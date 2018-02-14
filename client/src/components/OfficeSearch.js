@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
+
+import 'react-datepicker/dist/react-datepicker.css';
 
 
 class OfficeSearch extends Component {
@@ -23,6 +27,18 @@ class OfficeSearch extends Component {
   );
 
 
+  renderDatePicker = ({input, label, meta: {touched, error} }) => (
+    <div>
+      <label>{label}</label>
+      <DatePicker {...input}
+        selected={input.value ? moment(input.value, 'MMM DD, YYYY') : null}
+        dateFormat="MMM DD, YYYY"
+        placeholderText={moment().format("MMM DD, YYYY")}
+      />
+      {touched && error && <span>{error}</span>}
+    </div>
+  );
+
   render() {
     const { handleSubmit, pristine, reset, submitting } = this.props;
 
@@ -34,6 +50,11 @@ class OfficeSearch extends Component {
           label="Where"
           placeholder="Office form"
           component={this.renderField}
+        />
+        <Field
+          name="date"
+          label="When"
+          component={this.renderDatePicker}
         />
         <div className="form-buttons">
 					<button
