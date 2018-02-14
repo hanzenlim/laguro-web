@@ -1,7 +1,22 @@
 import React, { Component } from 'react';
 
 import OfficeSearch from './OfficeSearch';
+import DentistSearch from './DentistSearch';
+
 class Landing extends Component {
+  tabChange(event) {
+    const id = event.target.parentNode.id;
+    var element = document.getElementById(id);
+
+    var elementsToToggle = document.getElementsByClassName('toggle');
+
+    if(element && !element.classList.value.includes('active')){
+      for(var el of elementsToToggle){
+        el.classList.toggle('active');
+      }
+    }
+  }
+
   render() {
     return (
       <div className="bigSearch">
