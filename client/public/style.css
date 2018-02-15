@@ -59,6 +59,15 @@ body {
 
 /* Search Result page */
 
+.filters {
+  display: flex;
+  padding: 5px;
+}
+
+.filters a {
+  flex-grow: 1;
+  margin: 5px;
+}
 
 .searchResult {
   display: flex;
