@@ -57,3 +57,30 @@ body {
   padding: 20px;
 }
 
+/* Search Result page */
+
+
+.searchResult {
+  display: flex;
+  flex-flow: row nowrap;
+  width: 85%;
+  margin: 1em auto;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: 10px;
+  justify-content: flex-start;
+}
+
+.searchResult .details {
+  padding-left: 20px;
+}
+
+.searchResult .badges {
+  padding: 5px 0;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.searchResult .badge {
+  margin: 0 10px 0 0;
+}
