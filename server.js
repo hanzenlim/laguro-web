@@ -20,6 +20,7 @@ mongoose.Promise = global.Promise;
 // Models
 require("./models/User");
 require("./models/Dentist")
+require("./models/Office")
 
 // Services
 require("./services/passport");
@@ -43,7 +44,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 // Route Files
 require("./routes/authRoutes")(app);
-require("./routes/goalRoutes")(app);
+require("./routes/dentistRoutes")(app);
 
 if (process.env.NODE_ENV === 'production') {
   // express will serve production assets (main.js/css)
