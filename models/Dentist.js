@@ -7,6 +7,7 @@ const dentistSchema = new Schema({
 	type: String,
 	location: String,
 	badges: [String],
+	rating: [Number],
 	date_created: {
 		type: Date,
 		default: Date.now
@@ -23,7 +24,8 @@ const Dentist = mongoose.model("dentist", dentistSchema);
 // 		"Root Canal",
 // 		"Braces",
 // 		"Implants"
-// 	]
+// 	],
+// 	rating:[4,5,3,4,5,5]
 // });
 //
 // Dentist.create({
@@ -34,5 +36,6 @@ const Dentist = mongoose.model("dentist", dentistSchema);
 // 		"Newsletters",
 // 		"Surgery",
 // 		"At Risk Patients"
-// 	]
+// 	],
+// 	rating:[4,4,3,4,5]
 // })
