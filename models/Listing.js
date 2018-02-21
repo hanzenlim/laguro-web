@@ -1,0 +1,23 @@
+const mongoose = require("mongoose");
+const { Schema } = mongoose;
+
+const listingSchema = new Schema({
+	staff: [{
+		role: String,
+		price: Number,
+		num_available: Number
+	}],
+	equipment: [{
+		name: String,
+		price: Number
+	}],
+	cleaning_fee: Number,
+	time_available: [String],
+	price: Number,
+	date_created: {
+		type: Date,
+		default: Date.now
+	}
+});
+
+const Listing = mongoose.model("listing", listingSchema);
