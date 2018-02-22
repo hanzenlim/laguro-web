@@ -1,6 +1,11 @@
 import axios from "axios";
 import history from "../history"
-import { FETCH_DENTISTS, SET_FILTERS } from "./types";
+import {
+	FETCH_DENTISTS,
+	FETCH_OFFICES,
+	FETCH_LISTINGS,
+	SET_FILTERS
+} from "./types";
 
 export const searchDentists = filters => {
 	fetchDentists();
@@ -10,8 +15,8 @@ export const searchDentists = filters => {
 	};
 };
 
-export const searchListings = filters => {
-	fetchListings();
+export const searchOffices = filters => {
+	fetchOffices();
 	return dispatch => {
 		dispatch(setFilters(filters))
 		history.push('/office/search');
@@ -24,6 +29,16 @@ export const fetchDentists = () => {
 		dispatch({
 			type: FETCH_DENTISTS,
 			payload: dentists
+		});
+	};
+};
+
+export const fetchOffices = () => {
+	return async dispatch => {
+		const offices = await axios.get(`/api/offices`);
+		dispatch({
+			type: FETCH_OFFICES,
+			payload: offices
 		});
 	};
 };
