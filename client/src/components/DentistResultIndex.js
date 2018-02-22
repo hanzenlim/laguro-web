@@ -14,15 +14,21 @@ class DentistResultIndex extends Component {
     const allDentists = this.props.dentists.data;
 
     if(allDentists){
-      return allDentists.map(dentist => (
-        <DentistResult
-          name={dentist.name}
-          type={dentist.type}
-          location={dentist.location}
-          badges={dentist.badges}
-          key={dentist._id}
-        />
-      ));
+      return allDentists.map(dentist => {
+
+				//average the ratings
+				let avg_rating = dentist.rating.length > 0 ? dentist.rating.reduce((acc, val) => acc + val)/dentist.rating.length : 0
+
+				return <DentistResult
+				          name={dentist.name}
+				          type={dentist.type}
+				          location={dentist.location}
+				          badges={dentist.badges}
+									rating_value={avg_rating}
+									rating_count={dentist.rating.length}
+				          key={dentist._id}
+				        />
+      });
     } else {
       return <div></div>
     }

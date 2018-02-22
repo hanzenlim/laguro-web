@@ -38,7 +38,8 @@ class OfficeResultIndex extends Component {
 			          location={office.location}
 			          chairs={office.chairs}
 								listings={listings}
-								rating={avg_rating}
+								rating_value={avg_rating}
+								rating_count={office.rating.length}
 			          key={office._id}
 			        />
       });

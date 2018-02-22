@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import ReactStars from 'react-stars';
 
 class DentistResult extends Component {
 	renderBadges(badges) {
@@ -22,6 +23,15 @@ class DentistResult extends Component {
 					<h3>{this.props.name}</h3>
 					<h5>{this.props.type}</h5>
 					<h5>{this.props.location}</h5>
+					<div className="rating">
+						<ReactStars
+							count={5}
+							value={this.props.rating_value}
+						/>
+						<span className="rating_count">
+							{`(${this.props.rating_count})`}
+						</span>
+					</div>
 					<div className="badges">
 						{this.renderBadges(this.props.badges)}
 					</div>
