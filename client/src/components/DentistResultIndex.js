@@ -8,7 +8,6 @@ import FilterBar from "./FilterBar";
 class DentistResultIndex extends Component {
 	componentWillMount() {
 		this.props.fetchDentists();
-    console.log(this.props)
 	}
 
   renderDentistList(dentists){
