@@ -18,6 +18,13 @@ body {
   width: 100%;
 }
 
+/* Header Bar */
+
+.logo {
+  max-width: 30px;
+  margin-right: 10px;
+}
+
 /* Landing page search modules */
 
 .bigSearch {

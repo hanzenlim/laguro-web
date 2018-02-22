@@ -7,35 +7,38 @@ class Header extends Component {
   renderLogin() {
     const { auth } = this.props;
     switch (auth) {
-      case null:
-        return;
-      case false:
-        return <li><a className="login waves-effect waves-light btn" href="/auth/google">Login</a></li>;
-      default:  //user IS logged in
-        return (
-          <ul>
-            <li>
-              <a className="logout waves-effect waves-light btn" href="/api/logout">
-                Logout
-              </a>
-            </li>
-          </ul>
-        )
+      default:
+        return <li><a className="login waves-effect btn light-blue lighten-2" href="/auth/google">Login</a></li>;
+      // default:  //user IS logged in
+      //   return (
+      //     <ul>
+      //       <li>
+      //         <a className="logout waves-effect waves-light btn" href="/api/logout">
+      //           Logout
+      //         </a>
+      //       </li>
+      //     </ul>
+      //   )
     }
   }
 
   render() {
     return (
       <nav>
-        <div className="nav-wrapper">
+        <div className="nav-wrapper blue darken-1">
           <Link
-            className="left brand-logo"
+            className="left brand-logo valign-wrapper"
             to={this.props.auth ? '/dashboard' : '/'}
           >
-            WINTER CHALLENGE
+            <img className="logo" src="/logo-white.png"/>
+            Swap-Op
           </Link>
+
           <ul className="right">
-            {this.renderLogin()}
+            <li><Link to={'#'}>About Us</Link></li>
+            <li><Link to={'#'}>Help</Link></li>
+            <li><Link to={'#'}>Sign Up</Link></li>
+            <li>{this.renderLogin()}</li>
           </ul>
         </div>
       </nav>

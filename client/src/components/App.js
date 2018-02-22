@@ -8,6 +8,7 @@ import * as actions from '../actions';
 import Landing from './Landing';
 import DentistResultIndex from './DentistResultIndex';
 import OfficeResultIndex from './OfficeResultIndex';
+import Header from './Header';
 
 class App extends Component {
 
@@ -15,11 +16,14 @@ class App extends Component {
     return (
       <div className="wc-main">
         <Router history={history}>
-          <Switch>
-            <Route path="/dentist/search" component={DentistResultIndex} />
-            <Route path="/office/search" component={OfficeResultIndex} />
-            <Route path="/" component={Landing} />
-          </Switch>
+          <div>
+            <Header />
+            <Switch>
+              <Route path="/dentist/search" component={DentistResultIndex} />
+              <Route path="/office/search" component={OfficeResultIndex} />
+              <Route path="/" component={Landing} />
+            </Switch>
+          </div>
         </Router>
       </div>
     );
