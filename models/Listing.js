@@ -13,7 +13,8 @@ const listingSchema = new Schema({
 		price: Number
 	}],
 	cleaning_fee: Number,
-	time_available: [String],
+	time_available: Date,
+	time_closed: Date,
 	price: Number,
 	date_created: {
 		type: Date,

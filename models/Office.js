@@ -19,7 +19,6 @@ const Office = mongoose.model("office", officeSchema);
 // 	name: "Bell Dental Center",
 // 	location: "San Leandro, CA",
 // 	chairs: 7,
-// 	listings: [],
 // 	rating: [5, 5, 4, 5, 5, 5, 4, 5]
 // });
 //
@@ -50,7 +49,8 @@ const Office = mongoose.model("office", officeSchema);
 // 		}
 // 	],
 // 	cleaning_fee: 50,
-// 	time_available: ["8", "9"],
+// 	time_available: new Date('February 25, 2018 19:00:00'),
+// 	time_closed: new Date('February 25, 2018 22:00:00'),
 // 	price: 100
 // });
 //
@@ -74,7 +74,8 @@ const Office = mongoose.model("office", officeSchema);
 // 		}
 // 	],
 // 	cleaning_fee: 50,
-// 	time_available: ["7"],
+// 	time_available: new Date('February 26, 2018 20:00:00'),
+// 	time_closed: new Date('February 26, 2018 22:00:00'),
 // 	price: 100
 // });
 //
