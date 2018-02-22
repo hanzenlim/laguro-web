@@ -7,6 +7,7 @@ import * as actions from '../actions';
 // //components
 import Landing from './Landing';
 import DentistResultIndex from './DentistResultIndex';
+import OfficeResultIndex from './OfficeResultIndex';
 
 class App extends Component {
 
@@ -16,6 +17,7 @@ class App extends Component {
         <Router history={history}>
           <Switch>
             <Route path="/dentist/search" component={DentistResultIndex} />
+            <Route path="/office/search" component={OfficeResultIndex} />
             <Route path="/" component={Landing} />
           </Switch>
         </Router>

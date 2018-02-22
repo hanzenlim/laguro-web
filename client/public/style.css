@@ -93,3 +93,7 @@ body {
 .searchResult .badge {
   margin: 0 10px 0 0;
 }
+
+.searchResult .badgeLabel {
+  margin-right: 10px;
+}
