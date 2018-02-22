@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const listingSchema = new Schema({
+	office: { type: Schema.Types.ObjectId },
 	staff: [{
 		role: String,
 		price: Number,
