@@ -47,6 +47,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 require("./routes/authRoutes")(app);
 require("./routes/dentistRoutes")(app);
 require("./routes/officeRoutes")(app);
+require("./routes/listingRoutes")(app);
 
 if (process.env.NODE_ENV === 'production') {
   // express will serve production assets (main.js/css)
