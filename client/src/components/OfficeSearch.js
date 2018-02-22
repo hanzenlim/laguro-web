@@ -49,7 +49,7 @@ class OfficeSearch extends Component {
 				<Field
 					name="location"
 					label="Where"
-					placeholder="Office form"
+					placeholder="San Leandro, CA"
 					component={this.renderField}
 				/>
 				<Field name="date" label="When" component={this.renderDatePicker} />

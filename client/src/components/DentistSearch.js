@@ -49,7 +49,7 @@ class DentistSearch extends Component {
 				<Field
 					name="location"
 					label="Where"
-					placeholder="Dentist form"
+					placeholder="Oakland, CA"
 					component={this.renderField}
 				/>
 				<Field name="date" label="When" component={this.renderDatePicker} />
