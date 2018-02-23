@@ -19,6 +19,18 @@ body {
 }
 
 /* Header Bar */
+.brand-logo {
+  display: flex;
+  flex-flow: row nowrap;
+  margin-left: 10px;
+}
+
+.brand-logo h3 {
+  font-family: 'Raleway', sans-serif;
+  font-size: 35px;
+  display: inline-block;
+  margin: 0;
+}
 
 .logo {
   max-width: 30px;
