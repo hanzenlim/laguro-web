@@ -91,6 +91,10 @@ body {
   padding-left: 20px;
 }
 
+.searchResult h3 {
+  margin-top: 5px;
+}
+
 .searchResult .badges {
   padding: 5px 0;
   display: flex;
@@ -113,4 +117,10 @@ body {
 
 .searchResult .rating_count {
   margin-left: 5px;
+}
+
+.searchResult .result-img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
 }

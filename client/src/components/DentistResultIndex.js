@@ -26,6 +26,7 @@ class DentistResultIndex extends Component {
 				          badges={dentist.badges}
 									rating_value={avg_rating}
 									rating_count={dentist.rating.length}
+									img={dentist.img_url}
 				          key={dentist._id}
 				        />
       });

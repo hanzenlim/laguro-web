@@ -15,10 +15,18 @@ class DentistResult extends Component {
 		}
 	}
 
+	imgUrl(){
+		return this.props.img ? this.props.img : "http://via.placeholder.com/200x200"
+	}
+
 	render() {
 		return (
 			<div className="searchResult">
-				<img src="http://via.placeholder.com/200x200" alt="Doctor" />
+				<img
+					className="result-img"
+					src={this.imgUrl()}
+					alt="Doctor"
+				/>
 				<div className="details">
 					<h3>{this.props.name}</h3>
 					<h5>{this.props.type}</h5>

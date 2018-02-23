@@ -5,6 +5,7 @@ const { Schema } = mongoose;
 const officeSchema = new Schema({
 	name: String,
 	location: String,
+	img_url: String,
 	chairs: Number,
 	rating: [Number],
 	date_created: {
@@ -19,7 +20,8 @@ const Office = mongoose.model("office", officeSchema);
 // 	name: "Bell Dental Center",
 // 	location: "San Leandro, CA",
 // 	chairs: 7,
-// 	rating: [5, 5, 4, 5, 5, 5, 4, 5]
+// 	rating: [5, 5, 4, 5, 5, 5, 4, 5],
+// 	img_url: "/img/bell.jpg"
 // });
 //
 // bell.save();
@@ -83,12 +85,14 @@ const Office = mongoose.model("office", officeSchema);
 // 	name: "Albright Dental",
 // 	location: "Oakland, CA",
 // 	chairs: 3,
-// 	rating: [4, 4, 3, 4, 5]
+// 	rating: [4, 4, 3, 4, 5],
+// 	img_url: "/img/albright.jpg"
 // });
 //
 // const baysmile = Office.create({
 // 	name: "Baysmile Dental",
 // 	location: "Newark, CA",
 // 	chairs: 4,
-// 	rating: [4, 4, 3, 4, 4]
+// 	rating: [4, 4, 3, 4, 4],
+// 	img_url: "/img/baysmile.jpg"
 // });

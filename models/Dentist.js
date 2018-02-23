@@ -3,6 +3,7 @@ const { Schema } = mongoose;
 
 const dentistSchema = new Schema({
 	user_id: String,
+	img_url: String,
 	name: String,
 	type: String,
 	location: String,
@@ -20,6 +21,7 @@ const Dentist = mongoose.model("dentist", dentistSchema);
 // 	name:"William Choi",
 // 	type:"General Dentist",
 // 	location:"San Leandro, CA",
+// 	img_url: "/img/choi.jpg",
 // 	badges:[
 // 		"Root Canal",
 // 		"Braces",
@@ -32,6 +34,7 @@ const Dentist = mongoose.model("dentist", dentistSchema);
 // 	name:"Dyani Gaudilliere",
 // 	type:"Dental Researcher",
 // 	location:"Palo Alto, CA",
+// 	img_url: "/img/dyani.jpg",
 // 	badges:[
 // 		"Newsletters",
 // 		"Surgery",

@@ -20,7 +20,8 @@ class OfficeResultIndex extends Component {
     if(allOffices){
       let officeList = allOffices.map(office => {
 				//get all listings for this office
-				let officeListings = allListings.filter(listing => listing.office === office._id)
+
+				let officeListings = allListings ? allListings.filter(listing => listing.office === office._id) : []
 
 				//extract the price and time for each listing
 				let listings = officeListings.map(listing => {
@@ -40,6 +41,7 @@ class OfficeResultIndex extends Component {
 								listings={listings}
 								rating_value={avg_rating}
 								rating_count={office.rating.length}
+								img={office.img_url}
 			          key={office._id}
 			        />
       });
