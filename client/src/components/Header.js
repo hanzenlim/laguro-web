@@ -6,19 +6,18 @@ class Header extends Component {
 
   renderLogin() {
     const { auth } = this.props;
-    switch (auth) {
-      default:
-        return <li><a className="login waves-effect btn light-blue lighten-2" href="/auth/google">Login</a></li>;
-      // default:  //user IS logged in
-      //   return (
-      //     <ul>
-      //       <li>
-      //         <a className="logout waves-effect waves-light btn" href="/api/logout">
-      //           Logout
-      //         </a>
-      //       </li>
-      //     </ul>
-      //   )
+
+    if(auth != null){
+      switch (auth.data) {
+        case "":
+        return (
+          <a className="login waves-effect btn light-blue lighten-2" href="/auth/google">Login</a>
+        );
+        default:  //user IS logged in
+        return (
+          <a className="logout waves-effect btn light-blue lighten-2" href="/api/logout">Logout</a>
+        )
+      }
     }
   }
 
@@ -30,14 +29,18 @@ class Header extends Component {
             className="left brand-logo valign-wrapper"
             to={this.props.auth ? '/dashboard' : '/'}
           >
-            <img className="logo" src="/logo-white.png"/>
-            Swap-Op
+            <img
+              className="logo"
+              alt="Logo"
+              src="/logo-white.png"
+            />
+            <h3>LAGURO</h3>
           </Link>
 
           <ul className="right">
+            <li><Link to={'#'}>Become a Host</Link></li>
             <li><Link to={'#'}>About Us</Link></li>
             <li><Link to={'#'}>Help</Link></li>
-            <li><Link to={'#'}>Sign Up</Link></li>
             <li>{this.renderLogin()}</li>
           </ul>
         </div>
@@ -47,7 +50,7 @@ class Header extends Component {
 }
 
 function mapStateToProps(state){
-  return { auth: state.auth, points: state.points };
+  return { auth: state.auth };
 };
 
 export default connect(mapStateToProps)(Header);

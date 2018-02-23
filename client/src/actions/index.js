@@ -4,6 +4,7 @@ import {
 	FETCH_DENTISTS,
 	FETCH_OFFICES,
 	FETCH_LISTINGS,
+	FETCH_USER,
 	SET_FILTERS
 } from "./types";
 
@@ -50,6 +51,13 @@ export const fetchListings = () => {
 			type: FETCH_LISTINGS,
 			payload: listings
 		});
+	};
+};
+
+export const fetchUser = () => {
+	return async dispatch => {
+		const user = await axios.get("/api/current_user");
+		dispatch({ type: FETCH_USER, payload: user });
 	};
 };
 

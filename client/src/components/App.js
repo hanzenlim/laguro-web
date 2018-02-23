@@ -11,6 +11,9 @@ import OfficeResultIndex from './OfficeResultIndex';
 import Header from './Header';
 
 class App extends Component {
+  componentDidMount(){
+    this.props.fetchUser();
+  }
 
   render(){
     return (
