@@ -19,11 +19,25 @@ module.exports = app => {
 
 	//get all listings for an office
 	app.get("/api/offices/:id/listings", async (req, res) => {
-		await Listing
-      .find({ office: `${req.params.id}` })
-      .exec((err, listings) => {
-  			if (err) res.send(err);
-  			res.send(listings);
-  		});
+		await Listing.find({ office: `${req.params.id}` }).exec((err, listings) => {
+			if (err) res.send(err);
+			res.send(listings);
+		});
+	});
+
+	//Office creation route
+	app.post("/api/offices", async (req, res) => {
+		const { name, location, chairs } = req.body;
+		const dentist_id = req.user._id;
+
+		let newOffice = await Office.create({
+			name,
+			location,
+			chairs,
+			dentist: dentist_id
+		});
+
+		let dentistsOffices = await Office.find({ dentist: req.user.googleId });
+		res.send(dentistsOffices);
 	});
 };

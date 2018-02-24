@@ -3,6 +3,7 @@ const Listing = mongoose.model("listing");
 const { Schema } = mongoose;
 
 const officeSchema = new Schema({
+	dentist: { type: Schema.Types.ObjectId },
 	name: String,
 	location: String,
 	img_url: String,

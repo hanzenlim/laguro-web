@@ -5,7 +5,8 @@ import {
 	FETCH_OFFICES,
 	FETCH_LISTINGS,
 	FETCH_USER,
-	SET_FILTERS
+	SET_FILTERS,
+	CREATE_OFFICE
 } from "./types";
 
 export const searchDentists = filters => {
@@ -67,3 +68,17 @@ export const setFilters = filters => {
 		payload: filters
 	};
 };
+
+export function createOffice(values, type) {
+	return dispatch => {
+		console.log('pre', values)
+		axios.post("/api/offices", values).then(offices => {
+			console.log('post creation', offices)
+      dispatch({
+        type: CREATE_OFFICE,
+        payload: offices
+      })
+		});
+		history.push('/profile');
+	}
+}
