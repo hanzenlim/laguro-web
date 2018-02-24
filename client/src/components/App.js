@@ -24,8 +24,8 @@ class App extends Component {
           <div>
             <Header />
             <Switch>
-              <Route path="/dentist/search" component={DentistResultIndex} />
-              <Route path="/office/search" component={OfficeResultIndex} />
+              <Route path="/dentists/search" component={DentistResultIndex} />
+              <Route path="/offices/search" component={OfficeResultIndex} />
               <Route path="/offices/new" component={NewOffice} />
               <Route path="/profile" component={Profile} />
               <Route path="/" component={Landing} />

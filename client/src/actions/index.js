@@ -13,7 +13,7 @@ export const searchDentists = filters => {
 	fetchDentists();
 	return dispatch => {
 		dispatch(setFilters(filters))
-		history.push('/dentist/search');
+		history.push('/dentists/search');
 	};
 };
 
@@ -21,7 +21,7 @@ export const searchOffices = filters => {
 	fetchOffices();
 	return dispatch => {
 		dispatch(setFilters(filters))
-		history.push('/office/search');
+		history.push('/offices/search');
 	};
 };
 
