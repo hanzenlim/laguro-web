@@ -27,7 +27,8 @@ class OfficeResultIndex extends Component {
 				let listings = officeListings.map(listing => {
 					return {
 						time: moment(listing.time_available),
-						price: listing.price
+						office_id: listing.office,
+						id: listing._id
 					}
 				})
 

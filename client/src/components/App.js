@@ -12,6 +12,7 @@ import Header from './Header';
 import NewOffice from './NewOffice';
 import NewListing from './NewListing';
 import Profile from './Profile';
+import Listing from './Listing';
 
 class App extends Component {
   componentDidMount(){
@@ -29,6 +30,7 @@ class App extends Component {
               <Route path="/offices/search" component={OfficeResultIndex} />
               <Route path="/offices/new" component={NewOffice} />
               <Route path="/listings/new" component={NewListing} />
+              <Route path="/offices/:office_id/listings/:id" component={Listing} />
               <Route path="/profile" component={Profile} />
               <Route path="/" component={Landing} />
             </Switch>

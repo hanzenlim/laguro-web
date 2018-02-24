@@ -2,14 +2,18 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import moment from 'moment';
 import ReactStars from 'react-stars';
+import { Link } from "react-router-dom";
 
 class OfficeResult extends Component {
 	renderTimes(listings) {
 		if(listings){
 			return listings.map(listing => (
-				<span key={listing.time} className="badge white-text light-blue lighten-2">
+				<Link
+					key={listing.id}
+					to={`/offices/${listing.office_id}/listings/${listing.id}`}
+					className="badge white-text light-blue lighten-2">
 					{moment(listing.time).format('MMM D, h a')}
-				</span>
+				</Link>
 			));
 		} else {
 			return <div></div>
