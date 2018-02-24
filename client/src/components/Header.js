@@ -21,13 +21,28 @@ class Header extends Component {
     }
   }
 
+  profileButton() {
+    const { auth } = this.props;
+
+    if(auth != null){
+      switch (auth.data) {
+        case "":
+        return null;
+        default:  //user IS logged in
+        return (
+          <li><Link to={'/profile'}>{auth.data.name}</Link></li>
+        )
+      }
+    }
+  }
+
   render() {
     return (
       <nav>
         <div className="nav-wrapper blue darken-1">
           <Link
             className="left brand-logo valign-wrapper"
-            to={this.props.auth ? '/dashboard' : '/'}
+            to={'/'}
           >
             <img
               className="logo"
@@ -41,6 +56,7 @@ class Header extends Component {
             <li><Link to={'#'}>Become a Host</Link></li>
             <li><Link to={'#'}>About Us</Link></li>
             <li><Link to={'#'}>Help</Link></li>
+            {this.profileButton()}
             <li>{this.renderLogin()}</li>
           </ul>
         </div>

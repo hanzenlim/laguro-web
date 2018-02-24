@@ -10,6 +10,7 @@ import DentistResultIndex from './DentistResultIndex';
 import OfficeResultIndex from './OfficeResultIndex';
 import Header from './Header';
 import NewOffice from './NewOffice';
+import Profile from './Profile';
 
 class App extends Component {
   componentDidMount(){
@@ -26,6 +27,7 @@ class App extends Component {
               <Route path="/dentist/search" component={DentistResultIndex} />
               <Route path="/office/search" component={OfficeResultIndex} />
               <Route path="/offices/new" component={NewOffice} />
+              <Route path="/profile" component={Profile} />
               <Route path="/" component={Landing} />
             </Switch>
           </div>
