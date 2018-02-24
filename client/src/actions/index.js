@@ -6,7 +6,8 @@ import {
 	FETCH_LISTINGS,
 	FETCH_USER,
 	SET_FILTERS,
-	CREATE_OFFICE
+	CREATE_OFFICE,
+	CREATE_LISTING,
 } from "./types";
 
 export const searchDentists = filters => {
@@ -45,6 +46,16 @@ export const fetchOffices = () => {
 	};
 };
 
+export const fetchUserOffices = () => {
+	return async dispatch => {
+		const offices = await axios.get(`/api/user/offices`);
+		dispatch({
+			type: FETCH_OFFICES,
+			payload: offices
+		});
+	};
+};
+
 export const fetchListings = () => {
 	return async dispatch => {
 		const listings = await axios.get(`/api/listings`);
@@ -71,9 +82,7 @@ export const setFilters = filters => {
 
 export function createOffice(values, type) {
 	return dispatch => {
-		console.log('pre', values)
 		axios.post("/api/offices", values).then(offices => {
-			console.log('post creation', offices)
       dispatch({
         type: CREATE_OFFICE,
         payload: offices
@@ -82,3 +91,16 @@ export function createOffice(values, type) {
 		history.push('/profile');
 	}
 }
+
+export function createListing(values, type) {
+	return dispatch => {
+		axios.post("/api/listings", values).then(listing => {
+      dispatch({
+        type: CREATE_LISTING,
+        payload: listing
+      })
+		});
+		history.push('/profile');
+	}
+}
+

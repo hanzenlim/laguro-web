@@ -136,3 +136,18 @@ body {
   height: 200px;
   object-fit: cover;
 }
+
+/* New Listing form */
+
+.multiRowAdd {
+  display: flex;
+  flex-flow: row nowrap;
+  width: 95%;
+  margin: 1em auto;
+  align-items: center;
+}
+
+.multiRowAdd > div {
+  flex-grow: 1;
+  margin: 0 1.5em;
+}

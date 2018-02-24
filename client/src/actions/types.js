@@ -5,3 +5,4 @@ export const FETCH_USER = 'fetch_user';
 export const UPDATE_FILTERS = 'update_filters';
 export const SET_FILTERS = 'set_filters';
 export const CREATE_OFFICE = 'create_office';
+export const CREATE_LISTING = 'create_office';

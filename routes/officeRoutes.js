@@ -10,6 +10,13 @@ module.exports = app => {
 		res.send(allOffices);
 	});
 
+	//get user offices route
+	app.get("/api/user/offices", async (req, res) => {
+		const userOffices = await Office.find({dentist: req.user._id});
+
+		res.send(userOffices);
+	});
+
 	//get one office route
 	app.get("/api/offices/:id", async (req, res) => {
 		const office = await Office.find({ _id: `${req.params.id}` });
