@@ -8,6 +8,14 @@ module.exports = app => {
 
 		res.send(allListings);
 	});
+
+	//get single listings route
+	app.get("/api/listings/:id", async (req, res) => {
+		const listing = await Listing.findOne({ _id: `${req.params.id}` });
+
+		res.send(listing);
+	});
+
 	//Listing creation route
 	app.post("/api/listings", async (req, res) => {
 		const { office, price, staff, equipment, time_available, time_closed, cleaning_fee } = req.body;

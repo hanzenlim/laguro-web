@@ -19,7 +19,7 @@ module.exports = app => {
 
 	//get one office route
 	app.get("/api/offices/:id", async (req, res) => {
-		const office = await Office.find({ _id: `${req.params.id}` });
+		const office = await Office.findOne({ _id: `${req.params.id}` });
 
 		res.send(office);
 	});
