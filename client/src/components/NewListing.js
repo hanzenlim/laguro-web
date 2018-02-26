@@ -33,19 +33,19 @@ class NewListing extends Component {
 		}
 	}
 
-	renderField = ({ input,	label, type, placeholder, meta: { touched, error }	}) => (
+	renderField = ({ input,	label, type, placeholder, className, meta: { touched, error }	}) => (
 		<div>
-			<label>{label}</label>
-			<div>
+			<div className={className}>
+				<label>{label}</label>
 				<input {...input} placeholder={placeholder} />
 			</div>
 			{touched && error && <span>{error}</span>}
 		</div>
 	);
 
-	renderStaff = ({ fields, meta: { error } }) => (
-		<ul>
-			<h6>Staff Available</h6>
+	renderStaff = ({ fields, className, meta: { error } }) => (
+		<ul className={className}>
+			<label>Staff Available</label>
 			<li>
 				<button
 					type="button"
@@ -82,7 +82,7 @@ class NewListing extends Component {
 					<button
 						type="button"
 						title="Remove Staff"
-						className="red lighten-2 waves-effect btn"
+						className="red lighten-3 waves-effect btn"
 						onClick={() => fields.remove(index)}
 					>
 						<i className="material-icons tiny">delete_forever</i>
@@ -92,9 +92,9 @@ class NewListing extends Component {
 		</ul>
 	);
 
-	renderEquipment = ({ fields, meta: { error } }) => (
-		<ul>
-			<h6>Equipment Available</h6>
+	renderEquipment = ({ fields, className, meta: { error } }) => (
+		<ul className={className}>
+			<label>Equipment Available</label>
 			<li>
 				<button
 					type="button"
@@ -124,7 +124,7 @@ class NewListing extends Component {
 					<button
 						type="button"
 						title="Remove Staff"
-						className="red lighten-2 waves-effect btn"
+						className="red lighten-3 waves-effect btn"
 						onClick={() => fields.remove(index)}
 					>
 						<i className="material-icons tiny">delete_forever</i>
@@ -134,14 +134,19 @@ class NewListing extends Component {
 		</ul>
 	);
 
-	renderDatePicker = ({ input, label, meta: { touched, error } }) => (
-		<div>
+	renderDatePicker = ({ input, label, className, meta: { touched, error } }) => (
+		<div className={className}>
 			<label>{label}</label>
 			<DatePicker
 				{...input}
 				selected={input.value ? moment(input.value, "MMM DD, YYYY") : null}
 				dateFormat="MMM DD, YYYY"
 				placeholderText={moment().format("MMM DD, YYYY")}
+				showTimeSelect
+				timeFormat="HH:mm"
+				timeIntervals={15}
+				dateFormat="LLL"
+				timeCaption="time"
 			/>
 			{touched && error && <span>{error}</span>}
 		</div>
@@ -151,7 +156,11 @@ class NewListing extends Component {
 		const { handleSubmit, pristine, reset, submitting } = this.props;
 
 		return (
-			<form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+			<form
+				onSubmit={handleSubmit(this.onSubmit.bind(this))}
+				className="bigForm light-blue lighten-5"
+				>
+				<h4>Create a listing for an existing office</h4>
 				<label>
 					Select an existing office
 					<Field
@@ -164,34 +173,55 @@ class NewListing extends Component {
 						{this.renderOffices()}
 					</Field>
 				</label>
-				<Field
-					name="price"
-					label="Price per chair (hourly)"
-					placeholder="100"
-					component={this.renderField}
-				/>
+				<div className="row">
+					<Field
+						name="price"
+						label="Price per chair (hourly)"
+						placeholder="100"
+						className="col s12 m6"
+						component={this.renderField}
+					/>
 
-				<FieldArray name="staff" component={this.renderStaff} />
-				<FieldArray name="equipment" component={this.renderEquipment} />
+					<Field
+						name="cleaning_fee"
+						label="Cleaning Fee"
+						placeholder="50"
+						className="col s12 m6"
+						component={this.renderField}
+					/>
+				</div>
 
-				<Field
-					name="time_available"
-					label="Opening Time"
-					component={this.renderDatePicker}
-				/>
+				<div className="row">
+					<FieldArray
+						name="staff"
+						className="col s12"
+						component={this.renderStaff}
+					/>
+				</div>
 
-				<Field
-					name="time_closed"
-					label="Closing Time"
-					component={this.renderDatePicker}
-				/>
+				<div className="row">
+					<FieldArray
+						name="equipment"
+						className="col s12"
+						component={this.renderEquipment}
+					/>
+				</div>
 
-				<Field
-					name="cleaning_fee"
-					label="Cleaning Fee"
-					placeholder="50"
-					component={this.renderField}
-				/>
+				<div className="row">
+					<Field
+						name="time_available"
+						label="Opening Time"
+						className="col s12 m6"
+						component={this.renderDatePicker}
+					/>
+
+					<Field
+						name="time_closed"
+						label="Closing Time"
+						className="col s12 m6"
+						component={this.renderDatePicker}
+					/>
+				</div>
 
 				<div className="form-buttons">
 					<button
