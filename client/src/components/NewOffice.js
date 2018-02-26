@@ -37,8 +37,11 @@ class NewOffice extends Component {
 
 		return (
 			<form
+				className="bigForm light-blue lighten-5"
 				onSubmit={handleSubmit(this.onSubmit.bind(this))}
 			>
+				<h4>Create a new office</h4>
+
 				<Field
 					name="name"
 					label="Office Name"
