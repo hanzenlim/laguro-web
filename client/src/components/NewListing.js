@@ -146,7 +146,6 @@ class NewListing extends Component {
 				showTimeSelect
 				timeFormat="HH:mm"
 				timeIntervals={15}
-				dateFormat="LLL"
 				timeCaption="time"
 			/>
 			{touched && error && <span>{error}</span>}

@@ -17,7 +17,7 @@ class OfficeResultIndex extends Component {
 	renderEquipment(listing) {
 		if(listing.equipment){
 			return listing.equipment.map(equipment => (
-				<li className="listingRow">
+				<li className="listingRow" key={equipment.name}>
 					{equipment.name} - ${equipment.price}
 				</li>
 			))
@@ -29,7 +29,7 @@ class OfficeResultIndex extends Component {
 	renderStaff(listing) {
 		if(listing.staff){
 			return listing.staff.map(staff => (
-				<li className="listingRow">
+				<li className="listingRow" key={staff.role}>
 					{staff.role} - ${staff.price} ({staff.count} available)
 				</li>
 			))
@@ -39,9 +39,8 @@ class OfficeResultIndex extends Component {
 	}
 
 	renderImages(office) {
-		console.log(office.img_url)
 		return office.img_url.map(url =>
-			<img className="officeImg" src={url} />
+			<img className="officeImg" key={url} src={url} alt="office" />
 		)
 	}
 
@@ -72,7 +71,7 @@ class OfficeResultIndex extends Component {
 								<h3>{office.name}</h3>
 								<h5>{office.location}</h5>
 								<h6>
-									{moment(listing.time_available).format("MMM D, h a")} -{" "}
+									{moment(listing.time_available).format("MMM D, h a")} -
 									{moment(listing.time_closed).format("h a")}
 								</h6>
 							</div>
@@ -108,7 +107,7 @@ class OfficeResultIndex extends Component {
 									${listing.price} <small>hourly per chair</small>
 								</p>
 								<div className="rating">
-									<ReactStars count={5} value={avg_rating} size="10" />
+									<ReactStars count={5} value={avg_rating} size={10} />
 									<small>{`(${office.rating.length})`}</small>
 								</div>
 							</div>
