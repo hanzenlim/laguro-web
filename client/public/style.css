@@ -125,6 +125,8 @@ body {
 
 .searchResult .badge {
   margin: 0 10px 0 0;
+  padding: 2px 5px;
+  border-radius: 2px;
 }
 
 .searchResult .badgeLabel {

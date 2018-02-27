@@ -30,7 +30,14 @@ class Header extends Component {
         return null;
         default:  //user IS logged in
         return (
-          <li><Link to={'/profile'}>{auth.data.name}</Link></li>
+          <li>
+            <Link
+              to={'/profile'}
+              className="blue-text"
+            >
+              {auth.data.name}
+            </Link>
+          </li>
         )
       }
     }
@@ -39,7 +46,7 @@ class Header extends Component {
   render() {
     return (
       <nav>
-        <div className="nav-wrapper blue darken-1">
+        <div className="nav-wrapper white">
           <Link
             className="left brand-logo valign-wrapper"
             to={'/'}
@@ -49,13 +56,13 @@ class Header extends Component {
               alt="Logo"
               src="/logo-white.png"
             />
-            <h3>LAGURO</h3>
+            <h3 className="blue-text">LAGURO</h3>
           </Link>
 
           <ul className="right">
-            <li><Link to={'#'}>Become a Host</Link></li>
-            <li><Link to={'#'}>About Us</Link></li>
-            <li><Link to={'#'}>Help</Link></li>
+            <li><Link className="blue-text" to={'#'}>Become a Host</Link></li>
+            <li><Link className="blue-text" to={'#'}>About Us</Link></li>
+            <li><Link className="blue-text" to={'#'}>Help</Link></li>
             {this.profileButton()}
             <li>{this.renderLogin()}</li>
           </ul>
