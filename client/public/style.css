@@ -133,14 +133,14 @@ body {
   margin-right: 10px;
 }
 
-.searchResult .rating {
+.rating {
   display: flex;
   flex-flow: row nowrap;
   margin: 5px 0;
 }
 
-.searchResult .rating_count {
-  margin-left: 5px;
+.rating > div {
+  margin-right: 5px;
 }
 
 .searchResult .result-img {
@@ -177,4 +177,72 @@ body {
 .multiRowAdd > div {
   flex-grow: 1;
   margin: 0 1.5em;
+}
+
+/* Listing show page */
+.listing {
+  margin-bottom: 100px;
+}
+
+.officeImgs {
+  width: 70%;
+  margin: 0 auto;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-around;
+  overflow: scroll;
+}
+
+.officeImg {
+  height: 368px;
+  min-height: 400px;
+  max-height: 512px;
+  margin-right: 10px;
+}
+
+.listingDetails, .bookNow .content {
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 1em 2em;
+}
+
+.listingHeader, .bookNow .content, .availableRow {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.listingDetails > div {
+  margin-bottom: 2em;
+}
+
+.listingDetails > div:last-of-type {
+  margin: 0;
+}
+
+.availableRow {
+  border: 1px solid #e4e4e4;
+  padding: 1em 2.0em;
+  align-items: flex-start;
+}
+
+.listingRow {
+  padding: 0 1em;
+  list-style: none;
+}
+
+.bookNow {
+  background-color: white;
+  border-top: 1px solid #DBDBDB;
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  z-index: 4;
+  width: 100%;
+}
+
+.bookNow p {
+  margin: 0;
 }
