@@ -32,6 +32,7 @@ class OfficeSearch extends Component {
 				{...input}
 				selected={input.value ? moment(input.value, "MMM DD, YYYY") : null}
 				dateFormat="MMM DD, YYYY"
+				minDate={moment()}
 				placeholderText={moment().format("MMM DD, YYYY")}
 			/>
 			{touched && error && <span>{error}</span>}

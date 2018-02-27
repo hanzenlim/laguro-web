@@ -142,6 +142,7 @@ class NewListing extends Component {
 				selected={input.value ? moment(input.value, "MMM DD, YYYY") : null}
 				dateFormat="MMM DD, YYYY"
 				placeholderText={moment().format("MMM DD, YYYY")}
+				minDate={moment()}
 				showTimeSelect
 				timeFormat="HH:mm"
 				timeIntervals={15}
