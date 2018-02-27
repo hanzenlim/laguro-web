@@ -42,7 +42,7 @@ class OfficeResultIndex extends Component {
 								listings={listings}
 								rating_value={avg_rating}
 								rating_count={office.rating.length}
-								img={office.img_url}
+								img={office.img_url[0]}
 			          key={office._id}
 			        />
       });
