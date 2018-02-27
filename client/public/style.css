@@ -5,6 +5,10 @@ body {
   color: #333;
 }
 
+img {
+  max-width: 100%;
+}
+
 .form-buttons {
   display: flex;
   justify-content: flex-end;
@@ -48,41 +52,79 @@ body {
 }
 
 /* Landing page search modules */
+.hero-search, .hero-img {
+  width: 50%;
+  float: left;
+}
 
-.bigSearch {
+.hero-search {
+  padding: 2em 1em;
+}
+
+.hero-img {
+  float: right;
+  width: 50%;
+  height: 650px;
+  padding: 3em 0;
+}
+
+.hero-img img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.hero-search .search, .hero-search .mission {
+  width: 65%;
+  margin: 0 auto;
+}
+
+.mission h3 {
+  font-weight: bold;
+}
+
+.mission p {
+  font-size: 1.25em;
+  font-weight: 300;
+  line-height: 1.5;
+}
+
+.search {
   width: 70%;
   box-shadow: 0 2px 20px 1px rgba(0,0,0,0.1);
   margin: 1em auto;
 }
 
-.bigSearch .search-tabs {
+.search .search-tabs {
   display: flex;
 }
 
-.bigSearch .tab {
+.toggle {
+  display: none;
+}
+
+.toggle.active {
+  display: block;
+}
+
+.search .tab {
+  display: block;
   flex-grow: 1;
   text-align: center;
   border: 1px solid #eee;
   border-radius: 3px 3px 0 0;
   border-bottom: none;
+  background: #eee;
   color: #ccc;
 }
 
-.bigSearch .tab.active {
-  background: #eee;
+.search .tab.active {
+  background: #fff;
   color: #222;
 }
 
-.bigSearch .searchModule {
-  display: none;
-}
-
-.bigSearch .searchModule.active {
-  display: block;
-}
-
-.bigSearch form {
-  background: #eee;
+.search form {
+  background: #fff;
   padding: 20px;
 }
 

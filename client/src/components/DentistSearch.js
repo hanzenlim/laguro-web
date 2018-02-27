@@ -60,15 +60,7 @@ class DentistSearch extends Component {
 						type="submit"
 						disabled={pristine || submitting}
 					>
-						Submit
-					</button>
-					<button
-						className="waves-effect btn red lighten-2"
-						type="button"
-						disabled={pristine || submitting}
-						onClick={reset}
-					>
-						Clear
+						Search
 					</button>
 				</div>
 			</form>

@@ -56,7 +56,7 @@ class Header extends Component {
               alt="Logo"
               src="/logo-white.png"
             />
-            <h3 className="blue-text">LAGURO</h3>
+            <h3 className="blue-text">Laguro</h3>
           </Link>
 
           <ul className="right">
