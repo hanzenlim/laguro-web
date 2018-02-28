@@ -54,7 +54,6 @@ class ResultMap extends Component {
 		      fillOpacity:1,
 		      strokeWeight:2
 				},
-				label: labels[labelIndex++ % labels.length],
 				map: map
 			});
 		}
