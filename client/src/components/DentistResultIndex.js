@@ -4,6 +4,7 @@ import * as actions from "../actions";
 
 import DentistResult from "./DentistResult";
 import FilterBar from "./FilterBar";
+import ResultMap from "./ResultMap";
 
 class DentistResultIndex extends Component {
 	componentWillMount() {
@@ -39,7 +40,14 @@ class DentistResultIndex extends Component {
     return (
       <div>
         <FilterBar />
-        {this.renderDentistList()}
+				<div className="resultContainer">
+					<div className="resultList">
+						{this.renderDentistList()}
+					</div>
+					<div className="map">
+						<ResultMap locations={this.props.dentists.data} searchLocation={this.props.filters.location ? this.props.filters.location : null }/>
+					</div>
+				</div>
       </div>
     );
 	}

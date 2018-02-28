@@ -5,6 +5,9 @@ import moment from 'moment';
 
 import OfficeResult from "./OfficeResult";
 import FilterBar from "./FilterBar";
+import ResultMap from "./ResultMap";
+
+
 
 class OfficeResultIndex extends Component {
 	componentWillMount() {
@@ -57,7 +60,14 @@ class OfficeResultIndex extends Component {
     return (
       <div>
         <FilterBar />
-        {this.renderOfficeList()}
+				<div className="resultContainer">
+					<div className="resultList">
+						{this.renderOfficeList()}
+					</div>
+					<div className="map">
+						<ResultMap locations={this.props.offices.data} searchLocation={this.props.filters.location ? this.props.filters.location : null }/>
+					</div>
+				</div>
       </div>
     );
 	}

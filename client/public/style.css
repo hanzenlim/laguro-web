@@ -140,6 +140,33 @@ img {
   margin: 5px;
 }
 
+.resultContainer {
+  width: 100%;
+  max-width: 1500px;
+  margin: 0 auto;
+}
+
+.resultList {
+  width: 50%;
+  height: 85vh;
+  overflow-y: scroll;
+  float: left;
+}
+
+.map {
+  padding-top: 15px;
+  width: 50%;
+  float: right;
+  overflow: hidden;
+}
+
+/* auto-generated container for map */
+.map > div > div {
+  width: 50% !important;
+  height: 85vh !important;
+  max-width: 750px;
+}
+
 .searchResult {
   display: flex;
   flex-flow: row nowrap;
@@ -231,7 +258,7 @@ img {
   margin: 0 auto;
   display: flex;
   flex-flow: row nowrap;
-  justify-content: space-around;
+  justify-content: center;
   overflow: scroll;
 }
 
