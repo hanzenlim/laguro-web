@@ -59,7 +59,7 @@ class Landing extends Component {
 				</div>
 
         <div className="hero-img">
-          <img src="/img/hero1.jpg"/>
+          <img src="/img/hero1.jpg" alt="hero"/>
         </div>
 			</div>
 		);
