@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "axios": "^0.17.1",
+    "google-maps-react": "^1.1.2",
     "lodash": "^4.17.5",
     "materialize-css": "^1.0.0-alpha.3",
     "moment": "^2.20.1",
