@@ -40,7 +40,7 @@ class OfficeSearch extends Component {
 	);
 
 	render() {
-		const { handleSubmit, pristine, reset, submitting } = this.props;
+		const { handleSubmit, pristine, submitting } = this.props;
 
 		return (
 			<form
