@@ -3,6 +3,7 @@ import history from "../history"
 import {
 	FETCH_DENTISTS,
 	FETCH_OFFICES,
+	FILTER_OFFICES,
 	FETCH_LISTINGS,
 	FETCH_USER,
 	SET_FILTERS,
@@ -45,6 +46,15 @@ export const fetchOffices = () => {
 		});
 	};
 };
+
+export const updateOfficeList = (offices) => {
+	return dispatch => {
+		dispatch({
+			type: FILTER_OFFICES,
+			payload: offices
+		})
+	}
+}
 
 export const fetchUserOffices = () => {
 	return async dispatch => {
@@ -103,4 +113,3 @@ export function createListing(values, type) {
 		history.push('/profile');
 	}
 }
-
