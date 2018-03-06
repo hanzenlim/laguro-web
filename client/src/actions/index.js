@@ -3,10 +3,10 @@ import history from "../history"
 import {
 	FETCH_DENTISTS,
 	FETCH_OFFICES,
-	FILTER_OFFICES,
 	FETCH_LISTINGS,
 	FETCH_USER,
 	SET_FILTERS,
+	UPDATE_FILTERS,
 	CREATE_OFFICE,
 	CREATE_LISTING,
 } from "./types";
@@ -134,6 +134,13 @@ export const fetchUser = () => {
 		dispatch({ type: FETCH_USER, payload: user });
 	};
 };
+
+export const updateFilters = filter => {
+	return {
+		type: UPDATE_FILTERS,
+		payload: filter
+	}
+}
 
 export const setFilters = filters => {
 	return {
