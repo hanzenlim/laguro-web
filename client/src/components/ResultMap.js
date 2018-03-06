@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Map, GoogleApiWrapper } from "google-maps-react";
+import { Map } from "google-maps-react";
 import * as actions from "../actions";
 
 class ResultMap extends Component {

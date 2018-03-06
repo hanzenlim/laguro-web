@@ -13,7 +13,6 @@ class DentistResultIndex extends Component {
 
   renderDentistList(){
     const allDentists = this.props.dentists;
-		console.log(allDentists)
     if(allDentists){
       return allDentists.map(dentist => {
 

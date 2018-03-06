@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { GoogleApiWrapper } from "google-maps-react";
 import moment from 'moment';
 import * as actions from "../actions";
 
