@@ -5,71 +5,20 @@ import * as actions from "../actions";
 
 class ResultMap extends Component {
 	initMap(mapProps, map) {
-		const { google, locations, searchLocation } = mapProps.props;
+		const { locations, searchLocation } = mapProps.props;
+		const { google } = mapProps;
 		var geocoder = new google.maps.Geocoder();
 		var bounds = new google.maps.LatLngBounds();
-		var service = new google.maps.DistanceMatrixService();
 
-		// if a location was entered into the search box, filter offices by that search term, then geocode and place on map, otherwise push all pins to map
+		var allAddresses = locations.map(loc => {
+			return { ...loc, type: "office" };
+		});
+
 		if (searchLocation) {
-			//get [string] with each offices' address (needed  for distance matrix)
-			var officeAddresses = locations.map(loc => loc.location);
-
-			//filter and sort the offices by distance
-			filterResults(officeAddresses)
-			.then(filteredAddresses => {
-        // update the result list to match filtered/sorted result list
-				mapProps.props.updateOfficeList({data: filteredAddresses})
-
-				geocodeResults([...filteredAddresses, {location: searchLocation}]);
-			});
-		} else {
-			//get [{}] with each offices location and "type" to determine map icon
-			var allAddresses = locations.map(loc => {
-				return { ...loc, type: "office" };
-			});
-
-			// place marker for each office
-			geocodeResults(allAddresses);
+			var addressesWithSearchMarker = [ ...allAddresses, {location: searchLocation} ]
 		}
 
-		function filterResults(addresses) {
-			return new Promise(resolve => {
-				service.getDistanceMatrix(
-					{
-						origins: [searchLocation],
-						destinations: addresses,
-						travelMode: "DRIVING",
-						unitSystem: google.maps.UnitSystem.IMPERIAL
-					},
-					function(response, status) {
-						if (status !== "OK") {
-							alert("Distance Matrix failed: " + status);
-						} else {
-							var results = response.rows[0].elements;
-
-							var locationsWithDistance = locations.map((location, index) => {
-								return {
-									...location,
-									type: "office",
-									distance: results[index].distance.text.split(" ")[0]
-								}
-							});
-
-							//remove any offices greater than 35 miles away
-							var filteredResults = locationsWithDistance.filter(
-								location => location.distance < 35
-							);
-
-							//sort offices within range, allows their labels to reflect order
-							filteredResults.sort((a, b) => a.distance - b.distance);
-						}
-
-						resolve(filteredResults);
-					}
-				);
-			});
-		}
+		geocodeResults(addressesWithSearchMarker || allAddresses);
 
 		function geocodeResults(addresses) {
 			addresses.forEach((addr, index) => {
@@ -126,6 +75,4 @@ class ResultMap extends Component {
 	}
 }
 
-export default GoogleApiWrapper({
-	apiKey: "AIzaSyCyfeTxBZtGOquDUNxQxJsoXAoczjfYxJo"
-})(connect(null, actions)(ResultMap));
+export default connect(null, actions)(ResultMap);

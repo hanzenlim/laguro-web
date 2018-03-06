@@ -12,7 +12,6 @@ import {
 } from "./types";
 
 export const searchDentists = filters => {
-	fetchDentists();
 	return dispatch => {
 		dispatch(setFilters(filters))
 		history.push('/dentists/search');
@@ -20,40 +19,93 @@ export const searchDentists = filters => {
 };
 
 export const searchOffices = filters => {
-	fetchOffices();
 	return dispatch => {
 		dispatch(setFilters(filters))
 		history.push('/offices/search');
 	};
 };
 
-export const fetchDentists = () => {
+export const fetchDentists = (filters) => {
 	return async dispatch => {
-		const dentists = await axios.get("/api/dentists");
-		dispatch({
-			type: FETCH_DENTISTS,
-			payload: dentists
-		});
-	};
-};
-
-export const fetchOffices = () => {
-	return async dispatch => {
-		const offices = await axios.get(`/api/offices`);
-		dispatch({
-			type: FETCH_OFFICES,
-			payload: offices
-		});
-	};
-};
-
-export const updateOfficeList = (offices) => {
-	return dispatch => {
-		dispatch({
-			type: FILTER_OFFICES,
-			payload: offices
+		const google = window.google;
+		axios.get(`/api/dentists`).then(dentists => {
+			if(filters["location"]) {
+				filterOffices(google, filters, dentists.data).then(filteredDentists => {
+					dispatch({
+						type: FETCH_DENTISTS,
+						payload: filteredDentists
+					});
+				})
+			} else {
+				dispatch({
+					type: FETCH_DENTISTS,
+					payload: dentists.data
+				});
+			}
 		})
 	}
+};
+
+export const fetchOffices = (filters) => {
+	return async dispatch => {
+		const google = window.google;
+		axios.get(`/api/offices`).then(offices => {
+			if(filters["location"]) {
+				filterOffices(google, filters, offices.data).then(filteredOffices => {
+					dispatch({
+						type: FETCH_OFFICES,
+						payload: filteredOffices
+					});
+				})
+			} else {
+				dispatch({
+					type: FETCH_OFFICES,
+					payload: offices.data
+				});
+			}
+		})
+	}
+};
+
+export const filterOffices = (google, filters, offices) => {
+	var service = new google.maps.DistanceMatrixService();
+	var officeAddresses = offices.map(loc => loc.location);
+
+	return new Promise(resolve => {
+		service.getDistanceMatrix(
+			{
+				origins: [filters.location],
+				destinations: officeAddresses,
+				travelMode: "DRIVING",
+				unitSystem: google.maps.UnitSystem.IMPERIAL
+			},
+			function(response, status) {
+				if (status !== "OK") {
+					alert("Distance Matrix failed: " + status);
+				} else {
+					var results = response.rows[0].elements;
+
+					var locationsWithDistance = offices.map((office, index) => {
+						return {
+							...office,
+							locationType: "office",
+							distance: results[index].distance.text.split(" ")[0]
+						}
+					});
+
+					//remove any offices greater than 35 miles away
+					var filteredResults = locationsWithDistance.filter(
+						office => office.distance < 35
+					);
+
+					//sort offices within range, allows their labels to reflect order
+					filteredResults.sort((a, b) => a.distance - b.distance);
+				}
+
+				resolve(filteredResults);
+			}
+		);
+	});
 }
 
 export const fetchUserOffices = () => {

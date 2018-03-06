@@ -8,12 +8,12 @@ import ResultMap from "./ResultMap";
 
 class DentistResultIndex extends Component {
 	componentWillMount() {
-		this.props.fetchDentists();
+		this.props.fetchDentists(this.props.filters);
 	}
 
-  renderDentistList(dentists){
-    const allDentists = this.props.dentists.data;
-
+  renderDentistList(){
+    const allDentists = this.props.dentists;
+		console.log(allDentists)
     if(allDentists){
       return allDentists.map(dentist => {
 
@@ -45,7 +45,10 @@ class DentistResultIndex extends Component {
 						{this.renderDentistList()}
 					</div>
 					<div className="map">
-						<ResultMap locations={this.props.dentists.data} searchLocation={this.props.filters.location ? this.props.filters.location : null }/>
+						<ResultMap
+							locations={this.props.dentists}
+							google={window.google}
+							searchLocation={this.props.filters.location ? this.props.filters.location : null }/>
 					</div>
 				</div>
       </div>

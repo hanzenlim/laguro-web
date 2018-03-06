@@ -1,22 +1,21 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import * as actions from "../actions";
+import { GoogleApiWrapper } from "google-maps-react";
 import moment from 'moment';
+import * as actions from "../actions";
 
 import OfficeResult from "./OfficeResult";
 import FilterBar from "./FilterBar";
 import ResultMap from "./ResultMap";
 
-
-
 class OfficeResultIndex extends Component {
 	componentWillMount() {
 		this.props.fetchListings();
-		this.props.fetchOffices();
+		this.props.fetchOffices(this.props.filters)
 	}
 
   renderOfficeList(){
-    const allOffices = this.props.offices.data;
+    const allOffices = this.props.offices;
 		const allListings = this.props.listings.data;
 
 
@@ -65,7 +64,10 @@ class OfficeResultIndex extends Component {
 						{this.renderOfficeList()}
 					</div>
 					<div className="map">
-						<ResultMap locations={this.props.offices.data} searchLocation={this.props.filters.location ? this.props.filters.location : null }/>
+						<ResultMap
+							locations={this.props.offices}
+							google={window.google}
+							searchLocation={this.props.filters.location ? this.props.filters.location : null }/>
 					</div>
 				</div>
       </div>
@@ -81,4 +83,4 @@ function mapStateToProps(state) {
    };
 }
 
-export default connect(mapStateToProps, actions)(OfficeResultIndex);
+export default  connect(mapStateToProps, actions)(OfficeResultIndex);
