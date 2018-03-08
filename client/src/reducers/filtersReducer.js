@@ -5,7 +5,10 @@ export default function(state = {}, action) {
     case SET_FILTERS:
       return action.payload;
     case UPDATE_FILTERS:
-      return({...state, ...action.payload})
+      return Object.assign({}, state, {
+        ...state,
+        ...action.payload
+      })
     default:
       return state;
   }

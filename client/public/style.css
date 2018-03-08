@@ -135,9 +135,22 @@ img {
   padding: 5px;
 }
 
-.filters a {
+.filters > div {
   flex-grow: 1;
   margin: 5px;
+}
+
+.filters form {
+  padding: 10px;
+}
+
+.dropdown.btn {
+  width: 100% !important;
+  margin: 0 !important;
+  border: none !important;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14) !important;
+  border-radius: 2px !important;
+  height: 2.5rem !important;
 }
 
 .resultContainer {
@@ -161,7 +174,7 @@ img {
 }
 
 /* auto-generated container for map */
-.map > div > div {
+.map > div {
   width: 50% !important;
   height: 85vh !important;
   max-width: 750px;

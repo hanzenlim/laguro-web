@@ -1,11 +1,26 @@
-import { FETCH_OFFICES, FILTER_OFFICES } from '../actions/types';
+import { FETCH_OFFICES, REQUEST_OFFICES, UPDATE_FILTERS } from '../actions/types';
 
-export default function(state = [], action) {
+export default function(state = {
+  isFetching: false,
+  offices: []
+}, action) {
   switch (action.type) {
+    case UPDATE_FILTERS:
+      return Object.assign({}, state, {
+        ...state,
+        invalid: true
+      })
     case FETCH_OFFICES:
-      return action.payload;
-    case FILTER_OFFICES:
-      return action.payload;
+      return Object.assign({}, state, {
+        isFetching: false,
+        offices: action.payload
+      })
+    case REQUEST_OFFICES:
+      return Object.assign({}, state, {
+        ...state,
+        isFetching: true,
+        invalid: false
+      })
     default:
       return state;
   }

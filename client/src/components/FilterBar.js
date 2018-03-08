@@ -1,35 +1,46 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import * as materialize from "materialize-css/dist/js/materialize.js";
 
-import "react-datepicker/dist/react-datepicker.css";
+import DateFilter from "./filters/DateFilter";
+import LocationFilter from "./filters/LocationFilter";
 
 class FilterBar extends Component {
+	componentDidMount() {
+		var elements = document.getElementsByClassName("dropdown-trigger");
+		for (var el of elements) {
+			materialize.Dropdown.init(el, {
+				coverTrigger: false,
+				closeOnClick: false
+			});
+		  materialize.Dropdown.getInstance(el);
+
+		}
+	}
+
 	filterDefaults = {
-		date: "Date",
 		location: "Location",
 		insurance: "Insurance",
 		price: "Price",
 		procedure: "Procedure"
 	};
 
-	renderFilters() {
-		let { filters } = this.props;
-		let defaults = this.filterDefaults;
-		let keys = Object.keys(defaults);
-
-		return keys.map(key => {
-			let value = filters[`${key}`] ? filters[`${key}`] : defaults[`${key}`];
-
-			return (
-				<a key={value} className="waves-effect btn light-blue lighten-2">
-					{value}
-				</a>
-			);
-		});
-	}
-
 	render() {
-		return <div className="filters">{this.renderFilters()}</div>;
+		return (
+			<div className="filters">
+				<div>
+					<DateFilter selectedDate={this.props.filters["date"]} />
+				</div>
+				<div>
+					<a href="#" className="dropdown-trigger dropdown btn light-blue lighten-1" data-target="dropdown1">
+						{this.props.filters.location ? this.props.filters.location : "Location"}
+					</a>
+					<ul id='dropdown1' className='dropdown-content'>
+						<LocationFilter searchLocation={this.props.filters.location} />
+					</ul>
+				</div>
+			</div>
+		);
 	}
 }
 

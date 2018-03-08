@@ -16,7 +16,7 @@ class DateFilter extends Component {
 
 		return (
 			<DatePicker
-				className="btn light-blue lighten-2"
+				className="dropdown btn light-blue lighten-1"
 		  	selected={this.props.selectedDate ? moment(this.props.selectedDate) : moment()}
 		  	onChange={this.handleChange.bind(this)}
 			/>
