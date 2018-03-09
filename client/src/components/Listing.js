@@ -123,12 +123,10 @@ class OfficeResultIndex extends Component {
 			}
 		}
 		return <div>Loading...</div>;
-
 	}
 }
 
 function mapStateToProps(state) {
-	console.log("state", state)
 	return {
 		listings: state.listings.data,
 		offices: state.offices.offices,
