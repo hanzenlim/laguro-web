@@ -11,7 +11,7 @@ class OfficeResultIndex extends Component {
 		this.office_id = this.props.match.params.office_id;
 
 		this.props.fetchListings();
-		this.props.fetchOffices();
+		this.props.fetchOffices(this.props.filters);
 	}
 
 	renderEquipment(listing) {
@@ -128,9 +128,11 @@ class OfficeResultIndex extends Component {
 }
 
 function mapStateToProps(state) {
+	console.log("state", state)
 	return {
 		listings: state.listings.data,
-		offices: state.offices.data
+		offices: state.offices.offices,
+		filters: state.filters
 	};
 }
 
