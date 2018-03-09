@@ -11,55 +11,89 @@ class DentistResultIndex extends Component {
 		this.props.fetchDentists(this.props.filters);
 	}
 
-  renderDentistList(){
-    const allDentists = this.props.dentists;
-    if(allDentists){
-      return allDentists.map(dentist => {
+	renderMap() {
+		return (
+			<ResultMap
+				locations={this.props.dentists}
+				google={window.google}
+				searchLocation={
+					this.props.filters.location ? this.props.filters.location : null
+				}
+			/>
+		);
+	}
 
-				//average the ratings
-				let avg_rating = dentist.rating.length > 0 ? dentist.rating.reduce((acc, val) => acc + val)/dentist.rating.length : 0
+	renderDentistList() {
+		const filteredDentists = this.props.dentists;
 
-				return <DentistResult
-				          name={dentist.name}
-				          type={dentist.type}
-				          location={dentist.location}
-				          badges={dentist.badges}
-									rating_value={avg_rating}
-									rating_count={dentist.rating.length}
-									img={dentist.img_url}
-				          key={dentist._id}
-				        />
-      });
-    } else {
-      return <div></div>
-    }
-  }
+		let dentistList = filteredDentists.map(dentist => {
+			//average the ratings
+			let avg_rating =
+				dentist.rating.length > 0
+					? dentist.rating.reduce((acc, val) => acc + val) /
+						dentist.rating.length
+					: 0;
+
+			return (
+				<DentistResult
+					name={dentist.name}
+					type={dentist.type}
+					location={dentist.location}
+					badges={dentist.badges}
+					rating_value={avg_rating}
+					rating_count={dentist.rating.length}
+					img={dentist.img_url}
+					key={dentist._id}
+				/>
+			);
+		});
+
+		return dentistList;
+	}
 
 	render() {
-    return (
-      <div>
-        <FilterBar />
+		if (this.props.invalid) {
+			this.props.fetchDentists(this.props.filters);
+		}
+
+		if (this.props.isFetching) {
+			return <div>Loading...</div>;
+		}
+
+		return (
+			<div>
+				<FilterBar />
 				<div className="resultContainer">
-					<div className="resultList">
-						{this.renderDentistList()}
-					</div>
-					<div className="map">
-						<ResultMap
-							locations={this.props.dentists}
-							google={window.google}
-							searchLocation={this.props.filters.location ? this.props.filters.location : null }/>
-					</div>
+					<div className="resultList">{this.renderDentistList()}</div>
+					<div className="map">{this.renderMap()}</div>
 				</div>
-      </div>
-    );
+			</div>
+		);
 	}
+}
+
+function getVisibleOffices(offices) {
+	//remove any offices greater than 35 miles away
+	//if no location filter, office.distance is undefined and !!(undefined > 35) == false
+	let filteredOffices = offices.filter(office => {
+		if (office.distance > 35) {
+			return false;
+		}
+
+		return true;
+	});
+
+	//sort offices within range, allows their labels to reflect order
+	return filteredOffices.sort((a, b) => a.distance - b.distance);
 }
 
 function mapStateToProps(state) {
 	return {
-    dentists: state.dentists,
-    filters: state.filters
-   };
+		dentists: getVisibleOffices(state.dentists.dentists),
+		isFetching: state.dentists.isFetching,
+		invalid: state.dentists.invalid,
+		filters: state.filters
+	};
 }
 
 export default connect(mapStateToProps, actions)(DentistResultIndex);

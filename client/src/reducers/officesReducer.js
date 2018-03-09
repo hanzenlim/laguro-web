@@ -2,6 +2,7 @@ import { FETCH_OFFICES, REQUEST_OFFICES, UPDATE_FILTERS } from '../actions/types
 
 export default function(state = {
   isFetching: false,
+  invalid: false,
   offices: []
 }, action) {
   switch (action.type) {

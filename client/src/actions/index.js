@@ -9,7 +9,8 @@ import {
 	UPDATE_FILTERS,
 	CREATE_OFFICE,
 	CREATE_LISTING,
-	REQUEST_OFFICES
+	REQUEST_OFFICES,
+	REQUEST_DENTISTS
 } from "./types";
 
 export const searchDentists = filters => {
@@ -53,56 +54,95 @@ function requestOffices() {
 	};
 }
 
+function requestDentists() {
+	return {
+		type: REQUEST_DENTISTS
+	};
+}
+
 export const loadAllOffices = () => {
 	return axios.get(`/api/offices`);
 };
 
+export const loadAllDentists = () => {
+	return axios.get(`/api/dentists`);
+};
+
 export const fetchOffices = filters => {
 	return dispatch => {
-		const google = window.google;
 		dispatch(requestOffices());
 		return loadAllOffices().then(offices => {
-
 			if (!filters.location) {
 				return dispatch({
 					type: FETCH_OFFICES,
 					payload: offices.data
 				});
+			} else {
+				getDistances(offices, filters).then(filteredOffices => {
+					return dispatch({
+						type: FETCH_OFFICES,
+						payload: filteredOffices
+					});
+				});
 			}
-
-			var service = new google.maps.DistanceMatrixService();
-			var officeAddresses = offices.data.map(loc => loc.location);
-
-			service.getDistanceMatrix(
-				{
-					origins: [filters.location],
-					destinations: officeAddresses,
-					travelMode: "DRIVING",
-					unitSystem: google.maps.UnitSystem.IMPERIAL
-				},
-				function(response, status) {
-					if (status !== "OK") {
-						alert("Distance Matrix failed: " + status);
-					} else {
-						var results = response.rows[0].elements;
-
-						var locationsWithDistance = offices.data.map((office, index) => {
-							return {
-								...office,
-								locationType: "office",
-								distance: results[index].distance.text.split(" ")[0]
-							};
-						});
-
-						return dispatch({
-							type: FETCH_OFFICES,
-							payload: locationsWithDistance
-						});
-					}
-				}
-			);
 		});
 	};
+};
+
+export const fetchDentists = filters => {
+	return dispatch => {
+		dispatch(requestDentists());
+		return loadAllDentists().then(dentists => {
+			if (!filters.location) {
+				return dispatch({
+					type: FETCH_DENTISTS,
+					payload: dentists.data
+				});
+			} else {
+				getDistances(dentists, filters).then(filteredDentists => {
+					return dispatch({
+						type: FETCH_DENTISTS,
+						payload: filteredDentists
+					});
+				});
+			}
+		});
+	};
+};
+
+export const getDistances = (offices, filters) => {
+	return new Promise(resolve => {
+		const google = window.google;
+
+		var service = new google.maps.DistanceMatrixService();
+		var officeAddresses = offices.data.map(loc => loc.location);
+
+		service.getDistanceMatrix(
+			{
+				origins: [filters.location],
+				destinations: officeAddresses,
+				travelMode: "DRIVING",
+				unitSystem: google.maps.UnitSystem.IMPERIAL
+			},
+			function(response, status) {
+				if (status !== "OK") {
+					alert("Distance Matrix failed: " + status);
+				} else {
+					var results = response.rows[0].elements;
+
+					var locationsWithDistance = offices.data.map((office, index) => {
+						return {
+							...office,
+							locationType: "office",
+							distance: results[index].distance.text.split(" ")[0]
+						};
+					});
+
+					resolve(locationsWithDistance);
+				}
+			}
+		);
+	});
 };
 
 export const fetchUserOffices = () => {
