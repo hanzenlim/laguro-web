@@ -32,6 +32,12 @@ module.exports = app => {
 		res.send(req.user);
 	});
 
+	app.patch("/api/current_user/image", (req, res) => {
+		User.findByIdAndUpdate(req.user._id, { $set: { img: req.body.url }}, { new: true }, (err, user) => {
+			res.send(user);
+		});
+	})
+
 	//returns a list of all users
 	app.get("/api/users", async (req, res) => {
 		const userList = await User.find();

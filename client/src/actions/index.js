@@ -151,6 +151,17 @@ export const fetchUser = () => {
 	};
 };
 
+export const updateProfileImage = url => {
+	return async dispatch => {
+		axios.patch("/api/current_user/image", {url}).then(user => {
+			dispatch({
+				type: FETCH_USER,
+				payload: user
+			});
+		});
+	}
+}
+
 export const updateFilters = filter => {
 	return {
 		type: UPDATE_FILTERS,
