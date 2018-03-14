@@ -4,7 +4,7 @@ const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const mongoose = require("mongoose");
 
 // Local Packages
-const keys = require("../config/keys");
+const keys = require("../client/src/config/keys");
 
 // Load models
 const User = mongoose.model("users");

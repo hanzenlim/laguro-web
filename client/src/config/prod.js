@@ -4,6 +4,9 @@ module.exports = {
 	googleClientID: process.env.GOOGLE_CLIENT_ID,
 	googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
 
+	//filestack
+	filestack: process.env.FILESTACK,
+
   // Cookie-session
 	cookieKey: process.env.COOKIE_KEY
 };

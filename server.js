@@ -9,7 +9,7 @@ const logger = require('morgan');
 
 
 // Local Packages
-const keys = require("./config/keys");
+const keys = require("./client/src/config/keys");
 
 // DB config
 const mongoURI = process.env.MONGODB_URI || "mongodb://localhost/laguro";
