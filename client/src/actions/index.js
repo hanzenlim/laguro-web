@@ -177,7 +177,6 @@ export const setFilters = filters => {
 };
 
 export function createOffice(values) {
-	console.log(values)
 	return dispatch => {
 		axios.post("/api/offices", values).then(offices => {
 			dispatch({

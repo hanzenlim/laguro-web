@@ -2,9 +2,18 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
 import { Link } from "react-router-dom";
+import ReactFilestack from "filestack-react";
 import * as actions from "../actions";
+import keys from '../config/keys';
 
 class NewOffice extends Component {
+	constructor(props){
+		super(props);
+		this.state = {
+			img_url: []
+		}
+	}
+
 	loginMessage(){
     const { auth } = this.props;
     return(
@@ -15,10 +24,28 @@ class NewOffice extends Component {
     )
   }
 
+	extractUrlToState(result){
+		let upload = result.filesUploaded
+		let allUrls = [];
+		if(upload.length){
+			allUrls = upload.map(file => {
+				return file.url;
+			})
+		}
+		this.setState({img_url: allUrls})
+	}
+
+	renderUploadedImages(){
+		const { img_url } = this.state;
+		return img_url.map((url, index) => {
+			return <img src={url} key={"img"+index} alt="office"/>
+		})
+	}
+
 	onSubmit(values) {
 		const { reset } = this.props;
-
-		this.props.createOffice(values);
+		const { img_url } = this.state;
+		this.props.createOffice({...values, img_url});
 		reset();
 	}
 
@@ -33,7 +60,7 @@ class NewOffice extends Component {
 	);
 
 	render() {
-		const { handleSubmit, pristine, reset, submitting } = this.props;
+		const { handleSubmit, pristine, submitting } = this.props;
 
 		return (
 			<form
@@ -60,31 +87,44 @@ class NewOffice extends Component {
 					placeholder={3}
 					component={this.renderField}
 				/>
+				<div className="image_upload">
+					<ReactFilestack
+						apikey={keys.filestack}
+						buttonText="Upload Images"
+						buttonClass="btn light-blue lighten-2"
+						options={{
+							accept: ["image/*"],
+							imageMin: [300, 300],
+							maxFiles: 5,
+							fromSources: [
+								"local_file_system",
+								"url",
+								"imagesearch",
+								"facebook",
+								"instagram"
+							],
+							storeTo: { container: 'office-photos'}
+						}}
+						onSuccess={ result => this.extractUrlToState(result) }
+					/>
+					<div className="image_display">
+						{this.renderUploadedImages()}
+					</div>
+				</div>
 				<div className="form-buttons">
 					{this.loginMessage()}
 					<button
-						className="waves-effect btn green lighten-2"
+						className="waves-effect btn light-blue lighten-2"
 						type="submit"
 						disabled={pristine || submitting}
 					>
 						Submit
-					</button>
-					<button
-						className="waves-effect btn red lighten-2"
-						type="button"
-						disabled={pristine || submitting}
-						onClick={reset}
-						validate={loginCheck}
-					>
-						Clear
 					</button>
 				</div>
 			</form>
 		);
 	}
 }
-
-const loginCheck = (user = this.props.auth) => (user && user.data !== "")
 
 function mapStateToProps(state){
 	return{ auth: state.auth }

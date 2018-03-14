@@ -34,14 +34,15 @@ module.exports = app => {
 
 	//Office creation route
 	app.post("/api/offices", async (req, res) => {
-		const { name, location, chairs } = req.body;
-		const dentist_id = req.user._id;
+		const { name, location, chairs, img_url } = req.body;
+		const user = req.user._id;
 
 		let newOffice = await Office.create({
 			name,
 			location,
 			chairs,
-			user: dentist_id
+			img_url,
+			user
 		});
 
 		let dentistsOffices = await Office.find({ dentist: req.user.googleId });

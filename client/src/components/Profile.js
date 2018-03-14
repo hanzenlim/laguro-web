@@ -8,7 +8,6 @@ import keys from '../config/keys';
 class Landing extends Component {
 	profileDetails() {
 		const { auth } = this.props;
-    console.log(auth)
 		if (auth && auth.data) {
 			return (
 				<div>
