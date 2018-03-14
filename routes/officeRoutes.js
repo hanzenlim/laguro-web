@@ -41,7 +41,7 @@ module.exports = app => {
 			name,
 			location,
 			chairs,
-			dentist: dentist_id
+			user: dentist_id
 		});
 
 		let dentistsOffices = await Office.find({ dentist: req.user.googleId });

@@ -27,27 +27,6 @@ export const searchOffices = filters => {
 	};
 };
 
-// export const fetchDentists = filters => {
-// 	return async dispatch => {
-// 		const google = window.google;
-// 		axios.get(`/api/dentists`).then(dentists => {
-// 			if (filters["location"]) {
-// 				filterOffices(google, filters, dentists.data).then(filteredDentists => {
-// 					dispatch({
-// 						type: FETCH_DENTISTS,
-// 						payload: filteredDentists
-// 					});
-// 				});
-// 			} else {
-// 				dispatch({
-// 					type: FETCH_DENTISTS,
-// 					payload: dentists.data
-// 				});
-// 			}
-// 		});
-// 	};
-// };
-
 function requestOffices() {
 	return {
 		type: REQUEST_OFFICES
@@ -186,7 +165,8 @@ export const setFilters = filters => {
 	};
 };
 
-export function createOffice(values, type) {
+export function createOffice(values) {
+	console.log(values)
 	return dispatch => {
 		axios.post("/api/offices", values).then(offices => {
 			dispatch({

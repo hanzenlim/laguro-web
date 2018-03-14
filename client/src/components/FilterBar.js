@@ -32,7 +32,7 @@ class FilterBar extends Component {
 					<DateFilter selectedDate={this.props.filters["date"]} />
 				</div>
 				<div>
-					<a href="#" className="dropdown-trigger dropdown btn light-blue lighten-1" data-target="dropdown1">
+					<a className="dropdown-trigger dropdown btn light-blue lighten-1" data-target="dropdown1">
 						{this.props.filters.location ? this.props.filters.location : "Location"}
 					</a>
 					<ul id='dropdown1' className='dropdown-content'>
