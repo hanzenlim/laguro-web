@@ -15,26 +15,30 @@ class OfficeResultIndex extends Component {
 	}
 
 	renderEquipment(listing) {
-		if (listing.equipment) {
+		if (listing.equipment.length) {
 			return listing.equipment.map(equipment => (
 				<li className="listingRow" key={equipment.name}>
 					{equipment.name} - ${equipment.price}
 				</li>
 			));
 		} else {
-			return <li>No Equipment Available</li>;
+			return <li className="listingRow">
+				No Equipment Available
+			</li>;
 		}
 	}
 
 	renderStaff(listing) {
-		if (listing.staff) {
+		if (listing.staff.length) {
 			return listing.staff.map(staff => (
 				<li className="listingRow" key={staff.role}>
 					{staff.role} - ${staff.price} ({staff.count} available)
 				</li>
 			));
 		} else {
-			return <li>No Staff Available</li>;
+			return <li className="listingRow">
+				No Staff Available
+			</li>;
 		}
 	}
 
