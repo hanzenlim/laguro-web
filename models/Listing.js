@@ -3,7 +3,7 @@ const { Schema } = mongoose;
 
 const listingSchema = new Schema({
 	office: { type: Schema.Types.ObjectId },
-	dentist: { type: Schema.Types.ObjectId },
+	user: String,
 	staff: [{
 		role: String,
 		price: Number,

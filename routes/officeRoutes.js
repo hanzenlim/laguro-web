@@ -12,7 +12,7 @@ module.exports = app => {
 
 	//get user offices route
 	app.get("/api/user/offices", async (req, res) => {
-		const userOffices = await Office.find({dentist: req.user._id});
+		const userOffices = await Office.find({user: req.user._id});
 
 		res.send(userOffices);
 	});
