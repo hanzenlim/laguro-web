@@ -69,10 +69,12 @@ class OfficeResultIndex extends Component {
 								<div>
 									<h3>{office.name}</h3>
 									<h5>{office.location}</h5>
-									<h6>
-										{moment(listing.time_available).format("MMM D, h a")} -
-										{moment(listing.time_closed).format("h a")}
-									</h6>
+									<blockquote>
+										<h6>
+											Rental Window: {moment(listing.time_available).format("MMM D, h a")} -
+											{moment(listing.time_closed).format("h a")}
+										</h6>
+									</blockquote>
 								</div>
 								<Link
 									className="btn light-blue lighten-2 waves-effect"
