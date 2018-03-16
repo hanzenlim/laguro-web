@@ -129,7 +129,7 @@ export const fetchUserOffices = () => {
 		const offices = await axios.get(`/api/user/offices`);
 		dispatch({
 			type: FETCH_OFFICES,
-			payload: offices
+			payload: offices.data
 		});
 	};
 };

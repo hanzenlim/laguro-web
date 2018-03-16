@@ -19,9 +19,9 @@ class NewListing extends Component {
 	}
 
 	renderOffices() {
-		const offices = this.props.offices.data;
+		const offices = this.props.offices;
 
-		if(offices){
+		if(offices.length){
 			return offices.map(office => (
 					<option value={`${office._id}`} key={`${office.name}`}>
 						{office.name} - {office.location}
@@ -139,14 +139,14 @@ class NewListing extends Component {
 			<label>{label}</label>
 			<DatePicker
 				{...input}
-				selected={input.value ? moment(input.value, "MMM DD, YYYY") : null}
-				dateFormat="MMM DD, YYYY"
+				selected={input.value ? moment(input.value) : null}
+				dateFormat="MMM DD, YYYY h:mm a"
 				placeholderText={moment().format("MMM DD, YYYY")}
 				minDate={moment()}
 				showTimeSelect
-				timeFormat="HH:mm"
-				timeIntervals={15}
-				timeCaption="time"
+				timeFormat="h:mm a"
+				timeIntervals={60}
+				timeCaption="Time"
 			/>
 			{touched && error && <span>{error}</span>}
 		</div>
@@ -246,7 +246,7 @@ class NewListing extends Component {
 }
 
 function mapStateToProps(state) {
-	return { offices: state.offices };
+	return { offices: state.offices.offices };
 }
 
 export default reduxForm({
