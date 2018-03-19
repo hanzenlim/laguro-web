@@ -31,6 +31,35 @@ img {
   color: #fff;
 }
 
+.link {
+  background: white;
+  padding: 0.4em 1em;
+  line-height: 1.5rem;
+  padding: 10px 20px;
+  margin: 0;
+  border: none;
+  border-bottom: 1px solid #e0e0e0;
+  width: 100%;
+  display: block;
+  text-align: left;
+}
+
+nav ul a, .link {
+  color: #039be5 !important;
+  transition: all 0.2s;
+}
+
+.btn:hover, .link:hover, nav ul a:hover {
+  color: #ff3100 !important;
+  cursor: pointer;
+  background-color: rgba(0,0,0,0.1);
+}
+
+.link:focus {
+  color: #f60;
+  background-color: rgba(0,0,0,0.1)
+}
+
 /* Header Bar */
 .brand-logo {
   display: flex;
@@ -327,4 +356,23 @@ img {
 
 .bookNow p {
   margin: 0;
+}
+
+/* Profile Page - User view */
+.profile_container {
+  width: 100%;
+  max-width: 850px;
+  display: flex;
+  flex-flow: row;
+  margin: 1em auto;
+}
+
+.profile_container .sidebar {
+  width: calc(100%/3);
+  padding: 0 1em;
+}
+
+.profile_container .details {
+  width: calc(100% * 2/3);
+  padding: 0 1em;
 }

@@ -11,11 +11,11 @@ class Header extends Component {
       switch (auth.data) {
         case "":
         return (
-          <a className="login waves-effect btn light-blue lighten-2" href="/auth/google">Login</a>
+          <a className="login waves-effect btn light-blue lighten-2 white-text" href="/auth/google">Login</a>
         );
         default:  //user IS logged in
         return (
-          <a className="logout waves-effect btn light-blue lighten-2" href="/api/logout">Logout</a>
+          <a className="logout waves-effect btn light-blue lighten-2 white-text" href="/api/logout">Logout</a>
         )
       }
     }
@@ -33,7 +33,6 @@ class Header extends Component {
           <li>
             <Link
               to={'/profile'}
-              className="blue-text"
             >
               {auth.data.name}
             </Link>
@@ -60,9 +59,9 @@ class Header extends Component {
           </Link>
 
           <ul className="right">
-            <li><Link className="blue-text" to={'#'}>Become a Host</Link></li>
-            <li><Link className="blue-text" to={'#'}>About Us</Link></li>
-            <li><Link className="blue-text" to={'#'}>Help</Link></li>
+            <li><Link to={'#'}>Become a Host</Link></li>
+            <li><Link to={'#'}>About Us</Link></li>
+            <li><Link to={'#'}>Help</Link></li>
             {this.profileButton()}
             <li>{this.renderLogin()}</li>
           </ul>

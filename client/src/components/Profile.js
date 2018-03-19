@@ -2,41 +2,29 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import ReactFilestack from "filestack-react";
-import * as actions from '../actions';
-import keys from '../config/keys';
+import * as actions from "../actions";
+import keys from "../config/keys";
 
 class Landing extends Component {
-	profileDetails() {
-		const { auth } = this.props;
-		if (auth && auth.data) {
-			return (
-				<div>
-					<img src={auth.data.img} alt="user" />
-					<h4>Welcome back {auth.data.name}</h4>
-				</div>
-			);
-		} else {
-			return <Link to={"/auth/google"}>Login to see your profile</Link>;
-		}
 	componentWillMount(){
 		document.title = "Laguro - Profile"
 	}
 
-  setNewProfileImage(result){
-    let upload = result.filesUploaded[0]
-    if(upload){
-      this.props.updateProfileImage(upload.url)
-    }
-  }
-
-	render() {
+	profileDetails(auth) {
 		return (
-			<div>
-				<div>{this.profileDetails()}</div>
+			<div className="details">
+				<h4 className="flow-text">Welcome back {auth.data.name}</h4>
+			</div>
+		);
+	}
+
+	renderActions() {
+		return (
+			<ul className="collection">
 				<ReactFilestack
 					apikey={keys.filestack}
-					buttonText="Upload Image"
-					buttonClass="btn light-blue lighten-2"
+					buttonText="Upload New Image"
+					buttonClass="link"
 					options={{
 						accept: ["image/*"],
 						imageMin: [300, 300],
@@ -47,19 +35,39 @@ class Landing extends Component {
 							"facebook",
 							"instagram"
 						],
-            storeTo: { container: 'user-photos'}
+						storeTo: { container: "user-photos" }
 					}}
-					onSuccess={ result => this.setNewProfileImage(result) }
+					onSuccess={result => this.setNewProfileImage(result)}
 				/>
-				<div>
-					<Link to={"/offices/new"}>Create a new office</Link>
-					<br />
-					<Link to={"/listings/new"}>
-						Create a new listing for existing office
-					</Link>
-					<br />
-					<Link to={"/offices/search"}>Browse listings</Link>
+				<Link className=" link" to={"/offices/new"}>
+					Create a new office
+				</Link>
+				<Link className="link" to={"/listings/new"}>
+					Create a new listing
+				</Link>
+				<Link className="link" to={"/offices/search"}>
+					Browse listings
+				</Link>
+			</ul>
+		);
+	}
+
+	setNewProfileImage(result) {
+		let upload = result.filesUploaded[0];
+		if (upload) {
+			this.props.updateProfileImage(upload.url);
+		}
+	}
+
+	render() {
+		const { auth } = this.props;
+		return (
+			<div className="profile_container">
+				<div className="sidebar">
+					<img src={auth.data.img} alt="user" />
+					{this.renderActions()}
 				</div>
+				{this.profileDetails(auth)}
 			</div>
 		);
 	}
