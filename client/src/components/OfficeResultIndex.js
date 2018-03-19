@@ -9,6 +9,7 @@ import ResultMap from "./ResultMap";
 
 class OfficeResultIndex extends Component {
 	componentWillMount() {
+		document.title = "Laguro - Search Index";
 		this.props.fetchListings();
 		this.props.fetchOffices(this.props.filters);
 	}

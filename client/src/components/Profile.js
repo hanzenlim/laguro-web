@@ -18,6 +18,8 @@ class Landing extends Component {
 		} else {
 			return <Link to={"/auth/google"}>Login to see your profile</Link>;
 		}
+	componentWillMount(){
+		document.title = "Laguro - Profile"
 	}
 
   setNewProfileImage(result){

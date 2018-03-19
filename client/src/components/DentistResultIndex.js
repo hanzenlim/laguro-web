@@ -8,6 +8,7 @@ import ResultMap from "./ResultMap";
 
 class DentistResultIndex extends Component {
 	componentWillMount() {
+		document.title = "Laguro - Search Index";
 		this.props.fetchDentists(this.props.filters);
 	}
 

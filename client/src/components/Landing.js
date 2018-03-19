@@ -4,6 +4,10 @@ import OfficeSearch from "./OfficeSearch";
 import DentistSearch from "./DentistSearch";
 
 class Landing extends Component {
+	componentWillMount() {
+		document.title = "Laguro - Home";
+	}
+
 	tabChange(event) {
 		const id = event.target.parentNode.id;
 		var element = document.getElementById(id);
