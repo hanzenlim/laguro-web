@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Router, Route, Switch } from 'react-router-dom';
+import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import history from '../history'
 import { connect } from 'react-redux';
 import * as actions from '../actions';
@@ -13,6 +13,21 @@ import NewOffice from './NewOffice';
 import NewListing from './NewListing';
 import Profile from './Profile';
 import Listing from './Listing';
+
+const PrivateRoute = ({ auth, path, ...props, component: Component }) => (
+  <Route
+    render={() =>
+      auth && auth.data ? (
+        <Component {...props} />
+      ) : (
+        <div className="center-align">
+          <p>You must log in to view the page {path ? "at " + path : ""}</p>
+          <a className="login waves-effect btn light-blue lighten-2" href="/auth/google">Login</a>
+        </div>
+      )
+    }
+  />
+);
 
 class App extends Component {
   componentDidMount(){
@@ -28,10 +43,22 @@ class App extends Component {
             <Switch>
               <Route path="/dentists/search" component={DentistResultIndex} />
               <Route path="/offices/search" component={OfficeResultIndex} />
-              <Route path="/offices/new" component={NewOffice} />
-              <Route path="/listings/new" component={NewListing} />
               <Route path="/offices/:office_id/listings/:id" component={Listing} />
-              <Route path="/profile" component={Profile} />
+              <PrivateRoute
+                auth={this.props.auth}
+                path="/offices/new"
+                component={NewOffice}
+              />
+              <PrivateRoute
+                auth={this.props.auth}
+                path="/listings/new"
+                component={NewListing}
+              />
+              <PrivateRoute
+                auth={this.props.auth}
+                path="/profile"
+                component={Profile}
+              />
               <Route path="/" component={Landing} />
             </Switch>
           </div>
@@ -41,4 +68,8 @@ class App extends Component {
   };
 };
 
-export default connect(null, actions)(App);
+function mapStateToProps(state) {
+  return { auth: state.auth }
+}
+
+export default connect(mapStateToProps, actions)(App);

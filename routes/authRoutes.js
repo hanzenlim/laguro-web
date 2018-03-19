@@ -32,6 +32,7 @@ module.exports = app => {
 		res.send(req.user);
 	});
 
+	//use this route to update the user profile image
 	app.patch("/api/current_user/image", (req, res) => {
 		User.findByIdAndUpdate(req.user._id, { $set: { img: req.body.url }}, { new: true }, (err, user) => {
 			res.send(user);
