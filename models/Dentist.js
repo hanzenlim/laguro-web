@@ -7,7 +7,9 @@ const dentistSchema = new Schema({
 	name: String,
 	type: String,
 	location: String,
-	badges: [String],
+	procedures: [{
+		name: String
+	}],
 	rating: [Number],
 	date_created: {
 		type: Date,

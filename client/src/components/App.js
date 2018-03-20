@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Router, Route, Switch, Redirect } from 'react-router-dom';
+import { Router, Route, Switch } from 'react-router-dom';
 import history from '../history'
 import { connect } from 'react-redux';
 import * as actions from '../actions';
@@ -11,6 +11,7 @@ import OfficeResultIndex from './OfficeResultIndex';
 import Header from './Header';
 import NewOffice from './NewOffice';
 import NewListing from './NewListing';
+import NewDentist from './NewDentist';
 import Profile from './Profile';
 import Listing from './Listing';
 
@@ -48,6 +49,11 @@ class App extends Component {
                 auth={this.props.auth}
                 path="/offices/new"
                 component={NewOffice}
+              />
+              <PrivateRoute
+                auth={this.props.auth}
+                path="/dentist/new"
+                component={NewDentist}
               />
               <PrivateRoute
                 auth={this.props.auth}

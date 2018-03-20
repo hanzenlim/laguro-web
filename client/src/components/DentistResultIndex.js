@@ -30,7 +30,7 @@ class DentistResultIndex extends Component {
 		let dentistList = filteredDentists.map(dentist => {
 			//average the ratings
 			let avg_rating =
-				dentist.rating.length > 0
+				dentist.rating.length
 					? dentist.rating.reduce((acc, val) => acc + val) /
 						dentist.rating.length
 					: 0;
@@ -40,7 +40,7 @@ class DentistResultIndex extends Component {
 					name={dentist.name}
 					type={dentist.type}
 					location={dentist.location}
-					badges={dentist.badges}
+					procedures={dentist.procedures}
 					rating_value={avg_rating}
 					rating_count={dentist.rating.length}
 					img={dentist.img_url}

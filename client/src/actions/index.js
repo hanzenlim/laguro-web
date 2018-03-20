@@ -9,6 +9,7 @@ import {
 	UPDATE_FILTERS,
 	CREATE_OFFICE,
 	CREATE_LISTING,
+	CREATE_DENTIST,
 	REQUEST_OFFICES,
 	REQUEST_DENTISTS
 } from "./types";
@@ -175,6 +176,18 @@ export const setFilters = filters => {
 		payload: filters
 	};
 };
+
+export function createDentist(values) {
+	return dispatch => {
+		axios.post("/api/dentists", values).then(dentist => {
+			dispatch({
+				type: CREATE_DENTIST,
+				payload: dentist
+			});
+		});
+		history.push("/profile");
+	};
+}
 
 export function createOffice(values) {
 	return dispatch => {
