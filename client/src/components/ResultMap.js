@@ -31,9 +31,11 @@ class ResultMap extends Component {
 							map.fitBounds(bounds.extend(latlng));
 							if (addr.type === "office") {
 								addMarker(latlng, (index + 1).toString());
+								map.setZoom(11)
 							} else {
 								addSearchMarker(latlng);
 								map.setCenter(latlng);
+								map.setZoom(12)
 							}
 						}
 					});
