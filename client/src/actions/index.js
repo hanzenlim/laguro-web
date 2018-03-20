@@ -51,7 +51,7 @@ export const fetchOffices = filters => {
 	return dispatch => {
 		dispatch(requestOffices());
 		return loadAllOffices().then(offices => {
-			if (!filters.location) {
+			if ((!filters) || (filters && !filters.location)) {
 				return dispatch({
 					type: FETCH_OFFICES,
 					payload: offices.data
@@ -72,7 +72,7 @@ export const fetchDentists = filters => {
 	return dispatch => {
 		dispatch(requestDentists());
 		return loadAllDentists().then(dentists => {
-			if (!filters.location) {
+			if ((!filters) || (filters && !filters.location)) {
 				return dispatch({
 					type: FETCH_DENTISTS,
 					payload: dentists.data
