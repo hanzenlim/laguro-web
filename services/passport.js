@@ -36,10 +36,13 @@ passport.use(
 				return done(null, existingUser);
 			}
 
+			const imgUrl = profile.photos[0].value
+			const biggerImg = imgUrl.slice(0, -2).concat('300');
+
 			const newUser = await new User({
 				googleId: profile.id,
 				name: profile.displayName,
-				img: profile.photos[0].value
+				img: biggerImg
 			}).save();
 
 			done(null, newUser);
