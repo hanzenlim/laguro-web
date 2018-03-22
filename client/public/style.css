@@ -260,6 +260,20 @@ nav ul a, .link {
   object-fit: cover;
 }
 
+/* New Office form */
+.image_upload {
+  padding-left: 10px;
+}
+
+.image_display {
+  height: 300px;
+  margin-bottom: 15px;
+}
+
+.image_upload img {
+  max-height: 100%;
+}
+
 /* New Listing form */
 
 .bigForm {
@@ -372,17 +386,17 @@ nav ul a, .link {
   padding: 0 1em;
 }
 
-.profile_container img {
+.profile_img {
   width: 100%;
 }
 
-.profile_container img::before {
+.profile_img::before {
   content: '';
   padding-top: 100%;
   float: left;
 }
 
-.profile_container img::after {
+.profile_img::after {
   content: '';
   display: block;
   clear: both;

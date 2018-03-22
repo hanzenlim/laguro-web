@@ -177,6 +177,18 @@ export const setFilters = filters => {
 	};
 };
 
+export function editDentist(values) {
+	return dispatch => {
+		axios.patch(`/api/dentists`, values).then(dentists => {
+			dispatch({
+				type: FETCH_DENTISTS,
+				payload: dentists
+			});
+		});
+		history.push("/profile");
+	};
+}
+
 export function createDentist(values) {
 	return dispatch => {
 		axios.post("/api/dentists", values).then(dentist => {

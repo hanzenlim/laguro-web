@@ -12,6 +12,7 @@ import Header from './Header';
 import NewOffice from './NewOffice';
 import NewListing from './NewListing';
 import NewDentist from './NewDentist';
+import EditDentist from './EditDentist';
 import Profile from './Profile';
 import Listing from './Listing';
 
@@ -54,6 +55,11 @@ class App extends Component {
                 auth={this.props.auth}
                 path="/dentist/new"
                 component={NewDentist}
+              />
+              <PrivateRoute
+                auth={this.props.auth}
+                path="/dentist/edit"
+                component={EditDentist}
               />
               <PrivateRoute
                 auth={this.props.auth}
