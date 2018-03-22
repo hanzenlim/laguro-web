@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Field, FieldArray, reduxForm } from "redux-form";
 import * as actions from "../actions";
+import { Link } from "react-router-dom";
 
 class NewDentist extends Component {
 	onSubmit(values) {
@@ -63,7 +64,15 @@ class NewDentist extends Component {
 				className="bigForm light-blue lighten-5"
 				onSubmit={handleSubmit(this.onSubmit.bind(this))}
 			>
-				<h4>Create a dentist profile</h4>
+				<div className="form_title">
+					<h4>Create a dentist profile</h4>
+					<Link
+						className="btn light-blue lighten-2 waves-effect"
+						to={"/profile"}
+					>
+						Go back to profile
+					</Link>
+				</div>
 
 				<div className="row">
 					<Field

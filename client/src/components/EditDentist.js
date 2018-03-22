@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 import { Field, FieldArray, reduxForm } from "redux-form";
 import * as actions from "../actions";
 import ReactFilestack from "filestack-react";
-import keys from '../config/keys';
-
+import keys from "../config/keys";
+import { Link } from "react-router-dom";
 
 class EditDentist extends Component {
 	constructor(props) {
@@ -21,9 +21,9 @@ class EditDentist extends Component {
 
 		this.getDentist().then(dentist => {
 			this.setState({
-				 dentist: dentist,
-				 img_url: dentist.img_url
-			 });
+				dentist: dentist,
+				img_url: dentist.img_url
+			});
 
 			this.props.initialize({
 				name: dentist.name,
@@ -37,8 +37,7 @@ class EditDentist extends Component {
 	onSubmit(values) {
 		const { reset, auth } = this.props;
 		const { img_url } = this.state;
-		// console.log({...values, img_url, id: auth._id})
-		this.props.editDentist({...values, img_url, id: auth._id});
+		this.props.editDentist({ ...values, img_url, id: auth._id });
 		reset();
 	}
 
@@ -67,7 +66,13 @@ class EditDentist extends Component {
 		return <img src={img_url} alt="dentist" />;
 	}
 
-	renderField = ({ input, label, className, placeholder, meta: { touched, error } }) => (
+	renderField = ({
+		input,
+		label,
+		className,
+		placeholder,
+		meta: { touched, error }
+	}) => (
 		<div className={className}>
 			<label>{label}</label>
 			<div>
@@ -120,7 +125,15 @@ class EditDentist extends Component {
 				className="bigForm light-blue lighten-5"
 				onSubmit={handleSubmit(this.onSubmit.bind(this))}
 			>
-				<h4>Edit dentist profile</h4>
+				<div className="form_title">
+					<h4>Edit dentist profile</h4>
+					<Link
+						className="btn light-blue lighten-2 waves-effect"
+						to={"/profile"}
+					>
+						Go back to profile
+					</Link>
+				</div>
 
 				<div className="row">
 					<Field
@@ -147,9 +160,7 @@ class EditDentist extends Component {
 				</div>
 
 				<div className="image_upload">
-					<div className="image_display">
-						{this.renderUploadedImages()}
-					</div>
+					<div className="image_display">{this.renderUploadedImages()}</div>
 					<ReactFilestack
 						apikey={keys.filestack}
 						buttonText="Upload New Image"

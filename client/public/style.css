@@ -260,6 +260,15 @@ nav ul a, .link {
   object-fit: cover;
 }
 
+/* Dentist Form */
+
+.form_title {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
 /* New Office form */
 .image_upload {
   padding-left: 10px;
@@ -284,7 +293,7 @@ nav ul a, .link {
 }
 
 .bigForm h4 {
-  margin-bottom: 1.25em;
+  margin: 1.0em 0;
 }
 
 .bigForm > * {
