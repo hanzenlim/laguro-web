@@ -56,12 +56,15 @@ class Profile extends Component {
 		}
 	}
 
-	renderProfileDetails(auth, dentist) {
+	renderProfileDetails() {
+		const { auth } = this.props;
+		const { dentist } = this.state;
+
 		return (
 			<div>
 				<h4>Hey, I'm {dentist ? dentist.name : auth.name}!</h4>
 				<p>
-					{((dentist && dentist.location) ? dentist.location + " - " : "") +
+					{(dentist && dentist.location ? dentist.location + " - " : "") +
 						"Member since " +
 						moment(auth.date_created).format("MMMM `YY")}
 				</p>
@@ -112,7 +115,9 @@ class Profile extends Component {
 		});
 	}
 
-	renderActions(dentist) {
+	renderActions() {
+		const { dentist } = this.state;
+
 		return (
 			<ul className="collection">
 				{/* Display Create if no dentist profile or Edit if profile exists */}
@@ -171,18 +176,22 @@ class Profile extends Component {
 
 	render() {
 		const { auth } = this.props;
-		const { dentist, offices } = this.state;
+		const { dentist } = this.state;
 		return (
 			<div className="profile_container">
 				<div className="sidebar">
-					<img className="profile_img" src={dentist ? dentist.img_url : auth.img} alt="user" />
-					{this.renderActions(dentist)}
+					<img
+						className="profile_img"
+						src={dentist ? dentist.img_url : auth.img}
+						alt="user"
+					/>
+					{this.renderActions()}
 				</div>
 				<div className="main">
-					{this.renderProfileDetails(auth, dentist)}
+					{this.renderProfileDetails()}
 					<div className="offices">
 						<h5>Offices:</h5>
-						{this.renderUserOffices(auth, offices)}
+						{this.renderUserOffices()}
 					</div>
 				</div>
 			</div>
@@ -194,7 +203,7 @@ function mapStateToProps(state) {
 	return {
 		auth: state.auth.data,
 		dentists: state.dentists.dentists,
-		offices: state.offices.offices
+		offices: state.offices.offices,
 		listings: state.listings.data
 	};
 }
