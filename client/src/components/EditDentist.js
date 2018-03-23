@@ -118,7 +118,7 @@ class EditDentist extends Component {
 	);
 
 	render() {
-		const { handleSubmit, pristine, submitting } = this.props;
+		const { handleSubmit, submitting } = this.props;
 
 		return (
 			<form
