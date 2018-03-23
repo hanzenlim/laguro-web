@@ -11,7 +11,8 @@ class Profile extends Component {
 		super(props);
 
 		this.state = {
-			dentist: {}
+			dentist: {},
+			offices: []
 		};
 	}
 
@@ -21,6 +22,23 @@ class Profile extends Component {
 		this.getDentist().then(dentist => {
 			this.setState({ dentist: dentist });
 		});
+
+		this.getOffices().then(offices => {
+			this.setState({ offices: offices })
+		})
+	}
+
+	//get all offices for the logged in user
+	async getOffices() {
+		await this.props.fetchOffices();
+
+		const { offices, auth } = this.props;
+		if (offices.length) {
+			const userOffices = offices.filter(office => office.user === auth._id);
+			return userOffices;
+		} else {
+			return [];
+		}
 	}
 
 	// get all dentists and find the dentist profile that matches logged in user
@@ -36,9 +54,9 @@ class Profile extends Component {
 		}
 	}
 
-	profileDetails(auth, dentist) {
+	renderProfileDetails(auth, dentist) {
 		return (
-			<div className="details">
+			<div>
 				<h4>Hey, I'm {dentist ? dentist.name : auth.name}!</h4>
 				<p>
 					{((dentist && dentist.location) ? dentist.location + " - " : "") +
@@ -47,6 +65,17 @@ class Profile extends Component {
 				</p>
 			</div>
 		);
+	}
+
+	renderUserOffices(auth, offices) {
+		return offices.map((office, index) => {
+			return (
+				<div className="office" key={index}>
+					<h5>{office.name}</h5>
+					<p>{office.location}</p>
+				</div>
+			)
+		})
 	}
 
 	renderActions(dentist) {
@@ -108,14 +137,20 @@ class Profile extends Component {
 
 	render() {
 		const { auth } = this.props;
-		const { dentist } = this.state;
+		const { dentist, offices } = this.state;
 		return (
 			<div className="profile_container">
 				<div className="sidebar">
 					<img className="profile_img" src={dentist ? dentist.img_url : auth.img} alt="user" />
 					{this.renderActions(dentist)}
 				</div>
-				{this.profileDetails(auth, dentist)}
+				<div className="main">
+					{this.renderProfileDetails(auth, dentist)}
+					<div className="offices">
+						<h5>Offices:</h5>
+						{this.renderUserOffices(auth, offices)}
+					</div>
+				</div>
 			</div>
 		);
 	}
@@ -124,7 +159,8 @@ class Profile extends Component {
 function mapStateToProps(state) {
 	return {
 		auth: state.auth.data,
-		dentists: state.dentists.dentists
+		dentists: state.dentists.dentists,
+		offices: state.offices.offices
 	};
 }
 export default connect(mapStateToProps, actions)(Profile);
