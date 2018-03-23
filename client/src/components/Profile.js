@@ -39,7 +39,7 @@ class Profile extends Component {
 	profileDetails(auth, dentist) {
 		return (
 			<div className="details">
-				<h4>Hey, I'm {auth.name}!</h4>
+				<h4>Hey, I'm {dentist ? dentist.name : auth.name}!</h4>
 				<p>
 					{((dentist && dentist.location) ? dentist.location + " - " : "") +
 						"Member since " +
@@ -112,7 +112,7 @@ class Profile extends Component {
 		return (
 			<div className="profile_container">
 				<div className="sidebar">
-					<img className="profile_img" src={auth.img} alt="user" />
+					<img className="profile_img" src={dentist ? dentist.img_url : auth.img} alt="user" />
 					{this.renderActions(dentist)}
 				</div>
 				{this.profileDetails(auth, dentist)}
