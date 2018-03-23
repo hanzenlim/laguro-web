@@ -24,8 +24,10 @@ class Profile extends Component {
 		});
 
 		this.getOffices().then(offices => {
-			this.setState({ offices: offices })
-		})
+			this.setState({ offices: offices });
+		});
+
+		this.props.fetchListings();
 	}
 
 	//get all offices for the logged in user
@@ -67,15 +69,43 @@ class Profile extends Component {
 		);
 	}
 
-	renderUserOffices(auth, offices) {
+	getSortedListings(office) {
+		const { listings } = this.props;
+		if (listings) {
+
+			let filteredListings = listings.filter(listing => listing.office === office._id)
+
+			filteredListings = filteredListings.map((listing, index) => (
+				<li className="profile_listing" key={index}>
+					{moment(listing.time_available).format("MMM D, h a - ")}
+					{moment(listing.time_closed).format("h a")}
+				</li>
+			));
+
+			return filteredListings;
+		} else {
+			return []
+		}
+	}
+
+	renderUserOffices() {
+		const { auth } = this.props;
+		const { offices } = this.state;
+
 		return offices.map((office, index) => {
+			let filteredListings = this.getSortedListings(office);
+
 			return (
 				<div className="office" key={index}>
 					<h5>{office.name}</h5>
 					<p>{office.location}</p>
+					<h6>Upcoming listings:</h6>
+					<ul className="profile_listings browser-default">
+						{filteredListings}
+					</ul>
 				</div>
-			)
-		})
+			);
+		});
 	}
 
 	renderActions(dentist) {
@@ -161,6 +191,7 @@ function mapStateToProps(state) {
 		auth: state.auth.data,
 		dentists: state.dentists.dentists,
 		offices: state.offices.offices
+		listings: state.listings.data
 	};
 }
 export default connect(mapStateToProps, actions)(Profile);
