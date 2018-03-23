@@ -75,6 +75,10 @@ class Profile extends Component {
 
 			let filteredListings = listings.filter(listing => listing.office === office._id)
 
+			filteredListings = filteredListings.sort((listing_a, listing_b) => {
+				return moment(listing_a.time_available).isAfter(moment(listing_b.time_available))
+			})
+
 			filteredListings = filteredListings.map((listing, index) => (
 				<li className="profile_listing" key={index}>
 					{moment(listing.time_available).format("MMM D, h a - ")}

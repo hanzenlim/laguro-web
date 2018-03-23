@@ -45,6 +45,10 @@ class OfficeResultIndex extends Component {
 				};
 			});
 
+			listings = listings.sort((listing_a, listing_b) => {
+				return moment(listing_a.time).isAfter(moment(listing_b.time))
+			})
+
 			//average the ratings
 			let avg_rating =
 				office.rating.length > 0
