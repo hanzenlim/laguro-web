@@ -420,3 +420,7 @@ nav ul a, .link {
   border: 1px solid #eee;
   padding: 0 15px;
 }
+
+.profile_listing {
+  list-style-type: disc !important;
+}
