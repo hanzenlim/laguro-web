@@ -194,7 +194,7 @@ class EditDentist extends Component {
 					<button
 						className="waves-effect btn light-blue lighten-2"
 						type="submit"
-						disabled={pristine || submitting}
+						disabled={submitting}
 					>
 						Submit
 					</button>
