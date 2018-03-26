@@ -104,7 +104,15 @@ class Profile extends Component {
 
 			return (
 				<div className="office" key={index}>
-					<h5>{office.name}</h5>
+					<div className="office_header">
+						<h5>{office.name}</h5>
+						<Link
+							className="btn-small light-blue lighten-2 waves-effect"
+							to={`/offices/${office._id}/edit`}
+						>
+							Edit Office
+						</Link>
+					</div>
 					<p>{office.location}</p>
 					<h6>Upcoming listings:</h6>
 					<ul className="profile_listings browser-default">

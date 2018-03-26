@@ -275,12 +275,18 @@ nav ul a, .link {
 }
 
 .image_display {
-  height: 300px;
+  max-height: 300px;
   margin-bottom: 15px;
+  display: flex;
+  flex-flow: row nowrap;
+  overflow: scroll;
 }
 
 .image_upload img {
   max-height: 100%;
+  object-fit: fill;
+  align-self: center;
+  margin-right: 15px;
 }
 
 /* New Listing form */
@@ -419,6 +425,13 @@ nav ul a, .link {
 .office {
   border: 1px solid #eee;
   padding: 0 15px;
+}
+
+.office_header {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .profile_listing {

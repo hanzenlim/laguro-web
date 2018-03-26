@@ -10,6 +10,7 @@ import DentistResultIndex from './DentistResultIndex';
 import OfficeResultIndex from './OfficeResultIndex';
 import Header from './Header';
 import NewOffice from './NewOffice';
+import EditOffice from './EditOffice';
 import NewListing from './NewListing';
 import NewDentist from './NewDentist';
 import EditDentist from './EditDentist';
@@ -46,6 +47,11 @@ class App extends Component {
               <Route path="/dentists/search" component={DentistResultIndex} />
               <Route path="/offices/search" component={OfficeResultIndex} />
               <Route path="/offices/:office_id/listings/:id" component={Listing} />
+              <PrivateRoute
+                auth={this.props.auth}
+                path="/offices/:office_id/edit"
+                component={EditOffice}
+              />
               <PrivateRoute
                 auth={this.props.auth}
                 path="/offices/new"

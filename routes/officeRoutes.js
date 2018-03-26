@@ -48,4 +48,24 @@ module.exports = app => {
 		let dentistsOffices = await Office.find({ dentist: req.user.googleId });
 		res.send(dentistsOffices);
 	});
+
+	//edit office route
+	app.patch("/api/offices", async (req, res) => {
+		const { name, img_url, chairs, location, id } = req.body;
+
+		let office = await Office.findOneAndUpdate(
+			{ _id : id },
+			{
+				name,
+				location,
+				chairs,
+				img_url
+			},
+			{ new: true }
+		);
+
+		const offices = await Office.find();
+
+		res.send(offices);
+	});
 };

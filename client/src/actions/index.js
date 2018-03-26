@@ -201,6 +201,18 @@ export function createDentist(values) {
 	};
 }
 
+export function editOffice(values) {
+	return dispatch => {
+		axios.patch(`/api/offices`, values).then(offices => {
+			dispatch({
+				type: FETCH_OFFICES,
+				payload: offices
+			});
+		});
+		history.push("/profile");
+	};
+}
+
 export function createOffice(values) {
 	return dispatch => {
 		axios.post("/api/offices", values).then(offices => {
