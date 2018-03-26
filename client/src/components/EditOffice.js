@@ -62,11 +62,13 @@ class EditOffice extends Component {
 
 	extractUrlToState(result){
 		let upload = result.filesUploaded
-		let allUrls = [];
+		let allUrls = this.state.img_url;
 		if(upload.length){
-			allUrls = upload.map(file => {
+			let newImgs = upload.map(file => {
 				return file.url;
 			})
+
+			allUrls = [...allUrls, ...newImgs];
 		}
 		this.setState({img_url: allUrls})
 	}
