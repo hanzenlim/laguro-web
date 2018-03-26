@@ -284,9 +284,22 @@ nav ul a, .link {
 
 .image_upload img {
   max-height: 100%;
-  object-fit: fill;
+  object-fit: cover;
   align-self: center;
+}
+
+/* Edit Office form */
+
+.edit_img_container {
+  height: 100%;
   margin-right: 15px;
+  position: relative;
+}
+
+.delete_img {
+  position: absolute;
+  top: 10px;
+  left: 10px;
 }
 
 /* New Listing form */

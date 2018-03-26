@@ -60,24 +60,42 @@ class EditOffice extends Component {
 		}
 	}
 
-	extractUrlToState(result){
-		let upload = result.filesUploaded
+	extractUrlToState(result) {
+		let upload = result.filesUploaded;
 		let allUrls = this.state.img_url;
-		if(upload.length){
+		if (upload.length) {
 			let newImgs = upload.map(file => {
 				return file.url;
-			})
+			});
 
 			allUrls = [...allUrls, ...newImgs];
 		}
-		this.setState({img_url: allUrls})
+		this.setState({ img_url: allUrls });
 	}
 
-	renderUploadedImages(){
+	deleteImg(index) {
+		let allUrls = this.state.img_url;
+		allUrls.splice(index, 1);
+
+		this.setState({ img_url: allUrls });
+	}
+
+	renderUploadedImages() {
 		const { img_url } = this.state;
 		return img_url.map((url, index) => {
-			return <img src={url} key={"img"+index} alt="office"/>
-		})
+			return (
+				<div className="edit_img_container" key={"img" + index}>
+					<button
+						onClick={this.deleteImg.bind(this, index)}
+						type="button"
+						className="delete_img red lighten-2 btn"
+						>
+						<i className="material-icons">delete_forever</i>
+					</button>
+					<img src={url} alt="office" />
+				</div>
+			);
+		});
 	}
 
 	renderField = ({
@@ -95,7 +113,6 @@ class EditOffice extends Component {
 			{touched && error && <span>{error}</span>}
 		</div>
 	);
-
 
 	render() {
 		const { handleSubmit, submitting } = this.props;
