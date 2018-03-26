@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Field, FieldArray, reduxForm } from "redux-form";
+import { Field, reduxForm } from "redux-form";
 import * as actions from "../actions";
 import ReactFilestack from "filestack-react";
 import keys from "../config/keys";
@@ -38,7 +38,7 @@ class EditOffice extends Component {
 
 	onSubmit(values) {
 		const { reset } = this.props;
-		const { img_url, office } = this.state;
+		const { img_url } = this.state;
 		this.props.editOffice({
 			...values,
 			img_url,

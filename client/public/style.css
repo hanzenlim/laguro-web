@@ -292,6 +292,7 @@ nav ul a, .link {
 
 .edit_img_container {
   height: 100%;
+  width: 50%;
   margin-right: 15px;
   position: relative;
 }

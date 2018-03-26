@@ -96,7 +96,6 @@ class Profile extends Component {
 	}
 
 	renderUserOffices() {
-		const { auth } = this.props;
 		const { offices } = this.state;
 
 		return offices.map((office, index) => {
