@@ -83,8 +83,11 @@ class Profile extends Component {
 		}
 	}
 
-	deleteOffice(id) {
-		this.props.deleteOffice(id)
+	deleteOffice(office) {
+		// eslint-disable-next-line
+		if (confirm(`Delete ${office.name} and all associated listings?`)) {
+			this.props.deleteOffice(office._id);
+		}
 	}
 
 	renderUserOffices() {
@@ -97,7 +100,6 @@ class Profile extends Component {
 		} else {
 			userOffices = [];
 		}
-
 
 		return userOffices.map((office, index) => {
 			let filteredListings = this.getSortedListings(office);
@@ -115,7 +117,7 @@ class Profile extends Component {
 							</Link>
 							<button
 								type="button"
-								onClick={this.deleteOffice.bind(this, office._id)}
+								onClick={this.deleteOffice.bind(this, office)}
 								className="btn-small red lighten-2"
 							>
 								<i className="material-icons">delete_forever</i>
