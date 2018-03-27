@@ -448,6 +448,10 @@ nav ul a, .link {
   justify-content: space-between;
 }
 
+.office_btns > * {
+  margin-right: 10px;
+}
+
 .profile_listing {
   list-style-type: disc !important;
 }

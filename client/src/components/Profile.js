@@ -23,24 +23,9 @@ class Profile extends Component {
 			this.setState({ dentist: dentist });
 		});
 
-		this.getOffices().then(offices => {
-			this.setState({ offices: offices });
-		});
+		this.props.fetchOffices();
 
 		this.props.fetchListings();
-	}
-
-	//get all offices for the logged in user
-	async getOffices() {
-		await this.props.fetchOffices();
-
-		const { offices, auth } = this.props;
-		if (offices.length) {
-			const userOffices = offices.filter(office => office.user === auth._id);
-			return userOffices;
-		} else {
-			return [];
-		}
 	}
 
 	// get all dentists and find the dentist profile that matches logged in user
@@ -75,12 +60,15 @@ class Profile extends Component {
 	getSortedListings(office) {
 		const { listings } = this.props;
 		if (listings) {
-
-			let filteredListings = listings.filter(listing => listing.office === office._id)
+			let filteredListings = listings.filter(
+				listing => listing.office === office._id
+			);
 
 			filteredListings = filteredListings.sort((listing_a, listing_b) => {
-				return moment(listing_a.time_available).isAfter(moment(listing_b.time_available))
-			})
+				return moment(listing_a.time_available).isAfter(
+					moment(listing_b.time_available)
+				);
+			});
 
 			filteredListings = filteredListings.map((listing, index) => (
 				<li className="profile_listing" key={index}>
@@ -91,26 +79,48 @@ class Profile extends Component {
 
 			return filteredListings;
 		} else {
-			return []
+			return [];
 		}
 	}
 
-	renderUserOffices() {
-		const { offices } = this.state;
+	deleteOffice(id) {
+		this.props.deleteOffice(id)
+	}
 
-		return offices.map((office, index) => {
+	renderUserOffices() {
+		const { offices, auth } = this.props;
+
+		let userOffices = [];
+
+		if (offices.length) {
+			userOffices = offices.filter(office => office.user === auth._id);
+		} else {
+			userOffices = [];
+		}
+
+
+		return userOffices.map((office, index) => {
 			let filteredListings = this.getSortedListings(office);
 
 			return (
 				<div className="office" key={index}>
 					<div className="office_header">
 						<h5>{office.name}</h5>
-						<Link
-							className="btn-small light-blue lighten-2 waves-effect"
-							to={`/offices/${office._id}/edit`}
-						>
-							Edit Office
-						</Link>
+						<div className="office_btns">
+							<Link
+								className="btn-small light-blue lighten-2 waves-effect"
+								to={`/offices/${office._id}/edit`}
+							>
+								Edit Office
+							</Link>
+							<button
+								type="button"
+								onClick={this.deleteOffice.bind(this, office._id)}
+								className="btn-small red lighten-2"
+							>
+								<i className="material-icons">delete_forever</i>
+							</button>
+						</div>
 					</div>
 					<p>{office.location}</p>
 					<h6>Upcoming listings:</h6>

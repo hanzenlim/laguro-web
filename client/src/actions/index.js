@@ -213,6 +213,17 @@ export function editOffice(values) {
 	};
 }
 
+export function deleteOffice(id) {
+	return dispatch => {
+		axios.delete(`/api/offices/${id}`).then(offices => {
+			dispatch({
+				type: FETCH_OFFICES,
+				payload: offices.data
+			});
+		});
+	};
+}
+
 export function createOffice(values) {
 	return dispatch => {
 		axios.post("/api/offices", values).then(offices => {

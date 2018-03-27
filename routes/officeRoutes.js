@@ -68,4 +68,15 @@ module.exports = app => {
 
 		res.send(offices);
 	});
+
+	//delete office route
+	app.delete("/api/offices/:id", async (req, res) => {
+
+		await Listing.find({office: req.params.id}).remove();
+		await Office.find({_id: req.params.id}).remove();
+
+		const offices = await Office.find();
+
+		res.send(offices);
+	});
 };
