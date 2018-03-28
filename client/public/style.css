@@ -455,3 +455,26 @@ nav ul a, .link {
 .profile_listing {
   list-style-type: disc !important;
 }
+
+.listing_content {
+  margin: 7px;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.listing_content p {
+  margin: 0;
+}
+
+.listing_btns .btn-small {
+  height: 25px;
+  line-height: 20px;
+  padding: 2px 8px;
+  margin-right: 7px;
+}
+
+.listing_btns i {
+  font-size: 15px !important;
+}

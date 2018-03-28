@@ -72,8 +72,27 @@ class Profile extends Component {
 
 			filteredListings = filteredListings.map((listing, index) => (
 				<li className="profile_listing" key={index}>
-					{moment(listing.time_available).format("MMM D, h a - ")}
-					{moment(listing.time_closed).format("h a")}
+					<div className="listing_content">
+						<p>
+							{moment(listing.time_available).format("MMM D, h a - ")}
+							{moment(listing.time_closed).format("h a")}
+						</p>
+						<div className="listing_btns">
+							<Link
+								className="btn-small light-blue lighten-2"
+								to={`/offices/${listing.office}/listings/${listing._id}/edit`}
+							>
+								<i className="material-icons">edit</i>
+							</Link>
+							<button
+								type="button"
+								onClick={this.deleteListing.bind(this, listing)}
+								className="btn-small red lighten-2"
+							>
+								<i className="material-icons">delete_forever</i>
+							</button>
+						</div>
+					</div>
 				</li>
 			));
 
@@ -90,6 +109,10 @@ class Profile extends Component {
 		}
 	}
 
+	deleteListing(listing) {
+		this.props.deleteListing(listing._id);
+	}
+
 	renderUserOffices() {
 		const { offices, auth } = this.props;
 
@@ -102,7 +125,7 @@ class Profile extends Component {
 		}
 
 		return userOffices.map((office, index) => {
-			let filteredListings = this.getSortedListings(office);
+			let officeListings = this.getSortedListings(office);
 
 			return (
 				<div className="office" key={index}>
@@ -126,9 +149,7 @@ class Profile extends Component {
 					</div>
 					<p>{office.location}</p>
 					<h6>Upcoming listings:</h6>
-					<ul className="profile_listings browser-default">
-						{filteredListings}
-					</ul>
+					<ul className="profile_listings browser-default">{officeListings}</ul>
 				</div>
 			);
 		});
