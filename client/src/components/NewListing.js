@@ -4,36 +4,54 @@ import { Field, FieldArray, reduxForm } from "redux-form";
 import DatePicker from "react-datepicker";
 import moment from "moment";
 import * as actions from "../actions";
+import { Link } from "react-router-dom";
+
 
 import "react-datepicker/dist/react-datepicker.css";
 
 class NewListing extends Component {
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			time_available: moment(),
+			time_closed: moment()
+		};
+	}
+
 	componentDidMount() {
 		this.props.fetchUserOffices();
 	}
 
 	onSubmit(values) {
 		const { reset } = this.props;
-		this.props.createListing(values);
+		const { time_available, time_closed } = this.state;
+		this.props.createListing({ ...values, time_available, time_closed });
 		reset();
 	}
 
 	renderOffices() {
 		const offices = this.props.offices;
 
-		if(offices.length){
-			return offices.map(office => (
-					<option value={`${office._id}`} key={`${office.name}`}>
-						{office.name} - {office.location}
-					</option>
-				)
-			);
+		if (offices.length) {
+			return offices.map((office, index) => (
+				<option value={`${office._id}`} key={index}>
+					{office.name} - {office.location}
+				</option>
+			));
 		} else {
 			return null;
 		}
 	}
 
-	renderField = ({ input,	label, type, placeholder, className, meta: { touched, error }	}) => (
+	renderField = ({
+		input,
+		label,
+		type,
+		placeholder,
+		className,
+		meta: { touched, error }
+	}) => (
 		<div>
 			<div className={className}>
 				<label>{label}</label>
@@ -134,23 +152,32 @@ class NewListing extends Component {
 		</ul>
 	);
 
-	renderDatePicker = ({ input, label, className, meta: { touched, error } }) => (
-		<div className={className}>
-			<label>{label}</label>
-			<DatePicker
-				{...input}
-				selected={input.value ? moment(input.value) : null}
-				dateFormat="MMM DD, YYYY h:mm a"
-				placeholderText={moment().format("MMM DD, YYYY")}
-				minDate={moment()}
-				showTimeSelect
-				timeFormat="h:mm a"
-				timeIntervals={60}
-				timeCaption="Time"
-			/>
-			{touched && error && <span>{error}</span>}
-		</div>
-	);
+	handleChange(dateType, date) {
+		let stateObject = {};
+		stateObject[dateType] = date;
+
+		this.setState(stateObject);
+	}
+
+	renderDatePicker = ({ label, className, selectedDate, dateType }) => {
+		return (
+			<div className={className}>
+				<label>{label}</label>
+				<DatePicker
+					selected={selectedDate ? moment(selectedDate) : moment()}
+					onChange={this.handleChange.bind(this, dateType)}
+					dateFormat="LLL"
+					placeholderText={moment().format("MMM DD, YYYY")}
+					minDate={moment()}
+					showTimeSelect
+					withPortal
+					timeFormat="h:mm a"
+					timeIntervals={60}
+					timeCaption="Time"
+				/>
+			</div>
+		);
+	};
 
 	render() {
 		const { handleSubmit, pristine, reset, submitting } = this.props;
@@ -159,8 +186,16 @@ class NewListing extends Component {
 			<form
 				onSubmit={handleSubmit(this.onSubmit.bind(this))}
 				className="bigForm light-blue lighten-5"
-				>
-				<h4>Create a listing for an existing office</h4>
+			>
+				<div className="form_title">
+					<h4>Create a listing for an existing office</h4>
+					<Link
+						className="btn light-blue lighten-2 waves-effect"
+						to={"/profile"}
+					>
+						Go back to profile
+					</Link>
+				</div>
 				<label>
 					Select an existing office
 					<Field
@@ -211,6 +246,8 @@ class NewListing extends Component {
 					<Field
 						name="time_available"
 						label="Opening Time"
+						dateType="time_available"
+						selectedDate={this.state.time_available}
 						className="col s12 m6"
 						component={this.renderDatePicker}
 					/>
@@ -218,6 +255,8 @@ class NewListing extends Component {
 					<Field
 						name="time_closed"
 						label="Closing Time"
+						dateType="time_closed"
+						selectedDate={this.state.time_closed}
 						className="col s12 m6"
 						component={this.renderDatePicker}
 					/>
