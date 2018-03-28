@@ -14,6 +14,10 @@ class NewOffice extends Component {
 		}
 	}
 
+	componentWillMount() {
+		document.title = "Laguro - New Office"
+	}
+
 	loginMessage(){
     const { auth } = this.props;
     return(
@@ -67,7 +71,15 @@ class NewOffice extends Component {
 				className="bigForm light-blue lighten-5"
 				onSubmit={handleSubmit(this.onSubmit.bind(this))}
 			>
-				<h4>Create a new office</h4>
+				<div className="form_title">
+					<h4>Create a New Office</h4>
+					<Link
+						className="btn light-blue lighten-2 waves-effect"
+						to={"/profile"}
+					>
+						Go back to profile
+					</Link>
+				</div>
 
 				<Field
 					name="name"
