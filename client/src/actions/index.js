@@ -247,3 +247,14 @@ export function createListing(values, type) {
 		history.push("/profile");
 	};
 }
+export function editListing(values) {
+	return dispatch => {
+		axios.patch(`/api/listings`, values).then(listings => {
+			dispatch({
+				type: FETCH_LISTINGS,
+				payload: listings
+			});
+		});
+		history.push("/profile");
+	};
+}

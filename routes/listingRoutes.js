@@ -34,4 +34,27 @@ module.exports = app => {
 
 		res.send(newListing);
 	});
+
+	//edit office route
+	app.patch("/api/listings", async (req, res) => {
+		const { staff, equipment, cleaning_fee, time_available, time_closed, price, id } = req.body;
+
+		await Listing.findOneAndUpdate(
+			{ _id : id },
+			{
+				staff,
+				equipment,
+				cleaning_fee,
+				time_available,
+				time_closed,
+				price
+			},
+			{ new: true }
+		);
+
+		const listings = await Listing.find();
+
+		res.send(listings);
+	});
+
 };
