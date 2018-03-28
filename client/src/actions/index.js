@@ -247,6 +247,18 @@ export function createListing(values, type) {
 		history.push("/profile");
 	};
 }
+
+export function deleteListing(id) {
+	return dispatch => {
+		axios.delete(`/api/listings/${id}`).then(listings => {
+			dispatch({
+				type: FETCH_LISTINGS,
+				payload: listings
+			});
+		});
+	};
+}
+
 export function editListing(values) {
 	return dispatch => {
 		axios.patch(`/api/listings`, values).then(listings => {

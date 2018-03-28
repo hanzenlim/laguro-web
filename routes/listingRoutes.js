@@ -57,4 +57,13 @@ module.exports = app => {
 		res.send(listings);
 	});
 
+	//delete listing route
+	app.delete("/api/listings/:id", async (req, res) => {
+
+		await Listing.find({_id: req.params.id}).remove();
+
+		const listings = await Listing.find();
+
+		res.send(listings);
+	});
 };
