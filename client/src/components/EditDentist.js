@@ -17,7 +17,7 @@ class EditDentist extends Component {
 	}
 
 	componentWillMount() {
-		document.title = "Laguro - Profile";
+		document.title = "Laguro - Edit Profile";
 
 		this.getDentist().then(dentist => {
 			this.setState({
@@ -126,7 +126,7 @@ class EditDentist extends Component {
 				onSubmit={handleSubmit(this.onSubmit.bind(this))}
 			>
 				<div className="form_title">
-					<h4>Edit dentist profile</h4>
+					<h4>Edit Dentist Profile</h4>
 					<Link
 						className="btn light-blue lighten-2 waves-effect"
 						to={"/profile"}
