@@ -19,7 +19,8 @@ class NewListing extends Component {
 		};
 	}
 
-	componentDidMount() {
+	componentWillMount() {
+		document.title = "Laguro - New Listing"
 		this.props.fetchUserOffices();
 	}
 
@@ -188,7 +189,7 @@ class NewListing extends Component {
 				className="bigForm light-blue lighten-5"
 			>
 				<div className="form_title">
-					<h4>Create a listing for an existing office</h4>
+					<h4>Create a Listing for an Existing Office</h4>
 					<Link
 						className="btn light-blue lighten-2 waves-effect"
 						to={"/profile"}
