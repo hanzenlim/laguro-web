@@ -11,6 +11,10 @@ class NewDentist extends Component {
 		reset();
 	}
 
+	componentWillMount() {
+		document.title = "Laguro - New Profile";
+	}
+
 	renderField = ({ input, label, className, placeholder, meta: { touched, error } }) => (
 		<div className={className}>
 			<label>{label}</label>
@@ -65,7 +69,7 @@ class NewDentist extends Component {
 				onSubmit={handleSubmit(this.onSubmit.bind(this))}
 			>
 				<div className="form_title">
-					<h4>Create a dentist profile</h4>
+					<h4>Create a Dentist Profile</h4>
 					<Link
 						className="btn light-blue lighten-2 waves-effect"
 						to={"/profile"}
