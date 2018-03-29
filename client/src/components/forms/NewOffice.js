@@ -3,8 +3,9 @@ import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
 import { Link } from "react-router-dom";
 import ReactFilestack from "filestack-react";
-import * as actions from "../actions";
-import keys from '../config/keys';
+
+import * as actions from "../../actions";
+import keys from '../../config/keys';
 
 class NewOffice extends Component {
 	constructor(props){

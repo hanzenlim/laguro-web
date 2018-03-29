@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Field, FieldArray, reduxForm } from "redux-form";
-import * as actions from "../actions";
 import { Link } from "react-router-dom";
+
+import * as actions from "../../actions";
 
 class NewDentist extends Component {
 	onSubmit(values) {

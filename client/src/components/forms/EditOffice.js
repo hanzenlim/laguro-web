@@ -1,54 +1,61 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Field, FieldArray, reduxForm } from "redux-form";
-import * as actions from "../actions";
+import { Field, reduxForm } from "redux-form";
 import ReactFilestack from "filestack-react";
-import keys from "../config/keys";
 import { Link } from "react-router-dom";
 
-class EditDentist extends Component {
+import keys from "../../config/keys";
+import * as actions from "../../actions";
+
+class EditOffice extends Component {
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			dentist: {},
-			img_url: ""
+			office: {},
+			img_url: []
 		};
 	}
 
 	componentWillMount() {
-		document.title = "Laguro - Edit Profile";
+		document.title = "Laguro - Edit Office";
 
-		this.getDentist().then(dentist => {
+		// id from URL
+		this.office_id = this.props.computedMatch.params.office_id;
+
+		this.getOffice().then(office => {
 			this.setState({
-				dentist: dentist,
-				img_url: dentist.img_url
+				office: office,
+				img_url: office.img_url
 			});
 
 			this.props.initialize({
-				name: dentist.name,
-				location: dentist.location,
-				type: dentist.type,
-				procedures: dentist.procedures
+				name: office.name,
+				location: office.location,
+				chairs: office.chairs
 			});
 		});
 	}
 
 	onSubmit(values) {
-		const { reset, auth } = this.props;
+		const { reset } = this.props;
 		const { img_url } = this.state;
-		this.props.editDentist({ ...values, img_url, id: auth._id });
+		this.props.editOffice({
+			...values,
+			img_url,
+			id: this.office_id
+		});
 		reset();
 	}
 
 	// get all dentists and find the dentist profile that matches logged in user
-	async getDentist() {
-		await this.props.fetchDentists();
+	async getOffice() {
+		await this.props.fetchOffices();
 
-		const { dentists, auth } = this.props;
-		if (dentists.length) {
-			const dentist = dentists.filter(dentist => dentist.user_id === auth._id);
-			return dentist[0];
+		const { offices } = this.props;
+		if (offices.length) {
+			const office = offices.filter(office => office._id === this.office_id);
+			return office[0];
 		} else {
 			return {};
 		}
@@ -56,14 +63,40 @@ class EditDentist extends Component {
 
 	extractUrlToState(result) {
 		let upload = result.filesUploaded;
+		let allUrls = this.state.img_url;
 		if (upload.length) {
-			this.setState({ img_url: upload[0].url });
+			let newImgs = upload.map(file => {
+				return file.url;
+			});
+
+			allUrls = [...allUrls, ...newImgs];
 		}
+		this.setState({ img_url: allUrls });
+	}
+
+	deleteImg(index) {
+		let allUrls = this.state.img_url;
+		allUrls.splice(index, 1);
+
+		this.setState({ img_url: allUrls });
 	}
 
 	renderUploadedImages() {
 		const { img_url } = this.state;
-		return <img src={img_url} alt="dentist" />;
+		return img_url.map((url, index) => {
+			return (
+				<div className="edit_img_container" key={"img" + index}>
+					<button
+						onClick={this.deleteImg.bind(this, index)}
+						type="button"
+						className="delete_img red lighten-2 btn"
+						>
+						<i className="material-icons">delete_forever</i>
+					</button>
+					<img src={url} alt="office" />
+				</div>
+			);
+		});
 	}
 
 	renderField = ({
@@ -82,41 +115,6 @@ class EditDentist extends Component {
 		</div>
 	);
 
-	renderProcedures = ({ fields, className, meta: { error } }) => (
-		<ul className={className}>
-			<label>Procedures Offered</label>
-			<li>
-				<button
-					type="button"
-					className="waves-effect btn-flat"
-					onClick={() => fields.push({})}
-				>
-					Add Procedure
-				</button>
-				{error && <span>{error}</span>}
-			</li>
-			{fields.map((procedure, index) => (
-				<li key={index} className="multiRowAdd">
-					<Field
-						name={`${procedure}.name`}
-						type="text"
-						placeholder="Implants"
-						component={this.renderField}
-						label="Procedure"
-					/>
-					<button
-						type="button"
-						title="Remove Procedure"
-						className="red lighten-3 waves-effect btn"
-						onClick={() => fields.remove(index)}
-					>
-						<i className="material-icons tiny">delete_forever</i>
-					</button>
-				</li>
-			))}
-		</ul>
-	);
-
 	render() {
 		const { handleSubmit, submitting } = this.props;
 
@@ -126,7 +124,7 @@ class EditDentist extends Component {
 				onSubmit={handleSubmit(this.onSubmit.bind(this))}
 			>
 				<div className="form_title">
-					<h4>Edit Dentist Profile</h4>
+					<h4>Edit Dentist Office</h4>
 					<Link
 						className="btn light-blue lighten-2 waves-effect"
 						to={"/profile"}
@@ -140,21 +138,21 @@ class EditDentist extends Component {
 						name="name"
 						label="Name"
 						className="col s12 m4"
-						placeholder="General Dentist"
-						component={this.renderField}
-					/>
-					<Field
-						name="type"
-						label="Dental Specialty"
-						className="col s12 m4"
-						placeholder="General Dentist"
+						placeholder="Bell Dental"
 						component={this.renderField}
 					/>
 					<Field
 						name="location"
-						label="Location of practice"
-						className="col s12 m4"
-						placeholder="Oakland, CA"
+						label="Location"
+						className="col s12 m5"
+						placeholder="San Leandro, CA"
+						component={this.renderField}
+					/>
+					<Field
+						name="chairs"
+						label="Number of Chairs"
+						className="col s12 m3"
+						placeholder="3"
 						component={this.renderField}
 					/>
 				</div>
@@ -168,7 +166,7 @@ class EditDentist extends Component {
 						options={{
 							accept: ["image/*"],
 							imageMin: [300, 300],
-							maxFiles: 1,
+							maxFiles: 5,
 							fromSources: [
 								"local_file_system",
 								"url",
@@ -179,14 +177,6 @@ class EditDentist extends Component {
 							storeTo: { container: "office-photos" }
 						}}
 						onSuccess={result => this.extractUrlToState(result)}
-					/>
-				</div>
-
-				<div className="row">
-					<FieldArray
-						name="procedures"
-						className="col s12"
-						component={this.renderProcedures}
 					/>
 				</div>
 
@@ -207,10 +197,10 @@ class EditDentist extends Component {
 function mapStateToProps(state) {
 	return {
 		auth: state.auth.data,
-		dentists: state.dentists.dentists
+		offices: state.offices.offices
 	};
 }
 
 export default reduxForm({
-	form: "editDentist"
-})(connect(mapStateToProps, actions)(EditDentist));
+	form: "editOffice"
+})(connect(mapStateToProps, actions)(EditOffice));

@@ -3,8 +3,9 @@ import { connect } from "react-redux";
 import { Field, FieldArray, reduxForm } from "redux-form";
 import DatePicker from "react-datepicker";
 import moment from "moment";
-import * as actions from "../actions";
 import { Link } from "react-router-dom";
+
+import * as actions from "../../actions";
 
 import "react-datepicker/dist/react-datepicker.css";
 

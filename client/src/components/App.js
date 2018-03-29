@@ -9,12 +9,12 @@ import Landing from './Landing';
 import DentistResultIndex from './DentistResultIndex';
 import OfficeResultIndex from './OfficeResultIndex';
 import Header from './Header';
-import NewOffice from './NewOffice';
-import EditOffice from './EditOffice';
-import NewListing from './NewListing';
-import EditListing from './EditListing';
-import NewDentist from './NewDentist';
-import EditDentist from './EditDentist';
+import NewOffice from './forms/NewOffice';
+import EditOffice from './forms/EditOffice';
+import NewListing from './forms/NewListing';
+import EditListing from './forms/EditListing';
+import NewDentist from './forms/NewDentist';
+import EditDentist from './forms/EditDentist';
 import Profile from './Profile';
 import Listing from './Listing';
 
