@@ -26,7 +26,7 @@ class NewDentist extends Component {
 			<div>
 				<input {...input} placeholder={placeholder} />
 			</div>
-			{touched && error && <span>{error}</span>}
+			{touched && error && <span className="red-text">{error}</span>}
 		</div>
 	);
 
@@ -51,6 +51,7 @@ class NewDentist extends Component {
 						placeholder="Implants"
 						component={this.renderField}
 						label="Procedure"
+						validate={required}
 					/>
 					<button
 						type="button"
@@ -66,7 +67,7 @@ class NewDentist extends Component {
 	);
 
 	render() {
-		const { handleSubmit, pristine, submitting } = this.props;
+		const { handleSubmit, submitting } = this.props;
 
 		return (
 			<form
@@ -90,6 +91,7 @@ class NewDentist extends Component {
 						className="col s12 m6"
 						placeholder="General Dentist"
 						component={this.renderField}
+						validate={required}
 					/>
 					<Field
 						name="location"
@@ -97,6 +99,7 @@ class NewDentist extends Component {
 						className="col s12 m6"
 						placeholder="Oakland, CA"
 						component={this.renderField}
+						validate={required}
 					/>
 				</div>
 
@@ -112,7 +115,7 @@ class NewDentist extends Component {
 					<button
 						className="waves-effect btn light-blue lighten-2"
 						type="submit"
-						disabled={pristine || submitting}
+						disabled={submitting}
 					>
 						Submit
 					</button>
@@ -121,6 +124,8 @@ class NewDentist extends Component {
 		);
 	}
 }
+
+const required = value => (value && value !== "" ? undefined : 'Required')
 
 export default reduxForm({
 	form: "newDentist"
