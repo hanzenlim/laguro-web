@@ -14,6 +14,10 @@ class NewDentist extends Component {
 
 	componentWillMount() {
 		document.title = "Laguro - New Profile";
+
+		this.props.initialize({
+			specialty: "General Dentist"
+		})
 	}
 
 	renderField = ({ input, label, className, placeholder, meta: { touched, error } }) => (
@@ -81,7 +85,7 @@ class NewDentist extends Component {
 
 				<div className="row">
 					<Field
-						name="type"
+						name="specialty"
 						label="Dental Specialty"
 						className="col s12 m6"
 						placeholder="General Dentist"

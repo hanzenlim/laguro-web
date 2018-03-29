@@ -5,7 +5,7 @@ const dentistSchema = new Schema({
 	user_id: String,
 	img_url: String,
 	name: String,
-	type: String,
+	specialty: String,
 	location: String,
 	procedures: [{
 		name: String

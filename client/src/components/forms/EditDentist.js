@@ -29,7 +29,7 @@ class EditDentist extends Component {
 			this.props.initialize({
 				name: dentist.name,
 				location: dentist.location,
-				type: dentist.type,
+				specialty: dentist.specialty,
 				procedures: dentist.procedures
 			});
 		});
@@ -145,7 +145,7 @@ class EditDentist extends Component {
 						component={this.renderField}
 					/>
 					<Field
-						name="type"
+						name="specialty"
 						label="Dental Specialty"
 						className="col s12 m4"
 						placeholder="General Dentist"

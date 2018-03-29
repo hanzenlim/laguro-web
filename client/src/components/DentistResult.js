@@ -30,7 +30,7 @@ class DentistResult extends Component {
 				<img className="result-img" src={this.imgUrl()} alt="Doctor" />
 				<div className="details">
 					<h3>{this.props.name}</h3>
-					<h5>{this.props.type}</h5>
+					<h5>{this.props.specialty}</h5>
 					<h5>{this.props.location}</h5>
 					<div className="rating">
 						<ReactStars count={5} value={this.props.rating_value} />

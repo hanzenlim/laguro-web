@@ -38,7 +38,7 @@ class DentistResultIndex extends Component {
 			return (
 				<DentistResult
 					name={dentist.name}
-					type={dentist.type}
+					specialty={dentist.specialty}
 					location={dentist.location}
 					procedures={dentist.procedures}
 					rating_value={avg_rating}

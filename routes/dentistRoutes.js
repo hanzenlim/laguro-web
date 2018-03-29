@@ -11,11 +11,11 @@ module.exports = app => {
 
 	//create dentist route
 	app.post("/api/dentists", async (req, res) => {
-		const { type, location, procedures } = req.body;
+		const { specialty, location, procedures } = req.body;
 		const user = req.user;
 
 		let newDentist = await Dentist.create({
-			type,
+			specialty,
 			location,
 			procedures,
 			user_id: user._id,
@@ -29,12 +29,12 @@ module.exports = app => {
 
 	//edit dentist route
 	app.patch("/api/dentists", async (req, res) => {
-		const { name, img_url, type, location, procedures, id } = req.body;
+		const { name, img_url, specialty, location, procedures, id } = req.body;
 
 		let dentist = await Dentist.findOneAndUpdate(
 			{ user_id: id },
 			{
-				type,
+				specialty,
 				location,
 				procedures,
 				name,
