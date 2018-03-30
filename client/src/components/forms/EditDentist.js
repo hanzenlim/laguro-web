@@ -20,6 +20,8 @@ class EditDentist extends Component {
 	componentWillMount() {
 		document.title = "Laguro - Edit Profile";
 
+		console.log(keys.filestack)
+
 		this.getDentist().then(dentist => {
 			this.setState({
 				dentist: dentist,
