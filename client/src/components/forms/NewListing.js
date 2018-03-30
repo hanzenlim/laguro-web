@@ -53,12 +53,12 @@ class NewListing extends Component {
 		className,
 		meta: { touched, error }
 	}) => (
-		<div>
-			<div className={className}>
-				<label>{label}</label>
+		<div className={className}>
+			<label>{label}</label>
+			<div>
 				<input {...input} placeholder={placeholder} />
 			</div>
-			{touched && error && <span>{error}</span>}
+			{touched && error && <span className="red-text">{error}</span>}
 		</div>
 	);
 
@@ -83,6 +83,7 @@ class NewListing extends Component {
 						placeholder="RDA"
 						component={this.renderField}
 						label="Staff Role"
+						validate={required}
 					/>
 					<Field
 						name={`${staff}.price`}
@@ -90,6 +91,7 @@ class NewListing extends Component {
 						placeholder="30"
 						component={this.renderField}
 						label="Hourly Price"
+						validate={required}
 					/>
 					<Field
 						name={`${staff}.count`}
@@ -97,6 +99,7 @@ class NewListing extends Component {
 						placeholder="3"
 						component={this.renderField}
 						label="Number of Staff"
+						validate={required}
 					/>
 					<button
 						type="button"
@@ -132,6 +135,7 @@ class NewListing extends Component {
 						placeholder="Filling Setup"
 						component={this.renderField}
 						label="Equipment Type"
+						validate={required}
 					/>
 					<Field
 						name={`${equipment}.price`}
@@ -139,6 +143,7 @@ class NewListing extends Component {
 						placeholder="15"
 						component={this.renderField}
 						label="Per Unit Price"
+						validate={required}
 					/>
 					<button
 						type="button"
@@ -181,7 +186,7 @@ class NewListing extends Component {
 	};
 
 	render() {
-		const { handleSubmit, pristine, reset, submitting } = this.props;
+		const { handleSubmit, submitting } = this.props;
 
 		return (
 			<form
@@ -216,6 +221,7 @@ class NewListing extends Component {
 						placeholder="100"
 						className="col s12 m6"
 						component={this.renderField}
+						validate={required}
 					/>
 
 					<Field
@@ -224,6 +230,7 @@ class NewListing extends Component {
 						placeholder="50"
 						className="col s12 m6"
 						component={this.renderField}
+						validate={required}
 					/>
 				</div>
 
@@ -265,25 +272,19 @@ class NewListing extends Component {
 
 				<div className="form-buttons">
 					<button
-						className="waves-effect btn green lighten-2"
+						className="waves-effect btn light-blue lighten-2"
 						type="submit"
-						disabled={pristine || submitting}
+						disabled={submitting}
 					>
 						Submit
-					</button>
-					<button
-						className="waves-effect btn red lighten-2"
-						type="button"
-						disabled={pristine || submitting}
-						onClick={reset}
-					>
-						Clear
 					</button>
 				</div>
 			</form>
 		);
 	}
 }
+
+const required = value => (value && value !== "" ? undefined : 'Required')
 
 function mapStateToProps(state) {
 	return { offices: state.offices.offices };

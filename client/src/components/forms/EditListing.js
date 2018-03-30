@@ -74,7 +74,7 @@ class EditListing extends Component {
 				<label>{label}</label>
 				<input {...input} placeholder={placeholder} />
 			</div>
-			{touched && error && <span>{error}</span>}
+			{touched && error && <span className="red-text">{error}</span>}
 		</div>
 	);
 
@@ -99,6 +99,7 @@ class EditListing extends Component {
 						placeholder="RDA"
 						component={this.renderField}
 						label="Staff Role"
+						validate={required}
 					/>
 					<Field
 						name={`${staff}.price`}
@@ -106,6 +107,7 @@ class EditListing extends Component {
 						placeholder="30"
 						component={this.renderField}
 						label="Hourly Price"
+						validate={required}
 					/>
 					<Field
 						name={`${staff}.count`}
@@ -113,6 +115,7 @@ class EditListing extends Component {
 						placeholder="3"
 						component={this.renderField}
 						label="Number of Staff"
+						validate={required}
 					/>
 					<button
 						type="button"
@@ -148,6 +151,7 @@ class EditListing extends Component {
 						placeholder="Filling Setup"
 						component={this.renderField}
 						label="Equipment Type"
+						validate={required}
 					/>
 					<Field
 						name={`${equipment}.price`}
@@ -155,6 +159,7 @@ class EditListing extends Component {
 						placeholder="15"
 						component={this.renderField}
 						label="Per Unit Price"
+						validate={required}
 					/>
 					<button
 						type="button"
@@ -222,6 +227,7 @@ class EditListing extends Component {
 						label="Price per chair (hourly)"
 						placeholder="100"
 						className="col s12 m6"
+						validate={required}
 						component={this.renderField}
 					/>
 
@@ -230,6 +236,7 @@ class EditListing extends Component {
 						label="Cleaning Fee"
 						placeholder="50"
 						className="col s12 m6"
+						validate={required}
 						component={this.renderField}
 					/>
 				</div>
@@ -283,6 +290,8 @@ class EditListing extends Component {
 		);
 	}
 }
+
+const required = value => (value && value !== "" ? undefined : 'Required')
 
 function mapStateToProps(state) {
 	return { listings: state.listings.data };
