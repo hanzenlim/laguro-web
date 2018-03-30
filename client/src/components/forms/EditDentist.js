@@ -20,9 +20,6 @@ class EditDentist extends Component {
 	componentWillMount() {
 		document.title = "Laguro - Edit Profile";
 
-		console.log(keys)
-		console.log(process.env)
-
 		this.getDentist().then(dentist => {
 			this.setState({
 				dentist: dentist,
@@ -82,7 +79,7 @@ class EditDentist extends Component {
 			<div>
 				<input {...input} placeholder={placeholder} />
 			</div>
-			{touched && error && <span>{error}</span>}
+			{touched && error && <span className="red-text">{error}</span>}
 		</div>
 	);
 
@@ -107,6 +104,7 @@ class EditDentist extends Component {
 						placeholder="Implants"
 						component={this.renderField}
 						label="Procedure"
+						validate={required}
 					/>
 					<button
 						type="button"
@@ -144,7 +142,8 @@ class EditDentist extends Component {
 						name="name"
 						label="Name"
 						className="col s12 m4"
-						placeholder="General Dentist"
+						placeholder="Stephen Curry"
+						validate={required}
 						component={this.renderField}
 					/>
 					<Field
@@ -152,6 +151,7 @@ class EditDentist extends Component {
 						label="Dental Specialty"
 						className="col s12 m4"
 						placeholder="General Dentist"
+						validate={required}
 						component={this.renderField}
 					/>
 					<Field
@@ -159,6 +159,7 @@ class EditDentist extends Component {
 						label="Location of practice"
 						className="col s12 m4"
 						placeholder="Oakland, CA"
+						validate={required}
 						component={this.renderField}
 					/>
 				</div>
@@ -207,6 +208,8 @@ class EditDentist extends Component {
 		);
 	}
 }
+
+const required = value => (value && value !== "" ? undefined : 'Required')
 
 function mapStateToProps(state) {
 	return {
