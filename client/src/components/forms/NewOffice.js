@@ -54,18 +54,18 @@ class NewOffice extends Component {
 		reset();
 	}
 
-	renderField = ({ input, label, placeholder, meta: { touched, error } }) => (
-		<div>
+	renderField = ({ input, label, placeholder, className, meta: { touched, error } }) => (
+		<div className={className}>
 			<label>{label}</label>
 			<div>
 				<input {...input} placeholder={placeholder} />
 			</div>
-			{touched && error && <span>{error}</span>}
+			{touched && error && <span className="red-text">{error}</span>}
 		</div>
 	);
 
 	render() {
-		const { handleSubmit, pristine, submitting } = this.props;
+		const { handleSubmit, submitting } = this.props;
 
 		return (
 			<form
@@ -82,24 +82,35 @@ class NewOffice extends Component {
 					</Link>
 				</div>
 
-				<Field
-					name="name"
-					label="Office Name"
-					placeholder="Bell Dental Center"
-					component={this.renderField}
-				/>
-				<Field
-					name="location"
-					label="Address"
-					placeholder="1598 Washington Ave, San Leandro, CA"
-					component={this.renderField}
-				/>
-				<Field
-					name="chairs"
-					label="Number of Chairs"
-					placeholder={3}
-					component={this.renderField}
-				/>
+				<div className="row">
+					<Field
+						name="name"
+						label="Office Name"
+						placeholder="Bell Dental Center"
+						component={this.renderField}
+						validate={required}
+						className="col s12 m9"
+					/>
+
+					<Field
+						name="chairs"
+						label="Number of Chairs"
+						placeholder={3}
+						component={this.renderField}
+						validate={required}
+						className="col s12 m3"
+					/>
+				</div>
+				<div className="row">
+					<Field
+						name="location"
+						label="Address"
+						placeholder="1598 Washington Ave, San Leandro, CA"
+						component={this.renderField}
+						validate={required}
+						className="col s12"
+					/>
+				</div>
 				<div className="image_upload">
 					<ReactFilestack
 						apikey={keys.filestack}
@@ -129,7 +140,7 @@ class NewOffice extends Component {
 					<button
 						className="waves-effect btn light-blue lighten-2"
 						type="submit"
-						disabled={pristine || submitting}
+						disabled={submitting}
 					>
 						Submit
 					</button>
@@ -138,6 +149,8 @@ class NewOffice extends Component {
 		);
 	}
 }
+
+const required = value => (value && value !== "" ? undefined : 'Required')
 
 function mapStateToProps(state){
 	return{ auth: state.auth }
