@@ -111,7 +111,7 @@ class EditOffice extends Component {
 			<div>
 				<input {...input} placeholder={placeholder} />
 			</div>
-			{touched && error && <span>{error}</span>}
+			{touched && error && <span className="red-text">{error}</span>}
 		</div>
 	);
 
@@ -140,6 +140,7 @@ class EditOffice extends Component {
 						className="col s12 m4"
 						placeholder="Bell Dental"
 						component={this.renderField}
+						validate={required}
 					/>
 					<Field
 						name="location"
@@ -147,6 +148,7 @@ class EditOffice extends Component {
 						className="col s12 m5"
 						placeholder="San Leandro, CA"
 						component={this.renderField}
+						validate={required}
 					/>
 					<Field
 						name="chairs"
@@ -154,6 +156,7 @@ class EditOffice extends Component {
 						className="col s12 m3"
 						placeholder="3"
 						component={this.renderField}
+						validate={required}
 					/>
 				</div>
 
@@ -193,6 +196,8 @@ class EditOffice extends Component {
 		);
 	}
 }
+
+const required = value => (value && value !== "" ? undefined : 'Required')
 
 function mapStateToProps(state) {
 	return {
