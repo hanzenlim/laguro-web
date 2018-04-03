@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import * as actions from "../actions";
 import moment from "moment";
+import { Link } from "react-router-dom";
+
+import * as actions from "../actions";
 
 class Profile extends Component {
 	constructor(props) {
@@ -13,11 +15,10 @@ class Profile extends Component {
 	}
 
 	componentWillMount() {
-		document.title = "Laguro - Profile";
-
 		this.dentist_id = this.props.match.params.id;
 
 		this.getDentist().then(dentist => {
+			document.title = `Laguro - ${dentist.name}`;
 			this.setState({ dentist: dentist });
 		});
 
@@ -133,6 +134,12 @@ class Profile extends Component {
 				</div>
 				<div className="main">
 					{this.renderProfileDetails()}
+					<Link
+						className="btn light-blue lighten-2 waves-effect"
+						to={"/dentists/search"}
+					>
+						Go back to dentists
+					</Link>
 				</div>
 			</div>
 		);
