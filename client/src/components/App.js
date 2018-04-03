@@ -16,6 +16,7 @@ import EditListing from './forms/EditListing';
 import NewDentist from './forms/NewDentist';
 import EditDentist from './forms/EditDentist';
 import Profile from './Profile';
+import Dentist from './Dentist';
 import Listing from './Listing';
 
 const PrivateRoute = ({ auth, path, ...props, component: Component }) => (
@@ -73,6 +74,7 @@ class App extends Component {
                 path="/dentist/edit"
                 component={EditDentist}
               />
+              <Route path="/dentist/:id" component={Dentist} />
               <PrivateRoute
                 auth={this.props.auth}
                 path="/listings/new"

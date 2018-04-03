@@ -44,6 +44,7 @@ class DentistResultIndex extends Component {
 					rating_value={avg_rating}
 					rating_count={dentist.rating.length}
 					img={dentist.img_url}
+					user_id={dentist.user_id}
 					key={dentist._id}
 				/>
 			);

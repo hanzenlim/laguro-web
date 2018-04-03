@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import ReactStars from "react-stars";
+import { Link } from "react-router-dom";
 
 class DentistResult extends Component {
 	renderProcedures(procedures) {
@@ -40,6 +41,14 @@ class DentistResult extends Component {
 					</div>
 					<div className="badges">
 						{this.renderProcedures(this.props.procedures)}
+					</div>
+					<div>
+						<Link
+							className="btn-small light-blue lighten-2"
+							to={`/dentist/${this.props.user_id}`}
+						>
+							View More Info
+						</Link>
 					</div>
 				</div>
 			</div>
