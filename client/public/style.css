@@ -220,22 +220,33 @@ nav ul a, .link {
   justify-content: flex-start;
 }
 
-.searchResult .details {
+.searchResult .content {
   padding-left: 20px;
+  width: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
 }
 
-.searchResult h3 {
-  margin-top: 5px;
+.searchResult .row {
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+.searchResult .header > * {
+  margin: 5px 0;
 }
 
 .searchResult .badges {
-  padding: 5px 0;
+  padding: 10px 0;
   display: flex;
   justify-content: flex-start;
 }
 
 .searchResult .badge {
-  margin: 0 10px 0 0;
+  box-sizing: content-box;
+  margin: 0 5px 0 0;
   padding: 2px 5px;
   border-radius: 2px;
 }

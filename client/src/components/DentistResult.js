@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 class DentistResult extends Component {
 	renderProcedures(procedures) {
 		if (procedures.length) {
-			return procedures.map(procedure => (
+			return procedures.slice(0,4).map(procedure => (
 				<span
 					key={procedure.name}
 					className="badge white-text light-blue lighten-2"
@@ -29,26 +29,29 @@ class DentistResult extends Component {
 		return (
 			<div className="searchResult">
 				<img className="result-img" src={this.imgUrl()} alt="Doctor" />
-				<div className="details">
-					<h3>{this.props.name}</h3>
-					<h5>{this.props.specialty}</h5>
-					<h5>{this.props.location}</h5>
-					<div className="rating">
-						<ReactStars count={5} value={this.props.rating_value} />
-						<span className="rating_count">
-							{`(${this.props.rating_count})`}
-						</span>
+				<div className="content">
+					<div className="header">
+						<h4>{this.props.name}</h4>
+						<h6>{this.props.specialty} - {this.props.location}</h6>
 					</div>
 					<div className="badges">
 						{this.renderProcedures(this.props.procedures)}
 					</div>
-					<div>
-						<Link
-							className="btn-small light-blue lighten-2"
-							to={`/dentist/${this.props.user_id}`}
-						>
-							View More Info
-						</Link>
+					<div className="row">
+						<div className="rating col s12 m7">
+							<ReactStars count={5} value={this.props.rating_value} />
+							<span className="rating_count">
+								{`(${this.props.rating_count})`}
+							</span>
+						</div>
+						<div className="col s12 m5">
+							<Link
+								className="badge light-blue lighten-2 white-text"
+								to={`/dentist/${this.props.user_id}`}
+								>
+									View More
+								</Link>
+						</div>
 					</div>
 				</div>
 			</div>
