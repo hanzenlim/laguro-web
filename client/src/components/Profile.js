@@ -161,7 +161,7 @@ class Profile extends Component {
 		return (
 			<ul className="collection">
 				{/* Display Create if no dentist profile or Edit if profile exists */}
-				{dentist ? (
+				{(dentist && Object.keys(dentist).length !== 0) ? (
 					<Link className="link" to={"/dentist/edit"}>
 						Edit Dentist Profile
 					</Link>
