@@ -15,10 +15,11 @@ img {
 }
 
 .form-buttons .btn {
-  margin-left: 10px
+  margin-left: 10px;
 }
 
-.react-datepicker-wrapper, .react-datepicker__input-container {
+.react-datepicker-wrapper,
+.react-datepicker__input-container {
   width: 100%;
 }
 
@@ -44,20 +45,23 @@ img {
   text-align: left;
 }
 
-nav ul a, .link {
+nav ul a,
+.link {
   color: #039be5 !important;
   transition: all 0.2s;
 }
 
-.btn:hover, .link:hover, nav ul a:hover {
+.btn:hover,
+.link:hover,
+nav ul a:hover {
   color: #ff3100 !important;
   cursor: pointer;
-  background-color: rgba(0,0,0,0.1);
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .link:focus {
   color: #f60;
-  background-color: rgba(0,0,0,0.1)
+  background-color: rgba(0, 0, 0, 0.1);
 }
 
 /* Header Bar */
@@ -69,7 +73,7 @@ nav ul a, .link {
 }
 
 .brand-logo h3 {
-  font-family: 'Raleway', sans-serif;
+  font-family: "Raleway", sans-serif;
   font-size: 30px;
   display: inline-block;
   margin: 0;
@@ -81,7 +85,8 @@ nav ul a, .link {
 }
 
 /* Landing page search modules */
-.hero-search, .hero-img {
+.hero-search,
+.hero-img {
   width: 50%;
   float: left;
 }
@@ -103,7 +108,8 @@ nav ul a, .link {
   object-fit: cover;
 }
 
-.hero-search .search, .hero-search .mission {
+.hero-search .search,
+.hero-search .mission {
   width: 65%;
   margin: 0 auto;
 }
@@ -120,7 +126,7 @@ nav ul a, .link {
 
 .search {
   width: 70%;
-  box-shadow: 0 2px 20px 1px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 20px 1px rgba(0, 0, 0, 0.1);
   margin: 1em auto;
 }
 
@@ -177,7 +183,7 @@ nav ul a, .link {
   width: 100% !important;
   margin: 0 !important;
   border: none !important;
-  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14) !important;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14) !important;
   border-radius: 2px !important;
   height: 2.5rem !important;
 }
@@ -189,7 +195,7 @@ nav ul a, .link {
 }
 
 .resultList {
-  width: 50%;
+  width: 60%;
   height: 85vh;
   overflow-y: scroll;
   float: left;
@@ -197,14 +203,14 @@ nav ul a, .link {
 
 .map {
   padding-top: 15px;
-  width: 50%;
+  width: 40%;
   float: right;
   overflow: hidden;
 }
 
 /* auto-generated container for map */
 .map > div {
-  width: 50% !important;
+  width: 40% !important;
   height: 85vh !important;
   max-width: 750px;
 }
@@ -212,17 +218,21 @@ nav ul a, .link {
 .searchResult {
   display: flex;
   flex-flow: row nowrap;
-  width: 85%;
+  width: 90%;
   margin: 1em auto;
-  border: 1px solid #ccc;
+  border-top: 1px solid #ccc;
   border-radius: 3px;
-  padding: 10px;
-  justify-content: flex-start;
+  padding: 15px 0 15px 10px;
+  align-items: center;
+}
+
+.searchResult:last-of-type {
+  border-bottom: 1px solid #ccc;
 }
 
 .searchResult .content {
   padding-left: 20px;
-  width: 100%;
+  flex-grow: 1;
   display: flex;
   flex-flow: column nowrap;
   justify-content: space-between;
@@ -234,7 +244,8 @@ nav ul a, .link {
   align-items: center;
 }
 
-.searchResult .header > * {
+.searchResult .header h4,
+.searchResult .header h6 {
   margin: 5px 0;
 }
 
@@ -266,8 +277,8 @@ nav ul a, .link {
 }
 
 .searchResult .result-img {
-  width: 200px;
-  height: 200px;
+  width: 150px;
+  height: 150px;
   object-fit: cover;
 }
 
@@ -320,11 +331,11 @@ nav ul a, .link {
   width: 85%;
   margin: 3em auto;
   padding: 1em 4em;
-  box-shadow: 0 2px 20px 1px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 20px 1px rgba(0, 0, 0, 0.1);
 }
 
 .bigForm h4 {
-  margin: 1.0em 0;
+  margin: 1em 0;
 }
 
 .bigForm > * {
@@ -365,13 +376,16 @@ nav ul a, .link {
   margin-right: 10px;
 }
 
-.listingDetails, .bookNow .content {
+.listingDetails,
+.bookNow .content {
   max-width: 850px;
   margin: 0 auto;
   padding: 1em 2em;
 }
 
-.listingHeader, .bookNow .content, .availableRow {
+.listingHeader,
+.bookNow .content,
+.availableRow {
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
@@ -388,7 +402,7 @@ nav ul a, .link {
 
 .availableRow {
   border: 1px solid #e4e4e4;
-  padding: 1em 2.0em;
+  padding: 1em 2em;
   align-items: flex-start;
 }
 
@@ -399,7 +413,7 @@ nav ul a, .link {
 
 .bookNow {
   background-color: white;
-  border-top: 1px solid #DBDBDB;
+  border-top: 1px solid #dbdbdb;
   position: fixed;
   bottom: 0px;
   left: 0px;
@@ -422,7 +436,7 @@ nav ul a, .link {
 }
 
 .profile_container .sidebar {
-  width: calc(100%/3);
+  width: calc(100% / 3);
   padding: 0 1em;
 }
 
@@ -431,19 +445,19 @@ nav ul a, .link {
 }
 
 .profile_img::before {
-  content: '';
+  content: "";
   padding-top: 100%;
   float: left;
 }
 
 .profile_img::after {
-  content: '';
+  content: "";
   display: block;
   clear: both;
 }
 
 .profile_container .main {
-  width: calc(100% * 2/3);
+  width: calc(100% * 2 / 3);
   padding: 0 1em;
 }
 
