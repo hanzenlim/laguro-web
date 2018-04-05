@@ -212,7 +212,7 @@ nav ul a:hover {
 .map > div {
   width: 40% !important;
   height: 85vh !important;
-  max-width: 750px;
+  max-width: 600px;
 }
 
 .searchResult {
@@ -221,7 +221,6 @@ nav ul a:hover {
   width: 90%;
   margin: 1em auto;
   border-top: 1px solid #ccc;
-  border-radius: 3px;
   padding: 15px 0 15px 10px;
   align-items: center;
 }
@@ -244,7 +243,7 @@ nav ul a:hover {
   align-items: center;
 }
 
-.searchResult .header h4,
+.searchResult .header h5,
 .searchResult .header h6 {
   margin: 5px 0;
 }
@@ -275,6 +274,8 @@ nav ul a:hover {
 .rating > div {
   margin-right: 5px;
 }
+
+
 
 .searchResult .result-img {
   width: 150px;

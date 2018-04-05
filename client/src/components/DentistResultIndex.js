@@ -7,95 +7,94 @@ import FilterBar from "./FilterBar";
 import ResultMap from "./ResultMap";
 
 class DentistResultIndex extends Component {
-	componentWillMount() {
-		document.title = "Laguro - Search Index";
-		this.props.fetchDentists(this.props.filters);
-	}
+  componentWillMount() {
+    document.title = "Laguro - Search Index";
+    this.props.fetchDentists(this.props.filters);
+  }
 
-	renderMap() {
-		return (
-			<ResultMap
-				locations={this.props.dentists}
-				google={window.google}
-				searchLocation={
-					this.props.filters.location ? this.props.filters.location : null
-				}
-			/>
-		);
-	}
+  renderMap() {
+    return (
+      <ResultMap
+        locations={this.props.dentists}
+        google={window.google}
+        searchLocation={
+          this.props.filters.location ? this.props.filters.location : null
+        }
+      />
+    );
+  }
 
-	renderDentistList() {
-		const filteredDentists = this.props.dentists;
+  renderDentistList() {
+    const filteredDentists = this.props.dentists;
 
-		let dentistList = filteredDentists.map(dentist => {
-			//average the ratings
-			let avg_rating =
-				dentist.rating.length
-					? dentist.rating.reduce((acc, val) => acc + val) /
-						dentist.rating.length
-					: 0;
+    let dentistList = filteredDentists.map((dentist, index) => {
+      //average the ratings
+      let avg_rating = dentist.rating.length
+        ? dentist.rating.reduce((acc, val) => acc + val) / dentist.rating.length
+        : 0;
 
-			return (
-				<DentistResult
-					name={dentist.name}
-					specialty={dentist.specialty}
-					location={dentist.location}
-					procedures={dentist.procedures}
-					rating_value={avg_rating}
-					rating_count={dentist.rating.length}
-					img={dentist.img_url}
-					user_id={dentist.user_id}
-					key={dentist._id}
-				/>
-			);
-		});
+      return (
+        <DentistResult
+          name={dentist.name}
+          specialty={dentist.specialty}
+          location={dentist.location}
+          procedures={dentist.procedures}
+          rating_value={avg_rating}
+          rating_count={dentist.rating.length}
+          img={dentist.img_url}
+          user_id={dentist.user_id}
+          index={index}
+          key={dentist._id}
+        />
+      );
+    });
 
-		return dentistList;
-	}
+    return dentistList;
+  }
 
-	render() {
-		if (this.props.invalid) {
-			this.props.fetchDentists(this.props.filters);
-		}
+  render() {
+    if (this.props.invalid) {
+      this.props.fetchDentists(this.props.filters);
+    }
 
-		if (this.props.isFetching) {
-			return <div>Loading...</div>;
-		}
+    if (this.props.isFetching) {
+      return <div>Loading...</div>;
+    }
 
-		return (
-			<div>
-				<FilterBar />
-				<div className="resultContainer">
-					<div className="resultList">{this.renderDentistList()}</div>
-					<div className="map">{this.renderMap()}</div>
-				</div>
-			</div>
-		);
-	}
+    return (
+      <div>
+        <FilterBar />
+        <div className="resultContainer">
+          <div className="resultList">{this.renderDentistList()}</div>
+          <div className="map">{this.renderMap()}</div>
+        </div>
+      </div>
+    );
+  }
 }
 
 function getVisibleOffices(offices) {
-	//remove any offices greater than 35 miles away
-	//if no location filter, office.distance is undefined and !!(undefined > 35) == false
-	let filteredOffices = offices.filter(office => {
-		if (office.distance > 35) {
-			return false;
-		}
+  //remove any offices greater than 35 miles away
+  //if no location filter, office.distance is undefined and !!(undefined > 35) == false
+  let filteredOffices = offices.filter(office => {
+    if (office.distance > 35) {
+      return false;
+    }
 
-		return true;
-	});
+    return true;
+  });
 
-	//sort offices within range, allows their labels to reflect order
-	return filteredOffices.sort((a, b) => a.distance - b.distance);
+  //sort offices within range, allows their labels to reflect order
+  return filteredOffices.sort((a, b) => a.distance - b.distance);
 }
 
 function mapStateToProps(state) {
-	return {
-		dentists: getVisibleOffices(state.dentists.dentists),
-		isFetching: state.dentists.isFetching,
-		invalid: state.dentists.invalid,
-		filters: state.filters
-	};
+  return {
+    dentists: getVisibleOffices(state.dentists.dentists),
+    isFetching: state.dentists.isFetching,
+    invalid: state.dentists.invalid,
+    filters: state.filters
+  };
 }
 
 export default connect(mapStateToProps, actions)(DentistResultIndex);

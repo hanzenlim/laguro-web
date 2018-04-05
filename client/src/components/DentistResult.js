@@ -40,20 +40,26 @@ class DentistResult extends Component {
               className="blue-text text-darken-2"
               to={`/dentist/${this.props.user_id}`}
             >
-              <h4>{this.props.name}</h4>
+              <h5>
+                {this.props.index + 1}. {this.props.name}
+              </h5>
             </Link>
             <h6>
               {this.props.specialty} - {this.props.location}
             </h6>
           </div>
+          <div className="rating">
+            <ReactStars
+              count={5}
+              edit={false}
+              value={this.props.rating_value}
+            />
+            <span className="rating_count grey-text text-darken-1">
+              {`${this.props.rating_count} Reviews`}
+            </span>
+          </div>
           <div className="badges">
             {this.renderProcedures(this.props.procedures)}
-          </div>
-          <div className="rating">
-            <ReactStars count={5} value={this.props.rating_value} />
-            <span className="rating_count">
-              {`(${this.props.rating_count})`}
-            </span>
           </div>
         </div>
       </div>

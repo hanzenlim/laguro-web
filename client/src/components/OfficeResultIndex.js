@@ -8,118 +8,115 @@ import FilterBar from "./FilterBar";
 import ResultMap from "./ResultMap";
 
 class OfficeResultIndex extends Component {
-	componentWillMount() {
-		document.title = "Laguro - Search Index";
-		this.props.fetchListings();
-		this.props.fetchOffices(this.props.filters);
-	}
+  componentWillMount() {
+    document.title = "Laguro - Search Index";
+    this.props.fetchListings();
+    this.props.fetchOffices(this.props.filters);
+  }
 
-	renderMap() {
-		return (
-			<ResultMap
-				locations={this.props.offices}
-				google={window.google}
-				searchLocation={
-					this.props.filters.location ? this.props.filters.location : null
-				}
-			/>
-		);
-	}
+  renderMap() {
+    return (
+      <ResultMap
+        locations={this.props.offices}
+        google={window.google}
+        searchLocation={
+          this.props.filters.location ? this.props.filters.location : null
+        }
+      />
+    );
+  }
 
-	renderOfficeList() {
-		const filteredOffices = this.props.offices;
-		const allListings = this.props.listings;
+  renderOfficeList() {
+    const filteredOffices = this.props.offices;
+    const allListings = this.props.listings;
 
-		let officeList = filteredOffices.map(office => {
-			//get all listings for this office
-			let officeListings = allListings
-				? allListings.filter(listing => listing.office === office._id)
-				: [];
+    let officeList = filteredOffices.map((office, index) => {
+      //get all listings for this office
+      let officeListings = allListings
+        ? allListings.filter(listing => listing.office === office._id)
+        : [];
 
-			//extract the price and time for each listing
-			let listings = officeListings.map(listing => {
-				return {
-					time: moment(listing.time_available),
-					office_id: listing.office,
-					id: listing._id
-				};
-			});
+      //extract the price and time for each listing
+      let listings = officeListings.map(listing => {
+        return {
+          time: moment(listing.time_available),
+          office_id: listing.office,
+          id: listing._id
+        };
+      });
 
-			listings = listings.sort((listing_a, listing_b) => {
-				return moment(listing_a.time).isAfter(moment(listing_b.time))
-			})
+      listings = listings.sort((listing_a, listing_b) => {
+        return moment(listing_a.time).isAfter(moment(listing_b.time));
+      });
 
-			//average the ratings
-			let avg_rating =
-				office.rating.length > 0
-					? office.rating.reduce((acc, val) => acc + val) / office.rating.length
-					: null;
+      //average the ratings
+      let avg_rating =
+        office.rating.length > 0
+          ? office.rating.reduce((acc, val) => acc + val) / office.rating.length
+          : null;
 
-			return (
-				<OfficeResult
-					name={office.name}
-					location={office.location}
-					chairs={office.chairs}
-					listings={listings}
-					rating_value={avg_rating}
-					rating_count={office.rating.length}
-					img={office.img_url[0]}
-					key={office._id}
-				/>
-			);
-		});
+      return (
+        <OfficeResult
+          name={office.name}
+          location={office.location}
+          chairs={office.chairs}
+          listings={listings}
+          rating_value={avg_rating}
+          rating_count={office.rating.length}
+          img={office.img_url[0]}
+          index={index}
+          key={office._id}
+        />
+      );
+    });
 
-		return officeList;
-	}
+    return officeList;
+  }
 
-	render() {
-		if (this.props.invalid) {
-			this.props.fetchOffices(this.props.filters)
-		}
+  render() {
+    if (this.props.invalid) {
+      this.props.fetchOffices(this.props.filters);
+    }
 
-		if (this.props.isFetching) {
-			return <div>Loading...</div>;
-		}
+    if (this.props.isFetching) {
+      return <div>Loading...</div>;
+    }
 
-		return (
-			<div>
-				<FilterBar />
-				<div className="resultContainer">
-					<div className="resultList">
-						{this.renderOfficeList()}
-					</div>
-					<div className="map">
-						{this.renderMap()}
-					</div>
-				</div>
-			</div>
-		);
-	}
+    return (
+      <div>
+        <FilterBar />
+        <div className="resultContainer">
+          <div className="resultList">{this.renderOfficeList()}</div>
+          <div className="map">{this.renderMap()}</div>
+        </div>
+      </div>
+    );
+  }
 }
 
 function getVisibleOffices(offices) {
-	//remove any offices greater than 35 miles away
-	//if no location filter, office.distance is undefined and !!(undefined > 35) == false
-	let filteredOffices = offices.filter(office => {
-		if (office.distance > 35) {
-			return false;
-		}
+  //remove any offices greater than 35 miles away
+  //if no location filter, office.distance is undefined and !!(undefined > 35) == false
+  let filteredOffices = offices.filter(office => {
+    if (office.distance > 35) {
+      return false;
+    }
 
-		return true;
-	});
+    return true;
+  });
 
-	//sort offices within range, allows their labels to reflect order
-	return filteredOffices.sort((a, b) => a.distance - b.distance);
+  //sort offices within range, allows their labels to reflect order
+  return filteredOffices.sort((a, b) => a.distance - b.distance);
 }
 
 function mapStateToProps(state) {
-	return {
-		offices: getVisibleOffices(state.offices.offices),
-		isFetching: state.offices.isFetching,
-		invalid: state.offices.invalid,
-		listings: state.listings.data,
-		filters: state.filters
-	};
+  return {
+    offices: getVisibleOffices(state.offices.offices),
+    isFetching: state.offices.isFetching,
+    invalid: state.offices.invalid,
+    listings: state.listings.data,
+    filters: state.filters
+  };
 }
 
 export default connect(mapStateToProps, actions)(OfficeResultIndex);
