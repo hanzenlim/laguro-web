@@ -11,7 +11,8 @@ import {
 	CREATE_LISTING,
 	CREATE_DENTIST,
 	REQUEST_OFFICES,
-	REQUEST_DENTISTS
+	REQUEST_DENTISTS,
+	GET_ONE_DENTIST
 } from "./types";
 
 export const searchDentists = filters => {
@@ -90,6 +91,15 @@ export const fetchDentists = filters => {
 	};
 };
 
+export const getOneDentist = (id) => {
+	return async dispatch => {
+		const dentist = await axios.get(`/api/dentists/${id}`);
+		dispatch({
+			type: GET_ONE_DENTIST,
+			payload: dentist
+		});
+	};
+}
 export const getDistances = (offices, filters) => {
 	return new Promise(resolve => {
 		const google = window.google;

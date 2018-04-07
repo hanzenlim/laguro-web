@@ -9,6 +9,13 @@ module.exports = app => {
 		res.send(allDentists);
 	});
 
+	//get one dentist route
+	app.get("/api/dentists/:id", async (req, res) => {
+		const dentist = await Dentist.findOne({ _id: `${req.params.id}` });
+
+		res.send(dentist);
+	})
+
 	//create dentist route
 	app.post("/api/dentists", async (req, res) => {
 		const { specialty, location, procedures } = req.body;
