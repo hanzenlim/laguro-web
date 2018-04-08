@@ -31,4 +31,14 @@ module.exports = app => {
     });
     res.send(reviews);
   });
+
+	//delete office route
+	app.delete("/api/reviews/:id", async (req, res) => {
+
+		await Review.find({_id: req.params.id}).remove();
+
+		const reviews = await Review.find();
+
+		res.send(reviews);
+	});
 };

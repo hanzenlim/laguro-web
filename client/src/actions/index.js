@@ -123,6 +123,17 @@ export const createReview = (values) => {
 	};
 }
 
+export function deleteReview(id) {
+	return dispatch => {
+		axios.delete(`/api/reviews/${id}`).then(reviews => {
+			dispatch({
+				type: FETCH_REVIEWS,
+				payload: reviews.data
+			});
+		});
+	};
+}
+
 export const getDistances = (offices, filters) => {
 	return new Promise(resolve => {
 		const google = window.google;

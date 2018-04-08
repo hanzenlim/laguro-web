@@ -507,17 +507,32 @@ nav ul a:hover {
 
 .review .content {
   display: flex;
-  flex-flow: row wrap;
+  flex-flow: column;
   align-items: center;
+  justify-content: space-around;
   width: calc(200%/3);
+}
+
+.review .content .top-bar {
+  width: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-around;
 }
 
 .review .content p {
   margin: 8px 0;
 }
 
-.review .content > div {
-  margin-right: 8px;
+/* styling for div containing stars */
+.review .content .top-bar > div {
+  margin: 0 8px;
+}
+
+.review .btn-small.delete {
+  font-size: 10px;
+  padding: 0 5px;
 }
 
 /* Listing page */

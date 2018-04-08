@@ -9,12 +9,13 @@ class ReviewContainer extends Component {
     this.props.fetchReviews(this.props.reviewee_id);
   }
 
-  renderEditButtons() {
+  renderEditButtons(id) {
     return(
       <div>
         <button
           type="button"
-          className="btn-small red lighten-2"
+          className="btn-small red lighten-2 delete"
+          onClick={() => this.props.deleteReview(id)}
           >
             <i className="material-icons">delete_forever</i>
           </button>
@@ -31,13 +32,16 @@ class ReviewContainer extends Component {
           <h6>{review.reviewer_name}</h6>
         </div>
         <div className="content">
-          <ReactStars count={5} edit={false} value={review.rating} />
+          <div className="top-bar">
+            {moment(review.date_created).format("M/D/YY")}
+            <ReactStars count={5} edit={false} value={review.rating} />
+            {id === review.reviewer_id ? (
+              this.renderEditButtons(review._id)
+            ) : (
+              ""
+            )}
+          </div>
           <p>{review.text}</p>
-          {id === review.reviewer_id ? (
-            this.renderEditButtons()
-          ) : (
-            ""
-          )}
         </div>
       </div>
     ));
