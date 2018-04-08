@@ -5,6 +5,7 @@ import {
 	FETCH_OFFICES,
 	FETCH_LISTINGS,
 	FETCH_USER,
+	FETCH_REVIEWS,
 	SET_FILTERS,
 	UPDATE_FILTERS,
 	CREATE_OFFICE,
@@ -100,6 +101,28 @@ export const getOneDentist = (id) => {
 		});
 	};
 }
+
+export const fetchReviews = (id) => {
+	return async dispatch => {
+		const reviews = await axios.get(`/api/reviews/${id}`);
+		dispatch({
+			type: FETCH_REVIEWS,
+			payload: reviews.data
+		});
+	};
+}
+
+export const createReview = (values) => {
+	return dispatch => {
+		axios.post("/api/reviews", values).then(reviews => {
+			dispatch({
+				type: FETCH_REVIEWS,
+				payload: reviews.data
+			});
+		});
+	};
+}
+
 export const getDistances = (offices, filters) => {
 	return new Promise(resolve => {
 		const google = window.google;
