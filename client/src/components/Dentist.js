@@ -67,13 +67,16 @@ class Profile extends Component {
           >
             Go back to dentists
           </Link>
-					{/* if logged out, hide new review form */}
-          {auth && auth.data ? <NewReview dentist={dentist} /> : ""}
-          <ReviewContainer
-            reviewee_id={dentist._id}
-            reviewee_name={dentist.name}
-						auth={auth}
-          />
+					<div className="profile_section">
+						<h5>{"Reviews for " + dentist.name}</h5>
+						{/* if logged out, hide new review form */}
+						{auth && auth.data ? <NewReview dentist={dentist} /> : ""}
+						<ReviewContainer
+							reviewee_id={dentist._id}
+							reviewee_name={dentist.name}
+							auth={auth}
+						/>
+					</div>
         </div>
       </div>
     );

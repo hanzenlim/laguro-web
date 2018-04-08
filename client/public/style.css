@@ -483,6 +483,10 @@ nav ul a:hover {
 }
 
 /* profile page - public view */
+.profile_section {
+  margin-top: 4em;
+}
+
 .review {
   display: flex;
   flex-flow: row nowrap;
@@ -511,14 +515,18 @@ nav ul a:hover {
   align-items: center;
   justify-content: space-around;
   width: calc(200%/3);
+  padding: 0 8px;
 }
 
 .review .content .top-bar {
-  width: 100%;
+  width: 80%;
+  margin: 0 auto;
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
   justify-content: space-around;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #ccc;
 }
 
 .review .content p {

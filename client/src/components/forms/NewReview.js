@@ -56,11 +56,11 @@ class NewDentist extends Component {
 
     return (
       <form
-        className="grey lighten-5"
+        className="card-panel orange lighten-5"
         onSubmit={handleSubmit(this.onSubmit.bind(this))}
       >
         <div className="row valign-wrapper">
-					<h5 className="col s12 m5">Leave a Review</h5>
+					<h5 className="col s12 m5">Leave a review</h5>
 					<ReactStars
 						className="col s6 m4 center-align"
 						count={5}
