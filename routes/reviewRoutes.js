@@ -3,6 +3,14 @@ const mongoose = require("mongoose");
 const Review = mongoose.model("review");
 
 module.exports = app => {
+  //return all reviews for reviewee
+  app.get("/api/reviews/:reviewee_id", async (req, res) => {
+    const reviews = await Review.find({
+      reviewee_id: `${req.params.reviewee_id}`
+    });
+    res.send(reviews);
+  });
+
   // create a new review
   app.post("/api/reviews", async (req, res) => {
     const { reviewee_id, title, rating, text } = req.body;
