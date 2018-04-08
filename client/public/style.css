@@ -482,6 +482,46 @@ nav ul a:hover {
   list-style-type: disc !important;
 }
 
+/* profile page - public view */
+.review {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  padding: 10px;
+}
+
+.review .reviewer {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: flex-start;
+  width: calc(100%/3);
+}
+
+.review .reviewer img {
+  width: 40px;
+  height: 40px;
+  margin-right: 8px;
+}
+
+.review .content {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  width: calc(200%/3);
+}
+
+.review .content p {
+  margin: 8px 0;
+}
+
+.review .content > div {
+  margin-right: 8px;
+}
+
+/* Listing page */
+
 .listing_content {
   margin: 7px;
   display: flex;
