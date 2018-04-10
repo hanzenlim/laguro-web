@@ -5,7 +5,7 @@ import ReactStars from "react-stars";
 
 import * as actions from "../../actions";
 
-class NewDentist extends Component {
+class NewReview extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -20,10 +20,9 @@ class NewDentist extends Component {
   }
 
   onSubmit(values) {
-    const { reset, dentist } = this.props;
+    const { reset, reviewee } = this.props;
 		const { rating } = this.state;
-    // console.log({...values, rating, reviewee_id: dentist._id});
-    this.props.createReview({...values, rating, reviewee_id: dentist._id});
+    this.props.createReview({...values, rating, reviewee_id: reviewee._id});
     reset();
   }
 
@@ -74,7 +73,7 @@ class NewDentist extends Component {
 					<Field
 						name="text"
 						className="col s12 m9"
-						placeholder={this.props.dentist.name + " was a great dentist!"}
+						placeholder={this.props.reviewee.name + " was great!"}
 						component={this.renderTextArea}
 						validate={required}
 					/>
@@ -97,5 +96,5 @@ class NewDentist extends Component {
 const required = value => (value && value !== "" ? undefined : "Required");
 
 export default reduxForm({
-  form: "newDentist"
-})(connect(null, actions)(NewDentist));
+  form: "newReview"
+})(connect(null, actions)(NewReview));
