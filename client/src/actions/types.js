@@ -11,3 +11,5 @@ export const CREATE_OFFICE = 'create_office';
 export const CREATE_LISTING = 'create_office';
 export const CREATE_DENTIST = 'create_dentist';
 export const GET_ONE_DENTIST = 'get_one_dentist';
+export const GET_SELECTED_OFFICES = 'get_selected_offices';
+export const GET_SELECTED_LISTINGS = 'get_selected_listings';

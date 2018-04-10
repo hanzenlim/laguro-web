@@ -14,8 +14,8 @@ import {
   REQUEST_OFFICES,
   REQUEST_DENTISTS,
   GET_ONE_DENTIST,
-  GET_ONE_OFFICE,
-  GET_ONE_LISTING
+  GET_SELECTED_OFFICES,
+  GET_SELECTED_LISTINGS
 } from "./types";
 
 /**********************
@@ -57,10 +57,17 @@ export const setFilters = filters => {
 };
 
 export const searchDentists = filters => {
-  return dispatch => {
-    dispatch(setFilters(filters));
-    history.push("/dentists/search");
-  };
+	return dispatch => {
+		dispatch(setFilters(filters));
+		history.push("/dentists/search");
+	};
+};
+
+export const searchOffices = filters => {
+	return dispatch => {
+		dispatch(setFilters(filters));
+		history.push("/offices/search");
+	};
 };
 
 /**********************
@@ -134,13 +141,6 @@ export function createDentist(values) {
   };
 }
 
-export const searchOffices = filters => {
-  return dispatch => {
-    dispatch(setFilters(filters));
-    history.push("/offices/search");
-  };
-};
-
 function requestOffices() {
   return {
     type: REQUEST_OFFICES
@@ -182,8 +182,18 @@ export const fetchUserOffices = () => {
   return async dispatch => {
     const offices = await axios.get(`/api/user/offices`);
     dispatch({
-      type: FETCH_OFFICES,
+      type: GET_SELECTED_OFFICES,
       payload: offices.data
+    });
+  };
+};
+
+export const getOneOffice = id => {
+  return async dispatch => {
+    const office = await axios.get(`/api/offices/${id}`);
+    dispatch({
+      type: GET_SELECTED_OFFICES,
+      payload: office.data
     });
   };
 };
@@ -276,6 +286,16 @@ export const fetchListings = () => {
     });
   };
 };
+
+export const getOfficeListings = (office_id) => {
+	return async dispatch => {
+    const listings = await axios.get(`/api/offices/${office_id}/listings`);
+    dispatch({
+      type: GET_SELECTED_LISTINGS,
+      payload: listings.data
+    });
+  };
+}
 
 export function createListing(values, type) {
   return dispatch => {
