@@ -22,6 +22,10 @@ class Profile extends Component {
 
     this.getDentist().then(dentist => {
       this.setState({ dentist: dentist });
+
+      if(dentist){
+        this.props.fetchReviews(dentist._id);
+      }
     });
 
     this.props.fetchOffices();
@@ -246,7 +250,7 @@ class Profile extends Component {
   }
 
   render() {
-    const { auth } = this.props;
+    const { auth, reviews } = this.props;
     const { dentist } = this.state;
     // if dentist still hasn't loaded, wait for render
     if (dentist && Object.keys(dentist).length === 0) {
@@ -279,6 +283,7 @@ class Profile extends Component {
               <ReviewContainer
                 reviewee_id={dentist._id}
                 reviewee_name={dentist.name}
+                reviews={reviews}
               />
             </div>
           ) : (
@@ -295,7 +300,8 @@ function mapStateToProps(state) {
     auth: state.auth.data,
     dentists: state.dentists.dentists,
     offices: state.offices.offices,
-    listings: state.listings.all.data
+    listings: state.listings.all.data,
+    reviews: state.reviews
   };
 }
 export default connect(mapStateToProps, actions)(Profile);

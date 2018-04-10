@@ -1,7 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import * as actions from "../actions";
 import ReactStars from "react-stars";
+
+import * as actions from "../actions";
+import NewReview from "./forms/NewReview";
+import ReviewContainer from "./ReviewContainer";
 
 class OfficeResultIndex extends Component {
   componentDidMount() {
@@ -9,6 +12,7 @@ class OfficeResultIndex extends Component {
 
     this.props.getOfficeListings(this.office_id);
     this.props.getOneOffice(this.office_id);
+		this.props.fetchReviews(this.office_id);
   }
 
   renderImages(office) {
@@ -18,7 +22,7 @@ class OfficeResultIndex extends Component {
   }
 
   render() {
-    let { office } = this.props;
+    let { office, auth, reviews } = this.props;
 
     if (!office || Object.keys(office).length === 0) {
       return <div>Loading...</div>;
@@ -56,6 +60,16 @@ class OfficeResultIndex extends Component {
 			          </div>
 							</div>
             </div>
+						<div className="profile_section">
+							<h5>{"Reviews for " + office.name}</h5>
+							{/* if logged out, hide new review form */}
+							{auth && auth.data ? <NewReview reviewee={office} /> : ""}
+							<ReviewContainer
+								reviewee_id={office._id}
+								reviewee_name={office.name}
+								reviews={reviews}
+							/>
+						</div>
           </div>
         </div>
       );
@@ -66,7 +80,9 @@ class OfficeResultIndex extends Component {
 function mapStateToProps(state) {
   return {
     listings: state.listings.selected,
-    office: state.offices.selected
+    office: state.offices.selected,
+		reviews: state.reviews,
+		auth: state.auth
   };
 }
 

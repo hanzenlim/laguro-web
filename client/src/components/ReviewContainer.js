@@ -5,10 +5,6 @@ import ReactStars from "react-stars";
 import moment from "moment";
 
 class ReviewContainer extends Component {
-  componentWillMount() {
-    this.props.fetchReviews(this.props.reviewee_id);
-  }
-
   renderEditButtons(id) {
     return (
       <div>
@@ -24,7 +20,7 @@ class ReviewContainer extends Component {
   }
 
   renderReviewList(reviews) {
-    const id = this.props.auth._id;
+    const id = this.props.auth.data._id;
     return reviews.map((review, index) => (
       <div key={index} className="review card-panel grey lighten-5">
         <div className="reviewer">
@@ -48,7 +44,7 @@ class ReviewContainer extends Component {
   render() {
     const { reviews, reviewee_name } = this.props;
 
-    let noExistingReviews = (reviews && reviews.length === 0);
+    let noExistingReviews = (!reviews || reviews.length === 0);
 
     return (
       <div>
@@ -64,8 +60,7 @@ class ReviewContainer extends Component {
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth.data,
-    reviews: state.reviews
+    auth: state.auth
   };
 }
 

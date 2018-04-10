@@ -10,6 +10,7 @@ import ReviewContainer from "./ReviewContainer";
 class Profile extends Component {
   componentWillMount() {
     this.dentist_id = this.props.match.params.id;
+		this.props.fetchReviews(this.dentist_id);
 
     this.getDentist().then(dentist => {
       document.title = `Laguro - ${dentist.name}`;
@@ -44,7 +45,7 @@ class Profile extends Component {
   }
 
   render() {
-    const { dentist, auth } = this.props;
+    const { dentist, auth, reviews } = this.props;
     // if dentist still hasn't loaded, wait for render
     if (Object.keys(dentist).length === 0) {
       return <div>Loading...</div>;
@@ -70,10 +71,11 @@ class Profile extends Component {
 					<div className="profile_section">
 						<h5>{"Reviews for " + dentist.name}</h5>
 						{/* if logged out, hide new review form */}
-						{auth && auth.data ? <NewReview dentist={dentist} /> : ""}
+						{auth && auth.data ? <NewReview reviewee={dentist} /> : ""}
 						<ReviewContainer
 							reviewee_id={dentist._id}
 							reviewee_name={dentist.name}
+							reviews={reviews}
 						/>
 					</div>
         </div>
@@ -85,7 +87,8 @@ class Profile extends Component {
 function mapStateToProps(state) {
   return {
     auth: state.auth,
-    dentist: state.dentists.selectedDentist
+    dentist: state.dentists.selectedDentist,
+		reviews: state.reviews
   };
 }
 export default connect(mapStateToProps, actions)(Profile);
