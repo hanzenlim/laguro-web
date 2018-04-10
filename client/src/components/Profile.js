@@ -74,10 +74,15 @@ class Profile extends Component {
       filteredListings = filteredListings.map((listing, index) => (
         <li className="profile_listing" key={index}>
           <div className="listing_content">
-            <p>
-              {moment(listing.time_available).format("MMM D, h a - ")}
-              {moment(listing.time_closed).format("h a")}
-            </p>
+            <Link
+              className="blue-text text-darken-2"
+              to={`/offices/${listing.office}/listings/${listing._id}`}
+            >
+              <p>
+                {moment(listing.time_available).format("MMM D, h a - ")}
+                {moment(listing.time_closed).format("h a")}
+              </p>
+            </Link>
             <div className="listing_btns">
               <Link
                 className="btn-small light-blue lighten-2"
@@ -129,9 +134,14 @@ class Profile extends Component {
       let officeListings = this.getSortedListings(office);
 
       return (
-        <div className="office" key={index}>
+        <div className="office card-panel" key={index}>
           <div className="office_header">
-            <h5>{office.name}</h5>
+            <Link
+              className="blue-text text-darken-2"
+              to={`/offices/${office._id}`}
+            >
+              <h5>{office.name}</h5>
+            </Link>
             <div className="office_btns">
               <Link
                 className="btn-small light-blue lighten-2 waves-effect"
