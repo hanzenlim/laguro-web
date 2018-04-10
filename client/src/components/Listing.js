@@ -134,7 +134,7 @@ class OfficeResultIndex extends Component {
 
 function mapStateToProps(state) {
 	return {
-		listings: state.listings.data,
+		listings: state.listings.all.data,
 		offices: state.offices.offices,
 		filters: state.filters
 	};

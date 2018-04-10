@@ -285,7 +285,7 @@ function mapStateToProps(state) {
     auth: state.auth.data,
     dentists: state.dentists.dentists,
     offices: state.offices.offices,
-    listings: state.listings.data
+    listings: state.listings.all.data
   };
 }
 export default connect(mapStateToProps, actions)(Profile);
