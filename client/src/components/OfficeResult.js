@@ -33,9 +33,14 @@ class OfficeResult extends Component {
         <img className="result-img" src={this.imgUrl()} alt="Office" />
         <div className="content">
           <div className="header">
-            <h5>
-              {this.props.index + 1}. {this.props.name}
-            </h5>
+            <Link
+              className="blue-text text-darken-2"
+              to={`/offices/${this.props.office_id}`}
+            >
+              <h5>
+                {this.props.index + 1}. {this.props.name}
+              </h5>
+            </Link>
             <h6>{this.props.location}</h6>
           </div>
           <div className="rating">

@@ -64,6 +64,7 @@ class OfficeResultIndex extends Component {
           rating_value={avg_rating}
           rating_count={office.rating.length}
           img={office.img_url[0]}
+          office_id={office._id}
           index={index}
           key={office._id}
         />
