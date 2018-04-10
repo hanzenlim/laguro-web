@@ -74,7 +74,6 @@ class Profile extends Component {
 						<ReviewContainer
 							reviewee_id={dentist._id}
 							reviewee_name={dentist.name}
-							auth={auth}
 						/>
 					</div>
         </div>

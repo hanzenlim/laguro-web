@@ -5,6 +5,7 @@ import ReactFilestack from "filestack-react";
 import * as actions from "../actions";
 import keys from "../config/keys";
 import moment from "moment";
+import ReviewContainer from "./ReviewContainer";
 
 class Profile extends Component {
   constructor(props) {
@@ -47,7 +48,7 @@ class Profile extends Component {
 
     return (
       <div>
-        <h4>Hey, I'm {dentist ? dentist.name : auth.name}!</h4>
+        <h4>Welcome back {dentist ? dentist.name : auth.name}!</h4>
         <p>
           {(dentist && dentist.location ? dentist.location + " - " : "") +
             "Member since " +
@@ -196,13 +197,13 @@ class Profile extends Component {
           />
         )}
 
-				{dentistProfileExists ? (
-					<Link className="link" to={"/dentist/" + dentist._id}>
-						View public profile
-					</Link>
-				) : (
-					""
-				)}
+        {dentistProfileExists ? (
+          <Link className="link" to={"/dentist/" + dentist._id}>
+            View public profile
+          </Link>
+        ) : (
+          ""
+        )}
 
         {dentistProfileExists ? (
           <Link className="link" to={"/offices/new"}>
@@ -237,6 +238,11 @@ class Profile extends Component {
   render() {
     const { auth } = this.props;
     const { dentist } = this.state;
+    // if dentist still hasn't loaded, wait for render
+    if (dentist && Object.keys(dentist).length === 0) {
+      return <div>Loading...</div>;
+    }
+
     return (
       <div className="profile_container">
         <div className="sidebar">
@@ -249,10 +255,25 @@ class Profile extends Component {
         </div>
         <div className="main">
           {this.renderProfileDetails()}
-          <div className="offices">
-            <h5>Offices:</h5>
-            {this.renderUserOffices()}
-          </div>
+          {dentist ? (
+            <div className="offices profile-section">
+              <h5>Offices</h5>
+              {this.renderUserOffices()}
+            </div>
+          ) : (
+            ""
+          )}
+          {dentist ? (
+            <div className="reviews profile-section">
+              <h5>{"Reviews for " + dentist.name}</h5>
+              <ReviewContainer
+                reviewee_id={dentist._id}
+                reviewee_name={dentist.name}
+              />
+            </div>
+          ) : (
+            ""
+          )}
         </div>
       </div>
     );
