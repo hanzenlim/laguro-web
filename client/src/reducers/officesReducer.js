@@ -3,7 +3,7 @@ import { FETCH_OFFICES, REQUEST_OFFICES, UPDATE_FILTERS, GET_SELECTED_OFFICES } 
 export default function(state = {
   isFetching: false,
   invalid: false,
-  offices: [],
+  all: [],
   selected: []
 }, action) {
   switch (action.type) {
@@ -15,7 +15,7 @@ export default function(state = {
     case FETCH_OFFICES:
       return Object.assign({}, state, {
         isFetching: false,
-        offices: action.payload
+        all: action.payload
       })
     case REQUEST_OFFICES:
       return Object.assign({}, state, {

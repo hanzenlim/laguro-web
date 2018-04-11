@@ -299,7 +299,7 @@ function mapStateToProps(state) {
   return {
     auth: state.auth.data,
     dentists: state.dentists.dentists,
-    offices: state.offices.offices,
+    offices: state.offices.all,
     listings: state.listings.all.data,
     reviews: state.reviews
   };

@@ -202,7 +202,7 @@ const required = value => (value && value !== "" ? undefined : 'Required')
 function mapStateToProps(state) {
 	return {
 		auth: state.auth.data,
-		offices: state.offices.offices
+		offices: state.offices.all
 	};
 }
 

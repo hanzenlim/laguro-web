@@ -287,7 +287,7 @@ class NewListing extends Component {
 const required = value => (value && value !== "" ? undefined : 'Required')
 
 function mapStateToProps(state) {
-	return { offices: state.offices.offices };
+	return { offices: state.offices.all };
 }
 
 export default reduxForm({
