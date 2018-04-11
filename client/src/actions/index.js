@@ -57,17 +57,17 @@ export const setFilters = filters => {
 };
 
 export const searchDentists = filters => {
-	return dispatch => {
-		dispatch(setFilters(filters));
-		history.push("/dentists/search");
-	};
+  return dispatch => {
+    dispatch(setFilters(filters));
+    history.push("/dentists/search");
+  };
 };
 
 export const searchOffices = filters => {
-	return dispatch => {
-		dispatch(setFilters(filters));
-		history.push("/offices/search");
-	};
+  return dispatch => {
+    dispatch(setFilters(filters));
+    history.push("/offices/search");
+  };
 };
 
 /**********************
@@ -240,14 +240,14 @@ REVIEWS ACTIONS
 ***********************/
 
 export const fetchAllReviews = () => {
-	return async dispatch => {
-		const reviews = await axios.get(`/api/reviews`);
-		dispatch({
-			type: FETCH_REVIEWS,
-			payload: reviews.data
-		})
-	}
-}
+  return async dispatch => {
+    const reviews = await axios.get(`/api/reviews`);
+    dispatch({
+      type: FETCH_REVIEWS,
+      payload: reviews.data
+    });
+  };
+};
 
 export const fetchReviews = id => {
   return async dispatch => {
@@ -297,15 +297,25 @@ export const fetchListings = () => {
   };
 };
 
-export const getOfficeListings = (office_id) => {
-	return async dispatch => {
+export const getOfficeListings = office_id => {
+  return async dispatch => {
     const listings = await axios.get(`/api/offices/${office_id}/listings`);
     dispatch({
       type: GET_SELECTED_LISTINGS,
       payload: listings.data
     });
   };
-}
+};
+
+export const getOneListing = listing_id => {
+  return async dispatch => {
+    const listing = await axios.get(`/api/listings/${listing_id}`);
+    dispatch({
+      type: GET_SELECTED_LISTINGS,
+      payload: listing.data
+    });
+  };
+};
 
 export function createListing(values, type) {
   return dispatch => {
