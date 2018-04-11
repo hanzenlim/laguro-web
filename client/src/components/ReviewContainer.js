@@ -20,6 +20,9 @@ class ReviewContainer extends Component {
   }
 
   renderReviewList(reviews) {
+    if (!this.props.auth){
+      return ""
+    }
     const id = this.props.auth.data._id;
     return reviews.map((review, index) => (
       <div key={index} className="review card-panel grey lighten-5">

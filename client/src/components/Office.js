@@ -27,14 +27,15 @@ class OfficeResultIndex extends Component {
     if (!office || Object.keys(office).length === 0) {
       return <div>Loading...</div>;
     } else {
-      if (office.rating && office.rating.length) {
-        this.avg_rating =
-          office.rating.reduce((acc, val) => acc + val) / office.rating.length;
-				this.rating_count = office.rating.length;
-      } else {
-        this.avg_rating = 0;
+			// calculate avg rating
+			if (reviews && reviews.length) {
+				this.avg_rating =
+					reviews.map(review => (review.rating)).reduce((acc, rating) => acc + rating) / reviews.length;
+				this.rating_count = reviews.length;
+			} else {
+				this.avg_rating = 0;
 				this.rating_count = 0;
-      }
+			}
 
       return (
         <div className="listing">
