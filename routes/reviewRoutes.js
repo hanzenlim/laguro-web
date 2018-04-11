@@ -3,6 +3,12 @@ const mongoose = require("mongoose");
 const Review = mongoose.model("review");
 
 module.exports = app => {
+  //return ALL reviews (for use with the search indexes)
+  app.get("/api/reviews", async (req, res) => {
+    const reviews = await Review.find();
+    res.send(reviews);
+  })
+
   //return all reviews for reviewee
   app.get("/api/reviews/:reviewee_id", async (req, res) => {
     const reviews = await Review.find({

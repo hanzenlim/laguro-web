@@ -239,6 +239,16 @@ REVIEWS ACTIONS
 
 ***********************/
 
+export const fetchAllReviews = () => {
+	return async dispatch => {
+		const reviews = await axios.get(`/api/reviews`);
+		dispatch({
+			type: FETCH_REVIEWS,
+			payload: reviews.data
+		})
+	}
+}
+
 export const fetchReviews = id => {
   return async dispatch => {
     const reviews = await axios.get(`/api/reviews/${id}`);
