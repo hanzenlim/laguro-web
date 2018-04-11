@@ -12,6 +12,7 @@ class OfficeResultIndex extends Component {
     document.title = "Laguro - Search Index";
     this.props.fetchListings();
     this.props.fetchOffices(this.props.filters);
+    this.props.fetchAllReviews();
   }
 
   renderMap() {
@@ -27,6 +28,8 @@ class OfficeResultIndex extends Component {
   }
 
   renderOfficeList() {
+    const { reviews } = this.props;
+
     const filteredOffices = this.props.offices;
     const allListings = this.props.listings;
 
@@ -49,11 +52,16 @@ class OfficeResultIndex extends Component {
         return moment(listing_a.time).isAfter(moment(listing_b.time));
       });
 
-      //average the ratings
-      let avg_rating =
-        office.rating.length > 0
-          ? office.rating.reduce((acc, val) => acc + val) / office.rating.length
-          : null;
+      // calculate avg rating
+			if (reviews && reviews.length) {
+        let officeReviews = reviews.filter(review => (review.reviewee_id === office._id))
+				this.avg_rating =
+					officeReviews.map(review => (review.rating)).reduce((acc, rating) => acc + rating) / officeReviews.length;
+				this.rating_count = officeReviews.length;
+			} else {
+				this.avg_rating = 0;
+				this.rating_count = 0;
+			}
 
       return (
         <OfficeResult
@@ -61,8 +69,8 @@ class OfficeResultIndex extends Component {
           location={office.location}
           chairs={office.chairs}
           listings={listings}
-          rating_value={avg_rating}
-          rating_count={office.rating.length}
+          avg_rating={this.avg_rating}
+          rating_count={this.rating_count}
           img={office.img_url[0]}
           office_id={office._id}
           index={index}
@@ -116,6 +124,7 @@ function mapStateToProps(state) {
     isFetching: state.offices.isFetching,
     invalid: state.offices.invalid,
     listings: state.listings.all.data,
+    reviews: state.reviews,
     filters: state.filters
   };
 }

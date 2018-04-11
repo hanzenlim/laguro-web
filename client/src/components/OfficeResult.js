@@ -47,7 +47,7 @@ class OfficeResult extends Component {
             <ReactStars
               count={5}
               edit={false}
-              value={this.props.rating_value}
+              value={this.props.avg_rating}
             />
             <span className="rating_count">
               {`${this.props.rating_count} Reviews`}
