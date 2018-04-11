@@ -32,12 +32,17 @@ module.exports = app => {
     res.send(reviews);
   });
 
-	//delete office route
+	//delete review route
 	app.delete("/api/reviews/:id", async (req, res) => {
 
-		await Review.find({_id: req.params.id}).remove();
+		let review = await Review.find({_id: req.params.id});
+    let reviewee_id = review[0].reviewee_id;
 
-		const reviews = await Review.find();
+    review[0].remove();
+
+		const reviews = await Review.find({
+      reviewee_id: `${reviewee_id}`
+    });
 
 		res.send(reviews);
 	});
