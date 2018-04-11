@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import moment from "moment";
 import { Link } from "react-router-dom";
+import ReactStars from "react-stars";
 
 import * as actions from "../actions";
 import NewReview from "./forms/NewReview";
@@ -40,6 +41,17 @@ class Profile extends Component {
             "Member since " +
             moment(dentist.date_created).format("MMMM `YY")}
         </p>
+        <div className="rating">
+          <ReactStars
+            count={5}
+            edit={false}
+            size={18}
+            value={this.avg_rating}
+          />
+          <span className="rating_count">
+            {`${this.rating_count} Reviews`}
+          </span>
+        </div>
       </div>
     );
   }
@@ -47,9 +59,20 @@ class Profile extends Component {
   render() {
     const { dentist, auth, reviews } = this.props;
     // if dentist still hasn't loaded, wait for render
-    if (Object.keys(dentist).length === 0) {
+    if (!dentist || Object.keys(dentist).length === 0) {
       return <div>Loading...</div>;
     }
+    // calculate avg rating
+    if (reviews && reviews.length) {
+      let dentistReviews = reviews.filter(review => (review.reviewee_id === dentist._id))
+      this.avg_rating =
+        dentistReviews.map(review => (review.rating)).reduce((acc, rating) => acc + rating) / dentistReviews.length;
+      this.rating_count = dentistReviews.length;
+    } else {
+      this.avg_rating = 0;
+      this.rating_count = 0;
+    }
+
 
     return (
       <div className="profile_container">
