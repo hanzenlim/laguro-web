@@ -19,11 +19,11 @@ module.exports = app => {
 	//Listing creation route
 	app.post("/api/listings", async (req, res) => {
 		const { office, price, staff, equipment, time_available, time_closed, cleaning_fee } = req.body;
-		const user = req.user._id;
+		const host = req.user._id;
 
 		let newListing = await Listing.create({
 			office,
-			user,
+			host,
 			staff,
 			equipment,
 			cleaning_fee,
