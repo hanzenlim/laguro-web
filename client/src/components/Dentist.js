@@ -111,7 +111,7 @@ function mapStateToProps(state) {
   return {
     auth: state.auth,
     dentist: state.dentists.selectedDentist,
-		reviews: state.reviews
+		reviews: state.reviews.selected
   };
 }
 export default connect(mapStateToProps, actions)(Profile);

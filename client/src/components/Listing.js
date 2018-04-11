@@ -139,7 +139,7 @@ function mapStateToProps(state) {
   return {
     listing: state.listings.selected,
     office: state.offices.selected,
-		reviews: state.reviews,
+		reviews: state.reviews.selected,
     filters: state.filters
   };
 }

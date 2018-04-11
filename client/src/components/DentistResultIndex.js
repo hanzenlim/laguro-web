@@ -102,7 +102,7 @@ function mapStateToProps(state) {
     dentists: getVisibleOffices(state.dentists.dentists),
     isFetching: state.dentists.isFetching,
     invalid: state.dentists.invalid,
-    reviews: state.reviews,
+    reviews: state.reviews.all,
     filters: state.filters
   };
 }

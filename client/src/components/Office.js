@@ -82,7 +82,7 @@ function mapStateToProps(state) {
   return {
     listings: state.listings.selected,
     office: state.offices.selected,
-		reviews: state.reviews,
+		reviews: state.reviews.selected,
 		auth: state.auth
   };
 }

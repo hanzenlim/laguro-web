@@ -253,7 +253,7 @@ class Profile extends Component {
     const { auth, reviews } = this.props;
     const { dentist } = this.state;
     // if dentist still hasn't loaded, wait for render
-    if (dentist && Object.keys(dentist).length === 0) {
+    if (!dentist || Object.keys(dentist).length === 0) {
       return <div>Loading...</div>;
     }
 
@@ -301,7 +301,7 @@ function mapStateToProps(state) {
     dentists: state.dentists.dentists,
     offices: state.offices.all,
     listings: state.listings.all.data,
-    reviews: state.reviews
+    reviews: state.reviews.selected
   };
 }
 export default connect(mapStateToProps, actions)(Profile);

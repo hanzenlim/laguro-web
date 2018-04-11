@@ -6,6 +6,7 @@ import {
   FETCH_LISTINGS,
   FETCH_USER,
   FETCH_REVIEWS,
+  FETCH_ALL_REVIEWS,
   SET_FILTERS,
   UPDATE_FILTERS,
   CREATE_OFFICE,
@@ -243,7 +244,7 @@ export const fetchAllReviews = () => {
   return async dispatch => {
     const reviews = await axios.get(`/api/reviews`);
     dispatch({
-      type: FETCH_REVIEWS,
+      type: FETCH_ALL_REVIEWS,
       payload: reviews.data
     });
   };

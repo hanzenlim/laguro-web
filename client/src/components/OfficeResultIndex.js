@@ -10,9 +10,9 @@ import ResultMap from "./ResultMap";
 class OfficeResultIndex extends Component {
   componentWillMount() {
     document.title = "Laguro - Search Index";
+    this.props.fetchAllReviews();
     this.props.fetchListings();
     this.props.fetchOffices(this.props.filters);
-    this.props.fetchAllReviews();
   }
 
   renderMap() {
@@ -124,7 +124,7 @@ function mapStateToProps(state) {
     isFetching: state.offices.isFetching,
     invalid: state.offices.invalid,
     listings: state.listings.all.data,
-    reviews: state.reviews,
+    reviews: state.reviews.all,
     filters: state.filters
   };
 }
