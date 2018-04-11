@@ -55,7 +55,6 @@ class App extends Component {
                 component={EditListing}
               />
               <Route path="/offices/:office_id/listings/:id" component={Listing} />
-              <Route path="/offices/:office_id" component={Office} />
               <PrivateRoute
                 auth={this.props.auth}
                 path="/offices/:office_id/edit"
@@ -66,6 +65,7 @@ class App extends Component {
                 path="/offices/new"
                 component={NewOffice}
               />
+              <Route path="/offices/:office_id" component={Office} />
               <PrivateRoute
                 auth={this.props.auth}
                 path="/dentist/new"
