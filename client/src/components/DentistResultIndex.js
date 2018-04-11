@@ -10,6 +10,7 @@ class DentistResultIndex extends Component {
   componentWillMount() {
     document.title = "Laguro - Search Index";
     this.props.fetchDentists(this.props.filters);
+    this.props.fetchAllReviews();
   }
 
   renderMap() {
@@ -26,12 +27,20 @@ class DentistResultIndex extends Component {
 
   renderDentistList() {
     const filteredDentists = this.props.dentists;
+    const { reviews } = this.props;
 
     let dentistList = filteredDentists.map((dentist, index) => {
-      //average the ratings
-      let avg_rating = dentist.rating.length
-        ? dentist.rating.reduce((acc, val) => acc + val) / dentist.rating.length
-        : 0;
+      // calculate avg rating
+      if (reviews && reviews.length) {
+        let dentistReviews = reviews.filter(review => (review.reviewee_id === dentist._id))
+        this.avg_rating =
+          dentistReviews.map(review => (review.rating)).reduce((acc, rating) => acc + rating) / dentistReviews.length;
+        this.rating_count = dentistReviews.length;
+      } else {
+        this.avg_rating = 0;
+        this.rating_count = 0;
+      }
+
 
       return (
         <DentistResult
@@ -39,8 +48,8 @@ class DentistResultIndex extends Component {
           specialty={dentist.specialty}
           location={dentist.location}
           procedures={dentist.procedures}
-          rating_value={avg_rating}
-          rating_count={dentist.rating.length}
+          rating_value={this.avg_rating}
+          rating_count={this.rating_count}
           img={dentist.img_url}
           dentist_id={dentist._id}
           index={index}
@@ -93,6 +102,7 @@ function mapStateToProps(state) {
     dentists: getVisibleOffices(state.dentists.dentists),
     isFetching: state.dentists.isFetching,
     invalid: state.dentists.invalid,
+    reviews: state.reviews,
     filters: state.filters
   };
 }
