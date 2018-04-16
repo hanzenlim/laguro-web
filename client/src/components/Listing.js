@@ -87,6 +87,10 @@ class OfficeResultIndex extends Component {
       this.rating_count = 0;
     }
 
+    this.formatted_time =
+      moment(listing.time_available).format("MMM D, h a - ") +
+      moment(listing.time_closed).format("h a");
+
     return (
       <div className="listing">
         <div className="officeImgs">{this.renderImages(office)}</div>
@@ -97,11 +101,14 @@ class OfficeResultIndex extends Component {
               <h3>{office.name}</h3>
               <h5>{office.location}</h5>
               <blockquote>
-                <h6>
-                  Rental Window:{" "}
-                  {moment(listing.time_available).format("MMM D, h a - ")}
-                  {moment(listing.time_closed).format("h a")}
-                </h6>
+                <h6>Rental Window: {this.formatted_time}</h6>
+                {listing.reserved_by ? (
+                  <span className="red-text">
+                    This listing has been reserved
+                  </span>
+                ) : (
+                  ""
+                )}
               </blockquote>
             </div>
             <Link

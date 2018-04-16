@@ -249,6 +249,31 @@ class Profile extends Component {
     }
   }
 
+  renderReservations() {
+    const { listings, auth } = this.props;
+
+    let userListings = [];
+
+    if (listings && listings.length) {
+      userListings = listings.filter(listing => listing.reserved_by === auth._id);
+    }
+
+    return userListings.map((listing, index) => (
+      <div className="reservation" key={index}>
+        <Link
+          className="blue-text text-darken-2"
+          to={`/offices/${listing.office}/listings/${listing._id}`}
+        >
+          <p>
+            {moment(listing.time_available).format("MMM D, h a - ")}
+            {moment(listing.time_closed).format("h a")}
+          </p>
+        </Link>
+      </div>
+    ))
+
+  }
+
   render() {
     const { auth, reviews } = this.props;
     const { dentist } = this.state;
@@ -273,6 +298,14 @@ class Profile extends Component {
             <div className="offices profile-section">
               <h5>Offices</h5>
               {this.renderUserOffices()}
+            </div>
+          ) : (
+            ""
+          )}
+          {dentist ? (
+            <div className="offices profile-section">
+              <h5>Upcoming Reservations</h5>
+              {this.renderReservations()}
             </div>
           ) : (
             ""
