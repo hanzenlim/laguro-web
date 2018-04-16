@@ -3,6 +3,9 @@ const { Schema } = mongoose;
 
 const listingSchema = new Schema({
 	office: { type: Schema.Types.ObjectId },
+	office_name: String,
+	office_img: String,
+	appts_per_hour: Number,
 	host: String,
 	reserved_by: String,
 	staff: [{
