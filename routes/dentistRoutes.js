@@ -16,6 +16,12 @@ module.exports = app => {
 		res.send(dentist);
 	})
 
+	//get one dentist route
+	app.get("/api/dentists/user/:id", async (req, res) => {
+		const dentist = await Dentist.findOne({ user_id: `${req.params.id}` });
+
+		res.send(dentist);
+	})
 
 	// add listing to Cart
 	app.patch("/api/dentists/cart", async(req, res) => {

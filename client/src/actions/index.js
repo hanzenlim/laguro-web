@@ -118,6 +118,16 @@ export const getOneDentist = id => {
   };
 };
 
+export const getDentistByUser = id => {
+  return async dispatch => {
+    const dentist = await axios.get(`/api/dentists/user/${id}`);
+    dispatch({
+      type: GET_ONE_DENTIST,
+      payload: dentist
+    });
+  };
+}
+
 export function editDentist(values) {
   return dispatch => {
     axios.patch(`/api/dentists`, values).then(dentists => {
