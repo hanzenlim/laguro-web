@@ -319,10 +319,10 @@ export const fetchListings = () => {
   };
 };
 
-export const reserveListing = listing_id => {
+export const reserveListing = (listing_id, details) => {
   return async dispatch => {
     const reserved_listing = await axios.patch(
-      `/api/listings/${listing_id}/reserve`
+      `/api/listings/${listing_id}/reserve`, details
     );
     dispatch({
       type: GET_SELECTED_LISTINGS,

@@ -45,6 +45,34 @@ img {
   text-align: left;
 }
 
+.modal.open {
+  z-index: 1003;
+  display: block;
+  opacity: 1;
+  top: 10%;
+  transform: scaleX(1) scaleY(1);
+}
+
+#modal-overlay {
+    position: fixed;
+    z-index: 999;
+    top: -25%;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    height: 125%;
+    width: 100%;
+    background: #000;
+    display: none;
+    will-change: opacity;
+}
+
+#modal-overlay.open {
+    z-index: 1002;
+    display: block;
+    opacity: 0.5;
+}
+
 nav ul a,
 .link {
   color: #039be5 !important;
@@ -54,7 +82,7 @@ nav ul a,
 .btn:hover,
 .link:hover,
 nav ul a:hover {
-  color: #ff3100 !important;
+  color: #cc3100 !important;
   cursor: pointer;
   background-color: rgba(0, 0, 0, 0.1);
 }
@@ -325,6 +353,21 @@ nav ul a:hover {
   position: absolute;
   top: 10px;
   left: 10px;
+}
+
+/* Modal reservation form */
+
+.modalForm {
+  padding: 3em 4em;
+}
+
+.multiRow {
+  display: flex;
+  flex-flow: row nowrap;
+  width: 95%;
+  margin: 1em auto;
+  align-items: center;
+  justify-content: space-between;
 }
 
 /* New Listing form */

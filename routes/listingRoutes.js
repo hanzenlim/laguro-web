@@ -18,11 +18,12 @@ module.exports = app => {
 
   //Reserve listing route
   app.patch("/api/listings/:id/reserve", async (req, res) => {
+    const { staff_required, total_paid } = req.body;
     const user_id = req.user._id;
 
     Listing.findOneAndUpdate(
       { _id: `${req.params.id}` },
-      { reserved_by: user_id },
+      { reserved_by: user_id, staff_required, total_paid },
       { new: true },
       (err, listing) => {
         if (err) console.log(err);

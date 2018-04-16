@@ -5,6 +5,8 @@ import moment from "moment";
 import { Link } from "react-router-dom";
 import ReactStars from "react-stars";
 
+import ReservationOptions from './ReservationOptions';
+
 class OfficeResultIndex extends Component {
   componentDidMount() {
     this.listing_id = this.props.match.params.id;
@@ -43,6 +45,22 @@ class OfficeResultIndex extends Component {
     return office.img_url.map(url => (
       <img className="officeImg" key={url} src={url} alt="office" />
     ));
+  }
+
+  openModal(modal_id) {
+    let modal = document.getElementById(modal_id);
+    let modal_overlay = document.getElementById("modal-overlay");
+    modal.classList.add("open");
+    modal_overlay.classList.add("open");
+  }
+
+  closeModals() {
+    let modals = document.getElementsByClassName("modal");
+    let modal_overlay = document.getElementById("modal-overlay");
+    for (var modal of modals) {
+      modal.classList.remove("open");
+    }
+    modal_overlay.classList.remove("open");
   }
 
   render() {
@@ -111,6 +129,16 @@ class OfficeResultIndex extends Component {
           </div>
         </div>
 
+        <div id="reservation_options" className="modal">
+          <ReservationOptions listing={listing}/>
+        </div>
+        <div
+          id="modal-overlay"
+          onClick={() => {
+            this.closeModals();
+          }}
+        />
+
         <div className="bookNow">
           <div className="content">
             <div>
@@ -122,12 +150,13 @@ class OfficeResultIndex extends Component {
                 <small>{`(${this.rating_count})`}</small>
               </div>
             </div>
-            <Link
+            <button
               className="btn red lighten-2 waves-effect"
-              to={"/offices/search"}
+              onClick={() => this.openModal("reservation_options")}
+              disabled={!!(listing.reserved_by)}
             >
               Book Now
-            </Link>
+            </button>
           </div>
         </div>
       </div>

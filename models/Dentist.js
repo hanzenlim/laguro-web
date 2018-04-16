@@ -10,7 +10,7 @@ const dentistSchema = new Schema({
 	procedures: [{
 		name: String
 	}],
-	rating: [Number],
+	cart: [String],
 	date_created: {
 		type: Date,
 		default: Date.now

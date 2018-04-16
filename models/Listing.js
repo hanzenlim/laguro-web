@@ -10,10 +10,16 @@ const listingSchema = new Schema({
 		price: Number,
 		count: Number
 	}],
+	staff_required: [{
+		role: String,
+		price: Number,
+		count: Number
+	}],
 	equipment: [{
 		name: String,
 		price: Number
 	}],
+	total_paid: Number,
 	cleaning_fee: Number,
 	time_available: Date,
 	time_closed: Date,
