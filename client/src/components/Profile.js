@@ -120,7 +120,10 @@ class Profile extends Component {
   }
 
   deleteListing(listing) {
-    this.props.deleteListing(listing._id);
+    // eslint-disable-next-line
+    if (confirm(`Delete listing for ${moment(listing.time_available).format("MMM D, h a")}?`)) {
+      this.props.deleteListing(listing._id);
+    }
   }
 
   renderUserOffices() {
