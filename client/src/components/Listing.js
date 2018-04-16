@@ -42,9 +42,11 @@ class OfficeResultIndex extends Component {
   }
 
   renderImages(office) {
-    return office.img_url.map(url => (
-      <img className="officeImg" key={url} src={url} alt="office" />
-    ));
+    if(office.img_url && office.img_url.length){
+      return office.img_url.map(url => (
+        <img className="officeImg" key={url} src={url} alt="office" />
+      ));
+    }
   }
 
   openModal(modal_id) {
