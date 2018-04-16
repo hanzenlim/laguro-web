@@ -7,13 +7,13 @@ import { Link } from "react-router-dom";
 class OfficeResult extends Component {
   renderTimes(listings) {
     if (listings) {
-      return listings.map(listing => (
+      return listings.filter(listing => (!listing.reserved_by)).map(listing => (
         <Link
-          key={listing.id}
-          to={`/offices/${listing.office_id}/listings/${listing.id}`}
+          key={listing._id}
+          to={`/offices/${listing.office}/listings/${listing._id}`}
           className="badge white-text light-blue lighten-2"
         >
-          {moment(listing.time).format("MMM D, h a")}
+          {moment(listing.time_available).format("MMM D, h a")}
         </Link>
       ));
     } else {

@@ -40,13 +40,7 @@ class OfficeResultIndex extends Component {
         : [];
 
       //extract the price and time for each listing
-      let listings = officeListings.map(listing => {
-        return {
-          time: moment(listing.time_available),
-          office_id: listing.office,
-          id: listing._id
-        };
-      });
+      let listings = officeListings.filter(listing => (listing.office === office._id));
 
       listings = listings.sort((listing_a, listing_b) => {
         return moment(listing_a.time).isAfter(moment(listing_b.time));
