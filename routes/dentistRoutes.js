@@ -16,6 +16,27 @@ module.exports = app => {
 		res.send(dentist);
 	})
 
+
+	// add listing to Cart
+	app.patch("/api/dentists/cart", async(req, res) => {
+		Dentist.findOne(
+      {user_id: req.user._id},
+      (err, dentist) => {
+        if (err) console.log(err);
+				let cart = dentist.cart
+
+				dentist.cart = [
+					...cart,
+					req.body
+				]
+				dentist.save((err, dentist) => {
+					if(err) console.log(err);
+					res.send(dentist);
+				});
+      }
+    );
+	})
+
 	//create dentist route
 	app.post("/api/dentists", async (req, res) => {
 		const { specialty, location, procedures } = req.body;
