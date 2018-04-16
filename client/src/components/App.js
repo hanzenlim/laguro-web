@@ -19,6 +19,7 @@ import Profile from './Profile';
 import Dentist from './Dentist';
 import Listing from './Listing';
 import Office from './Office';
+import Cart from './Cart';
 
 const PrivateRoute = ({ auth, path, ...props, component: Component }) => (
   <Route
@@ -42,7 +43,7 @@ class App extends Component {
 
   render(){
     return (
-      <div className="wc-main">
+      <div>
         <Router history={history}>
           <div>
             <Header />
@@ -86,6 +87,11 @@ class App extends Component {
                 auth={this.props.auth}
                 path="/profile"
                 component={Profile}
+              />
+              <PrivateRoute
+                auth={this.props.auth}
+                path="/cart"
+                component={Cart}
               />
               <Route path="/" component={Landing} />
             </Switch>
