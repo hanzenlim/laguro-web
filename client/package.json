@@ -16,7 +16,7 @@
     "filestack-react": "^1.3.9",
     "google-maps-react": "^1.1.4",
     "lodash": "^4.17.5",
-    "materialize-css": "^1.0.0-alpha.4",
+    "materialize-css": "^1.0.0-beta",
     "moment": "^2.21.0",
     "react": "^16.2.0",
     "react-datepicker": "^1.2.2",
