@@ -142,6 +142,17 @@ export function createDentist(values) {
   };
 }
 
+export const putListingInCart = listing => {
+  return dispatch => {
+    axios.patch(`/api/dentists/cart`, listing).then(dentist => {
+      dispatch({
+        type: GET_ONE_DENTIST,
+        payload: dentist
+      });
+    });
+  };
+};
+
 function requestOffices() {
   return {
     type: REQUEST_OFFICES
@@ -294,6 +305,18 @@ export const fetchListings = () => {
     dispatch({
       type: FETCH_LISTINGS,
       payload: listings
+    });
+  };
+};
+
+export const reserveListing = listing_id => {
+  return async dispatch => {
+    const reserved_listing = await axios.patch(
+      `/api/listings/${listing_id}/reserve`
+    );
+    dispatch({
+      type: GET_SELECTED_LISTINGS,
+      payload: reserved_listing.data
     });
   };
 };
