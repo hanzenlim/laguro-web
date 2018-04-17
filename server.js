@@ -22,6 +22,7 @@ require("./models/Dentist");
 require("./models/Listing");
 require("./models/Office");
 require("./models/Review");
+require("./models/Reservation");
 
 // Services
 require("./services/passport");
@@ -49,6 +50,7 @@ require("./routes/dentistRoutes")(app);
 require("./routes/officeRoutes")(app);
 require("./routes/listingRoutes")(app);
 require("./routes/reviewRoutes")(app);
+require("./routes/reservationRoutes")(app);
 
 if (process.env.NODE_ENV === "production") {
   // express will serve production assets (main.js/css)
