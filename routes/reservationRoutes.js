@@ -8,7 +8,6 @@ module.exports = app => {
       listing_id,
     	office_name,
     	office_img,
-    	reserved_by,
     	chairs_selected,
     	appointments,
     	staff_selected,
@@ -16,20 +15,19 @@ module.exports = app => {
     	time_start,
     	time_end
     } = req.body;
-    const host = req.user._id;
+    const reserved_by = req.user._id;
 
     let newReservation = await Reservation.create({
-      office,
-      office_name,
-      office_img,
-      appts_per_hour,
-      host,
-      staff,
-      equipment,
-      cleaning_fee,
-      time_available,
-      time_closed,
-      price
+      listing_id,
+      reserved_by,
+    	office_name,
+    	office_img,
+    	chairs_selected,
+    	appointments,
+    	staff_selected,
+    	total_paid,
+    	time_start,
+    	time_end
     });
 
     res.send(newReservation);
