@@ -23,7 +23,7 @@ class Profile extends Component {
     this.getDentist().then(dentist => {
       this.setState({ dentist: dentist });
 
-      if(dentist){
+      if (dentist) {
         this.props.fetchReviews(dentist._id);
       }
     });
@@ -120,8 +120,14 @@ class Profile extends Component {
   }
 
   deleteListing(listing) {
-    // eslint-disable-next-line
-    if (confirm(`Delete listing for ${moment(listing.time_available).format("MMM D, h a")}?`)) {
+    if (
+      // eslint-disable-next-line
+      confirm(
+        `Delete listing for ${moment(listing.time_available).format(
+          "MMM D, h a"
+        )}?`
+      )
+    ) {
       this.props.deleteListing(listing._id);
     }
   }
@@ -252,29 +258,63 @@ class Profile extends Component {
     }
   }
 
+  renderOptions = (max) => {
+    let options = [];
+    for (let i = 0; i <= max; i++) {
+      options.push(
+        <option value={Number(i)} key={i}>
+          {i}
+        </option>
+      );
+    }
+    return options;
+  };
+
+  updateAppts(event){
+    this.props.editListing({id: event.target.dataset.id, appts_per_hour: event.target.value})
+  }
+
   renderReservations() {
     const { listings, auth } = this.props;
 
     let userListings = [];
 
     if (listings && listings.length) {
-      userListings = listings.filter(listing => listing.reserved_by === auth._id);
+      userListings = listings.filter(
+        listing => listing.reserved_by === auth._id
+      );
     }
 
     return userListings.map((listing, index) => (
-      <div className="reservation" key={index}>
+      <div key={index} className="reservation card-panel grey lighten-5">
         <Link
           className="blue-text text-darken-2"
-          to={`/offices/${listing.office}/listings/${listing._id}`}
+          to={`/offices/${listing.office}`}
         >
-          <p>
-            {moment(listing.time_available).format("MMM D, h a - ")}
-            {moment(listing.time_closed).format("h a")}
-          </p>
+          <div className="office_detail">
+            <img src={listing.office_img} alt="office" />
+            <h6>{listing.office_name}</h6>
+          </div>
         </Link>
+        <div className="content">
+          <div className="top-bar">
+            <Link
+              className="blue-text text-darken-2"
+              to={`/offices/${listing.office}/listings/${listing._id}`}
+            >
+              <p>
+                {moment(listing.time_available).format("MMM D, h a - ")}
+                {moment(listing.time_closed).format("h a")}
+              </p>
+            </Link>
+          </div>
+            <select data-id={listing._id} defaultValue={listing.appts_per_hour} onChange={this.updateAppts.bind(this)} style={{ display: "block", width: "50%", margin: "4px 0" }}>
+              {this.renderOptions(2)}
+            </select>
+            <sub>Apts/Hr</sub>
+        </div>
       </div>
-    ))
-
+    ));
   }
 
   render() {
