@@ -18,12 +18,12 @@ module.exports = app => {
 
   //Reserve listing route
   app.patch("/api/listings/:id/reserve", async (req, res) => {
-    const { staff_required, total_paid } = req.body;
+    const { staff_required, total_paid, appts_per_hour } = req.body;
     const user_id = req.user._id;
 
     Listing.findOneAndUpdate(
       { _id: `${req.params.id}` },
-      { reserved_by: user_id, staff_required, total_paid },
+      { reserved_by: user_id, staff_required, total_paid, appts_per_hour },
       { new: true },
       (err, listing) => {
         if (err) console.log(err);
@@ -36,6 +36,9 @@ module.exports = app => {
   app.post("/api/listings", async (req, res) => {
     const {
       office,
+      office_name,
+      office_img,
+      appts_per_hour,
       price,
       staff,
       equipment,
@@ -47,6 +50,9 @@ module.exports = app => {
 
     let newListing = await Listing.create({
       office,
+      office_name,
+      office_img,
+      appts_per_hour,
       host,
       staff,
       equipment,
@@ -59,28 +65,11 @@ module.exports = app => {
     res.send(newListing);
   });
 
-  //edit office route
+  //edit listing route
   app.patch("/api/listings", async (req, res) => {
-    const {
-      staff,
-      equipment,
-      cleaning_fee,
-      time_available,
-      time_closed,
-      price,
-      id
-    } = req.body;
-
     await Listing.findOneAndUpdate(
-      { _id: id },
-      {
-        staff,
-        equipment,
-        cleaning_fee,
-        time_available,
-        time_closed,
-        price
-      },
+      { _id: req.body.id },
+      { ...req.body },
       { new: true }
     );
 
