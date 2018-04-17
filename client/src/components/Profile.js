@@ -83,8 +83,8 @@ class Profile extends Component {
               to={`/offices/${listing.office}/listings/${listing._id}`}
             >
               <p>
-                {moment(listing.time_available).format("MMM D, h a - ")}
-                {moment(listing.time_closed).format("h a")}
+                {moment(listing.time_available).format("MMM D, h:mm - ")}
+                {moment(listing.time_closed).format("h:mm a")}
               </p>
             </Link>
             <div className="listing_btns">
@@ -303,8 +303,8 @@ class Profile extends Component {
               to={`/offices/${listing.office}/listings/${listing._id}`}
             >
               <p>
-                {moment(listing.time_available).format("MMM D, h a - ")}
-                {moment(listing.time_closed).format("h a")}
+                {moment(listing.time_available).format("MMM D, h:mm - ")}
+                {moment(listing.time_closed).format("h:mm a")}
               </p>
             </Link>
           </div>

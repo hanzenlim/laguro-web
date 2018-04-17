@@ -90,8 +90,8 @@ class OfficeResultIndex extends Component {
     }
 
     this.formatted_time =
-      moment(listing.time_available).format("MMM D, h a - ") +
-      moment(listing.time_closed).format("h a");
+      moment(listing.time_available).format("MMM D, h:mm a - ") +
+      moment(listing.time_closed).format("h:mm a");
 
     return (
       <div className="listing">
