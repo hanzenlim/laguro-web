@@ -39,4 +39,11 @@ module.exports = app => {
 
     res.send(updatedListing);
   });
+
+  //get user offices route
+  app.get("/api/user/reservations", async (req, res) => {
+    const user_reservations = await Reservation.find({reserved_by: req.user._id});
+
+    res.send(user_reservations);
+  });
 };

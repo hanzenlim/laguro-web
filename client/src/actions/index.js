@@ -16,7 +16,8 @@ import {
   REQUEST_DENTISTS,
   GET_ONE_DENTIST,
   GET_SELECTED_OFFICES,
-  GET_SELECTED_LISTINGS
+  GET_SELECTED_LISTINGS,
+  GET_SELECTED_RESERVATIONS
 } from "./types";
 
 /**********************
@@ -163,17 +164,17 @@ export const putListingInCart = listing => {
   };
 };
 
-function requestOffices() {
-  return {
-    type: REQUEST_OFFICES
-  };
-}
-
 /**********************
 
 OFFICE ACTIONS
 
 ***********************/
+
+function requestOffices() {
+  return {
+    type: REQUEST_OFFICES
+  };
+}
 
 export const loadAllOffices = () => {
   return axios.get(`/api/offices`);
@@ -320,6 +321,16 @@ export const createReservation = (details) => {
     });
   };
 };
+
+export const fetchUserReservations = () => {
+  return async dispatch => {
+    const user_reservations = await axios.get(`/api/user/reservations`);
+    dispatch({
+      type: GET_SELECTED_RESERVATIONS,
+      payload: user_reservations.data
+    })
+  }
+}
 
 /**********************
 
