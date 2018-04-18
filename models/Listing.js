@@ -5,6 +5,7 @@ const listingSchema = new Schema({
 	office: { type: Schema.Types.ObjectId },
 	host: String,
 	reservation_id: String,
+	reserved_by: String,
 	staff: [{
 		role: String,
 		price: Number,
