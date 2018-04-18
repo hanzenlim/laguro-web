@@ -29,8 +29,8 @@ class Profile extends Component {
     });
 
     this.props.fetchOffices();
-
     this.props.fetchListings();
+    this.props.fetchUserReservations();
   }
 
   // get all dentists and find the dentist profile that matches logged in user
@@ -258,7 +258,7 @@ class Profile extends Component {
     }
   }
 
-  renderOptions = (max) => {
+  renderOptions = max => {
     let options = [];
     for (let i = 0; i <= max; i++) {
       options.push(
@@ -270,48 +270,30 @@ class Profile extends Component {
     return options;
   };
 
-  updateAppts(event){
-    this.props.editListing({id: event.target.dataset.id, appts_per_hour: event.target.value})
-  }
-
   renderReservations() {
-    const { listings, auth } = this.props;
+    const { reservations, auth } = this.props;
 
-    let userListings = [];
-
-    if (listings && listings.length) {
-      userListings = listings.filter(
-        listing => listing.reserved_by === auth._id
-      );
-    }
-
-    return userListings.map((listing, index) => (
+    return reservations.map((reservation, index) => (
       <div key={index} className="reservation card-panel grey lighten-5">
         <Link
           className="blue-text text-darken-2"
-          to={`/offices/${listing.office}`}
+          to={`/offices/${reservation.office_id}`}
         >
           <div className="office_detail">
-            <img src={listing.office_img} alt="office" />
-            <h6>{listing.office_name}</h6>
+            <img src={reservation.office_img} alt="office" />
+            <h6>{reservation.office_name}</h6>
           </div>
         </Link>
         <div className="content">
-          <div className="top-bar">
-            <Link
-              className="blue-text text-darken-2"
-              to={`/offices/${listing.office}/listings/${listing._id}`}
-            >
-              <p>
-                {moment(listing.time_available).format("MMM D, h:mm - ")}
-                {moment(listing.time_closed).format("h:mm a")}
-              </p>
-            </Link>
-          </div>
-            <select data-id={listing._id} defaultValue={listing.appts_per_hour} onChange={this.updateAppts.bind(this)} style={{ display: "block", width: "50%", margin: "4px 0" }}>
-              {this.renderOptions(2)}
-            </select>
-            <sub>Apts/Hr</sub>
+          <Link
+            className="blue-text text-darken-2"
+            to={`/offices/${reservation.office_id}/listings/${reservation.listing_id}`}
+          >
+            <p>
+              {moment(reservation.time_start).format("MMM D, h:mm - ")}
+              {moment(reservation.time_end).format("h:mm a")}
+            </p>
+          </Link>
         </div>
       </div>
     ));
@@ -375,6 +357,7 @@ function mapStateToProps(state) {
   return {
     auth: state.auth.data,
     dentists: state.dentists.dentists,
+    reservations: state.reservations.selected,
     offices: state.offices.all,
     listings: state.listings.all.data,
     reviews: state.reviews.selected
