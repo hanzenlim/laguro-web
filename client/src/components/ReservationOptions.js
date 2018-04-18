@@ -1,26 +1,87 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Field, FieldArray, reduxForm, formValueSelector } from "redux-form";
+import DatePicker from "react-datepicker";
+import moment from "moment";
 
 import * as actions from "../actions";
 
 import "react-datepicker/dist/react-datepicker.css";
 
 class ReservationOptions extends Component {
+  constructor(props) {
+    super(props);
+    const { listing } = this.props;
+
+    this.state = {
+      time_start: moment(listing.time_available),
+      time_end: moment(listing.time_closed),
+      total_due: 0
+    };
+  }
+
   componentWillMount() {
     this.props.initialize({
-      staff: this.props.listing.staff
+      staff_selected: this.props.listing.staff,
+      chairs_selected: 1,
+      appts_per_hour: 1
     });
   }
 
   onSubmit(values) {
-    const { reset, listing } = this.props;
-    this.props.reserveListing(listing._id, {
-      appts_per_hour: values.appts_per_hour,
-      staff_required: values.staff,
-      total_paid: this.calcTotal() + 50
+    const { reset, listing, office } = this.props;
+    const { time_end, time_start } = this.state;
+
+    let appt_time = moment(time_start);
+    let last_time = moment(time_end);
+
+    let appointments = [];
+    let duration = 0;
+
+    switch (values.appts_per_hour) {
+      case 1:
+        duration = 60;
+        break;
+      case 2:
+        duration = 30;
+        break;
+      case 3:
+        duration = 20;
+        break;
+      case 4:
+        duration = 15;
+        break;
+      default:
+        return "";
+    }
+
+    while (appt_time.isBefore(last_time)) {
+      appointments.push({ time: appt_time });
+      appt_time = appt_time.add(duration, "minute");
+    }
+
+    this.props.createReservation({
+      ...values,
+      listing_id: listing._id,
+      office_name: office.name,
+      office_img: office.img_url[0],
+      appointments,
+      total_paid: this.calcTotal(),
+      time_start,
+      time_end
     });
+
     reset();
+    this.closeModals();
+  }
+
+  closeModals() {
+    let modals = document.getElementsByClassName("modal");
+    let modal_overlay = document.getElementById("modal-overlay");
+    for (var modal of modals) {
+      modal.classList.remove("open");
+    }
+    modal_overlay.classList.remove("open");
   }
 
   renderStaticField = ({ input, label, className }) => (
@@ -32,31 +93,69 @@ class ReservationOptions extends Component {
     </div>
   );
 
-  renderOptions = max_avail => {
+  renderOptions = (max_avail, min_avail = 1, label = "") => {
     let options = [];
-    for (let i = 0; i <= max_avail; i++) {
+    for (let i = min_avail; i <= max_avail; i++) {
       options.push(
         <option value={Number(i)} key={i}>
-          {i}
+          {`${i} ${label}`}
         </option>
       );
     }
     return options;
   };
 
+  handleChange(dateType, date) {
+    let stateObject = {};
+    stateObject[dateType] = moment(date);
+
+    this.setState(stateObject);
+  }
+
+  renderDatePicker = ({
+    label,
+    className,
+    selectedDate,
+    dateType,
+    listing
+  }) => {
+    return (
+      <div className={className}>
+        <label>{label}</label>
+        <DatePicker
+          selected={selectedDate ? moment(selectedDate) : moment()}
+          onChange={this.handleChange.bind(this, dateType)}
+          dateFormat="LLL"
+          placeholderText={moment().format("MMM DD, YYYY")}
+          minDate={moment(listing.time_available)}
+          maxDate={moment(listing.time_closed)}
+          minTime={moment(listing.time_available)}
+          maxTime={moment(listing.time_closed)}
+          showTimeSelect
+          timeFormat="h:mm"
+          timeIntervals={60}
+          timeCaption="Time"
+        />
+      </div>
+    );
+  };
+
   renderStaff = ({ fields, className, meta: { error } }) => {
     const { listing } = this.props;
-    let staffData = this.props.staff;
+    let staffData = this.props.staff_selected;
     if (!staffData) {
       return <div>Loading...</div>;
     }
     return (
-      <ul className={className}>
+      <ul
+        className={className}
+        style={{ border: "1px solid #999", padding: "4px" }}
+      >
         <label>Staff Required</label>
-        {fields.map((staff, index) => (
+        {fields.map((staff_selected, index) => (
           <li key={index} className="multiRow">
             <Field
-              name={`${staff}.role`}
+              name={`${staff_selected}.role`}
               component={this.renderStaticField}
               label="Staff Role"
             />
@@ -64,19 +163,19 @@ class ReservationOptions extends Component {
               <label>
                 Number required
                 <Field
-                  name={`${staff}.count`}
+                  name={`${staff_selected}.count`}
                   type="select"
                   style={{ display: "block" }}
                   component="select"
                 >
-                  {this.renderOptions(listing.staff[index].count)}
+                  {this.renderOptions(listing.staff[index].count, 0)}
                 </Field>
               </label>
             </div>
             <div>
               <label>Subtotal</label>
               <h6 className="red-text">
-                ${staffData[index].count * staffData[index].price}
+                ${staffData[index].count * staffData[index].price}/Hour
               </h6>
             </div>
           </li>
@@ -86,19 +185,34 @@ class ReservationOptions extends Component {
   };
 
   calcTotal() {
-    let staffData = this.props.staff;
+    let staffData = this.props.staff_selected;
+    let { time_start, time_end } = this.state;
+    let { chairs_selected, listing } = this.props;
+    let minutes = time_end.diff(time_start, "minutes");
+    let hours = minutes / 60;
+    let booking_fee = 50;
 
-    if (!staffData || !staffData.length) {
-      return 0;
+    if (hours <= 0) {
+      return booking_fee;
     }
 
-    let subtotals = staffData.map((staff, index) => staff.count * staff.price);
+    let chair_price = chairs_selected * listing.price * hours;
 
-    return subtotals.reduce((acc, sub) => sub + acc);
+    if (!staffData || !staffData.length) {
+      return booking_fee + chair_price;
+    }
+
+    let subtotals = staffData.map(
+      (staff, index) => staff.count * staff.price * hours
+    );
+
+    return (
+      booking_fee + chair_price + subtotals.reduce((acc, sub) => sub + acc)
+    );
   }
 
   render() {
-    const { handleSubmit, submitting } = this.props;
+    const { handleSubmit, submitting, listing } = this.props;
     return (
       <form
         onSubmit={handleSubmit(this.onSubmit.bind(this))}
@@ -107,16 +221,31 @@ class ReservationOptions extends Component {
         <div className="form_title">
           <h5>Choose reservation options</h5>
         </div>
-        <div>
-          <FieldArray
-            name="staff"
-            className="row"
-            component={this.renderStaff}
+
+        <div className="row">
+          <Field
+            name="time_start"
+            label="Doors opening"
+            dateType="time_start"
+            selectedDate={this.state.time_start}
+            className="col s12 m6"
+            component={this.renderDatePicker}
+            listing={listing}
+          />
+
+          <Field
+            name="time_end"
+            label="Doors closing"
+            dateType="time_end"
+            selectedDate={this.state.time_end}
+            className="col s12 m6"
+            component={this.renderDatePicker}
+            listing={listing}
           />
         </div>
 
         <div className="row">
-          <label className="col s6 offset-s3">
+          <label className="col s5">
             Number of appointment slots per hour
             <Field
               name={`appts_per_hour`}
@@ -124,12 +253,32 @@ class ReservationOptions extends Component {
               style={{ display: "block" }}
               component="select"
             >
-              {this.renderOptions(2)}
+              {this.renderOptions(4)}
             </Field>
-            <sub>
-              *Choose 0 slots per hour to prevent patients signing up
-            </sub>
           </label>
+          <label className="col s5 offset-s2">
+            Number of chairs needed
+            <Field
+              name={`chairs_selected`}
+              type="select"
+              style={{ display: "block" }}
+              component="select"
+            >
+              {this.renderOptions(
+                this.props.office.chairs,
+                1,
+                `- $${this.props.listing.price}/chair/hr`
+              )}
+            </Field>
+          </label>
+        </div>
+
+        <div>
+          <FieldArray
+            name="staff_selected"
+            className="row"
+            component={this.renderStaff}
+          />
         </div>
 
         <div className="row">
@@ -138,8 +287,8 @@ class ReservationOptions extends Component {
             <h6 className="red-text">$50</h6>
           </div>
           <div className="col s6 right-align">
-            <label>Total due today</label>
-            <h6 className="red-text">${this.calcTotal() + 50}</h6>
+            <label>Total due</label>
+            <h6 className="red-text">${this.calcTotal()}</h6>
           </div>
         </div>
 
@@ -169,7 +318,8 @@ ReservationOptions = reduxForm({
 function mapStateToProps(state) {
   const selector = formValueSelector("reservationOptions");
   return {
-    staff: selector(state, "staff")
+    staff_selected: selector(state, "staff_selected"),
+    chairs_selected: selector(state, "chairs_selected")
   };
 }
 

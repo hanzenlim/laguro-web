@@ -139,7 +139,7 @@ class OfficeResultIndex extends Component {
         </div>
 
         <div id="reservation_options" className="modal">
-          <ReservationOptions listing={listing}/>
+          <ReservationOptions listing={listing} office={office}/>
         </div>
         <div
           id="modal-overlay"
