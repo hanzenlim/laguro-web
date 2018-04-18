@@ -309,24 +309,30 @@ LISTING ACTIONS
 
 ***********************/
 
+export const createReservation = (details) => {
+  return async dispatch => {
+    const reserved_listing = await axios.post(
+      `/api/reservations`, details
+    );
+    dispatch({
+      type: GET_SELECTED_LISTINGS,
+      payload: reserved_listing.data
+    });
+  };
+};
+
+/**********************
+
+LISTING ACTIONS
+
+***********************/
+
 export const fetchListings = () => {
   return async dispatch => {
     const listings = await axios.get(`/api/listings`);
     dispatch({
       type: FETCH_LISTINGS,
       payload: listings
-    });
-  };
-};
-
-export const reserveListing = (listing_id, details) => {
-  return async dispatch => {
-    const reserved_listing = await axios.patch(
-      `/api/listings/${listing_id}/reserve`, details
-    );
-    dispatch({
-      type: GET_SELECTED_LISTINGS,
-      payload: reserved_listing.data
     });
   };
 };
