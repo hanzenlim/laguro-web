@@ -8,6 +8,7 @@ module.exports = app => {
     const reserved_by = req.user._id;
     const {
       listing_id,
+      office_id,
     	office_name,
     	office_img,
     	chairs_selected,
@@ -20,6 +21,7 @@ module.exports = app => {
 
     let newReservation = await Reservation.create({
       listing_id,
+      office_id,
       reserved_by,
     	office_name,
     	office_img,

@@ -63,6 +63,7 @@ class ReservationOptions extends Component {
     this.props.createReservation({
       ...values,
       listing_id: listing._id,
+      office_id: office._id,
       office_name: office.name,
       office_img: office.img_url[0],
       appointments,
