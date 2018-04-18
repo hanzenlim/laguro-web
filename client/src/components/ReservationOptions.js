@@ -64,6 +64,7 @@ class ReservationOptions extends Component {
       ...values,
       listing_id: listing._id,
       office_id: office._id,
+      host_id: listing.host,
       office_name: office.name,
       office_img: office.img_url[0],
       appointments,

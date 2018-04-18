@@ -9,6 +9,7 @@ module.exports = app => {
     const {
       listing_id,
       office_id,
+      host_id,
     	office_name,
     	office_img,
     	chairs_selected,
@@ -22,6 +23,7 @@ module.exports = app => {
     let newReservation = await Reservation.create({
       listing_id,
       office_id,
+      host_id,
       reserved_by,
     	office_name,
     	office_img,

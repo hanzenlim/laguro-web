@@ -4,6 +4,7 @@ const { Schema } = mongoose;
 const reservationSchema = new Schema({
 	listing_id: String,
 	office_id: String,
+	host_id: String,
 	office_name: String,
 	office_img: String,
 	reserved_by: String,
