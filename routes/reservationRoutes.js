@@ -1,9 +1,11 @@
 const mongoose = require("mongoose");
 const Reservation = mongoose.model("reservation");
+const Listing = mongoose.model("listing");
 
 module.exports = app => {
   //reservation creation route
   app.post("/api/reservations", async (req, res) => {
+    const reserved_by = req.user._id;
     const {
       listing_id,
     	office_name,
@@ -15,7 +17,6 @@ module.exports = app => {
     	time_start,
     	time_end
     } = req.body;
-    const reserved_by = req.user._id;
 
     let newReservation = await Reservation.create({
       listing_id,
@@ -30,6 +31,12 @@ module.exports = app => {
     	time_end
     });
 
-    res.send(newReservation);
+    let updatedListing = await Listing.findOneAndUpdate(
+      { _id: listing_id },
+      { reservation_id: newReservation._id, reserved_by },
+      { new: true }
+    );
+
+    res.send(updatedListing);
   });
 };
