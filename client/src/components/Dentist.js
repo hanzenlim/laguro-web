@@ -13,6 +13,7 @@ class Profile extends Component {
     this.dentist_id = this.props.match.params.id;
 		this.props.fetchReviews(this.dentist_id);
     this.props.fetchListings();
+    this.props.fetchUserReservations();
 
     this.getDentist().then(dentist => {
       document.title = `Laguro - ${dentist.name}`;
@@ -57,64 +58,35 @@ class Profile extends Component {
     );
   }
 
-  renderApptTimes(listing) {
-    let appts = [];
-    let appt_time = moment(listing.time_available);
-    let last_time = moment(listing.time_closed);
-    let duration = 0;
-
-    switch(listing.appts_per_hour) {
-      case 1:
-        duration = 60;
-        break;
-      case 2:
-        duration = 30;
-        break;
-      default:
-        return ""
-    }
-
-    while(appt_time.isBefore(last_time)){
-      appts.push(appt_time.format("h:mm a"));
-      appt_time = appt_time.add(duration, "minute")
-    }
-
+  renderApptTimes(appts) {
     return appts.map((appt, index) => (
-      <div key={index}>{appt}</div>
+      <div key={index}>{moment(appt.time).format("h:mm a")}</div>
     ))
   }
 
   renderReservations() {
-    const { listings, dentist } = this.props;
+    const { reservations } = this.props;
 
-    let userListings = [];
-
-    if (listings && listings.length) {
-      userListings = listings.filter(
-        listing => listing.reserved_by === dentist.user_id
-      );
-    }
-
-    return userListings.map((listing, index) => (
+    return reservations.map((reservation, index) => (
       <div key={index} className="reservation card-panel grey lighten-5">
         <div className="office_detail">
-          <img src={listing.office_img} alt="office" />
-          <h6>{listing.office_name}</h6>
+          <img src={reservation.office_img} alt="office" />
+          <h6>{reservation.office_name}</h6>
         </div>
         <div className="content">
           <div className="top-bar">
             <Link
               className="blue-text text-darken-2"
-              to={`/offices/${listing.office}/listings/${listing._id}`}
+              to={`/offices/${reservation.office_id}/listings/${reservation.listing_id}`}
             >
               <p>
-                {moment(listing.time_available).format("MMM D, h:mm - ")}
-                {moment(listing.time_closed).format("h:mm a")}
+                {moment(reservation.time_start).format("MMM D, h:mm - ")}
+                {moment(reservation.time_end).format("h:mm a")}
               </p>
             </Link>
           </div>
           <div>
-            {this.renderApptTimes(listing)}
+            {this.renderApptTimes(reservation.appointments)}
           </div>
         </div>
       </div>
@@ -182,6 +154,7 @@ function mapStateToProps(state) {
   return {
     auth: state.auth,
     listings: state.listings.all,
+    reservations: state.reservations.selected,
     dentist: state.dentists.selectedDentist,
 		reviews: state.reviews.selected
   };
