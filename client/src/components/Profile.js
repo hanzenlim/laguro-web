@@ -75,6 +75,14 @@ class Profile extends Component {
         );
       });
 
+      if (filteredListings.length === 0) {
+        return (
+          <li>
+            <strong>No listings available</strong>
+          </li>
+        );
+      }
+
       filteredListings = filteredListings.map((listing, index) => (
         <li className="profile_listing" key={index}>
           <div className="listing_content">
@@ -325,15 +333,12 @@ class Profile extends Component {
           <h6
             onClick={this.deleteReservation.bind(this, reservation)}
             className="red-text valign-wrapper"
-            style={{cursor: "pointer"}}
+            style={{ cursor: "pointer" }}
           >
-            <i
-              className="material-icons"
-              style={{fontSize: "18px"}}
-              >
-                delete_forever
-              </i>
-              Cancel Reservation
+            <i className="material-icons" style={{ fontSize: "18px" }}>
+              delete_forever
+            </i>
+            Cancel Reservation
           </h6>
         </div>
       </div>
