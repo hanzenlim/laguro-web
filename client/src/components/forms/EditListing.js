@@ -294,7 +294,7 @@ class EditListing extends Component {
 const required = value => (value && value !== "" ? undefined : 'Required')
 
 function mapStateToProps(state) {
-	return { listings: state.listings.all.data };
+	return { listings: state.listings.all };
 }
 
 export default reduxForm({

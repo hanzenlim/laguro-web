@@ -343,7 +343,7 @@ export const fetchListings = () => {
     const listings = await axios.get(`/api/listings`);
     dispatch({
       type: FETCH_LISTINGS,
-      payload: listings
+      payload: listings.data
     });
   };
 };
@@ -382,11 +382,15 @@ export function createListing(values, type) {
 
 export function deleteListing(id) {
   return dispatch => {
-    axios.delete(`/api/listings/${id}`).then(listings => {
+    axios.delete(`/api/listings/${id}`).then(result => {
       dispatch({
         type: FETCH_LISTINGS,
-        payload: listings
+        payload: result.data.listings
       });
+      dispatch({
+        type: GET_SELECTED_RESERVATIONS,
+        payload: result.data.user_reservations
+      })
     });
   };
 }
@@ -396,7 +400,7 @@ export function editListing(values) {
     axios.patch(`/api/listings`, values).then(listings => {
       dispatch({
         type: FETCH_LISTINGS,
-        payload: listings
+        payload: listings.data
       });
     });
     history.push("/profile");

@@ -64,7 +64,7 @@ class Profile extends Component {
 
   getSortedListings(office) {
     const { listings } = this.props;
-    if (listings) {
+    if (listings && listings.length) {
       let filteredListings = listings.filter(
         listing => listing.office === office._id
       );
@@ -271,7 +271,7 @@ class Profile extends Component {
   };
 
   renderReservations() {
-    const { reservations, auth } = this.props;
+    const { reservations } = this.props;
 
     return reservations.map((reservation, index) => (
       <div key={index} className="reservation card-panel grey lighten-5">
@@ -359,7 +359,7 @@ function mapStateToProps(state) {
     dentists: state.dentists.dentists,
     reservations: state.reservations.selected,
     offices: state.offices.all,
-    listings: state.listings.all.data,
+    listings: state.listings.all,
     reviews: state.reviews.selected
   };
 }

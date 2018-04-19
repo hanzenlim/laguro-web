@@ -117,7 +117,7 @@ function mapStateToProps(state) {
     offices: getVisibleOffices(state.offices.all),
     isFetching: state.offices.isFetching,
     invalid: state.offices.invalid,
-    listings: state.listings.all.data,
+    listings: state.listings.all,
     reviews: state.reviews.all,
     filters: state.filters
   };

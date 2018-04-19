@@ -64,7 +64,7 @@ class Cart extends Component {
 function mapStateToProps(state) {
   return {
     dentist: state.dentists.selectedDentist,
-    listings: state.listings.all.data,
+    listings: state.listings.all,
     auth: state.auth.data
   };
 }

@@ -181,7 +181,7 @@ class Profile extends Component {
 function mapStateToProps(state) {
   return {
     auth: state.auth,
-    listings: state.listings.all.data,
+    listings: state.listings.all,
     dentist: state.dentists.selectedDentist,
 		reviews: state.reviews.selected
   };
