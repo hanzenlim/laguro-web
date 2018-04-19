@@ -270,22 +270,33 @@ class Profile extends Component {
     return options;
   };
 
+  deleteReservation(reservation) {
+    if (
+      // eslint-disable-next-line
+      confirm(
+        `Delete reservation for ${moment(reservation.time_start).format(
+          "MMM D, h a"
+        )}?`
+      )
+    ) {
+      this.props.deleteReservation(reservation._id);
+    }
+  }
+
   renderReservations() {
     const { reservations } = this.props;
 
-    if(reservations.length === 0) {
-      return(
+    if (reservations.length === 0) {
+      return (
         <div>
-          <h6>{"No reservations yet - "}
-            <Link
-              className="blue-text text-darken-2"
-              to={`/offices/search`}
-              >
-                search for new listings and make a reservation
-              </Link>
+          <h6>
+            {"No reservations yet - "}
+            <Link className="blue-text text-darken-2" to={`/offices/search`}>
+              search for new listings and make a reservation
+            </Link>
           </h6>
         </div>
-      )
+      );
     }
 
     return reservations.map((reservation, index) => (
@@ -302,13 +313,28 @@ class Profile extends Component {
         <div className="content">
           <Link
             className="blue-text text-darken-2"
-            to={`/offices/${reservation.office_id}/listings/${reservation.listing_id}`}
+            to={`/offices/${reservation.office_id}/listings/${
+              reservation.listing_id
+            }`}
           >
             <p>
               {moment(reservation.time_start).format("MMM D, h:mm - ")}
               {moment(reservation.time_end).format("h:mm a")}
             </p>
           </Link>
+          <h6
+            onClick={this.deleteReservation.bind(this, reservation)}
+            className="red-text valign-wrapper"
+            style={{cursor: "pointer"}}
+          >
+            <i
+              className="material-icons"
+              style={{fontSize: "18px"}}
+              >
+                delete_forever
+              </i>
+              Cancel Reservation
+          </h6>
         </div>
       </div>
     ));

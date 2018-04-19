@@ -332,6 +332,16 @@ export const fetchUserReservations = () => {
   }
 }
 
+export const deleteReservation = (reservation_id) => {
+  return async dispatch => {
+    const user_reservations = await axios.delete(`/api/reservations/${reservation_id}`);
+    dispatch({
+      type: GET_SELECTED_RESERVATIONS,
+      payload: user_reservations.data
+    })
+  }
+}
+
 /**********************
 
 LISTING ACTIONS

@@ -50,4 +50,27 @@ module.exports = app => {
 
     res.send(user_reservations);
   });
+
+  //delete reservation route
+  app.delete("/api/reservations/:id", async (req, res) => {
+    let reservation = await Reservation.findOne({_id: req.params.id});
+    let reserved_by = reservation.reserved_by;
+    let listing_id = reservation.listing_id;
+
+    await Reservation.find({_id: req.params.id}).remove();
+    const user_reservations = await Reservation.find({
+      reserved_by: reserved_by
+    });
+
+    await Listing.findOneAndUpdate(
+      { _id: listing_id },
+      {
+        reservation_id: undefined,
+        reserved_by: undefined
+      },
+      { new: true }
+    );
+
+    res.send(user_reservations);
+  });
 };
