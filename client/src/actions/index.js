@@ -392,15 +392,11 @@ export function createListing(values, type) {
 
 export function deleteListing(id) {
   return dispatch => {
-    axios.delete(`/api/listings/${id}`).then(result => {
+    axios.delete(`/api/listings/${id}`).then(listings => {
       dispatch({
         type: FETCH_LISTINGS,
-        payload: result.data.listings
+        payload: listings.data
       });
-      dispatch({
-        type: GET_SELECTED_RESERVATIONS,
-        payload: result.data.user_reservations
-      })
     });
   };
 }

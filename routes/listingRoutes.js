@@ -66,13 +66,10 @@ module.exports = app => {
     const listing = await Listing.findOne({ _id: `${req.params.id}` });
 
     await Reservation.find({ listing_id: listing._id }).remove();
-    const user_reservations = await Reservation.find({
-      reserved_by: listing.reserved_by
-    });
 
     await Listing.find({ _id: req.params.id }).remove();
     const listings = await Listing.find();
 
-    res.send({ listings, user_reservations });
+    res.send(listings);
   });
 };
