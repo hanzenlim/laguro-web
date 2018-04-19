@@ -33,12 +33,11 @@ class ReservationOptions extends Component {
     const { time_end, time_start } = this.state;
 
     let appt_time = moment(time_start);
-    let last_time = moment(time_end);
 
     let appointments = [];
-    let duration = 0;
+    let duration = 60;
 
-    switch (values.appts_per_hour) {
+    switch (Number(values.appts_per_hour)) {
       case 1:
         duration = 60;
         break;
@@ -52,12 +51,12 @@ class ReservationOptions extends Component {
         duration = 15;
         break;
       default:
-        return "";
+        return 60;
     }
 
-    while (appt_time.isBefore(last_time)) {
-      appointments.push({ time: appt_time });
-      appt_time = appt_time.add(duration, "minute");
+    while (appt_time.isBefore(moment(time_end))) {
+      appointments.push({ time: appt_time.format("MMM D, YYYY h:mm a") });
+      appt_time = appt_time.add(duration, "minutes");
     }
 
     this.props.createReservation({
