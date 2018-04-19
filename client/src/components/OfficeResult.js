@@ -7,7 +7,17 @@ import { Link } from "react-router-dom";
 class OfficeResult extends Component {
   renderTimes(listings) {
     if (listings) {
-      return listings.filter(listing => (!listing.reserved_by)).map(listing => (
+      let filteredListings = listings.filter(listing => !listing.reserved_by);
+
+      if (filteredListings.length === 0) {
+        return (
+          <div className="valign-wrapper">
+            <small>No times available</small>
+          </div>
+        );
+      }
+
+      return filteredListings.map(listing => (
         <Link
           key={listing._id}
           to={`/offices/${listing.office}/listings/${listing._id}`}
@@ -44,11 +54,7 @@ class OfficeResult extends Component {
             <h6>{this.props.location}</h6>
           </div>
           <div className="rating">
-            <ReactStars
-              count={5}
-              edit={false}
-              value={this.props.avg_rating}
-            />
+            <ReactStars count={5} edit={false} value={this.props.avg_rating} />
             <span className="rating_count">
               {`${this.props.rating_count} Reviews`}
             </span>
