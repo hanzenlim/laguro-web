@@ -273,6 +273,21 @@ class Profile extends Component {
   renderReservations() {
     const { reservations } = this.props;
 
+    if(reservations.length === 0) {
+      return(
+        <div>
+          <h6>{"No reservations yet - "}
+            <Link
+              className="blue-text text-darken-2"
+              to={`/offices/search`}
+              >
+                search for new listings and make a reservation
+              </Link>
+          </h6>
+        </div>
+      )
+    }
+
     return reservations.map((reservation, index) => (
       <div key={index} className="reservation card-panel grey lighten-5">
         <Link
