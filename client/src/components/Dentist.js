@@ -105,7 +105,7 @@ class Profile extends Component {
           <div className="top-bar">
             <Link
               className="blue-text text-darken-2"
-              to={`/offices/${reservation.office_id}/listings/${reservation.listing_id}`}
+              to={`/offices/${reservation.office_id}`}
             >
               <p>
                 {moment(reservation.time_start).format("MMM D, h:mm - ")}
