@@ -352,6 +352,20 @@ export const deleteReservation = (reservation_id) => {
   }
 }
 
+// call this function with no patient_id to cancel appt
+export const reserveAppointment = (reserv_id, appt_id, patient_id = undefined) => {
+  return dispatch => {
+    axios.patch(
+      `/api/reservations/${reserv_id}/appointments`, {appt_id, patient_id}
+    ).then(user_reservations => {
+      dispatch({
+        type: GET_SELECTED_RESERVATIONS,
+        payload: user_reservations.data
+      });
+    });
+  };
+}
+
 /**********************
 
 LISTING ACTIONS

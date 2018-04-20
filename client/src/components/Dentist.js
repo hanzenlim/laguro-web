@@ -57,10 +57,13 @@ class Profile extends Component {
     );
   }
 
-  renderApptTimes(appts) {
-    return appts.map((appt, index) => (
-      <div key={index}>{moment(appt.time).format("h:mm a")}</div>
-    ))
+  reserveAppt(reservation, appt) {
+    const { auth } = this.props;
+    if (auth && auth.data) {
+      this.props.reserveAppointment(reservation._id, appt._id, auth._id);
+    }
+  }
+
   renderApptTimes(reservation) {
     const { auth } = this.props;
     const { appointments } = reservation;
@@ -71,6 +74,7 @@ class Profile extends Component {
           <span
             className="light-green-text text-accent-4"
             style={{ cursor: "pointer" }}
+            onClick={this.reserveAppt.bind(this, reservation, appt)}
           >
             {auth && auth.data ?
                `${moment(appt.time).format("h:mm a")} - Available!`
