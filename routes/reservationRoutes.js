@@ -10,14 +10,14 @@ module.exports = app => {
       listing_id,
       office_id,
       host_id,
-    	office_name,
-    	office_img,
-    	chairs_selected,
-    	appointments,
-    	staff_selected,
-    	total_paid,
-    	time_start,
-    	time_end
+      office_name,
+      office_img,
+      chairs_selected,
+      appointments,
+      staff_selected,
+      total_paid,
+      time_start,
+      time_end
     } = req.body;
 
     let newReservation = await Reservation.create({
@@ -25,14 +25,14 @@ module.exports = app => {
       office_id,
       host_id,
       reserved_by,
-    	office_name,
-    	office_img,
-    	chairs_selected,
-    	appointments,
-    	staff_selected,
-    	total_paid,
-    	time_start,
-    	time_end
+      office_name,
+      office_img,
+      chairs_selected,
+      appointments,
+      staff_selected,
+      total_paid,
+      time_start,
+      time_end
     });
 
     let updatedListing = await Listing.findOneAndUpdate(
@@ -44,9 +44,6 @@ module.exports = app => {
     res.send(updatedListing);
   });
 
-  //get user offices route
-  app.get("/api/user/reservations", async (req, res) => {
-    const user_reservations = await Reservation.find({reserved_by: req.user._id});
   //get user reservations route
   app.get("/api/reservations/user", async (req, res) => {
     const user_reservations = await Reservation.find({
@@ -65,17 +62,34 @@ module.exports = app => {
     res.send(dentist_reservations);
   });
 
+  //reserve an appt within reservation
+  app.patch("/api/reservations/:res_id/appointments", async (req, res) => {
+    let appt_id = req.body.appt_id;
+    let reservation_id = req.params.res_id;
+    let patient_id = req.body.patient_id;
+
+    let reservation = await Reservation.findOne({ _id: reservation_id });
+
+    let appointment = reservation.appointments.id(appt_id);
+
+    appointment.patient_id = patient_id;
+
+    await reservation.save();
+
+    const user_reservations = await Reservation.find({
+      reserved_by: reservation.reserved_by
+    });
 
     res.send(user_reservations);
   });
 
   //delete reservation route
   app.delete("/api/reservations/:id", async (req, res) => {
-    let reservation = await Reservation.findOne({_id: req.params.id});
+    let reservation = await Reservation.findOne({ _id: req.params.id });
     let reserved_by = reservation.reserved_by;
     let listing_id = reservation.listing_id;
 
-    await Reservation.find({_id: req.params.id}).remove();
+    await Reservation.find({ _id: req.params.id }).remove();
     const user_reservations = await Reservation.find({
       reserved_by: reserved_by
     });
