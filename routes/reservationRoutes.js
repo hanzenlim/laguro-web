@@ -47,6 +47,24 @@ module.exports = app => {
   //get user offices route
   app.get("/api/user/reservations", async (req, res) => {
     const user_reservations = await Reservation.find({reserved_by: req.user._id});
+  //get user reservations route
+  app.get("/api/reservations/user", async (req, res) => {
+    const user_reservations = await Reservation.find({
+      reserved_by: req.user._id
+    });
+
+    res.send(user_reservations);
+  });
+
+  //get dentist reservations route
+  app.get("/api/reservations/dentist/:dentist_id", async (req, res) => {
+    const dentist_reservations = await Reservation.find({
+      reserved_by: req.params.dentist_id
+    });
+
+    res.send(dentist_reservations);
+  });
+
 
     res.send(user_reservations);
   });

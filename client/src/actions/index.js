@@ -306,7 +306,7 @@ export function deleteReview(id) {
 
 /**********************
 
-LISTING ACTIONS
+RESERVATION ACTIONS
 
 ***********************/
 
@@ -324,10 +324,20 @@ export const createReservation = (details) => {
 
 export const fetchUserReservations = () => {
   return async dispatch => {
-    const user_reservations = await axios.get(`/api/user/reservations`);
+    const user_reservations = await axios.get(`/api/reservations/user`);
     dispatch({
       type: GET_SELECTED_RESERVATIONS,
       payload: user_reservations.data
+    })
+  }
+}
+
+export const fetchDentistReservations = (dentist_id) => {
+  return async dispatch => {
+    const dentist_reservations = await axios.get(`/api/reservations/dentist/${dentist_id}`);
+    dispatch({
+      type: GET_SELECTED_RESERVATIONS,
+      payload: dentist_reservations.data
     })
   }
 }

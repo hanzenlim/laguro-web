@@ -11,12 +11,13 @@ import ReviewContainer from "./ReviewContainer";
 class Profile extends Component {
   componentWillMount() {
     this.dentist_id = this.props.match.params.id;
-		this.props.fetchReviews(this.dentist_id);
+    this.props.fetchReviews(this.dentist_id);
     this.props.fetchListings();
-    this.props.fetchUserReservations();
 
     this.getDentist().then(dentist => {
       document.title = `Laguro - ${dentist.name}`;
+      this.dentist_user_id = dentist.user_id;
+      this.props.fetchDentistReservations(this.dentist_user_id);
     });
   }
 
