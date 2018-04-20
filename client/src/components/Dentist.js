@@ -51,9 +51,7 @@ class Profile extends Component {
             size={18}
             value={this.avg_rating}
           />
-          <span className="rating_count">
-            {`${this.rating_count} Reviews`}
-          </span>
+          <span className="rating_count">{`${this.rating_count} Reviews`}</span>
         </div>
       </div>
     );
@@ -63,6 +61,35 @@ class Profile extends Component {
     return appts.map((appt, index) => (
       <div key={index}>{moment(appt.time).format("h:mm a")}</div>
     ))
+  renderApptTimes(reservation) {
+    const { auth } = this.props;
+    const { appointments } = reservation;
+    return appointments.map((appt, index) => (
+      <div key={index}>
+        {/*If no paient has reserved this appt*/}
+        {!appt.patient_id ? (
+          <span
+            className="light-green-text text-accent-4"
+            style={{ cursor: "pointer" }}
+          >
+            {auth && auth.data ?
+               `${moment(appt.time).format("h:mm a")} - Available!`
+               :
+               `${moment(appt.time).format("h:mm a")} - Login to reserve!`
+            }
+          </span>
+        ) : (
+          <span
+            className="grey-text"
+            style={{
+              textDecoration: "line-through"
+            }}
+          >
+            {`${moment(appt.time).format("h:mm a")} - Reserved`}
+          </span>
+        )}
+      </div>
+    ));
   }
 
   renderReservations() {
@@ -86,9 +113,7 @@ class Profile extends Component {
               </p>
             </Link>
           </div>
-          <div>
-            {this.renderApptTimes(reservation.appointments)}
-          </div>
+          <div>{this.renderApptTimes(reservation)}</div>
         </div>
       </div>
     ));
@@ -102,15 +127,18 @@ class Profile extends Component {
     }
     // calculate avg rating
     if (reviews && reviews.length) {
-      let dentistReviews = reviews.filter(review => (review.reviewee_id === dentist._id))
+      let dentistReviews = reviews.filter(
+        review => review.reviewee_id === dentist._id
+      );
       this.avg_rating =
-        dentistReviews.map(review => (review.rating)).reduce((acc, rating) => acc + rating, 0) / dentistReviews.length;
+        dentistReviews
+          .map(review => review.rating)
+          .reduce((acc, rating) => acc + rating, 0) / dentistReviews.length;
       this.rating_count = dentistReviews.length;
     } else {
       this.avg_rating = 0;
       this.rating_count = 0;
     }
-
 
     return (
       <div className="profile_container">
@@ -135,16 +163,16 @@ class Profile extends Component {
               {this.renderReservations()}
             </div>
           </div>
-					<div className="profile_section">
-						<h5>{"Reviews for " + dentist.name}</h5>
-						{/* if logged out, hide new review form */}
-						{auth && auth.data ? <NewReview reviewee={dentist} /> : ""}
-						<ReviewContainer
-							reviewee_id={dentist._id}
-							reviewee_name={dentist.name}
-							reviews={reviews}
-						/>
-					</div>
+          <div className="profile_section">
+            <h5>{"Reviews for " + dentist.name}</h5>
+            {/* if logged out, hide new review form */}
+            {auth && auth.data ? <NewReview reviewee={dentist} /> : ""}
+            <ReviewContainer
+              reviewee_id={dentist._id}
+              reviewee_name={dentist.name}
+              reviews={reviews}
+            />
+          </div>
         </div>
       </div>
     );
@@ -157,7 +185,7 @@ function mapStateToProps(state) {
     listings: state.listings.all,
     reservations: state.reservations.selected,
     dentist: state.dentists.selectedDentist,
-		reviews: state.reviews.selected
+    reviews: state.reviews.selected
   };
 }
 export default connect(mapStateToProps, actions)(Profile);
