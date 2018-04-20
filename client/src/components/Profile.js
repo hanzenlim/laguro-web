@@ -348,10 +348,6 @@ class Profile extends Component {
   render() {
     const { auth, reviews } = this.props;
     const { dentist } = this.state;
-    // if dentist still hasn't loaded, wait for render
-    if (!dentist || Object.keys(dentist).length === 0) {
-      return <div>Loading...</div>;
-    }
 
     return (
       <div className="profile_container">
