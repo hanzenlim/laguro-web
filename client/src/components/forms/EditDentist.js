@@ -4,7 +4,6 @@ import { Field, FieldArray, reduxForm } from "redux-form";
 import ReactFilestack from "filestack-react";
 import { Link } from "react-router-dom";
 
-import keys from "../../config/keys";
 import * as actions from "../../actions";
 
 class EditDentist extends Component {

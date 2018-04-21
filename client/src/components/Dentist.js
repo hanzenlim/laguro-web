@@ -76,11 +76,9 @@ class Profile extends Component {
             style={{ cursor: "pointer" }}
             onClick={this.reserveAppt.bind(this, reservation, appt)}
           >
-            {auth && auth.data ?
-               `${moment(appt.time).format("h:mm a")} - Available!`
-               :
-               `${moment(appt.time).format("h:mm a")} - Login to reserve!`
-            }
+            {auth && auth.data
+              ? `${moment(appt.time).format("h:mm a")} - Available!`
+              : `${moment(appt.time).format("h:mm a")} - Login to reserve!`}
           </span>
         ) : (
           <span

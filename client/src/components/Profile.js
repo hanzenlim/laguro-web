@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import ReactFilestack from "filestack-react";
 import * as actions from "../actions";
-import keys from "../config/keys";
 import moment from "moment";
 import ReviewContainer from "./ReviewContainer";
 
