@@ -163,7 +163,7 @@ class EditOffice extends Component {
 				<div className="image_upload">
 					<div className="image_display">{this.renderUploadedImages()}</div>
 					<ReactFilestack
-						apikey={keys.filestack}
+						apikey={"Aj4gwfCaTS2Am35P0QGrbz"}
 						buttonText="Upload New Image"
 						buttonClass="btn light-blue lighten-2"
 						options={{
