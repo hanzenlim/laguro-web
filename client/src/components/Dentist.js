@@ -60,7 +60,7 @@ class Profile extends Component {
   reserveAppt(reservation, appt) {
     const { auth } = this.props;
     if (auth && auth.data) {
-      this.props.reserveAppointment(reservation._id, appt._id, auth._id);
+      this.props.reserveAppointment(reservation._id, appt._id, auth.data._id);
     }
   }
 
