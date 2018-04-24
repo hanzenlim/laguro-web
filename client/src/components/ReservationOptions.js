@@ -185,35 +185,49 @@ class ReservationOptions extends Component {
     );
   };
 
-  calcTotal() {
-    let staffData = this.props.staff_selected;
+  calcTime() {
     let { time_start, time_end } = this.state;
-    let { chairs_selected, listing } = this.props;
     let minutes = time_end.diff(time_start, "minutes");
-    let hours = minutes / 60;
-    let booking_fee = 50;
+    this.hours = minutes / 60;
+  }
 
-    if (hours <= 0) {
-      return booking_fee;
+  calcBookingFee() {
+    let { chairs_selected, listing } = this.props;
+    let chair_price = chairs_selected * listing.price * this.hours;
+
+    this.booking_fee = chair_price * 0.15;
+
+    return this.booking_fee;
+  }
+
+  calcTotal() {
+    let { chairs_selected, listing } = this.props;
+    let staffData = this.props.staff_selected;
+
+    if (this.hours <= 0) {
+      return 0;
     }
 
-    let chair_price = chairs_selected * listing.price * hours;
+    let chair_price = chairs_selected * listing.price * this.hours;
 
     if (!staffData || !staffData.length) {
-      return booking_fee + chair_price;
+      return this.booking_fee + chair_price;
     }
 
     let subtotals = staffData.map(
-      (staff, index) => staff.count * staff.price * hours
+      (staff, index) => staff.count * staff.price * this.hours
     );
 
     return (
-      booking_fee + chair_price + subtotals.reduce((acc, sub) => sub + acc)
+      this.booking_fee + chair_price + subtotals.reduce((acc, sub) => sub + acc)
     );
   }
 
   render() {
     const { handleSubmit, submitting, listing } = this.props;
+
+    this.calcTime();
+
     return (
       <form
         onSubmit={handleSubmit(this.onSubmit.bind(this))}
@@ -284,8 +298,8 @@ class ReservationOptions extends Component {
 
         <div className="row">
           <div className="col s6 left-align">
-            <label>Booking Fee</label>
-            <h6 className="red-text">$50</h6>
+            <label>Booking Fee - 15% of chair time</label>
+            <h6 className="red-text">${this.calcBookingFee()}</h6>
           </div>
           <div className="col s6 right-align">
             <label>Total due</label>
