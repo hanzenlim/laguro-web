@@ -268,7 +268,10 @@ class ReservationOptions extends Component {
               style={{ display: "block" }}
               component="select"
             >
-              {this.renderOptions(4)}
+              <option value={1}>1 - 60 min appointments</option>
+              <option value={2}>2 - 30 min appointments</option>
+              <option value={3}>3 - 20 min appointments</option>
+              <option value={4}>4 - 15 min appointments</option>
             </Field>
           </label>
           <label className="col s5 offset-s2">
