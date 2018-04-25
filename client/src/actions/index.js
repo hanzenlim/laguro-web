@@ -203,6 +203,7 @@ export const fetchOffices = filters => {
 
 export const fetchUserOffices = () => {
   return async dispatch => {
+    dispatch(requestOffices());
     const offices = await axios.get(`/api/user/offices`);
     dispatch({
       type: GET_SELECTED_OFFICES,

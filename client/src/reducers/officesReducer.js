@@ -26,6 +26,7 @@ export default function(state = {
     case GET_SELECTED_OFFICES:
       return Object.assign({}, state, {
         ...state,
+        isFetching: false,
         selected: action.payload
       })
     default:
