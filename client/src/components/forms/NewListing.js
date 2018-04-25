@@ -22,6 +22,7 @@ class NewListing extends Component {
 
   onSubmit(values) {
     if (
+      // if chosen duration is less than 2 hrs
       moment(values.time_available)
         .add(2, "hours")
         .isAfter(values.time_closed)
@@ -29,6 +30,11 @@ class NewListing extends Component {
       throw new SubmissionError({
         time_closed: "Minimum reservation is 2 hours",
         _error: "Invalid time frame, please correct error above"
+      });
+    } else if( !values.office ) {
+      throw new SubmissionError({
+        office: "Please select an office",
+        _error: "Please select an office above"
       });
     } else {
       let office = JSON.parse(values.office);
@@ -175,13 +181,6 @@ class NewListing extends Component {
     </ul>
   );
 
-  handleChange(dateType, date) {
-    let stateObject = {};
-    stateObject[dateType] = date;
-
-    this.setState(stateObject);
-  }
-
   renderDatePicker = ({
     input,
     label,
@@ -211,7 +210,7 @@ class NewListing extends Component {
   };
 
   render() {
-    const { handleSubmit, submitting } = this.props;
+    const { handleSubmit, submitting, error } = this.props;
 
     if (!this.props.initialized || this.props.isFetching)
       return <div>Loading...</div>;
@@ -234,7 +233,6 @@ class NewListing extends Component {
           Select an existing office
           <Field
             name="office"
-            type="select"
             style={{ display: "block" }}
             component="select"
           >
@@ -297,6 +295,7 @@ class NewListing extends Component {
         </div>
 
         <div className="form-buttons">
+          {error && <strong className="red-text">{error}</strong>}
           <button
             className="waves-effect btn light-blue lighten-2"
             type="submit"
