@@ -1,6 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Field, FieldArray, reduxForm, formValueSelector } from "redux-form";
+import {
+  Field,
+  FieldArray,
+  reduxForm,
+  formValueSelector,
+  SubmissionError
+} from "redux-form";
 import DatePicker from "react-datepicker";
 import moment from "moment";
 
@@ -9,71 +15,68 @@ import * as actions from "../actions";
 import "react-datepicker/dist/react-datepicker.css";
 
 class ReservationOptions extends Component {
-  constructor(props) {
-    super(props);
-    const { listing } = this.props;
-
-    this.state = {
-      time_start: moment(listing.time_available),
-      time_end: moment(listing.time_closed),
-      total_due: 0
-    };
-  }
-
   componentWillMount() {
+    const { listing } = this.props;
     this.props.initialize({
-      staff_selected: this.props.listing.staff,
+      staff_selected: listing.staff,
       chairs_selected: 1,
-      appts_per_hour: 1
+      appts_per_hour: 1,
+      time_start: moment(listing.time_available),
+      time_end: moment(listing.time_closed)
     });
   }
 
-  onSubmit(values) {
-    const { reset, listing, office } = this.props;
-    const { time_end, time_start } = this.state;
+  createReservation(values) {
+    const { listing, office, time_start, time_end } = this.props;
 
-    let appt_time = moment(time_start);
+    let selected_start = moment(time_start);
 
-    let appointments = [];
-    let duration = 60;
+    if (selected_start.add(2, "hours").isAfter(time_end)) {
+      throw new SubmissionError({
+        time_end: "Minimum reservation is 2 hours",
+        _error: "Invalid time frame, please correct error above"
+      });
+    } else {
+      let duration = 60;
 
-    switch (Number(values.appts_per_hour)) {
-      case 1:
+      switch (Number(values.appts_per_hour)) {
+        case 1:
         duration = 60;
         break;
-      case 2:
+        case 2:
         duration = 30;
         break;
-      case 3:
+        case 3:
         duration = 20;
         break;
-      case 4:
+        case 4:
         duration = 15;
         break;
-      default:
-        return 60;
+        default:
+        break;
+      }
+
+      let appt_time = moment(time_start);
+      let appointments = [];
+
+      while (appt_time.isBefore(moment(time_end))) {
+        appointments.push({ time: appt_time.format("MMM D, YYYY h:mm a") });
+        appt_time = appt_time.add(duration, "minutes");
+      }
+
+      this.props.createReservation({
+        ...values,
+        listing_id: listing._id,
+        office_id: office._id,
+        host_id: listing.host,
+        office_name: office.name,
+        office_img: office.img_url[0],
+        appointments,
+        total_paid: this.calcTotal()
+      });
+
+      this.closeModals();
     }
-
-    while (appt_time.isBefore(moment(time_end))) {
-      appointments.push({ time: appt_time.format("MMM D, YYYY h:mm a") });
-      appt_time = appt_time.add(duration, "minutes");
-    }
-
-    this.props.createReservation({
-      ...values,
-      listing_id: listing._id,
-      office_id: office._id,
-      host_id: listing.host,
-      office_name: office.name,
-      office_img: office.img_url[0],
-      appointments,
-      total_paid: this.calcTotal(),
-      time_start,
-      time_end
-    });
-
-    reset();
-    this.closeModals();
   }
 
   closeModals() {
@@ -106,37 +109,42 @@ class ReservationOptions extends Component {
     return options;
   };
 
-  handleChange(dateType, date) {
-    let stateObject = {};
-    stateObject[dateType] = moment(date);
-
-    this.setState(stateObject);
-  }
-
   renderDatePicker = ({
+    input,
     label,
     className,
     selectedDate,
     dateType,
-    listing
+    listing,
+    meta: { touched, error }
   }) => {
+    const { time_start, time_end } = this.props;
     return (
       <div className={className}>
         <label>{label}</label>
         <DatePicker
-          selected={selectedDate ? moment(selectedDate) : moment()}
-          onChange={this.handleChange.bind(this, dateType)}
+          selected={input.value}
+          onChange={input.onChange.bind(this)}
           dateFormat="LLL"
           placeholderText={moment().format("MMM DD, YYYY")}
           minDate={moment(listing.time_available)}
           maxDate={moment(listing.time_closed)}
-          minTime={moment(listing.time_available)}
-          maxTime={moment(listing.time_closed)}
+          minTime={
+            dateType === "time_start"
+              ? moment(listing.time_available)
+              : moment(time_start).add(2, "hours")
+          }
+          maxTime={
+            dateType === "time_start"
+              ? moment(time_end).subtract(2, "hours")
+              : moment(listing.time_closed)
+          }
           showTimeSelect
           timeFormat="h:mm"
           timeIntervals={60}
           timeCaption="Time"
         />
+        {touched && error && <span className="red-text">{error}</span>}
       </div>
     );
   };
@@ -186,7 +194,7 @@ class ReservationOptions extends Component {
   };
 
   calcTime() {
-    let { time_start, time_end } = this.state;
+    let { time_start, time_end } = this.props;
     let minutes = time_end.diff(time_start, "minutes");
     this.hours = minutes / 60;
   }
@@ -224,13 +232,15 @@ class ReservationOptions extends Component {
   }
 
   render() {
-    const { handleSubmit, submitting, listing } = this.props;
+    const { handleSubmit, submitting, listing, error } = this.props;
+
+    if (!this.props.initialized) return <div>Loading...</div>;
 
     this.calcTime();
 
     return (
       <form
-        onSubmit={handleSubmit(this.onSubmit.bind(this))}
+        onSubmit={handleSubmit(this.createReservation.bind(this))}
         className="modalForm light-blue lighten-5"
       >
         <div className="form_title">
@@ -242,7 +252,6 @@ class ReservationOptions extends Component {
             name="time_start"
             label="Doors opening"
             dateType="time_start"
-            selectedDate={this.state.time_start}
             className="col s12 m6"
             component={this.renderDatePicker}
             listing={listing}
@@ -252,7 +261,6 @@ class ReservationOptions extends Component {
             name="time_end"
             label="Doors closing"
             dateType="time_end"
-            selectedDate={this.state.time_end}
             className="col s12 m6"
             component={this.renderDatePicker}
             listing={listing}
@@ -310,7 +318,9 @@ class ReservationOptions extends Component {
           </div>
         </div>
 
+
         <div className="form-buttons">
+          {error && <strong className="red-text">{error}</strong>}
           <button
             className="waves-effect btn light-blue lighten-2"
             type="submit"
@@ -337,7 +347,9 @@ function mapStateToProps(state) {
   const selector = formValueSelector("reservationOptions");
   return {
     staff_selected: selector(state, "staff_selected"),
-    chairs_selected: selector(state, "chairs_selected")
+    chairs_selected: selector(state, "chairs_selected"),
+    time_start: selector(state, "time_start"),
+    time_end: selector(state, "time_end")
   };
 }
 
