@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Field, FieldArray, reduxForm } from "redux-form";
+import { Field, FieldArray, reduxForm, SubmissionError } from "redux-form";
 import DatePicker from "react-datepicker";
 import moment from "moment";
 import { Link } from "react-router-dom";
@@ -10,34 +10,35 @@ import * as actions from "../../actions";
 import "react-datepicker/dist/react-datepicker.css";
 
 class NewListing extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      time_available: moment(),
-      time_closed: moment()
-    };
-  }
-
   componentWillMount() {
     document.title = "Laguro - New Listing";
     this.props.fetchUserOffices();
+
+    this.props.initialize({
+      time_available: moment(),
+      time_closed: moment()
+    });
   }
 
   onSubmit(values) {
-    const { reset } = this.props;
-    const { time_available, time_closed } = this.state;
-    let office = JSON.parse(values.office);
-    this.props.createListing({
-      ...values,
-      office: office.id,
-      office_name: office.office_name,
-      office_img: office.office_img,
-      time_available,
-      time_closed
-    });
-
-    reset();
+    if (
+      moment(values.time_available)
+        .add(2, "hours")
+        .isAfter(values.time_closed)
+    ) {
+      throw new SubmissionError({
+        time_closed: "Minimum reservation is 2 hours",
+        _error: "Invalid time frame, please correct error above"
+      });
+    } else {
+      let office = JSON.parse(values.office);
+      this.props.createListing({
+        ...values,
+        office: office.id,
+        office_name: office.office_name,
+        office_img: office.office_img
+      });
+    }
   }
 
   renderOffices() {
@@ -181,15 +182,22 @@ class NewListing extends Component {
     this.setState(stateObject);
   }
 
-  renderDatePicker = ({ label, className, selectedDate, dateType }) => {
+  renderDatePicker = ({
+    input,
+    label,
+    className,
+    selectedDate,
+    dateType,
+    meta: { touched, error }
+  }) => {
     return (
       <div className={className}>
         <label>{label}</label>
         <DatePicker
-          selected={selectedDate ? moment(selectedDate) : moment()}
-          onChange={this.handleChange.bind(this, dateType)}
+          selected={input.value}
+          onChange={input.onChange.bind(this)}
           dateFormat="LLL"
-          placeholderText={moment().format("MMM DD, YYYY")}
+          placeholderText={moment().format("LLL")}
           minDate={moment()}
           showTimeSelect
           withPortal
@@ -197,12 +205,16 @@ class NewListing extends Component {
           timeIntervals={60}
           timeCaption="Time"
         />
+        {touched && error && <span className="red-text">{error}</span>}
       </div>
     );
   };
 
   render() {
     const { handleSubmit, submitting } = this.props;
+
+    if (!this.props.initialized || this.props.isFetching)
+      return <div>Loading...</div>;
 
     return (
       <form
@@ -271,7 +283,6 @@ class NewListing extends Component {
             name="time_available"
             label="Opening Time"
             dateType="time_available"
-            selectedDate={this.state.time_available}
             className="col s12 m6"
             component={this.renderDatePicker}
           />
@@ -280,7 +291,6 @@ class NewListing extends Component {
             name="time_closed"
             label="Closing Time"
             dateType="time_closed"
-            selectedDate={this.state.time_closed}
             className="col s12 m6"
             component={this.renderDatePicker}
           />
@@ -303,7 +313,10 @@ class NewListing extends Component {
 const required = value => (value && value !== "" ? undefined : "Required");
 
 function mapStateToProps(state) {
-  return { offices: state.offices.all };
+  return {
+    offices: state.offices.selected,
+    isFetching: state.offices.isFetching
+  };
 }
 
 export default reduxForm({
