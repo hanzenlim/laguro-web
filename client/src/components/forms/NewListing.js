@@ -1,6 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Field, FieldArray, reduxForm, SubmissionError } from "redux-form";
+import {
+  Field,
+  FieldArray,
+  reduxForm,
+  SubmissionError,
+  formValueSelector
+} from "redux-form";
 import DatePicker from "react-datepicker";
 import moment from "moment";
 import { Link } from "react-router-dom";
@@ -16,7 +22,8 @@ class NewListing extends Component {
 
     this.props.initialize({
       time_available: moment(),
-      time_closed: moment()
+      time_closed: moment(),
+      chairs_selected: 1
     });
   }
 
@@ -28,10 +35,9 @@ class NewListing extends Component {
         .isAfter(values.time_closed)
     ) {
       throw new SubmissionError({
-        time_closed: "Minimum reservation is 2 hours",
-        _error: "Invalid time frame, please correct error above"
+        time_closed: "Minimum reservation is 2 hours"
       });
-    } else if( !values.office ) {
+    } else if (!values.office) {
       throw new SubmissionError({
         office: "Please select an office",
         _error: "Please select an office above"
@@ -56,7 +62,8 @@ class NewListing extends Component {
           value={JSON.stringify({
             id: office._id,
             office_name: office.name,
-            office_img: office.img_url[0]
+            office_img: office.img_url[0],
+            chairs: office.chairs
           })}
           key={index}
         >
@@ -209,11 +216,40 @@ class NewListing extends Component {
     );
   };
 
+  renderOptions = (max_avail, min_avail = 1, label = "") => {
+    let options = [];
+    for (let i = min_avail; i <= max_avail; i++) {
+      options.push(
+        <option value={Number(i)} key={i}>
+          {`${i} ${label}`}
+        </option>
+      );
+    }
+    return options;
+  };
+
+  calcTime() {
+    let { time_available, time_closed } = this.props;
+    let minutes = time_closed.diff(time_available, "minutes");
+    this.hours = minutes / 60;
+  }
+
+  calcTotal() {
+    const { price, chairs_selected } = this.props;
+    if (this.hours <= 0 || !chairs_selected || !price) {
+      return 0;
+    }
+
+    return Math.floor(chairs_selected * price * this.hours * 0.2);
+  }
+
   render() {
-    const { handleSubmit, submitting, error } = this.props;
+    const { handleSubmit, submitting, error, selected_office } = this.props;
 
     if (!this.props.initialized || this.props.isFetching)
       return <div>Loading...</div>;
+
+    this.calcTime();
 
     return (
       <form
@@ -231,11 +267,7 @@ class NewListing extends Component {
         </div>
         <label>
           Select an existing office
-          <Field
-            name="office"
-            style={{ display: "block" }}
-            component="select"
-          >
+          <Field name="office" style={{ display: "block" }} component="select">
             <option value="">Please select an office...</option>
             {this.renderOffices()}
           </Field>
@@ -245,16 +277,31 @@ class NewListing extends Component {
             name="price"
             label="Price per chair (hourly)"
             placeholder="100"
-            className="col s12 m6"
+            className="col s4"
             component={this.renderField}
             validate={required}
           />
+
+          <label className="col s4">
+            Number of chairs needed
+            <Field
+              name="chairs_selected"
+              type="select"
+              style={{ display: "block" }}
+              component="select"
+            >
+              {this.renderOptions(
+                selected_office ? JSON.parse(selected_office).chairs : 1,
+                1
+              )}
+            </Field>
+          </label>
 
           <Field
             name="cleaning_fee"
             label="Cleaning Fee"
             placeholder="50"
-            className="col s12 m6"
+            className="col s4"
             component={this.renderField}
             validate={required}
           />
@@ -294,15 +341,21 @@ class NewListing extends Component {
           />
         </div>
 
-        <div className="form-buttons">
-          {error && <strong className="red-text">{error}</strong>}
-          <button
-            className="waves-effect btn light-blue lighten-2"
-            type="submit"
-            disabled={submitting}
-          >
-            Submit
-          </button>
+        <div className="row valign-wrapper">
+          <div className="col s6 left-align">
+            <label>Total due - 20% of total chair rental fee</label>
+            <h6 className="red-text">${this.calcTotal()}</h6>
+          </div>
+          <div className="form-buttons col s6 right-align">
+            {error && <strong className="red-text">{error}</strong>}
+            <button
+              className="waves-effect btn light-blue lighten-2"
+              type="submit"
+              disabled={submitting}
+            >
+              Submit
+            </button>
+          </div>
         </div>
       </form>
     );
@@ -311,13 +364,21 @@ class NewListing extends Component {
 
 const required = value => (value && value !== "" ? undefined : "Required");
 
+NewListing = reduxForm({
+  form: "newListing"
+})(NewListing);
+
 function mapStateToProps(state) {
+  const selector = formValueSelector("newListing");
   return {
+    time_available: selector(state, "time_available"),
+    time_closed: selector(state, "time_closed"),
+    price: selector(state, "price"),
+    selected_office: selector(state, "office"),
+    chairs_selected: selector(state, "chairs_selected"),
     offices: state.offices.selected,
     isFetching: state.offices.isFetching
   };
 }
 
-export default reduxForm({
-  form: "newListing"
-})(connect(mapStateToProps, actions)(NewListing));
+export default connect(mapStateToProps, actions)(NewListing);
