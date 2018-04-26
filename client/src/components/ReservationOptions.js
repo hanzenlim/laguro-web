@@ -30,7 +30,11 @@ class ReservationOptions extends Component {
   createReservation(values) {
     const { listing, office, time_start, time_end } = this.props;
 
-    if (moment(time_start).add(2, "hours").isAfter(time_end)) {
+    if (
+      moment(time_start)
+        .add(2, "hours")
+        .isAfter(time_end)
+    ) {
       throw new SubmissionError({
         time_end: "Minimum reservation is 2 hours",
         _error: "Invalid time frame, please correct error above"
@@ -38,7 +42,7 @@ class ReservationOptions extends Component {
     } else if (!values.acknowledge) {
       throw new SubmissionError({
         _error: "Please accept the terms to continue"
-      })
+      });
     } else {
       let duration = 60;
 
@@ -235,7 +239,7 @@ class ReservationOptions extends Component {
   }
 
   render() {
-    const { handleSubmit, submitting, listing, error } = this.props;
+    const { handleSubmit, submitting, listing, error, staff_selected } = this.props;
 
     if (!this.props.initialized) return <div>Loading...</div>;
 
@@ -302,13 +306,17 @@ class ReservationOptions extends Component {
           </label>
         </div>
 
-        <div>
-          <FieldArray
-            name="staff_selected"
-            className="row"
-            component={this.renderStaff}
-          />
-        </div>
+        {staff_selected && staff_selected.length ? (
+          <div>
+            <FieldArray
+              name="staff_selected"
+              className="row"
+              component={this.renderStaff}
+            />
+          </div>
+        ) : (
+          <div />
+        )}
 
         <div className="row">
           <div className="col s6 left-align">
@@ -323,15 +331,20 @@ class ReservationOptions extends Component {
 
         <div className="row">
           <sub>
-            *An additional 10% of final patient payment will be deducted on completion of procedure for use of Laguro services
+            *An additional 10% of final patient payment will be deducted on
+            completion of procedure for use of Laguro services
           </sub>
-          <br/>
+          <br />
           <sub>
-            **Payment for first two hours of selected staff payroll and booking fee are non-refundable
+            **Payment for first two hours of selected staff payroll and booking
+            fee are non-refundable
           </sub>
         </div>
 
-        <div className="row valign-wrapper" style={{marginTop: "30px", marginBottom: "0px"}}>
+        <div
+          className="row valign-wrapper"
+          style={{ marginTop: "30px", marginBottom: "0px" }}
+        >
           <div className="col s7 left-align">
             <Field
               name="acknowledge"
