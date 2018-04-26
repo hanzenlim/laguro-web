@@ -215,6 +215,7 @@ export const fetchUserOffices = () => {
 
 export const getOneOffice = id => {
   return async dispatch => {
+    dispatch(requestOffices());
     const office = await axios.get(`/api/offices/${id}`);
     dispatch({
       type: GET_SELECTED_OFFICES,

@@ -66,14 +66,9 @@ class OfficeResultIndex extends Component {
   }
 
   render() {
-    let { office, listing, reviews } = this.props;
+    let { office, listing, reviews, officeLoading, listingLoading } = this.props;
     // if dentist still hasn't loaded, wait for render
-    if (
-      !office ||
-      !listing ||
-      Object.keys(office).length === 0 ||
-      Object.keys(listing).length === 0
-    ) {
+    if (officeLoading || listingLoading) {
       return <div>Loading...</div>;
     }
 
@@ -175,6 +170,8 @@ class OfficeResultIndex extends Component {
 
 function mapStateToProps(state) {
   return {
+    officeLoading: state.offices.isFetching,
+    listingLoading: state.offices.isFetching,
     listing: state.listings.selected,
     office: state.offices.selected,
     reviews: state.reviews.selected,
