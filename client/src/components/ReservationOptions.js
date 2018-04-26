@@ -291,7 +291,7 @@ class ReservationOptions extends Component {
               component="select"
             >
               {this.renderOptions(
-                this.props.office.chairs,
+                this.props.listing.chairs_available,
                 1,
                 `- $${this.props.listing.price}/chair/hr`
               )}

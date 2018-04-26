@@ -5,6 +5,7 @@ export const FETCH_REVIEWS = 'fetch_reviews';
 export const FETCH_ALL_REVIEWS = 'fetch_all_reviews';
 export const REQUEST_OFFICES = 'request_offices';
 export const REQUEST_DENTISTS = 'request_dentists';
+export const REQUEST_LISTINGS = 'request_listings';
 export const FETCH_USER = 'fetch_user';
 export const UPDATE_FILTERS = 'update_filters';
 export const SET_FILTERS = 'set_filters';
