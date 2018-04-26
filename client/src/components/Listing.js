@@ -138,7 +138,7 @@ class OfficeResultIndex extends Component {
           </div>
         </div>
 
-        <div id="reservation_options" className="modal">
+        <div id="reservation_options" className="modal" style={{overflow: "visible"}}>
           <ReservationOptions listing={listing} office={office}/>
         </div>
         <div

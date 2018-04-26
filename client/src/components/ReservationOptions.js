@@ -22,38 +22,41 @@ class ReservationOptions extends Component {
       chairs_selected: 1,
       appts_per_hour: 1,
       time_start: moment(listing.time_available),
-      time_end: moment(listing.time_closed)
+      time_end: moment(listing.time_closed),
+      acknowledge: false
     });
   }
 
   createReservation(values) {
     const { listing, office, time_start, time_end } = this.props;
 
-    let selected_start = moment(time_start);
-
-    if (selected_start.add(2, "hours").isAfter(time_end)) {
+    if (moment(time_start).add(2, "hours").isAfter(time_end)) {
       throw new SubmissionError({
         time_end: "Minimum reservation is 2 hours",
         _error: "Invalid time frame, please correct error above"
       });
+    } else if (!values.acknowledge) {
+      throw new SubmissionError({
+        _error: "Please accept the terms to continue"
+      })
     } else {
       let duration = 60;
 
       switch (Number(values.appts_per_hour)) {
         case 1:
-        duration = 60;
-        break;
+          duration = 60;
+          break;
         case 2:
-        duration = 30;
-        break;
+          duration = 30;
+          break;
         case 3:
-        duration = 20;
-        break;
+          duration = 20;
+          break;
         case 4:
-        duration = 15;
-        break;
+          duration = 15;
+          break;
         default:
-        break;
+          break;
       }
 
       let appt_time = moment(time_start);
@@ -318,21 +321,37 @@ class ReservationOptions extends Component {
           </div>
         </div>
 
-
-        <div className="form-buttons">
-          {error && <strong className="red-text">{error}</strong>}
-          <button
-            className="waves-effect btn light-blue lighten-2"
-            type="submit"
-            disabled={submitting}
-          >
-            Submit
-          </button>
-        </div>
-        <div className="form_footer">
+        <div className="row">
           <sub>
-            *Payment for staff and initial booking fee is non-refundable
+            *An additional 10% of final patient payment will be deducted on completion of procedure for use of Laguro services
           </sub>
+          <br/>
+          <sub>
+            **Payment for first two hours of selected staff payroll and booking fee are non-refundable
+          </sub>
+        </div>
+
+        <div className="row valign-wrapper" style={{marginTop: "30px", marginBottom: "0px"}}>
+          <div className="col s7 left-align">
+            <Field
+              name="acknowledge"
+              id="acknowledge"
+              component="input"
+              type="checkbox"
+              className="browser-default"
+            />
+            I understand and agree to the terms above
+          </div>
+          <div className="form-buttons col s5 right-align">
+            {error && <strong className="red-text">{error}</strong>}
+            <button
+              className="waves-effect btn light-blue lighten-2"
+              type="submit"
+              disabled={submitting}
+            >
+              Submit
+            </button>
+          </div>
         </div>
       </form>
     );

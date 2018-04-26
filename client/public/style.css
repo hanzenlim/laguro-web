@@ -18,6 +18,13 @@ img {
   margin-left: 10px;
 }
 
+[type="checkbox"] {
+  position: inherit !important;
+  opacity: 1 !important;
+  pointer-events: all !important;
+  margin-right: 8px;
+}
+
 .react-datepicker-wrapper,
 .react-datepicker__input-container {
   width: 100%;
