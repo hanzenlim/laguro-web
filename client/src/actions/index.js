@@ -14,6 +14,7 @@ import {
   CREATE_DENTIST,
   REQUEST_OFFICES,
   REQUEST_DENTISTS,
+  REQUEST_LISTINGS,
   GET_ONE_DENTIST,
   GET_SELECTED_OFFICES,
   GET_SELECTED_LISTINGS,
@@ -373,8 +374,15 @@ LISTING ACTIONS
 
 ***********************/
 
+function requestListings() {
+  return {
+    type: REQUEST_LISTINGS
+  };
+}
+
 export const fetchListings = () => {
   return async dispatch => {
+    dispatch(requestListings());
     const listings = await axios.get(`/api/listings`);
     dispatch({
       type: FETCH_LISTINGS,
@@ -385,6 +393,7 @@ export const fetchListings = () => {
 
 export const getOfficeListings = office_id => {
   return async dispatch => {
+    dispatch(requestListings());
     const listings = await axios.get(`/api/offices/${office_id}/listings`);
     dispatch({
       type: GET_SELECTED_LISTINGS,
@@ -395,6 +404,7 @@ export const getOfficeListings = office_id => {
 
 export const getOneListing = listing_id => {
   return async dispatch => {
+    dispatch(requestOffices());
     const listing = await axios.get(`/api/listings/${listing_id}`);
     dispatch({
       type: GET_SELECTED_LISTINGS,

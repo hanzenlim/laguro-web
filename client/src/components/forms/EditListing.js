@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Field, FieldArray, reduxForm } from "redux-form";
+import { Field, FieldArray, reduxForm, formValueSelector, SubmissionError } from "redux-form";
 import DatePicker from "react-datepicker";
 import moment from "moment";
 import { Link } from "react-router-dom";
@@ -25,12 +25,12 @@ class EditListing extends Component {
 
 		this.getListing().then(listing => {
 			this.setState({
-				listing: listing,
-				time_available: listing.time_available,
-				time_closed: listing.time_closed
+				listing: listing
 			});
 
 			this.props.initialize({
+				time_available: moment(listing.time_available),
+				time_closed: moment(listing.time_closed),
 				equipment: listing.equipment,
 				staff: listing.staff,
 				cleaning_fee: listing.cleaning_fee,
@@ -41,11 +41,18 @@ class EditListing extends Component {
 	}
 
 	onSubmit(values) {
-		const { reset } = this.props;
-		const { time_available, time_closed, listing } = this.state;
-
-		this.props.editListing({...values, time_available, time_closed, id: listing._id });
-		reset();
+		if (
+      // if chosen duration is less than 2 hrs
+      moment(values.time_available)
+        .add(2, "hours")
+        .isAfter(values.time_closed)
+    ) {
+      throw new SubmissionError({
+        time_closed: "Minimum reservation is 2 hours"
+      });
+		} else {
+			// this.props.editListing({...values, id: this.listing_id });
+		}
 	}
 
 	async getListing() {
@@ -182,27 +189,33 @@ class EditListing extends Component {
 		this.setState(stateObject);
 	}
 
-	renderDatePicker = ({ label, className, selectedDate, dateType }) => {
-		return (
-			<div className={className}>
-				<label>{label}</label>
-				<DatePicker
-					selected={
-						selectedDate ? moment(selectedDate) : moment()
-					}
-					onChange={this.handleChange.bind(this, dateType)}
-					dateFormat="LLL"
-					placeholderText={moment().format("MMM DD, YYYY")}
-					minDate={moment()}
-					showTimeSelect
-					withPortal
-					timeFormat="h:mm a"
-					timeIntervals={60}
-					timeCaption="Time"
-				/>
-			</div>
-		);
-	};
+	renderDatePicker = ({
+    input,
+    label,
+    className,
+    selectedDate,
+    dateType,
+    meta: { touched, error }
+  }) => {
+    return (
+      <div className={className}>
+        <label>{label}</label>
+        <DatePicker
+          selected={input.value}
+          onChange={input.onChange.bind(this)}
+          dateFormat="LLL"
+          placeholderText={moment().format("LLL")}
+          minDate={moment()}
+          showTimeSelect
+          withPortal
+          timeFormat="h:mm a"
+          timeIntervals={60}
+          timeCaption="Time"
+        />
+        {touched && error && <span className="red-text">{error}</span>}
+      </div>
+    );
+  };
 
 	renderOptions = (max_avail, min_avail = 1, label = "") => {
 		let options = [];
@@ -216,8 +229,39 @@ class EditListing extends Component {
 		return options;
 	};
 
+	calcTime() {
+    let { time_available, time_closed } = this.props;
+    let minutes = time_closed.diff(time_available, "minutes");
+    this.hours = minutes / 60;
+  }
+
+  calcTotal() {
+    const { price, chairs_available } = this.props;
+		const { listing } = this.state;
+
+    if (this.hours <= 0 || !chairs_available || !price) {
+      return 0;
+    }
+
+		let old_minutes = moment(listing.time_closed).diff(moment(listing.time_available), "minutes");
+		let old_hours = old_minutes / 60;
+
+		let old_total = listing.chairs_available * listing.price * old_hours;
+		let new_total = chairs_available * price * this.hours;
+
+		let total_diff = new_total - old_total;
+		if(total_diff <= 0) return 0;
+
+    return Math.floor(total_diff * 0.2);
+  }
+
 	render() {
-		const { handleSubmit, submitting } = this.props;
+		const { handleSubmit, submitting, error } = this.props;
+
+		if (!this.props.initialized || this.props.isFetching)
+      return <div>Loading...</div>;
+
+    this.calcTime();
 
 		return (
 			<form
@@ -286,34 +330,39 @@ class EditListing extends Component {
 				</div>
 
 				<div className="row">
-					<Field
-						name="time_available"
-						label="Opening Time"
-						dateType="time_available"
-						selectedDate={this.state.time_available}
-						className="col s12 m6"
-						component={this.renderDatePicker}
-					/>
+          <Field
+            name="time_available"
+            label="Opening Time"
+            dateType="time_available"
+            className="col s12 m6"
+            component={this.renderDatePicker}
+          />
 
-					<Field
-						name="time_closed"
-						label="Closing Time"
-						dateType="time_closed"
-						selectedDate={this.state.time_closed}
-						className="col s12 m6"
-						component={this.renderDatePicker}
-					/>
-				</div>
+          <Field
+            name="time_closed"
+            label="Closing Time"
+            dateType="time_closed"
+            className="col s12 m6"
+            component={this.renderDatePicker}
+          />
+        </div>
 
-				<div className="form-buttons">
-					<button
-						className="waves-effect btn light-blue lighten-2"
-						type="submit"
-						disabled={submitting}
-					>
-						Submit
-					</button>
-				</div>
+				<div className="row valign-wrapper">
+          <div className="col s6 left-align">
+            <label>Additional listing fee due - 20% of adjusted chair rental fee</label>
+            <h6 className="red-text">${this.calcTotal()}</h6>
+          </div>
+          <div className="form-buttons col s6 right-align">
+            {error && <strong className="red-text">{error}</strong>}
+            <button
+              className="waves-effect btn light-blue lighten-2"
+              type="submit"
+              disabled={submitting}
+            >
+              Submit
+            </button>
+          </div>
+        </div>
 			</form>
 		);
 	}
@@ -321,10 +370,19 @@ class EditListing extends Component {
 
 const required = value => (value && value !== "" ? undefined : 'Required')
 
+EditListing = reduxForm({
+	form: "editListing"
+})(EditListing);
+
 function mapStateToProps(state) {
-	return { listings: state.listings.all };
+	const selector = formValueSelector("editListing");
+	return {
+		time_available: selector(state, "time_available"),
+		time_closed: selector(state, "time_closed"),
+		chairs_available: selector(state, "chairs_available"),    price: selector(state, "price"),
+		listings: state.listings.all,
+		isFetching: state.listings.isFetching
+	};
 }
 
-export default reduxForm({
-	form: "editListing"
-})(connect(mapStateToProps, actions)(EditListing));
+export default connect(mapStateToProps, actions)(EditListing);
