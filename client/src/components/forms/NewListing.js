@@ -258,7 +258,7 @@ class NewListing extends Component {
         className="bigForm light-blue lighten-5"
       >
         <div className="form_title">
-          <h4>Create a Listing for an Existing Office</h4>
+          <h4>Create a new listing</h4>
           <Link
             className="btn light-blue lighten-2 waves-effect"
             to={"/profile"}
@@ -266,6 +266,7 @@ class NewListing extends Component {
             Go back to profile
           </Link>
         </div>
+
         <label>
           Select an existing office
           <Field name="office" style={{ display: "block" }} component="select">
@@ -273,6 +274,25 @@ class NewListing extends Component {
             {this.renderOffices()}
           </Field>
         </label>
+
+        <div className="row">
+          <Field
+            name="time_available"
+            label="Opening Time"
+            dateType="time_available"
+            className="col s12 m6"
+            component={this.renderDatePicker}
+          />
+
+          <Field
+            name="time_closed"
+            label="Closing Time"
+            dateType="time_closed"
+            className="col s12 m6"
+            component={this.renderDatePicker}
+          />
+        </div>
+
         <div className="row">
           <Field
             name="price"
@@ -321,24 +341,6 @@ class NewListing extends Component {
             name="equipment"
             className="col s12"
             component={this.renderEquipment}
-          />
-        </div>
-
-        <div className="row">
-          <Field
-            name="time_available"
-            label="Opening Time"
-            dateType="time_available"
-            className="col s12 m6"
-            component={this.renderDatePicker}
-          />
-
-          <Field
-            name="time_closed"
-            label="Closing Time"
-            dateType="time_closed"
-            className="col s12 m6"
-            component={this.renderDatePicker}
           />
         </div>
 

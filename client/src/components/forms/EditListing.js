@@ -51,7 +51,7 @@ class EditListing extends Component {
         time_closed: "Minimum reservation is 2 hours"
       });
 		} else {
-			// this.props.editListing({...values, id: this.listing_id });
+			this.props.editListing({...values, id: this.listing_id });
 		}
 	}
 
@@ -269,13 +269,31 @@ class EditListing extends Component {
 				className="bigForm light-blue lighten-5"
 			>
 				<div className="form_title">
-					<h4>Edit Office Listing</h4>
+					<h4>Edit office listing</h4>
 					<Link
 						className="btn light-blue lighten-2 waves-effect"
 						to={"/profile"}
 					>
 						Go back to profile
 					</Link>
+				</div>
+
+				<div className="row">
+					<Field
+						name="time_available"
+						label="Opening Time"
+						dateType="time_available"
+						className="col s12 m6"
+						component={this.renderDatePicker}
+					/>
+
+					<Field
+						name="time_closed"
+						label="Closing Time"
+						dateType="time_closed"
+						className="col s12 m6"
+						component={this.renderDatePicker}
+					/>
 				</div>
 
 				<div className="row">
@@ -328,24 +346,6 @@ class EditListing extends Component {
 						component={this.renderEquipment}
 					/>
 				</div>
-
-				<div className="row">
-          <Field
-            name="time_available"
-            label="Opening Time"
-            dateType="time_available"
-            className="col s12 m6"
-            component={this.renderDatePicker}
-          />
-
-          <Field
-            name="time_closed"
-            label="Closing Time"
-            dateType="time_closed"
-            className="col s12 m6"
-            component={this.renderDatePicker}
-          />
-        </div>
 
 				<div className="row valign-wrapper">
           <div className="col s6 left-align">
