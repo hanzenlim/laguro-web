@@ -3,6 +3,9 @@ const { Schema } = mongoose;
 
 const listingSchema = new Schema({
 	office: { type: Schema.Types.ObjectId },
+	office_img: String,
+	office_name: String,
+	office_chairs: Number,
 	host: String,
 	reservation_id: String,
 	reserved_by: String,
@@ -15,6 +18,7 @@ const listingSchema = new Schema({
 		name: String,
 		price: Number
 	}],
+	chairs_available: Number,
 	cleaning_fee: Number,
 	time_available: Date,
 	time_closed: Date,

@@ -23,7 +23,7 @@ class NewListing extends Component {
     this.props.initialize({
       time_available: moment(),
       time_closed: moment(),
-      chairs_selected: 1
+      chairs_available: 1
     });
   }
 
@@ -48,7 +48,8 @@ class NewListing extends Component {
         ...values,
         office: office.id,
         office_name: office.office_name,
-        office_img: office.office_img
+        office_img: office.office_img,
+        office_chairs: office.chairs
       });
     }
   }
@@ -235,12 +236,12 @@ class NewListing extends Component {
   }
 
   calcTotal() {
-    const { price, chairs_selected } = this.props;
-    if (this.hours <= 0 || !chairs_selected || !price) {
+    const { price, chairs_available } = this.props;
+    if (this.hours <= 0 || !chairs_available || !price) {
       return 0;
     }
 
-    return Math.floor(chairs_selected * price * this.hours * 0.2);
+    return Math.floor(chairs_available * price * this.hours * 0.2);
   }
 
   render() {
@@ -283,9 +284,9 @@ class NewListing extends Component {
           />
 
           <label className="col s4">
-            Number of chairs needed
+            Number of chairs available
             <Field
-              name="chairs_selected"
+              name="chairs_available"
               type="select"
               style={{ display: "block" }}
               component="select"
@@ -375,7 +376,7 @@ function mapStateToProps(state) {
     time_closed: selector(state, "time_closed"),
     price: selector(state, "price"),
     selected_office: selector(state, "office"),
-    chairs_selected: selector(state, "chairs_selected"),
+    chairs_available: selector(state, "chairs_available"),
     offices: state.offices.selected,
     isFetching: state.offices.isFetching
   };

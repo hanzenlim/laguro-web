@@ -34,6 +34,7 @@ class EditListing extends Component {
 				equipment: listing.equipment,
 				staff: listing.staff,
 				cleaning_fee: listing.cleaning_fee,
+				chairs_available: listing.chairs_available,
 				price: listing.price
 			});
 		});
@@ -203,6 +204,18 @@ class EditListing extends Component {
 		);
 	};
 
+	renderOptions = (max_avail, min_avail = 1, label = "") => {
+		let options = [];
+		for (let i = min_avail; i <= max_avail; i++) {
+			options.push(
+				<option value={Number(i)} key={i}>
+					{`${i} ${label}`}
+				</option>
+			);
+		}
+		return options;
+	};
+
 	render() {
 		const { handleSubmit, submitting } = this.props;
 
@@ -226,16 +239,31 @@ class EditListing extends Component {
 						name="price"
 						label="Price per chair (hourly)"
 						placeholder="100"
-						className="col s12 m6"
+						className="col s12 m4"
 						validate={required}
 						component={this.renderField}
 					/>
+
+					<label className="col s12 m4">
+            Number of chairs available
+            <Field
+              name="chairs_available"
+              type="select"
+              style={{ display: "block" }}
+              component="select"
+            >
+              {this.renderOptions(
+ 								this.state.listing.office_chairs : 1,
+                1
+              )}
+            </Field>
+          </label>
 
 					<Field
 						name="cleaning_fee"
 						label="Cleaning Fee"
 						placeholder="50"
-						className="col s12 m6"
+						className="col s12 m4"
 						validate={required}
 						component={this.renderField}
 					/>
