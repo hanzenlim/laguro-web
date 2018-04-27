@@ -14,10 +14,6 @@ const listingSchema = new Schema({
 		price: Number,
 		count: Number
 	}],
-	equipment: [{
-		name: String,
-		price: Number
-	}],
 	chairs_available: Number,
 	cleaning_fee: Number,
 	time_available: Date,

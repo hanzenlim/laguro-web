@@ -50,7 +50,7 @@ class OfficeResultIndex extends Component {
 			if (reviews && reviews.length) {
         let officeReviews = reviews.filter(review => (review.reviewee_id === office._id))
 				this.avg_rating =
-					officeReviews.map(review => (review.rating)).reduce((acc, rating) => acc + rating) / officeReviews.length;
+					officeReviews.map(review => (review.rating)).reduce((acc, rating) => acc + rating, 0) / officeReviews.length;
 				this.rating_count = officeReviews.length;
 			} else {
 				this.avg_rating = 0;

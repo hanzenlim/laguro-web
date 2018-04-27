@@ -22,7 +22,7 @@ img {
   position: inherit !important;
   opacity: 1 !important;
   pointer-events: all !important;
-  margin-right: 8px;
+  margin: 0 8px;
 }
 
 .react-datepicker-wrapper,

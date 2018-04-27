@@ -145,50 +145,6 @@ class NewListing extends Component {
     </ul>
   );
 
-  renderEquipment = ({ fields, className, meta: { error } }) => (
-    <ul className={className}>
-      <label>Equipment Available</label>
-      <li>
-        <button
-          type="button"
-          className="waves-effect btn-flat"
-          onClick={() => fields.push({})}
-        >
-          Add Equipment
-        </button>
-        {error && <span>{error}</span>}
-      </li>
-      {fields.map((equipment, index) => (
-        <li key={index} className="multiRowAdd">
-          <Field
-            name={`${equipment}.name`}
-            type="text"
-            placeholder="Filling Setup"
-            component={this.renderField}
-            label="Equipment Type"
-            validate={required}
-          />
-          <Field
-            name={`${equipment}.price`}
-            type="text"
-            placeholder="15"
-            component={this.renderField}
-            label="Per Unit Price"
-            validate={required}
-          />
-          <button
-            type="button"
-            title="Remove Staff"
-            className="red lighten-3 waves-effect btn"
-            onClick={() => fields.remove(index)}
-          >
-            <i className="material-icons tiny">delete_forever</i>
-          </button>
-        </li>
-      ))}
-    </ul>
-  );
-
   renderDatePicker = ({
     input,
     label,
@@ -241,7 +197,7 @@ class NewListing extends Component {
       return 0;
     }
 
-    return Math.floor(chairs_available * price * this.hours * 0.2);
+    return Math.floor(chairs_available * price * this.hours * 0.2).toFixed(2);
   }
 
   render() {
@@ -333,14 +289,6 @@ class NewListing extends Component {
             name="staff"
             className="col s12"
             component={this.renderStaff}
-          />
-        </div>
-
-        <div className="row">
-          <FieldArray
-            name="equipment"
-            className="col s12"
-            component={this.renderEquipment}
           />
         </div>
 

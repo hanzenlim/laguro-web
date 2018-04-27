@@ -17,9 +17,9 @@ class OfficeResultIndex extends Component {
     this.props.fetchReviews(this.office_id);
   }
 
-  renderEquipment(listing) {
-    if (listing.equipment && listing.equipment.length) {
-      return listing.equipment.map(equipment => (
+  renderEquipment(office) {
+    if (office.equipment && office.equipment.length) {
+      return office.equipment.map(equipment => (
         <li className="listingRow" key={equipment.name}>
           {equipment.name} - ${equipment.price}
         </li>
@@ -77,7 +77,7 @@ class OfficeResultIndex extends Component {
       this.avg_rating =
         reviews
           .map(review => review.rating)
-          .reduce((acc, rating) => acc + rating) / reviews.length;
+          .reduce((acc, rating) => acc + rating, 0) / reviews.length;
       this.rating_count = reviews.length;
     } else {
       this.avg_rating = 0;
@@ -123,7 +123,7 @@ class OfficeResultIndex extends Component {
             </div>
             <div>
               <h5>Equipment Available</h5>
-              {this.renderEquipment(listing)}
+              {this.renderEquipment(office)}
             </div>
           </div>
 
@@ -133,7 +133,7 @@ class OfficeResultIndex extends Component {
           </div>
         </div>
 
-        <div id="reservation_options" className="modal" style={{overflow: "visible"}}>
+        <div id="reservation_options" className="modal" style={{overflow: "scroll"}}>
           <ReservationOptions listing={listing} office={office}/>
         </div>
         <div

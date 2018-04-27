@@ -8,7 +8,10 @@ const officeSchema = new Schema({
 	location: String,
 	img_url: [String],
 	chairs: Number,
-	rating: [Number],
+	equipment: [{
+		name: String,
+		price: Number
+	}],
 	date_created: {
 		type: Date,
 		default: Date.now
@@ -16,84 +19,3 @@ const officeSchema = new Schema({
 });
 
 const Office = mongoose.model("office", officeSchema);
-
-// const bell = new Office({
-// 	name: "Bell Dental Center",
-// 	location: "San Leandro, CA",
-// 	chairs: 7,
-// 	rating: [5, 5, 4, 5, 5, 5, 4, 5],
-// 	img_url: ["/img/bell.jpg", "/img/bell2.jpg", "/img/bell3.jpg"]
-// });
-//
-// bell.save();
-//
-// Listing.create({
-// 	office: bell._id,
-// 	staff: [
-// 		{
-// 			role: "RDA",
-// 			price: 30,
-// 			count: 3
-// 		},
-// 		{
-// 			role: "DA",
-// 			price: 17,
-// 			count: 2
-// 		}
-// 	],
-// 	equipment: [
-// 		{
-// 			name: "Sterilization",
-// 			price: 10
-// 		},
-// 		{
-// 			name: "Filling Setup",
-// 			price: 20
-// 		}
-// 	],
-// 	cleaning_fee: 50,
-// 	time_available: new Date('February 25, 2018 19:00:00'),
-// 	time_closed: new Date('February 25, 2018 22:00:00'),
-// 	price: 100
-// });
-//
-// Listing.create({
-// 	office: bell._id,
-// 	staff: [
-// 		{
-// 			role: "Front Desk",
-// 			price: 15,
-// 			count: 1
-// 		}
-// 	],
-// 	equipment: [
-// 		{
-// 			name: "Sterilization",
-// 			price: 10
-// 		},
-// 		{
-// 			name: "Filling Setup",
-// 			price: 20
-// 		}
-// 	],
-// 	cleaning_fee: 50,
-// 	time_available: new Date('February 26, 2018 20:00:00'),
-// 	time_closed: new Date('February 26, 2018 22:00:00'),
-// 	price: 100
-// });
-//
-// const albright = Office.create({
-// 	name: "Albright Dental",
-// 	location: "Oakland, CA",
-// 	chairs: 3,
-// 	rating: [4, 4, 3, 4, 5],
-// 	img_url: ["/img/albright.jpg"]
-// });
-//
-// const baysmile = Office.create({
-// 	name: "Baysmile Dental",
-// 	location: "Newark, CA",
-// 	chairs: 4,
-// 	rating: [4, 4, 3, 4, 4],
-// 	img_url: ["/img/baysmile.jpg"]
-// });

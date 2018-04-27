@@ -10,7 +10,6 @@ const dentistSchema = new Schema({
 	procedures: [{
 		name: String
 	}],
-	cart: [String],
 	date_created: {
 		type: Date,
 		default: Date.now
@@ -18,29 +17,3 @@ const dentistSchema = new Schema({
 });
 
 const Dentist = mongoose.model("dentist", dentistSchema);
-
-// Dentist.create({
-// 	name:"William Choi",
-// 	type:"General Dentist",
-// 	location:"San Leandro, CA",
-// 	img_url: "/img/choi.jpg",
-// 	badges:[
-// 		"Root Canal",
-// 		"Braces",
-// 		"Implants"
-// 	],
-// 	rating:[4,5,3,4,5,5]
-// });
-//
-// Dentist.create({
-// 	name:"Dyani Gaudilliere",
-// 	type:"Dental Researcher",
-// 	location:"Palo Alto, CA",
-// 	img_url: "/img/dyani.jpg",
-// 	badges:[
-// 		"Newsletters",
-// 		"Surgery",
-// 		"At Risk Patients"
-// 	],
-// 	rating:[4,4,3,4,5]
-// })

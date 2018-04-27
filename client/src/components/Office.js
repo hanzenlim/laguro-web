@@ -16,21 +16,34 @@ class OfficeResultIndex extends Component {
   }
 
   renderImages(office) {
+    if (!office.img_url || !office.img_url.length) return <div/>
     return office.img_url.map(url => (
       <img className="officeImg" key={url} src={url} alt="office" />
     ));
   }
 
-  render() {
-    let { office, auth, reviews } = this.props;
+  renderEquipment(office) {
+    if (office.equipment && office.equipment.length) {
+      return office.equipment.map(equipment => (
+        <li className="listingRow" key={equipment.name}>
+          {equipment.name} - ${equipment.price}
+        </li>
+      ));
+    } else {
+      return <li className="listingRow">No Equipment Available</li>;
+    }
+  }
 
-    if (!office || Object.keys(office).length === 0) {
+  render() {
+    let { office, auth, reviews, officeLoading } = this.props;
+
+    if (officeLoading) {
       return <div>Loading...</div>;
     } else {
 			// calculate avg rating
 			if (reviews && reviews.length) {
 				this.avg_rating =
-					reviews.map(review => (review.rating)).reduce((acc, rating) => acc + rating) / reviews.length;
+					reviews.map(review => (review.rating)).reduce((acc, rating) => acc + rating, 0) / reviews.length;
 				this.rating_count = reviews.length;
 			} else {
 				this.avg_rating = 0;
@@ -61,6 +74,14 @@ class OfficeResultIndex extends Component {
 			          </div>
 							</div>
             </div>
+
+            <div className="availableRow">
+              <div>
+                <h5>Equipment Available</h5>
+                {this.renderEquipment(office)}
+              </div>
+            </div>
+
 						<div className="profile_section">
 							<h5>{"Reviews for " + office.name}</h5>
 							{/* if logged out, hide new review form */}
@@ -80,6 +101,7 @@ class OfficeResultIndex extends Component {
 
 function mapStateToProps(state) {
   return {
+    officeLoading: state.offices.isFetching,
     listings: state.listings.selected,
     office: state.offices.selected,
 		reviews: state.reviews.selected,

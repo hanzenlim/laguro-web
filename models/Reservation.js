@@ -18,6 +18,10 @@ const reservationSchema = new Schema({
 		price: Number,
 		count: Number
 	}],
+	equip_selected: [{
+		name: String,
+		price: Number
+	}],
 	total_paid: Number,
 	time_start: Date,
 	time_end: Date,

@@ -15,6 +15,7 @@ module.exports = app => {
       chairs_selected,
       appointments,
       staff_selected,
+      equip_selected,
       total_paid,
       time_start,
       time_end
@@ -30,6 +31,7 @@ module.exports = app => {
       chairs_selected,
       appointments,
       staff_selected,
+      equip_selected,
       total_paid,
       time_start,
       time_end

@@ -34,7 +34,7 @@ class DentistResultIndex extends Component {
       if (reviews && reviews.length) {
         let dentistReviews = reviews.filter(review => (review.reviewee_id === dentist._id))
         this.avg_rating =
-          dentistReviews.map(review => (review.rating)).reduce((acc, rating) => acc + rating) / dentistReviews.length;
+          dentistReviews.map(review => (review.rating)).reduce((acc, rating) => acc + rating, 0) / dentistReviews.length;
         this.rating_count = dentistReviews.length;
       } else {
         this.avg_rating = 0;
