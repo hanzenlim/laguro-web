@@ -16,9 +16,11 @@ import "react-datepicker/dist/react-datepicker.css";
 
 class ReservationOptions extends Component {
   componentWillMount() {
-    const { listing } = this.props;
+    const { listing, office } = this.props;
+
     this.props.initialize({
       staff_selected: listing.staff,
+      equip_selected: office.equipment,
       chairs_selected: 1,
       appts_per_hour: 1,
       time_start: moment(listing.time_available),
@@ -71,8 +73,14 @@ class ReservationOptions extends Component {
         appt_time = appt_time.add(duration, "minutes");
       }
 
+      let equip_selected = values.equip_selected.filter(equip => equip.needed)
+
+      let staff_selected = values.staff_selected.filter(staff => staff.count > 0)
+
       this.props.createReservation({
         ...values,
+        staff_selected,
+        equip_selected,
         listing_id: listing._id,
         office_id: office._id,
         host_id: listing.host,
@@ -200,6 +208,26 @@ class ReservationOptions extends Component {
     );
   };
 
+  renderEquipment = ({ fields, className, meta: { error } }) => {
+    let equipData = this.props.equip_selected;
+    return (
+      <ul className={className}>
+        <label>Equipment Available</label>
+        {fields.map((equipment, index) => (
+          <li key={index} className="multiRowAdd">
+            {`${equipData[index].name} - $${equipData[index].price}`}
+            <Field
+              name={`${equipment}.needed`}
+              id={`equip${index}`}
+              component="input"
+              type="checkbox"
+            />
+          </li>
+        ))}
+      </ul>
+    );
+  };
+
   calcTime() {
     let { time_start, time_end } = this.props;
     let minutes = time_end.diff(time_start, "minutes");
@@ -210,14 +238,17 @@ class ReservationOptions extends Component {
     let { chairs_selected, listing } = this.props;
     let chair_price = chairs_selected * listing.price * this.hours;
 
-    this.booking_fee = chair_price * 0.15;
+    this.booking_fee = Number(Math.floor(chair_price * 0.15));
 
-    return this.booking_fee;
+    return this.booking_fee.toFixed(2);
   }
 
   calcTotal() {
     let { chairs_selected, listing } = this.props;
     let staffData = this.props.staff_selected;
+    let equipData = this.props.equip_selected;
+    this.staffTotal = 0;
+    this.equipTotal = 0;
 
     if (this.hours <= 0) {
       return 0;
@@ -225,21 +256,33 @@ class ReservationOptions extends Component {
 
     let chair_price = chairs_selected * listing.price * this.hours;
 
-    if (!staffData || !staffData.length) {
-      return this.booking_fee + chair_price;
+    if (staffData && staffData.length) {
+      this.staffTotal = staffData
+        .map((staff, index) => staff.count * staff.price * this.hours)
+        .reduce((acc, sub) => sub + acc, 0);
     }
 
-    let subtotals = staffData.map(
-      (staff, index) => staff.count * staff.price * this.hours
-    );
+    if (equipData && equipData.length) {
+      this.equipTotal = equipData
+        .filter(equip => equip.needed)
+        .map(equip => equip.price)
+        .reduce((acc, sub) => sub + acc, 0);
+    }
 
-    return (
-      this.booking_fee + chair_price + subtotals.reduce((acc, sub) => sub + acc)
-    );
+    let total =
+      this.booking_fee + chair_price + this.equipTotal + this.staffTotal;
+    return total.toFixed(2);
   }
 
   render() {
-    const { handleSubmit, submitting, listing, error, staff_selected } = this.props;
+    const {
+      handleSubmit,
+      submitting,
+      listing,
+      error,
+      staff_selected,
+      equip_selected
+    } = this.props;
 
     if (!this.props.initialized) return <div>Loading...</div>;
 
@@ -318,6 +361,18 @@ class ReservationOptions extends Component {
           <div />
         )}
 
+        {equip_selected && equip_selected.length ? (
+          <div>
+            <FieldArray
+              name="equip_selected"
+              className="row"
+              component={this.renderEquipment}
+            />
+          </div>
+        ) : (
+          <div />
+        )}
+
         <div className="row">
           <div className="col s6 left-align">
             <label>Booking Fee - 15% of chair time</label>
@@ -380,6 +435,7 @@ function mapStateToProps(state) {
   return {
     staff_selected: selector(state, "staff_selected"),
     chairs_selected: selector(state, "chairs_selected"),
+    equip_selected: selector(state, "equip_selected"),
     time_start: selector(state, "time_start"),
     time_end: selector(state, "time_end")
   };

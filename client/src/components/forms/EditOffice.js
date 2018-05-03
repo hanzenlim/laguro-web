@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Field, reduxForm } from "redux-form";
+import { Field, reduxForm, FieldArray } from "redux-form";
 import ReactFilestack from "filestack-react";
 import { Link } from "react-router-dom";
 
+import equipmentList from "../../staticData/equipmentList";
 import * as actions from "../../actions";
 
 class EditOffice extends Component {
@@ -31,7 +32,8 @@ class EditOffice extends Component {
 			this.props.initialize({
 				name: office.name,
 				location: office.location,
-				chairs: office.chairs
+				chairs: office.chairs,
+				equipment: office.equipment
 			});
 		});
 	}
@@ -98,6 +100,71 @@ class EditOffice extends Component {
 		});
 	}
 
+	renderEquipment() {
+		return equipmentList.map(equipment => {
+			return (
+				<option value={equipment.name} key={equipment.id}>
+					{equipment.name}
+				</option>
+			);
+		});
+	}
+
+	renderSelect = ({ input, label, meta: { touched, error } }) => {
+		return (
+			<div className="col s4">
+				<select {...input} className="browser-default">
+					<option value="">Please select equipment...</option>
+					{this.renderEquipment()}
+				</select>
+				{touched && (error && <span className="red-text">{error}</span>)}
+			</div>
+		);
+	};
+
+	renderEquipmentSelector = ({ fields, className, meta: { error } }) => (
+		<ul className={className}>
+			<label>Equipment Available</label>
+			<li>
+				<button
+					type="button"
+					className="waves-effect btn-flat"
+					onClick={() => fields.push({})}
+				>
+					Add Equipment
+				</button>
+				{error && <span>{error}</span>}
+			</li>
+			{fields.map((equipment, index) => (
+				<li key={index} className="multiRowAdd">
+					<Field
+						name={`${equipment}.name`}
+						component={this.renderSelect}
+						validate={required}
+					/>
+					<div className="col s2">
+						<Field
+							name={`${equipment}.price`}
+							type="text"
+							placeholder="15"
+							component={this.renderField}
+							label="Usage Price"
+							validate={required}
+						/>
+					</div>
+					<button
+						type="button"
+						title="Remove Equipment"
+						className="red lighten-3 waves-effect btn"
+						onClick={() => fields.remove(index)}
+					>
+						<i className="material-icons tiny">delete_forever</i>
+					</button>
+				</li>
+			))}
+		</ul>
+	);
+
 	renderField = ({
 		input,
 		label,
@@ -156,6 +223,14 @@ class EditOffice extends Component {
 						placeholder="3"
 						component={this.renderField}
 						validate={required}
+					/>
+				</div>
+
+				<div className="row">
+					<FieldArray
+						name="equipment"
+						className="col s12"
+						component={this.renderEquipmentSelector}
 					/>
 				</div>
 

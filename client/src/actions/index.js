@@ -226,10 +226,11 @@ export const getOneOffice = id => {
 
 export function editOffice(values) {
   return dispatch => {
+    dispatch(requestOffices());
     axios.patch(`/api/offices`, values).then(offices => {
       dispatch({
-        type: FETCH_OFFICES,
-        payload: offices
+        type: GET_SELECTED_OFFICES,
+        payload: offices.data
       });
     });
     history.push("/profile");
