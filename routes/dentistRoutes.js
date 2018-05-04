@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Dentist = mongoose.model("dentist");
+const User = mongoose.model("users");
 
 module.exports = app => {
 	//get all dentists route
@@ -45,15 +46,22 @@ module.exports = app => {
 
 	//create dentist route
 	app.post("/api/dentists", async (req, res) => {
-		const { specialty, location, procedures } = req.body;
+		const { specialty, location, procedures, img_url } = req.body;
 		const user = req.user;
+		await User.findOneAndUpdate(
+			{ _id: user._id },
+			{
+				img: img_url
+			},
+			{ new: true }
+		);
 
 		let newDentist = await Dentist.create({
 			specialty,
 			location,
 			procedures,
 			user_id: user._id,
-			img_url: user.img,
+			img_url: img_url,
 			name: user.name,
 			rating: []
 		});

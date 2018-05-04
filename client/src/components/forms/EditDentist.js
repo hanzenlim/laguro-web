@@ -4,6 +4,7 @@ import { Field, FieldArray, reduxForm } from "redux-form";
 import ReactFilestack from "filestack-react";
 import { Link } from "react-router-dom";
 
+import procedureList from "../../staticData/procedureList";
 import * as actions from "../../actions";
 
 class EditDentist extends Component {
@@ -66,6 +67,78 @@ class EditDentist extends Component {
 		return <img src={img_url} alt="dentist" />;
 	}
 
+	renderDurations() {
+		return [
+			<option value={30} key={30}>30 minutes</option>,
+			<option value={60} key={60}>60 minutes</option>
+		]
+	}
+
+	renderProcedures() {
+		let procedureOptions = procedureList.map(procedure => {
+			return (
+				<option value={procedure.name} key={procedure.id}>
+					{procedure.name}
+				</option>
+			);
+		});
+		procedureOptions = [
+			<option value="" key={0}>Please select a procedure...</option>,
+			...procedureOptions
+		];
+		return procedureOptions;
+	}
+
+  renderSelect = ({ input, label, children, meta: { touched, error } }) => {
+    return (
+      <div className="col s4">
+        <select {...input} className="browser-default">
+          {children}
+        </select>
+        {touched && (error && <span className="red-text">{error}</span>)}
+      </div>
+    );
+  };
+
+  renderProcedureSelector = ({ fields, className, meta: { error } }) => (
+    <ul className={className}>
+      <label>Procedures Offered</label>
+      {fields.map((procedure, index) => (
+        <li key={index} className="multiRowAdd">
+          <Field
+            name={`${procedure}.name`}
+            component={this.renderSelect}
+            children={this.renderProcedures()}
+            validate={required}
+          />
+          <Field
+            name={`${procedure}.duration`}
+            component={this.renderSelect}
+						children={this.renderDurations()}
+          />
+          <button
+            type="button"
+            title="Remove Procedure"
+            className="red lighten-3 waves-effect btn"
+            onClick={() => fields.remove(index)}
+          >
+            <i className="material-icons tiny">delete_forever</i>
+          </button>
+        </li>
+      ))}
+			<li>
+				<button
+					type="button"
+					className="waves-effect btn-flat"
+					onClick={() => fields.push({})}
+					>
+						Add Procedure
+					</button>
+					{error && <span>{error}</span>}
+				</li>
+    </ul>
+  );
+
 	renderField = ({
 		input,
 		label,
@@ -80,42 +153,6 @@ class EditDentist extends Component {
 			</div>
 			{touched && error && <span className="red-text">{error}</span>}
 		</div>
-	);
-
-	renderProcedures = ({ fields, className, meta: { error } }) => (
-		<ul className={className}>
-			<label>Procedures Offered</label>
-			<li>
-				<button
-					type="button"
-					className="waves-effect btn-flat"
-					onClick={() => fields.push({})}
-				>
-					Add Procedure
-				</button>
-				{error && <span>{error}</span>}
-			</li>
-			{fields.map((procedure, index) => (
-				<li key={index} className="multiRowAdd">
-					<Field
-						name={`${procedure}.name`}
-						type="text"
-						placeholder="Implants"
-						component={this.renderField}
-						label="Procedure"
-						validate={required}
-					/>
-					<button
-						type="button"
-						title="Remove Procedure"
-						className="red lighten-3 waves-effect btn"
-						onClick={() => fields.remove(index)}
-					>
-						<i className="material-icons tiny">delete_forever</i>
-					</button>
-				</li>
-			))}
-		</ul>
 	);
 
 	render() {
@@ -190,7 +227,7 @@ class EditDentist extends Component {
 					<FieldArray
 						name="procedures"
 						className="col s12"
-						component={this.renderProcedures}
+						component={this.renderProcedureSelector}
 					/>
 				</div>
 

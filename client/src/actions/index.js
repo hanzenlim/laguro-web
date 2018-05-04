@@ -11,7 +11,6 @@ import {
   UPDATE_FILTERS,
   CREATE_OFFICE,
   CREATE_LISTING,
-  CREATE_DENTIST,
   REQUEST_OFFICES,
   REQUEST_DENTISTS,
   REQUEST_LISTINGS,
@@ -112,6 +111,7 @@ export const fetchDentists = filters => {
 
 export const getOneDentist = id => {
   return async dispatch => {
+    dispatch(requestDentists());
     const dentist = await axios.get(`/api/dentists/${id}`);
     dispatch({
       type: GET_ONE_DENTIST,
@@ -122,6 +122,7 @@ export const getOneDentist = id => {
 
 export const getDentistByUser = id => {
   return async dispatch => {
+    dispatch(requestDentists());
     const dentist = await axios.get(`/api/dentists/user/${id}`);
     dispatch({
       type: GET_ONE_DENTIST,
@@ -146,7 +147,7 @@ export function createDentist(values) {
   return dispatch => {
     axios.post("/api/dentists", values).then(dentist => {
       dispatch({
-        type: CREATE_DENTIST,
+        type: GET_ONE_DENTIST,
         payload: dentist
       });
     });
