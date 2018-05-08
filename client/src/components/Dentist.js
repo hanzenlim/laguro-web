@@ -3,10 +3,12 @@ import { connect } from "react-redux";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import ReactStars from "react-stars";
+import * as materialize from "materialize-css/dist/js/materialize.js";
 
 import * as actions from "../actions";
 import NewReview from "./forms/NewReview";
 import ReviewContainer from "./ReviewContainer";
+import ApptDetails from "./ApptDetails";
 
 class Profile extends Component {
   componentWillMount() {
@@ -33,12 +35,40 @@ class Profile extends Component {
     }
   }
 
+  componentDidUpdate() {
+    var elements = document.getElementsByClassName("dropdown-trigger");
+    for (var el of elements) {
+      materialize.Dropdown.init(el, {
+        coverTrigger: false,
+        closeOnClick: false,
+        constrainWidth: false
+      });
+    }
+  }
+
+  renderProcedures(procedures) {
+    if (procedures.length) {
+      return procedures.slice(0, 4).map(procedure => (
+        <span
+          key={procedure.name}
+          className="badge white-text light-blue lighten-2"
+          style={{float: "none", padding: "3px 8px", marginLeft: "0", marginRight: "10px"}}
+        >
+          {`${procedure.name} - ${procedure.duration} mins`}
+        </span>
+      ));
+    } else {
+      return <div />;
+    }
+  }
+
   renderProfileDetails() {
     const { dentist } = this.props;
 
     return (
       <div>
         <h4>Hey, I'm {dentist ? dentist.name : ""}!</h4>
+        <div>{this.renderProcedures(dentist.procedures)}</div>
         <p>
           {(dentist && dentist.location ? dentist.location + " - " : "") +
             "Member since " +
@@ -57,36 +87,42 @@ class Profile extends Component {
     );
   }
 
-  reserveAppt(reservation, appt) {
-    const { auth } = this.props;
-    if (auth && auth.data) {
-      this.props.reserveAppointment(reservation._id, appt._id, auth.data._id);
-    }
-  }
-
   renderApptTimes(reservation) {
-    const { auth } = this.props;
+    const { auth, dentist } = this.props;
     const { appointments } = reservation;
     return appointments.map((appt, index) => (
       <div key={index}>
-        {/*If no paient has reserved this appt*/}
         {!appt.patient_id ? (
-          <span
-            className="light-green-text text-accent-4"
-            style={{ cursor: "pointer" }}
-            onClick={this.reserveAppt.bind(this, reservation, appt)}
-          >
-            {auth && auth.data
-              ? `${moment(appt.time).format("h:mm a")} - Available!`
-              : `${moment(appt.time).format("h:mm a")} - Login to reserve!`}
-          </span>
+          <div>
+            <a
+              className="light-green-text text-accent-4 dropdown-trigger"
+              style={{ cursor: "pointer" }}
+              data-target={`dropdown${index}`}
+              href={auth && auth.data ? "#" : "/auth/google"}
+            >
+              {/* If no patient has reserved this appt */}
+              {`${moment(appt.time).format("h:mm a")} - Available!`}
+            </a>
+            <ul className="dropdown-content" id={`dropdown${index}`}>
+              <ApptDetails
+                appointments={appointments}
+                procedures={dentist.procedures}
+                appt={appt}
+                auth={auth}
+                index={index}
+                reservation={reservation}
+              />
+            </ul>
+          </div>
         ) : (
           <span
             className="grey-text"
             style={{
-              textDecoration: "line-through"
+              textDecoration: "line-through",
+              cursor: "not-allowed"
             }}
           >
+            {/*If appt has already been reserved*/}
             {`${moment(appt.time).format("h:mm a")} - Reserved`}
           </span>
         )}
