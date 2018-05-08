@@ -8,7 +8,8 @@ const dentistSchema = new Schema({
 	specialty: String,
 	location: String,
 	procedures: [{
-		name: String
+		name: String,
+		duration: Number
 	}],
 	date_created: {
 		type: Date,

@@ -11,7 +11,6 @@ class Profile extends Component {
     super(props);
 
     this.state = {
-      dentist: {},
       offices: []
     };
   }
@@ -20,11 +19,7 @@ class Profile extends Component {
     document.title = "Laguro - Profile";
 
     this.getDentist().then(dentist => {
-      this.setState({ dentist: dentist });
-
-      if (dentist) {
-        this.props.fetchReviews(dentist._id);
-      }
+      this.props.fetchReviews(dentist._id);
     });
 
     this.props.fetchOffices();
@@ -32,22 +27,17 @@ class Profile extends Component {
     this.props.fetchUserReservations();
   }
 
-  // get all dentists and find the dentist profile that matches logged in user
   async getDentist() {
-    await this.props.fetchDentists();
+    const { getDentistByUser, auth } = this.props;
+    await getDentistByUser(auth._id);
 
-    const { dentists, auth } = this.props;
-    if (dentists.length) {
-      const dentist = dentists.filter(dentist => dentist.user_id === auth._id);
-      return dentist[0];
-    } else {
-      return {};
-    }
+    const { dentist } = this.props;
+    return dentist;
   }
 
   renderProfileDetails() {
     const { auth } = this.props;
-    const { dentist } = this.state;
+    const { dentist } = this.props;
 
     return (
       <div>
@@ -146,8 +136,17 @@ class Profile extends Component {
 
     if (offices.length) {
       userOffices = offices.filter(office => office.user === auth._id);
-    } else {
-      userOffices = [];
+    }
+
+    if (!userOffices.length) {
+      return (
+        <div>
+          {"No offices yet - "}
+          <Link className="blue-text text-darken-2" to={`/offices/new`}>
+            create a new office to begin hosting today
+          </Link>
+        </div>
+      );
     }
 
     return userOffices.map((office, index) => {
@@ -187,7 +186,7 @@ class Profile extends Component {
   }
 
   renderActions() {
-    const { dentist } = this.state;
+    const { dentist } = this.props;
     let dentistProfileExists = dentist && Object.keys(dentist).length !== 0;
 
     return (
@@ -346,7 +345,9 @@ class Profile extends Component {
 
   render() {
     const { auth, reviews } = this.props;
-    const { dentist } = this.state;
+    const { dentist, dentistLoading } = this.props;
+
+    if(dentistLoading) return <div>Loading...</div>
 
     return (
       <div className="profile_container">
@@ -362,7 +363,7 @@ class Profile extends Component {
           {this.renderProfileDetails()}
           {dentist ? (
             <div className="offices profile-section">
-              <h5>Offices</h5>
+              <h5>Your Offices</h5>
               {this.renderUserOffices()}
             </div>
           ) : (
@@ -397,7 +398,8 @@ class Profile extends Component {
 function mapStateToProps(state) {
   return {
     auth: state.auth.data,
-    dentists: state.dentists.dentists,
+    dentist: state.dentists.selectedDentist,
+    dentistLoading: state.dentists.isFetching,
     reservations: state.reservations.selected,
     offices: state.offices.all,
     listings: state.listings.all,
