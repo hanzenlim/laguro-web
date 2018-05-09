@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import ModalTrigger from './ModalTrigger';
 
 class Header extends Component {
 
@@ -45,6 +46,7 @@ class Header extends Component {
   render() {
     return (
       <nav>
+
         <div className="nav-wrapper white">
           <Link
             className="left brand-logo valign-wrapper"
@@ -57,6 +59,8 @@ class Header extends Component {
             />
             <h3 className="blue-text">Laguro</h3>
           </Link>
+
+          <ModalTrigger />
 
           <ul className="right">
             <li><Link to={'#'}>Become a Host</Link></li>
