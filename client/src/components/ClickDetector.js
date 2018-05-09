@@ -44,5 +44,5 @@ export default class ClickDetector extends Component {
 }
 
 ClickDetector.propTypes = {
-  children: PropTypes.array,
+  children: PropTypes.object,
 };

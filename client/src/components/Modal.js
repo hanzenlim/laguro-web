@@ -15,16 +15,18 @@ class Modal extends Component {
     }
 
     let ret = (
-      <ClickDetector action={this.props.handleHideModal}>
-        <div id="modal1" className={this.props.show ? 'modal open' : 'modal'}>
-            <a href="#!" onClick={this.props.handleHideModal} className="modal-close">X</a>
-            <div className="modal-content">
-                <Login />
-            </div>
-            <div className="modal-footer"></div>
-        </div>
+      <div>
+        <ClickDetector action={this.props.handleHideModal}>
+          <div id="modal1" className={this.props.show ? 'modal open' : 'modal'}>
+              <a href="#!" onClick={this.props.handleHideModal} className="modal-close">X</a>
+              <div className="modal-content">
+                  <Login />
+              </div>
+              <div className="modal-footer"></div>
+          </div>
+        </ClickDetector>
         {overlay}
-      </ClickDetector>
+      </div>
     );
 
     if (ret) {
