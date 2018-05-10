@@ -1,7 +1,9 @@
 // External Packages
 const passport = require("passport");
 const mongoose = require("mongoose");
+
 const User = mongoose.model("users");
+import { makeQuery, getUserQuery, getUserVariable } from '../util/serverDataLoader';
 
 module.exports = app => {
   // hit this route to start oauth process
@@ -17,6 +19,7 @@ module.exports = app => {
 		"/auth/google/callback",
 		passport.authenticate("google"),
 		(req, res) => {
+			res.cookie('userId', req.user.googleId, { maxAge: 2592000000 }); 
 			res.redirect('/profile');
 		}
 	);
@@ -24,11 +27,20 @@ module.exports = app => {
   // visiting this route clears logged in user
 	app.get('/api/logout', (req, res) => {
 		req.logout();
+		
+		// Clears the user id cookie.
+		res.cookie('userId', '');
 		res.redirect('/');
 	})
 
-	//use this route to test which user is logged in (testing purposes)
-	app.get("/api/current_user", (req, res) => {
+	app.get("/api/current_user", async (req, res) => {
+		if (req.user) {
+			let result = await makeQuery(getUserQuery, getUserVariable(req.user.googleId));		
+			res.send(result.data);
+
+			return;
+		}
+
 		res.send(req.user);
 	});
 

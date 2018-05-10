@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-
 import OfficeSearch from "./OfficeSearch";
 import DentistSearch from "./DentistSearch";
 
