@@ -8,7 +8,7 @@ import * as materialize from "materialize-css/dist/js/materialize.js";
 import * as actions from "../actions";
 import NewReview from "./forms/NewReview";
 import ReviewContainer from "./ReviewContainer";
-import ApptDetails from "./ApptDetails";
+import AppointmentOptions from "./AppointmentOptions";
 
 class Profile extends Component {
   componentWillMount() {
@@ -48,16 +48,10 @@ class Profile extends Component {
 
   renderProcedures(procedures) {
     if (procedures.length) {
-      return procedures.slice(0, 4).map(procedure => (
+      return procedures.map(procedure => (
         <span
           key={procedure.name}
-          className="badge white-text light-blue lighten-2"
-          style={{
-            float: "none",
-            padding: "3px 8px",
-            marginLeft: "0",
-            marginRight: "10px"
-          }}
+          className="badge procedure white-text light-blue lighten-2"
         >
           {`${procedure.name} - ${procedure.duration} mins`}
         </span>
@@ -74,7 +68,7 @@ class Profile extends Component {
       <div>
         <h4>Hey, I'm {dentist ? dentist.name : ""}!</h4>
         <div>{this.renderProcedures(dentist.procedures)}</div>
-        <p>
+        <p style={{ clear: "both" }}>
           {(dentist && dentist.location ? dentist.location + " - " : "") +
             "Member since " +
             moment(dentist.date_created).format("MMMM `YY")}
@@ -103,13 +97,12 @@ class Profile extends Component {
               className="light-green-text text-accent-4 dropdown-trigger"
               style={{ cursor: "pointer" }}
               data-target={`dropdown${index}`}
-              href={auth && auth.data ? "#" : "/auth/google"}
             >
               {/* If no patient has reserved this appt */}
               {`${moment(appt.time).format("h:mm a")} - Available!`}
             </a>
             <ul className="dropdown-content" id={`dropdown${index}`}>
-              <ApptDetails
+              <AppointmentOptions
                 appointments={appointments}
                 procedures={dentist.procedures}
                 appt={appt}
