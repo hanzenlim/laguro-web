@@ -61,14 +61,16 @@ export const setFilters = filters => {
 export const searchDentists = filters => {
   return dispatch => {
     dispatch(setFilters(filters));
-    history.push("/dentists/search");
+    history.push({pathname: "/dentists/search", search: `?query=${filters.location}`});
   };
 };
 
 export const searchOffices = filters => {
+
   return dispatch => {
     dispatch(setFilters(filters));
-    history.push("/offices/search");
+    history.push({pathname: "/offices/search", search: `?query=${filters.location}`});
+
   };
 };
 

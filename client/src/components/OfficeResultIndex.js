@@ -101,7 +101,7 @@ function getVisibleOffices(offices) {
   //remove any offices greater than 35 miles away
   //if no location filter, office.distance is undefined and !!(undefined > 35) == false
   let filteredOffices = offices.filter(office => {
-    if (office.distance > 35) {
+    if (office.distance && office.distance.split(",").join("") > 35) {
       return false;
     }
 

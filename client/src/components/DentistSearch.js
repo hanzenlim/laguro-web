@@ -1,19 +1,48 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Field, reduxForm } from "redux-form";
+import {
+	BrowserRouter as Router,
+	Route,
+	Link
+} from 'react-router-dom';
 import DatePicker from "react-datepicker";
 import moment from "moment";
 import * as actions from "../actions";
-
 import "react-datepicker/dist/react-datepicker.css";
+import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete'
+
 
 class DentistSearch extends Component {
+	constructor(props) {
+		super(props);
+		this.state = { location: '' };
+		this.onLocationChange = this.onLocationChange.bind(this);
+	}
+
+	onLocationChange(location) {
+		const { input } = this.props;
+		const { onChange } = input;
+		this.setState({ location });
+		onChange(location);
+	}
+
+	handleChange = (location) => {
+		this.setState({ location })
+	}
+
+	handleSelect = (location) => {
+		geocodeByAddress(location)
+		.then(results => getLatLng(results[0]))
+	}
+
 	onSubmit(values) {
 		const { reset } = this.props;
-
-		this.props.searchDentists(values);
+		//hardcoded the location
+		this.props.searchDentists({values, location: "San Leandro"});
 		reset();
 	}
+
 
 	renderField = ({ input, label, placeholder, meta: { touched, error } }) => (
 		<div>
@@ -34,39 +63,65 @@ class DentistSearch extends Component {
 				dateFormat="MMM DD, YYYY"
 				minDate={moment()}
 				placeholderText={moment().format("MMM DD, YYYY")}
-			/>
+				/>
 			{touched && error && <span>{error}</span>}
 		</div>
 	);
 
 	render() {
 		const { handleSubmit, pristine, submitting } = this.props;
-
 		return (
 			<form
 				className="searchModule toggle"
 				onSubmit={handleSubmit(this.onSubmit.bind(this))}
-			>
-				<Field
-					name="location"
-					label="Where"
-					placeholder="Oakland, CA"
-					component={this.renderField}
-				/>
+				>
+				<PlacesAutocomplete
+					value={this.state.location}
+					onChange={this.handleChange}
+					onSelect={this.handleSelect}
+					>
+					{({ getInputProps, suggestions, getSuggestionItemProps }) => (
+						<div>
+							<input
+								{...getInputProps({
+									placeholder: 'Search Places ...',
+									className: 'location-search-input'
+								})}
+								/>
+							<div className="autocomplete-dropdown-container">
+								{suggestions.map(suggestion => {
+									const className = suggestion.active ? 'suggestion-item--active' : 'suggestion-item';
+									// inline style for demonstration purpose
+									const style = suggestion.active
+									? { backgroundColor: '#fafafa', cursor: 'pointer' }
+									: { backgroundColor: '#ffffff', cursor: 'pointer' };
+									return (
+										<div {...getSuggestionItemProps(suggestion, { className, style })}>
+											<span>{suggestion.description}</span>
+										</div>
+									)
+								})}
+							</div>
+						</div>
+					)}
+				</PlacesAutocomplete>
 				<Field name="date" label="When" component={this.renderDatePicker} />
 				<div className="form-buttons">
 					<button
 						className="waves-effect btn green lighten-2"
 						type="submit"
 						disabled={pristine || submitting}
-					>
+						>
 						Search
 					</button>
 				</div>
 			</form>
+
 		);
+
 	}
 }
+
 
 export default reduxForm({
 	form: "dentistSearch"
