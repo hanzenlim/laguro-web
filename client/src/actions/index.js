@@ -20,6 +20,9 @@ import {
   GET_SELECTED_RESERVATIONS
 } from "./types";
 
+import cookies from 'browser-cookies';
+import { makeQuery, getUserQuery, getUserVariable } from "../util/clientDataLoader"
+
 /**********************
 
 USER ACTIONS
@@ -28,8 +31,14 @@ USER ACTIONS
 
 export const fetchUser = () => {
   return async dispatch => {
-    const user = await axios.get("/api/current_user");
-    dispatch({ type: FETCH_USER, payload: user });
+    const userId = cookies.get('userId');
+
+    if (userId) {
+      const user = await makeQuery(getUserQuery, getUserVariable(userId));
+      dispatch({ type: FETCH_USER, payload: user });
+    } else {
+      dispatch({ type: FETCH_USER, payload: {data: '' } });
+    }
   };
 };
 

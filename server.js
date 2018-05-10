@@ -1,4 +1,6 @@
 // External Packages
+
+// Todo: Update this to use es6 import
 const express = require("express");
 const mongoose = require("mongoose");
 const cookieSession = require("cookie-session");
@@ -6,6 +8,8 @@ const passport = require("passport");
 const path = require("path");
 const bodyParser = require("body-parser");
 const logger = require("morgan");
+
+import { makeQuery } from './util/serverDataLoader';
 
 // Local Packages
 const keys = require("./client/src/config/keys");
@@ -43,6 +47,27 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(logger("dev"));
 app.use(express.static(path.join(__dirname, "public")));
+
+app.post('/api/graphql', async (req, res) => {
+  let variables;
+  
+  // Check if user is authenticated
+  if (req.user && req.body && 
+    req.body.variables && 
+    req.body.variables.googleId === req.user.googleId) {
+      variables = {
+        ...req.body.variables,
+        authenticated: true
+      }
+  } else {
+    variables = {
+      ...req.body.variables
+    }
+  }
+
+  let result = await makeQuery(req.body.query, variables);
+  res.send(JSON.stringify(result));
+});
 
 // Route Files
 require("./routes/authRoutes")(app);

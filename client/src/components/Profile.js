@@ -5,6 +5,9 @@ import ReactFilestack from "filestack-react";
 import * as actions from "../actions";
 import moment from "moment";
 import ReviewContainer from "./ReviewContainer";
+import { makeQuery, getUserQuery, getUserVariable } from "../util/clientDataLoader"
+import isEmpty from 'lodash/isEmpty'
+import cookies from 'browser-cookies';
 
 class Profile extends Component {
   constructor(props) {
@@ -16,8 +19,6 @@ class Profile extends Component {
   }
 
   componentWillMount() {
-    document.title = "Laguro - Profile";
-
     this.getDentist().then(dentist => {
       this.props.fetchReviews(dentist._id);
     });
@@ -41,7 +42,7 @@ class Profile extends Component {
 
     return (
       <div>
-        <h4>Welcome back {dentist ? dentist.name : auth.name}!</h4>
+        <h4>Welcome back {dentist ? dentist.name : auth.username}!</h4>
         <p>
           {(dentist && dentist.location ? dentist.location + " - " : "") +
             "Member since " +
@@ -354,7 +355,8 @@ class Profile extends Component {
         <div className="sidebar">
           <img
             className="profile_img"
-            src={dentist ? dentist.img_url : auth.img}
+            src={!isEmpty(dentist) ? dentist.img_url : auth.imageUrl}
+            // src={auth.imageUrl}
             alt="user"
           />
           {this.renderActions()}
@@ -397,7 +399,7 @@ class Profile extends Component {
 
 function mapStateToProps(state) {
   return {
-    auth: state.auth.data,
+    auth: state.auth.data.getUserByGoogleId,
     dentist: state.dentists.selectedDentist,
     dentistLoading: state.dentists.isFetching,
     reservations: state.reservations.selected,

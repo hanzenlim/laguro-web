@@ -3,6 +3,15 @@ const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const mongoose = require("mongoose");
 
+import { 
+	makeQuery, 
+	makeMutation, 
+	getUserQuery, 
+	getUserVariable, 
+	createUserQuery, 
+	createUserVariable 
+} from '../util/serverDataLoader';
+
 // Local Packages
 const keys = require("../client/src/config/keys");
 
@@ -11,13 +20,12 @@ const User = mongoose.model("users");
 
 // Define passport functions
 passport.serializeUser((user, done) => {
-	done(null, user.id);
+	done(null, user.googleId);
 });
 
-passport.deserializeUser((id, done) => {
-	User.findById(id).then(user => {
-		done(null, user);
-	});
+passport.deserializeUser(async (id, done) => {
+	let result = await makeQuery(getUserQuery, getUserVariable(id));
+	done(null, result.data.getUserByGoogleId);
 });
 
 passport.use(
@@ -30,22 +38,23 @@ passport.use(
 		},
 
 		async (accessToken, refreshToken, profile, done) => {
-			const existingUser = await User.findOne({ googleId: profile.id });
+			let result = await makeQuery(getUserQuery, getUserVariable(profile.id));
 
-			if (existingUser) {
-				return done(null, existingUser);
+			if (result && result.data && result.data.getUserByGoogleId) {
+				return done(null, result.data.getUserByGoogleId);
 			}
 
 			const imgUrl = profile.photos[0].value
 			const biggerImg = imgUrl.slice(0, -2).concat('300');
 
-			const newUser = await new User({
-				googleId: profile.id,
-				name: profile.displayName,
-				img: biggerImg
-			}).save();
+			// Create a brand new user.
+			result = await makeMutation(createUserQuery, createUserVariable(
+				profile.displayName, 
+				profile.id, 
+				biggerImg));
+			
 
-			done(null, newUser);
+			done(null, result.data.createUser);
 		}
 	)
 );
