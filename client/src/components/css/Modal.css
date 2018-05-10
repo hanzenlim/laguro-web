@@ -1,4 +1,22 @@
-#google {
+.modal-close {
+  margin-left: 4%;
+  color: #000;
+}
+.modal-content {
+  margin: auto;
+}
+
+.modal-overlay {
+  z-index: 2;
+  display: block;
+  opacity: 0.5;
+}
+
+.modal1 {
+  width: 45%;
+}
+
+#googleLoginBtn {
   width: 90%;
   display: block;
   margin-top: -3%;

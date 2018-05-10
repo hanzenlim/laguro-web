@@ -1,11 +1,37 @@
 import React, { Component} from 'react';
-import Login from './Login';
-import ClickDetector from './ClickDetector'
 
-import './Modal.css'
+
+import './css/Modal.css'
 
 class Modal extends Component {
 
+  constructor() {
+    super();
+    this.setWrapperRef = this.setWrapperRef.bind(this);
+    this.handleClickOutside = this.handleClickOutside.bind(this);
+  }
+
+  componentDidMount() {
+    document.addEventListener('mousedown', this.handleClickOutside);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('mousedown', this.handleClickOutside);
+  }
+
+  /* Set the wrapper ref */
+  setWrapperRef(node) {
+    this.wrapperRef = node;
+  }
+
+  /* Alert if clicked on outside of element */
+  handleClickOutside(event) {
+    if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
+
+      this.props.handleHideModal();
+
+    }
+  }
 
   render() {
     let overlay;
@@ -16,19 +42,18 @@ class Modal extends Component {
 
     let ret = (
       <div>
-        <ClickDetector action={this.props.handleHideModal}>
-          <div id="modal1" className={this.props.show ? 'modal open' : 'modal'}>
-              <a href="#!" onClick={this.props.handleHideModal} className="modal-close">X</a>
-              <div className="modal-content">
-                  <Login />
-              </div>
-              <div className="modal-footer"></div>
+        <div ref={this.setWrapperRef} className={this.props.show ? 'modal open' : 'modal'}>
+          <a href="#!" onClick={this.props.handleHideModal} className="modal-close">X</a>
+          <div className="modal-content">
+              <a id="googleLoginBtn" className="login waves-effect">Log in with Google</a>
           </div>
-        </ClickDetector>
+          <div className="modal-footer"></div>
+        </div>
         {overlay}
       </div>
     );
 
+    // change
     if (ret) {
       return ret;
     } else {
@@ -36,8 +61,8 @@ class Modal extends Component {
     }
   }
     propTypes:{
-        handleHideModal: React.PropTypes.func.isRequired,
-        show: React.PropTypes.bool.isRequired,
+      handleHideModal: React.PropTypes.func.isRequired,
+      show: React.PropTypes.bool.isRequired
     }
 };
 
