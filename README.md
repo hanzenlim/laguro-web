@@ -1,6 +1,3 @@
-# LAGURO
-Dental Space Rental
-
 # Prereq
 1. Install mongo [(tutorial)](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/#install-mongodb-community-edition-with-homebrew)
 
