@@ -9,7 +9,8 @@
 	},
 	"scripts": {
 		"start": "node server.js",
-		"precommit": "eslint client/src server.js models routes services --fix",
+		"eslint:fix": "eslint client/src server.js models routes services --fix",
+		"precommit": "npm run eslint:fix",
 		"server": "nodemon server.js --exec babel-node --presets es2015,stage-2",
 		"client": "npm run start --prefix client",
 		"dev": "concurrently \"npm run server\" \"npm run client\"",
@@ -29,7 +30,6 @@
 		"morgan": "^1.9.0",
 		"passport": "^0.3.2",
 		"passport-google-oauth20": "^1.0.0",
-		"react-places-autocomplete": "^7.1.1",
 		"save": "^2.3.2"
 	},
 	"devDependencies": {

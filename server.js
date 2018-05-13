@@ -1,94 +1,91 @@
 // External Packages
 
 // Todo: Update this to use es6 import
-const express = require("express");
-const mongoose = require("mongoose");
-const cookieSession = require("cookie-session");
-const passport = require("passport");
-const path = require("path");
-const bodyParser = require("body-parser");
-const logger = require("morgan");
-
 import { makeQuery } from './util/serverDataLoader';
 
+const express = require('express');
+const mongoose = require('mongoose');
+const cookieSession = require('cookie-session');
+const passport = require('passport');
+const path = require('path');
+const bodyParser = require('body-parser');
+const logger = require('morgan');
+
 // Local Packages
-const keys = require("./client/src/config/keys");
+const keys = require('./client/src/config/keys');
 
 // DB config
-const mongoURI = process.env.MONGODB_URI || "mongodb://localhost/laguro";
+const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost/laguro';
 
 mongoose.connect(mongoURI, { useMongoClient: true });
 mongoose.Promise = global.Promise;
 
 // Models
-require("./models/User");
-require("./models/Dentist");
-require("./models/Listing");
-require("./models/Office");
-require("./models/Review");
-require("./models/Reservation");
+require('./models/User');
+require('./models/Dentist');
+require('./models/Listing');
+require('./models/Office');
+require('./models/Review');
+require('./models/Reservation');
 
 // Services
-require("./services/passport");
+require('./services/passport');
 
 // Middleware start
 const app = express();
-const db = mongoose.connection;
 app.use(bodyParser.json());
 
 // Auth config
-app.use(
-  cookieSession({
+app.use(cookieSession({
     maxAge: 10800000, // 1 day
-    keys: [keys.cookieKey]
-  })
-);
+    keys: [keys.cookieKey],
+}));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(logger("dev"));
-app.use(express.static(path.join(__dirname, "public")));
+app.use(logger('dev'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.post('/api/graphql', async (req, res) => {
-  let variables;
-  
-  // Check if user is authenticated
-  if (req.user && req.body && 
-    req.body.variables && 
-    req.body.variables.googleId === req.user.googleId) {
-      variables = {
-        ...req.body.variables,
-        authenticated: true
-      }
-  } else {
-    variables = {
-      ...req.body.variables
-    }
-  }
+    let variables;
 
-  let result = await makeQuery(req.body.query, variables);
-  res.send(JSON.stringify(result));
+    // Check if user is authenticated
+    if (req.user && req.body &&
+    req.body.variables &&
+    req.body.variables.googleId === req.user.googleId) {
+        variables = {
+            ...req.body.variables,
+            authenticated: true,
+        };
+    } else {
+        variables = {
+            ...req.body.variables,
+        };
+    }
+
+    const result = await makeQuery(req.body.query, variables);
+    res.send(JSON.stringify(result));
 });
 
 // Route Files
-require("./routes/authRoutes")(app);
-require("./routes/dentistRoutes")(app);
-require("./routes/officeRoutes")(app);
-require("./routes/listingRoutes")(app);
-require("./routes/reviewRoutes")(app);
-require("./routes/reservationRoutes")(app);
+require('./routes/authRoutes')(app);
+require('./routes/dentistRoutes')(app);
+require('./routes/officeRoutes')(app);
+require('./routes/listingRoutes')(app);
+require('./routes/reviewRoutes')(app);
+require('./routes/reservationRoutes')(app);
 
-if (process.env.NODE_ENV === "production") {
-  // express will serve production assets (main.js/css)
-  app.use(express.static("client/build"));
+if (process.env.NODE_ENV === 'production') {
+    // express will serve production assets (main.js/css)
+    app.use(express.static('client/build'));
 
-  // express will serve index.html if unrec. route
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
-  });
+    // express will serve index.html if unrec. route
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+    });
 }
 
 // Server Start
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log("Server listening on 5000");
+    console.log('Server listening on 5000'); /* eslint-disable-line no-console */
 });
