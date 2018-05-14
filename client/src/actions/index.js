@@ -7,3 +7,4 @@ export * from './appointmentActions';
 export * from './reviewActions';
 export * from './searchActions';
 export * from './uiActions';
+export * from './paymentOptionActions';

@@ -1,6 +1,10 @@
 import makeApiCall from '../util/clientDataLoader';
-import { DENTIST } from '../util/strings';
-import { userFragment, dentistFragment } from '../util/fragments';
+import { DENTIST, PAYMENT_OPTIONS } from '../util/strings';
+import {
+    userFragment,
+    dentistFragment,
+    paymentOptionFragment,
+} from '../util/fragments';
 
 // TODO organizing graphql in this manner does not work well when the desired
 // data is nested at a level > 1. Consider another option, this is just a stopgap,
@@ -8,11 +12,15 @@ const generateGetUserQuery = options => {
     const dentistResult = options.includes(DENTIST)
         ? `dentist {${dentistFragment}}`
         : '';
+    const paymentOptionsResult = options.includes(PAYMENT_OPTIONS)
+        ? `paymentOptions {${paymentOptionFragment}}`
+        : '';
     return `
         query getUserByGoogleId($googleId: String!) {
             getUserByGoogleId(googleId: $googleId) {
                 ${userFragment}
                 ${dentistResult}
+                ${paymentOptionsResult}
             }
         }
     `;
@@ -27,7 +35,7 @@ const updateUserQuery = `
 `;
 
 const getUserVariable = id => ({
-    googleId: id.toString()
+    googleId: id.toString(),
 });
 
 // TODO handle graphql errors
@@ -42,10 +50,10 @@ const User = {
     },
     updateProfileImage: async (userId, imageUrl) => {
         const response = await makeApiCall(updateUserQuery, {
-            input: { id: userId, imageUrl }
+            input: { id: userId, imageUrl },
         });
         return response.data.updateUser;
-    }
+    },
 };
 
 export default User;

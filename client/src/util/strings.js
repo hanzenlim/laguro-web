@@ -12,6 +12,7 @@ export const APPOINTMENT = 'appointment';
 export const APPOINTMENTS = 'appointments';
 export const REVIEW = 'review';
 export const REVIEWS = 'reviews';
+export const PAYMENT_OPTIONS = 'PAYMENT_OPTIONS';
 
 export const DENTIST_ID = 'dentistId';
 export const HOST_ID = 'hostId';

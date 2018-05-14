@@ -134,3 +134,10 @@ export const revieweeFragment = `
       }
     }
 `;
+
+export const paymentOptionFragment = `
+    id
+    address_city
+    address_country
+    last4
+`;

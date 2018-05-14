@@ -81,6 +81,7 @@ const Office = Loadable({
     loader: () => import("./Office"),
     loading: LoadingComponent
 });
+import Payment from './Payment';
 
 const PrivateRoute = ({ auth, path, component: Component, ...props }) => (
     <Route
@@ -178,6 +179,11 @@ class App extends Component {
                                 auth={this.props.auth}
                                 path="/payment-success"
                                 component={PaymentSuccess}
+                            />
+                            <PrivateRoute
+                                auth={this.props.auth}
+                                path="/payment"
+                                component={Payment}
                             />
                             <Route path="/" component={Landing} />
                             {/* Catch all unmatched routes. */}
