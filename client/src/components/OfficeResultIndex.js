@@ -54,7 +54,7 @@ class OfficeResultIndex extends Component {
                 this.avg_rating = 0;
                 this.rating_count = 0;
             }
-
+            
             return (
                 <OfficeResult
                     name={office.name}
@@ -63,7 +63,7 @@ class OfficeResultIndex extends Component {
                     listings={listings}
                     avg_rating={this.avg_rating}
                     rating_count={this.rating_count}
-                    img={office.img_url[0]}
+                    img={office.img_url? office.img_url[0]: null}
                     office_id={office._id}
                     index={index}
                     key={office._id}

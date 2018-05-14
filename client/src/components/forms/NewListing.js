@@ -64,7 +64,7 @@ class NewListing extends Component {
                     value={JSON.stringify({
                         id: office._id,
                         office_name: office.name,
-                        office_img: office.img_url[0],
+                        office_img: office.img_url? office.img_url[0]: null,
                         chairs: office.chairs,
                     })}
                     key={index}
