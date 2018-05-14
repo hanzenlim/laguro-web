@@ -1,55 +1,57 @@
 // External Packages
-const mongoose = require("mongoose");
-const Review = mongoose.model("review");
+const mongoose = require('mongoose');
 
-module.exports = app => {
-  //return ALL reviews (for use with the search indexes)
-  app.get("/api/reviews", async (req, res) => {
-    const reviews = await Review.find();
-    res.send(reviews);
-  })
+const Review = mongoose.model('review');
 
-  //return all reviews for reviewee
-  app.get("/api/reviews/:reviewee_id", async (req, res) => {
-    const reviews = await Review.find({
-      reviewee_id: `${req.params.reviewee_id}`
-    });
-    res.send(reviews);
-  });
-
-  // create a new review
-  app.post("/api/reviews", async (req, res) => {
-    const { reviewee_id, title, rating, text } = req.body;
-    const user = req.user;
-
-    let newReview = await Review.create({
-      reviewee_id,
-      title,
-      rating,
-      text,
-      reviewer_id: user._id,
-      reviewer_img: user.img,
-      reviewer_name: user.name
+module.exports = (app) => {
+    // return ALL reviews (for use with the search indexes)
+    app.get('/api/reviews', async (req, res) => {
+        const reviews = await Review.find();
+        res.send(reviews);
     });
 
-		const reviews = await Review.find({
-      reviewee_id: `${reviewee_id}`
-    });
-    res.send(reviews);
-  });
-
-	//delete review route
-	app.delete("/api/reviews/:id", async (req, res) => {
-
-		let review = await Review.find({_id: req.params.id});
-    let reviewee_id = review[0].reviewee_id;
-
-    review[0].remove();
-
-		const reviews = await Review.find({
-      reviewee_id: `${reviewee_id}`
+    // return all reviews for reviewee
+    app.get('/api/reviews/:reviewee_id', async (req, res) => {
+        const reviews = await Review.find({
+            reviewee_id: `${req.params.reviewee_id}`,
+        });
+        res.send(reviews);
     });
 
-		res.send(reviews);
-	});
+    // create a new review
+    app.post('/api/reviews', async (req, res) => {
+        const {
+            reviewee_id, title, rating, text,
+        } = req.body;
+        const user = req.user;
+
+        await Review.create({
+            reviewee_id,
+            title,
+            rating,
+            text,
+            reviewer_id: user._id,
+            reviewer_img: user.img,
+            reviewer_name: user.name,
+        });
+
+        const reviews = await Review.find({
+            reviewee_id: `${reviewee_id}`,
+        });
+        res.send(reviews);
+    });
+
+    // delete review route
+    app.delete('/api/reviews/:id', async (req, res) => {
+        const review = await Review.find({ _id: req.params.id });
+        const reviewee_id = review[0].reviewee_id;
+
+        review[0].remove();
+
+        const reviews = await Review.find({
+            reviewee_id: `${reviewee_id}`,
+        });
+
+        res.send(reviews);
+    });
 };

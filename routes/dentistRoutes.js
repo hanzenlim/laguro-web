@@ -1,92 +1,101 @@
-const mongoose = require("mongoose");
-const Dentist = mongoose.model("dentist");
-const User = mongoose.model("users");
+const mongoose = require('mongoose');
 
-module.exports = app => {
-	//get all dentists route
-	app.get("/api/dentists", async (req, res) => {
-		const allDentists = await Dentist.find();
+const Dentist = mongoose.model('dentist');
+const User = mongoose.model('users');
 
-		res.send(allDentists);
-	});
+module.exports = (app) => {
+    // get all dentists route
+    app.get('/api/dentists', async (req, res) => {
+        const allDentists = await Dentist.find();
 
-	//get one dentist route
-	app.get("/api/dentists/:id", async (req, res) => {
-		const dentist = await Dentist.findOne({ _id: `${req.params.id}` });
+        res.send(allDentists);
+    });
 
-		res.send(dentist);
-	})
+    // get one dentist route
+    app.get('/api/dentists/:id', async (req, res) => {
+        const dentist = await Dentist.findOne({ _id: `${req.params.id}` });
 
-	//get one dentist route
-	app.get("/api/dentists/user/:id", async (req, res) => {
-		const dentist = await Dentist.findOne({ user_id: `${req.params.id}` });
+        res.send(dentist);
+    });
 
-		res.send(dentist);
-	})
+    // get one dentist route
+    app.get('/api/dentists/user/:id', async (req, res) => {
+        const dentist = await Dentist.findOne({ user_id: `${req.params.id}` });
 
-	// add listing to Cart
-	app.patch("/api/dentists/cart", async(req, res) => {
-		Dentist.findOne(
-      {user_id: req.user._id},
-      (err, dentist) => {
-        if (err) console.log(err);
-				let cart = dentist.cart
+        res.send(dentist);
+    });
 
-				dentist.cart = [
-					...cart,
-					req.body
-				]
-				dentist.save((err, dentist) => {
-					if(err) console.log(err);
-					res.send(dentist);
-				});
-      }
-    );
-	})
+    // add listing to Cart
+    app.patch('/api/dentists/cart', async (req, res) => {
+        Dentist.findOne(
+            { user_id: req.user._id },
+            (err, dentist) => {
+                if (err) {
+                    console.log(err); /* eslint-disable-line no-console */
+                }
+                const cart = dentist.cart;
 
-	//create dentist route
-	app.post("/api/dentists", async (req, res) => {
-		const { specialty, location, procedures, img_url } = req.body;
-		const user = req.user;
-		await User.findOneAndUpdate(
-			{ _id: user._id },
-			{
-				img: img_url
-			},
-			{ new: true }
-		);
+                dentist.cart = [
+                    ...cart,
+                    req.body,
+                ];
+                dentist.save((err, dentist) => {
+                    if (err) { 
+                        console.log(err); /* eslint-disable-line no-console */
+                    }
+                    res.send(dentist);
+                });
+            },
+        );
+    });
 
-		let newDentist = await Dentist.create({
-			specialty,
-			location,
-			procedures,
-			user_id: user._id,
-			img_url: img_url,
-			name: user.name,
-			rating: []
-		});
+    // create dentist route
+    app.post('/api/dentists', async (req, res) => {
+        const {
+            specialty, location, procedures, img_url,
+        } = req.body;
+        const user = req.user;
+        await User.findOneAndUpdate(
+            { _id: user._id },
+            {
+                img: img_url,
+            },
+            { new: true },
+        );
 
-		res.send(newDentist);
-	});
+        const newDentist = await Dentist.create({
+            specialty,
+            location,
+            procedures,
+            user_id: user._id,
+            img_url,
+            name: user.name,
+            rating: [],
+        });
 
-	//edit dentist route
-	app.patch("/api/dentists", async (req, res) => {
-		const { name, img_url, specialty, location, procedures, id } = req.body;
+        res.send(newDentist);
+    });
 
-		let dentist = await Dentist.findOneAndUpdate(
-			{ user_id: id },
-			{
-				specialty,
-				location,
-				procedures,
-				name,
-				img_url
-			},
-			{ new: true }
-		);
+    // edit dentist route
+    app.patch('/api/dentists', async (req, res) => {
+        const {
+            name, img_url, specialty, location, procedures, id,
+        } = req.body;
 
-		const dentists = await Dentist.find();
+        await Dentist.findOneAndUpdate(
+            { user_id: id },
+            {
+                specialty,
+                location,
+                procedures,
+                name,
+                img_url,
+            },
+            { new: true },
+        );
 
-		res.send(dentists);
-	});
+        const dentists = await Dentist.find();
+
+        res.send(dentists);
+    });
 };

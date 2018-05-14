@@ -1,77 +1,78 @@
-const mongoose = require("mongoose");
-const Listing = mongoose.model("listing");
-const Reservation = mongoose.model("reservation");
+const mongoose = require('mongoose');
 
-module.exports = app => {
-  //get all listings route
-  app.get("/api/listings", async (req, res) => {
-    const allListings = await Listing.find();
+const Listing = mongoose.model('listing');
+const Reservation = mongoose.model('reservation');
 
-    res.send(allListings);
-  });
+module.exports = (app) => {
+    // get all listings route
+    app.get('/api/listings', async (req, res) => {
+        const allListings = await Listing.find();
 
-  //get single listings route
-  app.get("/api/listings/:id", async (req, res) => {
-    const listing = await Listing.findOne({ _id: `${req.params.id}` });
-
-    res.send(listing);
-  });
-
-  //Listing creation route
-  app.post("/api/listings", async (req, res) => {
-    const {
-      office,
-      office_name,
-      office_img,
-      office_chairs,
-      price,
-      staff,
-      chairs_available,
-      time_available,
-      time_closed,
-      cleaning_fee
-    } = req.body;
-    const host = req.user._id;
-
-    let newListing = await Listing.create({
-      office,
-      office_name,
-      office_img,
-      office_chairs,
-      host,
-      staff,
-      chairs_available,
-      cleaning_fee,
-      time_available,
-      time_closed,
-      price
+        res.send(allListings);
     });
 
-    res.send(newListing);
-  });
+    // get single listings route
+    app.get('/api/listings/:id', async (req, res) => {
+        const listing = await Listing.findOne({ _id: `${req.params.id}` });
 
-  //edit listing route
-  app.patch("/api/listings", async (req, res) => {
-    await Listing.findOneAndUpdate(
-      { _id: req.body.id },
-      { ...req.body },
-      { new: true }
-    );
+        res.send(listing);
+    });
 
-    const listings = await Listing.find();
+    // Listing creation route
+    app.post('/api/listings', async (req, res) => {
+        const {
+            office,
+            office_name,
+            office_img,
+            office_chairs,
+            price,
+            staff,
+            chairs_available,
+            time_available,
+            time_closed,
+            cleaning_fee,
+        } = req.body;
+        const host = req.user._id;
 
-    res.send(listings);
-  });
+        const newListing = await Listing.create({
+            office,
+            office_name,
+            office_img,
+            office_chairs,
+            host,
+            staff,
+            chairs_available,
+            cleaning_fee,
+            time_available,
+            time_closed,
+            price,
+        });
 
-  //delete listing route
-  app.delete("/api/listings/:id", async (req, res) => {
-    const listing = await Listing.findOne({ _id: `${req.params.id}` });
+        res.send(newListing);
+    });
 
-    await Reservation.find({ listing_id: listing._id }).remove();
+    // edit listing route
+    app.patch('/api/listings', async (req, res) => {
+        await Listing.findOneAndUpdate(
+            { _id: req.body.id },
+            { ...req.body },
+            { new: true },
+        );
 
-    await Listing.find({ _id: req.params.id }).remove();
-    const listings = await Listing.find();
+        const listings = await Listing.find();
 
-    res.send(listings);
-  });
+        res.send(listings);
+    });
+
+    // delete listing route
+    app.delete('/api/listings/:id', async (req, res) => {
+        const listing = await Listing.findOne({ _id: `${req.params.id}` });
+
+        await Reservation.find({ listing_id: listing._id }).remove();
+
+        await Listing.find({ _id: req.params.id }).remove();
+        const listings = await Listing.find();
+
+        res.send(listings);
+    });
 };
