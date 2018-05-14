@@ -46,27 +46,27 @@ class Header extends Component {
         return (
             <nav>
                 <div className="nav-wrapper white">
-                <Link
-                    className="left brand-logo valign-wrapper"
-                    to={'/'}
-                >
-                    <img
-                    className="logo"
-                    alt="Logo"
-                    src="/logo-white.png"
-                    />
-                    <h3 className="blue-text">Laguro</h3>
-                </Link>
+                    <Link
+                        className="left brand-logo valign-wrapper"
+                        to={'/'}
+                    >
+                        <img
+                            className="logo"
+                            alt="Logo"
+                            src="/logo-white.png"
+                        />
+                        <h3 className="blue-text">Laguro</h3>
+                    </Link>
 
-                <ModalTrigger />
+                    <ModalTrigger />
 
-                <ul className="right">
-                    <li><Link to={'#'}>Become a Host</Link></li>
-                    <li><Link to={'#'}>About Us</Link></li>
-                    <li><Link to={'#'}>Help</Link></li>
-                    {this.profileButton()}
-                    <li>{this.renderLogin()}</li>
-                </ul>
+                    <ul className="right">
+                        <li><Link to={'#'}>Become a Host</Link></li>
+                        <li><Link to={'#'}>About Us</Link></li>
+                        <li><Link to={'#'}>Help</Link></li>
+                        {this.profileButton()}
+                        <li>{this.renderLogin()}</li>
+                    </ul>
                 </div>
             </nav>
         );

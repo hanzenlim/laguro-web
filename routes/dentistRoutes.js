@@ -1,7 +1,5 @@
 const mongoose = require('mongoose');
-
 const Dentist = mongoose.model('dentist');
-const User = mongoose.model('users');
 
 module.exports = (app) => {
     // get all dentists route
@@ -28,7 +26,7 @@ module.exports = (app) => {
     // add listing to Cart
     app.patch('/api/dentists/cart', async (req, res) => {
         Dentist.findOne(
-            { user_id: req.user._id },
+            { user_id: req.user.id },
             (err, dentist) => {
                 if (err) {
                     console.log(err); /* eslint-disable-line no-console */
@@ -55,19 +53,11 @@ module.exports = (app) => {
             specialty, location, procedures, img_url,
         } = req.body;
         const user = req.user;
-        await User.findOneAndUpdate(
-            { _id: user._id },
-            {
-                img: img_url,
-            },
-            { new: true },
-        );
-
         const newDentist = await Dentist.create({
             specialty,
             location,
             procedures,
-            user_id: user._id,
+            user_id: user.id,
             img_url,
             name: user.name,
             rating: [],

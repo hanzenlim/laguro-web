@@ -83,18 +83,23 @@ class EditOffice extends Component {
 
     renderUploadedImages() {
         const { imgUrl } = this.state;
-        return imgUrl.map((url, index) => (
-            <div className="edit_img_container" key={`img${index}`}>
-                <button
-                    onClick={this.deleteImg.bind(this, index)}
-                    type="button"
-                    className="delete_img red lighten-2 btn"
-                >
-                    <i className="material-icons">delete_forever</i>
-                </button>
-                <img src={url} alt="office" />
-            </div>
-        ));
+		
+        if (imgUrl && imgUrl.length > 0) {
+            return imgUrl.map((url, index) => (
+                <div className="edit_img_container" key={`img${index}`}>
+                    <button
+                        onClick={this.deleteImg.bind(this, index)}
+                        type="button"
+                        className="delete_img red lighten-2 btn"
+                    >
+                        <i className="material-icons">delete_forever</i>
+                    </button>
+                    <img src={url} alt="office" />
+                </div>
+            ));
+        }
+
+        return null;
     }
 
     renderEquipment() {
