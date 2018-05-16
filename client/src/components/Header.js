@@ -7,38 +7,36 @@ class Header extends Component {
     renderLogin() {
         const { auth } = this.props;
 
-        if (auth != null) {
-            switch (auth.data) {
-            case '':
-                return (
-                    <a className="login waves-effect btn light-blue lighten-2 white-text" href="/auth/google">Login</a>
-                );
-            default: // user IS logged in
-                return (
-                    <a className="logout waves-effect btn light-blue lighten-2 white-text" href="/api/logout">Logout</a>
-                );
-            }
+        if (auth == null) {
+            return (
+                <a
+                    className="login waves-effect btn light-blue lighten-2 white-text"
+                    href="/auth/google"
+                >
+                    Login
+                </a>
+            );
         }
+        // user IS logged in
+        return (
+            <a
+                className="logout waves-effect btn light-blue lighten-2 white-text"
+                href="/api/logout"
+            >
+                Logout
+            </a>
+        );
     }
 
     profileButton() {
         const { auth } = this.props;
 
         if (auth != null) {
-            switch (auth.data) {
-            case '':
-                return null;
-            default: // user IS logged in
-                return (
-                    <li>
-                        <Link
-                            to={'/profile'}
-                        >
-                            {auth.data.name}
-                        </Link>
-                    </li>
-                );
-            }
+            return (
+                <li>
+                    <Link to={'/profile'}>{auth.name}</Link>
+                </li>
+            );
         }
     }
 
@@ -46,10 +44,7 @@ class Header extends Component {
         return (
             <nav>
                 <div className="nav-wrapper white">
-                    <Link
-                        className="left brand-logo valign-wrapper"
-                        to={'/'}
-                    >
+                    <Link className="left brand-logo valign-wrapper" to={'/'}>
                         <img
                             className="logo"
                             alt="Logo"
@@ -61,9 +56,15 @@ class Header extends Component {
                     <ModalTrigger />
 
                     <ul className="right">
-                        <li><Link to={'#'}>Become a Host</Link></li>
-                        <li><Link to={'#'}>About Us</Link></li>
-                        <li><Link to={'#'}>Help</Link></li>
+                        <li>
+                            <Link to={'#'}>Become a Host</Link>
+                        </li>
+                        <li>
+                            <Link to={'#'}>About Us</Link>
+                        </li>
+                        <li>
+                            <Link to={'#'}>Help</Link>
+                        </li>
                         {this.profileButton()}
                         <li>{this.renderLogin()}</li>
                     </ul>

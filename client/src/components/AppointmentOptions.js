@@ -8,7 +8,7 @@ class AppointmentOptions extends Component {
         const {
             auth, reservation, appointments, index,
         } = this.props;
-        if (auth && auth.data) {
+        if (auth) {
             for (let i = index; i < appointments.length; i++) {
                 const overlap = this.timeComparison(
                     appointments[index].time,
@@ -18,9 +18,9 @@ class AppointmentOptions extends Component {
 
                 if (overlap) {
                     this.props.reserveAppointment(
-                        reservation._id,
-                        appointments[i]._id,
-                        auth.data._id,
+                        reservation.id,
+                        appointments[i].id,
+                        auth.id,
                     );
                 }
             }

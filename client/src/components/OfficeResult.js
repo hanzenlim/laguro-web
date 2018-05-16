@@ -7,7 +7,9 @@ import { Link } from 'react-router-dom';
 class OfficeResult extends Component {
     renderTimes(listings) {
         if (listings) {
-            const filteredListings = listings.filter(listing => !listing.reserved_by);
+            const filteredListings = listings.filter(
+                listing => !listing.reserved_by
+            );
 
             if (filteredListings.length === 0) {
                 return (
@@ -16,11 +18,10 @@ class OfficeResult extends Component {
                     </div>
                 );
             }
-
             return filteredListings.map(listing => (
                 <Link
-                    key={listing._id}
-                    to={`/offices/${listing.office}/listings/${listing._id}`}
+                    key={listing.id}
+                    to={`/offices/${listing.office.id}/listings/${listing.id}`}
                     className="badge white-text light-blue lighten-2"
                 >
                     {moment(listing.time_available).format('MMM D, h a')}
@@ -53,7 +54,11 @@ class OfficeResult extends Component {
                         <h6>{this.props.location}</h6>
                     </div>
                     <div className="rating">
-                        <ReactStars count={5} edit={false} value={this.props.avg_rating} />
+                        <ReactStars
+                            count={5}
+                            edit={false}
+                            value={this.props.avg_rating}
+                        />
                         <span className="rating_count">
                             {`${this.props.rating_count} Reviews`}
                         </span>

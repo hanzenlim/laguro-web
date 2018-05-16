@@ -4,6 +4,7 @@ import { Field, reduxForm } from 'redux-form';
 import ReactStars from 'react-stars';
 
 import * as actions from '../../actions';
+import { getEntityName } from '../../util/entity';
 
 const required = value => (value && value !== '' ? undefined : 'Required');
 
@@ -11,8 +12,10 @@ class NewReview extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            rating: 3.5,
+            rating: 3
         };
+        const { reviewee, type } = this.props;
+        this.name = getEntityName(reviewee, type);
     }
 
     ratingPhrase() {
@@ -22,9 +25,15 @@ class NewReview extends Component {
     }
 
     onSubmit(values) {
-        const { reset, reviewee } = this.props;
+        const { reset, reviewee, reviewerId, type } = this.props;
         const { rating } = this.state;
-        this.props.createReview({ ...values, rating, reviewee_id: reviewee._id });
+        this.props.createReview({
+            ...values,
+            rating,
+            type,
+            revieweeId: reviewee.id,
+            reviewerId
+        });
         reset();
     }
 
@@ -32,7 +41,7 @@ class NewReview extends Component {
         input,
         className,
         placeholder,
-        meta: { touched, error },
+        meta: { touched, error }
     }) => (
         <div className={className}>
             <div className="input-field">
@@ -47,9 +56,9 @@ class NewReview extends Component {
         </div>
     );
 
-    ratingChanged = (newRating) => {
+    ratingChanged = newRating => {
         this.setState({ rating: newRating });
-    }
+    };
 
     render() {
         const { handleSubmit, submitting } = this.props;
@@ -66,6 +75,7 @@ class NewReview extends Component {
                         count={5}
                         size={24}
                         onChange={this.ratingChanged}
+                        half={false}
                         value={this.state.rating}
                     />
                     <h6 className="col s6 m3">{this.ratingPhrase()}</h6>
@@ -74,7 +84,7 @@ class NewReview extends Component {
                     <Field
                         name="text"
                         className="col s12 m9"
-                        placeholder={`${this.props.reviewee.name} was great!`}
+                        placeholder={`${this.name} was great!`}
                         component={this.renderTextArea}
                         validate={required}
                     />
@@ -84,7 +94,7 @@ class NewReview extends Component {
                             type="submit"
                             disabled={submitting}
                         >
-							Submit
+                            Submit
                         </button>
                     </div>
                 </div>
@@ -94,5 +104,5 @@ class NewReview extends Component {
 }
 
 export default reduxForm({
-    form: 'newReview',
+    form: 'newReview'
 })(connect(null, actions)(NewReview));

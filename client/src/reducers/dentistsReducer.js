@@ -1,11 +1,19 @@
-import { FETCH_DENTISTS, REQUEST_DENTISTS, UPDATE_FILTERS, GET_ONE_DENTIST } from '../actions/types';
+import {
+    FETCH_DENTISTS,
+    REQUEST_DENTISTS,
+    UPDATE_FILTERS,
+    GET_ONE_DENTIST,
+} from '../actions/types';
 
-export default function (state = {
-    isFetching: false,
-    invalid: false,
-    dentists: [],
-    selectedDentist: {},
-}, action) {
+export default function (
+    state = {
+        isFetching: false,
+        invalid: false,
+        dentists: [],
+        selectedDentist: null,
+    },
+    action,
+) {
     switch (action.type) {
     case UPDATE_FILTERS:
         return Object.assign({}, state, {
@@ -28,7 +36,7 @@ export default function (state = {
         return Object.assign({}, state, {
             ...state,
             isFetching: false,
-            selectedDentist: action.payload.data,
+            selectedDentist: action.payload,
         });
     default:
         return state;

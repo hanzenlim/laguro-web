@@ -11,7 +11,7 @@ class Cart extends Component {
 
     componentDidMount() {
         const { auth } = this.props;
-        this.props.getDentistByUser(auth._id);
+        this.props.getDentistByUser(auth.id);
         this.props.fetchListings();
     }
 
@@ -37,7 +37,7 @@ class Cart extends Component {
                 <div className="cart_item" key={index}>
                     <Link
                         className="blue-text text-darken-2"
-                        to={`/offices/${listing.office}/listings/${listing._id}`}
+                        to={`/offices/${listing.office}/listings/${listing.id}`}
                     >
                         <p>{`${formatted_time}`}</p>
                     </Link>
@@ -60,7 +60,7 @@ function mapStateToProps(state) {
     return {
         dentist: state.dentists.selectedDentist,
         listings: state.listings.all,
-        auth: state.auth.data,
+        auth: state.auth,
     };
 }
 export default connect(mapStateToProps, actions)(Cart);

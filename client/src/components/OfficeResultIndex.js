@@ -1,18 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import moment from 'moment';
 import * as actions from '../actions';
 
 import OfficeResult from './OfficeResult';
 import FilterBar from './FilterBar';
 import ResultMap from './ResultMap';
+import { LISTINGS, REVIEWS } from '../util/strings';
 
 class OfficeResultIndex extends Component {
     componentWillMount() {
         document.title = 'Laguro - Search Index';
-        this.props.fetchAllReviews();
-        this.props.fetchListings();
-        this.props.fetchOffices(this.props.filters);
+        this.props.fetchOffices(this.props.filters, LISTINGS, REVIEWS);
     }
 
     renderMap() {
@@ -21,52 +19,43 @@ class OfficeResultIndex extends Component {
                 locations={this.props.offices}
                 google={window.google}
                 searchLocation={
-                    this.props.filters.location ? this.props.filters.location : null
+                    this.props.filters.location
+                        ? this.props.filters.location
+                        : null
                 }
             />
         );
     }
 
     renderOfficeList() {
-        const { reviews } = this.props;
-
         const filteredOffices = this.props.offices;
-        const allListings = this.props.listings;
-
         const officeList = filteredOffices.map((office, index) => {
-            // get all listings for this office
-            const officeListings = allListings
-                ? allListings.filter(listing => listing.office === office._id)
-                : [];
-
-            // extract the price and time for each listing
-            let listings = officeListings.filter(listing => (listing.office === office._id));
-
-            listings = listings.sort((listing_a, listing_b) => moment(listing_a.time).isAfter(moment(listing_b.time)));
+            const { reviews } = office;
 
             // calculate avg rating
             if (reviews && reviews.length) {
-                const officeReviews = reviews.filter(review => (review.reviewee_id === office._id));
                 this.avg_rating =
-					officeReviews.map(review => (review.rating)).reduce((acc, rating) => acc + rating, 0) / officeReviews.length;
-                this.rating_count = officeReviews.length;
+                    reviews
+                        .map(review => review.rating)
+                        .reduce((acc, rating) => acc + rating, 0) /
+                    reviews.length;
+                this.rating_count = reviews.length;
             } else {
                 this.avg_rating = 0;
                 this.rating_count = 0;
             }
-            
             return (
                 <OfficeResult
                     name={office.name}
                     location={office.location}
-                    chairs={office.chairs}
-                    listings={listings}
+                    chairs={office.numChairs}
+                    listings={office.listings}
                     avg_rating={this.avg_rating}
                     rating_count={this.rating_count}
-                    img={office.img_url? office.img_url[0]: null}
-                    office_id={office._id}
+                    img={office.imageUrls ? office.imageUrls[0] : null}
+                    office_id={office.id}
                     index={index}
-                    key={office._id}
+                    key={office.id}
                 />
             );
         });
@@ -76,7 +65,7 @@ class OfficeResultIndex extends Component {
 
     render() {
         if (this.props.invalid) {
-            this.props.fetchOffices(this.props.filters);
+            this.props.fetchOffices(this.props.filters, LISTINGS, REVIEWS);
         }
 
         if (this.props.isFetching) {
@@ -98,7 +87,7 @@ class OfficeResultIndex extends Component {
 function getVisibleOffices(offices) {
     // remove any offices greater than 35 miles away
     // if no location filter, office.distance is undefined and !!(undefined > 35) == false
-    const filteredOffices = offices.filter((office) => {
+    const filteredOffices = offices.filter(office => {
         if (office.distance && office.distance.split(',').join('') > 35) {
             return false;
         }
@@ -115,9 +104,7 @@ function mapStateToProps(state) {
         offices: getVisibleOffices(state.offices.all),
         isFetching: state.offices.isFetching,
         invalid: state.offices.invalid,
-        listings: state.listings.all,
-        reviews: state.reviews.all,
-        filters: state.filters,
+        filters: state.filters
     };
 }
 

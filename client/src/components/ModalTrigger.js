@@ -3,31 +3,38 @@ import Modal from './Modal';
 
 import './css/ModalTrigger.css';
 
-class ModalTrigger extends Component{
-    constructor(){
-        super()
+class ModalTrigger extends Component {
+    constructor() {
+        super();
 
         this.state = {
             isModalOpen: false
-        }
+        };
         this.handleHideModal = this.handleHideModal.bind(this);
         this.handleShowModal = this.handleShowModal.bind(this);
     }
 
-    handleShowModal(){
+    handleShowModal() {
         this.setState({ isModalOpen: true });
     }
 
-    handleHideModal(){
-        this.setState({ isModalOpen: false })
+    handleHideModal() {
+        this.setState({ isModalOpen: false });
     }
 
-
-    render(){
-        return(
+    render() {
+        return (
             <div id="login-modal">
-                <a className="waves-effect waves-light btn modal-trigger" onClick={this.handleShowModal} >Login</a>
-                <Modal handleHideModal={this.handleHideModal} show={this.state.isModalOpen}/>
+                <a
+                    className="waves-effect waves-light btn modal-trigger"
+                    onClick={this.handleShowModal}
+                >
+                    Login
+                </a>
+                <Modal
+                    handleHideModal={this.handleHideModal}
+                    show={this.state.isModalOpen}
+                />
             </div>
         );
     }

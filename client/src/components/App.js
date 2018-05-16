@@ -19,27 +19,34 @@ import Dentist from './Dentist';
 import Listing from './Listing';
 import Office from './Office';
 import Cart from './Cart';
+import { DENTIST } from '../util/strings';
 
-const PrivateRoute = ({
-    auth, path, component: Component, ...props
-}) => (
+const PrivateRoute = ({ auth, path, component: Component, ...props }) => (
     <Route
         render={() =>
-            (auth && auth.data ? (
+            auth ? (
                 <Component {...props} />
             ) : (
                 <div className="center-align">
-                    <p>You must log in to view the page {path ? `at ${path}` : ''}</p>
-                    <a className="login waves-effect btn light-blue lighten-2" href="/auth/google">Login</a>
+                    <p>
+                        You must log in to view the page{' '}
+                        {path ? `at ${path}` : ''}
+                    </p>
+                    <a
+                        className="login waves-effect btn light-blue lighten-2"
+                        href="/auth/google"
+                    >
+                        Login
+                    </a>
                 </div>
-            ))
+            )
         }
     />
 );
 
 class App extends Component {
     componentDidMount() {
-        this.props.fetchUser();
+        this.props.fetchUser(DENTIST);
     }
 
     render() {
@@ -49,14 +56,23 @@ class App extends Component {
                     <div>
                         <Header />
                         <Switch>
-                            <Route path="/dentists/search" component={DentistResultIndex} />
-                            <Route path="/offices/search" component={OfficeResultIndex} />
+                            <Route
+                                path="/dentists/search"
+                                component={DentistResultIndex}
+                            />
+                            <Route
+                                path="/offices/search"
+                                component={OfficeResultIndex}
+                            />
                             <PrivateRoute
                                 auth={this.props.auth}
                                 path="/offices/:office_id/listings/:id/edit"
                                 component={EditListing}
                             />
-                            <Route path="/offices/:office_id/listings/:id" component={Listing} />
+                            <Route
+                                path="/offices/:office_id/listings/:id"
+                                component={Listing}
+                            />
                             <PrivateRoute
                                 auth={this.props.auth}
                                 path="/offices/:office_id/edit"
@@ -67,7 +83,10 @@ class App extends Component {
                                 path="/offices/new"
                                 component={NewOffice}
                             />
-                            <Route path="/offices/:office_id" component={Office} />
+                            <Route
+                                path="/offices/:office_id"
+                                component={Office}
+                            />
                             <PrivateRoute
                                 auth={this.props.auth}
                                 path="/dentist/new"

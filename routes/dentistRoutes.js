@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+
 const Dentist = mongoose.model('dentist');
 
 module.exports = (app) => {

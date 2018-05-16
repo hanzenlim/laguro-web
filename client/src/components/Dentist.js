@@ -3,7 +3,15 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
 import ReactStars from 'react-stars';
-import { Dropdown } from 'materialize-css';
+import * as materialize from 'materialize-css/dist/js/materialize';
+import {
+    USER,
+    DENTIST,
+    OFFICES,
+    LISTINGS,
+    RESERVATIONS,
+    REVIEWS
+} from '../util/strings';
 
 import * as actions from '../actions';
 import NewReview from './forms/NewReview';
@@ -13,34 +21,29 @@ import AppointmentOptions from './AppointmentOptions';
 class Profile extends Component {
     componentWillMount() {
         this.dentist_id = this.props.match.params.id;
-        this.props.fetchReviews(this.dentist_id);
-        this.props.fetchListings();
-
-        this.getDentist().then((dentist) => {
-            document.title = `Laguro - ${dentist.name}`;
-            this.dentist_user_id = dentist.user_id;
-            this.props.fetchDentistReservations(this.dentist_user_id);
-        });
-    }
-
-    // get dentist profile for id
-    async getDentist() {
-        await this.props.getOneDentist(this.dentist_id);
-        const { dentist } = this.props;
-
-        if (Object.keys(dentist).length) {
-            return dentist;
-        }
-        return {};
+        this.props
+            .getDentist(
+                this.dentist_id,
+                USER,
+                OFFICES,
+                LISTINGS,
+                RESERVATIONS,
+                REVIEWS
+            )
+            .then(() => {
+                const { user } = this.props.dentist;
+                document.title = `Laguro - ${user.name}`;
+                this.dentist_user_id = user.id;
+            });
     }
 
     componentDidUpdate() {
         const elements = document.getElementsByClassName('dropdown-trigger');
         for (const el of elements) {
-            Dropdown.init(el, {
+            materialize.Dropdown.init(el, {
                 coverTrigger: false,
                 closeOnClick: false,
-                constrainWidth: false,
+                constrainWidth: false
             });
         }
     }
@@ -60,31 +63,43 @@ class Profile extends Component {
     }
 
     renderProfileDetails() {
-        const { dentist } = this.props;
+        const { dentist, reviews } = this.props;
+        const ratings = reviews ? reviews.map(review => review.rating) : [];
+        const averageRating =
+            ratings.length === 0
+                ? 0
+                : ratings.reduce((total, rating) => total + rating) /
+                  ratings.length;
 
         return (
             <div>
-                <h4>Hey, I'm {dentist ? dentist.name : ''}!</h4>
+                <h4>Hey, I'm {dentist ? dentist.user.name : ''}!</h4>
                 <div>{this.renderProcedures(dentist.procedures)}</div>
                 <p style={{ clear: 'both' }}>
-                    {`${dentist && dentist.location ? `${dentist.location} - ` : ''
-                    }Member since ${
-                        moment(dentist.date_created).format('MMMM `YY')}`}
+                    {`${
+                        dentist && dentist.location
+                            ? `${dentist.location} - `
+                            : ''
+                    }Member since ${moment(dentist.date_created).format(
+                        'MMMM `YY'
+                    )}`}
                 </p>
                 <div className="rating">
                     <ReactStars
                         count={5}
                         edit={false}
                         size={18}
-                        value={this.avg_rating}
+                        value={averageRating}
                     />
-                    <span className="rating_count">{`${this.rating_count} Reviews`}</span>
+                    <span className="rating_count">{`${
+                        reviews.length
+                    } Reviews`}</span>
                 </div>
             </div>
         );
     }
 
-    renderApptTimes(reservation) {
+    renderAppointmentTimes(reservation) {
         const { auth, dentist } = this.props;
         const { appointments } = reservation;
         return appointments.map((appt, index) => (
@@ -97,9 +112,14 @@ class Profile extends Component {
                             data-target={`dropdown${index}`}
                         >
                             {/* If no patient has reserved this appt */}
-                            {`${moment(appt.time).format('h:mm a')} - Available!`}
+                            {`${moment(appt.time).format(
+                                'h:mm a'
+                            )} - Available!`}
                         </a>
-                        <ul className="dropdown-content" id={`dropdown${index}`}>
+                        <ul
+                            className="dropdown-content"
+                            id={`dropdown${index}`}
+                        >
                             <AppointmentOptions
                                 appointments={appointments}
                                 procedures={dentist.procedures}
@@ -115,7 +135,7 @@ class Profile extends Component {
                         className="grey-text"
                         style={{
                             textDecoration: 'line-through',
-                            cursor: 'not-allowed',
+                            cursor: 'not-allowed'
                         }}
                     >
                         {/* If appt has already been reserved */}
@@ -128,7 +148,6 @@ class Profile extends Component {
 
     renderReservations() {
         const { reservations } = this.props;
-
         return reservations.map((reservation, index) => (
             <div key={index} className="reservation card-panel grey lighten-5">
                 <div className="office_detail">
@@ -142,12 +161,14 @@ class Profile extends Component {
                             to={`/offices/${reservation.office_id}`}
                         >
                             <p>
-                                {moment(reservation.time_start).format('MMM D, h:mm - ')}
+                                {moment(reservation.time_start).format(
+                                    'MMM D, h:mm - '
+                                )}
                                 {moment(reservation.time_end).format('h:mm a')}
                             </p>
                         </Link>
                     </div>
-                    <div>{this.renderApptTimes(reservation)}</div>
+                    <div>{this.renderAppointmentTimes(reservation)}</div>
                 </div>
             </div>
         ));
@@ -159,13 +180,17 @@ class Profile extends Component {
         if (!dentist || Object.keys(dentist).length === 0) {
             return <div>Loading...</div>;
         }
+
         // calculate avg rating
         if (reviews && reviews.length) {
-            const dentistReviews = reviews.filter(review => review.reviewee_id === dentist._id);
+            const dentistReviews = reviews.filter(
+                review => review.reviewee_id === dentist.id
+            );
             this.avg_rating =
-        dentistReviews
-            .map(review => review.rating)
-            .reduce((acc, rating) => acc + rating, 0) / dentistReviews.length;
+                dentistReviews
+                    .map(review => review.rating)
+                    .reduce((acc, rating) => acc + rating, 0) /
+                dentistReviews.length;
             this.rating_count = dentistReviews.length;
         } else {
             this.avg_rating = 0;
@@ -177,7 +202,7 @@ class Profile extends Component {
                 <div className="sidebar">
                     <img
                         className="profile_img"
-                        src={dentist ? dentist.img_url : ''}
+                        src={dentist ? dentist.user.imageUrl : ''}
                         alt="user"
                     />
                 </div>
@@ -187,7 +212,7 @@ class Profile extends Component {
                         className="btn light-blue lighten-2 waves-effect"
                         to={'/dentists/search'}
                     >
-            Go back to dentists
+                        Go back to dentists
                     </Link>
                     <div className="profile_section">
                         <div className="offices">
@@ -196,12 +221,20 @@ class Profile extends Component {
                         </div>
                     </div>
                     <div className="profile_section">
-                        <h5>{`Reviews for ${dentist.name}`}</h5>
+                        <h5>{`Reviews for ${dentist.user.name}`}</h5>
                         {/* if logged out, hide new review form */}
-                        {auth && auth.data ? <NewReview reviewee={dentist} /> : ''}
+                        {auth ? (
+                            <NewReview
+                                reviewee={dentist}
+                                type={DENTIST}
+                                reviewerId={auth.id}
+                            />
+                        ) : (
+                            ''
+                        )}
                         <ReviewContainer
-                            reviewee_id={dentist._id}
-                            reviewee_name={dentist.name}
+                            revieweeId={dentist.id}
+                            revieweeName={dentist.user.name}
                             reviews={reviews}
                         />
                     </div>
@@ -214,10 +247,10 @@ class Profile extends Component {
 function mapStateToProps(state) {
     return {
         auth: state.auth,
+        dentist: state.dentists.selectedDentist,
         listings: state.listings.all,
         reservations: state.reservations.selected,
-        dentist: state.dentists.selectedDentist,
-        reviews: state.reviews.selected,
+        reviews: state.reviews.all
     };
 }
 export default connect(mapStateToProps, actions)(Profile);

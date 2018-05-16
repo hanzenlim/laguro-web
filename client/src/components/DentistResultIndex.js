@@ -5,12 +5,12 @@ import * as actions from '../actions';
 import DentistResult from './DentistResult';
 import FilterBar from './FilterBar';
 import ResultMap from './ResultMap';
+import { USER, REVIEWS } from '../util/strings';
 
 class DentistResultIndex extends Component {
     componentWillMount() {
         document.title = 'Laguro - Search Index';
-        this.props.fetchDentists(this.props.filters);
-        this.props.fetchAllReviews();
+        this.props.fetchDentists(this.props.filters, USER, REVIEWS);
     }
 
     renderMap() {
@@ -19,7 +19,9 @@ class DentistResultIndex extends Component {
                 locations={this.props.dentists}
                 google={window.google}
                 searchLocation={
-                    this.props.filters.location ? this.props.filters.location : null
+                    this.props.filters.location
+                        ? this.props.filters.location
+                        : null
                 }
             />
         );
@@ -27,20 +29,20 @@ class DentistResultIndex extends Component {
 
     renderDentistList() {
         const filteredDentists = this.props.dentists;
-        const { reviews } = this.props;
-
         const dentistList = filteredDentists.map((dentist, index) => {
+            const reviews = dentist.reviews;
             // calculate avg rating
             if (reviews && reviews.length) {
-                const dentistReviews = reviews.filter(review => (review.reviewee_id === dentist._id));
                 this.avg_rating =
-          dentistReviews.map(review => (review.rating)).reduce((acc, rating) => acc + rating, 0) / dentistReviews.length;
-                this.rating_count = dentistReviews.length;
+                    reviews
+                        .map(review => review.rating)
+                        .reduce((acc, rating) => acc + rating, 0) /
+                    reviews.length;
+                this.rating_count = reviews.length;
             } else {
                 this.avg_rating = 0;
                 this.rating_count = 0;
             }
-
 
             return (
                 <DentistResult
@@ -50,10 +52,10 @@ class DentistResultIndex extends Component {
                     procedures={dentist.procedures}
                     rating_value={this.avg_rating}
                     rating_count={this.rating_count}
-                    img={dentist.img_url}
-                    dentist_id={dentist._id}
+                    img={dentist.user.imageUrl}
+                    dentist_id={dentist.id}
                     index={index}
-                    key={dentist._id}
+                    key={dentist.id}
                 />
             );
         });
@@ -63,7 +65,7 @@ class DentistResultIndex extends Component {
 
     render() {
         if (this.props.invalid) {
-            this.props.fetchDentists(this.props.filters);
+            this.props.fetchDentists(this.props.filters, USER, REVIEWS);
         }
 
         if (this.props.isFetching) {
@@ -85,7 +87,7 @@ class DentistResultIndex extends Component {
 function getVisibleOffices(offices) {
     // remove any offices greater than 35 miles away
     // if no location filter, office.distance is undefined and !!(undefined > 35) == false
-    const filteredOffices = offices.filter((office) => {
+    const filteredOffices = offices.filter(office => {
         if (office.distance > 35) {
             return false;
         }
@@ -102,8 +104,7 @@ function mapStateToProps(state) {
         dentists: getVisibleOffices(state.dentists.dentists),
         isFetching: state.dentists.isFetching,
         invalid: state.dentists.invalid,
-        reviews: state.reviews.all,
-        filters: state.filters,
+        filters: state.filters
     };
 }
 

@@ -27,16 +27,16 @@ class Landing extends Component {
                     <div className="mission">
                         <h3 className="toggle active">No Empty Chairs.</h3>
                         <p className="grey-text toggle active">
-							Search, discover and book a chair after-hours at a local clinic
-							and see <strong>your</strong> patients on <strong>your</strong>{' '}
-							terms.
+                            Search, discover and book a chair after-hours at a
+                            local clinic and see <strong>your</strong> patients
+                            on <strong>your</strong> terms.
                         </p>
 
                         <h3 className="toggle">No Waiting Rooms.</h3>
                         <p className="grey-text toggle">
-							Find your next dentist or specialist and book an appointment in{' '}
-                            <strong>your</strong> neighborhood on <strong>your</strong>{' '}
-							schedule.
+                            Find your next dentist or specialist and book an
+                            appointment in <strong>your</strong> neighborhood on{' '}
+                            <strong>your</strong> schedule.
                         </p>
                     </div>
                     <div className="search">
@@ -62,7 +62,7 @@ class Landing extends Component {
                 </div>
 
                 <div className="hero-img">
-                    <img src="/img/hero1.jpg" alt="hero"/>
+                    <img src="/img/hero1.jpg" alt="hero" />
                 </div>
             </div>
         );
