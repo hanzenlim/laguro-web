@@ -9,6 +9,8 @@ import history from '../history';
 import Landing from './Landing';
 import Header from './Header';
 import LoginModal from './LoginModal';
+import PaymentSuccess from './PaymentSuccess';
+
 import { DENTIST } from '../util/strings';
 import NotFound from './NotFound';
 
@@ -112,9 +114,7 @@ class App extends Component {
             <div>
                 <Router history={history}>
                     <div>
-                        <Header 
-                            toggleShowModal={this.props.toggleLoginModal}
-                        />
+                        <Header toggleShowModal={this.props.toggleLoginModal} />
                         <Switch>
                             <Route
                                 path="/dentists/search"
@@ -172,6 +172,11 @@ class App extends Component {
                                 auth={this.props.auth}
                                 path="/cart"
                                 component={Cart}
+                            />
+                            <PrivateRoute
+                                auth={this.props.auth}
+                                path="/payment-success"
+                                component={PaymentSuccess}
                             />
                             <Route path="/" component={Landing} />
                             {/* Catch all unmatched routes. */}
