@@ -1,10 +1,8 @@
-import React, { Component} from 'react';
+import React, { Component } from 'react';
 
-
-import './css/Modal.css'
+import './css/Modal.css';
 
 class Modal extends Component {
-
     constructor() {
         super();
         this.setWrapperRef = this.setWrapperRef.bind(this);
@@ -27,9 +25,7 @@ class Modal extends Component {
     /* Alert if clicked on outside of element */
     handleClickOutside(event) {
         if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
-
             this.props.handleHideModal();
-
         }
     }
 
@@ -37,17 +33,32 @@ class Modal extends Component {
         let overlay;
 
         if (this.props.show) {
-            overlay = (<div className='modal-overlay'></div>);
+            overlay = <div className="modal-overlay" />;
         }
 
         let ret = (
             <div>
-                <div ref={this.setWrapperRef} className={this.props.show ? 'modal open' : 'modal'}>
-                    <a href="#!" onClick={this.props.handleHideModal} className="modal-close">X</a>
+                <div
+                    ref={this.setWrapperRef}
+                    className={this.props.show ? 'modal open' : 'modal'}
+                >
+                    <a
+                        href="#!"
+                        onClick={this.props.handleHideModal}
+                        className="modal-close"
+                    >
+                        X
+                    </a>
                     <div className="modal-content">
-                        <a id="googleLoginBtn" className="login waves-effect">Log in with Google</a>
+                        <a
+                            id="googleLoginBtn"
+                            href="/auth/google"
+                            className="login waves-effect"
+                        >
+                            Log in with Google
+                        </a>
                     </div>
-                    <div className="modal-footer"></div>
+                    <div className="modal-footer" />
                 </div>
                 {overlay}
             </div>
@@ -60,10 +71,10 @@ class Modal extends Component {
             return null;
         }
     }
-    propTypes:{
-      handleHideModal: React.PropTypes.func.isRequired,
-      show: React.PropTypes.bool.isRequired
-    }
+    propTypes: {
+        handleHideModal: React.PropTypes.func.isRequired,
+        show: React.PropTypes.bool.isRequired,
+    };
 }
 
 export default Modal;

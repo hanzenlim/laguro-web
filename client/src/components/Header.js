@@ -7,14 +7,9 @@ class Header extends Component {
     renderLogin() {
         const { auth } = this.props;
 
-        if (auth == null) {
+        if (auth === null) {
             return (
-                <a
-                    className="login waves-effect btn light-blue lighten-2 white-text"
-                    href="/auth/google"
-                >
-                    Login
-                </a>
+                <ModalTrigger />
             );
         }
         // user IS logged in
@@ -52,8 +47,6 @@ class Header extends Component {
                         />
                         <h3 className="blue-text">Laguro</h3>
                     </Link>
-
-                    <ModalTrigger />
 
                     <ul className="right">
                         <li>

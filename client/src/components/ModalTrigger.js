@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import Modal from './Modal';
 
-import './css/ModalTrigger.css';
-
 class ModalTrigger extends Component {
     constructor() {
         super();
 
         this.state = {
-            isModalOpen: false
+            isModalOpen: false,
         };
         this.handleHideModal = this.handleHideModal.bind(this);
         this.handleShowModal = this.handleShowModal.bind(this);
@@ -26,7 +24,7 @@ class ModalTrigger extends Component {
         return (
             <div id="login-modal">
                 <a
-                    className="waves-effect waves-light btn modal-trigger"
+                    className="waves-effect waves-light btn modal-trigger white-text"
                     onClick={this.handleShowModal}
                 >
                     Login
