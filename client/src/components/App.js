@@ -1,26 +1,83 @@
 import React, { Component } from 'react';
 import { Router, Route, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
+import Loadable from 'react-loadable';
 import * as actions from '../actions';
+import LoadingComponent from './LoadingComponent';
 
 import history from '../history';
 import Landing from './Landing';
-import DentistResultIndex from './DentistResultIndex';
-import OfficeResultIndex from './OfficeResultIndex';
 import Header from './Header';
-import NewOffice from './forms/NewOffice';
-import EditOffice from './forms/EditOffice';
-import NewListing from './forms/NewListing';
-import EditListing from './forms/EditListing';
-import NewDentist from './forms/NewDentist';
-import EditDentist from './forms/EditDentist';
-import Profile from './Profile';
-import Dentist from './Dentist';
-import Listing from './Listing';
-import Office from './Office';
-import Cart from './Cart';
 import LoginModal from './LoginModal';
 import { DENTIST } from '../util/strings';
+import NotFound from './NotFound';
+
+import './App.css';
+
+const Cart = Loadable({
+    loader: () => import("./Cart"),
+    loading: LoadingComponent
+});
+
+const DentistResultIndex = Loadable({
+    loader: () => import("./DentistResultIndex"),
+    loading: LoadingComponent
+});
+
+const OfficeResultIndex = Loadable({
+    loader: () => import("./OfficeResultIndex"),
+    loading: LoadingComponent
+});
+
+const NewOffice = Loadable({
+    loader: () => import("./forms/NewOffice"),
+    loading: LoadingComponent
+});
+
+const EditOffice = Loadable({
+    loader: () => import("./forms/EditOffice"),
+    loading: LoadingComponent
+});
+
+const NewListing = Loadable({
+    loader: () => import("./forms/NewListing"),
+    loading: LoadingComponent
+});
+
+const EditListing = Loadable({
+    loader: () => import("./forms/EditListing"),
+    loading: LoadingComponent
+});
+
+const NewDentist = Loadable({
+    loader: () => import("./forms/NewDentist"),
+    loading: LoadingComponent
+});
+
+const EditDentist = Loadable({
+    loader: () => import("./forms/EditDentist"),
+    loading: LoadingComponent
+});
+
+const Profile = Loadable({
+    loader: () => import("./Profile"),
+    loading: LoadingComponent
+});
+
+const Dentist = Loadable({
+    loader: () => import("./Dentist"),
+    loading: LoadingComponent
+});
+
+const Listing = Loadable({
+    loader: () => import("./Listing"),
+    loading: LoadingComponent
+});
+
+const Office = Loadable({
+    loader: () => import("./Office"),
+    loading: LoadingComponent
+});
 
 const PrivateRoute = ({ auth, path, component: Component, ...props }) => (
     <Route
@@ -117,6 +174,8 @@ class App extends Component {
                                 component={Cart}
                             />
                             <Route path="/" component={Landing} />
+                            {/* Catch all unmatched routes. */}
+                            <Route component={NotFound} />
                         </Switch>
                         <LoginModal
                             open={this.props.isLoginModalVisible}

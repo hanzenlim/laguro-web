@@ -1,22 +1,18 @@
 // External Packages
-import {
-    makeQuery,
-    makeMutation,
-    getUserQuery,
-    getUserVariable,
-    createUserQuery,
-    createUserVariable,
-} from '../util/serverDataLoader';
+const serverDataLoader = require('../util/serverDataLoader');
+
+const makeQuery = serverDataLoader.makeQuery;
+const makeMutation = serverDataLoader.makeMutation;
+const getUserQuery = serverDataLoader.getUserQuery;
+const getUserVariable = serverDataLoader.getUserVariable;
+const createUserQuery = serverDataLoader.createUserQuery;
+const createUserVariable = serverDataLoader.createUserVariable;
 
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const mongoose = require('mongoose');
 
 // Local Packages
 const keys = require('../client/src/config/keys');
-
-// Load models
-mongoose.model('users');
 
 // Define passport functions
 passport.serializeUser((user, done) => {
@@ -52,7 +48,6 @@ passport.use(new GoogleStrategy(
             profile.id,
             biggerImg,
         ));
-
 
         done(null, result.data.createUser);
     },

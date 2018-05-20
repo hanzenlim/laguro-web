@@ -1,9 +1,8 @@
 import { createApolloFetch } from 'apollo-fetch';
 
-const uri =
-    process.env.NODE_ENV === 'production'
-        ? 'http://prod-placeholder.com'
-        : 'http://localhost:3000/api/graphql';
+const uri = process.env.NODE_ENV === 'production' ?
+    'https://www.laguro.com/api/graphql' : 'http://localhost:3000/api/graphql';
+
 const apolloFetch = createApolloFetch({ uri });
 
 /* eslint no-unused-vars: ["error", { "args": "none" }] */
