@@ -54,9 +54,6 @@ export const reservationFragment = `
     listing {
         ${listingFragment}
     }
-    appointments {
-        ${appointmentFragment}
-    }
     staffSelected {
       role
       price

@@ -148,30 +148,39 @@ class Profile extends Component {
 
     renderReservations() {
         const { reservations } = this.props;
-        return reservations.map((reservation, index) => (
-            <div key={index} className="reservation card-panel grey lighten-5">
-                <div className="office_detail">
-                    <img src={reservation.office_img} alt="office" />
-                    <h6>{reservation.office_name}</h6>
-                </div>
-                <div className="content">
-                    <div className="top-bar">
-                        <Link
-                            className="blue-text text-darken-2"
-                            to={`/offices/${reservation.office_id}`}
-                        >
-                            <p>
-                                {moment(reservation.time_start).format(
-                                    'MMM D, h:mm - '
-                                )}
-                                {moment(reservation.time_end).format('h:mm a')}
-                            </p>
-                        </Link>
+        return reservations.map((reservation, index) => {
+            const office = reservation.office;
+            const officeImage =
+                office.imageUrls.length === 0 ? '' : office.imageUrls[0];
+            return (
+                <div
+                    key={index}
+                    className="reservation card-panel grey lighten-5"
+                >
+                    <div className="office_detail">
+                        <img src={officeImage} alt="" />
+                        <h6>{office.name}</h6>
                     </div>
-                    <div>{this.renderAppointmentTimes(reservation)}</div>
+                    <div className="content">
+                        <div className="top-bar">
+                            <Link
+                                className="blue-text text-darken-2"
+                                to={`/offices/${office.id}`}
+                            >
+                                <p>
+                                    {moment(reservation.startTime).format(
+                                        'MMM D, h:mm - '
+                                    )}
+                                    {moment(reservation.endTime).format(
+                                        'h:mm a'
+                                    )}
+                                </p>
+                            </Link>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        ));
+            );
+        });
     }
 
     render() {

@@ -195,7 +195,7 @@ class ReservationOptions extends Component {
                                     component="select"
                                 >
                                     {this.renderOptions(
-                                        listing.staff[index].count,
+                                        listing.staffAvailable[index].count,
                                         0
                                     )}
                                 </Field>
