@@ -5,3 +5,4 @@ export * from './listingActions';
 export * from './reservationActions';
 export * from './reviewActions';
 export * from './searchActions';
+export * from './uiActions';

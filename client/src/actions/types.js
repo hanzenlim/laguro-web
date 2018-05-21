@@ -6,6 +6,7 @@ export const REQUEST_OFFICES = 'request_offices';
 export const REQUEST_DENTISTS = 'request_dentists';
 export const REQUEST_LISTINGS = 'request_listings';
 export const FETCH_USER = 'fetch_user';
+export const TOGGLE_LOGIN_MODAL = 'toggle_login_modal';
 export const UPDATE_FILTERS = 'update_filters';
 export const SET_FILTERS = 'set_filters';
 export const CREATE_OFFICE = 'create_office';

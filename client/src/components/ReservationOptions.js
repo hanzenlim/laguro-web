@@ -5,7 +5,7 @@ import {
     FieldArray,
     reduxForm,
     formValueSelector,
-    SubmissionError
+    SubmissionError,
 } from 'redux-form';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
@@ -25,7 +25,7 @@ class ReservationOptions extends Component {
             appts_per_hour: 1,
             startTime: moment(listing.startTime),
             endTime: moment(listing.endTime),
-            acknowledge: false
+            acknowledge: false,
         });
     }
 
@@ -39,11 +39,11 @@ class ReservationOptions extends Component {
         ) {
             throw new SubmissionError({
                 endTime: 'Minimum reservation is 2 hours',
-                _error: 'Invalid time frame, please correct error above'
+                _error: 'Invalid time frame, please correct error above',
             });
         } else if (!values.acknowledge) {
             throw new SubmissionError({
-                _error: 'Please accept the terms to continue'
+                _error: 'Please accept the terms to continue',
             });
         } else {
             let duration = 60;
@@ -70,7 +70,7 @@ class ReservationOptions extends Component {
 
             while (appt_time.isBefore(moment(endTime))) {
                 appointments.push({
-                    time: appt_time.format('MMM D, YYYY h:mm a')
+                    time: appt_time.format('MMM D, YYYY h:mm a'),
                 });
                 appt_time = appt_time.add(duration, 'minutes');
             }
@@ -90,7 +90,7 @@ class ReservationOptions extends Component {
                 officeId: office.id,
                 hostId: listing.host.id,
                 reservedBy: this.props.auth.dentist.id,
-                totalPaid: this.calcTotal()
+                totalPaid: this.calcTotal(),
             });
 
             this.closeModals();
@@ -133,7 +133,7 @@ class ReservationOptions extends Component {
         className,
         dateType,
         listing,
-        meta: { touched, error }
+        meta: { touched, error },
     }) => {
         const { startTime, endTime } = this.props;
         return (
@@ -178,6 +178,7 @@ class ReservationOptions extends Component {
                 style={{ border: '1px solid #999', padding: '4px' }}
             >
                 <label>Staff Required</label>
+
                 {fields.map((staffSelected, index) => (
                     <li key={index} className="multiRow">
                         <Field
@@ -195,7 +196,7 @@ class ReservationOptions extends Component {
                                     component="select"
                                 >
                                     {this.renderOptions(
-                                        listing.staff[index].count,
+                                        listing.staffAvailable[index].count,
                                         0
                                     )}
                                 </Field>
@@ -289,7 +290,7 @@ class ReservationOptions extends Component {
             listing,
             error,
             staffSelected,
-            equipSelected
+            equipSelected,
         } = this.props;
 
         if (!this.props.initialized) return <div>Loading...</div>;
@@ -442,10 +443,10 @@ const mapStateToProps = state => {
         numChairs: selector(state, 'numChairs'),
         equipSelected: selector(state, 'equipSelected'),
         startTime: selector(state, 'startTime'),
-        endTime: selector(state, 'endTime')
+        endTime: selector(state, 'endTime'),
     };
 };
 
 export default reduxForm({
-    form: 'reservationOptions'
+    form: 'reservationOptions',
 })(connect(mapStateToProps, actions)(ReservationOptions));

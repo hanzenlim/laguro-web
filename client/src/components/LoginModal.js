@@ -1,14 +1,9 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import './css/Modal.css';
 
-class Modal extends Component {
-    constructor() {
-        super();
-        this.setWrapperRef = this.setWrapperRef.bind(this);
-        this.handleClickOutside = this.handleClickOutside.bind(this);
-    }
-
+class LoginModal extends Component {
     componentDidMount() {
         document.addEventListener('mousedown', this.handleClickOutside);
     }
@@ -18,33 +13,40 @@ class Modal extends Component {
     }
 
     /* Set the wrapper ref */
-    setWrapperRef(node) {
+    setWrapperRef = node => {
         this.wrapperRef = node;
-    }
+    };
 
     /* Alert if clicked on outside of element */
-    handleClickOutside(event) {
+    handleClickOutside = event => {
+        const { onClose } = this.props;
+
         if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
-            this.props.handleHideModal();
+            if (onClose) {
+                onClose();
+            }
         }
-    }
+    };
+
+    handleClose = () => {
+        const { onClose } = this.props;
+
+        if (onClose) {
+            onClose();
+        }
+    };
 
     render() {
-        let overlay;
+        const { open } = this.props;
 
-        if (this.props.show) {
-            overlay = <div className="modal-overlay" />;
-        }
+        if (!open) return null;
 
-        let ret = (
+        return (
             <div>
-                <div
-                    ref={this.setWrapperRef}
-                    className={this.props.show ? 'modal open' : 'modal'}
-                >
+                <div ref={this.setWrapperRef} className="modal open">
                     <a
                         href="#!"
-                        onClick={this.props.handleHideModal}
+                        onClick={this.handleClose}
                         className="modal-close"
                     >
                         X
@@ -60,21 +62,15 @@ class Modal extends Component {
                     </div>
                     <div className="modal-footer" />
                 </div>
-                {overlay}
+                <div className="modal-overlay" />
             </div>
         );
-
-        // change
-        if (ret) {
-            return ret;
-        } else {
-            return null;
-        }
     }
-    propTypes: {
-        handleHideModal: React.PropTypes.func.isRequired,
-        show: React.PropTypes.bool.isRequired,
-    };
 }
 
-export default Modal;
+LoginModal.propTypes = {
+    onClose: PropTypes.func.isRequired,
+    open: PropTypes.bool.isRequired,
+};
+
+export default LoginModal;

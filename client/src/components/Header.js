@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import ModalTrigger from './ModalTrigger';
 
 class Header extends Component {
     renderLogin() {
@@ -9,7 +8,12 @@ class Header extends Component {
 
         if (auth === null) {
             return (
-                <ModalTrigger />
+                <a
+                    className="waves-effect waves-light btn modal-trigger white-text"
+                    onClick={this.props.toggleShowModal}
+                >
+                    Login
+                </a>
             );
         }
         // user IS logged in
