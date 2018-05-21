@@ -5,7 +5,7 @@ import {
     FieldArray,
     reduxForm,
     formValueSelector,
-    SubmissionError
+    SubmissionError,
 } from 'redux-form';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
@@ -25,7 +25,7 @@ class ReservationOptions extends Component {
             appts_per_hour: 1,
             startTime: moment(listing.startTime),
             endTime: moment(listing.endTime),
-            acknowledge: false
+            acknowledge: false,
         });
     }
 
@@ -39,30 +39,30 @@ class ReservationOptions extends Component {
         ) {
             throw new SubmissionError({
                 endTime: 'Minimum reservation is 2 hours',
-                _error: 'Invalid time frame, please correct error above'
+                _error: 'Invalid time frame, please correct error above',
             });
         } else if (!values.acknowledge) {
             throw new SubmissionError({
-                _error: 'Please accept the terms to continue'
+                _error: 'Please accept the terms to continue',
             });
         } else {
             let duration = 60;
 
             switch (Number(values.appts_per_hour)) {
-            case 1:
-                duration = 60;
-                break;
-            case 2:
-                duration = 30;
-                break;
-            case 3:
-                duration = 20;
-                break;
-            case 4:
-                duration = 15;
-                break;
-            default:
-                break;
+                case 1:
+                    duration = 60;
+                    break;
+                case 2:
+                    duration = 30;
+                    break;
+                case 3:
+                    duration = 20;
+                    break;
+                case 4:
+                    duration = 15;
+                    break;
+                default:
+                    break;
             }
 
             let appt_time = moment(startTime);
@@ -70,7 +70,7 @@ class ReservationOptions extends Component {
 
             while (appt_time.isBefore(moment(endTime))) {
                 appointments.push({
-                    time: appt_time.format('MMM D, YYYY h:mm a')
+                    time: appt_time.format('MMM D, YYYY h:mm a'),
                 });
                 appt_time = appt_time.add(duration, 'minutes');
             }
@@ -81,7 +81,7 @@ class ReservationOptions extends Component {
                     const { role, count } = staff;
                     return {
                         role,
-                        count
+                        count,
                     };
                 });
             const totalPaid = Math.round(this.calcTotal() * 100);
@@ -97,8 +97,8 @@ class ReservationOptions extends Component {
                 reservedBy: this.props.auth.dentist.id,
                 startTime: values.startTime,
                 endTime: values.endTime,
-                paymentOptionId: 'card_1CVHQAG42zKCEoIVErYyYlQ9',
-                totalPaid
+                paymentOptionId: 'card_1CQJ8mG42zKCEoIVyxrsA6Nd',
+                totalPaid,
             });
 
             this.closeModals();
@@ -141,7 +141,7 @@ class ReservationOptions extends Component {
         className,
         dateType,
         listing,
-        meta: { touched, error }
+        meta: { touched, error },
     }) => {
         const { startTime, endTime } = this.props;
         return (
@@ -297,7 +297,7 @@ class ReservationOptions extends Component {
             listing,
             error,
             staffSelected,
-            equipmentOptions
+            equipmentOptions,
         } = this.props;
 
         if (!this.props.initialized) return <div>Loading...</div>;
@@ -452,10 +452,10 @@ const mapStateToProps = state => {
         numChairs: selector(state, 'numChairs'),
         equipmentOptions: selector(state, 'equipmentOptions'),
         startTime: selector(state, 'startTime'),
-        endTime: selector(state, 'endTime')
+        endTime: selector(state, 'endTime'),
     };
 };
 
 export default reduxForm({
-    form: 'reservationOptions'
+    form: 'reservationOptions',
 })(connect(mapStateToProps, actions)(ReservationOptions));

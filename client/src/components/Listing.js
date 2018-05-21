@@ -198,7 +198,7 @@ class OfficeResultIndex extends Component {
 function mapStateToProps(state) {
     return {
         listing: state.listings.selected,
-        auth: state.auth
+        auth: state.auth,
     };
 }
 

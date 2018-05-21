@@ -11,6 +11,7 @@ import Header from './Header';
 import LoginModal from './LoginModal';
 import PaymentSuccess from './PaymentSuccess';
 
+import LoginModal from './LoginModal';
 import { DENTIST } from '../util/strings';
 import NotFound from './NotFound';
 
