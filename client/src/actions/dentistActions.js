@@ -34,6 +34,9 @@ export const getDentist = (id, ...options) => async dispatch => {
         type: GET_ONE_DENTIST,
         payload: dentist
     });
+    if (!dentist) {
+        return;
+    }
     dispatchChildren(dentist, options, dispatch);
 };
 

@@ -45,6 +45,20 @@ export const listingFragment = `
     dateCreated
 `;
 
+export const appointmentFragment = `
+    patient {
+        id
+    }
+    procedure {
+        name
+        duration
+    }
+    location
+    startTime
+    endTime
+    dateCreated
+`;
+
 export const reservationFragment = `
     id
     numChairsSelected
@@ -53,6 +67,9 @@ export const reservationFragment = `
     }
     listing {
         ${listingFragment}
+    }
+    appointments {
+        ${appointmentFragment}
     }
     staffSelected {
       role
@@ -64,20 +81,6 @@ export const reservationFragment = `
     payment {
       id
     }
-    startTime
-    endTime
-    dateCreated
-`;
-
-export const appointmentFragment = `
-    patient {
-        id
-    }
-    procedure {
-        name: String!
-        duration: Int!
-    }
-    location
     startTime
     endTime
     dateCreated
