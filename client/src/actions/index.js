@@ -6,3 +6,4 @@ export * from './reservationActions';
 export * from './appointmentActions';
 export * from './reviewActions';
 export * from './searchActions';
+export * from './uiActions';

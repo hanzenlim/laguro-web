@@ -62,6 +62,16 @@ class OfficeResultIndex extends Component {
         modal_overlay.classList.remove('open');
     }
 
+    handleBookNow = () => {
+        const { auth } = this.props;
+
+        if (auth) {
+            this.openModal('reservation_options');
+        } else {
+            this.props.toggleLoginModal();
+        }
+    };
+
     render() {
         const { listing } = this.props;
         // if dentist still hasn't loaded, wait for render
@@ -173,9 +183,7 @@ class OfficeResultIndex extends Component {
                         </div>
                         <button
                             className="btn red lighten-2 waves-effect"
-                            onClick={() =>
-                                this.openModal('reservation_options')
-                            }
+                            onClick={this.handleBookNow}
                             disabled={!!listing.reservedBy}
                         >
                             Book Now
@@ -190,7 +198,7 @@ class OfficeResultIndex extends Component {
 function mapStateToProps(state) {
     return {
         listing: state.listings.selected,
-        auth: state.auth
+        auth: state.auth,
     };
 }
 

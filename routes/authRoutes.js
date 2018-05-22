@@ -1,18 +1,28 @@
 // External Packages
-import { makeQuery, getUserQuery, getUserVariable } from '../util/serverDataLoader';
+import {
+    makeQuery,
+    getUserQuery,
+    getUserVariable,
+} from '../util/serverDataLoader';
 
 const passport = require('passport');
 const mongoose = require('mongoose');
 
 const User = mongoose.model('users');
 
-module.exports = (app) => {
+module.exports = app => {
     // hit this route to start oauth process
     app.get(
         '/auth/google',
+        (req, res, next) => {
+            const referer = req.get('referer');
+            if (!req.session) req.session = {};
+            req.session.returnTo = referer;
+            next();
+        },
         passport.authenticate('google', {
             scope: ['profile', 'email'],
-        }),
+        })
     );
 
     // hit by goog OAuth post-auth
@@ -21,8 +31,8 @@ module.exports = (app) => {
         passport.authenticate('google'),
         (req, res) => {
             res.cookie('userId', req.user.googleId, { maxAge: 2592000000 });
-            res.redirect('/profile');
-        },
+            res.redirect(req.session.returnTo);
+        }
     );
 
     // visiting this route clears logged in user
@@ -36,20 +46,16 @@ module.exports = (app) => {
 
     app.get('/api/current_user', async (req, res) => {
         if (req.user) {
-            const result = await makeQuery(getUserQuery, getUserVariable(req.user.googleId));
+            const result = await makeQuery(
+                getUserQuery,
+                getUserVariable(req.user.googleId)
+            );
             res.send(result.data);
 
             return;
         }
 
         res.send(req.user);
-    });
-
-    // use this route to update the user profile image
-    app.patch('/api/current_user/image', (req, res) => {
-        User.findByIdAndUpdate(req.user._id, { $set: { img: req.body.url } }, { new: true }, (err, user) => {
-            res.send(user);
-        });
     });
 
     // returns a list of all users

@@ -19,6 +19,7 @@ import Dentist from './Dentist';
 import Listing from './Listing';
 import Office from './Office';
 import Cart from './Cart';
+import LoginModal from './LoginModal';
 import { DENTIST } from '../util/strings';
 
 const PrivateRoute = ({ auth, path, component: Component, ...props }) => (
@@ -115,6 +116,10 @@ class App extends Component {
                             />
                             <Route path="/" component={Landing} />
                         </Switch>
+                        <LoginModal
+                            open={this.props.isLoginModalVisible}
+                            onClose={this.props.toggleLoginModal}
+                        />
                     </div>
                 </Router>
             </div>
@@ -123,7 +128,10 @@ class App extends Component {
 }
 
 function mapStateToProps(state) {
-    return { auth: state.auth };
+    return {
+        auth: state.auth,
+        isLoginModalVisible: state.ui.isLoginModalVisible,
+    };
 }
 
 export default connect(mapStateToProps, actions)(App);
