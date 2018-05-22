@@ -85,7 +85,7 @@ class Profile extends Component {
                         >
                             <p>
                                 {moment(listing.startTime).format(
-                                    'MMM D, h:mm - '
+                                    'MMM D, h:mm a - '
                                 )}
                                 {moment(listing.endTime).format('h:mm a')}
                             </p>
@@ -275,8 +275,9 @@ class Profile extends Component {
 
     setNewProfileImage(result) {
         const upload = result.filesUploaded[0];
+        const userId = this.props.auth.id;
         if (upload) {
-            this.props.updateProfileImage(upload.url);
+            this.props.updateProfileImage(userId, upload.url);
         }
     }
 
@@ -351,7 +352,7 @@ class Profile extends Component {
                     >
                         <p>
                             {moment(reservation.startTime).format(
-                                'MMM D, h:mm - '
+                                'MMM D, h:mm a - '
                             )}
                             {moment(reservation.endTime).format('h:mm a')}
                         </p>

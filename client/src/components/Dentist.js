@@ -16,7 +16,7 @@ import {
 import * as actions from '../actions';
 import NewReview from './forms/NewReview';
 import ReviewContainer from './ReviewContainer';
-import AppointmentOptions from './AppointmentOptions';
+import Appointments from './Appointments';
 
 class Profile extends Component {
     componentWillMount() {
@@ -99,55 +99,8 @@ class Profile extends Component {
         );
     }
 
-    renderAppointmentTimes(reservation) {
-        const { auth, dentist } = this.props;
-        const { appointments } = reservation;
-        return appointments.map((appt, index) => (
-            <div key={index}>
-                {!appt.patient_id ? (
-                    <div>
-                        <a
-                            className="light-green-text text-accent-4 dropdown-trigger"
-                            style={{ cursor: 'pointer' }}
-                            data-target={`dropdown${index}`}
-                        >
-                            {/* If no patient has reserved this appt */}
-                            {`${moment(appt.time).format(
-                                'h:mm a'
-                            )} - Available!`}
-                        </a>
-                        <ul
-                            className="dropdown-content"
-                            id={`dropdown${index}`}
-                        >
-                            <AppointmentOptions
-                                appointments={appointments}
-                                procedures={dentist.procedures}
-                                appt={appt}
-                                auth={auth}
-                                index={index}
-                                reservation={reservation}
-                            />
-                        </ul>
-                    </div>
-                ) : (
-                    <span
-                        className="grey-text"
-                        style={{
-                            textDecoration: 'line-through',
-                            cursor: 'not-allowed'
-                        }}
-                    >
-                        {/* If appt has already been reserved */}
-                        {`${moment(appt.time).format('h:mm a')} - Reserved`}
-                    </span>
-                )}
-            </div>
-        ));
-    }
-
     renderReservations() {
-        const { reservations } = this.props;
+        const { auth, dentist, reservations } = this.props;
         return reservations.map((reservation, index) => {
             const office = reservation.office;
             const officeImage =
@@ -169,13 +122,20 @@ class Profile extends Component {
                             >
                                 <p>
                                     {moment(reservation.startTime).format(
-                                        'MMM D, h:mm - '
+                                        'MMM D, h:mm a - '
                                     )}
                                     {moment(reservation.endTime).format(
                                         'h:mm a'
                                     )}
                                 </p>
                             </Link>
+                        </div>
+                        <div>
+                            <Appointments
+                                reservation={reservation}
+                                auth={auth}
+                                dentist={dentist}
+                            />
                         </div>
                     </div>
                 </div>
@@ -205,13 +165,12 @@ class Profile extends Component {
             this.avg_rating = 0;
             this.rating_count = 0;
         }
-
         return (
             <div className="profile_container">
                 <div className="sidebar">
                     <img
                         className="profile_img"
-                        src={dentist ? dentist.user.imageUrl : ''}
+                        src={auth.imageUrl}
                         alt="user"
                     />
                 </div>
