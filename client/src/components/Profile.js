@@ -135,6 +135,10 @@ class Profile extends Component {
         ) {
             await this.props.deleteListing(listing.id);
             await this.props.queryListings(HOST_ID, this.props.dentist.id);
+            await this.props.queryReservations(
+                RESERVED_BY,
+                this.props.dentist.id
+            );
         }
     }
 
