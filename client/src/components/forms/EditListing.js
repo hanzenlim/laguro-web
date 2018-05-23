@@ -78,9 +78,9 @@ class EditListing extends Component {
         className,
         meta: { touched, error }
     }) => (
-        <div>
-            <div className={className}>
-                <label>{label}</label>
+        <div className={className}>
+            <label>{label}</label>
+            <div>
                 <input {...input} placeholder={placeholder} />
             </div>
             {touched && error && <span className="red-text">{error}</span>}
@@ -116,7 +116,7 @@ class EditListing extends Component {
                         placeholder="30"
                         component={this.renderField}
                         label="Hourly Price"
-                        validate={required}
+                        validate={[required, isNum]}
                     />
                     <Field
                         name={`${staffAvailable}.count`}
@@ -124,7 +124,7 @@ class EditListing extends Component {
                         placeholder="3"
                         component={this.renderField}
                         label="Number of Staff"
-                        validate={required}
+                        validate={[required, isNum]}
                     />
                     <button
                         type="button"
@@ -259,7 +259,7 @@ class EditListing extends Component {
                         label="Price per chair (hourly)"
                         placeholder="100"
                         className="col s12 m4"
-                        validate={required}
+                        validate={[required, isNum]}
                         component={this.renderField}
                     />
 
@@ -283,7 +283,7 @@ class EditListing extends Component {
                         label="Cleaning Fee"
                         placeholder="50"
                         className="col s12 m4"
-                        validate={required}
+                        validate={[required, isNum]}
                         component={this.renderField}
                     />
                 </div>
@@ -319,6 +319,9 @@ class EditListing extends Component {
         );
     }
 }
+
+const isNum = value =>
+    value && !isNaN(value) ? undefined : 'Must be a number';
 
 const mapStateToProps = state => {
     const selector = formValueSelector('editListing');

@@ -124,7 +124,7 @@ class NewListing extends Component {
                         placeholder="30"
                         component={this.renderField}
                         label="Hourly Price"
-                        validate={required}
+                        validate={[required, isNum]}
                     />
                     <Field
                         name={`${staff}.count`}
@@ -132,7 +132,7 @@ class NewListing extends Component {
                         placeholder="3"
                         component={this.renderField}
                         label="Number of Staff"
-                        validate={required}
+                        validate={[required, isNum]}
                     />
                     <button
                         type="button"
@@ -261,7 +261,7 @@ class NewListing extends Component {
                         placeholder="100"
                         className="col s4"
                         component={this.renderField}
-                        validate={required}
+                        validate={[required, isNum]}
                     />
 
                     <label className="col s4">
@@ -287,7 +287,7 @@ class NewListing extends Component {
                         placeholder="50"
                         className="col s4"
                         component={this.renderField}
-                        validate={required}
+                        validate={[required, isNum]}
                     />
                 </div>
 
@@ -319,6 +319,9 @@ class NewListing extends Component {
         );
     }
 }
+
+const isNum = value =>
+    value && !isNaN(value) ? undefined : 'Must be a number';
 
 const mapStateToProps = state => {
     const selector = formValueSelector('newListing');
