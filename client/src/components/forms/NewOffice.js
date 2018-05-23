@@ -101,7 +101,7 @@ class NewOffice extends Component {
                                 placeholder="15"
                                 component={this.renderField}
                                 label="Usage Price"
-                                validate={required}
+                                validate={[required, isNum]}
                             />
                         </div>
                         <button
@@ -171,7 +171,7 @@ class NewOffice extends Component {
                         label="Number of Chairs"
                         placeholder={3}
                         component={this.renderField}
-                        validate={required}
+                        validate={[required, isNum]}
                         className="col s12 m3"
                     />
                 </div>
@@ -233,6 +233,8 @@ class NewOffice extends Component {
 }
 
 const required = value => (value && value !== '' ? undefined : 'Required');
+const isNum = value =>
+    value && !isNaN(value) ? undefined : 'Must be a number';
 
 function mapStateToProps(state) {
     return { auth: state.auth };

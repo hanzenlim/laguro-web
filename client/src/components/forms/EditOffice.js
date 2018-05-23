@@ -135,7 +135,7 @@ class EditOffice extends Component {
                             placeholder="15"
                             component={this.renderField}
                             label="Usage Price"
-                            validate={required}
+                            validate={[required, isNum]}
                         />
                     </div>
                     <button
@@ -200,7 +200,7 @@ class EditOffice extends Component {
                         className="col s12 m3"
                         placeholder="3"
                         component={this.renderField}
-                        validate={required}
+                        validate={[required, isNum]}
                     />
                 </div>
 
@@ -252,6 +252,8 @@ class EditOffice extends Component {
 }
 
 const required = value => (value && value !== '' ? undefined : 'Required');
+const isNum = value =>
+    value && !isNaN(value) ? undefined : 'Must be a number';
 
 function mapStateToProps(state) {
     return {
