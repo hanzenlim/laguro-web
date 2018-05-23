@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="36px" height="28px" viewBox="0 0 36 28" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 4</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <filter x="-4.9%" y="-25.0%" width="110.5%" height="170.0%" filterUnits="objectBoundingBox" id="filter-1">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.786272321   0 0 0 0 0.780005473   0 0 0 0 0.780005473  0 0 0 1 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+    </defs>
+    <g id="UI-Screens" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Desktop---Checkout" transform="translate(-707.000000, -398.000000)">
+            <g id="Group" filter="url(#filter-1)" transform="translate(673.000000, 400.000000)">
+                <g id="Group-4" transform="translate(37.948220, 0.000000)">
+                    <rect id="Rectangle-Copy-4" fill="#FFFFFF" x="0.228096853" y="0" width="27.5391469" height="19.3745893" rx="3"></rect>
+                    <ellipse id="Oval" fill="#F2C57C" cx="10.4752213" cy="9.78926616" rx="3.84267166" ry="3.87491785"></ellipse>
+                    <ellipse id="Oval-Copy" fill="#D0091B" cx="16.879674" cy="9.78926616" rx="3.84267166" ry="3.87491785"></ellipse>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="12px" height="14px" viewBox="0 0 12 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>map-pin</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="UI-Screens" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="Desktop---Checkout" transform="translate(-244.000000, -207.000000)" stroke="#484E51">
+            <g id="Group-14" transform="translate(96.000000, 153.000000)">
+                <g id="Group-8">
+                    <g id="Group-12" transform="translate(149.000000, 53.000000)">
+                        <g id="map-pin" transform="translate(0.000000, 2.000000)">
+                            <path d="M10,4.99999993 C10,8.88888881 5,12.2222221 5,12.2222221 C5,12.2222221 0,8.88888881 0,4.99999993 C4.11484205e-08,2.23857621 2.23857628,-1.23358114e-16 5,0 C7.76142372,1.23358114e-16 9.99999996,2.23857621 10,4.99999993 Z" id="Shape"></path>
+                            <circle id="Oval" cx="5" cy="5" r="1.66666667"></circle>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

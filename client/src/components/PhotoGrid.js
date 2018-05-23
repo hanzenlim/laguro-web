@@ -1,0 +1,138 @@
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import styled from "styled-components";
+import Card from '@material-ui/core/Card';
+import * as actions from "../actions";
+
+import "./css/PhotoGrid.css";
+
+class PhotoGrid extends Component {
+
+    componentWillMount() {
+        document.title = "Laguro - Search Index";
+        if (this.props.listings.length === 0) {
+            this.props.fetchListings();
+        }
+    }
+
+    render() {
+
+        let photoGridElements;
+
+        const SoldOutDiv = styled.div`
+            text-align: center;
+            margin-top: 3%;
+            margin-bottom: 3%;
+            font-weight: bold;
+            font-size: 25px;
+        `;
+
+        if (this.props.listings) {
+
+            if (this.props.listings.length === 0) {
+                return (<SoldOutDiv> "All listings currently sold out! Don't worry, there will be more soon." </SoldOutDiv>)
+            } else {
+                var officesSoFar = {};
+
+                photoGridElements = this.props.listings.filter(function(listing) {
+
+                    if (officesSoFar.hasOwnProperty(listing.office.id)) {
+                        return false;
+                    } else {
+                        officesSoFar[listing.office.id] = 0;
+                        return true;
+                    }
+
+                }).map(listing => {
+
+                    const Container1 = styled.div`
+                        position: relative;
+                        width: 100%;
+                        padding-top: 67%;
+                    `;
+
+                    const Container2 = styled.div`
+                        position: absolute;
+                        top: 0;
+                        bottom: 0;
+                        left: 0;
+                        right: 0;
+                        height: 100%;
+                        width: 100%;
+                    `;
+
+                    const ListingInfo = styled.div`
+                        color: black;
+                        padding: 8px;
+                        line-height: 22px;
+                    `;
+
+                    const ListingInfoAddress = styled.div`
+                        font-size: 12px;
+                    `;
+
+                    const ListingInfoName = styled.div`
+                        font-size: 17px;
+                    `;
+
+                    const ListingCard = styled(Card)`
+                        @media screen and (max-width : 540px)
+                        {
+                            margin-bottom: 3.5%;
+                        }
+                    `
+
+                    return (
+                        <a href="http://google.com" key={listing.id}>
+                            <div className='col offset-s1 s10 m6 l3'>
+                                <ListingCard>
+                                    <Container1>
+                                        <Container2 />
+                                        <img className="photo-grid-listing-img center" id="element" alt={listing.office.imageUrls} src={listing.office.imageUrls} />
+                                    </Container1>
+                                    <ListingInfo>
+              							<ListingInfoName>{listing.office.name}</ListingInfoName>
+                                        <ListingInfoAddress className="truncate">{listing.office.location}</ListingInfoAddress>
+              							<div className="photo-grid-listing-deets deets">${listing.chairHourlyPrice} per hour - {listing.numChairsAvailable} chairs avail.</div>
+                                    </ListingInfo>
+                                </ListingCard>
+                            </div>
+                        </a>
+                    );
+                });
+            }
+
+
+        }
+
+        photoGridElements = photoGridElements.slice(0, 4 * parseInt(this.props.numRow, 10));
+
+        const Div = styled.div`
+            clear: both;
+            margin-top: 3%;
+            margin-left: 3%;
+            margin-right: 3%;
+        `
+        return (
+            <Div>
+                <h4 className="photo-grid-header"> New Listings </h4>
+                <div className="row">
+                    {photoGridElements}
+                </div>
+            </Div>
+        );
+    }
+}
+
+function mapStateToProps(state) {
+    return {
+        offices: state.offices.all,
+        isFetching: state.offices.isFetching,
+        invalid: state.offices.invalid,
+        listings: state.listings.all,
+        reviews: state.reviews.all,
+        filters: state.filters
+    };
+}
+
+export default connect(mapStateToProps, actions)(PhotoGrid);

@@ -10,6 +10,12 @@ const scanListingsQuery = `
     query {
         scanListings {
             ${listingFragment}
+            office {
+                ${officeFragment}
+                reviews {
+                    ${reviewerFragment}
+                }
+            }
         }
     }
 `;

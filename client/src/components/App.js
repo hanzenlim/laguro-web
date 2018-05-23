@@ -11,6 +11,7 @@ import Header from './Header';
 import LoginModal from './LoginModal';
 import { DENTIST } from '../util/strings';
 import NotFound from './NotFound';
+import Footer from './Footer';
 
 import './App.css';
 
@@ -122,7 +123,9 @@ class App extends Component {
             <div>
                 <Router history={history}>
                     <div>
-                        <Header toggleShowModal={this.props.toggleLoginModal} />
+                        <Header
+                            toggleShowModal={this.props.toggleLoginModal}
+                        />
                         <Switch>
                             <Route
                                 path="/dentist/search"
@@ -199,6 +202,7 @@ class App extends Component {
                             open={this.props.isLoginModalVisible}
                             onClose={this.props.toggleLoginModal}
                         />
+                        <Footer />
                     </div>
                 </Router>
             </div>
