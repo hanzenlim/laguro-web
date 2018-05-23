@@ -55,7 +55,9 @@ class App extends Component {
             <div>
                 <Router history={history}>
                     <div>
-                        <Header />
+                        <Header 
+                            toggleShowModal={this.props.toggleLoginModal}
+                        />
                         <Switch>
                             <Route
                                 path="/dentists/search"
