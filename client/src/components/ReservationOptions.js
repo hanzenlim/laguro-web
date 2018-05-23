@@ -7,6 +7,7 @@ import {
     formValueSelector,
     SubmissionError,
 } from 'redux-form';
+import { Redirect } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -15,12 +16,17 @@ import * as actions from '../actions';
 import { DENTIST } from '../util/strings';
 
 class ReservationOptions extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = { redirectToPayment: false };
+    }
     componentWillMount() {
         this.props.fetchUser(DENTIST);
         const { listing, office } = this.props;
         this.props.initialize({
             staffSelected: listing.staffAvailable,
-            equipmentOptions: office.equipment,
+            equipmentSelected: office.equipment,
             numChairs: 1,
             appts_per_hour: 1,
             startTime: moment(listing.startTime),
@@ -29,13 +35,11 @@ class ReservationOptions extends Component {
         });
     }
 
-    createReservation(values) {
-        const { listing, startTime, endTime } = this.props;
-
+    initiatePayment(values) {
         if (
-            moment(startTime)
+            moment(values.startTime)
                 .add(2, 'hours')
-                .isAfter(endTime)
+                .isAfter(values.endTime)
         ) {
             throw new SubmissionError({
                 endTime: 'Minimum reservation is 2 hours',
@@ -45,64 +49,9 @@ class ReservationOptions extends Component {
             throw new SubmissionError({
                 _error: 'Please accept the terms to continue',
             });
-        } else {
-            let duration = 60;
-
-            switch (Number(values.appts_per_hour)) {
-                case 1:
-                    duration = 60;
-                    break;
-                case 2:
-                    duration = 30;
-                    break;
-                case 3:
-                    duration = 20;
-                    break;
-                case 4:
-                    duration = 15;
-                    break;
-                default:
-                    break;
-            }
-
-            let appt_time = moment(startTime);
-            const appointments = [];
-
-            while (appt_time.isBefore(moment(endTime))) {
-                appointments.push({
-                    time: appt_time.format('MMM D, YYYY h:mm a'),
-                });
-                appt_time = appt_time.add(duration, 'minutes');
-            }
-
-            const staffSelected = values.staffSelected
-                .filter(staff => staff.count > 0)
-                .map(staff => {
-                    const { role, count } = staff;
-                    return {
-                        role,
-                        count,
-                    };
-                });
-            const totalPaid = Math.round(this.calcTotal() * 100);
-            const { equipmentOptions } = this.props;
-            const equipmentSelected = equipmentOptions
-                .filter(equipment => equipment.needed)
-                .map(equipment => equipment.name);
-            this.props.createReservation({
-                numChairsSelected: values.numChairs,
-                staffSelected,
-                equipmentSelected,
-                listingId: listing.id,
-                reservedBy: this.props.auth.dentist.id,
-                startTime: values.startTime,
-                endTime: values.endTime,
-                paymentOptionId: 'card_1CQJ8mG42zKCEoIVyxrsA6Nd',
-                totalPaid,
-            });
-
-            this.closeModals();
         }
+
+        this.setState({ redirectToPayment: true });
     }
 
     closeModals() {
@@ -224,7 +173,7 @@ class ReservationOptions extends Component {
     };
 
     renderEquipment = ({ fields, className }) => {
-        const equipData = this.props.equipmentOptions;
+        const equipData = this.props.equipmentSelected;
         return (
             <ul className={className}>
                 <label>Equipment Available</label>
@@ -262,7 +211,7 @@ class ReservationOptions extends Component {
     calcTotal() {
         const { numChairs, listing } = this.props;
         const staffData = this.props.staffSelected;
-        const equipData = this.props.equipmentOptions;
+        const equipData = this.props.equipmentSelected;
         this.staffTotal = 0;
         this.equipTotal = 0;
 
@@ -297,16 +246,51 @@ class ReservationOptions extends Component {
             listing,
             error,
             staffSelected,
-            equipmentOptions,
+            equipmentSelected,
         } = this.props;
 
         if (!this.props.initialized) return <div>Loading...</div>;
 
         this.calcTime();
 
+        if (this.state.redirectToPayment) {
+            const { startTime, endTime, numChairs } = this.props;
+            const totalPaid = Math.round(this.calcTotal() * 100);
+            let { equipmentSelected, staffSelected } = this.props;
+
+            staffSelected = JSON.stringify(
+                staffSelected.filter(staff => staff.count > 0).map(staff => {
+                    return { role: staff.role, count: staff.count };
+                })
+            );
+            equipmentSelected = JSON.stringify(
+                equipmentSelected
+                    .filter(equip => equip.needed)
+                    .map(equip => equip.name)
+            );
+
+            return (
+                <Redirect
+                    push
+                    to={{
+                        pathname: '/payment',
+                        search: `?totalPaid=${totalPaid}&time=[${moment(
+                            startTime
+                        ).format()},${moment(
+                            endTime
+                        ).format()}]&numChairs=${numChairs}&reservedBy=${
+                            listing.host.id
+                        }&staffSelected=${staffSelected}&equipmentSelected=${equipmentSelected}&type=reservation&listingId=${
+                            listing.id
+                        }`,
+                    }}
+                />
+            );
+        }
+
         return (
             <form
-                onSubmit={handleSubmit(this.createReservation.bind(this))}
+                onSubmit={handleSubmit(this.initiatePayment.bind(this))}
                 className="modalForm light-blue lighten-5"
             >
                 <div className="form_title">
@@ -379,10 +363,10 @@ class ReservationOptions extends Component {
                     <div />
                 )}
 
-                {equipmentOptions && equipmentOptions.length ? (
+                {equipmentSelected && equipmentSelected.length ? (
                     <div>
                         <FieldArray
-                            name="equipmentOptions"
+                            name="equipmentSelected"
                             className="row"
                             component={this.renderEquipment}
                         />
@@ -450,7 +434,7 @@ const mapStateToProps = state => {
     return {
         staffSelected: selector(state, 'staffSelected'),
         numChairs: selector(state, 'numChairs'),
-        equipmentOptions: selector(state, 'equipmentOptions'),
+        equipmentSelected: selector(state, 'equipmentSelected'),
         startTime: selector(state, 'startTime'),
         endTime: selector(state, 'endTime'),
     };
