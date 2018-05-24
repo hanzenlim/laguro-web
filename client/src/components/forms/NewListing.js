@@ -50,7 +50,6 @@ class NewListing extends Component {
             const office = JSON.parse(values.office);
             values.staffAvailable = values.staffAvailable || [];
             delete values.office;
-            values.totalPaid = Math.round(this.calcTotal() * 100);
             this.props.createListing({
                 ...values,
                 officeId: office.id
