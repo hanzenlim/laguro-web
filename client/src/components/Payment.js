@@ -90,7 +90,7 @@ class Payment extends Component {
         if (!this.props.auth.paymentOptions) return null;
 
         return this.props.auth.paymentOptions.map(paymentOption => (
-            <PaymentOption>
+            <PaymentOption key={paymentOption.id}>
                 <Padding vertical={15} left={10} right={30}>
                     <Grid container justify="space-between">
                         <Typography size="t4">VISA</Typography>
@@ -209,7 +209,7 @@ class Payment extends Component {
         return (
             <Card>
                 <Padding vertical={20} horizontal={20}>
-                    <Grid direction="column">
+                    <Grid container direction="column">
                         <Padding bottom={14}>
                             <Grid container>
                                 <Typography size="t3" weight="bold">
@@ -299,7 +299,7 @@ class Payment extends Component {
                             token={this.onSuccess}
                             stripeKey="pk_test_z6zaOFhsmnBHG6WCN8LH6wTR"
                             currency="USD"
-                            amount={totalAmount}
+                            amount={Number(totalAmount)}
                         >
                             {hasPaymentOptions ? (
                                 <Link>
