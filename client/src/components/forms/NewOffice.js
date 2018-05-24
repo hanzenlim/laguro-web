@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Field, FieldArray, reduxForm } from 'redux-form';
 import { Link } from 'react-router-dom';
 import ReactFilestack from 'filestack-react';
-
+import Autocomplete from '../filters/Autocomplete';
 import equipmentList from '../../staticData/equipmentList';
 import * as actions from '../../actions';
 import { DENTIST } from '../../util/strings';
@@ -12,6 +12,7 @@ class NewOffice extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            location: '',
             imageUrls: []
         };
     }
@@ -21,6 +22,12 @@ class NewOffice extends Component {
         this.props.fetchUser(DENTIST);
     }
 
+    onAutocomplete = location => {
+        this.setState({
+            location
+        });
+    };
+
     onSubmit(values) {
         const { reset, auth } = this.props;
         const { imageUrls } = this.state;
@@ -28,7 +35,8 @@ class NewOffice extends Component {
         this.props.createOffice({
             ...values,
             imageUrls,
-            hostId: auth.dentist.id
+            hostId: auth.dentist.id,
+            location: this.state.location
         });
         reset();
     }
@@ -158,14 +166,11 @@ class NewOffice extends Component {
                     <Field
                         name="name"
                         label="Office Name"
-                        placeholder="Bell Dental Center"
+                        placeholder="Bell Center"
                         component={this.renderField}
                         validate={required}
                         className="col s12 m9"
                     />
-                    {
-                        //TODO allow only numeric fields}
-                    }
                     <Field
                         name="numChairs"
                         label="Number of Chairs"
@@ -175,15 +180,11 @@ class NewOffice extends Component {
                         className="col s12 m3"
                     />
                 </div>
+
                 <div className="row">
-                    <Field
-                        name="location"
-                        label="Address"
-                        placeholder="1598 Washington Ave, San Leandro, CA"
-                        component={this.renderField}
-                        validate={required}
-                        className="col s12"
-                    />
+                    <div className="col s12 m12">
+                        <Autocomplete onAutocomplete={this.onAutocomplete} />
+                    </div>
                 </div>
 
                 <div className="row">
@@ -222,7 +223,7 @@ class NewOffice extends Component {
                     <button
                         className="waves-effect btn light-blue lighten-2"
                         type="submit"
-                        disabled={submitting}
+                        disabled={submitting || !this.state.location}
                     >
                         Submit
                     </button>

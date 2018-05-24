@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Field, FieldArray, reduxForm } from 'redux-form';
 import { Link } from 'react-router-dom';
 import { DENTIST } from '../../util/strings';
-
+import Autocomplete from '../filters/Autocomplete';
 import procedureList from '../../staticData/procedureList';
 import * as actions from '../../actions';
 
@@ -23,7 +23,8 @@ class EditDentist extends Component {
         document.title = 'Laguro - Edit Profile';
 
         this.setState({
-            dentist: dentist
+            dentist: dentist,
+            location: dentist.location
         });
         this.props.initialize({
             location: dentist.location,
@@ -32,9 +33,16 @@ class EditDentist extends Component {
         });
     }
 
+    onAutocomplete = location => {
+        this.setState({
+            location
+        });
+    };
+
     onSubmit(values) {
         const { reset, auth } = this.props;
         const dentist = auth.dentist;
+        values.location = this.state.location;
         this.props.editDentist({ ...values, id: dentist.id });
         reset();
     }
@@ -141,15 +149,17 @@ class EditDentist extends Component {
     );
 
     render() {
-        const { handleSubmit, submitting } = this.props;
-
+        const { handleSubmit, submitting, dentist } = this.props;
+        if (!dentist) {
+            return <div />;
+        }
         return (
             <form
                 className="bigForm light-blue lighten-5"
                 onSubmit={handleSubmit(this.onSubmit.bind(this))}
             >
                 <div className="form_title">
-                    <h4>Edit Dentist Profile</h4>
+                    <h4>Edit Doctor Profile</h4>
                     <Link
                         className="btn light-blue lighten-2 waves-effect"
                         to={'/profile'}
@@ -162,19 +172,17 @@ class EditDentist extends Component {
                     <Field
                         name="specialty"
                         label="Dental Specialty"
-                        className="col s12 m4"
+                        className="col s12 m6"
                         placeholder="General Dentist"
                         validate={required}
                         component={this.renderField}
                     />
-                    <Field
-                        name="location"
-                        label="Location of practice"
-                        className="col s12 m4"
-                        placeholder="Oakland, CA"
-                        validate={required}
-                        component={this.renderField}
-                    />
+                    <div className="col s12 m6">
+                        <Autocomplete
+                            onAutocomplete={this.onAutocomplete}
+                            location={this.props.dentist.location}
+                        />
+                    </div>
                 </div>
 
                 <div className="row">

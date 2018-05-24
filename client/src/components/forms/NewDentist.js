@@ -3,13 +3,28 @@ import { connect } from 'react-redux';
 import { Field, FieldArray, reduxForm } from 'redux-form';
 import { Link } from 'react-router-dom';
 
+import Autocomplete from '../filters/Autocomplete';
 import procedureList from '../../staticData/procedureList';
 import * as actions from '../../actions';
 
 class NewDentist extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            location: ''
+        };
+    }
+
+    onAutocomplete = location => {
+        this.setState({
+            location
+        });
+    };
+
     async onSubmit(values) {
         const { auth, reset } = this.props;
         values.procedures = values.procedures || [];
+        values.location = this.state.location;
         this.props.createDentist({ ...values, bio: ' ', userId: auth.id });
         reset();
     }
@@ -144,14 +159,11 @@ class NewDentist extends Component {
                         component={this.renderField}
                         validate={required}
                     />
-                    <Field
-                        name="location"
-                        label="Location of practice"
-                        className="col s12 m6"
-                        placeholder="Oakland, CA"
-                        component={this.renderField}
-                        validate={required}
-                    />
+                </div>
+                <div className="row">
+                    <div className="col s12 m12">
+                        <Autocomplete onAutocomplete={this.onAutocomplete} />
+                    </div>
                 </div>
 
                 <div className="row">
