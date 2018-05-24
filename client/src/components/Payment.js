@@ -55,14 +55,56 @@ class Payment extends Component {
         this.props.fetchUser(PAYMENT_OPTIONS);
     }
 
-    onSuccess = response => {
+    async onSuccess(response) {
         const { auth } = this.props;
 
         if (auth.paymentOptions.length) {
-            this.props.removePaymentOption(auth.id, auth.paymentOptions[0].id);
+            await this.props.removePaymentOption(
+                auth.id,
+                auth.paymentOptions[0].id
+            );
         }
 
-        this.props.addPaymentOption(auth.id, response.id);
+        await this.props.addPaymentOption(auth.id, response.id);
+        await this.props.fetchUser(PAYMENT_OPTIONS);
+        await this.handleCreateReservation();
+    }
+
+    handleCheckout = () => {
+        this.handleCreateReservation();
+    };
+
+    handleCreateReservation = () => {
+        const params = queryString.parse(this.props.location.search);
+        const { time } = params;
+
+        const [opening, closing] = time
+            .substring(1, time.length - 1)
+            .replace(/ /g, '+')
+            .split(',');
+
+        const timeFormat = 'YYYY-MM-DDTHH:mm:ss.SSSSZ';
+
+        const formattedOpeningTime = moment(opening).format(timeFormat);
+        const formattedClosingTime = moment(closing).format(timeFormat);
+
+        const payload = {
+            numChairsSelected: params.numChairs,
+            staffSelected: JSON.parse(params.staffSelected),
+            equipmentSelected: JSON.parse(params.equipmentSelected),
+            listingId: params.listingId,
+            reservedBy: params.reservedBy,
+            startTime: formattedOpeningTime,
+            endTime: formattedClosingTime,
+            paymentOptionId: this.props.auth.paymentOptions[0].id,
+            totalPaid: params.totalPaid,
+        };
+
+        this.props.createReservation(payload);
+    };
+
+    handleCreateAppointment = () => {
+        // console.warn('handleCreateAppointment');
     };
 
     renderPrice = totalPaid => {
@@ -301,7 +343,7 @@ class Payment extends Component {
                         <Padding bottom={12} />
 
                         <StripeCheckout
-                            token={this.onSuccess}
+                            token={this.onSuccess.bind(this)}
                             stripeKey="pk_test_z6zaOFhsmnBHG6WCN8LH6wTR"
                             currency="USD"
                             amount={Number(totalPaid)}
@@ -332,7 +374,12 @@ class Payment extends Component {
                         <Padding bottom={14} />
 
                         {hasPaymentOptions ? (
-                            <Button variant="raised" color="primary" fullWidth>
+                            <Button
+                                onClick={this.handleCheckout}
+                                variant="raised"
+                                color="primary"
+                                fullWidth
+                            >
                                 <Typography size="t2" weight="medium">
                                     Checkout
                                 </Typography>

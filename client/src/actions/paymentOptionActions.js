@@ -1,20 +1,18 @@
-import { SAVE_STRIPE_TOKEN } from './types';
+import { ADD_PAYMENT_OPTION, REMOVE_PAYMENT_OPTION } from './types';
 import PaymentOption from '../models/paymentOption';
-import history from '../history';
 
 export const addPaymentOption = (userId, paymentToken) => async dispatch => {
-    const result = await PaymentOption.create(userId, paymentToken);
+    const response = await PaymentOption.create(userId, paymentToken);
     dispatch({
-        type: SAVE_STRIPE_TOKEN,
-        payload: result,
+        type: ADD_PAYMENT_OPTION,
+        payload: response,
     });
-    history.push('/profile');
 };
 
 export const removePaymentOption = (userId, paymentToken) => async dispatch => {
-    const result = await PaymentOption.delete(userId, paymentToken);
+    const response = await PaymentOption.delete(userId, paymentToken);
     dispatch({
-        type: SAVE_STRIPE_TOKEN,
-        payload: result,
+        type: REMOVE_PAYMENT_OPTION,
+        payload: response,
     });
 };

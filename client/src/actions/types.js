@@ -17,4 +17,6 @@ export const GET_ONE_DENTIST = 'get_one_dentist';
 export const GET_SELECTED_OFFICES = 'get_selected_offices';
 export const GET_SELECTED_LISTINGS = 'get_selected_listings';
 export const GET_SELECTED_RESERVATIONS = 'get_selected_reservations';
-export const SAVE_STRIPE_TOKEN = 'save_stripe_token';
+export const GET_PAYMENT_OPTIONS = 'get_payment_options';
+export const ADD_PAYMENT_OPTION = 'add_payment_option';
+export const REMOVE_PAYMENT_OPTION = 'remove_payment_option';
