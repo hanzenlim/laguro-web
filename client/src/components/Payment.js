@@ -196,24 +196,6 @@ class Payment extends Component {
                             printing and typesetting industry.
                         </Typography>
                     </Grid>
-
-                    <Padding bottom={9} />
-
-                    <Grid container justify="flex-end">
-                        <Link>
-                            <Typography size="t6" color="silver" underline>
-                                Remove
-                            </Typography>
-                        </Link>
-
-                        <Padding right={13} />
-
-                        <Link>
-                            <Typography size="t6" color="silver" underline>
-                                Edit Reservation
-                            </Typography>
-                        </Link>
-                    </Grid>
                 </Padding>
             </Card>
         );
@@ -380,12 +362,6 @@ class Payment extends Component {
                     <Grid container spacing={16}>
                         <Grid item xs={12} lg={8}>
                             {this.renderListingCard()}
-
-                            <Padding top={16} bottom={18}>
-                                <Button variant="outlined" disabled>
-                                    Continue Reservation
-                                </Button>
-                            </Padding>
                         </Grid>
 
                         <Grid item xs={12} lg={4}>
