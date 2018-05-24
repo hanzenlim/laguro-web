@@ -1,14 +1,5 @@
 // External Packages
-import {
-    makeQuery,
-    getUserQuery,
-    getUserVariable,
-} from '../util/serverDataLoader';
-
 const passport = require('passport');
-const mongoose = require('mongoose');
-
-const User = mongoose.model('users');
 
 module.exports = app => {
     // hit this route to start oauth process
@@ -42,25 +33,5 @@ module.exports = app => {
         // Clears the user id cookie.
         res.cookie('userId', '');
         res.redirect('/');
-    });
-
-    app.get('/api/current_user', async (req, res) => {
-        if (req.user) {
-            const result = await makeQuery(
-                getUserQuery,
-                getUserVariable(req.user.googleId)
-            );
-            res.send(result.data);
-
-            return;
-        }
-
-        res.send(req.user);
-    });
-
-    // returns a list of all users
-    app.get('/api/users', async (req, res) => {
-        const userList = await User.find();
-        res.send(userList);
     });
 };

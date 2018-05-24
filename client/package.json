@@ -26,6 +26,7 @@
     "react": "^16.2.0",
     "react-datepicker": "^1.2.2",
     "react-dom": "^16.2.0",
+    "react-loadable": "^5.4.0",
     "react-places-autocomplete": "^7.1.1",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",

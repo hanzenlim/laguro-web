@@ -1,15 +1,18 @@
-import { createApolloFetch } from 'apollo-fetch';
+const createApolloFetch = require('apollo-fetch').createApolloFetch;
 
-const uri = process.env.NODE_ENV === "production" ? 
-    'http://prod-placeholder.com' : 'http://localhost:4000/graphql';
+const uri = process.env.NODE_ENV === "production" && process.env.graphQLUrl? 
+    process.env.graphQLUrl :
+    'http://localhost:4000/graphql';
+
 const apolloFetch = createApolloFetch({ uri });
 
 apolloFetch.use(({ request, options }, next) => {
     options.credentials = 'same-origin';
+    options['x-api-key'] = "api key";
     next();
 });
 
-export const getUserQuery = `
+module.exports.getUserQuery = `
     query getUserByGoogleId($googleId: String!) {
         getUserByGoogleId(googleId: $googleId) {
             id
@@ -20,11 +23,11 @@ export const getUserQuery = `
     }
 `;
 
-export const getUserVariable = (id) => ({
+module.exports.getUserVariable = (id) => ({
 	googleId: id.toString()
 });
 
-export const createUserQuery = `
+module.exports.createUserQuery = `
     mutation createUser($input: CreateUserInput!) {
         createUser(input: $input) {
             id
@@ -34,7 +37,7 @@ export const createUserQuery = `
     }
 `;
 
-export const createUserVariable = (name, id, img) => ({ 
+module.exports.createUserVariable = (name, id, img) => ({ 
 	"input": {
 		name: name,
 		googleId: id,
@@ -42,7 +45,7 @@ export const createUserVariable = (name, id, img) => ({
 	}
 });
 
-export const makeQuery = async (query, variables) => {
+module.exports.makeQuery = async (query, variables) => {
     let result = await apolloFetch({
         query,
         variables
@@ -51,7 +54,7 @@ export const makeQuery = async (query, variables) => {
     return result;
 }
 
-export const makeMutation = async (query, variables) => {
+module.exports.makeMutation = async (query, variables) => {
     let result = await apolloFetch({
         query,
         variables

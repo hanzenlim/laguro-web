@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import logo from '../images/logo-white.png';
 
 class Header extends Component {
     renderLogin() {
@@ -47,7 +48,7 @@ class Header extends Component {
                         <img
                             className="logo"
                             alt="Logo"
-                            src="/logo-white.png"
+                            src={logo}
                         />
                         <h3 className="blue-text">Laguro</h3>
                     </Link>

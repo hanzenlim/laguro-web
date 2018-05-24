@@ -1,0 +1,51 @@
+service: aws-nodejs # NOTE: update this with your service name
+provider:
+  name: aws
+  runtime: nodejs6.10
+  region: us-east-1
+  stage: dev
+    
+iamRoleStatements:
+    -  Effect: "Allow"
+       Action:
+         - acm:ListCertificates
+         - apigateway:GET
+         - apigateway:DELETE
+         - apigateway:POST
+         - apigateway:POST
+         - cloudfront:UpdateDistribution
+         - route53:ListHostedZones
+         - route53:ChangeResourceRecordSets
+         - route53:GetHostedZone
+         - route53:ListResourceRecordSets
+       Resource: "*"
+
+functions:
+  app:
+    handler: serverProd.expressApp
+    environment:
+      graphQLUrl: ${opt:graphqlurl}
+    events:
+      - http: ANY /
+      - http: 'ANY {proxy+}'
+      - cors: true
+
+
+plugins:
+  - serverless-webpack
+  - serverless-offline
+  - serverless-domain-manager
+
+custom:
+  serverless-offline:
+    port: 4001
+  webpack:
+    webpackConfig: ./serverless.webpack.config.js
+    includeModules: true
+    packager: 'npm'
+  customDomain:
+    domainName: 'www.laguro.com'
+    basePath: ''
+    stage: ${self:provider.stage}
+    createRoute53Record: true
+
