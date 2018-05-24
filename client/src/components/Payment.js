@@ -49,9 +49,9 @@ const PaymentOption = styled.div`
 class Payment extends Component {
     componentDidMount() {
         const params = queryString.parse(this.props.location.search);
-        const { listing_id } = params;
+        const { listingId } = params;
 
-        this.props.getListing(listing_id);
+        this.props.getListing(listingId);
         this.props.fetchUser(PAYMENT_OPTIONS);
     }
 
@@ -65,21 +65,27 @@ class Payment extends Component {
         this.props.addPaymentOption(auth.id, response.id);
     };
 
-    renderPrice = totalAmount => {
-        if (!totalAmount) return '$0';
+    renderPrice = totalPaid => {
+        if (!totalPaid) return '$0';
 
-        return `$${totalAmount.substring(
+        return `$${totalPaid.substring(
             0,
-            totalAmount.length - 2
-        )}.${totalAmount.substring(totalAmount.length - 2)}`;
+            totalPaid.length - 2
+        )}.${totalPaid.substring(totalPaid.length - 2)}`;
     };
 
     renderTime = time => {
         const [opening, closing] = time
             .substring(1, time.length - 1)
+            .replace(/ /g, '+')
             .split(',');
 
-        return `${opening} - ${closing}`;
+        const timeFormat = 'hh:mma';
+
+        const formattedOpeningTime = moment(opening).format(timeFormat);
+        const formattedClosingTime = moment(closing).format(timeFormat);
+
+        return `${formattedOpeningTime} - ${formattedClosingTime}`;
     };
 
     renderDate = date => {
@@ -106,7 +112,7 @@ class Payment extends Component {
     renderListingCard = () => {
         const { location, listing } = this.props;
         const params = queryString.parse(location.search);
-        const { date, time, totalAmount } = params;
+        const { date, time, totalPaid } = params;
 
         return (
             <Card>
@@ -134,7 +140,7 @@ class Payment extends Component {
                                         weight="bold"
                                         color="carribean-green"
                                     >
-                                        {this.renderPrice(totalAmount)}
+                                        {this.renderPrice(totalPaid)}
                                     </Typography>
                                 </Grid>
 
@@ -203,7 +209,7 @@ class Payment extends Component {
     renderSummaryCard = () => {
         const { location } = this.props;
         const params = queryString.parse(location.search);
-        const { totalAmount } = params;
+        const { totalPaid } = params;
 
         return (
             <Card>
@@ -225,7 +231,7 @@ class Payment extends Component {
                                     Reservation
                                 </Typography>
                                 <Typography size="t3" color="abbey">
-                                    {this.renderPrice(totalAmount)}
+                                    {this.renderPrice(totalPaid)}
                                 </Typography>
                             </Grid>
                         </Padding>
@@ -259,7 +265,7 @@ class Payment extends Component {
                                     color="abbey"
                                     weight="bold"
                                 >
-                                    {this.renderPrice(totalAmount)}
+                                    {this.renderPrice(totalPaid)}
                                 </Typography>
                             </Grid>
                         </Padding>
@@ -274,7 +280,7 @@ class Payment extends Component {
     renderPaymentCard = () => {
         const { location, auth } = this.props;
         const params = queryString.parse(location.search);
-        const { totalAmount } = params;
+        const { totalPaid } = params;
         const hasPaymentOptions =
             auth.paymentOptions && auth.paymentOptions.length;
 
@@ -298,7 +304,7 @@ class Payment extends Component {
                             token={this.onSuccess}
                             stripeKey="pk_test_z6zaOFhsmnBHG6WCN8LH6wTR"
                             currency="USD"
-                            amount={Number(totalAmount)}
+                            amount={Number(totalPaid)}
                         >
                             {hasPaymentOptions ? (
                                 <Link>
