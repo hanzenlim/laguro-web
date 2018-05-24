@@ -5,7 +5,7 @@ import {
     FieldArray,
     reduxForm,
     formValueSelector,
-    SubmissionError,
+    SubmissionError
 } from 'redux-form';
 import { Redirect } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
@@ -31,7 +31,7 @@ class ReservationOptions extends Component {
             appts_per_hour: 1,
             startTime: moment(listing.startTime),
             endTime: moment(listing.endTime),
-            acknowledge: false,
+            acknowledge: false
         });
     }
 
@@ -43,11 +43,11 @@ class ReservationOptions extends Component {
         ) {
             throw new SubmissionError({
                 endTime: 'Minimum reservation is 2 hours',
-                _error: 'Invalid time frame, please correct error above',
+                _error: 'Invalid time frame, please correct error above'
             });
         } else if (!values.acknowledge) {
             throw new SubmissionError({
-                _error: 'Please accept the terms to continue',
+                _error: 'Please accept the terms to continue'
             });
         }
 
@@ -90,7 +90,7 @@ class ReservationOptions extends Component {
         className,
         dateType,
         listing,
-        meta: { touched, error },
+        meta: { touched, error }
     }) => {
         const { startTime, endTime } = this.props;
         return (
@@ -246,7 +246,7 @@ class ReservationOptions extends Component {
             listing,
             error,
             staffSelected,
-            equipmentSelected,
+            equipmentSelected
         } = this.props;
 
         if (!this.props.initialized) return <div>Loading...</div>;
@@ -276,13 +276,15 @@ class ReservationOptions extends Component {
                         pathname: '/payment',
                         search: `?totalPaid=${totalPaid}&time=[${moment(
                             startTime
-                        ).format()},${moment(
+                        ).format('YYYY-MM-DDTHH:mm:ss.SSSSZ')},${moment(
                             endTime
-                        ).format()}]&numChairs=${numChairs}&reservedBy=${
+                        ).format(
+                            'YYYY-MM-DDTHH:mm:ss.SSSSZ'
+                        )}]&numChairs=${numChairs}&reservedBy=${
                             listing.host.id
                         }&staffSelected=${staffSelected}&equipmentSelected=${equipmentSelected}&type=reservation&listingId=${
                             listing.id
-                        }`,
+                        }`
                     }}
                 />
             );
@@ -436,10 +438,10 @@ const mapStateToProps = state => {
         numChairs: selector(state, 'numChairs'),
         equipmentSelected: selector(state, 'equipmentSelected'),
         startTime: selector(state, 'startTime'),
-        endTime: selector(state, 'endTime'),
+        endTime: selector(state, 'endTime')
     };
 };
 
 export default reduxForm({
-    form: 'reservationOptions',
+    form: 'reservationOptions'
 })(connect(mapStateToProps, actions)(ReservationOptions));

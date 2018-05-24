@@ -1,5 +1,5 @@
 import makeApiCall from '../util/clientDataLoader';
-import { reservationFragment } from '../util/fragments';
+import { reservationFragment, officeFragment } from '../util/fragments';
 import { CANCELLED_BY_DENTIST } from '..//util/strings';
 
 const scanReservationsQuery = `
@@ -12,6 +12,9 @@ const getReservationQuery = `
     query ($id: String!) {
         getReservation(id: $id) {
             ${reservationFragment}
+            office {
+                ${officeFragment}
+            }
         }
     }
 `;

@@ -17,29 +17,25 @@ const Container = styled.div`
 class PaymentSuccess extends Component {
     componentDidMount() {
         const params = queryString.parse(this.props.location.search);
-        const { listing_id } = params;
+        const { reservationId } = params;
 
-        this.props.getListing(listing_id);
+        this.props.getReservation(reservationId);
     }
 
-    renderTime = time => {
-        const [opening, closing] = time
-            .substring(1, time.length - 1)
-            .split(',');
-
-        return `${opening} - ${closing}`;
+    renderTime = (startTime, endTime) => {
+        return `${moment(startTime).format('h:mm a')} - ${moment(
+            endTime
+        ).format('h:mm a')}`;
     };
 
-    renderDate = date => {
-        return moment(date).format('ll');
+    renderDate = startDate => {
+        return moment(startDate).format('ll');
     };
 
     render() {
-        const { location, listing } = this.props;
-        const params = queryString.parse(location.search);
-        const { date, time } = params;
+        const { reservation } = this.props;
 
-        if (!listing) {
+        if (!reservation || !reservation.office) {
             return <div>Loading...</div>;
         }
 
@@ -57,7 +53,11 @@ class PaymentSuccess extends Component {
                                 <div className="row">
                                     <div className="col s12 m4">
                                         <img
-                                            src={listing.office.imageUrls[0] || 'http://via.placeholder.com/250x250'}
+                                            src={
+                                                reservation.office
+                                                    .imageUrls[0] ||
+                                                'http://via.placeholder.com/250x250'
+                                            }
                                             alt="office"
                                         />
                                     </div>
@@ -65,34 +65,45 @@ class PaymentSuccess extends Component {
                                         <div className="row">
                                             <div className="col s12">
                                                 <div className="card-title">
-                                                    {listing.office.name}
+                                                    {reservation.office.name}
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="row">
                                             <div className="col s12">
                                                 <h6 className="valign-wrapper">
-                                                    <i class="material-icons listing_card__detail_icon">
+                                                    <i className="material-icons listing_card__detail_icon">
                                                         location_on
                                                     </i>
-                                                    Location: {listing.office.location}
+                                                    Location:{' '}
+                                                    {
+                                                        reservation.office
+                                                            .location
+                                                    }
                                                 </h6>
                                             </div>
                                             <div className="col s12">
                                                 <h6 className="valign-wrapper">
-                                                    <i class="material-icons listing_card__detail_icon">
+                                                    <i className="material-icons listing_card__detail_icon">
                                                         access_time
                                                     </i>
-                                                    Time: {this.renderTime(time)}
+                                                    Time:{' '}
+                                                    {this.renderTime(
+                                                        reservation.startTime,
+                                                        reservation.endTime
+                                                    )}
                                                 </h6>
                                             </div>
 
                                             <div className="col s12">
                                                 <h6 className="valign-wrapper">
-                                                    <i class="material-icons listing_card__detail_icon">
+                                                    <i className="material-icons listing_card__detail_icon">
                                                         date_range
                                                     </i>
-                                                    Date: {this.renderDate(date)}
+                                                    Date:{' '}
+                                                    {this.renderDate(
+                                                        reservation.startTime
+                                                    )}
                                                 </h6>
                                             </div>
                                         </div>
@@ -116,7 +127,7 @@ class PaymentSuccess extends Component {
 
 function mapStateToProps(state) {
     return {
-        listing: state.listings.selected,
+        reservation: state.reservations.selected
     };
 }
 
