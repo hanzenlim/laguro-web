@@ -16,7 +16,7 @@ class AppointmentOptions extends Component {
             procedure,
             startTime,
             endTime,
-            paymentOptionId: 'card_1CQJ8mG42zKCEoIVyxrsA6Nd'
+            paymentOptionId: 'card_1CVHQAG42zKCEoIVErYyYlQ9'
         };
         if (auth) {
             await this.props.createAppointment(params);
