@@ -50,8 +50,7 @@ class NewListing extends Component {
             const office = JSON.parse(values.office);
             values.staffAvailable = values.staffAvailable || [];
             delete values.office;
-            // TODO clarify miscellaneous fees
-            delete values.cleaning_fee;
+            values.totalPaid = Math.round(this.calcTotal() * 100);
             this.props.createListing({
                 ...values,
                 officeId: office.id
@@ -256,7 +255,7 @@ class NewListing extends Component {
 
                 <div className="row">
                     <Field
-                        name="hourlyPrice"
+                        name="chairHourlyPrice"
                         label="Price per chair (hourly)"
                         placeholder="100"
                         className="col s4"
@@ -282,7 +281,7 @@ class NewListing extends Component {
                     </label>
 
                     <Field
-                        name="cleaning_fee"
+                        name="cleaningFee"
                         label="Cleaning Fee"
                         placeholder="50"
                         className="col s4"

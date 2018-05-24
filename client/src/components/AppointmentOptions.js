@@ -5,25 +5,22 @@ import { getStartTime } from '../util/timeUtil';
 import { RESERVED_BY } from '../util/strings';
 
 class AppointmentOptions extends Component {
-    reserveAppointment(procedure) {
+    async reserveAppointment(procedure) {
         const { auth, dentist, reservation, index } = this.props;
         const startTime = getStartTime(index, reservation.startTime);
         const endTime = startTime.clone();
         endTime.add(procedure.duration, 'minutes');
         const params = {
             reservationId: reservation.id,
-            dentistId: dentist.id,
             patientId: auth.id,
             procedure,
-            location: reservation.office.location,
             startTime,
             endTime,
-            // TODO plug in totalPaid from reservation calculation once available
-            totalPaid: 100
+            paymentOptionId: 'card_1CQJ8mG42zKCEoIVyxrsA6Nd'
         };
         if (auth) {
-            this.props.createAppointment(params);
-            this.props.queryReservations(RESERVED_BY, dentist.id);
+            await this.props.createAppointment(params);
+            await this.props.queryReservations(RESERVED_BY, dentist.id);
         } else {
             window.location.href = '/auth/google';
         }

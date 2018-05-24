@@ -47,10 +47,8 @@ class EditListing extends Component {
             startTime: moment(listing.startTime),
             endTime: moment(listing.endTime),
             staffAvailable: listing.staffAvailable,
-            // TODO sync to confirm misc fields
-            cleaning_fee: 3,
             numChairsAvailable: listing.numChairsAvailable,
-            hourlyPrice: listing.hourlyPrice
+            chairHourlyPrice: listing.chairHourlyPrice
         });
     }
 
@@ -66,7 +64,6 @@ class EditListing extends Component {
             });
         } else {
             // TODO aggregate misc expenses
-            delete values.cleaning_fee;
             this.props.editListing({ ...values, id: this.listing_id });
         }
     }
@@ -255,7 +252,7 @@ class EditListing extends Component {
 
                 <div className="row">
                     <Field
-                        name="hourlyPrice"
+                        name="chairHourlyPrice"
                         label="Price per chair (hourly)"
                         placeholder="100"
                         className="col s12 m4"
@@ -279,7 +276,7 @@ class EditListing extends Component {
                     </label>
 
                     <Field
-                        name="cleaning_fee"
+                        name="cleaningFee"
                         label="Cleaning Fee"
                         placeholder="50"
                         className="col s12 m4"

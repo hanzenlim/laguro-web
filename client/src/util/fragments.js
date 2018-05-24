@@ -39,7 +39,7 @@ export const listingFragment = `
       count
     }
     numChairsAvailable
-    hourlyPrice
+    chairHourlyPrice
     startTime
     endTime
     dateCreated
