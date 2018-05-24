@@ -1,8 +1,8 @@
 import { GET_SELECTED_RESERVATIONS } from './types';
 import Reservation from '../models/reservation';
 
-export const createReservation = details => async dispatch => {
-    await Reservation.create(details);
+export const createReservation = params => async dispatch => {
+    await Reservation.create(params);
     dispatch({
         type: GET_SELECTED_RESERVATIONS,
         payload: null

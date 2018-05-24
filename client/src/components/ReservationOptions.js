@@ -20,7 +20,7 @@ class ReservationOptions extends Component {
         const { listing, office } = this.props;
         this.props.initialize({
             staffSelected: listing.staffAvailable,
-            equipSelected: office.equipment,
+            equipmentOptions: office.equipment,
             numChairs: 1,
             appts_per_hour: 1,
             startTime: moment(listing.startTime),
@@ -30,7 +30,7 @@ class ReservationOptions extends Component {
     }
 
     createReservation(values) {
-        const { listing, office, startTime, endTime } = this.props;
+        const { listing, startTime, endTime } = this.props;
 
         if (
             moment(startTime)
@@ -75,20 +75,29 @@ class ReservationOptions extends Component {
                 appt_time = appt_time.add(duration, 'minutes');
             }
 
-            const staffSelected = values.staffSelected.filter(
-                staff => staff.count > 0
-            );
+            const staffSelected = values.staffSelected
+                .filter(staff => staff.count > 0)
+                .map(staff => {
+                    const { role, count } = staff;
+                    return {
+                        role,
+                        count
+                    };
+                });
             const totalPaid = Math.round(this.calcTotal() * 100);
+            const { equipmentOptions } = this.props;
+            const equipmentSelected = equipmentOptions
+                .filter(equipment => equipment.needed)
+                .map(equipment => equipment.name);
             this.props.createReservation({
                 numChairsSelected: values.numChairs,
+                staffSelected,
+                equipmentSelected,
+                listingId: listing.id,
+                reservedBy: this.props.auth.dentist.id,
                 startTime: values.startTime,
                 endTime: values.endTime,
-                staffSelected,
-                // TODO clarify equipment configuration
-                listingId: listing.id,
-                officeId: office.id,
-                hostId: listing.host.id,
-                reservedBy: this.props.auth.dentist.id,
+                paymentOptionId: 'card_1CQJ8mG42zKCEoIVyxrsA6Nd',
                 totalPaid
             });
 
@@ -215,7 +224,7 @@ class ReservationOptions extends Component {
     };
 
     renderEquipment = ({ fields, className }) => {
-        const equipData = this.props.equipSelected;
+        const equipData = this.props.equipmentOptions;
         return (
             <ul className={className}>
                 <label>Equipment Available</label>
@@ -244,8 +253,7 @@ class ReservationOptions extends Component {
 
     calcBookingFee() {
         const { numChairs, listing } = this.props;
-        const chair_price = numChairs * listing.hourlyPrice * this.hours;
-
+        const chair_price = numChairs * listing.chairHourlyPrice * this.hours;
         this.booking_fee = Number(Math.floor(chair_price * 0.15));
         return this.booking_fee.toFixed(2);
     }
@@ -254,7 +262,7 @@ class ReservationOptions extends Component {
     calcTotal() {
         const { numChairs, listing } = this.props;
         const staffData = this.props.staffSelected;
-        const equipData = this.props.equipSelected;
+        const equipData = this.props.equipmentOptions;
         this.staffTotal = 0;
         this.equipTotal = 0;
 
@@ -262,7 +270,7 @@ class ReservationOptions extends Component {
             return 0;
         }
 
-        const chair_price = numChairs * listing.hourlyPrice * this.hours;
+        const chair_price = numChairs * listing.chairHourlyPrice * this.hours;
 
         if (staffData && staffData.length) {
             this.staffTotal = staffData
@@ -289,7 +297,7 @@ class ReservationOptions extends Component {
             listing,
             error,
             staffSelected,
-            equipSelected
+            equipmentOptions
         } = this.props;
 
         if (!this.props.initialized) return <div>Loading...</div>;
@@ -351,7 +359,9 @@ class ReservationOptions extends Component {
                             {this.renderOptions(
                                 this.props.listing.numChairsAvailable,
                                 1,
-                                `- $${this.props.listing.hourlyPrice}/chair/hr`
+                                `- $${
+                                    this.props.listing.chairHourlyPrice
+                                }/chair/hr`
                             )}
                         </Field>
                     </label>
@@ -369,10 +379,10 @@ class ReservationOptions extends Component {
                     <div />
                 )}
 
-                {equipSelected && equipSelected.length ? (
+                {equipmentOptions && equipmentOptions.length ? (
                     <div>
                         <FieldArray
-                            name="equipSelected"
+                            name="equipmentOptions"
                             className="row"
                             component={this.renderEquipment}
                         />
@@ -440,7 +450,7 @@ const mapStateToProps = state => {
     return {
         staffSelected: selector(state, 'staffSelected'),
         numChairs: selector(state, 'numChairs'),
-        equipSelected: selector(state, 'equipSelected'),
+        equipmentOptions: selector(state, 'equipmentOptions'),
         startTime: selector(state, 'startTime'),
         endTime: selector(state, 'endTime')
     };
