@@ -170,7 +170,7 @@ class Profile extends Component {
                 <div className="sidebar">
                     <img
                         className="profile_img"
-                        src={auth.imageUrl}
+                        src={dentist.user.imageUrl}
                         alt="user"
                     />
                 </div>

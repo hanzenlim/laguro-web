@@ -1,5 +1,4 @@
 import {
-    USER,
     DENTIST,
     DENTISTS,
     OFFICE,
@@ -10,7 +9,6 @@ import {
     REVIEWS
 } from './strings';
 import {
-    FETCH_USER,
     GET_ONE_DENTIST,
     GET_SELECTED_OFFICES,
     FETCH_OFFICES,
@@ -22,13 +20,6 @@ import {
 
 // eslint-disable-next-line
 export const dispatchChildren = (entity, options, dispatch) => {
-    if (options.includes(USER)) {
-        dispatch({
-            type: FETCH_USER,
-            payload: entity.user
-        });
-    }
-
     if (options.includes(DENTIST)) {
         dispatch({
             type: GET_ONE_DENTIST,

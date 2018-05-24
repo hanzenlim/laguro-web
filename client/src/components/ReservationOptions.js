@@ -97,7 +97,7 @@ class ReservationOptions extends Component {
                 reservedBy: this.props.auth.dentist.id,
                 startTime: values.startTime,
                 endTime: values.endTime,
-                paymentOptionId: 'card_1CQJ8mG42zKCEoIVyxrsA6Nd',
+                paymentOptionId: 'card_1CVHQAG42zKCEoIVErYyYlQ9',
                 totalPaid
             });
 
