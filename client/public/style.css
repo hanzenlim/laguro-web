@@ -641,28 +641,3 @@ nav ul a:hover {
 .listing_btns i {
   font-size: 15px !important;
 }
-
-/* Payment page */
-
-.payment_container {
-  max-width: 1024px;
-  width: 100%;
-  height: calc(100vh - 64px);
-  margin: 100px auto;
-}
-
-.payment_container .reservation_summary_card .row {
-  margin-bottom: 0;
-}
-
-.payment_container .listing_card__detail {
-  display: flex;
-  align-items: center;
-  padding-bottom: 1rem;
-  margin: 0 0 1rem 0;
-  border-bottom: 1px solid gray;
-}
-
-.payment_container .listing_card__detail_icon {
-  margin-right: 10px;
-}
