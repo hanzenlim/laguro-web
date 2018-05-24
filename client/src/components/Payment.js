@@ -148,8 +148,7 @@ class Payment extends Component {
                                     <Padding right={4} />
 
                                     <Typography size="t6">
-                                        Location:
-                                        {listing.office.location}
+                                        {`Location: ${listing.office.location}`}
                                     </Typography>
                                 </Grid>
 
@@ -165,7 +164,7 @@ class Payment extends Component {
                                     <Padding right={4} />
 
                                     <Typography size="t6">
-                                        Time: {this.renderTime(time)}
+                                        {`Time: ${this.renderTime(time)}`}
                                     </Typography>
                                 </Grid>
 
@@ -181,7 +180,7 @@ class Payment extends Component {
                                     <Padding right={4} />
 
                                     <Typography size="t6">
-                                        Date: {this.renderDate(date)}
+                                        {`Date: ${this.renderDate(date)}`}
                                     </Typography>
                                 </Grid>
                             </Grid>
