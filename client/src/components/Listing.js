@@ -73,7 +73,7 @@ class OfficeResultIndex extends Component {
     };
 
     render() {
-        const { listing } = this.props;
+        const { listing, auth } = this.props;
         // if dentist still hasn't loaded, wait for render
         if (!listing) {
             return <div>Loading...</div>;
@@ -107,7 +107,7 @@ class OfficeResultIndex extends Component {
                             <h5>{office.location}</h5>
                             <blockquote>
                                 <h6>Rental Window: {this.formatted_time}</h6>
-                                {listing.reservedBy ? (
+                                {listing.reservations.length ? (
                                     <span className="red-text">
                                         This listing has been reserved
                                     </span>
@@ -184,7 +184,9 @@ class OfficeResultIndex extends Component {
                         <button
                             className="btn red lighten-2 waves-effect"
                             onClick={this.handleBookNow}
-                            disabled={!!listing.reservedBy}
+                            disabled={
+                                !!listing.reservations.length || !auth.dentist
+                            }
                         >
                             Book Now
                         </button>
@@ -198,7 +200,7 @@ class OfficeResultIndex extends Component {
 function mapStateToProps(state) {
     return {
         listing: state.listings.selected,
-        auth: state.auth,
+        auth: state.auth
     };
 }
 
