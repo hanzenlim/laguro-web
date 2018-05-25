@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import { Typography, Card, Button, Divider, Link, Grid } from './common';
 import { Padding } from './common/Spacing';
 import * as actions from '../actions';
-import { PAYMENT_OPTIONS } from '../util/strings';
+import { PAYMENT_OPTIONS, APPOINTMENT } from '../util/strings';
 
 const Wrapper = styled.div`
     background-color: #F8F9FA;
@@ -47,11 +47,20 @@ const PaymentOption = styled.div`
 `;
 
 class Payment extends Component {
-    componentDidMount() {
-        const params = queryString.parse(this.props.location.search);
-        const { listingId } = params;
+    constructor(props) {
+        super(props);
 
-        this.props.getListing(listingId);
+        const { location } = this.props;
+        this.urlParams = queryString.parse(location.search);
+    }
+
+    componentDidMount() {
+        if (this.urlParams.type === APPOINTMENT) {
+            this.props.getReservation(this.urlParams.reservationId);
+        } else {
+            this.props.getListing(this.urlParams.listingId);
+        }
+
         this.props.fetchUser(PAYMENT_OPTIONS);
     }
 
@@ -67,44 +76,59 @@ class Payment extends Component {
 
         await this.props.addPaymentOption(auth.id, response.id);
         await this.props.fetchUser(PAYMENT_OPTIONS);
-        await this.handleCreateReservation();
+
+        if (this.urlParams.type === APPOINTMENT) {
+            await this.handleCreateAppointment();
+        } else {
+            await this.handleCreateReservation();
+        }
     }
 
     handleCheckout = () => {
-        this.handleCreateReservation();
+        if (this.urlParams.type === APPOINTMENT) {
+            this.handleCreateAppointment();
+        } else {
+            this.handleCreateReservation();
+        }
     };
 
     handleCreateReservation = () => {
-        const params = queryString.parse(this.props.location.search);
-        const { time } = params;
-
-        const [opening, closing] = time
-            .substring(1, time.length - 1)
+        const [startTime, endTime] = this.urlParams.time
+            .substring(1, this.urlParams.time.length - 1)
             .replace(/ /g, '+')
             .split(',');
 
-        const timeFormat = 'YYYY-MM-DDTHH:mm:ss.SSSSZ';
-
-        const formattedOpeningTime = moment(opening).format(timeFormat);
-        const formattedClosingTime = moment(closing).format(timeFormat);
-
-        const payload = {
-            numChairsSelected: params.numChairs,
-            staffSelected: JSON.parse(params.staffSelected),
-            equipmentSelected: JSON.parse(params.equipmentSelected),
-            listingId: params.listingId,
-            reservedBy: params.reservedBy,
-            startTime: formattedOpeningTime,
-            endTime: formattedClosingTime,
+        const reservationPayload = {
+            numChairsSelected: this.urlParams.numChairs,
+            staffSelected: JSON.parse(this.urlParams.staffSelected),
+            equipmentSelected: JSON.parse(this.urlParams.equipmentSelected),
+            listingId: this.urlParams.listingId,
+            reservedBy: this.urlParams.reservedBy,
+            startTime,
+            endTime,
             paymentOptionId: this.props.auth.paymentOptions[0].id,
-            totalPaid: params.totalPaid,
+            totalPaid: this.urlParams.totalPaid
         };
 
-        this.props.createReservation(payload);
+        this.props.createReservation(reservationPayload);
     };
 
     handleCreateAppointment = () => {
-        // console.warn('handleCreateAppointment');
+        const [startTime, endTime] = this.urlParams.time
+            .substring(1, this.urlParams.time.length - 1)
+            .replace(/ /g, '+')
+            .split(',');
+
+        const appointmentPayload = {
+            reservationId: this.urlParams.reservationId,
+            patientId: this.urlParams.patientId,
+            procedure: JSON.parse(this.urlParams.procedure),
+            startTime,
+            endTime,
+            paymentOptionId: this.props.auth.paymentOptions[0].id
+        };
+
+        this.props.createAppointment(appointmentPayload);
     };
 
     renderPrice = totalPaid => {
@@ -117,21 +141,26 @@ class Payment extends Component {
     };
 
     renderTime = time => {
-        const [opening, closing] = time
+        const [startTime, endTime] = time
             .substring(1, time.length - 1)
             .replace(/ /g, '+')
             .split(',');
 
         const timeFormat = 'hh:mma';
 
-        const formattedOpeningTime = moment(opening).format(timeFormat);
-        const formattedClosingTime = moment(closing).format(timeFormat);
+        const formattedOpeningTime = moment(startTime).format(timeFormat);
+        const formattedClosingTime = moment(endTime).format(timeFormat);
 
         return `${formattedOpeningTime} - ${formattedClosingTime}`;
     };
 
-    renderDate = date => {
-        return moment(date).format('ll');
+    renderDate = time => {
+        const [opening] = time
+            .substring(1, time.length - 1)
+            .replace(/ /g, '+')
+            .split(',');
+
+        return moment(opening).format('ll');
     };
 
     renderPaymentOptions = () => {
@@ -152,9 +181,11 @@ class Payment extends Component {
     };
 
     renderListingCard = () => {
-        const { location, listing } = this.props;
-        const params = queryString.parse(location.search);
-        const { date, time, totalPaid } = params;
+        const office =
+            this.urlParams.type === APPOINTMENT
+                ? this.props.reservation.office
+                : this.props.listing.office;
+        const { time, totalPaid } = this.urlParams;
 
         return (
             <Card>
@@ -162,7 +193,7 @@ class Payment extends Component {
                     <Grid container alignItems="flex-start">
                         <ListingImage
                             src={
-                                listing.office.imageUrls[0] ||
+                                office.imageUrls[0] ||
                                 'http://via.placeholder.com/250x250'
                             }
                             alt="office"
@@ -174,7 +205,7 @@ class Payment extends Component {
                             <Grid container direction="column">
                                 <Grid container justify="space-between">
                                     <Typography size="t3" weight="bold">
-                                        {listing.office.name}
+                                        {office.name}
                                     </Typography>
 
                                     <Typography
@@ -196,7 +227,7 @@ class Payment extends Component {
                                     <Padding right={4} />
 
                                     <Typography size="t6">
-                                        {`Location: ${listing.office.location}`}
+                                        {`Location: ${office.location}`}
                                     </Typography>
                                 </Grid>
 
@@ -228,7 +259,7 @@ class Payment extends Component {
                                     <Padding right={4} />
 
                                     <Typography size="t6">
-                                        {`Date: ${this.renderDate(date)}`}
+                                        {`Date: ${this.renderDate(time)}`}
                                     </Typography>
                                 </Grid>
                             </Grid>
@@ -249,9 +280,7 @@ class Payment extends Component {
     };
 
     renderSummaryCard = () => {
-        const { location } = this.props;
-        const params = queryString.parse(location.search);
-        const { totalPaid } = params;
+        const { type, totalPaid } = this.urlParams;
 
         return (
             <Card>
@@ -259,8 +288,8 @@ class Payment extends Component {
                     <Grid container direction="column">
                         <Padding bottom={14}>
                             <Grid container>
-                                <Typography size="t3" weight="bold">
-                                    Reservation Summary
+                                <Typography size="t3" weight="bold" capitalize>
+                                    {`${type} Summary`}
                                 </Typography>
                             </Grid>
                         </Padding>
@@ -269,8 +298,8 @@ class Payment extends Component {
 
                         <Padding vertical={4}>
                             <Grid container justify="space-between">
-                                <Typography size="t3" color="abbey">
-                                    Reservation
+                                <Typography size="t3" color="abbey" capitalize>
+                                    {`${type}`}
                                 </Typography>
                                 <Typography size="t3" color="abbey">
                                     {this.renderPrice(totalPaid)}
@@ -320,9 +349,8 @@ class Payment extends Component {
     };
 
     renderPaymentCard = () => {
-        const { location, auth } = this.props;
-        const params = queryString.parse(location.search);
-        const { totalPaid } = params;
+        const { auth } = this.props;
+        const { totalPaid } = this.urlParams;
         const hasPaymentOptions =
             auth.paymentOptions && auth.paymentOptions.length;
 
@@ -392,7 +420,11 @@ class Payment extends Component {
     };
 
     render() {
-        const { listing } = this.props;
+        const listing =
+            this.urlParams.type === APPOINTMENT
+                ? this.props.reservation.listing
+                : this.props.listing;
+        const { type } = this.urlParams;
 
         if (!listing) {
             return <div>Loading...</div>;
@@ -405,7 +437,7 @@ class Payment extends Component {
                         <Grid container>
                             <Grid item xs={12}>
                                 <Typography size="t1" weight="bold">
-                                    Review and place your reservation
+                                    Review and place your {`${type}`}
                                 </Typography>
                             </Grid>
                         </Grid>
@@ -436,7 +468,8 @@ class Payment extends Component {
 function mapStateToProps(state) {
     return {
         listing: state.listings.selected,
-        auth: state.auth,
+        reservation: state.reservations.selected,
+        auth: state.auth
     };
 }
 
