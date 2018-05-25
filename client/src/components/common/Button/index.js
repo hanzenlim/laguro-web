@@ -13,7 +13,23 @@ const StyledButton = styled(MaterialUIButton)`
         props.color === 'primary' &&
         `
         && {
+            background-color: #0AD5B1;
+        }
+
+        &&:hover {
+            background-color: #00BC98;
+        }
+    `};
+
+    ${props =>
+        props.color === 'secondary' &&
+        `
+        && {
             background-color: #f46b13;
+        }
+
+        &&:hover {
+            background-color: #DB5200;
         }
     `};
 `;

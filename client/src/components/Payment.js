@@ -381,7 +381,7 @@ class Payment extends Component {
                         <Button
                             onClick={this.handleCheckout}
                             variant="raised"
-                            color="primary"
+                            color="secondary"
                             disabled={!hasPaymentOptions}
                             fullWidth
                         >
