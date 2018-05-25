@@ -1,7 +1,7 @@
 const createApolloFetch = require('apollo-fetch').createApolloFetch;
 
-const uri = process.env.NODE_ENV === "production" && process.env.graphQLUrl? 
-    process.env.graphQLUrl :
+const uri = process.env.NODE_ENV === "production" && process.env.GRAPHQL_URL? 
+    process.env.GRAPHQL_URL :
     'http://localhost:4000/graphql';
 
 const apolloFetch = createApolloFetch({ uri });

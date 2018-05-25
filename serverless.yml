@@ -4,6 +4,12 @@ provider:
   runtime: nodejs6.10
   region: us-east-1
   stage: dev
+  environment:
+    GRAPHQL_URL: ${env:GRAPHQL_URL}
+    GOOGLE_CLIENT_ID: ${env:GOOGLE_CLIENT_ID}
+    GOOGLE_CLIENT_SECRET: ${env:GOOGLE_CLIENT_SECRET}
+    FILESTACK: ${env:FILESTACK}
+    COOKIE_KEY: ${env:COOKIE_KEY}
     
 iamRoleStatements:
     -  Effect: "Allow"
@@ -23,8 +29,6 @@ iamRoleStatements:
 functions:
   app:
     handler: serverProd.expressApp
-    environment:
-      graphQLUrl: ${opt:graphqlurl}
     events:
       - http: ANY /
       - http: 'ANY {proxy+}'
