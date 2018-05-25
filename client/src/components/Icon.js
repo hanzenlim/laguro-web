@@ -1,10 +1,129 @@
 import React, { Component } from 'react';
+import NumChairsAvail from './icons/NumChairsAvail';
 
 class Icon extends Component {
 
     render() {
 
         switch (this.props.icon) {
+        case "numChairsAvail":
+            return (<NumChairsAvail className={this.props.className} width={this.props.width} />);
+        case "backToListings":
+            return (
+                <svg className={this.props.className} width={this.props.width} onClick={this.props.onClick} viewBox="0 0 35 35" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+                    <title>x-circle</title>
+                    <desc>Created with Sketch.</desc>
+                    <defs></defs>
+                    <g id="UI-Screens" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd" strokeLinecap="round" strokeLinejoin="round">
+                        <g id="Desktop---Selected-Office" transform="translate(-30.000000, -537.000000)" strokeWidth="2">
+                            <g id="Group-8" transform="translate(31.000000, 538.000000)">
+                                <g id="x-circle">
+                                    <circle id="Oval" stroke="#B3B1B1" fill="#B3B1B1" cx="16.5" cy="16.5" r="16.5"></circle>
+                                    <g id="Group-7" transform="translate(14.000000, 12.000000)" stroke="#FFFFFF">
+                                        <path d="M5,0 L0,4.83642578" id="Shape"></path>
+                                        <path d="M0,5.015625 L5,10" id="Shape"></path>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </svg>
+            )
+        case "carouselButtonLeft":
+            return (
+                <svg className={this.props.className} width={this.props.width} onClick={this.props.onClick} viewBox="0 0 35 35" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+                    <desc>Created with Sketch.</desc>
+                    <defs></defs>
+                    <g id="UI-Screens" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd" opacity="0.799999952" strokeLinecap="round" strokeLinejoin="round">
+                        <g id="Tablet---Selected-Office" transform="translate(-47.000000, -254.000000)" strokeWidth="2">
+                            <g id="x-circle" transform="translate(48.000000, 255.000000)">
+                                <circle id="Oval" stroke="#FFFFFF" fill="#FFFFFF" cx="16.5" cy="16.5" r="16.5"></circle>
+                                <g id="Group-7" transform="translate(14.000000, 12.000000)" stroke="#484E51">
+                                    <path d="M5,0 L0,4.83642578" id="Shape"></path>
+                                    <path d="M0,5.015625 L5,10" id="Shape"></path>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </svg>
+            )
+        case "carouselButtonRight":
+            return (
+                <svg className={this.props.className} width={this.props.width} onClick={this.props.onClick} viewBox="0 0 35 35" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+                    <desc>Created with Sketch.</desc>
+                    <defs></defs>
+                    <g id="UI-Screens" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd" opacity="0.799999952" strokeLinecap="round" strokeLinejoin="round">
+                        <g id="Tablet---Selected-Office" transform="translate(-713.000000, -254.000000)" strokeWidth="2">
+                            <g id="x-circle" transform="translate(730.500000, 271.500000) scale(-1, 1) translate(-730.500000, -271.500000) translate(714.000000, 255.000000)">
+                                <circle id="Oval" stroke="#FFFFFF" fill="#FFFFFF" cx="16.5" cy="16.5" r="16.5"></circle>
+                                <g id="Group-7" transform="translate(14.000000, 12.000000)" stroke="#484E51">
+                                    <path d="M5,0 L0,4.83642578" id="Shape"></path>
+                                    <path d="M0,5.015625 L5,10" id="Shape"></path>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </svg>
+            )
+        case "map-pin":
+            return (
+                <svg className={this.props.className} width={this.props.width} viewBox="0 0 12 14" version="1.1" xmlns="http://www.w3.org/2000/svg">
+                    <title>map-pin</title>
+                    <desc>Created with Sketch.</desc>
+                    <defs></defs>
+                    <g id="UI-Mockups" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd" strokeLinecap="round" strokeLinejoin="round">
+                        <g id="Desktop---Home" transform="translate(-208.000000, -443.000000)" stroke="#484E51">
+                            <g id="map-pin" transform="translate(209.000000, 444.000000)">
+                                <path d="M10,4.99999993 C10,8.88888881 5,12.2222221 5,12.2222221 C5,12.2222221 0,8.88888881 0,4.99999993 C4.11484205e-08,2.23857621 2.23857628,-1.23358114e-16 5,0 C7.76142372,1.23358114e-16 9.99999996,2.23857621 10,4.99999993 Z" id="Shape"></path>
+                                <circle id="Oval" cx="5" cy="5" r="1.66666667"></circle>
+                            </g>
+                        </g>
+                    </g>
+                </svg>
+
+            );
+        case "downArrow":
+            return (
+                <svg className={this.props.className} width={this.props.width} viewBox="0 0 15 8" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+                    <desc>Created with Sketch.</desc>
+                    <defs></defs>
+                    <g id="UI-Screens" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+                        <g id="Tablet---Selected-Office" transform="translate(-387.000000, -1525.000000)" stroke="#979797">
+                            <g id="Group-15" transform="translate(184.000000, 782.000000)">
+                                <g id="Group-17" transform="translate(0.000000, 428.000000)">
+                                    <g id="Group-2">
+                                        <g id="Group-13">
+                                            <g id="Group-11" transform="translate(1.000000, 0.000000)">
+                                                <polyline id="Path-10" points="202.585938 315.908203 209.338816 322.661082 216.415635 315.584262"></polyline>
+                                            </g>
+                                        </g>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </svg>
+            )
+        case "star":
+            return (
+                <svg className={this.props.className} width={this.props.width} viewBox="0 0 13 13" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+                    <desc>Created with Sketch.</desc>
+                    <defs></defs>
+                    <g id="UI-Screens" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd" strokeLinecap="round" strokeLinejoin="round">
+                        <g id="Tablet---Selected-Office" transform="translate(-508.000000, -1224.000000)" fill="#FFD800" stroke="#FFD800">
+                            <g id="Group-15" transform="translate(184.000000, 782.000000)">
+                                <g id="Group-17" transform="translate(0.000000, 428.000000)">
+                                    <g id="Group-2">
+                                        <g id="Group-13">
+                                            <polygon id="Shape" points="332.338151 17.9875342 336.739726 18.6308904 333.554795 21.7330137 334.306438 26.1154795 330.369863 24.045274 326.433288 26.1154795 327.184932 21.7330137 324 18.6308904 328.401575 17.9875342 330.369863 14"></polygon>
+                                        </g>
+                                    </g>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </svg>
+            );
         case "logo":
             return (
                 <svg className={this.props.className} width={this.props.width} viewBox="0 0 19 25" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
@@ -70,7 +189,7 @@ class Icon extends Component {
                 </svg>
             );
         default:
-            return null; 
+            return null;
         }
 
 

@@ -25,7 +25,7 @@ class Search extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { 
+        this.state = {
             location: '',
             enableSearch: false,
         };
@@ -100,7 +100,7 @@ class Search extends Component {
                                         </Grid>
                                         <Grid item xs={11} lg={11}>
                                             <div>
-                                                <input name="location" component="input" type="text" 
+                                                <input name="location" component="input" type="text"
                                                     {...getInputProps({
                                                         placeholder: 'Where',
                                                         className: 'location-search-input',

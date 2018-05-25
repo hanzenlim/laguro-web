@@ -24,6 +24,7 @@ export default styled.span`
   ${props => props.cursor === 'pointer' && 'cursor: pointer;'}
   ${props => props.cursor === 'not-allowed' && 'cursor: not-allowed;'}
   ${props => props.cursor === 'help' && 'cursor: help;'}
+  ${props => props.color === 'darkGrey' && 'color: #484E51;'}
 
   /* Font Weights */
   font-weight: inherit;

@@ -468,14 +468,12 @@ img {
     margin-right: 8px;
 }
 
-.review .content,
-.reservation .content {
-    display: flex;
-    flex-flow: column;
-    align-items: center;
-    justify-content: space-around;
-    width: calc(200% / 3);
-    padding: 0 8px;
+.review .content, .reservation .content {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 8px;
 }
 
 .review .content .top-bar,
@@ -558,4 +556,8 @@ img {
 }
 .material-icons.md-48 {
     font-size: 48px;
+}
+
+.center {
+    text-align: center;
 }

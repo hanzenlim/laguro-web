@@ -6,6 +6,7 @@ import {
 import Reservation from '../models/reservation';
 import history from '../history';
 
+
 export const getReservation = reservationId => async dispatch => {
     const reservation = await Reservation.get(reservationId);
     dispatch({
