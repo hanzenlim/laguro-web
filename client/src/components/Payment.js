@@ -76,12 +76,6 @@ class Payment extends Component {
 
         await this.props.addPaymentOption(auth.id, response.id);
         await this.props.fetchUser(PAYMENT_OPTIONS);
-
-        if (this.urlParams.type === APPOINTMENT) {
-            await this.handleCreateAppointment();
-        } else {
-            await this.handleCreateReservation();
-        }
     }
 
     handleCheckout = () => {
@@ -350,7 +344,6 @@ class Payment extends Component {
 
     renderPaymentCard = () => {
         const { auth } = this.props;
-        const { totalPaid } = this.urlParams;
         const hasPaymentOptions =
             auth.paymentOptions && auth.paymentOptions.length;
 
@@ -374,45 +367,28 @@ class Payment extends Component {
                             token={this.onSuccess.bind(this)}
                             stripeKey="pk_test_z6zaOFhsmnBHG6WCN8LH6wTR"
                             currency="USD"
-                            amount={Number(totalPaid)}
+                            panelLabel="Add card"
                         >
-                            {hasPaymentOptions ? (
-                                <Link>
-                                    <Typography
-                                        size="t5"
-                                        color="abbey"
-                                        underline
-                                    >
-                                        Add payment method
-                                    </Typography>
-                                </Link>
-                            ) : (
-                                <Button
-                                    variant="raised"
-                                    color="primary"
-                                    fullWidth
-                                >
-                                    <Typography size="t2" weight="medium">
-                                        Checkout
-                                    </Typography>
-                                </Button>
-                            )}
+                            <Link>
+                                <Typography size="t5" color="abbey" underline>
+                                    Add payment method
+                                </Typography>
+                            </Link>
                         </StripeCheckout>
 
                         <Padding bottom={14} />
 
-                        {hasPaymentOptions ? (
-                            <Button
-                                onClick={this.handleCheckout}
-                                variant="raised"
-                                color="primary"
-                                fullWidth
-                            >
-                                <Typography size="t2" weight="medium">
-                                    Checkout
-                                </Typography>
-                            </Button>
-                        ) : null}
+                        <Button
+                            onClick={this.handleCheckout}
+                            variant="raised"
+                            color="primary"
+                            disabled={!hasPaymentOptions}
+                            fullWidth
+                        >
+                            <Typography size="t2" weight="medium">
+                                Checkout
+                            </Typography>
+                        </Button>
                     </Grid>
                 </Padding>
             </Card>
