@@ -222,29 +222,24 @@ class Profile extends Component {
                     </Link>
                 )}
 
-                {/* Hide image uploader if dentist profile exists (must edit photo thru dentist profile) */}
-                {dentistProfileExists ? (
-                    ''
-                ) : (
-                    <ReactFilestack
-                        apikey={'Aj4gwfCaTS2Am35P0QGrbz'}
-                        buttonText="Upload New Image"
-                        buttonClass="link"
-                        options={{
-                            accept: ['image/*'],
-                            imageMin: [300, 300],
-                            fromSources: [
-                                'local_file_system',
-                                'url',
-                                'imagesearch',
-                                'facebook',
-                                'instagram'
-                            ],
-                            storeTo: { container: 'user-photos' }
-                        }}
-                        onSuccess={result => this.setNewProfileImage(result)}
-                    />
-                )}
+                <ReactFilestack
+                    apikey={'Aj4gwfCaTS2Am35P0QGrbz'}
+                    buttonText="Upload New Image"
+                    buttonClass="link"
+                    options={{
+                        accept: ['image/*'],
+                        imageMin: [300, 300],
+                        fromSources: [
+                            'local_file_system',
+                            'url',
+                            'imagesearch',
+                            'facebook',
+                            'instagram'
+                        ],
+                        storeTo: { container: 'user-photos' }
+                    }}
+                    onSuccess={result => this.setNewProfileImage(result)}
+                />
 
                 {dentistProfileExists ? (
                     <Link className="link" to={`/dentist/${dentist.id}`}>
