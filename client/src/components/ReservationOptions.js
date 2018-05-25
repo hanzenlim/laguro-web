@@ -166,7 +166,7 @@ class ReservationOptions extends Component {
                     }
                     showTimeSelect
                     timeFormat="h:mm"
-                    timeIntervals={60}
+                    timeIntervals={30}
                     timeCaption="Time"
                 />
                 {touched && error && <span className="red-text">{error}</span>}
