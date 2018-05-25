@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import OfficeSearch from './OfficeSearch';
 import DentistSearch from './DentistSearch';
+import hero from '../images/hero1.jpg';
 
 class Landing extends Component {
     componentWillMount() {
@@ -62,7 +63,7 @@ class Landing extends Component {
                 </div>
 
                 <div className="hero-img">
-                    <img src="/img/hero1.jpg" alt="hero" />
+                    <img src={hero} alt="hero" />
                 </div>
             </div>
         );
