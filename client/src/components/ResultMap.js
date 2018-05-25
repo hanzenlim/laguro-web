@@ -1,55 +1,117 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Map } from 'google-maps-react';
-import * as actions from '../actions';
+import { Map, InfoWindow, Marker } from 'google-maps-react';
 
 class ResultMap extends Component {
-    initMap(mapProps, map) {
+    constructor(props) {
+        super(props);
+        this.map = null;
+    }
+    state = {
+        markerData: [],
+        activeMarker: {},
+        activeMarkerIndex: false,
+        selectedPlace: {},
+        showingInfoWindow: false,
+        markerIsClicked: false,
+    };
+    //replace onMarkerClick with onMarkerMouseOver for hovering feature
+    onMarkerMouseOver = (index, props, marker) =>
+        this.setState({
+            activeMarker: marker,
+            activeMarkerIndex: index,
+            selectedPlace: props,
+            showingInfoWindow: true,
+        });
+
+    onMarkerMouseOut = () => {
+        if (this.state.markerIsClicked) {
+            return;
+        }
+        this.setState({
+            showingInfoWindow: false,
+        });
+    };
+    onInfoWindowClose = () =>
+        this.setState({
+            activeMarker: null,
+            showingInfoWindow: false,
+        });
+    onMouseoverMarker = (props, marker) =>
+        this.setState({
+            activeMarker: marker,
+            selectedPlace: props,
+            showingInfoWindow: true,
+        });
+    onMarkerClick = href => {
+        this.setState({
+            activeMarker: null,
+            showingInfoWindow: false,
+            markerIsClicked: true,
+        });
+        window.location.href = href;
+    };
+    onMapHover = () => {
+        if (this.state.showingInfoWindow)
+            this.setState({
+                activeMarker: null,
+                showingInfoWindow: false,
+            });
+    };
+    initMap = (mapProps, map) => {
         const { locations, searchLocation } = mapProps.props;
         const { google } = mapProps;
-        const geocoder = new google.maps.Geocoder();
-        const bounds = new google.maps.LatLngBounds();
-
-        const allAddresses = locations.map(loc => ({ ...loc, type: 'office' }));
-
+        var geocoder = new google.maps.Geocoder();
+        var bounds = new google.maps.LatLngBounds();
+        var allAddresses = locations.map(loc => {
+            return { ...loc, type: 'office' };
+        });
         if (searchLocation) {
             var addressesWithSearchMarker = [
                 ...allAddresses,
                 { location: searchLocation },
             ];
         }
-
-        geocodeResults(addressesWithSearchMarker || allAddresses);
-
-        function geocodeResults(addresses) {
+        //return the result for either the addresss with search marker or allAddresses
+        const geocodeResults = addresses => {
             addresses.forEach((addr, index) => {
-                geocoder.geocode({ address: addr.location }, (results, status) => {
-                    const latlng = results[0].geometry.location;
-                    if (status !== 'OK') {
-                        alert(`Geocode failed: ${status}`);
-                    } else {
-                        map.fitBounds(bounds.extend(latlng));
-                        if (addr.type === 'office') {
-                            addMarker(latlng, (index + 1).toString());
-                            map.setZoom(10);
+                geocoder.geocode(
+                    { address: addr.location },
+                    (results, status) => {
+                        if (!results) {
+                            return;
+                        }
+                        let position = results[0].geometry.location;
+                        if (status !== 'OK') {
+                            alert('Geocode failed: ' + status);
                         } else {
-                            addSearchMarker(latlng);
-                            map.setCenter(latlng);
-                            map.setZoom(11);
+                            map.fitBounds(bounds.extend(position));
+                            if (addr.type === 'office') {
+                                const label = (index + 1).toString();
+                                const newMarker = {
+                                    position,
+                                    label,
+                                    map,
+                                    id: addr.id,
+                                };
+                                let markerData = [
+                                    ...this.state.markerData,
+                                    newMarker,
+                                ];
+                                this.setState({
+                                    markerData,
+                                });
+                                map.setZoom(10);
+                            } else {
+                                addSearchMarker(position);
+                                map.setCenter(position);
+                                map.setZoom(11);
+                            }
                         }
                     }
-                });
+                );
             });
-        }
-
-        function addMarker(location, label) {
-            new google.maps.Marker({
-                position: location,
-                label,
-                map,
-            });
-        }
-
+        };
+        geocodeResults(addressesWithSearchMarker || allAddresses);
         function addSearchMarker(location) {
             new google.maps.Marker({
                 position: location,
@@ -60,20 +122,70 @@ class ResultMap extends Component {
                     fillOpacity: 1,
                     strokeWeight: 2,
                 },
-                map,
+                map: map,
             });
         }
-    }
-
+    };
     render() {
+        const { activeMarkerIndex } = this.state;
+        const { locations } = this.props;
+        const activeLocation =
+            activeMarkerIndex || activeMarkerIndex === 0
+                ? locations[activeMarkerIndex]
+                : false;
+        // making the component dynamic for both dentist and offices
+        let img_url = '';
+        const isDentistPage = window.location.pathname.indexOf('dentists') > -1;
+        const isOfficePage = window.location.pathname.indexOf('offices') > -1;
+        if (isDentistPage) {
+            img_url = activeLocation && activeLocation.user.imageUrl;
+        } else if (isOfficePage) {
+            img_url = activeLocation && activeLocation.imageUrls[0];
+        }
+        const markers = this.state.markerData.map((marker, index) => {
+            const markerlocation = locations.find(loc => {
+                return loc.id === marker.id;
+            });
+            return (
+                <Marker
+                    key={index}
+                    name={marker.label}
+                    onMouseover={this.onMarkerMouseOver.bind(null, index)}
+                    onMouseout={this.onMarkerMouseOut.bind(this, index)}
+                    onClick={this.onMarkerClick.bind(this, markerlocation.id)}
+                    position={marker.position}
+                />
+            );
+        });
         return (
             <Map
                 google={this.props.google}
                 props={this.props}
                 onReady={this.initMap}
-            />
+                zoom={14}
+            >
+                {markers}
+                {activeLocation && (
+                    <InfoWindow
+                        marker={this.state.activeMarker}
+                        onClose={this.onInfoWindowClose}
+                        visible={this.state.showingInfoWindow}
+                    >
+                        <div>
+                            <img src={img_url} width="150px" />
+                            <a
+                                href={`${
+                                    isDentistPage ? 'dentist' : 'offices'
+                                }/${activeLocation.id}`}
+                            >
+                                <div>{activeLocation.name}</div>
+                                <div>{activeLocation.location}</div>
+                            </a>
+                        </div>
+                    </InfoWindow>
+                )}
+            </Map>
         );
     }
 }
-
-export default connect(null, actions)(ResultMap);
+export default ResultMap;

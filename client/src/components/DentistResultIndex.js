@@ -46,7 +46,7 @@ class DentistResultIndex extends Component {
 
             return (
                 <DentistResult
-                    name={dentist.name}
+                    name={dentist.user.name}
                     specialty={dentist.specialty}
                     location={dentist.location}
                     procedures={dentist.procedures}
@@ -104,7 +104,7 @@ function mapStateToProps(state) {
         dentists: getVisibleOffices(state.dentists.dentists),
         isFetching: state.dentists.isFetching,
         invalid: state.dentists.invalid,
-        filters: state.filters
+        filters: state.filters,
     };
 }
 

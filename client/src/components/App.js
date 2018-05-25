@@ -157,7 +157,7 @@ class App extends Component {
                                 path="/dentist/edit"
                                 component={EditDentist}
                             />
-                            <Route path="/dentist/:id" component={Dentist} />
+                            <Route path="/dentists/:id" component={Dentist} />
                             <PrivateRoute
                                 auth={this.props.auth}
                                 path="/listings/new"
