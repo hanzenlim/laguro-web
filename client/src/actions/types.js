@@ -12,6 +12,7 @@ export const SET_FILTERS = 'set_filters';
 export const CREATE_OFFICE = 'create_office';
 export const CREATE_LISTING = 'create_office';
 export const CREATE_APPOINTMENT = 'create_appointment';
+export const GET_SELECTED_APPOINTMENTS = 'get_selected_appointments';
 export const CREATE_REVIEW = 'create_review';
 export const GET_ONE_DENTIST = 'get_one_dentist';
 export const GET_SELECTED_OFFICES = 'get_selected_offices';

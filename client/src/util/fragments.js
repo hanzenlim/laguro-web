@@ -48,6 +48,7 @@ export const listingFragment = `
 `;
 
 export const appointmentFragment = `
+    id
     patient {
         id
     }

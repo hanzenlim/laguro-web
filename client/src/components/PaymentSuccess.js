@@ -15,11 +15,21 @@ const Container = styled.div`
 `;
 
 class PaymentSuccess extends Component {
-    componentDidMount() {
-        const params = queryString.parse(this.props.location.search);
-        const { reservationId } = params;
+    constructor(props) {
+        super(props);
 
-        this.props.getReservation(reservationId);
+        const { location } = this.props;
+        this.urlParams = queryString.parse(location.search);
+    }
+
+    componentDidMount() {
+        const { reservationId, appointmentId } = this.urlParams;
+
+        if (appointmentId) {
+            this.props.getAppointment(appointmentId);
+        } else if (reservationId) {
+            this.props.getReservation(reservationId);
+        }
     }
 
     renderTime = (startTime, endTime) => {
@@ -127,7 +137,7 @@ class PaymentSuccess extends Component {
 
 function mapStateToProps(state) {
     return {
-        reservation: state.reservations.selected
+        reservation: state.reservations.selected,
     };
 }
 
