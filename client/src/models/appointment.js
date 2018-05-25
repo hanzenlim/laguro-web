@@ -1,5 +1,5 @@
 import makeApiCall from '../util/clientDataLoader';
-import { appointmentFragment } from '../util/fragments';
+import { appointmentFragment, reservationFragment } from '../util/fragments';
 
 const createAppointmentQuery = `
     mutation CreateAppointment($input: CreateAppointmentInput!) {
@@ -13,6 +13,9 @@ const getAppointmentQuery = `
     query ($id: String!) {
         getAppointment(id: $id) {
             ${appointmentFragment}
+            reservation {
+                ${reservationFragment}
+            }
         }
     }
 `;

@@ -4,7 +4,7 @@ import AppointmentOptions from './AppointmentOptions';
 import {
     DEFAULT_APPOINTMENT_WINDOW_SIZE,
     calculateTimeDifferenceInMinutes,
-    calculateBlockIndex,
+    calculateTimeSlotIndex,
     getStartTime
 } from '../util/timeUtil';
 
@@ -17,7 +17,6 @@ class Appointments extends Component {
             reservation.startTime,
             reservation.endTime
         );
-
         const numSlots = Math.floor(
             windowSize / DEFAULT_APPOINTMENT_WINDOW_SIZE
         );
@@ -26,7 +25,7 @@ class Appointments extends Component {
         // find all blocks that are not available, mark them
         for (let i = 0; i < appointments.length; i += 1) {
             const currentAppointment = appointments[i];
-            const startBlock = calculateBlockIndex(
+            const startBlock = calculateTimeSlotIndex(
                 reservation.startTime,
                 currentAppointment.startTime
             );
@@ -45,16 +44,16 @@ class Appointments extends Component {
         // mark available blocks by the number of minutes from start timeout
         // to next unavailable block or the end
         // this allows us to check whether we have enough time for a procedure
-        let distanceToNextAppointment = calculateTimeDifferenceInMinutes(
+        let durationToNextAppointment = calculateTimeDifferenceInMinutes(
             getStartTime(timeslots.length - 1, reservation.startTime),
             reservation.endTime
         );
         for (let i = timeslots.length - 1; i >= 0; i -= 1) {
             if (timeslots[i]) {
-                timeslots[i] = distanceToNextAppointment;
-                distanceToNextAppointment += DEFAULT_APPOINTMENT_WINDOW_SIZE;
+                timeslots[i] = durationToNextAppointment;
+                durationToNextAppointment += DEFAULT_APPOINTMENT_WINDOW_SIZE;
             } else {
-                distanceToNextAppointment = DEFAULT_APPOINTMENT_WINDOW_SIZE;
+                durationToNextAppointment = DEFAULT_APPOINTMENT_WINDOW_SIZE;
             }
         }
         return timeslots;
@@ -63,9 +62,9 @@ class Appointments extends Component {
     render() {
         const { auth, dentist, reservation } = this.props;
         const timeslots = this.calculateTimeslots();
-        return timeslots.map((distance, index) => (
+        return timeslots.map((durationToNextAppointment, index) => (
             <div key={index}>
-                {distance ? (
+                {durationToNextAppointment !== 0 ? (
                     <div>
                         <a
                             className="light-green-text text-accent-4 dropdown-trigger"
@@ -86,7 +85,9 @@ class Appointments extends Component {
                                 procedures={dentist.procedures}
                                 auth={auth}
                                 index={index}
-                                distance={distance}
+                                durationToNextAppointment={
+                                    durationToNextAppointment
+                                }
                                 dentist={dentist}
                                 reservation={reservation}
                             />

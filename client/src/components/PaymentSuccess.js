@@ -42,20 +42,32 @@ class PaymentSuccess extends Component {
         super(props);
 
         const { location } = this.props;
+        this.state = { type: undefined };
         this.urlParams = queryString.parse(location.search);
     }
 
     componentDidMount() {
-        const { reservationId, appointmentId } = this.urlParams;
+        this.fetchSuccessDetails();
+    }
 
+    async fetchSuccessDetails() {
+        const { reservationId, appointmentId } = this.urlParams;
         if (appointmentId) {
-            this.props.getAppointment(appointmentId);
+            await this.props.getAppointment(appointmentId);
+            this.setState({ type: 'appointment' });
         } else if (reservationId) {
-            this.props.getReservation(reservationId);
+            await this.props.getReservation(reservationId);
+            this.setState({ type: 'reservation' });
         }
     }
 
-    renderTime = (startTime, endTime) => {
+    renderTime = () => {
+        const { reservation, appointment } = this.props;
+        const { type } = this.state;
+
+        let { startTime, endTime } =
+            type === 'appointment' ? appointment : reservation;
+
         return `${moment(startTime).format('h:mm a')} - ${moment(
             endTime
         ).format('h:mm a')}`;
@@ -66,10 +78,22 @@ class PaymentSuccess extends Component {
     };
 
     render() {
-        const { reservation } = this.props;
+        const { type } = this.state;
+        let { appointment, reservation } = this.props;
+        let office = {};
 
-        if (!reservation || !reservation.office) {
-            return <div>Loading...</div>;
+        // if the store is not fully loaded, wait
+        if (
+            !Object.keys(appointment).length &&
+            !Object.keys(reservation).length
+        )
+            return <div />;
+
+        // if this is the appointment PaymentSuccess page, then the reservation object must be loaded from the appointment object
+        if (type === 'appointment') {
+            office = appointment.reservation.office;
+        } else if (type === 'reservation') {
+            office = reservation.office;
         }
 
         return (
@@ -90,8 +114,11 @@ class PaymentSuccess extends Component {
                             <Grid container alignItems="flex-start">
                                 <ListingImage
                                     src={
-                                        reservation.office.imageUrls[0] ||
-                                        'http://via.placeholder.com/250x250'
+                                        office &&
+                                        office.imageUrls &&
+                                        office.imageUrls.length
+                                            ? office.imageUrls[0]
+                                            : 'http://via.placeholder.com/250x250'
                                     }
                                     alt="office"
                                 />
@@ -102,7 +129,7 @@ class PaymentSuccess extends Component {
                                     <Grid container direction="column">
                                         <Grid container>
                                             <Typography size="t3" weight="bold">
-                                                {reservation.office.name}
+                                                {office.name}
                                             </Typography>
                                         </Grid>
 
@@ -116,9 +143,7 @@ class PaymentSuccess extends Component {
                                             <Padding right={4} />
 
                                             <Typography size="t6">
-                                                {`Location: ${
-                                                    reservation.office.location
-                                                }`}
+                                                {`Location: ${office.location}`}
                                             </Typography>
                                         </Grid>
 
@@ -134,10 +159,7 @@ class PaymentSuccess extends Component {
                                             <Padding right={4} />
 
                                             <Typography size="t6">
-                                                {`Time: ${this.renderTime(
-                                                    reservation.startTime,
-                                                    reservation.endTime
-                                                )}`}
+                                                {`Time: ${this.renderTime()}`}
                                             </Typography>
                                         </Grid>
 
@@ -181,7 +203,8 @@ class PaymentSuccess extends Component {
 
 function mapStateToProps(state) {
     return {
-        reservation: state.reservations.selected
+        reservation: state.reservations.selected,
+        appointment: state.appointments.selected
     };
 }
 

@@ -7,7 +7,6 @@ export const convertToUnixTimestamp = timestamp => {
     return moment(timestamp).valueOf();
 };
 
-const MS_IN_MINUTE = 60000;
 const MINUTES_IN_HALF_HOUR = 30;
 
 // return the moment corresponding to the nearest next half hours
@@ -20,9 +19,7 @@ export const getNextHalfHour = () => {
 };
 
 export const calculateTimeDifferenceInMinutes = (t1, t2) => {
-    return (
-        (convertToUnixTimestamp(t2) - convertToUnixTimestamp(t1)) / MS_IN_MINUTE
-    );
+    return moment(t2).diff(moment(t1), 'minutes');
 };
 
 // compare two times to see if one is at or after the other
@@ -33,10 +30,10 @@ export const isSameOrAfter = (time1, time2) => {
 // get index for corresponding time if we create an interview based
 // on a start time and end time, where each block is of length
 // DEFAULT_APPOINTMENT_WINDOW_SIZE
-export const calculateBlockIndex = (baseTime, currentTime) => {
-    return (
+export const calculateTimeSlotIndex = (baseTime, currentTime) => {
+    return Math.ceil(
         calculateTimeDifferenceInMinutes(baseTime, currentTime) /
-        DEFAULT_APPOINTMENT_WINDOW_SIZE
+            DEFAULT_APPOINTMENT_WINDOW_SIZE
     );
 };
 

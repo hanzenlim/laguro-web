@@ -28,7 +28,9 @@ class AppointmentOptions extends Component {
                 key={procedure.name}
                 className="procedure waves-effect btn light-blue lighten-2"
                 type="button"
-                disabled={this.props.distance < procedure.duration}
+                disabled={
+                    this.props.durationToNextAppointment < procedure.duration
+                }
                 onClick={this.initiatePayment.bind(this, procedure)}
             >
                 {`${procedure.name} - ${procedure.duration} mins`}
