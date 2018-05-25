@@ -14,6 +14,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 import * as actions from '../../actions';
 import { DENTIST, OFFICES } from '../../util/strings';
+import { getNextHalfHour } from '../../util/timeUtil';
 
 const required = value => (value && value !== '' ? undefined : 'Required');
 
@@ -154,15 +155,14 @@ class NewListing extends Component {
         <div className={className}>
             <label>{label}</label>
             <DatePicker
-                selected={input.value}
                 onChange={input.onChange.bind(this)}
                 dateFormat="LLL"
-                placeholderText={moment().format('LLL')}
+                placeholderText={getNextHalfHour().format('LLL')}
                 minDate={moment()}
                 showTimeSelect
                 withPortal
                 timeFormat="h:mm a"
-                timeIntervals={60}
+                timeIntervals={30}
                 timeCaption="Time"
             />
             {touched && error && <span className="red-text">{error}</span>}

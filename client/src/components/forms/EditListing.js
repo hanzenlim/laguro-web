@@ -160,7 +160,7 @@ class EditListing extends Component {
                 showTimeSelect
                 withPortal
                 timeFormat="h:mm a"
-                timeIntervals={60}
+                timeIntervals={30}
                 timeCaption="Time"
             />
             {touched && error && <span className="red-text">{error}</span>}

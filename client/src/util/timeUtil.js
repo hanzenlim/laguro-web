@@ -7,12 +7,21 @@ export const convertToUnixTimestamp = timestamp => {
     return moment(timestamp).valueOf();
 };
 
-const millisecondsInMinute = 60000;
+const MS_IN_MINUTE = 60000;
+const MINUTES_IN_HALF_HOUR = 30;
+
+// return the moment corresponding to the nearest next half hours
+// if it's 12:15, nearest next half hour is 12:30
+export const getNextHalfHour = () => {
+    var currentMoment = moment();
+    const remainder =
+        MINUTES_IN_HALF_HOUR - currentMoment.minute() % MINUTES_IN_HALF_HOUR;
+    return currentMoment.add(remainder, 'minutes');
+};
 
 export const calculateTimeDifferenceInMinutes = (t1, t2) => {
     return (
-        (convertToUnixTimestamp(t2) - convertToUnixTimestamp(t1)) /
-        millisecondsInMinute
+        (convertToUnixTimestamp(t2) - convertToUnixTimestamp(t1)) / MS_IN_MINUTE
     );
 };
 
