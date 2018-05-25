@@ -58,7 +58,7 @@ class Profile extends Component {
 
     // TODO access listings from office object instead
     getSortedListings(office) {
-        const { listings } = this.props;
+        const { listings, reservations } = this.props;
         if (listings && listings.length) {
             let filteredListings = listings.filter(
                 listing => listing.office.id === office.id
@@ -91,16 +91,14 @@ class Profile extends Component {
                             </p>
                         </Link>
                         <div className="listing_btns">
-                            <Link
-                                className="btn-small light-blue lighten-2"
-                                to={`/offices/${office.id}/listings/${
-                                    listing.id
-                                }/edit`}
-                            >
-                                <i className="material-icons">edit</i>
-                            </Link>
                             <button
                                 type="button"
+                                disabled={
+                                    reservations.filter(
+                                        reservation =>
+                                            reservation.listingId === listing.id
+                                    ).length > 0
+                                }
                                 onClick={this.deleteListing.bind(this, listing)}
                                 className="btn-small red lighten-2"
                             >
@@ -117,10 +115,11 @@ class Profile extends Component {
     }
 
     async deleteOffice(office) {
+        const { dentist } = this.props;
         // eslint-disable-next-line
         if (confirm(`Delete ${office.name} and all associated listings?`)) {
             await this.props.deleteOffice(office.id);
-            await this.props.queryOffices(HOST_ID, office.id);
+            await this.props.queryOffices(HOST_ID, dentist.id);
         }
     }
 
@@ -187,6 +186,7 @@ class Profile extends Component {
                             </Link>
                             <button
                                 type="button"
+                                disabled={officeListings.length}
                                 onClick={this.deleteOffice.bind(this, office)}
                                 className="btn-small red lighten-2"
                             >

@@ -4,6 +4,7 @@ export const userFragment = `
     googleId
     imageUrl
     dateCreated
+    dentistId
 `;
 
 export const dentistFragment = `
@@ -38,6 +39,7 @@ export const listingFragment = `
       price
       count
     }
+    officeId
     numChairsAvailable
     chairHourlyPrice
     startTime
@@ -53,6 +55,7 @@ export const appointmentFragment = `
         name
         duration
     }
+    reservationId
     location
     startTime
     endTime
@@ -62,6 +65,7 @@ export const appointmentFragment = `
 export const reservationFragment = `
     id
     numChairsSelected
+    listingId
     office {
         ${officeFragment}
     }
