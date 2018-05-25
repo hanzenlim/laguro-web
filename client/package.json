@@ -11,6 +11,7 @@
     }
   },
   "dependencies": {
+    "@material-ui/core": "^1.0.0",
     "apollo-fetch": "^0.7.0",
     "axios": "^0.17.1",
     "browser-cookies": "^1.2.0",
@@ -23,6 +24,7 @@
     "materialize-css": "^1.0.0-beta",
     "moment": "^2.21.0",
     "prop-types": "^15.6.1",
+    "query-string": "^6.1.0",
     "react": "^16.2.0",
     "react-datepicker": "^1.2.2",
     "react-dom": "^16.2.0",
@@ -33,9 +35,11 @@
     "react-router-redux": "^4.0.8",
     "react-scripts": "1.1.1",
     "react-stars": "^2.2.5",
+    "react-stripe-checkout": "^2.6.3",
     "redux": "^3.7.2",
     "redux-form": "^7.3.0",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "styled-components": "^3.2.6"
   },
   "scripts": {
     "start": "react-scripts start",

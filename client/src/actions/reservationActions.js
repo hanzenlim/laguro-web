@@ -1,12 +1,22 @@
-import { GET_SELECTED_RESERVATIONS } from './types';
+import { GET_SELECTED_RESERVATIONS, CREATE_RESERVATION } from './types';
 import Reservation from '../models/reservation';
+import history from '../history';
 
-export const createReservation = params => async dispatch => {
-    await Reservation.create(params);
+export const getReservation = reservationId => async dispatch => {
+    const reservation = await Reservation.get(reservationId);
     dispatch({
         type: GET_SELECTED_RESERVATIONS,
-        payload: null
+        payload: reservation
     });
+};
+
+export const createReservation = params => async dispatch => {
+    const reservation = await Reservation.create(params);
+    dispatch({
+        type: CREATE_RESERVATION,
+        payload: reservation
+    });
+    history.push(`/payment-success?reservationId=${reservation.id}`);
 };
 
 export const cancelReservation = reservationId => async dispatch => {

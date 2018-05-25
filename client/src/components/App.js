@@ -15,67 +15,77 @@ import NotFound from './NotFound';
 import './App.css';
 
 const Cart = Loadable({
-    loader: () => import("./Cart"),
+    loader: () => import('./Cart'),
     loading: LoadingComponent
 });
 
 const DentistResultIndex = Loadable({
-    loader: () => import("./DentistResultIndex"),
+    loader: () => import('./DentistResultIndex'),
     loading: LoadingComponent
 });
 
 const OfficeResultIndex = Loadable({
-    loader: () => import("./OfficeResultIndex"),
+    loader: () => import('./OfficeResultIndex'),
     loading: LoadingComponent
 });
 
 const NewOffice = Loadable({
-    loader: () => import("./forms/NewOffice"),
+    loader: () => import('./forms/NewOffice'),
     loading: LoadingComponent
 });
 
 const EditOffice = Loadable({
-    loader: () => import("./forms/EditOffice"),
+    loader: () => import('./forms/EditOffice'),
     loading: LoadingComponent
 });
 
 const NewListing = Loadable({
-    loader: () => import("./forms/NewListing"),
+    loader: () => import('./forms/NewListing'),
     loading: LoadingComponent
 });
 
 const EditListing = Loadable({
-    loader: () => import("./forms/EditListing"),
+    loader: () => import('./forms/EditListing'),
     loading: LoadingComponent
 });
 
 const NewDentist = Loadable({
-    loader: () => import("./forms/NewDentist"),
+    loader: () => import('./forms/NewDentist'),
     loading: LoadingComponent
 });
 
 const EditDentist = Loadable({
-    loader: () => import("./forms/EditDentist"),
+    loader: () => import('./forms/EditDentist'),
     loading: LoadingComponent
 });
 
 const Profile = Loadable({
-    loader: () => import("./Profile"),
+    loader: () => import('./Profile'),
     loading: LoadingComponent
 });
 
 const Dentist = Loadable({
-    loader: () => import("./Dentist"),
+    loader: () => import('./Dentist'),
     loading: LoadingComponent
 });
 
 const Listing = Loadable({
-    loader: () => import("./Listing"),
+    loader: () => import('./Listing'),
     loading: LoadingComponent
 });
 
 const Office = Loadable({
-    loader: () => import("./Office"),
+    loader: () => import('./Office'),
+    loading: LoadingComponent
+});
+
+const Payment = Loadable({
+    loader: () => import('./Payment'),
+    loading: LoadingComponent
+});
+
+const PaymentSuccess = Loadable({
+    loader: () => import('./PaymentSuccess'),
     loading: LoadingComponent
 });
 
@@ -112,9 +122,7 @@ class App extends Component {
             <div>
                 <Router history={history}>
                     <div>
-                        <Header 
-                            toggleShowModal={this.props.toggleLoginModal}
-                        />
+                        <Header toggleShowModal={this.props.toggleLoginModal} />
                         <Switch>
                             <Route
                                 path="/dentists/search"
@@ -173,6 +181,16 @@ class App extends Component {
                                 path="/cart"
                                 component={Cart}
                             />
+                            <PrivateRoute
+                                auth={this.props.auth}
+                                path="/payment-success"
+                                component={PaymentSuccess}
+                            />
+                            <PrivateRoute
+                                auth={this.props.auth}
+                                path="/payment"
+                                component={Payment}
+                            />
                             <Route path="/" component={Landing} />
                             {/* Catch all unmatched routes. */}
                             <Route component={NotFound} />
@@ -191,7 +209,7 @@ class App extends Component {
 function mapStateToProps(state) {
     return {
         auth: state.auth,
-        isLoginModalVisible: state.ui.isLoginModalVisible,
+        isLoginModalVisible: state.ui.isLoginModalVisible
     };
 }
 

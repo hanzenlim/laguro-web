@@ -1,28 +1,23 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import moment from 'moment';
+import { Redirect } from 'react-router-dom';
 import * as actions from '../actions';
 import { getStartTime } from '../util/timeUtil';
-import { RESERVED_BY } from '../util/strings';
 
 class AppointmentOptions extends Component {
-    async reserveAppointment(procedure) {
-        const { auth, dentist, reservation, index } = this.props;
-        const startTime = getStartTime(index, reservation.startTime);
-        const endTime = startTime.clone();
-        endTime.add(procedure.duration, 'minutes');
-        const params = {
-            reservationId: reservation.id,
-            patientId: auth.id,
-            procedure,
-            startTime,
-            endTime,
-            paymentOptionId: 'card_1CVHQAG42zKCEoIVErYyYlQ9'
-        };
+    constructor(props) {
+        super(props);
+
+        this.state = { redirectToPayment: false, procedure: null };
+    }
+
+    initiatePayment(procedure) {
+        const { auth } = this.props;
         if (auth) {
-            await this.props.createAppointment(params);
-            await this.props.queryReservations(RESERVED_BY, dentist.id);
+            this.setState({ procedure, redirectToPayment: true });
         } else {
-            window.location.href = '/auth/google';
+            this.props.toggleLoginModal();
         }
     }
 
@@ -33,8 +28,10 @@ class AppointmentOptions extends Component {
                 key={procedure.name}
                 className="procedure waves-effect btn light-blue lighten-2"
                 type="button"
-                disabled={this.props.distance < procedure.duration}
-                onClick={this.reserveAppointment.bind(this, procedure)}
+                disabled={
+                    this.props.durationToNextAppointment < procedure.duration
+                }
+                onClick={this.initiatePayment.bind(this, procedure)}
             >
                 {`${procedure.name} - ${procedure.duration} mins`}
             </button>
@@ -42,6 +39,35 @@ class AppointmentOptions extends Component {
     }
 
     render() {
+        const { redirectToPayment } = this.state;
+
+        if (redirectToPayment) {
+            const { auth, reservation, index } = this.props;
+            let { procedure } = this.state;
+
+            const startTime = getStartTime(index, reservation.startTime);
+            const endTime = startTime.clone();
+            endTime.add(procedure.duration, 'minutes');
+
+            procedure = JSON.stringify(procedure);
+
+            return (
+                <Redirect
+                    push
+                    to={{
+                        pathname: '/payment',
+                        search: `?type=appointment&totalPaid=10000&time=[${moment(
+                            startTime
+                        ).format()},${moment(
+                            endTime
+                        ).format()}]&procedure=${procedure}&reservationId=${
+                            reservation.id
+                        }&patientId=${auth.id}`
+                    }}
+                />
+            );
+        }
+
         return (
             <div className="procedureBtns">{this.renderProcedureButtons()}</div>
         );

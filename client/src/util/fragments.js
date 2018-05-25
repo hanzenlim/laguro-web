@@ -48,6 +48,7 @@ export const listingFragment = `
 `;
 
 export const appointmentFragment = `
+    id
     patient {
         id
     }
@@ -133,4 +134,11 @@ export const revieweeFragment = `
         dateCreated
       }
     }
+`;
+
+export const paymentOptionFragment = `
+    id
+    address_city
+    address_country
+    last4
 `;

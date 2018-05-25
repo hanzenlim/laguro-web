@@ -18,6 +18,9 @@ const getListingQuery = `
     query ($id: String!) {
         getListing(id: $id) {
             ${listingFragment}
+            reservations {
+                id
+            }
             host {
                 ${dentistFragment}
             }

@@ -9,6 +9,7 @@ import uiReducer from './uiReducer';
 import filtersReducer from './filtersReducer';
 import reviewsReducer from './reviewsReducer';
 import reservationsReducer from './reservationsReducer';
+import appointmentsReducer from './appointmentsReducer';
 
 export default combineReducers({
     dentists: dentistsReducer,
@@ -17,7 +18,8 @@ export default combineReducers({
     filters: filtersReducer,
     reviews: reviewsReducer,
     reservations: reservationsReducer,
+    appointments: appointmentsReducer,
     auth: authReducer,
     ui: uiReducer,
-    form: reduxFormReducer,
+    form: reduxFormReducer
 });
