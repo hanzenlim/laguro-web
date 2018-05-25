@@ -383,7 +383,7 @@ class Payment extends Component {
                                         color="abbey"
                                         underline
                                     >
-                                        Add new payment method
+                                        Add payment method
                                     </Typography>
                                 </Link>
                             ) : (
