@@ -1,5 +1,6 @@
 import makeApiCall from '../util/clientDataLoader';
 import { appointmentFragment, reservationFragment } from '../util/fragments';
+import { CANCELLED_BY_PATIENT } from '../util/strings';
 
 const createAppointmentQuery = `
     mutation CreateAppointment($input: CreateAppointmentInput!) {
@@ -20,7 +21,39 @@ const getAppointmentQuery = `
     }
 `;
 
+const queryAppointmentQuery = `
+    query ($input: QueryParams!) {
+        queryAppointments(input: $input) {
+            ${appointmentFragment}
+        }
+    }
+`;
+
+const cancelAppointmentQuery = `
+    mutation ($input: CancelAppointmentInput!) {
+        cancelAppointment(input: $input)
+    }
+`;
+
 const Appointment = {
+    query: async (
+        partitionKey,
+        partitionValue,
+        sortKey = null,
+        rangeStart = null,
+        rangeEnd = null
+    ) => {
+        const response = await makeApiCall(queryAppointmentQuery, {
+            input: {
+                partitionKey,
+                partitionValue,
+                sortKey,
+                rangeStart,
+                rangeEnd
+            }
+        });
+        return response.data.queryAppointments;
+    },
     get: async appointmentId => {
         if (!appointmentId) {
             return null;
@@ -35,6 +68,15 @@ const Appointment = {
             input: params
         });
         return response.data.createAppointment;
+    },
+    delete: async appointmentId => {
+        const response = await makeApiCall(cancelAppointmentQuery, {
+            input: {
+                id: appointmentId,
+                cancellationType: CANCELLED_BY_PATIENT
+            }
+        });
+        return response.data.cancelAppointment;
     }
 };
 

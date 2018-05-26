@@ -10,7 +10,6 @@ export const getAppointment = appointmentId => async dispatch => {
     });
 };
 
-
 export const createAppointment = params => async dispatch => {
     const appointment = await Appointment.create(params);
     dispatch({
