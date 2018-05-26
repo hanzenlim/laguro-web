@@ -118,7 +118,7 @@ class Profile extends Component {
                         <div className="top-bar">
                             <Link
                                 className="blue-text text-darken-2"
-                                to={`/offices/${office.id}`}
+                                to={`/office/${office.id}`}
                             >
                                 <p>
                                     {moment(reservation.startTime).format(
@@ -178,7 +178,7 @@ class Profile extends Component {
                     {this.renderProfileDetails()}
                     <Link
                         className="btn light-blue lighten-2 waves-effect"
-                        to={'/dentists/search'}
+                        to={'/dentist/search'}
                     >
                         Go back to dentists
                     </Link>

@@ -81,7 +81,7 @@ class Profile extends Component {
                     <div className="listing_content">
                         <Link
                             className="blue-text text-darken-2"
-                            to={`/offices/${office.id}/listings/${listing.id}`}
+                            to={`/office/${office.id}/listing/${listing.id}`}
                         >
                             <p>
                                 {moment(listing.startTime).format(
@@ -158,7 +158,7 @@ class Profile extends Component {
                     {'No offices yet - '}
                     <Link
                         className="blue-text text-darken-2"
-                        to={'/offices/new'}
+                        to={'/office/new'}
                     >
                         create a new office to begin hosting today
                     </Link>
@@ -173,14 +173,14 @@ class Profile extends Component {
                     <div className="office_header">
                         <Link
                             className="blue-text text-darken-2"
-                            to={`/offices/${office.id}`}
+                            to={`/office/${office.id}`}
                         >
                             <h5>{office.name}</h5>
                         </Link>
                         <div className="office_btns">
                             <Link
                                 className="btn-small light-blue lighten-2 waves-effect"
-                                to={`/offices/${office.id}/edit`}
+                                to={`/office/${office.id}/edit`}
                             >
                                 Edit Office
                             </Link>
@@ -250,7 +250,7 @@ class Profile extends Component {
                 )}
 
                 {dentistProfileExists ? (
-                    <Link className="link" to={'/offices/new'}>
+                    <Link className="link" to={'/office/new'}>
                         Create a new office
                     </Link>
                 ) : (
@@ -258,14 +258,14 @@ class Profile extends Component {
                 )}
 
                 {dentistProfileExists ? (
-                    <Link className="link" to={'/listings/new'}>
+                    <Link className="link" to={'/listing/new'}>
                         Create a new listing
                     </Link>
                 ) : (
                     ''
                 )}
 
-                <Link className="link" to={'/offices/search'}>
+                <Link className="link" to={'/office/search'}>
                     Browse listings
                 </Link>
             </ul>
@@ -322,7 +322,7 @@ class Profile extends Component {
                         {'No reservations yet - '}
                         <Link
                             className="blue-text text-darken-2"
-                            to={'/offices/search'}
+                            to={'/office/search'}
                         >
                             search for new listings and make a reservation
                         </Link>
@@ -335,7 +335,7 @@ class Profile extends Component {
             <div key={index} className="reservation card-panel grey lighten-5">
                 <Link
                     className="blue-text text-darken-2"
-                    to={`/offices/${reservation.office.id}`}
+                    to={`/office/${reservation.office.id}`}
                 >
                     <div className="office_detail">
                         <img src={reservation.office.imageUrls[0]} alt="" />
@@ -345,7 +345,7 @@ class Profile extends Component {
                 <div className="content">
                     <Link
                         className="blue-text text-darken-2"
-                        to={`/offices/${reservation.office.id}/listings/${
+                        to={`/office/${reservation.office.id}/listing/${
                             reservation.listing.id
                         }`}
                     >

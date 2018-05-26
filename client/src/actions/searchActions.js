@@ -16,7 +16,7 @@ export const setFilters = filters => ({
 export const searchDentists = filters => dispatch => {
     dispatch(setFilters(filters));
     history.push({
-        pathname: '/dentists/search',
+        pathname: '/dentist/search',
         search: `?query=${filters.location}`
     });
 };
@@ -24,7 +24,7 @@ export const searchDentists = filters => dispatch => {
 export const searchOffices = filters => dispatch => {
     dispatch(setFilters(filters));
     history.push({
-        pathname: '/offices/search',
+        pathname: '/office/search',
         search: `?query=${filters.location}`
     });
 };
