@@ -18,6 +18,7 @@ export const DENTIST_ID = 'dentistId';
 export const HOST_ID = 'hostId';
 export const REVIEWEE_ID = 'revieweeId';
 export const RESERVED_BY = 'reservedBy';
+export const START_TIME = 'startTime';
 
 // STATUSES
 export const ACTIVE = 'ACTIVE';

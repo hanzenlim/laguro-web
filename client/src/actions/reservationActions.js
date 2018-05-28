@@ -19,12 +19,8 @@ export const createReservation = params => async dispatch => {
     history.push(`/payment-success?reservationId=${reservation.id}`);
 };
 
-export const cancelReservation = reservationId => async dispatch => {
+export const cancelReservation = reservationId => async () => {
     await Reservation.delete(reservationId);
-    dispatch({
-        type: GET_SELECTED_RESERVATIONS,
-        payload: null
-    });
 };
 
 export const queryReservations = (key, value) => async dispatch => {
