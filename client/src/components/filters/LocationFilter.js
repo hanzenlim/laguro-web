@@ -1,14 +1,44 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
-import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
+import PlacesAutocomplete, {
+    geocodeByAddress,
+    getLatLng
+} from 'react-places-autocomplete';
+import styled from 'styled-components';
+import { Input, Grid, Button } from './../common';
+import { Padding } from './../common/Spacing';
 
 import * as actions from '../../actions';
+
+const SearchContainer = styled.div`
+    position: relative;
+`;
+
+const SearchInput = styled(Input)``;
+
+const SearchResultsConainer = styled.div`
+    position: absolute;
+    width: 100%;
+    z-index: 960;
+    background-color: #fafafa;
+    box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.24);
+`;
+
+const ResultsItem = styled.div`
+    padding: 12px 16px;
+    background-color: white;
+    cursor: pointer;
+
+    &:hover {
+        background-color: rgba(0, 0, 0, 0.08);
+    }
+`;
 
 class LocationFilter extends Component {
     constructor(props) {
         super(props);
-        this.state = { location: '' };
+        this.state = { location: this.props.searchLocation || '' };
         this.onLocationChange = this.onLocationChange.bind(this);
     }
 
@@ -19,74 +49,90 @@ class LocationFilter extends Component {
         onChange(location);
     }
 
-	handleChange = (location) => {
-	  this.setState({ location });
-	}
+    handleChange = location => {
+        this.setState({ location });
+    };
 
-	handleSelect = (location) => {
-	  geocodeByAddress(location)
-	    .then(results => getLatLng(results[0]));
-	}
+    handleSelect = location => {
+        geocodeByAddress(location).then(results => getLatLng(results[0]));
+    };
 
-	// replace updateFilters with searchOffices
-	onSubmit() {
-	  const { reset } = this.props;
-	  this.props.updateFilters({ location: this.state.location });
-	  reset();
-	}
+    // replace updateFilters with searchOffices
+    onSubmit() {
+        const { reset } = this.props;
+        this.props.updateFilters({ location: this.state.location });
+        reset();
+    }
 
-	render() {
-	  const { handleSubmit } = this.props;
-	  
-	  return (
-	        <form
-	            className="searchModule toggle active"
-	            onSubmit={handleSubmit(this.onSubmit.bind(this))}
-	        >
-	            <PlacesAutocomplete
-	                value={this.state.location}
-	                onChange={this.handleChange}
-	                onSelect={this.handleSelect}
-	            >
-	                {({ getInputProps, suggestions, getSuggestionItemProps }) => (
-	                    <div>
-	                        <input
-	                            {...getInputProps({
-	                                placeholder: 'Search Places ...',
-	                                className: 'location-search-input',
-	                            })}
-	                        />
-	                        <div className="autocomplete-dropdown-container">
-	                            {suggestions.map((suggestion) => {
-	                                const className = suggestion.active ? 'suggestion-item--active' : 'suggestion-item';
-	                                const style = suggestion.active
-	                                    ? { backgroundColor: '#fafafa', cursor: 'pointer' }
-	                                    : { backgroundColor: '#ffffff', cursor: 'pointer' };
-	                                return (
-	                                    <div {...getSuggestionItemProps(suggestion, { className, style })}>
-	                                        <span>{suggestion.description}</span>
-	                                    </div>
-	                                );
-	                            })}
-	                        </div>
-	                    </div>
-	                )}
-	            </PlacesAutocomplete>
-	            <div className="form-buttons">
-	                <button
-	                    className="waves-effect btn green lighten-2"
-	                    type="submit"
-	                >
-						Search
-	                </button>
-	            </div>
-	        </form>
+    render() {
+        const { handleSubmit } = this.props;
 
-	  );
-	}
+        return (
+            <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+                <Grid container>
+                    <Grid item xs>
+                        <PlacesAutocomplete
+                            value={this.state.location}
+                            onChange={this.handleChange}
+                            onSelect={this.handleSelect}
+                        >
+                            {({
+                                getInputProps,
+                                suggestions,
+                                getSuggestionItemProps
+                            }) => (
+                                <SearchContainer>
+                                    <SearchInput
+                                        fullWidth
+                                        variant="raised"
+                                        {...getInputProps({
+                                            placeholder: 'Search Places ...'
+                                        })}
+                                    />
+
+                                    {suggestions.length ? (
+                                        <SearchResultsConainer>
+                                            {suggestions.map(suggestion => {
+                                                return (
+                                                    <ResultsItem
+                                                        active={
+                                                            suggestion.active
+                                                        }
+                                                        {...getSuggestionItemProps(
+                                                            suggestion
+                                                        )}
+                                                    >
+                                                        <span>
+                                                            {
+                                                                suggestion.description
+                                                            }
+                                                        </span>
+                                                    </ResultsItem>
+                                                );
+                                            })}
+                                        </SearchResultsConainer>
+                                    ) : null}
+                                </SearchContainer>
+                            )}
+                        </PlacesAutocomplete>
+                    </Grid>
+                    <Grid item>
+                        <Padding left={7}>
+                            <Button
+                                variant="raised"
+                                color="secondary"
+                                type="submit"
+                            >
+                                Search
+                            </Button>
+                        </Padding>
+                    </Grid>
+                </Grid>
+            </form>
+        );
+    }
 }
 
-
 export default reduxForm({
-    form: 'locationFilter',
+    form: 'locationFilter'
 })(connect(null, actions)(LocationFilter));

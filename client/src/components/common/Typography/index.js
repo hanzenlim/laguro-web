@@ -14,7 +14,7 @@ export default styled.span`
   color: inherit;
   ${props => props.color === 'carribean-green' && 'color: #0AD5B1;'}
   ${props => props.color === 'white' && 'color: #FFFFFF;'}
-  ${props => props.color === 'black' && 'color: #000000'}
+  ${props => props.color === 'black' && 'color: #000000;'}
   ${props => props.color === 'abbey' && 'color: #484E51;'}
   ${props => props.color === 'silver' && 'color: #C8C7C7;'}
 

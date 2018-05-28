@@ -1,18 +1,56 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ReactStars from 'react-stars';
-import { Link } from 'react-router-dom';
+
+import styled from 'styled-components';
+
+import { Typography, Card, Grid, Link } from './common';
+import { Padding } from './common/Spacing';
+
+const Container = styled(Card)`
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+`;
+
+const ImageContainer = styled.div`
+    height: 120px;
+    width: 164px;
+`;
+
+const Image = styled.img`
+    height: 120px;
+    width: 164px;
+    object-fit: cover;
+`;
+
+const Procedure = styled.div`
+    min-height: 17px;
+    height: auto;
+    display: flex;
+    align-items: center;
+    background-color: #c8c7c7;
+    border-radius: 2px;
+    margin: 0 6px 4px 0;
+    padding: 0 4px;
+`;
+
+const DetailsContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+`;
 
 class DentistResult extends Component {
     renderProcedures(procedures) {
         if (procedures.length) {
             return procedures.slice(0, 4).map(procedure => (
-                <span
-                    key={procedure.name}
-                    className="badge white-text light-blue lighten-2"
-                >
-                    {procedure.name}
-                </span>
+                <Procedure key={procedure.name}>
+                    <Typography size="t6" weight="regular" color="white">
+                        {procedure.name}
+                    </Typography>
+                </Procedure>
             ));
         }
         return <div />;
@@ -26,46 +64,70 @@ class DentistResult extends Component {
 
     render() {
         return (
-            <div className="searchResult hoverable">
-                <Link
-                    className="blue-text text-darken-2"
-                    to={`/dentist/${this.props.dentist_id}`}
-                >
-                    <img
-                        className="result-img"
-                        src={this.imgUrl()}
-                        alt="Doctor"
-                    />
-                </Link>
-                <div className="content">
-                    <div className="header">
-                        <Link
-                            className="blue-text text-darken-2"
-                            to={`/dentist/${this.props.dentist_id}`}
-                        >
-                            <h5>
-                                {this.props.index + 1}. {this.props.name}
-                            </h5>
-                        </Link>
-                        <h6>
-                            {this.props.specialty} - {this.props.location}
-                        </h6>
-                    </div>
-                    <div className="rating">
-                        <ReactStars
-                            count={5}
-                            edit={false}
-                            value={this.props.rating_value}
-                        />
-                        <span className="rating_count grey-text text-darken-1">
-                            {`${this.props.rating_count} Reviews`}
-                        </span>
-                    </div>
-                    <div className="badges">
-                        {this.renderProcedures(this.props.procedures)}
-                    </div>
-                </div>
-            </div>
+            <Link
+                className="blue-text text-darken-2"
+                to={`/dentist/${this.props.dentist_id}`}
+            >
+                <Container>
+                    <Grid container>
+                        <Grid item>
+                            <Padding right={5}>
+                                <ImageContainer>
+                                    <Image src={this.imgUrl()} alt="Doctor" />
+                                </ImageContainer>
+                            </Padding>
+                        </Grid>
+
+                        <Grid item xs>
+                            <DetailsContainer>
+                                <Grid container>
+                                    <Typography
+                                        size="t4"
+                                        weight="regular"
+                                        color="black"
+                                    >
+                                        {this.props.name}
+                                    </Typography>
+                                </Grid>
+                                <Padding bottom={5} />
+                                <Grid container>
+                                    <Typography
+                                        size="t6"
+                                        weight="regular"
+                                        color="black"
+                                    >
+                                        {this.props.specialty} -{' '}
+                                        {this.props.location}
+                                    </Typography>
+                                </Grid>
+                                <Padding bottom={5} />
+                                <Grid container alignItems="center">
+                                    <ReactStars
+                                        size="10"
+                                        count={5}
+                                        edit={false}
+                                        value={this.props.rating_value}
+                                    />
+                                    <Padding right={7} />
+                                    <Typography
+                                        size="t6"
+                                        weight="regular"
+                                        color="black"
+                                    >{`(${
+                                        this.props.rating_count
+                                    }) Reviews`}</Typography>
+                                </Grid>
+                                <Padding bottom={7} />
+                                <Grid container>
+                                    {this.renderProcedures(
+                                        this.props.procedures
+                                    )}
+                                </Grid>
+                            </DetailsContainer>
+                        </Grid>
+                    </Grid>
+                </Container>
+            </Link>
         );
     }
 }
