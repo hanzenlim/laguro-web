@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Field, FieldArray, reduxForm } from 'redux-form';
+import { Field, FieldArray, reduxForm, SubmissionError } from 'redux-form';
 import { Link } from 'react-router-dom';
 import { DENTIST } from '../../util/strings';
 import Autocomplete from '../filters/Autocomplete';
@@ -40,11 +40,21 @@ class EditDentist extends Component {
     };
 
     onSubmit(values) {
-        const { reset, auth } = this.props;
+        const { auth } = this.props;
         const dentist = auth.dentist;
         values.location = this.state.location;
+
+        if (
+            // if no procedures
+            !values.procedures ||
+            values.procedures.length === 0
+        ) {
+            throw new SubmissionError({
+                _error: 'You must add at least 1 procedure'
+            });
+        }
+
         this.props.editDentist({ ...values, id: dentist.id });
-        reset();
     }
 
     // get all dentists and find the dentist profile that matches logged in user
@@ -149,7 +159,7 @@ class EditDentist extends Component {
     );
 
     render() {
-        const { handleSubmit, submitting, dentist } = this.props;
+        const { handleSubmit, submitting, dentist, error } = this.props;
         if (!dentist) {
             return <div />;
         }
@@ -193,7 +203,8 @@ class EditDentist extends Component {
                     />
                 </div>
 
-                <div className="form-buttons">
+                <div className="form-buttons col s6 right-align">
+                    {error && <strong className="red-text">{error}</strong>}
                     <button
                         className="waves-effect btn light-blue lighten-2"
                         type="submit"

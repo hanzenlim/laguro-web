@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Field, FieldArray, reduxForm } from 'redux-form';
+import { Field, FieldArray, reduxForm, SubmissionError } from 'redux-form';
 import { Link } from 'react-router-dom';
 
 import Autocomplete from '../filters/Autocomplete';
@@ -22,11 +22,20 @@ class NewDentist extends Component {
     };
 
     async onSubmit(values) {
-        const { auth, reset } = this.props;
-        values.procedures = values.procedures || [];
+        const { auth } = this.props;
+
+        if (
+            // if no procedures
+            !values.procedures ||
+            values.procedures.length === 0
+        ) {
+            throw new SubmissionError({
+                _error: 'You must add at least 1 procedure'
+            });
+        }
+
         values.location = this.state.location;
         this.props.createDentist({ ...values, bio: ' ', userId: auth.id });
-        reset();
     }
 
     async componentWillMount() {
@@ -128,13 +137,13 @@ class NewDentist extends Component {
                 >
                     Add Procedure
                 </button>
-                {error && <span>{error}</span>}
+                {error && <span className="red-text">{error}</span>}
             </li>
         </ul>
     );
 
     render() {
-        const { handleSubmit, submitting } = this.props;
+        const { handleSubmit, submitting, error } = this.props;
         return (
             <form
                 className="bigForm light-blue lighten-5"
@@ -171,10 +180,12 @@ class NewDentist extends Component {
                         name="procedures"
                         className="col s12"
                         component={this.renderProcedureSelector}
+                        validate={required}
                     />
                 </div>
 
-                <div className="form-buttons">
+                <div className="form-buttons col s6 right-align">
+                    {error && <strong className="red-text">{error}</strong>}
                     <button
                         className="waves-effect btn light-blue lighten-2"
                         type="submit"
