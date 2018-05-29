@@ -21,7 +21,7 @@ class OfficeResult extends Component {
             return filteredListings.map(listing => (
                 <Link
                     key={listing.id}
-                    to={`/offices/${listing.office.id}/listings/${listing.id}`}
+                    to={`/office/${listing.office.id}/listing/${listing.id}`}
                     className="badge white-text light-blue lighten-2"
                 >
                     {moment(listing.time_available).format('MMM D, h a')}
@@ -45,7 +45,7 @@ class OfficeResult extends Component {
                     <div className="header">
                         <Link
                             className="blue-text text-darken-2"
-                            to={`/offices/${this.props.office_id}`}
+                            to={`/office/${this.props.office_id}`}
                         >
                             <h5>
                                 {this.props.index + 1}. {this.props.name}

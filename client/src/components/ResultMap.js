@@ -12,7 +12,7 @@ class ResultMap extends Component {
         activeMarkerIndex: false,
         selectedPlace: {},
         showingInfoWindow: false,
-        markerIsClicked: false,
+        markerIsClicked: false
     };
     //replace onMarkerClick with onMarkerMouseOver for hovering feature
     onMarkerMouseOver = (index, props, marker) =>
@@ -20,7 +20,7 @@ class ResultMap extends Component {
             activeMarker: marker,
             activeMarkerIndex: index,
             selectedPlace: props,
-            showingInfoWindow: true,
+            showingInfoWindow: true
         });
 
     onMarkerMouseOut = () => {
@@ -28,33 +28,36 @@ class ResultMap extends Component {
             return;
         }
         this.setState({
-            showingInfoWindow: false,
+            showingInfoWindow: false
         });
     };
     onInfoWindowClose = () =>
         this.setState({
             activeMarker: null,
-            showingInfoWindow: false,
+            showingInfoWindow: false
         });
     onMouseoverMarker = (props, marker) =>
         this.setState({
             activeMarker: marker,
             selectedPlace: props,
-            showingInfoWindow: true,
+            showingInfoWindow: true
         });
     onMarkerClick = href => {
+        // eslint-disable-next-line
+        debugger;
         this.setState({
             activeMarker: null,
             showingInfoWindow: false,
-            markerIsClicked: true,
+            markerIsClicked: true
         });
+
         window.location.href = href;
     };
     onMapHover = () => {
         if (this.state.showingInfoWindow)
             this.setState({
                 activeMarker: null,
-                showingInfoWindow: false,
+                showingInfoWindow: false
             });
     };
     initMap = (mapProps, map) => {
@@ -68,7 +71,7 @@ class ResultMap extends Component {
         if (searchLocation) {
             var addressesWithSearchMarker = [
                 ...allAddresses,
-                { location: searchLocation },
+                { location: searchLocation }
             ];
         }
         //return the result for either the addresss with search marker or allAddresses
@@ -91,14 +94,14 @@ class ResultMap extends Component {
                                     position,
                                     label,
                                     map,
-                                    id: addr.id,
+                                    id: addr.id
                                 };
                                 let markerData = [
                                     ...this.state.markerData,
-                                    newMarker,
+                                    newMarker
                                 ];
                                 this.setState({
-                                    markerData,
+                                    markerData
                                 });
                                 map.setZoom(10);
                             } else {
@@ -120,9 +123,9 @@ class ResultMap extends Component {
                     scale: 7.5,
                     fillColor: 'red',
                     fillOpacity: 1,
-                    strokeWeight: 2,
+                    strokeWeight: 2
                 },
-                map: map,
+                map: map
             });
         }
     };

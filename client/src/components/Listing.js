@@ -118,7 +118,7 @@ class OfficeResultIndex extends Component {
                         </div>
                         <Link
                             className="btn light-blue lighten-2 waves-effect"
-                            to={'/offices/search'}
+                            to={'/office/search'}
                         >
                             Go back to listings
                         </Link>

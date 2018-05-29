@@ -14,11 +14,6 @@ import NotFound from './NotFound';
 
 import './App.css';
 
-const Cart = Loadable({
-    loader: () => import('./Cart'),
-    loading: LoadingComponent
-});
-
 const DentistResultIndex = Loadable({
     loader: () => import('./DentistResultIndex'),
     loading: LoadingComponent
@@ -125,34 +120,34 @@ class App extends Component {
                         <Header toggleShowModal={this.props.toggleLoginModal} />
                         <Switch>
                             <Route
-                                path="/dentists/search"
+                                path="/dentist/search"
                                 component={DentistResultIndex}
                             />
                             <Route
-                                path="/offices/search"
+                                path="/office/search"
                                 component={OfficeResultIndex}
                             />
                             <PrivateRoute
                                 auth={this.props.auth}
-                                path="/offices/:office_id/listings/:id/edit"
+                                path="/office/:office_id/listing/:id/edit"
                                 component={EditListing}
                             />
                             <Route
-                                path="/offices/:office_id/listings/:id"
+                                path="/office/:office_id/listing/:id"
                                 component={Listing}
                             />
                             <PrivateRoute
                                 auth={this.props.auth}
-                                path="/offices/:office_id/edit"
+                                path="/office/:office_id/edit"
                                 component={EditOffice}
                             />
                             <PrivateRoute
                                 auth={this.props.auth}
-                                path="/offices/new"
+                                path="/office/new"
                                 component={NewOffice}
                             />
                             <Route
-                                path="/offices/:office_id"
+                                path="/office/:office_id"
                                 component={Office}
                             />
                             <PrivateRoute
@@ -165,21 +160,16 @@ class App extends Component {
                                 path="/dentist/edit"
                                 component={EditDentist}
                             />
-                            <Route path="/dentists/:id" component={Dentist} />
+                            <Route path="/dentist/:id" component={Dentist} />
                             <PrivateRoute
                                 auth={this.props.auth}
-                                path="/listings/new"
+                                path="/listing/new"
                                 component={NewListing}
                             />
                             <PrivateRoute
                                 auth={this.props.auth}
                                 path="/profile"
                                 component={Profile}
-                            />
-                            <PrivateRoute
-                                auth={this.props.auth}
-                                path="/cart"
-                                component={Cart}
                             />
                             <PrivateRoute
                                 auth={this.props.auth}

@@ -29,7 +29,7 @@ class DentistResult extends Component {
             <div className="searchResult hoverable">
                 <Link
                     className="blue-text text-darken-2"
-                    to={`/dentists/${this.props.dentist_id}`}
+                    to={`/dentist/${this.props.dentist_id}`}
                 >
                     <img
                         className="result-img"
@@ -41,7 +41,7 @@ class DentistResult extends Component {
                     <div className="header">
                         <Link
                             className="blue-text text-darken-2"
-                            to={`/dentists/${this.props.dentist_id}`}
+                            to={`/dentist/${this.props.dentist_id}`}
                         >
                             <h5>
                                 {this.props.index + 1}. {this.props.name}
