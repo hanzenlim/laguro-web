@@ -15,6 +15,7 @@ export const REVIEWS = 'reviews';
 export const PAYMENT_OPTIONS = 'PAYMENT_OPTIONS';
 
 export const DENTIST_ID = 'dentistId';
+export const PATIENT_ID = 'patientId';
 export const HOST_ID = 'hostId';
 export const REVIEWEE_ID = 'revieweeId';
 export const RESERVED_BY = 'reservedBy';
@@ -23,6 +24,7 @@ export const START_TIME = 'startTime';
 // STATUSES
 export const ACTIVE = 'ACTIVE';
 export const CANCELLED_BY_DENTIST = 'CANCELLED_BY_DENTIST';
+export const CANCELLED_BY_PATIENT = 'CANCELLED BY PATIENT';
 
 // TODO delete following
 // const pluralizeMap = {

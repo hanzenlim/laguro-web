@@ -5,6 +5,7 @@ import ReactFilestack from 'filestack-react';
 import moment from 'moment';
 
 import ReviewContainer from './ReviewContainer';
+import PatientAppointments from './PatientAppointments';
 import * as actions from '../actions';
 import {
     USER,
@@ -407,6 +408,7 @@ class Profile extends Component {
                     ) : (
                         ''
                     )}
+                    <PatientAppointments patientId={auth.id} />
                     {dentist ? (
                         <div className="reviews profile-section">
                             <h5>{`Reviews for ${auth.name}`}</h5>
