@@ -18,11 +18,16 @@ export const DENTIST_ID = 'dentistId';
 export const HOST_ID = 'hostId';
 export const REVIEWEE_ID = 'revieweeId';
 export const RESERVED_BY = 'reservedBy';
+export const PAYER_ID = 'payerId';
+export const PAYEE_ID = 'payeeId';
 export const START_TIME = 'startTime';
 
 // STATUSES
 export const ACTIVE = 'ACTIVE';
 export const CANCELLED_BY_DENTIST = 'CANCELLED_BY_DENTIST';
+
+export const RESERVATION_PAYMENT_TYPE = 'RESERVATION';
+export const APPOINTMENT_PAYMENT_TYPE = 'APPOINTMENT';
 
 // TODO delete following
 // const pluralizeMap = {
