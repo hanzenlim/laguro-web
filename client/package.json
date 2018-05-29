@@ -24,7 +24,7 @@
     "materialize-css": "^1.0.0-beta",
     "moment": "^2.21.0",
     "prop-types": "^15.6.1",
-    "query-string": "^6.1.0",
+    "query-string": "^5.1.1",
     "react": "^16.2.0",
     "react-datepicker": "^1.2.2",
     "react-dom": "^16.2.0",
