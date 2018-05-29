@@ -8,11 +8,11 @@ import {
     formValueSelector
 } from 'redux-form';
 import { Link } from 'react-router-dom';
-import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 
 import * as actions from '../../actions';
+import renderDatePicker from './sharedComponents/datePicker';
 import { DENTIST, OFFICES } from '../../util/strings';
 import { getNextHalfHour } from '../../util/timeUtil';
 
@@ -26,8 +26,8 @@ class NewListing extends Component {
         await this.props.getDentist(auth.dentist.id, OFFICES);
 
         this.props.initialize({
-            startTime: moment(),
-            endTime: moment(),
+            startTime: getNextHalfHour(),
+            endTime: getNextHalfHour().add(2, 'hours'),
             numChairsAvailable: 1
         });
     }
@@ -146,29 +146,6 @@ class NewListing extends Component {
         </ul>
     );
 
-    renderDatePicker = ({
-        input,
-        label,
-        className,
-        meta: { touched, error }
-    }) => (
-        <div className={className}>
-            <label>{label}</label>
-            <DatePicker
-                onChange={input.onChange.bind(this)}
-                dateFormat="LLL"
-                placeholderText={getNextHalfHour().format('LLL')}
-                minDate={moment()}
-                showTimeSelect
-                withPortal
-                timeFormat="h:mm a"
-                timeIntervals={30}
-                timeCaption="Time"
-            />
-            {touched && error && <span className="red-text">{error}</span>}
-        </div>
-    );
-
     renderOptions = (maxAvail, minAvail = 1, label = '') => {
         const options = [];
         for (let i = minAvail; i <= maxAvail; i++) {
@@ -240,7 +217,7 @@ class NewListing extends Component {
                         label="Opening Time"
                         dateType="startTime"
                         className="col s12 m6"
-                        component={this.renderDatePicker}
+                        component={renderDatePicker}
                     />
 
                     <Field
@@ -248,7 +225,7 @@ class NewListing extends Component {
                         label="Closing Time"
                         dateType="endTime"
                         className="col s12 m6"
-                        component={this.renderDatePicker}
+                        component={renderDatePicker}
                     />
                 </div>
 

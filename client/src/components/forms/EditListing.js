@@ -7,11 +7,11 @@ import {
     formValueSelector,
     SubmissionError
 } from 'redux-form';
-import DatePicker from 'react-datepicker';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 
+import renderDatePicker from './sharedComponents/datePicker';
 import * as actions from '../../actions';
 
 const required = value => (value && value !== '' ? undefined : 'Required');
@@ -143,30 +143,6 @@ class EditListing extends Component {
         this.setState(stateObject);
     }
 
-    renderDatePicker = ({
-        input,
-        label,
-        className,
-        meta: { touched, error }
-    }) => (
-        <div className={className}>
-            <label>{label}</label>
-            <DatePicker
-                selected={input.value}
-                onChange={input.onChange.bind(this)}
-                dateFormat="LLL"
-                placeholderText={moment().format('LLL')}
-                minDate={moment()}
-                showTimeSelect
-                withPortal
-                timeFormat="h:mm a"
-                timeIntervals={30}
-                timeCaption="Time"
-            />
-            {touched && error && <span className="red-text">{error}</span>}
-        </div>
-    );
-
     renderOptions = (maxAvail, minAvail = 1, label = '') => {
         const options = [];
         for (let i = minAvail; i <= maxAvail; i++) {
@@ -238,7 +214,7 @@ class EditListing extends Component {
                         label="Opening Time"
                         dateType="startTime"
                         className="col s12 m6"
-                        component={this.renderDatePicker}
+                        component={renderDatePicker}
                     />
 
                     <Field
@@ -246,7 +222,7 @@ class EditListing extends Component {
                         label="Closing Time"
                         dateType="endTime"
                         className="col s12 m6"
-                        component={this.renderDatePicker}
+                        component={renderDatePicker}
                     />
                 </div>
 

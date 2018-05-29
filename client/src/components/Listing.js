@@ -4,7 +4,7 @@ import moment from 'moment';
 import { Link } from 'react-router-dom';
 import ReactStars from 'react-stars';
 
-import ReservationOptions from './ReservationOptions';
+import ReservationOptions from './forms/ReservationOptions';
 import * as actions from '../actions';
 
 // TODO change route to just be /listings:id and not /office/listings
