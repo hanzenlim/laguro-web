@@ -207,7 +207,8 @@ class ReservationOptions extends Component {
             listing,
             error,
             staffSelected,
-            equipmentSelected
+            equipmentSelected,
+            auth,
         } = this.props;
 
         if (!this.props.initialized) return <div>Loading...</div>;
@@ -242,7 +243,7 @@ class ReservationOptions extends Component {
                         ).format(
                             'YYYY-MM-DDTHH:mm:ss.SSSSZ'
                         )}]&numChairs=${numChairs}&reservedBy=${
-                            listing.host.id
+                            auth.dentist.id
                         }&staffSelected=${staffSelected}&equipmentSelected=${equipmentSelected}&type=reservation&listingId=${
                             listing.id
                         }`
