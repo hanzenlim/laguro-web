@@ -175,7 +175,7 @@ class ResultMap extends Component {
                         visible={this.state.showingInfoWindow}
                     >
                         <div>
-                            <img src={img_url} width="150px" />
+                            <img src={img_url} alt="office" width="150px" />
                             <a
                                 href={`${
                                     isDentistPage ? 'dentist' : 'offices'

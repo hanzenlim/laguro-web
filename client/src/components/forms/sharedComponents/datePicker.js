@@ -12,6 +12,10 @@ const getMinTime = (dateType, listing) => {
         return moment(listing.startTime);
     case 'endTime':
         return moment(listing.startTime).add(2, 'hours');
+    default:
+        return moment()
+            .hours(0)
+            .minutes(0);
     }
 };
 
@@ -25,6 +29,10 @@ const getMaxTime = (dateType, listing) => {
         return moment(listing.endTime).subtract(2, 'hours');
     case 'endTime':
         return moment(listing.endTime);
+    default:
+        return moment()
+            .hours(23)
+            .minutes(59);
     }
 };
 
