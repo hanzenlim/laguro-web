@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import moment from 'moment';
 import {
     RESERVATION_PAYMENT_TYPE,
     APPOINTMENT_PAYMENT_TYPE
@@ -13,30 +14,38 @@ class PaymentDetails extends Component {
         if (payment.type === RESERVATION_PAYMENT_TYPE && reservation) {
             itemInfo = (
                 <div>
-                    <li>{reservation.startTime}</li>
-                    <li>{reservation.endTime}</li>
+                    Payment for Reservation
+                    <li>
+                        {moment(reservation.startTime).format(
+                            'MMM DD h:mm a - '
+                        ) + moment(reservation.endTime).format('h:mm a')}
+                    </li>
                     <li>{reservation.location}</li>
                 </div>
             );
         } else if (payment.type === APPOINTMENT_PAYMENT_TYPE && appointment) {
             itemInfo = (
                 <div>
-                    <li>{appointment.startTime}</li>
-                    <li>{appointment.endTime}</li>
+                    Payment for Appointment
+                    <li>
+                        {moment(appointment.startTime).format(
+                            'MMM DD h:mm a - '
+                        ) + moment(appointment.endTime).format('h:mm a')}
+                    </li>
                     <li>{appointment.procedure.name}</li>
                     <li>{appointment.location}</li>
                 </div>
             );
         }
         return (
-            <div>
-                <ul>
-                    {itemInfo}
-                    <li>{payment.type}</li>
-                    <li>{source.last4}</li>
-                    <li>{source.brand}</li>
-                    <li>{payment.nominalAmount}</li>
-                </ul>
+            <div className="row">
+                <div className="reservation card-panel gray lighten-5 col s6">
+                    <div className="align-left">{itemInfo}</div>
+                    <div className="align-right">
+                        <p>{`${source.brand} - ${source.last4}`}</p>
+                        <p>{`$${(payment.nominalAmount / 100).toFixed(2)}`}</p>
+                    </div>
+                </div>
             </div>
         );
     }

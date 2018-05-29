@@ -32,8 +32,8 @@ class PaymentHistory extends Component {
         if (!payments.length) {
             return <div>No past payments.</div>;
         }
-        const paymentDetails = payments.map(payment => (
-            <PaymentDetails payment={payment} />
+        const paymentDetails = payments.map((payment, index) => (
+            <PaymentDetails payment={payment} key={index} />
         ));
         return <div>{paymentDetails}</div>;
     }
