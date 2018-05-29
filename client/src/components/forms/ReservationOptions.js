@@ -8,12 +8,12 @@ import {
     SubmissionError
 } from 'redux-form';
 import { Redirect } from 'react-router-dom';
-import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 
-import * as actions from '../actions';
-import { DENTIST } from '../util/strings';
+import renderDatePicker from './sharedComponents/datePicker';
+import * as actions from '../../actions';
+import { DENTIST } from '../../util/strings';
 
 class ReservationOptions extends Component {
     constructor(props) {
@@ -82,45 +82,6 @@ class ReservationOptions extends Component {
             );
         }
         return options;
-    };
-
-    renderDatePicker = ({
-        input,
-        label,
-        className,
-        dateType,
-        listing,
-        meta: { touched, error }
-    }) => {
-        const { startTime, endTime } = this.props;
-        return (
-            <div className={className}>
-                <label>{label}</label>
-                <DatePicker
-                    selected={input.value}
-                    onChange={input.onChange.bind(this)}
-                    dateFormat="LLL"
-                    placeholderText={moment().format('MMM DD, YYYY')}
-                    minDate={moment(listing.startTime)}
-                    maxDate={moment(listing.endTime)}
-                    minTime={
-                        dateType === 'startTime'
-                            ? moment(listing.startTime)
-                            : moment(startTime).add(2, 'hours')
-                    }
-                    maxTime={
-                        dateType === 'startTime'
-                            ? moment(endTime).subtract(2, 'hours')
-                            : moment(listing.endTime)
-                    }
-                    showTimeSelect
-                    timeFormat="h:mm"
-                    timeIntervals={30}
-                    timeCaption="Time"
-                />
-                {touched && error && <span className="red-text">{error}</span>}
-            </div>
-        );
     };
 
     renderStaff = ({ fields, className }) => {
@@ -305,7 +266,7 @@ class ReservationOptions extends Component {
                         label="Doors opening"
                         dateType="startTime"
                         className="col s12 m6"
-                        component={this.renderDatePicker}
+                        component={renderDatePicker}
                         listing={listing}
                     />
 
@@ -314,7 +275,7 @@ class ReservationOptions extends Component {
                         label="Doors closing"
                         dateType="endTime"
                         className="col s12 m6"
-                        component={this.renderDatePicker}
+                        component={renderDatePicker}
                         listing={listing}
                     />
                 </div>
