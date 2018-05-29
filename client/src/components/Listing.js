@@ -80,6 +80,11 @@ class OfficeResultIndex extends Component {
         }
         const { office } = listing;
         const { reviews } = office;
+        
+        // Disable book now button if listing has been reserved or
+        // if user does not have a dentit profile.
+        const disableBookNowBtn = !!listing.reservations.length || (auth && !auth.dentist)
+
         // calculate avg rating
         if (reviews && reviews.length) {
             this.avg_rating =
@@ -170,7 +175,8 @@ class OfficeResultIndex extends Component {
                     <div className="content">
                         <div>
                             <p>
-                                ${listing.price} <small>hourly per chair</small>
+                                ${listing.chairHourlyPrice}{' '}
+                                <small>hourly per chair</small>
                             </p>
                             <div className="rating">
                                 <ReactStars
@@ -181,15 +187,21 @@ class OfficeResultIndex extends Component {
                                 <small>{`(${this.rating_count})`}</small>
                             </div>
                         </div>
-                        <button
-                            className="btn red lighten-2 waves-effect"
-                            onClick={this.handleBookNow}
-                            disabled={
-                                !!listing.reservations.length || !auth.dentist
-                            }
-                        >
-                            Book Now
-                        </button>
+                        <div className="right-align">
+                            <button
+                                className="btn red lighten-2 waves-effect"
+                                onClick={this.handleBookNow}
+                                disabled={disableBookNowBtn}
+                            >
+                                Book Now
+                            </button>
+                            {auth &&
+                                !auth.dentist && (
+                                <p className="red-text">
+                                        Please create a dentist profile
+                                </p>
+                            )}
+                        </div>
                     </div>
                 </div>
             </div>
