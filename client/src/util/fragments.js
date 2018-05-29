@@ -142,3 +142,37 @@ export const paymentOptionFragment = `
     address_country
     last4
 `;
+
+export const paymentFragment = `
+    id
+    type
+    status
+    reservation {
+      location
+      numChairsSelected
+      staffSelected {
+        role
+        price
+        count
+      }
+      startTime
+      endTime
+    }
+    appointment {
+      location
+      procedure {
+        name
+      }
+      startTime
+      endTime
+    }
+    nominalAmount
+    currency
+    stripePayment {
+      source {
+        brand
+        last4
+      }
+    }
+    dateCreated
+`;

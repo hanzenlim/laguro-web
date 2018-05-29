@@ -250,6 +250,10 @@ class Profile extends Component {
                     ''
                 )}
 
+                <Link className="link" to={`/payment-history`}>
+                    View payment history
+                </Link>
+
                 {dentistProfileExists ? (
                     <Link className="link" to={'/office/new'}>
                         Create a new office

@@ -84,6 +84,11 @@ const PaymentSuccess = Loadable({
     loading: LoadingComponent
 });
 
+const PaymentHistory = Loadable({
+    loader: () => import('./PaymentHistory'),
+    loading: LoadingComponent
+});
+
 const PrivateRoute = ({ auth, path, component: Component, ...props }) => (
     <Route
         render={() =>
@@ -180,6 +185,11 @@ class App extends Component {
                                 auth={this.props.auth}
                                 path="/payment"
                                 component={Payment}
+                            />
+                            <PrivateRoute
+                                auth={this.props.auth}
+                                path="/payment-history"
+                                component={PaymentHistory}
                             />
                             <Route path="/" component={Landing} />
                             {/* Catch all unmatched routes. */}
