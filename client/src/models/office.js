@@ -76,9 +76,21 @@ const Office = {
         const response = await makeApiCall(scanOfficesQuery, null);
         return response.data.scanOffices;
     },
-    query: async (key, value) => {
+    query: async (
+        partitionKey,
+        partitionValue,
+        sortKey = null,
+        rangeStart = null,
+        rangeEnd = null
+    ) => {
         const response = await makeApiCall(queryOfficesQuery, {
-            input: { key, value }
+            input: {
+                partitionKey,
+                partitionValue,
+                sortKey,
+                rangeStart,
+                rangeEnd
+            }
         });
         return response.data.queryOffices;
     },

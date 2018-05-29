@@ -70,9 +70,21 @@ const Listing = {
         const response = await makeApiCall(scanListingsQuery, null);
         return response.data.scanListings;
     },
-    query: async (key, value) => {
+    query: async (
+        partitionKey,
+        partitionValue,
+        sortKey = null,
+        rangeStart = null,
+        rangeEnd = null
+    ) => {
         const response = await makeApiCall(queryListingsQuery, {
-            input: { key, value }
+            input: {
+                partitionKey,
+                partitionValue,
+                sortKey,
+                rangeStart,
+                rangeEnd
+            }
         });
         return response.data.queryListings;
     },
