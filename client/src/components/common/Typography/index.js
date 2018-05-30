@@ -3,12 +3,10 @@ import styled from 'styled-components';
 export default styled.span`
   /* Font Sizes */
   font-size: inherit;
-  ${props => props.size === 't1' && 'font-size: 24px;'}
-  ${props => props.size === 't2' && 'font-size: 18px;'}
-  ${props => props.size === 't3' && 'font-size: 16px;'}
-  ${props => props.size === 't4' && 'font-size: 14px;'}
-  ${props => props.size === 't5' && 'font-size: 12px;'}
-  ${props => props.size === 't6' && 'font-size: 10px;'}
+  ${props => props.size === 't1' && 'font-size: 32px;'}
+  ${props => props.size === 't2' && 'font-size: 16px;'}
+  ${props => props.size === 't3' && 'font-size: 14px;'}
+  ${props => props.size === 't4' && 'font-size: 12px;'}
 
   /* Colors */
   color: inherit;

@@ -128,7 +128,7 @@ class PaymentSuccess extends Component {
                                 <ListingInfo>
                                     <Grid container direction="column">
                                         <Grid container>
-                                            <Typography size="t3" weight="bold">
+                                            <Typography size="t2" weight="bold">
                                                 {office.name}
                                             </Typography>
                                         </Grid>
@@ -142,7 +142,7 @@ class PaymentSuccess extends Component {
 
                                             <Padding right={4} />
 
-                                            <Typography size="t6">
+                                            <Typography size="t3">
                                                 {`Location: ${office.location}`}
                                             </Typography>
                                         </Grid>
@@ -158,7 +158,7 @@ class PaymentSuccess extends Component {
 
                                             <Padding right={4} />
 
-                                            <Typography size="t6">
+                                            <Typography size="t3">
                                                 {`Time: ${this.renderTime()}`}
                                             </Typography>
                                         </Grid>
@@ -174,7 +174,7 @@ class PaymentSuccess extends Component {
 
                                             <Padding right={4} />
 
-                                            <Typography size="t6">
+                                            <Typography size="t3">
                                                 {`Date: ${this.renderDate(
                                                     reservation.startTime
                                                 )}`}

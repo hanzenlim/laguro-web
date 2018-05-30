@@ -66,7 +66,7 @@ class OfficeResult extends Component {
                     onClick={e => e.stopPropagation()}
                     to={`/office/${listing.office.id}/listing/${listing.id}`}
                 >
-                    <Typography size="t6" weight="regular" color="white">
+                    <Typography size="t3" weight="regular" color="white">
                         {moment(listing.time_available).format('MMM D, h a')}
                     </Typography>
                 </AvailableTime>
@@ -101,8 +101,8 @@ class OfficeResult extends Component {
                             <DetailsContainer>
                                 <Grid container>
                                     <Typography
-                                        size="t4"
-                                        weight="regular"
+                                        size="t2"
+                                        weight="bold"
                                         color="black"
                                     >
                                         {this.props.name}
@@ -111,7 +111,7 @@ class OfficeResult extends Component {
                                 <Padding bottom={5} />
                                 <Grid container>
                                     <Typography
-                                        size="t6"
+                                        size="t3"
                                         weight="regular"
                                         color="black"
                                     >
@@ -128,7 +128,7 @@ class OfficeResult extends Component {
                                     />
                                     <Padding right={7} />
                                     <Typography
-                                        size="t6"
+                                        size="t3"
                                         weight="regular"
                                         color="black"
                                     >{`(${
@@ -138,7 +138,7 @@ class OfficeResult extends Component {
                                 <Padding bottom={7} />
                                 <Grid container>
                                     <Typography
-                                        size="t6"
+                                        size="t3"
                                         weight="regular"
                                         color="black"
                                     >
