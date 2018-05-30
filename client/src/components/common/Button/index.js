@@ -5,7 +5,7 @@ import { Button as MaterialUIButton } from '@material-ui/core';
 const StyledButton = styled(MaterialUIButton)`
     && {
         text-transform: none;
-        padding: 14px 16px;
+        padding: 16px 16px;
         border-radius: 2px;
     }
 

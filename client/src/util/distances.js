@@ -19,15 +19,21 @@ export const getDistances = (entities, filters) =>
                 } else {
                     const results = response.rows[0].elements;
 
-                    const locationsWithDistance = entities.map(
-                        (office, index) => ({
-                            ...office,
-                            locationType: 'office',
-                            distance: results[index].distance.text.split(' ')[0]
-                        })
-                    );
+                    if (results[0].status !== 'ZERO_RESULTS') {
+                        const locationsWithDistance = entities.map(
+                            (office, index) => ({
+                                ...office,
+                                locationType: 'office',
+                                distance: results[index].distance.text.split(
+                                    ' '
+                                )[0]
+                            })
+                        );
 
-                    resolve(locationsWithDistance);
+                        resolve(locationsWithDistance);
+                    } else {
+                        resolve([]);
+                    }
                 }
             }
         );

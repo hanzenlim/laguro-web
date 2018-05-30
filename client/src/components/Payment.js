@@ -198,7 +198,7 @@ class Payment extends Component {
                         <ListingInfo>
                             <Grid container direction="column">
                                 <Grid container justify="space-between">
-                                    <Typography size="t3" weight="bold">
+                                    <Typography size="t2" weight="bold">
                                         {office.name}
                                     </Typography>
 
@@ -220,7 +220,7 @@ class Payment extends Component {
 
                                     <Padding right={4} />
 
-                                    <Typography size="t6">
+                                    <Typography size="t3">
                                         {`Location: ${office.location}`}
                                     </Typography>
                                 </Grid>
@@ -236,7 +236,7 @@ class Payment extends Component {
 
                                     <Padding right={4} />
 
-                                    <Typography size="t6">
+                                    <Typography size="t3">
                                         {`Time: ${this.renderTime(time)}`}
                                     </Typography>
                                 </Grid>
@@ -252,21 +252,12 @@ class Payment extends Component {
 
                                     <Padding right={4} />
 
-                                    <Typography size="t6">
+                                    <Typography size="t3">
                                         {`Date: ${this.renderDate(time)}`}
                                     </Typography>
                                 </Grid>
                             </Grid>
                         </ListingInfo>
-                    </Grid>
-
-                    <Padding bottom={22} />
-
-                    <Grid container>
-                        <Typography size="t5" weight="medium">
-                            Note: Lorem Ipsum is simply dummy text of the
-                            printing and typesetting industry.
-                        </Typography>
                     </Grid>
                 </Padding>
             </Card>
@@ -282,7 +273,7 @@ class Payment extends Component {
                     <Grid container direction="column">
                         <Padding bottom={14}>
                             <Grid container>
-                                <Typography size="t3" weight="bold" capitalize>
+                                <Typography size="t2" weight="bold" capitalize>
                                     {`${type} Summary`}
                                 </Typography>
                             </Grid>
@@ -353,7 +344,7 @@ class Payment extends Component {
                     <Grid container direction="column">
                         <Padding bottom={14}>
                             <Grid container>
-                                <Typography size="t3" weight="bold">
+                                <Typography size="t2" weight="bold">
                                     Payment Information
                                 </Typography>
                             </Grid>
@@ -370,7 +361,7 @@ class Payment extends Component {
                             panelLabel="Add card"
                         >
                             <Link>
-                                <Typography size="t5" color="abbey" underline>
+                                <Typography size="t4" color="abbey" underline>
                                     Add payment method
                                 </Typography>
                             </Link>
