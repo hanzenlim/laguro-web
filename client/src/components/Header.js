@@ -1,30 +1,64 @@
+import * as materialize from 'materialize-css/dist/js/materialize';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import logo from '../images/logo-white.png';
+import styled from 'styled-components';
+import logo from './icons/logo.svg';
+import Icon from './Icon';
+import Footer from './Footer';
+
+import './css/Header.css';
 
 class Header extends Component {
+
+    constructor() {
+        super();
+        this.state = {
+            height: window.innerHeight,
+            width: window.innerWidth
+        };
+        this.updateDimensions = this.updateDimensions.bind(this);
+    }
+
+    componentDidMount() {
+        window.addEventListener("resize", this.updateDimensions);
+        const elements = document.getElementsByClassName('sidenav');
+        for (const el of elements) {
+            materialize.Sidenav.init(el, {
+                preventScrolling: true,
+            });
+        }
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener("resize", this.updateDimensions);
+    }
+
+    updateDimensions() {
+        this.setState({
+            height: window.innerHeight,
+            width: window.innerWidth
+        });
+
+        const elements = document.getElementsByClassName('sidenav');
+        for (const el of elements) {
+            materialize.Sidenav.init(el, {
+                preventScrolling: true,
+            });
+        }
+    }
+
     renderLogin() {
         const { auth } = this.props;
 
         if (auth === null) {
             return (
-                <a
-                    className="waves-effect waves-light btn modal-trigger white-text"
-                    onClick={this.props.toggleShowModal}
-                >
-                    Login
-                </a>
+                <a id="login" className="login waves-effect btn lighten-2 modal-trigger" onClick={this.props.toggleShowModal}> Sign in </a>
             );
         }
         // user IS logged in
         return (
-            <a
-                className="logout waves-effect btn light-blue lighten-2 white-text"
-                href="/api/logout"
-            >
-                Logout
-            </a>
+            <a id ="logout" className="logout waves-effect btn lighten-2" href="/api/logout">Sign out</a>
         );
     }
 
@@ -40,35 +74,101 @@ class Header extends Component {
         }
     }
 
-    render() {
-        return (
-            <nav>
-                <div className="nav-wrapper white">
-                    <Link className="left brand-logo valign-wrapper" to={'/'}>
-                        <img
-                            className="logo"
-                            alt="Logo"
-                            src={logo}
-                        />
-                        <h3 className="blue-text">Laguro</h3>
-                    </Link>
 
-                    <ul className="right">
-                        <li>
-                            <Link to={'#'}>Become a Host</Link>
-                        </li>
-                        <li>
-                            <Link to={'#'}>About Us</Link>
-                        </li>
-                        <li>
-                            <Link to={'#'}>Help</Link>
-                        </li>
-                        {this.profileButton()}
-                        <li>{this.renderLogin()}</li>
+    render() {
+        const isMobile = window.innerWidth <= 540;
+
+        if (!isMobile) {
+            return (
+                <nav className="nav-extended">
+                    <div className="nav-wrapper">
+                        <a href="/">
+                            <div className="title-logo brand-logo">
+                                <img src={logo} className="logo" alt="logo" />
+                                Laguro
+                            </div>
+                        </a>
+                        <ul className="right">
+                            <li><Link to={'#'}>Rent your dental office</Link></li>
+                            <li><Link to={'#'}>How it works?</Link></li>
+                            {this.profileButton()}
+                            <li>{this.renderLogin()}</li>
+                        </ul>
+                    </div>
+                </nav>
+            );
+        } else {
+
+            const SideNavLink = styled(Link)`
+                width: 83%;
+                height: 5%;
+                color: black;
+                display: inline-block;
+                line-height: 40px;
+            `;
+
+            const SideNavLinkArrow = SideNavLink.extend`
+                width: 13%;
+            `;
+
+            const SideNavX = styled(Icon)`
+                float: right;
+                margin-right: 5%;
+            `
+
+            return (
+                <div>
+                    <nav className="nav-extended">
+                        <div className="nav-wrapper">
+                            <a data-target="slide-out" className="sidenav-trigger"><i className="material-icons">menu</i></a>
+
+                            <a href="/" className="brand-logo">
+                                <img src={logo} className="logo" alt="logo" />
+                            Laguro
+                            </a>
+                            <ul className="right">
+                                {this.profileButton()}
+                                <li>{this.renderLogin()}</li>
+                            </ul>
+                        </div>
+                    </nav>
+
+                    <ul id="slide-out" className="sidenav">
+                        <Icon icon="logo" width="39px" background="#0AD5B1" tooth="#FFFFFF" />
+                        <SideNavX className="sidenav-close" icon="sideNavX" width="15px" />
+                        <hr />
+
+                        <SideNavLink to={'#'}>Edit dentist profile </SideNavLink>
+                        <SideNavLinkArrow to={'#'}>{">"}</SideNavLinkArrow>
+
+                        <hr />
+
+                        <SideNavLink to={'#'}>View public profile</SideNavLink>
+                        <SideNavLinkArrow to={'#'}>{">"}</SideNavLinkArrow>
+
+                        <hr />
+
+                        <SideNavLink to={'#'}>Browse listings</SideNavLink>
+                        <SideNavLinkArrow to={'#'}>{">"}</SideNavLinkArrow>
+
+                        <hr />
+
+                        <SideNavLink to={'#'}>Rent your dental office</SideNavLink>
+                        <SideNavLinkArrow to={'#'}>{">"}</SideNavLinkArrow>
+
+                        <hr />
+
+                        <SideNavLink to={'#'}>How it works?</SideNavLink>
+                        <SideNavLinkArrow to={'#'}>{">"}</SideNavLinkArrow>
+
+                        <hr />
+
+                        <Footer />
+
                     </ul>
                 </div>
-            </nav>
-        );
+            );
+        }
     }
 }
 

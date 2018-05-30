@@ -1,0 +1,158 @@
+@media screen and (min-width: 541px)
+{
+  nav {
+    background-color: #26D4B1;
+  }
+
+  nav ul a,
+  .link {
+    color: #fff;
+    transition: all 0.2s;
+  }
+
+  nav .brand-logo {
+    margin-left: 1%;
+    left: auto;
+    transform: none;
+    font-size: 1.5rem;
+    font-weight: lighter;
+  }
+
+  .btn:hover,
+  .link:hover,
+  nav ul a:hover {
+    color: #cc3100;
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  .btn {
+      font-size: 13px;
+      padding: 0 35px 0 35px;
+      text-transform: none;
+  }
+
+  .link:focus {
+    color: #f60;
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  .brand-logo {
+    margin-left: 1%;
+  }
+
+  .logo {
+    width: 22.8px;
+    height: 30px;
+    margin-right: 7px;
+    margin-bottom: -7px;
+  }
+
+  #create-account {
+    background-color: #F25F14
+  }
+
+  #login, #logout {
+    background-color: #FFF;
+    color: #26D4B1;
+  }
+}
+
+@media screen and (max-width: 540px)
+{
+  nav {
+    background-color: #26D4B1;
+  }
+
+  nav ul a,
+  .link {
+    color: #fff;
+    transition: all 0.2s;
+  }
+
+  .btn:hover,
+  .link:hover,
+  nav ul a:hover {
+    color: #cc3100;
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  nav .brand-logo {
+    left: auto;
+    transform: none;
+    font-size: 21px;
+  }
+
+  nav ul a.btn {
+    font-size: 12px;
+    margin-right: auto;
+    margin-left: 0;
+  }
+
+  nav .sidenav-trigger {
+    margin-left: 2%;
+    margin-right: 2%;
+  }
+
+  nav .sidenav-trigger i {
+      line-height: 53px;
+      height: 53px;
+  }
+
+  .sidenav hr {
+    margin: 0;
+  }
+
+  .right {
+    margin-right: 3%;
+  }
+
+  .btn {
+    text-transform: none;
+  }
+
+  .link:focus {
+    color: #f60;
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  .logo {
+    width: 22.8px;
+    height: 30px;
+    margin-right: 7px;
+    margin-bottom: -8px;
+  }
+
+  .sidenav svg {
+    margin-top: 10%;
+    margin-left: 10%;
+    margin-bottom: 7%;
+  }
+
+  .sidenav footer {
+    position: absolute;
+    bottom: 60px;
+  }
+
+  .sidenav-arrow {
+    float: left;
+  }
+
+  #create-account {
+    background-color: #F25F14
+  }
+
+  #login, #logout {
+    background-color: #FFF;
+    color: #26D4B1;
+  }
+}
+
+nav.nav-extended .nav-wrapper {
+    min-height: 53px;
+}
+
+nav {
+    line-height: 53px;
+}

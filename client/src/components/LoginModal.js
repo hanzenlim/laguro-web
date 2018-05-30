@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import './css/Modal.css';
+import './css/LoginModal.css';
 
 class LoginModal extends Component {
     componentDidMount() {
@@ -39,7 +39,11 @@ class LoginModal extends Component {
     render() {
         const { open } = this.props;
 
+        // console.log("here");
+
         if (!open) return null;
+
+        // console.log("there");
 
         return (
             <div>

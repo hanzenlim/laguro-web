@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import ReactStars from 'react-stars';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import ReactStars from "react-stars";
 
-import * as actions from '../actions';
-import NewReview from './forms/NewReview';
-import ReviewContainer from './ReviewContainer';
-import { OFFICE, LISTINGS, REVIEWS } from '../util/strings';
+import * as actions from "../actions";
+import NewReview from "./forms/NewReview";
+import ReviewContainer from "./ReviewContainer";
+import PhotoGrid from "./PhotoGrid";
+import { LISTINGS, REVIEWS } from "../util/strings";
 
 class OfficeResultIndex extends Component {
     componentDidMount() {
@@ -81,18 +82,13 @@ class OfficeResultIndex extends Component {
                             {this.renderEquipment(office)}
                         </div>
                     </div>
-
                     <div className="profile_section">
-                        <h5>{`Reviews for ${office.name}`}</h5>
+                        <h5>{"Reviews for " + office.name}</h5>
                         {/* if logged out, hide new review form */}
-                        {auth ? (
-                            <NewReview
-                                reviewee={office}
-                                type={OFFICE}
-                                reviewerId={auth.id}
-                            />
+                        {auth && auth.data ? (
+                            <NewReview reviewee={office} />
                         ) : (
-                            ''
+                            ""
                         )}
                         <ReviewContainer
                             revieweeId={office.id}
@@ -101,6 +97,7 @@ class OfficeResultIndex extends Component {
                         />
                     </div>
                 </div>
+                <PhotoGrid numRow="1" page="office" />
             </div>
         );
     }

@@ -1,11 +1,38 @@
 import React, { Component } from 'react';
-import OfficeSearch from './OfficeSearch';
-import DentistSearch from './DentistSearch';
-import hero from '../images/hero1.jpg';
+import styled from "styled-components";
+import Search from "./Search";
+
+import HeroImg from './images/hero-img.png';
+import HeroImgMobile from './images/cta-img-mobile.png';
+import PhotoGrid from './PhotoGrid'
+import Icon from './Icon';
+
+import './css/Landing.css'
 
 class Landing extends Component {
-    componentWillMount() {
+    constructor() {
+        super();
+        this.state = {
+            height: window.innerHeight,
+            width: window.innerWidth
+        };
+        this.updateDimensions = this.updateDimensions.bind(this);
+    }
+
+    componentDidMount() {
+        window.addEventListener("resize", this.updateDimensions);
+    }
+
+    componentWillUnmount() {
         document.title = 'Laguro - Home';
+        window.removeEventListener("resize", this.updateDimensions);
+    }
+
+    updateDimensions() {
+        this.setState({
+            height: window.innerHeight,
+            width: window.innerWidth
+        });
     }
 
     tabChange(event) {
@@ -21,50 +48,86 @@ class Landing extends Component {
         }
     }
 
+    cta() {
+        if (!(window.innerWidth <= 540)) {
+            return (
+                <img id="cta" src={HeroImg} alt='cta' />
+            );
+        } else {
+            return (
+                <img id="cta" src={HeroImgMobile} alt='cta' />
+            );
+        }
+    }
+
     render() {
+        const SearchTabH5 = styled.h5`
+            padding: 1.1rem 0 .66rem 0;
+            margin: 0;
+            cursor: pointer;
+            font-size: 1.40rem;
+        `;
+
+        const IconWithMargin = styled(Icon)`
+            @media screen and (min-width : 541px) {
+                margin-top: 5%;
+            }
+        `;
+
+        const mainIconWidth = (window.innerWidth >= 541)? "81px" : "45px";
+
         return (
             <div>
-                <div className="hero-search">
-                    <div className="mission">
-                        <h3 className="toggle active">No Empty Chairs.</h3>
-                        <p className="grey-text toggle active">
-                            Search, discover and book a chair after-hours at a
-                            local clinic and see <strong>your</strong> patients
-                            on <strong>your</strong> terms.
-                        </p>
-
-                        <h3 className="toggle">No Waiting Rooms.</h3>
-                        <p className="grey-text toggle">
-                            Find your next dentist or specialist and book an
-                            appointment in <strong>your</strong> neighborhood on{' '}
-                            <strong>your</strong> schedule.
-                        </p>
-                    </div>
-                    <div className="search">
-                        <div className="search-tabs">
-                            <div
-                                className="tab active toggle"
-                                id="office-tab"
-                                onClick={this.tabChange}
-                            >
-                                <h5>Find an Office</h5>
+                <div className="landing">
+                    <div className="hero-search">
+                        <IconWithMargin width={mainIconWidth} icon="logo" background="#FFFFFF" tooth="#0AD5B1" />
+                        <div className="mission">
+                            <h3 className="toggle active headline"> No Waiting Rooms.</h3>
+                            <p className="toggle active explanation"> Find your next dentist or specialist and book an appointment in your neighborhood on your schedule.
+                            </p>
+                            <h3 className="toggle headline"> No Empty Chairs.</h3>
+                            <p className="toggle explanation"> Search, discover and book a chair after-hours at a local clinic and see your patients on your terms. </p>
+                        </div>
+                        <div className="search">
+                            <div className="search-tabs">
+                                <div
+                                    className="tab active toggle"
+                                    id="dentist-tab"
+                                    onClick={this.tabChange}
+                                >
+                                    <SearchTabH5 className="search-tab">Find a Dentist</SearchTabH5>
+                                </div>
+                                <div
+                                    className="tab toggle"
+                                    id="office-tab"
+                                    onClick={this.tabChange}
+                                >
+                                    <SearchTabH5 className="search-tab">Rent an Office</SearchTabH5>
+                                </div>
                             </div>
-                            <div
-                                className="tab toggle"
-                                id="dentist-tab"
-                                onClick={this.tabChange}
-                            >
-                                <h5>Find a Dentist</h5>
+                            <div className="searchModule toggle active">
+                                <Search search="dentist" />
+                            </div>
+                            <div className="searchModule toggle">
+                                <Search search="office" />
                             </div>
                         </div>
-                        <OfficeSearch />
-                        <DentistSearch />
                     </div>
                 </div>
 
-                <div className="hero-img">
-                    <img src={hero} alt="hero" />
+                <PhotoGrid numRow="2" page="landing"/>
+
+                <div id="cta-container">
+                    {this.cta()}
+                    <div id="cta-text">
+                        <h2 className="cta-text-header"> Rent your Office </h2>
+                        <h4 className="cta-text-blurb"> Have free space to share or have an open office? Rent your dental office with Laguro. </h4>
+
+                        <a id="get-started" className="login waves-effect btn white-text">Get Started</a>
+                    </div>
                 </div>
+
+
             </div>
         );
     }

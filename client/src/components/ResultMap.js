@@ -44,7 +44,6 @@ class ResultMap extends Component {
         });
     onMarkerClick = href => {
         // eslint-disable-next-line
-        debugger;
         this.setState({
             activeMarker: null,
             showingInfoWindow: false,
