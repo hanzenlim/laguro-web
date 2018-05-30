@@ -4,8 +4,7 @@
     background-color: #26D4B1;
   }
 
-  nav ul a,
-  .link {
+  nav ul a {
     color: #fff;
     transition: all 0.2s;
   }
@@ -64,8 +63,7 @@
     background-color: #26D4B1;
   }
 
-  nav ul a,
-  .link {
+  nav ul a {
     color: #fff;
     transition: all 0.2s;
   }
