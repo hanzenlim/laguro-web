@@ -83,7 +83,7 @@ class PhotoGrid extends Component {
                     `
 
                     return (
-                        <a href="http://google.com" key={listing.id}>
+                        <a href={`/office/${listing.officeId}`} key={listing.id}>
                             <div className='col offset-s1 s10 m6 l3'>
                                 <ListingCard>
                                     <Container1>
