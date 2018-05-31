@@ -45,7 +45,9 @@ const updateReservationQuery = `
 
 const deleteReservationQuery = `
     mutation CancelReservation($input: CancelReservationInput!) {
-        cancelReservation(input: $input)
+        cancelReservation(input: $input) {
+            id
+        }
     }
 `;
 
