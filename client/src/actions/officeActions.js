@@ -79,6 +79,5 @@ export function createOffice(values) {
             type: CREATE_OFFICE,
             payload: office
         });
-        history.push('/profile');
     };
 }

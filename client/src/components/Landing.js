@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import styled from "styled-components";
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import Search from "./Search";
 
 import HeroImg from './images/hero-img.png';
@@ -123,7 +124,7 @@ class Landing extends Component {
                         <h2 className="cta-text-header"> Rent your Office </h2>
                         <h4 className="cta-text-blurb"> Have free space to share or have an open office? Rent your dental office with Laguro. </h4>
 
-                        <a id="get-started" className="login waves-effect btn white-text">Get Started</a>
+                        <Link id="get-started" to={'/landlord-onboarding/add-office'} className="login waves-effect btn white-text">Get Started</Link>
                     </div>
                 </div>
 

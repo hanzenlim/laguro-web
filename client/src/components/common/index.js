@@ -6,5 +6,20 @@ import Divider from './Divider';
 import Link from './Link';
 import Grid from './Grid';
 import Input from './Input';
+import Select from './Select';
+import Option from './Option';
+import ProgressBar from './ProgressBar';
 
-export { Card, Button, Spacing, Typography, Divider, Link, Grid, Input };
+export {
+    Card,
+    Button,
+    Spacing,
+    Typography,
+    Divider,
+    Link,
+    Grid,
+    Input,
+    Select,
+    Option,
+    ProgressBar,
+};

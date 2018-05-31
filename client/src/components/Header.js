@@ -89,7 +89,7 @@ class Header extends Component {
                             </div>
                         </a>
                         <ul className="right">
-                            <li><Link to={'#'}>Rent your dental office</Link></li>
+                            <li><Link to={'/landlord-onboarding/add-office'}>Rent your dental office</Link></li>
                             <li><Link to={'#'}>How it works?</Link></li>
                             {this.profileButton()}
                             <li>{this.renderLogin()}</li>

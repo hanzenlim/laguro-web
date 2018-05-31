@@ -7,6 +7,7 @@ import PlacesAutocomplete, {
 } from 'react-places-autocomplete';
 import 'react-datepicker/dist/react-datepicker.css';
 import * as actions from '../../actions';
+import { Input } from '../common';
 
 class Autocomplete extends Component {
     constructor(props) {
@@ -40,7 +41,7 @@ class Autocomplete extends Component {
     render() {
         return (
             <div className="searchModule toggle active">
-                <span className="location-field">Location:</span>
+                <label>Location:</label>
                 <PlacesAutocomplete
                     value={this.state.location}
                     onChange={this.handleChange}
@@ -52,7 +53,7 @@ class Autocomplete extends Component {
                         getSuggestionItemProps
                     }) => (
                         <div>
-                            <input
+                            <Input
                                 {...getInputProps({
                                     placeholder: 'Search Places ...',
                                     className: 'location-search-input'

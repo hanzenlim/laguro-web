@@ -7,6 +7,7 @@ const StyledButton = styled(MaterialUIButton)`
         text-transform: none;
         padding: 16px 16px;
         border-radius: 2px;
+        color: white;
     }
 
     ${props =>
@@ -30,6 +31,31 @@ const StyledButton = styled(MaterialUIButton)`
 
         &&:hover {
             background-color: #DB5200;
+        }
+    `};
+
+    ${props =>
+        props.color === 'default' &&
+        `
+        && {
+            background-color: #484E51;
+        }
+
+        &&:hover {
+            background-color: #2F3538;
+        }
+    `};
+
+    ${props =>
+        props.disabled &&
+        `
+        && {
+            background-color: #f5f5f5;
+            color: rgba(0,0,0,.25);
+        }
+
+        &&:hover {
+            background-color: #f5f5f5;
         }
     `};
 `;

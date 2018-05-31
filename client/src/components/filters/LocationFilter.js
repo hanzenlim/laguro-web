@@ -82,12 +82,10 @@ class LocationFilter extends Component {
                                 getSuggestionItemProps
                             }) => (
                                 <SearchContainer>
+                                    <label>Search places:</label>
                                     <SearchInput
                                         fullWidth
-                                        variant="raised"
-                                        {...getInputProps({
-                                            placeholder: 'Search Places ...'
-                                        })}
+                                        {...getInputProps({})}
                                     />
 
                                     {suggestions.length ? (
