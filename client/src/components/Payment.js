@@ -52,6 +52,10 @@ class Payment extends Component {
 
         const { location } = this.props;
         this.urlParams = queryString.parse(location.search);
+
+        this.state = {
+            isButtonLoading: false
+        };
     }
 
     componentDidMount() {
@@ -79,6 +83,8 @@ class Payment extends Component {
     }
 
     handleCheckout = () => {
+        this.setState({ isButtonLoading: true });
+
         if (this.urlParams.type === APPOINTMENT) {
             this.handleCreateAppointment();
         } else {
@@ -373,7 +379,9 @@ class Payment extends Component {
                             onClick={this.handleCheckout}
                             variant="raised"
                             color="secondary"
-                            disabled={!hasPaymentOptions}
+                            disabled={
+                                !hasPaymentOptions || this.state.isButtonLoading
+                            }
                             fullWidth
                         >
                             <Typography size="t2" weight="medium">
