@@ -38,11 +38,11 @@ class ReservationOptions extends Component {
     initiatePayment(values) {
         if (
             moment(values.startTime)
-                .add(2, 'hours')
+                .add(1, 'hours')
                 .isAfter(values.endTime)
         ) {
             throw new SubmissionError({
-                endTime: 'Minimum reservation is 2 hours',
+                endTime: 'Minimum reservation is 1 hour',
                 _error: 'Invalid time frame, please correct error above'
             });
         } else if (!values.acknowledge) {
@@ -208,7 +208,7 @@ class ReservationOptions extends Component {
             error,
             staffSelected,
             equipmentSelected,
-            auth,
+            auth
         } = this.props;
 
         if (!this.props.initialized) return <div>Loading...</div>;
