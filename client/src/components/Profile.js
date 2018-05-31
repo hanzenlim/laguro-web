@@ -146,7 +146,9 @@ class Profile extends Component {
     // dentist fields
     renderUserOffices() {
         const { offices } = this.props;
-
+        if (!offices) {
+            return;
+        }
         let userOffices = offices;
 
         if (!userOffices) {
@@ -436,7 +438,7 @@ function mapStateToProps(state) {
         auth: state.auth,
         dentist: state.dentists.selectedDentist,
         offices: state.offices.all,
-        reservations: state.reservations.selected,
+        reservations: state.reservations.all,
         listings: state.listings.all,
         reviews: state.reviews.all
     };
