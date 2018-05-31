@@ -31,7 +31,9 @@ const queryAppointmentQuery = `
 
 const cancelAppointmentQuery = `
     mutation ($input: CancelAppointmentInput!) {
-        cancelAppointment(input: $input)
+        cancelAppointment(input: $input) {
+            id
+        }
     }
 `;
 
