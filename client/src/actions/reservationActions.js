@@ -1,11 +1,15 @@
-import { GET_SELECTED_RESERVATIONS, CREATE_RESERVATION } from './types';
+import {
+    GET_SELECTED_RESERVATIONS,
+    CREATE_RESERVATION,
+    FETCH_RESERVATION
+} from './types';
 import Reservation from '../models/reservation';
 import history from '../history';
 
 export const getReservation = reservationId => async dispatch => {
     const reservation = await Reservation.get(reservationId);
     dispatch({
-        type: GET_SELECTED_RESERVATIONS,
+        type: FETCH_RESERVATION,
         payload: reservation
     });
 };

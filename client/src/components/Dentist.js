@@ -217,7 +217,7 @@ function mapStateToProps(state) {
         auth: state.auth,
         dentist: state.dentists.selectedDentist,
         listings: state.listings.all,
-        reservations: state.reservations.selected,
+        reservations: state.reservations.all,
         reviews: state.reviews.all
     };
 }
