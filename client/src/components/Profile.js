@@ -175,8 +175,10 @@ class Profile extends Component {
             return <div />;
         }
 
+        if (dentistLoading) return <div className="stretch_height"></div>;
+
         return (
-            <div className="profile_container">
+            <div className="profile_container stretch_height">
                 <div className="sidebar">
                     <img
                         className="profile_img"

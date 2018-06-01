@@ -3,6 +3,8 @@ provider:
   name: aws
   runtime: nodejs6.10
   region: us-east-1
+  memory: 2880
+  timeout: 240
   stage: dev
   environment:
     GRAPHQL_URL: ${env:GRAPHQL_URL}

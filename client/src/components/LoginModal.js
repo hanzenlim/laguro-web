@@ -54,7 +54,7 @@ class LoginModal extends Component {
                         onClick={this.handleClose}
                         className="modal-close"
                     >
-                        <i className="material-icons md-48">close</i>
+                        <i className="material-icons md-38">close</i>
                     </a>
                     <div className="modal-header">
                         <div className="modal-desc">Sign In</div>
