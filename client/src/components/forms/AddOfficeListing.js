@@ -342,7 +342,7 @@ class NewListing extends Component {
                                         {this.renderOptions(
                                             selectedOffice
                                                 ? JSON.parse(selectedOffice)
-                                                      .chairs
+                                                    .chairs
                                                 : 1,
                                             1
                                         )}
