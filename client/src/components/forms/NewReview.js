@@ -84,7 +84,8 @@ class NewReview extends Component {
                     <Field
                         name="text"
                         className="col s12 m9"
-                        placeholder={`${this.name} was great!`}
+                        placeholder={`${this.props.reviewee.name ||
+                            this.props.reviewee.user.name} was great!`}
                         component={this.renderTextArea}
                         validate={required}
                     />

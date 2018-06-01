@@ -6,8 +6,9 @@ import moment from 'moment';
 
 import ReviewContainer from './ReviewContainer';
 import PatientAppointments from './PatientAppointments';
-import { filestackKey } from '../config/keys';
 import UserOfficeIndex from './UserOfficeIndex';
+import UserReservationIndex from './UserReservationIndex';
+import { filestackKey } from '../config/keys';
 import * as actions from '../actions';
 import {
     USER,
@@ -15,7 +16,6 @@ import {
     LISTINGS,
     RESERVATIONS,
     REVIEWS,
-    RESERVED_BY,
     HOST_ID
 } from '../util/strings';
 
@@ -129,9 +129,15 @@ class Profile extends Component {
                     View payment history
                 </Link>
 
-                <Link className="link" to={'/office/search'}>
-                    Browse listings
-                </Link>
+                {dentistProfileExists ? (
+                    <Link className="link" to={'/office/search'}>
+                        Browse listings
+                    </Link>
+                ) : (
+                    <Link className="link" to={'/dentist/search'}>
+                        Browse dentists
+                    </Link>
+                )}
             </ul>
         );
     }
@@ -156,90 +162,15 @@ class Profile extends Component {
         return options;
     };
 
-    async cancelReservation(reservation) {
-        if (
-            // eslint-disable-next-line
-            confirm(
-                `Delete reservation for ${moment(reservation.startTime).format(
-                    'MMM D, h a'
-                )}?`
-            )
-        ) {
-            await this.props.cancelReservation(reservation.id);
-            await this.props.queryReservations(
-                RESERVED_BY,
-                this.props.dentist.id
-            );
-        }
-    }
-
-    renderReservations() {
-        const { reservations } = this.props;
-
-        if (!reservations) {
-            return;
-        }
-        if (reservations.length === 0) {
-            return (
-                <div>
-                    <h6>
-                        {'No reservations yet - '}
-                        <Link
-                            className="blue-text text-darken-2"
-                            to={'/office/search'}
-                        >
-                            search for new listings and make a reservation
-                        </Link>
-                    </h6>
-                </div>
-            );
-        }
-
-        return reservations.map((reservation, index) => (
-            <div key={index} className="reservation card-panel grey lighten-5">
-                <Link
-                    className="blue-text text-darken-2"
-                    to={`/office/${reservation.office.id}`}
-                >
-                    <div className="office_detail">
-                        <img src={reservation.office.imageUrls[0]} alt="" />
-                        <h6>{reservation.office.name}</h6>
-                    </div>
-                </Link>
-                <div className="content">
-                    <Link
-                        className="blue-text text-darken-2"
-                        to={`/office/${reservation.office.id}/listing/${
-                            reservation.listing.id
-                        }`}
-                    >
-                        <p>
-                            {moment(reservation.startTime).format(
-                                'MMM D, h:mm a - '
-                            )}
-                            {moment(reservation.endTime).format('h:mm a')}
-                        </p>
-                    </Link>
-                    <h6
-                        onClick={this.cancelReservation.bind(this, reservation)}
-                        className="red-text valign-wrapper"
-                        style={{ cursor: 'pointer' }}
-                    >
-                        <i
-                            className="material-icons"
-                            style={{ fontSize: '18px' }}
-                        >
-                            delete_forever
-                        </i>
-                        Cancel Reservation
-                    </h6>
-                </div>
-            </div>
-        ));
-    }
-
     render() {
-        const { auth, dentistLoading, dentist, reviews, offices } = this.props;
+        const {
+            auth,
+            dentistLoading,
+            dentist,
+            reviews,
+            reservations,
+            offices
+        } = this.props;
         if (this.state.isLoading || dentistLoading) {
             return <div />;
         }
@@ -256,12 +187,12 @@ class Profile extends Component {
                 </div>
                 <div className="main">
                     {this.renderProfileDetails()}
-                    {dentist ? (
+                    {auth.dentist ? (
                         <div className="offices profile-section">
                             <h5>Your Offices</h5>
                             <UserOfficeIndex
                                 offices={offices}
-                                dentist={dentist}
+                                dentist={auth.dentist}
                                 reloadOffices={this.loadOffices}
                             />
                         </div>
@@ -271,7 +202,10 @@ class Profile extends Component {
                     {auth.dentist ? (
                         <div className="offices profile-section">
                             <h5>Upcoming Reservations</h5>
-                            {this.renderReservations()}
+                            <UserReservationIndex
+                                reservations={reservations}
+                                dentist={auth.dentist}
+                            />
                         </div>
                     ) : (
                         ''

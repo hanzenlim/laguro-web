@@ -198,10 +198,10 @@ class OfficeResultIndex extends Component {
                             </button>
                             {auth &&
                                 !auth.dentist && (
-                                    <p className="red-text">
+                                <p className="red-text">
                                         Please create a dentist profile
-                                    </p>
-                                )}
+                                </p>
+                            )}
                         </div>
                     </div>
                 </div>
