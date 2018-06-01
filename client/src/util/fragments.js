@@ -18,20 +18,6 @@ export const dentistFragment = `
     }
 `;
 
-export const officeFragment = `
-    id
-    name
-    location
-    equipment {
-        name
-        price
-    }
-    imageUrls
-    numChairs
-    status
-    dateCreated
-`;
-
 export const listingFragment = `
     id
     staffAvailable {
@@ -47,6 +33,34 @@ export const listingFragment = `
     dateCreated
 `;
 
+export const officeFragment = `
+id
+name
+location
+equipment {
+    name
+    price
+}
+listings {
+    ${listingFragment}
+    reservations {
+        id
+        staffSelected {
+            role
+            count
+        }
+        equipmentSelected
+    }
+}
+reviews {
+    rating
+}
+imageUrls
+numChairs
+status
+dateCreated
+`;
+
 export const appointmentFragment = `
     id
     patient {
@@ -57,6 +71,19 @@ export const appointmentFragment = `
         duration
     }
     reservationId
+    dentist {
+        id
+        user {
+            name
+            imageUrl
+        }
+    }
+    reservation {
+        id
+        office{
+            ${officeFragment}
+        }
+    }
     location
     startTime
     endTime

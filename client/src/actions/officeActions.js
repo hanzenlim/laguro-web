@@ -62,15 +62,9 @@ export function editOffice(values) {
     };
 }
 
-export function deleteOffice(id) {
-    return async dispatch => {
-        await Office.delete(id);
-        dispatch({
-            type: FETCH_OFFICES,
-            payload: null
-        });
-    };
-}
+export const deleteOffice = officeId => async () => {
+    await Office.delete(officeId);
+};
 
 export function createOffice(values) {
     return async dispatch => {
