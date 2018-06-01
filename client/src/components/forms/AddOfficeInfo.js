@@ -99,7 +99,11 @@ class NewOffice extends Component {
     );
 
     render() {
-        const { handleSubmit, submitting } = this.props;
+        const { auth, handleSubmit, submitting } = this.props;
+
+        if (auth && !auth.dentistId) {
+            history.push('/dentist/new?referrer=new_office');
+        }
 
         return (
             <StyledContainer>
@@ -110,9 +114,7 @@ class NewOffice extends Component {
                                 <Grid item xs={12}>
                                     <Typography size="t1">
                                         {`Hi ${
-                                            this.props.auth
-                                                ? this.props.auth.name
-                                                : ''
+                                            auth ? auth.name : ''
                                         }, let’s get started on creating
                                         your office listing`}
                                     </Typography>
