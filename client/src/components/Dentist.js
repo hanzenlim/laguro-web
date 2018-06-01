@@ -184,6 +184,10 @@ class Profile extends Component {
 
     renderReservations() {
         const { auth, dentist, reservations } = this.props;
+
+        if (reservations && reservations.length === 0 ) {
+            return <div>Sorry no available appointment for now</div>
+        }
         return reservations.map((reservation, index) => {
             const office = reservation.office;
             const officeImage =

@@ -112,7 +112,7 @@ class NewReview extends Component {
 
     render() {
         const { handleSubmit, auth } = this.props;
-        debugger;
+        
         const disableReviewBtn = auth ? false : true;
 
         return (

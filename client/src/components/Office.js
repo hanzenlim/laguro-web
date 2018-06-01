@@ -4,7 +4,6 @@ import Carousel from "nuka-carousel";
 import styled from 'styled-components';
 import ReactStars from "react-stars";
 import moment from 'moment';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import {Link as LaguroLink} from 'react-router-dom';
 
@@ -20,17 +19,6 @@ const Container = styled.div`
     padding: 0 7px;
     min-height: 100vh;
 `;
-
-const theme2 = createMuiTheme({
-    palette: {
-        primary: {
-            light: '#FFFFFF',
-            main: '#FFFFFF',
-            dark: '#FFFFFF',
-            contrastText: "#666",
-        },
-    },
-});
 
 const NameDiv = styled.div`
     font-size: 36px;
@@ -128,13 +116,6 @@ const OfficeCarousel = styled(Carousel)`
     }
 `;
 
-const ViewPhotosButton = styled(Button)`
-    @media screen and (min-width : 600px) {
-        width: 100%;
-        height: 1.5rem;
-    }
-`;
-
 const CarouselButtonLeft = styled(Icon)`
     margin-left: 15px;
 
@@ -176,14 +157,6 @@ const BackToListingsTextDiv = styled.div`
 
 const BackToListingsIcon = styled(Icon)`
     float: left;
-`;
-
-const ViewPhotosButtonContainer = styled.div`
-    display: none;
-
-    @media screen and (min-width : 600px) {
-        display: block;
-    }
 `;
 
 const NumChairsAvailIcon = styled(Icon)`
@@ -377,15 +350,6 @@ class OfficeResultIndex extends Component {
                     renderCenterRightControls={({ nextSlide }) => (
                         <CarouselButtonRight icon="carouselButtonRight" width="45px" className="carousel-control" onClick={nextSlide} />
                     )}
-                    renderBottomLeftControls={({ action }) => (
-                        <ViewPhotosButtonContainer>
-                            <MuiThemeProvider theme={theme2}>
-                                <ViewPhotosButton style={{ marginLeft: "85%", marginBottom: "8%", textTransform: "none", fontSize: "16px"}} variant="raised" color="primary" className="carousel-control" onClick={action}>
-                                    View Photos
-                                </ViewPhotosButton>
-                            </MuiThemeProvider>
-                        </ViewPhotosButtonContainer>
-                    )}
                     slidesToShow={window.innerWidth >= 600 ? 3 : 1}
                     slideWidth={window.innerWidth >= 600 ? 1.88 : 1}
                     cellSpacing={8}
@@ -420,11 +384,6 @@ class OfficeResultIndex extends Component {
                             <Typography size="t5">Chairs</Typography>
                         </div>
                     </div>
-<<<<<<< HEAD
-                    <div className="profile_section">
-                        <h5>{'Reviews for ' + office.name}</h5>
-                        {/* if logged out, hide new review form */}
-=======
                 </InfoDiv>
 
 
@@ -470,7 +429,6 @@ class OfficeResultIndex extends Component {
                     <hr />
 
                     <OfficeReviewsDiv>
->>>>>>> first draft of office details page
                         {auth ? (
                             <NewReview
                                 reviewee={office}
@@ -478,14 +436,10 @@ class OfficeResultIndex extends Component {
                                 reviewerId={auth.id}
                             />
                         ) : (
-<<<<<<< HEAD
-                            ''
-=======
                             <NewReview
                                 reviewee={office}
                                 type={OFFICE}
                             />
->>>>>>> first draft of office details page
                         )}
                         <Padding bottomPerc={2} />
 
