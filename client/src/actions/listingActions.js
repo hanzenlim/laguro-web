@@ -35,12 +35,8 @@ export const createListing = values => async dispatch => {
     history.push('/profile');
 };
 
-export const deleteListing = id => async dispatch => {
-    await Listing.delete(id);
-    dispatch({
-        type: FETCH_LISTINGS,
-        payload: null
-    });
+export const deleteListing = listingId => async () => {
+    await Listing.delete(listingId);
 };
 
 export const editListing = values => async dispatch => {

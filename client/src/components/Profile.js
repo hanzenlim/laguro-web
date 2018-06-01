@@ -7,6 +7,7 @@ import moment from 'moment';
 import ReviewContainer from './ReviewContainer';
 import PatientAppointments from './PatientAppointments';
 import { filestackKey } from '../config/keys';
+import UserOfficeIndex from './UserOfficeIndex';
 import * as actions from '../actions';
 import {
     USER,
@@ -14,11 +15,18 @@ import {
     LISTINGS,
     RESERVATIONS,
     REVIEWS,
-    HOST_ID,
-    RESERVED_BY
+    RESERVED_BY,
+    HOST_ID
 } from '../util/strings';
 
 class Profile extends Component {
+    constructor(props) {
+        super(props);
+        this.state = { isLoading: false };
+
+        this.loadOffices = this.loadOffices.bind(this);
+    }
+
     componentWillMount() {
         this.loadDentist();
     }
@@ -28,6 +36,7 @@ class Profile extends Component {
         if (!auth.dentist) {
             return null;
         }
+        this.setState({ isLoading: true });
         await this.props.getDentist(
             auth.dentist.id,
             USER,
@@ -37,7 +46,20 @@ class Profile extends Component {
             REVIEWS
         );
         const { dentist } = this.props;
+        this.setState({ isLoading: false });
         return dentist;
+    }
+
+    async loadOffices() {
+        this.setState({ isLoading: true });
+        const { auth } = this.props;
+        if (!auth.dentist) {
+            return null;
+        }
+        await this.props.queryOffices(HOST_ID, auth.dentist.id);
+        const { offices } = this.props;
+        this.setState({ isLoading: false });
+        return offices;
     }
 
     renderProfileDetails() {
@@ -56,156 +78,6 @@ class Profile extends Component {
                 </p>
             </div>
         );
-    }
-
-    // TODO access listings from office object instead
-    getSortedListings(office) {
-        const { listings, reservations } = this.props;
-        if (listings && listings.length) {
-            let filteredListings = listings.filter(
-                listing => listing.office.id === office.id
-            );
-
-            filteredListings = filteredListings.sort((listing_a, listing_b) =>
-                moment(listing_a.startTime).isAfter(moment(listing_b.startTime))
-            );
-
-            if (filteredListings.length === 0) {
-                return (
-                    <li>
-                        <strong>No listings available</strong>
-                    </li>
-                );
-            }
-
-            filteredListings = filteredListings.map((listing, index) => (
-                <li className="profile_listing" key={index}>
-                    <div className="listing_content">
-                        <Link
-                            className="blue-text text-darken-2"
-                            to={`/office/${office.id}/listing/${listing.id}`}
-                        >
-                            <p>
-                                {moment(listing.startTime).format(
-                                    'MMM D, h:mm a - '
-                                )}
-                                {moment(listing.endTime).format('h:mm a')}
-                            </p>
-                        </Link>
-                        <div className="listing_btns">
-                            <button
-                                type="button"
-                                disabled={
-                                    reservations.filter(
-                                        reservation =>
-                                            reservation.listingId === listing.id
-                                    ).length > 0
-                                }
-                                onClick={this.deleteListing.bind(this, listing)}
-                                className="btn-small red lighten-2"
-                            >
-                                <i className="material-icons">delete_forever</i>
-                            </button>
-                        </div>
-                    </div>
-                </li>
-            ));
-
-            return filteredListings;
-        }
-        return [];
-    }
-
-    async deleteOffice(office) {
-        const { dentist } = this.props;
-        // eslint-disable-next-line
-        if (confirm(`Delete ${office.name} and all associated listings?`)) {
-            await this.props.deleteOffice(office.id);
-            await this.props.queryOffices(HOST_ID, dentist.id);
-        }
-    }
-
-    async deleteListing(listing) {
-        if (
-            // eslint-disable-next-line
-            confirm(
-                `Delete listing for ${moment(listing.startTime).format(
-                    'MMM D, h a'
-                )}?`
-            )
-        ) {
-            await this.props.deleteListing(listing.id);
-            await this.props.queryListings(HOST_ID, this.props.dentist.id);
-            await this.props.queryReservations(
-                RESERVED_BY,
-                this.props.dentist.id
-            );
-        }
-    }
-
-    // TODO create a component for profile offices, apply this to other
-    // dentist fields
-    renderUserOffices() {
-        const { offices } = this.props;
-        if (!offices) {
-            return;
-        }
-        let userOffices = offices;
-
-        if (!userOffices) {
-            return;
-        }
-
-        if (!userOffices.length) {
-            return (
-                <div>
-                    {'No offices yet - '}
-                    <Link
-                        className="blue-text text-darken-2"
-                        to={'/office/new'}
-                    >
-                        create a new office to begin hosting today
-                    </Link>
-                </div>
-            );
-        }
-
-        return userOffices.map((office, index) => {
-            const officeListings = this.getSortedListings(office);
-            return (
-                <div className="office card-panel" key={index}>
-                    <div className="office_header">
-                        <Link
-                            className="blue-text text-darken-2"
-                            to={`/office/${office.id}`}
-                        >
-                            <h5>{office.name}</h5>
-                        </Link>
-                        <div className="office_btns">
-                            <Link
-                                className="btn-small light-blue lighten-2 waves-effect"
-                                to={`/office/${office.id}/edit`}
-                            >
-                                Edit Office
-                            </Link>
-                            <button
-                                type="button"
-                                disabled={officeListings.length}
-                                onClick={this.deleteOffice.bind(this, office)}
-                                className="btn-small red lighten-2"
-                            >
-                                <i className="material-icons">delete_forever</i>
-                            </button>
-                        </div>
-                    </div>
-                    <p>{office.location}</p>
-                    <h6>Upcoming listings:</h6>
-                    <ul className="profile_listings browser-default">
-                        {officeListings}
-                    </ul>
-                </div>
-            );
-        });
     }
 
     renderActions() {
@@ -256,22 +128,6 @@ class Profile extends Component {
                 <Link className="link" to={`/payment-history`}>
                     View payment history
                 </Link>
-
-                {dentistProfileExists ? (
-                    <Link className="link" to={'/office/new'}>
-                        Create a new office
-                    </Link>
-                ) : (
-                    ''
-                )}
-
-                {dentistProfileExists ? (
-                    <Link className="link" to={'/listing/new'}>
-                        Create a new listing
-                    </Link>
-                ) : (
-                    ''
-                )}
 
                 <Link className="link" to={'/office/search'}>
                     Browse listings
@@ -383,10 +239,11 @@ class Profile extends Component {
     }
 
     render() {
-        const { auth, dentistLoading, dentist, reviews } = this.props;
+        const { auth, dentistLoading, dentist, reviews, offices } = this.props;
+        if (this.state.isLoading || dentistLoading) {
+            return <div />;
+        }
 
-        // TODO consider reducing number of conditions
-        if (dentistLoading) return <div>Loading...</div>;
         return (
             <div className="profile_container">
                 <div className="sidebar">
@@ -402,12 +259,16 @@ class Profile extends Component {
                     {dentist ? (
                         <div className="offices profile-section">
                             <h5>Your Offices</h5>
-                            {this.renderUserOffices()}
+                            <UserOfficeIndex
+                                offices={offices}
+                                dentist={dentist}
+                                reloadOffices={this.loadOffices}
+                            />
                         </div>
                     ) : (
                         ''
                     )}
-                    {dentist ? (
+                    {auth.dentist ? (
                         <div className="offices profile-section">
                             <h5>Upcoming Reservations</h5>
                             {this.renderReservations()}
@@ -415,8 +276,11 @@ class Profile extends Component {
                     ) : (
                         ''
                     )}
-                    <PatientAppointments patientId={auth.id} />
-                    {dentist ? (
+                    {!auth.dentist && (
+                        <PatientAppointments patientId={auth.id} />
+                    )}
+                    {auth.dentist &&
+                        !!reviews.length && (
                         <div className="reviews profile-section">
                             <h5>{`Reviews for ${auth.name}`}</h5>
                             <ReviewContainer
@@ -425,8 +289,6 @@ class Profile extends Component {
                                 reviews={reviews}
                             />
                         </div>
-                    ) : (
-                        ''
                     )}
                 </div>
             </div>

@@ -9,8 +9,10 @@ import Input from './Input';
 import Select from './Select';
 import Option from './Option';
 import ProgressBar from './ProgressBar';
+import Chip from './Chip';
 
 export {
+    Chip,
     Card,
     Button,
     Spacing,
@@ -21,5 +23,5 @@ export {
     Input,
     Select,
     Option,
-    ProgressBar,
+    ProgressBar
 };

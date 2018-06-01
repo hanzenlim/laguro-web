@@ -15,6 +15,16 @@ class PatientAppointments extends Component {
         };
     }
 
+    componentWillMount() {
+        this.getAppointments();
+    }
+
+    async getAppointments() {
+        const { patientId } = this.props;
+        const appointments = await Appointment.query(PATIENT_ID, patientId);
+        this.setState({ appointments });
+    }
+
     async cancelAppointment(appointment) {
         if (
             // eslint-disable-next-line
@@ -27,10 +37,6 @@ class PatientAppointments extends Component {
             await Appointment.delete(appointment.id);
             await this.getAppointments();
         }
-    }
-
-    componentWillMount() {
-        this.getAppointments();
     }
 
     getAppointmentDetails(appointments) {
@@ -46,11 +52,6 @@ class PatientAppointments extends Component {
         ));
     }
 
-    async getAppointments() {
-        const { patientId } = this.props;
-        const appointments = await Appointment.query(PATIENT_ID, patientId);
-        this.setState({ appointments });
-    }
     render() {
         const appointments = this.state.appointments;
         if (!appointments.length) {
@@ -71,7 +72,7 @@ class PatientAppointments extends Component {
         const appointmentDetails = this.getAppointmentDetails(appointments);
         return (
             <div>
-                <h5>Appointments</h5>
+                <h5>Upcoming Appointments</h5>
                 <div className="appointment profile-sectionl">
                     <div className="appointment_header">
                         {appointmentDetails}
