@@ -36,11 +36,11 @@ class NewListing extends Component {
         if (
             // if chosen duration is less than 2 hrs
             moment(values.startTime)
-                .add(2, 'hours')
+                .add(1, 'hours')
                 .isAfter(values.endTime)
         ) {
             throw new SubmissionError({
-                endTime: 'Minimum reservation is 2 hours'
+                endTime: 'Minimum reservation is 1 hour'
             });
         } else if (!values.office) {
             throw new SubmissionError({
