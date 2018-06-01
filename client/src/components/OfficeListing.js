@@ -8,6 +8,7 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import moment from 'moment';
 
 import { Chip, Typography, Grid, Button } from './common';
+import { Padding } from './common/Spacing';
 
 class OfficeListing extends Component {
     confirmDeleteListing(listing) {
@@ -24,6 +25,13 @@ class OfficeListing extends Component {
     }
 
     generateListItems(set) {
+        if (set.length === 0) {
+            return (
+                <ListItem>
+                    <ListItemText secondary="None Selected" />
+                </ListItem>
+            );
+        }
         return set.map((item, index) => (
             <ListItem key={index}>
                 <ListItemText
@@ -79,8 +87,22 @@ class OfficeListing extends Component {
                                 listing
                             )}
                         >
-                            Delete Listing{' '}
-                            <i className="material-icons">delete_forever</i>
+                            <Grid
+                                container
+                                wrap="nowrap"
+                                alignItems="center"
+                                justify="flex-start"
+                            >
+                                <Typography color="black">
+                                    <i className="material-icons tiny">
+                                        delete_forever
+                                    </i>
+                                </Typography>
+                                <Padding horizontal={6} />
+                                <Typography size="t5" color="black">
+                                    Delete Listing
+                                </Typography>
+                            </Grid>
                         </Button>
                     </Grid>
                 </ExpansionPanelDetails>

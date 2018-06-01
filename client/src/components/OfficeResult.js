@@ -64,7 +64,7 @@ class OfficeResult extends Component {
                 <AvailableTime
                     key={listing.id}
                     onClick={e => e.stopPropagation()}
-                    to={`/office/${listing.office.id}/listing/${listing.id}`}
+                    to={`/office/${listing.officeId}/listing/${listing.id}`}
                 >
                     <Typography size="t3" weight="regular" color="white">
                         {moment(listing.time_available).format('MMM D, h a')}

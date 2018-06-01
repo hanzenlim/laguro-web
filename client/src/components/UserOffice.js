@@ -177,7 +177,7 @@ class UserOffice extends Component {
                                             </Typography>
                                             <Padding horizontal={6} />
                                             <Typography size="t5">
-                                                Delete
+                                                Delete Office
                                             </Typography>
                                         </Grid>
                                     </Button>

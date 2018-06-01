@@ -61,7 +61,7 @@ class PatientAppointments extends Component {
                         {'No appointments yet - '}
                         <Link
                             className="blue-text text-darken-2"
-                            to={'/dentists/search'}
+                            to={'/dentist/search'}
                         >
                             search for dentists to schedule an appointment
                         </Link>
