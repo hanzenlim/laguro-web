@@ -111,7 +111,9 @@ class NewReview extends Component {
     };
 
     render() {
-        const { handleSubmit } = this.props;
+        const { handleSubmit, auth } = this.props;
+        debugger;
+        const disableReviewBtn = auth ? false : true;
 
         return (
             <form
@@ -140,7 +142,7 @@ class NewReview extends Component {
 
                     <Grid item xs={2}>
                         <MuiThemeProvider theme={theme}>
-                            <ReviewSubmitButton variant="raised" color="primary" type="submit">
+                            <ReviewSubmitButton disabled={disableReviewBtn} variant="raised" color="primary" type="submit">
                                 Submit
                             </ReviewSubmitButton>
                         </MuiThemeProvider>
@@ -152,6 +154,12 @@ class NewReview extends Component {
     }
 }
 
+function mapStateToProps(state) {
+    return {
+        auth: state.auth,
+    };
+}
+
 export default reduxForm({
     form: 'newReview'
-})(connect(null, actions)(NewReview));
+})(connect(mapStateToProps, actions)(NewReview));
