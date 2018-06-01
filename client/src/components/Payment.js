@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import { Typography, Card, Button, Divider, Link, Grid } from './common';
 import { Padding } from './common/Spacing';
 import * as actions from '../actions';
-import { PAYMENT_OPTIONS, APPOINTMENT } from '../util/strings';
+import { PAYMENT_OPTIONS, APPOINTMENT, DENTIST } from '../util/strings';
 import { stripeKey } from '../config/keys';
 
 const Wrapper = styled.div`
@@ -66,7 +66,7 @@ class Payment extends Component {
             this.props.getListing(this.urlParams.listingId);
         }
 
-        this.props.fetchUser(PAYMENT_OPTIONS);
+        this.props.fetchUser(DENTIST, PAYMENT_OPTIONS);
     }
 
     async onSuccess(response) {
@@ -80,7 +80,7 @@ class Payment extends Component {
         }
 
         await this.props.addPaymentOption(auth.id, response.id);
-        await this.props.fetchUser(PAYMENT_OPTIONS);
+        await this.props.fetchUser(DENTIST, PAYMENT_OPTIONS);
     }
 
     handleCheckout = () => {
