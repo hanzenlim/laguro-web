@@ -374,6 +374,10 @@ img {
     margin: 1em auto;
 }
 
+.stretch_height {
+    min-height: 800px;
+}
+
 .profile_container .sidebar {
     width: calc(100% / 3);
     padding: 0 1em;

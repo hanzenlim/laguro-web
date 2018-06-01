@@ -4,11 +4,55 @@ import styled from "styled-components";
 import Card from '@material-ui/core/Card';
 import * as actions from "../actions";
 import { Padding } from './common/Spacing';
+import listingImgPlaceholder from './images/office-placeholder-small.png'
 
 import "./css/PhotoGrid.css";
 
-class PhotoGrid extends Component {
+const Container1 = styled.div`
+    position: relative;
+    width: 100%;
+    padding-top: 67%;
+`;
 
+const Container2 = styled.div`
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+`;
+
+const ListingInfo = styled.div`
+    color: black;
+    padding: 8px;
+    line-height: 22px;
+`;
+
+const ListingInfoAddress = styled.div`
+    font-size: 12px;
+`;
+
+const ListingInfoName = styled.div`
+    font-size: 17px;
+`;
+
+const ListingCard = styled(Card)`
+    @media screen and (max-width : 540px)
+    {
+        margin-bottom: 3.5%;
+    }
+`
+const SoldOutDiv = styled.div`
+    text-align: center;
+    margin-top: 3%;
+    margin-bottom: 3%;
+    font-weight: bold;
+    font-size: 25px;
+`;
+
+class PhotoGrid extends Component {
     componentWillMount() {
         document.title = "Laguro - Search Index";
         if (this.props.listings.length === 0) {
@@ -17,16 +61,7 @@ class PhotoGrid extends Component {
     }
 
     render() {
-
         let photoGridElements;
-
-        const SoldOutDiv = styled.div`
-            text-align: center;
-            margin-top: 3%;
-            margin-bottom: 3%;
-            font-weight: bold;
-            font-size: 25px;
-        `;
 
         if (this.props.listings) {
 
@@ -49,51 +84,20 @@ class PhotoGrid extends Component {
                     }
 
                 }).map(listing => {
-
-                    const Container1 = styled.div`
-                        position: relative;
-                        width: 100%;
-                        padding-top: 67%;
-                    `;
-
-                    const Container2 = styled.div`
-                        position: absolute;
-                        top: 0;
-                        bottom: 0;
-                        left: 0;
-                        right: 0;
-                        height: 100%;
-                        width: 100%;
-                    `;
-
-                    const ListingInfo = styled.div`
-                        color: black;
-                        padding: 8px;
-                        line-height: 22px;
-                    `;
-
-                    const ListingInfoAddress = styled.div`
-                        font-size: 12px;
-                    `;
-
-                    const ListingInfoName = styled.div`
-                        font-size: 17px;
-                    `;
-
-                    const ListingCard = styled(Card)`
-                        @media screen and (max-width : 540px)
-                        {
-                            margin-bottom: 3.5%;
-                        }
-                    `
-
+                    
+                    let listingImg;
+                    if (listing.office.imageUrls && listing.office.imageUrls.length !== 0) {
+                        listingImg = listing.office.imageUrls
+                    } else {
+                        listingImg = listingImgPlaceholder;
+                    }
                     return (
                         <a href={`/office/${listing.officeId}`} key={listing.id}>
                             <div className='col offset-s1 s10 m6 l3'>
                                 <ListingCard>
                                     <Container1>
                                         <Container2 />
-                                        <img className="photo-grid-listing-img center" id="element" alt={listing.office.imageUrls} src={listing.office.imageUrls} />
+                                        <img className="photo-grid-listing-img center" id="element" alt={listing.office.imageUrls} src={listingImg} />
                                     </Container1>
                                     <ListingInfo>
               							<ListingInfoName>{listing.office.name}</ListingInfoName>

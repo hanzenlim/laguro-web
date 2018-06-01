@@ -101,10 +101,9 @@ const PrivateRoute = ({ auth, path, component: Component, ...props }) => (
             auth ? (
                 <Component {...props} />
             ) : (
-                <div className="center-align">
+                <div className="center-align stretch_height">
                     <p>
-                        You must log in to view the page{' '}
-                        {path ? `at ${path}` : ''}
+                        You must log in to view the page
                     </p>
                     <a
                         className="login waves-effect btn light-blue lighten-2"
