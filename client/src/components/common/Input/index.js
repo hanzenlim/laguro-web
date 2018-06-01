@@ -1,30 +1,20 @@
 import React from 'react';
-import { Input as MaterialUITextField } from '@material-ui/core';
+import { TextField as MaterialUITextField } from '@material-ui/core';
 import styled from 'styled-components';
 
-const Wrapper = styled.div`
-    padding: 14px 24px 14px 18px;
-    width: 100%;
-    border-radius: 2px;
-    background-color: #fafafa;
-    box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.24);
-`;
-
 const StyledInput = styled(MaterialUITextField)`
+    width: 100%;
+
     &&&& input {
-        background-color: transparent;
-        border: none;
-        border-bottom: none;
-        border-radius: 0;
+        ${props => props.variant !== 'raised' && 'border: none !important;'};
         outline: none;
         height: auto;
-        width: 100%;
+        width: 100% !important;
         font-size: 16px;
-        margin: 0;
-        padding: 0;
         box-shadow: none;
         box-sizing: content-box;
         transition: none;
+        margin: 6px 0 8px 0 !important;
     }
 
     &&&&:after,
@@ -38,14 +28,6 @@ const StyledInput = styled(MaterialUITextField)`
 
 const Input = props => {
     const { children, ...customProps } = props;
-
-    if (props.variant === 'raised') {
-        return (
-            <Wrapper>
-                <StyledInput {...customProps} />
-            </Wrapper>
-        );
-    }
 
     return <StyledInput {...customProps} />;
 };

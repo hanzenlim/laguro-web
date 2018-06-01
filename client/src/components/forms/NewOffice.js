@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Field, FieldArray, reduxForm } from 'redux-form';
 import { Link } from 'react-router-dom';
 import ReactFilestack from 'filestack-react';
+import history from '../../history';
 import Autocomplete from '../filters/Autocomplete';
 import equipmentList from '../../staticData/equipmentList';
 import * as actions from '../../actions';
@@ -39,6 +40,7 @@ class NewOffice extends Component {
             location: this.state.location
         });
         reset();
+        history.push('/profile');
     }
 
     extractUrlToState(result) {

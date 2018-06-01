@@ -90,6 +90,11 @@ const PaymentHistory = Loadable({
     loading: LoadingComponent
 });
 
+const LandlordOnboarding = Loadable({
+    loader: () => import('./LandlordOnboarding'),
+    loading: LoadingComponent
+});
+
 const PrivateRoute = ({ auth, path, component: Component, ...props }) => (
     <Route
         render={() =>
@@ -123,10 +128,12 @@ class App extends Component {
             <div>
                 <Router history={history}>
                     <div>
-                        <Header
-                            toggleShowModal={this.props.toggleLoginModal}
-                        />
+                        <Header toggleShowModal={this.props.toggleLoginModal} />
                         <Switch>
+                            <Route
+                                path="/landlord-onboarding/:step"
+                                component={LandlordOnboarding}
+                            />
                             <Route
                                 path="/dentist/search"
                                 component={DentistResultIndex}
