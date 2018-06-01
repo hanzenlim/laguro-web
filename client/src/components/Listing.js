@@ -80,10 +80,11 @@ class OfficeResultIndex extends Component {
         }
         const { office } = listing;
         const { reviews } = office;
-        
+
         // Disable book now button if listing has been reserved or
         // if user does not have a dentit profile.
-        const disableBookNowBtn = !!listing.reservations.length || (auth && !auth.dentist)
+        const disableBookNowBtn =
+            !!listing.reservations.length || (auth && !auth.dentist);
 
         // calculate avg rating
         if (reviews && reviews.length) {
@@ -197,10 +198,10 @@ class OfficeResultIndex extends Component {
                             </button>
                             {auth &&
                                 !auth.dentist && (
-                                <p className="red-text">
+                                    <p className="red-text">
                                         Please create a dentist profile
-                                </p>
-                            )}
+                                    </p>
+                                )}
                         </div>
                     </div>
                 </div>

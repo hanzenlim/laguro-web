@@ -236,7 +236,7 @@ class NewListing extends Component {
                         placeholder="100"
                         className="col s4"
                         component={this.renderField}
-                        validate={[required, isNum]}
+                        validate={[required, isNum, dollarMinimum]}
                     />
 
                     <label className="col s4">
@@ -275,10 +275,6 @@ class NewListing extends Component {
                 </div>
 
                 <div className="row valign-wrapper">
-                    <div className="col s6 left-align">
-                        <label>Total due - 20% of total chair rental fee</label>
-                        <h6 className="red-text">${this.calcTotal()}</h6>
-                    </div>
                     <div className="form-buttons col s6 right-align">
                         {error && <strong className="red-text">{error}</strong>}
                         <button
@@ -294,6 +290,9 @@ class NewListing extends Component {
         );
     }
 }
+
+const dollarMinimum = value =>
+    value && value >= 1 ? undefined : 'Minimum hourly chair price is $1';
 
 const isNum = value =>
     value && !isNaN(value) ? undefined : 'Must be a number';
