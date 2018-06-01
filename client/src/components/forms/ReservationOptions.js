@@ -164,7 +164,8 @@ class ReservationOptions extends Component {
     calcBookingFee() {
         const { numChairs, listing } = this.props;
         const chair_price = numChairs * listing.chairHourlyPrice * this.hours;
-        this.booking_fee = Number(Math.floor(chair_price * 0.15));
+        this.booking_fee = Number(chair_price * 0.15);
+
         return this.booking_fee.toFixed(2);
     }
 
@@ -208,7 +209,7 @@ class ReservationOptions extends Component {
             error,
             staffSelected,
             equipmentSelected,
-            auth,
+            auth
         } = this.props;
 
         if (!this.props.initialized) return <div>Loading...</div>;
