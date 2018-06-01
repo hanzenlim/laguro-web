@@ -87,7 +87,7 @@ class PhotoGrid extends Component {
                     
                     let listingImg;
                     if (listing.office.imageUrls && listing.office.imageUrls.length !== 0) {
-                        listingImg = listing.office.imageUrls
+                        listingImg = listing.office.imageUrls[0]
                     } else {
                         listingImg = listingImgPlaceholder;
                     }
