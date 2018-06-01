@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import GoogleLoginButton from './images/google-login-button.png';
 import './css/LoginModal.css';
 
 class LoginModal extends Component {
@@ -53,15 +54,18 @@ class LoginModal extends Component {
                         onClick={this.handleClose}
                         className="modal-close"
                     >
-                        X
+                        <i class="material-icons md-48">close</i>
                     </a>
+                    <div className="modal-header">
+                        <div className="modal-desc">Sign In</div>
+                    </div>
                     <div className="modal-content">
                         <a
                             id="googleLoginBtn"
                             href="/auth/google"
                             className="login waves-effect"
                         >
-                            Log in with Google
+                            <img src={GoogleLoginButton} />
                         </a>
                     </div>
                     <div className="modal-footer" />
@@ -74,7 +78,7 @@ class LoginModal extends Component {
 
 LoginModal.propTypes = {
     onClose: PropTypes.func.isRequired,
-    open: PropTypes.bool.isRequired,
+    open: PropTypes.bool.isRequired
 };
 
 export default LoginModal;
