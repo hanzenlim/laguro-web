@@ -8,9 +8,7 @@ provider:
     GRAPHQL_URL: ${env:GRAPHQL_URL}
     GOOGLE_CLIENT_ID: ${env:GOOGLE_CLIENT_ID}
     GOOGLE_CLIENT_SECRET: ${env:GOOGLE_CLIENT_SECRET}
-    FILESTACK: ${env:FILESTACK}
     COOKIE_KEY: ${env:COOKIE_KEY}
-    STRIPE_PUBLIC_KEY: ${env:STRIPE_PUBLIC_KEY}
     
 iamRoleStatements:
     -  Effect: "Allow"

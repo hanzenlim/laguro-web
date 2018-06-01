@@ -6,6 +6,7 @@ import ReactFilestack from 'filestack-react';
 import Autocomplete from '../filters/Autocomplete';
 import equipmentList from '../../staticData/equipmentList';
 import * as actions from '../../actions';
+import { filestackKey } from '../../config/keys';
 import { DENTIST } from '../../util/strings';
 
 class NewOffice extends Component {
@@ -197,7 +198,7 @@ class NewOffice extends Component {
 
                 <div className="image_upload">
                     <ReactFilestack
-                        apikey={'Aj4gwfCaTS2Am35P0QGrbz'}
+                        apikey={filestackKey}
                         buttonText="Upload Images"
                         buttonClass="btn light-blue lighten-2"
                         options={{

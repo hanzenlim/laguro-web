@@ -1,14 +1,14 @@
-// prod.js production env keys - DO commit this!!!
 module.exports = {
     // Google OAuth 2.0
     googleClientID: process.env.GOOGLE_CLIENT_ID,
     googleClientSecret: process.env.GOOGLE_CLIENT_SECRET,
 
     // filestack
-    filestack: process.env.FILESTACK,
+    filestackKey: process.env.REACT_APP_FILESTACK_KEY,
 
     // Cookie-session
     cookieKey: process.env.COOKIE_KEY,
 
     stripeKey: process.env.REACT_APP_STRIPE_PUBLIC_KEY,
+    googleMapApiKey: process.env.REACT_APP_GOOGLE_MAP_API_KEY,
 };
