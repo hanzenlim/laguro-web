@@ -1,9 +1,9 @@
 @media screen and (min-width: 541px)
 {
   .page-footer {
-    padding-top: 4%;
+    padding-top: 2%;
     background-color: #3F4547;
-    height: 270px;
+    height: 200px;
   }
 
   .footer-container {

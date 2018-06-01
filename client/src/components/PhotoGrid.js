@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import styled from "styled-components";
 import Card from '@material-ui/core/Card';
 import * as actions from "../actions";
+import { Padding } from './common/Spacing';
 
 import "./css/PhotoGrid.css";
 
@@ -30,7 +31,11 @@ class PhotoGrid extends Component {
         if (this.props.listings) {
 
             if (this.props.listings.length === 0) {
-                return (<SoldOutDiv> "All listings currently sold out! Don't worry, there will be more soon." </SoldOutDiv>)
+                return (
+                    <Padding top={20} bottom={10}>
+                        <SoldOutDiv> "All listings currently sold out! Don't worry, there will be more soon." </SoldOutDiv>
+                    </Padding>
+                )
             } else {
                 var officesSoFar = {};
 

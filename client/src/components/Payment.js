@@ -9,6 +9,7 @@ import { Typography, Card, Button, Divider, Link, Grid } from './common';
 import { Padding } from './common/Spacing';
 import * as actions from '../actions';
 import { PAYMENT_OPTIONS, APPOINTMENT } from '../util/strings';
+import { stripeKey } from '../config/keys';
 
 const Wrapper = styled.div`
     background-color: #F8F9FA;
@@ -356,7 +357,7 @@ class Payment extends Component {
 
                         <StripeCheckout
                             token={this.onSuccess.bind(this)}
-                            stripeKey="pk_test_z6zaOFhsmnBHG6WCN8LH6wTR"
+                            stripeKey={stripeKey}
                             currency="USD"
                             panelLabel="Add card"
                         >

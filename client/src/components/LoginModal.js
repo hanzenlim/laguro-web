@@ -49,7 +49,7 @@ class LoginModal extends Component {
             <div>
                 <div ref={this.setWrapperRef} className="modal open">
                     <a
-                        href="#!"
+                        href="#"
                         onClick={this.handleClose}
                         className="modal-close"
                     >

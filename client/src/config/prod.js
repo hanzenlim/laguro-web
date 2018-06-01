@@ -9,4 +9,6 @@ module.exports = {
 
     // Cookie-session
     cookieKey: process.env.COOKIE_KEY,
+
+    stripeKey: process.env.REACT_APP_STRIPE_PUBLIC_KEY,
 };
