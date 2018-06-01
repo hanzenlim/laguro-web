@@ -1,10 +1,29 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ReactStars from 'react-stars';
-import moment from 'moment';
+import styled from 'styled-components';
+import Grid from '@material-ui/core/Grid';
 import { REVIEWEE_ID } from '../util/strings';
 
 import * as actions from '../actions';
+
+const ReviewDiv = styled.div`
+    float: left;
+    font-size: 13px;
+`;
+
+const ReviewNameDiv = styled.div`
+    font-weight: bold;
+    margin-top: 3%;
+    margin-bottom: 3%;
+    font-size: 17px;
+`;
+
+const ReviewContentDiv = styled.div`
+    float: none;
+    font-weight: 500;
+    font-size: 14px;
+`;
 
 class ReviewContainer extends Component {
     renderEditButtons(id) {
@@ -27,30 +46,23 @@ class ReviewContainer extends Component {
         if (!this.props.auth || !reviews) {
             return '';
         }
+        const reviewPerRow = window.innerWidth >= 601 ? 3 : 2;
 
-        const id = this.props.auth.id;
-        return reviews.map((review, index) => (
-            <div key={index} className="review card-panel grey lighten-5">
-                <div className="reviewer">
-                    <img src={review.reviewer.imageUrl} alt="reviewer" />
-                    <h6>{review.reviewer_name}</h6>
-                </div>
+        return reviews.slice(0,this.props.rows * reviewPerRow).map((review, index) => (
+            <Grid item xs={6} sm={4} key={index}>
+                <ReviewDiv>
+                    <ReviewNameDiv> {review.reviewer_name} </ReviewNameDiv>
+                    <ReviewContentDiv> {review.text} </ReviewContentDiv>
 
-                <div className="content">
-                    <div className="top-bar">
-                        {moment(review.date_created).format('M/D/YY')}
-                        <ReactStars
-                            count={5}
-                            edit={false}
-                            value={review.rating}
-                        />
-                        {id === review.reviewer.id
-                            ? this.renderEditButtons(review.id)
-                            : ''}
-                    </div>
-                    <p>{review.text}</p>
-                </div>
-            </div>
+                    <ReactStars
+                        count={5}
+                        edit={false}
+                        size={15}
+                        value={review.rating}
+                    />
+
+                </ReviewDiv>
+            </Grid>
         ));
     }
 
@@ -70,7 +82,7 @@ class ReviewContainer extends Component {
                         first!
                     </h6>
                 ) : (
-                    this.renderReviewList(reviews)
+                    <Grid container spacing={40}> {this.renderReviewList(reviews)} </Grid>
                 )}
             </div>
         );

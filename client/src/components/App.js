@@ -85,6 +85,7 @@ const PaymentSuccess = Loadable({
     loading: LoadingComponent
 });
 
+
 const PaymentHistory = Loadable({
     loader: () => import('./PaymentHistory'),
     loading: LoadingComponent
