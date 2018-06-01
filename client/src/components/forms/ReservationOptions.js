@@ -10,10 +10,19 @@ import {
 import { Redirect } from 'react-router-dom';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
+import styled from 'styled-components';
+
+import { Typography, Grid, Button, Option, Select } from '../common';
+import { Padding } from '../common/Spacing';
 
 import renderDatePicker from './sharedComponents/datePicker';
 import * as actions from '../../actions';
 import { DENTIST } from '../../util/strings';
+
+const StyledContainer = styled.div`
+    background: white;
+    padding: 60px;
+`;
 
 class ReservationOptions extends Component {
     constructor(props) {
@@ -76,9 +85,9 @@ class ReservationOptions extends Component {
         const options = [];
         for (let i = min_avail; i <= max_avail; i++) {
             options.push(
-                <option value={Number(i)} key={i}>
+                <Option value={Number(i)} key={i}>
                     {`${i} ${label}`}
-                </option>
+                </Option>
             );
         }
         return options;
@@ -200,6 +209,16 @@ class ReservationOptions extends Component {
         return total.toFixed(2);
     }
 
+    renderSelect = ({ input, meta: { touched, error }, children }) => {
+        return (
+            <Grid container>
+                <Select {...input}>{children}</Select>
+                {touched &&
+                    (error && <span className="red-text">{error}</span>)}
+            </Grid>
+        );
+    };
+
     render() {
         const {
             handleSubmit,
@@ -253,142 +272,184 @@ class ReservationOptions extends Component {
         }
 
         return (
-            <form
-                onSubmit={handleSubmit(this.initiatePayment.bind(this))}
-                className="modalForm light-blue lighten-5"
-            >
-                <div className="form_title">
-                    <h5>Choose reservation options</h5>
-                </div>
+            <StyledContainer>
+                <form onSubmit={handleSubmit(this.initiatePayment.bind(this))}>
+                    <Grid container>
+                        <Grid item xs={12}>
+                            <Typography size="t1">
+                                Choose reservation options
+                            </Typography>
+                        </Grid>
+                    </Grid>
 
-                <div className="row">
-                    <Field
-                        name="startTime"
-                        label="Doors opening"
-                        dateType="startTime"
-                        className="col s12 m6"
-                        component={renderDatePicker}
-                        listing={listing}
-                    />
+                    <Padding bottom="40" />
 
-                    <Field
-                        name="endTime"
-                        label="Doors closing"
-                        dateType="endTime"
-                        className="col s12 m6"
-                        component={renderDatePicker}
-                        listing={listing}
-                    />
-                </div>
+                    <Grid container>
+                        <Grid item xs={12}>
+                            <label>Doors opening</label>
+                            <Field
+                                name="startTime"
+                                dateType="startTime"
+                                component={renderDatePicker}
+                                listing={listing}
+                            />
+                            <Padding bottom="16" />
+                        </Grid>
+                    </Grid>
 
-                <div className="row">
-                    <label className="col s5">
-                        Number of appointment slots per hour
-                        <Field
-                            name={'appts_per_hour'}
-                            type="select"
-                            style={{ display: 'block' }}
-                            component="select"
-                        >
-                            <option value={1}>1 - 60 min appointments</option>
-                            <option value={2}>2 - 30 min appointments</option>
-                            <option value={3}>3 - 20 min appointments</option>
-                            <option value={4}>4 - 15 min appointments</option>
-                        </Field>
-                    </label>
-                    <label className="col s5 offset-s2">
-                        Number of chairs needed
-                        <Field
-                            name={'numChairs'}
-                            type="select"
-                            style={{ display: 'block' }}
-                            component="select"
-                        >
-                            {this.renderOptions(
-                                this.props.listing.numChairsAvailable,
-                                1,
-                                `- $${
-                                    this.props.listing.chairHourlyPrice
-                                }/chair/hr`
+                    <Grid container>
+                        <Grid item xs={12}>
+                            <label>Doors closing</label>
+                            <Field
+                                name="endTime"
+                                dateType="endTime"
+                                component={renderDatePicker}
+                                listing={listing}
+                            />
+
+                            <Padding bottom="16" />
+                        </Grid>
+                    </Grid>
+
+                    <Grid container>
+                        <Grid item xs={12}>
+                            <label>Number of appointment slots per hour</label>
+                            <Field
+                                name={'appts_per_hour'}
+                                type="select"
+                                style={{ display: 'block' }}
+                                component={this.renderSelect}
+                            >
+                                <Option value={1}>
+                                    1 - 60 min appointments
+                                </Option>
+                                <Option value={2}>
+                                    2 - 30 min appointments
+                                </Option>
+                                <Option value={3}>
+                                    3 - 20 min appointments
+                                </Option>
+                                <Option value={4}>
+                                    4 - 15 min appointments
+                                </Option>
+                            </Field>
+
+                            <Padding bottom="16" />
+                        </Grid>
+                    </Grid>
+
+                    <Grid container>
+                        <Grid item xs={12}>
+                            <label>Number of chairs needed</label>
+                            <Field
+                                name={'numChairs'}
+                                type="select"
+                                style={{ display: 'block' }}
+                                component={this.renderSelect}
+                            >
+                                {this.renderOptions(
+                                    this.props.listing.numChairsAvailable,
+                                    1,
+                                    `- $${
+                                        this.props.listing.chairHourlyPrice
+                                    }/chair/hr`
+                                )}
+                            </Field>
+
+                            <Padding bottom="16" />
+                        </Grid>
+                    </Grid>
+
+                    <Grid container>
+                        <Grid item xs={12}>
+                            {staffSelected && staffSelected.length ? (
+                                <div>
+                                    <FieldArray
+                                        name="staffSelected"
+                                        component={this.renderStaff}
+                                    />
+                                </div>
+                            ) : (
+                                <div />
                             )}
-                        </Field>
-                    </label>
-                </div>
 
-                {staffSelected && staffSelected.length ? (
-                    <div>
-                        <FieldArray
-                            name="staffSelected"
-                            className="row"
-                            component={this.renderStaff}
-                        />
-                    </div>
-                ) : (
-                    <div />
-                )}
+                            <Padding bottom="16" />
+                        </Grid>
+                    </Grid>
 
-                {equipmentSelected && equipmentSelected.length ? (
-                    <div>
-                        <FieldArray
-                            name="equipmentSelected"
-                            className="row"
-                            component={this.renderEquipment}
-                        />
-                    </div>
-                ) : (
-                    <div />
-                )}
+                    {equipmentSelected && equipmentSelected.length ? (
+                        <div>
+                            <FieldArray
+                                name="equipmentSelected"
+                                className="row"
+                                component={this.renderEquipment}
+                            />
+                        </div>
+                    ) : (
+                        <div />
+                    )}
 
-                <div className="row">
-                    <div className="col s6 left-align">
-                        <label>Booking Fee - 15% of chair time</label>
-                        <h6 className="red-text">${this.calcBookingFee()}</h6>
-                    </div>
-                    <div className="col s6 right-align">
-                        <label>Total due</label>
-                        <h6 className="red-text">${this.calcTotal()}</h6>
-                    </div>
-                </div>
+                    <Grid container>
+                        <Grid item xs={6}>
+                            <label>Booking Fee - 15% of chair time</label>
+                            <h6 className="red-text">
+                                ${this.calcBookingFee()}
+                            </h6>
+                        </Grid>
 
-                <div className="row">
-                    <sub>
-                        *An additional 10% of final patient payment will be
-                        deducted on completion of procedure for use of Laguro
-                        services
-                    </sub>
-                    <br />
-                    <sub>
-                        **Payment for first two hours of selected staff payroll
-                        and booking fee are non-refundable
-                    </sub>
-                </div>
+                        <Grid item xs={6}>
+                            <label>Total due</label>
+                            <h6 className="red-text">${this.calcTotal()}</h6>
+                        </Grid>
+                    </Grid>
 
-                <div
-                    className="row valign-wrapper"
-                    style={{ marginTop: '30px', marginBottom: '0px' }}
-                >
-                    <div className="col s7 left-align">
-                        <Field
-                            name="acknowledge"
-                            id="acknowledge"
-                            component="input"
-                            type="checkbox"
-                            className="browser-default"
-                        />
-                        I understand and agree to the terms above
+                    <div className="row">
+                        <sub>
+                            *An additional 10% of final patient payment will be
+                            deducted on completion of procedure for use of
+                            Laguro services
+                        </sub>
+                        <br />
+                        <sub>
+                            **Payment for first two hours of selected staff
+                            payroll and booking fee are non-refundable
+                        </sub>
+
+                        <Padding bottom="16" />
                     </div>
-                    <div className="form-buttons col s5 right-align">
-                        {error && <strong className="red-text">{error}</strong>}
-                        <button
-                            className="waves-effect btn light-blue lighten-2"
-                            type="submit"
-                            disabled={submitting}
-                        >
-                            Submit
-                        </button>
-                    </div>
-                </div>
-            </form>
+
+                    <Grid container>
+                        <Grid item xs={12}>
+                            <Field
+                                name="acknowledge"
+                                id="acknowledge"
+                                component="input"
+                                type="checkbox"
+                                className="browser-default"
+                            />
+                            I understand and agree to the terms above
+                            <Padding bottom="20" />
+                        </Grid>
+                    </Grid>
+
+                    <Grid container>
+                        <Grid item xs={12}>
+                            {error && (
+                                <strong className="red-text">{error}</strong>
+                            )}
+
+                            <Button
+                                fullWidth
+                                color="secondary"
+                                type="submit"
+                                disabled={submitting}
+                            >
+                                Book Reservation
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </form>
+            </StyledContainer>
         );
     }
 }
