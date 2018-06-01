@@ -47,7 +47,6 @@ export function createDentist(values) {
             type: GET_ONE_DENTIST,
             payload: dentist
         });
-        history.push('/profile');
     };
 }
 

@@ -131,8 +131,9 @@ class App extends Component {
                     <div>
                         <Header toggleShowModal={this.props.toggleLoginModal} />
                         <Switch>
-                            <Route
+                            <PrivateRoute
                                 path="/landlord-onboarding/:step"
+                                auth={this.props.auth}
                                 component={LandlordOnboarding}
                             />
                             <Route

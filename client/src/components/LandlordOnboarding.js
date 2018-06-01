@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 
 import AddOfficeInfo from './forms/AddOfficeInfo';
@@ -20,32 +20,40 @@ const StyledContainer = styled.div`
     min-height: 100vh;
 `;
 
-const LandlordOnboarding = props => {
-    const { step } = props.match.params;
+class LandlordOnboarding extends Component {
+    render() {
+        const { pathname } = this.props.location;
 
-    let percent = DEFAULT_PERCENTAGE;
-    switch (step) {
-    case OFFICE_STEP:
-        percent = OFFICE_PERCENTAGE;
-        break;
-    case EQUIPMENT_STEP:
-        percent = EQUIPMENT_PERCENTAGE;
-        break;
-    case LISTING_STEP:
-        percent = LISTING_PERCENTAGE;
-        break;
-    default:
-        percent = DEFAULT_PERCENTAGE;
+        const pathIndex = pathname.indexOf('/', 1);
+        let step = '';
+        if (pathIndex && pathIndex < pathname.length - 1) {
+            step = pathname.substring(pathIndex + 1);
+        }
+
+        let percent = DEFAULT_PERCENTAGE;
+        switch (step) {
+        case OFFICE_STEP:
+            percent = OFFICE_PERCENTAGE;
+            break;
+        case EQUIPMENT_STEP:
+            percent = EQUIPMENT_PERCENTAGE;
+            break;
+        case LISTING_STEP:
+            percent = LISTING_PERCENTAGE;
+            break;
+        default:
+            percent = DEFAULT_PERCENTAGE;
+        }
+
+        return (
+            <StyledContainer>
+                <ProgressBar percent={percent} />
+                {step === OFFICE_STEP && <AddOfficeInfo />}
+                {step === EQUIPMENT_STEP && <AddOfficeEquipments />}
+                {step === LISTING_STEP && <AddOfficeListing />}
+            </StyledContainer>
+        );
     }
-
-    return (
-        <StyledContainer>
-            <ProgressBar percent={percent} />
-            {step === OFFICE_STEP && <AddOfficeInfo />}
-            {step === EQUIPMENT_STEP && <AddOfficeEquipments />}
-            {step === LISTING_STEP && <AddOfficeListing />}
-        </StyledContainer>
-    );
-};
+}
 
 export default LandlordOnboarding;

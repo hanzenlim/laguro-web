@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import queryString from 'query-string';
 import { Field, FieldArray, reduxForm, SubmissionError } from 'redux-form';
 import { Link } from 'react-router-dom';
 
 import Autocomplete from '../filters/Autocomplete';
 import procedureList from '../../staticData/procedureList';
 import * as actions from '../../actions';
+import history from '../../history';
+import { DENTIST } from '../../util/strings';
 
 class NewDentist extends Component {
     constructor(props) {
@@ -13,6 +16,8 @@ class NewDentist extends Component {
         this.state = {
             location: ''
         };
+        const { location } = this.props;
+        this.urlParams = queryString.parse(location.search);
     }
 
     onAutocomplete = location => {
@@ -35,7 +40,21 @@ class NewDentist extends Component {
         }
 
         values.location = this.state.location;
-        this.props.createDentist({ ...values, bio: ' ', userId: auth.id });
+
+        await this.props.createDentist({
+            ...values,
+            bio: ' ',
+            userId: auth.id
+        });
+        // TODO address hacky way of making sure dentist is loaded
+        await this.props.fetchUser(DENTIST);
+        const referrerMap = { new_office: '/landlord-onboarding/add-office' };
+        const referrer = referrerMap[this.urlParams.referrer];
+        if (referrer) {
+            history.push(referrer);
+        } else {
+            history.push('/profile');
+        }
     }
 
     async componentWillMount() {
