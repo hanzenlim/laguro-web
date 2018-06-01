@@ -54,7 +54,7 @@ class LoginModal extends Component {
                         onClick={this.handleClose}
                         className="modal-close"
                     >
-                        <i class="material-icons md-48">close</i>
+                        <i className="material-icons md-48">close</i>
                     </a>
                     <div className="modal-header">
                         <div className="modal-desc">Sign In</div>
@@ -65,7 +65,7 @@ class LoginModal extends Component {
                             href="/auth/google"
                             className="login waves-effect"
                         >
-                            <img src={GoogleLoginButton} />
+                            <img width="300" height="70" src={GoogleLoginButton} />
                         </a>
                     </div>
                     <div className="modal-footer" />
