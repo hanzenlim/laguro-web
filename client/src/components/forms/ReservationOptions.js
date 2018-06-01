@@ -120,7 +120,7 @@ class ReservationOptions extends Component {
                                     name={`${staffSelected}.count`}
                                     type="select"
                                     style={{ display: 'block' }}
-                                    component="select"
+                                    component={this.renderSelect}
                                 >
                                     {this.renderOptions(
                                         listing.staffAvailable[index].count,
