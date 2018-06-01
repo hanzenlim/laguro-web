@@ -5,6 +5,7 @@ import ReactFilestack from 'filestack-react';
 import { Link } from 'react-router-dom';
 
 import equipmentList from '../../staticData/equipmentList';
+import { filestackKey } from '../../config/keys';
 import * as actions from '../../actions';
 
 class EditOffice extends Component {
@@ -217,7 +218,7 @@ class EditOffice extends Component {
                         {this.renderUploadedImages()}
                     </div>
                     <ReactFilestack
-                        apikey={'Aj4gwfCaTS2Am35P0QGrbz'}
+                        apikey={filestackKey}
                         buttonText="Upload New Image"
                         buttonClass="btn light-blue lighten-2"
                         options={{

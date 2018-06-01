@@ -6,6 +6,7 @@ import moment from 'moment';
 
 import ReviewContainer from './ReviewContainer';
 import PatientAppointments from './PatientAppointments';
+import { filestackKey } from '../config/keys';
 import * as actions from '../actions';
 import {
     USER,
@@ -226,7 +227,7 @@ class Profile extends Component {
                 )}
 
                 <ReactFilestack
-                    apikey={'Aj4gwfCaTS2Am35P0QGrbz'}
+                    apikey={filestackKey}
                     buttonText="Upload New Image"
                     buttonClass="link"
                     options={{
