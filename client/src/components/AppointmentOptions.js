@@ -74,4 +74,7 @@ class AppointmentOptions extends Component {
     }
 }
 
-export default connect(null, actions)(AppointmentOptions);
+export default connect(
+    null,
+    actions
+)(AppointmentOptions);

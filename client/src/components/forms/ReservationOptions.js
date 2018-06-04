@@ -9,20 +9,21 @@ import {
 } from 'redux-form';
 import { Redirect } from 'react-router-dom';
 import moment from 'moment';
-import 'react-datepicker/dist/react-datepicker.css';
-import styled from 'styled-components';
 
-import { Typography, Grid, Button, Option, Select } from '../common';
-import { Padding } from '../common/Spacing';
+import {
+    Typography,
+    Button,
+    Option,
+    Select,
+    Modal,
+    Checkbox,
+    Flex,
+    Box
+} from '../common';
 
 import renderDatePicker from './sharedComponents/datePicker';
 import * as actions from '../../actions';
 import { DENTIST } from '../../util/strings';
-
-const StyledContainer = styled.div`
-    background: white;
-    padding: 60px;
-`;
 
 class ReservationOptions extends Component {
     constructor(props) {
@@ -30,6 +31,7 @@ class ReservationOptions extends Component {
 
         this.state = { redirectToPayment: false };
     }
+
     componentWillMount() {
         this.props.fetchUser(DENTIST);
         const { listing, office } = this.props;
@@ -63,14 +65,17 @@ class ReservationOptions extends Component {
         this.setState({ redirectToPayment: true });
     }
 
-    closeModals() {
-        const modals = document.getElementsByClassName('modal');
-        const modal_overlay = document.getElementById('modal-overlay');
-        for (const modal of modals) {
-            modal.classList.remove('open');
-        }
-        modal_overlay.classList.remove('open');
-    }
+    renderCheckbox = ({ label, input: { onChange, value } }) => (
+        <Flex alignItems="center">
+            <Checkbox
+                checked={value ? true : false}
+                onClick={() => {
+                    onChange(value ? false : true);
+                }}
+            />
+            <Typography pl={2}>{label}</Typography>
+        </Flex>
+    );
 
     renderStaticField = ({ input, label, className }) => (
         <div>
@@ -212,11 +217,11 @@ class ReservationOptions extends Component {
 
     renderSelect = ({ input, meta: { touched, error }, children }) => {
         return (
-            <Grid container>
+            <Flex>
                 <Select {...input}>{children}</Select>
                 {touched &&
                     (error && <span className="red-text">{error}</span>)}
-            </Grid>
+            </Flex>
         );
     };
 
@@ -273,110 +278,79 @@ class ReservationOptions extends Component {
         }
 
         return (
-            <StyledContainer>
+            <Modal open={this.props.open} onClose={this.props.onClose} closable>
                 <form onSubmit={handleSubmit(this.initiatePayment.bind(this))}>
-                    <Grid container>
-                        <Grid item xs={12}>
-                            <Typography size="t1">
-                                Choose reservation options
-                            </Typography>
-                        </Grid>
-                    </Grid>
+                    <Flex pb={4}>
+                        <Typography size="t1">
+                            Choose reservation options
+                        </Typography>
+                    </Flex>
 
-                    <Padding bottom="40" />
+                    <Flex pb={3} flexDirection="column">
+                        <label>Doors opening</label>
+                        <Field
+                            name="startTime"
+                            dateType="startTime"
+                            component={renderDatePicker}
+                            listing={listing}
+                        />
+                    </Flex>
 
-                    <Grid container>
-                        <Grid item xs={12}>
-                            <label>Doors opening</label>
-                            <Field
-                                name="startTime"
-                                dateType="startTime"
-                                component={renderDatePicker}
-                                listing={listing}
-                            />
-                            <Padding bottom="16" />
-                        </Grid>
-                    </Grid>
+                    <Flex pb={3} flexDirection="column">
+                        <label>Doors closing</label>
+                        <Field
+                            name="endTime"
+                            dateType="endTime"
+                            component={renderDatePicker}
+                            listing={listing}
+                        />
+                    </Flex>
 
-                    <Grid container>
-                        <Grid item xs={12}>
-                            <label>Doors closing</label>
-                            <Field
-                                name="endTime"
-                                dateType="endTime"
-                                component={renderDatePicker}
-                                listing={listing}
-                            />
+                    <Flex pb={3} flexDirection="column">
+                        <label>Number of appointment slots per hour</label>
+                        <Field
+                            name={'appts_per_hour'}
+                            type="select"
+                            style={{ display: 'block' }}
+                            component={this.renderSelect}
+                        >
+                            <Option value={1}>1 - 60 min appointments</Option>
+                            <Option value={2}>2 - 30 min appointments</Option>
+                            <Option value={3}>3 - 20 min appointments</Option>
+                            <Option value={4}>4 - 15 min appointments</Option>
+                        </Field>
+                    </Flex>
 
-                            <Padding bottom="16" />
-                        </Grid>
-                    </Grid>
-
-                    <Grid container>
-                        <Grid item xs={12}>
-                            <label>Number of appointment slots per hour</label>
-                            <Field
-                                name={'appts_per_hour'}
-                                type="select"
-                                style={{ display: 'block' }}
-                                component={this.renderSelect}
-                            >
-                                <Option value={1}>
-                                    1 - 60 min appointments
-                                </Option>
-                                <Option value={2}>
-                                    2 - 30 min appointments
-                                </Option>
-                                <Option value={3}>
-                                    3 - 20 min appointments
-                                </Option>
-                                <Option value={4}>
-                                    4 - 15 min appointments
-                                </Option>
-                            </Field>
-
-                            <Padding bottom="16" />
-                        </Grid>
-                    </Grid>
-
-                    <Grid container>
-                        <Grid item xs={12}>
-                            <label>Number of chairs needed</label>
-                            <Field
-                                name={'numChairs'}
-                                type="select"
-                                style={{ display: 'block' }}
-                                component={this.renderSelect}
-                            >
-                                {this.renderOptions(
-                                    this.props.listing.numChairsAvailable,
-                                    1,
-                                    `- $${
-                                        this.props.listing.chairHourlyPrice
-                                    }/chair/hr`
-                                )}
-                            </Field>
-
-                            <Padding bottom="16" />
-                        </Grid>
-                    </Grid>
-
-                    <Grid container>
-                        <Grid item xs={12}>
-                            {staffSelected && staffSelected.length ? (
-                                <div>
-                                    <FieldArray
-                                        name="staffSelected"
-                                        component={this.renderStaff}
-                                    />
-                                </div>
-                            ) : (
-                                <div />
+                    <Flex pb={3} flexDirection="column">
+                        <label>Number of chairs needed</label>
+                        <Field
+                            name={'numChairs'}
+                            type="select"
+                            style={{ display: 'block' }}
+                            component={this.renderSelect}
+                        >
+                            {this.renderOptions(
+                                this.props.listing.numChairsAvailable,
+                                1,
+                                `- $${
+                                    this.props.listing.chairHourlyPrice
+                                }/chair/hr`
                             )}
+                        </Field>
+                    </Flex>
 
-                            <Padding bottom="16" />
-                        </Grid>
-                    </Grid>
+                    <Flex pb={3} flexDirection="column">
+                        {staffSelected && staffSelected.length ? (
+                            <div>
+                                <FieldArray
+                                    name="staffSelected"
+                                    component={this.renderStaff}
+                                />
+                            </div>
+                        ) : (
+                            <div />
+                        )}
+                    </Flex>
 
                     {equipmentSelected && equipmentSelected.length ? (
                         <div>
@@ -390,67 +364,62 @@ class ReservationOptions extends Component {
                         <div />
                     )}
 
-                    <Grid container>
-                        <Grid item xs={6}>
+                    <Flex>
+                        <Box width={1 / 2}>
                             <label>Booking Fee - 15% of chair time</label>
                             <h6 className="red-text">
                                 ${this.calcBookingFee()}
                             </h6>
-                        </Grid>
-
-                        <Grid item xs={6}>
+                        </Box>
+                        <Box width={1 / 2}>
                             <label>Total due</label>
                             <h6 className="red-text">${this.calcTotal()}</h6>
-                        </Grid>
-                    </Grid>
+                        </Box>
+                    </Flex>
 
-                    <div className="row">
-                        <sub>
-                            *An additional 10% of final patient payment will be
-                            deducted on completion of procedure for use of
-                            Laguro services
-                        </sub>
-                        <br />
-                        <sub>
-                            **Payment for first two hours of selected staff
-                            payroll and booking fee are non-refundable
-                        </sub>
+                    <Flex pb={3} flexDirection="column">
+                        <Box>
+                            <sub>
+                                *An additional 10% of final patient payment will
+                                be deducted on completion of procedure for use
+                                of Laguro services
+                            </sub>
+                        </Box>
+                        <Box>
+                            <sub>
+                                **Payment for first two hours of selected staff
+                                payroll and booking fee are non-refundable
+                            </sub>
+                        </Box>
+                    </Flex>
 
-                        <Padding bottom="16" />
-                    </div>
+                    <Flex pb={3}>
+                        <Field
+                            name="acknowledge"
+                            label="I understand and agree to the terms above"
+                            id="acknowledge"
+                            component={this.renderCheckbox}
+                            type="checkbox"
+                            className="browser-default"
+                        />
+                    </Flex>
 
-                    <Grid container>
-                        <Grid item xs={12}>
-                            <Field
-                                name="acknowledge"
-                                id="acknowledge"
-                                component="input"
-                                type="checkbox"
-                                className="browser-default"
-                            />
-                            I understand and agree to the terms above
-                            <Padding bottom="20" />
-                        </Grid>
-                    </Grid>
+                    <Flex flexDirection="column">
+                        {error && <strong className="red-text">{error}</strong>}
 
-                    <Grid container>
-                        <Grid item xs={12}>
-                            {error && (
-                                <strong className="red-text">{error}</strong>
-                            )}
-
-                            <Button
-                                fullWidth
-                                color="secondary"
-                                type="submit"
-                                disabled={submitting}
-                            >
+                        <Button
+                            fullWidth
+                            color="secondary"
+                            type="submit"
+                            disabled={submitting}
+                        >
+                            <Typography size="t2" weight="medium">
                                 Book Reservation
-                            </Button>
-                        </Grid>
-                    </Grid>
+                            </Typography>
+                        </Button>
+                    </Flex>
                 </form>
-            </StyledContainer>
+            </Modal>
         );
     }
 }
@@ -468,4 +437,9 @@ const mapStateToProps = state => {
 
 export default reduxForm({
     form: 'reservationOptions'
-})(connect(mapStateToProps, actions)(ReservationOptions));
+})(
+    connect(
+        mapStateToProps,
+        actions
+    )(ReservationOptions)
+);

@@ -1,16 +1,17 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
-import ReactStars from "react-stars";
+import ReactStars from 'react-stars';
 import moment from 'moment';
 import * as materialize from 'materialize-css/dist/js/materialize';
 import Icon from './Icon';
-import * as actions from "../actions";
-import { Link, Grid} from './common';
+import * as actions from '../actions';
+import { Link, Grid } from './common';
 import NewReview from './forms/NewReview';
 import ReviewContainer from './ReviewContainer';
 import { Padding } from './common/Spacing';
 import Appointments from './Appointments';
+import BookAppointment from './forms/BookAppointment';
 
 import {
     USER,
@@ -26,7 +27,6 @@ const StyledResContentDiv = styled.div`
         width: 100%;
         font-size: 14px;
     }
-
 `;
 
 const Container = styled.div`
@@ -49,15 +49,15 @@ const DetailsDiv = styled.div`
     margin-left: 4%;
     margin-right: 4%;
     margin-bottom: 15%;
-    margin-top: 7%
+    margin-top: 7%;
 
-    @media screen and (min-width : 600px) {
+    @media screen and (min-width: 600px) {
         margin-top: 0;
         margin-left: 25.5%;
         margin-right: 25.5%;
         margin-bottom: 4.5%;
     }
-`
+`;
 
 const DetailsHeadingDiv = styled.div`
     font-size: 24px;
@@ -76,7 +76,7 @@ const ShowMore = styled.div`
 const StaffEquipment = styled.div`
     font-size: 16px;
     line-height: 30px;
-    color: #484E51;
+    color: #484e51;
 `;
 
 const DentistReviewsDiv = styled.div`
@@ -97,7 +97,7 @@ const BackToListingsDiv = styled.div`
     margin-top: 6%;
     margin-bottom: 3%;
 
-    @media screen and (min-width : 600px) {
+    @media screen and (min-width: 600px) {
         position: absolute;
         display: block;
         margin-left: 3%;
@@ -129,11 +129,17 @@ const StyledProfPic = styled.img`
 `;
 
 class Profile extends Component {
-    constructor () {
+    constructor() {
         super();
-        this.state = { reviewRowNum: 1 };
+        this.state = {
+            reviewRowNum: 1,
+            isModalOpen: false,
+            selectedStartTime: null,
+            durationToNextAppointment: null
+        };
         this.handleReviewShowMore = this.handleReviewShowMore.bind(this);
     }
+
     componentWillMount() {
         this.dentist_id = this.props.match.params.id;
         this.props
@@ -146,15 +152,17 @@ class Profile extends Component {
                 REVIEWS
             )
             .then(() => {
-                const user = (this.props && this.props.dentist ? this.props.dentist.user : null);
-                document.title = `Laguro - ${user ? user.name : ""}`;
-                this.dentist_user_id = user ? user.id : "";
+                const user =
+                    this.props.dentist && this.props.dentist.user
+                        ? this.props.dentist.user
+                        : null;
+                document.title = `Laguro - ${user ? user.name : ''}`;
             });
     }
 
     handleReviewShowMore() {
         this.setState({
-            reviewRowNum: this.state.reviewRowNum + 1,
+            reviewRowNum: this.state.reviewRowNum + 1
         });
     }
 
@@ -180,13 +188,27 @@ class Profile extends Component {
         return <div>No procedures Available</div>;
     }
 
+    handleBookAppointment = (selectedStartTime, durationToNextAppointment) => {
+        this.setState({
+            isModalOpen: true,
+            selectedStartTime,
+            durationToNextAppointment
+        });
+    };
 
+    closeModal = () => {
+        this.setState({
+            isModalOpen: false,
+            selectedStartTime: null,
+            durationToNextAppointment: null
+        });
+    };
 
     renderReservations() {
         const { auth, dentist, reservations } = this.props;
 
-        if (reservations && reservations.length === 0 ) {
-            return <div>Sorry no available appointment for now</div>
+        if (reservations && reservations.length === 0) {
+            return <div>Sorry no available appointment for now</div>;
         }
         return reservations.map((reservation, index) => {
             const office = reservation.office;
@@ -223,7 +245,24 @@ class Profile extends Component {
                                     reservation={reservation}
                                     auth={auth}
                                     dentist={dentist}
+                                    onBookAppointment={
+                                        this.handleBookAppointment
+                                    }
                                 />
+
+                                {this.state.selectedStartTime && (
+                                    <BookAppointment
+                                        open={this.state.isModalOpen}
+                                        closeModal={this.closeModal}
+                                        dentist={dentist}
+                                        startTime={this.state.selectedStartTime}
+                                        durationToNextAppointment={
+                                            this.state.durationToNextAppointment
+                                        }
+                                        reservation={reservation}
+                                        auth={auth}
+                                    />
+                                )}
                             </div>
                         </StyledResContentDiv>
                     </div>
@@ -261,25 +300,35 @@ class Profile extends Component {
                 <Padding bottomPerc={1.5} />
 
                 <InfoDiv className="center">
-                    <Link style={{ color: "#000" }} to={"/dentist/search"}>
+                    <Link style={{ color: '#000' }} to={'/dentist/search'}>
                         <BackToListingsDiv>
-                            <BackToListingsIcon icon="backToListings" width="45px" />
-                            <BackToListingsTextDiv> Back to dentist search </BackToListingsTextDiv>
+                            <BackToListingsIcon
+                                icon="backToListings"
+                                width="45px"
+                            />
+                            <BackToListingsTextDiv>
+                                {' '}
+                                Back to dentist search{' '}
+                            </BackToListingsTextDiv>
                         </BackToListingsDiv>
                     </Link>
 
-                    <StyledProfPic src={(dentist && dentist.user) ? dentist.user.imageUrl : ""} alt="Profile Picture"></StyledProfPic>
+                    <StyledProfPic
+                        src={
+                            dentist && dentist.user ? dentist.user.imageUrl : ''
+                        }
+                        alt="Profile Picture"
+                    />
 
-                    <NameDiv>{dentist && dentist.user ? dentist.user.name : ""}</NameDiv>
+                    <NameDiv>
+                        {dentist && dentist.user ? dentist.user.name : ''}
+                    </NameDiv>
                 </InfoDiv>
 
                 <DetailsDiv>
-                    <DetailsHeadingDiv>
-                        Procedures Available
-                    </DetailsHeadingDiv>
+                    <DetailsHeadingDiv>Procedures Available</DetailsHeadingDiv>
 
                     <hr />
-
 
                     <StaffEquipment>
                         <Padding bottomPerc="1" />
@@ -321,27 +370,30 @@ class Profile extends Component {
                                 reviewerId={auth.id}
                             />
                         ) : (
-                            <NewReview
-                                reviewee={dentist}
-                                type={DENTIST}
-                            />
+                            <NewReview reviewee={dentist} type={DENTIST} />
                         )}
 
                         <Padding bottomPerc={2} />
 
                         <ReviewContainer
                             revieweeId={dentist.id}
-                            revieweeName={dentist && dentist.user ? dentist.user.name : ""}
+                            revieweeName={
+                                dentist && dentist.user ? dentist.user.name : ''
+                            }
                             reviews={reviews}
-                            rows={this && this.state ? this.state.reviewRowNum : 1}
+                            rows={
+                                this && this.state ? this.state.reviewRowNum : 1
+                            }
                         />
                     </DentistReviewsDiv>
 
-                    <ShowMore className="center" onClick={this.handleReviewShowMore}>
+                    <ShowMore
+                        className="center"
+                        onClick={this.handleReviewShowMore}
+                    >
                         <DownArrow icon="downArrow" width="20px" />
                         Show more
                     </ShowMore>
-
                 </DetailsDiv>
             </div>
         );
@@ -357,4 +409,7 @@ function mapStateToProps(state) {
         reviews: state.reviews.all
     };
 }
-export default connect(mapStateToProps, actions)(Profile);
+export default connect(
+    mapStateToProps,
+    actions
+)(Profile);

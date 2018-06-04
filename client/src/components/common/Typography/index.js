@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { space } from 'styled-system';
 
 export default styled.span`
   /* Font Sizes */
@@ -35,4 +36,6 @@ export default styled.span`
   /* Misc */
   ${props => props.underline && 'text-decoration: underline;'}
   ${props => props.capitalize && 'text-transform: capitalize;'}
+
+  ${space}
 `;

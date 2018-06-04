@@ -10,6 +10,14 @@ import * as actions from '../actions';
 // TODO change route to just be /listings:id and not /office/listings
 // with graphql integration, latter is unnecessary
 class OfficeResultIndex extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            isModalOpen: false
+        };
+    }
+
     componentDidMount() {
         this.listing_id = this.props.match.params.id;
 
@@ -46,27 +54,19 @@ class OfficeResultIndex extends Component {
         }
     }
 
-    openModal(modal_id) {
-        const modal = document.getElementById(modal_id);
-        const modal_overlay = document.getElementById('modal-overlay');
-        modal.classList.add('open');
-        modal_overlay.classList.add('open');
-    }
+    handleOpenModal = () => {
+        this.setState({ isModalOpen: true });
+    };
 
-    closeModals() {
-        const modals = document.getElementsByClassName('modal');
-        const modal_overlay = document.getElementById('modal-overlay');
-        for (const modal of modals) {
-            modal.classList.remove('open');
-        }
-        modal_overlay.classList.remove('open');
-    }
+    handleCloseModal = () => {
+        this.setState({ isModalOpen: false });
+    };
 
     handleBookNow = () => {
         const { auth } = this.props;
 
         if (auth) {
-            this.openModal('reservation_options');
+            this.handleOpenModal();
         } else {
             this.props.toggleLoginModal();
         }
@@ -154,22 +154,12 @@ class OfficeResultIndex extends Component {
                     </div>
                 </div>
 
-                <div
-                    id="reservation_options"
-                    className="modal"
-                    style={{ overflow: 'scroll' }}
-                >
-                    <ReservationOptions
-                        listing={listing}
-                        office={office}
-                        auth={this.props.auth}
-                    />
-                </div>
-                <div
-                    id="modal-overlay"
-                    onClick={() => {
-                        this.closeModals();
-                    }}
+                <ReservationOptions
+                    open={this.state.isModalOpen}
+                    onClose={this.handleCloseModal}
+                    listing={listing}
+                    office={office}
+                    auth={this.props.auth}
                 />
 
                 <div className="bookNow">
@@ -198,10 +188,10 @@ class OfficeResultIndex extends Component {
                             </button>
                             {auth &&
                                 !auth.dentist && (
-                                <p className="red-text">
+                                    <p className="red-text">
                                         Please create a dentist profile
-                                </p>
-                            )}
+                                    </p>
+                                )}
                         </div>
                     </div>
                 </div>
@@ -217,4 +207,7 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, actions)(OfficeResultIndex);
+export default connect(
+    mapStateToProps,
+    actions
+)(OfficeResultIndex);

@@ -10,6 +10,10 @@ import Select from './Select';
 import Option from './Option';
 import ProgressBar from './ProgressBar';
 import Chip from './Chip';
+import Box from './Box';
+import Modal from './Modal';
+import Checkbox from './Checkbox';
+import Flex from './Flex';
 
 export {
     Chip,
@@ -23,5 +27,9 @@ export {
     Input,
     Select,
     Option,
-    ProgressBar
+    ProgressBar,
+    Box,
+    Modal,
+    Checkbox,
+    Flex
 };

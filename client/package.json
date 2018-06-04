@@ -40,7 +40,8 @@
     "redux": "^3.7.2",
     "redux-form": "^7.3.0",
     "redux-thunk": "^2.2.0",
-    "styled-components": "^3.2.6"
+    "styled-components": "^3.2.6",
+    "styled-system": "^2.2.5"
   },
   "scripts": {
     "start": "env-cmd ./config/security.env.local react-scripts start",
