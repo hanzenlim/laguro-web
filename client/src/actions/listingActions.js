@@ -10,8 +10,8 @@ export const fetchListings = () => async dispatch => {
     });
 };
 
-export const queryListings = (key, value) => async dispatch => {
-    const listings = await Listing.query(key, value);
+export const queryListings = (key, value, sortKey = null, rangeStart = null, rangeEnd = null) => async dispatch => {
+    const listings = await Listing.query(key, value, sortKey, rangeStart, rangeEnd);
     dispatch({
         type: FETCH_LISTINGS,
         payload: listings

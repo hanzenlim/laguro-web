@@ -45,8 +45,8 @@ export const formatListingTime = (startTime, endTime) => {
     // if listing is not in the same year, display full length format
     if (!moment(startTime).isSame(moment(), 'year')) {
         return (
-            moment(startTime).format(`l, ${time} - `) +
-            moment(endTime).format(`l, ${time}`)
+            moment(startTime).format(`LL, ${time} - `) +
+            moment(endTime).format(`LL, ${time}`)
         );
     }
 

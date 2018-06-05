@@ -45,6 +45,9 @@ const queryListingsQuery = `
         queryListings(input: $input) {
             office{id}
             ${listingFragment}
+            reservations {
+                id
+            }
         }
     }
 `;

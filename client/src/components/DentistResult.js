@@ -114,8 +114,8 @@ class DentistResult extends Component {
                                         fontWeight="regular"
                                         color="black"
                                     >{`(${
-                                        this.props.rating_count
-                                    }) Reviews`}</Typography>
+                                            this.props.rating_count
+                                        }) Reviews`}</Typography>
                                 </Grid>
                                 <Padding bottom={7} />
                                 <Grid container>

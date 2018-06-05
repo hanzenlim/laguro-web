@@ -71,11 +71,6 @@ const Dentist = Loadable({
     loading: LoadingComponent
 });
 
-const Listing = Loadable({
-    loader: () => import('./Listing'),
-    loading: LoadingComponent
-});
-
 const Office = Loadable({
     loader: () => import('./Office'),
     loading: LoadingComponent
@@ -156,10 +151,6 @@ class App extends Component {
                                     auth={this.props.auth}
                                     path="/office/:office_id/listing/:id/edit"
                                     component={EditListing}
-                                />
-                                <Route
-                                    path="/office/:office_id/listing/:id"
-                                    component={Listing}
                                 />
                                 <PrivateRoute
                                     auth={this.props.auth}

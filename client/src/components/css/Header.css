@@ -91,6 +91,7 @@
   nav .sidenav-trigger {
     margin-left: 2%;
     margin-right: 2%;
+    height: 53px;
   }
 
   nav .sidenav-trigger i {
@@ -122,11 +123,11 @@
     margin-bottom: -8px;
   }
 
-  .sidenav svg {
+  /*.sidenav svg {
     margin-top: 10%;
     margin-left: 10%;
     margin-bottom: 7%;
-  }
+  }*/
 
   .sidenav footer {
     position: absolute;

@@ -8,7 +8,8 @@ import Button from '@material-ui/core/Button';
 
 import { required } from './formValidation';
 import * as actions from '../../actions';
-import Grid from '../common/Grid';
+import { Grid } from '../common/';
+import { Padding } from '../common/Spacing'
 import { getEntityName } from '../../util/entity';
 
 import '../css/forms/NewReview.css';
@@ -20,6 +21,13 @@ const ReviewSubmitButton = styled(Button)`
 
     && {
         text-transform: none;
+        min-width: 0;
+    }
+
+    @media screen and (min-width : 600px) {
+        && {
+            min-width: 88px;
+        } 
     }
 `;
 
@@ -65,6 +73,10 @@ const InputStarsDiv = styled.div`
     }
 `;
 
+const StyledPadding = styled(Padding)`
+    float: left;
+`;
+
 class NewReview extends Component {
     constructor(props) {
         super(props);
@@ -97,8 +109,11 @@ class NewReview extends Component {
         meta: { touched, error }
     }) => (
         <div className={className}>
-            <TextArea {...input} placeholder={placeholder} />
-            {touched && error && <span className="red-text">{error}</span>}
+            <TextArea
+                {...input}
+                placeholder={placeholder}
+            />
+            {(touched && error) ? <StyledPadding top={10}> <span className="red-text">{error}</span> </StyledPadding> : <StyledPadding />}
         </div>
     );
 

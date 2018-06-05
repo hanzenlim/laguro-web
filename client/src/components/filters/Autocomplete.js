@@ -67,13 +67,13 @@ class Autocomplete extends Component {
                                         : 'suggestion-item';
                                     const style = suggestion.active
                                         ? {
-                                              backgroundColor: '#fafafa',
-                                              cursor: 'pointer'
-                                          }
+                                            backgroundColor: '#fafafa',
+                                            cursor: 'pointer'
+                                        }
                                         : {
-                                              backgroundColor: '#ffffff',
-                                              cursor: 'pointer'
-                                          };
+                                            backgroundColor: '#ffffff',
+                                            cursor: 'pointer'
+                                        };
                                     return (
                                         <div
                                             {...getSuggestionItemProps(

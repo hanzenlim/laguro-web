@@ -3,173 +3,165 @@ import { connect } from 'react-redux';
 import Carousel from 'nuka-carousel';
 import styled from 'styled-components';
 import ReactStars from 'react-stars';
-import Button from '@material-ui/core/Button';
-
-import Icon from './Icon';
-import * as actions from '../actions';
-import { OFFICE, LISTINGS, REVIEWS } from '../util/strings';
-import { Typography, Link, Grid } from './common';
+import moment from 'moment';
+import * as actions from "../actions";
+import {
+    USER,
+    REVIEWS,
+    OFFICE,
+    OFFICE_ID,
+    START_TIME
+} from '../util/strings';
 import { formatListingTime } from '../util/timeUtil';
-import NewReview from './forms/NewReview';
+import Icon from './Icon';
 import ReviewContainer from './ReviewContainer';
+import { Box, Grid, Link, Modal, Typography, Button } from './common';
 import { Margin, Padding } from './common/Spacing';
+import ReservationOptions from './forms/ReservationOptions';
+import CreateDentistProfile from './forms/CreateDentistProfile';
+import NewReview from './forms/NewReview';
+import OfficePlaceholderBig from './images/office-placeholder-big.png';
 
-const Container = styled.div`
-    padding: 0 7px;
-    min-height: 100vh;
-`;
+let picHeight = window.innerWidth * 0.55;
+let padBackToListings = 0;
 
-const NameDiv = styled.div`
-    font-size: 36px;
-    margin-bottom: 1%;
-`;
+if (window.innerWidth > 600) {
+    picHeight = window.innerHeight - 170;
+    padBackToListings = 12;
+} else {
+    picHeight = window.innerWidth * 0.55;
+    padBackToListings  = 0;
+}
 
-const LocationDiv = styled.div`
-    font-size: 17px;
-`;
-
-const Container1 = styled.div`
+const StyledPicBox = styled(Box)`
     position: relative;
     width: 100%;
-    padding-top: 67%;
 `;
 
-const Container2 = styled.div`
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 100%;
-    width: 100%;
-`;
-
-const InfoDiv = styled.div`
-    margin-top: 0.7%;
-    margin-bottom: 2%;
-`;
-
-const DetailsDiv = styled.div`
+const StyledDetailsDiv = styled.div`
     display: block;
-    margin-left: 4%;
-    margin-right: 4%;
-    margin-bottom: 15%;
+    margin-left: auto;
+    margin-right: auto;
+    width: 92%;
     margin-top: 7%;
-
-    && @media screen and (min-width: 600px) {
+    @media screen and (min-width: 600px) {
         margin-top: 0;
-        margin-left: 25.5%;
-        margin-right: 25.5%;
-        margin-bottom: 4.5%;
+        margin-left: auto;
+        margin-right: auto;
+        width: 49vw;
     }
 `;
 
-const DetailsHeadingDiv = styled.div`
-    font-size: 24px;
+const StyledDetailsHeadingBox = styled(Box)`
     display: inline-block;
 `;
 
-const ShowMore = styled.div`
-    margin-top: 2%;
+const StyledShowMoreBox = styled(Box)`
     opacity: 0.4;
-    font-size: 11px;
     text-decoration: underline;
     clear: both;
     cursor: pointer;
 `;
 
-const StaffEquipment = styled.div`
-    font-size: 16px;
+const StyledEquipmentBox = styled(Box)`
     line-height: 30px;
+<<<<<<< HEAD
     color: #484e51;
+=======
+>>>>>>> cdf463b... Update Office detail page design; Remove listing; Implement booking modal
 `;
 
-const StyledAvailAppts = styled(Typography)`
+const StyledAvailListings = styled(Typography)`
     line-height: 30px;
-
     && {
-        text-transform: underline;
+        text-decoration: underline;
+        cursor: pointer;
     }
 `;
 
-const OfficeReviewsDiv = styled.div`
-    margin-top: 4.5%;
-    margin-bottom: 3%;
+const StyledOfficeReviewsDiv = styled.div`
     position: relative;
 `;
 
-const MapPinIcon = styled(Icon)`
+const StyledMapPinIcon = styled(Icon)`
     margin-right: 3px;
 `;
 
-const DownArrow = styled(Icon)`
-    margin-right: 1%;
+const StyledDownArrow = styled(Icon)`
+    margin-right: 6px;
 `;
 
-const OfficeCarousel = styled(Carousel)`
-    margin-top: 3px;
+const StyledOfficeCarousel = styled(Carousel)`
     position: relative;
+<<<<<<< HEAD
 
     @media screen and (min-width: 600px) {
+=======
+    @media screen and (min-width : 600px) {
+>>>>>>> cdf463b... Update Office detail page design; Remove listing; Implement booking modal
         margin-top: 0;
     }
 `;
 
-const CarouselButtonLeft = styled(Icon)`
+const StyledCarouselButtonLeftIcon = styled(Icon)`
     margin-left: 15px;
+<<<<<<< HEAD
 
     @media screen and (min-width: 600px) {
+=======
+    @media screen and (min-width : 600px) {
+>>>>>>> cdf463b... Update Office detail page design; Remove listing; Implement booking modal
         margin-left: 50px;
     }
 `;
 
-const CarouselButtonRight = styled(Icon)`
+const StyledCarouselButtonRightIcon = styled(Icon)`
     margin-right: 15px;
+<<<<<<< HEAD
 
     @media screen and (min-width: 600px) {
+=======
+    @media screen and (min-width : 600px) {
+>>>>>>> cdf463b... Update Office detail page design; Remove listing; Implement booking modal
         margin-right: 50px;
     }
 `;
 
-const BackToListingsDiv = styled.div`
+const StyledBackToListingsLink = styled(Link)`
     height: 45px;
     display: inline-block;
     margin-left: auto;
     margin-right: auto;
+<<<<<<< HEAD
     margin-top: 6%;
     margin-bottom: 3%;
 
     @media screen and (min-width: 600px) {
+=======
+    margin-top: 22px;
+    margin-bottom: 10px;
+    @media screen and (min-width : 600px) {
+>>>>>>> cdf463b... Update Office detail page design; Remove listing; Implement booking modal
         position: absolute;
         display: block;
         margin-left: 3%;
-        margin-top: 0.5%;
-        margin-bottom: 0%;
+        margin-top: 0;
+        margin-bottom: 0;
     }
 `;
 
-const BackToListingsTextDiv = styled.div`
+const StyledBackToListingsTextBox = styled(Box)`
     float: left;
     line-height: 45px;
     padding-left: 10px;
 `;
 
-const BackToListingsIcon = styled(Icon)`
+const StyledBackToListingsIcon = styled(Icon)`
     float: left;
 `;
 
-const NumChairsAvailIcon = styled(Icon)`
-    path {
-        stroke: #000;
-        stroke-width: 4px;
-        stroke-dasharray: 2, 2;
-        stroke-linejoin: round;
-        fill: none;
-    }
-`;
-
 const StyledReactStars = styled(ReactStars)`
-    line-height: 34px;
+    line-height: 35px;
     float: right;
 `;
 
@@ -180,26 +172,27 @@ const StyledAvailButton = styled(Button)`
         padding: 0;
         min-height: 18px;
         height: 22px;
-        color: white;
-        background-color: #67b620;
-        text-transform: none;
+        background-color: #67B620;
         min-width: 40px;
+        margin-left: -20px;
     }
 `;
 
-const StyledResButton = styled(Button)`
+const StyledResButton = StyledAvailButton.extend`
     && {
-        width: 75%;
-        font-size: 13px;
-        padding: 0;
-        min-height: 18px;
-        height: 22px;
-        color: white;
-        background-color: #f26b27;
-        text-transform: none;
-        min-width: 40px;
+        background-color: #F26B27;
     }
 `;
+
+const StyledCarouselImg = styled.img`
+    position: absolute;
+    width: 100%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: auto;
+`
 
 class OfficeResultIndex extends Component {
     constructor() {
@@ -207,151 +200,173 @@ class OfficeResultIndex extends Component {
         this.state = {
             reviewRowNum: 1,
             loaded: false,
-            listings: [],
-            availApptsInit: false
+            availListingsListings: false,
+            isModalOpen: false,
+            showReservationOptions: false
         };
         this.handleReviewShowMore = this.handleReviewShowMore.bind(this);
     }
 
+    componentWillMount() {
+        this.loadDentist();
+    }
+
     componentDidMount() {
         this.office_id = this.props.match.params.office_id;
-        this.props.getOffice(this.office_id, LISTINGS, REVIEWS);
+        this.props.getOffice(this.office_id, REVIEWS)
+        this.props.queryListings(OFFICE_ID, this.office_id, START_TIME, moment().utc().format());
     }
 
-    componentDidUpdate() {
-        if (
-            !this.state.availApptsInit &&
-            this.state.listings.length == 0 &&
-            this.props.office &&
-            !Array.isArray(this.props.office) &&
-            this.props.office.length != 0
-        ) {
-            this.loadListings();
-            this.setState({ availApptsInit: true });
+    async loadDentist() {
+        const { auth } = this.props;
+        if (!auth || !auth.dentist) {
+            return null;
         }
-    }
-
-    async loadListings() {
-        let listingsArray = [];
-        var i;
-        if (
-            this &&
-            this.props &&
-            this.props.office &&
-            this.props.office.listings
-        ) {
-            for (i = 0; i < this.props.office.listings.length; i++) {
-                await this.props.getListing(this.props.office.listings[i].id);
-                listingsArray.push(this.props.listing);
-            }
-        }
-
-        this.setState({ listings: listingsArray });
+        this.setState({ isLoading: true });
+        await this.props.getDentist(
+            auth.dentist.id,
+            USER
+        );
+        const { dentist } = this.props;
+        this.setState({ isLoading: false });
+        return dentist;
     }
 
     handleReviewShowMore() {
+        const reviews = this.props.reviews;
+        const rowNum = this.state.reviewRowNum;
+        if (reviews && reviews.length > rowNum * 3) {
+            this.setState({
+                reviewRowNum: Math.min(rowNum + 4, Math.ceil(reviews.length / 3)),
+            });
+        }
+    }
+
+    handleBookReservation(listing) {
+        const { auth } = this.props;
+
+        if (auth) {
+            this.setState({
+                isModalOpen: true,
+                listing
+            });
+        } else {
+            this.props.toggleLoginModal();
+        }
+    }
+
+    closeModal = () => {
         this.setState({
-            reviewRowNum: this.state.reviewRowNum + 1
+            isModalOpen: false,
+            listing: null
         });
+    };
+
+    handleSubmission() {
+        this.setState({ showReservationOptions: true });
+    }
+
+    dentistProfileExists() {
+        const { dentist } = this.props;
+        return dentist && Object.keys(dentist).length !== 0;
     }
 
     renderImages(office) {
-        if (!office.imageUrls || !office.imageUrls.length) {
-            return <div />;
+        
+        if (!(office.constructor === Object && Object.keys(office).length !== 0) || office && office.imageUrls && office.imageUrls.length === 0) {
+            return ([
+                <StyledPicBox pt={picHeight} key="1">
+                    <StyledCarouselImg src={OfficePlaceholderBig} alt="No image available" />
+                </StyledPicBox>,
+                <StyledPicBox pt={picHeight} key="2">
+                    <StyledCarouselImg src={OfficePlaceholderBig} alt="No image available" />
+                </StyledPicBox>,
+                <StyledPicBox pt={picHeight} key="3">
+                    <StyledCarouselImg src={OfficePlaceholderBig} alt="No image available" />
+                </StyledPicBox>
+            ]);
         } else {
             let imageUrls = office.imageUrls;
 
-            if (office && office.imageUrls && office.imageUrls.length < 3) {
-                imageUrls.push(imageUrls[0]);
-                if (imageUrls.length === 2) {
-                    imageUrls.push(imageUrls[0]);
-                }
-            }
+            if (Array.isArray(imageUrls)) {
+                imageUrls = imageUrls.slice();
+                imageUrls.splice(0, 0, imageUrls[imageUrls.length - 1]);
+                imageUrls.splice(imageUrls.length - 1, 1);
 
-            return imageUrls.map(url => (
-                <Container1 key={url}>
-                    <Container2 />
-                    <img className="photo-grid-listing-img center" src={url} />
-                </Container1>
-            ));
+                if (imageUrls.length < 3) {
+                    imageUrls.push(imageUrls[0]);
+                    if (imageUrls.length === 2) {
+                        imageUrls.push(imageUrls[0]);
+                    }
+                }
+
+                return imageUrls.map(url => (
+                    <StyledPicBox pt={picHeight} key={url}>
+                        <StyledCarouselImg src={url} alt="No image available" />
+                    </StyledPicBox>
+                ));
+            }
+            return null;
         }
     }
 
     renderEquipment(office) {
-        if (office && office.equipment && office.equipment.length) {
-            return office.equipment.map(equipment => (
-                <div key={equipment.name}>
-                    {equipment.name} - ${equipment.price}
+        const eq = office.equipment;
+        if (eq && Array.isArray(eq) && eq.length !== 0) {
+            return eq.map(e => (
+                <div key={e.name}>
+                    {e.name} - ${e.price}
                 </div>
             ));
+        } else {
+            return <div> No Equipment Available </div>;
         }
-        return <div>No Equipment Available</div>;
     }
 
-    renderAvailAppts(office) {
-        if (this.state.listings.length > 0) {
-            return this.state.listings.map((listing, index) => (
-                <Grid container key={index} spacing={8}>
-                    <Grid item xs={4}>
-                        <Link to={`/office/${office.id}/listing/${listing.id}`}>
-                            <StyledAvailAppts fontSize={4} color="darkGrey">
-                                {formatListingTime(
-                                    listing.startTime,
-                                    listing.endTime
-                                )}
-                            </StyledAvailAppts>
-                        </Link>
-                    </Grid>
-                    <Grid item xs={2}>
-                        <Link to={`/office/${office.id}/listing/${listing.id}`}>
-                            {!listing.reservations.length > 0 ? (
-                                <Margin topPerc={3}>
-                                    <StyledAvailButton>
-                                        {' '}
-                                        Available{' '}
-                                    </StyledAvailButton>{' '}
-                                </Margin>
-                            ) : (
-                                <StyledResButton> Reserved </StyledResButton>
-                            )}
-                        </Link>
-                    </Grid>
-                    <Grid item xs={5} />
-                </Grid>
-            ));
-        }
-
-        if (office && office.listings) {
-            return office.listings.map((listing, index) => (
-                <Grid container key={index} spacing={8}>
-                    <Grid item xs={4}>
-                        <StyledAvailAppts fontSize={4} color="darkGrey">
+    renderAvailListings(listings) {
+        if (Array.isArray(listings) && listings.length !== 0) {
+            return listings.filter(listing => moment(listing.startTime).isAfter(moment())).map((listing, index)=> (
+                [
+                    <Grid key={index*3} item xs={5}>
+                        <StyledAvailListings onClick={this.handleBookReservation.bind(this, listing)} size="t2" color="darkGrey">
                             {formatListingTime(
                                 listing.startTime,
                                 listing.endTime
                             )}
-                        </StyledAvailAppts>
+                        </StyledAvailListings>
+                    </Grid>,
+                    <Grid key={index*3+1} item xs={2}>
+                        {listing.reservations && !listing.reservations.length > 0 ?
+                            <Margin top={3}>
+                                <StyledAvailButton onClick={this.handleBookReservation.bind(this, listing)}> Available </StyledAvailButton>
+                            </Margin>
+                            :
+                            <Margin top={3}>
+                                <StyledResButton> Reserved </StyledResButton>
+                            </Margin>}
+                    </Grid>,
+                    <Grid key={index*3+2} item xs={5}>
                     </Grid>
-                    <Grid item xs={2}>
-                        <Margin topPerc={3}>
-                            <StyledAvailButton> Available </StyledAvailButton>{' '}
-                        </Margin>
-                    </Grid>
-                    <Grid item xs={5} />
-                </Grid>
+                ]
             ));
+        } else {
+            return <div> All listings currently sold out. </div>;
         }
     }
 
     render() {
-        const { office, auth, officeLoading, reviews } = this.props;
-
-        if (officeLoading) {
-            return <Container>Loading...</Container>;
+        let { office, auth, reviews, listings } = this.props;
+        const office_id = this.props.match.params.office_id;
+        if (office.id && office.id.valueOf() !== office_id.valueOf()) {
+            office = {};
+            listings = [];
+        } else if (!(office.constructor === Object && Object.keys(office).length !== 0)) {
+            listings = [];
+        } else if (office && office.listings && office.listings.length < listings.length) {
+            listings = [];
         }
 
         // calculate avg rating
-
         if (reviews && reviews.length) {
             this.avg_rating =
                 reviews
@@ -365,22 +380,15 @@ class OfficeResultIndex extends Component {
 
         return (
             <div>
-                <OfficeCarousel
+                <StyledOfficeCarousel
                     renderCenterLeftControls={({ previousSlide }) => (
-                        <CarouselButtonLeft
-                            icon="carouselButtonLeft"
-                            width="45px"
-                            className="carousel-control"
-                            onClick={previousSlide}
-                        />
+                        <StyledCarouselButtonLeftIcon icon="carouselButtonLeft" width="45px" className="carousel-control" onClick={previousSlide}/>
                     )}
                     renderCenterRightControls={({ nextSlide }) => (
-                        <CarouselButtonRight
-                            icon="carouselButtonRight"
-                            width="45px"
-                            className="carousel-control"
-                            onClick={nextSlide}
-                        />
+                        <StyledCarouselButtonRightIcon icon="carouselButtonRight" width="45px" className="carousel-control" onClick={nextSlide} />
+                    )}
+                    renderBottomCenterControls={() => (
+                        <div/ >
                     )}
                     slidesToShow={window.innerWidth >= 600 ? 3 : 1}
                     slideWidth={window.innerWidth >= 600 ? 1.88 : 1}
@@ -389,70 +397,69 @@ class OfficeResultIndex extends Component {
                     slideIndex={1}
                 >
                     {this.renderImages(office)}
-                </OfficeCarousel>
 
-                <InfoDiv className="center">
-                    <Link style={{ color: '#000' }} to={'/office/search'}>
-                        <BackToListingsDiv>
-                            <BackToListingsIcon
-                                icon="backToListings"
-                                width="45px"
-                            />
-                            <BackToListingsTextDiv>
-                                {' '}
-                                Back to office search{' '}
-                            </BackToListingsTextDiv>
-                        </BackToListingsDiv>
-                    </Link>
+                </StyledOfficeCarousel>
 
-                    <NameDiv>{office.name}</NameDiv>
+                <Padding bottom={padBackToListings} />
 
-                    <LocationDiv>
-                        <MapPinIcon icon="map-pin" width="15px" />
+                <div className="center">
+                    <StyledBackToListingsLink>
+                        <StyledBackToListingsIcon icon="backToListings" width="45px" />
+                        <StyledBackToListingsTextBox color="#000"> Back to office search </StyledBackToListingsTextBox>
+                    </StyledBackToListingsLink>
+
+                    <Box fontSize={36}>{office.name}</Box>
+                    <Padding bottom={12} />
+
+                    <Box fontSize={17}>
+                        <StyledMapPinIcon icon='map-pin' width="15px" />
                         {office.location}
-                    </LocationDiv>
+                    </Box>
 
-                    <Padding bottomPerc="1.5" />
+                    <Padding bottom={18} />
 
                     <div>
-                        <NumChairsAvailIcon
-                            icon="numChairsAvail"
-                            width="35px"
-                        />
-                        <Typography fontSize={4}>
-                            {' '}
-                            {office.numChairs}{' '}
-                        </Typography>
+                        <Icon icon="numChairsAvail" width="27px" />
+                        <Typography size="t4"> {office.numChairs} </Typography>
                         <div>
                             <Typography fontSize={1}>Chairs</Typography>
                         </div>
                     </div>
-                </InfoDiv>
+                </div>
 
-                <DetailsDiv>
-                    <DetailsHeadingDiv>Equipment Available</DetailsHeadingDiv>
+                <Padding bottom={12} />
+
+                <StyledDetailsDiv>
+                    <StyledDetailsHeadingBox fontSize={25}> Equipment Available </StyledDetailsHeadingBox>
 
                     <hr />
 
-                    <StaffEquipment>
-                        <Padding bottomPerc="1" />
+                    <Padding bottom={10} />
 
+                    <StyledEquipmentBox fontSize={18} color="#484E51">
+                        <Padding bottom="1" />
                         {this.renderEquipment(office)}
-                    </StaffEquipment>
+                    </StyledEquipmentBox>
 
-                    <Padding topPerc={5} />
+                    <Padding bottom={40} />
 
-                    <DetailsHeadingDiv>Available Listings</DetailsHeadingDiv>
+                    <StyledDetailsHeadingBox fontSize={25}>
+                        Current Listings
+                    </StyledDetailsHeadingBox>
 
                     <hr />
 
-                    {this.renderAvailAppts(office)}
+                    <Padding bottom={10} />
 
-                    <Padding topPerc={5} />
+                    <Grid container spacing={8}>
+                        {this.renderAvailListings(listings)}
+                    </Grid>
 
-                    <DetailsHeadingDiv>
+                    <Padding bottom={40} />
+
+                    <StyledDetailsHeadingBox fontSize={25}>
                         Reviews ({reviews.length})
-                    </DetailsHeadingDiv>
+                    </StyledDetailsHeadingBox>
 
                     <StyledReactStars
                         count={5}
@@ -463,7 +470,9 @@ class OfficeResultIndex extends Component {
 
                     <hr />
 
-                    <OfficeReviewsDiv>
+                    <Padding bottom={10} />
+
+                    <StyledOfficeReviewsDiv>
                         {auth ? (
                             <NewReview
                                 reviewee={office}
@@ -473,7 +482,7 @@ class OfficeResultIndex extends Component {
                         ) : (
                             <NewReview reviewee={office} type={OFFICE} />
                         )}
-                        <Padding bottomPerc={2} />
+                        <Padding bottom={12} />
 
                         <ReviewContainer
                             revieweeId={office.id}
@@ -481,16 +490,23 @@ class OfficeResultIndex extends Component {
                             reviews={reviews}
                             rows={this.state.reviewRowNum}
                         />
-                    </OfficeReviewsDiv>
+                    </StyledOfficeReviewsDiv>
 
-                    <ShowMore
-                        className="center"
-                        onClick={this.handleReviewShowMore}
-                    >
-                        <DownArrow icon="downArrow" width="20px" />
-                        Show more
-                    </ShowMore>
-                </DetailsDiv>
+                    {reviews.length > 0 && reviews.length > this.state.reviewRowNum * 3 && auth &&
+                        <StyledShowMoreBox fontSize={11} className="center" onClick={this.handleReviewShowMore}>
+                            <StyledDownArrow icon="downArrow" width="20px" />
+                            Show more
+                        </StyledShowMoreBox>}
+                </StyledDetailsDiv>
+
+                <Modal closable open={this.state.isModalOpen} onClose={this.closeModal}>
+                    {!this.state.showReservationOptions && !this.dentistProfileExists() && <CreateDentistProfile handleSubmission={this.handleSubmission.bind(this)} />}
+                    { (this.dentistProfileExists() ) && <ReservationOptions
+                        listing={this.state.listing}
+                        office={office}
+                        auth={auth}
+                    />}
+                </Modal>
             </div>
         );
     }
@@ -498,10 +514,9 @@ class OfficeResultIndex extends Component {
 
 function mapStateToProps(state) {
     return {
-        officeLoading: state.offices.isFetching,
-        listingLoading: state.listings.isFetching,
-        listing: state.listings.selected,
+        listings: state.listings.all,
         office: state.offices.selected,
+        dentist: state.dentists.selectedDentist,
         auth: state.auth,
         reviews: state.reviews.all
     };
