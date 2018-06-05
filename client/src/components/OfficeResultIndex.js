@@ -151,8 +151,9 @@ class OfficeResultIndex extends Component {
 
         return (
             <ViewToggle>
-                {options.map(view => (
+                {options.map((view, index) => (
                     <ViewOption
+                        key={index}
                         onClick={() => this.toggleView(view)}
                         active={this.state.activeView === view}
                     >

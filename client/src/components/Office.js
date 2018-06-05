@@ -3,14 +3,13 @@ import { connect } from "react-redux";
 import Carousel from "nuka-carousel";
 import styled from 'styled-components';
 import ReactStars from "react-stars";
-import moment from 'moment';
 import Button from '@material-ui/core/Button';
-import {Link as LaguroLink} from 'react-router-dom';
 
 import Icon from './Icon';
 import * as actions from "../actions";
 import { OFFICE, LISTINGS, REVIEWS } from "../util/strings";
 import { Typography, Link, Grid} from './common';
+import { formatListingTime } from '../util/timeUtil';
 import NewReview from './forms/NewReview';
 import ReviewContainer from './ReviewContainer';
 import { Margin, Padding } from './common/Spacing';
@@ -55,15 +54,15 @@ const DetailsDiv = styled.div`
     margin-left: 4%;
     margin-right: 4%;
     margin-bottom: 15%;
-    margin-top: 7%
+    margin-top: 7%;
 
-    @media screen and (min-width : 600px) {
+    && @media screen and (min-width: 600px) {
         margin-top: 0;
         margin-left: 25.5%;
         margin-right: 25.5%;
         margin-bottom: 4.5%;
     }
-`
+`;
 
 const DetailsHeadingDiv = styled.div`
     font-size: 24px;
@@ -282,41 +281,55 @@ class OfficeResultIndex extends Component {
 
     renderAvailAppts(office) {
         if (this.state.listings.length > 0) {
-            return this.state.listings.map(listing => (
-                [<Grid item xs={4}>
-                    <LaguroLink to={`/office/${office.id}/listing/${listing.id}`} >
-                        <StyledAvailAppts size="t2" color="darkGrey">
-                            {moment(listing.startTime).format(
-                                'MMMM D, YYYY h:mm - '
+            return this.state.listings.map((listing, index) => (
+                <Grid container key={index} spacing={8}>
+                    <Grid item xs={4}>
+                        <Link to={`/office/${office.id}/listing/${listing.id}`}>
+                            <StyledAvailAppts size="t2" color="darkGrey">
+                                {formatListingTime(
+                                    listing.startTime,
+                                    listing.endTime
+                                )}
+                            </StyledAvailAppts>
+                        </Link>
+                    </Grid>
+                    <Grid item xs={2}>
+                        <Link to={`/office/${office.id}/listing/${listing.id}`}>
+                            {!listing.reservations.length > 0 ? (
+                                <Margin topPerc={3}>
+                                    <StyledAvailButton>
+                                        {' '}
+                                        Available{' '}
+                                    </StyledAvailButton>{' '}
+                                </Margin>
+                            ) : (
+                                <StyledResButton> Reserved </StyledResButton>
                             )}
-                            {moment(listing.endTime).format('h:mm a')}
-                        </StyledAvailAppts>
-                    </LaguroLink>
-                </Grid>,
-                <Grid item xs={2}>
-                    <LaguroLink to={`/office/${office.id}/listing/${listing.id}`} >
-                        {!listing.reservations.length > 0 ? <Margin topPerc={3}><StyledAvailButton> Available </StyledAvailButton> </Margin>: <StyledResButton> Reserved </StyledResButton>}
-                    </LaguroLink>
-                </Grid>,
-                <Grid item xs={5}>
-                </Grid>]
+                        </Link>
+                    </Grid>
+                    <Grid item xs={5} />
+                </Grid>
             ));
         }
+
         if (office && office.listings) {
-            return office.listings.map(listing => (
-                [<Grid item xs={4}>
-                    <StyledAvailAppts size="t2" color="darkGrey">
-                        {moment(listing.startTime).format(
-                            'MMMM D, YYYY h:mm - '
-                        )}
-                        {moment(listing.endTime).format('h:mm a')}
-                    </StyledAvailAppts>
-                </Grid>,
-                <Grid item xs={2}>
-                    <Margin topPerc={3}><StyledAvailButton> Available </StyledAvailButton> </Margin>
-                </Grid>,
-                <Grid item xs={5}>
-                </Grid>]
+            return office.listings.map((listing, index) => (
+                <Grid container key={index} spacing={8}>
+                    <Grid item xs={4}>
+                        <StyledAvailAppts size="t2" color="darkGrey">
+                            {formatListingTime(
+                                listing.startTime,
+                                listing.endTime
+                            )}
+                        </StyledAvailAppts>
+                    </Grid>
+                    <Grid item xs={2}>
+                        <Margin topPerc={3}>
+                            <StyledAvailButton> Available </StyledAvailButton>{' '}
+                        </Margin>
+                    </Grid>
+                    <Grid item xs={5} />
+                </Grid>
             ));
         }
     }
@@ -409,9 +422,7 @@ class OfficeResultIndex extends Component {
 
                     <hr />
 
-                    <Grid container spacing={8}>
-                        {this.renderAvailAppts(office)}
-                    </Grid>
+                    {this.renderAvailAppts(office)}
 
                     <Padding topPerc={5} />
 

@@ -10,6 +10,7 @@ import { Padding } from './common/Spacing';
 import * as actions from '../actions';
 import { PAYMENT_OPTIONS, APPOINTMENT, DENTIST } from '../util/strings';
 import { stripeKey } from '../config/keys';
+import { formatListingTime } from '../util/timeUtil';
 
 const Wrapper = styled.div`
     background-color: #F8F9FA;
@@ -147,12 +148,7 @@ class Payment extends Component {
             .replace(/ /g, '+')
             .split(',');
 
-        const timeFormat = 'hh:mma';
-
-        const formattedOpeningTime = moment(startTime).format(timeFormat);
-        const formattedClosingTime = moment(endTime).format(timeFormat);
-
-        return `${formattedOpeningTime} - ${formattedClosingTime}`;
+        return formatListingTime(startTime, endTime);
     };
 
     renderDate = time => {

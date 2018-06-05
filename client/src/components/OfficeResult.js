@@ -24,7 +24,7 @@ const Image = styled.img`
     object-fit: cover;
 `;
 
-const AvailableTime = styled(Link)`
+const AvailableTime = styled.div`
     min-height: 17px;
     height: auto;
     display: flex;
@@ -64,10 +64,10 @@ class OfficeResult extends Component {
                 <AvailableTime
                     key={listing.id}
                     onClick={e => e.stopPropagation()}
-                    to={`/office/${listing.officeId}/listing/${listing.id}`}
+                    to={`/office/${listing.officeId}`}
                 >
                     <Typography size="t3" weight="regular" color="white">
-                        {moment(listing.time_available).format('MMM D, h a')}
+                        {moment(listing.startTime).format('MMM D, h a')}
                     </Typography>
                 </AvailableTime>
             ));
@@ -122,7 +122,7 @@ class OfficeResult extends Component {
                                 <Grid container alignItems="center">
                                     <ReactStars
                                         count={5}
-                                        size="10"
+                                        size={10}
                                         edit={false}
                                         value={this.props.avg_rating}
                                     />

@@ -37,6 +37,34 @@ export const calculateTimeSlotIndex = (baseTime, currentTime) => {
     );
 };
 
+// takes two times and formats their display based on when those times are
+export const formatListingTime = (startTime, endTime) => {
+    const time = 'h:mm a';
+    const day = 'MMMM D';
+
+    // if listing is not in the same year, display full length format
+    if (!moment(startTime).isSame(moment(), 'year')) {
+        return (
+            moment(startTime).format(`l, ${time} - `) +
+            moment(endTime).format(`l, ${time}`)
+        );
+    }
+
+    // if listing start time and end time are different days, display day for both start and end time
+    if (!moment(startTime).isSame(moment(endTime), 'day')) {
+        return (
+            moment(startTime).format(`${day}, ${time} - `) +
+            moment(endTime).format(`${day}, ${time}`)
+        );
+    }
+
+    // if listing start time and end time are same day, display condensed format
+    return (
+        moment(startTime).format(`${day}, ${time} - `) +
+        moment(endTime).format(`${time}`)
+    );
+};
+
 // get startTime of an index where each block except the last is of length
 // DEFAULT_APPOINTMENT_WINDOW_SIZE, with initial block starting with startTime
 export const getStartTime = (index, startTime) => {
