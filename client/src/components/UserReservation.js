@@ -9,6 +9,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import { Typography, Grid, Card, Divider } from './common';
 import { Padding, Margin } from './common/Spacing';
+import { formatListingTime } from '../util/timeUtil';
 
 const ListingImage = styled.img`
     height: 140px;
@@ -62,10 +63,7 @@ class UserOffice extends Component {
     render() {
         const { reservation } = this.props;
         const { office } = reservation;
-
-        const formattedTime =
-            moment(reservation.startTime).format('M/D, h:mm - ') +
-            moment(reservation.endTime).format('h:mm a');
+        const { startTime, endTime } = reservation;
 
         const { reviews } = office;
 
@@ -191,7 +189,7 @@ class UserOffice extends Component {
                                     <Padding right={4} />
 
                                     <Typography size="t4">
-                                        {formattedTime}
+                                        {formatListingTime(startTime, endTime)}
                                     </Typography>
                                 </Grid>
 

@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 import { Typography, Card, Button, Divider, Link, Grid } from './common';
 import { Padding } from './common/Spacing';
-
+import { formatListingTime } from '../util/timeUtil';
 import * as actions from '../actions';
 
 const Wrapper = styled.div`
@@ -68,9 +68,7 @@ class PaymentSuccess extends Component {
         let { startTime, endTime } =
             type === 'appointment' ? appointment : reservation;
 
-        return `${moment(startTime).format('h:mm a')} - ${moment(
-            endTime
-        ).format('h:mm a')}`;
+        return formatListingTime(startTime, endTime);
     };
 
     renderDate = startDate => {

@@ -9,6 +9,7 @@ import moment from 'moment';
 
 import { Chip, Typography, Grid, Button } from './common';
 import { Padding } from './common/Spacing';
+import { formatListingTime } from '../util/timeUtil';
 
 class OfficeListing extends Component {
     confirmDeleteListing(listing) {
@@ -126,10 +127,10 @@ class OfficeListing extends Component {
                 >
                     <Grid container justify="space-between">
                         <Typography>
-                            {moment(listing.startTime).format(
-                                'MMM D, h:mm a - '
+                            {formatListingTime(
+                                listing.startTime,
+                                listing.endTime
                             )}
-                            {moment(listing.endTime).format('h:mm a')}
                         </Typography>
                         {reservationsExist ? (
                             <Chip label="Reserved" />
