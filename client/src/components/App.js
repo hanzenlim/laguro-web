@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Router, Route, Switch } from 'react-router-dom';
+import { ThemeProvider } from 'styled-components';
 import { connect } from 'react-redux';
 import Loadable from 'react-loadable';
 import * as actions from '../actions';
@@ -12,6 +13,7 @@ import LoginModal from './LoginModal';
 import { DENTIST } from '../util/strings';
 import NotFound from './NotFound';
 import Footer from './Footer';
+import theme from '../theme';
 
 import './App.css';
 
@@ -85,7 +87,6 @@ const PaymentSuccess = Loadable({
     loading: LoadingComponent
 });
 
-
 const PaymentHistory = Loadable({
     loader: () => import('./PaymentHistory'),
     loading: LoadingComponent
@@ -103,9 +104,7 @@ const PrivateRoute = ({ auth, path, component: Component, ...props }) => (
                 <Component {...props} />
             ) : (
                 <div className="center-align stretch_height">
-                    <p>
-                        You must log in to view the page
-                    </p>
+                    <p>You must log in to view the page</p>
                     <a
                         className="login waves-effect btn light-blue lighten-2"
                         href="/auth/google"
@@ -125,7 +124,7 @@ class App extends Component {
 
     render() {
         return (
-            <div>
+            <ThemeProvider theme={theme}>
                 <Router history={history}>
                     <div>
                         <Header toggleShowModal={this.props.toggleLoginModal} />
@@ -213,7 +212,7 @@ class App extends Component {
                         <Footer />
                     </div>
                 </Router>
-            </div>
+            </ThemeProvider>
         );
     }
 }
@@ -225,4 +224,7 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, actions)(App);
+export default connect(
+    mapStateToProps,
+    actions
+)(App);

@@ -59,13 +59,34 @@ class Appointments extends Component {
         return timeslots;
     }
 
+    handleBookAppointment = event => {
+        const { startTime } = this.props.reservation;
+
+        const { currentTarget } = event;
+        const index = currentTarget.getAttribute('data-index');
+        const durationToNextAppointment = currentTarget.getAttribute(
+            'data-durationToNextAppointment'
+        );
+
+        this.props.onBookAppointment(
+            getStartTime(index, startTime).format(),
+            durationToNextAppointment
+        );
+    };
+
     render() {
         const { auth, dentist, reservation } = this.props;
         const timeslots = this.calculateTimeslots();
         return timeslots.map((durationToNextAppointment, index) => (
             <div key={index}>
                 {durationToNextAppointment !== 0 ? (
-                    <div>
+                    <div
+                        data-index={index}
+                        data-durationToNextAppointment={
+                            durationToNextAppointment
+                        }
+                        onClick={this.handleBookAppointment}
+                    >
                         <a
                             className="light-green-text text-accent-4 dropdown-trigger"
                             style={{ cursor: 'pointer' }}
