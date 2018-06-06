@@ -85,7 +85,6 @@ const PaymentSuccess = Loadable({
     loading: LoadingComponent
 });
 
-
 const PaymentHistory = Loadable({
     loader: () => import('./PaymentHistory'),
     loading: LoadingComponent
@@ -96,6 +95,11 @@ const LandlordOnboarding = Loadable({
     loading: LoadingComponent
 });
 
+const Payout = Loadable({
+    loader: () => import('./Payout'),
+    loading: LoadingComponent
+});
+
 const PrivateRoute = ({ auth, path, component: Component, ...props }) => (
     <Route
         render={() =>
@@ -103,9 +107,7 @@ const PrivateRoute = ({ auth, path, component: Component, ...props }) => (
                 <Component {...props} />
             ) : (
                 <div className="center-align stretch_height">
-                    <p>
-                        You must log in to view the page
-                    </p>
+                    <p>You must log in to view the page</p>
                     <a
                         className="login waves-effect btn light-blue lighten-2"
                         href="/auth/google"
@@ -201,6 +203,11 @@ class App extends Component {
                                 auth={this.props.auth}
                                 path="/payment-history"
                                 component={PaymentHistory}
+                            />
+                            <PrivateRoute
+                                auth={this.props.auth}
+                                path="/payout"
+                                component={Payout}
                             />
                             <Route path="/" component={Landing} />
                             {/* Catch all unmatched routes. */}

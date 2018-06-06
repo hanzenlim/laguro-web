@@ -13,6 +13,8 @@ export const APPOINTMENTS = 'appointments';
 export const REVIEW = 'review';
 export const REVIEWS = 'reviews';
 export const PAYMENT_OPTIONS = 'PAYMENT_OPTIONS';
+export const PAYOUT_ACCOUNT = 'PAYMENT_ACCOUNT';
+export const PAYOUT_LOGIN = 'PAYOUT_LOGIN';
 
 export const DENTIST_ID = 'dentistId';
 export const PATIENT_ID = 'patientId';

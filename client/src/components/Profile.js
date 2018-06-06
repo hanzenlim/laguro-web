@@ -175,7 +175,7 @@ class Profile extends Component {
             return <div />;
         }
 
-        if (dentistLoading) return <div className="stretch_height"></div>;
+        if (dentistLoading) return <div className="stretch_height" />;
 
         return (
             <div className="profile_container stretch_height">
@@ -217,15 +217,15 @@ class Profile extends Component {
                     )}
                     {auth.dentist &&
                         !!reviews.length && (
-                        <div className="reviews profile-section">
-                            <h5>{`Reviews for ${auth.name}`}</h5>
-                            <ReviewContainer
-                                revieweeId={dentist.id}
-                                revieweeName={auth.name}
-                                reviews={reviews}
-                            />
-                        </div>
-                    )}
+                            <div className="reviews profile-section">
+                                <h5>{`Reviews for ${auth.name}`}</h5>
+                                <ReviewContainer
+                                    revieweeId={dentist.id}
+                                    revieweeName={auth.name}
+                                    reviews={reviews}
+                                />
+                            </div>
+                        )}
                 </div>
             </div>
         );

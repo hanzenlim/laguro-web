@@ -2,7 +2,7 @@
 module.exports = {
     // Google OAuth 2.0
     googleClientID:
-		'358412081949-ch5mfbcol5ko4h7lp8pegb2qrt1ig3m0.apps.googleusercontent.com',
+        '358412081949-ch5mfbcol5ko4h7lp8pegb2qrt1ig3m0.apps.googleusercontent.com',
     googleClientSecret: '3jIFuNKGAuNQ5tuDbgWdm1Yu',
 
     // filestack api
@@ -10,6 +10,6 @@ module.exports = {
 
     // Cookie-session
     cookieKey: 'aoiergnpiuarengpiuanrpiughpiuabspevijnwasdjnglij',
-    stripeKey: 'pk_test_N4qTNFY0FVDmA36hKINg7LaP',
-    googleMapApiKey: 'AIzaSyAG734-AbLRsC-h0DfNxcCGWRuSOPK4Hrs',
+    stripeKey: 'pk_test_z6zaOFhsmnBHG6WCN8LH6wTR',
+    googleMapApiKey: 'AIzaSyAG734-AbLRsC-h0DfNxcCGWRuSOPK4Hrs'
 };
