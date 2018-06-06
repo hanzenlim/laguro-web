@@ -2,10 +2,25 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import ReactStars from 'react-stars';
+import Tooltip from '@material-ui/core/Tooltip';
+import styled from 'styled-components';
 
 import OfficeListing from './OfficeListing';
 import { Typography, Grid, Button } from './common';
-import { Padding } from './common/Spacing';
+import { Padding, Margin } from './common/Spacing';
+
+const StyledWideGrid = styled(Grid)`
+    width: 100%;
+`;
+
+const StyledWideLink = styled(Link)`
+    width: 100%;
+`;
+
+const StyledWideButton = styled(Button)`
+    width: 100%;
+    padding: 0 !important;
+`;
 
 class UserOffice extends Component {
     state = {
@@ -72,133 +87,172 @@ class UserOffice extends Component {
 
         const officeListings = this.getSortedListings(office);
         return (
-            <Grid container withborder="true" direction="column">
-                <Padding horizontal={20} vertical={10}>
-                    <Grid container direction="column">
-                        <Grid container wrap="nowrap" justify="space-between">
-                            <Grid item xs={9}>
-                                <Grid container direction="column">
-                                    <Link
-                                        className="blue-text text-darken-2"
-                                        to={`/office/${office.id}`}
-                                    >
-                                        <Typography color="black" size="t2">
-                                            {office.name}
+            <Margin vertical={10}>
+                <Grid container withborder="true" direction="column">
+                    <Padding horizontal={20} vertical={10}>
+                        <Grid container direction="column">
+                            <Grid
+                                container
+                                wrap="nowrap"
+                                justify="space-between"
+                            >
+                                <Grid item xs={9}>
+                                    <Grid container direction="column">
+                                        <Link
+                                            className="blue-text text-darken-2"
+                                            to={`/office/${office.id}`}
+                                        >
+                                            <Typography color="black" size="t2">
+                                                {office.name}
+                                            </Typography>
+                                        </Link>
+                                        <Typography size="t4">
+                                            {office.location}
                                         </Typography>
-                                    </Link>
-                                    <Typography size="t4">
-                                        {office.location}
-                                    </Typography>
+                                        <Grid
+                                            container
+                                            wrap="nowrap"
+                                            alignItems="center"
+                                        >
+                                            <ReactStars
+                                                count={5}
+                                                value={this.avg_rating}
+                                                size={12}
+                                                edit={false}
+                                            />
+                                            <Padding horizontal={4}>
+                                                <small>{`${
+                                                    this.rating_count
+                                                } Reviews`}</small>
+                                            </Padding>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                                <Grid item xs={3}>
                                     <Grid
                                         container
-                                        wrap="nowrap"
+                                        direction="column"
                                         alignItems="center"
                                     >
-                                        <ReactStars
-                                            count={5}
-                                            value={this.avg_rating}
-                                            size={12}
-                                            edit={false}
-                                        />
-                                        <Padding horizontal={4}>
-                                            <small>{`${
-                                                this.rating_count
-                                            } Reviews`}</small>
-                                        </Padding>
+                                        <StyledWideLink to={`/listing/new`}>
+                                            <Grid
+                                                container
+                                                wrap="nowrap"
+                                                alignItems="center"
+                                                justify="flex-start"
+                                            >
+                                                <Typography color="black">
+                                                    <i className="material-icons">
+                                                        playlist_add
+                                                    </i>
+                                                </Typography>
+                                                <Padding horizontal={6} />
+                                                <Typography
+                                                    size="t4"
+                                                    weight="medium"
+                                                    color="black"
+                                                >
+                                                    Add Listing
+                                                </Typography>
+                                            </Grid>
+                                        </StyledWideLink>
+                                        <Margin vertical={2} />
+                                        <StyledWideLink
+                                            to={`/office/${office.id}/edit`}
+                                        >
+                                            <Grid
+                                                container
+                                                wrap="nowrap"
+                                                alignItems="center"
+                                                justify="flex-start"
+                                            >
+                                                <Typography color="black">
+                                                    <i className="material-icons tiny">
+                                                        edit
+                                                    </i>
+                                                </Typography>
+                                                <Padding horizontal={6} />
+                                                <Typography
+                                                    size="t5"
+                                                    color="black"
+                                                >
+                                                    Edit Office
+                                                </Typography>
+                                            </Grid>
+                                        </StyledWideLink>
+                                        <Tooltip
+                                            id="tooltip-right"
+                                            title={
+                                                officeListings.length
+                                                    ? 'Delete all listings for this office first'
+                                                    : ''
+                                            }
+                                            placement="right"
+                                        >
+                                            <StyledWideGrid item>
+                                                <StyledWideButton
+                                                    disabled={
+                                                        !!officeListings.length
+                                                    }
+                                                    onClick={this.confirmDeleteOffice.bind(
+                                                        this,
+                                                        office
+                                                    )}
+                                                >
+                                                    <Grid
+                                                        container
+                                                        wrap="nowrap"
+                                                        alignItems="center"
+                                                        justify="flex-start"
+                                                    >
+                                                        <Typography
+                                                            color={
+                                                                officeListings.length
+                                                                    ? 'silver'
+                                                                    : 'black'
+                                                            }
+                                                        >
+                                                            <i className="material-icons tiny">
+                                                                delete_forever
+                                                            </i>
+                                                        </Typography>
+                                                        <Padding
+                                                            horizontal={6}
+                                                        />
+                                                        <Typography
+                                                            color={
+                                                                officeListings.length
+                                                                    ? 'silver'
+                                                                    : 'black'
+                                                            }
+                                                            size="t5"
+                                                            weight="regular"
+                                                        >
+                                                            Delete
+                                                        </Typography>
+                                                    </Grid>
+                                                </StyledWideButton>
+                                            </StyledWideGrid>
+                                        </Tooltip>
                                     </Grid>
                                 </Grid>
                             </Grid>
-                            <Grid item xs={3}>
-                                <Grid
-                                    container
-                                    direction="column"
-                                    alignItems="center"
-                                >
-                                    <Link
-                                        to={`/listing/new`}
-                                        style={{ width: '100%' }}
-                                    >
-                                        <Grid
-                                            container
-                                            wrap="nowrap"
-                                            alignItems="center"
-                                            justify="flex-start"
-                                        >
-                                            <Typography color="black">
-                                                <i className="material-icons tiny">
-                                                    playlist_add
-                                                </i>
-                                            </Typography>
-                                            <Padding horizontal={6} />
-                                            <Typography size="t5" color="black">
-                                                Add Listing
-                                            </Typography>
-                                        </Grid>
-                                    </Link>
-                                    <Link
-                                        to={`/office/${office.id}/edit`}
-                                        style={{ width: '100%' }}
-                                    >
-                                        <Grid
-                                            container
-                                            wrap="nowrap"
-                                            alignItems="center"
-                                            justify="flex-start"
-                                        >
-                                            <Typography color="black">
-                                                <i className="material-icons tiny">
-                                                    edit
-                                                </i>
-                                            </Typography>
-                                            <Padding horizontal={6} />
-                                            <Typography size="t5" color="black">
-                                                Edit Office
-                                            </Typography>
-                                        </Grid>
-                                    </Link>
-                                    <Button
-                                        disabled={!!officeListings.length}
-                                        onClick={this.confirmDeleteOffice.bind(
-                                            this,
-                                            office
-                                        )}
-                                        style={{ width: '100%', padding: 0 }}
-                                    >
-                                        <Grid
-                                            container
-                                            wrap="nowrap"
-                                            alignItems="center"
-                                            justify="flex-start"
-                                        >
-                                            <Typography>
-                                                <i className="material-icons tiny">
-                                                    delete_forever
-                                                </i>
-                                            </Typography>
-                                            <Padding horizontal={6} />
-                                            <Typography size="t5">
-                                                Delete Office
-                                            </Typography>
-                                        </Grid>
-                                    </Button>
-                                </Grid>
-                            </Grid>
+
+                            <Padding vertical={8} />
+
+                            <Typography size="t3" weight="bold">
+                                Upcoming listings:
+                            </Typography>
+
+                            <Padding vertical={4} />
+
+                            <Grid>{officeListings}</Grid>
                         </Grid>
 
-                        <Padding vertical={8} />
-
-                        <Typography size="t3" weight="bold">
-                            Upcoming listings:
-                        </Typography>
-
-                        <Padding vertical={4} />
-
-                        <Grid>{officeListings}</Grid>
-                    </Grid>
-
-                    <Padding vertical={6} />
-                </Padding>
-            </Grid>
+                        <Padding vertical={6} />
+                    </Padding>
+                </Grid>
+            </Margin>
         );
     }
 }
