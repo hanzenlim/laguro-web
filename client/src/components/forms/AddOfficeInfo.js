@@ -8,6 +8,7 @@ import Autocomplete from '../filters/Autocomplete';
 import * as actions from '../../actions';
 import { DENTIST } from '../../util/strings';
 import history from '../../history';
+import { required } from '../../util/formValidation';
 
 import { Typography, Input, Grid, Button } from '../common';
 import { Padding } from '../common/Spacing';
@@ -231,8 +232,6 @@ class NewOffice extends Component {
         );
     }
 }
-
-const required = value => (value && value !== '' ? undefined : 'Required');
 
 function mapStateToProps(state) {
     return { auth: state.auth };

@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import equipmentList from '../../staticData/equipmentList';
 import { filestackKey } from '../../config/keys';
 import * as actions from '../../actions';
+import { required, isNum } from '../../util/formValidation';
 
 class EditOffice extends Component {
     constructor(props) {
@@ -197,7 +198,7 @@ class EditOffice extends Component {
                     />
                     <Field
                         name="numChairs"
-                        label="Number of numChairs"
+                        label="Number of Chairs"
                         className="col s12 m3"
                         placeholder="3"
                         component={this.renderField}
@@ -251,10 +252,6 @@ class EditOffice extends Component {
         );
     }
 }
-
-const required = value => (value && value !== '' ? undefined : 'Required');
-const isNum = value =>
-    value && !isNaN(value) ? undefined : 'Must be a number';
 
 function mapStateToProps(state) {
     return {

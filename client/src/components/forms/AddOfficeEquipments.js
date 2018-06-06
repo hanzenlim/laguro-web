@@ -7,6 +7,7 @@ import equipmentList from '../../staticData/equipmentList';
 import * as actions from '../../actions';
 import { DENTIST } from '../../util/strings';
 import history from '../../history';
+import { required, isNum } from '../../util/formValidation';
 
 import { Typography, Input, Grid, Button, Option, Select } from '../common';
 import { Padding } from '../common/Spacing';
@@ -265,10 +266,6 @@ class NewOffice extends Component {
         );
     }
 }
-
-const required = value => (value && value !== '' ? undefined : 'Required');
-const isNum = value =>
-    value && !isNaN(value) ? undefined : 'Must be a number';
 
 function mapStateToProps(state) {
     return { auth: state.auth };

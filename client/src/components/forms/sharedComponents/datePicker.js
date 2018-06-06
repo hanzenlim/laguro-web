@@ -1,7 +1,6 @@
 import React from 'react';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
-import Input from '../../common/Input';
 
 const getMinTime = (dateType, listing) => {
     if (!listing)
@@ -48,7 +47,6 @@ const renderDatePicker = ({
     <div className={className}>
         <label>{label}</label>
         <DatePicker
-            customInput={<Input />}
             selected={input.value}
             onChange={input.onChange.bind(this)}
             dateFormat="LLL"

@@ -15,8 +15,7 @@ import * as actions from '../../actions';
 import renderDatePicker from './sharedComponents/datePicker';
 import { DENTIST, OFFICES } from '../../util/strings';
 import { getNextHalfHour } from '../../util/timeUtil';
-
-const required = value => (value && value !== '' ? undefined : 'Required');
+import { dollarMinimum, required, isNum } from '../../util/formValidation';
 
 class NewListing extends Component {
     async componentWillMount() {
@@ -34,7 +33,14 @@ class NewListing extends Component {
 
     onSubmit(values) {
         if (
-            // if chosen duration is less than 2 hrs
+            // endTime should be after startTime
+            moment(values.endTime).isBefore(values.startTime)
+        ) {
+            throw new SubmissionError({
+                endTime: 'Closing time must be after opening time'
+            });
+        } else if (
+            // if chosen duration is less than 1 hrs
             moment(values.startTime)
                 .add(1, 'hours')
                 .isAfter(values.endTime)
@@ -290,12 +296,6 @@ class NewListing extends Component {
         );
     }
 }
-
-const dollarMinimum = value =>
-    value && value >= 1 ? undefined : 'Minimum hourly chair price is $1';
-
-const isNum = value =>
-    value && !isNaN(value) ? undefined : 'Must be a number';
 
 const mapStateToProps = state => {
     const selector = formValueSelector('newListing');

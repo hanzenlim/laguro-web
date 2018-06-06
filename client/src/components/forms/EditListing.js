@@ -13,8 +13,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 import renderDatePicker from './sharedComponents/datePicker';
 import * as actions from '../../actions';
-
-const required = value => (value && value !== '' ? undefined : 'Required');
+import { required, isNum } from '../../util/formValidation';
 
 class EditListing extends Component {
     constructor(props) {
@@ -292,9 +291,6 @@ class EditListing extends Component {
         );
     }
 }
-
-const isNum = value =>
-    value && !isNaN(value) ? undefined : 'Must be a number';
 
 const mapStateToProps = state => {
     const selector = formValueSelector('editListing');

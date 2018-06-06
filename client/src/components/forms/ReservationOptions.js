@@ -56,6 +56,15 @@ class ReservationOptions extends Component {
                 endTime: 'Minimum reservation is 1 hour',
                 _error: 'Invalid time frame, please correct error above'
             });
+        } else if (
+            // if chosen duration is greater than 8 hrs
+            moment(values.startTime)
+                .add(12, 'hours')
+                .isBefore(values.endTime)
+        ) {
+            throw new SubmissionError({
+                endTime: 'Max length for reservation is 12 hours'
+            });
         } else if (!values.acknowledge) {
             throw new SubmissionError({
                 _error: 'Please accept the terms to continue'

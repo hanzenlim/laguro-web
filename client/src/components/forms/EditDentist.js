@@ -6,6 +6,7 @@ import { DENTIST } from '../../util/strings';
 import Autocomplete from '../filters/Autocomplete';
 import procedureList from '../../staticData/procedureList';
 import * as actions from '../../actions';
+import { required } from '../../util/formValidation';
 
 class EditDentist extends Component {
     constructor(props) {
@@ -217,8 +218,6 @@ class EditDentist extends Component {
         );
     }
 }
-
-const required = value => (value && value !== '' ? undefined : 'Required');
 
 function mapStateToProps(state) {
     return {

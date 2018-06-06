@@ -9,6 +9,7 @@ import procedureList from '../../staticData/procedureList';
 import * as actions from '../../actions';
 import history from '../../history';
 import { DENTIST } from '../../util/strings';
+import { required } from '../../util/formValidation';
 
 class NewDentist extends Component {
     constructor(props) {
@@ -217,8 +218,6 @@ class NewDentist extends Component {
         );
     }
 }
-
-const required = value => (value && value !== '' ? undefined : 'Required');
 
 function mapStateToProps(state) {
     return {

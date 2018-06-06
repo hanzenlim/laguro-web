@@ -9,6 +9,7 @@ import equipmentList from '../../staticData/equipmentList';
 import * as actions from '../../actions';
 import { filestackKey } from '../../config/keys';
 import { DENTIST } from '../../util/strings';
+import { required, isNum } from '../../util/formValidation';
 
 class NewOffice extends Component {
     constructor(props) {
@@ -235,10 +236,6 @@ class NewOffice extends Component {
         );
     }
 }
-
-const required = value => (value && value !== '' ? undefined : 'Required');
-const isNum = value =>
-    value && !isNaN(value) ? undefined : 'Must be a number';
 
 function mapStateToProps(state) {
     return { auth: state.auth };

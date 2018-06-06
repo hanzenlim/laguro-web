@@ -6,13 +6,12 @@ import styled from 'styled-components';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 
+import { required } from '../../util/formValidation';
 import * as actions from '../../actions';
 import Grid from '../common/Grid';
 import { getEntityName } from '../../util/entity';
 
 import '../css/forms/NewReview.css';
-
-const required = value => (value && value !== '' ? undefined : 'Required');
 
 const ReviewSubmitButton = styled(Button)`
     width: 100%;
@@ -30,15 +29,15 @@ const theme = createMuiTheme({
             light: '#3E4446',
             main: '#3E4446',
             dark: '#3E4446',
-            contrastText: "#FFFFFF",
+            contrastText: '#FFFFFF'
         },
         secondary: {
             light: '#F15F14',
             main: '#F15F14',
             dark: '#F15F14',
-            contrastText: "#FFFFFF",
-        },
-    },
+            contrastText: '#FFFFFF'
+        }
+    }
 });
 
 const TextArea = styled.textarea`
@@ -51,7 +50,7 @@ const TextArea = styled.textarea`
     border-radius: 5px;
     line-height: 45px;
 
-    @media screen and (min-width : 600px) {
+    @media screen and (min-width: 600px) {
         line-height: 54.5px;
     }
 `;
@@ -61,7 +60,7 @@ const InputStarsDiv = styled.div`
     left: 45%;
     line-height: 58.5px;
 
-    @media screen and (min-width : 600px) {
+    @media screen and (min-width: 600px) {
         left: 66%;
     }
 `;
@@ -98,10 +97,7 @@ class NewReview extends Component {
         meta: { touched, error }
     }) => (
         <div className={className}>
-            <TextArea
-                {...input}
-                placeholder={placeholder}
-            />
+            <TextArea {...input} placeholder={placeholder} />
             {touched && error && <span className="red-text">{error}</span>}
         </div>
     );
@@ -112,13 +108,11 @@ class NewReview extends Component {
 
     render() {
         const { handleSubmit, auth } = this.props;
-        
+
         const disableReviewBtn = auth ? false : true;
 
         return (
-            <form
-                onSubmit={handleSubmit(this.onSubmit.bind(this))}
-            >
+            <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                 <Grid container spacing={8}>
                     <Grid item xs={10}>
                         <div>
@@ -142,12 +136,16 @@ class NewReview extends Component {
 
                     <Grid item xs={2}>
                         <MuiThemeProvider theme={theme}>
-                            <ReviewSubmitButton disabled={disableReviewBtn} variant="raised" color="primary" type="submit">
+                            <ReviewSubmitButton
+                                disabled={disableReviewBtn}
+                                variant="raised"
+                                color="primary"
+                                type="submit"
+                            >
                                 Submit
                             </ReviewSubmitButton>
                         </MuiThemeProvider>
                     </Grid>
-
                 </Grid>
             </form>
         );
@@ -156,7 +154,7 @@ class NewReview extends Component {
 
 function mapStateToProps(state) {
     return {
-        auth: state.auth,
+        auth: state.auth
     };
 }
 

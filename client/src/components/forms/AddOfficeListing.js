@@ -14,6 +14,7 @@ import * as actions from '../../actions';
 import renderDatePicker from './sharedComponents/datePicker';
 import { DENTIST, OFFICES } from '../../util/strings';
 import { getNextHalfHour } from '../../util/timeUtil';
+import { required, isNum } from '../../util/formValidation';
 
 import { Typography, Input, Grid, Button, Option, Select } from '../common';
 import { Padding } from '../common/Spacing';
@@ -39,8 +40,6 @@ const StyledRemoveStaffIcon = styled.button`
 const StyledImage = styled.img`
     padding-top: 10em;
 `;
-
-const required = value => (value && value !== '' ? undefined : 'Required');
 
 class NewListing extends Component {
     async componentWillMount() {
@@ -415,9 +414,6 @@ class NewListing extends Component {
         );
     }
 }
-
-const isNum = value =>
-    value && !isNaN(value) ? undefined : 'Must be a number';
 
 const mapStateToProps = state => {
     const selector = formValueSelector('newListing');
