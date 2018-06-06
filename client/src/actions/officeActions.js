@@ -71,7 +71,7 @@ export function createOffice(values) {
         const office = await Office.create(values);
         dispatch({
             type: CREATE_OFFICE,
-            payload: office
+            payload: [office]
         });
     };
 }

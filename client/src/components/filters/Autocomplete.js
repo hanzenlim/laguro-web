@@ -28,6 +28,7 @@ class Autocomplete extends Component {
 
     handleSelect = location => {
         const { onAutocomplete } = this.props;
+        this.setState({ location });
         onAutocomplete(location);
         geocodeByAddress(location).then(results => getLatLng(results[0]));
     };
@@ -66,13 +67,13 @@ class Autocomplete extends Component {
                                         : 'suggestion-item';
                                     const style = suggestion.active
                                         ? {
-                                            backgroundColor: '#fafafa',
-                                            cursor: 'pointer'
-                                        }
+                                              backgroundColor: '#fafafa',
+                                              cursor: 'pointer'
+                                          }
                                         : {
-                                            backgroundColor: '#ffffff',
-                                            cursor: 'pointer'
-                                        };
+                                              backgroundColor: '#ffffff',
+                                              cursor: 'pointer'
+                                          };
                                     return (
                                         <div
                                             {...getSuggestionItemProps(
@@ -97,4 +98,9 @@ class Autocomplete extends Component {
 
 export default reduxForm({
     form: 'Autocomplete'
-})(connect(null, actions)(Autocomplete));
+})(
+    connect(
+        null,
+        actions
+    )(Autocomplete)
+);

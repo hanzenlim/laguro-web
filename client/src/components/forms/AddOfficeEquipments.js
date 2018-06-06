@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Field, FieldArray, reduxForm } from 'redux-form';
+import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form';
 import styled from 'styled-components';
 import queryString from 'query-string';
 import * as actions from '../../actions';
-import { DENTIST } from '../../util/strings';
 import history from '../../history';
 
 import {
@@ -43,66 +42,51 @@ class NewOffice extends Component {
         super(props);
 
         this.urlParams = queryString.parse(history.location.search);
+
+        this.props.initialize({
+            numChairs: this.urlParams.numChairs,
+            equipment: this.urlParams.equipment
+                ? JSON.parse(this.urlParams.equipment)
+                : []
+        });
     }
 
     componentWillMount() {
         document.title = 'Laguro - New Office';
-        this.props.fetchUser(DENTIST);
     }
 
     onSubmit(values) {
-        const { reset, auth } = this.props;
-        const { imageUrls, location, name } = this.urlParams;
+        values.equipment = values.equipment
+            ? JSON.stringify(values.equipment)
+            : [];
 
-        values.equipment = values.equipment || [];
-
-        this.props.createOffice({
-            ...values,
-            imageUrls: JSON.parse(imageUrls),
-            hostId: auth.dentist.id,
-            name,
-            location
+        const params = queryString.stringify({
+            ...this.urlParams,
+            ...values
         });
-        reset();
 
-        history.push('/landlord-onboarding/add-listing');
+        history.push(`/landlord-onboarding/add-listing?${params}`);
     }
 
     handleBack = () => {
-        history.push(
-            `/landlord-onboarding/add-office${history.location.search}`
-        );
-    };
+        const params = queryString.stringify({
+            ...this.urlParams,
+            numChairs: this.props.numChairs,
+            equipment: this.props.equipment
+                ? JSON.stringify(this.props.equipment)
+                : []
+        });
 
-    extractUrlToState(result) {
-        let upload = result.filesUploaded;
-        let allUrls = [];
-        if (upload.length) {
-            allUrls = upload.map(file => {
-                return file.url;
-            });
-        }
-        this.setState({ imageUrls: allUrls });
-    }
+        history.push(`/landlord-onboarding/add-office?${params}`);
+    };
 
     renderEquipmentSelector = ({ fields, className }) => {
         return (
             <ul className={className}>
-                <li>
-                    <Button
-                        type="button"
-                        color="primary"
-                        onClick={() => fields.push({})}
-                    >
-                        Add Equipment
-                    </Button>
-                </li>
-                <Padding bottom="16" />
                 {fields.map((equipment, index) => (
                     <li key={index}>
                         <Grid container alignItems="flex-end">
                             <Grid item xs={4}>
-                                <label>Equipment Available</label>
                                 <Field
                                     name={`${equipment}.name`}
                                     label="Equipment Available"
@@ -139,6 +123,16 @@ class NewOffice extends Component {
                         </Grid>
                     </li>
                 ))}
+                <li>
+                    <Button
+                        type="button"
+                        color="primary"
+                        onClick={() => fields.push({})}
+                    >
+                        Add Equipment
+                    </Button>
+                </li>
+                <Padding bottom="16" />
             </ul>
         );
     };
@@ -235,10 +229,19 @@ class NewOffice extends Component {
     }
 }
 
-function mapStateToProps(state) {
-    return { auth: state.auth };
-}
+const mapStateToProps = state => {
+    const selector = formValueSelector('addOfficeEquipments');
+    return {
+        numChairs: selector(state, 'numChairs'),
+        equipment: selector(state, 'equipment')
+    };
+};
 
 export default reduxForm({
     form: 'addOfficeEquipments'
-})(connect(mapStateToProps, actions)(NewOffice));
+})(
+    connect(
+        mapStateToProps,
+        actions
+    )(NewOffice)
+);

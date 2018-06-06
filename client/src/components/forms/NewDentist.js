@@ -148,7 +148,7 @@ class NewDentist extends Component {
                     <FieldArray
                         name="procedures"
                         className="col s12"
-                        component={this.procedureOptionselector}
+                        component={this.renderProcedureSelector}
                         validate={required}
                     />
                 </div>
@@ -177,4 +177,9 @@ function mapStateToProps(state) {
 
 export default reduxForm({
     form: 'newDentist'
-})(connect(mapStateToProps, actions)(NewDentist));
+})(
+    connect(
+        mapStateToProps,
+        actions
+    )(NewDentist)
+);

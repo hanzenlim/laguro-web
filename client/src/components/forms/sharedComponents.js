@@ -44,14 +44,14 @@ const getMinTime = (dateType, listing) => {
             .hours(0)
             .minutes(0);
     switch (dateType) {
-    case 'startTime':
-        return moment(listing.startTime);
-    case 'endTime':
-        return moment(listing.startTime).add(2, 'hours');
-    default:
-        return moment()
-            .hours(0)
-            .minutes(0);
+        case 'startTime':
+            return moment(listing.startTime);
+        case 'endTime':
+            return moment(listing.startTime).add(2, 'hours');
+        default:
+            return moment()
+                .hours(0)
+                .minutes(0);
     }
 };
 
@@ -61,14 +61,14 @@ const getMaxTime = (dateType, listing) => {
             .hours(23)
             .minutes(59);
     switch (dateType) {
-    case 'startTime':
-        return moment(listing.endTime).subtract(2, 'hours');
-    case 'endTime':
-        return moment(listing.endTime);
-    default:
-        return moment()
-            .hours(23)
-            .minutes(59);
+        case 'startTime':
+            return moment(listing.endTime).subtract(2, 'hours');
+        case 'endTime':
+            return moment(listing.endTime);
+        default:
+            return moment()
+                .hours(23)
+                .minutes(59);
     }
 };
 
@@ -107,12 +107,13 @@ export const renderField = ({
     input,
     label,
     className,
+    disabled,
     placeholder,
     meta: { touched, error }
 }) => (
     <Grid className={className} container direction="column">
         <label>{label}</label>
-        <Input {...input} placeholder={placeholder} />
+        <Input {...input} disabled={disabled} placeholder={placeholder} />
         {touched && error && <span className="red-text">{error}</span>}
     </Grid>
 );
@@ -150,6 +151,7 @@ export const renderOfficeOptions = offices => {
 export const renderSelect = props => {
     const {
         input,
+        label,
         disabled,
         meta: { touched, error },
         children
@@ -157,6 +159,7 @@ export const renderSelect = props => {
 
     return (
         <Grid container>
+            <label>{label}</label>
             <Select {...input} disabled={disabled}>
                 {children}
             </Select>
