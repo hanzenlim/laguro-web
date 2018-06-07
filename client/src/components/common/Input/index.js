@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { TextField as MaterialUITextField } from '@material-ui/core';
 import styled from 'styled-components';
 
@@ -26,10 +26,10 @@ const StyledInput = styled(MaterialUITextField)`
     font-size: 14px;
 `;
 
-const Input = props => {
-    const { children, ...customProps } = props;
-
-    return <StyledInput {...customProps} />;
-};
+class Input extends Component {
+    render() {
+        return <StyledInput {...this.props} />;
+    }
+}
 
 export default Input;

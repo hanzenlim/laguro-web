@@ -9,7 +9,10 @@ import * as actions from '../../actions';
 import { DENTIST } from '../../util/strings';
 import history from '../../history';
 
-import { Typography, Input, Grid, Button } from '../common';
+import { renderField } from './sharedComponents';
+import { required } from './formValidation';
+
+import { Typography, Grid, Button } from '../common';
 import { Padding } from '../common/Spacing';
 
 import officeSVG from '../icons/office.svg';
@@ -82,22 +85,6 @@ class NewOffice extends Component {
         });
     }
 
-    renderField = ({
-        input,
-        label,
-        placeholder,
-        className,
-        meta: { touched, error }
-    }) => (
-        <div className={className}>
-            <label>{label}</label>
-            <div>
-                <Input {...input} placeholder={placeholder} />
-            </div>
-            {touched && error && <span className="red-text">{error}</span>}
-        </div>
-    );
-
     render() {
         const { auth, handleSubmit, submitting } = this.props;
 
@@ -147,7 +134,7 @@ class NewOffice extends Component {
                                         name="name"
                                         label="Office Name"
                                         placeholder="Bell Center"
-                                        component={this.renderField}
+                                        component={renderField}
                                         validate={required}
                                     />
                                     <Padding bottom="16" />
@@ -231,8 +218,6 @@ class NewOffice extends Component {
         );
     }
 }
-
-const required = value => (value && value !== '' ? undefined : 'Required');
 
 function mapStateToProps(state) {
     return { auth: state.auth };

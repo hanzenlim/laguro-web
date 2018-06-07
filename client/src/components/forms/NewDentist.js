@@ -5,10 +5,16 @@ import { Field, FieldArray, reduxForm, SubmissionError } from 'redux-form';
 import { Link } from 'react-router-dom';
 
 import Autocomplete from '../filters/Autocomplete';
-import procedureList from '../../staticData/procedureList';
 import * as actions from '../../actions';
 import history from '../../history';
 import { DENTIST } from '../../util/strings';
+import { required } from './formValidation';
+import {
+    renderField,
+    renderSelect,
+    procedureOptions,
+    durationOptions
+} from './sharedComponents';
 
 class NewDentist extends Component {
     constructor(props) {
@@ -25,6 +31,15 @@ class NewDentist extends Component {
             location
         });
     };
+
+    async componentWillMount() {
+        document.title = 'Laguro - New Profile';
+
+        this.props.initialize({
+            specialty: 'General Dentist'
+        });
+        await this.props.fetchUser();
+    }
 
     async onSubmit(values) {
         const { auth } = this.props;
@@ -57,71 +72,6 @@ class NewDentist extends Component {
         }
     }
 
-    async componentWillMount() {
-        document.title = 'Laguro - New Profile';
-
-        this.props.initialize({
-            specialty: 'General Dentist'
-        });
-        await this.props.fetchUser();
-    }
-
-    renderField = ({
-        input,
-        label,
-        className,
-        placeholder,
-        meta: { touched, error }
-    }) => (
-        <div className={className}>
-            <label>{label}</label>
-            <div>
-                <input {...input} placeholder={placeholder} />
-            </div>
-            {touched && error && <span className="red-text">{error}</span>}
-        </div>
-    );
-
-    renderProcedures() {
-        let procedureOptions = procedureList.map(procedure => {
-            return (
-                <option value={procedure.name} key={procedure.id}>
-                    {procedure.name}
-                </option>
-            );
-        });
-        procedureOptions = [
-            <option value="" key={0}>
-                Please select a procedure...
-            </option>,
-            ...procedureOptions
-        ];
-        return procedureOptions;
-    }
-
-    renderDurations() {
-        return [
-            <option value={30} key={30}>
-                30 minutes
-            </option>,
-            <option value={60} key={60}>
-                60 minutes
-            </option>
-        ];
-    }
-
-    renderSelect = ({ input, children, meta: { touched, error } }) => {
-        return (
-            <div className="col s4">
-                <select {...input} className="browser-default">
-                    {children}
-                </select>
-                {touched &&
-                    (error && <span className="red-text">{error}</span>)}
-            </div>
-        );
-    };
-
     renderProcedureSelector = ({ fields, className, meta: { error } }) => (
         <ul className={className}>
             <label>Procedures Offered</label>
@@ -129,14 +79,14 @@ class NewDentist extends Component {
                 <li key={index} className="multiRowAdd">
                     <Field
                         name={`${procedure}.name`}
-                        component={this.renderSelect}
-                        children={this.renderProcedures()}
+                        component={renderSelect}
+                        children={procedureOptions}
                         validate={required}
                     />
                     <Field
                         name={`${procedure}.duration`}
-                        component={this.renderSelect}
-                        children={this.renderDurations()}
+                        component={renderSelect}
+                        children={durationOptions}
                     />
                     <button
                         type="button"
@@ -184,7 +134,7 @@ class NewDentist extends Component {
                         label="Dental Specialty"
                         className="col s12 m6"
                         placeholder="General Dentist"
-                        component={this.renderField}
+                        component={renderField}
                         validate={required}
                     />
                 </div>
@@ -198,7 +148,7 @@ class NewDentist extends Component {
                     <FieldArray
                         name="procedures"
                         className="col s12"
-                        component={this.renderProcedureSelector}
+                        component={this.procedureOptionselector}
                         validate={required}
                     />
                 </div>
@@ -217,8 +167,6 @@ class NewDentist extends Component {
         );
     }
 }
-
-const required = value => (value && value !== '' ? undefined : 'Required');
 
 function mapStateToProps(state) {
     return {

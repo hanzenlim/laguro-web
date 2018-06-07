@@ -4,18 +4,8 @@ import moment from 'moment';
 
 import history from '../../history';
 
-import {
-    Typography,
-    Grid,
-    Button,
-    Option,
-    Select,
-    Box,
-    Modal,
-    Input,
-    Checkbox,
-    Flex
-} from '../common';
+import { Typography, Grid, Button, Option, Box, Modal, Flex } from '../common';
+import { renderInput, renderSelect, renderCheckbox } from './sharedComponents';
 
 class BookAppointment extends Component {
     componentWillMount() {
@@ -34,41 +24,6 @@ class BookAppointment extends Component {
             time: `${formattedDate} ${formattedStartTime} - ${formattedEndTime}`
         });
     }
-
-    renderInput = ({ input, disabled }) => (
-        <Grid container>
-            <Input {...input} disabled={disabled} />
-        </Grid>
-    );
-
-    renderCheckbox = ({ label, input: { onChange, value } }) => (
-        <Flex alignItems="center">
-            <Checkbox
-                checked={value ? true : false}
-                onClick={() => {
-                    onChange(value ? false : true);
-                }}
-            />
-            <Typography pl={2}>{label}</Typography>
-        </Flex>
-    );
-
-    renderSelect = ({
-        input,
-        disabled,
-        children,
-        meta: { touched, error }
-    }) => {
-        return (
-            <Grid container>
-                <Select {...input} disabled={disabled}>
-                    {children}
-                </Select>
-                {touched &&
-                    (error && <span className="red-text">{error}</span>)}
-            </Grid>
-        );
-    };
 
     onSubmit(values) {
         const { startTime, reservation, auth } = this.props;
@@ -133,7 +88,7 @@ class BookAppointment extends Component {
                                 <Field
                                     disabled
                                     name="time"
-                                    component={this.renderInput}
+                                    component={renderInput}
                                 />
                             </Box>
                         </Grid>
@@ -142,7 +97,7 @@ class BookAppointment extends Component {
                                 <label>Procedures Available</label>
                                 <Field
                                     name="procedure"
-                                    component={this.renderSelect}
+                                    component={renderSelect}
                                     validate={required}
                                 >
                                     {this.renderProcedures(
@@ -157,7 +112,7 @@ class BookAppointment extends Component {
                                 <Field
                                     name="acknowledge"
                                     label="I understand and agree to the terms"
-                                    component={this.renderCheckbox}
+                                    component={renderCheckbox}
                                 />
                             </Flex>
                         </Grid>

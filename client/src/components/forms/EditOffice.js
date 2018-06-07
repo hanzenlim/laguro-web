@@ -4,9 +4,14 @@ import { Field, reduxForm, FieldArray } from 'redux-form';
 import ReactFilestack from 'filestack-react';
 import { Link } from 'react-router-dom';
 
-import equipmentList from '../../staticData/equipmentList';
 import { filestackKey } from '../../config/keys';
 import * as actions from '../../actions';
+import { required, isNum } from './formValidation';
+import {
+    renderField,
+    renderSelect,
+    equipmentOptions
+} from './sharedComponents';
 
 class EditOffice extends Component {
     constructor(props) {
@@ -38,14 +43,12 @@ class EditOffice extends Component {
     }
 
     async onSubmit(values) {
-        const { reset } = this.props;
         const { imageUrls } = this.state;
         await this.props.editOffice({
             ...values,
             imageUrls,
             id: this.office_id
         });
-        reset();
     }
 
     extractUrlToState(result) {
@@ -86,55 +89,24 @@ class EditOffice extends Component {
         });
     }
 
-    renderEquipment() {
-        return equipmentList.map(equipment => {
-            return (
-                <option value={equipment.name} key={equipment.id}>
-                    {equipment.name}
-                </option>
-            );
-        });
-    }
-
-    renderSelect = ({ input, meta: { touched, error } }) => {
-        return (
-            <div className="col s4">
-                <select {...input} className="browser-default">
-                    <option value="">Please select equipment...</option>
-                    {this.renderEquipment()}
-                </select>
-                {touched &&
-                    (error && <span className="red-text">{error}</span>)}
-            </div>
-        );
-    };
-
     renderEquipmentSelector = ({ fields, className, meta: { error } }) => (
         <ul className={className}>
             <label>Equipment Available</label>
-            <li>
-                <button
-                    type="button"
-                    className="waves-effect btn-flat"
-                    onClick={() => fields.push({})}
-                >
-                    Add Equipment
-                </button>
-                {error && <span>{error}</span>}
-            </li>
             {fields.map((equipment, index) => (
                 <li key={index} className="multiRowAdd">
                     <Field
                         name={`${equipment}.name`}
-                        component={this.renderSelect}
+                        label="Equipment Available"
+                        component={renderSelect}
                         validate={required}
+                        children={equipmentOptions}
                     />
                     <div className="col s2">
                         <Field
                             name={`${equipment}.price`}
                             type="text"
                             placeholder="15"
-                            component={this.renderField}
+                            component={renderField}
                             label="Usage Price"
                             validate={[required, isNum]}
                         />
@@ -149,23 +121,17 @@ class EditOffice extends Component {
                     </button>
                 </li>
             ))}
+            <li>
+                <button
+                    type="button"
+                    className="waves-effect btn-flat"
+                    onClick={() => fields.push({})}
+                >
+                    Add Equipment
+                </button>
+                {error && <span>{error}</span>}
+            </li>
         </ul>
-    );
-
-    renderField = ({
-        input,
-        label,
-        className,
-        placeholder,
-        meta: { touched, error }
-    }) => (
-        <div className={className}>
-            <label>{label}</label>
-            <div>
-                <input {...input} placeholder={placeholder} />
-            </div>
-            {touched && error && <span className="red-text">{error}</span>}
-        </div>
     );
 
     render() {
@@ -192,15 +158,15 @@ class EditOffice extends Component {
                         label="Name"
                         className="col s12 m4"
                         placeholder="Bell Dental"
-                        component={this.renderField}
+                        component={renderField}
                         validate={required}
                     />
                     <Field
                         name="numChairs"
-                        label="Number of numChairs"
+                        label="Number of Chairs"
                         className="col s12 m3"
                         placeholder="3"
-                        component={this.renderField}
+                        component={renderField}
                         validate={[required, isNum]}
                     />
                 </div>
@@ -251,10 +217,6 @@ class EditOffice extends Component {
         );
     }
 }
-
-const required = value => (value && value !== '' ? undefined : 'Required');
-const isNum = value =>
-    value && !isNaN(value) ? undefined : 'Must be a number';
 
 function mapStateToProps(state) {
     return {
