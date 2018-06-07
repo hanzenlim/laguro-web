@@ -215,11 +215,8 @@ class Profile extends Component {
             const officeImage =
                 office.imageUrls.length === 0 ? '' : office.imageUrls[0];
             return (
-                <Grid item xs={6}>
-                    <div
-                        key={index}
-                        className="reservation card-panel grey lighten-5"
-                    >
+                <Grid key={index} item xs={6}>
+                    <div className="reservation card-panel grey lighten-5">
                         <Link
                             className="blue-text text-darken-2"
                             to={`/office/${office.id}`}
@@ -409,7 +406,4 @@ function mapStateToProps(state) {
         reviews: state.reviews.all
     };
 }
-export default connect(
-    mapStateToProps,
-    actions
-)(Profile);
+export default connect(mapStateToProps, actions)(Profile);

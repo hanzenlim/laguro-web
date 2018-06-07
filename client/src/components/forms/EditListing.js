@@ -11,9 +11,13 @@ import { Link } from 'react-router-dom';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 
-import renderDatePicker from './sharedComponents/datePicker';
 import * as actions from '../../actions';
-import { required, isNum } from '../../util/formValidation';
+import { required, isNum } from './formValidation';
+import {
+    renderField,
+    renderDatePicker,
+    renderOptions
+} from './sharedComponents';
 
 class EditListing extends Component {
     constructor(props) {
@@ -67,22 +71,6 @@ class EditListing extends Component {
         }
     }
 
-    renderField = ({
-        input,
-        label,
-        placeholder,
-        className,
-        meta: { touched, error }
-    }) => (
-        <div className={className}>
-            <label>{label}</label>
-            <div>
-                <input {...input} placeholder={placeholder} />
-            </div>
-            {touched && error && <span className="red-text">{error}</span>}
-        </div>
-    );
-
     renderStaff = ({ fields, className, meta: { error } }) => (
         <ul className={className}>
             <label>Staff Available</label>
@@ -102,7 +90,7 @@ class EditListing extends Component {
                         name={`${staffAvailable}.role`}
                         type="text"
                         placeholder="RDA"
-                        component={this.renderField}
+                        component={renderField}
                         label="Staff Role"
                         validate={required}
                     />
@@ -110,7 +98,7 @@ class EditListing extends Component {
                         name={`${staffAvailable}.price`}
                         type="text"
                         placeholder="30"
-                        component={this.renderField}
+                        component={renderField}
                         label="Hourly Price"
                         validate={[required, isNum]}
                     />
@@ -118,7 +106,7 @@ class EditListing extends Component {
                         name={`${staffAvailable}.count`}
                         type="text"
                         placeholder="3"
-                        component={this.renderField}
+                        component={renderField}
                         label="Number of Staff"
                         validate={[required, isNum]}
                     />
@@ -141,18 +129,6 @@ class EditListing extends Component {
 
         this.setState(stateObject);
     }
-
-    renderOptions = (maxAvail, minAvail = 1, label = '') => {
-        const options = [];
-        for (let i = minAvail; i <= maxAvail; i++) {
-            options.push(
-                <option value={Number(i)} key={i}>
-                    {`${i} ${label}`}
-                </option>
-            );
-        }
-        return options;
-    };
 
     calcTime() {
         const { startTime, endTime } = this.props;
@@ -232,7 +208,7 @@ class EditListing extends Component {
                         placeholder="100"
                         className="col s12 m4"
                         validate={[required, isNum]}
-                        component={this.renderField}
+                        component={renderField}
                     />
 
                     <label className="col s12 m4">
@@ -243,10 +219,7 @@ class EditListing extends Component {
                             style={{ display: 'block' }}
                             component="select"
                         >
-                            {this.renderOptions(
-                                (this.props.office.numChairs: 1),
-                                1
-                            )}
+                            {renderOptions((this.props.office.numChairs: 1), 1)}
                         </Field>
                     </label>
 
@@ -256,7 +229,7 @@ class EditListing extends Component {
                         placeholder="50"
                         className="col s12 m4"
                         validate={[required, isNum]}
-                        component={this.renderField}
+                        component={renderField}
                     />
                 </div>
 

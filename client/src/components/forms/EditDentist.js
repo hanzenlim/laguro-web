@@ -4,9 +4,14 @@ import { Field, FieldArray, reduxForm, SubmissionError } from 'redux-form';
 import { Link } from 'react-router-dom';
 import { DENTIST } from '../../util/strings';
 import Autocomplete from '../filters/Autocomplete';
-import procedureList from '../../staticData/procedureList';
 import * as actions from '../../actions';
-import { required } from '../../util/formValidation';
+import { required } from './formValidation';
+import {
+    renderField,
+    renderSelect,
+    procedureOptions,
+    durationOptions
+} from './sharedComponents';
 
 class EditDentist extends Component {
     constructor(props) {
@@ -75,35 +80,6 @@ class EditDentist extends Component {
         ];
     }
 
-    renderProcedures() {
-        let procedureOptions = procedureList.map(procedure => {
-            return (
-                <option value={procedure.name} key={procedure.id}>
-                    {procedure.name}
-                </option>
-            );
-        });
-        procedureOptions = [
-            <option value="" key={0}>
-                Please select a procedure...
-            </option>,
-            ...procedureOptions
-        ];
-        return procedureOptions;
-    }
-
-    renderSelect = ({ input, children, meta: { touched, error } }) => {
-        return (
-            <div className="col s4">
-                <select {...input} className="browser-default">
-                    {children}
-                </select>
-                {touched &&
-                    (error && <span className="red-text">{error}</span>)}
-            </div>
-        );
-    };
-
     renderProcedureSelector = ({ fields, className, meta: { error } }) => (
         <ul className={className}>
             <label>Procedures Offered</label>
@@ -111,14 +87,14 @@ class EditDentist extends Component {
                 <li key={index} className="multiRowAdd">
                     <Field
                         name={`${procedure}.name`}
-                        component={this.renderSelect}
-                        children={this.renderProcedures()}
+                        component={renderSelect}
+                        children={procedureOptions}
                         validate={required}
                     />
                     <Field
                         name={`${procedure}.duration`}
-                        component={this.renderSelect}
-                        children={this.renderDurations()}
+                        component={renderSelect}
+                        children={durationOptions}
                     />
                     <button
                         type="button"
@@ -141,22 +117,6 @@ class EditDentist extends Component {
                 {error && <span>{error}</span>}
             </li>
         </ul>
-    );
-
-    renderField = ({
-        input,
-        label,
-        className,
-        placeholder,
-        meta: { touched, error }
-    }) => (
-        <div className={className}>
-            <label>{label}</label>
-            <div>
-                <input {...input} placeholder={placeholder} />
-            </div>
-            {touched && error && <span className="red-text">{error}</span>}
-        </div>
     );
 
     render() {
@@ -186,7 +146,7 @@ class EditDentist extends Component {
                         className="col s12 m6"
                         placeholder="General Dentist"
                         validate={required}
-                        component={this.renderField}
+                        component={renderField}
                     />
                     <div className="col s12 m6">
                         <Autocomplete

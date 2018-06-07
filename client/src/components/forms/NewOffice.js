@@ -9,7 +9,7 @@ import equipmentList from '../../staticData/equipmentList';
 import * as actions from '../../actions';
 import { filestackKey } from '../../config/keys';
 import { DENTIST } from '../../util/strings';
-import { required, isNum } from '../../util/formValidation';
+import { required, isNum } from './formValidation';
 
 class NewOffice extends Component {
     constructor(props) {

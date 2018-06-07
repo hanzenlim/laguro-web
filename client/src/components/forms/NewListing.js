@@ -12,10 +12,16 @@ import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 
 import * as actions from '../../actions';
-import renderDatePicker from './sharedComponents/datePicker';
 import { DENTIST, OFFICES } from '../../util/strings';
 import { getNextHalfHour } from '../../util/timeUtil';
-import { dollarMinimum, required, isNum } from '../../util/formValidation';
+import { dollarMinimum, required, isNum } from './formValidation';
+import {
+    renderField,
+    renderSelect,
+    renderOptions,
+    renderOfficeOptions,
+    renderDatePicker
+} from './sharedComponents';
 
 class NewListing extends Component {
     async componentWillMount() {
@@ -64,42 +70,6 @@ class NewListing extends Component {
         }
     }
 
-    renderOffices() {
-        const { offices } = this.props;
-
-        if (offices.length) {
-            return offices.map((office, index) => (
-                <option
-                    value={JSON.stringify({
-                        id: office.id,
-                        office_name: office.name,
-                        chairs: office.numChairs
-                    })}
-                    key={index}
-                >
-                    {office.name} - {office.location}
-                </option>
-            ));
-        }
-        return null;
-    }
-
-    renderField = ({
-        input,
-        label,
-        placeholder,
-        className,
-        meta: { touched, error }
-    }) => (
-        <div className={className}>
-            <label>{label}</label>
-            <div>
-                <input {...input} placeholder={placeholder} />
-            </div>
-            {touched && error && <span className="red-text">{error}</span>}
-        </div>
-    );
-
     renderStaff = ({ fields, className, meta: { error } }) => (
         <ul className={className}>
             <label>Staff Available</label>
@@ -119,7 +89,7 @@ class NewListing extends Component {
                         name={`${staff}.role`}
                         type="text"
                         placeholder="RDA"
-                        component={this.renderField}
+                        component={renderField}
                         label="Staff Role"
                         validate={required}
                     />
@@ -127,7 +97,7 @@ class NewListing extends Component {
                         name={`${staff}.price`}
                         type="text"
                         placeholder="30"
-                        component={this.renderField}
+                        component={renderField}
                         label="Hourly Price"
                         validate={[required, isNum]}
                     />
@@ -135,7 +105,7 @@ class NewListing extends Component {
                         name={`${staff}.count`}
                         type="text"
                         placeholder="3"
-                        component={this.renderField}
+                        component={renderField}
                         label="Number of Staff"
                         validate={[required, isNum]}
                     />
@@ -151,18 +121,6 @@ class NewListing extends Component {
             ))}
         </ul>
     );
-
-    renderOptions = (maxAvail, minAvail = 1, label = '') => {
-        const options = [];
-        for (let i = minAvail; i <= maxAvail; i++) {
-            options.push(
-                <option value={Number(i)} key={i}>
-                    {`${i} ${label}`}
-                </option>
-            );
-        }
-        return options;
-    };
 
     calcTime() {
         const { startTime, endTime } = this.props;
@@ -182,9 +140,15 @@ class NewListing extends Component {
     }
 
     render() {
-        const { handleSubmit, submitting, error, selectedOffice } = this.props;
+        const {
+            handleSubmit,
+            submitting,
+            error,
+            selectedOffice,
+            offices
+        } = this.props;
 
-        if (!this.props.initialized || !this.props.offices) {
+        if (!this.props.initialized || !offices) {
             return <div>Loading...</div>;
         }
 
@@ -210,10 +174,9 @@ class NewListing extends Component {
                     <Field
                         name="office"
                         style={{ display: 'block' }}
-                        component="select"
+                        component={renderSelect}
                     >
-                        <option value="">Please select an office...</option>
-                        {this.renderOffices()}
+                        {renderOfficeOptions(offices)}
                     </Field>
                 </label>
 
@@ -241,7 +204,7 @@ class NewListing extends Component {
                         label="Price per chair (hourly)"
                         placeholder="100"
                         className="col s4"
-                        component={this.renderField}
+                        component={renderField}
                         validate={[required, isNum, dollarMinimum]}
                     />
 
@@ -251,9 +214,9 @@ class NewListing extends Component {
                             name="numChairsAvailable"
                             type="select"
                             style={{ display: 'block' }}
-                            component="select"
+                            component={renderSelect}
                         >
-                            {this.renderOptions(
+                            {renderOptions(
                                 selectedOffice
                                     ? JSON.parse(selectedOffice).chairs
                                     : 1,
@@ -267,7 +230,7 @@ class NewListing extends Component {
                         label="Cleaning Fee"
                         placeholder="50"
                         className="col s4"
-                        component={this.renderField}
+                        component={renderField}
                         validate={[required, isNum]}
                     />
                 </div>

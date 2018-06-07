@@ -65,7 +65,7 @@ class Appointments extends Component {
         const { currentTarget } = event;
         const index = currentTarget.getAttribute('data-index');
         const durationToNextAppointment = currentTarget.getAttribute(
-            'data-durationToNextAppointment'
+            'data-duration_to_next_appointment'
         );
 
         this.props.onBookAppointment(
@@ -82,7 +82,7 @@ class Appointments extends Component {
                 {durationToNextAppointment !== 0 ? (
                     <div
                         data-index={index}
-                        data-durationToNextAppointment={
+                        data-duration_to_next_appointment={
                             durationToNextAppointment
                         }
                         onClick={this.handleBookAppointment}

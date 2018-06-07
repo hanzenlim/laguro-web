@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { MenuItem as MaterialUIMenuItem } from '@material-ui/core';
 
-const Option = props => {
-    const { ...customProps } = props;
-
-    return <MaterialUIMenuItem {...customProps} />;
-};
+class Option extends Component {
+    render() {
+        return <MaterialUIMenuItem {...this.props} />;
+    }
+}
 
 export default Option;

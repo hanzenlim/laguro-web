@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 
-import { required } from '../../util/formValidation';
+import { required } from './formValidation';
 import * as actions from '../../actions';
 import Grid from '../common/Grid';
 import { getEntityName } from '../../util/entity';

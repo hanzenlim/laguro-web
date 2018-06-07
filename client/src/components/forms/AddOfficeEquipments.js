@@ -3,13 +3,18 @@ import { connect } from 'react-redux';
 import { Field, FieldArray, reduxForm } from 'redux-form';
 import styled from 'styled-components';
 import queryString from 'query-string';
-import equipmentList from '../../staticData/equipmentList';
 import * as actions from '../../actions';
 import { DENTIST } from '../../util/strings';
 import history from '../../history';
-import { required, isNum } from '../../util/formValidation';
 
-import { Typography, Input, Grid, Button, Option, Select } from '../common';
+import {
+    renderField,
+    renderSelect,
+    equipmentOptions
+} from './sharedComponents';
+import { required, isNum } from './formValidation';
+
+import { Typography, Grid, Button } from '../common';
 import { Padding } from '../common/Spacing';
 
 import exitSVG from '../icons/exit.svg';
@@ -80,26 +85,6 @@ class NewOffice extends Component {
         this.setState({ imageUrls: allUrls });
     }
 
-    renderEquipment() {
-        return equipmentList.map(equipment => {
-            return (
-                <Option value={equipment.name} key={equipment.id}>
-                    {equipment.name}
-                </Option>
-            );
-        });
-    }
-
-    renderSelect = ({ input, meta: { touched, error }, children }) => {
-        return (
-            <Grid container>
-                <Select {...input}>{children}</Select>
-                {touched &&
-                    (error && <span className="red-text">{error}</span>)}
-            </Grid>
-        );
-    };
-
     renderEquipmentSelector = ({ fields, className }) => {
         return (
             <ul className={className}>
@@ -115,34 +100,33 @@ class NewOffice extends Component {
                 <Padding bottom="16" />
                 {fields.map((equipment, index) => (
                     <li key={index}>
-                        <Grid container alignItems="flex-start">
-                            <Grid xs>
+                        <Grid container alignItems="flex-end">
+                            <Grid item xs={4}>
                                 <label>Equipment Available</label>
                                 <Field
                                     name={`${equipment}.name`}
                                     label="Equipment Available"
-                                    component={this.renderSelect}
+                                    component={renderSelect}
                                     validate={required}
-                                >
-                                    <Option value="">
-                                        Please select equipment...
-                                    </Option>
-                                    {this.renderEquipment()}
-                                </Field>
+                                    children={equipmentOptions}
+                                />
+
                                 <Padding bottom="16" />
                             </Grid>
-                            <Grid xs>
+                            <Grid item xs={1} />
+                            <Grid item xs={4}>
                                 <label>Usage Price</label>
                                 <Field
                                     name={`${equipment}.price`}
                                     type="text"
                                     placeholder="15"
-                                    component={this.renderField}
+                                    component={renderField}
                                     validate={[required, isNum]}
                                 />
                                 <Padding bottom="16" />
                             </Grid>
-                            <Grid>
+                            <Grid item xs={1} />
+                            <Grid item xs={2}>
                                 <StyledRemoveStaffIcon
                                     type="button"
                                     title="Remove Equipment"
@@ -158,22 +142,6 @@ class NewOffice extends Component {
             </ul>
         );
     };
-
-    renderField = ({
-        input,
-        label,
-        placeholder,
-        className,
-        meta: { touched, error }
-    }) => (
-        <div className={className}>
-            <label>{label}</label>
-            <div>
-                <Input {...input} placeholder={placeholder} />
-            </div>
-            {touched && error && <span className="red-text">{error}</span>}
-        </div>
-    );
 
     render() {
         const { handleSubmit, submitting } = this.props;
@@ -217,8 +185,8 @@ class NewOffice extends Component {
                                 <Field
                                     name="numChairs"
                                     label="Number of Chairs"
-                                    placeholder={3}
-                                    component={this.renderField}
+                                    placeholder={'3'}
+                                    component={renderField}
                                     validate={[required, isNum]}
                                 />
                                 <Padding bottom="16" />

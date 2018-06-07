@@ -10,18 +10,15 @@ import {
 import { Redirect } from 'react-router-dom';
 import moment from 'moment';
 
-import {
-    Typography,
-    Button,
-    Option,
-    Select,
-    Modal,
-    Checkbox,
-    Flex,
-    Box
-} from '../common';
+import { Typography, Button, Option, Modal, Flex, Box } from '../common';
 
-import renderDatePicker from './sharedComponents/datePicker';
+import {
+    renderSelect,
+    renderDatePicker,
+    renderCheckbox,
+    renderOptions
+} from './sharedComponents';
+
 import * as actions from '../../actions';
 import { DENTIST } from '../../util/strings';
 
@@ -74,18 +71,6 @@ class ReservationOptions extends Component {
         this.setState({ redirectToPayment: true });
     }
 
-    renderCheckbox = ({ label, input: { onChange, value } }) => (
-        <Flex alignItems="center">
-            <Checkbox
-                checked={value ? true : false}
-                onClick={() => {
-                    onChange(value ? false : true);
-                }}
-            />
-            <Typography pl={2}>{label}</Typography>
-        </Flex>
-    );
-
     renderStaticField = ({ input, label, className }) => (
         <div>
             <div className={className}>
@@ -94,18 +79,6 @@ class ReservationOptions extends Component {
             </div>
         </div>
     );
-
-    renderOptions = (max_avail, min_avail = 1, label = '') => {
-        const options = [];
-        for (let i = min_avail; i <= max_avail; i++) {
-            options.push(
-                <Option value={Number(i)} key={i}>
-                    {`${i} ${label}`}
-                </Option>
-            );
-        }
-        return options;
-    };
 
     renderStaff = ({ fields, className }) => {
         const { listing } = this.props;
@@ -134,9 +107,9 @@ class ReservationOptions extends Component {
                                     name={`${staffSelected}.count`}
                                     type="select"
                                     style={{ display: 'block' }}
-                                    component={this.renderSelect}
+                                    component={renderSelect}
                                 >
-                                    {this.renderOptions(
+                                    {renderOptions(
                                         listing.staffAvailable[index].count,
                                         0
                                     )}
@@ -223,16 +196,6 @@ class ReservationOptions extends Component {
             this.booking_fee + chair_price + this.equipTotal + this.staffTotal;
         return total.toFixed(2);
     }
-
-    renderSelect = ({ input, meta: { touched, error }, children }) => {
-        return (
-            <Flex>
-                <Select {...input}>{children}</Select>
-                {touched &&
-                    (error && <span className="red-text">{error}</span>)}
-            </Flex>
-        );
-    };
 
     render() {
         const {
@@ -321,7 +284,7 @@ class ReservationOptions extends Component {
                             name={'appts_per_hour'}
                             type="select"
                             style={{ display: 'block' }}
-                            component={this.renderSelect}
+                            component={renderSelect}
                         >
                             <Option value={1}>1 - 60 min appointments</Option>
                             <Option value={2}>2 - 30 min appointments</Option>
@@ -336,9 +299,9 @@ class ReservationOptions extends Component {
                             name={'numChairs'}
                             type="select"
                             style={{ display: 'block' }}
-                            component={this.renderSelect}
+                            component={renderSelect}
                         >
-                            {this.renderOptions(
+                            {renderOptions(
                                 this.props.listing.numChairsAvailable,
                                 1,
                                 `- $${
@@ -407,7 +370,7 @@ class ReservationOptions extends Component {
                             name="acknowledge"
                             label="I understand and agree to the terms above"
                             id="acknowledge"
-                            component={this.renderCheckbox}
+                            component={renderCheckbox}
                             type="checkbox"
                             className="browser-default"
                         />
@@ -446,9 +409,4 @@ const mapStateToProps = state => {
 
 export default reduxForm({
     form: 'reservationOptions'
-})(
-    connect(
-        mapStateToProps,
-        actions
-    )(ReservationOptions)
-);
+})(connect(mapStateToProps, actions)(ReservationOptions));

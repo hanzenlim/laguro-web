@@ -11,13 +11,20 @@ import moment from 'moment';
 import styled from 'styled-components';
 
 import * as actions from '../../actions';
-import renderDatePicker from './sharedComponents/datePicker';
 import { DENTIST, OFFICES } from '../../util/strings';
 import { getNextHalfHour } from '../../util/timeUtil';
-import { required, isNum } from '../../util/formValidation';
-
-import { Typography, Input, Grid, Button, Option, Select } from '../common';
+import { Typography, Grid, Button } from '../common';
 import { Padding } from '../common/Spacing';
+
+import {
+    renderDatePicker,
+    renderField,
+    renderOptions,
+    renderOfficeOptions,
+    renderSelect
+} from './sharedComponents';
+import { required, isNum, dollarMinimum } from './formValidation';
+
 import history from '../../history';
 
 import exitSVG from '../icons/exit.svg';
@@ -91,33 +98,6 @@ class NewListing extends Component {
         }
     }
 
-    renderOfficeList() {
-        const { offices } = this.props;
-
-        if (offices.length) {
-            return offices.map((office, index) => (
-                <Option
-                    value={JSON.stringify({
-                        id: office.id,
-                        office_name: office.name,
-                        chairs: office.numChairs
-                    })}
-                    key={index}
-                >
-                    {office.name} - {office.location}
-                </Option>
-            ));
-        }
-        return null;
-    }
-
-    renderField = ({ input, placeholder, meta: { touched, error } }) => (
-        <Grid container direction="column">
-            <Input {...input} placeholder={placeholder} />
-            {touched && error && <span className="red-text">{error}</span>}
-        </Grid>
-    );
-
     renderStaff = ({ fields, className, meta: { error } }) => (
         <ul className={className}>
             <li>
@@ -142,7 +122,7 @@ class NewListing extends Component {
                                 name={`${staff}.role`}
                                 type="text"
                                 placeholder="RDA"
-                                component={this.renderField}
+                                component={renderField}
                                 label="Staff Role"
                                 validate={required}
                             />
@@ -154,7 +134,7 @@ class NewListing extends Component {
                                 name={`${staff}.price`}
                                 type="text"
                                 placeholder="30"
-                                component={this.renderField}
+                                component={renderField}
                                 label="Hourly Price"
                                 validate={[required, isNum]}
                             />
@@ -166,7 +146,7 @@ class NewListing extends Component {
                                 name={`${staff}.count`}
                                 type="text"
                                 placeholder="3"
-                                component={this.renderField}
+                                component={renderField}
                                 label="Number of Staff"
                                 validate={[required, isNum]}
                             />
@@ -188,18 +168,6 @@ class NewListing extends Component {
         </ul>
     );
 
-    renderOptions = (maxAvail, minAvail = 1, label = '') => {
-        const options = [];
-        for (let i = minAvail; i <= maxAvail; i++) {
-            options.push(
-                <Option value={Number(i)} key={i}>
-                    {`${i} ${label}`}
-                </Option>
-            );
-        }
-        return options;
-    };
-
     calcTime() {
         const { startTime, endTime } = this.props;
         const minutes = endTime.diff(startTime, 'minutes');
@@ -217,27 +185,14 @@ class NewListing extends Component {
         ).toFixed(2);
     }
 
-    renderSelect = props => {
-        const {
-            input,
-            disabled,
-            meta: { touched, error },
-            children
-        } = props;
-
-        return (
-            <Grid container>
-                <Select {...input} disabled={disabled}>
-                    {children}
-                </Select>
-                {touched &&
-                    (error && <span className="red-text">{error}</span>)}
-            </Grid>
-        );
-    };
-
     render() {
-        const { handleSubmit, submitting, error, selectedOffice } = this.props;
+        const {
+            handleSubmit,
+            submitting,
+            error,
+            selectedOffice,
+            offices
+        } = this.props;
 
         if (!this.props.initialized || !this.props.offices) {
             return <div>Loading...</div>;
@@ -287,9 +242,9 @@ class NewListing extends Component {
                                         label="Office Name"
                                         name="office"
                                         style={{ display: 'block' }}
-                                        component={this.renderSelect}
+                                        component={renderSelect}
                                     >
-                                        {this.renderOfficeList()}
+                                        {renderOfficeOptions(offices)}
                                     </Field>
                                     <Padding bottom="16" />
                                 </Grid>
@@ -325,8 +280,12 @@ class NewListing extends Component {
                                         name="chairHourlyPrice"
                                         label="Price per chair (hourly)"
                                         placeholder="100"
-                                        component={this.renderField}
-                                        validate={[required, isNum]}
+                                        component={renderField}
+                                        validate={[
+                                            required,
+                                            isNum,
+                                            dollarMinimum
+                                        ]}
                                     />
                                     <Padding bottom="16" />
                                 </Grid>
@@ -336,9 +295,9 @@ class NewListing extends Component {
                                         name="numChairsAvailable"
                                         type="select"
                                         style={{ display: 'block' }}
-                                        component={this.renderSelect}
+                                        component={renderSelect}
                                     >
-                                        {this.renderOptions(
+                                        {renderOptions(
                                             selectedOffice
                                                 ? JSON.parse(selectedOffice)
                                                     .chairs
@@ -357,7 +316,7 @@ class NewListing extends Component {
                                         name="cleaningFee"
                                         label="Cleaning Fee"
                                         placeholder="50"
-                                        component={this.renderField}
+                                        component={renderField}
                                         validate={[required, isNum]}
                                     />
                                     <Padding bottom="16" />
