@@ -5,6 +5,7 @@ export const userFragment = `
     imageUrl
     dateCreated
     dentistId
+    payoutAccountId
 `;
 
 export const dentistFragment = `

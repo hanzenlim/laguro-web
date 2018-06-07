@@ -1,46 +1,68 @@
 import makeApiCall from '../util/clientDataLoader';
-import { DENTIST, PAYMENT_OPTIONS } from '../util/strings';
+import { DENTIST, PAYMENT_OPTIONS, PAYOUT_LOGIN } from '../util/strings';
 import {
     userFragment,
     dentistFragment,
-    paymentOptionFragment,
+    paymentOptionFragment
 } from '../util/fragments';
 
-// TODO organizing graphql in this manner does not work well when the desired
-// data is nested at a level > 1. Consider another option, this is just a stopgap,
-const generateGetUserQuery = options => {
+const generateUserResult = options => {
     const dentistResult = options.includes(DENTIST)
         ? `dentist {${dentistFragment}}`
         : '';
     const paymentOptionsResult = options.includes(PAYMENT_OPTIONS)
         ? `paymentOptions {${paymentOptionFragment}}`
         : '';
+    const loginLinkResult = options.includes(PAYOUT_LOGIN)
+        ? `payoutLoginLink`
+        : '';
+    const result = `
+        ${userFragment}
+        ${dentistResult}
+        ${paymentOptionsResult}
+        ${loginLinkResult}
+    `;
+    return result;
+};
+
+// TODO organizing graphql in this manner does not work well when the desired
+// data is nested at a level > 1. Consider another option, this is just a stopgap,
+const generateGetUserQuery = (options = []) => {
     return `
         query getUserByGoogleId($googleId: String!) {
             getUserByGoogleId(googleId: $googleId) {
-                ${userFragment}
-                ${dentistResult}
-                ${paymentOptionsResult}
+                ${generateUserResult(options)}
             }
         }
     `;
 };
 
-const updateUserQuery = `
-    mutation UpdateUser($input: UpdateUserInput!) {
-        updateUser(input: $input) {
+const generateUpdateUserQuery = (options = []) => {
+    return `
+        mutation UpdateUser($input: UpdateUserInput!) {
+            updateUser(input: $input) {
+                ${generateUserResult(options)}
+            }
+        }
+    `;
+};
+
+const addPayoutAccountQuery = `
+    mutation AddPayoutAccount($input: AddPayoutAccountInput!) {
+        addPayoutAccount(input: $input) {
             ${userFragment}
+            payoutLoginLink
         }
     }
 `;
 
 const getUserVariable = id => ({
-    googleId: id.toString(),
+    googleId: id.toString()
 });
 
 // TODO handle graphql errors
 const User = {
-    getByGoogleId: async (userId, options) => {
+    getByGoogleId: async (userId, ...options) => {
         const getUserQuery = generateGetUserQuery(options);
         const response = await makeApiCall(
             getUserQuery,
@@ -49,11 +71,18 @@ const User = {
         return response.data.getUserByGoogleId;
     },
     updateProfileImage: async (userId, imageUrl) => {
+        const updateUserQuery = generateUpdateUserQuery();
         const response = await makeApiCall(updateUserQuery, {
-            input: { id: userId, imageUrl },
+            input: { id: userId, imageUrl }
         });
         return response.data.updateUser;
     },
+    addPayoutAccount: async (userId, accountToken) => {
+        const response = await makeApiCall(addPayoutAccountQuery, {
+            input: { userId, accountToken }
+        });
+        return response.data.addPayoutAccount;
+    }
 };
 
 export default User;

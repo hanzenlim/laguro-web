@@ -97,6 +97,11 @@ const LandlordOnboarding = Loadable({
     loading: LoadingComponent
 });
 
+const Payout = Loadable({
+    loader: () => import('./Payout'),
+    loading: LoadingComponent
+});
+
 const PrivateRoute = ({ auth, path, component: Component, ...props }) => (
     <Route
         render={() =>
@@ -200,6 +205,11 @@ class App extends Component {
                                 auth={this.props.auth}
                                 path="/payment-history"
                                 component={PaymentHistory}
+                            />
+                            <PrivateRoute
+                                auth={this.props.auth}
+                                path="/payout"
+                                component={Payout}
                             />
                             <Route path="/" component={Landing} />
                             {/* Catch all unmatched routes. */}
