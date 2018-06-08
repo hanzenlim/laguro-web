@@ -1,5 +1,5 @@
 {
-	"name": "swapop",
+	"name": "laguro-web",
 	"version": "1.0.0",
 	"description": "Airbnb for dental practices",
 	"main": "server.js",
@@ -13,7 +13,12 @@
 		"serverLocal": "nodemon serverLocal.js --exec babel-node --presets es2015,stage-2",
 		"client": "npm run start --prefix client",
 		"dev": "concurrently \"npm run serverLocal\" \"npm run client\"",
-		"heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
+		"heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client",
+		"webpack-analyzer": "npm run webpack-analyzer --prefix client",
+		"build-stage-assets": "env-cmd /tmp/security.env.stage npm run build --prefix client",
+		"build-prod-assets": "env-cmd /tmp/security.env.prod npm run build --prefix client",
+		"deploy-stage": "env-cmd /tmp/security.env.stage sls deploy -v --stage stage",
+		"deploy-prod": "env-cmd /tmp/security.env.prod sls deploy -v --stage production"
 	},
 	"author": "currymich",
 	"license": "ISC",

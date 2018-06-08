@@ -8,7 +8,15 @@ const apolloFetch = createApolloFetch({ uri });
 
 apolloFetch.use(({ request, options }, next) => {
     options.credentials = 'same-origin';
-    options['x-api-key'] = "api key";
+
+    if (process.env.NODE_ENV === "production") {
+        if (!options.headers) {
+            options.headers = {};
+        }
+
+        options.headers['x-api-key'] = process.env.GRAPHQL_SECRET_KEY;
+    }
+
     next();
 });
 
