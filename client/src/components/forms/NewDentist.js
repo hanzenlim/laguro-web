@@ -148,7 +148,7 @@ class NewDentist extends Component {
                     <FieldArray
                         name="procedures"
                         className="col s12"
-                        component={this.procedureOptionselector}
+                        component={this.renderProcedureSelector}
                         validate={required}
                     />
                 </div>

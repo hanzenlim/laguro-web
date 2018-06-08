@@ -6,6 +6,7 @@ import history from '../../history';
 
 import { Typography, Grid, Button, Option, Box, Modal, Flex } from '../common';
 import { renderInput, renderSelect, renderCheckbox } from './sharedComponents';
+import { APPOINTMENT_SCHEDULING_FEE } from '../../util/paymentUtil';
 
 class BookAppointment extends Component {
     componentWillMount() {
@@ -38,7 +39,7 @@ class BookAppointment extends Component {
             .clone()
             .add(values.procedure.duration, 'minutes');
 
-        const search = `?type=appointment&totalPaid=10000&time=[${moment(
+        const search = `?type=appointment&totalPaid=${APPOINTMENT_SCHEDULING_FEE}&time=[${moment(
             startTime
         ).format()},${moment(endTime).format()}]&procedure=${JSON.stringify(
             values.procedure
