@@ -217,15 +217,15 @@ class Profile extends Component {
                     )}
                     {auth.dentist &&
                         !!reviews.length && (
-                            <div className="reviews profile-section">
-                                <h5>{`Reviews for ${auth.name}`}</h5>
-                                <ReviewContainer
-                                    revieweeId={dentist.id}
-                                    revieweeName={auth.name}
-                                    reviews={reviews}
-                                />
-                            </div>
-                        )}
+                        <div className="reviews profile-section">
+                            <h5>{`Reviews for ${auth.name}`}</h5>
+                            <ReviewContainer
+                                revieweeId={dentist.id}
+                                revieweeName={auth.name}
+                                reviews={reviews}
+                            />
+                        </div>
+                    )}
                 </div>
             </div>
         );
