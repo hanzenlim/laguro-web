@@ -1,14 +1,14 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import Carousel from "nuka-carousel";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import Carousel from 'nuka-carousel';
 import styled from 'styled-components';
-import ReactStars from "react-stars";
+import ReactStars from 'react-stars';
 import Button from '@material-ui/core/Button';
 
 import Icon from './Icon';
-import * as actions from "../actions";
-import { OFFICE, LISTINGS, REVIEWS } from "../util/strings";
-import { Typography, Link, Grid} from './common';
+import * as actions from '../actions';
+import { OFFICE, LISTINGS, REVIEWS } from '../util/strings';
+import { Typography, Link, Grid } from './common';
 import { formatListingTime } from '../util/timeUtil';
 import NewReview from './forms/NewReview';
 import ReviewContainer from './ReviewContainer';
@@ -81,7 +81,7 @@ const ShowMore = styled.div`
 const StaffEquipment = styled.div`
     font-size: 16px;
     line-height: 30px;
-    color: #484E51;
+    color: #484e51;
 `;
 
 const StyledAvailAppts = styled(Typography)`
@@ -110,7 +110,7 @@ const OfficeCarousel = styled(Carousel)`
     margin-top: 3px;
     position: relative;
 
-    @media screen and (min-width : 600px) {
+    @media screen and (min-width: 600px) {
         margin-top: 0;
     }
 `;
@@ -118,7 +118,7 @@ const OfficeCarousel = styled(Carousel)`
 const CarouselButtonLeft = styled(Icon)`
     margin-left: 15px;
 
-    @media screen and (min-width : 600px) {
+    @media screen and (min-width: 600px) {
         margin-left: 50px;
     }
 `;
@@ -126,7 +126,7 @@ const CarouselButtonLeft = styled(Icon)`
 const CarouselButtonRight = styled(Icon)`
     margin-right: 15px;
 
-    @media screen and (min-width : 600px) {
+    @media screen and (min-width: 600px) {
         margin-right: 50px;
     }
 `;
@@ -139,7 +139,7 @@ const BackToListingsDiv = styled.div`
     margin-top: 6%;
     margin-bottom: 3%;
 
-    @media screen and (min-width : 600px) {
+    @media screen and (min-width: 600px) {
         position: absolute;
         display: block;
         margin-left: 3%;
@@ -162,7 +162,7 @@ const NumChairsAvailIcon = styled(Icon)`
     path {
         stroke: #000;
         stroke-width: 4px;
-        stroke-dasharray: 2,2;
+        stroke-dasharray: 2, 2;
         stroke-linejoin: round;
         fill: none;
     }
@@ -181,14 +181,13 @@ const StyledAvailButton = styled(Button)`
         min-height: 18px;
         height: 22px;
         color: white;
-        background-color: #67B620;
+        background-color: #67b620;
         text-transform: none;
         min-width: 40px;
     }
 `;
 
 const StyledResButton = styled(Button)`
-
     && {
         width: 75%;
         font-size: 13px;
@@ -196,7 +195,7 @@ const StyledResButton = styled(Button)`
         min-height: 18px;
         height: 22px;
         color: white;
-        background-color: #F26B27;
+        background-color: #f26b27;
         text-transform: none;
         min-width: 40px;
     }
@@ -220,7 +219,13 @@ class OfficeResultIndex extends Component {
     }
 
     componentDidUpdate() {
-        if (!this.state.availApptsInit && this.state.listings.length == 0 && this.props.office && !Array.isArray(this.props.office) && this.props.office.length != 0) {
+        if (
+            !this.state.availApptsInit &&
+            this.state.listings.length == 0 &&
+            this.props.office &&
+            !Array.isArray(this.props.office) &&
+            this.props.office.length != 0
+        ) {
             this.loadListings();
             this.setState({ availApptsInit: true });
         }
@@ -229,19 +234,24 @@ class OfficeResultIndex extends Component {
     async loadListings() {
         let listingsArray = [];
         var i;
-        if (this && this.props && this.props.office && this.props.office.listings) {
-            for (i = 0; i < this.props.office.listings.length; i ++ ) {
+        if (
+            this &&
+            this.props &&
+            this.props.office &&
+            this.props.office.listings
+        ) {
+            for (i = 0; i < this.props.office.listings.length; i++) {
                 await this.props.getListing(this.props.office.listings[i].id);
                 listingsArray.push(this.props.listing);
             }
         }
 
-        this.setState({ listings : listingsArray});
+        this.setState({ listings: listingsArray });
     }
 
     handleReviewShowMore() {
         this.setState({
-            reviewRowNum: this.state.reviewRowNum + 1,
+            reviewRowNum: this.state.reviewRowNum + 1
         });
     }
 
@@ -265,7 +275,6 @@ class OfficeResultIndex extends Component {
                 </Container1>
             ));
         }
-
     }
 
     renderEquipment(office) {
@@ -285,7 +294,7 @@ class OfficeResultIndex extends Component {
                 <Grid container key={index} spacing={8}>
                     <Grid item xs={4}>
                         <Link to={`/office/${office.id}/listing/${listing.id}`}>
-                            <StyledAvailAppts size="t2" color="darkGrey">
+                            <StyledAvailAppts fontSize={4} color="darkGrey">
                                 {formatListingTime(
                                     listing.startTime,
                                     listing.endTime
@@ -316,7 +325,7 @@ class OfficeResultIndex extends Component {
             return office.listings.map((listing, index) => (
                 <Grid container key={index} spacing={8}>
                     <Grid item xs={4}>
-                        <StyledAvailAppts size="t2" color="darkGrey">
+                        <StyledAvailAppts fontSize={4} color="darkGrey">
                             {formatListingTime(
                                 listing.startTime,
                                 listing.endTime
@@ -358,57 +367,74 @@ class OfficeResultIndex extends Component {
             <div>
                 <OfficeCarousel
                     renderCenterLeftControls={({ previousSlide }) => (
-                        <CarouselButtonLeft icon="carouselButtonLeft" width="45px" className="carousel-control" onClick={previousSlide}/>
+                        <CarouselButtonLeft
+                            icon="carouselButtonLeft"
+                            width="45px"
+                            className="carousel-control"
+                            onClick={previousSlide}
+                        />
                     )}
                     renderCenterRightControls={({ nextSlide }) => (
-                        <CarouselButtonRight icon="carouselButtonRight" width="45px" className="carousel-control" onClick={nextSlide} />
+                        <CarouselButtonRight
+                            icon="carouselButtonRight"
+                            width="45px"
+                            className="carousel-control"
+                            onClick={nextSlide}
+                        />
                     )}
                     slidesToShow={window.innerWidth >= 600 ? 3 : 1}
                     slideWidth={window.innerWidth >= 600 ? 1.88 : 1}
                     cellSpacing={8}
                     cellAlign="center"
-                    slideIndex={1}>
-
+                    slideIndex={1}
+                >
                     {this.renderImages(office)}
-
                 </OfficeCarousel>
 
                 <InfoDiv className="center">
-                    <Link style={{ color: "#000" }} to={"/office/search"}>
+                    <Link style={{ color: '#000' }} to={'/office/search'}>
                         <BackToListingsDiv>
-                            <BackToListingsIcon icon="backToListings" width="45px" />
-                            <BackToListingsTextDiv> Back to office search </BackToListingsTextDiv>
+                            <BackToListingsIcon
+                                icon="backToListings"
+                                width="45px"
+                            />
+                            <BackToListingsTextDiv>
+                                {' '}
+                                Back to office search{' '}
+                            </BackToListingsTextDiv>
                         </BackToListingsDiv>
                     </Link>
 
                     <NameDiv>{office.name}</NameDiv>
 
                     <LocationDiv>
-                        <MapPinIcon icon='map-pin' width="15px" />
+                        <MapPinIcon icon="map-pin" width="15px" />
                         {office.location}
                     </LocationDiv>
 
                     <Padding bottomPerc="1.5" />
 
                     <div>
-                        <NumChairsAvailIcon icon="numChairsAvail" width="35px" />
-                        <Typography size="t2"> {office.numChairs} </Typography>
+                        <NumChairsAvailIcon
+                            icon="numChairsAvail"
+                            width="35px"
+                        />
+                        <Typography fontSize={4}>
+                            {' '}
+                            {office.numChairs}{' '}
+                        </Typography>
                         <div>
-                            <Typography size="t5">Chairs</Typography>
+                            <Typography fontSize={1}>Chairs</Typography>
                         </div>
                     </div>
                 </InfoDiv>
 
-
                 <DetailsDiv>
-                    <DetailsHeadingDiv>
-                        Equipment Available
-                    </DetailsHeadingDiv>
+                    <DetailsHeadingDiv>Equipment Available</DetailsHeadingDiv>
 
                     <hr />
 
                     <StaffEquipment>
-
                         <Padding bottomPerc="1" />
 
                         {this.renderEquipment(office)}
@@ -416,9 +442,7 @@ class OfficeResultIndex extends Component {
 
                     <Padding topPerc={5} />
 
-                    <DetailsHeadingDiv>
-                        Available Listings
-                    </DetailsHeadingDiv>
+                    <DetailsHeadingDiv>Available Listings</DetailsHeadingDiv>
 
                     <hr />
 
@@ -447,10 +471,7 @@ class OfficeResultIndex extends Component {
                                 reviewerId={auth.id}
                             />
                         ) : (
-                            <NewReview
-                                reviewee={office}
-                                type={OFFICE}
-                            />
+                            <NewReview reviewee={office} type={OFFICE} />
                         )}
                         <Padding bottomPerc={2} />
 
@@ -462,11 +483,13 @@ class OfficeResultIndex extends Component {
                         />
                     </OfficeReviewsDiv>
 
-                    <ShowMore className="center" onClick={this.handleReviewShowMore}>
+                    <ShowMore
+                        className="center"
+                        onClick={this.handleReviewShowMore}
+                    >
                         <DownArrow icon="downArrow" width="20px" />
                         Show more
                     </ShowMore>
-
                 </DetailsDiv>
             </div>
         );
@@ -484,4 +507,7 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, actions)(OfficeResultIndex);
+export default connect(
+    mapStateToProps,
+    actions
+)(OfficeResultIndex);

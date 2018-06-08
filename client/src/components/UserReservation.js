@@ -104,7 +104,7 @@ class UserOffice extends Component {
                                     <Padding right={4} />
 
                                     <Typography
-                                        size="t5"
+                                        fontSize={1}
                                         color="silver"
                                         cursor="pointer"
                                         underline
@@ -127,8 +127,8 @@ class UserOffice extends Component {
                                 >
                                     <Link to={`/office/${office.id}`}>
                                         <Typography
-                                            size="t2"
-                                            weight="bold"
+                                            fontSize={4}
+                                            fontWeight="bold"
                                             color="black"
                                         >
                                             {office.name}
@@ -168,7 +168,7 @@ class UserOffice extends Component {
 
                                     <Padding right={4} />
 
-                                    <Typography size="t4">
+                                    <Typography fontSize={2}>
                                         {office.location}
                                     </Typography>
                                 </Grid>
@@ -188,7 +188,7 @@ class UserOffice extends Component {
 
                                     <Padding right={4} />
 
-                                    <Typography size="t4">
+                                    <Typography fontSize={2}>
                                         {formatListingTime(startTime, endTime)}
                                     </Typography>
                                 </Grid>

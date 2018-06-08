@@ -253,7 +253,7 @@ class ReservationOptions extends Component {
             <Modal open={this.props.open} onClose={this.props.onClose} closable>
                 <form onSubmit={handleSubmit(this.initiatePayment.bind(this))}>
                     <Flex pb={4}>
-                        <Typography size="t1">
+                        <Typography fontSize={5}>
                             Choose reservation options
                         </Typography>
                     </Flex>
@@ -385,7 +385,7 @@ class ReservationOptions extends Component {
                             type="submit"
                             disabled={submitting}
                         >
-                            <Typography size="t2" weight="medium">
+                            <Typography fontSize={4} fontWeight="medium">
                                 Book Reservation
                             </Typography>
                         </Button>
@@ -409,4 +409,9 @@ const mapStateToProps = state => {
 
 export default reduxForm({
     form: 'reservationOptions'
-})(connect(mapStateToProps, actions)(ReservationOptions));
+})(
+    connect(
+        mapStateToProps,
+        actions
+    )(ReservationOptions)
+);

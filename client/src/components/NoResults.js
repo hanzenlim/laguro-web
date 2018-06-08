@@ -75,7 +75,7 @@ const NoResults = props => {
                 </Grid>
                 <Grid item xs>
                     <HeadingContainer>
-                        <Typography weight="bold">
+                        <Typography fontWeight="bold">
                             No search results in your area
                         </Typography>
                     </HeadingContainer>

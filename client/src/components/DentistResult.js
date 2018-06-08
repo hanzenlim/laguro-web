@@ -47,7 +47,7 @@ class DentistResult extends Component {
         if (procedures.length) {
             return procedures.slice(0, 4).map(procedure => (
                 <Procedure key={procedure.name}>
-                    <Typography size="t3" weight="regular" color="white">
+                    <Typography fontSize={3} fontWeight="regular" color="white">
                         {procedure.name}
                     </Typography>
                 </Procedure>
@@ -82,8 +82,8 @@ class DentistResult extends Component {
                             <DetailsContainer>
                                 <Grid container>
                                     <Typography
-                                        size="t2"
-                                        weight="bold"
+                                        fontSize={4}
+                                        fontWeight="bold"
                                         color="black"
                                     >
                                         {this.props.name}
@@ -92,8 +92,8 @@ class DentistResult extends Component {
                                 <Padding bottom={5} />
                                 <Grid container>
                                     <Typography
-                                        size="t3"
-                                        weight="regular"
+                                        fontSize={3}
+                                        fontWeight="regular"
                                         color="black"
                                     >
                                         {this.props.specialty} -{' '}
@@ -110,12 +110,12 @@ class DentistResult extends Component {
                                     />
                                     <Padding right={7} />
                                     <Typography
-                                        size="t4"
-                                        weight="regular"
+                                        fontSize={2}
+                                        fontWeight="regular"
                                         color="black"
                                     >{`(${
-                                            this.props.rating_count
-                                        }) Reviews`}</Typography>
+                                        this.props.rating_count
+                                    }) Reviews`}</Typography>
                                 </Grid>
                                 <Padding bottom={7} />
                                 <Grid container>

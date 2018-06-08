@@ -100,7 +100,7 @@ class PaymentSuccess extends Component {
                     <Padding top={60} bottom={20}>
                         <Grid container>
                             <Grid item xs={12}>
-                                <Typography size="t1" weight="bold">
+                                <Typography fontSize={5} fontWeight="bold">
                                     Thank you! Your reservation is confirmed.
                                 </Typography>
                             </Grid>
@@ -126,7 +126,10 @@ class PaymentSuccess extends Component {
                                 <ListingInfo>
                                     <Grid container direction="column">
                                         <Grid container>
-                                            <Typography size="t2" weight="bold">
+                                            <Typography
+                                                fontSize={4}
+                                                fontWeight="bold"
+                                            >
                                                 {office.name}
                                             </Typography>
                                         </Grid>
@@ -140,7 +143,7 @@ class PaymentSuccess extends Component {
 
                                             <Padding right={4} />
 
-                                            <Typography size="t3">
+                                            <Typography fontSize={3}>
                                                 {`Location: ${office.location}`}
                                             </Typography>
                                         </Grid>
@@ -156,7 +159,7 @@ class PaymentSuccess extends Component {
 
                                             <Padding right={4} />
 
-                                            <Typography size="t3">
+                                            <Typography fontSize={3}>
                                                 {`Time: ${this.renderTime()}`}
                                             </Typography>
                                         </Grid>
@@ -172,7 +175,7 @@ class PaymentSuccess extends Component {
 
                                             <Padding right={4} />
 
-                                            <Typography size="t3">
+                                            <Typography fontSize={3}>
                                                 {`Date: ${this.renderDate(
                                                     reservation.startTime
                                                 )}`}
@@ -206,4 +209,7 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, actions)(PaymentSuccess);
+export default connect(
+    mapStateToProps,
+    actions
+)(PaymentSuccess);

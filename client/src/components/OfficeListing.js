@@ -100,7 +100,7 @@ class OfficeListing extends Component {
                                     </i>
                                 </Typography>
                                 <Padding horizontal={6} />
-                                <Typography size="t5" color="black">
+                                <Typography fontSize={1} color="black">
                                     Delete Listing
                                 </Typography>
                             </Grid>

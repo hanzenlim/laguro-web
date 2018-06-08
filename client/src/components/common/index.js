@@ -14,6 +14,7 @@ import Box from './Box';
 import Modal from './Modal';
 import Checkbox from './Checkbox';
 import Flex from './Flex';
+import Container from './Container';
 
 export {
     Chip,
@@ -31,5 +32,6 @@ export {
     Box,
     Modal,
     Checkbox,
-    Flex
+    Flex,
+    Container
 };
