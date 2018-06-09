@@ -2,7 +2,8 @@ import {
     FETCH_OFFICES,
     REQUEST_OFFICES,
     UPDATE_FILTERS,
-    GET_SELECTED_OFFICES
+    GET_SELECTED_OFFICES,
+    CREATE_OFFICE
 } from '../actions/types';
 
 export default function(
@@ -35,6 +36,11 @@ export default function(
         return Object.assign({}, state, {
             ...state,
             isFetching: false,
+            selected: action.payload
+        });
+    case CREATE_OFFICE:
+        return Object.assign({}, state, {
+            ...state,
             selected: action.payload
         });
     default:

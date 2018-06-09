@@ -15,6 +15,10 @@ const StyledInput = styled(MaterialUITextField)`
         box-sizing: content-box;
         transition: none;
         margin: 6px 0 8px 0 !important;
+
+        &::-webkit-input-placeholder {
+            color: #c8c7c7;
+        }
     }
 
     &&&&:after,

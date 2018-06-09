@@ -177,4 +177,9 @@ function mapStateToProps(state) {
 
 export default reduxForm({
     form: 'newDentist'
-})(connect(mapStateToProps, actions)(NewDentist));
+})(
+    connect(
+        mapStateToProps,
+        actions
+    )(NewDentist)
+);

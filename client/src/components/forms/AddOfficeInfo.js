@@ -29,6 +29,14 @@ const StyledImage = styled.img`
     padding-top: 10em;
 `;
 
+const StyledUploadedImage = styled.img`
+    height: 100px;
+    width: 100px;
+    border: 5px solid #d8d8d8;
+    margin: 0 8px 8px 0;
+    object-fit: contain;
+`;
+
 class NewOffice extends Component {
     constructor(props) {
         super(props);
@@ -52,13 +60,12 @@ class NewOffice extends Component {
     }
 
     onAutocomplete = location => {
-        this.setState({
-            location
-        });
+        this.setState({ location });
     };
 
     onSubmit = values => {
         const params = queryString.stringify({
+            ...this.urlParams,
             ...values,
             location: this.state.location,
             imageUrls: JSON.stringify(this.state.imageUrls)
@@ -80,8 +87,15 @@ class NewOffice extends Component {
 
     renderUploadedImages() {
         const { imageUrls } = this.state;
+
         return imageUrls.map((url, index) => {
-            return <img src={url} key={'img' + index} alt="office" />;
+            return (
+                <StyledUploadedImage
+                    src={url}
+                    key={'img' + index}
+                    alt="office"
+                />
+            );
         });
     }
 
@@ -225,4 +239,9 @@ function mapStateToProps(state) {
 
 export default reduxForm({
     form: 'addOfficeInfo'
-})(connect(mapStateToProps, actions)(NewOffice));
+})(
+    connect(
+        mapStateToProps,
+        actions
+    )(NewOffice)
+);

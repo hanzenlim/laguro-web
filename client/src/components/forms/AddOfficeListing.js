@@ -8,10 +8,11 @@ import {
     formValueSelector
 } from 'redux-form';
 import moment from 'moment';
+import queryString from 'query-string';
 import styled from 'styled-components';
 
 import * as actions from '../../actions';
-import { DENTIST, OFFICES } from '../../util/strings';
+import { DENTIST } from '../../util/strings';
 import { getNextHalfHour } from '../../util/timeUtil';
 import { Typography, Grid, Button } from '../common';
 import { Padding } from '../common/Spacing';
@@ -20,7 +21,6 @@ import {
     renderDatePicker,
     renderField,
     renderOptions,
-    renderOfficeOptions,
     renderSelect
 } from './sharedComponents';
 import { required, isNum, dollarMinimum } from './formValidation';
@@ -49,30 +49,52 @@ const StyledImage = styled.img`
 `;
 
 class NewListing extends Component {
-    async componentWillMount() {
-        document.title = 'Laguro - New Listing';
-        await this.props.fetchUser(DENTIST);
-        const { auth } = this.props;
-        await this.props.getDentist(auth.dentist.id, OFFICES);
-        const office = this.props.offices[0] || {};
+    constructor(props) {
+        super(props);
+
+        this.urlParams = queryString.parse(history.location.search);
 
         this.props.initialize({
-            startTime: getNextHalfHour(),
-            endTime: getNextHalfHour().add(2, 'hours'),
-            numChairsAvailable: 1,
-            office: JSON.stringify({
-                id: office.id,
-                office_name: office.name,
-                chairs: office.numChairs
-            })
+            office: this.urlParams.name,
+            cleaningFee: this.urlParams.cleaningFee,
+            chairHourlyPrice: this.urlParams.chairHourlyPrice,
+            startTime: this.urlParams.startTime
+                ? moment(this.urlParams.startTime)
+                : getNextHalfHour(),
+            endTime: this.urlParams.endTime
+                ? moment(this.urlParams.endTime)
+                : getNextHalfHour().add(2, 'hours'),
+            numChairsAvailable: this.urlParams.numChairsAvailable
+                ? Number(this.urlParams.numChairsAvailable)
+                : 1,
+            staffAvailable: this.urlParams.staffAvailable
+                ? JSON.parse(this.urlParams.staffAvailable)
+                : []
         });
     }
 
-    handleBack() {
-        history.goBack();
+    async componentWillMount() {
+        document.title = 'Laguro - New Listing';
+        await this.props.fetchUser(DENTIST);
     }
 
-    onSubmit(values) {
+    handleBack = () => {
+        const params = queryString.stringify({
+            ...this.urlParams,
+            startTime: this.props.startTime,
+            endTime: this.props.endTime,
+            chairHourlyPrice: this.props.chairHourlyPrice,
+            cleaningFee: this.props.cleaningFee,
+            numChairsAvailable: this.props.numChairsAvailable,
+            staffAvailable: this.props.staffAvailable
+                ? JSON.stringify(this.props.staffAvailable)
+                : []
+        });
+
+        history.push(`/landlord-onboarding/add-equipments?${params}`);
+    };
+
+    async onSubmit(values) {
         if (
             // if chosen duration is less than 2 hrs
             moment(values.startTime)
@@ -88,12 +110,29 @@ class NewListing extends Component {
                 _error: 'Please select an office above'
             });
         } else {
-            const office = JSON.parse(values.office);
             values.staffAvailable = values.staffAvailable || [];
             delete values.office;
-            this.props.createListing({
+
+            const {
+                name,
+                location,
+                numChairs,
+                imageUrls,
+                equipment
+            } = this.urlParams;
+
+            await this.props.createOffice({
+                name,
+                location,
+                numChairs,
+                hostId: this.props.auth.dentist.id,
+                imageUrls: JSON.parse(imageUrls),
+                equipment: JSON.parse(equipment)
+            });
+
+            await this.props.createListing({
                 ...values,
-                officeId: office.id
+                officeId: this.props.offices[0].id
             });
         }
     }
@@ -117,7 +156,6 @@ class NewListing extends Component {
                 <li key={index}>
                     <Grid container alignItems="flex-start">
                         <Grid xs>
-                            <label>Staff Role</label>
                             <Field
                                 name={`${staff}.role`}
                                 type="text"
@@ -129,7 +167,6 @@ class NewListing extends Component {
                             <Padding bottom="16" />
                         </Grid>
                         <Grid xs>
-                            <label>Hourly Price</label>
                             <Field
                                 name={`${staff}.price`}
                                 type="text"
@@ -141,7 +178,6 @@ class NewListing extends Component {
                             <Padding bottom="16" />
                         </Grid>
                         <Grid xs>
-                            <label>Number of Staff</label>
                             <Field
                                 name={`${staff}.count`}
                                 type="text"
@@ -174,27 +210,10 @@ class NewListing extends Component {
         this.hours = minutes / 60;
     }
 
-    calcTotal() {
-        const { price, numChairsAvailable } = this.props;
-        if (this.hours <= 0 || !numChairsAvailable || !price) {
-            return 0;
-        }
-
-        return Math.floor(
-            numChairsAvailable * price * this.hours * 0.2
-        ).toFixed(2);
-    }
-
     render() {
-        const {
-            handleSubmit,
-            submitting,
-            error,
-            selectedOffice,
-            offices
-        } = this.props;
+        const { handleSubmit, submitting, error } = this.props;
 
-        if (!this.props.initialized || !this.props.offices) {
+        if (!this.props.initialized) {
             return <div>Loading...</div>;
         }
 
@@ -236,16 +255,12 @@ class NewListing extends Component {
 
                             <Grid container>
                                 <Grid item xs={12}>
-                                    <label>Office Name</label>
                                     <Field
                                         disabled
                                         label="Office Name"
                                         name="office"
-                                        style={{ display: 'block' }}
-                                        component={renderSelect}
-                                    >
-                                        {renderOfficeOptions(offices)}
-                                    </Field>
+                                        component={renderField}
+                                    />
                                     <Padding bottom="16" />
                                 </Grid>
                             </Grid>
@@ -275,7 +290,6 @@ class NewListing extends Component {
 
                             <Grid container>
                                 <Grid item xs={12} md={6}>
-                                    <label>Price per chair (hourly)</label>
                                     <Field
                                         name="chairHourlyPrice"
                                         label="Price per chair (hourly)"
@@ -290,18 +304,15 @@ class NewListing extends Component {
                                     <Padding bottom="16" />
                                 </Grid>
                                 <Grid item xs={12} md={6}>
-                                    <label>Number of chairs available</label>
                                     <Field
                                         name="numChairsAvailable"
+                                        label="Number of chairs available"
                                         type="select"
                                         style={{ display: 'block' }}
                                         component={renderSelect}
                                     >
                                         {renderOptions(
-                                            selectedOffice
-                                                ? JSON.parse(selectedOffice)
-                                                    .chairs
-                                                : 1,
+                                            this.urlParams.numChairs || 1,
                                             1
                                         )}
                                     </Field>
@@ -311,7 +322,6 @@ class NewListing extends Component {
 
                             <Grid container>
                                 <Grid item xs={12}>
-                                    <label>Cleaning Fee</label>
                                     <Field
                                         name="cleaningFee"
                                         label="Cleaning Fee"
@@ -330,20 +340,17 @@ class NewListing extends Component {
                                 <Padding bottom="16" />
                             </div>
 
-                            <Grid container>
-                                <Grid item xs={12}>
-                                    <label>
-                                        Total due - 20% of total chair rental
-                                        fee
-                                    </label>
-                                    <h6 className="red-text">
-                                        ${this.calcTotal()}
-                                    </h6>
-                                    <Padding bottom="16" />
+                            <Grid container justify="space-between">
+                                <Grid item>
+                                    <Button
+                                        color="default"
+                                        onClick={this.handleBack}
+                                    >
+                                        <Typography size="t2" weight="medium">
+                                            Previous
+                                        </Typography>
+                                    </Button>
                                 </Grid>
-                            </Grid>
-
-                            <Grid container justify="flex-end">
                                 <Grid item>
                                     {error && (
                                         <strong className="red-text">
@@ -379,16 +386,21 @@ const mapStateToProps = state => {
     return {
         startTime: selector(state, 'startTime'),
         endTime: selector(state, 'endTime'),
-        price: selector(state, 'price'),
+        chairHourlyPrice: selector(state, 'chairHourlyPrice'),
         selectedOffice: selector(state, 'office'),
         numChairsAvailable: selector(state, 'numChairsAvailable'),
+        staffAvailable: selector(state, 'staffAvailable'),
+        cleaningFee: selector(state, 'cleaningFee'),
         auth: state.auth,
-        offices: state.dentists.selectedDentist
-            ? state.dentists.selectedDentist.offices
-            : []
+        offices: state.offices.selected ? state.offices.selected : []
     };
 };
 
 export default reduxForm({
     form: 'newListing'
-})(connect(mapStateToProps, actions)(NewListing));
+})(
+    connect(
+        mapStateToProps,
+        actions
+    )(NewListing)
+);
