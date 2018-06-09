@@ -4,6 +4,7 @@ import moment from 'moment';
 import { Redirect } from 'react-router-dom';
 import * as actions from '../actions';
 import { getStartTime } from '../util/timeUtil';
+import { APPOINTMENT_SCHEDULING_FEE } from '../util/paymentUtil';
 
 class AppointmentOptions extends Component {
     constructor(props) {
@@ -56,7 +57,7 @@ class AppointmentOptions extends Component {
                     push
                     to={{
                         pathname: '/payment',
-                        search: `?type=appointment&totalPaid=10000&time=[${moment(
+                        search: `?type=appointment&totalPaid=${APPOINTMENT_SCHEDULING_FEE}&time=[${moment(
                             startTime
                         ).format()},${moment(
                             endTime
@@ -74,7 +75,4 @@ class AppointmentOptions extends Component {
     }
 }
 
-export default connect(
-    null,
-    actions
-)(AppointmentOptions);
+export default connect(null, actions)(AppointmentOptions);

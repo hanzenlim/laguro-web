@@ -207,7 +207,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(
-    mapStateToProps,
-    actions
-)(OfficeResultIndex);
+export default connect(mapStateToProps, actions)(OfficeResultIndex);
