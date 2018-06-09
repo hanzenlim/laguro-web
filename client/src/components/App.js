@@ -4,15 +4,19 @@ import { ThemeProvider } from 'styled-components';
 import { connect } from 'react-redux';
 import Loadable from 'react-loadable';
 import * as actions from '../actions';
-import LoadingComponent from './LoadingComponent';
-
-import history from '../history';
-import Landing from './Landing';
-import Header from './Header';
-import LoginModal from './LoginModal';
 import { DENTIST } from '../util/strings';
+import LoadingComponent from './LoadingComponent';
+import history from '../history';
+
+import Landing from './Landing';
+import LoginModal from './LoginModal';
 import NotFound from './NotFound';
+
+import Layout from './Layout';
+import Header from './Header';
+import Content from './Content';
 import Footer from './Footer';
+
 import theme from '../theme';
 
 import './App.css';
@@ -131,96 +135,101 @@ class App extends Component {
         return (
             <ThemeProvider theme={theme}>
                 <Router history={history}>
-                    <div>
+                    <Layout>
                         <Header toggleShowModal={this.props.toggleLoginModal} />
-                        <Switch>
-                            <PrivateRoute
-                                path="/landlord-onboarding/:step"
-                                auth={this.props.auth}
-                                component={LandlordOnboarding}
-                            />
-                            <Route
-                                path="/dentist/search"
-                                component={DentistResultIndex}
-                            />
-                            <Route
-                                path="/office/search"
-                                component={OfficeResultIndex}
-                            />
-                            <PrivateRoute
-                                auth={this.props.auth}
-                                path="/office/:office_id/listing/:id/edit"
-                                component={EditListing}
-                            />
-                            <Route
-                                path="/office/:office_id/listing/:id"
-                                component={Listing}
-                            />
-                            <PrivateRoute
-                                auth={this.props.auth}
-                                path="/office/:office_id/edit"
-                                component={EditOffice}
-                            />
-                            <PrivateRoute
-                                auth={this.props.auth}
-                                path="/office/new"
-                                component={NewOffice}
-                            />
-                            <Route
-                                path="/office/:office_id"
-                                component={Office}
-                            />
-                            <PrivateRoute
-                                auth={this.props.auth}
-                                path="/dentist/new"
-                                component={NewDentist}
-                            />
-                            <PrivateRoute
-                                auth={this.props.auth}
-                                path="/dentist/edit"
-                                component={EditDentist}
-                            />
-                            <Route path="/dentist/:id" component={Dentist} />
-                            <PrivateRoute
-                                auth={this.props.auth}
-                                path="/listing/new"
-                                component={NewListing}
-                            />
-                            <PrivateRoute
-                                auth={this.props.auth}
-                                path="/profile"
-                                component={Profile}
-                            />
-                            <PrivateRoute
-                                auth={this.props.auth}
-                                path="/payment-success"
-                                component={PaymentSuccess}
-                            />
-                            <PrivateRoute
-                                auth={this.props.auth}
-                                path="/payment"
-                                component={Payment}
-                            />
-                            <PrivateRoute
-                                auth={this.props.auth}
-                                path="/payment-history"
-                                component={PaymentHistory}
-                            />
-                            <PrivateRoute
-                                auth={this.props.auth}
-                                path="/payout"
-                                component={Payout}
-                            />
-                            <Route path="/" component={Landing} />
-                            {/* Catch all unmatched routes. */}
-                            <Route component={NotFound} />
-                        </Switch>
+                        <Content>
+                            <Switch>
+                                <PrivateRoute
+                                    path="/landlord-onboarding/:step"
+                                    auth={this.props.auth}
+                                    component={LandlordOnboarding}
+                                />
+                                <Route
+                                    path="/dentist/search"
+                                    component={DentistResultIndex}
+                                />
+                                <Route
+                                    path="/office/search"
+                                    component={OfficeResultIndex}
+                                />
+                                <PrivateRoute
+                                    auth={this.props.auth}
+                                    path="/office/:office_id/listing/:id/edit"
+                                    component={EditListing}
+                                />
+                                <Route
+                                    path="/office/:office_id/listing/:id"
+                                    component={Listing}
+                                />
+                                <PrivateRoute
+                                    auth={this.props.auth}
+                                    path="/office/:office_id/edit"
+                                    component={EditOffice}
+                                />
+                                <PrivateRoute
+                                    auth={this.props.auth}
+                                    path="/office/new"
+                                    component={NewOffice}
+                                />
+                                <Route
+                                    path="/office/:office_id"
+                                    component={Office}
+                                />
+                                <PrivateRoute
+                                    auth={this.props.auth}
+                                    path="/dentist/new"
+                                    component={NewDentist}
+                                />
+                                <PrivateRoute
+                                    auth={this.props.auth}
+                                    path="/dentist/edit"
+                                    component={EditDentist}
+                                />
+                                <Route
+                                    path="/dentist/:id"
+                                    component={Dentist}
+                                />
+                                <PrivateRoute
+                                    auth={this.props.auth}
+                                    path="/listing/new"
+                                    component={NewListing}
+                                />
+                                <PrivateRoute
+                                    auth={this.props.auth}
+                                    path="/profile"
+                                    component={Profile}
+                                />
+                                <PrivateRoute
+                                    auth={this.props.auth}
+                                    path="/payment-success"
+                                    component={PaymentSuccess}
+                                />
+                                <PrivateRoute
+                                    auth={this.props.auth}
+                                    path="/payment"
+                                    component={Payment}
+                                />
+                                <PrivateRoute
+                                    auth={this.props.auth}
+                                    path="/payment-history"
+                                    component={PaymentHistory}
+                                />
+                                <PrivateRoute
+                                    auth={this.props.auth}
+                                    path="/payout"
+                                    component={Payout}
+                                />
+                                <Route path="/" component={Landing} />
+                                {/* Catch all unmatched routes. */}
+                                <Route component={NotFound} />
+                            </Switch>
+                        </Content>
                         <LoginModal
                             open={this.props.isLoginModalVisible}
                             onClose={this.props.toggleLoginModal}
                         />
                         <Footer />
-                    </div>
+                    </Layout>
                 </Router>
             </ThemeProvider>
         );
