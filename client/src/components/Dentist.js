@@ -290,7 +290,7 @@ class Profile extends Component {
                 <Padding bottomPerc={1.5} />
 
                 <InfoDiv className="center">
-                    <Link style={{ color: '#000' }} to={'/dentist/search'}>
+                    <Link to={'/dentist/search'}>
                         <BackToListingsDiv>
                             <BackToListingsIcon
                                 icon="backToListings"

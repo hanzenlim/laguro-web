@@ -4,25 +4,25 @@ import ReactStars from 'react-stars';
 import styled from 'styled-components';
 import Grid from '@material-ui/core/Grid';
 import { REVIEWEE_ID } from '../util/strings';
-
+import { Box } from './common';
+import { Padding } from './common/Spacing';
 import * as actions from '../actions';
 
-const ReviewDiv = styled.div`
+const ReviewDiv = styled(Box)`
     float: left;
-    font-size: 13px;
 `;
 
-const ReviewNameDiv = styled.div`
+const ReviewNameDiv = styled(Box)`
     font-weight: bold;
-    margin-top: 3%;
-    margin-bottom: 3%;
-    font-size: 17px;
 `;
 
-const ReviewContentDiv = styled.div`
+const ReviewContentDiv = styled(Box)`
     float: none;
     font-weight: 500;
-    font-size: 14px;
+    display: -webkit-box;
+    -webkit-line-clamp: 7;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 `;
 
 class ReviewContainer extends Component {
@@ -50,10 +50,11 @@ class ReviewContainer extends Component {
 
         return reviews.slice(0,this.props.rows * reviewPerRow).map((review, index) => (
             <Grid item xs={6} sm={4} key={index}>
-                <ReviewDiv>
-                    <ReviewNameDiv> {review.reviewer_name} </ReviewNameDiv>
-                    <ReviewContentDiv> {review.text} </ReviewContentDiv>
-
+                <ReviewDiv fontSize={13}>
+                    <ReviewNameDiv fontSize={17}> {review.reviewer.name} </ReviewNameDiv>
+                    <Padding bottom={10} />
+                    <ReviewContentDiv fontSize={14} className="review-content"> {review.text} </ReviewContentDiv>
+                    <Padding bottom={10} />
                     <ReactStars
                         count={5}
                         edit={false}
@@ -72,18 +73,10 @@ class ReviewContainer extends Component {
     }
 
     render() {
-        const { reviews, revieweeName } = this.props;
-        const noExistingReviews = !reviews || reviews.length === 0;
+        const { reviews } = this.props;
         return (
             <div>
-                {noExistingReviews ? (
-                    <h6 className="blue-text text-darken-3">
-                        No reviews yet for {revieweeName}, login to be the
-                        first!
-                    </h6>
-                ) : (
-                    <Grid container spacing={40}> {this.renderReviewList(reviews)} </Grid>
-                )}
+                <Grid container spacing={40}> {this.renderReviewList(reviews)} </Grid>
             </div>
         );
     }

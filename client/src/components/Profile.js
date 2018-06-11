@@ -3,11 +3,12 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import ReactFilestack from 'filestack-react';
 import moment from 'moment';
-
+import { Modal } from './common';
 import ReviewContainer from './ReviewContainer';
 import PatientAppointments from './PatientAppointments';
 import UserOfficeIndex from './UserOfficeIndex';
 import UserReservationIndex from './UserReservationIndex';
+import CreateDentistProfile from './forms/CreateDentistProfile';
 import { filestackKey } from '../config/keys';
 import * as actions from '../actions';
 import {
@@ -22,9 +23,13 @@ import {
 class Profile extends Component {
     constructor(props) {
         super(props);
-        this.state = { isLoading: false };
+        this.state = {
+            isLoading: false,
+            isModalOpen: false
+        };
 
         this.loadOffices = this.loadOffices.bind(this);
+        this.handleCreateDentist = this.handleCreateDentist.bind(this);
     }
 
     componentWillMount() {
@@ -62,6 +67,14 @@ class Profile extends Component {
         return offices;
     }
 
+    handleCreateDentist() {
+        this.setState({ isModalOpen: true });
+    }
+
+    closeModal = () => {
+        this.setState({ isModalOpen: false });
+    };
+
     renderProfileDetails() {
         const { auth, dentist } = this.props;
         return (
@@ -93,10 +106,14 @@ class Profile extends Component {
                         Edit Dentist Profile
                     </Link>
                 ) : (
-                    <Link className="link red-text" to={'/dentist/new'}>
+                    <a className="link red-text" onClick={this.handleCreateDentist}>
                         Create Dentist Profile
-                    </Link>
+                    </a>
                 )}
+
+                <Modal closable open={this.state.isModalOpen} onClose={this.closeModal}>
+                    <CreateDentistProfile handleSubmission={this.closeModal.bind(this)} />
+                </Modal>
 
                 <ReactFilestack
                     apikey={filestackKey}

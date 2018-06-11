@@ -10,7 +10,7 @@ import {
 import { Redirect } from 'react-router-dom';
 import moment from 'moment';
 
-import { Typography, Button, Option, Modal, Flex, Box } from '../common';
+import { Typography, Button, Option, Flex, Box } from '../common';
 
 import {
     renderSelect,
@@ -250,148 +250,146 @@ class ReservationOptions extends Component {
         }
 
         return (
-            <Modal open={this.props.open} onClose={this.props.onClose} closable>
-                <form onSubmit={handleSubmit(this.initiatePayment.bind(this))}>
-                    <Flex pb={4}>
-                        <Typography fontSize={5}>
-                            Choose reservation options
-                        </Typography>
-                    </Flex>
+            <form onSubmit={handleSubmit(this.initiatePayment.bind(this))}>
+                <Flex pb={4}>
+                    <Typography fontSize={5}>
+                        Choose reservation options
+                    </Typography>
+                </Flex>
 
-                    <Flex pb={3} flexDirection="column">
-                        <label>Doors opening</label>
-                        <Field
-                            name="startTime"
-                            dateType="startTime"
-                            component={renderDatePicker}
-                            listing={listing}
-                        />
-                    </Flex>
+                <Flex pb={3} flexDirection="column">
+                    <label>Doors opening</label>
+                    <Field
+                        name="startTime"
+                        dateType="startTime"
+                        component={renderDatePicker}
+                        listing={listing}
+                    />
+                </Flex>
 
-                    <Flex pb={3} flexDirection="column">
-                        <label>Doors closing</label>
-                        <Field
-                            name="endTime"
-                            dateType="endTime"
-                            component={renderDatePicker}
-                            listing={listing}
-                        />
-                    </Flex>
+                <Flex pb={3} flexDirection="column">
+                    <label>Doors closing</label>
+                    <Field
+                        name="endTime"
+                        dateType="endTime"
+                        component={renderDatePicker}
+                        listing={listing}
+                    />
+                </Flex>
 
-                    <Flex pb={3} flexDirection="column">
-                        <label>Number of appointment slots per hour</label>
-                        <Field
-                            name={'appts_per_hour'}
-                            type="select"
-                            style={{ display: 'block' }}
-                            component={renderSelect}
-                        >
-                            <Option value={1}>1 - 60 min appointments</Option>
-                            <Option value={2}>2 - 30 min appointments</Option>
-                            <Option value={3}>3 - 20 min appointments</Option>
-                            <Option value={4}>4 - 15 min appointments</Option>
-                        </Field>
-                    </Flex>
+                <Flex pb={3} flexDirection="column">
+                    <label>Number of appointment slots per hour</label>
+                    <Field
+                        name={'appts_per_hour'}
+                        type="select"
+                        style={{ display: 'block' }}
+                        component={renderSelect}
+                    >
+                        <Option value={1}>1 - 60 min appointments</Option>
+                        <Option value={2}>2 - 30 min appointments</Option>
+                        <Option value={3}>3 - 20 min appointments</Option>
+                        <Option value={4}>4 - 15 min appointments</Option>
+                    </Field>
+                </Flex>
 
-                    <Flex pb={3} flexDirection="column">
-                        <label>Number of chairs needed</label>
-                        <Field
-                            name={'numChairs'}
-                            type="select"
-                            style={{ display: 'block' }}
-                            component={renderSelect}
-                        >
-                            {renderOptions(
-                                this.props.listing.numChairsAvailable,
-                                1,
-                                `- $${
-                                    this.props.listing.chairHourlyPrice
-                                }/chair/hr`
-                            )}
-                        </Field>
-                    </Flex>
-
-                    <Flex pb={3} flexDirection="column">
-                        {staffSelected && staffSelected.length ? (
-                            <div>
-                                <FieldArray
-                                    name="staffSelected"
-                                    component={this.renderStaff}
-                                />
-                            </div>
-                        ) : (
-                            <div />
+                <Flex pb={3} flexDirection="column">
+                    <label>Number of chairs needed</label>
+                    <Field
+                        name={'numChairs'}
+                        type="select"
+                        style={{ display: 'block' }}
+                        component={renderSelect}
+                    >
+                        {renderOptions(
+                            this.props.listing.numChairsAvailable,
+                            1,
+                            `- $${
+                                this.props.listing.chairHourlyPrice
+                            }/chair/hr`
                         )}
-                    </Flex>
+                    </Field>
+                </Flex>
 
-                    {equipmentSelected && equipmentSelected.length ? (
+                <Flex pb={3} flexDirection="column">
+                    {staffSelected && staffSelected.length ? (
                         <div>
                             <FieldArray
-                                name="equipmentSelected"
-                                className="row"
-                                component={this.renderEquipment}
+                                name="staffSelected"
+                                component={this.renderStaff}
                             />
                         </div>
                     ) : (
                         <div />
                     )}
+                </Flex>
 
-                    <Flex>
-                        <Box width={1 / 2}>
-                            <label>Booking Fee - 15% of chair time</label>
-                            <h6 className="red-text">
-                                ${this.calcBookingFee()}
-                            </h6>
-                        </Box>
-                        <Box width={1 / 2}>
-                            <label>Total due</label>
-                            <h6 className="red-text">${this.calcTotal()}</h6>
-                        </Box>
-                    </Flex>
-
-                    <Flex pb={3} flexDirection="column">
-                        <Box>
-                            <sub>
-                                *An additional 10% of final patient payment will
-                                be deducted on completion of procedure for use
-                                of Laguro services
-                            </sub>
-                        </Box>
-                        <Box>
-                            <sub>
-                                **Payment for first two hours of selected staff
-                                payroll and booking fee are non-refundable
-                            </sub>
-                        </Box>
-                    </Flex>
-
-                    <Flex pb={3}>
-                        <Field
-                            name="acknowledge"
-                            label="I understand and agree to the terms above"
-                            id="acknowledge"
-                            component={renderCheckbox}
-                            type="checkbox"
-                            className="browser-default"
+                {equipmentSelected && equipmentSelected.length ? (
+                    <div>
+                        <FieldArray
+                            name="equipmentSelected"
+                            className="row"
+                            component={this.renderEquipment}
                         />
-                    </Flex>
+                    </div>
+                ) : (
+                    <div />
+                )}
 
-                    <Flex flexDirection="column">
-                        {error && <strong className="red-text">{error}</strong>}
+                <Flex>
+                    <Box width={1 / 2}>
+                        <label>Booking Fee - 15% of chair time</label>
+                        <h6 className="red-text">
+                            ${this.calcBookingFee()}
+                        </h6>
+                    </Box>
+                    <Box width={1 / 2}>
+                        <label>Total due</label>
+                        <h6 className="red-text">${this.calcTotal()}</h6>
+                    </Box>
+                </Flex>
 
-                        <Button
-                            fullWidth
-                            color="secondary"
-                            type="submit"
-                            disabled={submitting}
-                        >
-                            <Typography fontSize={4} fontWeight="medium">
-                                Book Reservation
-                            </Typography>
-                        </Button>
-                    </Flex>
-                </form>
-            </Modal>
+                <Flex pb={3} flexDirection="column">
+                    <Box>
+                        <sub>
+                            *An additional 10% of final patient payment will
+                            be deducted on completion of procedure for use
+                            of Laguro services
+                        </sub>
+                    </Box>
+                    <Box>
+                        <sub>
+                            **Payment for first two hours of selected staff
+                            payroll and booking fee are non-refundable
+                        </sub>
+                    </Box>
+                </Flex>
+
+                <Flex pb={3}>
+                    <Field
+                        name="acknowledge"
+                        label="I understand and agree to the terms above"
+                        id="acknowledge"
+                        component={renderCheckbox}
+                        type="checkbox"
+                        className="browser-default"
+                    />
+                </Flex>
+
+                <Flex flexDirection="column">
+                    {error && <strong className="red-text">{error}</strong>}
+
+                    <Button
+                        fullWidth
+                        color="secondary"
+                        type="submit"
+                        disabled={submitting}
+                    >
+                        <Typography fontSize={4} fontWeight="medium">
+                            Book Reservation
+                        </Typography>
+                    </Button>
+                </Flex>
+            </form>
         );
     }
 }

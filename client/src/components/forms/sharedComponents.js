@@ -44,14 +44,14 @@ const getMinTime = (dateType, listing) => {
             .hours(0)
             .minutes(0);
     switch (dateType) {
-        case 'startTime':
-            return moment(listing.startTime);
-        case 'endTime':
-            return moment(listing.startTime).add(2, 'hours');
-        default:
-            return moment()
-                .hours(0)
-                .minutes(0);
+    case 'startTime':
+        return moment(listing.startTime);
+    case 'endTime':
+        return moment(listing.startTime).add(2, 'hours');
+    default:
+        return moment()
+            .hours(0)
+            .minutes(0);
     }
 };
 
@@ -61,14 +61,14 @@ const getMaxTime = (dateType, listing) => {
             .hours(23)
             .minutes(59);
     switch (dateType) {
-        case 'startTime':
-            return moment(listing.endTime).subtract(2, 'hours');
-        case 'endTime':
-            return moment(listing.endTime);
-        default:
-            return moment()
-                .hours(23)
-                .minutes(59);
+    case 'startTime':
+        return moment(listing.endTime).subtract(2, 'hours');
+    case 'endTime':
+        return moment(listing.endTime);
+    default:
+        return moment()
+            .hours(23)
+            .minutes(59);
     }
 };
 
