@@ -135,7 +135,8 @@ class Profile extends Component {
             reviewRowNum: 1,
             isModalOpen: false,
             selectedStartTime: null,
-            durationToNextAppointment: null
+            durationToNextAppointment: null,
+            selectedReservation: {}
         };
         this.handleReviewShowMore = this.handleReviewShowMore.bind(this);
     }
@@ -188,11 +189,16 @@ class Profile extends Component {
         return <div>No procedures Available</div>;
     }
 
-    handleBookAppointment = (selectedStartTime, durationToNextAppointment) => {
+    handleBookAppointment = (
+        selectedStartTime,
+        durationToNextAppointment,
+        selectedReservation
+    ) => {
         this.setState({
             isModalOpen: true,
             selectedStartTime,
-            durationToNextAppointment
+            durationToNextAppointment,
+            selectedReservation
         });
     };
 
@@ -200,7 +206,8 @@ class Profile extends Component {
         this.setState({
             isModalOpen: false,
             selectedStartTime: null,
-            durationToNextAppointment: null
+            durationToNextAppointment: null,
+            selectedReservation: {}
         });
     };
 
@@ -246,20 +253,6 @@ class Profile extends Component {
                                         this.handleBookAppointment
                                     }
                                 />
-
-                                {this.state.selectedStartTime && (
-                                    <BookAppointment
-                                        open={this.state.isModalOpen}
-                                        closeModal={this.closeModal}
-                                        dentist={dentist}
-                                        startTime={this.state.selectedStartTime}
-                                        durationToNextAppointment={
-                                            this.state.durationToNextAppointment
-                                        }
-                                        reservation={reservation}
-                                        auth={auth}
-                                    />
-                                )}
                             </div>
                         </StyledResContentDiv>
                     </div>
@@ -392,6 +385,20 @@ class Profile extends Component {
                         Show more
                     </ShowMore>
                 </DetailsDiv>
+
+                {this.state.selectedStartTime && (
+                    <BookAppointment
+                        open={this.state.isModalOpen}
+                        closeModal={this.closeModal}
+                        dentist={dentist}
+                        startTime={this.state.selectedStartTime}
+                        durationToNextAppointment={
+                            this.state.durationToNextAppointment
+                        }
+                        reservation={this.state.selectedReservation}
+                        auth={auth}
+                    />
+                )}
             </div>
         );
     }
@@ -406,4 +413,7 @@ function mapStateToProps(state) {
         reviews: state.reviews.all
     };
 }
-export default connect(mapStateToProps, actions)(Profile);
+export default connect(
+    mapStateToProps,
+    actions
+)(Profile);
