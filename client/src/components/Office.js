@@ -65,10 +65,6 @@ const StyledShowMoreBox = styled(Box)`
 
 const StyledEquipmentBox = styled(Box)`
     line-height: 30px;
-<<<<<<< HEAD
-    color: #484e51;
-=======
->>>>>>> cdf463b... Update Office detail page design; Remove listing; Implement booking modal
 `;
 
 const StyledAvailListings = styled(Typography)`
@@ -93,36 +89,21 @@ const StyledDownArrow = styled(Icon)`
 
 const StyledOfficeCarousel = styled(Carousel)`
     position: relative;
-<<<<<<< HEAD
-
-    @media screen and (min-width: 600px) {
-=======
     @media screen and (min-width : 600px) {
->>>>>>> cdf463b... Update Office detail page design; Remove listing; Implement booking modal
         margin-top: 0;
     }
 `;
 
 const StyledCarouselButtonLeftIcon = styled(Icon)`
     margin-left: 15px;
-<<<<<<< HEAD
-
-    @media screen and (min-width: 600px) {
-=======
     @media screen and (min-width : 600px) {
->>>>>>> cdf463b... Update Office detail page design; Remove listing; Implement booking modal
         margin-left: 50px;
     }
 `;
 
 const StyledCarouselButtonRightIcon = styled(Icon)`
     margin-right: 15px;
-<<<<<<< HEAD
-
-    @media screen and (min-width: 600px) {
-=======
     @media screen and (min-width : 600px) {
->>>>>>> cdf463b... Update Office detail page design; Remove listing; Implement booking modal
         margin-right: 50px;
     }
 `;
@@ -133,16 +114,9 @@ const StyledBackToListingsLink = styled(Link)`
     display: inline-block;
     margin-left: auto;
     margin-right: auto;
-<<<<<<< HEAD
-    margin-top: 6%;
-    margin-bottom: 3%;
-
-    @media screen and (min-width: 600px) {
-=======
     margin-top: 22px;
     margin-bottom: 10px;
     @media screen and (min-width : 600px) {
->>>>>>> cdf463b... Update Office detail page design; Remove listing; Implement booking modal
         position: absolute;
         display: block;
         margin-left: 3%;
@@ -211,7 +185,7 @@ class OfficeResultIndex extends Component {
     componentDidMount() {
         this.office_id = this.props.match.params.office_id;
         this.props.getOffice(this.office_id, REVIEWS)
-        this.props.queryListings(OFFICE_ID, this.office_id, START_TIME, moment().utc().format());
+        this.props.queryListings(OFFICE_ID, this.office_id, {sortKey: START_TIME, rangeStart: moment().utc().format()});
     }
 
     async loadDentist() {

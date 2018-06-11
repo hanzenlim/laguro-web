@@ -73,18 +73,10 @@ class ReviewContainer extends Component {
     }
 
     render() {
-        const { reviews, revieweeName } = this.props;
-        const noExistingReviews = !reviews || reviews.length === 0;
+        const { reviews } = this.props;
         return (
             <div>
-                {noExistingReviews ? (
-                    <div className="blue-text text-darken-3">
-                        No reviews yet for {revieweeName}, login to be the
-                        first!
-                    </div>
-                ) : (
-                    <Grid container spacing={40}> {this.renderReviewList(reviews)} </Grid>
-                )}
+                <Grid container spacing={40}> {this.renderReviewList(reviews)} </Grid>
             </div>
         );
     }
