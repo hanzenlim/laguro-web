@@ -102,11 +102,14 @@ class UserOffice extends Component {
                                             className="blue-text text-darken-2"
                                             to={`/office/${office.id}`}
                                         >
-                                            <Typography color="black" size="t2">
+                                            <Typography
+                                                color="black"
+                                                fontSize={4}
+                                            >
                                                 {office.name}
                                             </Typography>
                                         </Link>
-                                        <Typography size="t4">
+                                        <Typography fontSize={2}>
                                             {office.location}
                                         </Typography>
                                         <Grid
@@ -148,8 +151,8 @@ class UserOffice extends Component {
                                                 </Typography>
                                                 <Padding horizontal={6} />
                                                 <Typography
-                                                    size="t4"
-                                                    weight="medium"
+                                                    fontSize={2}
+                                                    fontWeight="medium"
                                                     color="black"
                                                 >
                                                     Add Listing
@@ -173,7 +176,7 @@ class UserOffice extends Component {
                                                 </Typography>
                                                 <Padding horizontal={6} />
                                                 <Typography
-                                                    size="t5"
+                                                    fontSize={1}
                                                     color="black"
                                                 >
                                                     Edit Office
@@ -225,8 +228,8 @@ class UserOffice extends Component {
                                                                     ? 'silver'
                                                                     : 'black'
                                                             }
-                                                            size="t5"
-                                                            weight="regular"
+                                                            fontSize={1}
+                                                            fontWeight="regular"
                                                         >
                                                             Delete
                                                         </Typography>
@@ -240,7 +243,7 @@ class UserOffice extends Component {
 
                             <Padding vertical={8} />
 
-                            <Typography size="t3" weight="bold">
+                            <Typography fontSize={3} fontWeight="bold">
                                 Upcoming listings:
                             </Typography>
 

@@ -145,7 +145,7 @@ class NewListing extends Component {
                     color="primary"
                     onClick={() => fields.push({})}
                 >
-                    <Typography size="t2" weight="medium">
+                    <Typography fontSize={4} fontWeight="medium">
                         Add Staff
                     </Typography>
                 </Button>
@@ -226,7 +226,7 @@ class NewListing extends Component {
                         <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                             <Grid container>
                                 <Grid item xs={12}>
-                                    <Typography size="t1">
+                                    <Typography fontSize={5}>
                                         Now that you have created an office, we
                                         need a few more details
                                     </Typography>
@@ -237,7 +237,7 @@ class NewListing extends Component {
 
                             <Grid container>
                                 <Grid item xs={12}>
-                                    <Typography size="t3">Step 3</Typography>
+                                    <Typography fontSize={3}>Step 3</Typography>
                                 </Grid>
                             </Grid>
 
@@ -245,7 +245,7 @@ class NewListing extends Component {
 
                             <Grid container>
                                 <Grid item xs={12}>
-                                    <Typography size="t3" weight="bold">
+                                    <Typography fontSize={3} fontWeight="bold">
                                         Add more details about your office
                                     </Typography>
                                 </Grid>
@@ -362,7 +362,10 @@ class NewListing extends Component {
                                         type="submit"
                                         disabled={submitting}
                                     >
-                                        <Typography size="t2" weight="medium">
+                                        <Typography
+                                            fontSize={4}
+                                            fontWeight="medium"
+                                        >
                                             Submit
                                         </Typography>
                                     </Button>

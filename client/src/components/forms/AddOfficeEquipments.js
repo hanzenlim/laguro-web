@@ -148,7 +148,7 @@ class NewOffice extends Component {
                         <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                             <Grid container>
                                 <Grid item xs={12}>
-                                    <Typography size="t1">
+                                    <Typography fontSize={5}>
                                         Next, add the equipment that you have in
                                         the office
                                     </Typography>
@@ -159,7 +159,7 @@ class NewOffice extends Component {
 
                             <Grid container>
                                 <Grid item xs={12}>
-                                    <Typography size="t3">Step 2</Typography>
+                                    <Typography fontSize={3}>Step 2</Typography>
                                 </Grid>
                             </Grid>
 
@@ -167,7 +167,7 @@ class NewOffice extends Component {
 
                             <Grid container>
                                 <Grid item xs={12}>
-                                    <Typography size="t3" weight="bold">
+                                    <Typography fontSize={3} fontWeight="bold">
                                         Office Equipment Details
                                     </Typography>
                                 </Grid>
@@ -199,7 +199,10 @@ class NewOffice extends Component {
                                         color="default"
                                         onClick={this.handleBack}
                                     >
-                                        <Typography size="t2" weight="medium">
+                                        <Typography
+                                            fontSize={4}
+                                            fontWeight="medium"
+                                        >
                                             Previous
                                         </Typography>
                                     </Button>
@@ -210,7 +213,10 @@ class NewOffice extends Component {
                                         type="submit"
                                         disabled={submitting || !location}
                                     >
-                                        <Typography size="t2" weight="medium">
+                                        <Typography
+                                            fontSize={4}
+                                            fontWeight="medium"
+                                        >
                                             Next
                                         </Typography>
                                     </Button>

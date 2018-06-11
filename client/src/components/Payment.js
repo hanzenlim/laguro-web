@@ -5,14 +5,24 @@ import queryString from 'query-string';
 import StripeCheckout from 'react-stripe-checkout';
 import styled from 'styled-components';
 
-import { Typography, Card, Button, Divider, Link, Grid } from './common';
+import {
+    Typography,
+    Card,
+    Button,
+    Divider,
+    Link,
+    Grid,
+    Flex,
+    Box,
+    Container
+} from './common';
 import { Padding } from './common/Spacing';
 import * as actions from '../actions';
 import { PAYMENT_OPTIONS, APPOINTMENT, DENTIST } from '../util/strings';
 import { stripeKey } from '../config/keys';
 import { formatListingTime } from '../util/timeUtil';
 
-const Wrapper = styled.div`
+const StyledWrapper = styled.div`
     background-color: #F8F9FA;
     min-height: 100vh;
     min-width: 100vw;
@@ -20,13 +30,7 @@ const Wrapper = styled.div`
     height: 100%;
 `;
 
-const Container = styled.div`
-    max-width: 825px;
-    padding: 0 10px;
-    margin: 0 auto;
-`;
-
-const ListingImage = styled.img`
+const StyledListingImage = styled.img`
     height: 104px;
     max-width: 112px;
     width: 100%;
@@ -36,16 +40,16 @@ const ListingImage = styled.img`
     object-fit: cover;
 `;
 
-const ListingInfo = styled.div`
+const StyledListingInfo = styled.div`
     flex: 1;
 `;
 
-const PaymentOption = styled.div`
+const StyledPaymentOption = styled.div`
     height: 51px;
     width: 100%;
     border: 1px solid #c8c7c7;
     border-radius: 2px;
-    background-color: #ffffff;
+    background-color: ${props => props.theme.colors.white};
 `;
 
 class Payment extends Component {
@@ -164,16 +168,16 @@ class Payment extends Component {
         if (!this.props.auth.paymentOptions) return null;
 
         return this.props.auth.paymentOptions.map(paymentOption => (
-            <PaymentOption key={paymentOption.id}>
+            <StyledPaymentOption key={paymentOption.id}>
                 <Padding vertical={15} left={10} right={30}>
                     <Grid container justify="space-between">
-                        <Typography size="t4">VISA</Typography>
-                        <Typography size="t4" color="silver">
+                        <Typography fontSize={2}>VISA</Typography>
+                        <Typography fontSize={2} color="silver">
                             ••••••••{paymentOption.last4}
                         </Typography>
                     </Grid>
                 </Padding>
-            </PaymentOption>
+            </StyledPaymentOption>
         ));
     };
 
@@ -188,7 +192,7 @@ class Payment extends Component {
             <Card>
                 <Padding horizontal={20} vertical={20}>
                     <Grid container alignItems="flex-start">
-                        <ListingImage
+                        <StyledListingImage
                             src={
                                 office.imageUrls[0] ||
                                 'http://via.placeholder.com/250x250'
@@ -198,16 +202,16 @@ class Payment extends Component {
 
                         <Padding right={15} />
 
-                        <ListingInfo>
+                        <StyledListingInfo>
                             <Grid container direction="column">
                                 <Grid container justify="space-between">
-                                    <Typography size="t2" weight="bold">
+                                    <Typography fontSize={4} fontWeight="bold">
                                         {office.name}
                                     </Typography>
 
                                     <Typography
-                                        size="t3"
-                                        weight="bold"
+                                        fontSize={3}
+                                        fontWeight="bold"
                                         color="carribean-green"
                                     >
                                         {this.renderPrice(totalPaid)}
@@ -223,7 +227,7 @@ class Payment extends Component {
 
                                     <Padding right={4} />
 
-                                    <Typography size="t3">
+                                    <Typography fontSize={3}>
                                         {`Location: ${office.location}`}
                                     </Typography>
                                 </Grid>
@@ -239,7 +243,7 @@ class Payment extends Component {
 
                                     <Padding right={4} />
 
-                                    <Typography size="t3">
+                                    <Typography fontSize={3}>
                                         {`Time: ${this.renderTime(time)}`}
                                     </Typography>
                                 </Grid>
@@ -255,12 +259,12 @@ class Payment extends Component {
 
                                     <Padding right={4} />
 
-                                    <Typography size="t3">
+                                    <Typography fontSize={3}>
                                         {`Date: ${this.renderDate(time)}`}
                                     </Typography>
                                 </Grid>
                             </Grid>
-                        </ListingInfo>
+                        </StyledListingInfo>
                     </Grid>
                 </Padding>
             </Card>
@@ -272,66 +276,62 @@ class Payment extends Component {
 
         return (
             <Card>
-                <Padding vertical={20} horizontal={20}>
-                    <Grid container direction="column">
-                        <Padding bottom={14}>
-                            <Grid container>
-                                <Typography size="t2" weight="bold" capitalize>
-                                    {`${type} Summary`}
-                                </Typography>
-                            </Grid>
-                        </Padding>
+                <Flex p={3} flexDirection="column">
+                    <Box pb={3}>
+                        <Typography fontSize={4} fontWeight="bold" capitalize>
+                            {`${type} Summary`}
+                        </Typography>
+                    </Box>
 
-                        <Divider />
+                    <Divider />
 
-                        <Padding vertical={4}>
-                            <Grid container justify="space-between">
-                                <Typography size="t3" color="abbey" capitalize>
-                                    {`${type}`}
-                                </Typography>
-                                <Typography size="t3" color="abbey">
-                                    {this.renderPrice(totalPaid)}
-                                </Typography>
-                            </Grid>
-                        </Padding>
+                    <Box py={2}>
+                        <Flex justify="space-between">
+                            <Typography fontSize={3} color="abbey" capitalize>
+                                {`${type}`}
+                            </Typography>
+                            <Typography fontSize={3} color="abbey">
+                                {this.renderPrice(totalPaid)}
+                            </Typography>
+                        </Flex>
+                    </Box>
 
-                        <Divider />
+                    <Divider />
 
-                        <Padding vertical={4}>
-                            <Grid container justify="space-between">
-                                <Typography size="t3" color="abbey">
-                                    Discount Applied
-                                </Typography>
-                                <Typography size="t3" color="abbey">
-                                    None
-                                </Typography>
-                            </Grid>
-                        </Padding>
+                    <Box py={2}>
+                        <Flex justify="space-between">
+                            <Typography fontSize={3} color="abbey">
+                                Discount Applied
+                            </Typography>
+                            <Typography fontSize={3} color="abbey">
+                                None
+                            </Typography>
+                        </Flex>
+                    </Box>
 
-                        <Divider />
+                    <Divider />
 
-                        <Padding vertical={4}>
-                            <Grid container justify="space-between">
-                                <Typography
-                                    size="t3"
-                                    color="abbey"
-                                    weight="bold"
-                                >
-                                    Total
-                                </Typography>
-                                <Typography
-                                    size="t3"
-                                    color="abbey"
-                                    weight="bold"
-                                >
-                                    {this.renderPrice(totalPaid)}
-                                </Typography>
-                            </Grid>
-                        </Padding>
+                    <Box py={2}>
+                        <Flex justify="space-between">
+                            <Typography
+                                fontSize={3}
+                                color="abbey"
+                                fontWeight="bold"
+                            >
+                                Total
+                            </Typography>
+                            <Typography
+                                fontSize={3}
+                                color="abbey"
+                                fontWeight="bold"
+                            >
+                                {this.renderPrice(totalPaid)}
+                            </Typography>
+                        </Flex>
+                    </Box>
 
-                        <Divider />
-                    </Grid>
-                </Padding>
+                    <Divider />
+                </Flex>
             </Card>
         );
     };
@@ -343,20 +343,16 @@ class Payment extends Component {
 
         return (
             <Card>
-                <Padding vertical={20} horizontal={20}>
-                    <Grid container direction="column">
-                        <Padding bottom={14}>
-                            <Grid container>
-                                <Typography size="t2" weight="bold">
-                                    Payment Information
-                                </Typography>
-                            </Grid>
-                        </Padding>
+                <Flex p={3} flexDirection="column">
+                    <Box pb={3}>
+                        <Typography fontSize={4} fontWeight="bold">
+                            Payment Information
+                        </Typography>
+                    </Box>
 
-                        {this.renderPaymentOptions()}
+                    <Box pb={3}>{this.renderPaymentOptions()}</Box>
 
-                        <Padding bottom={12} />
-
+                    <Box pb={3}>
                         <StripeCheckout
                             token={this.onSuccess.bind(this)}
                             stripeKey={stripeKey}
@@ -364,29 +360,31 @@ class Payment extends Component {
                             panelLabel="Add card"
                         >
                             <Link>
-                                <Typography size="t4" color="abbey" underline>
+                                <Typography
+                                    fontSize={2}
+                                    color="abbey"
+                                    underline
+                                >
                                     Add payment method
                                 </Typography>
                             </Link>
                         </StripeCheckout>
+                    </Box>
 
-                        <Padding bottom={14} />
-
-                        <Button
-                            onClick={this.handleCheckout}
-                            variant="raised"
-                            color="secondary"
-                            disabled={
-                                !hasPaymentOptions || this.state.isButtonLoading
-                            }
-                            fullWidth
-                        >
-                            <Typography size="t2" weight="medium">
-                                Checkout
-                            </Typography>
-                        </Button>
-                    </Grid>
-                </Padding>
+                    <Button
+                        fullWidth
+                        onClick={this.handleCheckout}
+                        variant="raised"
+                        color="secondary"
+                        disabled={
+                            !hasPaymentOptions || this.state.isButtonLoading
+                        }
+                    >
+                        <Typography fontSize={4} fontWeight="medium">
+                            Checkout
+                        </Typography>
+                    </Button>
+                </Flex>
             </Card>
         );
     };
@@ -403,17 +401,19 @@ class Payment extends Component {
         }
 
         return (
-            <Wrapper>
+            <StyledWrapper>
                 <Container>
-                    <Padding top={60} bottom={20}>
-                        <Grid container>
-                            <Grid item xs={12}>
-                                <Typography size="t1" weight="bold">
-                                    Review and place your {`${type}`}
-                                </Typography>
+                    <Flex>
+                        <Padding top={60} bottom={20}>
+                            <Grid container>
+                                <Grid item xs={12}>
+                                    <Typography fontSize={5} fontWeight="bold">
+                                        Review and place your {`${type}`}
+                                    </Typography>
+                                </Grid>
                             </Grid>
-                        </Grid>
-                    </Padding>
+                        </Padding>
+                    </Flex>
 
                     <Grid container spacing={16}>
                         <Grid item xs={12} lg={8}>
@@ -432,7 +432,7 @@ class Payment extends Component {
                         </Grid>
                     </Grid>
                 </Container>
-            </Wrapper>
+            </StyledWrapper>
         );
     }
 }
@@ -445,4 +445,7 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, actions)(Payment);
+export default connect(
+    mapStateToProps,
+    actions
+)(Payment);

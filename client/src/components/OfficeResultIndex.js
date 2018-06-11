@@ -157,7 +157,7 @@ class OfficeResultIndex extends Component {
                         onClick={() => this.toggleView(view)}
                         active={this.state.activeView === view}
                     >
-                        <Typography size="t4" capitalize>
+                        <Typography fontSize={2} capitalize>
                             {view}
                         </Typography>
                     </ViewOption>
@@ -188,9 +188,9 @@ class OfficeResultIndex extends Component {
                         {this.renderViewToggle()}
                         {this.props.filters.location && (
                             <Padding top={20}>
-                                <Typography size="t3" color="abbey">
+                                <Typography fontSize={3} color="abbey">
                                     Dentist Office Rentals in{' '}
-                                    <Typography weight="bold">
+                                    <Typography fontWeight="bold">
                                         {this.props.filters.location}
                                     </Typography>
                                 </Typography>
@@ -236,4 +236,7 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, actions)(OfficeResultIndex);
+export default connect(
+    mapStateToProps,
+    actions
+)(OfficeResultIndex);

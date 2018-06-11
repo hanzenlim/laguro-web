@@ -113,7 +113,7 @@ class NewOffice extends Component {
                         <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                             <Grid container>
                                 <Grid item xs={12}>
-                                    <Typography size="t1">
+                                    <Typography fontSize={5}>
                                         {`Hi ${
                                             auth ? auth.name : ''
                                         }, let’s get started on creating
@@ -126,7 +126,7 @@ class NewOffice extends Component {
 
                             <Grid container>
                                 <Grid item xs={12}>
-                                    <Typography size="t3">Step 1</Typography>
+                                    <Typography fontSize={3}>Step 1</Typography>
                                 </Grid>
                             </Grid>
 
@@ -134,7 +134,7 @@ class NewOffice extends Component {
 
                             <Grid container>
                                 <Grid item xs={12}>
-                                    <Typography size="t3" weight="bold">
+                                    <Typography fontSize={3} fontWeight="bold">
                                         Office Details
                                     </Typography>
                                 </Grid>

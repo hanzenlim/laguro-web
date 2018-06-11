@@ -75,8 +75,8 @@ class BookAppointment extends Component {
                         <Grid item xs={12}>
                             <Box pb={4}>
                                 <Typography
-                                    size="t1"
-                                    weight="bold"
+                                    fontSize={5}
+                                    fontWeight="bold"
                                     color="abbey"
                                 >
                                     Available Appointments
@@ -119,12 +119,12 @@ class BookAppointment extends Component {
                         </Grid>
                         <Grid item xs={12}>
                             {error && (
-                                <Typography size="t3" color="red">
+                                <Typography fontSize={3} color="red">
                                     {error}
                                 </Typography>
                             )}
                             <Button fullWidth color="secondary" type="submit">
-                                <Typography size="t2" weight="medium">
+                                <Typography fontSize={4} fontWeight="medium">
                                     Book Appointment
                                 </Typography>
                             </Button>

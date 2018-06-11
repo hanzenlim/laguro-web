@@ -55,7 +55,7 @@ class AppointmentDetails extends Component {
                                     <Padding right={4} />
 
                                     <Typography
-                                        size="t5"
+                                        fontSize={1}
                                         color="silver"
                                         cursor="pointer"
                                         underline
@@ -69,8 +69,8 @@ class AppointmentDetails extends Component {
                             <Grid item container direction="column" sm={8}>
                                 <Link to={`/dentist/${dentist.id}`}>
                                     <Typography
-                                        size="t2"
-                                        weight="bold"
+                                        fontSize={4}
+                                        fontWeight="bold"
                                         color="black"
                                     >
                                         Dr. {dentist.user.name}
@@ -91,7 +91,7 @@ class AppointmentDetails extends Component {
                                     <Padding right={4} />
 
                                     <Link to={`/dentist/${dentist.id}`}>
-                                        <Typography size="t4" color="black">
+                                        <Typography fontSize={2} color="black">
                                             {office.name}
                                         </Typography>
                                     </Link>
@@ -112,7 +112,7 @@ class AppointmentDetails extends Component {
 
                                     <Padding right={4} />
 
-                                    <Typography size="t4">
+                                    <Typography fontSize={2}>
                                         {appointment.location}
                                     </Typography>
                                 </Grid>
@@ -132,7 +132,7 @@ class AppointmentDetails extends Component {
 
                                     <Padding right={4} />
 
-                                    <Typography size="t4">
+                                    <Typography fontSize={2}>
                                         {formattedTime}
                                     </Typography>
                                 </Grid>
@@ -152,7 +152,7 @@ class AppointmentDetails extends Component {
 
                                     <Padding right={4} />
 
-                                    <Typography size="t4">
+                                    <Typography fontSize={2}>
                                         {appointment.procedure.name}
                                     </Typography>
                                 </Grid>

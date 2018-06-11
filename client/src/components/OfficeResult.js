@@ -66,7 +66,7 @@ class OfficeResult extends Component {
                     onClick={e => e.stopPropagation()}
                     to={`/office/${listing.officeId}`}
                 >
-                    <Typography size="t3" weight="regular" color="white">
+                    <Typography fontSize={3} fontWeight="regular" color="white">
                         {moment(listing.startTime).format('MMM D, h a')}
                     </Typography>
                 </AvailableTime>
@@ -101,8 +101,8 @@ class OfficeResult extends Component {
                             <DetailsContainer>
                                 <Grid container>
                                     <Typography
-                                        size="t2"
-                                        weight="bold"
+                                        fontSize={4}
+                                        fontWeight="bold"
                                         color="black"
                                     >
                                         {this.props.name}
@@ -111,8 +111,8 @@ class OfficeResult extends Component {
                                 <Padding bottom={5} />
                                 <Grid container>
                                     <Typography
-                                        size="t3"
-                                        weight="regular"
+                                        fontSize={3}
+                                        fontWeight="regular"
                                         color="black"
                                     >
                                         {this.props.location}
@@ -128,18 +128,18 @@ class OfficeResult extends Component {
                                     />
                                     <Padding right={7} />
                                     <Typography
-                                        size="t3"
-                                        weight="regular"
+                                        fontSize={3}
+                                        fontWeight="regular"
                                         color="black"
                                     >{`(${
-                                            this.props.rating_count
-                                        }) Reviews`}</Typography>
+                                        this.props.rating_count
+                                    }) Reviews`}</Typography>
                                 </Grid>
                                 <Padding bottom={7} />
                                 <Grid container>
                                     <Typography
-                                        size="t3"
-                                        weight="regular"
+                                        fontSize={3}
+                                        fontWeight="regular"
                                         color="black"
                                     >
                                         Available Times:
