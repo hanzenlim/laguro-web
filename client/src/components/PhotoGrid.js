@@ -8,20 +8,18 @@ import listingImgPlaceholder from './images/office-placeholder-small.png'
 
 import "./css/PhotoGrid.css";
 
-const Container1 = styled.div`
+const StyledContainer = styled.div`
     position: relative;
     width: 100%;
     padding-top: 67%;
 `;
 
-const Container2 = styled.div`
+const StyledImg = styled.img`
     position: absolute;
     top: 0;
+    right: 0;
     bottom: 0;
     left: 0;
-    right: 0;
-    height: 100%;
-    width: 100%;
 `;
 
 const ListingInfo = styled.div`
@@ -84,7 +82,7 @@ class PhotoGrid extends Component {
                     }
 
                 }).map(listing => {
-                    
+
                     let listingImg;
                     if (listing.office.imageUrls && listing.office.imageUrls.length !== 0) {
                         listingImg = listing.office.imageUrls[0]
@@ -95,10 +93,9 @@ class PhotoGrid extends Component {
                         <a href={`/office/${listing.officeId}`} key={listing.id}>
                             <div className='col offset-s1 s10 m6 l3'>
                                 <ListingCard>
-                                    <Container1>
-                                        <Container2 />
-                                        <img className="photo-grid-listing-img center" id="element" alt={listing.office.imageUrls} src={listingImg} />
-                                    </Container1>
+                                    <StyledContainer>
+                                        <StyledImg className="center" id="element" alt={listing.office.imageUrls} src={listingImg} />
+                                    </StyledContainer>
                                     <ListingInfo>
               							<ListingInfoName>{listing.office.name}</ListingInfoName>
                                         <ListingInfoAddress className="truncate">{listing.office.location}</ListingInfoAddress>
