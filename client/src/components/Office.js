@@ -129,6 +129,7 @@ const StyledCarouselButtonRightIcon = styled(Icon)`
 
 const StyledBackToListingsLink = styled(Link)`
     height: 45px;
+    cursor: pointer;
     display: inline-block;
     margin-left: auto;
     margin-right: auto;
@@ -207,10 +208,6 @@ class OfficeResultIndex extends Component {
         this.handleReviewShowMore = this.handleReviewShowMore.bind(this);
     }
 
-    componentWillMount() {
-        this.loadDentist();
-    }
-
     componentDidMount() {
         this.office_id = this.props.match.params.office_id;
         this.props.getOffice(this.office_id, REVIEWS)
@@ -222,13 +219,14 @@ class OfficeResultIndex extends Component {
         if (!auth || !auth.dentist) {
             return null;
         }
-        this.setState({ isLoading: true });
+
         await this.props.getDentist(
             auth.dentist.id,
             USER
         );
+
         const { dentist } = this.props;
-        this.setState({ isLoading: false });
+
         return dentist;
     }
 
@@ -242,9 +240,13 @@ class OfficeResultIndex extends Component {
         }
     }
 
-    handleBookReservation(listing) {
+    async handleBookReservation(listing) {
         const { auth } = this.props;
 
+        if (!this.props.dentist) {
+            await this.loadDentist();
+        }
+        
         if (auth) {
             this.setState({
                 isModalOpen: true,
@@ -403,7 +405,7 @@ class OfficeResultIndex extends Component {
                 <Padding bottom={padBackToListings} />
 
                 <div className="center">
-                    <StyledBackToListingsLink>
+                    <StyledBackToListingsLink to={'/office/search'} >
                         <StyledBackToListingsIcon icon="backToListings" width="45px" />
                         <StyledBackToListingsTextBox color="#000"> Back to office search </StyledBackToListingsTextBox>
                     </StyledBackToListingsLink>

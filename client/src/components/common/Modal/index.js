@@ -11,7 +11,6 @@ export const StyledModalContent = styled.div`
     background: white;
     margin: auto;
     max-height: calc(100vh - 30px);
-    overflow: scroll;
     padding: 64px;
     max-width: 768px;
     width: calc(100vw - 30px);
