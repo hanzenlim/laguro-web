@@ -18,20 +18,12 @@ const queryPaymentsQuery = `
 `;
 
 const Payment = {
-    query: async (
-        partitionKey,
-        partitionValue,
-        sortKey = null,
-        rangeStart = null,
-        rangeEnd = null
-    ) => {
+    query: async (partitionKey, partitionValue, options) => {
         const response = await makeApiCall(queryPaymentsQuery, {
             input: {
                 partitionKey,
                 partitionValue,
-                sortKey,
-                rangeStart,
-                rangeEnd
+                options
             }
         });
         return response.data.queryPayments;

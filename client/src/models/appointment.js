@@ -38,20 +38,12 @@ const cancelAppointmentQuery = `
 `;
 
 const Appointment = {
-    query: async (
-        partitionKey,
-        partitionValue,
-        sortKey = null,
-        rangeStart = null,
-        rangeEnd = null
-    ) => {
+    query: async (partitionKey, partitionValue, options) => {
         const response = await makeApiCall(queryAppointmentQuery, {
             input: {
                 partitionKey,
                 partitionValue,
-                sortKey,
-                rangeStart,
-                rangeEnd
+                options
             }
         });
         return response.data.queryAppointments;

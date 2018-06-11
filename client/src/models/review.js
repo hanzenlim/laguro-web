@@ -49,20 +49,12 @@ const Review = {
         const response = await makeApiCall(getReviewQuery, { id: reviewId });
         return response.data.getReview;
     },
-    query: async (
-        partitionKey,
-        partitionValue,
-        sortKey = null,
-        rangeStart = null,
-        rangeEnd = null
-    ) => {
+    query: async (partitionKey, partitionValue, options) => {
         const response = await makeApiCall(queryReviewQuery, {
             input: {
                 partitionKey,
                 partitionValue,
-                sortKey,
-                rangeStart,
-                rangeEnd
+                options
             }
         });
         return response.data.queryReviews;
