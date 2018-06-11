@@ -60,7 +60,7 @@ class Appointments extends Component {
     }
 
     handleBookAppointment = event => {
-        const { startTime } = this.props.reservation;
+        const { reservation } = this.props;
 
         const { currentTarget } = event;
         const index = currentTarget.getAttribute('data-index');
@@ -69,8 +69,9 @@ class Appointments extends Component {
         );
 
         this.props.onBookAppointment(
-            getStartTime(index, startTime).format(),
-            durationToNextAppointment
+            getStartTime(index, reservation.startTime).format(),
+            durationToNextAppointment,
+            reservation
         );
     };
 
