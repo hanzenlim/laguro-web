@@ -65,20 +65,12 @@ const Reservation = {
         });
         return response.data.getReservation;
     },
-    query: async (
-        partitionKey,
-        partitionValue,
-        sortKey = null,
-        rangeStart = null,
-        rangeEnd = null
-    ) => {
+    query: async (partitionKey, partitionValue, options) => {
         const response = await makeApiCall(queryReservationsQuery, {
             input: {
                 partitionKey,
                 partitionValue,
-                sortKey,
-                rangeStart,
-                rangeEnd
+                options
             }
         });
         return response.data.queryReservations;
