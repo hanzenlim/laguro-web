@@ -11,60 +11,76 @@ import UserReservationIndex from './UserReservationIndex';
 import CreateDentistProfile from './forms/CreateDentistProfile';
 import { filestackKey } from '../config/keys';
 import * as actions from '../actions';
+
 import {
-    USER,
-    OFFICES,
-    LISTINGS,
-    RESERVATIONS,
-    REVIEWS,
-    HOST_ID
-} from '../util/strings';
+    dentistFragment,
+    officeFragment,
+    reservationFragment,
+    listingFragment,
+    appointmentFragment,
+    reviewerFragment,
+    filterActive
+} from '../util/fragments';
+
+const dentistQuery = `
+    query ($id: String!) {
+        getDentist(id: $id) {
+            ${dentistFragment}
+            offices {
+                ${officeFragment}
+                listings(${filterActive}) {
+                    ${listingFragment}
+                    reservations(${filterActive}) {
+                        ${reservationFragment}
+                        reservedBy {
+                            ${dentistFragment}
+                        }
+                    }
+                }
+            }
+            reservations(${filterActive}) {
+                ${reservationFragment}
+                appointments(${filterActive}) {
+                    ${appointmentFragment}
+                }
+                office {
+                    ${officeFragment}
+                }
+                hostId
+                reservedBy {
+                    id
+                }
+            }
+            reviews {
+                ${reviewerFragment}
+            }
+        }
+    }
+`;
 
 class Profile extends Component {
     constructor(props) {
         super(props);
         this.state = {
             isLoading: false,
-            isModalOpen: false
+            isModalOpen: false,
+            isFetching: false
         };
 
-        this.loadOffices = this.loadOffices.bind(this);
         this.handleCreateDentist = this.handleCreateDentist.bind(this);
     }
 
     componentWillMount() {
-        this.loadDentist();
+        this.loadDentistProfile();
     }
 
-    async loadDentist() {
+    async loadDentistProfile() {
         const { auth } = this.props;
-        if (!auth.dentist) {
-            return null;
+        this.setState({ isFetching: true });
+        if (auth.dentistId) {
+            await this.props.loadDentistProfile(dentistQuery, auth.dentistId);
         }
-        this.setState({ isLoading: true });
-        await this.props.getDentist(
-            auth.dentist.id,
-            USER,
-            OFFICES,
-            LISTINGS,
-            RESERVATIONS,
-            REVIEWS
-        );
-        const { dentist } = this.props;
-        this.setState({ isLoading: false });
-        return dentist;
-    }
-
-    async loadOffices() {
-        this.setState({ isLoading: true });
-        const { auth } = this.props;
-        if (!auth.dentist) {
-            return null;
-        }
-        await this.props.queryOffices(HOST_ID, auth.dentist.id);
-        const { offices } = this.props;
-        this.setState({ isLoading: false });
-        return offices;
+        this.setState({ isFetching: false });
     }
 
     handleCreateDentist() {
@@ -77,6 +93,7 @@ class Profile extends Component {
 
     renderProfileDetails() {
         const { auth, dentist } = this.props;
+
         return (
             <div>
                 <h4>Welcome back {auth.name}!</h4>
@@ -94,9 +111,8 @@ class Profile extends Component {
     }
 
     renderActions() {
-        const { dentist } = this.props;
-        const dentistProfileExists =
-            dentist && Object.keys(dentist).length !== 0;
+        const { auth } = this.props;
+        const dentistProfileExists = !!auth.dentistId;
 
         return (
             <ul className="collection">
@@ -144,7 +160,7 @@ class Profile extends Component {
                 />
 
                 {dentistProfileExists ? (
-                    <Link className="link" to={`/dentist/${dentist.id}`}>
+                    <Link className="link" to={`/dentist/${auth.dentistId}`}>
                         View public profile
                     </Link>
                 ) : (
@@ -169,6 +185,7 @@ class Profile extends Component {
     }
 
     setNewProfileImage(result) {
+        // check to make sure upload was successful
         const upload = result.filesUploaded[0];
         const userId = this.props.auth.id;
         if (upload) {
@@ -176,32 +193,10 @@ class Profile extends Component {
         }
     }
 
-    renderOptions = max => {
-        const options = [];
-        for (let i = 0; i <= max; i++) {
-            options.push(
-                <option value={Number(i)} key={i}>
-                    {i}
-                </option>
-            );
-        }
-        return options;
-    };
-
     render() {
-        const {
-            auth,
-            dentistLoading,
-            dentist,
-            reviews,
-            reservations,
-            offices
-        } = this.props;
-        if (this.state.isLoading || dentistLoading) {
-            return <div />;
-        }
-
-        if (dentistLoading) return <div className="stretch_height" />;
+        const { auth, dentist } = this.props;
+        const { isFetching } = this.state;
+        if (isFetching) return <div className="stretch_height" />;
 
         return (
             <div className="profile_container stretch_height">
@@ -215,40 +210,33 @@ class Profile extends Component {
                 </div>
                 <div className="main">
                     {this.renderProfileDetails()}
-                    {auth.dentist ? (
+                    {auth.dentistId ? (
                         <div className="offices profile-section">
                             <h5>Your Offices</h5>
-                            <UserOfficeIndex
-                                offices={offices}
-                                dentist={auth.dentist}
-                                reloadOffices={this.loadOffices}
-                            />
+                            <UserOfficeIndex />
                         </div>
                     ) : (
                         ''
                     )}
-                    {auth.dentist ? (
+                    {auth.dentistId ? (
                         <div className="offices profile-section">
                             <h5>Upcoming Reservations</h5>
-                            <UserReservationIndex
-                                reservations={reservations}
-                                dentist={auth.dentist}
-                            />
+                            <UserReservationIndex />
                         </div>
                     ) : (
                         ''
                     )}
-                    {!auth.dentist && (
+                    {!auth.dentistId && (
                         <PatientAppointments patientId={auth.id} />
                     )}
-                    {auth.dentist &&
-                        !!reviews.length && (
+                    {auth.dentistId &&
+                        !!dentist.reviews.length && (
                             <div className="reviews profile-section">
                                 <h5>{`Reviews for ${auth.name}`}</h5>
                                 <ReviewContainer
                                     revieweeId={dentist.id}
                                     revieweeName={auth.name}
-                                    reviews={reviews}
+                                    reviews={dentist.reviews}
                                 />
                             </div>
                         )}
@@ -261,11 +249,7 @@ class Profile extends Component {
 function mapStateToProps(state) {
     return {
         auth: state.auth,
-        dentist: state.dentists.selectedDentist,
-        offices: state.offices.all,
-        reservations: state.reservations.all,
-        listings: state.listings.all,
-        reviews: state.reviews.all
+        dentist: state.dentists.selectedDentist
     };
 }
 export default connect(mapStateToProps, actions)(Profile);

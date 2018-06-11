@@ -60,18 +60,25 @@ class Payment extends Component {
         this.urlParams = queryString.parse(location.search);
 
         this.state = {
-            isButtonLoading: false
+            isButtonLoading: false,
+            isFetching: true
         };
     }
 
     componentDidMount() {
+        this.loadData();
+    }
+
+    async loadData() {
+        this.setState({ isFetching: true });
         if (this.urlParams.type === APPOINTMENT) {
-            this.props.getReservation(this.urlParams.reservationId);
+            await this.props.getReservation(this.urlParams.reservationId);
         } else {
-            this.props.getListing(this.urlParams.listingId);
+            await this.props.getListing(this.urlParams.listingId);
         }
 
-        this.props.fetchUser(DENTIST, PAYMENT_OPTIONS);
+        await this.props.fetchUser(DENTIST, PAYMENT_OPTIONS);
+        this.setState({ isFetching: false });
     }
 
     async onSuccess(response) {
@@ -390,15 +397,8 @@ class Payment extends Component {
     };
 
     render() {
-        const listing =
-            this.urlParams.type === APPOINTMENT
-                ? this.props.reservation.listing
-                : this.props.listing;
         const { type } = this.urlParams;
-
-        if (!listing) {
-            return <div>Loading...</div>;
-        }
+        if (this.state.isFetching) return <div className="stretch_height" />;
 
         return (
             <StyledWrapper>
@@ -445,7 +445,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(
-    mapStateToProps,
-    actions
-)(Payment);
+export default connect(mapStateToProps, actions)(Payment);

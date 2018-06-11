@@ -103,7 +103,7 @@ class DentistResult extends Component {
                                 <Padding bottom={5} />
                                 <Grid container alignItems="center">
                                     <ReactStars
-                                        size="10"
+                                        size={10}
                                         count={5}
                                         edit={false}
                                         value={this.props.rating_value}

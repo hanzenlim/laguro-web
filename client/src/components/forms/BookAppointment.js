@@ -41,9 +41,9 @@ class BookAppointment extends Component {
 
         const search = `?type=appointment&totalPaid=${APPOINTMENT_SCHEDULING_FEE}&time=[${moment(
             startTime
-        ).format()},${moment(endTime).format()}]&procedure=${JSON.stringify(
+        ).format()},${moment(endTime).format()}]&procedure=${
             values.procedure
-        )}&reservationId=${reservation.id}&patientId=${auth.id}`;
+        }&reservationId=${reservation.id}&patientId=${auth.id}`;
 
         history.push(`/payment${search}`);
     }
@@ -53,7 +53,7 @@ class BookAppointment extends Component {
             <Option
                 disabled={durationToNextAppointment < procedure.duration}
                 key={procedure.name}
-                value={procedure}
+                value={JSON.stringify(procedure)}
             >{`${procedure.name} - ${procedure.duration} mins`}</Option>
         ));
     };

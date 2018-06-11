@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import ReactStars from 'react-stars';
@@ -8,6 +9,7 @@ import styled from 'styled-components';
 import OfficeListing from './OfficeListing';
 import { Typography, Grid, Button } from './common';
 import { Padding, Margin } from './common/Spacing';
+import * as actions from '../actions';
 
 const StyledWideGrid = styled(Grid)`
     width: 100%;
@@ -23,15 +25,43 @@ const StyledWideButton = styled(Button)`
 `;
 
 class UserOffice extends Component {
-    state = {
-        expanded: null
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            expanded: null
+        };
+
+        this.cancelUserListing = this.cancelUserListing.bind(this);
+    }
 
     handleExpansion = panel => (event, expanded) => {
         this.setState({
             expanded: expanded ? panel : false
         });
     };
+
+    confirmDeleteOffice(office) {
+        // eslint-disable-next-line
+        if (confirm(`Delete ${office.name} and all associated listings?`)) {
+            this.props.deleteUserOffice(office);
+        }
+    }
+
+    async cancelUserListing(listingToCancel) {
+        const { dentist } = this.props;
+
+        // find the office this reservation is for
+        let office = dentist.offices.find(
+            office => office.id === listingToCancel.officeId
+        );
+        // remove reservation from that listing
+        office.listings = office.listings.filter(
+            listing => listing.id !== listingToCancel.id
+        );
+
+        await this.props.cancelListing(listingToCancel.id);
+        this.props.updateDentist(dentist);
+    }
 
     getSortedListings(office) {
         if (!office || !office.listings || !office.listings.length) {
@@ -52,18 +82,11 @@ class UserOffice extends Component {
                 office={office}
                 key={listing.id}
                 index={index}
-                deleteListing={this.props.deleteListing}
+                cancelUserListing={this.cancelUserListing}
                 expandListing={this.handleExpansion}
                 expanded={this.state.expanded}
             />
         ));
-    }
-
-    confirmDeleteOffice(office) {
-        // eslint-disable-next-line
-        if (confirm(`Delete ${office.name} and all associated listings?`)) {
-            this.props.deleteOffice(office);
-        }
     }
 
     calculateAverageRating(reviews) {
@@ -261,4 +284,8 @@ class UserOffice extends Component {
     }
 }
 
-export default UserOffice;
+function mapStateToProps(state) {
+    return { dentist: state.dentists.selectedDentist };
+}
+
+export default connect(mapStateToProps, actions)(UserOffice);
