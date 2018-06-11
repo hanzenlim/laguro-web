@@ -51,11 +51,10 @@ app.post('/api/graphql', async (req, res) => {
 require('./routes/authRoutes')(app);
 
 if (process.env.NODE_ENV === 'production') {
-    // express will serve production assets 
-    app.use(express.static('build'));
-
-    // express will serve index.html if unrec. route
     app.get('*', (req, res) => {
+        res.header("Cache-Control", "no-cache, no-store, must-revalidate");
+        res.header("Pragma", "no-cache");
+
         res.sendFile(path.resolve('build', 'index.html'));
     });
 } else {

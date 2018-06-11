@@ -1,7 +1,7 @@
 import { createApolloFetch } from 'apollo-fetch';
 
 const uri = process.env.NODE_ENV === 'production' ?
-    'https://www.laguro.com/api/graphql' : 'http://localhost:3000/api/graphql';
+    process.env.REACT_APP_API_URL : 'http://localhost:3000/api/graphql';
 
 const apolloFetch = createApolloFetch({ uri });
 

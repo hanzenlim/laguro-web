@@ -1,4 +1,4 @@
-service: aws-nodejs # NOTE: update this with your service name
+service: laguro-web 
 provider:
   name: aws
   runtime: nodejs6.10
@@ -7,7 +7,9 @@ provider:
   timeout: 240
   stage: dev
   environment:
+    # These environments are used on the server side.
     GRAPHQL_URL: ${env:GRAPHQL_URL}
+    GRAPHQL_SECRET_KEY: ${env:GRAPHQL_SECRET_KEY}
     GOOGLE_CLIENT_ID: ${env:GOOGLE_CLIENT_ID}
     GOOGLE_CLIENT_SECRET: ${env:GOOGLE_CLIENT_SECRET}
     COOKIE_KEY: ${env:COOKIE_KEY}
@@ -49,8 +51,9 @@ custom:
     includeModules: true
     packager: 'npm'
   customDomain:
-    domainName: 'www.laguro.com'
+    domainName: ${env:DOMAIN_NAME}
     basePath: ''
-    stage: ${self:provider.stage}
+    stage: ${opt:stage, self:provider.stage}
     createRoute53Record: true
+    enabled: true
 
