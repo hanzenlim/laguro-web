@@ -1,8 +1,6 @@
 import { createApolloFetch } from 'apollo-fetch';
 
-const uri = process.env.NODE_ENV === 'production' ?
-    process.env.REACT_APP_API_URL : 'http://localhost:3000/api/graphql';
-
+const uri = process.env.REACT_APP_API_URL;
 const apolloFetch = createApolloFetch({ uri });
 
 /* eslint no-unused-vars: ["error", { "args": "none" }] */

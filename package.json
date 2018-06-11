@@ -12,7 +12,7 @@
 		"precommit": "npm run eslint:fix",
 		"serverLocal": "nodemon serverLocal.js --exec babel-node --presets es2015,stage-2",
 		"client": "npm run start --prefix client",
-		"dev": "concurrently \"npm run serverLocal\" \"npm run client\"",
+		"dev": "concurrently \"env-cmd ./config/security.env.local npm run serverLocal\" \"env-cmd ./config/security.env.local npm run client\"",
 		"heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client",
 		"webpack-analyzer": "npm run webpack-analyzer --prefix client",
 		"build-stage-assets": "env-cmd /tmp/security.env.stage npm run build --prefix client",

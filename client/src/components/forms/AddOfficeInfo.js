@@ -8,6 +8,7 @@ import Autocomplete from '../filters/Autocomplete';
 import * as actions from '../../actions';
 import { DENTIST } from '../../util/strings';
 import history from '../../history';
+import { filestackKey } from '../../config/keys';
 
 import { renderField } from './sharedComponents';
 import { required } from './formValidation';
@@ -170,7 +171,7 @@ class NewOffice extends Component {
                                     <label>Featured Office Image</label>
                                     <div>
                                         <ReactFilestack
-                                            apikey={'Aj4gwfCaTS2Am35P0QGrbz'}
+                                            apikey={filestackKey}
                                             options={{
                                                 accept: ['image/*'],
                                                 imageMin: [300, 300],

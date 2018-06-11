@@ -94,7 +94,7 @@ class PhotoGrid extends Component {
                             <div className='col offset-s1 s10 m6 l3'>
                                 <ListingCard>
                                     <StyledContainer>
-                                        <StyledImg className="center" id="element" alt={listing.office.imageUrls} src={listingImg} />
+                                        <StyledImg width="100%" height="100%" className="center" id="element" alt={listing.office.imageUrls} src={listingImg} />
                                     </StyledContainer>
                                     <ListingInfo>
               							<ListingInfoName>{listing.office.name}</ListingInfoName>

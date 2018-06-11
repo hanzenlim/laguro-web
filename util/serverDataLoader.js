@@ -1,22 +1,17 @@
 const createApolloFetch = require('apollo-fetch').createApolloFetch;
 
-const uri = process.env.NODE_ENV === "production" && process.env.GRAPHQL_URL? 
-    process.env.GRAPHQL_URL :
-    'http://localhost:4000/graphql';
+const uri = process.env.GRAPHQL_URL;
 
 const apolloFetch = createApolloFetch({ uri });
 
 apolloFetch.use(({ request, options }, next) => {
     options.credentials = 'same-origin';
 
-    if (process.env.NODE_ENV === "production") {
-        if (!options.headers) {
-            options.headers = {};
-        }
-
-        options.headers['x-api-key'] = process.env.GRAPHQL_SECRET_KEY;
+    if (!options.headers) {
+        options.headers = {};
     }
 
+    options.headers['x-api-key'] = process.env.GRAPHQL_SECRET_KEY;
     next();
 });
 
