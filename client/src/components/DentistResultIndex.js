@@ -8,7 +8,7 @@ import NoResults from './NoResults';
 import LocationFilter from './filters/LocationFilter';
 import DateFilter from './filters/DateFilter';
 import ResultMap from './ResultMap';
-import { USER, REVIEWS, DENTIST } from '../util/strings';
+import { DENTIST } from '../util/strings';
 
 import { Grid, Typography } from './common';
 import { Padding } from './common/Spacing';
@@ -72,7 +72,7 @@ class DentistResultIndex extends Component {
 
     componentWillMount() {
         document.title = 'Laguro - Search Index';
-        this.props.fetchDentists(this.props.filters, USER, REVIEWS);
+        this.props.fetchDentists(this.props.filters);
     }
 
     renderMap() {
@@ -167,7 +167,7 @@ class DentistResultIndex extends Component {
 
     render() {
         if (this.props.invalid) {
-            this.props.fetchDentists(this.props.filters, USER, REVIEWS);
+            this.props.fetchDentists(this.props.filters);
         }
 
         if (this.props.isFetching) {
@@ -235,7 +235,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(
-    mapStateToProps,
-    actions
-)(DentistResultIndex);
+export default connect(mapStateToProps, actions)(DentistResultIndex);

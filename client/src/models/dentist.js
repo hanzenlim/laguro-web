@@ -68,6 +68,20 @@ const generateGetDentistQuery = options => {
   `;
 };
 
+const getActiveDentistsQuery = `
+    query {
+        getActiveDentists {
+            ${dentistFragment}
+            user {
+                ${userFragment}
+            }
+            reviews {
+                ${reviewerFragment}
+            }
+        }
+    }
+`;
+
 const createDentistQuery = `
     mutation CreateDentist($input: CreateDentistInput!) {
         createDentist(input: $input) {
@@ -89,6 +103,10 @@ const Dentist = {
         const scanDentistsQuery = generateScanDentistsQuery(options);
         const response = await makeApiCall(scanDentistsQuery, null);
         return response.data.scanDentists;
+    },
+    getActive: async () => {
+        const response = await makeApiCall(getActiveDentistsQuery, null);
+        return response.data.getActiveDentists;
     },
     get: async (dentistId, options) => {
         if (!dentistId) {

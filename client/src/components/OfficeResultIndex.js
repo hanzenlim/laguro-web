@@ -8,7 +8,7 @@ import ResultMap from './ResultMap';
 import LocationFilter from './filters/LocationFilter';
 import DateFilter from './filters/DateFilter';
 import NoResults from './NoResults';
-import { LISTINGS, REVIEWS, OFFICE } from '../util/strings';
+import { OFFICE } from '../util/strings';
 
 import { Grid, Typography } from './common';
 import { Padding } from './common/Spacing';
@@ -72,7 +72,7 @@ class OfficeResultIndex extends Component {
 
     componentWillMount() {
         document.title = 'Laguro - Search Index';
-        this.props.fetchOffices(this.props.filters, LISTINGS, REVIEWS);
+        this.props.fetchOffices(this.props.filters);
     }
 
     renderMap() {
@@ -168,7 +168,7 @@ class OfficeResultIndex extends Component {
 
     render() {
         if (this.props.invalid) {
-            this.props.fetchOffices(this.props.filters, LISTINGS, REVIEWS);
+            this.props.fetchOffices(this.props.filters);
         }
 
         if (this.props.isFetching) {
@@ -236,7 +236,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(
-    mapStateToProps,
-    actions
-)(OfficeResultIndex);
+export default connect(mapStateToProps, actions)(OfficeResultIndex);
