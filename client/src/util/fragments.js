@@ -119,6 +119,13 @@ export const reservationFragment = `
     startTime
     endTime
     dateCreated
+    office {
+        ${officeFragment}
+    }
+
+    appointments(${filterActive}) {
+        ${appointmentFragment}
+    }
 `;
 
 export const reviewFragment = `

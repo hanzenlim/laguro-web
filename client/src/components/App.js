@@ -67,12 +67,12 @@ const Profile = Loadable({
 });
 
 const Dentist = Loadable({
-    loader: () => import('./Dentist'),
+    loader: () => import('./DetailsPage/Dentist'),
     loading: LoadingComponent
 });
 
 const Office = Loadable({
-    loader: () => import('./Office'),
+    loader: () => import('./DetailsPage/Office'),
     loading: LoadingComponent
 });
 

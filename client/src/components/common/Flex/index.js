@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import {
     space,
     width,
+    height, 
     color,
     alignItems,
     justifyContent,
@@ -12,12 +13,13 @@ import {
 
 const Flex = styled.div`
   display: flex;
-  ${space} ${width} ${color} ${alignItems} ${justifyContent} ${flexWrap} ${flexDirection};
+  ${space} ${width} ${height} ${color} ${alignItems} ${justifyContent} ${flexWrap} ${flexDirection};
 `;
 
 Flex.propTypes = {
     ...propTypes.space,
     ...propTypes.width,
+    ...propTypes.height,
     ...propTypes.color,
     ...propTypes.alignItems,
     ...propTypes.justifyContent,

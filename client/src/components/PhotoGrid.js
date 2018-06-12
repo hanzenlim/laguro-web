@@ -12,14 +12,17 @@ const StyledContainer = styled.div`
     position: relative;
     width: 100%;
     padding-top: 67%;
+    overflow: hidden;
 `;
 
 const StyledImg = styled.img`
     position: absolute;
+    width: 100%;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
+    height: auto;
 `;
 
 const ListingInfo = styled.div`
@@ -93,9 +96,11 @@ class PhotoGrid extends Component {
                         <a href={`/office/${listing.officeId}`} key={listing.id}>
                             <div className='col offset-s1 s10 m6 l3'>
                                 <ListingCard>
-                                    <StyledContainer>
-                                        <StyledImg width="100%" height="100%" className="center" id="element" alt={listing.office.imageUrls} src={listingImg} />
-                                    </StyledContainer>
+                                    <div>
+                                        <StyledContainer>
+                                            <StyledImg className="center" id="element" alt={listing.office.imageUrls} src={listingImg} />
+                                        </StyledContainer>
+                                    </div>
                                     <ListingInfo>
               							<ListingInfoName>{listing.office.name}</ListingInfoName>
                                         <ListingInfoAddress className="truncate">{listing.office.location}</ListingInfoAddress>
