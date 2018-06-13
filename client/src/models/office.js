@@ -40,6 +40,20 @@ const generateGetOfficeQuery = options => {
     `;
 };
 
+const getActiveOfficesQuery = `
+    query {
+        getActiveOffices {
+            ${officeFragment}
+            listings {
+                ${listingFragment}
+            }
+            reviews {
+                ${reviewerFragment}
+            }
+        }
+    }
+`;
+
 const queryOfficesQuery = `
     query QueryOffices($input: QueryParams!) {
         queryOffices(input: $input) {
@@ -75,6 +89,10 @@ const Office = {
         const scanOfficesQuery = generateScanOfficesQuery(options);
         const response = await makeApiCall(scanOfficesQuery, null);
         return response.data.scanOffices;
+    },
+    getActive: async () => {
+        const response = await makeApiCall(getActiveOfficesQuery, null);
+        return response.data.getActiveOffices;
     },
     query: async (partitionKey, partitionValue, options) => {
         const response = await makeApiCall(queryOfficesQuery, {

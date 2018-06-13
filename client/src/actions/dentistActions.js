@@ -10,9 +10,9 @@ function requestDentists() {
     };
 }
 
-export const fetchDentists = (filters, ...options) => async dispatch => {
+export const fetchDentists = filters => async dispatch => {
     dispatch(requestDentists());
-    const dentists = await Dentist.scan(options);
+    const dentists = await Dentist.getActive();
     if (!filters || (filters && !filters.location)) {
         dispatch({
             type: FETCH_DENTISTS,

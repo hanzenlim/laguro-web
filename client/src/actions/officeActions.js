@@ -15,9 +15,9 @@ function requestOffices() {
     };
 }
 
-export const fetchOffices = (filters, ...options) => async dispatch => {
+export const fetchOffices = filters => async dispatch => {
     dispatch(requestOffices());
-    const offices = await Office.scan(options);
+    const offices = await Office.getActive();
     if (!filters || (filters && !filters.location)) {
         dispatch({
             type: FETCH_OFFICES,
