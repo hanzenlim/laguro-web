@@ -22,14 +22,9 @@ const MapContainer = styled.div`
     position: relative;
     height: 100%;
     min-height: 100vh;
-
-    @media (max-width: 600px) {
-        ${props => !props.show && 'display: none;'};
-    }
 `;
 
 const OfficetListContainer = styled.div`
-    height: 100vh;
     ${props => !props.show && 'display: none;'};
 
     @media (min-width: 600px) {
@@ -66,7 +61,8 @@ class OfficeResultIndex extends Component {
         super(props);
 
         this.state = {
-            activeView: 'list'
+            activeView: 'list',
+            activeListingId: null
         };
     }
 
@@ -76,11 +72,16 @@ class OfficeResultIndex extends Component {
     }
 
     renderMap() {
+        const BREAKPOINT = '600';
+
+        if (window.innerWidth < BREAKPOINT && this.state.activeView !== 'map')
+            return null;
+
         return (
-            <MapContainer show={this.state.activeView === 'map'}>
+            <MapContainer>
                 <ResultMap
+                    activeListingId={this.state.activeListingId}
                     locations={this.props.offices}
-                    google={window.google}
                     searchLocation={
                         this.props.filters.location
                             ? this.props.filters.location
@@ -90,6 +91,15 @@ class OfficeResultIndex extends Component {
             </MapContainer>
         );
     }
+
+    setActiveListing = event => {
+        const activeListingId = event.currentTarget.getAttribute('data-id');
+        this.setState({ activeListingId });
+    };
+
+    removeActiveListing = () => {
+        this.setState({ activeListingId: null });
+    };
 
     renderOfficeList() {
         const filteredOffices = this.props.offices;
@@ -120,18 +130,24 @@ class OfficeResultIndex extends Component {
                 this.rating_count = 0;
             }
             return (
-                <OfficeResult
-                    name={office.name}
-                    location={office.location}
-                    chairs={office.numChairs}
-                    listings={office.listings}
-                    avg_rating={this.avg_rating}
-                    rating_count={this.rating_count}
-                    img={office.imageUrls ? office.imageUrls[0] : null}
-                    office_id={office.id}
-                    index={index}
-                    key={office.id}
-                />
+                <div
+                    data-id={office.id}
+                    onMouseOver={this.setActiveListing}
+                    onMouseOut={this.removeActiveListing}
+                >
+                    <OfficeResult
+                        name={office.name}
+                        location={office.location}
+                        chairs={office.numChairs}
+                        listings={office.listings}
+                        avg_rating={this.avg_rating}
+                        rating_count={this.rating_count}
+                        img={office.imageUrls ? office.imageUrls[0] : null}
+                        office_id={office.id}
+                        index={index}
+                        key={office.id}
+                    />
+                </div>
             );
         });
     }

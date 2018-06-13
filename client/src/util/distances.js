@@ -19,7 +19,10 @@ export const getDistances = (entities, filters) =>
                 } else {
                     const results = response.rows[0].elements;
 
-                    if (results[0].status !== 'ZERO_RESULTS') {
+                    if (
+                        results[0].status !== 'ZERO_RESULTS' &&
+                        results[0].status !== 'NOT_FOUND'
+                    ) {
                         const locationsWithDistance = entities.map(
                             (office, index) => ({
                                 ...office,

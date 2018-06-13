@@ -1,192 +1,239 @@
 import React, { Component } from 'react';
-import { Map, InfoWindow, Marker } from 'google-maps-react';
+import ReactMapGL, { Marker, Popup, NavigationControl } from 'react-map-gl';
+import fetch from 'unfetch';
+import styled from 'styled-components';
+import 'mapbox-gl/dist/mapbox-gl.css';
+import history from '../history';
+import { mapBoxApiKey } from '../config/keys';
+
+import MapPin from './MapPin';
+
+const StyledPopupOverlay = styled.div`
+    width: 130%;
+    height: 130%;
+    position: absolute;
+    background: transparent;
+    top: -20%;
+    left: -20%;
+`;
+
+const StyledMarkerContainer = styled(Marker)`
+    width: 0;
+    height: 0;
+`;
+
+const StyledMarkerOverlay = styled.div`
+    height: 50px;
+    width: 50px;
+    top: -40px;
+    left: -25px;
+    background: transparent;
+    position: absolute;
+    /* TODO: Add z index list to theme file */
+    z-index: 1000;
+`;
+
+const StyledNavigationControl = styled(NavigationControl)`
+    position: absolute;
+    top: 10px;
+    left: 10px;
+`;
+
+const MAP_STYLE = 'mapbox://styles/mapbox/streets-v9';
 
 class ResultMap extends Component {
     constructor(props) {
         super(props);
-        this.map = null;
-    }
-    state = {
-        markerData: [],
-        activeMarker: {},
-        activeMarkerIndex: false,
-        selectedPlace: {},
-        showingInfoWindow: false,
-        markerIsClicked: false
-    };
-    //replace onMarkerClick with onMarkerMouseOver for hovering feature
-    onMarkerMouseOver = (index, props, marker) =>
-        this.setState({
-            activeMarker: marker,
-            activeMarkerIndex: index,
-            selectedPlace: props,
-            showingInfoWindow: true
-        });
 
-    onMarkerMouseOut = () => {
-        if (this.state.markerIsClicked) {
-            return;
-        }
-        this.setState({
-            showingInfoWindow: false
-        });
-    };
-    onInfoWindowClose = () =>
-        this.setState({
-            activeMarker: null,
-            showingInfoWindow: false
-        });
-    onMouseoverMarker = (props, marker) =>
-        this.setState({
-            activeMarker: marker,
-            selectedPlace: props,
-            showingInfoWindow: true
-        });
-    onMarkerClick = href => {
-        // eslint-disable-next-line
-        this.setState({
-            activeMarker: null,
-            showingInfoWindow: false,
-            markerIsClicked: true
-        });
-
-        window.location.href = href;
-    };
-    onMapHover = () => {
-        if (this.state.showingInfoWindow)
-            this.setState({
-                activeMarker: null,
-                showingInfoWindow: false
-            });
-    };
-    initMap = (mapProps, map) => {
-        const { locations, searchLocation } = mapProps.props;
-        const { google } = mapProps;
-        var geocoder = new google.maps.Geocoder();
-        var bounds = new google.maps.LatLngBounds();
-        var allAddresses = locations.map(loc => {
-            return { ...loc, type: 'office' };
-        });
-        if (searchLocation) {
-            var addressesWithSearchMarker = [
-                ...allAddresses,
-                { location: searchLocation }
-            ];
-        }
-        //return the result for either the addresss with search marker or allAddresses
-        const geocodeResults = addresses => {
-            addresses.forEach((addr, index) => {
-                geocoder.geocode(
-                    { address: addr.location },
-                    (results, status) => {
-                        if (!results) {
-                            return;
-                        }
-                        let position = results[0].geometry.location;
-                        if (status !== 'OK') {
-                            alert('Geocode failed: ' + status);
-                        } else {
-                            map.fitBounds(bounds.extend(position));
-                            if (addr.type === 'office') {
-                                const label = (index + 1).toString();
-                                const newMarker = {
-                                    position,
-                                    label,
-                                    map,
-                                    id: addr.id
-                                };
-                                let markerData = [
-                                    ...this.state.markerData,
-                                    newMarker
-                                ];
-                                this.setState({
-                                    markerData
-                                });
-                                map.setZoom(10);
-                            } else {
-                                addSearchMarker(position);
-                                map.setCenter(position);
-                                map.setZoom(11);
-                            }
-                        }
-                    }
-                );
-            });
+        this.state = {
+            markerData: [],
+            popupInfo: null,
+            isOverPopup: false,
+            viewport: {
+                width: 0,
+                height: 0,
+                latitude: 37.7577,
+                longitude: -122.4376,
+                zoom: 8
+            }
         };
-        geocodeResults(addressesWithSearchMarker || allAddresses);
-        function addSearchMarker(location) {
-            new google.maps.Marker({
-                position: location,
-                icon: {
-                    path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
-                    scale: 7.5,
-                    fillColor: 'red',
-                    fillOpacity: 1,
-                    strokeWeight: 2
-                },
-                map: map
-            });
-        }
+    }
+
+    componentDidMount() {
+        window.addEventListener('resize', this.resize);
+        this.resize();
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.resize);
+    }
+
+    resize = () => {
+        const BREAKPOINT = 600;
+
+        this.setState({
+            viewport: {
+                ...this.state.viewport,
+                width:
+                    window.innerWidth < BREAKPOINT
+                        ? window.innerWidth - 16
+                        : window.innerWidth / 2 - 12,
+                height:
+                    window.innerWidth < BREAKPOINT
+                        ? window.innerHeight - 250
+                        : window.innerHeight - 67
+            }
+        });
     };
-    render() {
-        const { activeMarkerIndex } = this.state;
-        const { locations } = this.props;
-        const activeLocation =
-            activeMarkerIndex || activeMarkerIndex === 0
-                ? locations[activeMarkerIndex]
-                : false;
-        // making the component dynamic for both dentist and offices
-        let img_url = '';
-        const isDentistPage = window.location.pathname.indexOf('dentists') > -1;
-        const isOfficePage = window.location.pathname.indexOf('offices') > -1;
-        if (isDentistPage) {
-            img_url = activeLocation && activeLocation.user.imageUrl;
-        } else if (isOfficePage) {
-            img_url = activeLocation && activeLocation.imageUrls[0];
-        }
-        const markers = this.state.markerData.map((marker, index) => {
-            const markerlocation = locations.find(loc => {
-                return loc.id === marker.id;
-            });
+
+    // NOTE: THIS METHOD WILL BE REMOVED ONCE WE SAVE LOCATION COORDINATES TO DB
+    geocodeLocationList = () => {
+        this.props.locations.map(query => {
+            fetch(
+                `https://api.mapbox.com/geocoding/v5/mapbox.places/${
+                    query.location
+                }.json?country=us&types=place&access_token=${mapBoxApiKey}`
+            )
+                .then(response => response.json())
+                .then(responseData => {
+                    if (!responseData.features.length) return null;
+
+                    const [
+                        longitude,
+                        latitude
+                    ] = responseData.features[0].center;
+
+                    const newMarker = {
+                        latitude,
+                        longitude,
+                        ...query
+                    };
+
+                    const markerData = [...this.state.markerData, newMarker];
+
+                    this.setState({
+                        markerData,
+                        viewport: {
+                            ...this.state.viewport,
+                            latitude,
+                            longitude
+                        }
+                    });
+                });
+        });
+    };
+
+    goToListingPage = event => {
+        const selectedListingId = event.currentTarget.getAttribute('data-id');
+
+        history.push(`${selectedListingId}`);
+    };
+
+    renderPopup = () => {
+        const activeListing = this.state.markerData.filter(
+            item => item.id === this.props.activeListingId
+        )[0];
+
+        const popupInfo = this.state.popupInfo || activeListing;
+
+        const imageSrc = popupInfo
+            ? popupInfo.user
+                ? popupInfo.user.imageUrl
+                : popupInfo.imageUrls[0]
+            : '';
+
+        return (
+            popupInfo && (
+                <Popup
+                    anchor="top"
+                    dynamicPosition
+                    closeButton={false}
+                    longitude={popupInfo.longitude}
+                    latitude={popupInfo.latitude}
+                >
+                    <StyledPopupOverlay
+                        data-id={popupInfo.id}
+                        onClick={this.goToListingPage}
+                        onMouseOver={this.handleHoverInPopup}
+                        onMouseOut={this.handleHoverOutPopup}
+                    />
+                    <div>
+                        {imageSrc && (
+                            <img src={imageSrc} alt="office" width="150px" />
+                        )}
+                        <div>{popupInfo.name}</div>
+                        <div>{popupInfo.location}</div>
+                    </div>
+                </Popup>
+            )
+        );
+    };
+
+    updateViewport = viewport => {
+        this.setState({ viewport });
+    };
+
+    showPopup = event => {
+        const { currentTarget } = event;
+        const popupInfo = JSON.parse(currentTarget.getAttribute('data-marker'));
+
+        this.setState({ popupInfo });
+    };
+
+    hidePopup = () => {
+        setTimeout(() => {
+            if (!this.state.isOverPopup) {
+                this.setState({ popupInfo: null });
+            }
+        }, 400);
+    };
+
+    handleHoverInPopup = () => {
+        this.setState({ isOverPopup: true });
+    };
+
+    handleHoverOutPopup = () => {
+        this.setState({ popupInfo: null, isOverPopup: false });
+    };
+
+    renderMapMarker = () => {
+        return this.state.markerData.map((marker, index) => {
+            const { longitude, latitude } = marker;
+
             return (
-                <Marker
+                <StyledMarkerContainer
                     key={index}
-                    name={marker.label}
-                    onMouseover={this.onMarkerMouseOver.bind(null, index)}
-                    onMouseout={this.onMarkerMouseOut.bind(this, index)}
-                    onClick={this.onMarkerClick.bind(this, markerlocation.id)}
-                    position={marker.position}
-                />
+                    latitude={latitude}
+                    longitude={longitude}
+                >
+                    <StyledMarkerOverlay
+                        data-marker={JSON.stringify(marker)}
+                        onMouseOut={this.hidePopup}
+                        onMouseOver={this.showPopup}
+                        onClick={this.showPopup}
+                    />
+                    <MapPin size={30} />
+                </StyledMarkerContainer>
             );
         });
+    };
+
+    render() {
         return (
-            <Map
-                google={this.props.google}
-                props={this.props}
-                onReady={this.initMap}
-                zoom={14}
+            <ReactMapGL
+                {...this.state.viewport}
+                reuseMap
+                mapStyle={MAP_STYLE}
+                mapboxApiAccessToken={mapBoxApiKey}
+                onViewportChange={this.updateViewport}
+                onLoad={this.geocodeLocationList}
             >
-                {markers}
-                {activeLocation && (
-                    <InfoWindow
-                        marker={this.state.activeMarker}
-                        onClose={this.onInfoWindowClose}
-                        visible={this.state.showingInfoWindow}
-                    >
-                        <div>
-                            <img src={img_url} alt="office" width="150px" />
-                            <a
-                                href={`${
-                                    isDentistPage ? 'dentist' : 'offices'
-                                }/${activeLocation.id}`}
-                            >
-                                <div>{activeLocation.name}</div>
-                                <div>{activeLocation.location}</div>
-                            </a>
-                        </div>
-                    </InfoWindow>
-                )}
-            </Map>
+                {this.renderPopup()}
+                {this.renderMapMarker()}
+                <StyledNavigationControl
+                    onViewportChange={this.updateViewport}
+                />
+            </ReactMapGL>
         );
     }
 }
