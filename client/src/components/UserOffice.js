@@ -103,7 +103,8 @@ class UserOffice extends Component {
                                             to={`/office/${office.id}`}
                                         >
                                             <Typography
-                                                color="black"
+                                                color="#039be5"
+                                                underline
                                                 fontSize={4}
                                             >
                                                 {office.name}

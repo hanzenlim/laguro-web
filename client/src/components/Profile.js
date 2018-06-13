@@ -106,19 +106,28 @@ class Profile extends Component {
                         Edit Dentist Profile
                     </Link>
                 ) : (
-                    <a className="link red-text" onClick={this.handleCreateDentist}>
+                    <a
+                        className="link red-text"
+                        onClick={this.handleCreateDentist}
+                    >
                         Create Dentist Profile
                     </a>
                 )}
 
-                <Modal closable open={this.state.isModalOpen} onClose={this.closeModal}>
-                    <CreateDentistProfile handleSubmission={this.closeModal.bind(this)} />
+                <Modal
+                    closable
+                    open={this.state.isModalOpen}
+                    onClose={this.closeModal}
+                >
+                    <CreateDentistProfile
+                        handleSubmission={this.closeModal.bind(this)}
+                    />
                 </Modal>
 
                 <ReactFilestack
                     apikey={filestackKey}
                     buttonText="Upload New Image"
-                    buttonClass="link"
+                    buttonClass="link blue-text text-lighten-1"
                     options={{
                         accept: ['image/*'],
                         imageMin: [300, 300],
@@ -234,15 +243,15 @@ class Profile extends Component {
                     )}
                     {auth.dentist &&
                         !!reviews.length && (
-                        <div className="reviews profile-section">
-                            <h5>{`Reviews for ${auth.name}`}</h5>
-                            <ReviewContainer
-                                revieweeId={dentist.id}
-                                revieweeName={auth.name}
-                                reviews={reviews}
-                            />
-                        </div>
-                    )}
+                            <div className="reviews profile-section">
+                                <h5>{`Reviews for ${auth.name}`}</h5>
+                                <ReviewContainer
+                                    revieweeId={dentist.id}
+                                    revieweeName={auth.name}
+                                    reviews={reviews}
+                                />
+                            </div>
+                        )}
                 </div>
             </div>
         );
