@@ -11,7 +11,7 @@ export const StyledModalContent = styled.div`
     background: white;
     margin: auto;
     max-height: calc(100vh - 30px);
-    padding: 64px;
+    padding: 44px;
     max-width: 768px;
     width: calc(100vw - 30px);
     position: relative;
@@ -22,9 +22,10 @@ const StyledCloseButton = styled.button`
     border: none;
     background: none;
     position: absolute;
-    right: 64px;
+    right: 16px;
     padding: 0;
     cursor: pointer;
+    top: 21px;
 
     &:active {
         background: none;
