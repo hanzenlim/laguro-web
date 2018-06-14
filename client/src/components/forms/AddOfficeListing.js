@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
     Field,
-    FieldArray,
     reduxForm,
     SubmissionError,
     formValueSelector
@@ -26,8 +25,6 @@ import {
 import { required, isNum, dollarMinimum } from './formValidation';
 
 import history from '../../history';
-
-import exitSVG from '../icons/exit.svg';
 import staffSVG from '../icons/staff.svg';
 
 const StyledContainer = styled.div`
@@ -36,12 +33,6 @@ const StyledContainer = styled.div`
     max-width: 1080px;
     padding: 5em 10px;
     margin: 0 auto;
-`;
-
-const StyledRemoveStaffIcon = styled.button`
-    background: none;
-    border: none;
-    cursor: pointer;
 `;
 
 const StyledImage = styled.img`
@@ -137,73 +128,6 @@ class NewListing extends Component {
         }
     }
 
-    renderStaff = ({ fields, className, meta: { error } }) => (
-        <ul className={className}>
-            <li>
-                <Button
-                    type="button"
-                    color="primary"
-                    onClick={() => fields.push({})}
-                >
-                    <Typography fontSize={4} fontWeight="medium">
-                        Add Staff
-                    </Typography>
-                </Button>
-                {error && <span>{error}</span>}
-            </li>
-            <Padding bottom="16" />
-            {fields.map((staff, index) => (
-                <li key={index}>
-                    <Grid container alignItems="flex-start">
-                        <Grid xs>
-                            <Field
-                                name={`${staff}.role`}
-                                type="text"
-                                placeholder="RDA"
-                                component={renderField}
-                                label="Staff Role"
-                                validate={required}
-                            />
-                            <Padding bottom="16" />
-                        </Grid>
-                        <Grid xs>
-                            <Field
-                                name={`${staff}.price`}
-                                type="text"
-                                placeholder="30"
-                                component={renderField}
-                                label="Hourly Price"
-                                validate={[required, isNum]}
-                            />
-                            <Padding bottom="16" />
-                        </Grid>
-                        <Grid xs>
-                            <Field
-                                name={`${staff}.count`}
-                                type="text"
-                                placeholder="3"
-                                component={renderField}
-                                label="Number of Staff"
-                                validate={[required, isNum]}
-                            />
-                            <Padding bottom="16" />
-                        </Grid>
-                        <Grid>
-                            <StyledRemoveStaffIcon
-                                type="button"
-                                title="Remove Staff"
-                                onClick={() => fields.remove(index)}
-                            >
-                                <img src={exitSVG} alt="Remove Staff" />
-                            </StyledRemoveStaffIcon>
-                            <Padding bottom="16" />
-                        </Grid>
-                    </Grid>
-                </li>
-            ))}
-        </ul>
-    );
-
     calcTime() {
         const { startTime, endTime } = this.props;
         const minutes = endTime.diff(startTime, 'minutes');
@@ -228,7 +152,7 @@ class NewListing extends Component {
                                 <Grid item xs={12}>
                                     <Typography fontSize={5}>
                                         Now that you have created an office, we
-                                        need a few more details
+                                        need to create a listing
                                     </Typography>
                                 </Grid>
                             </Grid>
@@ -237,16 +161,8 @@ class NewListing extends Component {
 
                             <Grid container>
                                 <Grid item xs={12}>
-                                    <Typography fontSize={3}>Step 3</Typography>
-                                </Grid>
-                            </Grid>
-
-                            <Padding bottom="16" />
-
-                            <Grid container>
-                                <Grid item xs={12}>
-                                    <Typography fontSize={3} fontWeight="bold">
-                                        Add more details about your office
+                                    <Typography size="t3" weight="bold">
+                                        Add more details about your listing
                                     </Typography>
                                 </Grid>
                             </Grid>
@@ -266,7 +182,7 @@ class NewListing extends Component {
                             </Grid>
 
                             <Grid container>
-                                <Grid item xs={12} md={6}>
+                                <Grid item xs={12} md={5}>
                                     <Field
                                         name="startTime"
                                         label="Opening Time"
@@ -276,7 +192,8 @@ class NewListing extends Component {
                                     />
                                     <Padding bottom="16" />
                                 </Grid>
-                                <Grid item xs={12} md={6}>
+                                <Grid item md={2} />
+                                <Grid item xs={12} md={5}>
                                     <Field
                                         name="endTime"
                                         label="Closing Time"
@@ -289,7 +206,7 @@ class NewListing extends Component {
                             </Grid>
 
                             <Grid container>
-                                <Grid item xs={12} md={6}>
+                                <Grid item xs={12} md={4}>
                                     <Field
                                         name="chairHourlyPrice"
                                         label="Price per chair (hourly)"
@@ -303,7 +220,19 @@ class NewListing extends Component {
                                     />
                                     <Padding bottom="16" />
                                 </Grid>
-                                <Grid item xs={12} md={6}>
+                                <Grid item md={1} />
+                                <Grid item xs={12} md={2}>
+                                    <Field
+                                        name="cleaningFee"
+                                        label="Cleaning Fee"
+                                        placeholder="50"
+                                        component={renderField}
+                                        validate={[required, isNum]}
+                                    />
+                                    <Padding bottom="16" />
+                                </Grid>
+                                <Grid item md={1} />
+                                <Grid item xs={12} md={4}>
                                     <Field
                                         name="numChairsAvailable"
                                         label="Number of chairs available"
@@ -319,26 +248,6 @@ class NewListing extends Component {
                                     <Padding bottom="16" />
                                 </Grid>
                             </Grid>
-
-                            <Grid container>
-                                <Grid item xs={12}>
-                                    <Field
-                                        name="cleaningFee"
-                                        label="Cleaning Fee"
-                                        placeholder="50"
-                                        component={renderField}
-                                        validate={[required, isNum]}
-                                    />
-                                    <Padding bottom="16" />
-                                </Grid>
-                            </Grid>
-                            <div className="row">
-                                <FieldArray
-                                    name="staffAvailable"
-                                    component={this.renderStaff}
-                                />
-                                <Padding bottom="16" />
-                            </div>
 
                             <Grid container justify="space-between">
                                 <Grid item>
@@ -401,9 +310,4 @@ const mapStateToProps = state => {
 
 export default reduxForm({
     form: 'newListing'
-})(
-    connect(
-        mapStateToProps,
-        actions
-    )(NewListing)
-);
+})(connect(mapStateToProps, actions)(NewListing));

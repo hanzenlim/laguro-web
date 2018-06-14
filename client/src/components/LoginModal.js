@@ -49,11 +49,7 @@ class LoginModal extends Component {
         return (
             <div>
                 <div ref={this.setWrapperRef} className="modal open">
-                    <a
-                        href="#"
-                        onClick={this.handleClose}
-                        className="modal-close"
-                    >
+                    <a onClick={this.handleClose} className="modal-close">
                         <i className="material-icons md-38">close</i>
                     </a>
                     <div className="modal-header">
@@ -65,7 +61,12 @@ class LoginModal extends Component {
                             href="/auth/google"
                             className="login waves-effect"
                         >
-                            <img width="300" height="70" src={GoogleLoginButton} />
+                            <img
+                                alt="google login button"
+                                width="300"
+                                height="70"
+                                src={GoogleLoginButton}
+                            />
                         </a>
                     </div>
                     <div className="modal-footer" />

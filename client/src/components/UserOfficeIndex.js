@@ -8,30 +8,26 @@ import * as actions from '../actions';
 class UserOffices extends Component {
     constructor(props) {
         super(props);
-        this.state = { offices: this.props.offices };
 
-        this.deleteListingAndUpdateOffices = this.deleteListingAndUpdateOffices.bind(
-            this
+        this.deleteUserOffice = this.deleteUserOffice.bind(this);
+    }
+
+    async deleteUserOffice(officeToCancel) {
+        const { dentist } = this.props;
+
+        // find the office this reservation is for
+        dentist.offices = dentist.offices.filter(
+            office => office.id !== officeToCancel.id
         );
 
-        this.deleteOffice = this.deleteOffice.bind(this);
-    }
-
-    async deleteOffice(office) {
-        await this.props.deleteOffice(office.id);
-        this.props.reloadOffices();
-    }
-
-    async deleteListingAndUpdateOffices(listing) {
-        // api call to delete listing from DB
-        await this.props.deleteListing(listing.id);
-        this.props.reloadOffices();
+        await this.props.deleteOffice(officeToCancel.id);
+        this.props.updateDentist(dentist);
     }
 
     render() {
-        const { offices } = this.state;
+        const { offices } = this.props.dentist;
 
-        if (!offices) return;
+        if (!offices) return null;
 
         if (!offices.length) {
             return (
@@ -51,9 +47,7 @@ class UserOffices extends Component {
             <UserOffice
                 key={office.id}
                 office={office}
-                deleteOffice={this.deleteOffice}
-                deleteListing={this.deleteListingAndUpdateOffices}
-                queryOffices={this.props.queryOffices}
+                deleteUserOffice={this.deleteUserOffice}
             />
         ));
 
@@ -61,4 +55,8 @@ class UserOffices extends Component {
     }
 }
 
-export default connect(null, actions)(UserOffices);
+function mapStateToProps(state) {
+    return { dentist: state.dentists.selectedDentist };
+}
+
+export default connect(mapStateToProps, actions)(UserOffices);

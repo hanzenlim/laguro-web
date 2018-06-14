@@ -1,6 +1,9 @@
 import React from 'react';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+
 import {
     Input,
     Grid,
@@ -37,6 +40,21 @@ export const durationOptions = [
         60 minutes
     </option>
 ];
+
+export const generateListItems = set => {
+    if (!set || set.length === 0) {
+        return (
+            <ListItem>
+                <ListItemText secondary="None Selected" />
+            </ListItem>
+        );
+    }
+    return set.map((item, index) => (
+        <ListItem key={index}>
+            <ListItemText primary={item} />
+        </ListItem>
+    ));
+};
 
 const getMinTime = (dateType, listing) => {
     if (!listing)

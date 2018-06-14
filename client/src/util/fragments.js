@@ -1,3 +1,18 @@
+import moment from 'moment';
+import { STATUS, ACTIVE } from './strings';
+
+export const filterActive = `
+options: {
+    sortKey: "startTime",
+    rangeStart: "${moment().format()}",
+    filters: [
+        {
+            filterKey: "${STATUS}",
+            filterValue: "${ACTIVE}"
+        }
+    ]
+}`;
+
 export const userFragment = `
     id
     name
@@ -42,17 +57,6 @@ equipment {
     name
     price
 }
-listings {
-    ${listingFragment}
-    reservations {
-        id
-        staffSelected {
-            role
-            count
-        }
-        equipmentSelected
-    }
-}
 reviews {
     rating
 }
@@ -95,20 +99,18 @@ export const reservationFragment = `
     id
     numChairsSelected
     listingId
-    office {
-        ${officeFragment}
-    }
-    listing {
-        ${listingFragment}
-    }
-    appointments {
-        ${appointmentFragment}
-    }
     staffSelected {
       role
       price
       count
     }
+    reservedBy {
+        id
+        user {
+            name
+        }
+    }
+    equipmentSelected
     status
     totalPaid
     payment {

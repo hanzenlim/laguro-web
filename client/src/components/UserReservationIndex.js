@@ -1,27 +1,46 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
-import UserReservation from './UserReservation';
 import * as actions from '../actions';
-import { RESERVED_BY } from '../util/strings';
+import UserReservation from './UserReservation';
 
 class UserReservationIndex extends Component {
     constructor(props) {
         super(props);
-        this.cancelReservation = this.cancelReservation.bind(this);
+        this.cancelUserReservation = this.cancelUserReservation.bind(this);
     }
 
-    async cancelReservation(reservation) {
-        await this.props.cancelReservation(reservation.id);
-        await this.props.queryReservations(RESERVED_BY, this.props.dentist.id);
+    async cancelUserReservation(reservationToCancel) {
+        const { dentist } = this.props;
+        // if owner rented his own office, remove reservation from nested office/listing/reservation table
+        if (reservationToCancel.hostId === reservationToCancel.reservedBy.id) {
+            // find the office this reservation is for
+            let office = dentist.offices.find(
+                office => office.id === reservationToCancel.office.id
+            );
+            // find the listing that the reservation belongs to
+            let listing = office.listings.find(
+                listing => listing.id === reservationToCancel.listingId
+            );
+            // remove reservation from that listing
+            listing.reservations = listing.reservations.filter(
+                reservation => reservation.id !== reservationToCancel.id
+            );
+        }
+        // also remove reservation from dentist's list of reservations
+        dentist.reservations = dentist.reservations.filter(
+            res => res.id !== reservationToCancel.id
+        );
+        await this.props.cancelReservation(reservationToCancel.id);
+        this.props.updateDentist(dentist);
     }
 
     render() {
-        const { reservations } = this.props;
+        const { reservations } = this.props.dentist;
 
         if (!reservations) {
-            return;
+            return null;
         }
         if (reservations.length === 0) {
             return (
@@ -43,7 +62,7 @@ class UserReservationIndex extends Component {
             <UserReservation
                 key={reservation.id}
                 reservation={reservation}
-                cancelReservation={this.cancelReservation}
+                cancelUserReservation={this.cancelUserReservation}
             />
         ));
 
@@ -51,4 +70,10 @@ class UserReservationIndex extends Component {
     }
 }
 
-export default connect(null, actions)(UserReservationIndex);
+function mapStateToProps(state) {
+    return {
+        dentist: state.dentists.selectedDentist
+    };
+}
+
+export default connect(mapStateToProps, actions)(UserReservationIndex);

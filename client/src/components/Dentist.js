@@ -13,25 +13,21 @@ import { Padding } from './common/Spacing';
 import Appointments from './Appointments';
 import BookAppointment from './forms/BookAppointment';
 
+import { DENTIST } from '../util/strings';
 import {
-    USER,
-    DENTIST,
-    OFFICES,
-    LISTINGS,
-    RESERVATIONS,
-    REVIEWS
-} from '../util/strings';
+    dentistFragment,
+    officeFragment,
+    reservationFragment,
+    appointmentFragment,
+    reviewerFragment,
+    filterActive
+} from '../util/fragments';
 
 const StyledResContentDiv = styled.div`
     && {
         width: 100%;
         font-size: 14px;
     }
-`;
-
-const Container = styled.div`
-    padding: 0 7px;
-    min-height: 100vh;
 `;
 
 const NameDiv = styled.div`
@@ -128,7 +124,31 @@ const StyledProfPic = styled.img`
     width: 15%;
 `;
 
-class Profile extends Component {
+const dentistQuery = `
+    query ($id: String!) {
+        getDentist(id: $id) {
+            ${dentistFragment}
+            user {
+                name
+                imageUrl
+            }
+            reservations(${filterActive}) {
+                ${reservationFragment}
+                appointments(${filterActive}) {
+                    ${appointmentFragment}
+                }
+                office {
+                    ${officeFragment}
+                }
+            }
+            reviews {
+                ${reviewerFragment}
+            }
+        }
+    }
+`;
+
+class Dentist extends Component {
     constructor() {
         super();
         this.state = {
@@ -136,29 +156,25 @@ class Profile extends Component {
             isModalOpen: false,
             selectedStartTime: null,
             durationToNextAppointment: null,
-            selectedReservation: {}
+            selectedReservation: {},
+            isFetching: true
         };
         this.handleReviewShowMore = this.handleReviewShowMore.bind(this);
     }
 
     componentWillMount() {
+        this.loadDentistProfile();
+    }
+
+    async loadDentistProfile() {
+        this.setState({ isFetching: true });
         this.dentist_id = this.props.match.params.id;
-        this.props
-            .getDentist(
-                this.dentist_id,
-                USER,
-                OFFICES,
-                LISTINGS,
-                RESERVATIONS,
-                REVIEWS
-            )
-            .then(() => {
-                const user =
-                    this.props.dentist && this.props.dentist.user
-                        ? this.props.dentist.user
-                        : null;
-                document.title = `Laguro - ${user ? user.name : ''}`;
-            });
+        let dentist = await this.props.loadDentistProfile(
+            dentistQuery,
+            this.dentist_id
+        );
+        document.title = `Laguro - Dr. ${dentist.user.name}`;
+        this.setState({ isFetching: false });
     }
 
     handleReviewShowMore() {
@@ -182,7 +198,7 @@ class Profile extends Component {
         if (dentist) {
             return dentist.procedures.map(proc => (
                 <div key={proc.name}>
-                    {proc.name} - ${proc.duration}
+                    {proc.name} - {proc.duration} minutes
                 </div>
             ));
         }
@@ -212,12 +228,12 @@ class Profile extends Component {
     };
 
     renderReservations() {
-        const { auth, dentist, reservations } = this.props;
+        const { auth, dentist } = this.props;
 
-        if (reservations && reservations.length === 0) {
+        if (dentist.reservations && dentist.reservations.length === 0) {
             return <div>Sorry no available appointment for now</div>;
         }
-        return reservations.map((reservation, index) => {
+        return dentist.reservations.map((reservation, index) => {
             const office = reservation.office;
             const officeImage =
                 office.imageUrls.length === 0 ? '' : office.imageUrls[0];
@@ -262,16 +278,13 @@ class Profile extends Component {
     }
 
     render() {
-        const { dentist, auth, reviews } = this.props;
-
-        // if dentist still hasn't loaded, wait for render
-        if (!dentist || Object.keys(dentist).length === 0) {
-            return <Container>Loading...</Container>;
-        }
+        const { dentist, auth } = this.props;
+        const { isFetching } = this.state;
+        if (isFetching) return <div className="stretch_height" />;
 
         // calculate avg rating
-        if (reviews && reviews.length) {
-            const dentistReviews = reviews.filter(
+        if (dentist.reviews && dentist.reviews.length) {
+            const dentistReviews = dentist.reviews.filter(
                 review => review.reviewee_id === dentist.id
             );
             this.avg_rating =
@@ -340,7 +353,7 @@ class Profile extends Component {
                     <Padding topPerc={5} />
 
                     <DetailsHeadingDiv>
-                        Reviews ({reviews.length})
+                        Reviews ({dentist.reviews.length})
                     </DetailsHeadingDiv>
 
                     <StyledReactStars
@@ -370,7 +383,7 @@ class Profile extends Component {
                             revieweeName={
                                 dentist && dentist.user ? dentist.user.name : ''
                             }
-                            reviews={reviews}
+                            reviews={dentist.reviews}
                             rows={
                                 this && this.state ? this.state.reviewRowNum : 1
                             }
@@ -407,13 +420,7 @@ class Profile extends Component {
 function mapStateToProps(state) {
     return {
         auth: state.auth,
-        dentist: state.dentists.selectedDentist,
-        listings: state.listings.all,
-        reservations: state.reservations.all,
-        reviews: state.reviews.all
+        dentist: state.dentists.selectedDentist
     };
 }
-export default connect(
-    mapStateToProps,
-    actions
-)(Profile);
+export default connect(mapStateToProps, actions)(Dentist);

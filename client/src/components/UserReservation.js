@@ -3,10 +3,9 @@ import { Link } from 'react-router-dom';
 import moment from 'moment';
 import ReactStars from 'react-stars';
 import styled from 'styled-components';
-
 import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
+
+import { generateListItems } from './forms/sharedComponents';
 import { Typography, Grid, Card, Divider } from './common';
 import { Padding, Margin } from './common/Spacing';
 import { formatListingTime } from '../util/timeUtil';
@@ -30,7 +29,7 @@ class UserOffice extends Component {
                 )}?`
             )
         ) {
-            this.props.cancelReservation(reservation);
+            this.props.cancelUserReservation(reservation);
         }
     }
 
@@ -40,24 +39,6 @@ class UserOffice extends Component {
                 .map(review => review.rating)
                 .reduce((acc, rating) => acc + rating, 0) / reviews.length;
         this.rating_count = reviews.length;
-    }
-
-    generateListItems(set) {
-        if (set.length === 0) {
-            return (
-                <ListItem>
-                    <ListItemText secondary="None Selected" />
-                </ListItem>
-            );
-        }
-        return set.map((item, index) => (
-            <ListItem key={index}>
-                <ListItemText
-                    primary={item.role || item.name}
-                    secondary={item.count ? `(${item.count} selected)` : null}
-                />
-            </ListItem>
-        ));
     }
 
     render() {
@@ -205,23 +186,13 @@ class UserOffice extends Component {
                                     <Grid container spacing={16}>
                                         <Grid item xs={12} md={6}>
                                             <Typography variant="title">
-                                                Selected Staff
-                                            </Typography>
-                                            <div>
-                                                <List>
-                                                    {this.generateListItems(
-                                                        reservation.staffSelected
-                                                    )}
-                                                </List>
-                                            </div>
-                                        </Grid>
-                                        <Grid item xs={12} md={6}>
-                                            <Typography variant="title">
                                                 Selected Equipment
                                             </Typography>
                                             <div>
                                                 <List>
-                                                    {this.generateListItems([])}
+                                                    {generateListItems(
+                                                        reservation.equipmentSelected
+                                                    )}
                                                 </List>
                                             </div>
                                         </Grid>

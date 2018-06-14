@@ -27,6 +27,7 @@ export const PAYEE_ID = 'payeeId';
 export const START_TIME = 'startTime';
 
 // STATUSES
+export const STATUS = 'status';
 export const ACTIVE = 'ACTIVE';
 export const CANCELLED_BY_DENTIST = 'CANCELLED_BY_DENTIST';
 export const CANCELLED_BY_PATIENT = 'CANCELLED BY PATIENT';

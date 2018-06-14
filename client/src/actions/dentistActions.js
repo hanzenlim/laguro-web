@@ -1,7 +1,13 @@
 import Dentist from '../models/dentist';
 import { getDistances } from '../util/distances';
 import { dispatchChildren } from '../util/dispatchUtil';
-import { REQUEST_DENTISTS, FETCH_DENTISTS, GET_ONE_DENTIST } from './types';
+import {
+    REQUEST_DENTISTS,
+    FETCH_DENTISTS,
+    GET_ONE_DENTIST,
+    UPDATE_DENTIST_RESERVATIONS
+} from './types';
+import makeApiCall from '../util/clientDataLoader';
 import history from '../history';
 
 function requestDentists() {
@@ -27,6 +33,24 @@ export const fetchDentists = filters => async dispatch => {
     }
 };
 
+export const loadDentistProfile = (query, dentistId) => async dispatch => {
+    dispatch(requestDentists());
+    const response = await makeApiCall(query, { id: dentistId });
+    const dentist = response.data.getDentist;
+    dispatch({
+        type: GET_ONE_DENTIST,
+        payload: dentist
+    });
+    return dentist;
+};
+
+export const updateDentist = dentist => async dispatch => {
+    dispatch({
+        type: UPDATE_DENTIST_RESERVATIONS,
+        payload: dentist
+    });
+};
+
 export const getDentist = (id, ...options) => async dispatch => {
     dispatch(requestDentists());
     const dentist = await Dentist.get(id, options);
@@ -38,6 +62,7 @@ export const getDentist = (id, ...options) => async dispatch => {
         return;
     }
     dispatchChildren(dentist, options, dispatch);
+    return dentist;
 };
 
 export function createDentist(values) {

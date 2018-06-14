@@ -35,7 +35,7 @@ export const createListing = values => async dispatch => {
     history.push('/profile');
 };
 
-export const deleteListing = listingId => async () => {
+export const cancelListing = listingId => async () => {
     await Listing.delete(listingId);
 };
 
