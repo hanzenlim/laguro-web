@@ -11,9 +11,6 @@ const createUserVariable = serverDataLoader.createUserVariable;
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
-// Local Packages
-const keys = require('../client/src/config/keys');
-
 // Define passport functions
 passport.serializeUser((user, done) => {
     done(null, user.googleId);
@@ -26,8 +23,8 @@ passport.deserializeUser(async (id, done) => {
 
 passport.use(new GoogleStrategy(
     {
-        clientID: keys.googleClientID,
-        clientSecret: keys.googleClientSecret,
+        clientID: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         callbackURL: '/auth/google/callback',
         proxy: true,
     },

@@ -10,6 +10,7 @@ const StyledModal = styled(MaterialUIModal)``;
 export const StyledModalContent = styled.div`
     background: white;
     margin: auto;
+    overflow-y: auto;
     max-height: calc(100vh - 30px);
     padding: 44px;
     max-width: 768px;
@@ -22,7 +23,7 @@ const StyledCloseButton = styled.button`
     border: none;
     background: none;
     position: absolute;
-    right: 16px;
+    right: 23px;
     padding: 0;
     cursor: pointer;
     top: 21px;

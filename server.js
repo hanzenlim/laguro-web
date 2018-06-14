@@ -6,9 +6,6 @@ const bodyParser = require('body-parser');
 const logger = require('morgan');
 const makeQuery = require('./util/serverDataLoader').makeQuery;
 
-// Local Packages
-const keys = require('./client/src/config/keys');
-
 // Services
 require('./services/passport');
 
@@ -19,7 +16,7 @@ app.use(bodyParser.json());
 // Auth config
 app.use(cookieSession({
     maxAge: 10800000, // 1 day
-    keys: [keys.cookieKey],
+    keys: [process.env.COOKIE_KEY],
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -37,6 +34,7 @@ app.post('/api/graphql', async (req, res) => {
             ...req.body.variables,
             authenticated: true,
         };
+        
     } else {
         variables = {
             ...req.body.variables,
