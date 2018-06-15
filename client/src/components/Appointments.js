@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import styled from 'styled-components';
 import AppointmentOptions from './AppointmentOptions';
 import {
     DEFAULT_APPOINTMENT_WINDOW_SIZE,
@@ -7,6 +7,10 @@ import {
     calculateTimeSlotIndex,
     getStartTime
 } from '../util/timeUtil';
+
+const StyledA = styled.a`
+    color: #28A51C;
+`;
 
 class Appointments extends Component {
     calculateTimeslots() {
@@ -88,8 +92,8 @@ class Appointments extends Component {
                         }
                         onClick={this.handleBookAppointment}
                     >
-                        <a
-                            className="light-green-text text-accent-4 dropdown-trigger"
+                        <StyledA
+                            className="text-accent-4 dropdown-trigger"
                             style={{ cursor: 'pointer' }}
                             data-target={`dropdown${index}`}
                         >
@@ -98,7 +102,7 @@ class Appointments extends Component {
                                 index,
                                 reservation.startTime
                             ).format('h:mm a')} - Available!`}
-                        </a>
+                        </StyledA>
                         <ul
                             className="dropdown-content"
                             id={`dropdown${index}`}

@@ -8,7 +8,7 @@ class Icon extends Component {
         switch (this.props.icon) {
         case "numChairsAvail":
             return (<NumChairsAvail className={this.props.className} width={this.props.width} />);
-        case "backToListings":
+        case "BackToSearch":
             return (
                 <svg className={this.props.className} width={this.props.width} onClick={this.props.onClick} viewBox="0 0 35 35" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
                     <title>x-circle</title>

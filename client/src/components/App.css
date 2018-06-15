@@ -437,13 +437,6 @@ img {
     padding: 0 15px;
 }
 
-.office_header {
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-    justify-content: space-between;
-}
-
 .office_btns > * {
     margin-right: 10px;
 }
@@ -457,59 +450,14 @@ img {
     margin-top: 4em;
 }
 
-.review,
-.reservation {
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 4px;
-    padding: 10px;
-}
-
-.review .reviewer,
-.reservation .office_detail {
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-    width: calc(100% / 3);
-}
-
 .review .reviewer img,
 .reservation .office_detail img {
-    width: 40px;
-    height: 40px;
     margin-right: 8px;
-}
-
-.review .content,
-.reservation .content {
-    display: flex;
-    flex-flow: column;
-    align-items: center;
-    justify-content: space-around;
-    padding: 0 8px;
 }
 
 .review .content .top-bar,
 .reservation .content .top-bar {
-    width: 80%;
-    margin: 0 auto;
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-    justify-content: space-around;
-    padding-bottom: 8px;
     border-bottom: 1px solid #ccc;
-}
-
-.reservation a {
-    line-height: 0;
-}
-
-.review .content p,
-.reservation .content p {
-    margin: 8px 0;
 }
 
 /* styling for div containing stars */
@@ -520,59 +468,4 @@ img {
 .review .btn-small.delete {
     font-size: 10px;
     padding: 0 5px;
-}
-
-/* Listing page */
-
-.listing_content {
-    margin: 7px;
-    display: flex;
-    flex-flow: row nowrap;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.listing_content p {
-    margin: 0;
-}
-
-.listing_btns .btn-small {
-    height: 25px;
-    line-height: 20px;
-    padding: 2px 8px;
-    margin-right: 7px;
-}
-
-.listing_btns i {
-    font-size: 15px !important;
-}
-
-.location-field {
-    color: #9e9e9e;
-    font-size: 0.8rem;
-    font-size: 15px !important;
-}
-
-.truncate {
-    width: 38ch;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.material-icons.md-18 {
-    font-size: 18px;
-}
-.material-icons.md-24 {
-    font-size: 24px;
-}
-.material-icons.md-36 {
-    font-size: 36px;
-}
-.material-icons.md-48 {
-    font-size: 48px;
-}
-
-.center {
-    text-align: center;
 }

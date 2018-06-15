@@ -2,9 +2,9 @@ import { DENTIST, OFFICE } from './strings';
 
 // eslint-disable-next-line
 export const getEntityName = (entity, type) => {
-    if (type === DENTIST) {
+    if (entity && type === DENTIST) {
         return entity.user.name;
-    } else if (type === OFFICE) {
+    } else if (entity && type === OFFICE) {
         return entity.name;
     } else {
         return null;

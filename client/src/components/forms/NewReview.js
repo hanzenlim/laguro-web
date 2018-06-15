@@ -10,7 +10,6 @@ import { required } from './formValidation';
 import * as actions from '../../actions';
 import { Grid } from '../common/';
 import { Padding } from '../common/Spacing'
-import { getEntityName } from '../../util/entity';
 
 import '../css/forms/NewReview.css';
 
@@ -22,12 +21,6 @@ const ReviewSubmitButton = styled(Button)`
     && {
         text-transform: none;
         min-width: 0;
-    }
-
-    @media screen and (min-width : 600px) {
-        && {
-            min-width: 88px;
-        } 
     }
 `;
 
@@ -65,12 +58,8 @@ const TextArea = styled.textarea`
 
 const InputStarsDiv = styled.div`
     position: absolute;
-    left: 45%;
+    right: 21%;
     line-height: 58.5px;
-
-    @media screen and (min-width: 600px) {
-        left: 66%;
-    }
 `;
 
 const StyledPadding = styled(Padding)`
@@ -83,8 +72,6 @@ class NewReview extends Component {
         this.state = {
             rating: 3
         };
-        const { reviewee, type } = this.props;
-        this.name = getEntityName(reviewee, type);
     }
 
     onSubmit(values) {

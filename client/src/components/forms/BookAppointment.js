@@ -4,7 +4,7 @@ import moment from 'moment';
 
 import history from '../../history';
 
-import { Typography, Grid, Button, Option, Box, Modal, Flex } from '../common';
+import { Typography, Grid, Button, Option, Box, Flex } from '../common';
 import { renderInput, renderSelect, renderCheckbox } from './sharedComponents';
 import { APPOINTMENT_SCHEDULING_FEE } from '../../util/paymentUtil';
 
@@ -62,76 +62,72 @@ class BookAppointment extends Component {
         const {
             handleSubmit,
             dentist,
-            open,
             error,
-            closeModal,
             durationToNextAppointment
         } = this.props;
 
         return (
-            <Modal closable open={open} onClose={closeModal}>
-                <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
-                    <Grid container>
-                        <Grid item xs={12}>
-                            <Box pb={4}>
-                                <Typography
-                                    fontSize={5}
-                                    fontWeight="bold"
-                                    color="abbey"
-                                >
-                                    Available Appointments
-                                </Typography>
-                            </Box>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Box pb={3}>
-                                <label>Available Times</label>
-                                <Field
-                                    disabled
-                                    name="time"
-                                    component={renderInput}
-                                />
-                            </Box>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Box pb={4}>
-                                <label>Procedures Available</label>
-                                <Field
-                                    name="procedure"
-                                    component={renderSelect}
-                                    validate={required}
-                                >
-                                    {this.renderProcedures(
-                                        dentist.procedures,
-                                        durationToNextAppointment
-                                    )}
-                                </Field>
-                            </Box>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Flex alignItems="center" pb={4}>
-                                <Field
-                                    name="acknowledge"
-                                    label="I understand and agree to the terms"
-                                    component={renderCheckbox}
-                                />
-                            </Flex>
-                        </Grid>
-                        <Grid item xs={12}>
-                            {error && (
-                                <Typography fontSize={3} color="red">
-                                    {error}
-                                </Typography>
-                            )}
-                            <Button fullWidth color="secondary" type="submit">
-                                <Typography fontSize={4} fontWeight="medium">
-                                    Book Appointment
-                                </Typography>
-                            </Button>
-                        </Grid>
+            <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+                <Grid container>
+                    <Grid item xs={12}>
+                        <Box pb={4}>
+                            <Typography
+                                fontSize={5}
+                                fontWeight="bold"
+                                color="abbey"
+                            >
+                                Available Appointments
+                            </Typography>
+                        </Box>
                     </Grid>
-                </form>
-            </Modal>
+                    <Grid item xs={12}>
+                        <Box pb={3}>
+                            <label>Available Times</label>
+                            <Field
+                                disabled
+                                name="time"
+                                component={renderInput}
+                            />
+                        </Box>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Box pb={4}>
+                            <label>Procedures Available</label>
+                            <Field
+                                name="procedure"
+                                component={renderSelect}
+                                validate={required}
+                            >
+                                {this.renderProcedures(
+                                    dentist.procedures,
+                                    durationToNextAppointment
+                                )}
+                            </Field>
+                        </Box>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <Flex alignItems="center" pb={4}>
+                            <Field
+                                name="acknowledge"
+                                label="I understand and agree to the terms"
+                                component={renderCheckbox}
+                            />
+                        </Flex>
+                    </Grid>
+                    <Grid item xs={12}>
+                        {error && (
+                            <Typography fontSize={3} color="red">
+                                {error}
+                            </Typography>
+                        )}
+                        <Button fullWidth color="secondary" type="submit">
+                            <Typography fontSize={4} fontWeight="medium">
+                                Book Appointment
+                            </Typography>
+                        </Button>
+                    </Grid>
+                </Grid>
+            </form>
         );
     }
 }

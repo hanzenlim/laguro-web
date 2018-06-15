@@ -17,6 +17,7 @@ export const StyledModalContent = styled.div`
     width: calc(100vw - 30px);
     position: relative;
     outline: none;
+    overflow: auto; 
 `;
 
 const StyledCloseButton = styled.button`
