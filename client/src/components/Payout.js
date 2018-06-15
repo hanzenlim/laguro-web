@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import queryString from 'query-string';
+import PendingPayouts from './PendingPayouts';
 import { PAYOUT_LOGIN } from '../util/strings';
 import * as actions from '../actions';
 import User from '../models/user';
@@ -8,7 +9,7 @@ import User from '../models/user';
 class Payout extends Component {
     constructor(props) {
         super(props);
-        this.state = { user: null };
+        this.state = { user: null, receivable: null };
         this.loadPayout();
     }
 
@@ -30,8 +31,18 @@ class Payout extends Component {
         if (!user) {
             return <div />;
         }
+        let payoutLogin = (
+            <div>
+                <div>
+                    <h1>Payout page</h1>
+                </div>
+                <a href="https://connect.stripe.com/express/oauth/authorize?client_id=ca_Ckn9cr02OBbfnptZyI9b5ruq90H0cDX9">
+                    Create Payout Link{' '}
+                </a>
+            </div>
+        );
         if (user.payoutLoginLink) {
-            return (
+            payoutLogin = (
                 <div>
                     <h1> Stripe express account login link</h1>
                     <a href={user.payoutLoginLink}>Login Link</a>
@@ -40,12 +51,8 @@ class Payout extends Component {
         }
         return (
             <div>
-                <div>
-                    <h1>Payout page</h1>
-                </div>
-                <a href="https://connect.stripe.com/express/oauth/authorize?client_id=ca_Ckn9cr02OBbfnptZyI9b5ruq90H0cDX9">
-                    Create Payout Link{' '}
-                </a>
+                {payoutLogin}
+                <PendingPayouts user={user} />
             </div>
         );
     }

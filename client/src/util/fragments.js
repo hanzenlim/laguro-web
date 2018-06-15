@@ -211,5 +211,6 @@ export const paymentFragment = `
         last4
       }
     }
+    chargeStatus
     dateCreated
 `;
