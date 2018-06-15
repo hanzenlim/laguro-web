@@ -15,7 +15,7 @@ export const getDistances = (entities, filters) =>
             },
             (response, status) => {
                 if (status !== 'OK') {
-                    alert(`Distance Matrix failed: ${status}`);
+                    resolve([]);
                 } else {
                     const results = response.rows[0].elements;
 
