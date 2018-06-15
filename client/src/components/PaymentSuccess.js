@@ -189,12 +189,26 @@ class PaymentSuccess extends Component {
 
                     <Padding bottom={24} />
 
-                    <Grid container justify="center">
-                        <Link to={'/'}>
-                            <Button variant="raised" color="primary">
-                                Home
-                            </Button>
-                        </Link>
+                    <Grid
+                        container
+                        direction="row"
+                        justify="center"
+                        spacing={16}
+                    >
+                        <Grid item>
+                            <Link to={'/'}>
+                                <Button variant="raised" color="primary">
+                                    Home
+                                </Button>
+                            </Link>
+                        </Grid>
+                        <Grid item>
+                            <Link to={'/profile'}>
+                                <Button variant="raised" color="secondary">
+                                    Profile
+                                </Button>
+                            </Link>
+                        </Grid>
                     </Grid>
                 </Container>
             </Wrapper>
@@ -209,7 +223,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(
-    mapStateToProps,
-    actions
-)(PaymentSuccess);
+export default connect(mapStateToProps, actions)(PaymentSuccess);
