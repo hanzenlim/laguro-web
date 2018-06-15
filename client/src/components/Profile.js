@@ -196,6 +196,8 @@ class Profile extends Component {
     render() {
         const { auth, dentist } = this.props;
         const { isFetching } = this.state;
+        const imageUrl = auth && auth.imageUrl? auth.imageUrl : null;
+        const dentistId = auth && auth.dentistId? auth.dentistId : null;
         if (isFetching) return <div className="stretch_height" />;
 
         return (
@@ -203,14 +205,14 @@ class Profile extends Component {
                 <div className="sidebar">
                     <img
                         className="profile_img"
-                        src={auth.imageUrl}
+                        src={imageUrl}
                         alt="user"
                     />
                     {this.renderActions()}
                 </div>
                 <div className="main">
                     {this.renderProfileDetails()}
-                    {auth.dentistId ? (
+                    {dentistId ? (
                         <div className="offices profile-section">
                             <h5>Your Offices</h5>
                             <UserOfficeIndex />
@@ -218,7 +220,7 @@ class Profile extends Component {
                     ) : (
                         ''
                     )}
-                    {auth.dentistId ? (
+                    {dentistId ? (
                         <div className="offices profile-section">
                             <h5>Upcoming Reservations</h5>
                             <UserReservationIndex />
@@ -226,10 +228,10 @@ class Profile extends Component {
                     ) : (
                         ''
                     )}
-                    {!auth.dentistId && (
+                    {!dentistId && (
                         <PatientAppointments patientId={auth.id} />
                     )}
-                    {auth.dentistId &&
+                    {dentistId &&
                         !!dentist.reviews.length && (
                         <div className="reviews profile-section">
                             <h5>{`Reviews for ${auth.name}`}</h5>
