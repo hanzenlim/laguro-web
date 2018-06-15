@@ -1,4 +1,5 @@
-html, body,
+html,
+body,
 #root {
     height: 100%;
 }
@@ -12,6 +13,10 @@ body {
 
 img {
     max-width: 100%;
+}
+
+.pointer {
+    cursor: pointer;
 }
 
 .form-buttons {
@@ -477,12 +482,13 @@ img {
     margin-right: 8px;
 }
 
-.review .content, .reservation .content {
-  display: flex;
-  flex-flow: column;
-  align-items: center;
-  justify-content: space-around;
-  padding: 0 8px;
+.review .content,
+.reservation .content {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 8px;
 }
 
 .review .content .top-bar,
