@@ -28,43 +28,66 @@ const ReviewContentDiv = styled(Box)`
 class ReviewContainer extends Component {
     renderEditButtons(id) {
         return (
-            <div>
-                <button
-                    type="button"
-                    className="btn-small red lighten-2 delete"
-                    onClick={() => {
-                        this.deleteReview(id);
-                    }}
-                >
-                    <i className="material-icons">delete_forever</i>
-                </button>
-            </div>
+            <Box
+                p={1}
+                className="red lighten-3 white-text pointer"
+                onClick={() => {
+                    this.props.deleteReview(id);
+                }}
+            >
+                <i className="material-icons">delete_forever</i>
+            </Box>
         );
     }
 
     renderReviewList(reviews) {
-        if (!this.props.auth || !reviews) {
+        const { auth } = this.props;
+        if (!auth || !reviews) {
             return '';
         }
         const reviewPerRow = window.innerWidth >= 601 ? 3 : 2;
 
-        return reviews.slice(0,this.props.rows * reviewPerRow).map((review, index) => (
-            <Grid item xs={6} sm={4} key={index}>
-                <ReviewDiv fontSize={13}>
-                    <ReviewNameDiv fontSize={17}> {review.reviewer.name} </ReviewNameDiv>
-                    <Padding bottom={10} />
-                    <ReviewContentDiv fontSize={14} className="review-content"> {review.text} </ReviewContentDiv>
-                    <Padding bottom={10} />
-                    <ReactStars
-                        count={5}
-                        edit={false}
-                        size={15}
-                        value={review.rating}
-                    />
-
-                </ReviewDiv>
-            </Grid>
-        ));
+        return reviews
+            .slice(0, this.props.rows * reviewPerRow)
+            .map((review, index) => (
+                <Grid item xs={6} sm={4} key={index}>
+                    <Grid
+                        container
+                        direction="row"
+                        alignItems="center"
+                        spacing={16}
+                    >
+                        <Grid item>
+                            <ReviewDiv fontSize={13}>
+                                <ReviewNameDiv fontSize={17}>
+                                    {' '}
+                                    {review.reviewer.name}{' '}
+                                </ReviewNameDiv>
+                                <Padding bottom={10} />
+                                <ReviewContentDiv
+                                    fontSize={14}
+                                    className="review-content"
+                                >
+                                    {' '}
+                                    {review.text}{' '}
+                                </ReviewContentDiv>
+                                <Padding bottom={10} />
+                                <ReactStars
+                                    count={5}
+                                    edit={false}
+                                    size={15}
+                                    value={review.rating}
+                                />
+                            </ReviewDiv>
+                        </Grid>
+                        {auth.id === review.reviewer.id ? (
+                            <Grid item>
+                                {this.renderEditButtons(review.id)}
+                            </Grid>
+                        ) : null}
+                    </Grid>
+                </Grid>
+            ));
     }
 
     async deleteReview(id) {
@@ -76,7 +99,10 @@ class ReviewContainer extends Component {
         const { reviews } = this.props;
         return (
             <div>
-                <Grid container spacing={40}> {this.renderReviewList(reviews)} </Grid>
+                <Grid container spacing={40}>
+                    {' '}
+                    {this.renderReviewList(reviews)}{' '}
+                </Grid>
             </div>
         );
     }
