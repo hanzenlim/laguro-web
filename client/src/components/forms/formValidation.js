@@ -4,5 +4,18 @@ export const dollarMinimum = value =>
 export const isNum = value =>
     value && !isNaN(value) ? undefined : 'Must be a number';
 
-export const required = value =>
-    value && value !== '' ? undefined : 'Required';
+export function requiredAndSignedIn(value, allValues, props) {
+    if (!props.reviewerId) {
+        return 'Please log in before you can leave a review.';
+    } else if (props.wasReviewed) {
+        return 'You have already reviewed this office or dentist.';
+    } else if (!(value && value !== '')) {
+        return 'Required';
+    } else {
+        return undefined;
+    }
+}
+
+export function required(value) {
+    return value && value !== '' ? undefined : 'Required';
+}
