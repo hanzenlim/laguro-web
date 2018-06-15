@@ -15,11 +15,14 @@ export const getDistances = (entities, filters) =>
             },
             (response, status) => {
                 if (status !== 'OK') {
-                    alert(`Distance Matrix failed: ${status}`);
+                    resolve([]);
                 } else {
                     const results = response.rows[0].elements;
 
-                    if (results[0].status !== 'ZERO_RESULTS') {
+                    if (
+                        results[0].status !== 'ZERO_RESULTS' &&
+                        results[0].status !== 'NOT_FOUND'
+                    ) {
                         const locationsWithDistance = entities.map(
                             (office, index) => ({
                                 ...office,

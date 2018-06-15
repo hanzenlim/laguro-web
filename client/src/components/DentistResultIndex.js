@@ -22,10 +22,6 @@ const MapContainer = styled.div`
     position: relative;
     height: 100%;
     min-height: 100vh;
-
-    @media (max-width: 600px) {
-        ${props => !props.show && 'display: none;'};
-    }
 `;
 
 const DentistListContainer = styled.div`
@@ -66,7 +62,8 @@ class DentistResultIndex extends Component {
         super(props);
 
         this.state = {
-            activeView: 'list'
+            activeView: 'list',
+            activeListingId: null
         };
     }
 
@@ -76,11 +73,16 @@ class DentistResultIndex extends Component {
     }
 
     renderMap() {
+        const BREAKPOINT = '600';
+
+        if (window.innerWidth < BREAKPOINT && this.state.activeView !== 'map')
+            return null;
+
         return (
-            <MapContainer show={this.state.activeView === 'map'}>
+            <MapContainer>
                 <ResultMap
+                    activeListingId={this.state.activeListingId}
                     locations={this.props.dentists}
-                    google={window.google}
                     searchLocation={
                         this.props.filters.location
                             ? this.props.filters.location
@@ -90,6 +92,15 @@ class DentistResultIndex extends Component {
             </MapContainer>
         );
     }
+
+    setActiveListing = event => {
+        const activeListingId = event.currentTarget.getAttribute('data-id');
+        this.setState({ activeListingId });
+    };
+
+    removeActiveListing = () => {
+        this.setState({ activeListingId: null });
+    };
 
     renderDentistList() {
         const filteredDentists = this.props.dentists;
@@ -120,18 +131,24 @@ class DentistResultIndex extends Component {
             }
 
             return (
-                <DentistResult
-                    name={dentist.user.name}
-                    specialty={dentist.specialty}
-                    location={dentist.location}
-                    procedures={dentist.procedures}
-                    rating_value={this.avg_rating}
-                    rating_count={this.rating_count}
-                    img={dentist.user.imageUrl}
-                    dentist_id={dentist.id}
-                    index={index}
+                <div
                     key={dentist.id}
-                />
+                    data-id={dentist.id}
+                    onMouseOver={this.setActiveListing}
+                    onMouseOut={this.removeActiveListing}
+                >
+                    <DentistResult
+                        name={dentist.user.name}
+                        specialty={dentist.specialty}
+                        location={dentist.location}
+                        procedures={dentist.procedures}
+                        rating_value={this.avg_rating}
+                        rating_count={this.rating_count}
+                        img={dentist.user.imageUrl}
+                        dentist_id={dentist.id}
+                        index={index}
+                    />
+                </div>
             );
         });
     }
