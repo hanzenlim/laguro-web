@@ -243,7 +243,7 @@ class OfficeResultIndex extends Component {
 
     dentistProfileExists() {
         const { auth } = this.props;
-        return !!auth.dentistId;
+        return (auth && auth.dentistId);
     }
 
     renderImages(office) {
