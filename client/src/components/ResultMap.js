@@ -120,6 +120,8 @@ class ResultMap extends Component {
                         }
                     });
                 });
+            
+            return null;
         });
     };
 
