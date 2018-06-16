@@ -53,12 +53,15 @@ class PendingPayouts extends Component {
         let totalAmount = 0;
         let availableAmount = 0;
         for (let i = 0; i < receivable.length; i++) {
-            const payoutAmount = receivable[i].nominalAmount * 0.8 / 100;
+            const payoutAmount = receivable[i].stripePayment.amount;
             totalAmount += payoutAmount;
             if (receivable[i].chargeStatus === AVAILABLE) {
                 availableAmount += payoutAmount;
             }
         }
+        totalAmount = (totalAmount * 0.8 / 100).toFixed(2);
+        availableAmount = (availableAmount * 0.8 / 100).toFixed(2);
+        const pendingAmount = (totalAmount - availableAmount).toFixed(2);
         let receivableList = receivable.map((receivable, index) => {
             const reservation = receivable.reservation;
 
@@ -74,7 +77,9 @@ class PendingPayouts extends Component {
                             <div>End time: {reservation.endTime}</div>
                         </div>
                     )}
-                    <div>Amount: ${receivable.nominalAmount * 0.8 / 100}</div>
+                    <div>
+                        Amount: ${receivable.stripePayment.amount * 0.8 / 100}
+                    </div>
                 </li>
             );
         });
@@ -88,7 +93,7 @@ class PendingPayouts extends Component {
                     ''
                 )}
                 <div>Available amount: ${availableAmount}</div>
-                <div>Pending Amount: ${totalAmount - availableAmount}</div>
+                <div>Pending Amount: ${pendingAmount}</div>
                 <div>Total receivables: ${totalAmount}</div>
                 <ul>{receivableList}</ul>
             </div>

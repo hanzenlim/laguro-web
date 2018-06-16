@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import queryString from 'query-string';
 import PendingPayouts from './PendingPayouts';
 import { PAYOUT_LOGIN } from '../util/strings';
+import { stripeExpressClientKey } from '../config/keys';
 import * as actions from '../actions';
 import User from '../models/user';
 
@@ -36,7 +37,9 @@ class Payout extends Component {
                 <div>
                     <h1>Payout page</h1>
                 </div>
-                <a href="https://connect.stripe.com/express/oauth/authorize?client_id=ca_Ckn9cr02OBbfnptZyI9b5ruq90H0cDX9">
+                <a
+                    href={`https://connect.stripe.com/express/oauth/authorize?client_id=${stripeExpressClientKey}`}
+                >
                     Create Payout Link{' '}
                 </a>
             </div>
