@@ -183,12 +183,6 @@ class DetailDetails extends Component {
                     </Grid>,
                     <Grid key={index * 3 + 1} item xs={4} sm={2}>
                         <Box mt={1} ml={[0, -20]}>
-<<<<<<< HEAD
-                            {listing.reservations && !listing.reservations.length > 0 ?
-                                <StyledAvailButton onClick={this.handleBookReservation.bind(this, listing)}> Available </StyledAvailButton>
-                                :
-                                <StyledResButton> Reserved </StyledResButton>}
-=======
                             {listing.reservations &&
                             !listing.reservations.length > 0 ? (
                                     <StyledAvailButton
@@ -202,7 +196,6 @@ class DetailDetails extends Component {
                                 ) : (
                                     <StyledResButton> Reserved </StyledResButton>
                                 )}
->>>>>>> Adding filters to listing and appointment queries to hide cancelled
                         </Box>
                     </Grid>,
                     <Grid key={index * 3 + 2} item xs={false} sm={5} />
@@ -243,28 +236,6 @@ class DetailDetails extends Component {
             return <div> No procedures Available </div>;
         }
     }
-
-    handleBookAppointment = (
-        selectedStartTime,
-        durationToNextAppointment,
-        selectedReservation
-    ) => {
-        this.setState({
-            isModalOpen: true,
-            selectedStartTime,
-            durationToNextAppointment,
-            selectedReservation
-        });
-    };
-
-    closeModal = () => {
-        this.setState({
-            isModalOpen: false,
-            selectedStartTime: null,
-            durationToNextAppointment: null,
-            selectedReservation: {}
-        });
-    };
 
     renderAppointments() {
         const { auth, obj, reservations } = this.props;
@@ -317,8 +288,8 @@ class DetailDetails extends Component {
                                         reservation={reservation}
                                         auth={auth}
                                         dentist={obj}
-                                        onBookAppointment={
-                                            this.handleBookAppointment
+                                        handleBookAppointment={
+                                            this.props.handleBookAppointment
                                         }
                                     />
                                 )}

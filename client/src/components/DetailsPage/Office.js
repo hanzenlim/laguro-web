@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Carousel from 'nuka-carousel';
 import Icon from '../Icon';
 import * as actions from '../../actions';
-import { REVIEWS, LISTINGS } from '../../util/strings';
+import { REVIEWS, LISTINGS, HOST } from '../../util/strings';
 import { Box } from '../common';
 import { Padding } from '../common/Spacing';
 import OfficePlaceholderBig from '../images/office-placeholder-big.png';
@@ -69,7 +69,7 @@ class Office extends Component {
 
     componentDidMount() {
         this.office_id = this.props.match.params.office_id;
-        this.props.getOffice(this.office_id, REVIEWS, LISTINGS);
+        this.props.getOffice(this.office_id, REVIEWS, LISTINGS, HOST);
     }
 
     renderImages(office) {
@@ -169,7 +169,7 @@ class Office extends Component {
                     auth={auth}
                     obj={office}
                     reviews={reviews}
-                    listings={listings}
+                    listings={office.listings}
                     dentist={dentist}
                 />
             </div>

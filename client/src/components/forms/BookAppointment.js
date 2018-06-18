@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
-import { Field, reduxForm, SubmissionError } from 'redux-form';
+import {
+    Field,
+    reduxForm,
+    SubmissionError,
+    formValueSelector
+} from 'redux-form';
+import { connect } from 'react-redux';
 import moment from 'moment';
+import queryString from 'query-string';
 
 import history from '../../history';
 
@@ -10,21 +17,29 @@ import { APPOINTMENT_SCHEDULING_FEE } from '../../util/paymentUtil';
 
 class BookAppointment extends Component {
     componentWillMount() {
-        const { startTime, durationToNextAppointment } = this.props;
+        const { dentist, durationToNextAppointment } = this.props;
 
+        this.props.initialize({
+            procedure:
+                dentist.procedures[0].duration <= durationToNextAppointment
+                    ? dentist.procedures[0]
+                    : null,
+            time: `${this.formattedTime(dentist.procedures[0].duration)}`
+        });
+    }
+
+    formattedTime = duration => {
+        const { startTime } = this.props;
         const startTimeMoment = moment(startTime);
 
         const formattedDate = startTimeMoment.format('MMM D, YYYY');
         const formattedStartTime = startTimeMoment.format('h:mm a');
-        const formattedEndTime = startTimeMoment
-            .clone()
-            .add(durationToNextAppointment, 'minutes')
+        const formattedEndTime = moment(startTimeMoment)
+            .add(duration, 'minutes')
             .format('h:mm a');
 
-        this.props.initialize({
-            time: `${formattedDate} ${formattedStartTime} - ${formattedEndTime}`
-        });
-    }
+        return `${formattedDate} ${formattedStartTime} - ${formattedEndTime}`;
+    };
 
     onSubmit(values) {
         const { startTime, reservation, auth } = this.props;
@@ -39,13 +54,16 @@ class BookAppointment extends Component {
             .clone()
             .add(values.procedure.duration, 'minutes');
 
-        const search = `?type=appointment&totalPaid=${APPOINTMENT_SCHEDULING_FEE}&time=[${moment(
-            startTime
-        ).format()},${moment(endTime).format()}]&procedure=${
-            values.procedure
-        }&reservationId=${reservation.id}&patientId=${auth.id}`;
+        const urlParams = {};
+        urlParams.type = 'appointment';
+        urlParams.totalPaid = APPOINTMENT_SCHEDULING_FEE;
+        urlParams.startTime = moment(startTime).format();
+        urlParams.endTime = moment(endTime).format();
+        urlParams.procedure = JSON.stringify(values.procedure);
+        urlParams.reservationId = reservation.id;
+        urlParams.patientId = auth.id;
 
-        history.push(`/payment${search}`);
+        history.push(`/payment?${queryString.stringify(urlParams)}`);
     }
 
     renderProcedures = (procedures, durationToNextAppointment) => {
@@ -53,18 +71,27 @@ class BookAppointment extends Component {
             <Option
                 disabled={durationToNextAppointment < procedure.duration}
                 key={procedure.name}
-                value={JSON.stringify(procedure)}
+                value={procedure}
             >{`${procedure.name} - ${procedure.duration} mins`}</Option>
         ));
     };
+
+    updateTime(event) {
+        this.props.initialize({
+            time: this.formattedTime(event.target.value.duration)
+        });
+    }
 
     render() {
         const {
             handleSubmit,
             dentist,
             error,
-            durationToNextAppointment
+            durationToNextAppointment,
+            initialized
         } = this.props;
+
+        if (!initialized) return <div />;
 
         return (
             <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
@@ -82,10 +109,10 @@ class BookAppointment extends Component {
                     </Grid>
                     <Grid item xs={12}>
                         <Box pb={3}>
-                            <label>Available Times</label>
+                            <label>Selected Time</label>
                             <Field
-                                disabled
                                 name="time"
+                                disabled
                                 component={renderInput}
                             />
                         </Box>
@@ -97,6 +124,7 @@ class BookAppointment extends Component {
                                 name="procedure"
                                 component={renderSelect}
                                 validate={required}
+                                onChange={this.updateTime.bind(this)}
                             >
                                 {this.renderProcedures(
                                     dentist.procedures,
@@ -134,6 +162,14 @@ class BookAppointment extends Component {
 
 const required = value => (!value ? 'Required' : undefined);
 
+const mapStateToProps = state => {
+    const selector = formValueSelector('bookAppointment');
+    return {
+        duration: selector(state, 'procedure.duration'),
+        time: selector(state, 'time')
+    };
+};
+
 export default reduxForm({
     form: 'bookAppointment'
-})(BookAppointment);
+})(connect(mapStateToProps, null)(BookAppointment));

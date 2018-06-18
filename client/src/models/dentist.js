@@ -26,7 +26,15 @@ const generateDentistResult = options => {
         ? `offices{${officeFragment}}`
         : '';
     const reservationsResult = options.includes(RESERVATIONS)
-        ? `reservations(${filterActive}){${reservationFragment}}`
+        ? `reservations(${filterActive}){
+            ${reservationFragment}
+            office {
+                ${officeFragment}
+            }
+            appointments(${filterActive}) {
+                ${appointmentFragment}
+            }
+        }`
         : '';
     // TODO remove officeId once profile component has been broken down
     const listingsResult = options.includes(LISTINGS)

@@ -11,20 +11,10 @@ export const getAppointment = appointmentId => async dispatch => {
 };
 
 export const createAppointment = params => async dispatch => {
-    const response = await Appointment.create(params);
-    if (
-        response.errors &&
-        response.errors[0].message === 'Timeslot already booked!'
-    ) {
-        alert(
-            'Sorry, the appointment window you selected has been booked, please go back and select a new appointment.'
-        );
-    } else {
-        const appointment = response.data.createAppointment;
-        dispatch({
-            type: CREATE_APPOINTMENT,
-            payload: appointment
-        });
-        history.push(`/payment-success?appointmentId=${appointment.id}`);
-    }
+    const appointment = await Appointment.create(params);
+    dispatch({
+        type: CREATE_APPOINTMENT,
+        payload: appointment
+    });
+    history.push(`/payment-success?appointmentId=${appointment.id}`);
 };

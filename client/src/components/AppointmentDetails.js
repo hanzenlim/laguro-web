@@ -71,7 +71,8 @@ class AppointmentDetails extends Component {
                                     <Typography
                                         fontSize={4}
                                         fontWeight="bold"
-                                        color="black"
+                                        color="link_blue"
+                                        underline
                                     >
                                         Dr. {dentist.user.name}
                                     </Typography>

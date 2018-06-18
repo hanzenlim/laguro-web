@@ -126,7 +126,7 @@ class UserOffice extends Component {
                                             to={`/office/${office.id}`}
                                         >
                                             <Typography
-                                                color="#039be5"
+                                                color="link_blue"
                                                 underline
                                                 fontSize={4}
                                             >
