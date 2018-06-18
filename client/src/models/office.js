@@ -1,14 +1,24 @@
 import makeApiCall from '../util/clientDataLoader';
-import { LISTINGS, REVIEWS } from '../util/strings';
+import { LISTINGS, REVIEWS, HOST } from '../util/strings';
 import {
     officeFragment,
     listingFragment,
-    reviewerFragment
+    reviewerFragment,
+    filterActive
 } from '../util/fragments';
 
 const generateOfficeResult = options => {
+    const hostResult = options.includes(HOST) ? `host { id }` : ``;
     const listingsResult = options.includes(LISTINGS)
-        ? `listings{office{id} ${listingFragment}}`
+        ? `listings(${filterActive}) {
+            office {
+                id
+            }
+            reservations(${filterActive}) {
+                id
+            }
+            ${listingFragment}
+        }`
         : '';
     const reviewsResult = options.includes(REVIEWS)
         ? `reviews{${reviewerFragment}}`
@@ -16,6 +26,7 @@ const generateOfficeResult = options => {
     return `
         ${officeFragment}
         ${listingsResult}
+        ${hostResult}
         ${reviewsResult}
     `;
 };
@@ -44,7 +55,7 @@ const getActiveOfficesQuery = `
     query {
         getActiveOffices {
             ${officeFragment}
-            listings {
+            listings(${filterActive}) {
                 ${listingFragment}
             }
             reviews {

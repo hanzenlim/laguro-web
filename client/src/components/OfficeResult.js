@@ -142,7 +142,7 @@ class OfficeResult extends Component {
                                         fontWeight="regular"
                                         color="black"
                                     >
-                                        Available Times:
+                                        Upcoming Listings:
                                     </Typography>
                                 </Grid>
                                 <Padding bottom={5} />

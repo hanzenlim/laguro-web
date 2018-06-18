@@ -7,11 +7,7 @@ import ReactStars from 'react-stars';
 import { formatListingTime } from '../../util/timeUtil';
 import * as actions from '../../actions';
 import { Padding } from '../common/Spacing';
-import {
-    OFFICE,
-    DENTIST,
-    USER
-} from '../../util/strings';
+import { OFFICE, DENTIST, USER } from '../../util/strings';
 import NewReview from '../forms/NewReview';
 import ReviewContainer from '../ReviewContainer';
 import Icon from '../Icon';
@@ -97,14 +93,14 @@ const StyledAvailButton = styled(Button)`
         padding: 0;
         min-height: 18px;
         height: 22px;
-        background-color: #67B620;
+        background-color: #67b620;
         min-width: 40px;
     }
 `;
 
 const StyledResButton = StyledAvailButton.extend`
     && {
-        background-color: #F26B27;
+        background-color: #f26b27;
     }
 `;
 
@@ -112,10 +108,10 @@ class DetailDetails extends Component {
     constructor() {
         super();
         this.state = {
-            reviewRowNum : 1,
-            isModalOpen : false,
-            avg_rating : 0,
-            rating_count : 0
+            reviewRowNum: 1,
+            isModalOpen: false,
+            avg_rating: 0,
+            rating_count: 0
         };
         this.handleReviewShowMore = this.handleReviewShowMore.bind(this);
         this.handleSubmission = this.handleSubmission.bind(this);
@@ -130,8 +126,8 @@ class DetailDetails extends Component {
     }
 
     dentistProfileExists() {
-        const { dentist } = this.props;
-        return dentist && Object.keys(dentist).length !== 0;
+        const { auth } = this.props;
+        return auth && auth.dentistId;
     }
 
     reviewCalc() {
@@ -156,38 +152,61 @@ class DetailDetails extends Component {
     }
 
     renderAvailListings(listings) {
-
         if (Array.isArray(listings) && listings.length !== 0) {
-            return listings.filter(listing => moment(listing.startTime).isAfter(moment())).map((listing, index)=> (
-                [
-                    <Grid key={index*3} item xs={8} sm={5}>
-                        {listing.reservations && !listing.reservations.length > 0 ?
-                            <StyledListingsTyp onClick={this.handleBookReservation.bind(this, listing)} size="t2" color="darkGrey">
-                                {formatListingTime(
-                                    listing.startTime,
-                                    listing.endTime
-                                )}
-                            </StyledListingsTyp>
-                            :
-                            <StyledListingsTyp size="t2" color="darkGrey">
-                                {formatListingTime(
-                                    listing.startTime,
-                                    listing.endTime
-                                )}
-                            </StyledListingsTyp>}
+            return listings
+                .filter(listing => moment(listing.startTime).isAfter(moment()))
+                .map((listing, index) => [
+                    <Grid key={index * 3} item xs={8} sm={5}>
+                        {listing.reservations &&
+                        !listing.reservations.length > 0 ? (
+                                <StyledListingsTyp
+                                    onClick={this.handleBookReservation.bind(
+                                        this,
+                                        listing
+                                    )}
+                                    size="t2"
+                                    color="darkGrey"
+                                >
+                                    {formatListingTime(
+                                        listing.startTime,
+                                        listing.endTime
+                                    )}
+                                </StyledListingsTyp>
+                            ) : (
+                                <StyledListingsTyp size="t2" color="darkGrey">
+                                    {formatListingTime(
+                                        listing.startTime,
+                                        listing.endTime
+                                    )}
+                                </StyledListingsTyp>
+                            )}
                     </Grid>,
-                    <Grid key={index*3+1} item xs={4} sm={2}>
+                    <Grid key={index * 3 + 1} item xs={4} sm={2}>
                         <Box mt={1} ml={[0, -20]}>
+<<<<<<< HEAD
                             {listing.reservations && !listing.reservations.length > 0 ?
                                 <StyledAvailButton onClick={this.handleBookReservation.bind(this, listing)}> Available </StyledAvailButton>
                                 :
                                 <StyledResButton> Reserved </StyledResButton>}
+=======
+                            {listing.reservations &&
+                            !listing.reservations.length > 0 ? (
+                                    <StyledAvailButton
+                                        onClick={this.handleBookReservation.bind(
+                                            this
+                                        )}
+                                    >
+                                        {' '}
+                                    Available{' '}
+                                    </StyledAvailButton>
+                                ) : (
+                                    <StyledResButton> Reserved </StyledResButton>
+                                )}
+>>>>>>> Adding filters to listing and appointment queries to hide cancelled
                         </Box>
                     </Grid>,
-                    <Grid key={index*3+2} item xs={false} sm={5}>
-                    </Grid>
-                ]
-            ));
+                    <Grid key={index * 3 + 2} item xs={false} sm={5} />
+                ]);
         } else {
             return <div> All listings currently sold out. </div>;
         }
@@ -196,9 +215,17 @@ class DetailDetails extends Component {
     handleReviewShowMore() {
         const reviews = this.props.reviews;
         const rowNum = this.state.reviewRowNum;
-        if (reviews && reviews.length > rowNum * (window.innerWidth > 600 ? 3 : 2)) {
+        if (
+            reviews &&
+            reviews.length > rowNum * (window.innerWidth > 600 ? 3 : 2)
+        ) {
             this.setState({
-                reviewRowNum: Math.min(rowNum + 4, Math.ceil(reviews.length / (window.innerWidth > 600 ? 3 : 2))),
+                reviewRowNum: Math.min(
+                    rowNum + 4,
+                    Math.ceil(
+                        reviews.length / (window.innerWidth > 600 ? 3 : 2)
+                    )
+                )
             });
         }
         this.reviewCalc();
@@ -243,19 +270,31 @@ class DetailDetails extends Component {
         const { auth, obj, reservations } = this.props;
 
         if (!reservations || (reservations && reservations.length === 0)) {
-            return <Box width={1}>Sorry, no available appointments for now.</Box>;
+            return (
+                <Box width={1}>Sorry, no available appointments for now.</Box>
+            );
         }
         return reservations.map((reservation, index) => {
             const office = reservation.office;
-            const officeImage = (Array.isArray(office.imageUrls) && office.imageUrls.length !== 0) ? office.imageUrls[0] : OfficePlaceholderBig;
+            const officeImage =
+                Array.isArray(office.imageUrls) && office.imageUrls.length !== 0
+                    ? office.imageUrls[0]
+                    : OfficePlaceholderBig;
             return (
-                <ResCardBox key={index} p={2} className="reservation card-panel grey lighten-5">
+                <ResCardBox
+                    key={index}
+                    p={2}
+                    className="reservation card-panel grey lighten-5"
+                >
                     <Flex justifyContent="space-evenly">
                         <Link
                             className="blue-text text-darken-2"
                             to={`/office/${office.id}`}
                         >
-                            <StyledOfficeFlex flexDirection="column" justifyContent="center">
+                            <StyledOfficeFlex
+                                flexDirection="column"
+                                justifyContent="center"
+                            >
                                 <Box fontSize={3}>{office.name}</Box>
                                 <StyledOfficeImg src={officeImage} alt="" />
                             </StyledOfficeFlex>
@@ -273,14 +312,16 @@ class DetailDetails extends Component {
                             </div>
                             <Box pb={2} />
                             <div className="center">
-                                {reservation && <Appointments
-                                    reservation={reservation}
-                                    auth={auth}
-                                    dentist={obj}
-                                    onBookAppointment={
-                                        this.handleBookAppointment
-                                    }
-                                />}
+                                {reservation && (
+                                    <Appointments
+                                        reservation={reservation}
+                                        auth={auth}
+                                        dentist={obj}
+                                        onBookAppointment={
+                                            this.handleBookAppointment
+                                        }
+                                    />
+                                )}
                             </div>
                         </StyledResContentDiv>
                     </Flex>
@@ -295,10 +336,7 @@ class DetailDetails extends Component {
             return null;
         }
 
-        await this.props.getDentist(
-            auth.dentist.id,
-            USER
-        );
+        await this.props.getDentist(auth.dentist.id, USER);
 
         const { dentist } = this.props;
 
@@ -340,16 +378,19 @@ class DetailDetails extends Component {
 
         let equipmentOrProcedures;
         let listingsOrAppointments;
-        if (this.props.type === "office") {
-            equipmentOrProcedures = "Equipment Available";
-            listingsOrAppointments = "Current Listings";
+        if (this.props.type === 'office') {
+            equipmentOrProcedures = 'Equipment Available';
+            listingsOrAppointments = 'Current Listings';
         } else {
-            equipmentOrProcedures = "Procedures";
-            listingsOrAppointments = "Appointments";
+            equipmentOrProcedures = 'Procedures';
+            listingsOrAppointments = 'Appointments';
         }
         return (
             <StyledDetailsDiv>
-                <StyledDetailsHeadingBox fontSize={25}> {equipmentOrProcedures} </StyledDetailsHeadingBox>
+                <StyledDetailsHeadingBox fontSize={25}>
+                    {' '}
+                    {equipmentOrProcedures}{' '}
+                </StyledDetailsHeadingBox>
 
                 <hr />
 
@@ -357,7 +398,9 @@ class DetailDetails extends Component {
 
                 <StyledEquipmentBox fontSize={18} color="#484E51">
                     <Padding bottom="1" />
-                    {this.props.type === "office" ? this.renderEquipment(obj) : this.renderProcedures(obj)}
+                    {this.props.type === 'office'
+                        ? this.renderEquipment(obj)
+                        : this.renderProcedures(obj)}
                 </StyledEquipmentBox>
 
                 <Padding bottom={40} />
@@ -370,11 +413,15 @@ class DetailDetails extends Component {
 
                 <Padding bottom={10} />
 
-                {this.props.type === "office" ? <Grid container spacing={8}>
-                    {this.renderAvailListings(listings)}
-                </Grid> : <Flex justifyContent="space-evenly" flexWrap="wrap">
-                    {this.renderAppointments()}
-                </Flex>}
+                {this.props.type === 'office' ? (
+                    <Grid container spacing={8}>
+                        {this.renderAvailListings(listings)}
+                    </Grid>
+                ) : (
+                    <Flex justifyContent="space-evenly" flexWrap="wrap">
+                        {this.renderAppointments()}
+                    </Flex>
+                )}
 
                 <Padding bottom={40} />
 
@@ -394,43 +441,81 @@ class DetailDetails extends Component {
                 <Padding bottom={10} />
 
                 <StyledReviewsDiv>
-                    {auth && (obj.constructor === Object && Object.keys(obj).length !== 0) &&
+                    {auth &&
+                        (obj.constructor === Object &&
+                            Object.keys(obj).length !== 0) && (
                         <NewReview
                             reviewee={obj}
-                            type={this.props.type === "office" ? OFFICE : DENTIST}
+                            type={
+                                this.props.type === 'office'
+                                    ? OFFICE
+                                    : DENTIST
+                            }
                             reviewerId={auth.id}
-                        />}
+                        />
+                    )}
                     <Padding bottom={12} />
 
-                    {obj && <ReviewContainer
-                        revieweeId={obj.id}
-                        revieweeName={this.props.type === "office" ? obj.name : (obj && obj.user ? obj.user.name : '')}
-                        reviews={reviews}
-                        rows={this.state.reviewRowNum}
-                    />}
+                    {obj && (
+                        <ReviewContainer
+                            revieweeId={obj.id}
+                            revieweeName={
+                                this.props.type === 'office'
+                                    ? obj.name
+                                    : obj && obj.user
+                                        ? obj.user.name
+                                        : ''
+                            }
+                            reviews={reviews}
+                            rows={this.state.reviewRowNum}
+                        />
+                    )}
                 </StyledReviewsDiv>
 
-                {reviews.length > 0 && reviews.length > this.state.reviewRowNum * (window.innerWidth > 600 ? 3 : 2) && auth &&
+                {reviews.length > 0 &&
+                    reviews.length >
+                        this.state.reviewRowNum *
+                            (window.innerWidth > 600 ? 3 : 2) &&
+                    auth && (
                     <Box mt={20}>
-                        <StyledShowMoreBox fontSize={11} className="center" onClick={this.handleReviewShowMore}>
-                            <StyledDownArrow icon="downArrow" width="20px" />
-                            Show more
+                        <StyledShowMoreBox
+                            fontSize={11}
+                            className="center"
+                            onClick={this.handleReviewShowMore}
+                        >
+                            <StyledDownArrow
+                                icon="downArrow"
+                                width="20px"
+                            />
+                                Show more
                         </StyledShowMoreBox>
-                    </Box>}
+                    </Box>
+                )}
 
-                {this.props.type === "office" && <Modal closable open={this.state.isModalOpen} onClose={this.closeModal}>
-                    {!this.state.showReservationOptions && !this.dentistProfileExists() && <CreateDentistProfile handleSubmission={this.handleSubmission} />}
-                    { (this.dentistProfileExists() ) && <ReservationOptions
-                        listing={this.state.listing}
-                        office={obj}
-                        auth={auth}
-                    />}
-                </Modal>}
+                {this.props.type === 'office' && (
+                    <Modal
+                        closable
+                        open={this.state.isModalOpen}
+                        onClose={this.closeModal}
+                    >
+                        {!this.state.showReservationOptions &&
+                            !this.dentistProfileExists() && (
+                            <CreateDentistProfile
+                                handleSubmission={this.handleSubmission}
+                            />
+                        )}
+                        {this.dentistProfileExists() && (
+                            <ReservationOptions
+                                listing={this.state.listing}
+                                office={obj}
+                                auth={auth}
+                            />
+                        )}
+                    </Modal>
+                )}
             </StyledDetailsDiv>
         );
     }
 }
 
-export default connect(null,
-    actions
-)(DetailDetails);
+export default connect(null, actions)(DetailDetails);

@@ -61,7 +61,7 @@ const Appointment = {
         const response = await makeApiCall(createAppointmentQuery, {
             input: params
         });
-        return response.data.createAppointment;
+        return response;
     },
     delete: async appointmentId => {
         const response = await makeApiCall(cancelAppointmentQuery, {
