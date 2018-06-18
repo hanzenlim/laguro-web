@@ -178,7 +178,7 @@ class DetailDetails extends Component {
                     <Grid key={index*3+1} item xs={4} sm={2}>
                         <Box mt={1} ml={[0, -20]}>
                             {listing.reservations && !listing.reservations.length > 0 ?
-                                <StyledAvailButton onClick={this.handleBookReservation.bind(this)}> Available </StyledAvailButton>
+                                <StyledAvailButton onClick={this.handleBookReservation.bind(this, listing)}> Available </StyledAvailButton>
                                 :
                                 <StyledResButton> Reserved </StyledResButton>}
                         </Box>
