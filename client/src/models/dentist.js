@@ -86,6 +86,15 @@ const createDentistQuery = `
     mutation CreateDentist($input: CreateDentistInput!) {
         createDentist(input: $input) {
             ${dentistFragment}
+            reviews {
+                id
+            }
+            offices {
+                id
+            }
+            reservations {
+                id
+            }
         }
     }
 `;

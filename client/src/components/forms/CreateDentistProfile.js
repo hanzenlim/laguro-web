@@ -1,14 +1,18 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import queryString from 'query-string';
 import styled from 'styled-components';
 import { Field, FieldArray, reduxForm, SubmissionError } from 'redux-form';
-import { Flex } from '../common'
+import { Flex } from '../common';
 import Autocomplete from '../filters/Autocomplete';
-import procedureList from '../../staticData/procedureList';
 import * as actions from '../../actions';
 import { DENTIST } from '../../util/strings';
 import { required } from './formValidation';
+import {
+    renderField,
+    durationOptions,
+    procedureOptions,
+    renderSelect
+} from './sharedComponents';
 
 const StyledBox = styled(Flex)`
     line-height: 36px;
@@ -20,10 +24,12 @@ class CreateDentistProfile extends Component {
         this.state = {
             location: ''
         };
-        const { location } = this.props;
-        if (location) {
-            this.urlParams = queryString.parse(location.search);
-        }
+    }
+
+    async componentWillMount() {
+        this.props.initialize({
+            specialty: 'General Dentist'
+        });
     }
 
     onAutocomplete = location => {
@@ -52,73 +58,9 @@ class CreateDentistProfile extends Component {
             bio: ' ',
             userId: auth.id
         });
-        // TODO address hacky way of making sure dentist is loaded
+
         await this.props.fetchUser(DENTIST);
     }
-
-    async componentWillMount() {
-        document.title = 'Laguro - New Profile';
-
-        this.props.initialize({
-            specialty: 'General Dentist'
-        });
-    }
-
-    renderField = ({
-        input,
-        label,
-        className,
-        placeholder,
-        meta: { touched, error }
-    }) => (
-        <div className={className}>
-            <label>{label}</label>
-            <div>
-                <input {...input} placeholder={placeholder} />
-            </div>
-            {touched && error && <span className="red-text">{error}</span>}
-        </div>
-    );
-
-    renderProcedures() {
-        let procedureOptions = procedureList.map(procedure => {
-            return (
-                <option value={procedure.name} key={procedure.id}>
-                    {procedure.name}
-                </option>
-            );
-        });
-        procedureOptions = [
-            <option value="" key={0}>
-                Please select a procedure...
-            </option>,
-            ...procedureOptions
-        ];
-        return procedureOptions;
-    }
-
-    renderDurations() {
-        return [
-            <option value={30} key={30}>
-                30 minutes
-            </option>,
-            <option value={60} key={60}>
-                60 minutes
-            </option>
-        ];
-    }
-
-    renderSelect = ({ input, children, meta: { touched, error } }) => {
-        return (
-            <div className="col s4">
-                <select {...input} className="browser-default">
-                    {children}
-                </select>
-                {touched &&
-                    (error && <span className="red-text">{error}</span>)}
-            </div>
-        );
-    };
 
     renderProcedureSelector = ({ fields, className, meta: { error } }) => (
         <ul className={className}>
@@ -127,14 +69,14 @@ class CreateDentistProfile extends Component {
                 <li key={index} className="multiRowAdd">
                     <Field
                         name={`${procedure}.name`}
-                        component={this.renderSelect}
-                        children={this.renderProcedures()}
+                        component={renderSelect}
+                        children={procedureOptions}
                         validate={required}
                     />
                     <Field
                         name={`${procedure}.duration`}
-                        component={this.renderSelect}
-                        children={this.renderDurations()}
+                        component={renderSelect}
+                        children={durationOptions}
                     />
                     <button
                         type="button"
@@ -151,11 +93,17 @@ class CreateDentistProfile extends Component {
                     <button
                         type="button"
                         className="waves-effect btn light-blue lighten-2"
-                        onClick={() => fields.push({ duration: 60 })}
+                        onClick={() =>
+                            fields.push({ name: 'Exam/Cleaning', duration: 60 })
+                        }
                     >
                         Add Procedure
                     </button>
-                    {error && <StyledBox ml={2} className="red-text">{error}</StyledBox>}
+                    {error && (
+                        <StyledBox ml={2} className="red-text">
+                            {error}
+                        </StyledBox>
+                    )}
                 </Flex>
             </li>
         </ul>
@@ -185,7 +133,7 @@ class CreateDentistProfile extends Component {
                         label="Dental Specialty"
                         className="col s12 m6"
                         placeholder="General Dentist"
-                        component={this.renderField}
+                        component={renderField}
                         validate={required}
                     />
                 </div>

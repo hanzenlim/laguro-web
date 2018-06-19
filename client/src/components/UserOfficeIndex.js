@@ -27,9 +27,7 @@ class UserOffices extends Component {
     render() {
         const { offices } = this.props.dentist;
 
-        if (!offices) return null;
-
-        if (!offices.length) {
+        if (!offices || !offices.length) {
             return (
                 <div>
                     {'No offices yet - '}
