@@ -9,11 +9,12 @@ import history from '../../history';
 import {
     renderField,
     renderSelect,
+    charCount,
     equipmentOptions
 } from './sharedComponents';
 import { required, isNum } from './formValidation';
 
-import { Typography, Grid, Button } from '../common';
+import { Box, Typography, Grid, Button } from '../common';
 import { Padding } from '../common/Spacing';
 
 import exitSVG from '../icons/exit.svg';
@@ -42,9 +43,9 @@ class NewOffice extends Component {
         super(props);
 
         this.urlParams = queryString.parse(history.location.search);
-
         this.props.initialize({
             numChairs: this.urlParams.numChairs,
+            description: this.urlParams.description,
             equipment: this.urlParams.equipment
                 ? JSON.parse(this.urlParams.equipment)
                 : []
@@ -62,7 +63,7 @@ class NewOffice extends Component {
 
         const params = queryString.stringify({
             ...this.urlParams,
-            ...values
+            ...values,
         });
 
         history.push(`/landlord-onboarding/add-listing?${params}`);
@@ -72,6 +73,7 @@ class NewOffice extends Component {
         const params = queryString.stringify({
             ...this.urlParams,
             numChairs: this.props.numChairs,
+            description: this.props.description,
             equipment: this.props.equipment
                 ? JSON.stringify(this.props.equipment)
                 : []
@@ -138,9 +140,9 @@ class NewOffice extends Component {
     };
 
     render() {
+
         const { handleSubmit, submitting } = this.props;
         const { location } = this.urlParams;
-
         return (
             <StyledContainer>
                 <Grid container>
@@ -149,8 +151,7 @@ class NewOffice extends Component {
                             <Grid container>
                                 <Grid item xs={12}>
                                     <Typography fontSize={5}>
-                                        Next, add the equipment that you have in
-                                        the office
+                                        Next, tell us a little bit about your office and your equipments
                                     </Typography>
                                 </Grid>
                             </Grid>
@@ -168,12 +169,30 @@ class NewOffice extends Component {
                             <Grid container>
                                 <Grid item xs={12}>
                                     <Typography fontSize={3} fontWeight="bold">
-                                        Office Equipment Details
+                                        Office Details
                                     </Typography>
                                 </Grid>
                             </Grid>
 
-                            <Padding bottom="24" />
+                            <Box mb={24} />
+
+                            <Box className="row">
+                                <Field
+                                    name="description"
+                                    label="Description (optional)"
+                                    component={renderField}
+                                    multiline={true}
+                                    rows={2}
+                                    charCount={true}
+                                    inputProps={{
+                                        maxLength: 500
+                                    }}
+                                />
+                            </Box>
+
+                            {charCount(this.props.description ? this.props.description.length : 0, 500)}
+
+                            <Box mb={16} />
 
                             <div className="row">
                                 <Field
@@ -239,7 +258,8 @@ const mapStateToProps = state => {
     const selector = formValueSelector('addOfficeEquipments');
     return {
         numChairs: selector(state, 'numChairs'),
-        equipment: selector(state, 'equipment')
+        equipment: selector(state, 'equipment'),
+        description: selector(state, 'description')
     };
 };
 
