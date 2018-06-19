@@ -62,7 +62,6 @@ class Profile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isLoading: false,
             isModalOpen: false,
             isFetching: false
         };
@@ -196,18 +195,14 @@ class Profile extends Component {
     render() {
         const { auth, dentist } = this.props;
         const { isFetching } = this.state;
-        const imageUrl = auth && auth.imageUrl? auth.imageUrl : null;
-        const dentistId = auth && auth.dentistId? auth.dentistId : null;
+        const imageUrl = auth && auth.imageUrl ? auth.imageUrl : null;
+        const dentistId = auth && auth.dentistId ? auth.dentistId : null;
         if (isFetching) return <div className="stretch_height" />;
 
         return (
             <div className="profile_container stretch_height">
                 <div className="sidebar">
-                    <img
-                        className="profile_img"
-                        src={imageUrl}
-                        alt="user"
-                    />
+                    <img className="profile_img" src={imageUrl} alt="user" />
                     {this.renderActions()}
                 </div>
                 <div className="main">
@@ -228,11 +223,10 @@ class Profile extends Component {
                     ) : (
                         ''
                     )}
-                    {!dentistId && (
-                        <PatientAppointments patientId={auth.id} />
-                    )}
+                    {!dentistId && <PatientAppointments patientId={auth.id} />}
                     {dentistId &&
-                        !!dentist.reviews.length && (
+                        dentist.reviews &&
+                        dentist.reviews.length > 0 && (
                         <div className="reviews profile-section">
                             <h5>{`Reviews for ${auth.name}`}</h5>
                             <ReviewContainer

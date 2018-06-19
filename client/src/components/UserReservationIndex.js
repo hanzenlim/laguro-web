@@ -39,10 +39,7 @@ class UserReservationIndex extends Component {
     render() {
         const { reservations } = this.props.dentist;
 
-        if (!reservations) {
-            return null;
-        }
-        if (reservations.length === 0) {
+        if (!reservations || reservations.length === 0) {
             return (
                 <div>
                     <h6>
