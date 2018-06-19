@@ -25,6 +25,7 @@ export const RESERVED_BY = 'reservedBy';
 export const PAYER_ID = 'payerId';
 export const PAYEE_ID = 'payeeId';
 export const START_TIME = 'startTime';
+export const DATE_CREATED = 'dateCreated';
 
 // STATUSES
 export const STATUS = 'status';
@@ -32,8 +33,13 @@ export const ACTIVE = 'ACTIVE';
 export const CANCELLED_BY_DENTIST = 'CANCELLED_BY_DENTIST';
 export const CANCELLED_BY_PATIENT = 'CANCELLED BY PATIENT';
 
+export const TYPE = 'type';
 export const RESERVATION_PAYMENT_TYPE = 'RESERVATION';
 export const APPOINTMENT_PAYMENT_TYPE = 'APPOINTMENT';
+
+export const AVAILABLE = 'available';
+
+export const CHARGED = 'CHARGED';
 
 // TODO delete following
 // const pluralizeMap = {

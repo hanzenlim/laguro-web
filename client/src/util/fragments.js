@@ -206,10 +206,12 @@ export const paymentFragment = `
     nominalAmount
     currency
     stripePayment {
+      amount
       source {
         brand
         last4
       }
     }
+    chargeStatus
     dateCreated
 `;
