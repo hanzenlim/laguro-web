@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
+import isEmpty from 'lodash/isEmpty';
 import ReactStars from 'react-stars';
 import { formatListingTime } from '../../util/timeUtil';
 import * as actions from '../../actions';
@@ -307,7 +308,7 @@ class DetailDetails extends Component {
     async handleBookReservation(listing) {
         const { auth } = this.props;
 
-        if (!this.props.dentist) {
+        if (isEmpty(this.props.dentist)) {
             await this.loadDentist();
         }
 

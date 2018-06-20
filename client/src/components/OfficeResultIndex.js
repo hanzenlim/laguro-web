@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import * as actions from '../actions';
 
 import OfficeResult from './OfficeResult';
@@ -188,7 +189,7 @@ class OfficeResultIndex extends Component {
         }
 
         if (this.props.isFetching) {
-            return <Container>Loading...</Container>;
+            return <LinearProgress />;
         }
 
         return (

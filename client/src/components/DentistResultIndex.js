@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import * as actions from '../actions';
 
 import DentistResult from './DentistResult';
@@ -189,7 +190,7 @@ class DentistResultIndex extends Component {
         }
 
         if (this.props.isFetching) {
-            return <Container>Loading...</Container>;
+            return <LinearProgress />; 
         }
 
         return (
