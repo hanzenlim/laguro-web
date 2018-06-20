@@ -12,6 +12,7 @@ module.exports = app => {
             next();
         },
         passport.authenticate('google', {
+            prompt: 'select_account',
             scope: ['profile', 'email'],
         })
     );
