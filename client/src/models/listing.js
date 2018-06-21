@@ -47,6 +47,9 @@ const queryListingsQuery = `
             ${listingFragment}
             reservations {
                 id
+                startTime
+                endTime
+                status
             }
         }
     }

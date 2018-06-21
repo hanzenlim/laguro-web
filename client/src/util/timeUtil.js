@@ -72,3 +72,56 @@ export const getStartTime = (index, startTime) => {
         .clone()
         .add(DEFAULT_APPOINTMENT_WINDOW_SIZE * index, 'minutes');
 };
+
+export const calculateTimeslots = (reservation, appointments) => {
+    // number of minutes available between reservation start and end time
+    const windowSize = calculateTimeDifferenceInMinutes(
+        reservation.startTime,
+        reservation.endTime
+    );
+    const numSlots = Math.floor(windowSize / DEFAULT_APPOINTMENT_WINDOW_SIZE);
+    const timeslots = new Array(numSlots).fill(true);
+
+    // find all blocks that are not available, mark them
+    for (let i = 0; i < appointments.length; i += 1) {
+        const currentAppointment = appointments[i];
+        const startBlock = calculateTimeSlotIndex(
+            reservation.startTime,
+            currentAppointment.startTime
+        );
+
+        // if appointment with procedure, use the procedure for duration
+        // else, calc duration from reservation start/endtime
+        const duration = currentAppointment.procedure
+            ? currentAppointment.procedure.duration
+            : calculateTimeDifferenceInMinutes(
+                currentAppointment.startTime,
+                currentAppointment.endTime
+            );
+
+        const endBlock =
+            startBlock -
+            1 +
+            Math.ceil(duration / DEFAULT_APPOINTMENT_WINDOW_SIZE);
+        for (let j = startBlock; j <= endBlock; j += 1) {
+            timeslots[j] = 0;
+        }
+    }
+
+    // mark available blocks by the number of minutes from start timeout
+    // to next unavailable block or the end
+    // this allows us to check whether we have enough time for a procedure
+    let durationToNextAppointment = calculateTimeDifferenceInMinutes(
+        getStartTime(timeslots.length - 1, reservation.startTime),
+        reservation.endTime
+    );
+    for (let i = timeslots.length - 1; i >= 0; i -= 1) {
+        if (timeslots[i]) {
+            timeslots[i] = durationToNextAppointment;
+            durationToNextAppointment += DEFAULT_APPOINTMENT_WINDOW_SIZE;
+        } else {
+            durationToNextAppointment = DEFAULT_APPOINTMENT_WINDOW_SIZE;
+        }
+    }
+    return timeslots;
+};

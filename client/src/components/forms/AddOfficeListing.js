@@ -25,7 +25,6 @@ import {
 import { required, isNum, dollarMinimum } from './formValidation';
 
 import history from '../../history';
-import staffSVG from '../icons/staff.svg';
 
 const StyledContainer = styled.div`
     min-height: 100vh;
@@ -33,10 +32,6 @@ const StyledContainer = styled.div`
     max-width: 1080px;
     padding: 5em 10px;
     margin: 0 auto;
-`;
-
-const StyledImage = styled.img`
-    padding-top: 10em;
 `;
 
 class NewListing extends Component {
@@ -57,10 +52,7 @@ class NewListing extends Component {
                 : getNextHalfHour().add(2, 'hours'),
             numChairsAvailable: this.urlParams.numChairsAvailable
                 ? Number(this.urlParams.numChairsAvailable)
-                : 1,
-            staffAvailable: this.urlParams.staffAvailable
-                ? JSON.parse(this.urlParams.staffAvailable)
-                : []
+                : 1
         });
     }
 
@@ -76,10 +68,7 @@ class NewListing extends Component {
             endTime: this.props.endTime,
             chairHourlyPrice: this.props.chairHourlyPrice,
             cleaningFee: this.props.cleaningFee,
-            numChairsAvailable: this.props.numChairsAvailable,
-            staffAvailable: this.props.staffAvailable
-                ? JSON.stringify(this.props.staffAvailable)
-                : []
+            numChairsAvailable: this.props.numChairsAvailable
         });
 
         history.push(`/landlord-onboarding/add-equipments?${params}`);
@@ -101,7 +90,6 @@ class NewListing extends Component {
                 _error: 'Please select an office above'
             });
         } else {
-            values.staffAvailable = values.staffAvailable || [];
             delete values.office;
 
             const {
@@ -282,11 +270,6 @@ class NewListing extends Component {
                             </Grid>
                         </form>
                     </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <Grid container justify="center">
-                            <StyledImage src={staffSVG} />
-                        </Grid>
-                    </Grid>
                 </Grid>
             </StyledContainer>
         );
@@ -301,7 +284,6 @@ const mapStateToProps = state => {
         chairHourlyPrice: selector(state, 'chairHourlyPrice'),
         selectedOffice: selector(state, 'office'),
         numChairsAvailable: selector(state, 'numChairsAvailable'),
-        staffAvailable: selector(state, 'staffAvailable'),
         cleaningFee: selector(state, 'cleaningFee'),
         auth: state.auth,
         offices: state.offices.selected ? state.offices.selected : []

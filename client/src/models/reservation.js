@@ -79,7 +79,8 @@ const Reservation = {
         const response = await makeApiCall(createReservationQuery, {
             input: params
         });
-        return response.data.createReservation;
+
+        return response;
     },
     update: async params => {
         const response = await makeApiCall(updateReservationQuery, {

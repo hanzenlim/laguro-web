@@ -60,7 +60,6 @@ class NewListing extends Component {
             });
         } else {
             const office = JSON.parse(values.office);
-            values.staffAvailable = values.staffAvailable || [];
             delete values.office;
             this.props.createListing({
                 ...values,

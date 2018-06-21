@@ -10,42 +10,80 @@ import {
 import { Redirect } from 'react-router-dom';
 import moment from 'moment';
 import queryString from 'query-string';
-
-import { Typography, Button, Option, Flex, Box } from '../common';
+import DatePicker from 'react-datepicker';
+import { Typography, Button, Input, Flex, Box } from '../common';
 
 import {
     renderSelect,
-    renderDatePicker,
     renderCheckbox,
     renderOptions
 } from './sharedComponents';
 
 import * as actions from '../../actions';
-import { DENTIST } from '../../util/strings';
+import { DENTIST, ACTIVE } from '../../util/strings';
+import { calculateTimeslots, getStartTime } from '../../util/timeUtil';
 
 class ReservationOptions extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { redirectToPayment: false };
+        this.state = {
+            redirectToPayment: false,
+            timeSlots: []
+        };
     }
 
     componentWillMount() {
         this.props.fetchUser(DENTIST);
         const { listing, office } = this.props;
+
+        const filteredReservations = listing.reservations.filter(
+            res => res.status === ACTIVE
+        );
+
+        const durationToNextReservation = calculateTimeslots(
+            listing,
+            filteredReservations
+        );
+
+        const timeSlotsWithDuration = durationToNextReservation.map(
+            (duration, index) => {
+                return {
+                    durationToNext: duration,
+                    startTime: getStartTime(index, listing.startTime)
+                };
+            }
+        );
+
+        const firstAvailReservationIndex = durationToNextReservation.findIndex(
+            duration => duration > 0
+        );
+        const firstAvailReservation = getStartTime(
+            firstAvailReservationIndex,
+            listing.startTime
+        );
+
+        this.setState({ timeSlots: timeSlotsWithDuration });
+
         this.props.initialize({
-            staffSelected: listing.staffAvailable,
             equipmentSelected: office.equipment,
             numChairs: 1,
             appts_per_hour: 1,
-            startTime: moment(listing.startTime),
-            endTime: moment(listing.endTime),
+            startTime: moment(firstAvailReservation),
+            endTime: moment(firstAvailReservation).add(2, 'hours'),
             acknowledge: false
         });
     }
 
     initiatePayment(values) {
         if (
+            // endTime should be after startTime
+            moment(values.endTime).isBefore(values.startTime)
+        ) {
+            throw new SubmissionError({
+                endTime: 'Closing time must be after opening time'
+            });
+        } else if (
             moment(values.startTime)
                 .add(1, 'hours')
                 .isAfter(values.endTime)
@@ -81,55 +119,6 @@ class ReservationOptions extends Component {
         </div>
     );
 
-    renderStaff = ({ fields, className }) => {
-        const { listing } = this.props;
-        const staffData = this.props.staffSelected;
-        if (!staffData) {
-            return <div>Loading...</div>;
-        }
-        return (
-            <ul
-                className={className}
-                style={{ border: '1px solid #999', padding: '4px' }}
-            >
-                <label>Staff Required</label>
-
-                {fields.map((staffSelected, index) => (
-                    <li key={index} className="multiRow">
-                        <Field
-                            name={`${staffSelected}.role`}
-                            component={this.renderStaticField}
-                            label="Staff Role"
-                        />
-                        <div>
-                            <label>
-                                Number required
-                                <Field
-                                    name={`${staffSelected}.count`}
-                                    type="select"
-                                    style={{ display: 'block' }}
-                                    component={renderSelect}
-                                >
-                                    {renderOptions(
-                                        listing.staffAvailable[index].count,
-                                        0
-                                    )}
-                                </Field>
-                            </label>
-                        </div>
-                        <div>
-                            <label>Subtotal</label>
-                            <h6 className="red-text">
-                                ${staffData[index].count *
-                                    staffData[index].price}/Hour
-                            </h6>
-                        </div>
-                    </li>
-                ))}
-            </ul>
-        );
-    };
-
     renderEquipment = ({ fields, className }) => {
         const equipData = this.props.equipmentSelected;
         return (
@@ -163,15 +152,15 @@ class ReservationOptions extends Component {
         const chair_price = numChairs * listing.chairHourlyPrice * this.hours;
         this.booking_fee = Number(chair_price * 0.15);
 
+        if (this.booking_fee <= 0) return 0;
+
         return this.booking_fee.toFixed(2);
     }
 
     // TODO create a payment calculator utility class
     calcTotal() {
         const { numChairs, listing } = this.props;
-        const staffData = this.props.staffSelected;
         const equipData = this.props.equipmentSelected;
-        this.staffTotal = 0;
         this.equipTotal = 0;
 
         if (this.hours <= 0) {
@@ -180,12 +169,6 @@ class ReservationOptions extends Component {
 
         const chair_price = numChairs * listing.chairHourlyPrice * this.hours;
 
-        if (staffData && staffData.length) {
-            this.staffTotal = staffData
-                .map(staff => staff.count * staff.price * this.hours)
-                .reduce((acc, sub) => sub + acc, 0);
-        }
-
         if (equipData && equipData.length) {
             this.equipTotal = equipData
                 .filter(equip => equip.needed)
@@ -193,9 +176,96 @@ class ReservationOptions extends Component {
                 .reduce((acc, sub) => sub + acc, 0);
         }
 
-        const total =
-            this.booking_fee + chair_price + this.equipTotal + this.staffTotal;
+        const total = this.booking_fee + chair_price + this.equipTotal;
         return total.toFixed(2);
+    }
+
+    renderOpeningTimePicker({
+        input,
+        label,
+        className,
+        listing,
+        reservedTimeSlots,
+        meta: { touched, error }
+    }) {
+        let { startTime } = this.props;
+        return (
+            <div className={className}>
+                <label>{label}</label>
+                <DatePicker
+                    customInput={<Input />}
+                    selected={input.value}
+                    onChange={input.onChange.bind(this)}
+                    dateFormat="LLL"
+                    minTime={
+                        moment(listing.startTime).isBefore(startTime, 'day')
+                            ? moment().startOf('day')
+                            : moment(listing.startTime)
+                    }
+                    maxTime={
+                        moment(listing.endTime).isAfter(startTime, 'day')
+                            ? moment().endOf('day')
+                            : moment(listing.endTime).subtract(1, 'hours')
+                    }
+                    showTimeSelect
+                    minDate={moment(listing.startTime)}
+                    maxDate={moment(listing.endTime)}
+                    excludeTimes={reservedTimeSlots}
+                    timeFormat="h:mm a"
+                    timeIntervals={30}
+                    timeCaption="Time"
+                />
+                {touched && error && <span className="red-text">{error}</span>}
+            </div>
+        );
+    }
+
+    renderClosingTimePicker({
+        input,
+        label,
+        className,
+        durationToNext,
+        meta: { touched, error }
+    }) {
+        let { startTime } = this.props;
+        return (
+            <div className={className}>
+                <label>{label}</label>
+                <DatePicker
+                    customInput={<Input />}
+                    selected={input.value}
+                    onChange={input.onChange.bind(this)}
+                    dateFormat="LLL"
+                    minTime={moment(startTime).add(1, 'hours')}
+                    maxTime={
+                        moment(startTime)
+                            .add(durationToNext, 'minutes')
+                            .isAfter(startTime, 'day')
+                            ? moment().endOf('day')
+                            : moment(startTime).add(durationToNext, 'minutes')
+                    }
+                    showTimeSelect
+                    minDate={
+                        moment(startTime)
+                            .add(1, 'hours')
+                            .isSame(moment(startTime), 'day')
+                            ? moment(startTime)
+                            : moment(startTime).add(1, 'day')
+                    }
+                    maxDate={
+                        moment(startTime)
+                            .add(1, 'hours')
+                            .isSame(moment(startTime), 'day')
+                            ? moment(startTime)
+                            : moment(startTime).add(1, 'day')
+                    }
+                    timeFormat="h:mm a"
+                    timeIntervals={30}
+                    timeCaption="Time"
+                />
+                {touched && error && <span className="red-text">{error}</span>}
+            </div>
+        );
     }
 
     render() {
@@ -204,7 +274,6 @@ class ReservationOptions extends Component {
             submitting,
             listing,
             error,
-            staffSelected,
             equipmentSelected,
             auth
         } = this.props;
@@ -213,16 +282,26 @@ class ReservationOptions extends Component {
 
         this.calcTime();
 
+        let { startTime } = this.props;
+        let { timeSlots } = this.state;
+
+        let selectedTimeSlot = timeSlots.find(timeSlot =>
+            moment(timeSlot.startTime).isSame(startTime, 'minute')
+        );
+
+        let durationToNextReservation = selectedTimeSlot
+            ? selectedTimeSlot.durationToNext
+            : 0;
+
+        let reservedTimeSlots = timeSlots
+            .filter(timeSlot => timeSlot.durationToNext === 0)
+            .map(timeSlot => timeSlot.startTime);
+
         if (this.state.redirectToPayment) {
             const { startTime, endTime, numChairs } = this.props;
             const totalPaid = Math.round(this.calcTotal() * 100);
-            let { equipmentSelected, staffSelected } = this.props;
+            let { equipmentSelected } = this.props;
 
-            staffSelected = JSON.stringify(
-                staffSelected.filter(staff => staff.count > 0).map(staff => {
-                    return { role: staff.role, count: staff.count };
-                })
-            );
             equipmentSelected = JSON.stringify(
                 equipmentSelected
                     .filter(equip => equip.needed)
@@ -236,7 +315,6 @@ class ReservationOptions extends Component {
             urlParams.endTime = moment(endTime).format();
             urlParams.numChairs = numChairs;
             urlParams.reservedBy = auth.dentist.id;
-            urlParams.staffSelected = staffSelected;
             urlParams.equipmentSelected = equipmentSelected;
             urlParams.listingId = listing.id;
 
@@ -259,39 +337,28 @@ class ReservationOptions extends Component {
                     </Typography>
                 </Flex>
 
-                <Flex pb={3} flexDirection="column">
-                    <label>Doors opening</label>
-                    <Field
-                        name="startTime"
-                        dateType="startTime"
-                        component={renderDatePicker}
-                        listing={listing}
-                    />
-                </Flex>
+                <Flex direction="row">
+                    <Flex width={1 / 2} pb={3} mr={4} flexDirection="column">
+                        <label>Doors opening</label>
+                        <Field
+                            name="startTime"
+                            dateType="startTime"
+                            component={this.renderOpeningTimePicker.bind(this)}
+                            listing={listing}
+                            reservedTimeSlots={reservedTimeSlots}
+                        />
+                    </Flex>
 
-                <Flex pb={3} flexDirection="column">
-                    <label>Doors closing</label>
-                    <Field
-                        name="endTime"
-                        dateType="endTime"
-                        component={renderDatePicker}
-                        listing={listing}
-                    />
-                </Flex>
-
-                <Flex pb={3} flexDirection="column">
-                    <label>Number of appointment slots per hour</label>
-                    <Field
-                        name={'appts_per_hour'}
-                        type="select"
-                        style={{ display: 'block' }}
-                        component={renderSelect}
-                    >
-                        <Option value={1}>1 - 60 min appointments</Option>
-                        <Option value={2}>2 - 30 min appointments</Option>
-                        <Option value={3}>3 - 20 min appointments</Option>
-                        <Option value={4}>4 - 15 min appointments</Option>
-                    </Field>
+                    <Flex width={1 / 2} pb={3} ml={4} flexDirection="column">
+                        <label>Doors closing</label>
+                        <Field
+                            name="endTime"
+                            dateType="endTime"
+                            component={this.renderClosingTimePicker.bind(this)}
+                            durationToNext={durationToNextReservation}
+                            listing={listing}
+                        />
+                    </Flex>
                 </Flex>
 
                 <Flex pb={3} flexDirection="column">
@@ -308,19 +375,6 @@ class ReservationOptions extends Component {
                             `- $${this.props.listing.chairHourlyPrice}/chair/hr`
                         )}
                     </Field>
-                </Flex>
-
-                <Flex pb={3} flexDirection="column">
-                    {staffSelected && staffSelected.length ? (
-                        <div>
-                            <FieldArray
-                                name="staffSelected"
-                                component={this.renderStaff}
-                            />
-                        </div>
-                    ) : (
-                        <div />
-                    )}
                 </Flex>
 
                 {equipmentSelected && equipmentSelected.length ? (
@@ -395,7 +449,6 @@ class ReservationOptions extends Component {
 const mapStateToProps = state => {
     const selector = formValueSelector('reservationOptions');
     return {
-        staffSelected: selector(state, 'staffSelected'),
         numChairs: selector(state, 'numChairs'),
         equipmentSelected: selector(state, 'equipmentSelected'),
         startTime: selector(state, 'startTime'),

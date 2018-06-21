@@ -1,66 +1,12 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import { Typography } from './common';
-import {
-    DEFAULT_APPOINTMENT_WINDOW_SIZE,
-    calculateTimeDifferenceInMinutes,
-    calculateTimeSlotIndex,
-    getStartTime
-} from '../util/timeUtil';
+import { getStartTime, calculateTimeslots } from '../util/timeUtil';
 
 class Appointments extends Component {
     constructor(props) {
         super(props);
         this.handleClick = this.handleClick.bind(this);
-    }
-    calculateTimeslots() {
-        const { reservation } = this.props;
-        const { appointments } = reservation;
-        // number of minutes available between reservation start and end time
-        const windowSize = calculateTimeDifferenceInMinutes(
-            reservation.startTime,
-            reservation.endTime
-        );
-        const numSlots = Math.floor(
-            windowSize / DEFAULT_APPOINTMENT_WINDOW_SIZE
-        );
-        const timeslots = new Array(numSlots).fill(true);
-
-        // find all blocks that are not available, mark them
-        for (let i = 0; i < appointments.length; i += 1) {
-            const currentAppointment = appointments[i];
-            const startBlock = calculateTimeSlotIndex(
-                reservation.startTime,
-                currentAppointment.startTime
-            );
-            const endBlock =
-                startBlock -
-                1 +
-                Math.ceil(
-                    currentAppointment.procedure.duration /
-                        DEFAULT_APPOINTMENT_WINDOW_SIZE
-                );
-            for (let j = startBlock; j <= endBlock; j += 1) {
-                timeslots[j] = 0;
-            }
-        }
-
-        // mark available blocks by the number of minutes from start timeout
-        // to next unavailable block or the end
-        // this allows us to check whether we have enough time for a procedure
-        let durationToNextAppointment = calculateTimeDifferenceInMinutes(
-            getStartTime(timeslots.length - 1, reservation.startTime),
-            reservation.endTime
-        );
-        for (let i = timeslots.length - 1; i >= 0; i -= 1) {
-            if (timeslots[i]) {
-                timeslots[i] = durationToNextAppointment;
-                durationToNextAppointment += DEFAULT_APPOINTMENT_WINDOW_SIZE;
-            } else {
-                durationToNextAppointment = DEFAULT_APPOINTMENT_WINDOW_SIZE;
-            }
-        }
-        return timeslots;
     }
 
     handleClick(e) {
@@ -78,7 +24,10 @@ class Appointments extends Component {
 
     render() {
         const { reservation } = this.props;
-        const timeslots = this.calculateTimeslots();
+        const timeslots = calculateTimeslots(
+            reservation,
+            reservation.appointments
+        );
         return timeslots.map((durationToNextAppointment, index) => (
             <div key={index}>
                 {durationToNextAppointment !== 0 ? (

@@ -35,17 +35,6 @@ class OfficeResultIndex extends Component {
         return <li className="listingRow">No Equipment Available</li>;
     }
 
-    renderStaff(listing) {
-        if (listing.staffAvailable && listing.staffAvailable.length) {
-            return listing.staffAvailable.map(staff => (
-                <li className="listingRow" key={staff.role}>
-                    {staff.role} - ${staff.price} ({staff.count} available)
-                </li>
-            ));
-        }
-        return <li className="listingRow">No Staff Available</li>;
-    }
-
     renderImages(office) {
         if (office.imageUrls && office.imageUrls.length) {
             return office.imageUrls.map(url => (
@@ -131,10 +120,6 @@ class OfficeResultIndex extends Component {
                     </div>
 
                     <div className="availableRow">
-                        <div>
-                            <h5>Staff Available</h5>
-                            {this.renderStaff(listing)}
-                        </div>
                         <div>
                             <h5>Equipment Available</h5>
                             {this.renderEquipment(office)}

@@ -15,12 +15,22 @@ export const getReservation = reservationId => async dispatch => {
 };
 
 export const createReservation = params => async dispatch => {
-    const reservation = await Reservation.create(params);
-    dispatch({
-        type: CREATE_RESERVATION,
-        payload: reservation
-    });
-    history.push(`/payment-success?reservationId=${reservation.id}`);
+    const response = await Reservation.create(params);
+    if (
+        response.errors &&
+        response.errors[0].message === 'Timeslot already booked!'
+    ) {
+        alert(
+            'Sorry, the reservation window you selected has been booked, please go back and select a new time window.'
+        );
+    } else {
+        const reservation = response.data.createReservation;
+        dispatch({
+            type: CREATE_RESERVATION,
+            payload: reservation
+        });
+        history.push(`/payment-success?reservationId=${reservation.id}`);
+    }
 };
 
 export const cancelReservation = reservationId => async () => {

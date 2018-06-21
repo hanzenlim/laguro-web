@@ -64,8 +64,6 @@ const getMinTime = (dateType, listing) => {
     switch (dateType) {
     case 'startTime':
         return moment(listing.startTime);
-    case 'endTime':
-        return moment(listing.startTime).add(2, 'hours');
     default:
         return moment()
             .hours(0)
@@ -80,9 +78,7 @@ const getMaxTime = (dateType, listing) => {
             .minutes(59);
     switch (dateType) {
     case 'startTime':
-        return moment(listing.endTime).subtract(2, 'hours');
-    case 'endTime':
-        return moment(listing.endTime);
+        return moment(listing.endTime).subtract(1, 'hours');
     default:
         return moment()
             .hours(23)

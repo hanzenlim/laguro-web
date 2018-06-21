@@ -7,7 +7,8 @@ import moment from 'moment';
 import { generateListItems } from './forms/sharedComponents';
 import { Chip, Typography, Grid, Button } from './common';
 import { Padding, Margin } from './common/Spacing';
-import { formatListingTime } from '../util/timeUtil';
+import { formatListingTime, calculateTimeslots } from '../util/timeUtil';
+import { ACTIVE } from '../util/strings';
 
 class OfficeListing extends Component {
     confirmDeleteListing(listing) {
@@ -23,8 +24,8 @@ class OfficeListing extends Component {
         }
     }
 
-    renderDetails(reservationsExist, listing) {
-        if (reservationsExist) {
+    renderDetails(reservationsAvailable, listing) {
+        if (!reservationsAvailable) {
             return (
                 <ExpansionPanelDetails>
                     <Grid container spacing={16}>
@@ -99,9 +100,21 @@ class OfficeListing extends Component {
         }
     }
 
+    checkAvailability(listing) {
+        const filteredReservations = listing.reservations.filter(
+            res => res.status === ACTIVE
+        );
+        const timeSlots = calculateTimeslots(listing, filteredReservations);
+
+        const openSlots = timeSlots.filter(
+            durationToNext => durationToNext >= 60
+        );
+        return !!openSlots.length;
+    }
+
     render() {
         const { office, listing, index, expandListing, expanded } = this.props;
-        const reservationsExist = listing.reservations.length > 0;
+        const reservationsAvailable = this.checkAvailability(listing);
         const reservations = listing.reservations;
 
         return (
@@ -121,15 +134,15 @@ class OfficeListing extends Component {
                                 listing.endTime
                             )}
                         </Typography>
-                        {reservationsExist ? (
-                            <Chip label="Reserved" />
-                        ) : (
+                        {reservationsAvailable ? (
                             <Chip label="Available" />
+                        ) : (
+                            <Chip label="Reserved" />
                         )}
                     </Grid>
                 </ExpansionPanelSummary>
                 {this.renderDetails(
-                    reservationsExist,
+                    reservationsAvailable,
                     listing,
                     office,
                     reservations

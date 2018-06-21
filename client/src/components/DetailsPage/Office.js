@@ -2,9 +2,16 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import Carousel from 'nuka-carousel';
+import moment from 'moment';
 import Icon from '../Icon';
 import * as actions from '../../actions';
-import { REVIEWS, LISTINGS, HOST } from '../../util/strings';
+import {
+    REVIEWS,
+    OFFICE_ID,
+    START_TIME,
+    STATUS,
+    ACTIVE
+} from '../../util/strings';
 import { Box } from '../common';
 import { Padding } from '../common/Spacing';
 import OfficePlaceholderBig from '../images/office-placeholder-big.png';
@@ -69,7 +76,19 @@ class Office extends Component {
 
     componentDidMount() {
         this.office_id = this.props.match.params.office_id;
-        this.props.getOffice(this.office_id, REVIEWS, LISTINGS, HOST);
+        this.props.getOffice(this.office_id, REVIEWS);
+        this.props.queryListings(OFFICE_ID, this.office_id, {
+            sortKey: START_TIME,
+            rangeStart: moment()
+                .utc()
+                .format(),
+            filters: [
+                {
+                    filterKey: `${STATUS}`,
+                    filterValue: `${ACTIVE}`
+                }
+            ]
+        });
     }
 
     renderImages(office) {
