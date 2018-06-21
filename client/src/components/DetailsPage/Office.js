@@ -188,7 +188,7 @@ class Office extends Component {
                     auth={auth}
                     obj={office}
                     reviews={reviews}
-                    listings={office.listings}
+                    listings={listings}
                     dentist={dentist}
                 />
             </div>
