@@ -2,8 +2,8 @@ import history from '../history';
 import { GET_SELECTED_LISTINGS, FETCH_LISTINGS, CREATE_LISTING } from './types';
 import Listing from '../models/listing';
 
-export const fetchListings = () => async dispatch => {
-    const listings = await Listing.scan();
+export const fetchListings = (active = false) => async dispatch => {
+    const listings = active ? await Listing.scanActive() : await Listing.scan();
     dispatch({
         type: FETCH_LISTINGS,
         payload: listings

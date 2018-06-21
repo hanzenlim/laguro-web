@@ -142,17 +142,17 @@ class Search extends Component {
                                                             // inline style for demonstration purpose
                                                             const style = suggestion.active
                                                                 ? {
-                                                                      backgroundColor:
+                                                                    backgroundColor:
                                                                           '#fafafa',
-                                                                      cursor:
+                                                                    cursor:
                                                                           'pointer'
-                                                                  }
+                                                                }
                                                                 : {
-                                                                      backgroundColor:
+                                                                    backgroundColor:
                                                                           '#ffffff',
-                                                                      cursor:
+                                                                    cursor:
                                                                           'pointer'
-                                                                  };
+                                                                };
                                                             return (
                                                                 <div
                                                                     {...getSuggestionItemProps(

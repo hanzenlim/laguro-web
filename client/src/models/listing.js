@@ -3,12 +3,26 @@ import {
     listingFragment,
     dentistFragment,
     officeFragment,
-    reviewerFragment
+    reviewerFragment,
 } from '../util/fragments';
 
 const scanListingsQuery = `
     query {
         scanListings {
+            ${listingFragment}
+            office {
+                ${officeFragment}
+                reviews {
+                    ${reviewerFragment}
+                }
+            }
+        }
+    }
+`;
+
+const scanActiveCurrentListingsQuery = `
+    query {
+        scanActiveCurrentListings {
             ${listingFragment}
             office {
                 ${officeFragment}
@@ -81,6 +95,10 @@ const Listing = {
     scan: async () => {
         const response = await makeApiCall(scanListingsQuery, null);
         return response.data.scanListings;
+    },
+    scanActive: async () => {
+        const response = await makeApiCall(scanActiveCurrentListingsQuery, null);
+        return response.data.scanActiveCurrentListings;
     },
     query: async (partitionKey, partitionValue, options) => {
         const response = await makeApiCall(queryListingsQuery, {
