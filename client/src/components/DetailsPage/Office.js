@@ -1,15 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import moment from 'moment';
 import styled from 'styled-components';
 import Carousel from 'nuka-carousel';
 import Icon from '../Icon';
-import * as actions from "../../actions";
-import {
-    REVIEWS,
-    OFFICE_ID,
-    START_TIME
-} from '../../util/strings';
+import * as actions from '../../actions';
+import { REVIEWS, LISTINGS, HOST } from '../../util/strings';
 import { Box } from '../common';
 import { Padding } from '../common/Spacing';
 import OfficePlaceholderBig from '../images/office-placeholder-big.png';
@@ -43,25 +38,24 @@ const StyledPicBox = styled(Box)`
 
 const StyledCarousel = styled(Carousel)`
     position: relative;
-    @media screen and (min-width : 600px) {
+    @media screen and (min-width: 600px) {
         margin-top: 0;
     }
 `;
 
 const StyledCarouselButtonLeftIcon = styled(Icon)`
     margin-left: 15px;
-    @media screen and (min-width : 600px) {
+    @media screen and (min-width: 600px) {
         margin-left: 50px;
     }
 `;
 
 const StyledCarouselButtonRightIcon = styled(Icon)`
     margin-right: 15px;
-    @media screen and (min-width : 600px) {
+    @media screen and (min-width: 600px) {
         margin-right: 50px;
     }
 `;
-
 
 class Office extends Component {
     constructor() {
@@ -75,16 +69,23 @@ class Office extends Component {
 
     componentDidMount() {
         this.office_id = this.props.match.params.office_id;
-        this.props.getOffice(this.office_id, REVIEWS)
-        this.props.queryListings(OFFICE_ID, this.office_id, {sortKey: START_TIME, rangeStart: moment().utc().format()});
+        this.props.getOffice(this.office_id, REVIEWS, LISTINGS, HOST);
     }
 
     renderImages(office) {
-
-        if (!(office.constructor === Object && Object.keys(office).length !== 0) || (office && office.imageUrls && office.imageUrls.length === 0)) {
+        if (
+            !(
+                office.constructor === Object &&
+                Object.keys(office).length !== 0
+            ) ||
+            (office && office.imageUrls && office.imageUrls.length === 0)
+        ) {
             return [1, 2, 3].map(key => (
                 <StyledPicBox pt={picHeight} key={key}>
-                    <StyledCarouselImg src={OfficePlaceholderBig} alt="No image available" />
+                    <StyledCarouselImg
+                        src={OfficePlaceholderBig}
+                        alt="No image available"
+                    />
                 </StyledPicBox>
             ));
         } else {
@@ -118,9 +119,15 @@ class Office extends Component {
         if (office.id && office.id.valueOf() !== office_id.valueOf()) {
             office = {};
             listings = [];
-        } else if (!(office.constructor === Object && Object.keys(office).length !== 0)) {
+        } else if (
+            !(office.constructor === Object && Object.keys(office).length !== 0)
+        ) {
             listings = [];
-        } else if (office && office.listings && office.listings.length < listings.length) {
+        } else if (
+            office &&
+            office.listings &&
+            office.listings.length < listings.length
+        ) {
             listings = [];
         }
 
@@ -128,14 +135,22 @@ class Office extends Component {
             <div>
                 <StyledCarousel
                     renderCenterLeftControls={({ previousSlide }) => (
-                        <StyledCarouselButtonLeftIcon icon="carouselButtonLeft" width="45px" className="carousel-control" onClick={previousSlide}/>
+                        <StyledCarouselButtonLeftIcon
+                            icon="carouselButtonLeft"
+                            width="45px"
+                            className="carousel-control"
+                            onClick={previousSlide}
+                        />
                     )}
                     renderCenterRightControls={({ nextSlide }) => (
-                        <StyledCarouselButtonRightIcon icon="carouselButtonRight" width="45px" className="carousel-control" onClick={nextSlide} />
+                        <StyledCarouselButtonRightIcon
+                            icon="carouselButtonRight"
+                            width="45px"
+                            className="carousel-control"
+                            onClick={nextSlide}
+                        />
                     )}
-                    renderBottomCenterControls={() => (
-                        <div/ >
-                    )}
+                    renderBottomCenterControls={() => <div />}
                     slidesToShow={window.innerWidth >= 600 ? 3 : 1}
                     slideWidth={window.innerWidth >= 600 ? 1.88 : 1}
                     cellSpacing={8}
@@ -143,14 +158,20 @@ class Office extends Component {
                     slideIndex={1}
                 >
                     {this.renderImages(office)}
-
                 </StyledCarousel>
 
-                <TopHalfInfo type="office" obj={office}/>
+                <TopHalfInfo type="office" obj={office} />
 
                 <Padding bottom={12} />
 
-                <DetailDetails type="office" auth={auth} obj={office} reviews={reviews} listings={listings} dentist={dentist}/>
+                <DetailDetails
+                    type="office"
+                    auth={auth}
+                    obj={office}
+                    reviews={reviews}
+                    listings={office.listings}
+                    dentist={dentist}
+                />
             </div>
         );
     }
@@ -166,7 +187,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(
-    mapStateToProps,
-    actions
-)(Office);
+export default connect(mapStateToProps, actions)(Office);

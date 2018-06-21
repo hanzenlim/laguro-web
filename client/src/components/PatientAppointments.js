@@ -5,7 +5,7 @@ import moment from 'moment';
 import AppointmentDetails from './AppointmentDetails';
 
 import Appointment from '../models/appointment';
-import { PATIENT_ID } from '../util/strings';
+import { PATIENT_ID, STATUS, ACTIVE } from '../util/strings';
 
 class PatientAppointments extends Component {
     constructor(props) {
@@ -21,7 +21,16 @@ class PatientAppointments extends Component {
 
     async getAppointments() {
         const { patientId } = this.props;
-        const appointments = await Appointment.query(PATIENT_ID, patientId);
+        const appointments = await Appointment.query(PATIENT_ID, patientId, {
+            sortKey: 'startTime',
+            rangeStart: `${moment().format()}`,
+            filters: [
+                {
+                    filterKey: `${STATUS}`,
+                    filterValue: `${ACTIVE}`
+                }
+            ]
+        });
         this.setState({ appointments });
     }
 

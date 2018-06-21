@@ -6,7 +6,8 @@ import {
     reservationFragment,
     listingFragment,
     appointmentFragment,
-    reviewerFragment
+    reviewerFragment,
+    filterActive
 } from '../util/fragments';
 import {
     USER,
@@ -25,7 +26,15 @@ const generateDentistResult = options => {
         ? `offices{${officeFragment}}`
         : '';
     const reservationsResult = options.includes(RESERVATIONS)
-        ? `reservations{${reservationFragment}}`
+        ? `reservations(${filterActive}){
+            ${reservationFragment}
+            office {
+                ${officeFragment}
+            }
+            appointments(${filterActive}) {
+                ${appointmentFragment}
+            }
+        }`
         : '';
     // TODO remove officeId once profile component has been broken down
     const listingsResult = options.includes(LISTINGS)

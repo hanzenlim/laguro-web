@@ -110,7 +110,7 @@ class UserOffice extends Component {
                                         <Typography
                                             fontSize={4}
                                             underline
-                                            color="#039be5"
+                                            color="link_blue"
                                         >
                                             {office.name}
                                         </Typography>

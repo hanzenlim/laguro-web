@@ -9,6 +9,7 @@ import {
 } from 'redux-form';
 import { Redirect } from 'react-router-dom';
 import moment from 'moment';
+import queryString from 'query-string';
 
 import { Typography, Button, Option, Flex, Box } from '../common';
 
@@ -228,22 +229,23 @@ class ReservationOptions extends Component {
                     .map(equip => equip.name)
             );
 
+            const urlParams = {};
+            urlParams.type = 'reservation';
+            urlParams.totalPaid = totalPaid;
+            urlParams.startTime = moment(startTime).format();
+            urlParams.endTime = moment(endTime).format();
+            urlParams.numChairs = numChairs;
+            urlParams.reservedBy = auth.dentist.id;
+            urlParams.staffSelected = staffSelected;
+            urlParams.equipmentSelected = equipmentSelected;
+            urlParams.listingId = listing.id;
+
             return (
                 <Redirect
                     push
                     to={{
                         pathname: '/payment',
-                        search: `?totalPaid=${totalPaid}&time=[${moment(
-                            startTime
-                        ).format('YYYY-MM-DDTHH:mm:ss.SSSSZ')},${moment(
-                            endTime
-                        ).format(
-                            'YYYY-MM-DDTHH:mm:ss.SSSSZ'
-                        )}]&numChairs=${numChairs}&reservedBy=${
-                            auth.dentist.id
-                        }&staffSelected=${staffSelected}&equipmentSelected=${equipmentSelected}&type=reservation&listingId=${
-                            listing.id
-                        }`
+                        search: `?${queryString.stringify(urlParams)}`
                     }}
                 />
             );
@@ -303,9 +305,7 @@ class ReservationOptions extends Component {
                         {renderOptions(
                             this.props.listing.numChairsAvailable,
                             1,
-                            `- $${
-                                this.props.listing.chairHourlyPrice
-                            }/chair/hr`
+                            `- $${this.props.listing.chairHourlyPrice}/chair/hr`
                         )}
                     </Field>
                 </Flex>
@@ -338,9 +338,7 @@ class ReservationOptions extends Component {
                 <Flex>
                     <Box width={1 / 2}>
                         <label>Booking Fee - 15% of chair time</label>
-                        <h6 className="red-text">
-                            ${this.calcBookingFee()}
-                        </h6>
+                        <h6 className="red-text">${this.calcBookingFee()}</h6>
                     </Box>
                     <Box width={1 / 2}>
                         <label>Total due</label>
@@ -351,9 +349,9 @@ class ReservationOptions extends Component {
                 <Flex pb={3} flexDirection="column">
                     <Box>
                         <sub>
-                            *An additional 10% of final patient payment will
-                            be deducted on completion of procedure for use
-                            of Laguro services
+                            *An additional 10% of final patient payment will be
+                            deducted on completion of procedure for use of
+                            Laguro services
                         </sub>
                     </Box>
                     <Box>
@@ -407,9 +405,4 @@ const mapStateToProps = state => {
 
 export default reduxForm({
     form: 'reservationOptions'
-})(
-    connect(
-        mapStateToProps,
-        actions
-    )(ReservationOptions)
-);
+})(connect(mapStateToProps, actions)(ReservationOptions));

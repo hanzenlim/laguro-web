@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import moment from 'moment';
 import queryString from 'query-string';
 import StripeCheckout from 'react-stripe-checkout';
 import styled from 'styled-components';
@@ -106,10 +105,7 @@ class Payment extends Component {
     };
 
     handleCreateReservation = () => {
-        const [startTime, endTime] = this.urlParams.time
-            .substring(1, this.urlParams.time.length - 1)
-            .replace(/ /g, '+')
-            .split(',');
+        const { startTime, endTime } = this.urlParams;
 
         const reservationPayload = {
             numChairsSelected: this.urlParams.numChairs,
@@ -127,10 +123,7 @@ class Payment extends Component {
     };
 
     handleCreateAppointment = () => {
-        const [startTime, endTime] = this.urlParams.time
-            .substring(1, this.urlParams.time.length - 1)
-            .replace(/ /g, '+')
-            .split(',');
+        const { startTime, endTime } = this.urlParams;
 
         const appointmentPayload = {
             reservationId: this.urlParams.reservationId,
@@ -153,22 +146,8 @@ class Payment extends Component {
         )}.${totalPaid.substring(totalPaid.length - 2)}`;
     };
 
-    renderTime = time => {
-        const [startTime, endTime] = time
-            .substring(1, time.length - 1)
-            .replace(/ /g, '+')
-            .split(',');
-
+    renderTime = (startTime, endTime) => {
         return formatListingTime(startTime, endTime);
-    };
-
-    renderDate = time => {
-        const [opening] = time
-            .substring(1, time.length - 1)
-            .replace(/ /g, '+')
-            .split(',');
-
-        return moment(opening).format('ll');
     };
 
     renderPaymentOptions = () => {
@@ -193,7 +172,8 @@ class Payment extends Component {
             this.urlParams.type === APPOINTMENT
                 ? this.props.reservation.office
                 : this.props.listing.office;
-        const { time, totalPaid } = this.urlParams;
+        const { totalPaid } = this.urlParams;
+        const parsed = queryString.parse(window.location.search);
 
         return (
             <Card>
@@ -251,23 +231,10 @@ class Payment extends Component {
                                     <Padding right={4} />
 
                                     <Typography fontSize={3}>
-                                        {`Time: ${this.renderTime(time)}`}
-                                    </Typography>
-                                </Grid>
-
-                                <Padding vertical={8}>
-                                    <Divider />
-                                </Padding>
-
-                                <Grid container wrap="nowrap">
-                                    <i className="material-icons tiny">
-                                        date_range
-                                    </i>
-
-                                    <Padding right={4} />
-
-                                    <Typography fontSize={3}>
-                                        {`Date: ${this.renderDate(time)}`}
+                                        {`Time: ${this.renderTime(
+                                            parsed.startTime,
+                                            parsed.endTime
+                                        )}`}
                                     </Typography>
                                 </Grid>
                             </Grid>
@@ -307,19 +274,6 @@ class Payment extends Component {
 
                     <Box py={2}>
                         <Flex justify="space-between">
-                            <Typography fontSize={3} color="abbey">
-                                Discount Applied
-                            </Typography>
-                            <Typography fontSize={3} color="abbey">
-                                None
-                            </Typography>
-                        </Flex>
-                    </Box>
-
-                    <Divider />
-
-                    <Box py={2}>
-                        <Flex justify="space-between">
                             <Typography
                                 fontSize={3}
                                 color="abbey"
@@ -336,8 +290,6 @@ class Payment extends Component {
                             </Typography>
                         </Flex>
                     </Box>
-
-                    <Divider />
                 </Flex>
             </Card>
         );

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import * as materialize from 'materialize-css/dist/js/materialize';
 import {
     USER,
     OFFICES,
@@ -24,6 +23,8 @@ class Dentist extends Component {
             showReservationOptions: false,
             selectedReservation: {}
         };
+
+        this.handleBookAppointment = this.handleBookAppointment.bind(this);
     }
 
     componentWillMount() {
@@ -46,16 +47,28 @@ class Dentist extends Component {
             });
     }
 
-    componentDidUpdate() {
-        const elements = document.getElementsByClassName('dropdown-trigger');
-        for (const el of elements) {
-            materialize.Dropdown.init(el, {
-                coverTrigger: false,
-                closeOnClick: false,
-                constrainWidth: false
-            });
-        }
+    handleBookAppointment(
+        selectedStartTime,
+        durationToNextAppointment,
+        selectedReservation
+    ) {
+        this.setState({
+            isModalOpen: true,
+            showReservationOptions: true,
+            selectedStartTime,
+            durationToNextAppointment,
+            selectedReservation
+        });
     }
+
+    closeModal = () => {
+        this.setState({
+            isModalOpen: false,
+            selectedStartTime: null,
+            durationToNextAppointment: null,
+            selectedReservation: {}
+        });
+    };
 
     render() {
         const { dentist, auth, reviews, reservations } = this.props;
@@ -64,10 +77,21 @@ class Dentist extends Component {
             <div>
                 <TopHalfInfo type="dentist" obj={dentist} />
 
-                <DetailDetails type="dentist" obj={dentist} reviews={reviews} reservations={reservations} auth={auth} />
+                <DetailDetails
+                    type="dentist"
+                    obj={dentist}
+                    reviews={reviews}
+                    reservations={reservations}
+                    auth={auth}
+                    handleBookAppointment={this.handleBookAppointment}
+                />
 
                 {this.state.selectedStartTime && (
-                    <Modal closable open={this.state.isModalOpen} onClose={this.closeModal}>
+                    <Modal
+                        closable
+                        open={this.state.isModalOpen}
+                        onClose={this.closeModal}
+                    >
                         <BookAppointment
                             open={this.state.isModalOpen}
                             closeModal={this.closeModal}
@@ -95,7 +119,4 @@ function mapStateToProps(state) {
         reviews: state.reviews.all
     };
 }
-export default connect(
-    mapStateToProps,
-    actions
-)(Dentist);
+export default connect(mapStateToProps, actions)(Dentist);

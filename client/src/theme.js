@@ -5,6 +5,8 @@ export default {
         white: '#fff',
         abbey: '#484e51',
         silver: '#c8c7c7',
+        link_blue: '#039be5',
+        appointment_green: '#28a51c',
         'carribean-green': '#0ad5B1',
         red: '#ff0000',
         darkGrey: '#484e51'

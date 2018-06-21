@@ -1,5 +1,6 @@
 // TODO consider creating a pluralize function
 export const USER = 'user';
+export const HOST = 'host';
 export const DENTIST = 'dentist';
 export const DENTISTS = 'dentists';
 export const OFFICE = 'office';

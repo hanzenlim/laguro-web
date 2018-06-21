@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import styled from 'styled-components';
-import AppointmentOptions from './AppointmentOptions';
+import moment from 'moment';
+import { Typography } from './common';
 import {
     DEFAULT_APPOINTMENT_WINDOW_SIZE,
     calculateTimeDifferenceInMinutes,
@@ -8,11 +8,11 @@ import {
     getStartTime
 } from '../util/timeUtil';
 
-const StyledA = styled.a`
-    color: #28A51C;
-`;
-
 class Appointments extends Component {
+    constructor(props) {
+        super(props);
+        this.handleClick = this.handleClick.bind(this);
+    }
     calculateTimeslots() {
         const { reservation } = this.props;
         const { appointments } = reservation;
@@ -63,61 +63,49 @@ class Appointments extends Component {
         return timeslots;
     }
 
-    handleBookAppointment = event => {
-        const { reservation } = this.props;
-
-        const { currentTarget } = event;
-        const index = currentTarget.getAttribute('data-index');
-        const durationToNextAppointment = currentTarget.getAttribute(
-            'data-duration_to_next_appointment'
+    handleClick(e) {
+        const {
+            reservation,
+            duration_to_next_appointment,
+            start_time
+        } = e.target.dataset;
+        this.props.handleBookAppointment(
+            start_time,
+            duration_to_next_appointment,
+            JSON.parse(reservation)
         );
-
-        this.props.onBookAppointment(
-            getStartTime(index, reservation.startTime).format(),
-            durationToNextAppointment,
-            reservation
-        );
-    };
+    }
 
     render() {
-        const { auth, dentist, reservation } = this.props;
+        const { reservation } = this.props;
         const timeslots = this.calculateTimeslots();
         return timeslots.map((durationToNextAppointment, index) => (
             <div key={index}>
                 {durationToNextAppointment !== 0 ? (
-                    <div
-                        data-index={index}
-                        data-duration_to_next_appointment={
-                            durationToNextAppointment
-                        }
-                        onClick={this.handleBookAppointment}
-                    >
-                        <StyledA
+                    <div>
+                        <a
                             className="text-accent-4 dropdown-trigger"
                             style={{ cursor: 'pointer' }}
                             data-target={`dropdown${index}`}
                         >
                             {/* If no patient has reserved this appt */}
-                            {`${getStartTime(
-                                index,
-                                reservation.startTime
-                            ).format('h:mm a')} - Available!`}
-                        </StyledA>
-                        <ul
-                            className="dropdown-content"
-                            id={`dropdown${index}`}
-                        >
-                            <AppointmentOptions
-                                procedures={dentist.procedures}
-                                auth={auth}
-                                index={index}
-                                durationToNextAppointment={
+                            <Typography
+                                color="appointment_green"
+                                data-reservation={JSON.stringify(reservation)}
+                                data-duration_to_next_appointment={
                                     durationToNextAppointment
                                 }
-                                dentist={dentist}
-                                reservation={reservation}
-                            />
-                        </ul>
+                                data-start_time={moment(
+                                    getStartTime(index, reservation.startTime)
+                                ).format()}
+                                onClick={this.handleClick}
+                            >
+                                {`${getStartTime(
+                                    index,
+                                    reservation.startTime
+                                ).format('h:mm a')} - Available!`}
+                            </Typography>
+                        </a>
                     </div>
                 ) : (
                     <span
