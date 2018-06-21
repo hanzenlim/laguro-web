@@ -1,3 +1,6 @@
+import authRoutes from './routes/authRoutes';
+import hellosignRoutes from './routes/hellosignRoutes';
+
 const express = require('express');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
@@ -14,10 +17,12 @@ const app = express();
 app.use(bodyParser.json());
 
 // Auth config
-app.use(cookieSession({
-    maxAge: 10800000, // 1 day
-    keys: [process.env.COOKIE_KEY],
-}));
+app.use(
+    cookieSession({
+        maxAge: 10800000, // 1 day
+        keys: [process.env.COOKIE_KEY]
+    })
+);
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(logger('dev'));
@@ -27,17 +32,19 @@ app.post('/api/graphql', async (req, res) => {
     let variables;
 
     // Check if user is authenticated
-    if (req.user && req.body &&
-    req.body.variables &&
-    req.body.variables.googleId === req.user.googleId) {
+    if (
+        req.user &&
+        req.body &&
+        req.body.variables &&
+        req.body.variables.googleId === req.user.googleId
+    ) {
         variables = {
             ...req.body.variables,
-            authenticated: true,
+            authenticated: true
         };
-        
     } else {
         variables = {
-            ...req.body.variables,
+            ...req.body.variables
         };
     }
 
@@ -46,17 +53,18 @@ app.post('/api/graphql', async (req, res) => {
 });
 
 // Route Files
-require('./routes/authRoutes')(app);
+authRoutes(app);
+hellosignRoutes(app);
 
 if (process.env.NODE_ENV === 'production') {
     app.get('*', (req, res) => {
-        res.header("Cache-Control", "no-cache, no-store, must-revalidate");
-        res.header("Pragma", "no-cache");
+        res.header('Cache-Control', 'no-cache, no-store, must-revalidate');
+        res.header('Pragma', 'no-cache');
 
         res.sendFile(path.resolve('build', 'index.html'));
     });
 } else {
-    // express will serve production assets 
+    // express will serve production assets
     app.use(express.static('client/build'));
 
     // express will serve index.html if route is unrecognizable
@@ -66,7 +74,3 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 module.exports = app;
-
-
-
-

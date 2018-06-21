@@ -1,7 +1,7 @@
 // External Packages
 const passport = require('passport');
 
-module.exports = app => {
+const authRoutes = app => {
     // hit this route to start oauth process
     app.get(
         '/auth/google',
@@ -35,3 +35,5 @@ module.exports = app => {
         res.redirect('/');
     });
 };
+
+export default authRoutes;

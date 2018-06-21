@@ -1,4 +1,4 @@
-service: laguro-web 
+service: laguro-web
 provider:
   name: aws
   runtime: nodejs6.10
@@ -13,7 +13,8 @@ provider:
     GOOGLE_CLIENT_ID: ${env:GOOGLE_CLIENT_ID}
     GOOGLE_CLIENT_SECRET: ${env:GOOGLE_CLIENT_SECRET}
     COOKIE_KEY: ${env:COOKIE_KEY}
-    
+    HELLOSIGN_API_KEY: ${env:HELLOSIGN_API_KEY}
+
 iamRoleStatements:
     -  Effect: "Allow"
        Action:
