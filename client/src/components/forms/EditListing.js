@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
     Field,
-    FieldArray,
     reduxForm,
     formValueSelector,
     SubmissionError
@@ -49,7 +48,6 @@ class EditListing extends Component {
         this.props.initialize({
             startTime: moment(listing.startTime),
             endTime: moment(listing.endTime),
-            staffAvailable: listing.staffAvailable,
             numChairsAvailable: listing.numChairsAvailable,
             chairHourlyPrice: listing.chairHourlyPrice
         });
@@ -70,58 +68,6 @@ class EditListing extends Component {
             this.props.editListing({ ...values, id: this.listing_id });
         }
     }
-
-    renderStaff = ({ fields, className, meta: { error } }) => (
-        <ul className={className}>
-            <label>Staff Available</label>
-            <li>
-                <button
-                    type="button"
-                    className="waves-effect btn-flat"
-                    onClick={() => fields.push({})}
-                >
-                    Add Staff
-                </button>
-                {error && <span>{error}</span>}
-            </li>
-            {fields.map((staffAvailable, index) => (
-                <li key={index} className="multiRowAdd">
-                    <Field
-                        name={`${staffAvailable}.role`}
-                        type="text"
-                        placeholder="RDA"
-                        component={renderField}
-                        label="Staff Role"
-                        validate={required}
-                    />
-                    <Field
-                        name={`${staffAvailable}.price`}
-                        type="text"
-                        placeholder="30"
-                        component={renderField}
-                        label="Hourly Price"
-                        validate={[required, isNum]}
-                    />
-                    <Field
-                        name={`${staffAvailable}.count`}
-                        type="text"
-                        placeholder="3"
-                        component={renderField}
-                        label="Number of Staff"
-                        validate={[required, isNum]}
-                    />
-                    <button
-                        type="button"
-                        title="Remove Staff"
-                        className="red lighten-3 waves-effect btn"
-                        onClick={() => fields.remove(index)}
-                    >
-                        <i className="material-icons tiny">delete_forever</i>
-                    </button>
-                </li>
-            ))}
-        </ul>
-    );
 
     handleChange(dateType, date) {
         const stateObject = {};
@@ -230,14 +176,6 @@ class EditListing extends Component {
                         className="col s12 m4"
                         validate={[required, isNum]}
                         component={renderField}
-                    />
-                </div>
-
-                <div className="row">
-                    <FieldArray
-                        name="staffAvailable"
-                        className="col s12"
-                        component={this.renderStaff}
                     />
                 </div>
 

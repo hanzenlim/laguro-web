@@ -9,7 +9,7 @@ import Button from '@material-ui/core/Button';
 import { required } from './formValidation';
 import * as actions from '../../actions';
 import { Grid } from '../common/';
-import { Padding } from '../common/Spacing'
+import { Padding } from '../common/Spacing';
 
 import '../css/forms/NewReview.css';
 
@@ -75,8 +75,6 @@ class NewReview extends Component {
     }
 
     onSubmit(values) {
-        // console.log(this.props);
-
         const { reset, reviewee, reviewerId, type } = this.props;
         const { rating } = this.state;
         this.props.createReview({
@@ -96,11 +94,15 @@ class NewReview extends Component {
         meta: { touched, error }
     }) => (
         <div className={className}>
-            <TextArea
-                {...input}
-                placeholder={placeholder}
-            />
-            {(touched && error) ? <StyledPadding top={10}> <span className="red-text">{error}</span> </StyledPadding> : <StyledPadding />}
+            <TextArea {...input} placeholder={placeholder} />
+            {touched && error ? (
+                <StyledPadding top={10}>
+                    {' '}
+                    <span className="red-text">{error}</span>{' '}
+                </StyledPadding>
+            ) : (
+                <StyledPadding />
+            )}
         </div>
     );
 

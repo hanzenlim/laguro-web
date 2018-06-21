@@ -109,7 +109,6 @@ class Payment extends Component {
 
         const reservationPayload = {
             numChairsSelected: this.urlParams.numChairs,
-            staffSelected: JSON.parse(this.urlParams.staffSelected),
             equipmentSelected: JSON.parse(this.urlParams.equipmentSelected),
             listingId: this.urlParams.listingId,
             reservedBy: this.urlParams.reservedBy,

@@ -36,11 +36,6 @@ export const dentistFragment = `
 
 export const listingFragment = `
     id
-    staffAvailable {
-      role
-      price
-      count
-    }
     officeId
     numChairsAvailable
     chairHourlyPrice
@@ -99,11 +94,6 @@ export const reservationFragment = `
     id
     numChairsSelected
     listingId
-    staffSelected {
-      role
-      price
-      count
-    }
     reservedBy {
         id
         user {
@@ -180,11 +170,6 @@ export const paymentFragment = `
     reservation {
       location
       numChairsSelected
-      staffSelected {
-        role
-        price
-        count
-      }
       startTime
       endTime
     }

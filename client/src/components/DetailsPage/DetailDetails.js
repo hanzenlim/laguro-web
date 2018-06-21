@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import isEmpty from 'lodash/isEmpty';
 import ReactStars from 'react-stars';
-import { formatListingTime } from '../../util/timeUtil';
+import { formatListingTime, calculateTimeslots } from '../../util/timeUtil';
 import * as actions from '../../actions';
 import { Padding } from '../common/Spacing';
-import { OFFICE, DENTIST, USER } from '../../util/strings';
+import { OFFICE, DENTIST, USER, ACTIVE } from '../../util/strings';
 import NewReview from '../forms/NewReview';
 import ReviewContainer from '../ReviewContainer';
 import Icon from '../Icon';
@@ -151,51 +151,62 @@ class DetailDetails extends Component {
         this.setState({ avg_rating, rating_count });
     }
 
+    checkAvailability(listing) {
+        const filteredReservations = listing.reservations.filter(
+            res => res.status === ACTIVE
+        );
+        const timeSlots = calculateTimeslots(listing, filteredReservations);
+
+        const openSlots = timeSlots.filter(
+            durationToNext => durationToNext >= 60
+        );
+        return !!openSlots.length;
+    }
+
     renderAvailListings(listings) {
         if (Array.isArray(listings) && listings.length !== 0) {
             return listings
                 .filter(listing => moment(listing.startTime).isAfter(moment()))
                 .map((listing, index) => [
                     <Grid key={index * 3} item xs={8} sm={5}>
-                        {listing.reservations &&
-                        !listing.reservations.length > 0 ? (
-                                <StyledListingsTyp
+                        {this.checkAvailability(listing) ? (
+                            <StyledListingsTyp
+                                onClick={this.handleBookReservation.bind(
+                                    this,
+                                    listing
+                                )}
+                                size="t2"
+                                color="darkGrey"
+                            >
+                                {formatListingTime(
+                                    listing.startTime,
+                                    listing.endTime
+                                )}
+                            </StyledListingsTyp>
+                        ) : (
+                            <StyledListingsTyp size="t2" color="darkGrey">
+                                {formatListingTime(
+                                    listing.startTime,
+                                    listing.endTime
+                                )}
+                            </StyledListingsTyp>
+                        )}
+                    </Grid>,
+                    <Grid key={index * 3 + 1} item xs={4} sm={2}>
+                        <Box mt={1} ml={[0, -20]}>
+                            {this.checkAvailability(listing) ? (
+                                <StyledAvailButton
                                     onClick={this.handleBookReservation.bind(
                                         this,
                                         listing
                                     )}
-                                    size="t2"
-                                    color="darkGrey"
                                 >
-                                    {formatListingTime(
-                                        listing.startTime,
-                                        listing.endTime
-                                    )}
-                                </StyledListingsTyp>
-                            ) : (
-                                <StyledListingsTyp size="t2" color="darkGrey">
-                                    {formatListingTime(
-                                        listing.startTime,
-                                        listing.endTime
-                                    )}
-                                </StyledListingsTyp>
-                            )}
-                    </Grid>,
-                    <Grid key={index * 3 + 1} item xs={4} sm={2}>
-                        <Box mt={1} ml={[0, -20]}>
-                            {listing.reservations &&
-                            !listing.reservations.length > 0 ? (
-                                    <StyledAvailButton
-                                        onClick={this.handleBookReservation.bind(
-                                            this
-                                        )}
-                                    >
-                                        {' '}
+                                    {' '}
                                     Available{' '}
-                                    </StyledAvailButton>
-                                ) : (
-                                    <StyledResButton> Reserved </StyledResButton>
-                                )}
+                                </StyledAvailButton>
+                            ) : (
+                                <StyledResButton> Reserved </StyledResButton>
+                            )}
                         </Box>
                     </Grid>,
                     <Grid key={index * 3 + 2} item xs={false} sm={5} />
@@ -415,16 +426,16 @@ class DetailDetails extends Component {
                     {auth &&
                         (obj.constructor === Object &&
                             Object.keys(obj).length !== 0) && (
-                        <NewReview
-                            reviewee={obj}
-                            type={
-                                this.props.type === 'office'
-                                    ? OFFICE
-                                    : DENTIST
-                            }
-                            reviewerId={auth.id}
-                        />
-                    )}
+                            <NewReview
+                                reviewee={obj}
+                                type={
+                                    this.props.type === 'office'
+                                        ? OFFICE
+                                        : DENTIST
+                                }
+                                reviewerId={auth.id}
+                            />
+                        )}
                     <Padding bottom={12} />
 
                     {obj && (
@@ -448,20 +459,20 @@ class DetailDetails extends Component {
                         this.state.reviewRowNum *
                             (window.innerWidth > 600 ? 3 : 2) &&
                     auth && (
-                    <Box mt={20}>
-                        <StyledShowMoreBox
-                            fontSize={11}
-                            className="center"
-                            onClick={this.handleReviewShowMore}
-                        >
-                            <StyledDownArrow
-                                icon="downArrow"
-                                width="20px"
-                            />
+                        <Box mt={20}>
+                            <StyledShowMoreBox
+                                fontSize={11}
+                                className="center"
+                                onClick={this.handleReviewShowMore}
+                            >
+                                <StyledDownArrow
+                                    icon="downArrow"
+                                    width="20px"
+                                />
                                 Show more
-                        </StyledShowMoreBox>
-                    </Box>
-                )}
+                            </StyledShowMoreBox>
+                        </Box>
+                    )}
 
                 {this.props.type === 'office' && (
                     <Modal
@@ -471,10 +482,10 @@ class DetailDetails extends Component {
                     >
                         {!this.state.showReservationOptions &&
                             !this.dentistProfileExists() && (
-                            <CreateDentistProfile
-                                handleSubmission={this.handleSubmission}
-                            />
-                        )}
+                                <CreateDentistProfile
+                                    handleSubmission={this.handleSubmission}
+                                />
+                            )}
                         {this.dentistProfileExists() && (
                             <ReservationOptions
                                 listing={this.state.listing}
