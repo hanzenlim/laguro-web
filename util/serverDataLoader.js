@@ -27,7 +27,7 @@ module.exports.getUserQuery = `
 `;
 
 module.exports.getUserVariable = (id) => ({
-	googleId: id.toString()
+    googleId: id.toString()
 });
 
 module.exports.createUserQuery = `
@@ -35,18 +35,35 @@ module.exports.createUserQuery = `
         createUser(input: $input) {
             id
             googleId
+            email
             imageUrl
         }
     }
 `;
 
-module.exports.createUserVariable = (name, id, img) => ({ 
-	"input": {
-		name: name,
-		googleId: id,
-		imageUrl: img
-	}
+module.exports.updatePatientDocumentSignatureQuery = `
+    mutation updatePatientDocumentSignature($input: UpdatePatientDocumentSignatureInput!) {
+        updatePatientDocumentSignature(input: $input) {
+            signatureRequestId
+        }
+    }
+`;
+
+module.exports.createUserVariable = (name, id, email, img) => ({
+    "input": {
+        name: name,
+        googleId: id,
+        email: email,
+        imageUrl: img
+    }
 });
+
+module.exports.updatePatientDocumentSignatureVariable = (signatureRequestId) => ({
+    "input": {
+        signatureRequestId: signatureRequestId,
+    }
+});
+
 
 module.exports.makeQuery = async (query, variables) => {
     let result = await apolloFetch({

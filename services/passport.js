@@ -39,10 +39,13 @@ passport.use(new GoogleStrategy(
         const imgUrl = profile.photos[0].value;
         const biggerImg = imgUrl.slice(0, -2).concat('300');
 
+        const email = profile.emails[0].value;
+
         // Create a brand new user.
         result = await makeMutation(createUserQuery, createUserVariable(
             profile.displayName,
             profile.id,
+            email,
             biggerImg,
         ));
 
