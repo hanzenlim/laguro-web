@@ -63,26 +63,11 @@ class NewListing extends Component {
             delete values.office;
             this.props.createListing({
                 ...values,
+                chairHourlyPrice: values.chairHourlyPrice * 100,
+                cleaningFee: values.cleaningFee * 100,
                 officeId: office.id
             });
         }
-    }
-
-    calcTime() {
-        const { startTime, endTime } = this.props;
-        const minutes = endTime.diff(startTime, 'minutes');
-        this.hours = minutes / 60;
-    }
-
-    calcTotal() {
-        const { price, numChairsAvailable } = this.props;
-        if (this.hours <= 0 || !numChairsAvailable || !price) {
-            return 0;
-        }
-
-        return Math.floor(
-            numChairsAvailable * price * this.hours * 0.2
-        ).toFixed(2);
     }
 
     render() {
@@ -97,8 +82,6 @@ class NewListing extends Component {
         if (!this.props.initialized || !offices) {
             return <div>Loading...</div>;
         }
-
-        this.calcTime();
 
         return (
             <form

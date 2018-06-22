@@ -40,7 +40,7 @@ class Payout extends Component {
                 <a
                     href={`https://connect.stripe.com/express/oauth/authorize?client_id=${stripeExpressClientKey}`}
                 >
-                    Create Payout Link{' '}
+                    Create Payout Link
                 </a>
             </div>
         );

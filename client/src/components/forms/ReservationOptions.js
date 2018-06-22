@@ -22,6 +22,7 @@ import {
 import * as actions from '../../actions';
 import { DENTIST, ACTIVE } from '../../util/strings';
 import { calculateTimeslots, getStartTime } from '../../util/timeUtil';
+import { renderPrice } from '../../util/paymentUtil';
 
 class ReservationOptions extends Component {
     constructor(props) {
@@ -126,9 +127,9 @@ class ReservationOptions extends Component {
                 <label>Equipment Available</label>
                 {fields.map((equipment, index) => (
                     <li key={index} className="multiRowAdd">
-                        {`${equipData[index].name} - $${
+                        {`${equipData[index].name} - ${renderPrice(
                             equipData[index].price
-                        }`}
+                        )}`}
                         <Field
                             name={`${equipment}.needed`}
                             id={`equip${index}`}
@@ -144,40 +145,48 @@ class ReservationOptions extends Component {
     calcTime() {
         const { startTime, endTime } = this.props;
         const minutes = endTime.diff(startTime, 'minutes');
-        this.hours = minutes / 60;
+        if (minutes <= 0) return 0;
+
+        return minutes / 60; //hours
+    }
+
+    calcReservationFee() {
+        const { numChairs, listing } = this.props;
+        const reservationFee =
+            numChairs * listing.chairHourlyPrice * this.calcTime();
+
+        return reservationFee;
     }
 
     calcBookingFee() {
-        const { numChairs, listing } = this.props;
-        const chair_price = numChairs * listing.chairHourlyPrice * this.hours;
-        this.booking_fee = Number(chair_price * 0.15);
+        const bookingFee = this.calcReservationFee() * 0.15;
 
-        if (this.booking_fee <= 0) return 0;
-
-        return this.booking_fee.toFixed(2);
+        return bookingFee;
     }
 
-    // TODO create a payment calculator utility class
-    calcTotal() {
-        const { numChairs, listing } = this.props;
-        const equipData = this.props.equipmentSelected;
-        this.equipTotal = 0;
-
-        if (this.hours <= 0) {
+    calcEquipFee() {
+        const { equipmentSelected } = this.props;
+        if (!equipmentSelected || equipmentSelected.length === 0) {
             return 0;
         }
+        const equipmentFee = equipmentSelected
+            .filter(equip => equip.needed)
+            .map(equip => equip.price)
+            .reduce((acc, sub) => sub + acc, 0);
 
-        const chair_price = numChairs * listing.chairHourlyPrice * this.hours;
+        return equipmentFee;
+    }
 
-        if (equipData && equipData.length) {
-            this.equipTotal = equipData
-                .filter(equip => equip.needed)
-                .map(equip => equip.price)
-                .reduce((acc, sub) => sub + acc, 0);
-        }
+    calcTotal() {
+        const { listing } = this.props;
+        const reservationFee = this.calcReservationFee();
+        const bookingFee = this.calcBookingFee();
+        const equipmentFee = this.calcEquipFee();
 
-        const total = this.booking_fee + chair_price + this.equipTotal;
-        return total.toFixed(2);
+        const total =
+            bookingFee + reservationFee + equipmentFee + listing.cleaningFee;
+
+        return total;
     }
 
     renderOpeningTimePicker({
@@ -280,8 +289,6 @@ class ReservationOptions extends Component {
 
         if (!this.props.initialized) return <div>Loading...</div>;
 
-        this.calcTime();
-
         let { startTime } = this.props;
         let { timeSlots } = this.state;
 
@@ -299,7 +306,6 @@ class ReservationOptions extends Component {
 
         if (this.state.redirectToPayment) {
             const { startTime, endTime, numChairs } = this.props;
-            const totalPaid = Math.round(this.calcTotal() * 100);
             let { equipmentSelected } = this.props;
 
             equipmentSelected = JSON.stringify(
@@ -310,7 +316,11 @@ class ReservationOptions extends Component {
 
             const urlParams = {};
             urlParams.type = 'reservation';
-            urlParams.totalPaid = totalPaid;
+            urlParams.totalPaid = this.calcTotal();
+            urlParams.equipmentFee = this.calcEquipFee();
+            urlParams.cleaningFee = listing.cleaningFee;
+            urlParams.bookingFee = this.calcBookingFee();
+            urlParams.reservationFee = this.calcReservationFee();
             urlParams.startTime = moment(startTime).format();
             urlParams.endTime = moment(endTime).format();
             urlParams.numChairs = numChairs;
@@ -372,7 +382,9 @@ class ReservationOptions extends Component {
                         {renderOptions(
                             this.props.listing.numChairsAvailable,
                             1,
-                            `- $${this.props.listing.chairHourlyPrice}/chair/hr`
+                            `- $${(
+                                this.props.listing.chairHourlyPrice / 100
+                            ).toFixed(2)}/chair/hr`
                         )}
                     </Field>
                 </Flex>
@@ -389,29 +401,39 @@ class ReservationOptions extends Component {
                     <div />
                 )}
 
-                <Flex>
-                    <Box width={1 / 2}>
-                        <label>Booking Fee - 15% of chair time</label>
-                        <h6 className="red-text">${this.calcBookingFee()}</h6>
+                <Flex pt={2}>
+                    <Box width={1 / 5}>
+                        <label>Chair Rental Fee</label>
+                        <h6>{renderPrice(this.calcReservationFee())}</h6>
                     </Box>
-                    <Box width={1 / 2}>
-                        <label>Total due</label>
-                        <h6 className="red-text">${this.calcTotal()}</h6>
+                    <Box width={1 / 5}>
+                        <label>Equipment Fee</label>
+                        <h6>{renderPrice(this.calcEquipFee())}</h6>
+                    </Box>
+                    <Box width={1 / 5}>
+                        <label>Cleaning Fee</label>
+                        <h6>{renderPrice(listing.cleaningFee)}</h6>
+                    </Box>
+                    <Box width={1 / 5}>
+                        <label>Booking Fee *</label>
+                        <h6>{renderPrice(this.calcBookingFee())}</h6>
+                    </Box>
+                    <Box width={1 / 5}>
+                        <label>Total due **</label>
+                        <h6 className="red-text">
+                            {renderPrice(this.calcTotal())}
+                        </h6>
                     </Box>
                 </Flex>
 
-                <Flex pb={3} flexDirection="column">
+                <Flex pt={3} pb={3} flexDirection="column">
                     <Box>
-                        <sub>
-                            *An additional 10% of final patient payment will be
-                            deducted on completion of procedure for use of
-                            Laguro services
-                        </sub>
+                        <sub>* Booking fee is non-refundable</sub>
                     </Box>
                     <Box>
                         <sub>
-                            **Payment for first two hours of selected staff
-                            payroll and booking fee are non-refundable
+                            ** An additional 10% fee will be deducted from
+                            patient collections for use of Laguro services
                         </sub>
                     </Box>
                 </Flex>

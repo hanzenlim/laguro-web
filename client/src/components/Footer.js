@@ -62,7 +62,6 @@ class Footer extends Component {
                             </p>
                         </div>
                         <div className="col offset-l4 l8 s12 footer-copyright">
-                            {' '}
                             © 2018 Laguro LLC. All Rights Reserved.
                         </div>
                     </div>

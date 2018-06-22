@@ -57,6 +57,7 @@ class BookAppointment extends Component {
         const urlParams = {};
         urlParams.type = 'appointment';
         urlParams.totalPaid = APPOINTMENT_SCHEDULING_FEE;
+        urlParams.reservationFee = APPOINTMENT_SCHEDULING_FEE;
         urlParams.startTime = moment(startTime).format();
         urlParams.endTime = moment(endTime).format();
         urlParams.procedure = JSON.stringify(values.procedure);

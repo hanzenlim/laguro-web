@@ -39,6 +39,7 @@ export const listingFragment = `
     officeId
     numChairsAvailable
     chairHourlyPrice
+    cleaningFee
     startTime
     endTime
     dateCreated

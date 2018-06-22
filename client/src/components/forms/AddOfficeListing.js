@@ -39,18 +39,25 @@ class NewListing extends Component {
         super(props);
 
         this.urlParams = queryString.parse(history.location.search);
+        const {
+            cleaningFee,
+            chairHourlyPrice,
+            startTime,
+            endTime,
+            numChairsAvailable,
+            name
+        } = this.urlParams;
+
         this.props.initialize({
-            office: this.urlParams.name,
-            cleaningFee: this.urlParams.cleaningFee,
-            chairHourlyPrice: this.urlParams.chairHourlyPrice,
-            startTime: this.urlParams.startTime
-                ? moment(this.urlParams.startTime)
-                : getNextHalfHour(),
-            endTime: this.urlParams.endTime
-                ? moment(this.urlParams.endTime)
+            office: name,
+            cleaningFee: cleaningFee ? cleaningFee / 100 : 15,
+            chairHourlyPrice: chairHourlyPrice ? chairHourlyPrice / 100 : 50,
+            startTime: startTime ? moment(startTime) : getNextHalfHour(),
+            endTime: endTime
+                ? moment(endTime)
                 : getNextHalfHour().add(2, 'hours'),
-            numChairsAvailable: this.urlParams.numChairsAvailable
-                ? Number(this.urlParams.numChairsAvailable)
+            numChairsAvailable: numChairsAvailable
+                ? Number(numChairsAvailable)
                 : 1
         });
     }
@@ -61,13 +68,21 @@ class NewListing extends Component {
     }
 
     handleBack = () => {
+        const {
+            chairHourlyPrice,
+            cleaningFee,
+            numChairsAvailable,
+            endTime,
+            startTime
+        } = this.props;
+
         const params = queryString.stringify({
             ...this.urlParams,
-            startTime: this.props.startTime,
-            endTime: this.props.endTime,
-            chairHourlyPrice: this.props.chairHourlyPrice,
-            cleaningFee: this.props.cleaningFee,
-            numChairsAvailable: this.props.numChairsAvailable
+            startTime: moment(startTime).format(),
+            endTime: moment(endTime).format(),
+            chairHourlyPrice: chairHourlyPrice ? chairHourlyPrice * 100 : 0,
+            cleaningFee: cleaningFee ? cleaningFee * 100 : 0,
+            numChairsAvailable: numChairsAvailable
         });
 
         history.push(`/landlord-onboarding/add-equipments?${params}`);
@@ -112,6 +127,8 @@ class NewListing extends Component {
 
             await this.props.createListing({
                 ...values,
+                chairHourlyPrice: values.chairHourlyPrice * 100,
+                cleaningFee: values.cleaningFee * 100,
                 officeId: this.props.offices[0].id
             });
         }

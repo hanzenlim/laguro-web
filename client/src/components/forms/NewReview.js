@@ -97,8 +97,7 @@ class NewReview extends Component {
             <TextArea {...input} placeholder={placeholder} />
             {touched && error ? (
                 <StyledPadding top={10}>
-                    {' '}
-                    <span className="red-text">{error}</span>{' '}
+                    <span className="red-text">{error}</span>
                 </StyledPadding>
             ) : (
                 <StyledPadding />
