@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 
-import { required } from './formValidation';
+import { requiredAndSignedIn } from './formValidation';
 import * as actions from '../../actions';
 import { Grid } from '../common/';
 import { Padding } from '../common/Spacing';
@@ -111,9 +111,7 @@ class NewReview extends Component {
     };
 
     render() {
-        const { handleSubmit, auth } = this.props;
-
-        const disableReviewBtn = auth ? false : true;
+        const { handleSubmit } = this.props;
 
         return (
             <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
@@ -124,7 +122,7 @@ class NewReview extends Component {
                                 name="text"
                                 placeholder={`Write a review`}
                                 component={this.renderTextArea}
-                                validate={required}
+                                validate={requiredAndSignedIn}
                             />
                         </div>
                         <InputStarsDiv>
@@ -141,7 +139,6 @@ class NewReview extends Component {
                     <Grid item xs={2}>
                         <MuiThemeProvider theme={theme}>
                             <ReviewSubmitButton
-                                disabled={disableReviewBtn}
                                 variant="raised"
                                 color="primary"
                                 type="submit"
@@ -163,5 +160,6 @@ function mapStateToProps(state) {
 }
 
 export default reduxForm({
-    form: 'newReview'
+    form: 'newReview',
+    requiredAndSignedIn
 })(connect(mapStateToProps, actions)(NewReview));

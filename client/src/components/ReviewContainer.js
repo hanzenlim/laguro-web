@@ -4,11 +4,11 @@ import ReactStars from 'react-stars';
 import styled from 'styled-components';
 import Grid from '@material-ui/core/Grid';
 import { REVIEWEE_ID } from '../util/strings';
-import { Box } from './common';
+import { Flex, Box } from './common';
 import { Padding } from './common/Spacing';
 import * as actions from '../actions';
 
-const ReviewDiv = styled(Box)`
+const ReviewBox = styled(Box)`
     float: left;
 `;
 
@@ -28,11 +28,11 @@ const ReviewContentDiv = styled(Box)`
 class ReviewContainer extends Component {
     renderEditButtons(id) {
         return (
-            <Box
+            <Box height={33}
                 p={1}
                 className="red lighten-3 white-text pointer"
                 onClick={() => {
-                    this.props.deleteReview(id);
+                    this.deleteReview(id);
                 }}
             >
                 <i className="material-icons">delete_forever</i>
@@ -42,7 +42,7 @@ class ReviewContainer extends Component {
 
     renderReviewList(reviews) {
         const { auth } = this.props;
-        if (!auth || !reviews) {
+        if (!reviews) {
             return '';
         }
         const reviewPerRow = window.innerWidth >= 601 ? 3 : 2;
@@ -51,41 +51,28 @@ class ReviewContainer extends Component {
             .slice(0, this.props.rows * reviewPerRow)
             .map((review, index) => (
                 <Grid item xs={6} sm={4} key={index}>
-                    <Grid
-                        container
-                        direction="row"
-                        alignItems="center"
-                        spacing={16}
-                    >
-                        <Grid item>
-                            <ReviewDiv fontSize={13}>
-                                <ReviewNameDiv fontSize={17}>
-                                    {' '}
-                                    {review.reviewer.name}{' '}
-                                </ReviewNameDiv>
-                                <Padding bottom={10} />
-                                <ReviewContentDiv
-                                    fontSize={14}
-                                    className="review-content"
-                                >
-                                    {' '}
-                                    {review.text}{' '}
-                                </ReviewContentDiv>
-                                <Padding bottom={10} />
-                                <ReactStars
-                                    count={5}
-                                    edit={false}
-                                    size={15}
-                                    value={review.rating}
-                                />
-                            </ReviewDiv>
-                        </Grid>
-                        {auth.id === review.reviewer.id ? (
-                            <Grid item>
-                                {this.renderEditButtons(review.id)}
-                            </Grid>
-                        ) : null}
-                    </Grid>
+                    <Flex>
+                        <ReviewBox fontSize={13}>
+                            <ReviewNameDiv fontSize={17}>
+                                {review.reviewer.name}
+                            </ReviewNameDiv>
+                            <Padding bottom={10} />
+                            <ReviewContentDiv
+                                fontSize={14}
+                                className="review-content"
+                            >
+                                {review.text}
+                            </ReviewContentDiv>
+                            <Padding bottom={10} />
+                            <ReactStars
+                                count={5}
+                                edit={false}
+                                size={15}
+                                value={review.rating}
+                            />
+                        </ReviewBox>
+                        {auth && auth.id === review.reviewer.id ? (this.renderEditButtons(review.id)) : null}
+                    </Flex>
                 </Grid>
             ));
     }
@@ -110,7 +97,8 @@ class ReviewContainer extends Component {
 
 function mapStateToProps(state) {
     return {
-        auth: state.auth
+        auth: state.auth,
+        reviews: state.reviews.all
     };
 }
 
