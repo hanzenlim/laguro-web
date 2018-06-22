@@ -52,6 +52,7 @@ equipment {
     name
     price
 }
+description
 reviews {
     rating
 }

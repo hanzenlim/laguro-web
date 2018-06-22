@@ -54,6 +54,11 @@ const StyledDetailsHeadingBox = styled(Box)`
     display: inline-block;
 `;
 
+const StyledDescriptionBox = styled(Box)`
+    white-space: pre-line;
+    ${props => 'overflow: ' + props.overflow + ';'}
+`;
+
 const StyledShowMoreBox = styled(Box)`
     opacity: 0.4;
     text-decoration: underline;
@@ -111,10 +116,12 @@ class DetailDetails extends Component {
             reviewRowNum: 1,
             isModalOpen: false,
             avg_rating: 0,
-            rating_count: 0
+            rating_count: 0,
+            descShowMore: true,
         };
-        this.handleReviewShowMore = this.handleReviewShowMore.bind(this);
+        this.handleShowMoreReview = this.handleShowMoreReview.bind(this);
         this.handleSubmission = this.handleSubmission.bind(this);
+        this.handleShowMoreDescription = this.handleShowMoreDescription.bind(this);
     }
 
     componentDidUpdate() {
@@ -216,7 +223,7 @@ class DetailDetails extends Component {
         }
     }
 
-    handleReviewShowMore() {
+    handleShowMoreReview() {
         const reviews = this.props.reviews;
         const rowNum = this.state.reviewRowNum;
         if (
@@ -233,6 +240,12 @@ class DetailDetails extends Component {
             });
         }
         this.reviewCalc();
+    }
+
+    handleShowMoreDescription() {
+        this.setState({
+            descShowMore: false
+        });
     }
 
     renderProcedures(dentist) {
@@ -372,18 +385,31 @@ class DetailDetails extends Component {
             equipmentOrProcedures = 'Procedures';
             listingsOrAppointments = 'Appointments';
         }
+
         return (
             <StyledDetailsDiv>
-                <StyledDetailsHeadingBox fontSize={25}>
-                    {' '}
-                    {equipmentOrProcedures}{' '}
-                </StyledDetailsHeadingBox>
+                {this.props.type === 'office' && obj.description && <Box>
+                    <StyledDetailsHeadingBox fontSize={25}> Description </StyledDetailsHeadingBox>
+                    <hr />
+                    <StyledDescriptionBox overflow={this.state.descShowMore ? 'hidden' : 'auto'} maxHeight={this.state.descShowMore ? 68 : 300}> {obj.description} </StyledDescriptionBox>
+                    <Box mb={10} />
+                    {this.state.descShowMore && <Box mt={10}>
+                        <StyledShowMoreBox fontSize={1} className="center" onClick={this.handleShowMoreDescription}>
+                            <StyledDownArrow icon="downArrow" width="20px" />
+                            Show more
+                        </StyledShowMoreBox>
+                    </Box>}
+                </Box>}
+
+                <Box mb={40} />
+
+                <StyledDetailsHeadingBox fontSize={25}> {equipmentOrProcedures} </StyledDetailsHeadingBox>
 
                 <hr />
 
                 <Padding bottom={10} />
 
-                <StyledEquipmentBox fontSize={18} color="#484E51">
+                <StyledEquipmentBox fontSize={4} color="#484E51">
                     <Padding bottom="1" />
                     {this.props.type === 'office'
                         ? this.renderEquipment(obj)
@@ -461,9 +487,9 @@ class DetailDetails extends Component {
                     auth && (
                     <Box mt={20}>
                         <StyledShowMoreBox
-                            fontSize={11}
+                            fontSize={1}
                             className="center"
-                            onClick={this.handleReviewShowMore}
+                            onClick={this.handleShowMoreReview}
                         >
                             <StyledDownArrow
                                 icon="downArrow"

@@ -9,7 +9,8 @@ export default {
         appointment_green: '#28a51c',
         'carribean-green': '#0ad5B1',
         red: '#ff0000',
-        darkGrey: '#484e51'
+        darkGrey: '#484e51',
+        gray: '#9e9e9e'
     },
     fontSizes: [10, 12, 14, 16, 18, 32],
     fontWeights: {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Field, reduxForm, FieldArray } from 'redux-form';
+import { formValueSelector, Field, reduxForm, FieldArray } from 'redux-form';
 import ReactFilestack from 'filestack-react';
 import { Link } from 'react-router-dom';
 
@@ -10,7 +10,8 @@ import { required, isNum } from './formValidation';
 import {
     renderField,
     renderSelect,
-    equipmentOptions
+    equipmentOptions,
+    charCount
 } from './sharedComponents';
 
 class EditOffice extends Component {
@@ -38,7 +39,8 @@ class EditOffice extends Component {
         this.props.initialize({
             name: office.name,
             numChairs: office.numChairs,
-            equipment: office.equipment
+            equipment: office.equipment,
+            description: office.description
         });
     }
 
@@ -171,6 +173,20 @@ class EditOffice extends Component {
                     />
                 </div>
 
+                <Field
+                    name="description"
+                    label="Description (optional)"
+                    component={renderField}
+                    multiline={true}
+                    rows={2}
+                    charCount={true}
+                    inputProps={{
+                        maxLength: 500
+                    }}
+                />
+
+                {charCount(this.props.description ? this.props.description.length : 0, 500)}
+
                 <div className="row">
                     <FieldArray
                         name="equipment"
@@ -219,10 +235,14 @@ class EditOffice extends Component {
 }
 
 function mapStateToProps(state) {
+    const selector = formValueSelector('editOffice');
+
     return {
         auth: state.auth,
-        office: state.offices.selected
+        office: state.offices.selected,
+        description: selector(state, 'description')
     };
+
 }
 
 export default reduxForm({

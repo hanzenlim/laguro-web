@@ -1,5 +1,6 @@
 import React from 'react';
 import DatePicker from 'react-datepicker';
+import styled from 'styled-components';
 import moment from 'moment';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -11,7 +12,8 @@ import {
     Select,
     Checkbox,
     Typography,
-    Flex
+    Flex,
+    Box
 } from '../common';
 import equipmentList from '../../staticData/equipmentList';
 import procedureList from '../../staticData/procedureList';
@@ -123,14 +125,17 @@ export const renderField = ({
     className,
     disabled,
     placeholder,
+    multiline,
+    inputProps,
+    rows,
     meta: { touched, error }
-}) => (
+}) =>{ return (
     <Grid className={className} container direction="column">
         <label>{label}</label>
-        <Input {...input} disabled={disabled} placeholder={placeholder} />
+        <Input {...input} inputProps={inputProps} rows={rows} multiline={multiline} disabled={disabled} placeholder={placeholder} />
         {touched && error && <span className="red-text">{error}</span>}
     </Grid>
-);
+)};
 
 export const renderOptions = (maxAvail, minAvail = 1, label = '') => {
     const options = [];
@@ -199,3 +204,18 @@ export const renderCheckbox = ({ label, input: { onChange, value } }) => (
         <Typography pl={2}>{label}</Typography>
     </Flex>
 );
+
+export const charCount = (numChar, total) => {
+    const StyledCharCountBox = styled(Box)`
+        float: right;
+        && {
+            margin: 0
+        }
+    `;
+
+    return (
+        <StyledCharCountBox color="gray" fontSize={1}>
+            {numChar} / {total}
+        </StyledCharCountBox>
+    )
+}

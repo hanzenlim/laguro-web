@@ -39,7 +39,6 @@ class NewListing extends Component {
         super(props);
 
         this.urlParams = queryString.parse(history.location.search);
-
         this.props.initialize({
             office: this.urlParams.name,
             cleaningFee: this.urlParams.cleaningFee,
@@ -97,7 +96,8 @@ class NewListing extends Component {
                 location,
                 numChairs,
                 imageUrls,
-                equipment
+                equipment,
+                description
             } = this.urlParams;
 
             await this.props.createOffice({
@@ -106,7 +106,8 @@ class NewListing extends Component {
                 numChairs,
                 hostId: this.props.auth.dentist.id,
                 imageUrls: JSON.parse(imageUrls),
-                equipment: JSON.parse(equipment)
+                equipment: JSON.parse(equipment),
+                description
             });
 
             await this.props.createListing({

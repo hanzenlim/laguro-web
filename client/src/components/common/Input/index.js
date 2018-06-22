@@ -21,6 +21,10 @@ const StyledInput = styled(MaterialUITextField)`
         }
     }
 
+    textarea {
+        height: auto; 
+    }
+
     &&&&:after,
     &&&&:before {
         /* HACK: Temporary fix for  materilize css globals */
