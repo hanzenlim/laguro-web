@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Card from '@material-ui/core/Card';
 import * as actions from "../actions";
 import { Padding } from './common/Spacing';
-import listingImgPlaceholder from './images/office-placeholder-small.png'
+import listingImgPlaceholder from './images/office-placeholder-thumbnail.png'
 
 import "./css/PhotoGrid.css";
 
@@ -85,7 +85,6 @@ class PhotoGrid extends Component {
                     }
 
                 }).map(listing => {
-
                     let listingImg;
                     if (listing.office.imageUrls && listing.office.imageUrls.length !== 0) {
                         listingImg = listing.office.imageUrls[0]
