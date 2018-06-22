@@ -9,6 +9,7 @@ import {
     REVIEWS,
     OFFICE_ID,
     START_TIME,
+    HOST,
     STATUS,
     ACTIVE
 } from '../../util/strings';
@@ -76,7 +77,7 @@ class Office extends Component {
 
     componentDidMount() {
         this.office_id = this.props.match.params.office_id;
-        this.props.getOffice(this.office_id, REVIEWS);
+        this.props.getOffice(this.office_id, REVIEWS, HOST);
         this.props.queryListings(OFFICE_ID, this.office_id, {
             sortKey: START_TIME,
             rangeStart: moment()

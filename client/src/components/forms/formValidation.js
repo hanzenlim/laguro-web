@@ -7,6 +7,8 @@ export const isNum = value =>
 export function requiredAndSignedIn(value, allValues, props) {
     if (!props.reviewerId) {
         return 'Please log in before you can leave a review.';
+    } else if (props.own) {
+        return 'You cannot leave a review on your own office or dentist profile.';  
     } else if (props.wasReviewed) {
         return 'You have already reviewed this office or dentist.';
     } else if (!(value && value !== '')) {

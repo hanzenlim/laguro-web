@@ -434,6 +434,7 @@ class DetailDetails extends Component {
                             type={this.props.type === "office" ? OFFICE : DENTIST}
                             reviewerId={auth && auth.id}
                             wasReviewed={auth && reviews.some(e => e.reviewer.id === auth.id)}
+                            own={auth && auth.dentistId === (this.props.type === 'office' ? obj.host.id : obj.id)}
                         />}
                     <Padding bottom={12} />
 
