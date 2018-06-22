@@ -101,6 +101,15 @@ const Payout = Loadable({
     loading: LoadingComponent
 });
 
+const Terms = Loadable({
+    loader: () => import('./Terms'),
+    loading: LoadingComponent
+});
+
+const PrivacyPolicy = Loadable({
+    loader: () => import('./PrivacyPolicy'),
+    loading: LoadingComponent
+});
 const PrivateRoute = ({ auth, path, component: Component, ...props }) => (
     <Route
         render={() =>
@@ -139,14 +148,6 @@ class App extends Component {
                                     auth={this.props.auth}
                                     component={LandlordOnboarding}
                                 />
-                                <Route
-                                    path="/dentist/search"
-                                    component={DentistResultIndex}
-                                />
-                                <Route
-                                    path="/office/search"
-                                    component={OfficeResultIndex}
-                                />
                                 <PrivateRoute
                                     auth={this.props.auth}
                                     path="/office/:office_id/listing/:id/edit"
@@ -162,10 +163,6 @@ class App extends Component {
                                     path="/office/new"
                                     component={NewOffice}
                                 />
-                                <Route
-                                    path="/office/:office_id"
-                                    component={Office}
-                                />
                                 <PrivateRoute
                                     auth={this.props.auth}
                                     path="/dentist/new"
@@ -175,10 +172,6 @@ class App extends Component {
                                     auth={this.props.auth}
                                     path="/dentist/edit"
                                     component={EditDentist}
-                                />
-                                <Route
-                                    path="/dentist/:id"
-                                    component={Dentist}
                                 />
                                 <PrivateRoute
                                     auth={this.props.auth}
@@ -209,6 +202,30 @@ class App extends Component {
                                     auth={this.props.auth}
                                     path="/payout"
                                     component={Payout}
+                                />
+                                <Route
+                                    path="/dentist/:id"
+                                    component={Dentist}
+                                />
+                                <Route
+                                    path="/dentist/search"
+                                    component={DentistResultIndex}
+                                />
+                                <Route
+                                    path="/office/search"
+                                    component={OfficeResultIndex}
+                                />
+                                <Route
+                                    path="/office/:office_id"
+                                    component={Office}
+                                />
+                                <Route
+                                    path="/terms"
+                                    component={Terms}
+                                />
+                                <Route
+                                    path="/privacy"
+                                    component={PrivacyPolicy}
                                 />
                                 <Route path="/" component={Landing} />
                                 {/* Catch all unmatched routes. */}

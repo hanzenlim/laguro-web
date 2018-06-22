@@ -458,20 +458,20 @@ class DetailDetails extends Component {
                         this.state.reviewRowNum *
                             (window.innerWidth > 600 ? 3 : 2) &&
                     auth && (
-                        <Box mt={20}>
-                            <StyledShowMoreBox
-                                fontSize={11}
-                                className="center"
-                                onClick={this.handleReviewShowMore}
-                            >
-                                <StyledDownArrow
-                                    icon="downArrow"
-                                    width="20px"
-                                />
+                    <Box mt={20}>
+                        <StyledShowMoreBox
+                            fontSize={11}
+                            className="center"
+                            onClick={this.handleReviewShowMore}
+                        >
+                            <StyledDownArrow
+                                icon="downArrow"
+                                width="20px"
+                            />
                                     Show more
-                            </StyledShowMoreBox>
-                        </Box>
-                    )}
+                        </StyledShowMoreBox>
+                    </Box>
+                )}
 
                 {this.props.type === 'office' && (
                     <Modal
@@ -481,10 +481,10 @@ class DetailDetails extends Component {
                     >
                         {!this.state.showReservationOptions &&
                             !this.dentistProfileExists() && (
-                                <CreateDentistProfile
-                                    handleSubmission={this.handleSubmission}
-                                />
-                            )}
+                            <CreateDentistProfile
+                                handleSubmission={this.handleSubmission}
+                            />
+                        )}
                         {this.dentistProfileExists() && (
                             <ReservationOptions
                                 listing={this.state.listing}
