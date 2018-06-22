@@ -191,6 +191,7 @@ class Office extends Component {
                     reviews={reviews}
                     listings={listings}
                     dentist={dentist}
+                    ownPage={auth && office.host && (auth.dentistId === office.host.id)}
                 />
             </div>
         );
