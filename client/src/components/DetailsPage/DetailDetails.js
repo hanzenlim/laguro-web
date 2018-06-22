@@ -342,6 +342,12 @@ class DetailDetails extends Component {
         }
     }
 
+    closeModal = () => {
+        this.setState({
+            isModalOpen: false,
+        });
+    };
+
     renderEquipment(office) {
         const eq = office.equipment;
         if (eq && Array.isArray(eq) && eq.length !== 0) {
@@ -426,16 +432,16 @@ class DetailDetails extends Component {
                     {auth &&
                         (obj.constructor === Object &&
                             Object.keys(obj).length !== 0) && (
-                            <NewReview
-                                reviewee={obj}
-                                type={
-                                    this.props.type === 'office'
-                                        ? OFFICE
-                                        : DENTIST
-                                }
-                                reviewerId={auth.id}
-                            />
-                        )}
+                        <NewReview
+                            reviewee={obj}
+                            type={
+                                this.props.type === 'office'
+                                    ? OFFICE
+                                    : DENTIST
+                            }
+                            reviewerId={auth.id}
+                        />
+                    )}
                     <Padding bottom={12} />
 
                     {obj && (
@@ -459,20 +465,20 @@ class DetailDetails extends Component {
                         this.state.reviewRowNum *
                             (window.innerWidth > 600 ? 3 : 2) &&
                     auth && (
-                        <Box mt={20}>
-                            <StyledShowMoreBox
-                                fontSize={11}
-                                className="center"
-                                onClick={this.handleReviewShowMore}
-                            >
-                                <StyledDownArrow
-                                    icon="downArrow"
-                                    width="20px"
-                                />
+                    <Box mt={20}>
+                        <StyledShowMoreBox
+                            fontSize={11}
+                            className="center"
+                            onClick={this.handleReviewShowMore}
+                        >
+                            <StyledDownArrow
+                                icon="downArrow"
+                                width="20px"
+                            />
                                 Show more
-                            </StyledShowMoreBox>
-                        </Box>
-                    )}
+                        </StyledShowMoreBox>
+                    </Box>
+                )}
 
                 {this.props.type === 'office' && (
                     <Modal
@@ -482,10 +488,10 @@ class DetailDetails extends Component {
                     >
                         {!this.state.showReservationOptions &&
                             !this.dentistProfileExists() && (
-                                <CreateDentistProfile
-                                    handleSubmission={this.handleSubmission}
-                                />
-                            )}
+                            <CreateDentistProfile
+                                handleSubmission={this.handleSubmission}
+                            />
+                        )}
                         {this.dentistProfileExists() && (
                             <ReservationOptions
                                 listing={this.state.listing}
