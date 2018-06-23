@@ -57,6 +57,10 @@ authRoutes(app);
 hellosignRoutes(app);
 
 if (process.env.NODE_ENV === 'production') {
+    app.get('/robots.txt', (req, res) => {
+        res.sendFile(path.resolve('build', 'robots.txt'));
+    });
+    
     app.get('*', (req, res) => {
         res.header('Cache-Control', 'no-cache, no-store, must-revalidate');
         res.header('Pragma', 'no-cache');
