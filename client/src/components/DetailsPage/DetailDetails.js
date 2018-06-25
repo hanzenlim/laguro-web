@@ -56,7 +56,7 @@ const StyledDetailsHeadingBox = styled(Box)`
 
 const StyledDescriptionBox = styled(Box)`
     white-space: pre-line;
-    ${props => 'overflow: ' + props.overflow + ';'}
+    ${props => 'overflow: ' + props.overflow + ';'};
 `;
 
 const StyledShowMoreBox = styled(Box)`
@@ -117,11 +117,13 @@ class DetailDetails extends Component {
             isModalOpen: false,
             avg_rating: 0,
             rating_count: 0,
-            descShowMore: true,
+            descShowMore: true
         };
         this.handleShowMoreReview = this.handleShowMoreReview.bind(this);
         this.handleSubmission = this.handleSubmission.bind(this);
-        this.handleShowMoreDescription = this.handleShowMoreDescription.bind(this);
+        this.handleShowMoreDescription = this.handleShowMoreDescription.bind(
+            this
+        );
     }
 
     componentDidUpdate() {
@@ -208,8 +210,7 @@ class DetailDetails extends Component {
                                         listing
                                     )}
                                 >
-                                    {' '}
-                                    Available{' '}
+                                    Available
                                 </StyledAvailButton>
                             ) : (
                                 <StyledResButton> Reserved </StyledResButton>
@@ -357,7 +358,7 @@ class DetailDetails extends Component {
 
     closeModal = () => {
         this.setState({
-            isModalOpen: false,
+            isModalOpen: false
         });
     };
 
@@ -366,7 +367,7 @@ class DetailDetails extends Component {
         if (eq && Array.isArray(eq) && eq.length !== 0) {
             return eq.map(e => (
                 <div key={e.name}>
-                    {e.name} - ${e.price}
+                    {e.name} - ${(e.price / 100).toFixed(2)}
                 </div>
             ));
         } else {
@@ -388,22 +389,45 @@ class DetailDetails extends Component {
 
         return (
             <StyledDetailsDiv>
-                {this.props.type === 'office' && obj.description && <Box>
-                    <StyledDetailsHeadingBox fontSize={25}> Description </StyledDetailsHeadingBox>
-                    <hr />
-                    <StyledDescriptionBox overflow={this.state.descShowMore ? 'hidden' : 'auto'} maxHeight={this.state.descShowMore ? 68 : 300}> {obj.description} </StyledDescriptionBox>
-                    <Box mb={10} />
-                    {this.state.descShowMore && <Box mt={10}>
-                        <StyledShowMoreBox fontSize={1} className="center" onClick={this.handleShowMoreDescription}>
-                            <StyledDownArrow icon="downArrow" width="20px" />
-                            Show more
-                        </StyledShowMoreBox>
-                    </Box>}
-                </Box>}
+                {this.props.type === 'office' &&
+                    obj.description && (
+                        <Box>
+                            <StyledDetailsHeadingBox fontSize={25}>
+                                Description
+                            </StyledDetailsHeadingBox>
+                            <hr />
+                            <StyledDescriptionBox
+                                overflow={
+                                    this.state.descShowMore ? 'hidden' : 'auto'
+                                }
+                                maxHeight={this.state.descShowMore ? 68 : 300}
+                            >
+                                {obj.description}
+                            </StyledDescriptionBox>
+                            <Box mb={10} />
+                            {this.state.descShowMore && (
+                                <Box mt={10}>
+                                    <StyledShowMoreBox
+                                        fontSize={1}
+                                        className="center"
+                                        onClick={this.handleShowMoreDescription}
+                                    >
+                                        <StyledDownArrow
+                                            icon="downArrow"
+                                            width="20px"
+                                        />
+                                        Show more
+                                    </StyledShowMoreBox>
+                                </Box>
+                            )}
+                        </Box>
+                    )}
 
                 <Box mb={40} />
 
-                <StyledDetailsHeadingBox fontSize={25}> {equipmentOrProcedures} </StyledDetailsHeadingBox>
+                <StyledDetailsHeadingBox fontSize={25}>
+                    {equipmentOrProcedures}
+                </StyledDetailsHeadingBox>
 
                 <hr />
 
@@ -454,14 +478,23 @@ class DetailDetails extends Component {
                 <Padding bottom={10} />
 
                 <StyledReviewsDiv>
-                    {(obj.constructor === Object && Object.keys(obj).length !== 0) &&
-                        <NewReview
-                            reviewee={obj}
-                            type={this.props.type === "office" ? OFFICE : DENTIST}
-                            reviewerId={auth && auth.id}
-                            wasReviewed={auth && reviews.some(e => e.reviewer.id === auth.id)}
-                            ownPage={ownPage}
-                        />}
+                    {obj.constructor === Object &&
+                        Object.keys(obj).length !== 0 && (
+                            <NewReview
+                                reviewee={obj}
+                                type={
+                                    this.props.type === 'office'
+                                        ? OFFICE
+                                        : DENTIST
+                                }
+                                reviewerId={auth && auth.id}
+                                wasReviewed={
+                                    auth &&
+                                    reviews.some(e => e.reviewer.id === auth.id)
+                                }
+                                ownPage={ownPage}
+                            />
+                        )}
                     <Padding bottom={12} />
 
                     {obj && (
@@ -485,20 +518,20 @@ class DetailDetails extends Component {
                         this.state.reviewRowNum *
                             (window.innerWidth > 600 ? 3 : 2) &&
                     auth && (
-                    <Box mt={20}>
-                        <StyledShowMoreBox
-                            fontSize={1}
-                            className="center"
-                            onClick={this.handleShowMoreReview}
-                        >
-                            <StyledDownArrow
-                                icon="downArrow"
-                                width="20px"
-                            />
-                                    Show more
-                        </StyledShowMoreBox>
-                    </Box>
-                )}
+                        <Box mt={20}>
+                            <StyledShowMoreBox
+                                fontSize={1}
+                                className="center"
+                                onClick={this.handleShowMoreReview}
+                            >
+                                <StyledDownArrow
+                                    icon="downArrow"
+                                    width="20px"
+                                />
+                                Show more
+                            </StyledShowMoreBox>
+                        </Box>
+                    )}
 
                 {this.props.type === 'office' && (
                     <Modal
@@ -508,10 +541,10 @@ class DetailDetails extends Component {
                     >
                         {!this.state.showReservationOptions &&
                             !this.dentistProfileExists() && (
-                            <CreateDentistProfile
-                                handleSubmission={this.handleSubmission}
-                            />
-                        )}
+                                <CreateDentistProfile
+                                    handleSubmission={this.handleSubmission}
+                                />
+                            )}
                         {this.dentistProfileExists() && (
                             <ReservationOptions
                                 listing={this.state.listing}

@@ -20,6 +20,7 @@ import * as actions from '../actions';
 import { PAYMENT_OPTIONS, APPOINTMENT, DENTIST } from '../util/strings';
 import { stripeKey } from '../config/keys';
 import { formatListingTime } from '../util/timeUtil';
+import { renderPrice } from '../util/paymentUtil';
 
 const StyledWrapper = styled.div`
     background-color: #F8F9FA;
@@ -136,15 +137,6 @@ class Payment extends Component {
         this.props.createAppointment(appointmentPayload);
     };
 
-    renderPrice = totalPaid => {
-        if (!totalPaid) return '$0';
-
-        return `$${totalPaid.substring(
-            0,
-            totalPaid.length - 2
-        )}.${totalPaid.substring(totalPaid.length - 2)}`;
-    };
-
     renderTime = (startTime, endTime) => {
         return formatListingTime(startTime, endTime);
     };
@@ -198,9 +190,9 @@ class Payment extends Component {
                                     <Typography
                                         fontSize={3}
                                         fontWeight="bold"
-                                        color="carribean-green"
+                                        color="black"
                                     >
-                                        {this.renderPrice(totalPaid)}
+                                        {renderPrice(totalPaid)}
                                     </Typography>
                                 </Grid>
 
@@ -245,7 +237,14 @@ class Payment extends Component {
     };
 
     renderSummaryCard = () => {
-        const { type, totalPaid } = this.urlParams;
+        const {
+            type,
+            totalPaid,
+            equipmentFee,
+            bookingFee,
+            cleaningFee,
+            reservationFee
+        } = this.urlParams;
 
         return (
             <Card>
@@ -261,13 +260,67 @@ class Payment extends Component {
                     <Box py={2}>
                         <Flex justify="space-between">
                             <Typography fontSize={3} color="abbey" capitalize>
-                                {`${type}`}
+                                {`${type} Cost`}
                             </Typography>
                             <Typography fontSize={3} color="abbey">
-                                {this.renderPrice(totalPaid)}
+                                {renderPrice(reservationFee)}
                             </Typography>
                         </Flex>
                     </Box>
+
+                    {equipmentFee &&
+                        equipmentFee > 0 && (
+                            <Box py={2}>
+                                <Flex justify="space-between">
+                                    <Typography
+                                        fontSize={3}
+                                        color="abbey"
+                                        capitalize
+                                    >
+                                        Equipment Fee
+                                    </Typography>
+                                    <Typography fontSize={3} color="abbey">
+                                        {renderPrice(equipmentFee)}
+                                    </Typography>
+                                </Flex>
+                            </Box>
+                        )}
+
+                    {cleaningFee &&
+                        cleaningFee > 0 && (
+                            <Box py={2}>
+                                <Flex justify="space-between">
+                                    <Typography
+                                        fontSize={3}
+                                        color="abbey"
+                                        capitalize
+                                    >
+                                        Cleaning Fee
+                                    </Typography>
+                                    <Typography fontSize={3} color="abbey">
+                                        {renderPrice(cleaningFee)}
+                                    </Typography>
+                                </Flex>
+                            </Box>
+                        )}
+
+                    {bookingFee &&
+                        bookingFee > 0 && (
+                            <Box py={2}>
+                                <Flex justify="space-between">
+                                    <Typography
+                                        fontSize={3}
+                                        color="abbey"
+                                        capitalize
+                                    >
+                                        Booking Fee
+                                    </Typography>
+                                    <Typography fontSize={3} color="abbey">
+                                        {renderPrice(bookingFee)}
+                                    </Typography>
+                                </Flex>
+                            </Box>
+                        )}
 
                     <Divider />
 
@@ -275,17 +328,17 @@ class Payment extends Component {
                         <Flex justify="space-between">
                             <Typography
                                 fontSize={3}
-                                color="abbey"
+                                color="black"
                                 fontWeight="bold"
                             >
                                 Total
                             </Typography>
                             <Typography
                                 fontSize={3}
-                                color="abbey"
+                                color="black"
                                 fontWeight="bold"
                             >
-                                {this.renderPrice(totalPaid)}
+                                {renderPrice(totalPaid)}
                             </Typography>
                         </Flex>
                     </Box>

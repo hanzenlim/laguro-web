@@ -28,7 +28,8 @@ const ReviewContentDiv = styled(Box)`
 class ReviewContainer extends Component {
     renderEditButtons(id) {
         return (
-            <Box height={33}
+            <Box
+                height={33}
                 p={1}
                 className="red lighten-3 white-text pointer"
                 onClick={() => {
@@ -71,7 +72,9 @@ class ReviewContainer extends Component {
                                 value={review.rating}
                             />
                         </ReviewBox>
-                        {auth && auth.id === review.reviewer.id ? (this.renderEditButtons(review.id)) : null}
+                        {auth && auth.id === review.reviewer.id
+                            ? this.renderEditButtons(review.id)
+                            : null}
                     </Flex>
                 </Grid>
             ));
@@ -87,8 +90,7 @@ class ReviewContainer extends Component {
         return (
             <div>
                 <Grid container spacing={40}>
-                    {' '}
-                    {this.renderReviewList(reviews)}{' '}
+                    {this.renderReviewList(reviews)}
                 </Grid>
             </div>
         );

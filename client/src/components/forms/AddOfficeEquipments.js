@@ -5,6 +5,10 @@ import styled from 'styled-components';
 import queryString from 'query-string';
 import * as actions from '../../actions';
 import history from '../../history';
+import {
+    addCentsToEquipment,
+    removeCentsFromEquipment
+} from '../../util/paymentUtil';
 
 import {
     renderField,
@@ -43,12 +47,17 @@ class NewOffice extends Component {
         super(props);
 
         this.urlParams = queryString.parse(history.location.search);
+
+        let { equipment } = this.urlParams;
+
+        equipment = equipment
+            ? removeCentsFromEquipment(JSON.parse(equipment))
+            : [];
+
         this.props.initialize({
             numChairs: this.urlParams.numChairs,
             description: this.urlParams.description,
-            equipment: this.urlParams.equipment
-                ? JSON.parse(this.urlParams.equipment)
-                : []
+            equipment
         });
     }
 
@@ -58,12 +67,12 @@ class NewOffice extends Component {
 
     onSubmit(values) {
         values.equipment = values.equipment
-            ? JSON.stringify(values.equipment)
+            ? JSON.stringify(addCentsToEquipment(values.equipment))
             : [];
 
         const params = queryString.stringify({
             ...this.urlParams,
-            ...values,
+            ...values
         });
 
         history.push(`/landlord-onboarding/add-listing?${params}`);
@@ -75,7 +84,7 @@ class NewOffice extends Component {
             numChairs: this.props.numChairs,
             description: this.props.description,
             equipment: this.props.equipment
-                ? JSON.stringify(this.props.equipment)
+                ? JSON.stringify(addCentsToEquipment(this.props.equipment))
                 : []
         });
 
@@ -140,7 +149,6 @@ class NewOffice extends Component {
     };
 
     render() {
-
         const { handleSubmit, submitting } = this.props;
         const { location } = this.urlParams;
         return (
@@ -151,7 +159,8 @@ class NewOffice extends Component {
                             <Grid container>
                                 <Grid item xs={12}>
                                     <Typography fontSize={5}>
-                                        Next, tell us a little bit about your office and your equipments
+                                        Next, tell us a little bit about your
+                                        office and your equipments
                                     </Typography>
                                 </Grid>
                             </Grid>
@@ -190,7 +199,12 @@ class NewOffice extends Component {
                                 />
                             </Box>
 
-                            {charCount(this.props.description ? this.props.description.length : 0, 500)}
+                            {charCount(
+                                this.props.description
+                                    ? this.props.description.length
+                                    : 0,
+                                500
+                            )}
 
                             <Box mb={16} />
 
@@ -265,9 +279,4 @@ const mapStateToProps = state => {
 
 export default reduxForm({
     form: 'addOfficeEquipments'
-})(
-    connect(
-        mapStateToProps,
-        actions
-    )(NewOffice)
-);
+})(connect(mapStateToProps, actions)(NewOffice));

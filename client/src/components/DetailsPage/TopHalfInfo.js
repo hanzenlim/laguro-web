@@ -17,7 +17,7 @@ let padBackToSearchLet = 0;
 if (window.innerWidth > 600) {
     padBackToSearchLet = 12;
 } else {
-    padBackToSearchLet  = 0;
+    padBackToSearchLet = 0;
 }
 
 const padBackToSearch = padBackToSearchLet;
@@ -32,7 +32,7 @@ const StyledBackToSearchLink = styled(Link)`
     display: inline-block;
     margin-left: auto;
     margin-right: auto;
-    @media screen and (min-width : 600px) {
+    @media screen and (min-width: 600px) {
         position: absolute;
         display: block;
         margin-left: 3%;
@@ -53,12 +53,12 @@ class TopHalfInfo extends Component {
         const obj = this.props.obj;
         let backToSearchLink;
         let backToSearchText;
-        if (this.props.type === "office") {
-            backToSearchLink = "/obj/search"
-            backToSearchText = "Back to office search";
+        if (this.props.type === 'office') {
+            backToSearchLink = '/office/search';
+            backToSearchText = 'Back to office search';
         } else {
-            backToSearchLink = "/dentist/search"
-            backToSearchText = "Back to dentist search";
+            backToSearchLink = '/dentist/search';
+            backToSearchText = 'Back to dentist search';
         }
         return (
             <div className="center">
@@ -66,42 +66,60 @@ class TopHalfInfo extends Component {
 
                 <Box mt={[3, 0]} mb={[2, 0]}>
                     <StyledBackToSearchLink to={backToSearchLink}>
-                        <StyledBackToSearchIcon icon="BackToSearch" width="45px" />
-                        <StyledBackToSearchTextBox pl={10} color="#000"> { backToSearchText}</StyledBackToSearchTextBox>
+                        <StyledBackToSearchIcon
+                            icon="BackToSearch"
+                            width="45px"
+                        />
+                        <StyledBackToSearchTextBox pl={10} color="#000">
+                            {backToSearchText}
+                        </StyledBackToSearchTextBox>
                     </StyledBackToSearchLink>
                 </Box>
 
-                {this.props.type === "dentist" && <StyledProfPic
-                    src={
-                        obj && obj.user ? obj.user.imageUrl : 'https://lh5.googleusercontent.com/-pJtmF-TTUxk/AAAAAAAAAAI/AAAAAAAAAAA/6ULkoHqUkSo/photo.jpg?sz=300'
-                    }
-                    alt="Profile Picture"
-                />}
+                {this.props.type === 'dentist' && (
+                    <StyledProfPic
+                        src={
+                            obj && obj.user
+                                ? obj.user.imageUrl
+                                : 'https://lh5.googleusercontent.com/-pJtmF-TTUxk/AAAAAAAAAAI/AAAAAAAAAAA/6ULkoHqUkSo/photo.jpg?sz=300'
+                        }
+                        alt="Profile Picture"
+                    />
+                )}
 
-                {this.props.type === "dentist" && <Box mb={12} />}
+                {this.props.type === 'dentist' && <Box mb={12} />}
 
-                {this.props.type === "office" ? <Box fontSize={36}>{obj && obj.name ? obj.name : "_____"}</Box> : <Box fontSize={36}>{obj && obj.user ? obj.user.name : "_____"}</Box>}
+                {this.props.type === 'office' ? (
+                    <Box fontSize={36}>
+                        {obj && obj.name ? obj.name : '_____'}
+                    </Box>
+                ) : (
+                    <Box fontSize={36}>
+                        {obj && obj.user ? obj.user.name : '_____'}
+                    </Box>
+                )}
 
-                {
-                    this.props.type === "office" &&
+                {this.props.type === 'office' && (
+                    <div>
+                        <Box mb={12} />
+                        <Box fontSize={17}>
+                            <StyledMapPinIcon icon="map-pin" width="15px" />
+                            {obj && obj.location ? obj.location : '_____'}
+                        </Box>
+
+                        <Padding bottom={18} />
+
                         <div>
-                            <Box mb={12} />
-                            <Box fontSize={17}>
-                                <StyledMapPinIcon icon='map-pin' width="15px" />
-                                {obj && obj.location ? obj.location : "_____"}
-                            </Box>
-
-                            <Padding bottom={18} />
-
+                            <Icon icon="numChairsAvail" width="27px" />
+                            <Typography size="t4">
+                                {obj && obj.numChairs ? obj.numChairs : '__'}
+                            </Typography>
                             <div>
-                                <Icon icon="numChairsAvail" width="27px" />
-                                <Typography size="t4"> {obj && obj.numChairs ? obj.numChairs : "__"} </Typography>
-                                <div>
-                                    <Typography fontSize={1}>Chairs</Typography>
-                                </div>
+                                <Typography fontSize={1}>Chairs</Typography>
                             </div>
                         </div>
-                }
+                    </div>
+                )}
             </div>
         );
     }
