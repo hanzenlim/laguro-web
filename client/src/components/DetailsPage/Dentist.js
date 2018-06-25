@@ -84,6 +84,7 @@ class Dentist extends Component {
                     reservations={reservations}
                     auth={auth}
                     handleBookAppointment={this.handleBookAppointment}
+                    ownPage={auth && auth.dentistId === dentist.id}
                 />
 
                 {this.state.selectedStartTime && (

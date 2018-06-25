@@ -375,7 +375,7 @@ class DetailDetails extends Component {
     }
 
     render() {
-        const { auth, obj, reviews, listings } = this.props;
+        const { auth, obj, reviews, listings, ownPage } = this.props;
         let equipmentOrProcedures;
         let listingsOrAppointments;
         if (this.props.type === 'office') {
@@ -460,7 +460,7 @@ class DetailDetails extends Component {
                             type={this.props.type === "office" ? OFFICE : DENTIST}
                             reviewerId={auth && auth.id}
                             wasReviewed={auth && reviews.some(e => e.reviewer.id === auth.id)}
-                            own={auth && auth.dentistId === (this.props.type === 'office' ? obj.host.id : obj.id)}
+                            ownPage={ownPage}
                         />}
                     <Padding bottom={12} />
 
