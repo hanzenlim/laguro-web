@@ -204,12 +204,12 @@ class App extends Component {
                                     component={Payout}
                                 />
                                 <Route
-                                    path="/dentist/:id"
-                                    component={Dentist}
-                                />
-                                <Route
                                     path="/dentist/search"
                                     component={DentistResultIndex}
+                                />
+                                <Route
+                                    path="/dentist/:id"
+                                    component={Dentist}
                                 />
                                 <Route
                                     path="/office/search"
@@ -219,10 +219,7 @@ class App extends Component {
                                     path="/office/:office_id"
                                     component={Office}
                                 />
-                                <Route
-                                    path="/terms"
-                                    component={Terms}
-                                />
+                                <Route path="/terms" component={Terms} />
                                 <Route
                                     path="/privacy"
                                     component={PrivacyPolicy}
