@@ -12,9 +12,9 @@ const EQUIPMENT_STEP = 'add-equipments';
 const LISTING_STEP = 'add-listing';
 
 const DEFAULT_PERCENTAGE = 0;
-const OFFICE_PERCENTAGE = 30;
-const EQUIPMENT_PERCENTAGE = 60;
-const LISTING_PERCENTAGE = 90;
+const OFFICE_PERCENTAGE = 25;
+const EQUIPMENT_PERCENTAGE = 50;
+const LISTING_PERCENTAGE = 75;
 
 const StyledContainer = styled.div`
     min-height: 100vh;

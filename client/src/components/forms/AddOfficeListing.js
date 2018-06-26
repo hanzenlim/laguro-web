@@ -9,11 +9,12 @@ import {
 import moment from 'moment';
 import queryString from 'query-string';
 import styled from 'styled-components';
+import { borders, color } from 'styled-system';
 
 import * as actions from '../../actions';
 import { DENTIST } from '../../util/strings';
 import { getNextHalfHour } from '../../util/timeUtil';
-import { Typography, Grid, Button } from '../common';
+import { Typography, Grid, Button, Flex } from '../common';
 import { Padding } from '../common/Spacing';
 
 import {
@@ -32,6 +33,10 @@ const StyledContainer = styled.div`
     max-width: 1080px;
     padding: 5em 10px;
     margin: 0 auto;
+`;
+
+const StyledFlexWithBorder = styled(Flex)`
+    ${borders} ${color};
 `;
 
 class NewListing extends Component {
@@ -165,27 +170,17 @@ class NewListing extends Component {
 
                             <Padding bottom="24" />
 
-                            <Grid container>
-                                <Grid item xs={12}>
-                                    <Typography size="t3" weight="bold">
-                                        Add more details about your listing
-                                    </Typography>
-                                </Grid>
-                            </Grid>
+                            <StyledFlexWithBorder
+                                borderBottom="1px solid gray"
+                                flexDirection="column"
+                            >
+                                <label>Office Name</label>
+                                <Typography fontSize={4}>
+                                    {this.urlParams.name}
+                                </Typography>
+                            </StyledFlexWithBorder>
 
-                            <Padding bottom="24" />
-
-                            <Grid container>
-                                <Grid item xs={12}>
-                                    <Field
-                                        disabled
-                                        label="Office Name"
-                                        name="office"
-                                        component={renderField}
-                                    />
-                                    <Padding bottom="16" />
-                                </Grid>
-                            </Grid>
+                            <Padding bottom="16" />
 
                             <Grid container>
                                 <Grid item xs={12} md={5}>
