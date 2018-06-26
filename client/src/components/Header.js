@@ -10,7 +10,6 @@ import Footer from './Footer';
 import './css/Header.css';
 
 class Header extends Component {
-
     constructor() {
         super();
         this.state = {
@@ -21,17 +20,17 @@ class Header extends Component {
     }
 
     componentDidMount() {
-        window.addEventListener("resize", this.updateDimensions);
+        window.addEventListener('resize', this.updateDimensions);
         const elements = document.getElementsByClassName('sidenav');
         for (const el of elements) {
             materialize.Sidenav.init(el, {
-                preventScrolling: true,
+                preventScrolling: true
             });
         }
     }
 
     componentWillUnmount() {
-        window.removeEventListener("resize", this.updateDimensions);
+        window.removeEventListener('resize', this.updateDimensions);
     }
 
     updateDimensions() {
@@ -43,7 +42,7 @@ class Header extends Component {
         const elements = document.getElementsByClassName('sidenav');
         for (const el of elements) {
             materialize.Sidenav.init(el, {
-                preventScrolling: true,
+                preventScrolling: true
             });
         }
     }
@@ -53,12 +52,25 @@ class Header extends Component {
 
         if (auth === null) {
             return (
-                <a id="login" className="login waves-effect btn lighten-2 modal-trigger" onClick={this.props.toggleShowModal}> Sign in </a>
+                <a
+                    id="login"
+                    className="login waves-effect btn lighten-2 modal-trigger"
+                    onClick={this.props.toggleShowModal}
+                >
+                    {' '}
+                    Sign in{' '}
+                </a>
             );
         }
         // user IS logged in
         return (
-            <a id ="logout" className="logout waves-effect btn lighten-2" href="/api/logout">Sign out</a>
+            <a
+                id="logout"
+                className="logout waves-effect btn lighten-2"
+                href="/api/logout"
+            >
+                Sign out
+            </a>
         );
     }
 
@@ -74,8 +86,8 @@ class Header extends Component {
         }
     }
 
-
     render() {
+        const { auth } = this.props;
         const isMobile = window.innerWidth <= 540;
 
         if (!isMobile) {
@@ -89,8 +101,14 @@ class Header extends Component {
                             </div>
                         </a>
                         <ul className="right">
-                            <li><Link to={'/landlord-onboarding/add-office'}>Rent your dental office</Link></li>
-                            <li><Link to={'#'}>How it works?</Link></li>
+                            <li>
+                                <Link to={'/landlord-onboarding/add-office'}>
+                                    Rent your dental office
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to={'#'}>How it works?</Link>
+                            </li>
                             {this.profileButton()}
                             <li>{this.renderLogin()}</li>
                         </ul>
@@ -98,7 +116,6 @@ class Header extends Component {
                 </nav>
             );
         } else {
-
             const SideNavLink = styled(Link)`
                 width: 83%;
                 height: 5%;
@@ -114,17 +131,22 @@ class Header extends Component {
             const SideNavX = styled(Icon)`
                 float: right;
                 margin-right: 5%;
-            `
+            `;
 
             return (
                 <div>
                     <nav className="nav-extended">
                         <div className="nav-wrapper">
-                            <a data-target="slide-out" className="sidenav-trigger"><i className="material-icons">menu</i></a>
+                            <a
+                                data-target="slide-out"
+                                className="sidenav-trigger"
+                            >
+                                <i className="material-icons">menu</i>
+                            </a>
 
                             <a href="/" className="brand-logo">
                                 <img src={logo} className="logo" alt="logo" />
-                            Laguro
+                                Laguro
                             </a>
                             <ul className="right">
                                 {this.profileButton()}
@@ -134,37 +156,45 @@ class Header extends Component {
                     </nav>
 
                     <ul id="slide-out" className="sidenav">
-                        <Icon icon="logo" width="39px" background="#0AD5B1" tooth="#FFFFFF" />
-                        <SideNavX className="sidenav-close" icon="sideNavX" width="15px" />
+                        <Icon
+                            icon="logo"
+                            width="39px"
+                            background="#0AD5B1"
+                            tooth="#FFFFFF"
+                        />
+                        <SideNavX
+                            className="sidenav-close"
+                            icon="sideNavX"
+                            width="15px"
+                        />
                         <hr />
 
-                        <SideNavLink to={'#'}>Edit dentist profile </SideNavLink>
-                        <SideNavLinkArrow to={'#'}>{">"}</SideNavLinkArrow>
-
-                        <hr />
-
-                        <SideNavLink to={'#'}>View public profile</SideNavLink>
-                        <SideNavLinkArrow to={'#'}>{">"}</SideNavLinkArrow>
-
-                        <hr />
-
-                        <SideNavLink to={'#'}>Browse listings</SideNavLink>
-                        <SideNavLinkArrow to={'#'}>{">"}</SideNavLinkArrow>
-
-                        <hr />
-
-                        <SideNavLink to={'#'}>Rent your dental office</SideNavLink>
-                        <SideNavLinkArrow to={'#'}>{">"}</SideNavLinkArrow>
+                        <SideNavLink to={'/landlord-onboarding/add-office'}>
+                            Rent your dental office
+                        </SideNavLink>
+                        <SideNavLinkArrow
+                            to={'/landlord-onboarding/add-office'}
+                        >
+                            {'>'}
+                        </SideNavLinkArrow>
 
                         <hr />
 
                         <SideNavLink to={'#'}>How it works?</SideNavLink>
-                        <SideNavLinkArrow to={'#'}>{">"}</SideNavLinkArrow>
+                        <SideNavLinkArrow to={'#'}>{'>'}</SideNavLinkArrow>
+
+                        <hr />
+
+                        <SideNavLink to={'/profile'}>
+                            {auth && auth.name ? auth.name : 'Profile'}
+                        </SideNavLink>
+                        <SideNavLinkArrow to={'/profile'}>
+                            {'>'}
+                        </SideNavLinkArrow>
 
                         <hr />
 
                         <Footer />
-
                     </ul>
                 </div>
             );
