@@ -49,17 +49,18 @@ class CreateDentistProfile extends Component {
             throw new SubmissionError({
                 _error: 'You must add at least 1 procedure'
             });
+        } else {
+            values.location = this.state.location;
+
+            await this.props.createDentist({
+                ...values,
+                bio: ' ',
+                userId: auth.id
+            });
+
+            await this.props.fetchUser(DENTIST);
+            this.props.closeModal();
         }
-
-        values.location = this.state.location;
-
-        await this.props.createDentist({
-            ...values,
-            bio: ' ',
-            userId: auth.id
-        });
-
-        await this.props.fetchUser(DENTIST);
     }
 
     renderProcedureSelector = ({ fields, className, meta: { error } }) => (
@@ -113,7 +114,6 @@ class CreateDentistProfile extends Component {
         e.preventDefault();
         const { handleSubmit } = this.props;
         handleSubmit(this.onSubmit.bind(this))();
-        this.props.handleSubmission();
     }
 
     render() {
