@@ -58,7 +58,6 @@ reviews {
     rating
 }
 imageUrls
-numChairs
 status
 dateCreated
 `;

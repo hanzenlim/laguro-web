@@ -52,10 +52,9 @@ class NewOffice extends Component {
 
         equipment = equipment
             ? removeCentsFromEquipment(JSON.parse(equipment))
-            : [];
+            : [{ name: 'Digital X-Ray', price: 20 }];
 
         this.props.initialize({
-            numChairs: this.urlParams.numChairs,
             description: this.urlParams.description,
             equipment
         });
@@ -81,7 +80,6 @@ class NewOffice extends Component {
     handleBack = () => {
         const params = queryString.stringify({
             ...this.urlParams,
-            numChairs: this.props.numChairs,
             description: this.props.description,
             equipment: this.props.equipment
                 ? JSON.stringify(addCentsToEquipment(this.props.equipment))
@@ -160,30 +158,12 @@ class NewOffice extends Component {
                                 <Grid item xs={12}>
                                     <Typography fontSize={5}>
                                         Next, tell us a little bit about your
-                                        office and your equipments
+                                        office and equipment
                                     </Typography>
                                 </Grid>
                             </Grid>
 
                             <Padding bottom="24" />
-
-                            <Grid container>
-                                <Grid item xs={12}>
-                                    <Typography fontSize={3}>Step 2</Typography>
-                                </Grid>
-                            </Grid>
-
-                            <Padding bottom="16" />
-
-                            <Grid container>
-                                <Grid item xs={12}>
-                                    <Typography fontSize={3} fontWeight="bold">
-                                        Office Details
-                                    </Typography>
-                                </Grid>
-                            </Grid>
-
-                            <Box mb={24} />
 
                             <Box className="row">
                                 <Field
@@ -207,17 +187,6 @@ class NewOffice extends Component {
                             )}
 
                             <Box mb={16} />
-
-                            <div className="row">
-                                <Field
-                                    name="numChairs"
-                                    label="Number of Chairs"
-                                    placeholder={'3'}
-                                    component={renderField}
-                                    validate={[required, isNum]}
-                                />
-                                <Padding bottom="16" />
-                            </div>
 
                             <div className="row">
                                 <FieldArray
@@ -271,7 +240,6 @@ class NewOffice extends Component {
 const mapStateToProps = state => {
     const selector = formValueSelector('addOfficeEquipments');
     return {
-        numChairs: selector(state, 'numChairs'),
         equipment: selector(state, 'equipment'),
         description: selector(state, 'description')
     };

@@ -391,37 +391,37 @@ class DetailDetails extends Component {
             <StyledDetailsDiv>
                 {this.props.type === 'office' &&
                     obj.description && (
-                        <Box>
-                            <StyledDetailsHeadingBox fontSize={25}>
+                    <Box>
+                        <StyledDetailsHeadingBox fontSize={25}>
                                 Description
-                            </StyledDetailsHeadingBox>
-                            <hr />
-                            <StyledDescriptionBox
-                                overflow={
-                                    this.state.descShowMore ? 'hidden' : 'auto'
-                                }
-                                maxHeight={this.state.descShowMore ? 68 : 300}
-                            >
-                                {obj.description}
-                            </StyledDescriptionBox>
-                            <Box mb={10} />
-                            {this.state.descShowMore && (
-                                <Box mt={10}>
-                                    <StyledShowMoreBox
-                                        fontSize={1}
-                                        className="center"
-                                        onClick={this.handleShowMoreDescription}
-                                    >
-                                        <StyledDownArrow
-                                            icon="downArrow"
-                                            width="20px"
-                                        />
+                        </StyledDetailsHeadingBox>
+                        <hr />
+                        <StyledDescriptionBox
+                            overflow={
+                                this.state.descShowMore ? 'hidden' : 'auto'
+                            }
+                            maxHeight={this.state.descShowMore ? 68 : 300}
+                        >
+                            {obj.description}
+                        </StyledDescriptionBox>
+                        <Box mb={10} />
+                        {this.state.descShowMore && (
+                            <Box mt={10}>
+                                <StyledShowMoreBox
+                                    fontSize={1}
+                                    className="center"
+                                    onClick={this.handleShowMoreDescription}
+                                >
+                                    <StyledDownArrow
+                                        icon="downArrow"
+                                        width="20px"
+                                    />
                                         Show more
-                                    </StyledShowMoreBox>
-                                </Box>
-                            )}
-                        </Box>
-                    )}
+                                </StyledShowMoreBox>
+                            </Box>
+                        )}
+                    </Box>
+                )}
 
                 <Box mb={40} />
 
@@ -480,21 +480,21 @@ class DetailDetails extends Component {
                 <StyledReviewsDiv>
                     {obj.constructor === Object &&
                         Object.keys(obj).length !== 0 && (
-                            <NewReview
-                                reviewee={obj}
-                                type={
-                                    this.props.type === 'office'
-                                        ? OFFICE
-                                        : DENTIST
-                                }
-                                reviewerId={auth && auth.id}
-                                wasReviewed={
-                                    auth &&
+                        <NewReview
+                            reviewee={obj}
+                            type={
+                                this.props.type === 'office'
+                                    ? OFFICE
+                                    : DENTIST
+                            }
+                            reviewerId={auth && auth.id}
+                            wasReviewed={
+                                auth &&
                                     reviews.some(e => e.reviewer.id === auth.id)
-                                }
-                                ownPage={ownPage}
-                            />
-                        )}
+                            }
+                            ownPage={ownPage}
+                        />
+                    )}
                     <Padding bottom={12} />
 
                     {obj && (
@@ -518,20 +518,20 @@ class DetailDetails extends Component {
                         this.state.reviewRowNum *
                             (window.innerWidth > 600 ? 3 : 2) &&
                     auth && (
-                        <Box mt={20}>
-                            <StyledShowMoreBox
-                                fontSize={1}
-                                className="center"
-                                onClick={this.handleShowMoreReview}
-                            >
-                                <StyledDownArrow
-                                    icon="downArrow"
-                                    width="20px"
-                                />
+                    <Box mt={20}>
+                        <StyledShowMoreBox
+                            fontSize={1}
+                            className="center"
+                            onClick={this.handleShowMoreReview}
+                        >
+                            <StyledDownArrow
+                                icon="downArrow"
+                                width="20px"
+                            />
                                 Show more
-                            </StyledShowMoreBox>
-                        </Box>
-                    )}
+                        </StyledShowMoreBox>
+                    </Box>
+                )}
 
                 {this.props.type === 'office' && (
                     <Modal
@@ -541,10 +541,10 @@ class DetailDetails extends Component {
                     >
                         {!this.state.showReservationOptions &&
                             !this.dentistProfileExists() && (
-                                <CreateDentistProfile
-                                    handleSubmission={this.handleSubmission}
-                                />
-                            )}
+                            <CreateDentistProfile
+                                handleSubmission={this.handleSubmission}
+                            />
+                        )}
                         {this.dentistProfileExists() && (
                             <ReservationOptions
                                 listing={this.state.listing}

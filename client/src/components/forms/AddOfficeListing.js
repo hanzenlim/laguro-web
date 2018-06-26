@@ -16,12 +16,7 @@ import { getNextHalfHour } from '../../util/timeUtil';
 import { Typography, Grid, Button } from '../common';
 import { Padding } from '../common/Spacing';
 
-import {
-    renderDatePicker,
-    renderField,
-    renderOptions,
-    renderSelect
-} from './sharedComponents';
+import { renderDatePicker, renderField } from './sharedComponents';
 import { required, isNum, dollarMinimum } from './formValidation';
 
 import history from '../../history';
@@ -109,7 +104,6 @@ class NewListing extends Component {
             const {
                 name,
                 location,
-                numChairs,
                 imageUrls,
                 equipment,
                 description
@@ -118,7 +112,6 @@ class NewListing extends Component {
             await this.props.createOffice({
                 name,
                 location,
-                numChairs,
                 hostId: this.props.auth.dentist.id,
                 imageUrls: JSON.parse(imageUrls),
                 equipment: JSON.parse(equipment),
@@ -242,15 +235,10 @@ class NewListing extends Component {
                                     <Field
                                         name="numChairsAvailable"
                                         label="Number of chairs available"
-                                        type="select"
-                                        style={{ display: 'block' }}
-                                        component={renderSelect}
-                                    >
-                                        {renderOptions(
-                                            this.urlParams.numChairs || 1,
-                                            1
-                                        )}
-                                    </Field>
+                                        component={renderField}
+                                        placeholder="1"
+                                        validate={[required, isNum]}
+                                    />
                                     <Padding bottom="16" />
                                 </Grid>
                             </Grid>
