@@ -19,13 +19,33 @@ const ReviewNameDiv = styled(Box)`
 const ReviewContentDiv = styled(Box)`
     float: none;
     font-weight: 500;
-    display: -webkit-box;
-    -webkit-line-clamp: 7;
-    -webkit-box-orient: vertical;
     overflow: hidden;
 `;
 
 class ReviewContainer extends Component {
+    constructor() {
+        super();
+        this.state = { showMoreMap: Object.create(null) };
+    }
+
+    componentWillReceiveProps(){
+        const { reviews } = this.props;
+        let showMoreMap = this.state.showMoreMap;
+
+        for (let review in reviews) {
+            showMoreMap[review.id] = false;
+        }
+
+        this.setState({ showMoreMap });
+    }
+
+    handleShowMoreReviewText(reviewId) {
+        let showMoreMap = this.state.showMoreMap;
+        showMoreMap[reviewId] = true;
+
+        this.setState({ showMoreMap });
+    }
+
     renderEditButtons(id) {
         return (
             <Box
@@ -61,8 +81,10 @@ class ReviewContainer extends Component {
                             <ReviewContentDiv
                                 fontSize={14}
                                 className="review-content"
+                                showMore={this.state.showMoreMap[review.id]}
                             >
-                                {review.text}
+                                {this.state.showMoreMap[review.id] ? review.text : review.text.substring(0, 190).trim() + '...'}
+                                {!this.state.showMoreMap[review.id] && <a onClick={this.handleShowMoreReviewText.bind(this, review.id)}>Read more</a>}
                             </ReviewContentDiv>
                             <Padding bottom={10} />
                             <ReactStars
