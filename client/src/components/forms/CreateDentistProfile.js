@@ -114,6 +114,7 @@ class CreateDentistProfile extends Component {
         e.preventDefault();
         const { handleSubmit } = this.props;
         handleSubmit(this.onSubmit.bind(this))();
+        this.props.handleSubmission();
     }
 
     render() {

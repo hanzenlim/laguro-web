@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 
-import { requiredAndSignedIn } from './formValidation';
+import { reviewConditions } from './formValidation';
 import * as actions from '../../actions';
 import { Grid } from '../common/';
 import { Padding } from '../common/Spacing';
@@ -111,7 +111,6 @@ class NewReview extends Component {
 
     render() {
         const { handleSubmit } = this.props;
-
         return (
             <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                 <Grid container spacing={8}>
@@ -121,7 +120,7 @@ class NewReview extends Component {
                                 name="text"
                                 placeholder={`Write a review`}
                                 component={this.renderTextArea}
-                                validate={requiredAndSignedIn}
+                                validate={reviewConditions}
                             />
                         </div>
                         <InputStarsDiv>
@@ -160,5 +159,5 @@ function mapStateToProps(state) {
 
 export default reduxForm({
     form: 'newReview',
-    requiredAndSignedIn
+    reviewConditions
 })(connect(mapStateToProps, actions)(NewReview));

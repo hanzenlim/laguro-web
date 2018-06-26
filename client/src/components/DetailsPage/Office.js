@@ -11,8 +11,10 @@ import {
     START_TIME,
     HOST,
     STATUS,
-    ACTIVE
+    ACTIVE,
+    ALL_RESERVATIONS
 } from '../../util/strings';
+import dentistProfileExists from '../../util/userInfo';
 import { Box } from '../common';
 import { Padding } from '../common/Spacing';
 import OfficePlaceholderBig from '../images/office-placeholder-big.png';
@@ -71,7 +73,7 @@ class Office extends Component {
         this.state = {
             reviewRowNum: 1,
             isModalOpen: false,
-            showReservationOptions: false
+            showReservationOptions: false,
         };
     }
 
@@ -90,6 +92,26 @@ class Office extends Component {
                 }
             ]
         });
+
+        if (dentistProfileExists(this.props.auth)) {
+            this.props
+                .getDentist(
+                    this.props.auth.dentistId,
+                    ALL_RESERVATIONS,
+                );
+        }
+    }
+
+    verifyUser = () => {
+        const { reservations } = this.props;
+        if (reservations) {
+            for (let res of reservations) {
+                if (res && res.office && (res.office.id === this.office_id)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     renderImages(office) {
@@ -134,7 +156,7 @@ class Office extends Component {
     }
 
     render() {
-        let { office, auth, reviews, listings, dentist } = this.props;
+        let { office, auth, reviews, listings } = this.props;
         const office_id = this.props.match.params.office_id;
         if (office.id && office.id.valueOf() !== office_id.valueOf()) {
             office = {};
@@ -190,8 +212,8 @@ class Office extends Component {
                     obj={office}
                     reviews={reviews}
                     listings={listings}
-                    dentist={dentist}
                     ownPage={auth && office.host && (auth.dentistId === office.host.id)}
+                    verified={this.verifyUser()}
                 />
             </div>
         );
@@ -204,7 +226,8 @@ function mapStateToProps(state) {
         office: state.offices.selected,
         dentist: state.dentists.selectedDentist,
         auth: state.auth,
-        reviews: state.reviews.all
+        reviews: state.reviews.all,
+        reservations: state.reservations.all.length === 0 ? null : state.reservations.all
     };
 }
 

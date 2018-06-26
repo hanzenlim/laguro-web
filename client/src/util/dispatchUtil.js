@@ -6,7 +6,9 @@ import {
     LISTING,
     LISTINGS,
     RESERVATIONS,
-    REVIEWS
+    REVIEWS,
+    ALL_RESERVATIONS,
+    APPOINTMENTS
 } from './strings';
 import {
     GET_ONE_DENTIST,
@@ -15,7 +17,8 @@ import {
     GET_SELECTED_LISTINGS,
     FETCH_LISTINGS,
     GET_SELECTED_RESERVATIONS,
-    FETCH_REVIEWS
+    FETCH_REVIEWS,
+    GET_SELECTED_APPOINTMENTS
 } from '../actions/types';
 
 // eslint-disable-next-line
@@ -69,10 +72,24 @@ export const dispatchChildren = (entity, options, dispatch) => {
         });
     }
 
+    if (options.includes(ALL_RESERVATIONS)) {
+        dispatch({
+            type: GET_SELECTED_RESERVATIONS,
+            payload: entity.reservations
+        });
+    }
+
     if (options.includes(REVIEWS)) {
         dispatch({
             type: FETCH_REVIEWS,
             payload: entity.reviews
+        });
+    }
+
+    if (options.includes(APPOINTMENTS)) {
+        dispatch({
+            type: GET_SELECTED_APPOINTMENTS,
+            payload: entity.appointments
         });
     }
 };

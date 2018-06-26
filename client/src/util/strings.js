@@ -9,6 +9,7 @@ export const LISTING = 'listing';
 export const LISTINGS = 'listings';
 export const RESERVATION = 'reservation';
 export const RESERVATIONS = 'reservations';
+export const ALL_RESERVATIONS = 'all_reservations';
 export const APPOINTMENT = 'appointment';
 export const APPOINTMENTS = 'appointments';
 export const REVIEW = 'review';

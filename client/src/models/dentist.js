@@ -17,6 +17,7 @@ import {
     LISTINGS,
     APPOINTMENTS,
     REVIEWS,
+    ALL_RESERVATIONS,
     STATUS,
     ACTIVE
 } from '../util/strings';
@@ -50,6 +51,14 @@ const generateDentistResult = options => {
             }
         }`
         : '';
+    const allReservationsResult = options.includes(ALL_RESERVATIONS)
+        ? `reservations{
+            ${reservationFragment}
+            office {
+                ${officeFragment}
+            }
+        }`
+        : '';
     // TODO remove officeId once profile component has been broken down
     const listingsResult = options.includes(LISTINGS)
         ? `listings{office{id} ${listingFragment}}`
@@ -65,6 +74,7 @@ const generateDentistResult = options => {
         ${userResult}
         ${officeResult}
         ${reservationsResult}
+        ${allReservationsResult}
         ${listingsResult}
         ${appointmentsResult}
         ${reviewsResult}
