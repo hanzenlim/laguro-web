@@ -1,3 +1,4 @@
+import moment from 'moment';
 import makeApiCall from '../util/clientDataLoader';
 import {
     userFragment,
@@ -15,7 +16,9 @@ import {
     RESERVATIONS,
     LISTINGS,
     APPOINTMENTS,
-    REVIEWS
+    REVIEWS,
+    STATUS,
+    ACTIVE
 } from '../util/strings';
 
 const generateDentistResult = options => {
@@ -26,7 +29,18 @@ const generateDentistResult = options => {
         ? `offices{${officeFragment}}`
         : '';
     const reservationsResult = options.includes(RESERVATIONS)
-        ? `reservations(${filterActive}){
+        ? `reservations(options: {
+            sortKey: "startTime",
+            rangeStart: "${moment()
+        .startOf('day')
+        .format()}",
+            filters: [
+                {
+                    filterKey: "${STATUS}",
+                    filterValue: "${ACTIVE}"
+                }
+            ]
+        }){
             ${reservationFragment}
             office {
                 ${officeFragment}
