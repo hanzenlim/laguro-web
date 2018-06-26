@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Padding } from '../common/Spacing';
 import Icon from '../Icon';
-import { Box, Link, Typography } from '../common';
+import { Box, Link } from '../common';
 
 const StyledProfPic = styled.img`
     border-radius: 50%;
@@ -108,16 +108,6 @@ class TopHalfInfo extends Component {
                         </Box>
 
                         <Padding bottom={18} />
-
-                        <div>
-                            <Icon icon="numChairsAvail" width="27px" />
-                            <Typography size="t4">
-                                {obj && obj.numChairs ? obj.numChairs : '__'}
-                            </Typography>
-                            <div>
-                                <Typography fontSize={1}>Chairs</Typography>
-                            </div>
-                        </div>
                     </div>
                 )}
             </div>

@@ -127,24 +127,6 @@ class NewOffice extends Component {
 
                             <Grid container>
                                 <Grid item xs={12}>
-                                    <Typography fontSize={3}>Step 1</Typography>
-                                </Grid>
-                            </Grid>
-
-                            <Padding bottom="16" />
-
-                            <Grid container>
-                                <Grid item xs={12}>
-                                    <Typography fontSize={3} fontWeight="bold">
-                                        Office Details
-                                    </Typography>
-                                </Grid>
-                            </Grid>
-
-                            <Padding bottom="24" />
-
-                            <Grid container>
-                                <Grid item xs={12}>
                                     <Field
                                         name="name"
                                         label="Office Name"
@@ -240,9 +222,4 @@ function mapStateToProps(state) {
 
 export default reduxForm({
     form: 'addOfficeInfo'
-})(
-    connect(
-        mapStateToProps,
-        actions
-    )(NewOffice)
-);
+})(connect(mapStateToProps, actions)(NewOffice));
