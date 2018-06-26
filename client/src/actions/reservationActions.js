@@ -16,13 +16,18 @@ export const getReservation = reservationId => async dispatch => {
 
 export const createReservation = params => async dispatch => {
     const response = await Reservation.create(params);
-    if (
-        response.errors &&
-        response.errors[0].message === 'Timeslot already booked!'
-    ) {
-        alert(
-            'Sorry, the reservation window you selected has been booked, please go back and select a new time window.'
-        );
+    if (response && response.errors) {
+        if (response.errors[0].message === 'Timeslot already booked!') {
+            alert(
+                'Sorry, the reservation window you selected has been booked, please go back and select a new time window.'
+            );
+        } else if (
+            response.errors[0].message === 'Timeslot is outside listing window!'
+        ) {
+            alert(
+                'Sorry, the reservation window you selected is outside of the available window for this listing. Please go back and select a new time window'
+            );
+        }
     } else {
         const reservation = response.data.createReservation;
         dispatch({
