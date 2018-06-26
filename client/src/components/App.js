@@ -110,6 +110,7 @@ const PrivacyPolicy = Loadable({
     loader: () => import('./PrivacyPolicy'),
     loading: LoadingComponent
 });
+
 const PrivateRoute = ({ auth, path, component: Component, ...props }) => (
     <Route
         render={() =>

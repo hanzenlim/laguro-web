@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import moment from 'moment';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import MaskedInput from 'react-text-mask';
 
 import {
     Input,
@@ -136,6 +137,21 @@ export const renderField = ({
         {touched && error && <span className="red-text">{error}</span>}
     </Grid>
 )};
+
+export const renderMaskedField = (props) => {
+    const { input, className, label, meta: { touched, error }, ...custom } = props;
+
+    return (
+        <Grid className={className} container direction="column">
+            <label>{label}</label>
+            <MaskedInput
+                {...input}
+                {...custom}
+            />
+            {touched && error && <span className="red-text">{error}</span>}
+        </Grid>
+    )
+};
 
 export const renderOptions = (maxAvail, minAvail = 1, label = '') => {
     const options = [];

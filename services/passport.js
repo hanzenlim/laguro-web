@@ -43,7 +43,8 @@ passport.use(new GoogleStrategy(
 
         // Create a brand new user.
         result = await makeMutation(createUserQuery, createUserVariable(
-            profile.displayName,
+            profile.name.givenName,
+            profile.name.familyName,
             profile.id,
             email,
             biggerImg,

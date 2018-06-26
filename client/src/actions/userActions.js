@@ -12,8 +12,8 @@ export const fetchUser = (...options) => async dispatch => {
     }
 };
 
-export const updateProfileImage = (userId, imageUrl) => async dispatch => {
-    const user = await User.updateProfileImage(userId, imageUrl);
+export const updateUserProfile = (userId, profile) => async dispatch => {
+    const user = await User.updateProfile(userId, profile);
     dispatch({
         type: FETCH_USER,
         payload: user

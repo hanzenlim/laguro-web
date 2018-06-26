@@ -80,7 +80,7 @@ class Header extends Component {
         if (auth != null) {
             return (
                 <li>
-                    <Link to={'/profile'}>{auth.name}</Link>
+                    <Link to={'/profile'}>{`${auth.firstName} ${auth.lastName}`}</Link>
                 </li>
             );
         }

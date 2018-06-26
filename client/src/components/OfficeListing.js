@@ -38,7 +38,9 @@ class OfficeListing extends Component {
                                     listing.reservations.map(
                                         res =>
                                             `Dr. ${
-                                                res.reservedBy.user.name
+                                                res.reservedBy.user.firstName
+                                            } ${
+                                                res.reservedBy.user.lastName
                                             }  -  ${formatListingTime(
                                                 res.startTime,
                                                 res.endTime

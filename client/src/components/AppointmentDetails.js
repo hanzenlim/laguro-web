@@ -74,7 +74,7 @@ class AppointmentDetails extends Component {
                                         color="link_blue"
                                         underline
                                     >
-                                        Dr. {dentist.user.name}
+                                        {`Dr. ${dentist.user.firstName} ${dentist.user.lastName}`}
                                     </Typography>
                                 </Link>
 
