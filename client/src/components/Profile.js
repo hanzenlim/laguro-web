@@ -2,14 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ReactFilestack from 'filestack-react';
 import moment from 'moment';
-import { Modal, Link } from './common';
+import { Link, Modal } from './common';
 import ReviewContainer from './ReviewContainer';
 import PatientAppointments from './PatientAppointments';
 import UserOfficeIndex from './UserOfficeIndex';
 import UserReservationIndex from './UserReservationIndex';
-import CreateDentistProfile from './forms/CreateDentistProfile';
 import EditUser from './forms/EditUser';
 import { filestackKey } from '../config/keys';
+import CreateProfile from './forms/CreateProfile';
 import * as actions from '../actions';
 
 import {
@@ -62,17 +62,20 @@ class Profile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isModalOpen: false,
+            isCreateProfileModalOpen: false,
             isEditUserProfileOpen: false,
             isFetching: false
         };
-
-        this.handleCreateDentist = this.handleCreateDentist.bind(this);
-        this.closeModal = this.closeModal.bind(this);
     }
 
     componentWillMount() {
         this.loadDentistProfile();
+    }
+
+    toggleCreateProfileModal = () => {
+        this.setState({
+            isCreateProfileModalOpen: !this.state.isCreateProfileModalOpen
+        });
     }
 
     async loadDentistProfile() {
@@ -83,14 +86,6 @@ class Profile extends Component {
         }
         this.setState({ isFetching: false });
     }
-
-    handleCreateDentist() {
-        this.setState({ isModalOpen: true });
-    }
-
-    closeModal = () => {
-        this.setState({ isModalOpen: false });
-    };
 
     renderProfileDetails() {
         const { auth, dentist } = this.props;
@@ -131,21 +126,20 @@ class Profile extends Component {
                         Edit Dentist Profile
                     </Link>
                 ) : (
-                    <a
+                    <div><a
                         className="link red-text"
-                        onClick={this.handleCreateDentist}
+                        onClick={this.toggleCreateProfileModal}
                     >
                         Create Dentist Profile
                     </a>
+                    <Modal
+                        closable
+                        open={this.state.isCreateProfileModalOpen}
+                        onClose={this.toggleCreateProfileModal}
+                    >
+                        <CreateProfile />
+                    </Modal></div>
                 )}
-
-                <Modal
-                    closable
-                    open={this.state.isModalOpen}
-                    onClose={this.closeModal}
-                >
-                    <CreateDentistProfile closeModal={this.closeModal} />
-                </Modal>
 
                 <ReactFilestack
                     apikey={filestackKey}

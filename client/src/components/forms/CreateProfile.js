@@ -13,12 +13,13 @@ import {
     procedureOptions,
     renderSelect
 } from './sharedComponents';
+import dentistProfileExists from '../../util/userInfo';
 
 const StyledBox = styled(Flex)`
     line-height: 36px;
 `;
 
-class CreateDentistProfile extends Component {
+class CreateProfile extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -59,7 +60,6 @@ class CreateDentistProfile extends Component {
             });
 
             await this.props.fetchUser(DENTIST);
-            this.props.closeModal();
         }
     }
 
@@ -114,69 +114,70 @@ class CreateDentistProfile extends Component {
         e.preventDefault();
         const { handleSubmit } = this.props;
         handleSubmit(this.onSubmit.bind(this))();
-        this.props.handleSubmission();
     }
 
     render() {
-        const { submitting, error } = this.props;
-        return (
-            <form
-                className="lighten-5"
-                onSubmit={this.handleSubmission.bind(this)}
-            >
-                <div className="form_title">
-                    <h4>Create a dentist profile</h4>
-                </div>
-
-                <div className="row">
-                    <Field
-                        name="specialty"
-                        label="Dental Specialty"
-                        className="col s12 m6"
-                        placeholder="General Dentist"
-                        component={renderField}
-                        validate={required}
-                    />
-                </div>
-                <div className="row">
-                    <div className="col s12 m12">
-                        <Autocomplete onAutocomplete={this.onAutocomplete} />
+        const { submitting, error, auth, message } = this.props;
+        if (dentistProfileExists(auth)) {
+            return null;
+        } else {
+            return (
+                <form
+                    className="lighten-5"
+                    onSubmit={this.handleSubmission.bind(this)}
+                >
+                    <div className="form_title">
+                        <h4>{message ? message : 'Create a dentist profile'}</h4>
                     </div>
-                </div>
 
-                <div className="row">
-                    <FieldArray
-                        name="procedures"
-                        className="col s12"
-                        component={this.renderProcedureSelector}
-                        validate={required}
-                    />
-                </div>
+                    <div className="row">
+                        <Field
+                            name="specialty"
+                            label="Dental Specialty"
+                            className="col s12 m6"
+                            placeholder="General Dentist"
+                            component={renderField}
+                            validate={required}
+                        />
+                    </div>
+                    <div className="row">
+                        <div className="col s12 m12">
+                            <Autocomplete onAutocomplete={this.onAutocomplete} />
+                        </div>
+                    </div>
 
-                <div className="form-buttons col s6 right-align">
-                    {error && <strong className="red-text">{error}</strong>}
-                    <button
-                        className="waves-effect btn light-blue lighten-2"
-                        type="submit"
-                        disabled={submitting}
-                    >
-                        Submit
-                    </button>
-                </div>
-            </form>
-        );
+                    <div className="row">
+                        <FieldArray
+                            name="procedures"
+                            className="col s12"
+                            component={this.renderProcedureSelector}
+                            validate={required}
+                        />
+                    </div>
+
+                    <div className="form-buttons col s6 right-align">
+                        {error && <strong className="red-text">{error}</strong>}
+                        <button
+                            className="waves-effect btn light-blue lighten-2"
+                            type="submit"
+                            disabled={submitting}
+                        >
+                            Submit
+                        </button>
+                    </div>
+                </form>
+            );
+        }
+
     }
 }
-
-// const required = value => (value && value !== '' ? undefined : 'Required');
 
 function mapStateToProps(state) {
     return {
         auth: state.auth,
-        dentists: state.dentists.dentists
     };
 }
 
 export default reduxForm({
-    form: 'createDentistProfile'
-})(connect(mapStateToProps, actions)(CreateDentistProfile));
+    form: 'createProfileModal'
+})(connect(mapStateToProps, actions)(CreateProfile));

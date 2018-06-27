@@ -248,7 +248,7 @@ class App extends Component {
 function mapStateToProps(state) {
     return {
         auth: state.auth,
-        isLoginModalVisible: state.ui.isLoginModalVisible
+        isLoginModalVisible: state.ui.isLoginModalVisible,
     };
 }
 

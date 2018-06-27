@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import Carousel from 'nuka-carousel';
+import { isEmpty } from 'lodash';
 import moment from 'moment';
 import Icon from '../Icon';
 import * as actions from '../../actions';
@@ -73,7 +74,6 @@ class Office extends Component {
         this.state = {
             reviewRowNum: 1,
             isModalOpen: false,
-            showReservationOptions: false,
         };
     }
 
@@ -102,7 +102,8 @@ class Office extends Component {
         }
     }
 
-    verifyUser = () => {
+    // check if user has had an reservation before, or has one currently with this office
+    isUserVerified = () => {
         const { reservations } = this.props;
         if (reservations) {
             for (let res of reservations) {
@@ -213,7 +214,7 @@ class Office extends Component {
                     reviews={reviews}
                     listings={listings}
                     ownPage={auth && office.host && (auth.dentistId === office.host.id)}
-                    verified={this.verifyUser()}
+                    isUserVerified={this.isUserVerified()}
                 />
             </div>
         );
@@ -227,7 +228,7 @@ function mapStateToProps(state) {
         dentist: state.dentists.selectedDentist,
         auth: state.auth,
         reviews: state.reviews.all,
-        reservations: state.reservations.all.length === 0 ? null : state.reservations.all
+        reservations: isEmpty(state.reservations.all) ? null : state.reservations.all
     };
 }
 

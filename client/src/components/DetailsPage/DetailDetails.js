@@ -3,6 +3,7 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import ReactStars from 'react-stars';
+import { isEmpty } from 'lodash';
 import { formatListingTime, calculateTimeslots } from '../../util/timeUtil';
 import dentistProfileExists from '../../util/userInfo';
 import * as actions from '../../actions';
@@ -12,7 +13,7 @@ import NewReview from '../forms/NewReview';
 import ReviewContainer from '../ReviewContainer';
 import Icon from '../Icon';
 import ReservationOptions from '../forms/ReservationOptions';
-import CreateDentistProfile from '../forms/CreateDentistProfile';
+import CreateProfile from '../forms/CreateProfile';
 import { Box, Modal, Grid, Link, Typography, Button, Flex } from '../common';
 import OfficePlaceholderBig from '../images/office-placeholder-big.png';
 import Appointments from '../Appointments';
@@ -120,7 +121,6 @@ class DetailDetails extends Component {
             descShowMore: true
         };
         this.handleShowMoreReview = this.handleShowMoreReview.bind(this);
-        this.handleSubmission = this.handleSubmission.bind(this);
         this.handleShowMoreDescription = this.handleShowMoreDescription.bind(
             this
         );
@@ -128,10 +128,6 @@ class DetailDetails extends Component {
 
     componentDidUpdate() {
         this.reviewCalc();
-    }
-
-    handleSubmission() {
-        this.setState({ showReservationOptions: true });
     }
 
     reviewCalc() {
@@ -358,7 +354,7 @@ class DetailDetails extends Component {
     }
 
     render() {
-        const { auth, obj, reviews, listings, ownPage, verified} = this.props;
+        const { auth, obj, reviews, listings, ownPage, isUserVerified} = this.props;
         let equipmentOrProcedures;
         let listingsOrAppointments;
         if (this.props.type === 'office') {
@@ -460,8 +456,7 @@ class DetailDetails extends Component {
                 <Padding bottom={10} />
 
                 <StyledReviewsDiv>
-                    {obj && obj.constructor === Object &&
-                        Object.keys(obj).length !== 0 && (
+                    {!isEmpty(obj) && (
                         <NewReview
                             reviewee={obj}
                             type={
@@ -472,10 +467,11 @@ class DetailDetails extends Component {
                             reviewerId={auth && auth.id}
                             alreadyReviewed={
                                 auth &&
-                                        reviews.some(e => e.reviewer.id === auth.id)
+                                        reviews.some(e => e.reviewer
+                                            .id === auth.id)
                             }
                             ownPage={ownPage}
-                            verified={verified}
+                            isUserVerified={isUserVerified}
                         />)}
                     <Padding bottom={12} />
 
@@ -522,11 +518,8 @@ class DetailDetails extends Component {
                         onClose={this.closeModal}
                     >
                         {!this.state.showReservationOptions &&
-                            !dentistProfileExists(auth) && (
-                            <CreateDentistProfile
-                                handleSubmission={this.handleSubmission}
-                                closeModal={() => {}}
-                            />
+                            !dentistProfileExists() && (
+                            <CreateProfile message={'Before you can book a reservation, we need you to create a dentist profile.'}/>
                         )}
                         {dentistProfileExists(auth) && (
                             <ReservationOptions

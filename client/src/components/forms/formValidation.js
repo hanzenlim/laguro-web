@@ -17,7 +17,7 @@ export function reviewConditions(value, allValues, props) {
         return 'Please log in before you can leave a review.';
     } else if (props.ownPage) {
         return 'You cannot leave a review on your own office or dentist profile.';
-    } else if (!props.verified){
+    } else if (!props.isUserVerified){
         return 'You cannot review an office or dentist that you have not had a reservation or appointment with.';
     } else if (props.alreadyReviewed) {
         return 'You have already reviewed this office or dentist.';

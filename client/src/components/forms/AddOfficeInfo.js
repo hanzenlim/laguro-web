@@ -103,10 +103,6 @@ class NewOffice extends Component {
     render() {
         const { auth, handleSubmit, submitting } = this.props;
 
-        if (auth && !auth.dentistId) {
-            history.push('/dentist/new?referrer=new_office');
-        }
-
         return (
             <StyledContainer>
                 <Grid container>

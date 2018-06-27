@@ -38,7 +38,7 @@ const Modal = props => {
     const { children, closable, ...customProps } = props;
 
     return (
-        <StyledModal {...customProps} onBackdropClick={customProps.onClose}>
+        <StyledModal {...customProps}>
             <StyledModalContent>
                 {closable && (
                     <StyledCloseButton

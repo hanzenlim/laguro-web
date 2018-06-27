@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { isEmpty } from 'lodash';
 import {
     USER,
     OFFICES,
@@ -24,7 +25,6 @@ class Dentist extends Component {
             durationToNextAppointment: null,
             showReservationOptions: false,
             selectedReservation: {},
-            verified: false
         };
 
         this.handleBookAppointment = this.handleBookAppointment.bind(this);
@@ -55,7 +55,8 @@ class Dentist extends Component {
         }
     }
 
-    verifyUser = () => {
+    // check if user has had an appointment before, or has one currently with this dentist
+    isUserVerified = () => {
         const { appointments } = this.props;
         if (appointments) {
             for (let appt of appointments) {
@@ -105,7 +106,7 @@ class Dentist extends Component {
                     auth={auth}
                     handleBookAppointment={this.handleBookAppointment}
                     ownPage={auth && dentist && auth.dentistId === dentist.id}
-                    verified={this.verifyUser()}
+                    isUserVerified={this.isUserVerified()}
                 />
 
                 {this.state.selectedStartTime && auth ? (
@@ -143,7 +144,7 @@ function mapStateToProps(state) {
         dentist: state.dentists.selectedDentist,
         listings: state.listings.all,
         reservations: state.reservations.all,
-        appointments: state.appointments.selected.constructor === Object ? null : state.appointments.selected,
+        appointments: isEmpty(state.appointments.selected) ? null : state.appointments.selected,
         reviews: state.reviews.all
     };
 }
