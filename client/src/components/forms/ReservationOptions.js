@@ -24,6 +24,8 @@ import { DENTIST, ACTIVE } from '../../util/strings';
 import { calculateTimeslots, getStartTime } from '../../util/timeUtil';
 import { renderPrice } from '../../util/paymentUtil';
 
+const MINIMUM_RESERVATION_WINDOW = 60;
+
 class ReservationOptions extends Component {
     constructor(props) {
         super(props);
@@ -71,7 +73,10 @@ class ReservationOptions extends Component {
             numChairs: 1,
             appts_per_hour: 1,
             startTime: moment(firstAvailReservation),
-            endTime: moment(firstAvailReservation).add(2, 'hours'),
+            endTime: moment(firstAvailReservation).add(
+                MINIMUM_RESERVATION_WINDOW,
+                'minutes'
+            ),
             acknowledge: false
         });
     }
@@ -86,7 +91,7 @@ class ReservationOptions extends Component {
             });
         } else if (
             moment(values.startTime)
-                .add(1, 'hours')
+                .add(MINIMUM_RESERVATION_WINDOW, 'minutes')
                 .isAfter(values.endTime)
         ) {
             throw new SubmissionError({
@@ -214,7 +219,10 @@ class ReservationOptions extends Component {
                     maxTime={
                         moment(listing.endTime).isAfter(startTime, 'day')
                             ? moment().endOf('day')
-                            : moment(listing.endTime).subtract(1, 'hours')
+                            : moment(listing.endTime).subtract(
+                                MINIMUM_RESERVATION_WINDOW,
+                                'minutes'
+                            )
                     }
                     showTimeSelect
                     minDate={moment(listing.startTime)}
@@ -245,7 +253,10 @@ class ReservationOptions extends Component {
                     selected={input.value}
                     onChange={input.onChange.bind(this)}
                     dateFormat="LLL"
-                    minTime={moment(startTime).add(1, 'hours')}
+                    minTime={moment(startTime).add(
+                        MINIMUM_RESERVATION_WINDOW,
+                        'minutes'
+                    )}
                     maxTime={
                         moment(startTime)
                             .add(durationToNext, 'minutes')
@@ -256,14 +267,14 @@ class ReservationOptions extends Component {
                     showTimeSelect
                     minDate={
                         moment(startTime)
-                            .add(1, 'hours')
+                            .add(MINIMUM_RESERVATION_WINDOW, 'minutes')
                             .isSame(moment(startTime), 'day')
                             ? moment(startTime)
                             : moment(startTime).add(1, 'day')
                     }
                     maxDate={
                         moment(startTime)
-                            .add(1, 'hours')
+                            .add(MINIMUM_RESERVATION_WINDOW, 'minutes')
                             .isSame(moment(startTime), 'day')
                             ? moment(startTime)
                             : moment(startTime).add(1, 'day')
