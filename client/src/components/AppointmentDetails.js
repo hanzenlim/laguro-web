@@ -16,6 +16,12 @@ const ListingImage = styled.img`
 `;
 
 class AppointmentDetails extends Component {
+
+    handleCancelAppointment = () => {
+        const { appointment } = this.props;
+        this.props.cancelAppointment(appointment);
+    }
+
     render() {
         const { appointment } = this.props;
         const { office } = appointment.reservation;
@@ -35,6 +41,7 @@ class AppointmentDetails extends Component {
                         <Grid container wrap="nowrap">
                             <Grid item container direction="column" sm={4}>
                                 <ListingImage
+                                    className="image"
                                     src={
                                         dentist.user.imageUrl ||
                                         'http://via.placeholder.com/250x250'
@@ -62,7 +69,7 @@ class AppointmentDetails extends Component {
                                         color="silver"
                                         cursor="pointer"
                                         underline
-                                        onClick={this.props.cancelAppointment}
+                                        onClick={this.handleCancelAppointment}
                                     >
                                         Cancel Appointment
                                     </Typography>

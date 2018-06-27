@@ -49,12 +49,24 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "eject": "react-scripts eject",
     "webpack-analyzer": "node webpackAnalyzerBuild.js"
   },
+  "jest": {
+    "setupTestFrameworkScriptFile": "<rootDir>/src/setupTests.js",
+    "moduleNameMapper": {
+      "\\.(css|jpg|png|svg)$": "<rootDir>/src/EmptyModule.js"
+    }
+  },
   "devDependencies": {
     "env-cmd": "^8.0.2",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "enzyme-to-json": "^3.3.4",
+    "jest": "^23.2.0",
+    "jest-enzyme": "^6.0.2",
     "webpack-bundle-analyzer": "^2.13.1"
   }
 }
