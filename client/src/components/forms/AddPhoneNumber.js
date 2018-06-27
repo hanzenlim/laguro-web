@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
-import * as actions from '../../actions';
+import { updateUserProfile } from '../../actions';
 import { Button, Typography, Box, Modal } from '../common';
 import { required } from './formValidation';
 import { renderMaskedField } from './sharedComponents';
@@ -80,6 +80,6 @@ export default reduxForm({
 })(
     connect(
         mapStateToProps,
-        actions
+        { updateUserProfile }
     )(AddPhoneNumber)
 );

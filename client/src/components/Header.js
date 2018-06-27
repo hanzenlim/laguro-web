@@ -78,9 +78,12 @@ class Header extends Component {
         const { auth } = this.props;
 
         if (auth != null) {
+            const firstName = auth && auth.firstName;
+            const lastName = auth && auth.lastName;
+
             return (
                 <li>
-                    <Link to={'/profile'}>{`${auth.firstName} ${auth.lastName}`}</Link>
+                    <Link to={'/profile'}>{`${firstName} ${lastName}`}</Link>
                 </li>
             );
         }

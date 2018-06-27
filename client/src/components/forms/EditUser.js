@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, reduxForm, SubmissionError } from 'redux-form';
-import * as actions from '../../actions';
+import { updateUserProfile } from '../../actions';
 import { Button, Typography, Box, Modal } from '../common';
 import { required } from './formValidation';
 import { renderField, renderMaskedField } from './sharedComponents';
@@ -18,9 +18,9 @@ class EditUser extends Component {
         document.title = 'Laguro - Edit User Profile';
 
         this.props.initialize({
-            firstName: auth.firstName,
-            lastName: auth.lastName,
-            phoneNumber: maskPhoneNumber(auth.phoneNumber),
+            firstName: auth && auth.firstName,
+            lastName: auth && auth.lastName,
+            phoneNumber: maskPhoneNumber(auth && auth.phoneNumber),
         });
     }
 
@@ -102,6 +102,6 @@ export default reduxForm({
 })(
     connect(
         mapStateToProps,
-        actions
+        { updateUserProfile }
     )(EditUser)
 );

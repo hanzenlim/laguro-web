@@ -93,10 +93,12 @@ class Profile extends Component {
 
     renderProfileDetails() {
         const { auth, dentist } = this.props;
+        const firstName = auth && auth.firstName;
+        const lastName = auth && auth.lastName;
 
         return (
             <div>
-                <h4>{`Welcome back ${auth.firstName} ${auth.lastName}!`}</h4>
+                <h4>{`Welcome back ${firstName} ${lastName}!`}</h4>
                 <p>
                     {`${
                         dentist && dentist.location
