@@ -70,10 +70,10 @@ const User = {
         );
         return response.data.getUserByGoogleId;
     },
-    updateProfileImage: async (userId, imageUrl) => {
+    updateProfile: async (userId, profile) => {
         const updateUserQuery = generateUpdateUserQuery();
         const response = await makeApiCall(updateUserQuery, {
-            input: { id: userId, imageUrl }
+            input: { id: userId, ...profile }
         });
         return response.data.updateUser;
     },

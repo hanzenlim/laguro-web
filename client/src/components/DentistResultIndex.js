@@ -139,7 +139,7 @@ class DentistResultIndex extends Component {
                     onMouseOut={this.removeActiveListing}
                 >
                     <DentistResult
-                        name={dentist.user.name}
+                        name={`${dentist.user.firstName} ${dentist.user.lastName}`}
                         specialty={dentist.specialty}
                         location={dentist.location}
                         procedures={dentist.procedures}
@@ -190,7 +190,7 @@ class DentistResultIndex extends Component {
         }
 
         if (this.props.isFetching) {
-            return <LinearProgress />; 
+            return <LinearProgress />;
         }
 
         return (

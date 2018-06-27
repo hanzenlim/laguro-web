@@ -21,6 +21,9 @@ class AppointmentDetails extends Component {
         const { office } = appointment.reservation;
         const { dentist } = appointment;
 
+        const firstName = dentist && dentist.user && dentist.firstName;
+        const lastName = dentist && dentist.user && dentist.lastName;
+
         const formattedTime =
             moment(appointment.startTime).format('M/D, h:mm - ') +
             moment(appointment.endTime).format('h:mm a');
@@ -74,7 +77,7 @@ class AppointmentDetails extends Component {
                                         color="link_blue"
                                         underline
                                     >
-                                        Dr. {dentist.user.name}
+                                        {`Dr. ${firstName} ${lastName}`}
                                     </Typography>
                                 </Link>
 

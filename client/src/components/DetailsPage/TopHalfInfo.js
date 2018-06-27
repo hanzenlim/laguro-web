@@ -95,7 +95,7 @@ class TopHalfInfo extends Component {
                     </Box>
                 ) : (
                     <Box fontSize={36}>
-                        {obj && obj.user ? obj.user.name : '_____'}
+                        {obj && obj.user ? `${obj.user.firstName} ${obj.user.lastName}` : '_____'}
                     </Box>
                 )}
 

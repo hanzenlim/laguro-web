@@ -36,13 +36,16 @@ class OfficeListing extends Component {
                             <div>
                                 {generateListItems(
                                     listing.reservations.map(
-                                        res =>
-                                            `Dr. ${
-                                                res.reservedBy.user.name
-                                            }  -  ${formatListingTime(
+                                        res => {
+                                            const firstName  = res && res.reservedBy && res.reservedBy.user && res.reservedBy.user.firstName;
+                                            const lastName  = res && res.reservedBy && res.reservedBy.user && res.reservedBy.user.lastName;
+                                            const listingTime = formatListingTime(
                                                 res.startTime,
                                                 res.endTime
-                                            )}`
+                                            );
+
+                                            return `Dr. ${firstName} ${lastName}  -  ${listingTime}`;
+                                        }
                                     )
                                 )}
                             </div>

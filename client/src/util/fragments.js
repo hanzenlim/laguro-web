@@ -15,9 +15,11 @@ options: {
 
 export const userFragment = `
     id
-    name
+    firstName
+    lastName
     googleId
     imageUrl
+    phoneNumber
     dateCreated
     dentistId
     payoutAccountId
@@ -75,7 +77,8 @@ export const appointmentFragment = `
     dentist {
         id
         user {
-            name
+            firstName
+            lastName
             imageUrl
         }
     }
@@ -98,7 +101,8 @@ export const reservationFragment = `
     reservedBy {
         id
         user {
-            name
+            firstName
+            lastName
         }
     }
     equipmentSelected
@@ -125,7 +129,8 @@ export const reviewerFragment = `
     ${reviewFragment}
     reviewer {
         id
-        name
+        firstName
+        lastName
         imageUrl
     }
 `;
@@ -136,7 +141,8 @@ export const revieweeFragment = `
       id
       user {
         id
-        name
+        firstName
+        lastName
         imageUrl
       }
       dateCreated
@@ -147,7 +153,8 @@ export const revieweeFragment = `
         id
         user {
           id
-          name
+          firstName
+          lastName
         }
         specialty
         location

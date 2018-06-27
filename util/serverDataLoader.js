@@ -19,7 +19,8 @@ module.exports.getUserQuery = `
     query getUserByGoogleId($googleId: String!) {
         getUserByGoogleId(googleId: $googleId) {
             id
-            name
+            firstName
+            lastName
             googleId
             imageUrl
         }
@@ -49,11 +50,12 @@ module.exports.updatePatientDocumentSignatureQuery = `
     }
 `;
 
-module.exports.createUserVariable = (name, id, email, img) => ({
+module.exports.createUserVariable = (firstName, lastName, id, email, img) => ({
     "input": {
-        name: name,
+        firstName,
+        lastName,
         googleId: id,
-        email: email,
+        email,
         imageUrl: img
     }
 });

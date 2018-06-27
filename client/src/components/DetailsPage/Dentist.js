@@ -44,7 +44,7 @@ class Dentist extends Component {
                     this.props.dentist && this.props.dentist.user
                         ? this.props.dentist.user
                         : null;
-                document.title = `Laguro - ${user ? user.name : ''}`;
+                document.title = `Laguro - ${user ? `${user.firstName} ${user.lastName}` : ''}`;
             });
     }
 

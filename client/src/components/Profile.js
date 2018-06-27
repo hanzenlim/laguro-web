@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import ReactFilestack from 'filestack-react';
 import moment from 'moment';
-import { Modal } from './common';
+import { Modal, Link } from './common';
 import ReviewContainer from './ReviewContainer';
 import PatientAppointments from './PatientAppointments';
 import UserOfficeIndex from './UserOfficeIndex';
 import UserReservationIndex from './UserReservationIndex';
 import CreateDentistProfile from './forms/CreateDentistProfile';
+import EditUser from './forms/EditUser';
 import { filestackKey } from '../config/keys';
 import * as actions from '../actions';
 
@@ -63,6 +63,7 @@ class Profile extends Component {
         super(props);
         this.state = {
             isModalOpen: false,
+            isEditUserProfileOpen: false,
             isFetching: false
         };
 
@@ -93,10 +94,12 @@ class Profile extends Component {
 
     renderProfileDetails() {
         const { auth, dentist } = this.props;
+        const firstName = auth && auth.firstName;
+        const lastName = auth && auth.lastName;
 
         return (
             <div>
-                <h4>Welcome back {auth.name}!</h4>
+                <h4>{`Welcome back ${firstName} ${lastName}!`}</h4>
                 <p>
                     {`${
                         dentist && dentist.location
@@ -116,6 +119,12 @@ class Profile extends Component {
 
         return (
             <ul className="collection">
+                <div
+                    className="link blue-text"
+                    onClick={this.toggleEditUserProfileModal}
+                >
+                    Edit User Profile
+                </div>
                 {/* Display Create if no dentist profile or Edit if profile exists */}
                 {dentistProfileExists ? (
                     <Link className="link" to={'/dentist/edit'}>
@@ -187,8 +196,14 @@ class Profile extends Component {
         const upload = result.filesUploaded[0];
         const userId = this.props.auth.id;
         if (upload) {
-            this.props.updateProfileImage(userId, upload.url);
+            this.props.updateProfile(userId, { imgUrl: upload.url });
         }
+    }
+
+    toggleEditUserProfileModal = () => {
+        this.setState({
+            isEditUserProfileOpen: !this.state.isEditUserProfileOpen
+        });
     }
 
     render() {
@@ -236,6 +251,7 @@ class Profile extends Component {
                             </div>
                         )}
                 </div>
+                <EditUser open={this.state.isEditUserProfileOpen} onClose={this.toggleEditUserProfileModal} />
             </div>
         );
     }
@@ -247,4 +263,7 @@ function mapStateToProps(state) {
         dentist: state.dentists.selectedDentist
     };
 }
-export default connect(mapStateToProps, actions)(Profile);
+export default connect(
+    mapStateToProps,
+    actions
+)(Profile);
