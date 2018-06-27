@@ -17,7 +17,7 @@ export const StyledModalContent = styled.div`
     width: calc(100vw - 30px);
     position: relative;
     outline: none;
-    overflow: auto; 
+    overflow: auto;
 `;
 
 const StyledCloseButton = styled.button`
@@ -35,12 +35,12 @@ const StyledCloseButton = styled.button`
 `;
 
 const Modal = props => {
-    const { children, ...customProps } = props;
+    const { children, closable, ...customProps } = props;
 
     return (
         <StyledModal {...customProps} onBackdropClick={customProps.onClose}>
             <StyledModalContent>
-                {customProps.closable && (
+                {closable && (
                     <StyledCloseButton
                         type="button"
                         title="Close modal"
