@@ -160,15 +160,19 @@ class DetailDetails extends Component {
         this.setState({ avg_rating, rating_count });
     }
 
-    checkAvailability(listing) {
+    isListingAvailable(listing) {
+        if (!listing.reservations) {
+            return false;
+        }
+
         const filteredReservations = listing.reservations.filter(
             res => res.status === ACTIVE
         );
         const timeSlots = calculateTimeslots(listing, filteredReservations);
-
         const openSlots = timeSlots.filter(
             durationToNext => durationToNext >= 60
         );
+
         return !!openSlots.length;
     }
 
@@ -178,7 +182,7 @@ class DetailDetails extends Component {
                 .filter(listing => moment(listing.startTime).isAfter(moment()))
                 .map((listing, index) => [
                     <Grid key={index * 3} item xs={8} sm={5}>
-                        {this.checkAvailability(listing) ? (
+                        {this.isListingAvailable(listing) ? (
                             <StyledListingsTyp
                                 onClick={this.handleBookReservation.bind(
                                     this,
@@ -203,7 +207,7 @@ class DetailDetails extends Component {
                     </Grid>,
                     <Grid key={index * 3 + 1} item xs={4} sm={2}>
                         <Box mt={1} ml={[0, -20]}>
-                            {this.checkAvailability(listing) ? (
+                            {this.isListingAvailable(listing) ? (
                                 <StyledAvailButton
                                     onClick={this.handleBookReservation.bind(
                                         this,
