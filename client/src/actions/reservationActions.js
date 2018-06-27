@@ -27,6 +27,8 @@ export const createReservation = params => async dispatch => {
             alert(
                 'Sorry, the reservation window you selected is outside of the available window for this listing. Please go back and select a new time window'
             );
+        } else {
+            alert('Sorry, something went wrong. Please try again later.');
         }
     } else {
         const reservation = response.data.createReservation;
