@@ -15,7 +15,8 @@
         "no-plusplus": "off",
         "no-mixed-spaces-and-tabs": "off",
         "react/jsx-uses-react": "error",
-        "react/jsx-uses-vars": "error"
+        "react/jsx-uses-vars": "error",
+        "import/no-extraneous-dependencies": ["error", {"devDependencies": true}]
     },
     "globals": {
         "document": true,
@@ -23,6 +24,10 @@
         "alert": true
     },
     "plugins": [
-        "react"
-    ]
+        "react",
+        "jest"
+    ],
+    "env": {
+        "jest/globals": true
+    }
 }

@@ -34,7 +34,7 @@ class PatientAppointments extends Component {
         this.setState({ appointments });
     }
 
-    async cancelAppointment(appointment) {
+    cancelAppointment = async (appointment) => {
         if (
             // eslint-disable-next-line
             confirm(
@@ -53,10 +53,7 @@ class PatientAppointments extends Component {
             <AppointmentDetails
                 key={appointment.id}
                 appointment={appointment}
-                cancelAppointment={this.cancelAppointment.bind(
-                    this,
-                    appointment
-                )}
+                cancelAppointment={this.cancelAppointment}
             />
         ));
     }
