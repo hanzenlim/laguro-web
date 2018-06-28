@@ -89,7 +89,6 @@ class ResultMap extends Component {
     // NOTE: THIS METHOD WILL BE REMOVED ONCE WE SAVE LOCATION COORDINATES TO DB
     geocodeLocationList = () => {
         this.props.locations.map(query => {
-            let { location } = query;
             fetch(
                 `https://api.mapbox.com/geocoding/v5/mapbox.places/${
                     query.location
