@@ -16,6 +16,7 @@ import Layout from './Layout';
 import Header from './Header';
 import Content from './Content';
 import Footer from './Footer';
+import ErrorBoundary from './ErrorBoundary';
 
 import theme from '../theme';
 
@@ -142,94 +143,96 @@ class App extends Component {
                 <Router history={history}>
                     <Layout>
                         <Header toggleShowModal={this.props.toggleLoginModal} />
-                        <Content>
-                            <Switch>
-                                <PrivateRoute
-                                    path="/landlord-onboarding/:step"
-                                    auth={this.props.auth}
-                                    component={LandlordOnboarding}
-                                />
-                                <PrivateRoute
-                                    auth={this.props.auth}
-                                    path="/office/:office_id/listing/:id/edit"
-                                    component={EditListing}
-                                />
-                                <PrivateRoute
-                                    auth={this.props.auth}
-                                    path="/office/:office_id/edit"
-                                    component={EditOffice}
-                                />
-                                <PrivateRoute
-                                    auth={this.props.auth}
-                                    path="/office/new"
-                                    component={NewOffice}
-                                />
-                                <PrivateRoute
-                                    auth={this.props.auth}
-                                    path="/dentist/new"
-                                    component={NewDentist}
-                                />
-                                <PrivateRoute
-                                    auth={this.props.auth}
-                                    path="/dentist/edit"
-                                    component={EditDentist}
-                                />
-                                <PrivateRoute
-                                    auth={this.props.auth}
-                                    path="/listing/new"
-                                    component={NewListing}
-                                />
-                                <PrivateRoute
-                                    auth={this.props.auth}
-                                    path="/profile"
-                                    component={Profile}
-                                />
-                                <PrivateRoute
-                                    auth={this.props.auth}
-                                    path="/payment-success"
-                                    component={PaymentSuccess}
-                                />
-                                <PrivateRoute
-                                    auth={this.props.auth}
-                                    path="/payment"
-                                    component={Payment}
-                                />
-                                <PrivateRoute
-                                    auth={this.props.auth}
-                                    path="/payment-history"
-                                    component={PaymentHistory}
-                                />
-                                <PrivateRoute
-                                    auth={this.props.auth}
-                                    path="/payout"
-                                    component={Payout}
-                                />
-                                <Route
-                                    path="/dentist/search"
-                                    component={DentistResultIndex}
-                                />
-                                <Route
-                                    path="/dentist/:id"
-                                    component={Dentist}
-                                />
-                                <Route
-                                    path="/office/search"
-                                    component={OfficeResultIndex}
-                                />
-                                <Route
-                                    path="/office/:office_id"
-                                    component={Office}
-                                />
-                                <Route path="/terms" component={Terms} />
-                                <Route
-                                    path="/privacy"
-                                    component={PrivacyPolicy}
-                                />
-                                <Route path="/" component={Landing} />
-                                {/* Catch all unmatched routes. */}
-                                <Route component={NotFound} />
-                            </Switch>
-                        </Content>
+                        <ErrorBoundary>
+                            <Content>
+                                <Switch>
+                                    <PrivateRoute
+                                        path="/landlord-onboarding/:step"
+                                        auth={this.props.auth}
+                                        component={LandlordOnboarding}
+                                    />
+                                    <PrivateRoute
+                                        auth={this.props.auth}
+                                        path="/office/:office_id/listing/:id/edit"
+                                        component={EditListing}
+                                    />
+                                    <PrivateRoute
+                                        auth={this.props.auth}
+                                        path="/office/:office_id/edit"
+                                        component={EditOffice}
+                                    />
+                                    <PrivateRoute
+                                        auth={this.props.auth}
+                                        path="/office/new"
+                                        component={NewOffice}
+                                    />
+                                    <PrivateRoute
+                                        auth={this.props.auth}
+                                        path="/dentist/new"
+                                        component={NewDentist}
+                                    />
+                                    <PrivateRoute
+                                        auth={this.props.auth}
+                                        path="/dentist/edit"
+                                        component={EditDentist}
+                                    />
+                                    <PrivateRoute
+                                        auth={this.props.auth}
+                                        path="/listing/new"
+                                        component={NewListing}
+                                    />
+                                    <PrivateRoute
+                                        auth={this.props.auth}
+                                        path="/profile"
+                                        component={Profile}
+                                    />
+                                    <PrivateRoute
+                                        auth={this.props.auth}
+                                        path="/payment-success"
+                                        component={PaymentSuccess}
+                                    />
+                                    <PrivateRoute
+                                        auth={this.props.auth}
+                                        path="/payment"
+                                        component={Payment}
+                                    />
+                                    <PrivateRoute
+                                        auth={this.props.auth}
+                                        path="/payment-history"
+                                        component={PaymentHistory}
+                                    />
+                                    <PrivateRoute
+                                        auth={this.props.auth}
+                                        path="/payout"
+                                        component={Payout}
+                                    />
+                                    <Route
+                                        path="/dentist/search"
+                                        component={DentistResultIndex}
+                                    />
+                                    <Route
+                                        path="/dentist/:id"
+                                        component={Dentist}
+                                    />
+                                    <Route
+                                        path="/office/search"
+                                        component={OfficeResultIndex}
+                                    />
+                                    <Route
+                                        path="/office/:office_id"
+                                        component={Office}
+                                    />
+                                    <Route path="/terms" component={Terms} />
+                                    <Route
+                                        path="/privacy"
+                                        component={PrivacyPolicy}
+                                    />
+                                    <Route path="/" component={Landing} />
+                                    {/* Catch all unmatched routes. */}
+                                    <Route component={NotFound} />
+                                </Switch>
+                            </Content>
+                        </ErrorBoundary>
                         <LoginModal
                             open={this.props.isLoginModalVisible}
                             onClose={this.props.toggleLoginModal}
@@ -249,7 +252,4 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(
-    mapStateToProps,
-    actions
-)(App);
+export default connect(mapStateToProps, actions)(App);
