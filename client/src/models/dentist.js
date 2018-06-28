@@ -94,12 +94,17 @@ const generateGetDentistQuery = options => {
 const getActiveDentistsQuery = `
     query {
         getActiveDentists {
-            ${dentistFragment}
-            user {
-                ${userFragment}
+            dentist {
+                ${dentistFragment}
+                user {
+                    ${userFragment}
+                }
+                reviews {
+                    ${reviewerFragment}
+                }
             }
-            reviews {
-                ${reviewerFragment}
+            reservations {
+                ${reservationFragment}
             }
         }
     }

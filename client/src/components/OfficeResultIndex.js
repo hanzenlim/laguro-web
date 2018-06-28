@@ -132,9 +132,10 @@ class OfficeResultIndex extends Component {
             }
             return (
                 <div
-                    data-id={office.id}
+                    data-id={office.id + office.location}
                     onMouseOver={this.setActiveListing}
                     onMouseOut={this.removeActiveListing}
+                    key={office.id + office.location}
                 >
                     <OfficeResult
                         name={office.name}
@@ -146,7 +147,6 @@ class OfficeResultIndex extends Component {
                         img={office.imageUrls ? office.imageUrls[0] : null}
                         office_id={office.id}
                         index={index}
-                        key={office.id}
                     />
                 </div>
             );

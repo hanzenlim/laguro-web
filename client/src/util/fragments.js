@@ -114,6 +114,7 @@ export const reservationFragment = `
     startTime
     endTime
     dateCreated
+    location
 `;
 
 export const reviewFragment = `

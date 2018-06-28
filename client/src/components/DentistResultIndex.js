@@ -70,7 +70,7 @@ class DentistResultIndex extends Component {
 
     componentWillMount() {
         document.title = 'Laguro - Search Index';
-        this.props.fetchDentists(this.props.filters);
+        this.props.fetchActiveDentists(this.props.filters);
     }
 
     renderMap() {
@@ -133,10 +133,10 @@ class DentistResultIndex extends Component {
 
             return (
                 <div
-                    key={dentist.id}
-                    data-id={dentist.id}
+                    data-id={dentist.id + dentist.location}
                     onMouseOver={this.setActiveListing}
                     onMouseOut={this.removeActiveListing}
+                    key={dentist.id + dentist.location}
                 >
                     <DentistResult
                         name={`${dentist.user.firstName} ${dentist.user.lastName}`}
@@ -186,7 +186,7 @@ class DentistResultIndex extends Component {
 
     render() {
         if (this.props.invalid) {
-            this.props.fetchDentists(this.props.filters);
+            this.props.fetchActiveDentists(this.props.filters);
         }
 
         if (this.props.isFetching) {

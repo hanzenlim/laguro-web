@@ -16,19 +16,53 @@ function requestDentists() {
     };
 }
 
-export const fetchDentists = filters => async dispatch => {
+export const fetchActiveDentists = filters => async dispatch => {
     dispatch(requestDentists());
-    const dentists = await Dentist.getActive();
+    const dentistsWithReservations = await Dentist.getActive();
+    const dentists = dentistsWithReservations.map(obj => obj.dentist);
     if (!filters || (filters && !filters.location)) {
         dispatch({
             type: FETCH_DENTISTS,
             payload: dentists
         });
     } else {
-        const filteredDentists = await getDistances(dentists, filters);
+        // Get distances for each location that each dentist has reserved at
+        let distanceQueries = [];
+        //for each dentist...
+        for (let i = 0; i < dentistsWithReservations.length; i++) {
+            // get reservations for this dentist
+            const reservations = dentistsWithReservations[i].reservations;
+            // extract locations from reservations
+            const locations = reservations.map(res => res.location);
+            // remove duplicate locations
+            const filteredLocations = [...new Set(locations)];
+
+            // create array of new dentist objects with each of their unique locations
+            let dentistUniqueLocations = [];
+            for (let j = 0; j < filteredLocations.length; j++) {
+                dentistUniqueLocations.push({
+                    ...dentists[i],
+                    location: filteredLocations[j]
+                });
+            }
+
+            // use google api to calculate distance from search query and append distance onto dentist object
+            distanceQueries.push(getDistances(dentistUniqueLocations, filters));
+        }
+        let dentistsWithDistances = await Promise.all(distanceQueries);
+
+        let mergedDentists = dentistsWithDistances[0];
+        if (dentistsWithDistances.length > 1) {
+            for (let i = 1; i < dentistsWithDistances.length; i++) {
+                mergedDentists = mergedDentists.concat(
+                    dentistsWithDistances[i]
+                );
+            }
+        }
+
         dispatch({
             type: FETCH_DENTISTS,
-            payload: filteredDentists
+            payload: mergedDentists
         });
     }
 };
