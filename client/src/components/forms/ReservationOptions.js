@@ -157,14 +157,15 @@ class ReservationOptions extends Component {
 
     calcReservationFee() {
         const { numChairs, listing } = this.props;
-        const reservationFee =
-            numChairs * listing.chairHourlyPrice * this.calcTime();
+        const reservationFee = Math.round(
+            numChairs * listing.chairHourlyPrice * this.calcTime()
+        );
 
         return reservationFee;
     }
 
     calcBookingFee() {
-        const bookingFee = this.calcReservationFee() * 0.15;
+        const bookingFee = Math.round(this.calcReservationFee() * 0.15);
 
         return bookingFee;
     }
