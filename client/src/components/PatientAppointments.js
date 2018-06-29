@@ -34,13 +34,28 @@ class PatientAppointments extends Component {
         this.setState({ appointments });
     }
 
+    // TODO: Calcalation of refund amount should be done in the backend, not frontend.
+    // calculate percentage of appointment cost to refund
+    calculateAppointmentRefund = (appointment) => {
+        const ms = moment().diff(moment(appointment.dateCreated));
+        const timeElapsedInHours = moment.duration(ms).asHours();
+        if (timeElapsedInHours < 24) {
+            return 1;
+        }
+        if (timeElapsedInHours < 48) {
+            return 0.5;
+        }
+
+        return 0;
+    };
+
     cancelAppointment = async (appointment) => {
         if (
             // eslint-disable-next-line
             confirm(
                 `Delete appointment for ${moment(appointment.startTime).format(
                     'MMM D, h:mm a'
-                )}?`
+                )}?. A total amount of $${Math.round(20 * this.calculateAppointmentRefund(appointment))}`
             )
         ) {
             await Appointment.delete(appointment.id);
