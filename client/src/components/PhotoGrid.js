@@ -57,7 +57,8 @@ class PhotoGrid extends Component {
     componentWillMount() {
         document.title = "Laguro - Search Index";
         if (this.props.listings.length === 0) {
-            this.props.fetchListings();
+            const active = true;
+            this.props.fetchListings(active);
         }
     }
 
