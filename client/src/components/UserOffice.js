@@ -161,7 +161,11 @@ class UserOffice extends Component {
                                         direction="column"
                                         alignItems="center"
                                     >
-                                        <StyledWideLink to={`/listing/new`}>
+                                        <StyledWideLink
+                                            to={`/landlord-onboarding/add-listing?officeId=${
+                                                office.id
+                                            }&name=${office.name}`}
+                                        >
                                             <Grid
                                                 container
                                                 wrap="nowrap"

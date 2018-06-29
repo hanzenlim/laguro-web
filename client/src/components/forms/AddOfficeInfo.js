@@ -116,9 +116,13 @@ class NewOffice extends Component {
                                 <Grid item xs={12}>
                                     <Typography fontSize={5}>
                                         {`Hi ${
-                                            auth ? auth.name : ''
+                                            auth
+                                                ? `${auth.firstName} ${
+                                                    auth.lastName
+                                                }`
+                                                : ''
                                         }, let’s get started on creating
-                                        your office listing`}
+                                        your new office`}
                                     </Typography>
                                 </Grid>
                             </Grid>
