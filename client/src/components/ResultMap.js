@@ -89,6 +89,7 @@ class ResultMap extends Component {
     // NOTE: THIS METHOD WILL BE REMOVED ONCE WE SAVE LOCATION COORDINATES TO DB
     geocodeLocationList = () => {
         this.props.locations.map(query => {
+            let { location } = query;
             fetch(
                 `https://api.mapbox.com/geocoding/v5/mapbox.places/${
                     query.location
@@ -133,7 +134,7 @@ class ResultMap extends Component {
 
     renderPopup = () => {
         const activeListing = this.state.markerData.filter(
-            item => item.id === this.props.activeListingId
+            item => item.id + item.location === this.props.activeListingId
         )[0];
 
         const popupInfo = this.state.popupInfo || activeListing;
