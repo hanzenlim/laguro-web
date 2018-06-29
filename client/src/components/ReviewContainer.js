@@ -25,7 +25,7 @@ const ReviewContentDiv = styled(Box)`
 class ReviewContainer extends Component {
     constructor() {
         super();
-        this.state = { showMoreMap: Object.create(null) };
+        this.state = { showMoreMap: {} };
     }
 
     componentWillReceiveProps(){
@@ -39,26 +39,39 @@ class ReviewContainer extends Component {
         this.setState({ showMoreMap });
     }
 
-    handleShowMoreReviewText(reviewId) {
+    handleShowMoreReviewText = (e) => {
         let showMoreMap = this.state.showMoreMap;
-        showMoreMap[reviewId] = true;
+        const { reviewid } = e.target.dataset;
+
+        showMoreMap[reviewid] = true;
 
         this.setState({ showMoreMap });
     }
 
-    renderEditButtons(id) {
+    renderEditButtons = (reviewid) => {
         return (
             <Box
                 height={33}
                 p={1}
                 className="red lighten-3 white-text pointer"
-                onClick={() => {
-                    this.deleteReview(id);
-                }}
+                data-reviewid={reviewid}
+                onClick={this.deleteReview}
             >
                 <i className="material-icons">delete_forever</i>
             </Box>
         );
+    }
+
+    renderReviewText = (reviewId, reviewText) => {
+        if (reviewText.length > 190) {
+            return (
+                <div>
+                    {this.state.showMoreMap[reviewId] ? reviewText : reviewText.substring(0, 190).trim() + '...'}
+                    {!this.state.showMoreMap[reviewId] && <a data-reviewid={reviewId} onClick={this.handleShowMoreReviewText}>Read more</a>}
+                </div>)
+        } else {
+            return reviewText;
+        }
     }
 
     renderReviewList(reviews) {
@@ -83,8 +96,7 @@ class ReviewContainer extends Component {
                                 className="review-content"
                                 showMore={this.state.showMoreMap[review.id]}
                             >
-                                {this.state.showMoreMap[review.id] ? review.text : review.text.substring(0, 190).trim() + '...'}
-                                {!this.state.showMoreMap[review.id] && <a onClick={this.handleShowMoreReviewText.bind(this, review.id)}>Read more</a>}
+                                {this.renderReviewText(review.id, review.text)}
                             </ReviewContentDiv>
                             <Padding bottom={10} />
                             <ReactStars
@@ -102,8 +114,9 @@ class ReviewContainer extends Component {
             ));
     }
 
-    async deleteReview(id) {
-        await this.props.deleteReview(id);
+    deleteReview = async (e) => {
+        const { reviewid } = e.currentTarget.dataset;
+        await this.props.deleteReview(reviewid);
         await this.props.queryReviews(REVIEWEE_ID, this.props.revieweeId);
     }
 
