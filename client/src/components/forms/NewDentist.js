@@ -69,6 +69,11 @@ class NewDentist extends Component {
             history.push(referrer);
         } else {
             history.push('/profile');
+            await this.props.fetchUser(DENTIST);
+            
+            if (this.props.closeModal) {
+                this.props.closeModal();
+            }
         }
     }
 
