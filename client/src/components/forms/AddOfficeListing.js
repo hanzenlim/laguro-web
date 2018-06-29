@@ -18,7 +18,13 @@ import { Typography, Grid, Button, Flex } from '../common';
 import { Padding } from '../common/Spacing';
 
 import { renderDatePicker, renderField } from './sharedComponents';
-import { required, isNum, dollarMinimum } from './formValidation';
+import {
+    required,
+    isNum,
+    dollarMinimum,
+    lessFifty,
+    greaterZero
+} from './formValidation';
 
 import history from '../../history';
 
@@ -45,8 +51,13 @@ class NewListing extends Component {
             startTime,
             endTime,
             numChairsAvailable,
-            name
+            name,
+            officeId
         } = this.urlParams;
+
+        // if officeId is defined, office exists, no need
+        // to create a new office
+        this.state = { isExistingOffice: officeId !== undefined };
 
         this.props.initialize({
             office: name,
@@ -111,23 +122,30 @@ class NewListing extends Component {
                 location,
                 imageUrls,
                 equipment,
-                description
+                description,
+                officeId
             } = this.urlParams;
 
-            await this.props.createOffice({
-                name,
-                location,
-                hostId: this.props.auth.dentist.id,
-                imageUrls: JSON.parse(imageUrls),
-                equipment: JSON.parse(equipment),
-                description
-            });
+            if (!this.state.isExistingOffice) {
+                await this.props.createOffice({
+                    name,
+                    location,
+                    hostId: this.props.auth.dentist.id,
+                    imageUrls: JSON.parse(imageUrls),
+                    equipment: JSON.parse(equipment),
+                    description
+                });
+            }
 
+            // if opened from an existing office, use that officeId, else use
+            // the newly created office's id
             await this.props.createListing({
                 ...values,
                 chairHourlyPrice: values.chairHourlyPrice * 100,
                 cleaningFee: values.cleaningFee * 100,
-                officeId: this.props.offices[0].id
+                officeId: this.state.isExistingOffice
+                    ? officeId
+                    : this.props.offices[0].id
             });
         }
     }
@@ -154,10 +172,17 @@ class NewListing extends Component {
                         <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                             <Grid container>
                                 <Grid item xs={12}>
-                                    <Typography fontSize={5}>
-                                        Now that you have created an office, we
-                                        need to create a listing
-                                    </Typography>
+                                    {this.state.isExistingOffice ? (
+                                        <Typography fontSize={5}>
+                                            Enter more info to create a new
+                                            listing for your office
+                                        </Typography>
+                                    ) : (
+                                        <Typography fontSize={5}>
+                                            Now that you have created an office,
+                                            we need to create a listing
+                                        </Typography>
+                                    )}
                                 </Grid>
                             </Grid>
 
@@ -232,23 +257,33 @@ class NewListing extends Component {
                                         label="Number of chairs available"
                                         component={renderField}
                                         placeholder="1"
-                                        validate={[required, isNum]}
+                                        validate={[
+                                            required,
+                                            greaterZero,
+                                            lessFifty,
+                                            isNum
+                                        ]}
                                     />
                                     <Padding bottom="16" />
                                 </Grid>
                             </Grid>
 
                             <Grid container justify="space-between">
-                                <Grid item>
-                                    <Button
-                                        color="default"
-                                        onClick={this.handleBack}
-                                    >
-                                        <Typography size="t2" weight="medium">
-                                            Previous
-                                        </Typography>
-                                    </Button>
-                                </Grid>
+                                {!this.state.isExistingOffice && (
+                                    <Grid item>
+                                        <Button
+                                            color="default"
+                                            onClick={this.handleBack}
+                                        >
+                                            <Typography
+                                                size="t2"
+                                                weight="medium"
+                                            >
+                                                Previous
+                                            </Typography>
+                                        </Button>
+                                    </Grid>
+                                )}
                                 <Grid item>
                                     {error && (
                                         <strong className="red-text">
