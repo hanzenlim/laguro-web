@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import logo from './icons/logo.svg';
+import { Typography } from './common';
 
 import './css/Footer.css';
 
@@ -55,10 +57,10 @@ class Footer extends Component {
                         </div>
                         <div className="col l4 s6">
                             <p className="grey-text text-lighten-4 footer-item">
-                                Privacy
+                                <Link to={'/privacy'}><Typography color="white">Privacy</Typography></Link>
                             </p>
                             <p className="grey-text text-lighten-4 footer-item">
-                                Terms
+                                <Link to={'/terms'}><Typography color="white">Terms</Typography></Link>
                             </p>
                         </div>
                         <div className="col offset-l4 l8 s12 footer-copyright">
