@@ -92,7 +92,7 @@ class ResultMap extends Component {
             fetch(
                 `https://api.mapbox.com/geocoding/v5/mapbox.places/${
                     query.location
-                }.json?country=us&types=place&access_token=${mapBoxApiKey}`
+                }.json?country=us&types=address%2Cplace&access_token=${mapBoxApiKey}`
             )
                 .then(response => response.json())
                 .then(responseData => {
@@ -120,7 +120,7 @@ class ResultMap extends Component {
                         }
                     });
                 });
-            
+
             return null;
         });
     };
