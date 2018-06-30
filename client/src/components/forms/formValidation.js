@@ -1,5 +1,5 @@
 export const dollarMinimum = value =>
-    value && value >= 1 ? undefined : 'Minimum hourly chair price is $1';
+    value && value >= 100 ? undefined : 'Minimum price is $1';
 
 export const isNum = value =>
     value && /^[1-9][0-9]*$/.test(value) ? undefined : 'Must be a whole number';

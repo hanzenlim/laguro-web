@@ -14,6 +14,7 @@ import { borders, color } from 'styled-system';
 import * as actions from '../../actions';
 import { DENTIST } from '../../util/strings';
 import { getNextHalfHour } from '../../util/timeUtil';
+import { renderPrice, removeSpecialChars } from '../../util/paymentUtil';
 import { Typography, Grid, Button, Flex } from '../common';
 import { Padding } from '../common/Spacing';
 
@@ -61,8 +62,8 @@ class NewListing extends Component {
 
         this.props.initialize({
             office: name,
-            cleaningFee: cleaningFee ? cleaningFee / 100 : 15,
-            chairHourlyPrice: chairHourlyPrice ? chairHourlyPrice / 100 : 50,
+            cleaningFee: cleaningFee ? cleaningFee : 1500,
+            chairHourlyPrice: chairHourlyPrice ? chairHourlyPrice : 5000,
             startTime: startTime ? moment(startTime) : getNextHalfHour(),
             endTime: endTime
                 ? moment(endTime)
@@ -91,8 +92,8 @@ class NewListing extends Component {
             ...this.urlParams,
             startTime: moment(startTime).format(),
             endTime: moment(endTime).format(),
-            chairHourlyPrice: chairHourlyPrice ? chairHourlyPrice * 100 : 0,
-            cleaningFee: cleaningFee ? cleaningFee * 100 : 0,
+            chairHourlyPrice: chairHourlyPrice ? chairHourlyPrice : 0,
+            cleaningFee: cleaningFee ? cleaningFee : 0,
             numChairsAvailable: numChairsAvailable
         });
 
@@ -141,8 +142,8 @@ class NewListing extends Component {
             // the newly created office's id
             await this.props.createListing({
                 ...values,
-                chairHourlyPrice: values.chairHourlyPrice * 100,
-                cleaningFee: values.cleaningFee * 100,
+                chairHourlyPrice: values.chairHourlyPrice,
+                cleaningFee: values.cleaningFee,
                 officeId: this.state.isExistingOffice
                     ? officeId
                     : this.props.offices[0].id
@@ -231,11 +232,11 @@ class NewListing extends Component {
                                         label="Price per chair (hourly)"
                                         placeholder="100"
                                         component={renderField}
-                                        validate={[
-                                            required,
-                                            isNum,
-                                            dollarMinimum
-                                        ]}
+                                        validate={[required, dollarMinimum]}
+                                        format={value => renderPrice(value)}
+                                        normalize={value =>
+                                            removeSpecialChars(value)
+                                        }
                                     />
                                     <Padding bottom="16" />
                                 </Grid>
@@ -246,7 +247,11 @@ class NewListing extends Component {
                                         label="Cleaning Fee"
                                         placeholder="50"
                                         component={renderField}
-                                        validate={[required, isNum]}
+                                        validate={[required]}
+                                        format={value => renderPrice(value)}
+                                        normalize={value =>
+                                            removeSpecialChars(value)
+                                        }
                                     />
                                     <Padding bottom="16" />
                                 </Grid>

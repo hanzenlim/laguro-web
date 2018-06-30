@@ -6,7 +6,8 @@ import { Link } from 'react-router-dom';
 
 import { filestackKey } from '../../config/keys';
 import * as actions from '../../actions';
-import { required, isNum } from './formValidation';
+import { renderPrice, removeSpecialChars } from '../../util/paymentUtil';
+import { required } from './formValidation';
 import {
     renderField,
     renderSelect,
@@ -38,7 +39,6 @@ class EditOffice extends Component {
 
         this.props.initialize({
             name: office.name,
-            numChairs: office.numChairs,
             equipment: office.equipment,
             description: office.description
         });
@@ -110,7 +110,9 @@ class EditOffice extends Component {
                             placeholder="15"
                             component={renderField}
                             label="Usage Price"
-                            validate={[required, isNum]}
+                            validate={[required]}
+                            format={value => renderPrice(value)}
+                            normalize={value => removeSpecialChars(value)}
                         />
                     </div>
                     <button
@@ -163,14 +165,6 @@ class EditOffice extends Component {
                         component={renderField}
                         validate={required}
                     />
-                    <Field
-                        name="numChairs"
-                        label="Number of Chairs"
-                        className="col s12 m3"
-                        placeholder="3"
-                        component={renderField}
-                        validate={[required, isNum]}
-                    />
                 </div>
 
                 <Field
@@ -185,7 +179,10 @@ class EditOffice extends Component {
                     }}
                 />
 
-                {charCount(this.props.description ? this.props.description.length : 0, 500)}
+                {charCount(
+                    this.props.description ? this.props.description.length : 0,
+                    500
+                )}
 
                 <div className="row">
                     <FieldArray
@@ -242,7 +239,6 @@ function mapStateToProps(state) {
         office: state.offices.selected,
         description: selector(state, 'description')
     };
-
 }
 
 export default reduxForm({

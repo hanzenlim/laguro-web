@@ -5,10 +5,7 @@ import styled from 'styled-components';
 import queryString from 'query-string';
 import * as actions from '../../actions';
 import history from '../../history';
-import {
-    addCentsToEquipment,
-    removeCentsFromEquipment
-} from '../../util/paymentUtil';
+import { renderPrice, removeSpecialChars } from '../../util/paymentUtil';
 
 import {
     renderField,
@@ -16,7 +13,7 @@ import {
     charCount,
     equipmentOptions
 } from './sharedComponents';
-import { required, isNum } from './formValidation';
+import { required, dollarMinimum } from './formValidation';
 
 import { Box, Typography, Grid, Button } from '../common';
 import { Padding } from '../common/Spacing';
@@ -51,8 +48,8 @@ class NewOffice extends Component {
         let { equipment } = this.urlParams;
 
         equipment = equipment
-            ? removeCentsFromEquipment(JSON.parse(equipment))
-            : [{ name: 'Digital X-Ray', price: 20 }];
+            ? JSON.parse(equipment)
+            : [{ name: 'Digital X-Ray', price: 2000 }];
 
         this.props.initialize({
             description: this.urlParams.description,
@@ -66,7 +63,7 @@ class NewOffice extends Component {
 
     onSubmit(values) {
         values.equipment = values.equipment
-            ? JSON.stringify(addCentsToEquipment(values.equipment))
+            ? JSON.stringify(values.equipment)
             : [];
 
         const params = queryString.stringify({
@@ -82,7 +79,7 @@ class NewOffice extends Component {
             ...this.urlParams,
             description: this.props.description,
             equipment: this.props.equipment
-                ? JSON.stringify(addCentsToEquipment(this.props.equipment))
+                ? JSON.stringify(this.props.equipment)
                 : []
         });
 
@@ -108,13 +105,17 @@ class NewOffice extends Component {
                             </Grid>
                             <Grid item xs={1} />
                             <Grid item xs={4}>
-                                <label>Usage Price</label>
                                 <Field
                                     name={`${equipment}.price`}
                                     type="text"
                                     placeholder="15"
                                     component={renderField}
-                                    validate={[required, isNum]}
+                                    label="Usage Price"
+                                    validate={[required, dollarMinimum]}
+                                    format={value => renderPrice(value)}
+                                    normalize={value =>
+                                        removeSpecialChars(value)
+                                    }
                                 />
                                 <Padding bottom="16" />
                             </Grid>
@@ -136,7 +137,9 @@ class NewOffice extends Component {
                     <Button
                         type="button"
                         color="primary"
-                        onClick={() => fields.push({})}
+                        onClick={() =>
+                            fields.push({ name: 'Digital X-Ray', price: 2000 })
+                        }
                     >
                         Add Equipment
                     </Button>
