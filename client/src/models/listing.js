@@ -20,9 +20,9 @@ const scanListingsQuery = `
     }
 `;
 
-const scanActiveCurrentListingsQuery = `
+const getActiveListingsQuery = `
     query {
-        scanActiveCurrentListings {
+        getActiveListings {
             ${listingFragment}
             office {
                 ${officeFragment}
@@ -96,10 +96,6 @@ const Listing = {
         const response = await makeApiCall(scanListingsQuery, null);
         return response.data.scanListings;
     },
-    scanActive: async () => {
-        const response = await makeApiCall(scanActiveCurrentListingsQuery, null);
-        return response.data.scanActiveCurrentListings;
-    },
     query: async (partitionKey, partitionValue, options) => {
         const response = await makeApiCall(queryListingsQuery, {
             input: {
@@ -116,6 +112,10 @@ const Listing = {
         }
         const response = await makeApiCall(getListingQuery, { id: listingId });
         return response.data.getListing;
+    },
+    getActive: async () => {
+        const response = await makeApiCall(getActiveListingsQuery, null);
+        return response.data.getActiveListings;
     },
     create: async params => {
         const response = await makeApiCall(createListingQuery, {
