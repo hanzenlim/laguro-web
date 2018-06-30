@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-
+import { connect } from 'react-redux';
 import AddOfficeInfo from './forms/AddOfficeInfo';
 import AddOfficeEquipments from './forms/AddOfficeEquipments';
 import AddOfficeListing from './forms/AddOfficeListing';
-
-import { ProgressBar } from './common';
+import { ProgressBar, Modal } from './common';
+import CreateProfile from './forms/CreateProfile';
+import dentistProfileExists from '../util/userInfo';
 
 const OFFICE_STEP = 'add-office';
 const EQUIPMENT_STEP = 'add-equipments';
@@ -21,6 +22,34 @@ const StyledContainer = styled.div`
 `;
 
 class LandlordOnboarding extends Component {
+    constructor() {
+        super();
+        this.state = {isModalOpen: true}
+    }
+
+    closeCreateProfileModal = () => {
+        this.setState({
+            isModalOpen: false
+        });
+    }
+
+    renderCreateProfileModal = () => {
+        const { auth } = this.props;
+        if (!dentistProfileExists(auth)) {
+            return (<Modal
+                closable={false}
+                open={this.state.isModalOpen}
+                onClose={this.closeCreateProfileModal}
+                className="fade"
+                disableBackdropClick
+                disableEscapeKeyDown
+            >
+                <CreateProfile message={'Before renting your office, we need you to create a dentist profile. '}/>
+            </Modal>);
+        }
+        return '';
+    }
+
     render() {
         const { pathname } = this.props.location;
 
@@ -47,6 +76,7 @@ class LandlordOnboarding extends Component {
 
         return (
             <StyledContainer>
+                {this.renderCreateProfileModal()}
                 <ProgressBar percent={percent} />
                 {step === OFFICE_STEP && <AddOfficeInfo />}
                 {step === EQUIPMENT_STEP && <AddOfficeEquipments />}
@@ -56,4 +86,13 @@ class LandlordOnboarding extends Component {
     }
 }
 
-export default LandlordOnboarding;
+function mapStateToProps(state) {
+    return {
+        auth: state.auth,
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    null
+)(LandlordOnboarding);

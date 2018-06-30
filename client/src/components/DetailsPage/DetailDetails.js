@@ -2,17 +2,18 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
-import isEmpty from 'lodash/isEmpty';
 import ReactStars from 'react-stars';
+import { isEmpty } from 'lodash';
 import { formatListingTime, calculateTimeslots } from '../../util/timeUtil';
+import dentistProfileExists from '../../util/userInfo';
 import * as actions from '../../actions';
 import { Padding } from '../common/Spacing';
-import { OFFICE, DENTIST, USER, ACTIVE } from '../../util/strings';
+import { OFFICE, DENTIST, ACTIVE } from '../../util/strings';
 import NewReview from '../forms/NewReview';
 import ReviewContainer from '../ReviewContainer';
 import Icon from '../Icon';
 import ReservationOptions from '../forms/ReservationOptions';
-import CreateDentistProfile from '../forms/CreateDentistProfile';
+import CreateProfile from '../forms/CreateProfile';
 import { Box, Modal, Grid, Link, Typography, Button, Flex } from '../common';
 import OfficePlaceholderBig from '../images/office-placeholder-big.png';
 import Appointments from '../Appointments';
@@ -120,7 +121,6 @@ class DetailDetails extends Component {
             descShowMore: true
         };
         this.handleShowMoreReview = this.handleShowMoreReview.bind(this);
-        this.handleSubmission = this.handleSubmission.bind(this);
         this.handleShowMoreDescription = this.handleShowMoreDescription.bind(
             this
         );
@@ -128,15 +128,6 @@ class DetailDetails extends Component {
 
     componentDidUpdate() {
         this.reviewCalc();
-    }
-
-    handleSubmission() {
-        this.setState({ showReservationOptions: true });
-    }
-
-    dentistProfileExists() {
-        const { auth } = this.props;
-        return auth && auth.dentistId;
     }
 
     reviewCalc() {
@@ -330,25 +321,8 @@ class DetailDetails extends Component {
         });
     }
 
-    async loadDentist() {
-        const { auth } = this.props;
-        if (!auth || !auth.dentist) {
-            return null;
-        }
-
-        await this.props.getDentist(auth.dentist.id, USER);
-
-        const { dentist } = this.props;
-
-        return dentist;
-    }
-
     async handleBookReservation(listing) {
         const { auth } = this.props;
-
-        if (isEmpty(this.props.dentist)) {
-            await this.loadDentist();
-        }
 
         if (auth) {
             this.setState({
@@ -380,7 +354,7 @@ class DetailDetails extends Component {
     }
 
     render() {
-        const { auth, obj, reviews, listings, ownPage } = this.props;
+        const { auth, obj, reviews, listings, ownPage, isUserVerified} = this.props;
         let equipmentOrProcedures;
         let listingsOrAppointments;
         if (this.props.type === 'office') {
@@ -482,8 +456,7 @@ class DetailDetails extends Component {
                 <Padding bottom={10} />
 
                 <StyledReviewsDiv>
-                    {obj.constructor === Object &&
-                        Object.keys(obj).length !== 0 && (
+                    {!isEmpty(obj) && (
                         <NewReview
                             reviewee={obj}
                             type={
@@ -492,13 +465,14 @@ class DetailDetails extends Component {
                                     : DENTIST
                             }
                             reviewerId={auth && auth.id}
-                            wasReviewed={
+                            alreadyReviewed={
                                 auth &&
-                                    reviews.some(e => e.reviewer.id === auth.id)
+                                        reviews.some(e => e.reviewer
+                                            .id === auth.id)
                             }
                             ownPage={ownPage}
-                        />
-                    )}
+                            isUserVerified={isUserVerified}
+                        />)}
                     <Padding bottom={12} />
 
                     {obj && (
@@ -544,12 +518,10 @@ class DetailDetails extends Component {
                         onClose={this.closeModal}
                     >
                         {!this.state.showReservationOptions &&
-                            !this.dentistProfileExists() && (
-                            <CreateDentistProfile
-                                handleSubmission={this.handleSubmission}
-                            />
+                            !dentistProfileExists() && (
+                            <CreateProfile message={'Before you can book a reservation, we need you to create a dentist profile.'}/>
                         )}
-                        {this.dentistProfileExists() && (
+                        {dentistProfileExists(auth) && (
                             <ReservationOptions
                                 listing={this.state.listing}
                                 office={obj}

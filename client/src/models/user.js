@@ -1,6 +1,7 @@
 import makeApiCall from '../util/clientDataLoader';
-import { DENTIST, PAYMENT_OPTIONS, PAYOUT_LOGIN } from '../util/strings';
+import { APPOINTMENTS, DENTIST, PAYMENT_OPTIONS, PAYOUT_LOGIN } from '../util/strings';
 import {
+    appointmentFragment,
     userFragment,
     dentistFragment,
     paymentOptionFragment
@@ -16,11 +17,15 @@ const generateUserResult = options => {
     const loginLinkResult = options.includes(PAYOUT_LOGIN)
         ? `payoutLoginLink`
         : '';
+    const appointmentResult= options.includes(APPOINTMENTS)
+        ? `appointments {${appointmentFragment}}`
+        : '';
     const result = `
         ${userFragment}
         ${dentistResult}
         ${paymentOptionsResult}
         ${loginLinkResult}
+        ${appointmentResult}
     `;
     return result;
 };

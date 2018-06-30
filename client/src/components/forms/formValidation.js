@@ -10,12 +10,16 @@ export const lessFifty = value =>
 export const greaterZero = value =>
     value && value > 0 ? undefined : 'Must be greater than zero';
 
-export function requiredAndSignedIn(value, allValues, props) {
-    if (!props.reviewerId) {
+export function reviewConditions(value, allValues, props) {
+    if (value === undefined) {
+        return 'Required';
+    } else if (!props.reviewerId) {
         return 'Please log in before you can leave a review.';
-    } else if (props.own) {
+    } else if (props.ownPage) {
         return 'You cannot leave a review on your own office or dentist profile.';
-    } else if (props.wasReviewed) {
+    } else if (!props.isUserVerified){
+        return 'You cannot review an office or dentist that you have not had a reservation or appointment with.';
+    } else if (props.alreadyReviewed) {
         return 'You have already reviewed this office or dentist.';
     } else if (!(value && value !== '')) {
         return 'Required';

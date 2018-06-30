@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { isEmpty } from 'lodash';
 import {
     USER,
     OFFICES,
     LISTINGS,
     RESERVATIONS,
-    REVIEWS
+    REVIEWS,
+    APPOINTMENTS
 } from '../../util/strings';
 import BookAppointment from '../forms/BookAppointment';
 import * as actions from '../../actions';
@@ -22,7 +24,7 @@ class Dentist extends Component {
             selectedStartTime: null,
             durationToNextAppointment: null,
             showReservationOptions: false,
-            selectedReservation: {}
+            selectedReservation: {},
         };
 
         this.handleBookAppointment = this.handleBookAppointment.bind(this);
@@ -46,6 +48,24 @@ class Dentist extends Component {
                         : null;
                 document.title = `Laguro - ${user ? `${user.firstName} ${user.lastName}` : ''}`;
             });
+
+        const { auth } = this.props;
+        if (auth) {
+            this.props.fetchUser(auth.googleId, APPOINTMENTS)
+        }
+    }
+
+    // check if user has had an appointment before, or has one currently with this dentist
+    isUserVerified = () => {
+        const { appointments } = this.props;
+        if (appointments) {
+            for (let appt of appointments) {
+                if (appt && appt.dentist && (appt.dentist.id === this.dentist_id)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     handleBookAppointment(
@@ -85,7 +105,8 @@ class Dentist extends Component {
                     reservations={reservations}
                     auth={auth}
                     handleBookAppointment={this.handleBookAppointment}
-                    ownPage={auth && auth.dentistId === dentist.id}
+                    ownPage={auth && dentist && auth.dentistId === dentist.id}
+                    isUserVerified={this.isUserVerified()}
                 />
 
                 {this.state.selectedStartTime && auth ? (
@@ -123,6 +144,7 @@ function mapStateToProps(state) {
         dentist: state.dentists.selectedDentist,
         listings: state.listings.all,
         reservations: state.reservations.all,
+        appointments: isEmpty(state.appointments.selected) ? null : state.appointments.selected,
         reviews: state.reviews.all
     };
 }
