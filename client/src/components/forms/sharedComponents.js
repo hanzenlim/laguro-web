@@ -14,7 +14,7 @@ import {
     Checkbox,
     Typography,
     Flex,
-    Box
+    Box,
 } from '../common';
 import equipmentList from '../../staticData/equipmentList';
 import procedureList from '../../staticData/procedureList';
@@ -41,7 +41,7 @@ export const durationOptions = [
     </option>,
     <option value={60} key={60}>
         60 minutes
-    </option>
+    </option>,
 ];
 
 export const generateListItems = set => {
@@ -65,12 +65,12 @@ const getMinTime = (dateType, listing) => {
             .hours(0)
             .minutes(0);
     switch (dateType) {
-    case 'startTime':
-        return moment(listing.startTime);
-    default:
-        return moment()
-            .hours(0)
-            .minutes(0);
+        case 'startTime':
+            return moment(listing.startTime);
+        default:
+            return moment()
+                .hours(0)
+                .minutes(0);
     }
 };
 
@@ -80,12 +80,12 @@ const getMaxTime = (dateType, listing) => {
             .hours(23)
             .minutes(59);
     switch (dateType) {
-    case 'startTime':
-        return moment(listing.endTime).subtract(1, 'hours');
-    default:
-        return moment()
-            .hours(23)
-            .minutes(59);
+        case 'startTime':
+            return moment(listing.endTime).subtract(1, 'hours');
+        default:
+            return moment()
+                .hours(23)
+                .minutes(59);
     }
 };
 
@@ -95,7 +95,7 @@ export const renderDatePicker = ({
     className,
     dateType,
     listing,
-    meta: { touched, error }
+    meta: { touched, error },
 }) => (
     <div className={className}>
         <label>{label}</label>
@@ -122,35 +122,36 @@ export const renderDatePicker = ({
 
 export const renderField = ({
     input,
-    label,
     className,
-    disabled,
-    placeholder,
-    multiline,
-    inputProps,
-    rows,
-    meta: { touched, error }
-}) =>{ return (
-    <Grid className={className} container direction="column">
-        <label>{label}</label>
-        <Input {...input} inputProps={inputProps} rows={rows} multiline={multiline} disabled={disabled} placeholder={placeholder} />
-        {touched && error && <span className="red-text">{error}</span>}
-    </Grid>
-)};
+    label,
+    meta: { touched, error },
+    ...custom
+}) => {
+    return (
+        <Grid className={className} container direction="column">
+            <label>{label}</label>
+            <Input {...input} {...custom} />
+            {touched && error && <span className="red-text">{error}</span>}
+        </Grid>
+    );
+};
 
-export const renderMaskedField = (props) => {
-    const { input, className, label, meta: { touched, error }, ...custom } = props;
+export const renderMaskedField = props => {
+    const {
+        input,
+        className,
+        label,
+        meta: { touched, error },
+        ...custom
+    } = props;
 
     return (
         <Grid className={className} container direction="column">
             <label>{label}</label>
-            <MaskedInput
-                {...input}
-                {...custom}
-            />
+            <MaskedInput {...input} {...custom} />
             {touched && error && <span className="red-text">{error}</span>}
         </Grid>
-    )
+    );
 };
 
 export const renderOptions = (maxAvail, minAvail = 1, label = '') => {
@@ -172,7 +173,7 @@ export const renderOfficeOptions = offices => {
                 value={JSON.stringify({
                     id: office.id,
                     office_name: office.name,
-                    chairs: office.numChairs
+                    chairs: office.numChairs,
                 })}
                 key={index}
             >
@@ -189,7 +190,7 @@ export const renderSelect = props => {
         label,
         disabled,
         meta: { touched, error },
-        children
+        children,
     } = props;
 
     return (
@@ -225,7 +226,7 @@ export const charCount = (numChar, total) => {
     const StyledCharCountBox = styled(Box)`
         float: right;
         && {
-            margin: 0
+            margin: 0;
         }
     `;
 
@@ -233,5 +234,5 @@ export const charCount = (numChar, total) => {
         <StyledCharCountBox color="gray" fontSize={1}>
             {numChar} / {total}
         </StyledCharCountBox>
-    )
-}
+    );
+};

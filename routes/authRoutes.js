@@ -2,7 +2,36 @@
 const passport = require('passport');
 
 const authRoutes = app => {
-    // hit this route to start oauth process
+    app.post('/api/signup', (req, res, next) => {
+        return passport.authenticate('local-signup', (err, user, info) => {
+            if (err) return next(err);
+
+            req.logIn(user, err => {
+                if (err) {
+                    return res.status(403).json(info);
+                }
+
+                res.cookie('userId', user.id, { maxAge: 2592000000 });
+                return res.status(200).json(user);
+            });
+        })(req, res, next);
+    });
+
+    app.post('/api/login', (req, res, next) => {
+        return passport.authenticate('local-login', (err, user, info) => {
+            if (err) return next(err);
+
+            req.logIn(user, err => {
+                if (err) {
+                    return res.status(403).json(info);
+                }
+
+                res.cookie('userId', user.id, { maxAge: 2592000000 });
+                return res.status(200).json(user);
+            });
+        })(req, res, next);
+    });
+
     app.get(
         '/auth/google',
         (req, res, next) => {
@@ -22,7 +51,7 @@ const authRoutes = app => {
         '/auth/google/callback',
         passport.authenticate('google'),
         (req, res) => {
-            res.cookie('userId', req.user.googleId, { maxAge: 2592000000 });
+            res.cookie('userId', req.user.id, { maxAge: 2592000000 });
             res.redirect(req.session.returnTo);
         }
     );
