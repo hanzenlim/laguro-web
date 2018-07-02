@@ -46,26 +46,20 @@
     display: flex;
   }
 
-  .toggle {
-    display: none;
-  }
-
-  .toggle.active {
-    display: block;
-  }
-
-  .search .tab {
+  .active {
     display: block;
     flex-grow: 1;
     text-align: center;
     border-radius: 3px 3px 0 0;
-    background: #BFBEBE;
-    color: #ccc;
-  }
-
-  .search .tab.active {
     background: #fff;
     color: #222;
+    color: inherit;
+  }
+
+  .inactive {
+    display: block;
+    background: #BFBEBE;
+    color: #ccc;
   }
 
   .search-tabs {
@@ -150,26 +144,19 @@
     display: flex;
   }
 
-  .toggle {
-    display: none;
-  }
-
-  .toggle.active {
+  .active {
     display: block;
+    background: inherit;
+    color: inherit;
   }
 
-  .search .tab {
+  .inactive {
     display: block;
     flex-grow: 1;
     text-align: center;
     border-radius: 3px 3px 0 0;
     background: #BFBEBE;
     color: #ccc;
-  }
-
-  .search .tab.active {
-    background: #fff;
-    color: #222;
   }
 
   .search-tabs {
@@ -266,26 +253,13 @@
     display: flex;
   }
 
-  .toggle {
-    display: none;
-  }
-
-  .toggle.active {
-    display: block;
-  }
-
-  .search .tab {
+  .inactive {
     display: block;
     flex-grow: 1;
     text-align: center;
     border-radius: 3px 3px 0 0;
     background: #BFBEBE;
     color: #ccc;
-  }
-
-  .search .tab.active {
-    background: #fff;
-    color: #222;
   }
 
   .search-tabs {
