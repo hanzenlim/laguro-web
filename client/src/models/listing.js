@@ -4,6 +4,7 @@ import {
     dentistFragment,
     officeFragment,
     reviewerFragment,
+    filterActive
 } from '../util/fragments';
 
 const scanListingsQuery = `
@@ -59,7 +60,7 @@ const queryListingsQuery = `
         queryListings(input: $input) {
             office{id}
             ${listingFragment}
-            reservations {
+            reservations(${filterActive}) {
                 id
                 startTime
                 endTime
