@@ -4,6 +4,7 @@ import styled from "styled-components";
 import Card from '@material-ui/core/Card';
 import * as actions from "../actions";
 import { Padding } from './common/Spacing';
+import { Typography } from './common';
 import listingImgPlaceholder from './images/office-placeholder-thumbnail.png'
 
 import "./css/PhotoGrid.css";
@@ -29,14 +30,6 @@ const ListingInfo = styled.div`
     color: black;
     padding: 8px;
     line-height: 22px;
-`;
-
-const ListingInfoAddress = styled.div`
-    font-size: 12px;
-`;
-
-const ListingInfoName = styled.div`
-    font-size: 17px;
 `;
 
 const ListingCard = styled(Card)`
@@ -102,9 +95,9 @@ class PhotoGrid extends Component {
                                         </StyledContainer>
                                     </div>
                                     <ListingInfo>
-              							<ListingInfoName>{listing.office.name}</ListingInfoName>
-                                        <ListingInfoAddress className="truncate">{listing.office.location}</ListingInfoAddress>
-              							<div className="photo-grid-listing-deets deets">${listing.chairHourlyPrice} per hour - {listing.numChairsAvailable} chairs avail.</div>
+              							<Typography fontSize={3} truncate>{listing.office.name}</Typography>
+                                        <Typography fontSize={1} truncate>{listing.office.location}</Typography>
+              							<Typography fontSize={1} fontWeight={"light"} truncate>${listing.chairHourlyPrice} per hour - {listing.numChairsAvailable} chairs avail.</Typography>
                                     </ListingInfo>
                                 </ListingCard>
                             </div>

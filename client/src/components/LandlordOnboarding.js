@@ -40,9 +40,9 @@ class LandlordOnboarding extends Component {
                 closable={false}
                 open={this.state.isModalOpen}
                 onClose={this.closeCreateProfileModal}
-                className="fade"
                 disableBackdropClick
                 disableEscapeKeyDown
+                fade={2}
             >
                 <CreateProfile message={'Before renting your office, we need you to create a dentist profile. '}/>
             </Modal>);
