@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import AppointmentDetails from '../AppointmentDetails'
 
-describe('Login Component', () => {
+describe('<AppointmentDetails />', () => {
     const appointment = {
         reservation: {
             office: {

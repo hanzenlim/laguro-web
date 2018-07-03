@@ -112,25 +112,32 @@ const PrivacyPolicy = Loadable({
     loading: LoadingComponent
 });
 
-const PrivateRoute = ({ auth, path, component: Component, ...props }) => (
-    <Route
-        render={() =>
-            auth ? (
-                <Component {...props} />
-            ) : (
-                <div className="center-align stretch_height">
-                    <p>You must log in to view the page</p>
-                    <a
-                        className="login waves-effect btn light-blue lighten-2"
-                        href="/auth/google"
-                    >
+const UploadHealthInsuranceDocuments = Loadable({
+    loader: () => import('./UploadDocuments/UploadHealthInsurance'),
+    loading: LoadingComponent
+});
+
+const PrivateRoute = ({ auth, path, component: Component, ...props }) => {
+    const { toggleLoginModal } = props;
+    
+    return (
+        <Route
+            render={() =>
+                auth ? (
+                    <Component {...props} />
+                ) : (
+                    <div className="center-align stretch_height">
+                        <p>You must log in to view the page</p>
+                        <div onClick={toggleLoginModal} className="login waves-effect btn light-blue lighten-2">
                         Login
-                    </a>
-                </div>
-            )
-        }
-    />
-);
+
+                        </div>
+                    </div>
+                )
+            }
+        />
+    )
+};
 
 class App extends Component {
     componentDidMount() {
@@ -205,6 +212,12 @@ class App extends Component {
                                         auth={this.props.auth}
                                         path="/payout"
                                         component={Payout}
+                                    />
+                                    <PrivateRoute
+                                        auth={this.props.auth}
+                                        path="/upload/documents"
+                                        component={UploadHealthInsuranceDocuments}
+                                        toggleLoginModal={this.props.toggleLoginModal}
                                     />
                                     <Route
                                         path="/dentist/search"
