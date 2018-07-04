@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import { Modal, Flex, Box, Divider, Typography } from './common';
-import Signup from './forms/Signup';
-import Login from './forms/Login';
+import ConnectedSignup from './forms/Signup';
+import ConnectedLogin from './forms/Login';
 import * as actions from '../actions';
 
 const LOGIN_VIEW = 'login';
@@ -45,12 +45,12 @@ class LoginModal extends Component {
                 <Flex justifyContent="center" flexDirection="column">
                     <Box>
                         {this.state.view === LOGIN_VIEW ? (
-                            <Login
+                            <ConnectedLogin
                                 onToggleView={this.handleToggleView}
                                 onSuccess={this.handleSuccess}
                             />
                         ) : (
-                            <Signup
+                            <ConnectedSignup
                                 onToggleView={this.handleToggleView}
                                 onSuccess={this.handleSuccess}
                             />

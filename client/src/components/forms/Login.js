@@ -6,7 +6,7 @@ import { required } from './formValidation';
 import { Flex, Box, Button, Typography, Divider } from './../common';
 import GoogleButton from '../GoogleButton';
 
-class LoginForm extends Component {
+class Login extends Component {
     constructor() {
         super();
 
@@ -15,8 +15,21 @@ class LoginForm extends Component {
         };
     }
 
-    onSubmit = values => {
-        request('/api/login', {
+    onSubmit = async values => {
+        try {
+            const result = await this.login(values);
+            if (result) {
+                this.onLoginSuccess();
+            }
+        } catch (error) {
+            if (error && error.message) {
+                this.onLoginFail(error.message);
+            }
+        }
+    };
+
+    login = values => {
+        return request('/api/login', {
             method: 'POST',
             credentials: 'same-origin',
             headers: {
@@ -24,15 +37,17 @@ class LoginForm extends Component {
                 'Access-Control-Origin': '*',
             },
             body: JSON.stringify({ ...values }),
-        })
-            .then(() => {
-                this.props.onSuccess();
-            })
-            .catch(err => {
-                this.setState({
-                    error: err.message,
-                });
-            });
+        });
+    };
+
+    onLoginSuccess = () => {
+        this.props.onSuccess();
+    };
+
+    onLoginFail = error => {
+        this.setState({
+            error,
+        });
     };
 
     render() {
@@ -57,7 +72,11 @@ class LoginForm extends Component {
                     <Divider text="or" />
                 </Box>
 
-                <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+                <form
+                    onSubmit={
+                        handleSubmit && handleSubmit(this.onSubmit.bind(this))
+                    }
+                >
                     <Box pb={2}>
                         <Field
                             name="username"
@@ -88,6 +107,7 @@ class LoginForm extends Component {
     }
 }
 
+export { Login };
 export default reduxForm({
     form: 'login',
-})(LoginForm);
+})(Login);

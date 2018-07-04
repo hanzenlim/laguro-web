@@ -6,7 +6,7 @@ import { required } from './formValidation';
 import { Flex, Box, Button, Typography, Divider } from './../common';
 import GoogleButton from '../GoogleButton';
 
-class Form extends Component {
+class Signup extends Component {
     constructor() {
         super();
 
@@ -15,24 +15,37 @@ class Form extends Component {
         };
     }
 
-    onSubmit = values => {
-        request('/api/signup', {
+    onSubmit = async values => {
+        try {
+            const result = await this.signup(values);
+            if (result) {
+                this.onSignupSuccess();
+            }
+        } catch (error) {
+            if (error && error.message) {
+                this.onSignupFail(error.message);
+            }
+        }
+    };
+
+    signup = values => {
+        return request('/api/signup', {
             method: 'POST',
             credentials: 'same-origin',
             headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Origin': '*',
             },
-            body: JSON.stringify(values),
-        })
-            .then(() => {
-                this.props.onSuccess();
-            })
-            .catch(err => {
-                this.setState({
-                    error: err.message,
-                });
-            });
+            body: JSON.stringify({ ...values }),
+        });
+    };
+
+    onSignupSuccess = () => {
+        this.props.onSuccess();
+    };
+
+    onSignupFail = error => {
+        this.setState({ error });
     };
 
     render() {
@@ -56,7 +69,11 @@ class Form extends Component {
                     <Divider text="or" />
                 </Box>
 
-                <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+                <form
+                    onSubmit={
+                        handleSubmit && handleSubmit(this.onSubmit.bind(this))
+                    }
+                >
                     <Box pb={2}>
                         <Field
                             name="firstName"
@@ -106,6 +123,8 @@ class Form extends Component {
     }
 }
 
+export { Signup };
+
 export default reduxForm({
     form: 'signup',
-})(Form);
+})(Signup);
