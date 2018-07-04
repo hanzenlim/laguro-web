@@ -9,6 +9,24 @@ import Footer from './Footer';
 
 import './css/Header.css';
 
+const SideNavLink = styled(Link)`
+    width: 83%;
+    height: 5%;
+    color: black;
+    display: inline-block;
+    line-height: 40px;
+`;
+
+const SideNavLinkArrow = SideNavLink.extend`
+    width: 13%;
+`;
+
+const SideNavX = styled(Icon)`
+    float: right;
+    margin-right: 5%;
+`;
+
+
 class Header extends Component {
     constructor() {
         super();
@@ -106,7 +124,7 @@ class Header extends Component {
                         <ul className="right">
                             <li>
                                 <Link to={'/landlord-onboarding/add-office'}>
-                                    Rent your dental office
+                                    Rente your dental office
                                 </Link>
                             </li>
                             <li>
@@ -119,23 +137,7 @@ class Header extends Component {
                 </nav>
             );
         } else {
-            const SideNavLink = styled(Link)`
-                width: 83%;
-                height: 5%;
-                color: black;
-                display: inline-block;
-                line-height: 40px;
-            `;
-
-            const SideNavLinkArrow = SideNavLink.extend`
-                width: 13%;
-            `;
-
-            const SideNavX = styled(Icon)`
-                float: right;
-                margin-right: 5%;
-            `;
-
+        
             return (
                 <div>
                     <nav className="nav-extended">

@@ -27,8 +27,8 @@ class AppointmentDetails extends Component {
         const { office } = appointment.reservation;
         const { dentist } = appointment;
 
-        const firstName = dentist && dentist.user && dentist.firstName;
-        const lastName = dentist && dentist.user && dentist.lastName;
+        const firstName = dentist && dentist.user && dentist.user.firstName;
+        const lastName = dentist && dentist.user && dentist.user.lastName;
 
         const formattedTime =
             moment(appointment.startTime).format('M/D, h:mm - ') +

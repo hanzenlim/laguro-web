@@ -21,12 +21,13 @@ const ListingImage = styled.img`
 
 class UserOffice extends Component {
     confirmCancelReservation(reservation) {
+        
         if (
             // eslint-disable-next-line
             confirm(
-                `Delete reservation for ${moment(reservation.startTime).format(
+                `Are you sure you want to delete reservation for ${moment(reservation.startTime).format(
                     'MMM D, h:mm a'
-                )}?`
+                )}? Only 50% of your total amount will be refunded. A total amount of ${reservation && reservation.totalPaid/100} will be refunded.`
             )
         ) {
             this.props.cancelUserReservation(reservation);
