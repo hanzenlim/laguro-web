@@ -80,7 +80,10 @@ passport.use(
                 getUserByEmailVariable(username)
             );
 
-            if (result.data.getUserByEmail) {
+            const getUserByEmail =
+                result && result.data && result.data.getUserByEmail;
+
+            if (getUserByEmail) {
                 return done(null, false, {
                     message: 'This email address is already registered.',
                 });
@@ -102,7 +105,10 @@ passport.use(
                         )
                     );
 
-                    done(null, result.data.createLocalUser);
+                    const createLocalUser =
+                        result && result.data && result.data.createLocalUser;
+
+                    done(null, createLocalUser);
                 });
             });
         }
@@ -119,13 +125,16 @@ passport.use(
                 getUserByEmailVariable(username)
             );
 
-            if (!result.data.getUserByEmail) {
+            const getUserByEmail =
+                result && result.data && result.data.getUserByEmail;
+
+            if (!getUserByEmail) {
                 return done(null, false, {
                     message: 'Invalid username/password.',
                 });
             }
 
-            if (result.data.getUserByEmail.googleId) {
+            if (getUserByEmail && getUserByEmail.googleId) {
                 return done(null, false, {
                     message:
                         'Either the credentials you supplied are invalid, or you signed up using an OpenID provider, such as Google.',
@@ -135,7 +144,7 @@ passport.use(
             if (
                 !bcrypt.compareSync(
                     password,
-                    result.data.getUserByEmail.password
+                    getUserByEmail && getUserByEmail.password
                 )
             ) {
                 return done(null, false, {
@@ -143,7 +152,7 @@ passport.use(
                 });
             }
 
-            done(null, result.data.getUserByEmail);
+            done(null, getUserByEmail);
         }
     )
 );
