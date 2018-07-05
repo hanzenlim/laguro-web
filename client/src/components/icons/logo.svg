@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="19px" height="25px" viewBox="0 0 19 25" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
-    <title>logo</title>
+<svg width="152px" height="152px" viewBox="0 0 152 152" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>Group</title>
     <desc>Created with Sketch.</desc>
-    <defs></defs>
-    <g id="UI-Mockups" stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-        <g id="Desktop---Home" transform="translate(-12.000000, -6.000000)">
-            <g id="logo" transform="translate(11.000000, 6.000000)">
-                <path d="M10.0365631,0 C5.06159311,0 1.02864107,3.9833638 1.02864107,8.89740859 C1.02864107,15.979436 10.0365631,24.5886654 10.0365631,24.5886654 C10.0365631,24.5886654 19.0444851,15.979436 19.0444851,8.89740859 C19.0444851,3.9833638 15.011533,0 10.0365631,0 Z" id="Shape" fill="#FFFFFF" fillRule="nonzero"></path>
-                <path d="M14.816607,9.82253656 C14.1203004,12.555075 12.7284341,15.4218675 12.7284341,15.4218675 C12.7284341,15.4218675 12.4548406,16.086745 11.763513,16.086745 C10.5070741,16.086745 11.0711895,14.4764333 10.0363141,14.4764333 C8.98749765,14.4764333 9.57999307,16.086745 8.30563002,16.086745 C7.60758079,16.086745 7.34444312,15.4218675 7.34444312,15.4218675 C7.34444312,15.4218675 5.95257677,12.5548291 5.25651912,9.82253656 C4.56046147,7.09024406 7.30087728,6.95574406 7.30087728,6.95574406 L12.7719999,6.95574406 C12.7719999,6.95574406 15.5124157,7.09024406 14.816607,9.82253656 Z" id="Path" fill="#0AD5B1"></path>
-                <path d="M10.0574747,9.06938574 C11.1359159,9.06938574 12.1040734,8.98627605 12.7662741,8.70522761 C12.3283752,9.20044333 11.2750777,9.54960238 10.0442804,9.54960238 C8.79854638,9.54960238 7.73479304,9.19183729 7.30685202,8.68703199 C7.96979963,8.97865356 8.95613024,9.06938574 10.0574747,9.06938574 Z" id="Path" fill="#FFFFFF"></path>
+    <defs>
+        <circle id="path-1" cx="70" cy="70" r="70"></circle>
+        <filter x="-6.4%" y="-6.4%" width="112.9%" height="112.9%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="0" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="3" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.784313725   0 0 0 0 0.780392157   0 0 0 0 0.780392157  0 0 0 0.69 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="UI-Screens" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Green-Logo" transform="translate(-4.000000, -4.000000)">
+            <g id="Group" transform="translate(10.000000, 10.000000)">
+                <g id="Oval">
+                    <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                    <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
+                </g>
+                <path d="M83.4736182,99.2857143 L55,99.2857143 C53.8954305,99.2857143 53,98.3902838 53,97.2857143 L53,35 L53,35 C60.5307223,35 66.6355789,41.1048566 66.6355789,48.6355789 L66.6355789,84.7593325 L98,84.7593325 L98,84.7593325 C98,92.7820316 91.4963173,99.2857143 83.4736182,99.2857143 Z" id="L-🌈cubic-bezier(0.55,-0.06,-0.37,-0.55);lrgb;15" fill="#0AD5B1"></path>
             </g>
         </g>
     </g>
