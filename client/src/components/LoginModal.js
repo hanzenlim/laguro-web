@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { Modal, Flex, Box, Divider, Typography } from './common';
 import ConnectedSignup from './forms/Signup';
 import ConnectedLogin from './forms/Login';
-import * as actions from '../actions';
+import { fetchUser } from '../actions';
 
 const LOGIN_VIEW = 'login';
 const SIGNUP_VIEW = 'signup';
@@ -91,5 +91,5 @@ LoginModal.propTypes = {
 
 export default connect(
     null,
-    actions
+    { fetchUser }
 )(LoginModal);
