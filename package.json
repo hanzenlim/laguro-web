@@ -15,7 +15,7 @@
 		"dev": "concurrently \"env-cmd ./config/security.env.local npm run serverLocal\" \"env-cmd ./config/security.env.local npm run client\"",
 		"test": "npm run test --prefix client",
 		"webpack-analyzer": "npm run webpack-analyzer --prefix client",
-		"build-stage-assets": "PUBLIC_URL=https://s3.us-west-1.amazonaws.com/laguro-stage-assets/$(date '+%m-%d-%Y:')$(git log --pretty=format:'%h' -n 1) env-cmd /home/runner/security.env.stage npm run build --prefix client",
+		"build-stage-assets": "PUBLIC_URL=https://d2gc87qn5b3r0i.cloudfront.net/$(date '+%m-%d-%Y:')$(git log --pretty=format:'%h' -n 1) env-cmd /home/runner/security.env.stage npm run build --prefix client",
 		"deploy-stage-assets": "s3-deploy './client/build/**' --cwd './client/build/' --region us-west-1 --bucket laguro-stage-assets --gzip --cache 2503982 --filePrefix $(date '+%m-%d-%Y:')$(git log --pretty=format:'%h' -n 1)",
 		"deploy-stage": "env-cmd /home/runner/security.env.stage sls deploy -v --stage stage",
 		"build-prod-assets": "PUBLIC_URL=https://s3.us-west-1.amazonaws.com/laguro-prod-assets/$(date '+%m-%d-%Y:')$(git log --pretty=format:'%h' -n 1) env-cmd /home/runner/security.env.prod npm run build --prefix client",
