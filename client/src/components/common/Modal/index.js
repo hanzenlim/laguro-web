@@ -60,7 +60,7 @@ const Modal = props => {
 };
 
 Modal.propTypes = {
-    closable: PropTypes.bool.isRequired
+    closable: PropTypes.bool
 };
 
 export default Modal;

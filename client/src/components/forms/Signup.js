@@ -123,6 +123,8 @@ class Signup extends Component {
     }
 }
 
+// Exporting it as an object without the connect so we can unit test it properly. If you don't
+// do this then you have to mock the store.
 export { Signup };
 
 export default reduxForm({
