@@ -13,9 +13,10 @@ import {
     Grid,
     Flex,
     Box,
-    Container
+    Container,
 } from './common';
 import { Padding } from './common/Spacing';
+import AddPhoneNumber from './forms/AddPhoneNumber';
 import * as actions from '../actions';
 import { PAYMENT_OPTIONS, APPOINTMENT, DENTIST } from '../util/strings';
 import { stripeKey } from '../config/keys';
@@ -61,7 +62,8 @@ class Payment extends Component {
 
         this.state = {
             isButtonLoading: false,
-            isFetching: true
+            isFetching: true,
+            isModalOpen: !props.auth.phoneNumber,
         };
     }
 
@@ -95,6 +97,10 @@ class Payment extends Component {
         await this.props.fetchUser(DENTIST, PAYMENT_OPTIONS);
     }
 
+    toggleModal = () => {
+        this.setState({ isModalOpen: !this.state.isModalOpen });
+    };
+
     handleCheckout = () => {
         this.setState({ isButtonLoading: true });
 
@@ -116,7 +122,7 @@ class Payment extends Component {
             startTime,
             endTime,
             paymentOptionId: this.props.auth.paymentOptions[0].id,
-            totalPaid: this.urlParams.totalPaid
+            totalPaid: this.urlParams.totalPaid,
         };
 
         this.props.createReservation(reservationPayload);
@@ -131,7 +137,7 @@ class Payment extends Component {
             procedure: JSON.parse(this.urlParams.procedure),
             startTime,
             endTime,
-            paymentOptionId: this.props.auth.paymentOptions[0].id
+            paymentOptionId: this.props.auth.paymentOptions[0].id,
         };
 
         this.props.createAppointment(appointmentPayload);
@@ -243,7 +249,7 @@ class Payment extends Component {
             equipmentFee,
             bookingFee,
             cleaningFee,
-            reservationFee
+            reservationFee,
         } = this.urlParams;
 
         return (
@@ -270,57 +276,57 @@ class Payment extends Component {
 
                     {equipmentFee &&
                         equipmentFee > 0 && (
-                        <Box py={2}>
-                            <Flex justify="space-between">
-                                <Typography
-                                    fontSize={3}
-                                    color="abbey"
-                                    capitalize
-                                >
+                            <Box py={2}>
+                                <Flex justify="space-between">
+                                    <Typography
+                                        fontSize={3}
+                                        color="abbey"
+                                        capitalize
+                                    >
                                         Equipment Fee
-                                </Typography>
-                                <Typography fontSize={3} color="abbey">
-                                    {renderPrice(equipmentFee)}
-                                </Typography>
-                            </Flex>
-                        </Box>
-                    )}
+                                    </Typography>
+                                    <Typography fontSize={3} color="abbey">
+                                        {renderPrice(equipmentFee)}
+                                    </Typography>
+                                </Flex>
+                            </Box>
+                        )}
 
                     {cleaningFee &&
                         cleaningFee > 0 && (
-                        <Box py={2}>
-                            <Flex justify="space-between">
-                                <Typography
-                                    fontSize={3}
-                                    color="abbey"
-                                    capitalize
-                                >
+                            <Box py={2}>
+                                <Flex justify="space-between">
+                                    <Typography
+                                        fontSize={3}
+                                        color="abbey"
+                                        capitalize
+                                    >
                                         Cleaning Fee
-                                </Typography>
-                                <Typography fontSize={3} color="abbey">
-                                    {renderPrice(cleaningFee)}
-                                </Typography>
-                            </Flex>
-                        </Box>
-                    )}
+                                    </Typography>
+                                    <Typography fontSize={3} color="abbey">
+                                        {renderPrice(cleaningFee)}
+                                    </Typography>
+                                </Flex>
+                            </Box>
+                        )}
 
                     {bookingFee &&
                         bookingFee > 0 && (
-                        <Box py={2}>
-                            <Flex justify="space-between">
-                                <Typography
-                                    fontSize={3}
-                                    color="abbey"
-                                    capitalize
-                                >
+                            <Box py={2}>
+                                <Flex justify="space-between">
+                                    <Typography
+                                        fontSize={3}
+                                        color="abbey"
+                                        capitalize
+                                    >
                                         Booking Fee
-                                </Typography>
-                                <Typography fontSize={3} color="abbey">
-                                    {renderPrice(bookingFee)}
-                                </Typography>
-                            </Flex>
-                        </Box>
-                    )}
+                                    </Typography>
+                                    <Typography fontSize={3} color="abbey">
+                                        {renderPrice(bookingFee)}
+                                    </Typography>
+                                </Flex>
+                            </Box>
+                        )}
 
                     <Divider />
 
@@ -436,6 +442,11 @@ class Payment extends Component {
                         </Grid>
                     </Grid>
                 </Container>
+
+                <AddPhoneNumber
+                    open={this.state.isModalOpen}
+                    onClose={this.toggleModal}
+                />
             </StyledWrapper>
         );
     }
@@ -445,8 +456,11 @@ function mapStateToProps(state) {
     return {
         listing: state.listings.selected,
         reservation: state.reservations.selected,
-        auth: state.auth
+        auth: state.auth,
     };
 }
 
-export default connect(mapStateToProps, actions)(Payment);
+export default connect(
+    mapStateToProps,
+    actions
+)(Payment);

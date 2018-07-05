@@ -6,7 +6,6 @@ import styled from 'styled-components';
 
 import { Typography, Card, Button, Divider, Link, Grid } from './common';
 import { Padding } from './common/Spacing';
-import AddPhoneNumber from './forms/AddPhoneNumber';
 import { formatListingTime } from '../util/timeUtil';
 import * as actions from '../actions';
 
@@ -43,7 +42,7 @@ class PaymentSuccess extends Component {
         super(props);
 
         const { location } = this.props;
-        this.state = { type: undefined, isModalOpen: !props.auth.phoneNumber };
+        this.state = { type: undefined };
         this.urlParams = queryString.parse(location.search);
     }
 
@@ -60,10 +59,6 @@ class PaymentSuccess extends Component {
             await this.props.getReservation(reservationId);
             this.setState({ type: 'reservation' });
         }
-    }
-
-    toggleModal = () => {
-        this.setState({ isModalOpen: !this.state.isModalOpen });
     }
 
     renderTime = () => {
@@ -216,8 +211,6 @@ class PaymentSuccess extends Component {
                         </Grid>
                     </Grid>
                 </Container>
-
-                <AddPhoneNumber open={this.state.isModalOpen} onClose={this.toggleModal} />
             </Wrapper>
         );
     }
@@ -227,8 +220,11 @@ function mapStateToProps(state) {
     return {
         auth: state.auth,
         reservation: state.reservations.selected,
-        appointment: state.appointments.selected
+        appointment: state.appointments.selected,
     };
 }
 
-export default connect(mapStateToProps, actions)(PaymentSuccess);
+export default connect(
+    mapStateToProps,
+    actions
+)(PaymentSuccess);
