@@ -26,7 +26,6 @@ const SideNavX = styled(Icon)`
     margin-right: 5%;
 `;
 
-
 class Header extends Component {
     constructor() {
         super();
@@ -124,7 +123,7 @@ class Header extends Component {
                         <ul className="right">
                             <li>
                                 <Link to={'/landlord-onboarding/add-office'}>
-                                    Rente your dental office
+                                    Rent your dental office
                                 </Link>
                             </li>
                             <li>
@@ -137,7 +136,6 @@ class Header extends Component {
                 </nav>
             );
         } else {
-        
             return (
                 <div>
                     <nav className="nav-extended">
