@@ -24,3 +24,4 @@ export const GET_PAYMENT_OPTIONS = 'get_payment_options';
 export const ADD_PAYMENT_OPTION = 'add_payment_option';
 export const REMOVE_PAYMENT_OPTION = 'remove_payment_option';
 export const UPDATE_DENTIST_RESERVATIONS = 'update_dentist_reservations';
+export const FETCH_PAYMENTS = 'fetch_payments';
