@@ -2,14 +2,62 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PaymentDetails from './PaymentDetails';
 import * as actions from '../actions';
-import Payment from '../models/payment';
-import { PAYER_ID } from '../util/strings';
+import { Box, Typography } from './common';
+import { PAYER_ID, PAYEE_ID } from '../util/strings';
+
+const paymentHistoryQuery = `
+    query QueryPayments($input: QueryParams!) {
+        queryPayments(input: $input) {
+            id
+            type
+            status
+            reservation {
+              location
+              numChairsSelected
+              startTime
+              endTime
+              office {
+                  id
+                  name
+                  imageUrls
+              }
+            }
+            appointment {
+              location
+              procedure {
+                name
+              }
+              startTime
+              endTime
+              reservation{
+                  office {
+                      id
+                      name
+                      imageUrls
+                  }
+              }
+            }
+            nominalAmount
+            currency
+            stripePayment {
+              amount
+              source {
+                brand
+                last4
+              }
+            }
+            chargeStatus
+            dateCreated
+        }
+    }
+`;
 
 class PaymentHistory extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            payments: null
+            payerHistory: [],
+            payeeHistory: []
         };
     }
 
@@ -20,22 +68,34 @@ class PaymentHistory extends Component {
     async fetchPayments() {
         await this.props.fetchUser();
         const userId = this.props.auth.id;
-        const payments = await Payment.query(PAYER_ID, userId);
-        this.setState({ payments });
+        const payerHistory = await this.props.loadPaymentHistory(paymentHistoryQuery, PAYER_ID, userId);
+        const payeeHistory = await this.props.loadPaymentHistory(paymentHistoryQuery, PAYEE_ID, userId);
+        this.setState({ payerHistory, payeeHistory });
     }
 
     render() {
-        const { payments } = this.state;
-        if (!payments) {
+
+        const { payeeHistory, payerHistory } = this.state;
+        if (!payeeHistory.length && !payerHistory.length) {
             return <div />;
         }
-        if (!payments.length) {
-            return <div>No past payments.</div>;
-        }
-        const paymentDetails = payments.map((payment, index) => (
+        const payeeHistoryDetails = payeeHistory.map((payment, index) => (
             <PaymentDetails payment={payment} key={index} />
         ));
-        return <div>{paymentDetails}</div>;
+        const payerHistoryDetails = payerHistory.map((payment, index) => (
+            <PaymentDetails payment={payment} key={index} />
+        ));
+
+        return (
+            <Box mx={7} mt={5}>
+                <Typography fontSize={5}>
+                    Payment History
+                </Typography>
+                <Box pb={3} />
+                {payeeHistoryDetails}
+                <Box pb={3} />
+                {payerHistoryDetails}
+            </Box>);
     }
 }
 

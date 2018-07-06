@@ -10,6 +10,7 @@ import filtersReducer from './filtersReducer';
 import reviewsReducer from './reviewsReducer';
 import reservationsReducer from './reservationsReducer';
 import appointmentsReducer from './appointmentsReducer';
+import paymentReducer from './paymentReducer';
 
 export default combineReducers({
     dentists: dentistsReducer,
@@ -21,5 +22,6 @@ export default combineReducers({
     appointments: appointmentsReducer,
     auth: authReducer,
     ui: uiReducer,
-    form: reduxFormReducer
+    form: reduxFormReducer,
+    payments: paymentReducer
 });

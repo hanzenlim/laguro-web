@@ -8,3 +8,4 @@ export * from './reviewActions';
 export * from './searchActions';
 export * from './uiActions';
 export * from './paymentOptionActions';
+export * from './paymentActions';

@@ -92,48 +92,48 @@ class OfficeListing extends Component {
                         {listing &&
                             listing.reservations &&
                             listing.reservations.length === 0 && (
-                                <Grid item xs={12} md={4}>
-                                    <Button
-                                        onClick={this.confirmDeleteListing.bind(
-                                            this,
-                                            listing
-                                        )}
+                            <Grid item xs={12} md={4}>
+                                <Button
+                                    onClick={this.confirmDeleteListing.bind(
+                                        this,
+                                        listing
+                                    )}
+                                >
+                                    <Grid
+                                        container
+                                        wrap="nowrap"
+                                        alignItems="center"
+                                        justify="flex-end"
                                     >
-                                        <Grid
-                                            container
-                                            wrap="nowrap"
-                                            alignItems="center"
-                                            justify="flex-end"
-                                        >
-                                            <Typography color="black">
-                                                <i className="material-icons tiny">
+                                        <Typography color="black">
+                                            <i className="material-icons tiny">
                                                     delete_forever
-                                                </i>
-                                            </Typography>
-                                            <Padding horizontal={6} />
-                                            <Typography size="t5" color="black">
+                                            </i>
+                                        </Typography>
+                                        <Padding horizontal={6} />
+                                        <Typography size="t5" color="black">
                                                 Delete Listing
-                                            </Typography>
-                                        </Grid>
-                                    </Button>
-                                </Grid>
-                            )}
+                                        </Typography>
+                                    </Grid>
+                                </Button>
+                            </Grid>
+                        )}
                         {listing &&
                             listing.reservations &&
                             listing.reservations.length > 0 && (
-                                <Grid item xs={12}>
-                                    <Margin vertical={10} />
-                                    <Divider />
-                                    <Margin vertical={10} />
+                            <Grid item xs={12}>
+                                <Margin vertical={10} />
+                                <Divider />
+                                <Margin vertical={10} />
 
-                                    <Typography variant="title">
+                                <Typography variant="title">
                                         Reservations for this listing:
-                                    </Typography>
-                                    <div>
-                                        {this.renderReservationList(listing)}
-                                    </div>
-                                </Grid>
-                            )}
+                                </Typography>
+                                <div>
+                                    {this.renderReservationList(listing)}
+                                </div>
+                            </Grid>
+                        )}
                     </Grid>
                 </ExpansionPanelDetails>
             );
