@@ -209,9 +209,4 @@ class Search extends Component {
 
 export default reduxForm({
     form: 'Search'
-})(
-    connect(
-        null,
-        actions
-    )(Search)
-);
+})(connect(null, actions)(Search));

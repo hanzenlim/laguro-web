@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import moment from 'moment';
 import * as actions from '../actions';
 
 import OfficeResult from './OfficeResult';
@@ -72,7 +73,7 @@ class OfficeResultIndex extends Component {
         this.props.fetchOffices(this.props.filters);
     }
 
-    renderMap() {
+    renderMap(activeOffices) {
         const BREAKPOINT = '600';
 
         if (window.innerWidth < BREAKPOINT && this.state.activeView !== 'map')
@@ -82,7 +83,7 @@ class OfficeResultIndex extends Component {
             <MapContainer>
                 <ResultMap
                     activeListingId={this.state.activeListingId}
-                    locations={this.props.offices}
+                    locations={activeOffices}
                     searchLocation={
                         this.props.filters.location
                             ? this.props.filters.location
@@ -102,11 +103,10 @@ class OfficeResultIndex extends Component {
         this.setState({ activeListingId: null });
     };
 
-    renderOfficeList() {
-        const filteredOffices = this.props.offices;
+    renderOfficeList(activeOffices) {
         const searchInput = this.props.filters.location;
 
-        if (searchInput && searchInput.length && !filteredOffices.length) {
+        if (searchInput && searchInput.length && !activeOffices.length) {
             return (
                 <NoResults
                     onClose={this.handleClearSearchInput}
@@ -115,7 +115,7 @@ class OfficeResultIndex extends Component {
             );
         }
 
-        return filteredOffices.map((office, index) => {
+        return activeOffices.map((office, index) => {
             const { reviews } = office;
 
             // calculate avg rating
@@ -184,14 +184,42 @@ class OfficeResultIndex extends Component {
     };
 
     render() {
+        const { filters } = this.props;
         if (this.props.invalid) {
-            this.props.fetchOffices(this.props.filters);
+            this.props.fetchOffices(filters);
         }
 
         if (this.props.isFetching) {
             return <LinearProgress />;
         }
 
+        let activeOffices = this.props.offices;
+        let filterDate = null;
+
+        if (filters.date) {
+            filterDate = moment(filters.date);
+        }
+        if (!filterDate && filters.values) {
+            filterDate = moment(filters.values.date);
+        }
+        if (filterDate) {
+            const filterDay = filterDate.format('LL');
+            activeOffices = activeOffices.filter(office => {
+                const { listings } = office;
+                for (let i = 0; i < listings.length; i += 1) {
+                    const startDay = moment(listings[i].startTime).format('LL');
+                    const endDay = moment(listings[i].endTime).format('LL');
+                    if (
+                        startDay === filterDay ||
+                        endDay === filterDay ||
+                        (startDay < filterDay && filterDay < endDay)
+                    ) {
+                        return true;
+                    }
+                }
+                return false;
+            });
+        }
         return (
             <Container>
                 <Padding top={14} />
@@ -217,11 +245,11 @@ class OfficeResultIndex extends Component {
                         <OfficetListContainer
                             show={this.state.activeView === 'list'}
                         >
-                            {this.renderOfficeList()}
+                            {this.renderOfficeList(activeOffices)}
                         </OfficetListContainer>
                     </Grid>
                     <Grid item xs={12} md={6}>
-                        {this.renderMap()}
+                        {this.renderMap(activeOffices)}
                     </Grid>
                 </Grid>
             </Container>
@@ -230,18 +258,20 @@ class OfficeResultIndex extends Component {
 }
 
 function getVisibleOffices(offices) {
+    if (!offices) {
+        return [];
+    }
     // remove any offices greater than 35 miles away
     // if no location filter, office.distance is undefined and !!(undefined > 35) == false
-    const filteredOffices = offices.filter(office => {
+    const nearbyOffices = offices.filter(office => {
         if (office.distance && office.distance.split(',').join('') > 35) {
             return false;
         }
 
         return true;
     });
-
     // sort offices within range, allows their labels to reflect order
-    return filteredOffices.sort((a, b) => a.distance - b.distance);
+    return nearbyOffices.sort((a, b) => a.distance - b.distance);
 }
 
 function mapStateToProps(state) {

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import moment from 'moment';
 import * as actions from '../actions';
 
 import DentistResult from './DentistResult';
@@ -73,7 +74,7 @@ class DentistResultIndex extends Component {
         this.props.fetchActiveDentists(this.props.filters);
     }
 
-    renderMap() {
+    renderMap(activeDentists) {
         const BREAKPOINT = '600';
 
         if (window.innerWidth < BREAKPOINT && this.state.activeView !== 'map')
@@ -83,7 +84,7 @@ class DentistResultIndex extends Component {
             <MapContainer>
                 <ResultMap
                     activeListingId={this.state.activeListingId}
-                    locations={this.props.dentists}
+                    locations={activeDentists}
                     searchLocation={
                         this.props.filters.location
                             ? this.props.filters.location
@@ -103,11 +104,10 @@ class DentistResultIndex extends Component {
         this.setState({ activeListingId: null });
     };
 
-    renderDentistList() {
-        const filteredDentists = this.props.dentists;
+    renderDentistList(activeDentists) {
         const searchInput = this.props.filters.location;
 
-        if (searchInput && searchInput.length && !filteredDentists.length) {
+        if (searchInput && searchInput.length && !activeDentists.length) {
             return (
                 <NoResults
                     onClose={this.handleClearSearchInput}
@@ -116,7 +116,7 @@ class DentistResultIndex extends Component {
             );
         }
 
-        return filteredDentists.map((dentist, index) => {
+        return activeDentists.map((dentist, index) => {
             const reviews = dentist.reviews;
             // calculate avg rating
             if (reviews && reviews.length) {
@@ -139,7 +139,9 @@ class DentistResultIndex extends Component {
                     key={dentist.id + dentist.location}
                 >
                     <DentistResult
-                        name={`${dentist.user.firstName} ${dentist.user.lastName}`}
+                        name={`${dentist.user.firstName} ${
+                            dentist.user.lastName
+                        }`}
                         specialty={dentist.specialty}
                         location={dentist.location}
                         procedures={dentist.procedures}
@@ -185,12 +187,41 @@ class DentistResultIndex extends Component {
     };
 
     render() {
+        const { filters } = this.props;
         if (this.props.invalid) {
             this.props.fetchActiveDentists(this.props.filters);
         }
 
         if (this.props.isFetching) {
             return <LinearProgress />;
+        }
+
+        let activeDentists = this.props.dentists;
+        let filterDate = null;
+
+        if (filters.date) {
+            filterDate = moment(filters.date);
+        }
+        if (!filterDate && filters.values) {
+            filterDate = moment(filters.values.date);
+        }
+        if (filterDate) {
+            const filterDay = filterDate.format('LL');
+            activeDentists = activeDentists.filter(dentist => {
+                const { schedule } = dentist;
+                for (let i = 0; i < schedule.length; i += 1) {
+                    const startDay = moment(schedule[i].startTime).format('LL');
+                    const endDay = moment(schedule[i].endTime).format('LL');
+                    if (
+                        startDay === filterDay ||
+                        endDay === filterDay ||
+                        (startDay < filterDay && filterDay < endDay)
+                    ) {
+                        return true;
+                    }
+                }
+                return false;
+            });
         }
 
         return (
@@ -218,11 +249,11 @@ class DentistResultIndex extends Component {
                         <DentistListContainer
                             show={this.state.activeView === 'list'}
                         >
-                            {this.renderDentistList()}
+                            {this.renderDentistList(activeDentists)}
                         </DentistListContainer>
                     </Grid>
                     <Grid item xs={12} md={6}>
-                        {this.renderMap()}
+                        {this.renderMap(activeDentists)}
                     </Grid>
                 </Grid>
             </Container>
@@ -230,11 +261,14 @@ class DentistResultIndex extends Component {
     }
 }
 
-function getVisibleOffices(offices) {
+function getVisibleDentists(dentists) {
+    if (!dentists) {
+        return [];
+    }
     // remove any offices greater than 35 miles away
     // if no location filter, office.distance is undefined and !!(undefined > 35) == false
-    const filteredOffices = offices.filter(office => {
-        if (office.distance > 35) {
+    const visibleDentists = dentists.filter(dentist => {
+        if (dentist.distance > 35) {
             return false;
         }
 
@@ -242,12 +276,12 @@ function getVisibleOffices(offices) {
     });
 
     // sort offices within range, allows their labels to reflect order
-    return filteredOffices.sort((a, b) => a.distance - b.distance);
+    return visibleDentists.sort((a, b) => a.distance - b.distance);
 }
 
 function mapStateToProps(state) {
     return {
-        dentists: getVisibleOffices(state.dentists.dentists),
+        dentists: getVisibleDentists(state.dentists.dentists),
         isFetching: state.dentists.isFetching,
         invalid: state.dentists.invalid,
         filters: state.filters
