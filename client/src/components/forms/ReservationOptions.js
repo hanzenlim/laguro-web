@@ -336,7 +336,7 @@ class ReservationOptions extends Component {
             urlParams.startTime = moment(startTime).format();
             urlParams.endTime = moment(endTime).format();
             urlParams.numChairs = numChairs;
-            urlParams.reservedBy = auth.dentist.id;
+            urlParams.reservedBy = auth.dentistId;
             urlParams.equipmentSelected = equipmentSelected;
             urlParams.listingId = listing.id;
 

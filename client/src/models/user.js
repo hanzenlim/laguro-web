@@ -1,5 +1,10 @@
 import makeApiCall from '../util/clientDataLoader';
-import { APPOINTMENTS, DENTIST, PAYMENT_OPTIONS, PAYOUT_LOGIN } from '../util/strings';
+import {
+    APPOINTMENTS,
+    DENTIST,
+    PAYMENT_OPTIONS,
+    PAYOUT_LOGIN
+} from '../util/strings';
 import {
     appointmentFragment,
     userFragment,
@@ -17,7 +22,7 @@ const generateUserResult = options => {
     const loginLinkResult = options.includes(PAYOUT_LOGIN)
         ? `payoutLoginLink`
         : '';
-    const appointmentResult= options.includes(APPOINTMENTS)
+    const appointmentResult = options.includes(APPOINTMENTS)
         ? `appointments {${appointmentFragment}}`
         : '';
     const result = `
@@ -69,6 +74,7 @@ const generateGetUserByUserIdQuery = `
     query ($id: String!) {
         getUser(id: $id) {
             ${userFragment}
+            paymentOptions {${paymentOptionFragment}}
         }
     }
 `;
