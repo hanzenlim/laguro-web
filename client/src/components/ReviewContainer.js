@@ -4,16 +4,13 @@ import ReactStars from 'react-stars';
 import styled from 'styled-components';
 import Grid from '@material-ui/core/Grid';
 import { REVIEWEE_ID } from '../util/strings';
-import { Flex, Box } from './common';
+import { Flex, Box, Typography } from './common';
 import { Padding } from './common/Spacing';
 import * as actions from '../actions';
 
 const ReviewBox = styled(Box)`
     float: left;
-`;
-
-const ReviewNameDiv = styled(Box)`
-    font-weight: bold;
+    max-width: 100%;
 `;
 
 const ReviewContentDiv = styled(Box)`
@@ -87,9 +84,9 @@ class ReviewContainer extends Component {
                 <Grid item xs={6} sm={4} key={index}>
                     <Flex>
                         <ReviewBox fontSize={13}>
-                            <ReviewNameDiv fontSize={17}>
-                                {review.reviewer.name}
-                            </ReviewNameDiv>
+                            <Typography pr={1} fontSize={17} fontWeight={"bold"} truncate>
+                                {review && review.reviewer && (review.reviewer.firstName + " " + review.reviewer.lastName)}
+                            </Typography>
                             <Padding bottom={10} />
                             <ReviewContentDiv
                                 fontSize={14}

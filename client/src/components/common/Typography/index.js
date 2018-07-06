@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { space, color, fontSize, fontWeight } from 'styled-system';
+import { truncate } from '../../../util/styleUtil'
 
 export default styled.span`
   /* Cursors */
@@ -10,6 +11,7 @@ export default styled.span`
   /* Misc */
   ${props => props.underline && 'text-decoration: underline;'}
   ${props => props.capitalize && 'text-transform: capitalize;'}
+  ${props => props.truncate && truncate('auto')}
 
   ${space} ${color} ${fontSize} ${fontWeight}
 `;

@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
 import styled from "styled-components";
 import Card from '@material-ui/core/Card';
-import * as actions from "../actions";
-import { Padding } from './common/Spacing';
-import listingImgPlaceholder from './images/office-placeholder-thumbnail.png'
+import { Typography, Flex, Box } from './common';
+import objImgPlaceholder from './images/office-placeholder-thumbnail.png'
 
 import "./css/PhotoGrid.css";
+
+const maxNumProcedures = 4;
 
 const StyledContainer = styled.div`
     position: relative;
@@ -27,16 +27,7 @@ const StyledImg = styled.img`
 
 const ListingInfo = styled.div`
     color: black;
-    padding: 8px;
     line-height: 22px;
-`;
-
-const ListingInfoAddress = styled.div`
-    font-size: 12px;
-`;
-
-const ListingInfoName = styled.div`
-    font-size: 17px;
 `;
 
 const ListingCard = styled(Card)`
@@ -53,59 +44,78 @@ const SoldOutDiv = styled.div`
     font-size: 25px;
 `;
 
+const Procedure = styled.div`
+    min-height: 17px;
+    height: auto;
+    display: flex;
+    align-items: center;
+    background-color: #c8c7c7;
+    border-radius: 2px;
+    margin: 0 6px 4px 0;
+    padding: 0 4px;
+`;
+
 class PhotoGrid extends Component {
     componentWillMount() {
         document.title = "Laguro - Search Index";
-        if (this.props.listings.length === 0) {
-            const active = true;
-            this.props.fetchListings(active);
-        }
+    }
+
+    renderProcedures = procedures => {
+        return procedures.slice(0, maxNumProcedures).map(procedure => (
+            <Procedure key={procedure.name}>
+                <Typography fontSize={3} fontWeight="regular" color="white">
+                    {procedure.name}
+                </Typography>
+            </Procedure>
+        ));
     }
 
     render() {
+        const { className, objects, header } = this.props;
         let photoGridElements;
-
-        if (this.props.listings) {
-
-            if (this.props.listings.length === 0) {
+        if (objects) {
+            if (objects.length === 0) {
                 return (
-                    <Padding top={20} bottom={10}>
+                    <Box className={className} pt={3} pb={2}>
                         <SoldOutDiv> "All listings currently sold out! Don't worry, there will be more soon." </SoldOutDiv>
-                    </Padding>
+                    </Box>
                 )
             } else {
-                var officesSoFar = {};
 
-                photoGridElements = this.props.listings.filter(function(listing) {
-
-                    if (officesSoFar.hasOwnProperty(listing.office.id)) {
-                        return false;
-                    } else {
-                        officesSoFar[listing.office.id] = 0;
-                        return true;
-                    }
-
-                }).map(listing => {
-                    let listingImg;
-                    if (listing.office.imageUrls && listing.office.imageUrls.length !== 0) {
-                        listingImg = listing.office.imageUrls[0]
-                    } else {
-                        listingImg = listingImgPlaceholder;
-                    }
+                photoGridElements = objects.map(obj => {
+                    const objImg = obj.imageUrl || objImgPlaceholder;
                     return (
-                        <a href={`/office/${listing.officeId}`} key={listing.id}>
+                        <a href={obj.detailPageUrl} key={obj.id}>
                             <div className='col offset-s1 s10 m6 l3'>
                                 <ListingCard>
-                                    <div>
+                                    <div data-name="image">
                                         <StyledContainer>
-                                            <StyledImg className="center" id="element" alt={listing.office.imageUrls} src={listingImg} />
+                                            <StyledImg className="center" id="element" alt={objImg} src={objImg} />
                                         </StyledContainer>
                                     </div>
-                                    <ListingInfo>
-              							<ListingInfoName>{listing.office.name}</ListingInfoName>
-                                        <ListingInfoAddress className="truncate">{listing.office.location}</ListingInfoAddress>
-              							<div className="photo-grid-listing-deets deets">${listing.chairHourlyPrice} per hour - {listing.numChairsAvailable} chairs avail.</div>
-                                    </ListingInfo>
+                                    <Box p={2}>
+                                        <ListingInfo>
+                  							<div data-name="name">
+                                                <Typography fontSize={3} truncate>{obj.name}</Typography>
+                                            </div>
+                                            <div data-name="location">
+                                                <Typography fontSize={1} truncate>{obj.location}</Typography>
+                                            </div>
+                  							{obj.chairHourlyPrice &&
+                                                <div data-name="chairHourlyPrice">
+                                                    <Typography fontSize={1} fontWeight={"light"} truncate>
+                                                        ${obj.chairHourlyPrice} per hour on average - {obj.numChairsAvailable} chair(s) avail. usually
+                                                    </Typography>
+                                                </div>}
+                                        </ListingInfo>
+                                        <Box pb={2} />
+                                        {obj.procedures &&
+                                            <div data-name="procedures">
+                                                <Flex>
+                                                    {this.renderProcedures(obj.procedures)}
+                                                </Flex>
+                                            </div>}
+                                    </Box>
                                 </ListingCard>
                             </div>
                         </a>
@@ -116,34 +126,21 @@ class PhotoGrid extends Component {
 
         }
 
-        photoGridElements = photoGridElements.slice(0, 4 * parseInt(this.props.numRow, 10));
+        photoGridElements = photoGridElements && photoGridElements.slice(0, 4 * parseInt(this.props.numRow, 10));
 
-        const Div = styled.div`
+        const StyledBox = styled(Box)`
             clear: both;
-            margin-top: 3%;
-            margin-left: 3%;
-            margin-right: 3%;
-        `
+        `;
+
         return (
-            <Div>
-                <h4 className="photo-grid-header"> New Listings </h4>
+            <StyledBox mt={4} mx={4} className={className}>
+                <h4 className="photo-grid-header"> {header} </h4>
                 <div className="row">
                     {photoGridElements}
                 </div>
-            </Div>
+            </StyledBox>
         );
     }
 }
 
-function mapStateToProps(state) {
-    return {
-        offices: state.offices.all,
-        isFetching: state.offices.isFetching,
-        invalid: state.offices.invalid,
-        listings: state.listings.all,
-        reviews: state.reviews.all,
-        filters: state.filters
-    };
-}
-
-export default connect(mapStateToProps, actions)(PhotoGrid);
+export default PhotoGrid;
