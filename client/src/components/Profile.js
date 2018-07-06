@@ -19,7 +19,7 @@ import {
     listingFragment,
     appointmentFragment,
     reviewerFragment,
-    filterActive
+    filterActive,
 } from '../util/fragments';
 
 const dentistQuery = `
@@ -64,7 +64,7 @@ class Profile extends Component {
         this.state = {
             isCreateProfileModalOpen: false,
             isEditUserProfileOpen: false,
-            isFetching: false
+            isFetching: false,
         };
     }
 
@@ -74,9 +74,9 @@ class Profile extends Component {
 
     toggleCreateProfileModal = () => {
         this.setState({
-            isCreateProfileModalOpen: !this.state.isCreateProfileModalOpen
+            isCreateProfileModalOpen: !this.state.isCreateProfileModalOpen,
         });
-    }
+    };
 
     async loadDentistProfile() {
         const { auth } = this.props;
@@ -126,19 +126,21 @@ class Profile extends Component {
                         Edit Dentist Profile
                     </Link>
                 ) : (
-                    <div><a
-                        className="link red-text"
-                        onClick={this.toggleCreateProfileModal}
-                    >
-                        Create Dentist Profile
-                    </a>
-                    <Modal
-                        closable
-                        open={this.state.isCreateProfileModalOpen}
-                        onClose={this.toggleCreateProfileModal}
-                    >
-                        <CreateProfile />
-                    </Modal></div>
+                    <div>
+                        <a
+                            className="link red-text"
+                            onClick={this.toggleCreateProfileModal}
+                        >
+                            Create Dentist Profile
+                        </a>
+                        <Modal
+                            closable
+                            open={this.state.isCreateProfileModalOpen}
+                            onClose={this.toggleCreateProfileModal}
+                        >
+                            <CreateProfile />
+                        </Modal>
+                    </div>
                 )}
 
                 <ReactFilestack
@@ -153,9 +155,16 @@ class Profile extends Component {
                             'url',
                             'imagesearch',
                             'facebook',
-                            'instagram'
+                            'instagram',
                         ],
-                        storeTo: { container: 'user-photos' }
+                        transformations: {
+                            crop: {
+                                aspectRatio: 4 / 4,
+                                force: true,
+                            },
+                        },
+                        uploadInBackground: false,
+                        storeTo: { container: 'user-photos' },
                     }}
                     onSuccess={result => this.setNewProfileImage(result)}
                 />
@@ -190,15 +199,15 @@ class Profile extends Component {
         const upload = result.filesUploaded[0];
         const userId = this.props.auth.id;
         if (upload) {
-            this.props.updateProfile(userId, { imgUrl: upload.url });
+            this.props.updateUserProfile(userId, { imageUrl: upload.url });
         }
     }
 
     toggleEditUserProfileModal = () => {
         this.setState({
-            isEditUserProfileOpen: !this.state.isEditUserProfileOpen
+            isEditUserProfileOpen: !this.state.isEditUserProfileOpen,
         });
-    }
+    };
 
     render() {
         const { auth, dentist } = this.props;
@@ -235,17 +244,20 @@ class Profile extends Component {
                     {dentistId &&
                         dentist.reviews &&
                         dentist.reviews.length > 0 && (
-                        <div className="reviews profile-section">
-                            <h5>{`Reviews for ${auth.name}`}</h5>
-                            <ReviewContainer
-                                revieweeId={dentist.id}
-                                revieweeName={auth.name}
-                                reviews={dentist.reviews}
-                            />
-                        </div>
-                    )}
+                            <div className="reviews profile-section">
+                                <h5>{`Reviews for ${auth.name}`}</h5>
+                                <ReviewContainer
+                                    revieweeId={dentist.id}
+                                    revieweeName={auth.name}
+                                    reviews={dentist.reviews}
+                                />
+                            </div>
+                        )}
                 </div>
-                <EditUser open={this.state.isEditUserProfileOpen} onClose={this.toggleEditUserProfileModal} />
+                <EditUser
+                    open={this.state.isEditUserProfileOpen}
+                    onClose={this.toggleEditUserProfileModal}
+                />
             </div>
         );
     }
@@ -254,7 +266,7 @@ class Profile extends Component {
 function mapStateToProps(state) {
     return {
         auth: state.auth,
-        dentist: state.dentists.selectedDentist
+        dentist: state.dentists.selectedDentist,
     };
 }
 export default connect(
