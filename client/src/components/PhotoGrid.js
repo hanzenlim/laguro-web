@@ -71,13 +71,13 @@ class PhotoGrid extends Component {
     }
 
     render() {
-        const { className, objects, header } = this.props;
+        const { className, objects, header, message } = this.props;
         let photoGridElements;
         if (objects) {
             if (objects.length === 0) {
                 return (
                     <Box className={className} pt={3} pb={2}>
-                        <SoldOutDiv> "All listings currently sold out! Don't worry, there will be more soon." </SoldOutDiv>
+                        <SoldOutDiv> {message} </SoldOutDiv>
                     </Box>
                 )
             } else {
