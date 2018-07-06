@@ -4,12 +4,16 @@ import { Field, reduxForm, SubmissionError } from 'redux-form';
 import { updateUserProfile } from '../../actions';
 import { Button, Typography, Box, Modal } from '../common';
 import { required } from './formValidation';
-import { renderField, renderMaskedField } from './sharedComponents';
+import {
+    renderField,
+    renderMaskedField,
+    renderCheckbox
+} from './sharedComponents';
 import {
     maskPhoneNumber,
     formatPhoneNumber,
     isPhoneNumberInputValid,
-    PHONE_NUMBER_MASK,
+    PHONE_NUMBER_MASK
 } from '../../util/phoneNumberUtil';
 
 class EditUser extends Component {
@@ -21,21 +25,25 @@ class EditUser extends Component {
             firstName: auth && auth.firstName,
             lastName: auth && auth.lastName,
             phoneNumber: maskPhoneNumber(auth && auth.phoneNumber),
+            notificationSettings: auth && auth.notificationSettings
         });
     }
 
     onSubmit = values => {
-        const { phoneNumber } = values;
+        const { phoneNumber, notificationSettings } = values;
 
-        if (phoneNumber && !isPhoneNumberInputValid(phoneNumber)) {
+        if (
+            (phoneNumber && !isPhoneNumberInputValid(phoneNumber)) ||
+            (!phoneNumber && notificationSettings.general.sms)
+        ) {
             throw new SubmissionError({
-                phoneNumber: 'Please add a valid phone number.',
+                phoneNumber: 'Please add a valid phone number.'
             });
         }
 
         this.props.updateUserProfile(this.props.auth.id, {
             ...values,
-            phoneNumber: formatPhoneNumber(phoneNumber),
+            phoneNumber: formatPhoneNumber(phoneNumber)
         });
 
         this.props.onClose();
@@ -43,7 +51,6 @@ class EditUser extends Component {
 
     render() {
         const { handleSubmit, open, onClose } = this.props;
-
         return (
             <Modal closable open={open} onClose={onClose}>
                 <form onSubmit={handleSubmit(this.onSubmit)}>
@@ -68,7 +75,7 @@ class EditUser extends Component {
                             component={renderField}
                         />
                     </Box>
-                    <Box pb={4}>
+                    <Box pb={2}>
                         <Field
                             name="phoneNumber"
                             label="Phone Number"
@@ -78,6 +85,23 @@ class EditUser extends Component {
                             placeholderChar={'\u2000'}
                         />
                     </Box>
+                    <div>
+                        <Box pb={2}>
+                            <h5>Notification Settings</h5>
+                        </Box>
+                        <Field
+                            name="notificationSettings.general.email"
+                            label="Email"
+                            component={renderCheckbox}
+                        />
+                        <Box pb={4}>
+                            <Field
+                                name="notificationSettings.general.sms"
+                                label="Text Message"
+                                component={renderCheckbox}
+                            />
+                        </Box>
+                    </div>
                     <Box>
                         <Button type="submit" color="primary">
                             <Typography fontSize={4} fontWeight="medium">
@@ -93,15 +117,10 @@ class EditUser extends Component {
 
 function mapStateToProps(state) {
     return {
-        auth: state.auth,
+        auth: state.auth
     };
 }
 
 export default reduxForm({
-    form: 'editUser',
-})(
-    connect(
-        mapStateToProps,
-        { updateUserProfile }
-    )(EditUser)
-);
+    form: 'editUser'
+})(connect(mapStateToProps, { updateUserProfile })(EditUser));
