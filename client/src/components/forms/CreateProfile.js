@@ -50,6 +50,10 @@ class CreateProfile extends Component {
             throw new SubmissionError({
                 _error: 'You must add at least 1 procedure'
             });
+        } else if (!this.state.location) {
+            throw new SubmissionError({
+                _error: 'You must provide an address'
+            });
         } else {
             values.location = this.state.location;
 
