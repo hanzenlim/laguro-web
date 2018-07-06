@@ -146,15 +146,16 @@
 
   .active {
     display: block;
-    background: inherit;
+    flex-grow: 1;
+    text-align: center;
+    border-radius: 3px 3px 0 0;
+    background: #fff;
+    color: #222;
     color: inherit;
   }
 
   .inactive {
     display: block;
-    flex-grow: 1;
-    text-align: center;
-    border-radius: 3px 3px 0 0;
     background: #BFBEBE;
     color: #ccc;
   }
@@ -253,11 +254,18 @@
     display: flex;
   }
 
-  .inactive {
+  .active {
     display: block;
     flex-grow: 1;
     text-align: center;
     border-radius: 3px 3px 0 0;
+    background: #fff;
+    color: #222;
+    color: inherit;
+  }
+
+  .inactive {
+    display: block;
     background: #BFBEBE;
     color: #ccc;
   }
