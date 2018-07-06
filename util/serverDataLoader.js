@@ -16,19 +16,34 @@ apolloFetch.use(({ request, options }, next) => {
 });
 
 module.exports.getUserQuery = `
-    query getUserByGoogleId($googleId: String!) {
-        getUserByGoogleId(googleId: $googleId) {
+    query getUser($id: String!) {
+        getUser(id: $id) {
             id
             firstName
             lastName
-            googleId
             imageUrl
         }
     }
 `;
 
-module.exports.getUserVariable = (id) => ({
-    googleId: id.toString()
+module.exports.getUserByEmailQuery = `
+    query getUserByEmail($email: String!) {
+        getUserByEmail(email: $email) {
+            id
+            googleId
+            firstName
+            lastName
+            password
+        }
+    }
+`;
+
+module.exports.getUserVariable = id => ({
+    id: id.toString(),
+});
+
+module.exports.getUserByEmailVariable = email => ({
+    email: email,
 });
 
 module.exports.createUserQuery = `
@@ -42,6 +57,15 @@ module.exports.createUserQuery = `
     }
 `;
 
+module.exports.createLocalUserQuery = `
+    mutation createLocalUser($input: CreateLocalUserInput!) {
+        createLocalUser(input: $input) {
+            id
+            email
+        }
+    }
+`;
+
 module.exports.updatePatientDocumentSignatureQuery = `
     mutation updatePatientDocumentSignature($input: UpdatePatientDocumentSignatureInput!) {
         updatePatientDocumentSignature(input: $input) {
@@ -51,36 +75,49 @@ module.exports.updatePatientDocumentSignatureQuery = `
 `;
 
 module.exports.createUserVariable = (firstName, lastName, id, email, img) => ({
-    "input": {
+    input: {
         firstName,
         lastName,
         googleId: id,
         email,
-        imageUrl: img
-    }
+        imageUrl: img,
+    },
 });
 
-module.exports.updatePatientDocumentSignatureVariable = (signatureRequestId) => ({
-    "input": {
+module.exports.createLocalUserVariable = (
+    firstName,
+    lastName,
+    password,
+    email
+) => ({
+    input: {
+        firstName,
+        lastName,
+        password,
+        email,
+    },
+});
+
+module.exports.updatePatientDocumentSignatureVariable = signatureRequestId => ({
+    input: {
         signatureRequestId: signatureRequestId,
-    }
+    },
 });
-
 
 module.exports.makeQuery = async (query, variables) => {
     let result = await apolloFetch({
         query,
-        variables
+        variables,
     });
 
     return result;
-}
+};
 
 module.exports.makeMutation = async (query, variables) => {
     let result = await apolloFetch({
         query,
-        variables
+        variables,
     });
 
     return result;
-}
+};

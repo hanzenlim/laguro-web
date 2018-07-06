@@ -20,7 +20,7 @@ app.use(bodyParser.json());
 app.use(
     cookieSession({
         maxAge: 10800000, // 1 day
-        keys: [process.env.COOKIE_KEY]
+        keys: [process.env.COOKIE_KEY],
     })
 );
 app.use(passport.initialize());
@@ -36,15 +36,15 @@ app.post('/api/graphql', async (req, res) => {
         req.user &&
         req.body &&
         req.body.variables &&
-        req.body.variables.googleId === req.user.googleId
+        req.body.variables.id === req.user.id
     ) {
         variables = {
             ...req.body.variables,
-            authenticated: true
+            authenticated: true,
         };
     } else {
         variables = {
-            ...req.body.variables
+            ...req.body.variables,
         };
     }
 
@@ -60,7 +60,7 @@ if (process.env.NODE_ENV === 'production') {
     app.get('/robots.txt', (req, res) => {
         res.sendFile(path.resolve('build', 'robots.txt'));
     });
-    
+
     app.get('*', (req, res) => {
         res.header('Cache-Control', 'no-cache, no-store, must-revalidate');
         res.header('Pragma', 'no-cache');

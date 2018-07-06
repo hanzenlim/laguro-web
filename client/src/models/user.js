@@ -62,11 +62,28 @@ const addPayoutAccountQuery = `
 `;
 
 const getUserVariable = id => ({
-    googleId: id.toString()
+    userId: id.toString()
 });
+
+const generateGetUserByUserIdQuery = `
+    query ($id: String!) {
+        getUser(id: $id) {
+            ${userFragment}
+        }
+    }
+`;
 
 // TODO handle graphql errors
 const User = {
+    getByUserId: async userId => {
+        if (!userId) {
+            return null;
+        }
+        const response = await makeApiCall(generateGetUserByUserIdQuery, {
+            id: userId
+        });
+        return response.data.getUser;
+    },
     getByGoogleId: async (userId, ...options) => {
         const getUserQuery = generateGetUserQuery(options);
         const response = await makeApiCall(
