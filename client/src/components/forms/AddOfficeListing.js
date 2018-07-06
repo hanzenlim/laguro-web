@@ -126,12 +126,11 @@ class NewListing extends Component {
                 description,
                 officeId
             } = this.urlParams;
-
             if (!this.state.isExistingOffice) {
                 await this.props.createOffice({
                     name,
                     location,
-                    hostId: this.props.auth.dentist.id,
+                    hostId: this.props.auth.dentistId,
                     imageUrls: JSON.parse(imageUrls),
                     equipment: JSON.parse(equipment),
                     description

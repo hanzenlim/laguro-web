@@ -47,7 +47,6 @@ class EditDentist extends Component {
 
     onSubmit(values) {
         const { auth } = this.props;
-        const dentist = auth.dentist;
         values.location = this.state.location;
 
         if (
@@ -60,13 +59,13 @@ class EditDentist extends Component {
             });
         }
 
-        this.props.editDentist({ ...values, id: dentist.id });
+        this.props.editDentist({ ...values, id: auth.dentistId });
     }
 
     // get all dentists and find the dentist profile that matches logged in user
     async getDentist() {
         const { auth } = this.props;
-        return await this.props.getDentist(auth.dentist.id);
+        return await this.props.getDentist(auth.dentistId);
     }
 
     renderDurations() {

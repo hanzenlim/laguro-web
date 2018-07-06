@@ -53,7 +53,8 @@ export const fetchActiveDentists = filters => async dispatch => {
         }
 
         // use google api to calculate distance from search query and append distance onto dentist object
-        distanceQueries.push(getDistances(dentistUniqueLocations, filters));
+        if (filters) {distanceQueries.push(getDistances(dentistUniqueLocations, filters));}
+
     }
     if (!filters || (filters && !filters.location)) {
         dispatch({
