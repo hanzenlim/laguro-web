@@ -23,6 +23,12 @@ export const userFragment = `
     dateCreated
     dentistId
     payoutAccountId
+    notificationSettings {
+        general {
+            email
+            sms
+        }
+    }
 `;
 
 export const dentistFragment = `
