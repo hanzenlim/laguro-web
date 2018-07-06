@@ -1,10 +1,11 @@
-import React, { Component } from "react";
-import styled from "styled-components";
+import React, { Component } from 'react';
+import styled from 'styled-components';
 import Card from '@material-ui/core/Card';
 import { Typography, Flex, Box } from './common';
-import objImgPlaceholder from './images/office-placeholder-thumbnail.png'
+import objImgPlaceholder from './images/office-placeholder-thumbnail.png';
+import { renderPrice } from '../util/paymentUtil';
 
-import "./css/PhotoGrid.css";
+import './css/PhotoGrid.css';
 
 const maxNumProcedures = 4;
 
@@ -31,11 +32,10 @@ const ListingInfo = styled.div`
 `;
 
 const ListingCard = styled(Card)`
-    @media screen and (max-width : 540px)
-    {
+    @media screen and (max-width: 540px) {
         margin-bottom: 3.5%;
     }
-`
+`;
 const SoldOutDiv = styled.div`
     text-align: center;
     margin-top: 3%;
@@ -57,7 +57,7 @@ const Procedure = styled.div`
 
 class PhotoGrid extends Component {
     componentWillMount() {
-        document.title = "Laguro - Search Index";
+        document.title = 'Laguro - Search Index';
     }
 
     renderProcedures = procedures => {
@@ -68,7 +68,7 @@ class PhotoGrid extends Component {
                 </Typography>
             </Procedure>
         ));
-    }
+    };
 
     render() {
         const { className, objects, header, message } = this.props;
@@ -79,42 +79,68 @@ class PhotoGrid extends Component {
                     <Box className={className} pt={3} pb={2}>
                         <SoldOutDiv> {message} </SoldOutDiv>
                     </Box>
-                )
+                );
             } else {
-
                 photoGridElements = objects.map(obj => {
                     const objImg = obj.imageUrl || objImgPlaceholder;
                     return (
                         <a href={obj.detailPageUrl} key={obj.id}>
-                            <div className='col offset-s1 s10 m6 l3'>
+                            <div className="col offset-s1 s10 m6 l3">
                                 <ListingCard>
                                     <div data-name="image">
                                         <StyledContainer>
-                                            <StyledImg className="center" id="element" alt={objImg} src={objImg} />
+                                            <StyledImg
+                                                className="center"
+                                                id="element"
+                                                alt={objImg}
+                                                src={objImg}
+                                            />
                                         </StyledContainer>
                                     </div>
                                     <Box p={2}>
                                         <ListingInfo>
-                  							<div data-name="name">
-                                                <Typography fontSize={3} truncate>{obj.name}</Typography>
+                                            <div data-name="name">
+                                                <Typography
+                                                    fontSize={3}
+                                                    truncate
+                                                >
+                                                    {obj.name}
+                                                </Typography>
                                             </div>
                                             <div data-name="location">
-                                                <Typography fontSize={1} truncate>{obj.location}</Typography>
+                                                <Typography
+                                                    fontSize={1}
+                                                    truncate
+                                                >
+                                                    {obj.location}
+                                                </Typography>
                                             </div>
-                  							{obj.chairHourlyPrice &&
+                                            {obj.chairHourlyPrice && (
                                                 <div data-name="chairHourlyPrice">
-                                                    <Typography fontSize={1} fontWeight={"light"} truncate>
-                                                        ${obj.chairHourlyPrice} per hour on average - {obj.numChairsAvailable} chair(s) avail. usually
+                                                    <Typography
+                                                        fontSize={1}
+                                                        fontWeight={'light'}
+                                                        truncate
+                                                    >
+                                                        {`${renderPrice(
+                                                            obj.chairHourlyPrice
+                                                        )} per hour on average - ${
+                                                            obj.numChairsAvailable
+                                                        } chair(s) avail. usually`}
                                                     </Typography>
-                                                </div>}
+                                                </div>
+                                            )}
                                         </ListingInfo>
                                         <Box pb={2} />
-                                        {obj.procedures &&
+                                        {obj.procedures && (
                                             <div data-name="procedures">
                                                 <Flex>
-                                                    {this.renderProcedures(obj.procedures)}
+                                                    {this.renderProcedures(
+                                                        obj.procedures
+                                                    )}
                                                 </Flex>
-                                            </div>}
+                                            </div>
+                                        )}
                                     </Box>
                                 </ListingCard>
                             </div>
@@ -122,11 +148,11 @@ class PhotoGrid extends Component {
                     );
                 });
             }
-
-
         }
 
-        photoGridElements = photoGridElements && photoGridElements.slice(0, 4 * parseInt(this.props.numRow, 10));
+        photoGridElements =
+            photoGridElements &&
+            photoGridElements.slice(0, 4 * parseInt(this.props.numRow, 10));
 
         const StyledBox = styled(Box)`
             clear: both;
@@ -135,9 +161,7 @@ class PhotoGrid extends Component {
         return (
             <StyledBox mt={4} mx={4} className={className}>
                 <h4 className="photo-grid-header"> {header} </h4>
-                <div className="row">
-                    {photoGridElements}
-                </div>
+                <div className="row">{photoGridElements}</div>
             </StyledBox>
         );
     }

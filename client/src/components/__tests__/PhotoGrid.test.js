@@ -11,8 +11,8 @@ describe('PhotoGrid Component', () => {
             name: 'jestName',
             location: 'jestLocation',
             imageUrl: 'jestUrl',
-            chairHourlyPrice: 'jestChairHourlyPrice',
-            numChairsAvailable: 'jestNumChairsAvailable',
+            chairHourlyPrice: 1000,
+            numChairsAvailable: 20,
             detailPageUrl: `/office/jest1`
         }
     ];
@@ -24,10 +24,12 @@ describe('PhotoGrid Component', () => {
             location: 'jestLocation',
             imageUrl: 'jestUrl',
             detailPageUrl: `/office/jest1`,
-            procedures: [{
-                name: 'jestProcedureName',
-                duration: 'jestProcedureDuration'
-            }]
+            procedures: [
+                {
+                    name: 'jestProcedureName',
+                    duration: 'jestProcedureDuration'
+                }
+            ]
         }
     ];
 
@@ -40,17 +42,25 @@ describe('PhotoGrid Component', () => {
         const image = component.find('[data-name="image"]');
         const name = component.find('[data-name="name"]');
         const location = component.find('[data-name="location"]');
-        const chairHourlyPrice = component.find('[data-name="chairHourlyPrice"]');
+        const chairHourlyPrice = component.find(
+            '[data-name="chairHourlyPrice"]'
+        );
 
         expect(image).toHaveLength(1);
         expect(name).toHaveLength(1);
         expect(location).toHaveLength(1);
         expect(chairHourlyPrice).toHaveLength(1);
 
-        expect(image.find('img').prop("src")).toEqual('jestUrl');
+        expect(image.find('img').prop('src')).toEqual('jestUrl');
         expect(name.find('span').text()).toEqual('jestName');
         expect(location.find('span').text()).toEqual('jestLocation');
-        expect(chairHourlyPrice.find('span').text()).toEqual('$jestChairHourlyPrice per hour on average - jestNumChairsAvailable chair(s) avail. usually');
+        expect(chairHourlyPrice.find('span').text()).toEqual(
+            `$${(offices[0].chairHourlyPrice / 100).toFixed(
+                2
+            )} per hour on average - ${
+                offices[0].numChairsAvailable
+            } chair(s) avail. usually`
+        );
     });
 
     it('should populate one dentist card when passing in a prop', () => {
@@ -65,9 +75,9 @@ describe('PhotoGrid Component', () => {
         expect(location).toHaveLength(1);
         expect(procedures).toHaveLength(1);
 
-        expect(image.find('img').prop("src")).toEqual('jestUrl');
+        expect(image.find('img').prop('src')).toEqual('jestUrl');
         expect(name.find('span').text()).toEqual('jestName');
         expect(location.find('span').text()).toEqual('jestLocation');
         expect(procedures.find('span').text()).toEqual('jestProcedureName');
     });
-})
+});

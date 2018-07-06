@@ -27,7 +27,7 @@ class NewListing extends Component {
         document.title = 'Laguro - New Listing';
         await this.props.fetchUser(DENTIST);
         const { auth } = this.props;
-        await this.props.getDentist(auth.dentist.id, OFFICES);
+        await this.props.getDentist(auth.dentistId, OFFICES);
 
         this.props.initialize({
             startTime: getNextHalfHour(),

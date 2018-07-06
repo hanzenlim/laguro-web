@@ -38,7 +38,7 @@ class NewOffice extends Component {
         this.props.createOffice({
             ...values,
             imageUrls,
-            hostId: auth.dentist.id,
+            hostId: auth.dentistId,
             location: this.state.location
         });
         reset();
