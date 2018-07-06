@@ -373,37 +373,37 @@ class DetailDetails extends Component {
             <StyledDetailsDiv>
                 {this.props.type === 'office' &&
                     obj.description && (
-                        <Box>
-                            <StyledDetailsHeadingBox fontSize={25}>
+                    <Box>
+                        <StyledDetailsHeadingBox fontSize={25}>
                                 Description
-                            </StyledDetailsHeadingBox>
-                            <hr />
-                            <StyledDescriptionBox
-                                overflow={
-                                    this.state.descShowMore ? 'hidden' : 'auto'
-                                }
-                                maxHeight={this.state.descShowMore ? 68 : 300}
-                            >
-                                {obj.description}
-                            </StyledDescriptionBox>
-                            <Box mb={10} />
-                            {this.state.descShowMore && (
-                                <Box mt={10}>
-                                    <StyledShowMoreBox
-                                        fontSize={1}
-                                        className="center"
-                                        onClick={this.handleShowMoreDescription}
-                                    >
-                                        <StyledDownArrow
-                                            icon="downArrow"
-                                            width="20px"
-                                        />
+                        </StyledDetailsHeadingBox>
+                        <hr />
+                        <StyledDescriptionBox
+                            overflow={
+                                this.state.descShowMore ? 'hidden' : 'auto'
+                            }
+                            maxHeight={this.state.descShowMore ? 68 : 300}
+                        >
+                            {obj.description}
+                        </StyledDescriptionBox>
+                        <Box mb={10} />
+                        {this.state.descShowMore && (
+                            <Box mt={10}>
+                                <StyledShowMoreBox
+                                    fontSize={1}
+                                    className="center"
+                                    onClick={this.handleShowMoreDescription}
+                                >
+                                    <StyledDownArrow
+                                        icon="downArrow"
+                                        width="20px"
+                                    />
                                         Show more
-                                    </StyledShowMoreBox>
-                                </Box>
-                            )}
-                        </Box>
-                    )}
+                                </StyledShowMoreBox>
+                            </Box>
+                        )}
+                    </Box>
+                )}
 
                 <Box mb={40} />
 
@@ -498,20 +498,20 @@ class DetailDetails extends Component {
                         this.state.reviewRowNum *
                             (window.innerWidth > 600 ? 3 : 2) &&
                     auth && (
-                        <Box mt={20}>
-                            <StyledShowMoreBox
-                                fontSize={1}
-                                className="center"
-                                onClick={this.handleShowMoreReview}
-                            >
-                                <StyledDownArrow
-                                    icon="downArrow"
-                                    width="20px"
-                                />
+                    <Box mt={20}>
+                        <StyledShowMoreBox
+                            fontSize={1}
+                            className="center"
+                            onClick={this.handleShowMoreReview}
+                        >
+                            <StyledDownArrow
+                                icon="downArrow"
+                                width="20px"
+                            />
                                 Show more
-                            </StyledShowMoreBox>
-                        </Box>
-                    )}
+                        </StyledShowMoreBox>
+                    </Box>
+                )}
 
                 {this.props.type === 'office' && (
                     <Modal
@@ -521,12 +521,12 @@ class DetailDetails extends Component {
                     >
                         {!this.state.showReservationOptions &&
                             !dentistProfileExists() && (
-                                <CreateProfile
-                                    message={
-                                        'Before you can book a reservation, we need you to create a dentist profile.'
-                                    }
-                                />
-                            )}
+                            <CreateProfile
+                                message={
+                                    'Before you can book a reservation, we need you to create a dentist profile.'
+                                }
+                            />
+                        )}
                         {dentistProfileExists(auth) && (
                             <ReservationOptions
                                 listing={this.state.listing}

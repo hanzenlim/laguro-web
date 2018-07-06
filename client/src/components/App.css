@@ -225,11 +225,6 @@ img {
     justify-content: space-between;
 }
 
-/* New Office form */
-.image_upload {
-    padding-left: 10px;
-}
-
 .image_display {
     max-height: 300px;
     margin-bottom: 15px;
