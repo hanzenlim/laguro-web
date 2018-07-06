@@ -228,6 +228,13 @@ class EditOffice extends Component {
                                             'facebook',
                                             'instagram'
                                         ],
+                                        transformations: {
+                                            crop: {
+                                                aspectRatio: 3 / 2,
+                                                force: true,
+                                            },
+                                        },
+                                        uploadInBackground: false,
                                         storeTo: { container: 'office-photos' }
                                     }}
                                     onSuccess={result => this.extractUrlToState(result)}
