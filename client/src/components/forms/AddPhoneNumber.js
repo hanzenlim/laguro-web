@@ -8,7 +8,7 @@ import { renderMaskedField } from './sharedComponents';
 import {
     formatPhoneNumber,
     isPhoneNumberInputValid,
-    PHONE_NUMBER_MASK,
+    PHONE_NUMBER_MASK
 } from '../../util/phoneNumberUtil';
 
 class AddPhoneNumber extends Component {
@@ -17,12 +17,12 @@ class AddPhoneNumber extends Component {
 
         if (phoneNumber && !isPhoneNumberInputValid(phoneNumber)) {
             throw new SubmissionError({
-                phoneNumber: 'Please add a valid phone number.',
+                phoneNumber: 'Please add a valid phone number.'
             });
         }
 
         this.props.updateUserProfile(this.props.auth.id, {
-            phoneNumber: formatPhoneNumber(phoneNumber),
+            phoneNumber: formatPhoneNumber(phoneNumber)
         });
 
         this.props.onClose();
@@ -32,7 +32,7 @@ class AddPhoneNumber extends Component {
         const { handleSubmit, onClose, open } = this.props;
 
         return (
-            <Modal closable open={open} onClose={onClose}>
+            <Modal closable open={open} closeModal={onClose}>
                 <form onSubmit={handleSubmit(this.onSubmit)}>
                     <Box pb={2}>
                         <Typography fontSize={5}>
@@ -71,15 +71,10 @@ class AddPhoneNumber extends Component {
 
 function mapStateToProps(state) {
     return {
-        auth: state.auth,
+        auth: state.auth
     };
 }
 
 export default reduxForm({
-    form: 'addPhoneNumber',
-})(
-    connect(
-        mapStateToProps,
-        { updateUserProfile }
-    )(AddPhoneNumber)
-);
+    form: 'addPhoneNumber'
+})(connect(mapStateToProps, { updateUserProfile })(AddPhoneNumber));

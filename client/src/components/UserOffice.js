@@ -36,7 +36,7 @@ class UserOffice extends Component {
 
     handleExpansion = panel => (event, expanded) => {
         this.setState({
-            expanded: expanded ? panel : false
+            expanded: expanded ? panel : null
         });
     };
 

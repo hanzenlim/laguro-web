@@ -15,7 +15,7 @@ import {
     listingFragment,
     appointmentFragment,
     reviewerFragment,
-    filterActive,
+    filterActive
 } from '../util/fragments';
 
 const dentistQuery = `
@@ -58,21 +58,13 @@ class Profile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isCreateProfileModalOpen: false,
-            isEditUserProfileOpen: false,
-            isFetching: false,
+            isFetching: false
         };
     }
 
     componentWillMount() {
         this.loadDentistProfile();
     }
-
-    toggleCreateProfileModal = () => {
-        this.setState({
-            isCreateProfileModalOpen: !this.state.isCreateProfileModalOpen,
-        });
-    };
 
     async loadDentistProfile() {
         const { auth } = this.props;
@@ -149,10 +141,6 @@ class Profile extends Component {
                         </div>
                     )}
                 </div>
-                <EditUser
-                    open={this.state.isEditUserProfileOpen}
-                    onClose={this.toggleEditUserProfileModal}
-                />
             </div>
         );
     }
@@ -161,10 +149,7 @@ class Profile extends Component {
 function mapStateToProps(state) {
     return {
         auth: state.auth,
-        dentist: state.dentists.selectedDentist,
+        dentist: state.dentists.selectedDentist
     };
 }
-export default connect(
-    mapStateToProps,
-    actions
-)(Profile);
+export default connect(mapStateToProps, actions)(Profile);
