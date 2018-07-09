@@ -52,16 +52,6 @@ const EditListing = Loadable({
     loading: LoadingComponent
 });
 
-const NewDentist = Loadable({
-    loader: () => import('./forms/NewDentist'),
-    loading: LoadingComponent
-});
-
-const EditDentist = Loadable({
-    loader: () => import('./forms/EditDentist'),
-    loading: LoadingComponent
-});
-
 const Profile = Loadable({
     loader: () => import('./Profile'),
     loading: LoadingComponent
@@ -175,16 +165,6 @@ class App extends Component {
                                     />
                                     <PrivateRoute
                                         auth={this.props.auth}
-                                        path="/dentist/new"
-                                        component={NewDentist}
-                                    />
-                                    <PrivateRoute
-                                        auth={this.props.auth}
-                                        path="/dentist/edit"
-                                        component={EditDentist}
-                                    />
-                                    <PrivateRoute
-                                        auth={this.props.auth}
                                         path="/listing/new"
                                         component={NewListing}
                                     />
@@ -248,7 +228,7 @@ class App extends Component {
                         </ErrorBoundary>
                         <LoginModal
                             open={this.props.isLoginModalVisible}
-                            onClose={this.props.toggleLoginModal}
+                            closeModal={this.props.toggleLoginModal}
                         />
                         <Footer />
                     </Layout>
@@ -261,7 +241,7 @@ class App extends Component {
 function mapStateToProps(state) {
     return {
         auth: state.auth,
-        isLoginModalVisible: state.ui.isLoginModalVisible,
+        isLoginModalVisible: state.ui.isLoginModalVisible
     };
 }
 
