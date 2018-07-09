@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import ReactFilestack from 'filestack-react';
 import moment from 'moment';
-import { Link, Modal } from './common';
 import ReviewContainer from './ReviewContainer';
 import PatientAppointments from './PatientAppointments';
 import UserOfficeIndex from './UserOfficeIndex';
 import UserReservationIndex from './UserReservationIndex';
-import EditUser from './forms/EditUser';
-import { filestackKey } from '../config/keys';
-import CreateProfile from './forms/CreateProfile';
+import ProfileActions from './ProfileActions';
 import * as actions from '../actions';
 
 import {
@@ -108,107 +104,6 @@ class Profile extends Component {
         );
     }
 
-    renderActions() {
-        const { auth } = this.props;
-        const dentistProfileExists = !!auth.dentistId;
-
-        return (
-            <ul className="collection">
-                <div
-                    className="link blue-text"
-                    onClick={this.toggleEditUserProfileModal}
-                >
-                    Edit User Profile
-                </div>
-                {/* Display Create if no dentist profile or Edit if profile exists */}
-                {dentistProfileExists ? (
-                    <Link className="link" to={'/dentist/edit'}>
-                        Edit Dentist Profile
-                    </Link>
-                ) : (
-                    <div>
-                        <a
-                            className="link red-text"
-                            onClick={this.toggleCreateProfileModal}
-                        >
-                            Create Dentist Profile
-                        </a>
-                        <Modal
-                            closable
-                            open={this.state.isCreateProfileModalOpen}
-                            onClose={this.toggleCreateProfileModal}
-                        >
-                            <CreateProfile />
-                        </Modal>
-                    </div>
-                )}
-
-                <ReactFilestack
-                    apikey={filestackKey}
-                    buttonText="Upload New Image"
-                    buttonClass="link blue-text text-lighten-1"
-                    options={{
-                        accept: ['image/*'],
-                        imageMin: [300, 300],
-                        fromSources: [
-                            'local_file_system',
-                            'url',
-                            'imagesearch',
-                            'facebook',
-                            'instagram',
-                        ],
-                        transformations: {
-                            crop: {
-                                aspectRatio: 4 / 4,
-                                force: true,
-                            },
-                        },
-                        uploadInBackground: false,
-                        storeTo: { container: 'user-photos' },
-                    }}
-                    onSuccess={result => this.setNewProfileImage(result)}
-                />
-
-                {dentistProfileExists ? (
-                    <Link className="link" to={`/dentist/${auth.dentistId}`}>
-                        View public profile
-                    </Link>
-                ) : (
-                    ''
-                )}
-
-                <Link className="link" to={`/payment-history`}>
-                    View payment history
-                </Link>
-
-                {dentistProfileExists ? (
-                    <Link className="link" to={'/office/search'}>
-                        Browse listings
-                    </Link>
-                ) : (
-                    <Link className="link" to={'/dentist/search'}>
-                        Browse dentists
-                    </Link>
-                )}
-            </ul>
-        );
-    }
-
-    setNewProfileImage(result) {
-        // check to make sure upload was successful
-        const upload = result.filesUploaded[0];
-        const userId = this.props.auth.id;
-        if (upload) {
-            this.props.updateUserProfile(userId, { imageUrl: upload.url });
-        }
-    }
-
-    toggleEditUserProfileModal = () => {
-        this.setState({
-            isEditUserProfileOpen: !this.state.isEditUserProfileOpen,
-        });
-    };
-
     render() {
         const { auth, dentist } = this.props;
         const { isFetching } = this.state;
@@ -220,7 +115,7 @@ class Profile extends Component {
             <div className="profile_container stretch_height">
                 <div className="sidebar">
                     <img className="profile_img" src={imageUrl} alt="user" />
-                    {this.renderActions()}
+                    <ProfileActions auth={auth} dentist={dentist} />
                 </div>
                 <div className="main">
                     {this.renderProfileDetails()}
