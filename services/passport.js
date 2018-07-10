@@ -6,7 +6,9 @@ const serverDataLoader = require('../util/serverDataLoader');
 const makeQuery = serverDataLoader.makeQuery;
 const makeMutation = serverDataLoader.makeMutation;
 const getUserQuery = serverDataLoader.getUserQuery;
+const getUserByGoogleIdQuery = serverDataLoader.getUserByGoogleIdQuery;
 const getUserVariable = serverDataLoader.getUserVariable;
+const getUserByGoogleIdVariable = serverDataLoader.getUserByGoogleIdVariable;
 const getUserByEmailQuery = serverDataLoader.getUserByEmailQuery;
 const getUserByEmailVariable = serverDataLoader.getUserByEmailVariable;
 const createUserQuery = serverDataLoader.createUserQuery;
@@ -40,8 +42,8 @@ passport.use(
 
         async (accessToken, refreshToken, profile, done) => {
             let result = await makeQuery(
-                getUserQuery,
-                getUserVariable(profile.id)
+                getUserByGoogleIdQuery,
+                getUserByGoogleIdVariable(profile.id)
             );
 
             if (result && result.data && result.data.getUserByGoogleId) {
