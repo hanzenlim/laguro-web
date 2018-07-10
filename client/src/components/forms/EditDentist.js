@@ -30,7 +30,6 @@ class EditDentist extends Component {
         const { dentist } = this.props;
         if (!isEmpty(dentist)) {
             const { location, specialty, procedures } = dentist;
-            this.setState({ location });
 
             this.props.initialize({
                 location,
@@ -40,16 +39,9 @@ class EditDentist extends Component {
         }
     }
 
-    onAutocomplete = location => {
-        this.setState({
-            location
-        });
-    };
-
     async onSubmit(values) {
         const { auth } = this.props;
         const dentistId = auth.dentistId;
-        values.location = this.state.location;
 
         if (
             // if no procedures
@@ -120,7 +112,6 @@ class EditDentist extends Component {
             message,
             open,
             closeModal,
-            dentist,
             auth
         } = this.props;
 
@@ -152,9 +143,19 @@ class EditDentist extends Component {
                     </div>
                     <div className="row">
                         <div className="col s12 m12">
-                            <Autocomplete
-                                onAutocomplete={this.onAutocomplete}
-                                location={dentist ? dentist.location : ''}
+                            <Field
+                                name="location"
+                                component={props => {
+                                    const { onChange, value } = props.input;
+                                    return (
+                                        <Autocomplete
+                                            onAutocomplete={location =>
+                                                onChange(location)
+                                            }
+                                            location={value}
+                                        />
+                                    );
+                                }}
                             />
                         </div>
                     </div>
