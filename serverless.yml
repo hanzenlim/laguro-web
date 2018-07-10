@@ -1,7 +1,7 @@
 service: laguro-web
 provider:
   name: aws
-  runtime: nodejs6.10
+  runtime: nodejs8.10
   region: us-east-1
   memory: 2880
   timeout: 240
