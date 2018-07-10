@@ -68,7 +68,6 @@ describe('Landing Component', () => {
     let store, component;
 
     beforeEach(() => {
-        // spy = jest.fn();
         setupGoogleMock();
         store = mockStore(initialState)
         component = mount(<Provider store={store}><LandingComponent {...mockProps}/></Provider>, createContext());

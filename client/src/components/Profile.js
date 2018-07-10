@@ -17,6 +17,9 @@ const loadDentistProfileQuery = `
     }
 `;
 
+export const defaultProfilePhoto =
+    'http://lh5.googleusercontent.com/-pJtmF-TTUxk/AAAAAAAAAAI/AAAAAAAAAAA/6ULkoHqUkSo/photo.jpg?sz=300';
+
 class Profile extends Component {
     constructor(props) {
         super(props);
@@ -66,34 +69,44 @@ class Profile extends Component {
         const { auth, dentist } = this.props;
         const { isFetching } = this.state;
         if (isFetching) return <div className="stretch_height" />;
-        const imageUrl = auth && auth.imageUrl ? auth.imageUrl : null;
-        const userIsDentist = auth && auth.dentistId;
+        const imageUrl =
+            auth && auth.imageUrl ? auth.imageUrl : defaultProfilePhoto;
+        const dentistId = auth && auth.dentistId ? auth.dentistId : null;
 
         return (
             <div className="profile_container stretch_height">
                 <div className="sidebar">
-                    <img className="profile_img" src={imageUrl} alt="user" />
+                    <img
+                        data-name="profile-image"
+                        className="profile_img"
+                        src={imageUrl}
+                        alt="user"
+                    />
                     <ProfileActions auth={auth} dentist={dentist} />
                 </div>
                 <div className="main">
                     {this.renderProfileDetails()}
-                    {userIsDentist && (
+                    {dentistId ? (
                         <div>
                             <h5>Your Offices</h5>
-                            <UserOfficeIndex id="test"/>
+                            <UserOfficeIndex />
                         </div>
+                    ) : (
+                        ''
                     )}
-                    {userIsDentist && (
+                    {dentistId ? (
                         <div>
                             <h5>Upcoming Reservations</h5>
                             <UserReservationIndex />
                         </div>
+                    ) : (
+                        ''
                     )}
                     <div>
                         <h5>Upcoming Appointments</h5>
                         <PatientAppointments patientId={auth.id} />
                     </div>
-                    {userIsDentist &&
+                    {dentistId &&
                         dentist &&
                         dentist.reviews &&
                         dentist.reviews.length > 0 && (
@@ -118,7 +131,10 @@ function mapStateToProps(state) {
         dentist: state.dentists.selectedDentist
     };
 }
-export { Profile };
+
+// Exporting it as an object without the connect so we can unit test it properly. If you don't
+// do this then you have to mock the store.
+export { Profile as NoReduxProfile };
 export default connect(
     mapStateToProps,
     actions

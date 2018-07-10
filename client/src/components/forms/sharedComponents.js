@@ -415,7 +415,7 @@ export const charCount = (numChar, total) => {
     `;
 
     return (
-        <StyledCharCountBox color="gray" fontSize={1}>
+        <StyledCharCountBox color="lightGrey" fontSize={1}>
             {numChar} / {total}
         </StyledCharCountBox>
     );
