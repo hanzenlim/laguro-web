@@ -167,7 +167,7 @@ class DetailDetails extends Component {
     renderAvailListings(listings) {
         if (Array.isArray(listings) && listings.length !== 0) {
             return listings
-                .filter(listing => moment(listing.startTime).isAfter(moment()))
+                .filter(listing => moment(listing.endTime).isAfter(moment()))
                 .map((listing, index) => [
                     <Grid key={index * 3} item xs={8} sm={5}>
                         {this.isListingAvailable(listing) ? (
