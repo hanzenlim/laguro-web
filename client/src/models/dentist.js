@@ -19,7 +19,8 @@ import {
     REVIEWS,
     ALL_RESERVATIONS,
     STATUS,
-    ACTIVE
+    ACTIVE,
+    END_TIME
 } from '../util/strings';
 
 const generateDentistResult = options => {
@@ -31,7 +32,7 @@ const generateDentistResult = options => {
         : '';
     const reservationsResult = options.includes(RESERVATIONS)
         ? `reservations(options: {
-            sortKey: "startTime",
+            sortKey: "${END_TIME}",
             rangeStart: "${moment()
         .startOf('day')
         .format()}",

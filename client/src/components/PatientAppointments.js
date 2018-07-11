@@ -5,7 +5,7 @@ import moment from 'moment';
 import AppointmentDetails from './AppointmentDetails';
 
 import Appointment from '../models/appointment';
-import { PATIENT_ID, STATUS, ACTIVE } from '../util/strings';
+import { PATIENT_ID, END_TIME, STATUS, ACTIVE } from '../util/strings';
 
 class PatientAppointments extends Component {
     constructor(props) {
@@ -22,7 +22,7 @@ class PatientAppointments extends Component {
     async getAppointments() {
         const { patientId } = this.props;
         const appointments = await Appointment.query(PATIENT_ID, patientId, {
-            sortKey: 'startTime',
+            sortKey: `${END_TIME}`,
             rangeStart: `${moment().format()}`,
             filters: [
                 {
@@ -36,7 +36,7 @@ class PatientAppointments extends Component {
 
     // TODO: Calcalation of refund amount should be done in the backend, not frontend.
     // calculate percentage of appointment cost to refund
-    calculateAppointmentRefund = (appointment) => {
+    calculateAppointmentRefund = appointment => {
         const ms = moment().diff(moment(appointment.dateCreated));
         const timeElapsedInHours = moment.duration(ms).asHours();
         if (timeElapsedInHours < 24) {
@@ -49,19 +49,21 @@ class PatientAppointments extends Component {
         return 0;
     };
 
-    cancelAppointment = async (appointment) => {
+    cancelAppointment = async appointment => {
         if (
             // eslint-disable-next-line
             confirm(
                 `Delete appointment for ${moment(appointment.startTime).format(
                     'MMM D, h:mm a'
-                )}?. A total amount of $${Math.round(20 * this.calculateAppointmentRefund(appointment))}`
+                )}?. A total amount of $${Math.round(
+                    20 * this.calculateAppointmentRefund(appointment)
+                )}`
             )
         ) {
             await Appointment.delete(appointment.id);
             await this.getAppointments();
         }
-    }
+    };
 
     getAppointmentDetails(appointments) {
         return appointments.map(appointment => (

@@ -27,6 +27,7 @@ export const RESERVED_BY = 'reservedBy';
 export const PAYER_ID = 'payerId';
 export const PAYEE_ID = 'payeeId';
 export const START_TIME = 'startTime';
+export const END_TIME = 'endTime';
 export const DATE_CREATED = 'dateCreated';
 
 // STATUSES

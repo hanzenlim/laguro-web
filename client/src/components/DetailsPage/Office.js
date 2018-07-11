@@ -9,7 +9,7 @@ import * as actions from '../../actions';
 import {
     REVIEWS,
     OFFICE_ID,
-    START_TIME,
+    END_TIME,
     HOST,
     STATUS,
     ACTIVE,
@@ -73,7 +73,7 @@ class Office extends Component {
         super();
         this.state = {
             reviewRowNum: 1,
-            isModalOpen: false,
+            isModalOpen: false
         };
     }
 
@@ -81,7 +81,7 @@ class Office extends Component {
         this.office_id = this.props.match.params.office_id;
         this.props.getOffice(this.office_id, REVIEWS, HOST);
         this.props.queryListings(OFFICE_ID, this.office_id, {
-            sortKey: START_TIME,
+            sortKey: END_TIME,
             rangeStart: moment()
                 .utc()
                 .format(),
@@ -94,11 +94,7 @@ class Office extends Component {
         });
 
         if (dentistProfileExists(this.props.auth)) {
-            this.props
-                .getDentist(
-                    this.props.auth.dentistId,
-                    ALL_RESERVATIONS,
-                );
+            this.props.getDentist(this.props.auth.dentistId, ALL_RESERVATIONS);
         }
     }
 
@@ -107,13 +103,13 @@ class Office extends Component {
         const { reservations } = this.props;
         if (reservations) {
             for (let res of reservations) {
-                if (res && res.office && (res.office.id === this.office_id)) {
+                if (res && res.office && res.office.id === this.office_id) {
                     return true;
                 }
             }
         }
         return false;
-    }
+    };
 
     renderImages(office) {
         if (
@@ -213,7 +209,9 @@ class Office extends Component {
                     obj={office}
                     reviews={reviews}
                     listings={listings}
-                    ownPage={auth && office.host && (auth.dentistId === office.host.id)}
+                    ownPage={
+                        auth && office.host && auth.dentistId === office.host.id
+                    }
                     isUserVerified={this.isUserVerified()}
                 />
             </div>
@@ -228,7 +226,9 @@ function mapStateToProps(state) {
         dentist: state.dentists.selectedDentist,
         auth: state.auth,
         reviews: state.reviews.all,
-        reservations: isEmpty(state.reservations.all) ? null : state.reservations.all
+        reservations: isEmpty(state.reservations.all)
+            ? null
+            : state.reservations.all
     };
 }
 
