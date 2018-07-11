@@ -11,7 +11,7 @@ class Signup extends Component {
         super();
 
         this.state = {
-            error: '',
+            error: ''
         };
     }
 
@@ -34,9 +34,9 @@ class Signup extends Component {
             credentials: 'same-origin',
             headers: {
                 'Content-Type': 'application/json',
-                'Access-Control-Origin': '*',
+                'Access-Control-Origin': '*'
             },
-            body: JSON.stringify({ ...values }),
+            body: JSON.stringify({ ...values })
         });
     };
 
@@ -55,12 +55,6 @@ class Signup extends Component {
             <Flex flexDirection="column">
                 <Box pb={3}>
                     <Typography fontSize={5}>Create Account</Typography>
-                </Box>
-                <Box pb={4}>
-                    <Typography>
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry.
-                    </Typography>
                 </Box>
 
                 <GoogleButton href="/auth/google" />
@@ -126,5 +120,5 @@ class Signup extends Component {
 export { Signup };
 
 export default reduxForm({
-    form: 'signup',
+    form: 'signup'
 })(Signup);
