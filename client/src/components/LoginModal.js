@@ -20,13 +20,13 @@ class LoginModal extends Component {
         super();
 
         this.state = {
-            view: LOGIN_VIEW,
+            view: LOGIN_VIEW
         };
     }
 
     toggleView = () => {
         this.setState({
-            view: this.state.view === LOGIN_VIEW ? SIGNUP_VIEW : LOGIN_VIEW,
+            view: this.state.view === LOGIN_VIEW ? SIGNUP_VIEW : LOGIN_VIEW
         });
     };
 
@@ -41,7 +41,7 @@ class LoginModal extends Component {
         if (!open) return null;
 
         return (
-            <Modal closable open={open} onClose={this.props.onClose}>
+            <Modal closable open={open} closeModal={this.props.onClose}>
                 <Flex justifyContent="center" flexDirection="column">
                     <Box>
                         {this.state.view === LOGIN_VIEW ? (
@@ -85,11 +85,8 @@ class LoginModal extends Component {
 }
 
 LoginModal.propTypes = {
-    onClose: PropTypes.func.isRequired,
-    open: PropTypes.bool.isRequired,
+    closeModal: PropTypes.func.isRequired,
+    open: PropTypes.bool.isRequired
 };
 
-export default connect(
-    null,
-    { fetchUser }
-)(LoginModal);
+export default connect(null, { fetchUser })(LoginModal);

@@ -43,6 +43,8 @@ export default function(
             ...state,
             isFetching: false,
             selectedDentist: action.payload
+                ? action.payload
+                : state.selectedDentist
         });
     default:
         return state;

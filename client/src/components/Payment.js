@@ -13,7 +13,7 @@ import {
     Grid,
     Flex,
     Box,
-    Container,
+    Container
 } from './common';
 import { Padding } from './common/Spacing';
 import AddPhoneNumber from './forms/AddPhoneNumber';
@@ -63,7 +63,7 @@ class Payment extends Component {
         this.state = {
             isButtonLoading: false,
             isFetching: true,
-            isModalOpen: !props.auth.phoneNumber,
+            isModalOpen: !props.auth.phoneNumber
         };
     }
 
@@ -122,7 +122,7 @@ class Payment extends Component {
             startTime,
             endTime,
             paymentOptionId: this.props.auth.paymentOptions[0].id,
-            totalPaid: this.urlParams.totalPaid,
+            totalPaid: this.urlParams.totalPaid
         };
 
         this.props.createReservation(reservationPayload);
@@ -137,7 +137,7 @@ class Payment extends Component {
             procedure: JSON.parse(this.urlParams.procedure),
             startTime,
             endTime,
-            paymentOptionId: this.props.auth.paymentOptions[0].id,
+            paymentOptionId: this.props.auth.paymentOptions[0].id
         };
 
         this.props.createAppointment(appointmentPayload);
@@ -249,7 +249,7 @@ class Payment extends Component {
             equipmentFee,
             bookingFee,
             cleaningFee,
-            reservationFee,
+            reservationFee
         } = this.urlParams;
 
         return (
@@ -445,7 +445,7 @@ class Payment extends Component {
 
                 <AddPhoneNumber
                     open={this.state.isModalOpen}
-                    onClose={this.toggleModal}
+                    closeModal={this.toggleModal}
                 />
             </StyledWrapper>
         );
@@ -456,11 +456,8 @@ function mapStateToProps(state) {
     return {
         listing: state.listings.selected,
         reservation: state.reservations.selected,
-        auth: state.auth,
+        auth: state.auth
     };
 }
 
-export default connect(
-    mapStateToProps,
-    actions
-)(Payment);
+export default connect(mapStateToProps, actions)(Payment);

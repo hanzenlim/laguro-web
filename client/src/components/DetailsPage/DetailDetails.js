@@ -13,8 +13,8 @@ import NewReview from '../forms/NewReview';
 import ReviewContainer from '../ReviewContainer';
 import Icon from '../Icon';
 import ReservationOptions from '../forms/ReservationOptions';
-import CreateProfile from '../forms/CreateProfile';
-import { Box, Modal, Grid, Link, Typography, Button, Flex } from '../common';
+import NewDentist from '../forms/NewDentist';
+import { Box, Grid, Link, Typography, Button, Flex, Modal } from '../common';
 import OfficePlaceholderBig from '../images/office-placeholder-big.png';
 import Appointments from '../Appointments';
 
@@ -406,32 +406,23 @@ class DetailDetails extends Component {
                 )}
 
                 <Box mb={40} />
-
                 <StyledDetailsHeadingBox fontSize={25}>
                     {equipmentOrProcedures}
                 </StyledDetailsHeadingBox>
-
                 <hr />
-
                 <Padding bottom={10} />
-
                 <StyledEquipmentBox fontSize={4} color="#484E51">
                     <Padding bottom="1" />
                     {this.props.type === 'office'
                         ? this.renderEquipment(obj)
                         : this.renderProcedures(obj)}
                 </StyledEquipmentBox>
-
                 <Padding bottom={40} />
-
                 <StyledDetailsHeadingBox fontSize={25}>
                     {listingsOrAppointments}
                 </StyledDetailsHeadingBox>
-
                 <hr />
-
                 <Padding bottom={10} />
-
                 {this.props.type === 'office' ? (
                     <Grid container spacing={8}>
                         {this.renderAvailListings(listings)}
@@ -441,24 +432,18 @@ class DetailDetails extends Component {
                         {this.renderAppointments()}
                     </Flex>
                 )}
-
                 <Padding bottom={40} />
-
                 <StyledDetailsHeadingBox fontSize={25}>
                     Reviews ({this.state.rating_count})
                 </StyledDetailsHeadingBox>
-
                 <StyledReactStars
                     count={5}
                     edit={false}
                     size={20}
                     value={this.state.avg_rating}
                 />
-
                 <hr />
-
                 <Padding bottom={10} />
-
                 <StyledReviewsDiv>
                     {!isEmpty(obj) && (
                         <NewReview
@@ -492,7 +477,6 @@ class DetailDetails extends Component {
                         />
                     )}
                 </StyledReviewsDiv>
-
                 {reviews.length > 0 &&
                     reviews.length >
                         this.state.reviewRowNum *
@@ -512,30 +496,30 @@ class DetailDetails extends Component {
                         </StyledShowMoreBox>
                     </Box>
                 )}
-
-                {this.props.type === 'office' && (
-                    <Modal
-                        closable
-                        open={this.state.isModalOpen}
-                        onClose={this.closeModal}
-                    >
-                        {!this.state.showReservationOptions &&
-                            !dentistProfileExists() && (
-                            <CreateProfile
-                                message={
-                                    'Before you can book a reservation, we need you to create a dentist profile.'
-                                }
-                            />
-                        )}
-                        {dentistProfileExists(auth) && (
+                {this.props.type === 'office' &&
+                this.state.isModalOpen &&
+                dentistProfileExists(auth) ? (
+                        <Modal
+                            closable
+                            open={this.state.isModalOpen}
+                            closeModal={this.closeModal}
+                        >
                             <ReservationOptions
                                 listing={this.state.listing}
                                 office={obj}
                                 auth={auth}
                             />
-                        )}
-                    </Modal>
-                )}
+                        </Modal>
+                    ) : (
+                        <NewDentist
+                            open={this.state.isModalOpen}
+                            closeModal={this.closeModal}
+                            auth={auth}
+                            message={
+                                'Before you can book a reservation, we need you to create a dentist profile.'
+                            }
+                        />
+                    )}
             </StyledDetailsDiv>
         );
     }

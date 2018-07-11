@@ -19,7 +19,6 @@ import {
 class EditUser extends Component {
     async componentWillMount() {
         const { auth } = this.props;
-        document.title = 'Laguro - Edit User Profile';
 
         this.props.initialize({
             firstName: auth && auth.firstName,
@@ -46,16 +45,18 @@ class EditUser extends Component {
             phoneNumber: formatPhoneNumber(phoneNumber)
         });
 
-        this.props.onClose();
+        this.props.closeModal();
     };
 
     render() {
-        const { handleSubmit, open, onClose } = this.props;
+        const { handleSubmit, open, closeModal } = this.props;
         return (
-            <Modal closable open={open} onClose={onClose}>
+            <Modal closable open={open} closeModal={closeModal}>
                 <form onSubmit={handleSubmit(this.onSubmit)}>
                     <Box pb={2}>
-                        <Typography fontSize={5}>Edit Profile</Typography>
+                        <Typography fontSize={5}>
+                            Edit your user profile
+                        </Typography>
                     </Box>
                     <Box pb={2}>
                         <Field

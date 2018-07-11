@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux';
-import { reducer as reduxFormReducer } from 'redux-form';
-
+import formReducer from './formReducer';
 import dentistsReducer from './dentistsReducer';
 import officesReducer from './officesReducer';
 import listingsReducer from './listingsReducer';
@@ -22,6 +21,6 @@ export default combineReducers({
     appointments: appointmentsReducer,
     auth: authReducer,
     ui: uiReducer,
-    form: reduxFormReducer,
+    form: formReducer,
     payments: paymentReducer
 });

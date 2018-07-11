@@ -38,7 +38,7 @@ const StyledCloseButton = styled.button`
 `;
 
 const Modal = props => {
-    const { children, closable, ...customProps } = props;
+    const { children, closable, closeModal, ...customProps } = props;
 
     return (
         <StyledModal {...customProps}>
@@ -47,7 +47,7 @@ const Modal = props => {
                     <StyledCloseButton
                         type="button"
                         title="Close modal"
-                        onClick={customProps.onClose}
+                        onClick={closeModal}
                     >
                         <img src={exitSVG} alt="Close modal" />
                     </StyledCloseButton>

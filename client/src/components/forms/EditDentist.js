@@ -1,53 +1,47 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import styled from 'styled-components';
 import { Field, FieldArray, reduxForm, SubmissionError } from 'redux-form';
-import { Link } from 'react-router-dom';
-import { DENTIST } from '../../util/strings';
+import { isEmpty } from 'lodash';
+import { Flex, Modal } from '../common';
 import Autocomplete from '../filters/Autocomplete';
-import * as actions from '../../actions';
 import { required } from './formValidation';
+import * as actions from '../../actions';
 import {
     renderField,
-    renderSelect,
+    durationOptions,
     procedureOptions,
-    durationOptions
+    renderSelect
 } from './sharedComponents';
+import dentistProfileExists from '../../util/userInfo';
+
+const StyledBox = styled(Flex)`
+    line-height: 36px;
+`;
 
 class EditDentist extends Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            dentist: {}
-        };
+        this.state = { location: '' };
+        this.onSubmit = this.onSubmit.bind(this);
     }
 
     async componentWillMount() {
-        await this.props.fetchUser(DENTIST);
-        await this.getDentist();
         const { dentist } = this.props;
-        document.title = 'Laguro - Edit Profile';
+        if (!isEmpty(dentist)) {
+            const { location, specialty, procedures } = dentist;
 
-        this.setState({
-            dentist: dentist,
-            location: dentist.location
-        });
-        this.props.initialize({
-            location: dentist.location,
-            specialty: dentist.specialty,
-            procedures: dentist.procedures
-        });
+            this.props.initialize({
+                location,
+                specialty,
+                procedures
+            });
+        }
     }
 
-    onAutocomplete = location => {
-        this.setState({
-            location
-        });
-    };
-
-    onSubmit(values) {
+    async onSubmit(values) {
         const { auth } = this.props;
-        values.location = this.state.location;
+        const dentistId = auth.dentistId;
 
         if (
             // if no procedures
@@ -57,30 +51,10 @@ class EditDentist extends Component {
             throw new SubmissionError({
                 _error: 'You must add at least 1 procedure'
             });
-        } else if (!this.state.location) {
-            throw new SubmissionError({
-                _error: 'You must provide an address'
-            });
-        } 
-
-        this.props.editDentist({ ...values, id: auth.dentistId });
-    }
-
-    // get all dentists and find the dentist profile that matches logged in user
-    async getDentist() {
-        const { auth } = this.props;
-        return await this.props.getDentist(auth.dentistId);
-    }
-
-    renderDurations() {
-        return [
-            <option value={30} key={30}>
-                30 minutes
-            </option>,
-            <option value={60} key={60}>
-                60 minutes
-            </option>
-        ];
+        } else {
+            this.props.editDentist({ ...values, id: dentistId });
+            this.props.closeModal();
+        }
     }
 
     renderProcedureSelector = ({ fields, className, meta: { error } }) => (
@@ -110,85 +84,107 @@ class EditDentist extends Component {
                 </li>
             ))}
             <li>
-                <button
-                    type="button"
-                    className="waves-effect btn-flat"
-                    onClick={() => fields.push({ duration: 30 })}
-                >
-                    Add Procedure
-                </button>
-                {error && <span>{error}</span>}
+                <Flex mt={1}>
+                    <button
+                        type="button"
+                        className="waves-effect btn light-blue lighten-2"
+                        onClick={() =>
+                            fields.push({ name: 'Exam/Cleaning', duration: 60 })
+                        }
+                    >
+                        Add Procedure
+                    </button>
+                    {error && (
+                        <StyledBox ml={2} className="red-text">
+                            {error}
+                        </StyledBox>
+                    )}
+                </Flex>
             </li>
         </ul>
     );
 
     render() {
-        const { handleSubmit, submitting, dentist, error } = this.props;
-        if (!dentist) {
-            return <div />;
-        }
-        return (
-            <form
-                className="bigForm light-blue lighten-5"
-                onSubmit={handleSubmit(this.onSubmit.bind(this))}
-            >
-                <div className="form_title">
-                    <h4>Edit Doctor Profile</h4>
-                    <Link
-                        className="btn light-blue lighten-2 waves-effect"
-                        to={'/profile'}
-                    >
-                        Go back to profile
-                    </Link>
-                </div>
+        const {
+            handleSubmit,
+            submitting,
+            error,
+            message,
+            open,
+            closeModal,
+            auth
+        } = this.props;
 
-                <div className="row">
-                    <Field
-                        name="specialty"
-                        label="Dental Specialty"
-                        className="col s12 m6"
-                        placeholder="General Dentist"
-                        validate={required}
-                        component={renderField}
-                    />
-                    <div className="col s12 m6">
-                        <Autocomplete
-                            onAutocomplete={this.onAutocomplete}
-                            location={this.props.dentist.location}
+        if (!dentistProfileExists(auth)) {
+            return null;
+        }
+
+        return (
+            <Modal closable open={open} closeModal={closeModal}>
+                <form
+                    className="lighten-5"
+                    onSubmit={handleSubmit(this.onSubmit)}
+                >
+                    <div className="form_title">
+                        <h4>
+                            {message ? message : 'Edit your dentist profile'}
+                        </h4>
+                    </div>
+
+                    <div className="row">
+                        <Field
+                            name="specialty"
+                            label="Dental Specialty"
+                            className="col s12 m6"
+                            placeholder="General Dentist"
+                            component={renderField}
+                            validate={required}
                         />
                     </div>
-                </div>
+                    <div className="row">
+                        <div className="col s12 m12">
+                            <Field
+                                name="location"
+                                component={props => {
+                                    const { onChange, value } = props.input;
+                                    return (
+                                        <Autocomplete
+                                            onAutocomplete={location =>
+                                                onChange(location)
+                                            }
+                                            location={value}
+                                        />
+                                    );
+                                }}
+                            />
+                        </div>
+                    </div>
 
-                <div className="row">
-                    <FieldArray
-                        name="procedures"
-                        className="col s12"
-                        component={this.renderProcedureSelector}
-                    />
-                </div>
+                    <div className="row">
+                        <FieldArray
+                            name="procedures"
+                            className="col s12"
+                            component={this.renderProcedureSelector}
+                            validate={required}
+                        />
+                    </div>
 
-                <div className="form-buttons col s6 right-align">
-                    {error && <strong className="red-text">{error}</strong>}
-                    <button
-                        className="waves-effect btn light-blue lighten-2"
-                        type="submit"
-                        disabled={submitting}
-                    >
-                        Submit
-                    </button>
-                </div>
-            </form>
+                    <div className="form-buttons col s6 right-align">
+                        {error && <strong className="red-text">{error}</strong>}
+                        <button
+                            className="waves-effect btn light-blue lighten-2"
+                            type="submit"
+                            disabled={submitting}
+                        >
+                            Submit
+                        </button>
+                    </div>
+                </form>
+            </Modal>
         );
     }
 }
 
-function mapStateToProps(state) {
-    return {
-        auth: state.auth,
-        dentist: state.dentists.selectedDentist
-    };
-}
-
 export default reduxForm({
     form: 'editDentist'
-})(connect(mapStateToProps, actions)(EditDentist));
+})(connect(null, actions)(EditDentist));

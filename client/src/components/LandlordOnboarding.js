@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import AddOfficeInfo from './forms/AddOfficeInfo';
 import AddOfficeEquipments from './forms/AddOfficeEquipments';
 import AddOfficeListing from './forms/AddOfficeListing';
-import { ProgressBar, Modal } from './common';
-import CreateProfile from './forms/CreateProfile';
+import { ProgressBar } from './common';
+import NewDentist from './forms/NewDentist';
 import dentistProfileExists from '../util/userInfo';
 
 const OFFICE_STEP = 'add-office';
@@ -24,31 +24,29 @@ const StyledContainer = styled.div`
 class LandlordOnboarding extends Component {
     constructor() {
         super();
-        this.state = {isModalOpen: true}
+        this.state = { isModalOpen: true };
     }
 
     closeCreateProfileModal = () => {
         this.setState({
             isModalOpen: false
         });
-    }
+    };
 
     renderCreateProfileModal = () => {
         const { auth } = this.props;
-        if (!dentistProfileExists(auth)) {
-            return (<Modal
-                closable={false}
-                open={this.state.isModalOpen}
-                onClose={this.closeCreateProfileModal}
-                disableBackdropClick
-                disableEscapeKeyDown
-                fade={2}
-            >
-                <CreateProfile message={'Before renting your office, we need you to create a dentist profile. '}/>
-            </Modal>);
-        }
-        return '';
-    }
+
+        return (
+            <NewDentist
+                open={!dentistProfileExists(auth)}
+                closeModal={this.closeCreateProfileModal}
+                auth={auth}
+                message={
+                    'Before renting your office, we need you to create a dentist profile. '
+                }
+            />
+        );
+    };
 
     render() {
         const { pathname } = this.props.location;
@@ -88,11 +86,8 @@ class LandlordOnboarding extends Component {
 
 function mapStateToProps(state) {
     return {
-        auth: state.auth,
+        auth: state.auth
     };
 }
 
-export default connect(
-    mapStateToProps,
-    null
-)(LandlordOnboarding);
+export default connect(mapStateToProps, null)(LandlordOnboarding);

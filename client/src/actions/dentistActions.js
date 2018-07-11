@@ -126,7 +126,7 @@ export function editDentist(values) {
     return async dispatch => {
         const dentist = await Dentist.update(values);
         dispatch({
-            type: FETCH_DENTISTS,
+            type: GET_ONE_DENTIST,
             payload: dentist
         });
         history.push('/profile');

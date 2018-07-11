@@ -24,7 +24,7 @@ class Dentist extends Component {
             selectedStartTime: null,
             durationToNextAppointment: null,
             showReservationOptions: false,
-            selectedReservation: {},
+            selectedReservation: {}
         };
 
         this.handleBookAppointment = this.handleBookAppointment.bind(this);
@@ -46,12 +46,14 @@ class Dentist extends Component {
                     this.props.dentist && this.props.dentist.user
                         ? this.props.dentist.user
                         : null;
-                document.title = `Laguro - ${user ? `${user.firstName} ${user.lastName}` : ''}`;
+                document.title = `Laguro - ${
+                    user ? `${user.firstName} ${user.lastName}` : ''
+                }`;
             });
 
         const { auth } = this.props;
         if (auth) {
-            this.props.fetchUser(auth.googleId, APPOINTMENTS)
+            this.props.fetchUser(auth.googleId, APPOINTMENTS);
         }
     }
 
@@ -60,13 +62,17 @@ class Dentist extends Component {
         const { appointments } = this.props;
         if (appointments) {
             for (let appt of appointments) {
-                if (appt && appt.dentist && (appt.dentist.id === this.dentist_id)) {
+                if (
+                    appt &&
+                    appt.dentist &&
+                    appt.dentist.id === this.dentist_id
+                ) {
                     return true;
                 }
             }
         }
         return false;
-    }
+    };
 
     handleBookAppointment(
         selectedStartTime,
@@ -113,7 +119,7 @@ class Dentist extends Component {
                     <Modal
                         closable
                         open={this.state.isModalOpen}
-                        onClose={this.closeModal}
+                        closeModal={this.closeModal}
                     >
                         <BookAppointment
                             open={this.state.isModalOpen}
@@ -130,7 +136,7 @@ class Dentist extends Component {
                 ) : (
                     <LoginModal
                         open={this.state.isModalOpen}
-                        onClose={this.closeModal}
+                        closeModal={this.closeModal}
                     />
                 )}
             </div>
@@ -144,7 +150,9 @@ function mapStateToProps(state) {
         dentist: state.dentists.selectedDentist,
         listings: state.listings.all,
         reservations: state.reservations.all,
-        appointments: isEmpty(state.appointments.selected) ? null : state.appointments.selected,
+        appointments: isEmpty(state.appointments.selected)
+            ? null
+            : state.appointments.selected,
         reviews: state.reviews.all
     };
 }

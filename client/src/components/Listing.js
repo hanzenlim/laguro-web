@@ -141,7 +141,7 @@ class OfficeResultIndex extends Component {
 
                 <ReservationOptions
                     open={this.state.isModalOpen}
-                    onClose={this.handleCloseModal}
+                    closeModal={this.handleCloseModal}
                     listing={listing}
                     office={office}
                     auth={this.props.auth}
