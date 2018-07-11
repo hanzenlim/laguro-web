@@ -25,14 +25,14 @@ class AddPhoneNumber extends Component {
             phoneNumber: formatPhoneNumber(phoneNumber)
         });
 
-        this.props.onClose();
+        this.props.closeModal();
     };
 
     render() {
-        const { handleSubmit, onClose, open } = this.props;
+        const { handleSubmit, closeModal, open } = this.props;
 
         return (
-            <Modal closable open={open} closeModal={onClose}>
+            <Modal closable open={open} closeModal={closeModal}>
                 <form onSubmit={handleSubmit(this.onSubmit)}>
                     <Box pb={2}>
                         <Typography fontSize={5}>
