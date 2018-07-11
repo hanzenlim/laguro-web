@@ -123,7 +123,9 @@ class UserOffice extends Component {
                                     <Grid container direction="column">
                                         <Link
                                             className="blue-text text-darken-2"
-                                            to={`/office/${office.id}`}
+                                            to={`/office/${
+                                                office.id
+                                            }?referrer=profile`}
                                         >
                                             <Typography
                                                 color="link_blue"

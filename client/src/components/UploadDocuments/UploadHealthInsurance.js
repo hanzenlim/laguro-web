@@ -124,7 +124,7 @@ class UploadHealthInsurance extends Component {
     }
 
     async generateImageSignature(urlArr) {
-        debugger;
+        
         // Extracting the file handle from the urlArr. The urlArr has this format https://cdn.filestackcontent.com/yF9AgWbSTHyWbMGZDiow
         const viewPolicySignature = await this.getViewPolicySignature(urlArr.split('/')[3]);
 
@@ -186,7 +186,7 @@ class UploadHealthInsurance extends Component {
     }
 
     handleSubmit = async () => {
-        debugger;
+        
         const { auth } = this.props;
         // In order to update the patient document table, we need to get the primary key
         // so we get the patient document by patient id and extract the primary key. We will

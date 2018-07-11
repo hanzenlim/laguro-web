@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import queryString from 'query-string';
 import { Padding } from '../common/Spacing';
 import Icon from '../Icon';
 import { Box, Link } from '../common';
+import history from '../../history';
 
 const StyledProfPic = styled.img`
     border-radius: 50%;
@@ -26,7 +28,7 @@ const StyledMapPinIcon = styled(Icon)`
     margin-right: 3px;
 `;
 
-const StyledBackToSearchLink = styled(Link)`
+const StyledbackLinkUrl = styled(Link)`
     height: 45px;
     cursor: pointer;
     display: inline-block;
@@ -39,7 +41,7 @@ const StyledBackToSearchLink = styled(Link)`
     }
 `;
 
-const StyledBackToSearchTextBox = styled(Box)`
+const StyledbackLinkTextBox = styled(Box)`
     float: left;
     line-height: 45px;
 `;
@@ -49,32 +51,51 @@ const StyledBackToSearchIcon = styled(Icon)`
 `;
 
 class TopHalfInfo extends Component {
+    constructor(props) {
+        super(props);
+
+        this.urlParams = queryString.parse(history.location.search);
+    }
+
     render() {
         const obj = this.props.obj;
-        let backToSearchLink;
-        let backToSearchText;
-        if (this.props.type === 'office') {
-            backToSearchLink = '/office/search';
-            backToSearchText = 'Back to office search';
-        } else {
-            backToSearchLink = '/dentist/search';
-            backToSearchText = 'Back to dentist search';
+        let backLinkUrl;
+        let backLinkText;
+        let { referrer, dentistId } = this.urlParams;
+
+        if (referrer === 'search') {
+            if (this.props.type === 'office') {
+                backLinkUrl = '/office/search';
+                backLinkText = 'Back to office search';
+            } else {
+                backLinkUrl = '/dentist/search';
+                backLinkText = 'Back to dentist search';
+            }
+        } else if (referrer === 'profile') {
+            backLinkUrl = '/profile';
+            backLinkText = 'Back to profile';
+        } else if (referrer === 'dentist' && dentistId !== 'undefined') {
+            backLinkUrl = `/dentist/${dentistId}`;
+            backLinkText = 'Back to dentist page';
         }
+
         return (
             <div className="center">
                 <Padding bottom={padBackToSearch} />
 
-                <Box mt={[3, 0]} mb={[2, 0]}>
-                    <StyledBackToSearchLink to={backToSearchLink}>
-                        <StyledBackToSearchIcon
-                            icon="BackToSearch"
-                            width="45px"
-                        />
-                        <StyledBackToSearchTextBox pl={10} color="#000">
-                            {backToSearchText}
-                        </StyledBackToSearchTextBox>
-                    </StyledBackToSearchLink>
-                </Box>
+                {backLinkUrl !== undefined && (
+                    <Box mt={[3, 0]} mb={[2, 0]}>
+                        <StyledbackLinkUrl to={backLinkUrl}>
+                            <StyledBackToSearchIcon
+                                icon="BackToSearch"
+                                width="45px"
+                            />
+                            <StyledbackLinkTextBox pl={10} color="#000">
+                                {backLinkText}
+                            </StyledbackLinkTextBox>
+                        </StyledbackLinkUrl>
+                    </Box>
+                )}
 
                 {this.props.type === 'dentist' && (
                     <StyledProfPic
@@ -95,7 +116,9 @@ class TopHalfInfo extends Component {
                     </Box>
                 ) : (
                     <Box fontSize={36}>
-                        {obj && obj.user ? `${obj.user.firstName} ${obj.user.lastName}` : '_____'}
+                        {obj && obj.user
+                            ? `${obj.user.firstName} ${obj.user.lastName}`
+                            : '_____'}
                     </Box>
                 )}
 

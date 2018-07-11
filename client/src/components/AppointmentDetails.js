@@ -16,11 +16,10 @@ const ListingImage = styled.img`
 `;
 
 class AppointmentDetails extends Component {
-
     handleCancelAppointment = () => {
         const { appointment } = this.props;
         this.props.cancelAppointment(appointment);
-    }
+    };
 
     render() {
         const { appointment } = this.props;
@@ -77,7 +76,11 @@ class AppointmentDetails extends Component {
                             </Grid>
 
                             <Grid item container direction="column" sm={8}>
-                                <Link to={`/dentist/${dentist.id}`}>
+                                <Link
+                                    to={`/dentist/${
+                                        dentist.id
+                                    }?referrer=profile`}
+                                >
                                     <Typography
                                         fontSize={4}
                                         fontWeight="bold"
@@ -101,7 +104,11 @@ class AppointmentDetails extends Component {
 
                                     <Padding right={4} />
 
-                                    <Link to={`/dentist/${dentist.id}`}>
+                                    <Link
+                                        to={`/dentist/${
+                                            dentist.id
+                                        }?referrer=profile`}
+                                    >
                                         <Typography fontSize={2} color="black">
                                             {office.name}
                                         </Typography>

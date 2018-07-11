@@ -32,7 +32,7 @@ class LoginModal extends Component {
 
     handleSuccess = async () => {
         await this.props.fetchUser();
-        this.props.onClose();
+        this.props.closeModal();
     };
 
     render() {
@@ -41,7 +41,7 @@ class LoginModal extends Component {
         if (!open) return null;
 
         return (
-            <Modal closable open={open} closeModal={this.props.onClose}>
+            <Modal closable open={open} closeModal={this.props.closeModal}>
                 <Flex justifyContent="center" flexDirection="column">
                     <Box>
                         {this.state.view === LOGIN_VIEW ? (

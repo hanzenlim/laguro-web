@@ -24,10 +24,11 @@ class Appointments extends Component {
 
     render() {
         const { reservation } = this.props;
-        const timeslots = calculateTimeslots(
-            reservation,
-            reservation.appointments
-        );
+        let appointments = reservation.appointments
+            ? reservation.appointments
+            : [];
+
+        const timeslots = calculateTimeslots(reservation, appointments);
         return timeslots.map((durationToNextAppointment, index) => (
             <div key={index}>
                 {durationToNextAppointment !== 0 ? (
