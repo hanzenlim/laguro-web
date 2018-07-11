@@ -7,49 +7,12 @@ import UserOfficeIndex from './UserOfficeIndex';
 import UserReservationIndex from './UserReservationIndex';
 import ProfileActions from './ProfileActions';
 import * as actions from '../actions';
+import { dentistProfilePageFragment } from '../util/fragments';
 
-import {
-    dentistFragment,
-    officeFragment,
-    reservationFragment,
-    listingFragment,
-    appointmentFragment,
-    reviewerFragment,
-    filterActive
-} from '../util/fragments';
-
-const dentistQuery = `
+const loadDentistProfileQuery = `
     query ($id: String!) {
         getDentist(id: $id) {
-            ${dentistFragment}
-            offices {
-                ${officeFragment}
-                listings(${filterActive}) {
-                    ${listingFragment}
-                    reservations(${filterActive}) {
-                        ${reservationFragment}
-                        reservedBy {
-                            ${dentistFragment}
-                        }
-                    }
-                }
-            }
-            reservations(${filterActive}) {
-                ${reservationFragment}
-                appointments(${filterActive}) {
-                    ${appointmentFragment}
-                }
-                office {
-                    ${officeFragment}
-                }
-                hostId
-                reservedBy {
-                    id
-                }
-            }
-            reviews {
-                ${reviewerFragment}
-            }
+            ${dentistProfilePageFragment}
         }
     }
 `;
@@ -70,7 +33,10 @@ class Profile extends Component {
         const { auth } = this.props;
         this.setState({ isFetching: true });
         if (auth.dentistId) {
-            await this.props.loadDentistProfile(dentistQuery, auth.dentistId);
+            await this.props.loadDentistProfile(
+                loadDentistProfileQuery,
+                auth.dentistId
+            );
         }
         this.setState({ isFetching: false });
     }
@@ -131,15 +97,15 @@ class Profile extends Component {
                     {dentistId &&
                         dentist.reviews &&
                         dentist.reviews.length > 0 && (
-                        <div className="reviews profile-section">
-                            <h5>{`Reviews for ${auth.name}`}</h5>
-                            <ReviewContainer
-                                revieweeId={dentist.id}
-                                revieweeName={auth.name}
-                                reviews={dentist.reviews}
-                            />
-                        </div>
-                    )}
+                            <div className="reviews profile-section">
+                                <h5>{`Reviews for ${auth.name}`}</h5>
+                                <ReviewContainer
+                                    revieweeId={dentist.id}
+                                    revieweeName={auth.name}
+                                    reviews={dentist.reviews}
+                                />
+                            </div>
+                        )}
                 </div>
             </div>
         );
