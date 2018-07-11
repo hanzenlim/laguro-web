@@ -24,7 +24,6 @@ class AddPhoneNumber extends Component {
         this.props.updateUserProfile(this.props.auth.id, {
             phoneNumber: formatPhoneNumber(phoneNumber)
         });
-
         this.props.closeModal();
     };
 
@@ -42,7 +41,7 @@ class AddPhoneNumber extends Component {
                     <Box pb={2}>
                         <Typography>
                             This is so your dentist can contact you, and so
-                            Laugro knows how to reach you.
+                            Laguro knows how to reach you.
                         </Typography>
                     </Box>
                     <Box pb={4}>

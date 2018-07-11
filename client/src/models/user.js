@@ -47,11 +47,12 @@ const generateGetUserQuery = (options = []) => {
     `;
 };
 
-const generateUpdateUserQuery = (options = []) => {
+const generateUpdateUserQuery = () => {
     return `
         mutation UpdateUser($input: UpdateUserInput!) {
             updateUser(input: $input) {
-                ${generateUserResult(options)}
+                ${userFragment}
+                paymentOptions {${paymentOptionFragment}}
             }
         }
     `;
