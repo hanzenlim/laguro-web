@@ -8,7 +8,8 @@ import {
     listingFragment,
     appointmentFragment,
     reviewerFragment,
-    filterActive
+    filterActive,
+    dentistProfilePageFragment
 } from '../util/fragments';
 import {
     USER,
@@ -141,7 +142,7 @@ const createDentistQuery = `
 const updateDentistQuery = `
     mutation UpdateDentist($input: UpdateDentistInput!) {
         updateDentist(input: $input) {
-            ${dentistFragment}
+            ${dentistProfilePageFragment}
         }
     }
 `;

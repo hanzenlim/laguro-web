@@ -208,3 +208,35 @@ export const paymentFragment = `
     chargeStatus
     dateCreated
 `;
+
+export const dentistProfilePageFragment = `
+    ${dentistFragment}
+    offices {
+        ${officeFragment}
+        listings(${filterActive}) {
+            ${listingFragment}
+            reservations(${filterActive}) {
+                ${reservationFragment}
+                reservedBy {
+                    ${dentistFragment}
+                }
+            }
+        }
+    }
+    reservations(${filterActive}) {
+        ${reservationFragment}
+        appointments(${filterActive}) {
+            ${appointmentFragment}
+        }
+        office {
+            ${officeFragment}
+        }
+        hostId
+        reservedBy {
+            id
+        }
+    }
+    reviews {
+        ${reviewerFragment}
+    }
+`;
