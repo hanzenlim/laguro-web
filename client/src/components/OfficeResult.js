@@ -64,7 +64,7 @@ class OfficeResult extends Component {
                 <AvailableTime
                     key={listing.id}
                     onClick={e => e.stopPropagation()}
-                    to={`/office/${listing.officeId}`}
+                    to={`/office/${listing.officeId}?referrer=search`}
                 >
                     <Typography fontSize={3} fontWeight="regular" color="white">
                         {moment(listing.startTime).format('MMM D, h a')}
@@ -85,7 +85,7 @@ class OfficeResult extends Component {
         return (
             <Link
                 className="blue-text text-darken-2"
-                to={`/office/${this.props.office_id}`}
+                to={`/office/${this.props.office_id}?referrer=search`}
             >
                 <Container>
                     <Grid container>

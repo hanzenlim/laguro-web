@@ -95,7 +95,7 @@ class ProfileActions extends Component {
                     {dentistProfileExists ? (
                         <Link
                             className="link"
-                            to={`/dentist/${auth.dentistId}`}
+                            to={`/dentist/${auth.dentistId}?referrer=profile`}
                         >
                             View public profile
                         </Link>

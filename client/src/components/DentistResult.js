@@ -66,7 +66,7 @@ class DentistResult extends Component {
         return (
             <Link
                 className="blue-text text-darken-2"
-                to={`/dentist/${this.props.dentist_id}`}
+                to={`/dentist/${this.props.dentist_id}?referrer=search`}
             >
                 <Container>
                     <Grid container>

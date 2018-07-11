@@ -277,7 +277,11 @@ class DetailDetails extends Component {
                     <Flex justifyContent="space-evenly">
                         <Link
                             className="blue-text text-darken-2"
-                            to={`/office/${office.id}`}
+                            to={`/office/${
+                                office.id
+                            }?referrer=dentist&dentistId=${
+                                reservation.reservedBy.id
+                            }`}
                         >
                             <StyledOfficeFlex
                                 flexDirection="column"
@@ -373,37 +377,37 @@ class DetailDetails extends Component {
             <StyledDetailsDiv>
                 {this.props.type === 'office' &&
                     obj.description && (
-                    <Box>
-                        <StyledDetailsHeadingBox fontSize={25}>
+                        <Box>
+                            <StyledDetailsHeadingBox fontSize={25}>
                                 Description
-                        </StyledDetailsHeadingBox>
-                        <hr />
-                        <StyledDescriptionBox
-                            overflow={
-                                this.state.descShowMore ? 'hidden' : 'auto'
-                            }
-                            maxHeight={this.state.descShowMore ? 68 : 300}
-                        >
-                            {obj.description}
-                        </StyledDescriptionBox>
-                        <Box mb={10} />
-                        {this.state.descShowMore && (
-                            <Box mt={10}>
-                                <StyledShowMoreBox
-                                    fontSize={1}
-                                    className="center"
-                                    onClick={this.handleShowMoreDescription}
-                                >
-                                    <StyledDownArrow
-                                        icon="downArrow"
-                                        width="20px"
-                                    />
+                            </StyledDetailsHeadingBox>
+                            <hr />
+                            <StyledDescriptionBox
+                                overflow={
+                                    this.state.descShowMore ? 'hidden' : 'auto'
+                                }
+                                maxHeight={this.state.descShowMore ? 68 : 300}
+                            >
+                                {obj.description}
+                            </StyledDescriptionBox>
+                            <Box mb={10} />
+                            {this.state.descShowMore && (
+                                <Box mt={10}>
+                                    <StyledShowMoreBox
+                                        fontSize={1}
+                                        className="center"
+                                        onClick={this.handleShowMoreDescription}
+                                    >
+                                        <StyledDownArrow
+                                            icon="downArrow"
+                                            width="20px"
+                                        />
                                         Show more
-                                </StyledShowMoreBox>
-                            </Box>
-                        )}
-                    </Box>
-                )}
+                                    </StyledShowMoreBox>
+                                </Box>
+                            )}
+                        </Box>
+                    )}
 
                 <Box mb={40} />
                 <StyledDetailsHeadingBox fontSize={25}>
@@ -482,20 +486,20 @@ class DetailDetails extends Component {
                         this.state.reviewRowNum *
                             (window.innerWidth > 600 ? 3 : 2) &&
                     auth && (
-                    <Box mt={20}>
-                        <StyledShowMoreBox
-                            fontSize={1}
-                            className="center"
-                            onClick={this.handleShowMoreReview}
-                        >
-                            <StyledDownArrow
-                                icon="downArrow"
-                                width="20px"
-                            />
+                        <Box mt={20}>
+                            <StyledShowMoreBox
+                                fontSize={1}
+                                className="center"
+                                onClick={this.handleShowMoreReview}
+                            >
+                                <StyledDownArrow
+                                    icon="downArrow"
+                                    width="20px"
+                                />
                                 Show more
-                        </StyledShowMoreBox>
-                    </Box>
-                )}
+                            </StyledShowMoreBox>
+                        </Box>
+                    )}
                 {this.props.type === 'office' &&
                 this.state.isModalOpen &&
                 dentistProfileExists(auth) ? (
