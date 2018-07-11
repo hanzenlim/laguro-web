@@ -26,6 +26,19 @@ module.exports.getUserQuery = `
     }
 `;
 
+module.exports.getUserByGoogleIdQuery = `
+    query getUserByGoogleId($googleId: String!) {
+        getUserByGoogleId(googleId: $googleId) {
+            id
+            firstName
+            lastName
+            googleId
+            imageUrl
+        }
+    }
+`;
+
+
 module.exports.getUserByEmailQuery = `
     query getUserByEmail($email: String!) {
         getUserByEmail(email: $email) {
@@ -37,6 +50,10 @@ module.exports.getUserByEmailQuery = `
         }
     }
 `;
+
+module.exports.getUserByGoogleIdVariable = id => ({
+    googleId: id.toString(),
+});
 
 module.exports.getUserVariable = id => ({
     id: id.toString(),
