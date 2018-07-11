@@ -11,7 +11,7 @@ class Login extends Component {
         super();
 
         this.state = {
-            error: '',
+            error: ''
         };
     }
 
@@ -34,9 +34,9 @@ class Login extends Component {
             credentials: 'same-origin',
             headers: {
                 'Content-Type': 'application/json',
-                'Access-Control-Origin': '*',
+                'Access-Control-Origin': '*'
             },
-            body: JSON.stringify({ ...values }),
+            body: JSON.stringify({ ...values })
         });
     };
 
@@ -46,7 +46,7 @@ class Login extends Component {
 
     onLoginFail = error => {
         this.setState({
-            error,
+            error
         });
     };
 
@@ -57,13 +57,6 @@ class Login extends Component {
             <Flex flexDirection="column">
                 <Box pb={3}>
                     <Typography fontSize={5}>Sign In</Typography>
-                </Box>
-
-                <Box pb={4}>
-                    <Typography>
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry.
-                    </Typography>
                 </Box>
 
                 <GoogleButton href="/auth/google" />
@@ -109,5 +102,5 @@ class Login extends Component {
 
 export { Login };
 export default reduxForm({
-    form: 'login',
+    form: 'login'
 })(Login);

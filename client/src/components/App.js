@@ -109,7 +109,7 @@ const UploadHealthInsuranceDocuments = Loadable({
 
 const PrivateRoute = ({ auth, path, component: Component, ...props }) => {
     const { toggleLoginModal } = props;
-    
+
     return (
         <Route
             render={() =>
@@ -118,15 +118,17 @@ const PrivateRoute = ({ auth, path, component: Component, ...props }) => {
                 ) : (
                     <div className="center-align stretch_height">
                         <p>You must log in to view the page</p>
-                        <div onClick={toggleLoginModal} className="login waves-effect btn light-blue lighten-2">
-                        Login
-
+                        <div
+                            onClick={toggleLoginModal}
+                            className="login waves-effect btn light-blue lighten-2"
+                        >
+                            Login
                         </div>
                     </div>
                 )
             }
         />
-    )
+    );
 };
 
 class App extends Component {
@@ -147,57 +149,91 @@ class App extends Component {
                                         path="/landlord-onboarding/:step"
                                         auth={this.props.auth}
                                         component={LandlordOnboarding}
+                                        toggleLoginModal={
+                                            this.props.toggleLoginModal
+                                        }
                                     />
                                     <PrivateRoute
                                         auth={this.props.auth}
                                         path="/office/:office_id/listing/:id/edit"
                                         component={EditListing}
+                                        toggleLoginModal={
+                                            this.props.toggleLoginModal
+                                        }
                                     />
                                     <PrivateRoute
                                         auth={this.props.auth}
                                         path="/office/:office_id/edit"
                                         component={EditOffice}
+                                        toggleLoginModal={
+                                            this.props.toggleLoginModal
+                                        }
                                     />
                                     <PrivateRoute
                                         auth={this.props.auth}
                                         path="/office/new"
                                         component={NewOffice}
+                                        toggleLoginModal={
+                                            this.props.toggleLoginModal
+                                        }
                                     />
                                     <PrivateRoute
                                         auth={this.props.auth}
                                         path="/listing/new"
                                         component={NewListing}
+                                        toggleLoginModal={
+                                            this.props.toggleLoginModal
+                                        }
                                     />
                                     <PrivateRoute
                                         auth={this.props.auth}
                                         path="/profile"
                                         component={Profile}
+                                        toggleLoginModal={
+                                            this.props.toggleLoginModal
+                                        }
                                     />
                                     <PrivateRoute
                                         auth={this.props.auth}
                                         path="/payment-success"
                                         component={PaymentSuccess}
+                                        toggleLoginModal={
+                                            this.props.toggleLoginModal
+                                        }
                                     />
                                     <PrivateRoute
                                         auth={this.props.auth}
                                         path="/payment"
                                         component={Payment}
+                                        toggleLoginModal={
+                                            this.props.toggleLoginModal
+                                        }
                                     />
                                     <PrivateRoute
                                         auth={this.props.auth}
                                         path="/payment-history"
                                         component={PaymentHistory}
+                                        toggleLoginModal={
+                                            this.props.toggleLoginModal
+                                        }
                                     />
                                     <PrivateRoute
                                         auth={this.props.auth}
                                         path="/payout"
                                         component={Payout}
+                                        toggleLoginModal={
+                                            this.props.toggleLoginModal
+                                        }
                                     />
                                     <PrivateRoute
                                         auth={this.props.auth}
                                         path="/upload/documents"
-                                        component={UploadHealthInsuranceDocuments}
-                                        toggleLoginModal={this.props.toggleLoginModal}
+                                        component={
+                                            UploadHealthInsuranceDocuments
+                                        }
+                                        toggleLoginModal={
+                                            this.props.toggleLoginModal
+                                        }
                                     />
                                     <Route
                                         path="/dentist/search"
