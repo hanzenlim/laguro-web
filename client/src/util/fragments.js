@@ -1,9 +1,9 @@
 import moment from 'moment';
-import { STATUS, ACTIVE } from './strings';
+import { STATUS, END_TIME, ACTIVE } from './strings';
 
 export const filterActive = `
 options: {
-    sortKey: "startTime",
+    sortKey: "${END_TIME}",
     rangeStart: "${moment().format()}",
     filters: [
         {
