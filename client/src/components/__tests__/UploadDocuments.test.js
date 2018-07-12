@@ -58,7 +58,7 @@ describe('<UploadDocuments />', () => {
         }
 
         component.instance().extractUrlToState(result).then(() => {
-            expect(component.state('signedUrl')).toEqual(expect.arrayContaining([expectedSignedUrl]));
+            expect(component.state('signedUrlArr')).toEqual(expect.arrayContaining([expectedSignedUrl]));
         });
     });
 });
