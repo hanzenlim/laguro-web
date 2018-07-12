@@ -82,6 +82,7 @@ class PaymentSuccess extends Component {
 
         // if the store is not fully loaded, wait
         if (
+            appointment && reservation &&
             !Object.keys(appointment).length &&
             !Object.keys(reservation).length
         )
