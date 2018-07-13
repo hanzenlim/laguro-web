@@ -6,6 +6,7 @@ import PlacesAutocomplete, {
     getLatLng
 } from 'react-places-autocomplete';
 import 'react-datepicker/dist/react-datepicker.css';
+import { addTooltip } from '../forms/sharedComponents';
 import * as actions from '../../actions';
 import { Input } from '../common';
 
@@ -40,9 +41,14 @@ class Autocomplete extends Component {
     }
 
     render() {
+        const { tooltip } = this.props;
+
         return (
-            <div className="searchModule toggle active">
-                <label>Location:</label>
+            <div className="searchModule toggle">
+                <label>
+                    {`Location `}
+                    {tooltip && addTooltip(tooltip)}
+                </label>
                 <PlacesAutocomplete
                     value={this.state.location}
                     onChange={this.handleChange}
@@ -98,9 +104,4 @@ class Autocomplete extends Component {
 
 export default reduxForm({
     form: 'Autocomplete'
-})(
-    connect(
-        null,
-        actions
-    )(Autocomplete)
-);
+})(connect(null, actions)(Autocomplete));

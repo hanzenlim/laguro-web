@@ -89,6 +89,7 @@ class Signup extends Component {
                         <Field
                             name="username"
                             label="Email Address"
+                            tooltip="Laguro will use your email for login and notification purposes only."
                             type="email"
                             component={renderField}
                             validate={[required]}

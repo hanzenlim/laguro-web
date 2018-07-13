@@ -120,9 +120,10 @@ class BookAppointment extends Component {
                     </Grid>
                     <Grid item xs={12}>
                         <Box pb={4}>
-                            <label>Procedures Available</label>
                             <Field
                                 name="procedure"
+                                label="Procedures Available"
+                                tooltip="What procedure are you coming in for?"
                                 component={renderSelect}
                                 validate={required}
                                 onChange={this.updateTime.bind(this)}

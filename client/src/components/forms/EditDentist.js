@@ -11,7 +11,8 @@ import {
     renderField,
     durationOptions,
     procedureOptions,
-    renderSelect
+    renderSelect,
+    addTooltip
 } from './sharedComponents';
 import dentistProfileExists from '../../util/userInfo';
 
@@ -59,7 +60,12 @@ class EditDentist extends Component {
 
     renderProcedureSelector = ({ fields, className, meta: { error } }) => (
         <ul className={className}>
-            <label>Procedures Offered</label>
+            <label>
+                {`Procedures Offered`}
+                {addTooltip(
+                    'List all the procedures you want patients to be able to book with you and the estimated time it takes you to complete each.'
+                )}
+            </label>
             {fields.map((procedure, index) => (
                 <li key={index} className="multiRowAdd">
                     <Field
@@ -149,6 +155,7 @@ class EditDentist extends Component {
                                     const { onChange, value } = props.input;
                                     return (
                                         <Autocomplete
+                                            tooltip="This is the location patients will find you at in search if you do not have any reservations."
                                             onAutocomplete={location =>
                                                 onChange(location)
                                             }

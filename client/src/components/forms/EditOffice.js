@@ -1,11 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {
-    Field,
-    reduxForm,
-    formValueSelector,
-    FieldArray
-} from 'redux-form';
+import { Field, reduxForm, formValueSelector, FieldArray } from 'redux-form';
 import styled from 'styled-components';
 import ReactFilestack from 'filestack-react';
 import * as actions from '../../actions';
@@ -13,11 +8,14 @@ import { filestackKey } from '../../config/keys';
 import { renderPrice, removeSpecialChars } from '../../util/paymentUtil';
 import { Typography, Grid, Button, Box } from '../common';
 import { Padding } from '../common/Spacing';
-import { renderField, charCount, renderSelect, equipmentOptions,
-} from './sharedComponents';
 import {
-    required,
-} from './formValidation';
+    renderField,
+    charCount,
+    renderSelect,
+    equipmentOptions,
+    addTooltip
+} from './sharedComponents';
+import { required } from './formValidation';
 
 const StyledContainer = styled.div`
     min-height: 100vh;
@@ -105,28 +103,27 @@ class EditOffice extends Component {
 
     renderEquipmentSelector = ({ fields, meta: { error } }) => (
         <ul>
-            <label>Equipment Available</label>
+            <label>{`Equipment Available`}</label>
             {fields.map((equipment, index) => (
                 <li key={index} className="multiRowAdd">
                     <Field
                         name={`${equipment}.name`}
-                        label="Type"
+                        label="Equipment Type"
                         component={renderSelect}
                         validate={required}
                         children={equipmentOptions}
                     />
-                    <div>
-                        <Field
-                            name={`${equipment}.price`}
-                            type="text"
-                            placeholder="15"
-                            component={renderField}
-                            label="Usage Price"
-                            validate={[required]}
-                            format={value => renderPrice(value)}
-                            normalize={value => removeSpecialChars(value)}
-                        />
-                    </div>
+                    <Field
+                        name={`${equipment}.price`}
+                        type="text"
+                        placeholder="15"
+                        component={renderField}
+                        label="Usage Price"
+                        tooltip="How much do you want to charge dentists to use this equipment? (one-time charge)"
+                        validate={[required]}
+                        format={value => renderPrice(value)}
+                        normalize={value => removeSpecialChars(value)}
+                    />
                     <button
                         type="button"
                         title="Remove Equipment"
@@ -176,7 +173,8 @@ class EditOffice extends Component {
 
                             <Field
                                 name="name"
-                                label="Name"
+                                label="Office Name"
+                                tooltip="What do you want your office to be called?"
                                 className="col s12"
                                 component={renderField}
                                 validate={required}
@@ -197,7 +195,9 @@ class EditOffice extends Component {
                             />
 
                             {charCount(
-                                this.props.description ? this.props.description.length : 0,
+                                this.props.description
+                                    ? this.props.description.length
+                                    : 0,
                                 500
                             )}
 
@@ -210,6 +210,12 @@ class EditOffice extends Component {
                             </div>
 
                             <div className="image_upload">
+                                <label>
+                                    {`Featured Office Image`}
+                                    {addTooltip(
+                                        'Upload images of your office. The first image will show up on search results.'
+                                    )}
+                                </label>
                                 <div className="image_display">
                                     {this.renderUploadedImages()}
                                 </div>
@@ -231,13 +237,15 @@ class EditOffice extends Component {
                                         transformations: {
                                             crop: {
                                                 aspectRatio: 3 / 2,
-                                                force: true,
-                                            },
+                                                force: true
+                                            }
                                         },
                                         uploadInBackground: false,
                                         storeTo: { container: 'office-photos' }
                                     }}
-                                    onSuccess={result => this.extractUrlToState(result)}
+                                    onSuccess={result =>
+                                        this.extractUrlToState(result)
+                                    }
                                 />
                             </div>
 
