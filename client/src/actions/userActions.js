@@ -7,7 +7,7 @@ export const fetchUser = (...options) => async dispatch => {
     const userId = cookies.get('userId');
     let user;
     if (userId) {
-        user = await User.getByUserId(userId, ...options);
+        user = await User.get(userId, ...options);
         dispatch({ type: FETCH_USER, payload: user });
     } else {
         dispatch({ type: FETCH_USER, payload: null });
