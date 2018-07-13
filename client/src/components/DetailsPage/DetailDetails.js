@@ -13,10 +13,11 @@ import NewReview from '../forms/NewReview';
 import ReviewContainer from '../ReviewContainer';
 import Icon from '../Icon';
 import ReservationOptions from '../forms/ReservationOptions';
-import NewDentist from '../forms/NewDentist';
 import { Box, Grid, Link, Typography, Button, Flex, Modal } from '../common';
 import OfficePlaceholderBig from '../images/office-placeholder-big.png';
 import Appointments from '../Appointments';
+//eslint-disable-next-line
+import NewDentist from '../forms/NewDentist';
 
 const StyledOfficeFlex = styled(Flex)`
     height: 100%;
@@ -111,11 +112,11 @@ const StyledResButton = StyledAvailButton.extend`
 `;
 
 class DetailDetails extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             reviewRowNum: 1,
-            isModalOpen: false,
+            visibleModal: null,
             avg_rating: 0,
             rating_count: 0,
             descShowMore: true
@@ -324,20 +325,30 @@ class DetailDetails extends Component {
 
     async handleBookReservation(listing) {
         const { auth } = this.props;
+        this.setState({ listing });
 
-        if (auth) {
-            this.setState({
-                isModalOpen: true,
-                listing
-            });
-        } else {
+        if (!auth) {
             this.props.toggleLoginModal();
+        }
+
+        if (!dentistProfileExists(auth)) {
+            this.openModal('newDentist');
+        } else {
+            this.openModal('reservationOptions');
         }
     }
 
+    openModal = modal_name => {
+        this.setState({ visibleModal: modal_name });
+    };
+
+    openReservationModal = () => {
+        this.openModal('reservationOptions');
+    };
+
     closeModal = () => {
         this.setState({
-            isModalOpen: false
+            visibleModal: null
         });
     };
 
@@ -500,33 +511,33 @@ class DetailDetails extends Component {
                             </StyledShowMoreBox>
                         </Box>
                     )}
-                {this.props.type === 'office' &&
-                this.state.isModalOpen &&
-                dentistProfileExists(auth) ? (
-                        <Modal
-                            closable
-                            open={this.state.isModalOpen}
-                            closeModal={this.closeModal}
-                        >
-                            <ReservationOptions
-                                listing={this.state.listing}
-                                office={obj}
-                                auth={auth}
-                            />
-                        </Modal>
-                    ) : (
-                        <NewDentist
-                            open={this.state.isModalOpen}
-                            closeModal={this.closeModal}
-                            auth={auth}
-                            message={
-                                'Before you can book a reservation, we need you to create a dentist profile.'
-                            }
-                        />
-                    )}
+
+                <Modal
+                    closable
+                    open={this.state.visibleModal === 'reservationOptions'}
+                    closeModal={this.closeModal}
+                >
+                    <ReservationOptions
+                        listing={this.state.listing}
+                        office={obj}
+                        auth={auth}
+                    />
+                </Modal>
+
+                <NewDentist
+                    id="newDentistForm"
+                    open={this.state.visibleModal === 'newDentist'}
+                    closeModal={this.closeModal}
+                    onSuccess={this.openReservationModal}
+                    auth={auth}
+                    message={
+                        'Before you can book a reservation, we need you to create a dentist profile.'
+                    }
+                />
             </StyledDetailsDiv>
         );
     }
 }
 
+export { DetailDetails };
 export default connect(null, actions)(DetailDetails);

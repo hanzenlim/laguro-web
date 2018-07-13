@@ -60,7 +60,7 @@ class NewDentist extends Component {
             });
 
             await this.props.fetchUser(DENTIST);
-            this.props.closeModal();
+            this.props.onSuccess();
         }
     }
 
@@ -113,11 +113,11 @@ class NewDentist extends Component {
 
     render() {
         const {
-            handleSubmit,
             submitting,
             error,
             auth,
             message,
+            handleSubmit,
             open,
             closeModal
         } = this.props;
@@ -182,6 +182,7 @@ class NewDentist extends Component {
     }
 }
 
+export { NewDentist };
 export default reduxForm({
     form: 'newDentist'
 })(connect(null, actions)(NewDentist));
