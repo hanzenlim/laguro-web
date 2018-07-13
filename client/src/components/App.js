@@ -24,82 +24,87 @@ import './App.css';
 
 const DentistResultIndex = Loadable({
     loader: () => import('./DentistResultIndex'),
-    loading: LoadingComponent
+    loading: LoadingComponent,
 });
 
 const OfficeResultIndex = Loadable({
     loader: () => import('./OfficeResultIndex'),
-    loading: LoadingComponent
+    loading: LoadingComponent,
 });
 
 const NewOffice = Loadable({
     loader: () => import('./forms/NewOffice'),
-    loading: LoadingComponent
+    loading: LoadingComponent,
 });
 
 const EditOffice = Loadable({
     loader: () => import('./forms/EditOffice'),
-    loading: LoadingComponent
+    loading: LoadingComponent,
 });
 
 const NewListing = Loadable({
     loader: () => import('./forms/NewListing'),
-    loading: LoadingComponent
+    loading: LoadingComponent,
 });
 
 const EditListing = Loadable({
     loader: () => import('./forms/EditListing'),
-    loading: LoadingComponent
+    loading: LoadingComponent,
 });
 
 const Profile = Loadable({
     loader: () => import('./Profile'),
-    loading: LoadingComponent
+    loading: LoadingComponent,
 });
 
 const Dentist = Loadable({
     loader: () => import('./DetailsPage/Dentist'),
-    loading: LoadingComponent
+    loading: LoadingComponent,
 });
 
 const Office = Loadable({
     loader: () => import('./DetailsPage/Office'),
-    loading: LoadingComponent
+    loading: LoadingComponent,
 });
 
 const Payment = Loadable({
     loader: () => import('./Payment'),
-    loading: LoadingComponent
+    loading: LoadingComponent,
 });
 
 const PaymentSuccess = Loadable({
     loader: () => import('./PaymentSuccess'),
-    loading: LoadingComponent
+    loading: LoadingComponent,
 });
 
 const PaymentHistory = Loadable({
     loader: () => import('./PaymentHistory'),
-    loading: LoadingComponent
+    loading: LoadingComponent,
 });
 
 const LandlordOnboarding = Loadable({
     loader: () => import('./LandlordOnboarding'),
-    loading: LoadingComponent
+    loading: LoadingComponent,
 });
 
 const Payout = Loadable({
     loader: () => import('./Payout'),
-    loading: LoadingComponent
+    loading: LoadingComponent,
 });
 
 const Terms = Loadable({
     loader: () => import('./Terms'),
-    loading: LoadingComponent
+    loading: LoadingComponent,
 });
 
 const PrivacyPolicy = Loadable({
     loader: () => import('./PrivacyPolicy'),
-    loading: LoadingComponent
+    loading: LoadingComponent,
+});
+
+const ResetPassword = Loadable({
+    loader: () => import('./forms/ResetPassword'),
+    loading: LoadingComponent,
 });
 
 const UploadHealthInsuranceDocuments = Loadable({
@@ -251,6 +256,10 @@ class App extends Component {
                                         path="/office/:office_id"
                                         component={Office}
                                     />
+                                    <Route
+                                        path="/reset-password"
+                                        component={ResetPassword}
+                                    />
                                     <Route path="/terms" component={Terms} />
                                     <Route
                                         path="/privacy"
@@ -281,4 +290,7 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, actions)(App);
+export default connect(
+    mapStateToProps,
+    actions
+)(App);

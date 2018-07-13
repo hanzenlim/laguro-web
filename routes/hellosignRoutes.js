@@ -5,8 +5,10 @@ import multer from 'multer';
 const serverDataLoader = require('../util/serverDataLoader');
 
 const makeMutation = serverDataLoader.makeMutation;
-const updatePatientDocumentSignatureQuery = serverDataLoader.updatePatientDocumentSignatureQuery;
-const updatePatientDocumentSignatureVariable = serverDataLoader.updatePatientDocumentSignatureVariable;
+const updatePatientDocumentSignatureQuery =
+    serverDataLoader.updatePatientDocumentSignatureQuery;
+const updatePatientDocumentSignatureVariable =
+    serverDataLoader.updatePatientDocumentSignatureVariable;
 
 const upload = multer();
 
@@ -17,17 +19,15 @@ const hellosignRoutes = app => {
         const { event_time, event_type, event_hash } = event.event;
 
         const hash = crypto
-            .createHmac(
-                'sha256',
-                process.env.HELLOSIGN_API_KEY,
-            )
+            .createHmac('sha256', process.env.HELLOSIGN_API_KEY)
             .update(event_time + event_type)
             .digest('hex')
             .toString();
 
         if (event_hash === hash) {
             if (event_type === 'signature_request_all_signed') {
-                const signatureRequestId = event.signature_request.signature_request_id;
+                const signatureRequestId =
+                    event.signature_request.signature_request_id;
 
                 makeMutation(
                     updatePatientDocumentSignatureQuery,

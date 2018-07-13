@@ -55,12 +55,26 @@ module.exports.getUserByGoogleIdVariable = id => ({
     googleId: id.toString(),
 });
 
+module.exports.getResetPasswordRequestQuery = `
+    query getResetPasswordRequest($id: String!) {
+        getResetPasswordRequest(id: $id) {
+            id
+            email
+            status
+        }
+    }
+`;
+
 module.exports.getUserVariable = id => ({
     id: id.toString(),
 });
 
 module.exports.getUserByEmailVariable = email => ({
     email: email,
+});
+
+module.exports.getResetPasswordRequestVariable = (id) => ({
+    id: id.toString(),
 });
 
 module.exports.createUserQuery = `
@@ -87,6 +101,24 @@ module.exports.updatePatientDocumentSignatureQuery = `
     mutation updatePatientDocumentSignature($input: UpdatePatientDocumentSignatureInput!) {
         updatePatientDocumentSignature(input: $input) {
             signatureRequestId
+        }
+    }
+`;
+
+module.exports.createResetPasswordRequestQuery = `
+    mutation createResetPasswordRequest($input: CreateResetPasswordRequestInput!) {
+        createResetPasswordRequest(input: $input) {
+            email
+        }
+    }
+`;
+
+module.exports.useResetPasswordRequestQuery = `
+    mutation useResetPasswordRequest($input: UseResetPasswordRequestInput!) {
+        useResetPasswordRequest(input: $input) {
+            id
+            email
+            status
         }
     }
 `;
@@ -118,6 +150,20 @@ module.exports.createLocalUserVariable = (
 module.exports.updatePatientDocumentSignatureVariable = signatureRequestId => ({
     input: {
         signatureRequestId: signatureRequestId,
+    },
+});
+
+module.exports.createResetPasswordRequestVariable = email => ({
+    input: {
+        email,
+    },
+});
+
+module.exports.useResetPasswordRequestVariable = (id, token, password) => ({
+    input: {
+        id,
+        token,
+        password,
     },
 });
 

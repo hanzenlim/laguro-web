@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
+import styled from 'styled-components';
 import request from './../../util/fetchUtil';
 import { renderField } from './sharedComponents';
 import { required } from './formValidation';
 import { Flex, Box, Button, Typography, Divider } from './../common';
 import GoogleButton from '../GoogleButton';
+
+const StyledLink = styled.a`
+    // HACK
+    cursor: pointer;
+`;
 
 class Login extends Component {
     constructor() {
@@ -51,7 +57,7 @@ class Login extends Component {
     };
 
     render() {
-        const { handleSubmit } = this.props;
+        const { handleSubmit, onForgotPasswordClick } = this.props;
 
         return (
             <Flex flexDirection="column">
@@ -89,6 +95,15 @@ class Login extends Component {
                         />
                     </Box>
 
+                    <Flex justifyContent="flex-end" pb={3}>
+                        <StyledLink
+                            onClick={onForgotPasswordClick}
+                            data-view="forgotPassword"
+                        >
+                            Forgot Password?
+                        </StyledLink>
+                    </Flex>
+
                     <Typography pb={2}>{this.state.error}</Typography>
 
                     <Button color="secondary" type="submit" fullWidth>
@@ -100,7 +115,10 @@ class Login extends Component {
     }
 }
 
+// Exporting it as an object without the connect so we can unit test it properly. If you don't
+// do this then you have to mock the store.
 export { Login };
+
 export default reduxForm({
     form: 'login'
 })(Login);
