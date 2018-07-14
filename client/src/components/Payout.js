@@ -20,7 +20,7 @@ class Payout extends Component {
         const params = queryString.parse(location.search);
         const accountToken = params.code;
 
-        let user = await User.getByUserId(auth.id, PAYOUT_LOGIN);
+        let user = await User.get(auth.id, PAYOUT_LOGIN);
         if (accountToken && !user.payoutAccountId) {
             user = await User.addPayoutAccount(user.id, accountToken);
         }

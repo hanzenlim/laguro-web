@@ -35,18 +35,6 @@ const generateUserResult = options => {
     return result;
 };
 
-// TODO organizing graphql in this manner does not work well when the desired
-// data is nested at a level > 1. Consider another option, this is just a stopgap,
-const generateGetUserQuery = (options = []) => {
-    return `
-        query getUserByGoogleId($googleId: String!) {
-            getUserByGoogleId(googleId: $googleId) {
-                ${generateUserResult(options)}
-            }
-        }
-    `;
-};
-
 const generateUpdateUserQuery = () => {
     return `
         mutation UpdateUser($input: UpdateUserInput!) {
@@ -67,37 +55,22 @@ const addPayoutAccountQuery = `
     }
 `;
 
-const getUserVariable = id => ({
-    userId: id.toString()
-});
-
-const generateGetUserByUserIdQuery = `
-    query ($id: String!) {
-        getUser(id: $id) {
-            ${userFragment}
-            paymentOptions {${paymentOptionFragment}}
+const generateGetUserQuery = (options = []) => {
+    return `
+        query ($id: String!) {
+            getUser(id: $id) {
+                ${generateUserResult(options)}
+            }
         }
-    }
-`;
+    `;
+};
 
 // TODO handle graphql errors
 const User = {
-    getByUserId: async userId => {
-        if (!userId) {
-            return null;
-        }
-        const response = await makeApiCall(generateGetUserByUserIdQuery, {
-            id: userId
-        });
-        return response.data.getUser;
-    },
-    getByGoogleId: async (userId, ...options) => {
+    get: async (userId, ...options) => {
         const getUserQuery = generateGetUserQuery(options);
-        const response = await makeApiCall(
-            getUserQuery,
-            getUserVariable(userId)
-        );
-        return response.data.getUserByGoogleId;
+        const response = await makeApiCall(getUserQuery, { id: userId });
+        return response.data.getUser;
     },
     updateProfile: async (userId, profile) => {
         const updateUserQuery = generateUpdateUserQuery();
