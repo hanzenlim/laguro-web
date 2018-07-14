@@ -29,50 +29,61 @@ class Appointments extends Component {
             : [];
 
         const timeslots = calculateTimeslots(reservation, appointments);
-        return timeslots.map((durationToNextAppointment, index) => (
-            <div key={index}>
-                {durationToNextAppointment !== 0 ? (
-                    <div>
-                        <a
-                            className="text-accent-4 dropdown-trigger"
-                            style={{ cursor: 'pointer' }}
-                            data-target={`dropdown${index}`}
-                        >
-                            {/* If no patient has reserved this appt */}
-                            <Typography
-                                color="appointment_green"
-                                data-reservation={JSON.stringify(reservation)}
-                                data-duration_to_next_appointment={
-                                    durationToNextAppointment
-                                }
-                                data-start_time={moment(
-                                    getStartTime(index, reservation.startTime)
-                                ).format()}
-                                onClick={this.handleClick}
-                            >
-                                {`${getStartTime(
-                                    index,
-                                    reservation.startTime
-                                ).format('h:mm a')} - Available!`}
-                            </Typography>
-                        </a>
+        const currentTime = moment();
+        const appointmentSlots = timeslots.map(
+            (durationToNextAppointment, index) => {
+                const blockStartTime = getStartTime(
+                    index,
+                    reservation.startTime
+                );
+                return (
+                    <div key={index}>
+                        {durationToNextAppointment !== 0 &&
+                        blockStartTime.isAfter(currentTime) ? (
+                                <div data-name="available-slot">
+                                    <a
+                                        className="text-accent-4 dropdown-trigger"
+                                        style={{ cursor: 'pointer' }}
+                                        data-target={`dropdown${index}`}
+                                    >
+                                        {/* If no patient has reserved this appt */}
+                                        <Typography
+                                            color="appointment_green"
+                                            data-reservation={JSON.stringify(
+                                                reservation
+                                            )}
+                                            data-duration_to_next_appointment={
+                                                durationToNextAppointment
+                                            }
+                                            data-start_time={blockStartTime.format()}
+                                            onClick={this.handleClick}
+                                        >
+                                            {`${blockStartTime.format(
+                                                'h:mm a'
+                                            )} - Available!`}
+                                        </Typography>
+                                    </a>
+                                </div>
+                            ) : (
+                                <span
+                                    className="grey-text"
+                                    data-name="unavailable-slot"
+                                    style={{
+                                        textDecoration: 'line-through',
+                                        cursor: 'not-allowed'
+                                    }}
+                                >
+                                    {/* If appt has already been reserved */}
+                                    {`${blockStartTime.format(
+                                        'h:mm a'
+                                    )} - Reserved`}
+                                </span>
+                            )}
                     </div>
-                ) : (
-                    <span
-                        className="grey-text"
-                        style={{
-                            textDecoration: 'line-through',
-                            cursor: 'not-allowed'
-                        }}
-                    >
-                        {/* If appt has already been reserved */}
-                        {`${getStartTime(index, reservation.startTime).format(
-                            'h:mm a'
-                        )} - Reserved`}
-                    </span>
-                )}
-            </div>
-        ));
+                );
+            }
+        );
+        return <div className="reservation-schedule">{appointmentSlots}</div>;
     }
 }
 
