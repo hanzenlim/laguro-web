@@ -40,6 +40,7 @@ class LandlordOnboarding extends Component {
             <NewDentist
                 open={!dentistProfileExists(auth)}
                 closeModal={this.closeCreateProfileModal}
+                onSuccess={this.closeCreateProfileModal}
                 auth={auth}
                 message={
                     'Before renting your office, we need you to create a dentist profile. '
