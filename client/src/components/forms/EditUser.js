@@ -93,12 +93,14 @@ class EditUser extends Component {
                         <Field
                             name="notificationSettings.general.email"
                             label="Email"
+                            tooltip="Enabling this will allow Laguro to send you emails for updates on your appointments, offices, or reservations."
                             component={renderCheckbox}
                         />
                         <Box pb={4}>
                             <Field
                                 name="notificationSettings.general.sms"
                                 label="Text Message"
+                                tooltip="Enabling this will allow Laguro to send you text messages for updates on your appointments, offices, or reservations."
                                 component={renderCheckbox}
                             />
                         </Box>

@@ -16,7 +16,8 @@ import { Typography, Button, Input, Flex, Box } from '../common';
 import {
     renderSelect,
     renderCheckbox,
-    renderOptions
+    renderOptions,
+    addTooltip
 } from './sharedComponents';
 
 import * as actions from '../../actions';
@@ -95,17 +96,24 @@ class ReservationOptions extends Component {
                 .isAfter(values.endTime)
         ) {
             throw new SubmissionError({
-                endTime: 'Minimum reservation is 1 hour',
+                endTime: `Minimum reservation is ${MINIMUM_RESERVATION_WINDOW} minutes`,
                 _error: 'Invalid time frame, please correct error above'
             });
         } else if (
-            // if chosen duration is greater than 8 hrs
+            // if chosen duration is greater than 12 hrs
             moment(values.startTime)
                 .add(12, 'hours')
                 .isBefore(values.endTime)
         ) {
             throw new SubmissionError({
                 endTime: 'Max length for reservation is 12 hours'
+            });
+        } else if (
+            // if chosen duration spans 2 days
+            !moment(values.startTime).isSame(moment(values.endTime), 'day')
+        ) {
+            throw new SubmissionError({
+                endTime: 'Opening and closing must be on same day'
             });
         } else if (!values.acknowledge) {
             throw new SubmissionError({
@@ -129,7 +137,12 @@ class ReservationOptions extends Component {
         const equipData = this.props.equipmentSelected;
         return (
             <ul className={className}>
-                <label>Equipment Available</label>
+                <label>
+                    {`Equipment Needed`}
+                    {addTooltip(
+                        'Select the equipment you anticipate needing for your reservation.'
+                    )}
+                </label>
                 {fields.map((equipment, index) => (
                     <li key={index} className="multiRowAdd">
                         {`${equipData[index].name} - ${renderPrice(
@@ -200,13 +213,17 @@ class ReservationOptions extends Component {
         label,
         className,
         listing,
+        tooltip,
         reservedTimeSlots,
         meta: { touched, error }
     }) {
         let { startTime } = this.props;
         return (
             <div className={className}>
-                <label>{label}</label>
+                <label>
+                    {label && `${label} `}
+                    {tooltip && addTooltip(tooltip)}
+                </label>
                 <DatePicker
                     customInput={<Input />}
                     selected={input.value}
@@ -242,13 +259,17 @@ class ReservationOptions extends Component {
         input,
         label,
         className,
+        tooltip,
         durationToNext,
         meta: { touched, error }
     }) {
         let { startTime } = this.props;
         return (
             <div className={className}>
-                <label>{label}</label>
+                <label>
+                    {label && `${label} `}
+                    {tooltip && addTooltip(tooltip)}
+                </label>
                 <DatePicker
                     customInput={<Input />}
                     selected={input.value}
@@ -361,9 +382,10 @@ class ReservationOptions extends Component {
 
                 <Flex direction="row">
                     <Flex width={1 / 2} pb={3} mr={4} flexDirection="column">
-                        <label>Doors opening</label>
                         <Field
                             name="startTime"
+                            label="Doors opening"
+                            tooltip="What is the first time you want available for patients to reserve?"
                             dateType="startTime"
                             component={this.renderOpeningTimePicker.bind(this)}
                             listing={listing}
@@ -372,10 +394,11 @@ class ReservationOptions extends Component {
                     </Flex>
 
                     <Flex width={1 / 2} pb={3} ml={4} flexDirection="column">
-                        <label>Doors closing</label>
                         <Field
                             name="endTime"
                             dateType="endTime"
+                            label="Doors closing"
+                            tooltip="What is the last time you want available for patients to reserve?"
                             component={this.renderClosingTimePicker.bind(this)}
                             durationToNext={durationToNextReservation}
                             listing={listing}
@@ -384,10 +407,11 @@ class ReservationOptions extends Component {
                 </Flex>
 
                 <Flex pb={3} flexDirection="column">
-                    <label>Number of chairs needed</label>
                     <Field
                         name={'numChairs'}
                         type="select"
+                        label="Number of chairs needed"
+                        tooltip="If you work in pairs or with an assistant you may prefer to reserve multiple chairs."
                         style={{ display: 'block' }}
                         component={renderSelect}
                     >
@@ -415,7 +439,12 @@ class ReservationOptions extends Component {
 
                 <Flex pt={2}>
                     <Box width={1 / 5}>
-                        <label>Chair Rental Fee</label>
+                        <label>
+                            {`Chair Rental Fee`}
+                            {addTooltip(
+                                'Total price based on hourly price and reservation duration.'
+                            )}
+                        </label>
                         <h6>{renderPrice(this.calcReservationFee())}</h6>
                     </Box>
                     <Box width={1 / 5}>
@@ -423,11 +452,21 @@ class ReservationOptions extends Component {
                         <h6>{renderPrice(this.calcEquipFee())}</h6>
                     </Box>
                     <Box width={1 / 5}>
-                        <label>Cleaning Fee</label>
+                        <label>
+                            {`Cleaning Fee`}
+                            {addTooltip(
+                                'Price charged by host for post-reservation cleanup.'
+                            )}
+                        </label>
                         <h6>{renderPrice(listing.cleaningFee)}</h6>
                     </Box>
                     <Box width={1 / 5}>
-                        <label>Booking Fee *</label>
+                        <label>
+                            {`Booking Fee *`}
+                            {addTooltip(
+                                'Fee for using Laguro services based on reservation cost.'
+                            )}
+                        </label>
                         <h6>{renderPrice(this.calcBookingFee())}</h6>
                     </Box>
                     <Box width={1 / 5}>

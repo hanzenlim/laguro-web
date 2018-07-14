@@ -10,7 +10,7 @@ import { DENTIST } from '../../util/strings';
 import history from '../../history';
 import { filestackKey } from '../../config/keys';
 
-import { renderField } from './sharedComponents';
+import { renderField, addTooltip } from './sharedComponents';
 import { required } from './formValidation';
 
 import { Typography, Grid, Button } from '../common';
@@ -130,6 +130,7 @@ class NewOffice extends Component {
                                     <Field
                                         name="name"
                                         label="Office Name"
+                                        tooltip="What do you want your office to be called?"
                                         placeholder="Bell Center"
                                         component={renderField}
                                         validate={required}
@@ -143,6 +144,7 @@ class NewOffice extends Component {
                                     <Autocomplete
                                         onAutocomplete={this.onAutocomplete}
                                         location={this.state.location}
+                                        tooltip="What is your office's address?"
                                     />
                                     <Padding bottom="16" />
                                 </Grid>
@@ -150,7 +152,12 @@ class NewOffice extends Component {
 
                             <Grid container>
                                 <Grid item xs={12}>
-                                    <label>Featured Office Image</label>
+                                    <label>
+                                        {`Featured Office Image`}
+                                        {addTooltip(
+                                            'Upload images of your office. The first image will show up on search results.'
+                                        )}
+                                    </label>
                                     <div>
                                         <ReactFilestack
                                             apikey={filestackKey}
@@ -168,8 +175,8 @@ class NewOffice extends Component {
                                                 transformations: {
                                                     crop: {
                                                         aspectRatio: 3 / 2,
-                                                        force: true,
-                                                    },
+                                                        force: true
+                                                    }
                                                 },
                                                 uploadInBackground: false,
                                                 storeTo: {

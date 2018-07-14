@@ -95,7 +95,7 @@ class NewOffice extends Component {
                             <Grid item xs={4}>
                                 <Field
                                     name={`${equipment}.name`}
-                                    label="Equipment Available"
+                                    label="Equipment Type"
                                     component={renderSelect}
                                     validate={required}
                                     children={equipmentOptions}
@@ -111,6 +111,7 @@ class NewOffice extends Component {
                                     placeholder="15"
                                     component={renderField}
                                     label="Usage Price"
+                                    tooltip="How much do you want to charge dentists to use this equipment? (one-time charge)"
                                     validate={[required, dollarMinimum]}
                                     format={value => renderPrice(value)}
                                     normalize={value =>
@@ -172,6 +173,7 @@ class NewOffice extends Component {
                                 <Field
                                     name="description"
                                     label="Description (optional)"
+                                    tooltip="Describe a few notable things about your office."
                                     component={renderField}
                                     multiline={true}
                                     rows={2}

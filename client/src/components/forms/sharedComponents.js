@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import moment from 'moment';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import Tooltip from '@material-ui/core/Tooltip';
 import MaskedInput from 'react-text-mask';
 
 import {
@@ -14,10 +15,27 @@ import {
     Checkbox,
     Typography,
     Flex,
-    Box,
+    Box
 } from '../common';
 import equipmentList from '../../staticData/equipmentList';
 import procedureList from '../../staticData/procedureList';
+
+export const addTooltip = (text, fontSize = '0.8rem') => {
+    return (
+        <Tooltip id="tooltip-right" title={text} placement="right">
+            <i
+                className="material-icons tiny"
+                style={{
+                    fontSize: `${fontSize}`,
+                    marginLeft: '3px',
+                    padding: '3px'
+                }}
+            >
+                help_outline
+            </i>
+        </Tooltip>
+    );
+};
 
 export const equipmentOptions = equipmentList.map(equipment => {
     return (
@@ -41,7 +59,7 @@ export const durationOptions = [
     </option>,
     <option value={60} key={60}>
         60 minutes
-    </option>,
+    </option>
 ];
 
 export const generateListItems = set => {
@@ -65,12 +83,12 @@ const getMinTime = (dateType, listing) => {
             .hours(0)
             .minutes(0);
     switch (dateType) {
-        case 'startTime':
-            return moment(listing.startTime);
-        default:
-            return moment()
-                .hours(0)
-                .minutes(0);
+    case 'startTime':
+        return moment(listing.startTime);
+    default:
+        return moment()
+            .hours(0)
+            .minutes(0);
     }
 };
 
@@ -80,12 +98,12 @@ const getMaxTime = (dateType, listing) => {
             .hours(23)
             .minutes(59);
     switch (dateType) {
-        case 'startTime':
-            return moment(listing.endTime).subtract(1, 'hours');
-        default:
-            return moment()
-                .hours(23)
-                .minutes(59);
+    case 'startTime':
+        return moment(listing.endTime).subtract(1, 'hours');
+    default:
+        return moment()
+            .hours(23)
+            .minutes(59);
     }
 };
 
@@ -93,12 +111,16 @@ export const renderDatePicker = ({
     input,
     label,
     className,
+    tooltip,
     dateType,
     listing,
-    meta: { touched, error },
+    meta: { touched, error }
 }) => (
     <div className={className}>
-        <label>{label}</label>
+        <label>
+            {label && `${label} `}
+            {tooltip && addTooltip(tooltip)}
+        </label>
         <DatePicker
             customInput={<Input />}
             selected={input.value}
@@ -123,13 +145,17 @@ export const renderDatePicker = ({
 export const renderField = ({
     input,
     className,
+    tooltip,
     label,
     meta: { touched, error },
     ...custom
 }) => {
     return (
         <Grid className={className} container direction="column">
-            <label>{label}</label>
+            <label>
+                {label && `${label} `}
+                {tooltip && addTooltip(tooltip)}
+            </label>
             <Input {...input} {...custom} />
             {touched && error && <span className="red-text">{error}</span>}
         </Grid>
@@ -141,13 +167,17 @@ export const renderMaskedField = props => {
         input,
         className,
         label,
+        tooltip,
         meta: { touched, error },
         ...custom
     } = props;
 
     return (
         <Grid className={className} container direction="column">
-            <label>{label}</label>
+            <label>
+                {label && `${label} `}
+                {tooltip && addTooltip(tooltip)}
+            </label>
             <MaskedInput {...input} {...custom} />
             {touched && error && <span className="red-text">{error}</span>}
         </Grid>
@@ -173,7 +203,7 @@ export const renderOfficeOptions = offices => {
                 value={JSON.stringify({
                     id: office.id,
                     office_name: office.name,
-                    chairs: office.numChairs,
+                    chairs: office.numChairs
                 })}
                 key={index}
             >
@@ -189,13 +219,17 @@ export const renderSelect = props => {
         input,
         label,
         disabled,
+        tooltip,
         meta: { touched, error },
-        children,
+        children
     } = props;
 
     return (
         <Grid container>
-            <label>{label}</label>
+            <label>
+                {label && `${label} `}
+                {tooltip && addTooltip(tooltip)}
+            </label>
             <Select {...input} disabled={disabled}>
                 {children}
             </Select>
@@ -210,7 +244,11 @@ export const renderInput = ({ input, disabled }) => (
     </Grid>
 );
 
-export const renderCheckbox = ({ label, input: { onChange, value } }) => (
+export const renderCheckbox = ({
+    label,
+    tooltip,
+    input: { onChange, value }
+}) => (
     <Flex alignItems="center">
         <Checkbox
             checked={value ? true : false}
@@ -218,7 +256,9 @@ export const renderCheckbox = ({ label, input: { onChange, value } }) => (
                 onChange(value ? false : true);
             }}
         />
-        <Typography pl={2}>{label}</Typography>
+        <Typography pl={2}>
+            {label} {tooltip && addTooltip(tooltip, '16px')}
+        </Typography>
     </Flex>
 );
 

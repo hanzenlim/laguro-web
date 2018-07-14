@@ -205,6 +205,7 @@ class NewListing extends Component {
                                     <Field
                                         name="startTime"
                                         label="Opening Time"
+                                        tooltip="What is the first time you want your office to be available?"
                                         dateType="startTime"
                                         className="col s12 m6"
                                         component={renderDatePicker}
@@ -216,6 +217,7 @@ class NewListing extends Component {
                                     <Field
                                         name="endTime"
                                         label="Closing Time"
+                                        tooltip="What is the last time you want your office to be available?"
                                         dateType="endTime"
                                         className="col s12 m6"
                                         component={renderDatePicker}
@@ -229,6 +231,7 @@ class NewListing extends Component {
                                     <Field
                                         name="chairHourlyPrice"
                                         label="Price per chair (hourly)"
+                                        tooltip="How much hourly do you want to charge dentists to use a single chair?"
                                         placeholder="100"
                                         component={renderField}
                                         validate={[required, dollarMinimum]}
@@ -244,6 +247,7 @@ class NewListing extends Component {
                                     <Field
                                         name="cleaningFee"
                                         label="Cleaning Fee"
+                                        tooltip="How much do you want to charge dentists for post-reservation clean up?"
                                         placeholder="50"
                                         component={renderField}
                                         validate={[required]}
@@ -259,6 +263,7 @@ class NewListing extends Component {
                                     <Field
                                         name="numChairsAvailable"
                                         label="Number of chairs available"
+                                        tooltip="How many chairs can dentists choose to reserve?"
                                         component={renderField}
                                         placeholder="1"
                                         validate={[
