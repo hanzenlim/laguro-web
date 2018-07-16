@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Field, reduxForm } from 'redux-form';
+import { Field, reduxForm, formValueSelector } from 'redux-form';
 import ReactStars from 'react-stars';
 import styled from 'styled-components';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
@@ -41,18 +41,26 @@ const theme = createMuiTheme({
     }
 });
 
-const TextArea = styled.textarea`
+const StyledTextArea = styled.textarea`
     float: left;
     display: block;
     box-sizing: border-box;
     border: 1px solid #cccccc;
-    height: 3.9rem;
-    padding-left: 10px;
+    ${props => props.larger && 'height: 100px;'}
+    ${props => props.larger && 'line-height: 18px;'}
+    ${props => props.larger && 'padding-top: 10px;'}
+    ${props => !props.larger && 'height: 58px;'}
+    ${props => !props.larger && 'line-height: 45px;'}
     border-radius: 5px;
-    line-height: 45px;
+    padding-left: 10px;
+    padding-right: 120px;
 
     @media screen and (min-width: 600px) {
-        line-height: 54.5px;
+        ${props => props.larger && 'height: 150px;'}
+        ${props => props.larger && 'line-height: 18px;'}
+        ${props => props.larger && 'padding-top: 19px;'}
+        ${props => !props.larger && 'height: 58px;'}
+        ${props => !props.larger && 'line-height: 54px;'}
     }
 `;
 
@@ -92,18 +100,21 @@ class NewReview extends Component {
         className,
         placeholder,
         meta: { touched, error }
-    }) => (
-        <div className={className}>
-            <TextArea {...input} placeholder={placeholder} />
-            {touched && error ? (
-                <StyledPadding top={10}>
-                    <span className="red-text">{error}</span>
-                </StyledPadding>
-            ) : (
-                <StyledPadding />
-            )}
-        </div>
-    );
+    }) => {
+        const larger = this.props.text !== undefined;
+        return (
+            <div data-name="review-input" className={className}>
+                <StyledTextArea {...input} larger={larger} placeholder={placeholder} />
+                {touched && error ? (
+                    <StyledPadding top={10}>
+                        <span className="red-text">{error}</span>
+                    </StyledPadding>
+                ) : (
+                    <StyledPadding />
+                )
+                }
+            </div>
+        );};
 
     ratingChanged = newRating => {
         this.setState({ rating: newRating });
@@ -152,8 +163,10 @@ class NewReview extends Component {
 }
 
 function mapStateToProps(state) {
+    const selector = formValueSelector('newReview');
     return {
-        auth: state.auth
+        auth: state.auth,
+        text: selector(state, 'text')
     };
 }
 
