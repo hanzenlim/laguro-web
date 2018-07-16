@@ -5,8 +5,9 @@ import AddOfficeInfo from './forms/AddOfficeInfo';
 import AddOfficeEquipments from './forms/AddOfficeEquipments';
 import AddOfficeListing from './forms/AddOfficeListing';
 import { ProgressBar } from './common';
-import NewDentist from './forms/NewDentist';
 import dentistProfileExists from '../util/userInfo';
+//eslint-disable-next-line
+import NewDentist from './forms/NewDentist';
 
 const OFFICE_STEP = 'add-office';
 const EQUIPMENT_STEP = 'add-equipments';

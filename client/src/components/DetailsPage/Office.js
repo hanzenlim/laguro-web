@@ -20,15 +20,9 @@ import { Box } from '../common';
 import { Padding } from '../common/Spacing';
 import OfficePlaceholderBig from '../images/office-placeholder-big.png';
 import TopHalfInfo from './TopHalfInfo';
+import isMobile from '../../util/uiUtil';
+//eslint-disable-next-line
 import DetailDetails from './DetailDetails';
-
-let picHeightLet = window.innerWidth * 0.55;
-
-if (window.innerWidth > 600) {
-    picHeightLet = window.innerWidth * 0.37;
-} else {
-    picHeightLet = window.innerWidth * 0.55;
-}
 
 const StyledCarouselImg = styled.img`
     position: absolute;
@@ -39,8 +33,6 @@ const StyledCarouselImg = styled.img`
     left: 0;
     height: auto;
 `;
-
-const picHeight = picHeightLet;
 
 const StyledPicBox = styled(Box)`
     position: relative;
@@ -67,6 +59,9 @@ const StyledCarouselButtonRightIcon = styled(Icon)`
         margin-right: 50px;
     }
 `;
+
+// for each breakpoint, height of picture will be a fractiohn of its width.
+const picRatioArray = [window.innerWidth * 0.55, window.innerWidth * 0.37]
 
 class Office extends Component {
     constructor() {
@@ -120,7 +115,7 @@ class Office extends Component {
             (office && office.imageUrls && office.imageUrls.length === 0)
         ) {
             return [1, 2, 3].map(key => (
-                <StyledPicBox pt={picHeight} key={key}>
+                <StyledPicBox pt={picRatioArray} key={key}>
                     <StyledCarouselImg
                         src={OfficePlaceholderBig}
                         alt="No image available"
@@ -143,7 +138,7 @@ class Office extends Component {
                 }
 
                 return imageUrls.map(url => (
-                    <StyledPicBox pt={picHeight} key={url}>
+                    <StyledPicBox pt={picRatioArray} key={url}>
                         <StyledCarouselImg src={url} alt="No image available" />
                     </StyledPicBox>
                 ));
@@ -190,8 +185,8 @@ class Office extends Component {
                         />
                     )}
                     renderBottomCenterControls={() => <div />}
-                    slidesToShow={window.innerWidth >= 600 ? 3 : 1}
-                    slideWidth={window.innerWidth >= 600 ? 1.88 : 1}
+                    slidesToShow={isMobile() ? 1 : 3}
+                    slideWidth={isMobile() ? 1 : 1.88}
                     cellSpacing={8}
                     cellAlign="center"
                     slideIndex={1}

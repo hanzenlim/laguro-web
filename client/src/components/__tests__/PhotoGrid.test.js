@@ -13,7 +13,7 @@ describe('PhotoGrid Component', () => {
             imageUrl: 'jestUrl',
             chairHourlyPrice: 1000,
             numChairsAvailable: 20,
-            detailPageUrl: `/office/jest1`
+            detailPageUrl: '/office/jest1'
         }
     ];
 
@@ -23,7 +23,7 @@ describe('PhotoGrid Component', () => {
             name: 'jestName',
             location: 'jestLocation',
             imageUrl: 'jestUrl',
-            detailPageUrl: `/office/jest1`,
+            detailPageUrl: '/office/jest1',
             procedures: [
                 {
                     name: 'jestProcedureName',

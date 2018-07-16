@@ -129,7 +129,7 @@ class NewReview extends Component {
                         <div>
                             <Field
                                 name="text"
-                                placeholder={`Write a review`}
+                                placeholder={'Write a review'}
                                 component={this.renderTextArea}
                                 validate={reviewConditions}
                             />

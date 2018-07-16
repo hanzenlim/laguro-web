@@ -8,7 +8,7 @@ import {
 } from '../util/fragments';
 
 const generateOfficeResult = options => {
-    const hostResult = options.includes(HOST) ? `host { id }` : ``;
+    const hostResult = options.includes(HOST) ? 'host { id }' : '';
     const listingsResult = options.includes(LISTINGS)
         ? `listings(${filterActive}) {
             office {

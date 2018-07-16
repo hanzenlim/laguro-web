@@ -153,7 +153,7 @@ class NewOffice extends Component {
                             <Grid container>
                                 <Grid item xs={12}>
                                     <label>
-                                        {`Featured Office Image`}
+                                        {'Featured Office Image'}
                                         {addTooltip(
                                             'Upload images of your office. The first image will show up on search results.'
                                         )}

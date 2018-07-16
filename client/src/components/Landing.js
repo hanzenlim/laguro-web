@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { connect } from "react-redux";
-import * as actions from "../actions";
-import Search from "./Search";
+import { connect } from 'react-redux';
+import * as actions from '../actions';
+import Search from './Search';
 
 import HeroImg from './images/hero-img.png';
 import HeroImgMobile from './images/cta-img-mobile.png';
@@ -37,14 +37,14 @@ export class LandingComponent extends Component {
     }
 
     componentDidMount() {
-        window.addEventListener("resize", this.updateDimensions);
+        window.addEventListener('resize', this.updateDimensions);
         this.props.fetchOffices();
         this.props.fetchActiveDentists();
     }
 
     componentWillUnmount() {
         document.title = 'Laguro - Home';
-        window.removeEventListener("resize", this.updateDimensions);
+        window.removeEventListener('resize', this.updateDimensions);
     }
 
     updateDimensions() {
@@ -72,7 +72,7 @@ export class LandingComponent extends Component {
     }
 
     renderDentistVersion = () =>  {
-        const mainIconWidth = (window.innerWidth >= 541)? "81px" : "45px";
+        const mainIconWidth = (window.innerWidth >= 541)? '81px' : '45px';
         const { dentists } = this.props;
         return (
             <div>
@@ -107,12 +107,12 @@ export class LandingComponent extends Component {
                         </div>
                     </div>
                 </div>
-                <PhotoGrid data-name="dentist-photo-grid" numRow="2" page="landing" objects={dentists} header={"Popular Dentists"} message="No dentist has an available appointmet. Please come back and check again."/>
+                <PhotoGrid data-name="dentist-photo-grid" numRow="2" page="landing" objects={dentists} header={'Popular Dentists'} message="No dentist has an available appointmet. Please come back and check again."/>
             </div>);
     }
 
     renderOfficeVersion = () =>  {
-        const mainIconWidth = (window.innerWidth >= 541)? "81px" : "45px";
+        const mainIconWidth = (window.innerWidth >= 541)? '81px' : '45px';
         const { offices } = this.props;
         return (
             <div>
@@ -147,7 +147,7 @@ export class LandingComponent extends Component {
                     </div>
                 </div>
 
-                <PhotoGrid data-name="office-photo-grid" numRow="2" objects={offices} header={"New Listings"} message="All listings currently sold out! Don't worry, there will be more soon."/>
+                <PhotoGrid data-name="office-photo-grid" numRow="2" objects={offices} header={'New Listings'} message="All listings currently sold out! Don't worry, there will be more soon."/>
             </div>);
     }
 
@@ -182,7 +182,7 @@ function mapStateToProps(state) {
                 imageUrl: office.imageUrls[0],
                 chairHourlyPrice: office.listings.map(listing => listing.chairHourlyPrice).reduce((a, b) => a + b) / office.listings.length,
                 numChairsAvailable: office.listings.map(listing => listing.numChairsAvailable).reduce((a, b) => a + b) / office.listings.length,
-                detailPageUrl: `/office/` + id
+                detailPageUrl: '/office/' + id
             };
         }),
         dentists: state.dentists && state.dentists.dentists && state.dentists.dentists.map(dentist => {
@@ -193,7 +193,7 @@ function mapStateToProps(state) {
                 procedures,
                 imageUrl: dentist.user.imageUrl,
                 name: dentist.user.firstName + ' ' + dentist.user.lastName,
-                detailPageUrl: `/dentist/` + id
+                detailPageUrl: '/dentist/' + id
             };
         })
     };

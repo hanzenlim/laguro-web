@@ -35,25 +35,25 @@ describe('<UploadDocuments />', () => {
         component.instance().generateImageSignature = jest.fn().mockReturnValue(expectedSignedUrl);
 
         const result = {  
-            "filesUploaded":[  
+            'filesUploaded':[  
                 {  
-                    "filename":"myAwesomeImage.png",
-                    "handle":"UoozRgYHTLSgqhtvBNZv",
-                    "mimetype":"image/png",
-                    "originalPath":"Screen Shot 2018-06-14 at 10.36.36 AM.png",
-                    "size":133941,
-                    "source":"local_file_system",
-                    "url":"https://cdn.filestackcontent.com/UoozRgYHTLSgqhtvBNZv",
-                    "uploadId":"662dba5a7bf566931ad9a13c1b9c6344",
-                    "originalFile":{  
-                        "name":"myAwesomeImage.png",
-                        "type":"image/png",
-                        "size":133941
+                    'filename':'myAwesomeImage.png',
+                    'handle':'UoozRgYHTLSgqhtvBNZv',
+                    'mimetype':'image/png',
+                    'originalPath':'Screen Shot 2018-06-14 at 10.36.36 AM.png',
+                    'size':133941,
+                    'source':'local_file_system',
+                    'url':'https://cdn.filestackcontent.com/UoozRgYHTLSgqhtvBNZv',
+                    'uploadId':'662dba5a7bf566931ad9a13c1b9c6344',
+                    'originalFile':{  
+                        'name':'myAwesomeImage.png',
+                        'type':'image/png',
+                        'size':133941
                     },
-                    "status":"Stored"
+                    'status':'Stored'
                 }
             ],
-            "filesFailed":[  
+            'filesFailed':[  
             ]
         }
 

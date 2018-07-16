@@ -162,7 +162,7 @@ class EditOffice extends Component {
 
                             <div className="image_upload">
                                 <label>
-                                    {`Featured Office Image`}
+                                    {'Featured Office Image'}
                                     {addTooltip(
                                         'Upload images of your office. The first image will show up on search results.'
                                     )}

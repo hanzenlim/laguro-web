@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import history from '../history';
 import { mapBoxApiKey } from '../config/keys';
-
+import isMobile from '../util/uiUtil';
 import MapPin from './MapPin';
 
 const StyledPopupOverlay = styled.div`
@@ -69,17 +69,15 @@ class ResultMap extends Component {
     }
 
     resize = () => {
-        const BREAKPOINT = 600;
-
         this.setState({
             viewport: {
                 ...this.state.viewport,
                 width:
-                    window.innerWidth < BREAKPOINT
+                    isMobile()
                         ? window.innerWidth - 16
                         : window.innerWidth / 2 - 12,
                 height:
-                    window.innerWidth < BREAKPOINT
+                    isMobile()
                         ? window.innerHeight - 250
                         : window.innerHeight - 67
             }
