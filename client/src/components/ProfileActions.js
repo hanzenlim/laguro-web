@@ -44,7 +44,7 @@ class ProfileActions extends Component {
         if (
             // eslint-disable-next-line
             confirm(
-                `Are you sure you want to reset your Open Dental password? A new password will be emailed to you.`
+                'Are you sure you want to reset your Open Dental password? A new password will be emailed to you.'
             )
         ) {
             try {
@@ -150,7 +150,7 @@ class ProfileActions extends Component {
                     closeModal={this.closeModal}
                     open={this.state.visibleModal === 'editUser'}
                 />
-                <NewDentist
+                <NewDentistRedux
                     closeModal={this.closeModal}
                     onSuccess={this.closeModal}
                     open={this.state.visibleModal === 'newDentist'}

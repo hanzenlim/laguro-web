@@ -13,9 +13,8 @@ import BookAppointment from '../forms/BookAppointment';
 import * as actions from '../../actions';
 import TopHalfInfo from './TopHalfInfo';
 import LoginModal from '../LoginModal';
+import DetailDetailsRedux from './DetailDetails';
 import { Modal } from '../common';
-//eslint-disable-next-line
-import DetailDetails from './DetailDetails';
 
 class Dentist extends Component {
     constructor(props) {
@@ -112,7 +111,7 @@ class Dentist extends Component {
             <div>
                 <TopHalfInfo type="dentist" obj={dentist} />
 
-                <DetailDetails
+                <DetailDetailsRedux
                     type="dentist"
                     obj={dentist}
                     reviews={reviews}

@@ -6,8 +6,8 @@ import AddOfficeInfo from './forms/AddOfficeInfo';
 import AddOfficeEquipments from './forms/AddOfficeEquipments';
 import AddOfficeListing from './forms/AddOfficeListing';
 import { ProgressBar } from './common';
+import NewDentistRedux from './forms/NewDentist';
 import dentistProfileExists from '../util/userInfo';
-import NewDentist from './forms/NewDentist';
 import history from '../history';
 
 const OFFICE_STEP = 'add-office';
@@ -47,7 +47,7 @@ class LandlordOnboarding extends Component {
         const { auth } = this.props;
 
         return (
-            <NewDentist
+            <NewDentistRedux
                 open={!dentistProfileExists(auth)}
                 closeModal={this.closeCreateProfileModal}
                 onSuccess={this.closeCreateProfileModal}

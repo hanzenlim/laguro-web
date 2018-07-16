@@ -20,16 +20,30 @@ const ListingImage = styled.img`
 `;
 
 class UserOffice extends Component {
+    calculateReservationRefund = reservation => {
+        const ms = moment().diff(moment(reservation.dateCreated));
+        const timeElapsedInHours = moment.duration(ms).asHours();
+        if (timeElapsedInHours < 24) {
+            return 1;
+        }
+        if (timeElapsedInHours < 48) {
+            return 0.5;
+        }
+
+        return 0;
+    };
+
     confirmCancelReservation(reservation) {
+        const reservationRefund = this.calculateReservationRefund(reservation);
         if (
             // eslint-disable-next-line
             confirm(
                 `Are you sure you want to delete reservation for ${moment(
                     reservation.startTime
-                ).format(
-                    'MMM D, h:mm a'
-                )}? Only 50% of your total amount will be refunded. A total amount of ${reservation &&
-                    reservation.totalPaid / 100} will be refunded.`
+                ).format('MMM D, h:mm a')}? ${reservationRefund *
+                    100}% of your total amount will be refunded, a total amount of $${Math.round(
+                    reservation.totalPaid * reservationRefund
+                )}.`
             )
         ) {
             this.props.cancelUserReservation(reservation);
