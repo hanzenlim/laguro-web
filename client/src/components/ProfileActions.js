@@ -9,6 +9,7 @@ import EditDentist from './forms/EditDentist';
 import { Link } from './common';
 import { filestackKey } from '../config/keys';
 import * as actions from '../actions';
+import Provider from '../models/provider';
 
 class ProfileActions extends Component {
     constructor(props) {
@@ -37,6 +38,22 @@ class ProfileActions extends Component {
             this.props.updateUserProfile(userId, { imageUrl: upload.url });
         }
     }
+
+    resetPassword = async () => {
+        if (
+            // eslint-disable-next-line
+            confirm(
+                `Are you sure you want to reset your Open Dental password? A new password will be emailed to you.`
+            )
+        ) {
+            try {
+                await Provider.resetPassword(this.props.auth.dentistId);
+                alert('Check email for you new Open Dental credentials.');
+            } catch (err) {
+                alert('Something went wrong. Please try again later.');
+            }
+        }
+    };
 
     render() {
         const { auth, dentist } = this.props;
@@ -70,6 +87,16 @@ class ProfileActions extends Component {
                             onClick={this.openModal}
                         >
                             Create Dentist Profile
+                        </a>
+                    )}
+
+                    {dentistProfileExists && (
+                        <a
+                            className="link"
+                            data-name="resetProviderPassword"
+                            onClick={this.resetPassword}
+                        >
+                            Reset Open Dental Password
                         </a>
                     )}
 
@@ -138,5 +165,5 @@ class ProfileActions extends Component {
         );
     }
 }
-
+export { ProfileActions };
 export default connect(null, actions)(ProfileActions);

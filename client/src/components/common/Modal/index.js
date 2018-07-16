@@ -2,12 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Modal as MaterialUIModal } from '@material-ui/core';
 import styled from 'styled-components';
-import { fade } from '../../../util/styleUtil'
+import { fade } from '../../../util/styleUtil';
 
 import exitSVG from '../../icons/exit.svg';
 
 const StyledModal = styled(MaterialUIModal)`
-    ${props => props.fade && fade(props.fade)}
+    ${props => props.fade && fade(props.fade)};
 `;
 
 export const StyledModalContent = styled.div`
