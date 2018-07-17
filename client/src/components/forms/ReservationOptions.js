@@ -138,7 +138,7 @@ class ReservationOptions extends Component {
         return (
             <ul className={className}>
                 <label>
-                    {`Equipment Needed`}
+                    {'Equipment Needed'}
                     {addTooltip(
                         'Select the equipment you anticipate needing for your reservation.'
                     )}
@@ -440,7 +440,7 @@ class ReservationOptions extends Component {
                 <Flex pt={2}>
                     <Box width={1 / 5}>
                         <label>
-                            {`Chair Rental Fee`}
+                            {'Chair Rental Fee'}
                             {addTooltip(
                                 'Total price based on hourly price and reservation duration.'
                             )}
@@ -453,7 +453,7 @@ class ReservationOptions extends Component {
                     </Box>
                     <Box width={1 / 5}>
                         <label>
-                            {`Cleaning Fee`}
+                            {'Cleaning Fee'}
                             {addTooltip(
                                 'Price charged by host for post-reservation cleanup.'
                             )}
@@ -462,7 +462,7 @@ class ReservationOptions extends Component {
                     </Box>
                     <Box width={1 / 5}>
                         <label>
-                            {`Booking Fee *`}
+                            {'Booking Fee *'}
                             {addTooltip(
                                 'Fee for using Laguro services based on reservation cost.'
                             )}

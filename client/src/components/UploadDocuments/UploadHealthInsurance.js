@@ -93,9 +93,9 @@ class UploadHealthInsurance extends Component {
 
     async getPatientDocuments(id) {
         let patientDocument = await makeApiCall(queryPatientDocumentQuery, {
-            "input": {
-                "partitionKey": "patientId",
-                "partitionValue": id,
+            'input': {
+                'partitionKey': 'patientId',
+                'partitionValue': id,
             }
         });
 
@@ -164,7 +164,7 @@ class UploadHealthInsurance extends Component {
                         alt="uploadedImage"
                     />
                     <StyledDeleteIcon data-imageindex={key} onClick={this.deleteImage}>
-                        <DeleteIcon style={{"fontSize": "40px"}}/>
+                        <DeleteIcon style={{'fontSize': '40px'}}/>
                     </StyledDeleteIcon>
                 </StyledImageContainer>
             )
@@ -192,9 +192,9 @@ class UploadHealthInsurance extends Component {
         // so we get the patient document by patient id and extract the primary key. We will
         // use the primary key to update the patient document.
         const patientDocResponse = await makeApiCall(queryPatientDocumentQuery, {
-            "input": {
-                "partitionKey": "patientId",
-                "partitionValue": auth && auth.id,
+            'input': {
+                'partitionKey': 'patientId',
+                'partitionValue': auth && auth.id,
             }
         });
 
@@ -207,9 +207,9 @@ class UploadHealthInsurance extends Component {
         // There is no patient document for this user yet. Let's go ahead and create it
         if (!id) {
             response = await makeApiCall(createPatientDocumentQuery, {
-                "input": {
-                    "patientId": auth && auth.id,
-                    "healthInsuranceImages": this.state.urlArr
+                'input': {
+                    'patientId': auth && auth.id,
+                    'healthInsuranceImages': this.state.urlArr
                 }
             });
 

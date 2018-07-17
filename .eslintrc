@@ -17,7 +17,8 @@
         "react/jsx-uses-react": "error",
         "react/jsx-uses-vars": "error",
         "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
-        "import/no-named-as-default": "off"
+        "import/no-named-as-default": "off",
+        "quotes": [2, "single", "avoid-escape"]
     },
     "globals": {
         "document": true,

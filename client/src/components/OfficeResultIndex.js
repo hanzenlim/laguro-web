@@ -14,6 +14,7 @@ import { OFFICE } from '../util/strings';
 
 import { Grid, Typography } from './common';
 import { Padding } from './common/Spacing';
+import isMobile from '../util/uiUtil';
 
 const Container = styled.div`
     padding: 0 7px;
@@ -74,9 +75,7 @@ class OfficeResultIndex extends Component {
     }
 
     renderMap(activeOffices) {
-        const BREAKPOINT = '600';
-
-        if (window.innerWidth < BREAKPOINT && this.state.activeView !== 'map')
+        if (isMobile() && this.state.activeView !== 'map')
             return null;
 
         return (

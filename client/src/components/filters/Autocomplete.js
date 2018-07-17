@@ -46,7 +46,7 @@ class Autocomplete extends Component {
         return (
             <div className="searchModule toggle">
                 <label>
-                    {`Location `}
+                    {'Location '}
                     {tooltip && addTooltip(tooltip)}
                 </label>
                 <PlacesAutocomplete

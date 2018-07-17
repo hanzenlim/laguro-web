@@ -16,8 +16,9 @@ import ReservationOptions from '../forms/ReservationOptions';
 import { Box, Grid, Link, Typography, Button, Flex, Modal } from '../common';
 import OfficePlaceholderBig from '../images/office-placeholder-big.png';
 import Appointments from '../Appointments';
+import isMobile from '../../util/uiUtil';
 //eslint-disable-next-line
-import NewDentist from '../forms/NewDentist';
+import NewDentist from "../forms/NewDentist";
 
 const StyledOfficeFlex = styled(Flex)`
     height: 100%;
@@ -110,6 +111,8 @@ const StyledResButton = StyledAvailButton.extend`
         background-color: #f26b27;
     }
 `;
+
+const reviewPerRow = isMobile() ? 2 : 3;
 
 class DetailDetails extends Component {
     constructor(props) {
@@ -220,16 +223,11 @@ class DetailDetails extends Component {
     handleShowMoreReview() {
         const reviews = this.props.reviews;
         const rowNum = this.state.reviewRowNum;
-        if (
-            reviews &&
-            reviews.length > rowNum * (window.innerWidth > 600 ? 3 : 2)
-        ) {
+        if (reviews && reviews.length > rowNum * reviewPerRow) {
             this.setState({
                 reviewRowNum: Math.min(
                     rowNum + 4,
-                    Math.ceil(
-                        reviews.length / (window.innerWidth > 600 ? 3 : 2)
-                    )
+                    Math.ceil(reviews.length / reviewPerRow)
                 )
             });
         }
@@ -388,37 +386,37 @@ class DetailDetails extends Component {
             <StyledDetailsDiv>
                 {this.props.type === 'office' &&
                     obj.description && (
-                        <Box>
-                            <StyledDetailsHeadingBox fontSize={25}>
+                    <Box>
+                        <StyledDetailsHeadingBox fontSize={25}>
                                 Description
-                            </StyledDetailsHeadingBox>
-                            <hr />
-                            <StyledDescriptionBox
-                                overflow={
-                                    this.state.descShowMore ? 'hidden' : 'auto'
-                                }
-                                maxHeight={this.state.descShowMore ? 68 : 300}
-                            >
-                                {obj.description}
-                            </StyledDescriptionBox>
-                            <Box mb={10} />
-                            {this.state.descShowMore && (
-                                <Box mt={10}>
-                                    <StyledShowMoreBox
-                                        fontSize={1}
-                                        className="center"
-                                        onClick={this.handleShowMoreDescription}
-                                    >
-                                        <StyledDownArrow
-                                            icon="downArrow"
-                                            width="20px"
-                                        />
+                        </StyledDetailsHeadingBox>
+                        <hr />
+                        <StyledDescriptionBox
+                            overflow={
+                                this.state.descShowMore ? 'hidden' : 'auto'
+                            }
+                            maxHeight={this.state.descShowMore ? 68 : 300}
+                        >
+                            {obj.description}
+                        </StyledDescriptionBox>
+                        <Box mb={10} />
+                        {this.state.descShowMore && (
+                            <Box mt={10}>
+                                <StyledShowMoreBox
+                                    fontSize={1}
+                                    className="center"
+                                    onClick={this.handleShowMoreDescription}
+                                >
+                                    <StyledDownArrow
+                                        icon="downArrow"
+                                        width="20px"
+                                    />
                                         Show more
-                                    </StyledShowMoreBox>
-                                </Box>
-                            )}
-                        </Box>
-                    )}
+                                </StyledShowMoreBox>
+                            </Box>
+                        )}
+                    </Box>
+                )}
 
                 <Box mb={40} />
                 <StyledDetailsHeadingBox fontSize={25}>
@@ -493,24 +491,22 @@ class DetailDetails extends Component {
                     )}
                 </StyledReviewsDiv>
                 {reviews.length > 0 &&
-                    reviews.length >
-                        this.state.reviewRowNum *
-                            (window.innerWidth > 600 ? 3 : 2) &&
+                    reviews.length > this.state.reviewRowNum * reviewPerRow &&
                     auth && (
-                        <Box mt={20}>
-                            <StyledShowMoreBox
-                                fontSize={1}
-                                className="center"
-                                onClick={this.handleShowMoreReview}
-                            >
-                                <StyledDownArrow
-                                    icon="downArrow"
-                                    width="20px"
-                                />
+                    <Box mt={20}>
+                        <StyledShowMoreBox
+                            fontSize={1}
+                            className="center"
+                            onClick={this.handleShowMoreReview}
+                        >
+                            <StyledDownArrow
+                                icon="downArrow"
+                                width="20px"
+                            />
                                 Show more
-                            </StyledShowMoreBox>
-                        </Box>
-                    )}
+                        </StyledShowMoreBox>
+                    </Box>
+                )}
 
                 <Modal
                     closable

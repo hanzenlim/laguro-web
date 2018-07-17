@@ -1,3 +1,5 @@
+export const breakPointsInPixels = ['600'];
+
 export default {
     // TODO: Update to use generic color names
     colors: {
@@ -20,6 +22,6 @@ export default {
         bold: 700
     },
     space: [0, 4, 8, 16, 32, 64, 128, 256, 512],
-    breakpoints: ['600px'],
+    breakpoints: breakPointsInPixels.map(breakpoint => breakpoint.toString() + 'px'),
     maxContainerWidth: '960px'
 };

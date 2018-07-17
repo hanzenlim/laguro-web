@@ -5,6 +5,7 @@ import { Padding } from '../common/Spacing';
 import Icon from '../Icon';
 import { Box, Link } from '../common';
 import history from '../../history';
+import isMobile from '../../util/uiUtil';
 
 const StyledProfPic = styled.img`
     border-radius: 50%;
@@ -14,15 +15,13 @@ const StyledProfPic = styled.img`
     height: 150px;
 `;
 
-let padBackToSearchLet = 0;
+let padBackToSearch = 0;
 
-if (window.innerWidth > 600) {
-    padBackToSearchLet = 12;
+if (isMobile()) {
+    padBackToSearch = 0;
 } else {
-    padBackToSearchLet = 0;
+    padBackToSearch = 12;
 }
-
-const padBackToSearch = padBackToSearchLet;
 
 const StyledMapPinIcon = styled(Icon)`
     margin-right: 3px;

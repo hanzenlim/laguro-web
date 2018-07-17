@@ -84,8 +84,8 @@ class ReviewContainer extends Component {
                 <Grid item xs={6} sm={4} key={index}>
                     <Flex>
                         <ReviewBox fontSize={13}>
-                            <Typography pr={1} fontSize={17} fontWeight={"bold"} truncate>
-                                {review && review.reviewer && (review.reviewer.firstName + " " + review.reviewer.lastName)}
+                            <Typography pr={1} fontSize={17} fontWeight={'bold'} truncate>
+                                {review && review.reviewer && (review.reviewer.firstName + ' ' + review.reviewer.lastName)}
                             </Typography>
                             <Padding bottom={10} />
                             <ReviewContentDiv

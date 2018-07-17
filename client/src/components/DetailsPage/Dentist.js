@@ -13,8 +13,9 @@ import BookAppointment from '../forms/BookAppointment';
 import * as actions from '../../actions';
 import TopHalfInfo from './TopHalfInfo';
 import LoginModal from '../LoginModal';
-import DetailDetails from './DetailDetails';
 import { Modal } from '../common';
+//eslint-disable-next-line
+import DetailDetails from './DetailDetails';
 
 class Dentist extends Component {
     constructor(props) {

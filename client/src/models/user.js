@@ -20,7 +20,7 @@ const generateUserResult = options => {
         ? `paymentOptions {${paymentOptionFragment}}`
         : '';
     const loginLinkResult = options.includes(PAYOUT_LOGIN)
-        ? `payoutLoginLink`
+        ? 'payoutLoginLink'
         : '';
     const appointmentResult = options.includes(APPOINTMENTS)
         ? `appointments {${appointmentFragment}}`

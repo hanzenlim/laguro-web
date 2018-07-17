@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import ReactFilestack from 'filestack-react';
 
 import EditUser from './forms/EditUser';
+//eslint-disable-next-line
 import NewDentist from './forms/NewDentist';
 import EditDentist from './forms/EditDentist';
 
@@ -130,7 +131,7 @@ class ProfileActions extends Component {
                         ''
                     )}
 
-                    <Link className="link" to={`/payment-history`}>
+                    <Link className="link" to={'/payment-history'}>
                         View payment history
                     </Link>
 
