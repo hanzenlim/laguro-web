@@ -199,7 +199,7 @@ class OfficeResultIndex extends Component {
         if (filters.date) {
             filterDate = moment(filters.date);
         }
-        if (!filterDate && filters.values) {
+        if (!filterDate && filters.values && filters.values.date) {
             filterDate = moment(filters.values.date);
         }
         if (filterDate) {
