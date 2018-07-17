@@ -53,12 +53,19 @@ class Dentist extends Component {
 
         const { auth } = this.props;
         if (auth) {
-            this.props.fetchUser(auth.googleId, APPOINTMENTS);
+            this.setState({ isAppointmentLoading: true });
+            this.props.fetchUser(auth.googleId, APPOINTMENTS).then(() => {
+                this.setState({ isAppointmentLoading: false });
+            });
         }
     }
 
     // check if user has had an appointment before, or has one currently with this dentist
     isUserVerified = () => {
+        if (this.state.isAppointmentLoading) {
+            return false;
+        }
+
         const { appointments } = this.props;
         if (appointments) {
             for (let appt of appointments) {
