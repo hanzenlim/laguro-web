@@ -9,7 +9,7 @@ import {
 } from 'redux-form';
 import { isEmpty } from 'lodash';
 import { Modal } from '../common';
-import Autocomplete from '../filters/Autocomplete';
+import ReduxAutocomplete from '../filters/ReduxAutocomplete';
 import { required } from './formValidation';
 import * as actions from '../../actions';
 import { renderField, renderProcedureSelector } from './sharedComponents';
@@ -94,18 +94,9 @@ class EditDentist extends Component {
                         <div className="col s12 m12">
                             <Field
                                 name="location"
-                                component={props => {
-                                    const { onChange, value } = props.input;
-                                    return (
-                                        <Autocomplete
-                                            tooltip="This is the location patients will find you at in search if you do not have any reservations."
-                                            onAutocomplete={location =>
-                                                onChange(location)
-                                            }
-                                            location={value}
-                                        />
-                                    );
-                                }}
+                                component={ReduxAutocomplete}
+                                validate={required}
+                                tooltip="This is the location patients will find you at in search if you do not have any reservations."
                             />
                         </div>
                     </div>

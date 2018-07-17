@@ -7,7 +7,7 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 
 import { reviewConditions } from './formValidation';
-import * as actions from '../../actions';
+import { createReview } from '../../actions';
 import { Grid } from '../common/';
 import { Padding } from '../common/Spacing';
 
@@ -104,17 +104,21 @@ class NewReview extends Component {
         const larger = this.props.text !== undefined;
         return (
             <div data-name="review-input" className={className}>
-                <StyledTextArea {...input} larger={larger} placeholder={placeholder} />
+                <StyledTextArea
+                    {...input}
+                    larger={larger}
+                    placeholder={placeholder}
+                />
                 {touched && error ? (
                     <StyledPadding top={10}>
                         <span className="red-text">{error}</span>
                     </StyledPadding>
                 ) : (
                     <StyledPadding />
-                )
-                }
+                )}
             </div>
-        );};
+        );
+    };
 
     ratingChanged = newRating => {
         this.setState({ rating: newRating });
@@ -173,4 +177,4 @@ function mapStateToProps(state) {
 export default reduxForm({
     form: 'newReview',
     reviewConditions
-})(connect(mapStateToProps, actions)(NewReview));
+})(connect(mapStateToProps, { createReview })(NewReview));
