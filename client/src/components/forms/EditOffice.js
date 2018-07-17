@@ -5,14 +5,12 @@ import styled from 'styled-components';
 import ReactFilestack from 'filestack-react';
 import * as actions from '../../actions';
 import { filestackKey } from '../../config/keys';
-import { renderPrice, removeSpecialChars } from '../../util/paymentUtil';
 import { Typography, Grid, Button, Box } from '../common';
 import { Padding } from '../common/Spacing';
 import {
     renderField,
     charCount,
-    renderSelect,
-    equipmentOptions,
+    renderEquipmentSelector,
     addTooltip
 } from './sharedComponents';
 import { required } from './formValidation';
@@ -101,54 +99,6 @@ class EditOffice extends Component {
         });
     }
 
-    renderEquipmentSelector = ({ fields, meta: { error } }) => (
-        <ul>
-            <label>{`Equipment Available`}</label>
-            {fields.map((equipment, index) => (
-                <li key={index} className="multiRowAdd">
-                    <Field
-                        name={`${equipment}.name`}
-                        label="Equipment Type"
-                        component={renderSelect}
-                        validate={required}
-                        children={equipmentOptions}
-                    />
-                    <Field
-                        name={`${equipment}.price`}
-                        type="text"
-                        placeholder="15"
-                        component={renderField}
-                        label="Usage Price"
-                        tooltip="How much do you want to charge dentists to use this equipment? (one-time charge)"
-                        validate={[required]}
-                        format={value => renderPrice(value)}
-                        normalize={value => removeSpecialChars(value)}
-                    />
-                    <button
-                        type="button"
-                        title="Remove Equipment"
-                        className="red lighten-3 waves-effect btn"
-                        onClick={() => fields.remove(index)}
-                    >
-                        <i className="material-icons tiny">delete_forever</i>
-                    </button>
-                </li>
-            ))}
-            <li>
-                <Box ml={4}>
-                    <button
-                        type="button"
-                        className="waves-effect btn-flat"
-                        onClick={() => fields.push({})}
-                    >
-                        Add Equipment
-                    </button>
-                </Box>
-                {error && <span>{error}</span>}
-            </li>
-        </ul>
-    );
-
     render() {
         const { handleSubmit, submitting, error } = this.props;
 
@@ -203,9 +153,10 @@ class EditOffice extends Component {
 
                             <div className="row">
                                 <FieldArray
-                                    name="equipment"
                                     className="col s12"
-                                    component={this.renderEquipmentSelector}
+                                    name="equipment"
+                                    selected={this.props.equipment}
+                                    component={renderEquipmentSelector}
                                 />
                             </div>
 
@@ -285,6 +236,7 @@ const mapStateToProps = state => {
     return {
         auth: state.auth,
         office: state.offices.selected,
+        equipment: selector(state, 'equipment'),
         description: selector(state, 'description')
     };
 };

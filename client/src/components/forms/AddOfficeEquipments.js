@@ -5,20 +5,15 @@ import styled from 'styled-components';
 import queryString from 'query-string';
 import * as actions from '../../actions';
 import history from '../../history';
-import { renderPrice, removeSpecialChars } from '../../util/paymentUtil';
-
 import {
     renderField,
-    renderSelect,
-    charCount,
-    equipmentOptions
+    renderEquipmentSelector,
+    charCount
 } from './sharedComponents';
-import { required, dollarMinimum } from './formValidation';
 
 import { Box, Typography, Grid, Button } from '../common';
 import { Padding } from '../common/Spacing';
 
-import exitSVG from '../icons/exit.svg';
 import equipmentSVG from '../icons/equipment.svg';
 
 const StyledContainer = styled.div`
@@ -27,12 +22,6 @@ const StyledContainer = styled.div`
     max-width: 1080px;
     padding: 5em 10px;
     margin: 0 auto;
-`;
-
-const StyledRemoveStaffIcon = styled.button`
-    background: none;
-    border: none;
-    cursor: pointer;
 `;
 
 const StyledImage = styled.img`
@@ -86,70 +75,6 @@ class NewOffice extends Component {
         history.push(`/landlord-onboarding/add-office?${params}`);
     };
 
-    renderEquipmentSelector = ({ fields, className }) => {
-        return (
-            <ul className={className}>
-                {fields.map((equipment, index) => (
-                    <li key={index}>
-                        <Grid container alignItems="flex-end">
-                            <Grid item xs={4}>
-                                <Field
-                                    name={`${equipment}.name`}
-                                    label="Equipment Type"
-                                    component={renderSelect}
-                                    validate={required}
-                                    children={equipmentOptions}
-                                />
-
-                                <Padding bottom="16" />
-                            </Grid>
-                            <Grid item xs={1} />
-                            <Grid item xs={4}>
-                                <Field
-                                    name={`${equipment}.price`}
-                                    type="text"
-                                    placeholder="15"
-                                    component={renderField}
-                                    label="Usage Price"
-                                    tooltip="How much do you want to charge dentists to use this equipment? (one-time charge)"
-                                    validate={[required, dollarMinimum]}
-                                    format={value => renderPrice(value)}
-                                    normalize={value =>
-                                        removeSpecialChars(value)
-                                    }
-                                />
-                                <Padding bottom="16" />
-                            </Grid>
-                            <Grid item xs={1} />
-                            <Grid item xs={2}>
-                                <StyledRemoveStaffIcon
-                                    type="button"
-                                    title="Remove Equipment"
-                                    onClick={() => fields.remove(index)}
-                                >
-                                    <img src={exitSVG} alt="Remove Equipment" />
-                                </StyledRemoveStaffIcon>
-                                <Padding bottom="16" />
-                            </Grid>
-                        </Grid>
-                    </li>
-                ))}
-                <li>
-                    <Button
-                        type="button"
-                        color="primary"
-                        onClick={() =>
-                            fields.push({ name: 'Digital X-Ray', price: 2000 })
-                        }
-                    >
-                        Add Equipment
-                    </Button>
-                </li>
-                <Padding bottom="16" />
-            </ul>
-        );
-    };
-
     render() {
         const { handleSubmit, submitting } = this.props;
         const { location } = this.urlParams;
@@ -177,7 +102,6 @@ class NewOffice extends Component {
                                     component={renderField}
                                     multiline={true}
                                     rows={2}
-                                    charCount={true}
                                     inputProps={{
                                         maxLength: 500
                                     }}
@@ -196,7 +120,8 @@ class NewOffice extends Component {
                             <div className="row">
                                 <FieldArray
                                     name="equipment"
-                                    component={this.renderEquipmentSelector}
+                                    selected={this.props.equipment}
+                                    component={renderEquipmentSelector}
                                 />
                             </div>
 
