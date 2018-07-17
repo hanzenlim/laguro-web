@@ -1,24 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import styled from 'styled-components';
-import { Field, FieldArray, reduxForm, SubmissionError } from 'redux-form';
-import { Flex, Modal } from '../common';
+import {
+    Field,
+    FieldArray,
+    reduxForm,
+    SubmissionError,
+    formValueSelector
+} from 'redux-form';
+import { Modal } from '../common';
 import Autocomplete from '../filters/Autocomplete';
 import * as actions from '../../actions';
 import { DENTIST } from '../../util/strings';
 import { required } from './formValidation';
-import {
-    renderField,
-    durationOptions,
-    procedureOptions,
-    renderSelect,
-    addTooltip
-} from './sharedComponents';
+import { renderField, renderProcedureSelector } from './sharedComponents';
 import dentistProfileExists from '../../util/userInfo';
-
-const StyledBox = styled(Flex)`
-    line-height: 36px;
-`;
 
 class NewDentist extends Component {
     constructor(props) {
@@ -31,7 +26,8 @@ class NewDentist extends Component {
 
     async componentWillMount() {
         this.props.initialize({
-            specialty: 'General Dentist'
+            specialty: 'General Dentist',
+            procedures: [{ name: 'Exam/Cleaning', duration: 60 }]
         });
     }
 
@@ -64,58 +60,6 @@ class NewDentist extends Component {
             this.props.onSuccess();
         }
     }
-
-    renderProcedureSelector = ({ fields, className, meta: { error } }) => (
-        <ul className={className}>
-            <label>
-                {`Procedures Offered`}
-                {addTooltip(
-                    'List all the procedures you want patients to be able to book with you and the estimated time it takes you to complete each.'
-                )}
-            </label>
-            {fields.map((procedure, index) => (
-                <li key={index} className="multiRowAdd">
-                    <Field
-                        name={`${procedure}.name`}
-                        component={renderSelect}
-                        children={procedureOptions}
-                        validate={required}
-                    />
-                    <Field
-                        name={`${procedure}.duration`}
-                        component={renderSelect}
-                        children={durationOptions}
-                    />
-                    <button
-                        type="button"
-                        title="Remove Procedure"
-                        className="red lighten-3 waves-effect btn"
-                        onClick={() => fields.remove(index)}
-                    >
-                        <i className="material-icons tiny">delete_forever</i>
-                    </button>
-                </li>
-            ))}
-            <li>
-                <Flex mt={1}>
-                    <button
-                        type="button"
-                        className="waves-effect btn light-blue lighten-2"
-                        onClick={() =>
-                            fields.push({ name: 'Exam/Cleaning', duration: 60 })
-                        }
-                    >
-                        Add Procedure
-                    </button>
-                    {error && (
-                        <StyledBox ml={2} className="red-text">
-                            {error}
-                        </StyledBox>
-                    )}
-                </Flex>
-            </li>
-        </ul>
-    );
 
     render() {
         const {
@@ -165,7 +109,8 @@ class NewDentist extends Component {
                             <FieldArray
                                 name="procedures"
                                 className="col s12"
-                                component={this.renderProcedureSelector}
+                                component={renderProcedureSelector}
+                                selected={this.props.procedures}
                                 validate={required}
                             />
                         </div>
@@ -189,7 +134,14 @@ class NewDentist extends Component {
     }
 }
 
+const mapStateToProps = state => {
+    const selector = formValueSelector('newDentist');
+    return {
+        procedures: selector(state, 'procedures')
+    };
+};
+
 export { NewDentist };
 export default reduxForm({
     form: 'newDentist'
-})(connect(null, actions)(NewDentist));
+})(connect(mapStateToProps, actions)(NewDentist));

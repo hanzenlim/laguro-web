@@ -6,6 +6,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Tooltip from '@material-ui/core/Tooltip';
 import MaskedInput from 'react-text-mask';
+import { Field } from 'redux-form';
 
 import {
     Input,
@@ -15,10 +16,25 @@ import {
     Checkbox,
     Typography,
     Flex,
+    Button,
     Box
 } from '../common';
+import { Padding } from '../common/Spacing';
+import { renderPrice, removeSpecialChars } from '../../util/paymentUtil';
+import { required, dollarMinimum } from './formValidation';
+import exitSVG from '../icons/exit.svg';
 import equipmentList from '../../staticData/equipmentList';
 import procedureList from '../../staticData/procedureList';
+
+const StyledRemoveButton = styled.button`
+    background: none;
+    border: none;
+    cursor: pointer;
+`;
+
+const StyledBox = styled(Flex)`
+    line-height: 36px;
+`;
 
 export const addTooltip = (text, fontSize = '0.8rem') => {
     return (
@@ -37,21 +53,149 @@ export const addTooltip = (text, fontSize = '0.8rem') => {
     );
 };
 
-export const equipmentOptions = equipmentList.map(equipment => {
-    return (
-        <Option value={equipment.name} key={equipment.id}>
-            {equipment.name}
-        </Option>
-    );
-});
+export const renderOptionsFromList = (list, selected = null) => {
+    return list.map(object => {
+        return (
+            <Option
+                value={object.name}
+                key={object.id}
+                disabled={checkIfAlreadySelected(object.name, selected)}
+            >
+                {object.name}
+            </Option>
+        );
+    });
+};
 
-export const procedureOptions = procedureList.map(procedure => {
+export const checkIfAlreadySelected = (objectName, selectedObjects) => {
+    // get list of all currently selected equipment from the form reducer
+    if (!selectedObjects) return false;
+    // parse out a list of names
+    let selectedNames = selectedObjects.map(obj => obj.name);
+    // return true if that option is already selected, otherwise false
+    return selectedNames.includes(objectName);
+};
+
+export const renderEquipmentSelector = ({
+    fields,
+    className,
+    selected,
+    meta: { error }
+}) => {
     return (
-        <Option value={procedure.name} key={procedure.id}>
-            {procedure.name}
-        </Option>
+        <ul className={className}>
+            {fields.map((equipment, index) => (
+                <li key={index}>
+                    <Grid container alignItems="flex-end">
+                        <Grid item xs={4}>
+                            <Field
+                                name={`${equipment}.name`}
+                                component={renderSelect}
+                                validate={required}
+                            >
+                                {renderOptionsFromList(equipmentList, selected)}
+                            </Field>
+
+                            <Padding bottom="16" />
+                        </Grid>
+                        <Grid item xs={1} />
+                        <Grid item xs={4}>
+                            <Field
+                                name={`${equipment}.price`}
+                                type="text"
+                                placeholder="15"
+                                component={renderField}
+                                label="Usage Price"
+                                tooltip="How much do you want to charge dentists to use this equipment? (one-time charge)"
+                                validate={[required, dollarMinimum]}
+                                format={value => renderPrice(value)}
+                                normalize={value => removeSpecialChars(value)}
+                            />
+                            <Padding bottom="16" />
+                        </Grid>
+                        <Grid item xs={1} />
+                        <Grid item xs={2}>
+                            <StyledRemoveButton
+                                type="button"
+                                title="Remove Equipment"
+                                onClick={() => fields.remove(index)}
+                            >
+                                <img src={exitSVG} alt="Remove Equipment" />
+                            </StyledRemoveButton>
+                            <Padding bottom="16" />
+                        </Grid>
+                    </Grid>
+                </li>
+            ))}
+            <li>
+                <Button
+                    type="button"
+                    color="primary"
+                    onClick={() => fields.push({ name: '', price: 2000 })}
+                >
+                    Add Equipment
+                </Button>
+            </li>
+            {error && <span>{error}</span>}
+            <Padding bottom="16" />
+        </ul>
     );
-});
+};
+
+export const renderProcedureSelector = ({
+    fields,
+    className,
+    selected,
+    meta: { error }
+}) => (
+    <ul className={className}>
+        <label>
+            {`Procedures Offered`}
+            {addTooltip(
+                'List all the procedures you want patients to be able to book with you and the estimated time it takes you to complete each.'
+            )}
+        </label>
+        {fields.map((procedure, index) => (
+            <li key={index} className="multiRowAdd">
+                <Field
+                    name={`${procedure}.name`}
+                    component={renderSelect}
+                    validate={required}
+                >
+                    {renderOptionsFromList(procedureList, selected)}
+                </Field>
+                <Field
+                    name={`${procedure}.duration`}
+                    component={renderSelect}
+                    children={durationOptions}
+                />
+                <StyledRemoveButton
+                    type="button"
+                    title="Remove Equipment"
+                    onClick={() => fields.remove(index)}
+                >
+                    <img src={exitSVG} alt="Remove Equipment" />
+                </StyledRemoveButton>
+            </li>
+        ))}
+        <li>
+            <Flex mt={1}>
+                <button
+                    type="button"
+                    className="waves-effect btn light-blue lighten-2"
+                    onClick={() => fields.push({ name: '', duration: 60 })}
+                >
+                    Add Procedure
+                </button>
+                {error && (
+                    <StyledBox ml={2} className="red-text">
+                        {error}
+                    </StyledBox>
+                )}
+            </Flex>
+        </li>
+    </ul>
+);
 
 export const durationOptions = [
     <option value={30} key={30}>
