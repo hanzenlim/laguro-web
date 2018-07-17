@@ -86,9 +86,12 @@ const updateListingQuery = `
     }
 `;
 
-const deleteListingQuery = `
-    mutation DeleteListing($id: String!) {
-        deleteListing(id: $id)
+const cancelListingQuery = `
+    mutation CancelListing($input: CancelListingInput!) {
+        cancelListing(input: $input) {
+            id
+            status
+        }
     }
 `;
 
@@ -131,10 +134,12 @@ const Listing = {
         return response.data.updateListingQuery;
     },
     delete: async listingId => {
-        const response = await makeApiCall(deleteListingQuery, {
-            id: listingId
+        const response = await makeApiCall(cancelListingQuery, {
+            input: {
+                id: listingId
+            }
         });
-        return response.data.deleteListing;
+        return response.data.cancelListing;
     }
 };
 

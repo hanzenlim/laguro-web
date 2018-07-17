@@ -73,13 +73,20 @@ class Office extends Component {
         super();
         this.state = {
             reviewRowNum: 1,
-            isModalOpen: false
+            isModalOpen: false,
+            isLoading: true
         };
     }
 
     componentDidMount() {
+        this.loadOffice();
+    }
+
+    async loadOffice() {
         this.office_id = this.props.match.params.office_id;
-        this.props.getOffice(this.office_id, REVIEWS, HOST);
+        this.props.getOffice(this.office_id, REVIEWS, HOST).then(() => {
+            this.setState({ isLoading: false });
+        });
         this.props.queryListings(OFFICE_ID, this.office_id, {
             sortKey: END_TIME,
             rangeStart: moment()
@@ -155,6 +162,11 @@ class Office extends Component {
     render() {
         let { office, auth, reviews, listings } = this.props;
         const office_id = this.props.match.params.office_id;
+
+        if (this.state.isLoading) {
+            return <div />;
+        }
+
         if (office.id && office.id.valueOf() !== office_id.valueOf()) {
             office = {};
             listings = [];
@@ -198,22 +210,30 @@ class Office extends Component {
                 >
                     {this.renderImages(office)}
                 </StyledCarousel>
-
                 <TopHalfInfo type="office" obj={office} />
 
                 <Padding bottom={12} />
-
-                <DetailDetails
-                    type="office"
-                    auth={auth}
-                    obj={office}
-                    reviews={reviews}
-                    listings={listings}
-                    ownPage={
-                        auth && office.host && auth.dentistId === office.host.id
-                    }
-                    isUserVerified={this.isUserVerified()}
-                />
+                {office.status === ACTIVE ? (
+                    <DetailDetails
+                        type="office"
+                        auth={auth}
+                        obj={office}
+                        reviews={reviews}
+                        listings={listings}
+                        ownPage={
+                            auth &&
+                            office.host &&
+                            auth.dentistId === office.host.id
+                        }
+                        isUserVerified={this.isUserVerified()}
+                    />
+                ) : (
+                    <div className="center red-text">
+                        <h5>
+                            <strong>This office is no longer active.</strong>
+                        </h5>
+                    </div>
+                )}
             </div>
         );
     }

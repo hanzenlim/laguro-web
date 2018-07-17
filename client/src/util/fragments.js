@@ -13,6 +13,17 @@ options: {
     ]
 }`;
 
+export const activeOfficeFilter = `
+    options: {
+        filters: [
+            {
+                filterKey: "${STATUS}",
+                filterValue: "${ACTIVE}"
+            }
+        ]
+    }
+`;
+
 export const userFragment = `
     id
     firstName
@@ -48,26 +59,27 @@ export const listingFragment = `
     numChairsAvailable
     chairHourlyPrice
     cleaningFee
+    status
     startTime
     endTime
     dateCreated
 `;
 
 export const officeFragment = `
-id
-name
-location
-equipment {
+    id
     name
-    price
-}
-description
-reviews {
-    rating
-}
-imageUrls
-status
-dateCreated
+    location
+    equipment {
+        name
+        price
+    }
+    description
+    reviews {
+        rating
+    }
+    imageUrls
+    status
+    dateCreated
 `;
 
 export const appointmentFragment = `
@@ -211,7 +223,7 @@ export const paymentFragment = `
 
 export const dentistProfilePageFragment = `
     ${dentistFragment}
-    offices {
+    offices(${activeOfficeFilter}) {
         ${officeFragment}
         listings(${filterActive}) {
             ${listingFragment}
