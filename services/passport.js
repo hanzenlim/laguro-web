@@ -11,8 +11,8 @@ const getUserVariable = serverDataLoader.getUserVariable;
 const getUserByGoogleIdVariable = serverDataLoader.getUserByGoogleIdVariable;
 const getUserByEmailQuery = serverDataLoader.getUserByEmailQuery;
 const getUserByEmailVariable = serverDataLoader.getUserByEmailVariable;
-const createUserQuery = serverDataLoader.createUserQuery;
-const createUserVariable = serverDataLoader.createUserVariable;
+const createGoogleUserQuery = serverDataLoader.createGoogleUserQuery;
+const createGoogleUserVariable = serverDataLoader.createGoogleUserVariable;
 
 const createLocalUserQuery = serverDataLoader.createLocalUserQuery;
 const createLocalUserVariable = serverDataLoader.createLocalUserVariable;
@@ -37,7 +37,7 @@ passport.use(
             clientID: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
             callbackURL: '/auth/google/callback',
-            proxy: true,
+            proxy: true
         },
 
         async (accessToken, refreshToken, profile, done) => {
@@ -57,8 +57,8 @@ passport.use(
 
             // Create a brand new user.
             result = await makeMutation(
-                createUserQuery,
-                createUserVariable(
+                createGoogleUserQuery,
+                createGoogleUserVariable(
                     profile.name.givenName,
                     profile.name.familyName,
                     profile.id,
@@ -67,7 +67,7 @@ passport.use(
                 )
             );
 
-            done(null, result.data.createUser);
+            done(null, result.data.createGoogleUser);
         }
     )
 );
@@ -87,7 +87,7 @@ passport.use(
 
             if (getUserByEmail) {
                 return done(null, false, {
-                    message: 'This email address is already registered.',
+                    message: 'This email address is already registered.'
                 });
             }
 
@@ -132,14 +132,14 @@ passport.use(
 
             if (!getUserByEmail) {
                 return done(null, false, {
-                    message: 'Invalid username/password.',
+                    message: 'Invalid username/password.'
                 });
             }
 
             if (getUserByEmail && getUserByEmail.googleId) {
                 return done(null, false, {
                     message:
-                        'Either the credentials you supplied are invalid, or you signed up using an OpenID provider, such as Google.',
+                        'Either the credentials you supplied are invalid, or you signed up using an OpenID provider, such as Google.'
                 });
             }
 
@@ -150,7 +150,7 @@ passport.use(
                 )
             ) {
                 return done(null, false, {
-                    message: 'Invalid username/password.',
+                    message: 'Invalid username/password.'
                 });
             }
 
