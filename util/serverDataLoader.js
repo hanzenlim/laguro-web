@@ -38,7 +38,6 @@ module.exports.getUserByGoogleIdQuery = `
     }
 `;
 
-
 module.exports.getUserByEmailQuery = `
     query getUserByEmail($email: String!) {
         getUserByEmail(email: $email) {
@@ -52,7 +51,7 @@ module.exports.getUserByEmailQuery = `
 `;
 
 module.exports.getUserByGoogleIdVariable = id => ({
-    googleId: id.toString(),
+    googleId: id.toString()
 });
 
 module.exports.getResetPasswordRequestQuery = `
@@ -66,20 +65,20 @@ module.exports.getResetPasswordRequestQuery = `
 `;
 
 module.exports.getUserVariable = id => ({
-    id: id.toString(),
+    id: id.toString()
 });
 
 module.exports.getUserByEmailVariable = email => ({
-    email: email,
+    email: email
 });
 
-module.exports.getResetPasswordRequestVariable = (id) => ({
-    id: id.toString(),
+module.exports.getResetPasswordRequestVariable = id => ({
+    id: id.toString()
 });
 
-module.exports.createUserQuery = `
-    mutation createUser($input: CreateUserInput!) {
-        createUser(input: $input) {
+module.exports.createGoogleUserQuery = `
+    mutation createGoogleUser($input: CreateGoogleUserInput!) {
+        createGoogleUser(input: $input) {
             id
             googleId
             email
@@ -123,14 +122,20 @@ module.exports.useResetPasswordRequestQuery = `
     }
 `;
 
-module.exports.createUserVariable = (firstName, lastName, id, email, img) => ({
+module.exports.createGoogleUserVariable = (
+    firstName,
+    lastName,
+    id,
+    email,
+    img
+) => ({
     input: {
         firstName,
         lastName,
         googleId: id,
         email,
-        imageUrl: img,
-    },
+        imageUrl: img
+    }
 });
 
 module.exports.createLocalUserVariable = (
@@ -143,34 +148,34 @@ module.exports.createLocalUserVariable = (
         firstName,
         lastName,
         password,
-        email,
-    },
+        email
+    }
 });
 
 module.exports.updatePatientDocumentSignatureVariable = signatureRequestId => ({
     input: {
-        signatureRequestId: signatureRequestId,
-    },
+        signatureRequestId: signatureRequestId
+    }
 });
 
 module.exports.createResetPasswordRequestVariable = email => ({
     input: {
-        email,
-    },
+        email
+    }
 });
 
 module.exports.useResetPasswordRequestVariable = (id, token, password) => ({
     input: {
         id,
         token,
-        password,
-    },
+        password
+    }
 });
 
 module.exports.makeQuery = async (query, variables) => {
     let result = await apolloFetch({
         query,
-        variables,
+        variables
     });
 
     return result;
@@ -179,7 +184,7 @@ module.exports.makeQuery = async (query, variables) => {
 module.exports.makeMutation = async (query, variables) => {
     let result = await apolloFetch({
         query,
-        variables,
+        variables
     });
 
     return result;
