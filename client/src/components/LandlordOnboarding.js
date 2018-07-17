@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
+import queryString from 'query-string';
 import AddOfficeInfo from './forms/AddOfficeInfo';
 import AddOfficeEquipments from './forms/AddOfficeEquipments';
 import AddOfficeListing from './forms/AddOfficeListing';
 import { ProgressBar } from './common';
 import dentistProfileExists from '../util/userInfo';
-//eslint-disable-next-line
 import NewDentist from './forms/NewDentist';
+import history from '../history';
 
 const OFFICE_STEP = 'add-office';
 const EQUIPMENT_STEP = 'add-equipments';
@@ -26,6 +27,14 @@ class LandlordOnboarding extends Component {
     constructor() {
         super();
         this.state = { isModalOpen: true };
+    }
+
+    // isExistingOffice is true if officeId defined (when adding new listing)
+    isExistingOffice() {
+        this.urlParams = queryString.parse(history.location.search);
+        const { officeId } = this.urlParams;
+
+        return officeId !== undefined;
     }
 
     closeCreateProfileModal = () => {
@@ -51,13 +60,7 @@ class LandlordOnboarding extends Component {
     };
 
     render() {
-        const { pathname } = this.props.location;
-
-        const pathIndex = pathname.indexOf('/', 1);
-        let step = '';
-        if (pathIndex && pathIndex < pathname.length - 1) {
-            step = pathname.substring(pathIndex + 1);
-        }
+        let step = this.props.computedMatch.params.step;
 
         let percent = DEFAULT_PERCENTAGE;
         switch (step) {
@@ -77,7 +80,7 @@ class LandlordOnboarding extends Component {
         return (
             <StyledContainer>
                 {this.renderCreateProfileModal()}
-                <ProgressBar percent={percent} />
+                {!this.isExistingOffice() && <ProgressBar percent={percent} />}
                 {step === OFFICE_STEP && <AddOfficeInfo />}
                 {step === EQUIPMENT_STEP && <AddOfficeEquipments />}
                 {step === LISTING_STEP && <AddOfficeListing />}
@@ -92,4 +95,8 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, null)(LandlordOnboarding);
+export { LandlordOnboarding };
+export default connect(
+    mapStateToProps,
+    null
+)(LandlordOnboarding);

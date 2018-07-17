@@ -227,10 +227,10 @@ class NewListing extends Component {
                             </Grid>
 
                             <Grid container>
-                                <Grid item xs={12} md={4}>
+                                <Grid item xs={12} md={3}>
                                     <Field
                                         name="chairHourlyPrice"
-                                        label="Price per chair (hourly)"
+                                        label="Hourly chair price"
                                         tooltip="How much hourly do you want to charge dentists to use a single chair?"
                                         placeholder="100"
                                         component={renderField}
@@ -243,7 +243,7 @@ class NewListing extends Component {
                                     <Padding bottom="16" />
                                 </Grid>
                                 <Grid item md={1} />
-                                <Grid item xs={12} md={2}>
+                                <Grid item xs={12} md={3}>
                                     <Field
                                         name="cleaningFee"
                                         label="Cleaning Fee"
