@@ -95,7 +95,6 @@ class PatientAppointments extends Component {
         const appointmentDetails = this.getAppointmentDetails(appointments);
         return (
             <div>
-                <h5>Upcoming Appointments</h5>
                 <div className="appointment profile-sectionl">
                     <div className="appointment_header">
                         {appointmentDetails}

@@ -67,7 +67,7 @@ class Profile extends Component {
         const { isFetching } = this.state;
         if (isFetching) return <div className="stretch_height" />;
         const imageUrl = auth && auth.imageUrl ? auth.imageUrl : null;
-        const dentistId = auth && auth.dentistId ? auth.dentistId : null;
+        const userIsDentist = auth && auth.dentistId;
 
         return (
             <div className="profile_container stretch_height">
@@ -77,35 +77,35 @@ class Profile extends Component {
                 </div>
                 <div className="main">
                     {this.renderProfileDetails()}
-                    {dentistId ? (
-                        <div className="offices profile-section">
+                    {userIsDentist && (
+                        <div>
                             <h5>Your Offices</h5>
-                            <UserOfficeIndex />
+                            <UserOfficeIndex id="test"/>
                         </div>
-                    ) : (
-                        ''
                     )}
-                    {dentistId ? (
-                        <div className="offices profile-section">
+                    {userIsDentist && (
+                        <div>
                             <h5>Upcoming Reservations</h5>
                             <UserReservationIndex />
                         </div>
-                    ) : (
-                        ''
                     )}
-                    {!dentistId && <PatientAppointments patientId={auth.id} />}
-                    {dentistId &&
+                    <div>
+                        <h5>Upcoming Appointments</h5>
+                        <PatientAppointments patientId={auth.id} />
+                    </div>
+                    {userIsDentist &&
+                        dentist &&
                         dentist.reviews &&
                         dentist.reviews.length > 0 && (
-                        <div className="reviews profile-section">
-                            <h5>{`Reviews for ${auth.name}`}</h5>
-                            <ReviewContainer
-                                revieweeId={dentist.id}
-                                revieweeName={auth.name}
-                                reviews={dentist.reviews}
-                            />
-                        </div>
-                    )}
+                            <div className="reviews profile-section">
+                                <h5>{`Reviews for ${auth.name}`}</h5>
+                                <ReviewContainer
+                                    revieweeId={dentist.id}
+                                    revieweeName={auth.name}
+                                    reviews={dentist.reviews}
+                                />
+                            </div>
+                        )}
                 </div>
             </div>
         );
@@ -118,4 +118,8 @@ function mapStateToProps(state) {
         dentist: state.dentists.selectedDentist
     };
 }
-export default connect(mapStateToProps, actions)(Profile);
+export { Profile };
+export default connect(
+    mapStateToProps,
+    actions
+)(Profile);
