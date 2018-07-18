@@ -35,7 +35,7 @@ const StyledTableCell = styled(TableCell)`
 
 const StyledOptionalTableCell = StyledTableCell.extend`
     && {
-      display: none;  
+        display: none;
     }
 
     @media screen and (min-width: 600px) {
@@ -43,10 +43,10 @@ const StyledOptionalTableCell = StyledTableCell.extend`
             display: auto;
         }
     }
-`
+`;
 
 const StyledTableRow = styled(TableRow)`
-    border-top: 3px solid rgba(0,0,0,0.36);
+    border-top: 3px solid rgba(0, 0, 0, 0.36);
 `;
 
 const filterPatientProcedures = (patientProcedures, status) => {
@@ -73,9 +73,15 @@ const renderProcedureTable = patientProcedures => {
                 {moment(pc.dateCreated).format('MM/DD/YYYY')}
             </StyledTableCell>
             <StyledTableCell>{pc.name}</StyledTableCell>
-            <StyledOptionalTableCell numeric>{renderPrice(pc.totalCost)}</StyledOptionalTableCell>
-            <StyledOptionalTableCell numeric>{renderPrice(pc.insuranceEstimate)}</StyledOptionalTableCell>
-            <StyledTableCell numeric>{renderPrice(pc.patientEstimate)}</StyledTableCell>
+            <StyledOptionalTableCell numeric>
+                {renderPrice(pc.totalCost)}
+            </StyledOptionalTableCell>
+            <StyledOptionalTableCell numeric>
+                {renderPrice(pc.insuranceEstimate)}
+            </StyledOptionalTableCell>
+            <StyledTableCell numeric>
+                {renderPrice(pc.patientEstimate)}
+            </StyledTableCell>
         </TableRow>
     ));
 
@@ -85,19 +91,37 @@ const renderProcedureTable = patientProcedures => {
                 <TableRow>
                     <StyledTableCell header="true">Date</StyledTableCell>
                     <StyledTableCell header="true">Procedure</StyledTableCell>
-                    <StyledOptionalTableCell numeric>Total Cost</StyledOptionalTableCell>
-                    <StyledOptionalTableCell numeric>Insurance Estimate</StyledOptionalTableCell>
+                    <StyledOptionalTableCell numeric>
+                        Total Cost
+                    </StyledOptionalTableCell>
+                    <StyledOptionalTableCell numeric>
+                        Insurance Estimate
+                    </StyledOptionalTableCell>
                     <StyledTableCell numeric>Patient Estimate</StyledTableCell>
                 </TableRow>
             </TableHead>
             <TableBody>
                 {rows}
                 <StyledTableRow>
-                    <StyledTableCell><Typography fontWeight="bold">Total</Typography></StyledTableCell>
-                    <StyledTableCell></StyledTableCell>
-                    <StyledOptionalTableCell numeric>{renderPrice(sumBy(patientProcedures, 'totalCost'))}</StyledOptionalTableCell>
-                    <StyledOptionalTableCell numeric>{renderPrice(sumBy(patientProcedures, 'insuranceEstimate'))}</StyledOptionalTableCell>
-                    <StyledTableCell numeric><Typography fontSize={3} fontWeight="bold">{renderPrice(sumBy(patientProcedures, 'patientEstimate'))}</Typography></StyledTableCell>
+                    <StyledTableCell>
+                        <Typography fontWeight="bold">Total</Typography>
+                    </StyledTableCell>
+                    <StyledTableCell />
+                    <StyledOptionalTableCell numeric>
+                        {renderPrice(sumBy(patientProcedures, 'totalCost'))}
+                    </StyledOptionalTableCell>
+                    <StyledOptionalTableCell numeric>
+                        {renderPrice(
+                            sumBy(patientProcedures, 'insuranceEstimate')
+                        )}
+                    </StyledOptionalTableCell>
+                    <StyledTableCell numeric>
+                        <Typography fontSize={3} fontWeight="bold">
+                            {renderPrice(
+                                sumBy(patientProcedures, 'patientEstimate')
+                            )}
+                        </Typography>
+                    </StyledTableCell>
                 </StyledTableRow>
             </TableBody>
         </Table>
@@ -111,8 +135,12 @@ const renderEmptyTable = () => {
                 <TableRow>
                     <StyledTableCell>Date</StyledTableCell>
                     <StyledTableCell>Procedure</StyledTableCell>
-                    <StyledOptionalTableCell numeric>Total Cost</StyledOptionalTableCell>
-                    <StyledOptionalTableCell numeric>Insurancve Estimate</StyledOptionalTableCell>
+                    <StyledOptionalTableCell numeric>
+                        Total Cost
+                    </StyledOptionalTableCell>
+                    <StyledOptionalTableCell numeric>
+                        Insurancve Estimate
+                    </StyledOptionalTableCell>
                     <StyledTableCell numeric>Patient Estimate</StyledTableCell>
                 </TableRow>
             </TableHead>
@@ -138,6 +166,10 @@ const renderEmptyTable = () => {
 };
 
 class ProcedureConsent extends Component {
+    constructor() {
+        super();
+    }
+
     componentDidMount() {
         const { auth } = this.props;
         this.props.queryPatientProcedure(PATIENT_ID, auth.id);
@@ -157,7 +189,10 @@ class ProcedureConsent extends Component {
             patientProcedures.map(pc => pc.id)
         );
         urlParams.totalPaid = sumBy(patientProcedures, 'patientEstimate');
-        urlParams.procedurePatientEstimate = sumBy(patientProcedures, 'patientEstimate');
+        urlParams.procedurePatientEstimate = sumBy(
+            patientProcedures,
+            'patientEstimate'
+        );
 
         history.push(`/payment?${queryString.stringify(urlParams)}`);
     }
