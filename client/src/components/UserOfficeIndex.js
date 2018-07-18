@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import UserOffice from './UserOffice';
 import * as actions from '../actions';
 
-class UserOffices extends Component {
+class UserOfficeIndex extends Component {
     constructor(props) {
         super(props);
 
@@ -57,4 +57,4 @@ function mapStateToProps(state) {
     return { dentist: state.dentists.selectedDentist };
 }
 
-export default connect(mapStateToProps, actions)(UserOffices);
+export default connect(mapStateToProps, actions)(UserOfficeIndex);
