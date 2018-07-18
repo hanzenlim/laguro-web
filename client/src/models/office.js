@@ -90,8 +90,11 @@ const updateOfficeQuery = `
 `;
 
 const deleteOfficeQuery = `
-    mutation DeleteOffice($id: String!) {
-        deleteOffice(id: $id)
+    mutation DeleteOffice($input: DeleteOfficeInput!) {
+        deleteOffice(input: $input) {
+            id
+            status
+        }
     }
 `;
 
@@ -136,7 +139,9 @@ const Office = {
         return response.data.updateOffice;
     },
     delete: async officeId => {
-        const response = await makeApiCall(deleteOfficeQuery, { id: officeId });
+        const response = await makeApiCall(deleteOfficeQuery, {
+            input: { id: officeId }
+        });
         return response.data.deleteOffice;
     }
 };
