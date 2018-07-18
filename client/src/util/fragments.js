@@ -254,3 +254,16 @@ export const dentistProfilePageFragment = `
         ${reviewerFragment}
     }
 `;
+
+export const patientProcedureFragment = `
+    id
+    patientId
+    procedureNum
+    dateCreated
+    totalCost
+    patientEstimate
+    insuranceEstimate
+    name
+    status
+    dentistId
+`;

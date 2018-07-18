@@ -145,7 +145,7 @@ describe('<PaymentHistory /> ', () => {
             paymentAmount: PAYMENT_NOMINAL_AMOUNT,
             payeeId: LANDLORD,
             payerId: DENTIST,
-            procedureName: undefined,
+            procedureNames: undefined,
             startTime: RESERVATION_START_TIME,
             source: {
                 brand: PAYMENT_BRAND,
@@ -174,7 +174,7 @@ describe('<PaymentHistory /> ', () => {
             paymentAmount: PAYMENT_NOMINAL_AMOUNT,
             payeeId: DENTIST,
             payerId: PATIENT,
-            procedureName: PROCEDURE_NAME,
+            procedureNames: [PROCEDURE_NAME],
             startTime: APPOINTMENT_START_TIME,
             source: {
                 brand: PAYMENT_BRAND,

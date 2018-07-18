@@ -9,3 +9,4 @@ export * from './searchActions';
 export * from './uiActions';
 export * from './paymentOptionActions';
 export * from './paymentActions';
+export * from './patientProcedureActions';

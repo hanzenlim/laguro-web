@@ -10,6 +10,7 @@ import reviewsReducer from './reviewsReducer';
 import reservationsReducer from './reservationsReducer';
 import appointmentsReducer from './appointmentsReducer';
 import paymentReducer from './paymentReducer';
+import patientProcedureReducer from './patientProcedureReducer';
 
 export default combineReducers({
     dentists: dentistsReducer,
@@ -22,5 +23,6 @@ export default combineReducers({
     auth: authReducer,
     ui: uiReducer,
     form: formReducer,
-    payments: paymentReducer
+    payments: paymentReducer,
+    patientProcedures: patientProcedureReducer
 });

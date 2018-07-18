@@ -15,6 +15,7 @@ import Modal from './Modal';
 import Checkbox from './Checkbox';
 import Flex from './Flex';
 import Container from './Container';
+import Table from './Table';
 
 export {
     Chip,
@@ -29,6 +30,7 @@ export {
     Select,
     Option,
     ProgressBar,
+    Table,
     Box,
     Modal,
     Checkbox,

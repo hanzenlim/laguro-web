@@ -4,7 +4,7 @@ import { ThemeProvider } from 'styled-components';
 import { connect } from 'react-redux';
 import Loadable from 'react-loadable';
 import * as actions from '../actions';
-import { DENTIST } from '../util/strings';
+import { DENTIST, PAYMENT_OPTIONS } from '../util/strings';
 import LoadingComponent from './LoadingComponent';
 import history from '../history';
 
@@ -102,6 +102,11 @@ const UploadHealthInsuranceDocuments = Loadable({
     loading: LoadingComponent
 });
 
+const ProcedureConsent = Loadable({
+    loader: () => import('./forms/ProcedureConsent'),
+    loading: LoadingComponent
+});
+
 const PrivateRoute = ({ auth, path, component: Component, ...props }) => {
     const { toggleLoginModal } = props;
 
@@ -128,7 +133,7 @@ const PrivateRoute = ({ auth, path, component: Component, ...props }) => {
 
 class App extends Component {
     componentDidMount() {
-        this.props.fetchUser(DENTIST);
+        this.props.fetchUser(DENTIST, PAYMENT_OPTIONS);
     }
 
     render() {
@@ -213,6 +218,11 @@ class App extends Component {
                                         toggleLoginModal={
                                             this.props.toggleLoginModal
                                         }
+                                    />
+                                    <PrivateRoute
+                                        auth={this.props.auth}
+                                        path="/procedure/consent/"
+                                        component={ProcedureConsent}
                                     />
                                     <Route
                                         path="/dentist/search"
