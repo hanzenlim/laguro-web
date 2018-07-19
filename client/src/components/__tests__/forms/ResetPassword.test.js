@@ -24,12 +24,12 @@ describe('<ResetPassword />', () => {
         );
     });
 
-    it('should update message state on useResetPasswordRequest promise fail', async () => {
+    it('should update error state on useResetPasswordRequest promise fail', async () => {
         component.instance().useResetPasswordRequest = jest
             .fn()
             .mockReturnValue(Promise.reject({ message: 'Invalid request.' }));
 
         await component.instance().onSubmit();
-        expect(component.state('message')).toBe('Invalid request.');
+        expect(component.state('error')).toBe('Invalid request.');
     });
 });

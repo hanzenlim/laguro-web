@@ -65,6 +65,12 @@ const generateGetUserQuery = (options = []) => {
     `;
 };
 
+const editUserPasswordQuery = `
+    mutation ($input: EditUserPasswordInput!) {
+        editUserPassword(input: $input)
+    }
+`;
+
 // TODO handle graphql errors
 const User = {
     get: async (userId, ...options) => {
@@ -78,6 +84,16 @@ const User = {
             input: { id: userId, ...profile }
         });
         return response.data.updateUser;
+    },
+    editPassword: async args => {
+        const response = await makeApiCall(editUserPasswordQuery, {
+            input: args
+        });
+        if (response.errors) {
+            throw new Error(response.errors[0].message);
+        } else {
+            return response.data.editUserPassword;
+        }
     },
     addPayoutAccount: async (userId, accountToken) => {
         const response = await makeApiCall(addPayoutAccountQuery, {

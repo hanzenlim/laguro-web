@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
-import queryString from 'query-string';
+import { connect } from 'react-redux';
 import styled from 'styled-components';
-import request from './../../util/fetchUtil';
 import { renderField } from './sharedComponents';
 import { required, confirmPassword } from './formValidation';
 import { Flex, Box, Button, Typography } from './../common';
-import history from '../../history';
+import User from '../../models/user';
+import {
+    INCORRECT_PASSWORD_ERROR,
+    DEFAULT_ERROR_DISPLAY
+} from '../../util/errors';
 
 const StyledContainer = styled.div`
     max-width: 600px;
@@ -15,11 +18,9 @@ const StyledContainer = styled.div`
     margin-top: 150px;
 `;
 
-class ResetPassword extends Component {
+class EditPassword extends Component {
     constructor(props) {
         super(props);
-
-        this.urlParams = queryString.parse(history.location.search);
 
         this.state = {
             message: '',
@@ -28,16 +29,12 @@ class ResetPassword extends Component {
     }
 
     onSubmit = async values => {
-        if (values) {
-            const { id, token } = this.urlParams;
-            values.id = id;
-            values.token = token;
-            values.password = values.newPassword;
-        }
-
+        const { auth } = this.props;
+        const { currentPassword, newPassword } = values;
         try {
-            const result = await this.useResetPasswordRequest(values);
-            if (result && result.status && result.status === 'USED') {
+            const args = { userId: auth.id, currentPassword, newPassword };
+            const result = await User.editPassword(args);
+            if (result) {
                 this.setState({
                     message:
                         'Your password has been changed. You can now log in with your new credentials.',
@@ -45,33 +42,31 @@ class ResetPassword extends Component {
                 });
             }
         } catch (error) {
-            if (error && error.message) {
-                this.setState({ message: '', error: error.message });
+            let errorMessage = '';
+            if (error.message === INCORRECT_PASSWORD_ERROR) {
+                errorMessage = INCORRECT_PASSWORD_ERROR;
+            } else {
+                errorMessage = DEFAULT_ERROR_DISPLAY;
             }
+            this.setState({ message: '', error: errorMessage });
         }
     };
 
-    useResetPasswordRequest = values => {
-        return request('/api/reset-password', {
-            method: 'POST',
-            credentials: 'same-origin',
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Origin': '*'
-            },
-            body: JSON.stringify({ ...values })
-        });
-    };
-
     render() {
-        const { handleSubmit } = this.props;
+        const { handleSubmit, auth } = this.props;
         const { message, error } = this.state;
+
+        if (!auth) {
+            return <div />;
+        }
 
         return (
             <StyledContainer>
                 <Flex flexDirection="column">
                     <Box pb={10}>
-                        <Typography fontSize={5}>Set your password</Typography>
+                        <Typography fontSize={5}>
+                            Update your password
+                        </Typography>
                     </Box>
 
                     <form
@@ -80,6 +75,16 @@ class ResetPassword extends Component {
                             handleSubmit(this.onSubmit.bind(this))
                         }
                     >
+                        <Box pb={4}>
+                            <Field
+                                name="currentPassword"
+                                label="Current Password"
+                                type="password"
+                                component={renderField}
+                                validate={[required]}
+                            />
+                        </Box>
+
                         <Box pb={4}>
                             <Field
                                 name="newPassword"
@@ -117,8 +122,14 @@ class ResetPassword extends Component {
 
 // Exporting it as an object without the connect so we can unit test it properly. If you don't
 // do this then you have to mock the store.
-export { ResetPassword };
+export { EditPassword };
+
+function mapStateToProps(state) {
+    return {
+        auth: state.auth
+    };
+}
 
 export default reduxForm({
-    form: 'resetPassword'
-})(ResetPassword);
+    form: 'editUser'
+})(connect(mapStateToProps, null)(EditPassword));

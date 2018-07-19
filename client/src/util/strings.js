@@ -48,8 +48,10 @@ export const REFUNDED = 'REFUNDED';
 // Payment history
 export const PAYMENT_MADE = 'PAYMENT MADE';
 export const PAYMENT_RECEIVED = 'PAYMENT RECEIVED';
-export const RESERVATION_CANCELLED_BY_DENTIST = 'Reservation cancelled by dentist'
-export const APPOINTMENT_CANCELLED_BY_PATIENT = 'Appointment cancelled by patient'
+export const RESERVATION_CANCELLED_BY_DENTIST =
+    'Reservation cancelled by dentist';
+export const APPOINTMENT_CANCELLED_BY_PATIENT =
+    'Appointment cancelled by patient';
 export const RESERVATION_BOOKED = 'Reservation booked';
 export const APPOINTMENT_BOOKED = 'Appointment booked';
 export const CANCELLED = 'CANCELLED';
