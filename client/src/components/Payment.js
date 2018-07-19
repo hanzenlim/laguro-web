@@ -445,6 +445,7 @@ class Payment extends Component {
                 <AddPhoneNumber
                     open={this.state.isModalOpen}
                     closeModal={this.toggleModal}
+                    type={this.urlParams.type}
                 />
             </StyledWrapper>
         );

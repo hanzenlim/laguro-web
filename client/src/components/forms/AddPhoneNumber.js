@@ -27,6 +27,20 @@ class AddPhoneNumber extends Component {
         this.props.closeModal();
     };
 
+    renderPurposeStatement() {
+        const { type } = this.props;
+        switch (type) {
+        case 'appointment':
+            return 'This is so Laguro can contact you about any updates to your appointment.';
+        case 'listing':
+            return 'This is so Laguro can let you know you about any new reservations made for your listing.';
+        case 'reservation':
+            return 'This is so Laguro can let you know about any new appointments booked for your reservation.';
+        default:
+            return 'This is so Laguro can contact you regarding this action.';
+        }
+    }
+
     render() {
         const { handleSubmit, closeModal, open } = this.props;
 
@@ -39,10 +53,7 @@ class AddPhoneNumber extends Component {
                         </Typography>
                     </Box>
                     <Box pb={2}>
-                        <Typography>
-                            This is so your dentist can contact you, and so
-                            Laguro knows how to reach you.
-                        </Typography>
+                        <Typography>{this.renderPurposeStatement()}</Typography>
                     </Box>
                     <Box pb={4}>
                         <Field
