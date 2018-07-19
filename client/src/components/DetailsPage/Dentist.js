@@ -13,7 +13,7 @@ import BookAppointment from '../forms/BookAppointment';
 import * as actions from '../../actions';
 import TopHalfInfo from './TopHalfInfo';
 import LoginModal from '../LoginModal';
-import DetailDetailsRedux from './DetailDetails';
+import DetailDetails from './DetailDetails';
 import { Modal } from '../common';
 
 class Dentist extends Component {
@@ -111,7 +111,7 @@ class Dentist extends Component {
             <div>
                 <TopHalfInfo type="dentist" obj={dentist} />
 
-                <DetailDetailsRedux
+                <DetailDetails
                     type="dentist"
                     obj={dentist}
                     reviews={reviews}

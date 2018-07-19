@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import ReactFilestack from 'filestack-react';
-import { UploadHealthInsurance } from '../UploadDocuments/UploadHealthInsurance';
+import { NoReduxUploadHealthInsurance } from '../UploadDocuments/UploadHealthInsurance';
 
 describe('<UploadDocuments />', () => {
     let component = '';
@@ -9,7 +9,7 @@ describe('<UploadDocuments />', () => {
 
     beforeEach(() => {
         // spy = jest.fn();
-        component = shallow(<UploadHealthInsurance 
+        component = shallow(<NoReduxUploadHealthInsurance 
             auth={null}
         />);
     });

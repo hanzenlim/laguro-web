@@ -21,7 +21,7 @@ import { Padding } from '../common/Spacing';
 import OfficePlaceholderBig from '../images/office-placeholder-big.png';
 import TopHalfInfo from './TopHalfInfo';
 import isMobile from '../../util/uiUtil';
-import DetailDetailsRedux from './DetailDetails';
+import DetailDetails from './DetailDetails';
 
 const StyledCarouselImg = styled.img`
     position: absolute;

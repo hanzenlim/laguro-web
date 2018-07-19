@@ -1,7 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import { SubmissionError } from 'redux-form';
-import { NewDentist } from '../../forms/NewDentist';
+import { NoReduxNewDentist } from '../../forms/NewDentist';
 
 describe('<NewDentist />', () => {
     const defaultProps = {
@@ -13,7 +13,7 @@ describe('<NewDentist />', () => {
 
     describe('onSubmit function', () => {
         it('should throw an error if procedures is undefined', () => {
-            const newDentist = shallow(<NewDentist {...defaultProps} />);
+            const newDentist = shallow(<NoReduxNewDentist {...defaultProps} />);
             let values = { foo: 'bar' };
 
             return expect(
@@ -22,7 +22,7 @@ describe('<NewDentist />', () => {
         });
 
         it('should throw an error if procedures has length 0', async () => {
-            const newDentist = shallow(<NewDentist {...defaultProps} />);
+            const newDentist = shallow(<NoReduxNewDentist {...defaultProps} />);
             let values = { foo: 'bar', procedures: [] };
 
             return expect(
@@ -38,7 +38,7 @@ describe('<NewDentist />', () => {
                 createDentist: jest.fn(),
                 onSuccess: jest.fn()
             };
-            const newDentist = shallow(<NewDentist {...props} />);
+            const newDentist = shallow(<NoReduxNewDentist {...props} />);
             let values = { foo: 'bar', procedures: ['foo'] };
 
             expect(
@@ -65,7 +65,7 @@ describe('<NewDentist />', () => {
                 createDentist: jest.fn(),
                 fetchUser: jest.fn()
             };
-            const newDentist = shallow(<NewDentist {...props} />);
+            const newDentist = shallow(<NoReduxNewDentist {...props} />);
             let values = { foo: 'bar', procedures: ['foo'] };
 
             expect(newDentist.instance().props.onSuccess).toHaveBeenCalledTimes(

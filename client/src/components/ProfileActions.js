@@ -150,7 +150,7 @@ class ProfileActions extends Component {
                     closeModal={this.closeModal}
                     open={this.state.visibleModal === 'editUser'}
                 />
-                <NewDentistRedux
+                <NewDentist
                     closeModal={this.closeModal}
                     onSuccess={this.closeModal}
                     open={this.state.visibleModal === 'newDentist'}
@@ -166,5 +166,8 @@ class ProfileActions extends Component {
         );
     }
 }
-export { ProfileActions };
+
+// Exporting it as an object without the connect so we can unit test it properly. If you don't
+// do this then you have to mock the store.
+export { ProfileActions as NoReduxProfileActions };
 export default connect(null, actions)(ProfileActions);
