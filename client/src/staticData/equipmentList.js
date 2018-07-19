@@ -10,6 +10,9 @@ const equipmentList = [
     { id: 9, name: 'Implant System' },
     { id: 10, name: 'Root Canal Setup' },
     { id: 11, name: 'Ortho Supplies' },
+    { id: 12, name: 'Microscope' },
+    { id: 13, name: 'Anesthetic' },
+    { id: 14, name: 'Nitrous Oxide' }
 ];
 
 export default equipmentList;
