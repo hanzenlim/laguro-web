@@ -150,7 +150,7 @@ export const renderProcedureSelector = ({
 }) => (
     <ul className={className}>
         <label>
-            {`Procedures Offered`}
+            {'Procedures Offered'}
             {addTooltip(
                 'List all the procedures you want patients to be able to book with you and the estimated time it takes you to complete each.'
             )}
@@ -198,11 +198,17 @@ export const renderProcedureSelector = ({
 );
 
 export const durationOptions = [
+    <option value={15} key={15}>
+        15 minutes
+    </option>,
     <option value={30} key={30}>
         30 minutes
     </option>,
     <option value={60} key={60}>
         60 minutes
+    </option>,
+    <option value={90} key={90}>
+        90 minutes
     </option>
 ];
 
