@@ -107,7 +107,7 @@ export class LandingComponent extends Component {
                         </div>
                     </div>
                 </div>
-                <PhotoGrid data-name="dentist-photo-grid" numRow="2" page="landing" objects={dentists} header={'Popular Dentists'} message="No dentist has an available appointmet. Please come back and check again."/>
+                <PhotoGrid data-name="dentist-photo-grid" numRow="2" page="landing" objects={dentists} header={'Popular Dentists'} message="No dentist has an available appointment. Please come back and check again."/>
             </div>);
     }
 
