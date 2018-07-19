@@ -1,7 +1,7 @@
 import moment from 'moment';
 
 /* eslint-disable import/prefer-default-export */
-export const DEFAULT_APPOINTMENT_WINDOW_SIZE = 30;
+export const DEFAULT_APPOINTMENT_WINDOW_SIZE = 15;
 
 export const convertToUnixTimestamp = timestamp => {
     return moment(timestamp).valueOf();
