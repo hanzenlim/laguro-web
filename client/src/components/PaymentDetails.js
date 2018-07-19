@@ -1,67 +1,126 @@
 import React, { Component } from 'react';
 import moment from 'moment';
-import {
-    RESERVATION_PAYMENT_TYPE,
-    APPOINTMENT_PAYMENT_TYPE
-} from '../util/strings';
+import { isEmpty } from 'lodash';
+import styled from 'styled-components';
+import { renderPrice } from '../util/paymentUtil';
 import { Box, Card, Flex, Typography } from './common';
+import officeImgPlaceholder from './images/office-placeholder-thumbnail.png';
+
+const StyledPaddedBox = styled(Box)`
+    width: 3%;
+`;
+
+const StyledInfoFlex = styled(Flex)`
+    width: 64%;
+`;
+
+const StyledPaymentFlex = styled(Flex)`
+    width: 20%;
+`;
 
 class PaymentDetails extends Component {
     render() {
-        const { payment } = this.props;
-        const { source } = payment.stripePayment;
-        const { reservation, appointment } = payment;
+        const { index, payment } = this.props;
+        const {
+            action,
+            date,
+            description,
+            endTime,
+            office,
+            paymentAmount,
+            procedureName,
+            startTime,
+            source
+        } = payment;
 
-        // let itemInfo = '';
-        let type;
-        let office;
-        let procedureName;
-        let eventType = reservation;
-        if (payment.type === RESERVATION_PAYMENT_TYPE && reservation) {
-            type = 'Reservation';
-            office = reservation.office;
-            eventType = reservation;
-        } else if (payment.type === APPOINTMENT_PAYMENT_TYPE && appointment) {
-            type = 'Appointment'
-            office = appointment.reservation.office;
-            procedureName = appointment.procedure.name;
-            eventType = appointment;
+        if (isEmpty(payment)) {
+            return '';
         }
 
-        const location = eventType.location;
-        const startTime = eventType.startTime;
-        const endTime = eventType.endTime;
-
         return (
-            <Box mb={3}>
+            <Box key={index} mb={2}>
                 <Card>
                     <Flex p={3}>
-                        <img width="100px" height="67px" src={office.imageUrls[0]} alt={office.imageUrls[0]} />
-                        <Box pr={3} />
-                        <Box width={1000}>
-                            <Typography fontSize={4} fontWeight="bold"> {office.name} </Typography>
-                            <Typography fontSize={2}> {location} </Typography>
+                        <Flex
+                            flexDirection="column"
+                            justifyContent="center"
+                            width="13%"
+                        >
+                            <img
+                                data-name="office-image"
+                                src={
+                                    !isEmpty(office.imageUrls)
+                                        ? office.imageUrls[0]
+                                        : officeImgPlaceholder
+                                }
+                                alt={office.imageUrls[0]}
+                            />
+                        </Flex>
+                        <StyledPaddedBox pr={3} />
+                        <StyledInfoFlex
+                            flexDirection="column"
+                            justifyContent="center"
+                        >
+                            <div data-name="office-name">
+                                <Typography fontSize={4} fontWeight="bold">
+                                    {office.name}
+                                </Typography>
+                            </div>
+                            <div data-name="office-location">
+                                <Typography fontSize={2}>
+                                    {office.location}
+                                </Typography>
+                            </div>
                             <div>
-                                <div>
-                                    Payment for {type}
-                                </div>
-                                <div>
+                                <div data-name="action">{action}</div>
+                                <div data-name="start-end-time">
                                     {moment(startTime).format(
                                         'MMM DD h:mm a - '
                                     ) + moment(endTime).format('h:mm a')}
                                 </div>
-                                <div>
+                                <div data-name="procedures">
                                     {procedureName && <li>{procedureName}</li>}
                                 </div>
                             </div>
-                        </Box>
-                        <Box width={100}>
-                            <p>{`${source.brand} - ${source.last4}`}</p>
-                            <p>{`$${(payment.nominalAmount / 100).toFixed(2)}`}</p>
-                        </Box>
+                        </StyledInfoFlex>
+                        <StyledPaymentFlex
+                            flexDirection="column"
+                            justifyContent="center"
+                        >
+                            <Flex justifyContent="center">
+                                <div data-name="payment-amount">
+                                    {renderPrice(paymentAmount)}
+                                </div>
+                            </Flex>
+                            <Flex justifyContent="center">
+                                <div data-name="description">
+                                    <Box fontSize={2} description={description}>
+                                        {description}
+                                    </Box>
+                                </div>
+                            </Flex>
+                            <Flex justifyContent="center">
+                                <div data-name="date">
+                                    <Typography fontSize={1}>
+                                        {date &&
+                                            moment
+                                                .unix(date)
+                                                .format('MMMM Do, YYYY h:mm A')}
+                                    </Typography>
+                                </div>
+                            </Flex>
+                            <Flex justifyContent="center">
+                                <div data-name="source">
+                                    <Typography>{`${source.brand} - ${
+                                        source.last4
+                                    }`}</Typography>
+                                </div>
+                            </Flex>
+                        </StyledPaymentFlex>
                     </Flex>
                 </Card>
-            </Box>);
+            </Box>
+        );
     }
 }
 

@@ -41,9 +41,9 @@ class UserOffice extends Component {
                 `Are you sure you want to delete reservation for ${moment(
                     reservation.startTime
                 ).format('MMM D, h:mm a')}? ${reservationRefund *
-                    100}% of your total amount will be refunded, a total amount of $${Math.round(
-                    reservation.totalPaid * reservationRefund
-                )}.`
+                    100}% of your total amount will be refunded, a total amount of $${
+                    ((reservation.totalPaid * reservationRefund) / 100).toFixed(2)
+                }`
             )
         ) {
             this.props.cancelUserReservation(reservation);

@@ -1,0 +1,15 @@
+export const DENTIST = 'dentist';
+export const FORMATTED_PAYMENT_NOMINAL_AMOUNT = '$1.00';
+export const LANDLORD = 'landlord';
+export const OFFICE_IMAGE = 'office_image';
+export const OFFICE_LOCATION = 'office_location';
+export const OFFICE_NAME = 'office_name';
+export const PATIENT = 'patient';
+export const PAYMENT_BRAND = 'payment_brand';
+export const PAYMENT_DATE = 1;
+export const PAYMENT_LAST4 = 'payment_last4';
+export const PAYMENT_NOMINAL_AMOUNT = 100;
+export const PROFILE_IMAGE = 'profile_img';
+export const PROCEDURE_NAME = 'procedure_name';
+export const RESERVATION_END_TIME = '20180701';
+export const RESERVATION_START_TIME = '20180701';

@@ -1,19 +1,25 @@
 import styled from 'styled-components';
 import {
+    background,
+    border,
+    borderLeft,
+    borderRadius,
+    borderRight,
     space,
     width,
-    height, 
+    height,
     color,
     alignItems,
     justifyContent,
     flexWrap,
     flexDirection,
+    fontWeight,
     propTypes
 } from 'styled-system';
 
 const Flex = styled.div`
   display: flex;
-  ${space} ${width} ${height} ${color} ${alignItems} ${justifyContent} ${flexWrap} ${flexDirection};
+  ${alignItems} ${background} ${border} ${borderLeft} ${borderRadius} ${borderRight} ${color} ${flexDirection} ${flexWrap} ${fontWeight} ${height} ${justifyContent} ${space} ${width};
 `;
 
 Flex.propTypes = {

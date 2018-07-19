@@ -17,8 +17,7 @@ import { Box, Grid, Link, Typography, Button, Flex, Modal } from '../common';
 import OfficePlaceholderBig from '../images/office-placeholder-big.png';
 import Appointments from '../Appointments';
 import isMobile from '../../util/uiUtil';
-//eslint-disable-next-line
-import NewDentist from "../forms/NewDentist";
+import NewDentist from '../forms/NewDentist';
 
 const StyledOfficeFlex = styled(Flex)`
     height: 100%;

@@ -1,21 +1,38 @@
 import {
-    FETCH_PAYMENTS,
+    FETCH_PAYEE_PAYMENTS,
+    FETCH_PAYER_PAYMENTS,
+    REQUEST_PAYMENT_HISTORY
 } from '../actions/types';
 
 export default function(
     state = {
-        isFetching: false,
+        isFetchingPayeePayments: false,
+        isFetchingPayerPayments: false,
         invalid: false,
-        payments: []
+        payeePayments: [],
+        payerPayments: []
     },
     action
 ) {
     switch (action.type) {
-    case FETCH_PAYMENTS:
+    case REQUEST_PAYMENT_HISTORY:
         return Object.assign({}, state, {
             ...state,
-            isFetching: false,
-            payments: action.payload
+            isFetchingPayeePayments: true,
+            isFetchingPayerPayments: true,
+            invalid: false
+        });
+    case FETCH_PAYEE_PAYMENTS:
+        return Object.assign({}, state, {
+            ...state,
+            isFetchingPayeePayments: false,
+            payeePayments: action.payload
+        });
+    case FETCH_PAYER_PAYMENTS:
+        return Object.assign({}, state, {
+            ...state,
+            isFetchingPayerPayments: false,
+            payerPayments: action.payload
         });
     default:
         return state;
