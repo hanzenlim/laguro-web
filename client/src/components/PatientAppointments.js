@@ -55,9 +55,9 @@ class PatientAppointments extends Component {
             confirm(
                 `Delete appointment for ${moment(appointment.startTime).format(
                     'MMM D, h:mm a'
-                )}?. A total amount of $${Math.round(
-                    20 * this.calculateAppointmentRefund(appointment)
-                )}`
+                )}?. A total amount of $${
+                    (20 * this.calculateAppointmentRefund(appointment)).toFixed(2)
+                }`
             )
         ) {
             await Appointment.delete(appointment.id);
