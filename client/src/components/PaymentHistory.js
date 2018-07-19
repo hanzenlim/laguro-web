@@ -83,10 +83,6 @@ const paymentHistoryQuery = `
 `;
 
 export class PaymentHistory extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     componentDidMount() {
         const userId = this.props.auth && this.props.auth.id;
         this.props.loadPaymentHistory(paymentHistoryQuery, PAYER_ID, userId);
