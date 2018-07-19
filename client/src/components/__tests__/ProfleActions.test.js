@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { ProfileActions } from '../ProfileActions';
+import { NoReduxProfileActions } from '../ProfileActions';
 import Provider from '../../models/provider';
 
 global.confirm = jest.fn();
@@ -16,7 +16,7 @@ describe('<ProfileActions />', () => {
     describe('dentist profile does not exist', () => {
         it('should not render the OD reset password link', () => {
             const component = shallow(
-                <ProfileActions auth={auth} dentist={null} />
+                <NoReduxProfileActions auth={auth} dentist={null} />
             );
             expect(
                 component.find('[data-name="resetProviderPassword"]')
@@ -27,7 +27,7 @@ describe('<ProfileActions />', () => {
     describe('dentist profile exists', () => {
         it('should not render the OD reset password link', () => {
             const component = shallow(
-                <ProfileActions auth={authWithDentist} dentist={dentist} />
+                <NoReduxProfileActions auth={authWithDentist} dentist={dentist} />
             );
             expect(
                 component.find('[data-name="resetProviderPassword"]')
@@ -41,7 +41,7 @@ describe('<ProfileActions />', () => {
         describe('successfully resets the password', () => {
             it('alerts the success message', async () => {
                 const component = shallow(
-                    <ProfileActions auth={authWithDentist} dentist={dentist} />
+                    <NoReduxProfileActions auth={authWithDentist} dentist={dentist} />
                 ).instance();
                 await component.resetPassword();
                 expect(alert).toHaveBeenCalledWith(
@@ -53,7 +53,7 @@ describe('<ProfileActions />', () => {
         describe('fails to reset the password', () => {
             it('alerts the success message', async () => {
                 const component = shallow(
-                    <ProfileActions auth={authWithDentist} dentist={dentist} />
+                    <NoReduxProfileActions auth={authWithDentist} dentist={dentist} />
                 ).instance();
                 Provider.resetPassword.mockImplementation(() => {
                     throw new Error('');

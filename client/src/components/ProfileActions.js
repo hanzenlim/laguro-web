@@ -44,7 +44,7 @@ class ProfileActions extends Component {
         if (
             // eslint-disable-next-line
             confirm(
-                `Are you sure you want to reset your Open Dental password? A new password will be emailed to you.`
+                'Are you sure you want to reset your Open Dental password? A new password will be emailed to you.'
             )
         ) {
             try {
@@ -166,5 +166,8 @@ class ProfileActions extends Component {
         );
     }
 }
-export { ProfileActions };
+
+// Exporting it as an object without the connect so we can unit test it properly. If you don't
+// do this then you have to mock the store.
+export { ProfileActions as NoReduxProfileActions };
 export default connect(null, actions)(ProfileActions);

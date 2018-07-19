@@ -150,7 +150,7 @@ export const renderProcedureSelector = ({
 }) => (
     <ul className={className}>
         <label>
-            {`Procedures Offered`}
+            {'Procedures Offered'}
             {addTooltip(
                 'List all the procedures you want patients to be able to book with you and the estimated time it takes you to complete each.'
             )}

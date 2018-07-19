@@ -141,7 +141,9 @@ const mapStateToProps = state => {
     };
 };
 
-export { NewDentist };
+// Exporting it as an object without the connect so we can unit test it properly. If you don't
+// do this then you have to mock the store.
+export { NewDentist as NoReduxNewDentist };
 export default reduxForm({
     form: 'newDentist'
 })(connect(mapStateToProps, actions)(NewDentist));

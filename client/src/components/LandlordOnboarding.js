@@ -6,8 +6,8 @@ import AddOfficeInfo from './forms/AddOfficeInfo';
 import AddOfficeEquipments from './forms/AddOfficeEquipments';
 import AddOfficeListing from './forms/AddOfficeListing';
 import { ProgressBar } from './common';
-import dentistProfileExists from '../util/userInfo';
 import NewDentist from './forms/NewDentist';
+import dentistProfileExists from '../util/userInfo';
 import history from '../history';
 
 const OFFICE_STEP = 'add-office';

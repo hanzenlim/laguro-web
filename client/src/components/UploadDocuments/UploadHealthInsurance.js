@@ -307,5 +307,5 @@ const mapStateToProps = (state) => {
 
 // Exporting it as an object without the connect so we can unit test it properly. If you don't
 // do this then you have to mock the store.
-export { UploadHealthInsurance };
+export { UploadHealthInsurance as NoReduxUploadHealthInsurance };
 export default connect(mapStateToProps, null)(UploadHealthInsurance);
