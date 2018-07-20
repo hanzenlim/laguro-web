@@ -87,6 +87,11 @@ const PrivacyPolicy = Loadable({
     loading: LoadingComponent
 });
 
+const EditPassword = Loadable({
+    loader: () => import('./forms/EditPassword'),
+    loading: LoadingComponent
+});
+
 const ResetPassword = Loadable({
     loader: () => import('./forms/ResetPassword'),
     loading: LoadingComponent
@@ -197,6 +202,14 @@ class App extends Component {
                                         component={
                                             UploadHealthInsuranceDocuments
                                         }
+                                        toggleLoginModal={
+                                            this.props.toggleLoginModal
+                                        }
+                                    />
+                                    <PrivateRoute
+                                        auth={this.props.auth}
+                                        path="/edit-password"
+                                        component={EditPassword}
                                         toggleLoginModal={
                                             this.props.toggleLoginModal
                                         }

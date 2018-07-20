@@ -6,7 +6,6 @@ import EditUser from './forms/EditUser';
 //eslint-disable-next-line
 import NewDentist from './forms/NewDentist';
 import EditDentist from './forms/EditDentist';
-
 import { Link } from './common';
 import { filestackKey } from '../config/keys';
 import * as actions from '../actions';
@@ -119,6 +118,12 @@ class ProfileActions extends Component {
                         }}
                         onSuccess={result => this.setNewProfileImage(result)}
                     />
+
+                    {!auth.googleId && (
+                        <Link className="link" to={'/edit-password'}>
+                            Update Password
+                        </Link>
+                    )}
 
                     {dentistProfileExists ? (
                         <Link
