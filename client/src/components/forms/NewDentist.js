@@ -69,13 +69,14 @@ class NewDentist extends Component {
             message,
             handleSubmit,
             open,
-            closeModal
+            closeModal,
+            closable
         } = this.props;
         if (dentistProfileExists(auth)) {
             return null;
         } else {
             return (
-                <Modal closable open={open} closeModal={closeModal}>
+                <Modal closable={closable} open={open} closeModal={closeModal}>
                     <form
                         className="lighten-5"
                         onSubmit={handleSubmit(this.onSubmit)}
