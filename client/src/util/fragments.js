@@ -86,6 +86,8 @@ export const appointmentFragment = `
     id
     patient {
         id
+        firstName
+        lastName
     }
     procedure {
         name

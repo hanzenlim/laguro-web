@@ -4,22 +4,25 @@ import moment from 'moment';
 import ReactStars from 'react-stars';
 import styled from 'styled-components';
 import List from '@material-ui/core/List';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 
 import { generateListItems } from './forms/sharedComponents';
-import { Typography, Grid, Card, Divider } from './common';
+import { Typography, Flex, Card, Divider, Box } from './common';
 import { Padding, Margin } from './common/Spacing';
 import { formatListingTime } from '../util/timeUtil';
 
 const ListingImage = styled.img`
-    height: 140px;
-    max-width: 140px;
+    height: 120px;
+    max-width: 120px;
     width: 100%;
     border-radius: 2px;
     box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.12), 0 2px 2px 0 rgba(0, 0, 0, 0.24);
     object-fit: cover;
 `;
 
-class UserOffice extends Component {
+class UserReservation extends Component {
     calculateReservationRefund = reservation => {
         const ms = moment().diff(moment(reservation.dateCreated));
         const timeElapsedInHours = moment.duration(ms).asHours();
@@ -58,6 +61,26 @@ class UserOffice extends Component {
         this.rating_count = reviews.length;
     }
 
+    renderAppointmentList(reservation) {
+        if (!reservation.appointments || reservation.appointments.length === 0)
+            return (
+                <Typography fontSize={2} color="darkGray">
+                    No appointments have been scheduled yet
+                </Typography>
+            );
+        const reservationAppointments = reservation.appointments.map(appt => {
+            const patientFirst = appt.patient && appt.patient.firstName;
+            const patientLast = appt.patient && appt.patient.lastName;
+            const procedure = appt.procedure && appt.procedure.name;
+            const startTime = moment(appt.startTime).format('h:mm');
+            const endTime = moment(appt.endTime).format('h:mm a');
+
+            return `${patientFirst} ${patientLast} - ${procedure} - ${startTime} - ${endTime}`;
+        });
+
+        return generateListItems(reservationAppointments);
+    }
+
     render() {
         const { reservation } = this.props;
         const { office } = reservation;
@@ -76,8 +99,8 @@ class UserOffice extends Component {
             <Margin vertical={20}>
                 <Card key={reservation.id}>
                     <Padding horizontal={20} vertical={20}>
-                        <Grid container wrap="nowrap">
-                            <Grid item container direction="column" sm={4}>
+                        <Flex flexDirection="row">
+                            <Box width={1 / 3}>
                                 <ListingImage
                                     src={
                                         office.imageUrls[0] ||
@@ -85,43 +108,13 @@ class UserOffice extends Component {
                                     }
                                     alt="office"
                                 />
-                                <Padding vertical={6} />
+                            </Box>
 
-                                <Grid
-                                    container
-                                    wrap="nowrap"
+                            <Box width={2 / 3}>
+                                <Flex
+                                    flexDirection="row"
                                     alignItems="center"
-                                >
-                                    <i
-                                        className="material-icons tiny"
-                                        style={{ color: 'silver' }}
-                                    >
-                                        delete_forever
-                                    </i>
-
-                                    <Padding right={4} />
-
-                                    <Typography
-                                        fontSize={1}
-                                        color="silver"
-                                        cursor="pointer"
-                                        underline
-                                        onClick={this.confirmCancelReservation.bind(
-                                            this,
-                                            reservation
-                                        )}
-                                    >
-                                        Cancel Reservation
-                                    </Typography>
-                                </Grid>
-                            </Grid>
-
-                            <Grid item container direction="column" sm={8}>
-                                <Grid
-                                    container
-                                    wrap="nowrap"
-                                    justify="space-between"
-                                    alignItems="center"
+                                    justifyContent="space-between"
                                 >
                                     <Link
                                         to={`/office/${
@@ -136,34 +129,28 @@ class UserOffice extends Component {
                                             {office.name}
                                         </Typography>
                                     </Link>
-                                    <Grid item xs={4}>
-                                        <Grid
-                                            container
-                                            wrap="nowrap"
-                                            alignItems="center"
-                                        >
-                                            <ReactStars
-                                                count={5}
-                                                value={this.avg_rating}
-                                                size={12}
-                                                edit={false}
-                                            />
-                                            <Padding horizontal={4}>
-                                                <small>{`(${
-                                                    this.rating_count
-                                                })`}</small>
-                                            </Padding>
-                                        </Grid>
-                                    </Grid>
-                                </Grid>
 
-                                <Padding vertical={8} />
+                                    <Flex
+                                        flexDirection="row"
+                                        alignItems="center"
+                                    >
+                                        <ReactStars
+                                            count={5}
+                                            value={this.avg_rating}
+                                            size={12}
+                                            edit={false}
+                                        />
+                                        <Padding horizontal={4}>
+                                            <small>{`(${
+                                                this.rating_count
+                                            })`}</small>
+                                        </Padding>
+                                    </Flex>
+                                </Flex>
 
-                                <Grid
-                                    container
-                                    wrap="nowrap"
-                                    alignItems="center"
-                                >
+                                <Padding vertical={4} />
+
+                                <Flex flexDirection="row">
                                     <i className="material-icons tiny">
                                         location_on
                                     </i>
@@ -173,17 +160,13 @@ class UserOffice extends Component {
                                     <Typography fontSize={2}>
                                         {office.location}
                                     </Typography>
-                                </Grid>
+                                </Flex>
 
                                 <Padding vertical={6}>
                                     <Divider />
                                 </Padding>
 
-                                <Grid
-                                    container
-                                    wrap="nowrap"
-                                    alignItems="center"
-                                >
+                                <Flex flexDirection="row">
                                     <i className="material-icons tiny">
                                         date_range
                                     </i>
@@ -193,34 +176,82 @@ class UserOffice extends Component {
                                     <Typography fontSize={2}>
                                         {formatListingTime(startTime, endTime)}
                                     </Typography>
-                                </Grid>
+                                </Flex>
 
                                 <Padding vertical={6}>
                                     <Divider />
                                 </Padding>
 
-                                <Grid
-                                    container
-                                    wrap="nowrap"
-                                    alignItems="center"
+                                <Flex flexDirection="row">
+                                    <i className="material-icons tiny">
+                                        delete_forever
+                                    </i>
+
+                                    <Padding right={4} />
+
+                                    <Typography
+                                        fontSize={2}
+                                        cursor="pointer"
+                                        onClick={this.confirmCancelReservation.bind(
+                                            this,
+                                            reservation
+                                        )}
+                                    >
+                                        Cancel Reservation
+                                    </Typography>
+                                </Flex>
+                            </Box>
+                        </Flex>
+
+                        <Padding vertical={6} />
+
+                        <ExpansionPanel>
+                            <ExpansionPanelSummary
+                                expandIcon={
+                                    <i className="material-icons">
+                                        keyboard_arrow_down
+                                    </i>
+                                }
+                            >
+                                <Typography variant="title">
+                                    Selected Equipment
+                                </Typography>
+                            </ExpansionPanelSummary>
+                            <ExpansionPanelDetails>
+                                <Flex
+                                    width={1}
+                                    flexDirection="row"
+                                    justifyContent="space-between"
                                 >
-                                    <Grid container spacing={16}>
-                                        <Grid item xs={12} md={6}>
-                                            <Typography variant="title">
-                                                Selected Equipment
-                                            </Typography>
-                                            <div>
-                                                <List>
-                                                    {generateListItems(
-                                                        reservation.equipmentSelected
-                                                    )}
-                                                </List>
-                                            </div>
-                                        </Grid>
-                                    </Grid>
-                                </Grid>
-                            </Grid>
-                        </Grid>
+                                    <Box width={2 / 3}>
+                                        <List id="equipment_list">
+                                            {generateListItems(
+                                                reservation.equipmentSelected
+                                            )}
+                                        </List>
+                                    </Box>
+                                </Flex>
+                            </ExpansionPanelDetails>
+                        </ExpansionPanel>
+
+                        <ExpansionPanel>
+                            <ExpansionPanelSummary
+                                expandIcon={
+                                    <i className="material-icons">
+                                        keyboard_arrow_down
+                                    </i>
+                                }
+                            >
+                                <Typography variant="title">
+                                    Appointments for this reservation
+                                </Typography>
+                            </ExpansionPanelSummary>
+                            <ExpansionPanelDetails>
+                                <List id="appointment_list">
+                                    {this.renderAppointmentList(reservation)}
+                                </List>
+                            </ExpansionPanelDetails>
+                        </ExpansionPanel>
                     </Padding>
                 </Card>
             </Margin>
@@ -228,4 +259,4 @@ class UserOffice extends Component {
     }
 }
 
-export default UserOffice;
+export default UserReservation;
