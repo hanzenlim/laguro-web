@@ -49,6 +49,7 @@ class LandlordOnboarding extends Component {
         return (
             <NewDentist
                 open={!dentistProfileExists(auth)}
+                closable={false}
                 closeModal={this.closeCreateProfileModal}
                 onSuccess={this.closeCreateProfileModal}
                 auth={auth}
@@ -96,7 +97,4 @@ function mapStateToProps(state) {
 }
 
 export { LandlordOnboarding };
-export default connect(
-    mapStateToProps,
-    null
-)(LandlordOnboarding);
+export default connect(mapStateToProps, null)(LandlordOnboarding);

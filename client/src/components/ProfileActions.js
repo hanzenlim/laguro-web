@@ -157,6 +157,7 @@ class ProfileActions extends Component {
                 />
                 <NewDentist
                     closeModal={this.closeModal}
+                    closable={true}
                     onSuccess={this.closeModal}
                     open={this.state.visibleModal === 'newDentist'}
                     auth={auth}
