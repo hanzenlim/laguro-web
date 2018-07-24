@@ -8,6 +8,10 @@ import { mapBoxApiKey } from '../config/keys';
 import isMobile from '../util/uiUtil';
 import MapPin from './MapPin';
 
+const StyledPopup = styled(Popup)`
+    z-index: ${props => props.theme.zIndex.overlay};
+`;
+
 const StyledMarkerContainer = styled(Marker)`
     width: 0;
     height: 0;
@@ -140,7 +144,7 @@ class ResultMap extends Component {
 
         return (
             popupInfo && (
-                <Popup
+                <StyledPopup
                     anchor="top"
                     dynamicPosition
                     closeButton={true}
@@ -155,7 +159,7 @@ class ResultMap extends Component {
                         <div>{name}</div>
                         <div>{popupInfo.location}</div>
                     </div>
-                </Popup>
+                </StyledPopup>
             )
         );
     };

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { border, height, space, width, fontSize, color, maxHeight, background } from 'styled-system';
+import { border, height, space, width, fontSize, color, maxHeight, background, zIndex } from 'styled-system';
 
 export default styled.div`
   ${space}
@@ -10,4 +10,5 @@ export default styled.div`
   ${height}
   ${border}
   ${background}
+  ${zIndex}
 `;
