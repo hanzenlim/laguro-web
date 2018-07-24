@@ -6,16 +6,52 @@ import { renderPrice } from '../util/paymentUtil';
 import { Box, Card, Flex, Typography } from './common';
 import officeImgPlaceholder from './images/office-placeholder-thumbnail.png';
 
-const StyledPaddedBox = styled(Box)`
-    width: 3%;
+const StyledContainer = styled(Box)`
+    display: flex;
+    flex-direction: column;
+
+    @media screen and (min-width: 600px) {
+        flex-direction: row;
+    }
+`;
+
+const StyledImageContainer = styled.div`
+    width: 100%;
+    margin-bottom: 15px;
+
+    @media screen and (min-width: 600px) {
+        max-width: 150px;
+        max-height: 100px;
+        margin-bottom: 0;
+        padding-right: 20px;
+    }
+`;
+
+const StyledPaymentInfo = styled.div`
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+
+    @media screen and (min-width: 600px) {
+        justify-content: space-between;
+        flex-direction: row;
+    }
 `;
 
 const StyledInfoFlex = styled(Flex)`
-    width: 64%;
+    margin-bottom: 15px;
+
+    @media screen and (min-width: 600px) {
+        margin-bottom: 0;
+    }
 `;
 
 const StyledPaymentFlex = styled(Flex)`
-    width: 20%;
+    align-items: flex-start;
+
+    @media screen and (min-width: 600px) {
+        align-items: flex-end;
+    }
 `;
 
 class PaymentDetails extends Component {
@@ -38,29 +74,24 @@ class PaymentDetails extends Component {
         }
 
         return (
-            <Box key={index} mb={2}>
-                <Card>
-                    <Flex p={3}>
-                        <Flex
-                            flexDirection="column"
-                            justifyContent="center"
-                            width="13%"
-                        >
-                            <img
-                                data-name="office-image"
-                                src={
-                                    !isEmpty(office.imageUrls)
-                                        ? office.imageUrls[0]
-                                        : officeImgPlaceholder
-                                }
-                                alt={office.imageUrls[0]}
-                            />
-                        </Flex>
-                        <StyledPaddedBox pr={3} />
-                        <StyledInfoFlex
-                            flexDirection="column"
-                            justifyContent="center"
-                        >
+            <Card key={index} mb={2}>
+                <StyledContainer p={3}>
+                    <StyledImageContainer>
+                        <img
+                            width="100%"
+                            height="100%"
+                            data-name="office-image"
+                            src={
+                                !isEmpty(office.imageUrls)
+                                    ? office.imageUrls[0]
+                                    : officeImgPlaceholder
+                            }
+                            alt={office.imageUrls[0]}
+                        />
+                    </StyledImageContainer>
+
+                    <StyledPaymentInfo>
+                        <StyledInfoFlex flexDirection="column">
                             <div data-name="office-name">
                                 <Typography fontSize={4} fontWeight="bold">
                                     {office.name}
@@ -83,10 +114,7 @@ class PaymentDetails extends Component {
                                 </div>
                             </div>
                         </StyledInfoFlex>
-                        <StyledPaymentFlex
-                            flexDirection="column"
-                            justifyContent="center"
-                        >
+                        <StyledPaymentFlex flexDirection="column">
                             <Flex justifyContent="center">
                                 <div data-name="payment-amount">
                                     {renderPrice(paymentAmount)}
@@ -117,9 +145,9 @@ class PaymentDetails extends Component {
                                 </div>
                             </Flex>
                         </StyledPaymentFlex>
-                    </Flex>
-                </Card>
-            </Box>
+                    </StyledPaymentInfo>
+                </StyledContainer>
+            </Card>
         );
     }
 }
