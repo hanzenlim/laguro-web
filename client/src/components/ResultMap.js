@@ -8,15 +8,6 @@ import { mapBoxApiKey } from '../config/keys';
 import isMobile from '../util/uiUtil';
 import MapPin from './MapPin';
 
-const StyledPopupOverlay = styled.div`
-    width: 130%;
-    height: 130%;
-    position: absolute;
-    background: transparent;
-    top: -20%;
-    left: -20%;
-`;
-
 const StyledMarkerContainer = styled(Marker)`
     width: 0;
     height: 0;
@@ -48,7 +39,6 @@ class ResultMap extends Component {
         this.state = {
             markerData: [],
             popupInfo: null,
-            isOverPopup: false,
             viewport: {
                 width: 0,
                 height: 0,
@@ -147,17 +137,12 @@ class ResultMap extends Component {
                 <Popup
                     anchor="top"
                     dynamicPosition
-                    closeButton={false}
+                    closeButton={true}
+                    onClose={this.hidePopup}
                     longitude={popupInfo.longitude}
                     latitude={popupInfo.latitude}
                 >
-                    <StyledPopupOverlay
-                        data-id={popupInfo.id}
-                        onClick={this.goToListingPage}
-                        onMouseOver={this.handleHoverInPopup}
-                        onMouseOut={this.handleHoverOutPopup}
-                    />
-                    <div>
+                    <div data-id={popupInfo.id} onClick={this.goToListingPage}>
                         {imageSrc && (
                             <img src={imageSrc} alt="office" width="150px" />
                         )}
@@ -181,20 +166,8 @@ class ResultMap extends Component {
     };
 
     hidePopup = () => {
-        setTimeout(() => {
-            if (!this.state.isOverPopup) {
-                this.setState({ popupInfo: null });
-            }
-        }, 400);
-    };
-
-    handleHoverInPopup = () => {
-        this.setState({ isOverPopup: true });
-    };
-
-    handleHoverOutPopup = () => {
-        this.setState({ popupInfo: null, isOverPopup: false });
-    };
+        this.setState({ popupInfo: null });
+    }
 
     renderMapMarker = () => {
         return this.state.markerData.map((marker, index) => {
@@ -208,8 +181,6 @@ class ResultMap extends Component {
                 >
                     <StyledMarkerOverlay
                         data-marker={JSON.stringify(marker)}
-                        onMouseOut={this.hidePopup}
-                        onMouseOver={this.showPopup}
                         onClick={this.showPopup}
                     />
                     <MapPin size={30} />
