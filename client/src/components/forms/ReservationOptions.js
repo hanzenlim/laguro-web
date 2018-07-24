@@ -5,7 +5,8 @@ import {
     FieldArray,
     reduxForm,
     formValueSelector,
-    SubmissionError
+    SubmissionError,
+    change
 } from 'redux-form';
 import { Redirect } from 'react-router-dom';
 import moment from 'moment';
@@ -21,7 +22,7 @@ import {
 } from './sharedComponents';
 
 import * as actions from '../../actions';
-import { DENTIST, ACTIVE } from '../../util/strings';
+import { ACTIVE } from '../../util/strings';
 import { calculateTimeslots, getStartTime } from '../../util/timeUtil';
 import { renderPrice } from '../../util/paymentUtil';
 
@@ -32,49 +33,22 @@ class ReservationOptions extends Component {
         super(props);
 
         this.state = {
-            redirectToPayment: false,
-            timeSlots: []
+            redirectToPayment: false
         };
     }
 
     componentWillMount() {
-        this.props.fetchUser(DENTIST);
-        const { listing, office } = this.props;
+        const { office } = this.props;
 
-        const filteredReservations = listing.reservations.filter(
-            res => res.status === ACTIVE
-        );
-
-        const durationToNextReservation = calculateTimeslots(
-            listing,
-            filteredReservations
-        );
-
-        const timeSlotsWithDuration = durationToNextReservation.map(
-            (duration, index) => {
-                return {
-                    durationToNext: duration,
-                    startTime: getStartTime(index, listing.startTime)
-                };
-            }
-        );
-
-        const firstAvailReservationIndex = durationToNextReservation.findIndex(
-            duration => duration > 0
-        );
-        const firstAvailReservation = getStartTime(
-            firstAvailReservationIndex,
-            listing.startTime
-        );
-
-        this.setState({ timeSlots: timeSlotsWithDuration });
+        this.timeslots = this.initTimeslots();
+        this.firstAvail = this.getFirstAvailReservation();
 
         this.props.initialize({
             equipmentSelected: office.equipment,
             numChairs: 1,
             appts_per_hour: 1,
-            startTime: moment(firstAvailReservation),
-            endTime: moment(firstAvailReservation).add(
+            startTime: moment(this.firstAvail),
+            endTime: moment(this.firstAvail).add(
                 MINIMUM_RESERVATION_WINDOW,
                 'minutes'
             ),
@@ -108,13 +82,6 @@ class ReservationOptions extends Component {
             throw new SubmissionError({
                 endTime: 'Max length for reservation is 12 hours'
             });
-        } else if (
-            // if chosen duration spans 2 days
-            !moment(values.startTime).isSame(moment(values.endTime), 'day')
-        ) {
-            throw new SubmissionError({
-                endTime: 'Opening and closing must be on same day'
-            });
         } else if (!values.acknowledge) {
             throw new SubmissionError({
                 _error: 'Please accept the terms to continue'
@@ -122,6 +89,43 @@ class ReservationOptions extends Component {
         }
 
         this.setState({ redirectToPayment: true });
+    }
+
+    initTimeslots() {
+        const { listing } = this.props;
+
+        const filteredReservations = listing.reservations.filter(
+            res => res.status === ACTIVE
+        );
+
+        const timeslots = calculateTimeslots(listing, filteredReservations);
+
+        const filteredTimeslots = timeslots.map((duration, index) => {
+            let timeslotStartTime = getStartTime(index, listing.startTime);
+            if (moment(timeslotStartTime).isSameOrBefore(moment())) {
+                return 0;
+            } else {
+                return duration;
+            }
+        });
+
+        return filteredTimeslots.map((duration, index) => {
+            return {
+                durationToNext: duration,
+                startTime: getStartTime(index, listing.startTime)
+            };
+        });
+    }
+
+    getFirstAvailReservation() {
+        const { listing } = this.props;
+        let durations = this.timeslots.map(timeslot => timeslot.durationToNext);
+
+        const index = durations.findIndex(
+            duration => duration > MINIMUM_RESERVATION_WINDOW
+        );
+
+        return getStartTime(index, listing.startTime);
     }
 
     renderStaticField = ({ input, label, className }) => (
@@ -208,6 +212,53 @@ class ReservationOptions extends Component {
         return total;
     }
 
+    onOpeningTimeChange(startTime) {
+        let { endTime, listing } = this.props;
+        if (moment(startTime).isAfter(moment(endTime))) {
+            if (
+                moment(startTime)
+                    .add(MINIMUM_RESERVATION_WINDOW, 'minutes')
+                    .isAfter(listing.endTime)
+            ) {
+                this.props.dispatch(
+                    change(
+                        'reservationOptions',
+                        'startTime',
+                        moment(listing.endTime).subtract(
+                            MINIMUM_RESERVATION_WINDOW,
+                            'minutes'
+                        )
+                    )
+                );
+                this.props.dispatch(
+                    change(
+                        'reservationOptions',
+                        'endTime',
+                        moment(listing.endTime)
+                    )
+                );
+            } else {
+                this.props.dispatch(
+                    change(
+                        'reservationOptions',
+                        'endTime',
+                        moment(startTime).add(
+                            MINIMUM_RESERVATION_WINDOW,
+                            'minutes'
+                        )
+                    )
+                );
+                this.props.dispatch(
+                    change('reservationOptions', 'startTime', moment(startTime))
+                );
+            }
+        } else {
+            this.props.dispatch(
+                change('reservationOptions', 'startTime', moment(startTime))
+            );
+        }
+    }
+
     renderOpeningTimePicker({
         input,
         label,
@@ -218,6 +269,20 @@ class ReservationOptions extends Component {
         meta: { touched, error }
     }) {
         let { startTime } = this.props;
+        let firstAvail = moment(this.firstAvail);
+        let minTime = startTime.isSame(firstAvail, 'day')
+            ? firstAvail
+            : moment(startTime).startOf('day');
+        let maxTime = moment(startTime).isSame(listing.endTime, 'day')
+            ? moment(listing.endTime).subtract(
+                MINIMUM_RESERVATION_WINDOW,
+                'minutes'
+            )
+            : moment().endOf('day');
+        let todaysReservations = reservedTimeSlots.filter(timeslot =>
+            timeslot.isSame(moment(startTime), 'day')
+        );
+
         return (
             <div className={className}>
                 <label>
@@ -227,27 +292,16 @@ class ReservationOptions extends Component {
                 <DatePicker
                     customInput={<Input />}
                     selected={input.value}
-                    onChange={input.onChange.bind(this)}
+                    onChange={this.onOpeningTimeChange.bind(this)}
                     dateFormat="LLL"
-                    minTime={
-                        moment(listing.startTime).isBefore(startTime, 'day')
-                            ? moment().startOf('day')
-                            : moment(listing.startTime)
-                    }
-                    maxTime={
-                        moment(listing.endTime).isAfter(startTime, 'day')
-                            ? moment().endOf('day')
-                            : moment(listing.endTime).subtract(
-                                MINIMUM_RESERVATION_WINDOW,
-                                'minutes'
-                            )
-                    }
+                    minTime={moment(minTime)}
+                    maxTime={moment(maxTime)}
                     showTimeSelect
-                    minDate={moment(listing.startTime)}
+                    minDate={moment(firstAvail)}
                     maxDate={moment(listing.endTime)}
-                    excludeTimes={reservedTimeSlots}
+                    excludeTimes={todaysReservations}
                     timeFormat="h:mm a"
-                    timeIntervals={30}
+                    timeIntervals={15}
                     timeCaption="Time"
                 />
                 {touched && error && <span className="red-text">{error}</span>}
@@ -261,9 +315,24 @@ class ReservationOptions extends Component {
         className,
         tooltip,
         durationToNext,
+        listing,
         meta: { touched, error }
     }) {
-        let { startTime } = this.props;
+        let { startTime, endTime } = this.props;
+
+        let minTime = moment(startTime)
+            .add(MINIMUM_RESERVATION_WINDOW, 'minutes')
+            .isSame(startTime, 'day')
+            ? moment(startTime).add(MINIMUM_RESERVATION_WINDOW, 'minutes')
+            : moment(endTime).startOf('day');
+        let maxTime = moment(endTime).isSame(listing.endTime, 'day')
+            ? moment(listing.endTime)
+            : moment(startTime)
+                .add(durationToNext, 'minutes')
+                .isSame(startTime, 'day')
+                ? moment(startTime).add(durationToNext, 'minutes')
+                : moment().endOf('day');
+
         return (
             <div className={className}>
                 <label>
@@ -275,34 +344,19 @@ class ReservationOptions extends Component {
                     selected={input.value}
                     onChange={input.onChange.bind(this)}
                     dateFormat="LLL"
-                    minTime={moment(startTime).add(
-                        MINIMUM_RESERVATION_WINDOW,
-                        'minutes'
-                    )}
-                    maxTime={
-                        moment(startTime)
-                            .add(durationToNext, 'minutes')
-                            .isAfter(startTime, 'day')
-                            ? moment().endOf('day')
-                            : moment(startTime).add(durationToNext, 'minutes')
-                    }
+                    minTime={moment(minTime)}
+                    maxTime={moment(maxTime)}
                     showTimeSelect
                     minDate={
                         moment(startTime)
                             .add(MINIMUM_RESERVATION_WINDOW, 'minutes')
-                            .isSame(moment(startTime), 'day')
+                            .isSame(startTime, 'day')
                             ? moment(startTime)
                             : moment(startTime).add(1, 'day')
                     }
-                    maxDate={
-                        moment(startTime)
-                            .add(MINIMUM_RESERVATION_WINDOW, 'minutes')
-                            .isSame(moment(startTime), 'day')
-                            ? moment(startTime)
-                            : moment(startTime).add(1, 'day')
-                    }
+                    maxDate={moment(listing.endTime)}
                     timeFormat="h:mm a"
-                    timeIntervals={30}
+                    timeIntervals={15}
                     timeCaption="Time"
                 />
                 {touched && error && <span className="red-text">{error}</span>}
@@ -323,19 +377,18 @@ class ReservationOptions extends Component {
         if (!this.props.initialized) return <div>Loading...</div>;
 
         let { startTime } = this.props;
-        let { timeSlots } = this.state;
 
-        let selectedTimeSlot = timeSlots.find(timeSlot =>
-            moment(timeSlot.startTime).isSame(startTime, 'minute')
+        let selectedTimeSlot = this.timeslots.find(timeslot =>
+            moment(timeslot.startTime).isSame(startTime, 'minute')
         );
 
         let durationToNextReservation = selectedTimeSlot
             ? selectedTimeSlot.durationToNext
             : 0;
 
-        let reservedTimeSlots = timeSlots
-            .filter(timeSlot => timeSlot.durationToNext === 0)
-            .map(timeSlot => timeSlot.startTime);
+        let reservedTimeSlots = this.timeslots
+            .filter(timeslot => timeslot.durationToNext < 60)
+            .map(timeslot => timeslot.startTime);
 
         if (this.state.redirectToPayment) {
             const { startTime, endTime, numChairs } = this.props;
@@ -386,7 +439,6 @@ class ReservationOptions extends Component {
                             name="startTime"
                             label="Doors opening"
                             tooltip="What is the first time you want available for patients to reserve?"
-                            dateType="startTime"
                             component={this.renderOpeningTimePicker.bind(this)}
                             listing={listing}
                             reservedTimeSlots={reservedTimeSlots}
@@ -396,7 +448,6 @@ class ReservationOptions extends Component {
                     <Flex width={1 / 2} pb={3} ml={4} flexDirection="column">
                         <Field
                             name="endTime"
-                            dateType="endTime"
                             label="Doors closing"
                             tooltip="What is the last time you want available for patients to reserve?"
                             component={this.renderClosingTimePicker.bind(this)}
@@ -529,6 +580,12 @@ const mapStateToProps = state => {
     };
 };
 
+export { ReservationOptions };
 export default reduxForm({
     form: 'reservationOptions'
-})(connect(mapStateToProps, actions)(ReservationOptions));
+})(
+    connect(
+        mapStateToProps,
+        actions
+    )(ReservationOptions)
+);
