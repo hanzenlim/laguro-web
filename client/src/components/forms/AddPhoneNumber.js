@@ -11,8 +11,11 @@ import {
     PHONE_NUMBER_MASK
 } from '../../util/phoneNumberUtil';
 
+const defaultSettings = { general: { email: true, sms: true } };
+
 class AddPhoneNumber extends Component {
     onSubmit = values => {
+        const { auth } = this.props;
         const { phoneNumber } = values;
 
         if (phoneNumber && !isPhoneNumberInputValid(phoneNumber)) {
@@ -21,8 +24,18 @@ class AddPhoneNumber extends Component {
             });
         }
 
+        let { notificationSettings } = auth;
+        if (!notificationSettings) {
+            notificationSettings = defaultSettings;
+        } else if (!notificationSettings.general) {
+            notificationSettings.general = defaultSettings.general;
+        } else {
+            notificationSettings.general.sms = true;
+        }
+
         this.props.updateUserProfile(this.props.auth.id, {
-            phoneNumber: formatPhoneNumber(phoneNumber)
+            phoneNumber: formatPhoneNumber(phoneNumber),
+            notificationSettings
         });
         this.props.closeModal();
     };
@@ -85,6 +98,7 @@ function mapStateToProps(state) {
     };
 }
 
+export { AddPhoneNumber };
 export default reduxForm({
     form: 'addPhoneNumber'
 })(connect(mapStateToProps, { updateUserProfile })(AddPhoneNumber));
