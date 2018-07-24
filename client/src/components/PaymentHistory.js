@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { isEmpty, orderBy } from 'lodash';
+import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { loadPaymentHistory } from '../actions';
 import {
@@ -17,6 +18,13 @@ import {
 } from '../util/strings';
 import { Box, Flex, Typography } from './common';
 import PaymentDetails from './PaymentDetails';
+
+const StyledContainer = styled.div`
+    margin: 0 auto;
+    max-width: 768px;
+    width: 100%;
+    padding: 0 10px;
+`;
 
 const paymentHistoryQuery = `
     query QueryPayments($input: QueryParams!) {
@@ -203,15 +211,17 @@ export class PaymentHistory extends Component {
         const paymentDetailsList = this.renderPaymentDetailsList(processedPayments);
 
         return (
-            <Box mx={7} mt={5}>
-                <Flex justifyContent='space-between'>
-                    <Typography fontSize={5}>
+            <StyledContainer>
+                <Box mt={5}>
+                    <Flex justifyContent='space-between'>
+                        <Typography fontSize={5}>
                         Payment History
-                    </Typography>
-                </Flex>
-                <Box pb={3} />
-                {!isEmpty(paymentDetailsList) ? paymentDetailsList : isFetchingPaymentHistory ? 'Loading...' : 'No payment history.'}
-            </Box>);
+                        </Typography>
+                    </Flex>
+                    <Box pb={3} />
+                    {!isEmpty(paymentDetailsList) ? paymentDetailsList : isFetchingPaymentHistory ? 'Loading...' : 'No payment history.'}
+                </Box>
+            </StyledContainer>);
     }
 }
 
