@@ -12,7 +12,6 @@ const maxNumProcedures = 4;
 const StyledContainer = styled.div`
     position: relative;
     width: 100%;
-    padding-top: 67%;
     overflow: hidden;
 `;
 
@@ -72,6 +71,10 @@ class PhotoGrid extends Component {
 
     render() {
         const { className, objects, header, message } = this.props;
+        const dentistCardPadding = '100%';
+        const officeCardPadding = '67%';
+        const paddingTop = this.props.type === 'dentist' ? dentistCardPadding : officeCardPadding;
+
         let photoGridElements;
         if (objects) {
             if (objects.length === 0) {
@@ -88,7 +91,7 @@ class PhotoGrid extends Component {
                             <div className="col offset-s1 s10 m6 l3">
                                 <ListingCard>
                                     <div data-name="image">
-                                        <StyledContainer>
+                                        <StyledContainer style={{paddingTop}}>
                                             <StyledImg
                                                 className="center"
                                                 id="element"

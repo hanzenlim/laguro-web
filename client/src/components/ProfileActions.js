@@ -7,6 +7,7 @@ import NewDentist from './forms/NewDentist';
 import EditDentist from './forms/EditDentist';
 import { Link, Button } from './common';
 import { filestackKey } from '../config/keys';
+import { profileImageRatio } from '../util/uiUtil';
 import * as actions from '../actions';
 import Provider from '../models/provider';
 
@@ -115,6 +116,12 @@ class ProfileActions extends Component {
                                 'facebook',
                                 'instagram'
                             ],
+                            transformations: {
+                                crop: {
+                                    aspectRatio: profileImageRatio,
+                                    force: true
+                                }
+                            },
                             storeTo: { container: 'user-photos' }
                         }}
                         onSuccess={result => this.setNewProfileImage(result)}

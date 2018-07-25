@@ -14,7 +14,7 @@ import { OFFICE } from '../util/strings';
 
 import { Grid, Typography } from './common';
 import { Padding } from './common/Spacing';
-import isMobile from '../util/uiUtil';
+import { isMobile } from '../util/uiUtil';
 
 const Container = styled.div`
     padding: 0 7px;

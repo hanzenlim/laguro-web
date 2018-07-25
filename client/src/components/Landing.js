@@ -107,7 +107,7 @@ export class LandingComponent extends Component {
                         </div>
                     </div>
                 </div>
-                <PhotoGrid data-name="dentist-photo-grid" numRow="2" page="landing" objects={dentists} header={'Popular Dentists'} message="No dentist has an available appointment. Please come back and check again."/>
+                <PhotoGrid data-name="dentist-photo-grid" numRow="2" page="landing" objects={dentists} header={'Popular Dentists'} type="dentist" message="No dentist has an available appointment. Please come back and check again."/>
             </div>);
     }
 
@@ -147,7 +147,7 @@ export class LandingComponent extends Component {
                     </div>
                 </div>
 
-                <PhotoGrid data-name="office-photo-grid" numRow="2" objects={offices} header={'New Listings'} message="All listings currently sold out! Don't worry, there will be more soon."/>
+                <PhotoGrid data-name="office-photo-grid" numRow="2" objects={offices} header={'New Listings'} type="office" message="All listings currently sold out! Don't worry, there will be more soon."/>
             </div>);
     }
 
