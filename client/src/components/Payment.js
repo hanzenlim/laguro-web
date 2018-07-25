@@ -376,13 +376,15 @@ class Payment extends Component {
                             panelLabel="Add card"
                         >
                             <Link>
-                                <Typography
-                                    fontSize={2}
-                                    color="abbey"
-                                    underline
+                                <Button
+                                    fullWidth
+                                    variant="raised"
+                                    color="primary"
                                 >
-                                    Add payment method
-                                </Typography>
+                                    <Typography fontSize={4} fontWeight="medium">
+                                        Add Payment Method
+                                    </Typography>
+                                </Button>
                             </Link>
                         </StripeCheckout>
                     </Box>

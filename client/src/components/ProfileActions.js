@@ -3,10 +3,9 @@ import { connect } from 'react-redux';
 import ReactFilestack from 'filestack-react';
 
 import EditUser from './forms/EditUser';
-//eslint-disable-next-line
 import NewDentist from './forms/NewDentist';
 import EditDentist from './forms/EditDentist';
-import { Link } from './common';
+import { Link, Button } from './common';
 import { filestackKey } from '../config/keys';
 import * as actions from '../actions';
 import Provider from '../models/provider';
@@ -23,7 +22,7 @@ class ProfileActions extends Component {
     }
 
     openModal = event => {
-        this.setState({ visibleModal: event.target.dataset.modal_name });
+        this.setState({ visibleModal: event.currentTarget.dataset.modal_name });
     };
 
     closeModal = () => {
@@ -62,48 +61,50 @@ class ProfileActions extends Component {
             <div>
                 <ul className="collection">
                     <div>
-                        <a
-                            className="link"
+                        <Button
+                            link
+                            border
                             data-modal_name="editUser"
                             onClick={this.openModal}
                         >
                             Edit User Profile
-                        </a>
+                        </Button>
                     </div>
 
                     {/* Display Create if no dentist profile or Edit if profile exists */}
                     {dentistProfileExists ? (
-                        <a
-                            className="link"
+                        <Button
+                            link
+                            border
                             data-modal_name="editDentist"
                             onClick={this.openModal}
                         >
                             Edit Dentist Profile
-                        </a>
+                        </Button>
                     ) : (
-                        <a
-                            className="link red-text"
+                        <Button
+                            link
+                            border
                             data-modal_name="newDentist"
                             onClick={this.openModal}
                         >
                             Create Dentist Profile
-                        </a>
+                        </Button>
                     )}
 
                     {dentistProfileExists && (
-                        <a
-                            className="link"
+                        <Button
+                            link
+                            border
                             data-name="resetProviderPassword"
                             onClick={this.resetPassword}
                         >
                             Reset Open Dental Password
-                        </a>
+                        </Button>
                     )}
 
                     <ReactFilestack
                         apikey={filestackKey}
-                        buttonText="Upload New Image"
-                        buttonClass="link blue-text text-lighten-1"
                         options={{
                             accept: ['image/*'],
                             imageMin: [300, 300],
@@ -117,36 +118,50 @@ class ProfileActions extends Component {
                             storeTo: { container: 'user-photos' }
                         }}
                         onSuccess={result => this.setNewProfileImage(result)}
+                        render={({ onPick }) => (
+                            <Button onClick={onPick} link border>
+                                Upload New Image
+                            </Button>
+                        )}
                     />
 
                     {!auth.googleId && (
-                        <Link className="link" to={'/edit-password'}>
-                            Update Password
+                        <Link to={'/edit-password'}>
+                            <Button link border>
+                                Update Password
+                            </Button>
                         </Link>
                     )}
 
                     {dentistProfileExists ? (
                         <Link
-                            className="link"
                             to={`/dentist/${auth.dentistId}?referrer=profile`}
                         >
-                            View public profile
+                            <Button link border>
+                                View public profile
+                            </Button>
                         </Link>
                     ) : (
                         ''
                     )}
 
-                    <Link className="link" to={'/payment-history'}>
-                        View payment history
+                    <Link to={'/payment-history'}>
+                        <Button link border>
+                            View payment history
+                        </Button>
                     </Link>
 
                     {dentistProfileExists ? (
-                        <Link className="link" to={'/office/search'}>
-                            Browse listings
+                        <Link to={'/office/search'}>
+                            <Button link>
+                                Browse Listings
+                            </Button>
                         </Link>
                     ) : (
-                        <Link className="link" to={'/dentist/search'}>
-                            Browse dentists
+                        <Link to={'/dentist/search'}>
+                            <Button link>
+                                Browse Dentists
+                            </Button>
                         </Link>
                     )}
                 </ul>
@@ -176,4 +191,7 @@ class ProfileActions extends Component {
 // Exporting it as an object without the connect so we can unit test it properly. If you don't
 // do this then you have to mock the store.
 export { ProfileActions as NoReduxProfileActions };
-export default connect(null, actions)(ProfileActions);
+export default connect(
+    null,
+    actions
+)(ProfileActions);

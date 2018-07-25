@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Button as MaterialUIButton } from '@material-ui/core';
+import theme from '../../../theme';
 
 const StyledButton = styled(MaterialUIButton)`
     && {
@@ -8,6 +9,10 @@ const StyledButton = styled(MaterialUIButton)`
         padding: 16px 16px;
         border-radius: 2px;
         color: white;
+    }
+
+    &&:focus {
+        background-color: rgba(0, 0, 0, 0.08);
     }
 
     ${props =>
@@ -47,6 +52,30 @@ const StyledButton = styled(MaterialUIButton)`
     `};
 
     ${props =>
+        props.link &&
+        `
+        &&{
+            color: ${theme.colors.link_blue};
+            width: 100%;
+            justify-content: flex-start;
+            font-size: inherit;
+            font-weight: inherit;
+            font: inherit;
+        }
+
+        &&:hover {
+            color: ${theme.colors.red};
+        }
+    `};
+
+    ${props =>
+        props.border &&
+        `
+        &&{
+            border-bottom: 1px solid #e0e0e0;
+        }
+    `}
+    ${props =>
         props.disabled &&
         `
         && {
@@ -61,9 +90,9 @@ const StyledButton = styled(MaterialUIButton)`
 `;
 
 const Button = props => {
-    const { children, ...customProps } = props;
+    const { children, link, border, ...customProps} = props;
 
-    return <StyledButton {...customProps}>{children}</StyledButton>;
+    return <StyledButton link={link ? 1 : 0} border={border ? 1 : 0} {...customProps}>{children}</StyledButton>;
 };
 
 export default Button;
