@@ -5,7 +5,7 @@ import ReactStars from 'react-stars';
 import styled from 'styled-components';
 
 import { Typography, Card, Grid, Link } from './common';
-import { Padding } from './common/Spacing';
+import { Padding, Margin } from './common/Spacing';
 
 const Container = styled(Card)`
     width: 100%;
@@ -14,8 +14,8 @@ const Container = styled(Card)`
 `;
 
 const ImageContainer = styled.div`
-    height: 120px;
-    width: 164px;
+    height: 140px;
+    width: 170px;
 `;
 
 const Image = styled.img`
@@ -90,11 +90,11 @@ class OfficeResult extends Component {
                 <Container>
                     <Grid container>
                         <Grid item>
-                            <Padding right={5}>
+                            <Margin right={15}>
                                 <ImageContainer>
                                     <Image src={this.imgUrl()} alt="Office" />
                                 </ImageContainer>
-                            </Padding>
+                            </Margin>
                         </Grid>
 
                         <Grid item xs>

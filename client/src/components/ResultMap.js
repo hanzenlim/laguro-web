@@ -132,6 +132,12 @@ class ResultMap extends Component {
                 : popupInfo.imageUrls[0]
             : '';
 
+        const name = popupInfo
+            ? popupInfo.user
+                ? `${popupInfo.user.firstName} ${popupInfo.user.lastName}`
+                : popupInfo.name
+            : '';
+
         return (
             popupInfo && (
                 <Popup
@@ -142,11 +148,11 @@ class ResultMap extends Component {
                     longitude={popupInfo.longitude}
                     latitude={popupInfo.latitude}
                 >
-                    <div data-id={popupInfo.id} onClick={this.goToListingPage}>
+                    <div data-id={popupInfo.id} onClick={this.goToListingPage} style={{width: '185px'}}>
                         {imageSrc && (
-                            <img src={imageSrc} alt="office" width="150px" />
+                            <img src={imageSrc} alt="office" width="175px" />
                         )}
-                        <div>{popupInfo.name}</div>
+                        <div>{name}</div>
                         <div>{popupInfo.location}</div>
                     </div>
                 </Popup>
