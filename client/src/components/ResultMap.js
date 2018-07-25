@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import history from '../history';
 import { mapBoxApiKey } from '../config/keys';
-import isMobile from '../util/uiUtil';
+import { isMobile } from '../util/uiUtil';
 import MapPin from './MapPin';
 
 const StyledMarkerContainer = styled(Marker)`

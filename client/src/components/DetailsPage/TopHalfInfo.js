@@ -5,7 +5,7 @@ import { Padding } from '../common/Spacing';
 import Icon from '../Icon';
 import { Box, Link } from '../common';
 import history from '../../history';
-import isMobile from '../../util/uiUtil';
+import { isMobile } from '../../util/uiUtil';
 
 const StyledProfPic = styled.img`
     border-radius: 50%;

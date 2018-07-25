@@ -16,7 +16,7 @@ import ReservationOptions from '../forms/ReservationOptions';
 import { Box, Grid, Link, Typography, Button, Flex, Modal } from '../common';
 import OfficePlaceholderBig from '../images/office-placeholder-big.png';
 import Appointments from '../Appointments';
-import isMobile from '../../util/uiUtil';
+import { isMobile } from '../../util/uiUtil';
 import NewDentist from '../forms/NewDentist';
 
 const StyledOfficeFlex = styled(Flex)`

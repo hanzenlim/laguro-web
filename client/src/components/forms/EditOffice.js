@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import ReactFilestack from 'filestack-react';
 import * as actions from '../../actions';
 import { filestackKey } from '../../config/keys';
+import { officeImageRatio } from '../../util/uiUtil';
 import { Typography, Grid, Button, Box } from '../common';
 import { Padding } from '../common/Spacing';
 import {
@@ -187,7 +188,7 @@ class EditOffice extends Component {
                                         ],
                                         transformations: {
                                             crop: {
-                                                aspectRatio: 3 / 2,
+                                                aspectRatio: officeImageRatio,
                                                 force: true
                                             }
                                         },

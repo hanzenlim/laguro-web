@@ -9,6 +9,7 @@ import * as actions from '../../actions';
 import { DENTIST } from '../../util/strings';
 import history from '../../history';
 import { filestackKey } from '../../config/keys';
+import { officeImageRatio } from '../../util/uiUtil';
 
 import { renderField, addTooltip } from './sharedComponents';
 import { required } from './formValidation';
@@ -174,7 +175,7 @@ class NewOffice extends Component {
                                                 ],
                                                 transformations: {
                                                     crop: {
-                                                        aspectRatio: 3 / 2,
+                                                        aspectRatio: officeImageRatio,
                                                         force: true
                                                     }
                                                 },
