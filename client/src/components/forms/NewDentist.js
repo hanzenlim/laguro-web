@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form';
 import { Box, Modal } from '../common';
-import ReduxAutocomplete from '../filters/ReduxAutocomplete';
+import Autocomplete from '../filters/Autocomplete';
 import { createDentist, fetchUser } from '../../actions';
 import { DENTIST } from '../../util/strings';
 import { required } from './formValidation';
@@ -77,7 +77,7 @@ class NewDentist extends Component {
 
                     <Field
                         name="location"
-                        component={ReduxAutocomplete}
+                        component={Autocomplete}
                         validate={required}
                         tooltip="This is the location patients will find you at in search if you do not have any reservations."
                     />

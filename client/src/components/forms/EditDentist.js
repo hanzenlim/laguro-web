@@ -1,15 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {
-    Field,
-    FieldArray,
-    reduxForm,
-    SubmissionError,
-    formValueSelector
-} from 'redux-form';
+import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form';
 import { isEmpty } from 'lodash';
 import { Modal } from '../common';
-import ReduxAutocomplete from '../filters/ReduxAutocomplete';
+import Autocomplete from '../filters/Autocomplete';
 import { required } from './formValidation';
 import * as actions from '../../actions';
 import { renderField, renderProcedureSelector } from './sharedComponents';
@@ -39,18 +33,8 @@ class EditDentist extends Component {
         const { auth } = this.props;
         const dentistId = auth.dentistId;
 
-        if (
-            // if no procedures
-            !values.procedures ||
-            values.procedures.length === 0
-        ) {
-            throw new SubmissionError({
-                _error: 'You must add at least 1 procedure'
-            });
-        } else {
-            this.props.editDentist({ ...values, id: dentistId });
-            this.props.closeModal();
-        }
+        this.props.editDentist({ ...values, id: dentistId });
+        this.props.closeModal();
     }
 
     render() {
@@ -94,7 +78,7 @@ class EditDentist extends Component {
                         <div className="col s12 m12">
                             <Field
                                 name="location"
-                                component={ReduxAutocomplete}
+                                component={Autocomplete}
                                 validate={required}
                                 tooltip="This is the location patients will find you at in search if you do not have any reservations."
                             />

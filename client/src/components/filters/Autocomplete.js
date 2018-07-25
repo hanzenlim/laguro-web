@@ -1,23 +1,24 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { reduxForm } from 'redux-form';
 import PlacesAutocomplete, {
     geocodeByAddress,
     getLatLng
 } from 'react-places-autocomplete';
 import 'react-datepicker/dist/react-datepicker.css';
 import { addTooltip } from '../forms/sharedComponents';
-import * as actions from '../../actions';
-import { Input } from '../common';
+import { Input, Typography } from '../common';
 
 class Autocomplete extends Component {
     constructor(props) {
         super(props);
-        this.state = { location: props.location || '' };
-        if (props.location) {
+        const initialLocation = this.props.input.value || '';
+        this.state = {
+            location: initialLocation
+        };
+        if (initialLocation) {
             this.handleSelect(props.location);
         }
         this.onLocationChange = this.onLocationChange.bind(this);
+        this.props.input.onChange(initialLocation);
     }
 
     onLocationChange(location) {
@@ -32,32 +33,27 @@ class Autocomplete extends Component {
     };
 
     handleChange = location => {
-        const { onChange } = this.props;
+        const { onChange } = this.props.input;
         if (onChange) {
-            this.props.onChange(location);
+            onChange('');
         }
         this.onLocationChange(location);
     };
 
     handleSelect = location => {
-        const { onAutocomplete } = this.props;
+        const { onChange } = this.props.input;
 
-        if (onAutocomplete) {
-            onAutocomplete(location);
+        if (onChange) {
+            onChange(location);
         }
 
         this.setState({ location });
         geocodeByAddress(location).then(results => getLatLng(results[0]));
     };
 
-    onSubmit(values) {
-        const { reset } = this.props;
-        this.props.searchOffices({ values, location: this.state.location });
-        reset();
-    }
-
     render() {
         const { tooltip } = this.props;
+        const { touched, error } = this.props.meta;
         return (
             <div className="searchModule toggle">
                 <label>
@@ -113,11 +109,11 @@ class Autocomplete extends Component {
                         </div>
                     )}
                 </PlacesAutocomplete>
+                {touched &&
+                    error && <Typography color="red">{error}</Typography>}
             </div>
         );
     }
 }
 
-export default reduxForm({
-    form: 'Autocomplete'
-})(connect(null, actions)(Autocomplete));
+export default Autocomplete;
