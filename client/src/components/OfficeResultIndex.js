@@ -15,6 +15,7 @@ import { OFFICE } from '../util/strings';
 import { Grid, Typography } from './common';
 import { Padding } from './common/Spacing';
 import { isMobile } from '../util/uiUtil';
+import history from '../history';
 
 const Container = styled.div`
     padding: 0 7px;
@@ -154,6 +155,7 @@ class OfficeResultIndex extends Component {
 
     handleClearSearchInput = () => {
         this.props.updateFilters({ location: '' });
+        history.push('/office/search');
     };
 
     toggleView = view => {
