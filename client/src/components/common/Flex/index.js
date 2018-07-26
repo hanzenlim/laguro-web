@@ -20,6 +20,7 @@ import {
 const Flex = styled.div`
   display: flex;
   ${alignItems} ${background} ${border} ${borderLeft} ${borderRadius} ${borderRight} ${color} ${flexDirection} ${flexWrap} ${fontWeight} ${height} ${justifyContent} ${space} ${width};
+  ${props => props.withborder && 'border: 1px solid #ddd; border-radius: 3px;'};
 `;
 
 Flex.propTypes = {

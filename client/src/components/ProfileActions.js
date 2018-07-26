@@ -140,23 +140,31 @@ class ProfileActions extends Component {
                         </Link>
                     )}
 
-                    {dentistProfileExists ? (
+                    {dentistProfileExists && (
                         <Link
                             to={`/dentist/${auth.dentistId}?referrer=profile`}
                         >
                             <Button link border>
-                                View public profile
+                                View Public Profile
                             </Button>
                         </Link>
-                    ) : (
-                        ''
                     )}
 
                     <Link to={'/payment-history'}>
                         <Button link border>
-                            View payment history
+                            View Payment History
                         </Button>
                     </Link>
+
+                    {dentistProfileExists && (
+                        <Link
+                            to={'/payout'}
+                        >
+                            <Button link border>
+                                View Laguro Balance
+                            </Button>
+                        </Link>
+                    )}
 
                     {dentistProfileExists ? (
                         <Link to={'/office/search'}>
