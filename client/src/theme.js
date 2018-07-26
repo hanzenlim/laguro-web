@@ -21,6 +21,13 @@ export default {
         medium: 500,
         bold: 700
     },
+    zIndex: {
+        modal     : 900,
+        overlay   : 800,
+        dropdown  : 700,
+        header    : 600,
+        footer    : 500,
+    },
     space: [0, 4, 8, 16, 32, 64, 128, 256, 512],
     breakpoints: breakPointsInPixels.map(breakpoint => breakpoint.toString() + 'px'),
     maxContainerWidth: '960px'
