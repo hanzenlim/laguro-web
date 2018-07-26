@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { reduxForm } from 'redux-form';
+import queryString from 'query-string';
 import PlacesAutocomplete, {
     geocodeByAddress,
     getLatLng
 } from 'react-places-autocomplete';
 import styled from 'styled-components';
+import history from '../../history';
 import { Input, Grid, Button } from './../common';
 import { Padding } from './../common/Spacing';
 
@@ -38,7 +40,13 @@ const ResultsItem = styled.div`
 class LocationFilter extends Component {
     constructor(props) {
         super(props);
-        this.state = { location: this.props.searchLocation || '' };
+
+        this.urlParams = queryString.parse(history.location.search);
+
+        this.state = {
+            location: this.urlParams.query || this.props.searchLocation || ''
+        };
+
         this.onLocationChange = this.onLocationChange.bind(this);
     }
 
@@ -61,6 +69,10 @@ class LocationFilter extends Component {
     onSubmit() {
         const { reset } = this.props;
         this.props.updateFilters({ location: this.state.location });
+
+        history.push({
+            search: `?query=${this.state.location}`
+        });
         reset();
     }
 
