@@ -1,3 +1,5 @@
+import { isEmpty, isInteger } from 'lodash';
+
 export const dollarMinimum = value =>
     value && value >= 100 ? undefined : 'Minimum price is $1';
 
@@ -29,7 +31,7 @@ export function reviewConditions(value, allValues, props) {
 }
 
 export function required(value) {
-    return value && value !== '' ? undefined : 'Required';
+    return isEmpty(value) && !isInteger(value) ? 'Required' : undefined;
 }
 
 export function confirmPassword(confirmationPassword, allValues) {
