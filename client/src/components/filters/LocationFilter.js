@@ -71,7 +71,6 @@ class LocationFilter extends Component {
         this.props.updateFilters({ location: this.state.location });
 
         history.push({
-            pathname: '/office/search',
             search: `?query=${this.state.location}`
         });
         reset();

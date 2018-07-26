@@ -158,7 +158,7 @@ class DentistResultIndex extends Component {
 
     handleClearSearchInput = () => {
         this.props.updateFilters({ location: '' });
-        history.push('/office/search');
+        history.push('/dentist/search');
     };
 
     toggleView = view => {
