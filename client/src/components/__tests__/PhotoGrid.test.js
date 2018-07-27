@@ -51,7 +51,6 @@ describe('PhotoGrid Component', () => {
         expect(location).toHaveLength(1);
         expect(chairHourlyPrice).toHaveLength(1);
 
-        expect(image.find('img').prop('src')).toEqual('jestUrl');
         expect(name.find('span').text()).toEqual('jestName');
         expect(location.find('span').text()).toEqual('jestLocation');
         expect(chairHourlyPrice.find('span').text()).toEqual(
@@ -75,7 +74,6 @@ describe('PhotoGrid Component', () => {
         expect(location).toHaveLength(1);
         expect(procedures).toHaveLength(1);
 
-        expect(image.find('img').prop('src')).toEqual('jestUrl');
         expect(name.find('span').text()).toEqual('jestName');
         expect(location.find('span').text()).toEqual('jestLocation');
         expect(procedures.find('span').text()).toEqual('jestProcedureName');
