@@ -1,103 +1,59 @@
 import React, { Component } from 'react';
-import { AVAILABLE } from '../util/strings';
-import { paymentFragment } from '../util/fragments';
-import makeApiCall from '../util/clientDataLoader';
+import moment from 'moment';
 
-const getUserAccountReceivableQuery = `
-    query ($userId: String!) {
-        getUserAccountReceivable(userId: $userId) {
-            ${paymentFragment}
-        }
-    }
-`;
-
-const payoutUserQuery = `
-    mutation ($userId: String!) {
-        payoutUser(userId: $userId)
-    }
-`;
+import { renderPrice } from '../util/paymentUtil';
+import { Flex, Typography } from './common';
 
 class PendingPayouts extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { receivable: null };
-        this.payoutUser = this.payoutUser.bind(this);
-        this.loadAccountReceivable = this.loadAccountReceivable.bind(this);
-        this.loadAccountReceivable();
-    }
-
-    async loadAccountReceivable() {
-        const { user } = this.props;
-        const response = await makeApiCall(getUserAccountReceivableQuery, {
-            userId: user.id
-        });
-        const receivable = response.data.getUserAccountReceivable;
-        this.setState({ receivable });
-    }
-
-    async payoutUser() {
-        const { user } = this.props;
-        const response = await makeApiCall(payoutUserQuery, {
-            userId: user.id
-        });
-        alert('Paid out $' + response.data.payoutUser / 100);
-        this.loadAccountReceivable();
-    }
-
-    render() {
-        const { user } = this.props;
-        const { receivable } = this.state;
-        if (!user || !receivable) {
-            return <div />;
-        }
-        let totalAmount = 0;
-        let availableAmount = 0;
-        for (let i = 0; i < receivable.length; i++) {
-            const payoutAmount = receivable[i].stripePayment.amount;
-            totalAmount += payoutAmount;
-            if (receivable[i].chargeStatus === AVAILABLE) {
-                availableAmount += payoutAmount;
-            }
-        }
-        totalAmount = (totalAmount * 0.8 / 100).toFixed(2);
-        availableAmount = (availableAmount * 0.8 / 100).toFixed(2);
-        const pendingAmount = (totalAmount - availableAmount).toFixed(2);
-        let receivableList = receivable.map((receivable, index) => {
-            const reservation = receivable.reservation;
-
-            // TODO consider storing PAYOUT amount or implement calculation util function
-            // TODO figure out what info to display
+    receivableList =
+        // TODO consider storing PAYOUT amount or implement calculation util function
+        // TODO figure out what info to display
+        this.props.receivable.map((receivable, index) => {
+            const { reservation } = receivable;
+            let location = reservation
+                ? `Location: ${reservation.location}`
+                : '';
+            let type =
+                receivable.type === 'RESERVATION' ? 'Reservation' : 'Procedure';
             return (
                 <li key={index}>
-                    <div>Id: {receivable.id}</div>
-                    {reservation && (
-                        <div>
-                            <div>Location: {reservation.location}</div>
-                            <div>Start time: {reservation.startTime}</div>
-                            <div>End time: {reservation.endTime}</div>
-                        </div>
-                    )}
-                    <div>
-                        Amount: ${receivable.stripePayment.amount * 0.8 / 100}
-                    </div>
+                    <Flex
+                        flexDirection="column"
+                        p={3}
+                        my={2}
+                        withborder="true"
+                    >
+                        <Flex justifyContent="space-between">
+                            <Typography mb={3} fontWeight="bold">
+                                {`${type} Income`}
+                            </Typography>
+                            <Typography>
+                                {renderPrice(
+                                    receivable.stripePayment.amount * 0.8
+                                )}
+                            </Typography>
+                        </Flex>
+
+                        <Typography mb={1}>{location}</Typography>
+                        {reservation && (
+                            <Typography>
+                                {`Time: ${moment(reservation.startTime).format(
+                                    'M/D/YY h:mm a'
+                                )} - ${moment(reservation.endTime).format(
+                                    'h:mm a'
+                                )}`}
+                            </Typography>
+                        )}
+                    </Flex>
                 </li>
             );
         });
-        return (
-            <div>
-                {user.payoutAccountId ? (
-                    <button onClick={this.payoutUser}>
-                        Payout available amount
-                    </button>
-                ) : (
-                    ''
-                )}
-                <div>Available amount: ${availableAmount}</div>
-                <div>Pending Amount: ${pendingAmount}</div>
-                <div>Total receivables: ${totalAmount}</div>
-                <ul>{receivableList}</ul>
-            </div>
-        );
+
+    render() {
+        const { receivable } = this.props;
+        if (!receivable) return <div />;
+
+        return <ul>{this.receivableList}</ul>;
     }
 }
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Button as MaterialUIButton } from '@material-ui/core';
+import Tooltip from '@material-ui/core/Tooltip';
 import theme from '../../../theme';
 
 const StyledButton = styled(MaterialUIButton)`
@@ -17,6 +18,7 @@ const StyledButton = styled(MaterialUIButton)`
 
     ${props =>
         props.color === 'primary' &&
+        !props.disabled &&
         `
         && {
             background-color: #0AD5B1;
@@ -29,6 +31,7 @@ const StyledButton = styled(MaterialUIButton)`
 
     ${props =>
         props.color === 'secondary' &&
+        !props.disabled &&
         `
         && {
             background-color: #f46b13;
@@ -41,6 +44,7 @@ const StyledButton = styled(MaterialUIButton)`
 
     ${props =>
         props.color === 'default' &&
+        !props.disabled &&
         `
         && {
             background-color: #484E51;
@@ -74,25 +78,34 @@ const StyledButton = styled(MaterialUIButton)`
         &&{
             border-bottom: 1px solid #e0e0e0;
         }
-    `}
+    `};
+
     ${props =>
         props.disabled &&
         `
         && {
-            background-color: #f5f5f5;
-            color: rgba(0,0,0,.25);
-        }
-
-        &&:hover {
-            background-color: #f5f5f5;
+            background-color: #e5e5e5;
+            color: rgba(0,0,0,0.5) !important; //important to overwrite default (need higher contrast)
         }
     `};
 `;
 
 const Button = props => {
-    const { children, link, border, ...customProps} = props;
+    const { children, link, border, tooltip, ...customProps } = props;
 
-    return <StyledButton link={link ? 1 : 0} border={border ? 1 : 0} {...customProps}>{children}</StyledButton>;
+    return (
+        <Tooltip placement="right" title={tooltip || ''}>
+            <div>
+                <StyledButton
+                    link={link ? 1 : 0}
+                    border={border ? 1 : 0}
+                    {...customProps}
+                >
+                    {children}
+                </StyledButton>
+            </div>
+        </Tooltip>
+    );
 };
 
 export default Button;

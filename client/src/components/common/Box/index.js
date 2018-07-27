@@ -11,4 +11,5 @@ export default styled.div`
   ${border}
   ${background}
   ${zIndex}
+  ${props => props.withborder && 'border: 1px solid #ddd; border-radius: 3px;'};
 `;
