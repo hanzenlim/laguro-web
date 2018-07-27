@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Field, reduxForm } from 'redux-form';
+import { Field, reduxForm, formValueSelector } from 'redux-form';
 import queryString from 'query-string';
 import ReactFilestack from 'filestack-react';
 import styled from 'styled-components';
@@ -44,10 +44,9 @@ class NewOffice extends Component {
         super(props);
 
         this.urlParams = queryString.parse(history.location.search);
-        const { imageUrls, location } = this.urlParams;
+        const { imageUrls } = this.urlParams;
 
         this.state = {
-            location: location || '',
             imageUrls: imageUrls ? JSON.parse(imageUrls) : []
         };
     }
@@ -57,19 +56,15 @@ class NewOffice extends Component {
         this.props.fetchUser(DENTIST);
 
         this.props.initialize({
-            name: this.urlParams.name || ''
+            name: this.urlParams.name || '',
+            location: this.urlParams.location || ''
         });
     }
-
-    onAutocomplete = location => {
-        this.setState({ location });
-    };
 
     onSubmit = values => {
         const params = queryString.stringify({
             ...this.urlParams,
             ...values,
-            location: this.state.location,
             imageUrls: JSON.stringify(this.state.imageUrls)
         });
 
@@ -142,9 +137,10 @@ class NewOffice extends Component {
 
                             <Grid container>
                                 <Grid item xs={12}>
-                                    <Autocomplete
-                                        onAutocomplete={this.onAutocomplete}
-                                        location={this.state.location}
+                                    <Field
+                                        name="location"
+                                        component={Autocomplete}
+                                        validate={required}
                                         tooltip="What is your office's address?"
                                     />
                                     <Padding bottom="16" />
@@ -211,9 +207,7 @@ class NewOffice extends Component {
                                 <Button
                                     type="submit"
                                     color="primary"
-                                    disabled={
-                                        submitting || !this.state.location
-                                    }
+                                    disabled={submitting}
                                 >
                                     Next
                                 </Button>
@@ -232,7 +226,11 @@ class NewOffice extends Component {
 }
 
 function mapStateToProps(state) {
-    return { auth: state.auth };
+    const selector = formValueSelector('addOfficeInfo');
+    return {
+        auth: state.auth,
+        location: selector(state, 'location')
+    };
 }
 
 export default reduxForm({

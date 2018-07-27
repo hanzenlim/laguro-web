@@ -1,12 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {
-    Field,
-    FieldArray,
-    reduxForm,
-    SubmissionError,
-    formValueSelector
-} from 'redux-form';
+import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form';
 import { isEmpty } from 'lodash';
 import { Modal } from '../common';
 import Autocomplete from '../filters/Autocomplete';
@@ -39,18 +33,8 @@ class EditDentist extends Component {
         const { auth } = this.props;
         const dentistId = auth.dentistId;
 
-        if (
-            // if no procedures
-            !values.procedures ||
-            values.procedures.length === 0
-        ) {
-            throw new SubmissionError({
-                _error: 'You must add at least 1 procedure'
-            });
-        } else {
-            this.props.editDentist({ ...values, id: dentistId });
-            this.props.closeModal();
-        }
+        this.props.editDentist({ ...values, id: dentistId });
+        this.props.closeModal();
     }
 
     render() {
@@ -94,18 +78,9 @@ class EditDentist extends Component {
                         <div className="col s12 m12">
                             <Field
                                 name="location"
-                                component={props => {
-                                    const { onChange, value } = props.input;
-                                    return (
-                                        <Autocomplete
-                                            tooltip="This is the location patients will find you at in search if you do not have any reservations."
-                                            onAutocomplete={location =>
-                                                onChange(location)
-                                            }
-                                            location={value}
-                                        />
-                                    );
-                                }}
+                                component={Autocomplete}
+                                validate={required}
+                                tooltip="This is the location patients will find you at in search if you do not have any reservations."
                             />
                         </div>
                     </div>

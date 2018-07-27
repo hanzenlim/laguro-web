@@ -32,8 +32,8 @@ const StyledRemoveButton = styled.button`
     cursor: pointer;
 `;
 
-const StyledBox = styled(Flex)`
-    line-height: 36px;
+const StyledUl = styled.ul`
+    margin: 0;
 `;
 
 export const addTooltip = (text, fontSize = '0.8rem') => {
@@ -142,59 +142,64 @@ export const renderEquipmentSelector = ({
     );
 };
 
-export const renderProcedureSelector = ({
-    fields,
-    className,
-    selected,
-    meta: { error }
-}) => (
-    <ul className={className}>
-        <label>
-            {'Procedures Offered'}
-            {addTooltip(
-                'List all the procedures you want patients to be able to book with you and the estimated time it takes you to complete each.'
-            )}
-        </label>
-        {fields.map((procedure, index) => (
-            <li key={index} className="multiRowAdd">
-                <Field
-                    name={`${procedure}.name`}
-                    component={renderSelect}
-                    validate={required}
-                >
-                    {renderOptionsFromList(procedureList, selected)}
-                </Field>
-                <Field
-                    name={`${procedure}.duration`}
-                    component={renderSelect}
-                    children={durationOptions}
-                />
-                <StyledRemoveButton
-                    type="button"
-                    title="Remove Equipment"
-                    onClick={() => fields.remove(index)}
-                >
-                    <img src={exitSVG} alt="Remove Equipment" />
-                </StyledRemoveButton>
-            </li>
-        ))}
-        <li>
-            <Flex mt={1}>
-                <button
-                    type="button"
-                    className="waves-effect btn light-blue lighten-2"
-                    onClick={() => fields.push({ name: '', duration: 60 })}
-                >
-                    Add Procedure
-                </button>
-                {error && (
-                    <StyledBox ml={2} className="red-text">
-                        {error}
-                    </StyledBox>
+export const renderProcedureSelector = ({ fields, className, selected }) => (
+    <div>
+        <StyledUl className={className}>
+            <label>
+                {'Procedures Offered'}
+                {addTooltip(
+                    'List all the procedures you want patients to be able to book with you and the estimated time it takes you to complete each.'
                 )}
-            </Flex>
-        </li>
-    </ul>
+            </label>
+            {fields.map((procedure, index) => (
+                <Flex width={500} p={2} key={index}>
+                    <Box m={2} width={200}>
+                        <Field
+                            name={`${procedure}.name`}
+                            component={renderSelect}
+                            validate={required}
+                        >
+                            {renderOptionsFromList(procedureList, selected)}
+                        </Field>
+                    </Box>
+                    <Box m={2} width={200}>
+                        <Field
+                            name={`${procedure}.duration`}
+                            component={renderSelect}
+                            children={durationOptions}
+                        />
+                    </Box>
+                    <Box m={2} width={28}>
+                        {index !== 0 && (
+                            <StyledRemoveButton
+                                type="button"
+                                title="Remove Equipment"
+                                onClick={() => {
+                                    fields.remove(index);
+                                }}
+                            >
+                                <img src={exitSVG} alt="Remove Equipment" />
+                            </StyledRemoveButton>
+                        )}
+                    </Box>
+                </Flex>
+            ))}
+            <li>
+                <Flex mt={1}>
+                    <button
+                        type="button"
+                        className="waves-effect btn light-blue lighten-2"
+                        onClick={() => {
+                            fields.push({ name: '', duration: 60 });
+                        }}
+                    >
+                        Add Procedure
+                    </button>
+                </Flex>
+            </li>
+        </StyledUl>
+        <Box pb={1} />
+    </div>
 );
 
 export const durationOptions = [

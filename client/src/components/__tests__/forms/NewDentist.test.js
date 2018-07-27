@@ -1,6 +1,5 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import { SubmissionError } from 'redux-form';
 import { NoReduxNewDentist } from '../../forms/NewDentist';
 
 describe('<NewDentist />', () => {
@@ -12,24 +11,6 @@ describe('<NewDentist />', () => {
     };
 
     describe('onSubmit function', () => {
-        it('should throw an error if procedures is undefined', () => {
-            const newDentist = shallow(<NoReduxNewDentist {...defaultProps} />);
-            let values = { foo: 'bar' };
-
-            return expect(
-                newDentist.instance().onSubmit(values)
-            ).rejects.toBeInstanceOf(SubmissionError);
-        });
-
-        it('should throw an error if procedures has length 0', async () => {
-            const newDentist = shallow(<NoReduxNewDentist {...defaultProps} />);
-            let values = { foo: 'bar', procedures: [] };
-
-            return expect(
-                newDentist.instance().onSubmit(values)
-            ).rejects.toBeInstanceOf(SubmissionError);
-        });
-
         it('should call createDentist and fetchUser if dentist has procedures', async () => {
             let props = {
                 ...defaultProps,
