@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import Card from '@material-ui/core/Card';
 import { Typography, Flex, Box } from './common';
-import objImgPlaceholder from './images/office-placeholder-thumbnail.png';
+import officeImagePlaceholder from './images/office-placeholder-thumbnail.png';
+import { defaultProfilePhoto } from './Profile';
 import { renderPrice } from '../util/paymentUtil';
 
 import './css/PhotoGrid.css';
@@ -70,10 +71,11 @@ class PhotoGrid extends Component {
     };
 
     render() {
-        const { className, objects, header, message } = this.props;
+        const { className, objects, header, message, type } = this.props;
         const dentistCardPadding = '100%';
         const officeCardPadding = '67%';
-        const paddingTop = this.props.type === 'dentist' ? dentistCardPadding : officeCardPadding;
+        const paddingTop =
+            type === 'dentist' ? dentistCardPadding : officeCardPadding;
 
         let photoGridElements;
         if (objects) {
@@ -85,7 +87,10 @@ class PhotoGrid extends Component {
                 );
             } else {
                 photoGridElements = objects.map(obj => {
-                    const objImg = obj.imageUrl || objImgPlaceholder;
+                    const objImg =
+                        obj.imageUrl || type === 'dentist'
+                            ? defaultProfilePhoto
+                            : officeImagePlaceholder;
                     return (
                         <a href={obj.detailPageUrl} key={obj.id}>
                             <div className="col offset-s1 s10 m6 l3">

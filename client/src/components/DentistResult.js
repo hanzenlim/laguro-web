@@ -6,6 +6,7 @@ import styled from 'styled-components';
 
 import { Typography, Card, Grid, Link } from './common';
 import { Padding, Margin } from './common/Spacing';
+import { defaultProfilePhoto } from './Profile';
 
 const Container = styled(Card)`
     width: 100%;
@@ -59,7 +60,7 @@ class DentistResult extends Component {
     imgUrl() {
         return this.props.img
             ? this.props.img
-            : 'http://via.placeholder.com/200x200';
+            : defaultProfilePhoto;
     }
 
     render() {

@@ -7,6 +7,7 @@ import history from '../history';
 import { mapBoxApiKey } from '../config/keys';
 import { isMobile } from '../util/uiUtil';
 import MapPin from './MapPin';
+import { defaultProfilePhoto } from './Profile';
 
 const StyledPopup = styled(Popup)`
     z-index: ${props => props.theme.zIndex.overlay};
@@ -132,7 +133,7 @@ class ResultMap extends Component {
 
         const imageSrc = popupInfo
             ? popupInfo.user
-                ? popupInfo.user.imageUrl
+                ? popupInfo.user.imageUrl || defaultProfilePhoto
                 : popupInfo.imageUrls[0]
             : '';
 
