@@ -73,8 +73,8 @@ class UploadHealthInsurance extends Component {
             type: 'upload',
         });
 
-        const policySignature = uploadPolicySignature 
-            && uploadPolicySignature.data 
+        const policySignature = uploadPolicySignature
+            && uploadPolicySignature.data
             && uploadPolicySignature.data.getFileStackPolicySignature;
 
         return {
@@ -99,21 +99,21 @@ class UploadHealthInsurance extends Component {
             }
         });
 
-        patientDocument = patientDocument 
-            && patientDocument.data 
+        patientDocument = patientDocument
+            && patientDocument.data
             && patientDocument.data.queryPatientDocument[0];
 
         let signedUrlArr = [];
         let urlArr = [];
 
-        if (patientDocument && patientDocument.healthInsuranceImages 
+        if (patientDocument && patientDocument.healthInsuranceImages
             && patientDocument.healthInsuranceImages.length > 0) {
             for (let obj of patientDocument.healthInsuranceImages) {
-                const result = await this.generateImageSignature(obj); 
+                const result = await this.generateImageSignature(obj);
                 signedUrlArr.push(result);
                 urlArr.push(obj)
             }
-            
+
             return {
                 signedUrlArr,
                 urlArr
@@ -124,7 +124,7 @@ class UploadHealthInsurance extends Component {
     }
 
     async generateImageSignature(urlArr) {
-        
+
         // Extracting the file handle from the urlArr. The urlArr has this format https://cdn.filestackcontent.com/yF9AgWbSTHyWbMGZDiow
         const viewPolicySignature = await this.getViewPolicySignature(urlArr.split('/')[3]);
 
@@ -138,12 +138,12 @@ class UploadHealthInsurance extends Component {
         let urlArr = [...this.state.urlArr];
 
         for (let value of uploadImages) {
-            const generatedSignedUrl = await this.generateImageSignature(value.url); 
+            const generatedSignedUrl = await this.generateImageSignature(value.url);
             signedUrlArr.push(generatedSignedUrl);
             urlArr.push(value.url);
         }
- 
-        this.setState({ 
+
+        this.setState({
             signedUrlArr,
             urlArr
         });
@@ -186,7 +186,7 @@ class UploadHealthInsurance extends Component {
     }
 
     handleSubmit = async () => {
-        
+
         const { auth } = this.props;
         // In order to update the patient document table, we need to get the primary key
         // so we get the patient document by patient id and extract the primary key. We will
@@ -198,25 +198,25 @@ class UploadHealthInsurance extends Component {
             }
         });
 
-        const id = patientDocResponse 
-            && patientDocResponse.data 
-            && patientDocResponse.data.queryPatientDocument[0] 
+        const id = patientDocResponse
+            && patientDocResponse.data
+            && patientDocResponse.data.queryPatientDocument[0]
             && patientDocResponse.data.queryPatientDocument[0].id;
 
         let response;
         // There is no patient document for this user yet. Let's go ahead and create it
         if (!id) {
             response = await makeApiCall(createPatientDocumentQuery, {
-                'input': {
-                    'patientId': auth && auth.id,
-                    'healthInsuranceImages': this.state.urlArr
+                input: {
+                    patientId: auth && auth.id,
+                    healthInsuranceImages: this.state.signedUrlArr,
                 }
             });
 
         } else {
             const params = {
                 id,
-                healthInsuranceImages: this.state.urlArr,
+                healthInsuranceImages: this.state.signedUrlArr,
             };
 
             response = await makeApiCall(saveUploadedImagesUrlQuery, {
@@ -249,7 +249,7 @@ class UploadHealthInsurance extends Component {
                     <Box pt={10}>
                         {this.renderUploadedImages()}
                     </Box>
-                    
+
                     {!this.state.isLoading &&
                         <ReactFilestack
                             apikey={secureFilestackKey}
@@ -269,7 +269,7 @@ class UploadHealthInsurance extends Component {
                                     'instagram'
                                 ],
                                 storeTo: {
-                                    container: 'office-photos'
+                                    location: 's3',
                                 }
                             }}
                             onSuccess={this.extractUrlToState}
@@ -290,7 +290,7 @@ class UploadHealthInsurance extends Component {
                             color="secondary"
                             type="submit"
                         >
-                            Save        
+                            Save
                         </Button>
                     </Box>
                 </Box>
