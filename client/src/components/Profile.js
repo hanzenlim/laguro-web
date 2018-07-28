@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import moment from 'moment';
+import styled from 'styled-components';
 import ReviewContainer from './ReviewContainer';
 import PatientAppointments from './PatientAppointments';
 import UserOfficeIndex from './UserOfficeIndex';
@@ -8,6 +9,7 @@ import UserReservationIndex from './UserReservationIndex';
 import ProfileActions from './ProfileActions';
 import * as actions from '../actions';
 import { dentistProfilePageFragment } from '../util/fragments';
+import { Flex, Box, Typography } from './common';
 
 const loadDentistProfileQuery = `
     query ($id: String!) {
@@ -16,6 +18,78 @@ const loadDentistProfileQuery = `
         }
     }
 `;
+
+const StyledContainer = styled(Flex)`
+    width: 90%;
+    margin: 3em auto;
+    max-width: 850px;
+    flex-direction: row;
+
+    @media screen and (max-width: 700px) {
+        flex-direction: column;
+    }
+`;
+
+const StyledSidebar = styled(Box)`
+    width: calc(100% * 1 / 3);
+
+    @media screen and (max-width: 700px) {
+        width: 100%;
+    }
+`;
+
+const StyledMain = styled(Box)`
+    width: calc(100% * 2 / 3);
+
+    @media screen and (max-width: 700px) {
+        width: 100%;
+    }
+`;
+
+const StyledDesktopHeader = styled(Box)`
+    display: block;
+
+    @media screen and (max-width: 700px) {
+        display: none;
+    }
+`;
+
+const StyledMobileHeader = styled(Box)`
+    display: none;
+
+    @media screen and (max-width: 700px) {
+        display: block;
+    }
+`;
+
+const StyledProfileImage = styled.img`
+    @media screen and (max-width: 700px) {
+        border-radius: 100%;
+        display: block;
+        width: 200px;
+        height: 200px;
+        margin: 0 auto;
+        margin-bottom: 20px;
+    }
+`;
+
+const ProfileHeader = ({ auth, dentist }) => {
+    const firstName = auth && auth.firstName;
+    const lastName = auth && auth.lastName;
+
+    return (
+        <Flex flexDirection="column" mb={4}>
+            <Typography
+                fontSize={5}
+            >{`Welcome back ${firstName} ${lastName}!`}</Typography>
+            <Typography fontSize={3}>
+                {`${
+                    dentist && dentist.location ? `${dentist.location} - ` : ''
+                }Member since ${moment(auth.date_created).format('MMMM `YY')}`}
+            </Typography>
+        </Flex>
+    );
+};
 
 export const defaultProfilePhoto =
     'http://lh5.googleusercontent.com/-pJtmF-TTUxk/AAAAAAAAAAI/AAAAAAAAAAA/6ULkoHqUkSo/photo.jpg?sz=300';
@@ -44,27 +118,6 @@ class Profile extends Component {
         this.setState({ isFetching: false });
     }
 
-    renderProfileDetails() {
-        const { auth, dentist } = this.props;
-        const firstName = auth && auth.firstName;
-        const lastName = auth && auth.lastName;
-
-        return (
-            <div>
-                <h4>{`Welcome back ${firstName} ${lastName}!`}</h4>
-                <p>
-                    {`${
-                        dentist && dentist.location
-                            ? `${dentist.location} - `
-                            : ''
-                    }Member since ${moment(auth.date_created).format(
-                        'MMMM `YY'
-                    )}`}
-                </p>
-            </div>
-        );
-    }
-
     render() {
         const { auth, dentist } = this.props;
         const { isFetching } = this.state;
@@ -74,53 +127,53 @@ class Profile extends Component {
         const dentistId = auth && auth.dentistId ? auth.dentistId : null;
 
         return (
-            <div className="profile_container stretch_height">
-                <div className="sidebar">
-                    <img
+            <StyledContainer className="stretch_height">
+                <StyledSidebar mr={4}>
+                    <StyledMobileHeader>
+                        <ProfileHeader auth={auth} dentist={dentist} />
+                    </StyledMobileHeader>
+                    <StyledProfileImage
                         data-name="profile-image"
-                        className="profile_img"
                         src={imageUrl}
                         alt="user"
                     />
                     <ProfileActions auth={auth} dentist={dentist} />
-                </div>
-                <div className="main">
-                    {this.renderProfileDetails()}
-                    {dentistId ? (
-                        <div>
+                </StyledSidebar>
+                <StyledMain>
+                    <StyledDesktopHeader>
+                        <ProfileHeader auth={auth} dentist={dentist} />
+                    </StyledDesktopHeader>
+                    {dentistId && (
+                        <Box mb={4}>
                             <h5>Your Offices</h5>
                             <UserOfficeIndex />
-                        </div>
-                    ) : (
-                        ''
+                        </Box>
                     )}
-                    {dentistId ? (
-                        <div>
+                    {dentistId && (
+                        <Box mb={4}>
                             <h5>Upcoming Reservations</h5>
                             <UserReservationIndex />
-                        </div>
-                    ) : (
-                        ''
+                        </Box>
                     )}
-                    <div>
+                    <Box mb={4}>
                         <h5>Upcoming Appointments</h5>
                         <PatientAppointments patientId={auth.id} />
-                    </div>
+                    </Box>
                     {dentistId &&
                         dentist &&
                         dentist.reviews &&
                         dentist.reviews.length > 0 && (
-                        <div className="reviews profile-section">
+                        <Box className="reviews profile-section">
                             <h5>{`Reviews for ${auth.name}`}</h5>
                             <ReviewContainer
                                 revieweeId={dentist.id}
                                 revieweeName={auth.name}
                                 reviews={dentist.reviews}
                             />
-                        </div>
+                        </Box>
                     )}
-                </div>
-            </div>
+                </StyledMain>
+            </StyledContainer>
         );
     }
 }

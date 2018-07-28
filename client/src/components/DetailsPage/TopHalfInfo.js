@@ -99,7 +99,7 @@ class TopHalfInfo extends Component {
                 {this.props.type === 'dentist' && (
                     <StyledProfPic
                         src={
-                            obj && obj.user
+                            obj && obj.user && obj.user.imageUrl
                                 ? obj.user.imageUrl
                                 : 'https://lh5.googleusercontent.com/-pJtmF-TTUxk/AAAAAAAAAAI/AAAAAAAAAAA/6ULkoHqUkSo/photo.jpg?sz=300'
                         }

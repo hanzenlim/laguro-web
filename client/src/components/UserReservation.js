@@ -22,6 +22,22 @@ const ListingImage = styled.img`
     object-fit: cover;
 `;
 
+const StyledImageContainer = styled(Box)`
+    width: 30%;
+
+    @media screen and (max-width: 500px){
+        display: none;
+    }
+`;
+
+const StyledDetails = styled(Box)`
+    width: 70%;
+
+    @media screen and (max-width: 500px){
+        width: 100%;
+    }
+`;
+
 class UserReservation extends Component {
     calculateReservationRefund = reservation => {
         const ms = moment().diff(moment(reservation.dateCreated));
@@ -100,7 +116,7 @@ class UserReservation extends Component {
                 <Card key={reservation.id}>
                     <Padding horizontal={20} vertical={20}>
                         <Flex flexDirection="row">
-                            <Box width={1 / 3}>
+                            <StyledImageContainer>
                                 <ListingImage
                                     src={
                                         office.imageUrls[0] ||
@@ -108,11 +124,12 @@ class UserReservation extends Component {
                                     }
                                     alt="office"
                                 />
-                            </Box>
+                            </StyledImageContainer>
 
-                            <Box width={2 / 3}>
+                            <StyledDetails>
                                 <Flex
                                     flexDirection="row"
+                                    flexWrap="wrap"
                                     alignItems="center"
                                     justifyContent="space-between"
                                 >
@@ -200,7 +217,7 @@ class UserReservation extends Component {
                                         Cancel Reservation
                                     </Typography>
                                 </Flex>
-                            </Box>
+                            </StyledDetails>
                         </Flex>
 
                         <Padding vertical={6} />
