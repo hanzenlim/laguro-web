@@ -180,8 +180,10 @@ function mapStateToProps(state) {
                 location,
                 //computing the average chairHourlyPrice and numChairsAvailable
                 imageUrl: office.imageUrls[0],
-                chairHourlyPrice: office.listings.map(listing => listing.chairHourlyPrice).reduce((a, b) => a + b) / office.listings.length,
-                numChairsAvailable: office.listings.map(listing => listing.numChairsAvailable).reduce((a, b) => a + b) / office.listings.length,
+                chairHourlyPrice:
+                    office.listings && office.listings.map(listing => listing.chairHourlyPrice).reduce((a, b) => a + b) / office.listings.length,
+                numChairsAvailable:
+                    office.listings && office.listings.map(listing => listing.numChairsAvailable).reduce((a, b) => a + b) / office.listings.length,
                 detailPageUrl: '/office/' + id
             };
         }),
