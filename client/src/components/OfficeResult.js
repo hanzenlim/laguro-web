@@ -4,6 +4,7 @@ import moment from 'moment';
 import ReactStars from 'react-stars';
 import styled from 'styled-components';
 
+import officeImagePlaceholder from './images/office-placeholder-thumbnail.png';
 import { Typography, Card, Grid, Link } from './common';
 import { Padding, Margin } from './common/Spacing';
 
@@ -78,7 +79,7 @@ class OfficeResult extends Component {
     imgUrl() {
         return this.props.img
             ? this.props.img
-            : 'http://via.placeholder.com/200x200';
+            : officeImagePlaceholder;
     }
 
     render() {

@@ -88,15 +88,17 @@ class PhotoGrid extends Component {
             } else {
                 photoGridElements = objects.map(obj => {
                     const objImg =
-                        obj.imageUrl || type === 'dentist'
+                        obj.imageUrl ||
+                        (type === 'dentist'
                             ? defaultProfilePhoto
-                            : officeImagePlaceholder;
+                            : officeImagePlaceholder);
+
                     return (
                         <a href={obj.detailPageUrl} key={obj.id}>
                             <div className="col offset-s1 s10 m6 l3">
                                 <ListingCard>
                                     <div data-name="image">
-                                        <StyledContainer style={{paddingTop}}>
+                                        <StyledContainer style={{ paddingTop }}>
                                             <StyledImg
                                                 className="center"
                                                 id="element"
