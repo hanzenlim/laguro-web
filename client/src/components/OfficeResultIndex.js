@@ -12,7 +12,7 @@ import DateFilter from './filters/DateFilter';
 import NoResults from './NoResults';
 import { OFFICE } from '../util/strings';
 
-import { Grid, Typography } from './common';
+import { Grid, Typography, Flex, Box } from './common';
 import { Padding } from './common/Spacing';
 import { isMobile } from '../util/uiUtil';
 import history from '../history';
@@ -230,7 +230,14 @@ class OfficeResultIndex extends Component {
                             searchLocation={this.props.filters.location}
                         />
                         <Padding bottom={8} />
-                        <DateFilter selectedDate={this.props.filters.date} />
+                        <Flex alignItems="center">
+                            <Box mr={3}>
+                                <label>
+                                    Filter by date:
+                                </label>
+                            </Box>
+                            <DateFilter filters={this.props.filters} />
+                        </Flex>
                         {this.renderViewToggle()}
                         {this.props.filters.location && (
                             <Padding top={20}>
