@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import styled from 'styled-components';
 import ReactStars from 'react-stars';
 import { isEmpty } from 'lodash';
-import { formatListingTime, calculateTimeslots } from '../../util/timeUtil';
+import { formatListingTime, calculateTimeslots, getStartTime } from '../../util/timeUtil';
 import dentistProfileExists from '../../util/userInfo';
 import * as actions from '../../actions';
 import { Padding } from '../common/Spacing';
@@ -159,8 +159,18 @@ class DetailDetails extends Component {
             return false;
         }
 
-        const timeSlots = calculateTimeslots(listing, listing.reservations);
-        const openSlots = timeSlots.filter(
+        const timeslots = calculateTimeslots(listing, listing.reservations);
+
+        const filteredTimeslots = timeslots.map((duration, index) => {
+            let timeslotStartTime = getStartTime(index, listing.startTime);
+            if (moment(timeslotStartTime).isSameOrBefore(moment())) {
+                return 0;
+            } else {
+                return duration;
+            }
+        });
+
+        const openSlots = filteredTimeslots.filter(
             durationToNext => durationToNext >= 60
         );
 
