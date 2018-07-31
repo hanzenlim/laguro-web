@@ -83,7 +83,7 @@ describe('Landing Component', () => {
     });
 
     it('should make office photoGrid active when tabChange happens', () => {
-        component.find('#office-tab').simulate('click');
+        component.find('#office-tab').hostNodes().simulate('click');
         expect(component.find('[data-name="office-photo-grid"]')).toHaveLength(1);
         expect(component.find('[data-name="dentist-photo-grid"]')).toHaveLength(0);
     });
