@@ -6,24 +6,27 @@ import styled from 'styled-components';
 import logo from './icons/logo.svg';
 import Icon from './Icon';
 import Footer from './Footer';
+import { Flex } from './common';
 
 import './css/Header.css';
 
 const SideNavLink = styled(Link)`
-    width: 83%;
-    height: 5%;
-    color: black;
+    display: block;
+    width: 100%;
     display: inline-block;
-    line-height: 40px;
 `;
 
-const SideNavLinkArrow = SideNavLink.extend`
-    width: 13%;
+const StyledSidenavHeader = styled.div`
+    padding: 10px;
+`;
+
+const StyledNavItem = styled(Flex)`
+    padding: 10px 0;
+    color: black;
 `;
 
 const SideNavX = styled(Icon)`
     float: right;
-    margin-right: 5%;
 `;
 
 class Header extends Component {
@@ -159,41 +162,53 @@ class Header extends Component {
                     </nav>
 
                     <ul id="slide-out" className="sidenav">
-                        <Icon
-                            icon="logo"
-                            width="39px"
-                            background="#0AD5B1"
-                            tooth="#FFFFFF"
-                        />
-                        <SideNavX
-                            className="sidenav-close"
-                            icon="sideNavX"
-                            width="15px"
-                        />
+                        <StyledSidenavHeader>
+                            <Icon
+                                icon="logo"
+                                width="39px"
+                                background="#0AD5B1"
+                                tooth="#FFFFFF"
+                            />
+                            <SideNavX
+                                className="sidenav-close"
+                                icon="sideNavX"
+                                width="15px"
+                            />
+                        </StyledSidenavHeader>
+
                         <hr />
 
                         <SideNavLink to={'/landlord-onboarding/add-office'}>
-                            Rent your dental office
+                            {/* HACK: Adding a sidenav-close to SideNavLink destroys the layout */}
+                            <a class="sidenav-close" href="#!">
+                                <StyledNavItem justifyContent="space-between">
+                                    <span>Rent your dental office</span>
+                                    <span>{'>'}</span>
+                                </StyledNavItem>
+                            </a>
                         </SideNavLink>
-                        <SideNavLinkArrow
-                            to={'/landlord-onboarding/add-office'}
-                        >
-                            {'>'}
-                        </SideNavLinkArrow>
 
                         <hr />
 
-                        <SideNavLink to={'#'}>How it works?</SideNavLink>
-                        <SideNavLinkArrow to={'#'}>{'>'}</SideNavLinkArrow>
+                        <SideNavLink to={'#'}>
+                            <a class="sidenav-close" href="#!">
+                                <StyledNavItem justifyContent="space-between">
+                                    <span>How it works?</span>
+                                    <span>{'>'}</span>
+                                </StyledNavItem>
+                            </a>
+                        </SideNavLink>
 
                         <hr />
 
                         <SideNavLink to={'/profile'}>
-                            {auth && auth.name ? auth.name : 'Profile'}
+                            <a class="sidenav-close" href="#!">
+                                <StyledNavItem justifyContent="space-between">
+                                    <span>{auth && auth.name ? auth.name : 'Profile'}</span>
+                                    <span>{'>'}</span>
+                                </StyledNavItem>
+                            </a>
                         </SideNavLink>
-                        <SideNavLinkArrow to={'/profile'}>
-                            {'>'}
-                        </SideNavLinkArrow>
 
                         <hr />
 
