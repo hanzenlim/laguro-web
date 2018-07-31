@@ -119,13 +119,13 @@ class PaymentDetails extends Component {
                                 <div>
                                     <div data-name="action">{action}</div>
                                     <div data-name="start-end-time">
-                                        {moment(startTime).format(
-                                            'MMM DD h:mm a '
-                                        ) +
-                                            (endTime &&
+                                        {startTime &&
+                                            moment(startTime).format(
+                                                'MMM DD h:mm a '
+                                            ) +
                                                 moment(endTime).format(
                                                     '- h:mm a'
-                                                ))}
+                                                )}
                                     </div>
                                     <div data-name="procedures">
                                         {this.renderProcedureNames()}
