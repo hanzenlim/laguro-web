@@ -129,9 +129,9 @@ class Header extends Component {
                                     Rent your dental office
                                 </Link>
                             </li>
-                            <li>
+                            {/* <li>
                                 <Link to={'#'}>How it works?</Link>
-                            </li>
+                            </li> */}
                             {this.profileButton()}
                             <li>{this.renderLogin()}</li>
                         </ul>
@@ -190,7 +190,7 @@ class Header extends Component {
 
                         <hr />
 
-                        <SideNavLink to={'#'}>
+                        {/* <SideNavLink to={'#'}>
                             <a class="sidenav-close" href="#!">
                                 <StyledNavItem justifyContent="space-between">
                                     <span>How it works?</span>
@@ -199,7 +199,7 @@ class Header extends Component {
                             </a>
                         </SideNavLink>
 
-                        <hr />
+                        <hr />*/}
 
                         <SideNavLink to={'/profile'}>
                             <a class="sidenav-close" href="#!">
