@@ -92,7 +92,7 @@ class PhotoGrid extends Component {
                             ? defaultProfilePhoto
                             : officeImagePlaceholder;
                     return (
-                        <a href={obj.detailPageUrl} key={obj.id}>
+                        <a href={obj.detailPageUrl + '?referrer=home'} key={obj.id}>
                             <div className="col offset-s1 s10 m6 l3">
                                 <ListingCard>
                                     <div data-name="image">
