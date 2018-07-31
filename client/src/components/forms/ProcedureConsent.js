@@ -166,10 +166,6 @@ const renderEmptyTable = () => {
 };
 
 class ProcedureConsent extends Component {
-    constructor() {
-        super();
-    }
-
     componentDidMount() {
         const { auth } = this.props;
         this.props.queryPatientProcedure(PATIENT_ID, auth.id);
