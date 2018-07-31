@@ -53,6 +53,10 @@ img {
     color: #fff;
 }
 
+.btn.delete_img {
+    padding: 0 10px;
+}
+
 .link {
     background: white;
     padding: 0.4em 1em;
