@@ -13,6 +13,9 @@ import { paymentFragment } from '../util/fragments';
 import makeApiCall from '../util/clientDataLoader';
 import { Box, Flex, Button, Typography } from './common';
 
+const PROCEDURE_PERCENTAGE = 0.85;
+const RESERVATION_PERCENTAGE = 0.8;
+
 const getUserAccountReceivableQuery = `
     query ($userId: String!) {
         getUserAccountReceivable(userId: $userId) {
@@ -100,9 +103,10 @@ class Payout extends Component {
         let totalAmount = 0;
         let availableAmount = 0;
         for (let i = 0; i < receivable.length; i++) {
+            let percentage = receivable[i].type === 'RESERVATION' ? RESERVATION_PERCENTAGE : PROCEDURE_PERCENTAGE;
             const payoutAmount = receivable[i].stripePayment.amount;
-            totalAmount += payoutAmount;
-            if (receivable[i].chargeStatus === AVAILABLE) {
+            totalAmount += Math.floor(payoutAmount * percentage);
+            if (receivable[i].chargeStatus === AVAILABLE && receivable[i].type === 'RESERVATION') {
                 availableAmount += payoutAmount;
             }
         }
@@ -157,18 +161,18 @@ class Payout extends Component {
                 <Flex justifyContent="space-between">
                     <Typography>Available:</Typography>
                     <Typography>
-                        {renderPrice(availableAmount * 0.8)}
+                        {renderPrice(availableAmount)}
                     </Typography>
                 </Flex>
                 <Flex justifyContent="space-between">
                     <Typography>Pending:</Typography>
                     <Typography>
-                        {renderPrice((totalAmount - availableAmount) * 0.8)}
+                        {renderPrice(totalAmount - availableAmount)}
                     </Typography>
                 </Flex>
                 <Flex justifyContent="space-between">
                     <Typography>Total: </Typography>
-                    <Typography>{renderPrice(totalAmount * 0.8)}</Typography>
+                    <Typography>{renderPrice(totalAmount)}</Typography>
                 </Flex>
             </StyledSummaryContainer>
         );
