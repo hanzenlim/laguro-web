@@ -259,10 +259,7 @@ class Payment extends Component {
                 <Padding horizontal={20} vertical={20}>
                     <Grid container alignItems="flex-start">
                         <StyledListingImage
-                            src={
-                                office.imageUrls[0] ||
-                                officeImagePlaceholder
-                            }
+                            src={office.imageUrls[0] || officeImagePlaceholder}
                             alt="office"
                         />
 
@@ -382,57 +379,57 @@ class Payment extends Component {
 
                     {equipmentFee &&
                         equipmentFee > 0 && (
-                            <Box py={2}>
-                                <Flex justify="space-between">
-                                    <Typography
-                                        fontSize={3}
-                                        color="abbey"
-                                        capitalize
-                                    >
+                        <Box py={2}>
+                            <Flex justify="space-between">
+                                <Typography
+                                    fontSize={3}
+                                    color="abbey"
+                                    capitalize
+                                >
                                         Equipment Fee
-                                    </Typography>
-                                    <Typography fontSize={3} color="abbey">
-                                        {renderPrice(equipmentFee)}
-                                    </Typography>
-                                </Flex>
-                            </Box>
-                        )}
+                                </Typography>
+                                <Typography fontSize={3} color="abbey">
+                                    {renderPrice(equipmentFee)}
+                                </Typography>
+                            </Flex>
+                        </Box>
+                    )}
 
                     {cleaningFee &&
                         cleaningFee > 0 && (
-                            <Box py={2}>
-                                <Flex justify="space-between">
-                                    <Typography
-                                        fontSize={3}
-                                        color="abbey"
-                                        capitalize
-                                    >
+                        <Box py={2}>
+                            <Flex justify="space-between">
+                                <Typography
+                                    fontSize={3}
+                                    color="abbey"
+                                    capitalize
+                                >
                                         Cleaning Fee
-                                    </Typography>
-                                    <Typography fontSize={3} color="abbey">
-                                        {renderPrice(cleaningFee)}
-                                    </Typography>
-                                </Flex>
-                            </Box>
-                        )}
+                                </Typography>
+                                <Typography fontSize={3} color="abbey">
+                                    {renderPrice(cleaningFee)}
+                                </Typography>
+                            </Flex>
+                        </Box>
+                    )}
 
                     {bookingFee &&
                         bookingFee > 0 && (
-                            <Box py={2}>
-                                <Flex justify="space-between">
-                                    <Typography
-                                        fontSize={3}
-                                        color="abbey"
-                                        capitalize
-                                    >
+                        <Box py={2}>
+                            <Flex justify="space-between">
+                                <Typography
+                                    fontSize={3}
+                                    color="abbey"
+                                    capitalize
+                                >
                                         Booking Fee
-                                    </Typography>
-                                    <Typography fontSize={3} color="abbey">
-                                        {renderPrice(bookingFee)}
-                                    </Typography>
-                                </Flex>
-                            </Box>
-                        )}
+                                </Typography>
+                                <Typography fontSize={3} color="abbey">
+                                    {renderPrice(bookingFee)}
+                                </Typography>
+                            </Flex>
+                        </Box>
+                    )}
 
                     <Divider />
 
@@ -524,7 +521,6 @@ class Payment extends Component {
                 ? 'Review and pay for your procedures'
                 : `Review and place your ${type}`;
         if (this.state.isFetching) return <div className="stretch_height" />;
-
         return (
             <StyledWrapper>
                 <Container>

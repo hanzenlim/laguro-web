@@ -211,30 +211,30 @@ class ProcedureConsent extends Component {
                 <Box pb={[3, 5]} />
                 {!isFetching &&
                     !isEmpty(patientProcedures) && (
-                        <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
-                            <Field
-                                name="consent"
-                                label="I agree upon the above procedures to be performed by the practitioner."
-                                component={renderCheckbox}
-                                validate={checkBoxRequired}
-                            />
-                            <Box pb={[4, 2]} />
-                            <Flex justifyContent="flex-end">
-                                <Button
-                                    color="secondary"
-                                    type="submit"
-                                    disabled={submitting}
+                    <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+                        <Field
+                            name="consent"
+                            label="I agree upon the above procedures to be performed by the practitioner."
+                            component={renderCheckbox}
+                            validate={checkBoxRequired}
+                        />
+                        <Box pb={[4, 2]} />
+                        <Flex justifyContent="flex-end">
+                            <Button
+                                color="secondary"
+                                type="submit"
+                                disabled={submitting}
+                            >
+                                <Typography
+                                    fontSize={4}
+                                    fontWeight="medium"
                                 >
-                                    <Typography
-                                        fontSize={4}
-                                        fontWeight="medium"
-                                    >
                                         Proceed to checkout
-                                    </Typography>
-                                </Button>
-                            </Flex>
-                        </form>
-                    )}
+                                </Typography>
+                            </Button>
+                        </Flex>
+                    </form>
+                )}
             </Box>
         );
     }
