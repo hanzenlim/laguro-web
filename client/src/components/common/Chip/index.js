@@ -18,10 +18,19 @@ const StyledChip = styled(MaterialUIChip)`
     `};
 
     ${props =>
-        props.label === 'Reserved' &&
+        (props.label === 'Reserved') &&
         `
         && {
             background-color: #f46b13;
+        }
+    `};
+
+    ${props =>
+        (props.label === 'Pending') &&
+        `
+        && {
+            background-color: #fff;
+            border: 1px solid #ccc; 
         }
     `};
 `;

@@ -202,6 +202,9 @@ export const paymentFragment = `
       startTime
       endTime
     }
+    procedures {
+        name
+    }
     appointment {
       location
       procedure {
