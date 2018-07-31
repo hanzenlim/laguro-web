@@ -122,7 +122,7 @@ class ReservationOptions extends Component {
         let durations = this.timeslots.map(timeslot => timeslot.durationToNext);
 
         const index = durations.findIndex(
-            duration => duration > MINIMUM_RESERVATION_WINDOW
+            duration => duration >= MINIMUM_RESERVATION_WINDOW
         );
 
         return getStartTime(index, listing.startTime);
