@@ -12,6 +12,7 @@ import { generateListItems } from './forms/sharedComponents';
 import { Typography, Flex, Card, Divider, Box } from './common';
 import { Padding, Margin } from './common/Spacing';
 import { formatListingTime } from '../util/timeUtil';
+import officeImagePlaceholder from './images/office-placeholder-thumbnail.png';
 
 const ListingImage = styled.img`
     height: 120px;
@@ -120,7 +121,7 @@ class UserReservation extends Component {
                                 <ListingImage
                                     src={
                                         office.imageUrls[0] ||
-                                        'http://via.placeholder.com/250x250'
+                                        officeImagePlaceholder
                                     }
                                     alt="office"
                                 />

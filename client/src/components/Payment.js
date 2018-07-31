@@ -28,6 +28,7 @@ import {
 import { stripeKey } from '../config/keys';
 import { formatListingTime } from '../util/timeUtil';
 import { renderPrice } from '../util/paymentUtil';
+import officeImagePlaceholder from './images/office-placeholder-thumbnail.png';
 
 const StyledWrapper = styled.div`
     background-color: #F8F9FA;
@@ -260,7 +261,7 @@ class Payment extends Component {
                         <StyledListingImage
                             src={
                                 office.imageUrls[0] ||
-                                'http://via.placeholder.com/250x250'
+                                officeImagePlaceholder
                             }
                             alt="office"
                         />

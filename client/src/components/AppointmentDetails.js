@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import moment from 'moment';
 import styled from 'styled-components';
 
+import { defaultProfilePhoto } from './Profile';
 import { Typography, Card, Grid, Divider } from './common';
 import { Padding, Margin } from './common/Spacing';
 
@@ -43,7 +44,7 @@ class AppointmentDetails extends Component {
                                     className="image"
                                     src={
                                         dentist.user.imageUrl ||
-                                        'http://via.placeholder.com/250x250'
+                                        defaultProfilePhoto
                                     }
                                     alt="dentist"
                                 />

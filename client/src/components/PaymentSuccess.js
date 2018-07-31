@@ -8,6 +8,7 @@ import { Typography, Box, Card, Button, Divider, Link, Grid } from './common';
 import { Padding } from './common/Spacing';
 import { formatListingTime } from '../util/timeUtil';
 import * as actions from '../actions';
+import officeImagePlaceholder from './images/office-placeholder-thumbnail.png';
 
 const Wrapper = styled.div`
     background-color: #F8F9FA;
@@ -210,7 +211,7 @@ class PaymentSuccess extends Component {
                                         office.imageUrls &&
                                         office.imageUrls.length
                                             ? office.imageUrls[0]
-                                            : 'http://via.placeholder.com/250x250'
+                                            : officeImagePlaceholder
                                     }
                                     alt="office"
                                 />
