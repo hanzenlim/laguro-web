@@ -24,11 +24,13 @@ import { renderCheckbox } from './sharedComponents';
 
 const StyledTableCell = styled(TableCell)`
     && {
-        padding: 2px 28px 2px 12px;
+        padding: 2px 24px 2px 8px;
+        font-size: 12px;
     }
     @media screen and (min-width: 600px) {
         && {
-            padding: 4px 56px 4px 24px;
+            padding: 4px 48px 4px 16px;
+            font-size: 14px;
         }
     }
 `;
@@ -40,7 +42,7 @@ const StyledOptionalTableCell = StyledTableCell.extend`
 
     @media screen and (min-width: 600px) {
         && {
-            display: auto;
+            display: table-cell;
         }
     }
 `;
@@ -208,7 +210,7 @@ class ProcedureConsent extends Component {
                 </Typography>
                 {isFetching && renderEmptyTable()}
                 {!isFetching && renderProcedureTable(patientProcedures)}
-                <Box pb={[3, 5]} />
+                <Box pb={3} />
                 {!isFetching &&
                     !isEmpty(patientProcedures) && (
                     <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>

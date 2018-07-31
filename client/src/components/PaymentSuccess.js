@@ -82,7 +82,7 @@ class PaymentSuccess extends Component {
         return moment(startDate).format('ll');
     };
 
-    renderProcedure = (pc, index) => {
+    renderProcedure = (pc, index, length) => {
         return (
             <ListingInfo key={index}>
                 <Grid container direction="column">
@@ -112,9 +112,11 @@ class PaymentSuccess extends Component {
                         </Typography>
                     </Grid>
 
-                    <Padding vertical={8}>
-                        <Divider />
-                    </Padding>
+                    {index + 1 !== length && (
+                        <Padding vertical={8}>
+                            <Divider />
+                        </Padding>
+                    )}
                 </Grid>
             </ListingInfo>
         );
@@ -137,7 +139,11 @@ class PaymentSuccess extends Component {
                     <Card>
                         <Padding horizontal={20} vertical={20}>
                             {procedures.map((pc, index) =>
-                                this.renderProcedure(pc, index)
+                                this.renderProcedure(
+                                    pc,
+                                    index,
+                                    procedures.length
+                                )
                             )}
                         </Padding>
                     </Card>

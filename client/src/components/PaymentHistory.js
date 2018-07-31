@@ -133,8 +133,6 @@ export class PaymentHistory extends Component {
             action = PROCEDURES_ASSIGNED;
             office = {};
             eventType = {};
-            startTime = procedures[0].dateCreated;
-            endTime = '';
             procedureNames = procedures.map(pc => pc.name);
         }
 
@@ -185,8 +183,6 @@ export class PaymentHistory extends Component {
         } else if (payment.type === PROCEDURE_PAYMENT_TYPE && procedures) {
             office = {};
             eventType = {};
-            startTime = procedures[0].dateCreated;
-            endTime = '';
             procedureNames = procedures.map(pc => pc.name);
         }
 
