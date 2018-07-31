@@ -259,10 +259,7 @@ class Payment extends Component {
                 <Padding horizontal={20} vertical={20}>
                     <Grid container alignItems="flex-start">
                         <StyledListingImage
-                            src={
-                                office.imageUrls[0] ||
-                                officeImagePlaceholder
-                            }
+                            src={office.imageUrls[0] || officeImagePlaceholder}
                             alt="office"
                         />
 
