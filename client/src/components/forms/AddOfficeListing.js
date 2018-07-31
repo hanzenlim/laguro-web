@@ -29,12 +29,18 @@ import {
 
 import history from '../../history';
 
+import staffSVG from '../icons/staff.svg';
+
 const StyledContainer = styled.div`
     min-height: 100vh;
     height: 100%;
     max-width: 1080px;
     padding: 5em 10px;
     margin: 0 auto;
+`;
+
+const StyledImage = styled.img`
+    padding-top: 5em;
 `;
 
 const StyledFlexWithBorder = styled(Flex)`
@@ -314,6 +320,11 @@ class NewListing extends Component {
                                 </Grid>
                             </Grid>
                         </form>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <Grid container justify="center">
+                            <StyledImage src={staffSVG} />
+                        </Grid>
                     </Grid>
                 </Grid>
             </StyledContainer>

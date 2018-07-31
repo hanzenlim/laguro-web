@@ -28,7 +28,7 @@ const StyledContainer = styled.div`
 `;
 
 const StyledImage = styled.img`
-    padding-top: 10em;
+    padding-top: 5em;
 `;
 
 const StyledUploadedImage = styled.img`
