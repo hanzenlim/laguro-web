@@ -76,6 +76,9 @@ class TopHalfInfo extends Component {
         } else if (referrer === 'dentist' && dentistId !== 'undefined') {
             backLinkUrl = `/dentist/${dentistId}`;
             backLinkText = 'Back to dentist page';
+        } else if (referrer === 'home') {
+            backLinkUrl = '/';
+            backLinkText = 'Back to home page';
         }
 
         return (
