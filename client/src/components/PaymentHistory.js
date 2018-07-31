@@ -14,7 +14,9 @@ import {
     REFUNDED,
     RESERVATION_BOOKED,
     RESERVATION_CANCELLED_BY_DENTIST,
-    RESERVATION_PAYMENT_TYPE
+    RESERVATION_PAYMENT_TYPE,
+    PROCEDURE_PAYMENT_TYPE,
+    PROCEDURES_ASSIGNED
 } from '../util/strings';
 import { Box, Flex, Typography } from './common';
 import PaymentDetails from './PaymentDetails';
@@ -68,6 +70,10 @@ const paymentHistoryQuery = `
                 status
                 dateCancelled
             }
+            procedures {
+                name
+                dateCreated
+            }
             nominalAmount
             currency
             stripePayment {
@@ -86,6 +92,7 @@ const paymentHistoryQuery = `
             chargeStatus
             dateCreated
             refundAmount
+
         }
     }
 `;
@@ -98,8 +105,14 @@ export class PaymentHistory extends Component {
 
     processPayment = (auth, payment) => {
         const { source, created } = payment.stripePayment;
-        const { reservation, appointment } = payment;
-        let action, office, procedureName, eventType, description;
+        const { reservation, appointment, procedures } = payment;
+        let action,
+            office,
+            procedureNames,
+            eventType,
+            description,
+            startTime,
+            endTime;
         let paymentObj = {};
         let date = Number(created);
         let paymentAmount = payment.nominalAmount;
@@ -107,14 +120,23 @@ export class PaymentHistory extends Component {
             action = RESERVATION_BOOKED;
             office = reservation.office;
             eventType = reservation;
+            startTime = eventType.startTime;
+            endTime = eventType.endTime;
         } else if (payment.type === APPOINTMENT_PAYMENT_TYPE && appointment) {
             action = APPOINTMENT_BOOKED;
             office = appointment.reservation.office;
-            procedureName = appointment.procedure.name;
+            procedureNames = [appointment.procedure.name];
             eventType = appointment;
+            startTime = eventType.startTime;
+            endTime = eventType.endTime;
+        } else if (payment.type === PROCEDURE_PAYMENT_TYPE && procedures) {
+            action = PROCEDURES_ASSIGNED;
+            office = {};
+            eventType = {};
+            startTime = procedures[0].dateCreated;
+            endTime = '';
+            procedureNames = procedures.map(pc => pc.name);
         }
-        const startTime = eventType.startTime;
-        const endTime = eventType.endTime;
 
         // Upon refund, payment.status changes to REFUNDED. It is still necessary to process such payment with description PAYMENT_MADE.
         if (payment.status === CHARGED || payment.status === REFUNDED) {
@@ -127,46 +149,59 @@ export class PaymentHistory extends Component {
                 endTime,
                 office,
                 paymentAmount,
-                procedureName,
+                procedureNames,
                 payeeId: payment.payee.id,
                 payerId: payment.payer.id,
                 startTime,
                 source,
                 type: payment.type
-            }
+            };
         }
 
         return paymentObj;
-    }
+    };
 
     processCancellation = (auth, payment) => {
         const { source, refunds } = payment.stripePayment;
-        const { reservation, appointment, refundAmount } = payment;
+        const { reservation, appointment, refundAmount, procedures } = payment;
 
         let office;
-        let procedureName;
+        let procedureNames;
         let eventType;
+        let startTime;
+        let endTime;
+
         if (payment.type === RESERVATION_PAYMENT_TYPE && reservation) {
             office = reservation.office;
             eventType = reservation;
+            startTime = eventType.startTime;
+            endTime = eventType.endTime;
         } else if (payment.type === APPOINTMENT_PAYMENT_TYPE && appointment) {
             office = appointment.reservation.office;
-            procedureName = appointment.procedure.name;
+            procedureNames = appointment.procedure.name;
             eventType = appointment;
+            startTime = eventType.startTime;
+            endTime = eventType.endTime;
+        } else if (payment.type === PROCEDURE_PAYMENT_TYPE && procedures) {
+            office = {};
+            eventType = {};
+            startTime = procedures[0].dateCreated;
+            endTime = '';
+            procedureNames = procedures.map(pc => pc.name);
         }
-
-        const startTime = eventType.startTime;
-        const endTime = eventType.endTime;
 
         let cancellationObj = {};
 
         if (eventType.status === CANCELLED) {
             cancellationObj = {
-                action: payment.type === RESERVATION_PAYMENT_TYPE ? RESERVATION_CANCELLED_BY_DENTIST : APPOINTMENT_CANCELLED_BY_PATIENT,
+                action:
+                    payment.type === RESERVATION_PAYMENT_TYPE
+                        ? RESERVATION_CANCELLED_BY_DENTIST
+                        : APPOINTMENT_CANCELLED_BY_PATIENT,
                 auth,
                 endTime,
                 office,
-                procedureName,
+                procedureNames,
                 payeeId: payment.payee.id,
                 payerId: payment.payer.id,
                 startTime,
@@ -179,49 +214,60 @@ export class PaymentHistory extends Component {
         }
 
         return cancellationObj;
-    }
+    };
 
-    processPayments = (payerPayments) => {
+    processPayments = payerPayments => {
         const { auth } = this.props;
-        const concat = (x,y) => x.concat(y)
+        const concat = (x, y) => x.concat(y);
 
         let processedPayments = payerPayments
             .filter(payment => auth.id === payment.payer.id)
-            .map((payment) => this.processPayment(auth, payment))
+            .map(payment => this.processPayment(auth, payment))
             .reduce(concat, []);
 
-        processedPayments = processedPayments.concat(payerPayments
-            .filter(payment => auth.id === payment.payer.id)
-            .map((payment) => this.processCancellation(auth, payment))
-            .reduce(concat, []));
+        processedPayments = processedPayments.concat(
+            payerPayments
+                .filter(payment => auth.id === payment.payer.id)
+                .map(payment => this.processCancellation(auth, payment))
+                .reduce(concat, [])
+        );
 
         return processedPayments;
-    }
+    };
 
     renderPaymentDetailsList = processedPayments => {
-        const orderedProcessedPayments = orderBy(processedPayments, ['date'], ['desc']);
+        const orderedProcessedPayments = orderBy(
+            processedPayments,
+            ['date'],
+            ['desc']
+        );
         return orderedProcessedPayments.map((payment, index) => (
-            <PaymentDetails payment={payment} key={index}/>
-        ))
-    }
+            <PaymentDetails payment={payment} key={index} />
+        ));
+    };
 
     render() {
         const { isFetchingPaymentHistory, payerPayments } = this.props;
         const processedPayments = this.processPayments(payerPayments);
-        const paymentDetailsList = this.renderPaymentDetailsList(processedPayments);
+        const paymentDetailsList = this.renderPaymentDetailsList(
+            processedPayments
+        );
 
         return (
             <StyledContainer>
                 <Box mt={5}>
-                    <Flex justifyContent='space-between'>
-                        <Typography fontSize={5}>
-                        Payment History
-                        </Typography>
+                    <Flex justifyContent="space-between">
+                        <Typography fontSize={5}>Payment History</Typography>
                     </Flex>
                     <Box pb={3} />
-                    {!isEmpty(paymentDetailsList) ? paymentDetailsList : isFetchingPaymentHistory ? 'Loading...' : 'No payment history.'}
+                    {!isEmpty(paymentDetailsList)
+                        ? paymentDetailsList
+                        : isFetchingPaymentHistory
+                            ? 'Loading...'
+                            : 'No payment history.'}
                 </Box>
-            </StyledContainer>);
+            </StyledContainer>
+        );
     }
 }
 

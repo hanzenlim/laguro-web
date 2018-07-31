@@ -9,6 +9,7 @@ export const LISTING = 'listing';
 export const LISTINGS = 'listings';
 export const RESERVATION = 'reservation';
 export const RESERVATIONS = 'reservations';
+export const PROCEDURE = 'procedure';
 export const ALL_RESERVATIONS = 'all_reservations';
 export const APPOINTMENT = 'appointment';
 export const APPOINTMENTS = 'appointments';
@@ -26,6 +27,8 @@ export const REVIEWEE_ID = 'revieweeId';
 export const RESERVED_BY = 'reservedBy';
 export const PAYER_ID = 'payerId';
 export const PAYEE_ID = 'payeeId';
+export const PAYER = 'payer';
+export const PAYEE = 'payee';
 export const START_TIME = 'startTime';
 export const END_TIME = 'endTime';
 export const DATE_CREATED = 'dateCreated';
@@ -39,6 +42,7 @@ export const CANCELLED_BY_PATIENT = 'CANCELLED BY PATIENT';
 export const TYPE = 'type';
 export const RESERVATION_PAYMENT_TYPE = 'RESERVATION';
 export const APPOINTMENT_PAYMENT_TYPE = 'APPOINTMENT';
+export const PROCEDURE_PAYMENT_TYPE = 'PROCEDURE';
 
 export const AVAILABLE = 'available';
 
@@ -54,8 +58,12 @@ export const APPOINTMENT_CANCELLED_BY_PATIENT =
     'Appointment cancelled by patient';
 export const RESERVATION_BOOKED = 'Reservation booked';
 export const APPOINTMENT_BOOKED = 'Appointment booked';
+export const PROCEDURES_ASSIGNED = 'Procedures assigned';
 export const CANCELLED = 'CANCELLED';
 
+export const APPOINTMENT_NUM = 'appointmentNum';
+//PatientProcedure
+export const PENDING = 'pending';
 // TODO delete following
 // const pluralizeMap = {
 //     USER: 'users',

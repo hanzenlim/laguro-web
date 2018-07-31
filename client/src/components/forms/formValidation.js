@@ -31,7 +31,13 @@ export function reviewConditions(value, allValues, props) {
 }
 
 export function required(value) {
-    return isEmpty(value) && !isInteger(value) ? 'Required' : undefined;
+    return isEmpty(value) && !isInteger(value)
+        ? 'Required'
+        : undefined;
+}
+
+export function checkBoxRequired(value) { 
+    return value ? undefined : 'Required';
 }
 
 export function confirmPassword(confirmationPassword, allValues) {

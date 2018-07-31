@@ -402,20 +402,26 @@ export const renderInput = ({ input, disabled }) => (
 export const renderCheckbox = ({
     label,
     tooltip,
-    input: { onChange, value }
-}) => (
-    <Flex alignItems="center">
-        <Checkbox
-            checked={value ? true : false}
-            onClick={() => {
-                onChange(value ? false : true);
-            }}
-        />
-        <Typography pl={2}>
-            {label} {tooltip && addTooltip(tooltip, '16px')}
-        </Typography>
-    </Flex>
-);
+    input: { onChange, value },
+    meta: { touched, error }
+}) => {
+    return (
+        <div>
+            <Flex alignItems="center">
+                <Checkbox
+                    checked={value ? true : false}
+                    onClick={() => {
+                        onChange(value ? false : true);
+                    }}
+                />
+                <Typography pl={2}>
+                    {label} {tooltip && addTooltip(tooltip, '16px')}
+                </Typography>
+            </Flex>
+            {touched && (error && <Typography color="red">{error}</Typography>)}
+        </div>
+    );
+};
 
 export const charCount = (numChar, total) => {
     const StyledCharCountBox = styled(Box)`

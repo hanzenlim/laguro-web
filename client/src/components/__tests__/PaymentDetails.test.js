@@ -78,7 +78,6 @@ describe('<PaymentDetails />', () => {
             moment(RESERVATION_START_TIME).format('MMM DD h:mm a - ') +
                 moment(RESERVATION_END_TIME).format('h:mm a')
         );
-        expect(procedures.text()).toEqual(PROCEDURE_NAME);
         expect(paymentAmount.text()).toEqual(FORMATTED_PAYMENT_NOMINAL_AMOUNT);
         expect(
             description

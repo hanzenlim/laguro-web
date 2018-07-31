@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { isEmpty } from 'lodash';
 import moment from 'moment';
 import queryString from 'query-string';
 import styled from 'styled-components';
-
-import { Typography, Card, Button, Divider, Link, Grid } from './common';
+import { Typography, Box, Card, Button, Divider, Link, Grid } from './common';
 import { Padding } from './common/Spacing';
 import { formatListingTime } from '../util/timeUtil';
 import * as actions from '../actions';
@@ -51,18 +51,24 @@ class PaymentSuccess extends Component {
     }
 
     async fetchSuccessDetails() {
-        const { reservationId, appointmentId } = this.urlParams;
+        const { reservationId, appointmentId, procedureIds } = this.urlParams;
         if (appointmentId) {
             await this.props.getAppointment(appointmentId);
             this.setState({ type: 'appointment' });
         } else if (reservationId) {
             await this.props.getReservation(reservationId);
             this.setState({ type: 'reservation' });
+        } else {
+            await this.props.getProcedures(JSON.parse(procedureIds));
         }
     }
 
     renderTime = () => {
-        const { reservation, appointment } = this.props;
+        const { reservation, appointment, procedures } = this.props;
+        if (!isEmpty(procedures)) {
+            return '';
+        }
+
         const { type } = this.state;
 
         let { startTime, endTime } =
@@ -75,14 +81,101 @@ class PaymentSuccess extends Component {
         return moment(startDate).format('ll');
     };
 
-    render() {
+    renderProcedure = (pc, index) => {
+        return (
+            <ListingInfo key={index}>
+                <Grid container direction="column">
+                    <Grid container>
+                        <Typography fontSize={4} fontWeight="bold">
+                            {pc.definition}
+                        </Typography>
+                    </Grid>
+
+                    <Padding bottom={11} />
+
+                    <Grid container wrap="nowrap">
+                        <Typography fontSize={3}>
+                            {`Procedure: ${pc.name}`}
+                        </Typography>
+                    </Grid>
+
+                    <Grid container wrap="nowrap">
+                        <i className="material-icons tiny">date_range</i>
+
+                        <Padding right={4} />
+
+                        <Typography fontSize={3}>
+                            {`Date prescribed: ${this.renderDate(
+                                pc.dateCreated
+                            )}`}
+                        </Typography>
+                    </Grid>
+
+                    <Padding vertical={8}>
+                        <Divider />
+                    </Padding>
+                </Grid>
+            </ListingInfo>
+        );
+    };
+
+    renderProceduresCard = () => {
+        const { procedures } = this.props;
+        return (
+            <Wrapper>
+                <Container>
+                    <Box pb={[3, 5]} />
+                    <Grid container>
+                        <Grid item xs={12}>
+                            <Typography fontSize={5} fontWeight="bold">
+                                Thank you! Your procedures are all set.
+                            </Typography>
+                        </Grid>
+                    </Grid>
+                    <Box pb={3} />
+                    <Card>
+                        <Padding horizontal={20} vertical={20}>
+                            {procedures.map((pc, index) =>
+                                this.renderProcedure(pc, index)
+                            )}
+                        </Padding>
+                    </Card>
+                    <Padding bottom={24} />
+                    <Grid
+                        container
+                        direction="row"
+                        justify="center"
+                        spacing={16}
+                    >
+                        <Grid item>
+                            <Link to={'/'}>
+                                <Button variant="raised" color="primary">
+                                    Home
+                                </Button>
+                            </Link>
+                        </Grid>
+                        <Grid item>
+                            <Link to={'/profile'}>
+                                <Button variant="raised" color="secondary">
+                                    Profile
+                                </Button>
+                            </Link>
+                        </Grid>
+                    </Grid>
+                </Container>
+            </Wrapper>
+        );
+    };
+
+    renderApptResCard = () => {
         const { type } = this.state;
         let { appointment, reservation } = this.props;
         let office = {};
 
         // if the store is not fully loaded, wait
         if (
-            appointment && reservation &&
+            appointment &&
+            reservation &&
             !Object.keys(appointment).length &&
             !Object.keys(reservation).length
         )
@@ -214,6 +307,15 @@ class PaymentSuccess extends Component {
                 </Container>
             </Wrapper>
         );
+    };
+
+    render() {
+        const { procedures } = this.props;
+        if (isEmpty(procedures)) {
+            return this.renderApptResCard();
+        } else {
+            return this.renderProceduresCard();
+        }
     }
 }
 
@@ -222,10 +324,8 @@ function mapStateToProps(state) {
         auth: state.auth,
         reservation: state.reservations.selected,
         appointment: state.appointments.selected,
+        procedures: state.patientProcedures.selectedProcedures
     };
 }
 
-export default connect(
-    mapStateToProps,
-    actions
-)(PaymentSuccess);
+export default connect(mapStateToProps, actions)(PaymentSuccess);

@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
+import moment from 'moment';
 import { connect } from 'react-redux';
 import queryString from 'query-string';
 import StripeCheckout from 'react-stripe-checkout';
 import styled from 'styled-components';
-
 import {
     Typography,
     Card,
@@ -18,7 +18,13 @@ import {
 import { Padding } from './common/Spacing';
 import AddPhoneNumber from './forms/AddPhoneNumber';
 import * as actions from '../actions';
-import { PAYMENT_OPTIONS, APPOINTMENT, DENTIST } from '../util/strings';
+import {
+    PAYMENT_OPTIONS,
+    APPOINTMENT,
+    DENTIST,
+    RESERVATION,
+    PROCEDURE
+} from '../util/strings';
 import { stripeKey } from '../config/keys';
 import { formatListingTime } from '../util/timeUtil';
 import { renderPrice } from '../util/paymentUtil';
@@ -73,13 +79,14 @@ class Payment extends Component {
 
     async loadData() {
         this.setState({ isFetching: true });
-        if (this.urlParams.type === APPOINTMENT) {
-            await this.props.getReservation(this.urlParams.reservationId);
-        } else {
-            await this.props.getListing(this.urlParams.listingId);
+        const { listingId, reservationId, procedureIds, type } = this.urlParams;
+        if (type === APPOINTMENT) {
+            await this.props.getReservation(reservationId);
+        } else if (type === RESERVATION) {
+            await this.props.getListing(listingId);
+        } else if (type === PROCEDURE) {
+            await this.props.getProcedures(JSON.parse(procedureIds));
         }
-
-        await this.props.fetchUser(DENTIST, PAYMENT_OPTIONS);
         this.setState({ isFetching: false });
     }
 
@@ -105,8 +112,10 @@ class Payment extends Component {
 
         if (this.urlParams.type === APPOINTMENT) {
             this.handleCreateAppointment();
-        } else {
+        } else if (this.urlParams.type === RESERVATION) {
             this.handleCreateReservation();
+        } else if (this.urlParams.type === PROCEDURE) {
+            this.handleUpdateProcedures();
         }
     };
 
@@ -142,6 +151,13 @@ class Payment extends Component {
         this.props.createAppointment(appointmentPayload);
     };
 
+    handleUpdateProcedures = () => {
+        this.props.updatePatientProcedures({
+            procedureIds: JSON.parse(this.urlParams.procedureIds),
+            paymentOptionId: this.props.auth.paymentOptions[0].id
+        });
+    };
+
     renderTime = (startTime, endTime) => {
         return formatListingTime(startTime, endTime);
     };
@@ -163,7 +179,73 @@ class Payment extends Component {
         ));
     };
 
-    renderListingCard = () => {
+    renderSubjectCards = () => {
+        const { type } = this.urlParams;
+
+        if (type === APPOINTMENT || type === RESERVATION) {
+            return this.renderEventCard();
+        } else {
+            return this.renderProcedureCards();
+        }
+    };
+
+    renderProcedureCards = () => {
+        let { procedures } = this.props;
+
+        return procedures.map((pc, index) => {
+            return (
+                <Box key={index} mb={2}>
+                    <Card>
+                        <Padding horizontal={20} vertical={20}>
+                            <Grid container alignItems="flex-start">
+                                <StyledListingInfo>
+                                    <Grid container direction="column">
+                                        <Grid container justify="space-between">
+                                            <Typography
+                                                fontSize={4}
+                                                fontWeight="bold"
+                                            >
+                                                {pc.name}
+                                            </Typography>
+
+                                            <Typography
+                                                fontSize={3}
+                                                fontWeight="bold"
+                                                color="black"
+                                            >
+                                                {renderPrice(
+                                                    pc.patientEstimate
+                                                )}
+                                            </Typography>
+                                        </Grid>
+                                        <Padding vertical={8}>
+                                            <Divider />
+                                        </Padding>
+
+                                        <Grid container wrap="nowrap">
+                                            <i className="material-icons tiny">
+                                                access_time
+                                            </i>
+
+                                            <Padding right={4} />
+
+                                            <Typography fontSize={3}>
+                                                {`Time: ${moment(
+                                                    pc.dateCreated
+                                                ).format('MM/DD/YYYY')}`}
+                                            </Typography>
+                                        </Grid>
+                                    </Grid>
+                                </StyledListingInfo>
+                            </Grid>
+                        </Padding>
+                    </Card>
+                </Box>
+            );
+        });
+    };
+
+    renderEventCard = () => {
         const office =
             this.urlParams.type === APPOINTMENT
                 ? this.props.reservation.office
@@ -248,7 +330,8 @@ class Payment extends Component {
             equipmentFee,
             bookingFee,
             cleaningFee,
-            reservationFee
+            reservationFee,
+            procedurePatientEstimate
         } = this.urlParams;
 
         return (
@@ -262,7 +345,7 @@ class Payment extends Component {
 
                     <Divider />
 
-                    <Box py={2}>
+                    {reservationFee && <Box py={2}>
                         <Flex justify="space-between">
                             <Typography fontSize={3} color="abbey" capitalize>
                                 {`${type} Cost`}
@@ -271,61 +354,72 @@ class Payment extends Component {
                                 {renderPrice(reservationFee)}
                             </Typography>
                         </Flex>
-                    </Box>
+                    </Box>}
+
+                    {procedurePatientEstimate && <Box py={2}>
+                        <Flex justify="space-between">
+                            <Typography fontSize={3} color="abbey" capitalize>
+                                {`${type} Cost`}
+                            </Typography>
+                            <Typography fontSize={3} color="abbey">
+                                {renderPrice(procedurePatientEstimate)}
+                            </Typography>
+                        </Flex>
+                    </Box>}
 
                     {equipmentFee &&
                         equipmentFee > 0 && (
-                        <Box py={2}>
-                            <Flex justify="space-between">
-                                <Typography
-                                    fontSize={3}
-                                    color="abbey"
-                                    capitalize
-                                >
+                            <Box py={2}>
+                                <Flex justify="space-between">
+                                    <Typography
+                                        fontSize={3}
+                                        color="abbey"
+                                        capitalize
+                                    >
                                         Equipment Fee
                                 </Typography>
-                                <Typography fontSize={3} color="abbey">
-                                    {renderPrice(equipmentFee)}
-                                </Typography>
-                            </Flex>
-                        </Box>
-                    )}
+                                    <Typography fontSize={3} color="abbey">
+                                        {renderPrice(equipmentFee)}
+                                    </Typography>
+                                </Flex>
+                            </Box>
+                        )}
 
                     {cleaningFee &&
                         cleaningFee > 0 && (
-                        <Box py={2}>
-                            <Flex justify="space-between">
-                                <Typography
-                                    fontSize={3}
-                                    color="abbey"
-                                    capitalize
-                                >
+                            <Box py={2}>
+                                <Flex justify="space-between">
+                                    <Typography
+                                        fontSize={3}
+                                        color="abbey"
+                                        capitalize
+                                    >
                                         Cleaning Fee
                                 </Typography>
-                                <Typography fontSize={3} color="abbey">
-                                    {renderPrice(cleaningFee)}
-                                </Typography>
-                            </Flex>
-                        </Box>
-                    )}
+                                    <Typography fontSize={3} color="abbey">
+                                        {renderPrice(cleaningFee)}
+                                    </Typography>
+                                </Flex>
+                            </Box>
+                        )}
 
                     {bookingFee &&
                         bookingFee > 0 && (
-                        <Box py={2}>
-                            <Flex justify="space-between">
-                                <Typography
-                                    fontSize={3}
-                                    color="abbey"
-                                    capitalize
-                                >
+                            <Box py={2}>
+                                <Flex justify="space-between">
+                                    <Typography
+                                        fontSize={3}
+                                        color="abbey"
+                                        capitalize
+                                    >
                                         Booking Fee
                                 </Typography>
-                                <Typography fontSize={3} color="abbey">
-                                    {renderPrice(bookingFee)}
-                                </Typography>
-                            </Flex>
-                        </Box>
-                    )}
+                                    <Typography fontSize={3} color="abbey">
+                                        {renderPrice(bookingFee)}
+                                    </Typography>
+                                </Flex>
+                            </Box>
+                        )}
 
                     <Divider />
 
@@ -381,7 +475,10 @@ class Payment extends Component {
                                     variant="raised"
                                     color="primary"
                                 >
-                                    <Typography fontSize={4} fontWeight="medium">
+                                    <Typography
+                                        fontSize={4}
+                                        fontWeight="medium"
+                                    >
                                         Add Payment Method
                                     </Typography>
                                 </Button>
@@ -399,7 +496,7 @@ class Payment extends Component {
                         }
                     >
                         <Typography fontSize={4} fontWeight="medium">
-                            Checkout
+                            Check out
                         </Typography>
                     </Button>
                 </Flex>
@@ -409,26 +506,27 @@ class Payment extends Component {
 
     render() {
         const { type } = this.urlParams;
+        const header = type === PROCEDURE ? 'Review and pay for your procedures' : `Review and place your ${type}`
         if (this.state.isFetching) return <div className="stretch_height" />;
 
         return (
             <StyledWrapper>
                 <Container>
+                    <Box pb={[3, 5]} />
                     <Flex>
-                        <Padding top={60} bottom={20}>
-                            <Grid container>
-                                <Grid item xs={12}>
-                                    <Typography fontSize={5} fontWeight="bold">
-                                        Review and place your {`${type}`}
-                                    </Typography>
-                                </Grid>
+                        <Grid container>
+                            <Grid item xs={12}>
+                                <Typography fontSize={5} fontWeight="bold">
+                                    {header}
+                                </Typography>
                             </Grid>
-                        </Padding>
+                        </Grid>
                     </Flex>
+                    <Box pb={3} />
 
                     <Grid container spacing={16}>
                         <Grid item xs={12} lg={8}>
-                            {this.renderListingCard()}
+                            {this.renderSubjectCards()}
                         </Grid>
 
                         <Grid item xs={12} lg={4}>
@@ -458,7 +556,8 @@ function mapStateToProps(state) {
     return {
         listing: state.listings.selected,
         reservation: state.reservations.selected,
-        auth: state.auth
+        auth: state.auth,
+        procedures: state.patientProcedures.selectedProcedures
     };
 }
 

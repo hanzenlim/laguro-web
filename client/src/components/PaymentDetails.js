@@ -55,6 +55,15 @@ const StyledPaymentFlex = styled(Flex)`
 `;
 
 class PaymentDetails extends Component {
+    renderProcedureNames = () => {
+        const { procedureNames } = this.props.payment;
+
+        return (
+            procedureNames &&
+            procedureNames.map((name, index) => <li key={index}>{name}</li>)
+        );
+    };
+
     render() {
         const { index, payment } = this.props;
         const {
@@ -64,7 +73,6 @@ class PaymentDetails extends Component {
             endTime,
             office,
             paymentAmount,
-            procedureName,
             startTime,
             source
         } = payment;
@@ -74,80 +82,97 @@ class PaymentDetails extends Component {
         }
 
         return (
-            <Card key={index} mb={2}>
-                <StyledContainer p={3}>
-                    <StyledImageContainer>
-                        <img
-                            width="100%"
-                            height="100%"
-                            data-name="office-image"
-                            src={
-                                !isEmpty(office.imageUrls)
-                                    ? office.imageUrls[0]
-                                    : officeImgPlaceholder
-                            }
-                            alt={office.imageUrls[0]}
-                        />
-                    </StyledImageContainer>
+            <Box mb={2}>
+                <Card key={index}>
+                    <StyledContainer p={3}>
+                        {office.imageUrls && (
+                            <StyledImageContainer>
+                                <img
+                                    width="100%"
+                                    height="100%"
+                                    data-name="office-image"
+                                    src={
+                                        !isEmpty(office.imageUrls)
+                                            ? office.imageUrls[0]
+                                            : officeImgPlaceholder
+                                    }
+                                    alt={
+                                        !isEmpty(office.imageUrls)
+                                            ? office.imageUrls[0]
+                                            : officeImgPlaceholder
+                                    }
+                                />
+                            </StyledImageContainer>
+                        )}
 
-                    <StyledPaymentInfo>
-                        <StyledInfoFlex flexDirection="column">
-                            <div data-name="office-name">
-                                <Typography fontSize={4} fontWeight="bold">
-                                    {office.name}
-                                </Typography>
-                            </div>
-                            <div data-name="office-location">
-                                <Typography fontSize={2}>
-                                    {office.location}
-                                </Typography>
-                            </div>
-                            <div>
-                                <div data-name="action">{action}</div>
-                                <div data-name="start-end-time">
-                                    {moment(startTime).format(
-                                        'MMM DD h:mm a - '
-                                    ) + moment(endTime).format('h:mm a')}
-                                </div>
-                                <div data-name="procedures">
-                                    {procedureName && <li>{procedureName}</li>}
-                                </div>
-                            </div>
-                        </StyledInfoFlex>
-                        <StyledPaymentFlex flexDirection="column">
-                            <Flex justifyContent="center">
-                                <div data-name="payment-amount">
-                                    {renderPrice(paymentAmount)}
-                                </div>
-                            </Flex>
-                            <Flex justifyContent="center">
-                                <div data-name="description">
-                                    <Box fontSize={2} description={description}>
-                                        {description}
-                                    </Box>
-                                </div>
-                            </Flex>
-                            <Flex justifyContent="center">
-                                <div data-name="date">
-                                    <Typography fontSize={1}>
-                                        {date &&
-                                            moment
-                                                .unix(date)
-                                                .format('MMMM Do, YYYY h:mm A')}
+                        <StyledPaymentInfo>
+                            <StyledInfoFlex flexDirection="column">
+                                <div data-name="office-name">
+                                    <Typography fontSize={4} fontWeight="bold">
+                                        {office.name}
                                     </Typography>
                                 </div>
-                            </Flex>
-                            <Flex justifyContent="center">
-                                <div data-name="source">
-                                    <Typography>{`${source.brand} - ${
-                                        source.last4
-                                    }`}</Typography>
+                                <div data-name="office-location">
+                                    <Typography fontSize={2}>
+                                        {office.location}
+                                    </Typography>
                                 </div>
-                            </Flex>
-                        </StyledPaymentFlex>
-                    </StyledPaymentInfo>
-                </StyledContainer>
-            </Card>
+                                <div>
+                                    <div data-name="action">{action}</div>
+                                    <div data-name="start-end-time">
+                                        {moment(startTime).format(
+                                            'MMM DD h:mm a '
+                                        ) +
+                                            (endTime &&
+                                                moment(endTime).format(
+                                                    '- h:mm a'
+                                                ))}
+                                    </div>
+                                    <div data-name="procedures">
+                                        {this.renderProcedureNames()}
+                                    </div>
+                                </div>
+                            </StyledInfoFlex>
+                            <StyledPaymentFlex flexDirection="column">
+                                <Flex justifyContent="center">
+                                    <div data-name="payment-amount">
+                                        {renderPrice(paymentAmount)}
+                                    </div>
+                                </Flex>
+                                <Flex justifyContent="center">
+                                    <div data-name="description">
+                                        <Box
+                                            fontSize={2}
+                                            description={description}
+                                        >
+                                            {description}
+                                        </Box>
+                                    </div>
+                                </Flex>
+                                <Flex justifyContent="center">
+                                    <div data-name="date">
+                                        <Typography fontSize={1}>
+                                            {date &&
+                                                moment
+                                                    .unix(date)
+                                                    .format(
+                                                        'MMMM Do, YYYY h:mm A'
+                                                    )}
+                                        </Typography>
+                                    </div>
+                                </Flex>
+                                <Flex justifyContent="center">
+                                    <div data-name="source">
+                                        <Typography>{`${source.brand} - ${
+                                            source.last4
+                                        }`}</Typography>
+                                    </div>
+                                </Flex>
+                            </StyledPaymentFlex>
+                        </StyledPaymentInfo>
+                    </StyledContainer>
+                </Card>
+            </Box>
         );
     }
 }
