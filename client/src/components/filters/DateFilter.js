@@ -12,14 +12,26 @@ class DateFilter extends Component {
     }
 
     render() {
+        const { date, values } = this.props.filters;
+        let selectedDate = values ? values.date : '';
+        if (date) selectedDate = date;
+
+        let button_color = selectedDate
+            ? 'light-blue lighten-1'
+            : 'grey lighten-1';
+        let className = 'dropdown btn ' + button_color;
+
         return (
             <DatePicker
-                className="dropdown btn light-blue lighten-1"
-                selected={this.props.selectedDate ? moment(this.props.selectedDate) : moment()}
+                className={className}
+                selected={selectedDate ? moment(selectedDate) : moment()}
                 onChange={this.handleChange.bind(this)}
             />
         );
     }
 }
 
-export default connect(null, actions)(DateFilter);
+export default connect(
+    null,
+    actions
+)(DateFilter);
