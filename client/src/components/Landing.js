@@ -31,7 +31,7 @@ export class LandingComponent extends Component {
         this.state = {
             height: window.innerHeight,
             width: window.innerWidth,
-            toggle: 'dentist'
+            activeTab: 'dentist'
         };
         this.updateDimensions = this.updateDimensions.bind(this);
     }
@@ -54,9 +54,9 @@ export class LandingComponent extends Component {
         });
     }
 
-    tabChange = () => {
-        // console.log(event.currentTarget.id);
-        this.setState({toggle: this.state.toggle === 'dentist' ? 'office' : 'dentist'});
+    tabChange = (e) => {
+        const { tab } = e.target.dataset;
+        this.setState({ activeTab: tab });
     }
 
     cta() {
@@ -86,19 +86,25 @@ export class LandingComponent extends Component {
                         </div>
                         <div className="search">
                             <div className="search-tabs">
-                                <div
-                                    className="tab"
-                                    id="dentist-tab"
-                                    onClick={this.tabChange}
-                                >
-                                    <SearchTabH5 className="search-tab active">Find a Dentist</SearchTabH5>
+                                <div className="tab">
+                                    <SearchTabH5
+                                        onClick={this.tabChange}
+                                        id="dentist-tab"
+                                        data-tab="dentist"
+                                        className="search-tab active"
+                                    >
+                                        Find a Dentist
+                                    </SearchTabH5>
                                 </div>
-                                <div
-                                    className="tab inactive"
-                                    id="office-tab"
-                                    onClick={this.tabChange}
-                                >
-                                    <SearchTabH5 className="search-tab">Rent an Office</SearchTabH5>
+                                <div className="tab inactive">
+                                    <SearchTabH5
+                                        onClick={this.tabChange}
+                                        id="office-tab"
+                                        data-tab="office"
+                                        className="search-tab"
+                                    >
+                                        Rent an Office
+                                    </SearchTabH5>
                                 </div>
                             </div>
                             <div className="searchModule">
@@ -125,19 +131,25 @@ export class LandingComponent extends Component {
                         </div>
                         <div className="search">
                             <div className="search-tabs">
-                                <div
-                                    className="tab inactive"
-                                    id="dentist-tab"
-                                    onClick={this.tabChange}
-                                >
-                                    <SearchTabH5 className="search-tab">Find a Dentist</SearchTabH5>
+                                <div className="tab inactive">
+                                    <SearchTabH5
+                                        onClick={this.tabChange}
+                                        id="dentist-tab"
+                                        data-tab="dentist"
+                                        className="search-tab"
+                                    >
+                                        Find a Dentist
+                                    </SearchTabH5>
                                 </div>
-                                <div
-                                    className="tab"
-                                    id="office-tab"
-                                    onClick={this.tabChange}
-                                >
-                                    <SearchTabH5 className="search-tab active">Rent an Office</SearchTabH5>
+                                <div className="tab">
+                                    <SearchTabH5
+                                        onClick={this.tabChange}
+                                        id="office-tab"
+                                        data-tab="office"
+                                        className="search-tab active"
+                                    >
+                                        Rent an Office
+                                    </SearchTabH5>
                                 </div>
                             </div>
                             <div className="searchModule">
@@ -155,8 +167,8 @@ export class LandingComponent extends Component {
 
         return (
             <div>
-                {this.state.toggle === 'dentist' && this.renderDentistVersion()}
-                {this.state.toggle === 'office' && this.renderOfficeVersion()}
+                {this.state.activeTab === 'dentist' && this.renderDentistVersion()}
+                {this.state.activeTab === 'office' && this.renderOfficeVersion()}
                 <div id="cta-container">
                     {this.cta()}
                     <div id="cta-text">
