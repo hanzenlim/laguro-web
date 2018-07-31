@@ -24,6 +24,10 @@ const StyledContainer = styled.div`
     margin: 0 auto;
 `;
 
+const StyledImage = styled.img`
+    min-width: 200px;
+`;
+
 class EditOffice extends Component {
     constructor(props) {
         super(props);
@@ -94,7 +98,7 @@ class EditOffice extends Component {
                     >
                         <i className="material-icons">delete_forever</i>
                     </button>
-                    <img src={url} alt="office" />
+                    <StyledImage src={url} alt="office" />
                 </div>
             );
         });
