@@ -76,13 +76,13 @@ describe('<PaymentDetails />', () => {
         expect(action.text()).toEqual(RESERVATION_BOOKED);
         expect(startEndTime.text()).toEqual(
             moment(RESERVATION_START_TIME).format('MMM DD h:mm a - ') +
-                moment(RESERVATION_END_TIME).format('h:mm a')
+            moment(RESERVATION_END_TIME).format('h:mm a')
         );
         expect(paymentAmount.text()).toEqual(FORMATTED_PAYMENT_NOMINAL_AMOUNT);
         expect(
             description
                 .children()
-                .find('div')
+                .find('span')
                 .text()
         ).toEqual(PAYMENT_MADE);
         expect(date.find('span').text()).toEqual(

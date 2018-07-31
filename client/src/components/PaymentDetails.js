@@ -30,12 +30,7 @@ const StyledImageContainer = styled.div`
 const StyledPaymentInfo = styled.div`
     display: flex;
     flex: 1;
-    flex-direction: column;
-
-    @media screen and (min-width: 600px) {
-        justify-content: space-between;
-        flex-direction: row;
-    }
+    justify-content: space-between;
 `;
 
 const StyledInfoFlex = styled(Flex)`
@@ -52,6 +47,10 @@ const StyledPaymentFlex = styled(Flex)`
     @media screen and (min-width: 600px) {
         align-items: flex-end;
     }
+`;
+
+const StyledTypography = styled(Typography)`
+    line-height: 22px;
 `;
 
 class PaymentDetails extends Component {
@@ -141,24 +140,21 @@ class PaymentDetails extends Component {
                                 </Flex>
                                 <Flex justifyContent="center">
                                     <div data-name="description">
-                                        <Box
-                                            fontSize={2}
-                                            description={description}
-                                        >
+                                        <StyledTypography fontSize={2}>
                                             {description}
-                                        </Box>
+                                        </StyledTypography>
                                     </div>
                                 </Flex>
                                 <Flex justifyContent="center">
                                     <div data-name="date">
-                                        <Typography fontSize={1}>
+                                        <StyledTypography fontSize={1}>
                                             {date &&
                                                 moment
                                                     .unix(date)
                                                     .format(
                                                         'MMMM Do, YYYY h:mm A'
                                                     )}
-                                        </Typography>
+                                        </StyledTypography>
                                     </div>
                                 </Flex>
                                 <Flex justifyContent="center">

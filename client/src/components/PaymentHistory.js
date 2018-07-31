@@ -255,7 +255,7 @@ export class PaymentHistory extends Component {
 
         return (
             <StyledContainer>
-                <Box mt={5}>
+                <Box mt={[3, 5]}>
                     <Flex justifyContent="space-between">
                         <Typography fontSize={5}>Payment History</Typography>
                     </Flex>

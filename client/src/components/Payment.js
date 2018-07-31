@@ -89,6 +89,7 @@ class Payment extends Component {
             await this.props.getProcedures(JSON.parse(procedureIds));
         }
         this.setState({ isFetching: false });
+        await this.props.fetchUser(DENTIST, PAYMENT_OPTIONS);
     }
 
     async onSuccess(response) {
@@ -99,7 +100,6 @@ class Payment extends Component {
                 auth.paymentOptions[0].id
             );
         }
-
         await this.props.addPaymentOption(auth.id, response.id);
         await this.props.fetchUser(DENTIST, PAYMENT_OPTIONS);
     }
@@ -346,27 +346,39 @@ class Payment extends Component {
 
                     <Divider />
 
-                    {reservationFee && <Box py={2}>
-                        <Flex justify="space-between">
-                            <Typography fontSize={3} color="abbey" capitalize>
-                                {`${type} Cost`}
-                            </Typography>
-                            <Typography fontSize={3} color="abbey">
-                                {renderPrice(reservationFee)}
-                            </Typography>
-                        </Flex>
-                    </Box>}
+                    {reservationFee && (
+                        <Box py={2}>
+                            <Flex justify="space-between">
+                                <Typography
+                                    fontSize={3}
+                                    color="abbey"
+                                    capitalize
+                                >
+                                    {`${type} Cost`}
+                                </Typography>
+                                <Typography fontSize={3} color="abbey">
+                                    {renderPrice(reservationFee)}
+                                </Typography>
+                            </Flex>
+                        </Box>
+                    )}
 
-                    {procedurePatientEstimate && <Box py={2}>
-                        <Flex justify="space-between">
-                            <Typography fontSize={3} color="abbey" capitalize>
-                                {`${type} Cost`}
-                            </Typography>
-                            <Typography fontSize={3} color="abbey">
-                                {renderPrice(procedurePatientEstimate)}
-                            </Typography>
-                        </Flex>
-                    </Box>}
+                    {procedurePatientEstimate && (
+                        <Box py={2}>
+                            <Flex justify="space-between">
+                                <Typography
+                                    fontSize={3}
+                                    color="abbey"
+                                    capitalize
+                                >
+                                    {`${type} Cost`}
+                                </Typography>
+                                <Typography fontSize={3} color="abbey">
+                                    {renderPrice(procedurePatientEstimate)}
+                                </Typography>
+                            </Flex>
+                        </Box>
+                    )}
 
                     {equipmentFee &&
                         equipmentFee > 0 && (
@@ -378,7 +390,7 @@ class Payment extends Component {
                                         capitalize
                                     >
                                         Equipment Fee
-                                </Typography>
+                                    </Typography>
                                     <Typography fontSize={3} color="abbey">
                                         {renderPrice(equipmentFee)}
                                     </Typography>
@@ -396,7 +408,7 @@ class Payment extends Component {
                                         capitalize
                                     >
                                         Cleaning Fee
-                                </Typography>
+                                    </Typography>
                                     <Typography fontSize={3} color="abbey">
                                         {renderPrice(cleaningFee)}
                                     </Typography>
@@ -414,7 +426,7 @@ class Payment extends Component {
                                         capitalize
                                     >
                                         Booking Fee
-                                </Typography>
+                                    </Typography>
                                     <Typography fontSize={3} color="abbey">
                                         {renderPrice(bookingFee)}
                                     </Typography>
@@ -507,7 +519,10 @@ class Payment extends Component {
 
     render() {
         const { type } = this.urlParams;
-        const header = type === PROCEDURE ? 'Review and pay for your procedures' : `Review and place your ${type}`
+        const header =
+            type === PROCEDURE
+                ? 'Review and pay for your procedures'
+                : `Review and place your ${type}`;
         if (this.state.isFetching) return <div className="stretch_height" />;
 
         return (
