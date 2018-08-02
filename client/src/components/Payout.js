@@ -105,9 +105,10 @@ class Payout extends Component {
         for (let i = 0; i < receivable.length; i++) {
             let percentage = receivable[i].type === 'RESERVATION' ? RESERVATION_PERCENTAGE : PROCEDURE_PERCENTAGE;
             const payoutAmount = receivable[i].stripePayment.amount;
+            
             totalAmount += Math.floor(payoutAmount * percentage);
             if (receivable[i].chargeStatus === AVAILABLE && receivable[i].type === 'RESERVATION') {
-                availableAmount += payoutAmount;
+                availableAmount += Math.floor(payoutAmount * percentage);
             }
         }
 

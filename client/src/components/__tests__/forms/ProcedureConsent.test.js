@@ -1,5 +1,6 @@
 import React from 'react';
 import { mount } from 'enzyme';
+import TableCell from '@material-ui/core/TableCell';
 import { ProcedureConsent } from '../../forms/ProcedureConsent';
 import { PENDING } from '../../../util/strings';
 
@@ -44,8 +45,8 @@ describe('Procedure Consent form', () => {
     });
 
     it('should display a table of date, procedure, and fee', () => {
-        const data = component.find('WithStyles(TableCell)');
-        expect(data).toHaveLength(15);
+        const data = component.find(TableCell);
+        expect(data.length).toEqual(15);
         expect(data.at(5).text()).toEqual('07/01/2018');
         expect(data.at(6).text()).toEqual('procedure_type');
         expect(data.at(7).text()).toEqual('$1.00');
