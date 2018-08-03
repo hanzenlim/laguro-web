@@ -129,10 +129,6 @@ class DetailDetails extends Component {
         );
     }
 
-    componentDidUpdate() {
-        this.reviewCalc();
-    }
-
     reviewCalc() {
         const { reviews } = this.props;
 
@@ -330,19 +326,28 @@ class DetailDetails extends Component {
         });
     }
 
-    async handleBookReservation(listing) {
-        const { auth } = this.props;
-        this.setState({ listing });
+    componentDidUpdate(prevProps){
+        this.reviewCalc();
 
+        if(this.props.auth !== prevProps.auth && this.state.listing) {
+            this.openBookingModal()
+        }
+    }
+
+    openBookingModal() {
+        const { auth } = this.props;
         if (!auth) {
             this.props.toggleLoginModal();
-        }
-
-        if (!dentistProfileExists(auth)) {
+        } else if (!dentistProfileExists(auth)) {
             this.openModal('newDentist');
         } else {
             this.openModal('reservationOptions');
         }
+    }
+
+    async handleBookReservation(listing) {
+        this.setState({ listing });
+        this.openBookingModal()
     }
 
     openModal = modal_name => {
