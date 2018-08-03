@@ -15,6 +15,7 @@ class Appointments extends Component {
             duration_to_next_appointment,
             start_time
         } = e.target.dataset;
+
         this.props.handleBookAppointment(
             start_time,
             duration_to_next_appointment,

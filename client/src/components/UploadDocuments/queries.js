@@ -2,7 +2,12 @@ export const queryPatientDocumentQuery = `
     query ($input: QueryParams!) {
         queryPatientDocument(input: $input){
             id,
-            healthInsuranceImages
+            healthInsuranceImages,
+            license,
+            dentistPhotoId,
+            stateDentalLicense,
+            deaRegistration,
+            warranty
         }
     }
 `;
@@ -10,7 +15,12 @@ export const queryPatientDocumentQuery = `
 export const saveUploadedImagesUrlQuery = `
     mutation UpdatePatientDocument($input: UpdatePatientDocumentInput!) {
         updatePatientDocument(input: $input) {
-            healthInsuranceImages 
+            healthInsuranceImages,
+            license,
+            dentistPhotoId,
+            stateDentalLicense,
+            deaRegistration,
+            warranty
         }
     }
 `;

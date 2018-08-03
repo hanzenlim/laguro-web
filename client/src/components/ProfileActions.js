@@ -5,9 +5,11 @@ import ReactFilestack from 'filestack-react';
 import EditUser from './forms/EditUser';
 import NewDentist from './forms/NewDentist';
 import EditDentist from './forms/EditDentist';
+import UploadDocumentsModal from './UploadDocuments';
 import { Link, Button } from './common';
 import { filestackKey } from '../config/keys';
 import { profileImageRatio } from '../util/uiUtil';
+import { DENTIST, PATIENT } from '../util/strings';
 import * as actions from '../actions';
 import Provider from '../models/provider';
 
@@ -61,6 +63,26 @@ class ProfileActions extends Component {
         return (
             <div>
                 <ul className="collection">
+                    {dentistProfileExists && (
+                        <Button
+                            link
+                            border
+                            data-modal_name="verifyDentistProfile"
+                            onClick={this.openModal}
+                        >
+                            Verify Dentist Profile
+                        </Button>
+                    )}
+
+                    <Button
+                        link
+                        border
+                        data-modal_name="verifyPatientProfile"
+                        onClick={this.openModal}
+                    >
+                        Verify Patient Profile
+                    </Button>
+
                     <div>
                         <Button
                             link
@@ -180,6 +202,18 @@ class ProfileActions extends Component {
                         </Link>
                     )}
                 </ul>
+
+                <UploadDocumentsModal
+                    closeModal={this.closeModal}
+                    open={this.state.visibleModal === 'verifyDentistProfile'}
+                    userType={DENTIST}
+                />
+
+                <UploadDocumentsModal
+                    closeModal={this.closeModal}
+                    open={this.state.visibleModal === 'verifyPatientProfile'}
+                    userType={PATIENT}
+                />
 
                 <EditUser
                     closeModal={this.closeModal}
