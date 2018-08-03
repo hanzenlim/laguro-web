@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 // External Packages
 const passport = require('passport');
@@ -14,7 +14,7 @@ const {
     useResetPasswordRequestQuery,
     useResetPasswordRequestVariable,
     getResetPasswordRequestQuery,
-    getResetPasswordRequestVariable,
+    getResetPasswordRequestVariable
 } = serverDataLoader;
 
 const authRoutes = app => {
@@ -62,7 +62,7 @@ const authRoutes = app => {
             if (getUserByEmail && getUserByEmail.googleId) {
                 return res.status(403).json({
                     message:
-                        'Either the credentials you supplied are invalid, or you signed up using an OpenID provider, such as Google.',
+                        'Either the credentials you supplied are invalid, or you signed up using an OpenID provider, such as Google.'
                 });
             }
 
@@ -72,11 +72,11 @@ const authRoutes = app => {
             );
 
             return res.status(200).json({
-                message: 'Email sent.',
+                message: 'Email sent.'
             });
         } else {
             return res.status(403).json({
-                message: 'Invalid login credentials.',
+                message: 'Invalid login credentials.'
             });
         }
     });
@@ -95,27 +95,27 @@ const authRoutes = app => {
 
         if (getResetPasswordRequest.status === 'EXPIRED') {
             return res.status(400).json({
-                message: 'Reset password request already expired.',
+                message: 'Reset password request already expired.'
             });
         }
 
         if (getResetPasswordRequest.status === 'USED') {
             return res.status(400).json({
-                message: 'Reset password request already used.',
+                message: 'Reset password request already used.'
             });
         }
 
         bcrypt.genSalt(10, async (err, salt) => {
             if (err) {
                 return res.status(403).json({
-                    message: 'Invalid request.',
+                    message: 'Invalid request.'
                 });
             }
 
             bcrypt.hash(password, salt, async (err, hashedPassword) => {
                 if (err) {
                     return res.status(403).json({
-                        message: 'Invalid request.',
+                        message: 'Invalid request.'
                     });
                 }
 
@@ -129,14 +129,14 @@ const authRoutes = app => {
                 if (useResetPasswordRequest) {
                     if (useResetPasswordRequest.status === 'EXPIRED') {
                         res.status(400).json({
-                            message: 'Reset password request already expired.',
+                            message: 'Reset password request already expired.'
                         });
                     } else {
                         return res.status(200).json(useResetPasswordRequest);
                     }
                 } else {
                     return res.status(400).json({
-                        message: 'Invalid request.',
+                        message: 'Invalid request.'
                     });
                 }
             });
@@ -153,7 +153,7 @@ const authRoutes = app => {
         },
         passport.authenticate('google', {
             prompt: 'select_account',
-            scope: ['profile', 'email'],
+            scope: ['profile', 'email']
         })
     );
 

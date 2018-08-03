@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 
 // External Packages
 const serverDataLoader = require('../util/serverDataLoader');
