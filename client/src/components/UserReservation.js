@@ -9,7 +9,7 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 
 import { generateListItems } from './forms/sharedComponents';
-import { Typography, Flex, Card, Divider, Box } from './common';
+import { Typography, Flex, Card, Divider, Box, Button } from './common';
 import { Padding, Margin } from './common/Spacing';
 import { formatListingTime } from '../util/timeUtil';
 import officeImagePlaceholder from './images/office-placeholder-thumbnail.png';
@@ -26,7 +26,7 @@ const ListingImage = styled.img`
 const StyledImageContainer = styled(Box)`
     width: 30%;
 
-    @media screen and (max-width: 500px){
+    @media screen and (max-width: 500px) {
         display: none;
     }
 `;
@@ -34,7 +34,7 @@ const StyledImageContainer = styled(Box)`
 const StyledDetails = styled(Box)`
     width: 70%;
 
-    @media screen and (max-width: 500px){
+    @media screen and (max-width: 500px) {
         width: 100%;
     }
 `;
@@ -61,9 +61,11 @@ class UserReservation extends Component {
                 `Are you sure you want to delete reservation for ${moment(
                     reservation.startTime
                 ).format('MMM D, h:mm a')}? ${reservationRefund *
-                    100}% of your total amount will be refunded, a total amount of $${
-                    ((reservation.totalPaid * reservationRefund) / 100).toFixed(2)
-                }`
+                    100}% of your total amount will be refunded, a total amount of $${(
+                    reservation.totalPaid *
+                    reservationRefund /
+                    100
+                ).toFixed(2)}`
             )
         ) {
             this.props.cancelUserReservation(reservation);
@@ -96,6 +98,14 @@ class UserReservation extends Component {
         });
 
         return generateListItems(reservationAppointments);
+    }
+
+    handleClick = (event) => {
+        const { reservation, office } = event.currentTarget.dataset;
+        this.props.handleAddEquipment(
+            JSON.parse(office),
+            JSON.parse(reservation)
+        );
     }
 
     render() {
@@ -247,6 +257,30 @@ class UserReservation extends Component {
                                                 reservation.equipmentSelected
                                             )}
                                         </List>
+                                    </Box>
+                                    <Box width={1 / 3}>
+                                        <Button
+                                            onClick={this.handleClick}
+                                            disabled={
+                                                !reservation.office ||
+                                                reservation.office.equipment
+                                                    .length === 0 ||
+                                                reservation.equipmentSelected
+                                                    .length ===
+                                                    reservation.office.equipment
+                                                        .length
+                                            }
+                                            data-office={JSON.stringify(
+                                                reservation.office
+                                            )}
+                                            data-reservation={JSON.stringify(
+                                                reservation
+                                            )}
+                                            color="primary"
+                                            fullWidth
+                                        >
+                                            Add More
+                                        </Button>
                                     </Box>
                                 </Flex>
                             </ExpansionPanelDetails>

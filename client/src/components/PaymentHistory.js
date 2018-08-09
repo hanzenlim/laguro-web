@@ -13,8 +13,10 @@ import {
     PAYMENT_MADE,
     REFUNDED,
     RESERVATION_BOOKED,
+    EQUIPMENT_ADDED,
     RESERVATION_CANCELLED_BY_DENTIST,
     RESERVATION_PAYMENT_TYPE,
+    EQUIPMENT_PAYMENT_TYPE,
     PROCEDURE_PAYMENT_TYPE,
     PROCEDURES_ASSIGNED
 } from '../util/strings';
@@ -122,6 +124,12 @@ export class PaymentHistory extends Component {
             eventType = reservation;
             startTime = eventType.startTime;
             endTime = eventType.endTime;
+        } else if (payment.type === EQUIPMENT_PAYMENT_TYPE && reservation) {
+            action = EQUIPMENT_ADDED;
+            office = reservation.office;
+            eventType = reservation;
+            startTime = eventType.startTime;
+            endTime = eventType.endTime;
         } else if (payment.type === APPOINTMENT_PAYMENT_TYPE && appointment) {
             action = APPOINTMENT_BOOKED;
             office = appointment.reservation.office;
@@ -174,9 +182,14 @@ export class PaymentHistory extends Component {
             eventType = reservation;
             startTime = eventType.startTime;
             endTime = eventType.endTime;
+        } else if (payment.type === EQUIPMENT_PAYMENT_TYPE && reservation) {
+            office = reservation.office;
+            eventType = reservation;
+            startTime = eventType.startTime;
+            endTime = eventType.endTime;
         } else if (payment.type === APPOINTMENT_PAYMENT_TYPE && appointment) {
             office = appointment.reservation.office;
-            procedureNames = appointment.procedure.name;
+            procedureNames = [appointment.procedure.name];
             eventType = appointment;
             startTime = eventType.startTime;
             endTime = eventType.endTime;

@@ -15,7 +15,8 @@ describe('<UserReservation />', () => {
                 name: 'Bell',
                 location: 'San Leandro, CA',
                 reviews: [],
-                imageUrls: []
+                imageUrls: [],
+                equipment: []
             }
         }
     };

@@ -23,7 +23,8 @@ import {
     APPOINTMENT,
     DENTIST,
     RESERVATION,
-    PROCEDURE
+    PROCEDURE,
+    EQUIPMENT
 } from '../util/strings';
 import { stripeKey } from '../config/keys';
 import { formatListingTime } from '../util/timeUtil';
@@ -117,6 +118,8 @@ class Payment extends Component {
             this.handleCreateReservation();
         } else if (this.urlParams.type === PROCEDURE) {
             this.handleUpdateProcedures();
+        } else if (this.urlParams.type === EQUIPMENT) {
+            this.handleUpdateEquipment();
         }
     };
 
@@ -156,6 +159,14 @@ class Payment extends Component {
         this.props.updatePatientProcedures({
             procedureIds: JSON.parse(this.urlParams.procedureIds),
             paymentOptionId: this.props.auth.paymentOptions[0].id
+        });
+    };
+
+    handleUpdateEquipment = () => {
+        this.props.updateReservation({
+            id: this.urlParams.reservationId,
+            equipmentSelected: JSON.parse(this.urlParams.equipment),
+            totalPaid: this.urlParams.totalPaid
         });
     };
 
@@ -379,57 +390,57 @@ class Payment extends Component {
 
                     {equipmentFee &&
                         equipmentFee > 0 && (
-                        <Box py={2}>
-                            <Flex justify="space-between">
-                                <Typography
-                                    fontSize={3}
-                                    color="abbey"
-                                    capitalize
-                                >
+                            <Box py={2}>
+                                <Flex justify="space-between">
+                                    <Typography
+                                        fontSize={3}
+                                        color="abbey"
+                                        capitalize
+                                    >
                                         Equipment Fee
-                                </Typography>
-                                <Typography fontSize={3} color="abbey">
-                                    {renderPrice(equipmentFee)}
-                                </Typography>
-                            </Flex>
-                        </Box>
-                    )}
+                                    </Typography>
+                                    <Typography fontSize={3} color="abbey">
+                                        {renderPrice(equipmentFee)}
+                                    </Typography>
+                                </Flex>
+                            </Box>
+                        )}
 
                     {cleaningFee &&
                         cleaningFee > 0 && (
-                        <Box py={2}>
-                            <Flex justify="space-between">
-                                <Typography
-                                    fontSize={3}
-                                    color="abbey"
-                                    capitalize
-                                >
+                            <Box py={2}>
+                                <Flex justify="space-between">
+                                    <Typography
+                                        fontSize={3}
+                                        color="abbey"
+                                        capitalize
+                                    >
                                         Cleaning Fee
-                                </Typography>
-                                <Typography fontSize={3} color="abbey">
-                                    {renderPrice(cleaningFee)}
-                                </Typography>
-                            </Flex>
-                        </Box>
-                    )}
+                                    </Typography>
+                                    <Typography fontSize={3} color="abbey">
+                                        {renderPrice(cleaningFee)}
+                                    </Typography>
+                                </Flex>
+                            </Box>
+                        )}
 
                     {bookingFee &&
                         bookingFee > 0 && (
-                        <Box py={2}>
-                            <Flex justify="space-between">
-                                <Typography
-                                    fontSize={3}
-                                    color="abbey"
-                                    capitalize
-                                >
+                            <Box py={2}>
+                                <Flex justify="space-between">
+                                    <Typography
+                                        fontSize={3}
+                                        color="abbey"
+                                        capitalize
+                                    >
                                         Booking Fee
-                                </Typography>
-                                <Typography fontSize={3} color="abbey">
-                                    {renderPrice(bookingFee)}
-                                </Typography>
-                            </Flex>
-                        </Box>
-                    )}
+                                    </Typography>
+                                    <Typography fontSize={3} color="abbey">
+                                        {renderPrice(bookingFee)}
+                                    </Typography>
+                                </Flex>
+                            </Box>
+                        )}
 
                     <Divider />
 
@@ -516,10 +527,20 @@ class Payment extends Component {
 
     render() {
         const { type } = this.urlParams;
-        const header =
-            type === PROCEDURE
-                ? 'Review and pay for your procedures'
-                : `Review and place your ${type}`;
+        let header;
+
+        switch (type) {
+        case PROCEDURE:
+            header = 'Review and pay for your procedures';
+            break;
+        case EQUIPMENT:
+            header = 'Review and pay for your additional equipment';
+            break;
+        default:
+            header = `Review and place your ${type}`;
+            break;
+        }
+
         if (this.state.isFetching) return <div className="stretch_height" />;
         return (
             <StyledWrapper>

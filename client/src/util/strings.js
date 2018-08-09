@@ -3,6 +3,7 @@ export const USER = 'user';
 export const HOST = 'host';
 export const DENTIST = 'dentist';
 export const DENTISTS = 'dentists';
+export const EQUIPMENT = 'equipment';
 export const OFFICE = 'office';
 export const OFFICES = 'offices';
 export const LISTING = 'listing';
@@ -43,6 +44,7 @@ export const TYPE = 'type';
 export const RESERVATION_PAYMENT_TYPE = 'RESERVATION';
 export const APPOINTMENT_PAYMENT_TYPE = 'APPOINTMENT';
 export const PROCEDURE_PAYMENT_TYPE = 'PROCEDURE';
+export const EQUIPMENT_PAYMENT_TYPE = 'EQUIPMENT';
 
 export const AVAILABLE = 'available';
 
@@ -57,6 +59,7 @@ export const RESERVATION_CANCELLED_BY_DENTIST =
 export const APPOINTMENT_CANCELLED_BY_PATIENT =
     'Appointment cancelled by patient';
 export const RESERVATION_BOOKED = 'Reservation booked';
+export const EQUIPMENT_ADDED = 'Equipment added';
 export const APPOINTMENT_BOOKED = 'Appointment booked';
 export const PROCEDURES_ASSIGNED = 'Procedures assigned';
 export const CANCELLED = 'CANCELLED';
