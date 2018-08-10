@@ -14,6 +14,15 @@ export const getReservation = reservationId => async dispatch => {
     });
 };
 
+export const updateReservation = params => async dispatch => {
+    const reservation = await Reservation.update(params);
+    dispatch({
+        type: CREATE_RESERVATION,
+        payload: reservation
+    });
+    history.push(`/payment-success?reservationId=${reservation.id}`);
+}
+
 export const createReservation = params => async dispatch => {
     const response = await Reservation.create(params);
     if (response && response.errors) {
