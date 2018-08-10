@@ -8,6 +8,7 @@ import { required } from './formValidation';
 import * as actions from '../../actions';
 import { renderField, renderProcedureSelector } from './sharedComponents';
 import dentistProfileExists from '../../util/userInfo';
+import history from '../../history';
 
 class EditDentist extends Component {
     constructor(props) {
@@ -34,6 +35,7 @@ class EditDentist extends Component {
         const dentistId = auth.dentistId;
 
         this.props.editDentist({ ...values, id: dentistId });
+        history.push('/profile');
         this.props.closeModal();
     }
 

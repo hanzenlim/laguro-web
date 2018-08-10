@@ -28,6 +28,7 @@ export const userFragment = `
     id
     firstName
     lastName
+    isVerified
     googleId
     imageUrl
     phoneNumber
@@ -47,6 +48,7 @@ export const dentistFragment = `
     bio
     location
     specialty
+    isVerified
     procedures {
         name
         duration

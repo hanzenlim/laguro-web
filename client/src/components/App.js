@@ -97,11 +97,6 @@ const ResetPassword = Loadable({
     loading: LoadingComponent
 });
 
-const UploadHealthInsuranceDocuments = Loadable({
-    loader: () => import('./UploadDocuments/UploadHealthInsurance'),
-    loading: LoadingComponent
-});
-
 const ProcedureConsent = Loadable({
     loader: () => import('./forms/ProcedureConsent'),
     loading: LoadingComponent
@@ -197,16 +192,6 @@ class App extends Component {
                                         auth={this.props.auth}
                                         path="/payout"
                                         component={Payout}
-                                        toggleLoginModal={
-                                            this.props.toggleLoginModal
-                                        }
-                                    />
-                                    <PrivateRoute
-                                        auth={this.props.auth}
-                                        path="/upload/documents"
-                                        component={
-                                            UploadHealthInsuranceDocuments
-                                        }
                                         toggleLoginModal={
                                             this.props.toggleLoginModal
                                         }

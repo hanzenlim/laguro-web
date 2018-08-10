@@ -8,7 +8,6 @@ import {
     UPDATE_DENTIST_RESERVATIONS
 } from './types';
 import makeApiCall from '../util/clientDataLoader';
-import history from '../history';
 
 function requestDentists() {
     return {
@@ -129,6 +128,5 @@ export function editDentist(values) {
             type: GET_ONE_DENTIST,
             payload: dentist
         });
-        history.push('/profile');
     };
 }

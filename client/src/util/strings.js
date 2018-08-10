@@ -4,6 +4,7 @@ export const HOST = 'host';
 export const DENTIST = 'dentist';
 export const DENTISTS = 'dentists';
 export const EQUIPMENT = 'equipment';
+export const PATIENT = 'patient';
 export const OFFICE = 'office';
 export const OFFICES = 'offices';
 export const LISTING = 'listing';

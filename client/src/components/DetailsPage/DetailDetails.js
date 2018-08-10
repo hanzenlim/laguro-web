@@ -3,12 +3,12 @@ import moment from 'moment';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import ReactStars from 'react-stars';
-import { isEmpty } from 'lodash';
+import { get, isEmpty } from 'lodash';
 import { formatListingTime, calculateTimeslots, getStartTime } from '../../util/timeUtil';
 import dentistProfileExists from '../../util/userInfo';
 import * as actions from '../../actions';
 import { Padding } from '../common/Spacing';
-import { OFFICE, DENTIST } from '../../util/strings';
+import { OFFICE, DENTIST, PATIENT } from '../../util/strings';
 import NewReview from '../forms/NewReview';
 import ReviewContainer from '../ReviewContainer';
 import Icon from '../Icon';
@@ -18,6 +18,7 @@ import OfficePlaceholderBig from '../images/office-placeholder-big.png';
 import Appointments from '../Appointments';
 import { isMobile } from '../../util/uiUtil';
 import NewDentist from '../forms/NewDentist';
+import VerificationModal from '../UploadDocuments';
 
 const StyledOfficeFlex = styled(Flex)`
     height: 100%;
@@ -121,7 +122,10 @@ class DetailDetails extends Component {
             visibleModal: null,
             avg_rating: 0,
             rating_count: 0,
-            descShowMore: true
+            descShowMore: true,
+            selectedStartTime: null,
+            selectedReservation: null,
+            durationToNextAppointment: null
         };
         this.handleShowMoreReview = this.handleShowMoreReview.bind(this);
         this.handleShowMoreDescription = this.handleShowMoreDescription.bind(
@@ -245,6 +249,35 @@ class DetailDetails extends Component {
         });
     }
 
+    handleBookAppointment = (
+        selectedStartTime,
+        durationToNextAppointment,
+        selectedReservation
+    ) => {
+        // TODO: Move book appointment modal to this component
+        // so we don't have to keep track of function params in state
+        if (!get(this, 'props.auth.isVerified')) {
+            this.openVerifyUserModal();
+            this.setState({ selectedStartTime, selectedReservation, durationToNextAppointment });
+        } else {
+            this.props.handleBookAppointment(
+                selectedStartTime,
+                durationToNextAppointment,
+                selectedReservation
+            );
+        }
+    }
+
+    openBookAppointmentModal = () => {
+        const { selectedStartTime, selectedReservation, durationToNextAppointment } = this.state;
+
+        this.props.handleBookAppointment(
+            selectedStartTime,
+            durationToNextAppointment,
+            selectedReservation
+        );
+    }
+
     renderProcedures(dentist) {
         const pc = dentist && dentist.procedures;
         if (pc && Array.isArray(pc) && pc.length !== 0) {
@@ -313,9 +346,7 @@ class DetailDetails extends Component {
                                         reservation={reservation}
                                         auth={auth}
                                         dentist={obj}
-                                        handleBookAppointment={
-                                            this.props.handleBookAppointment
-                                        }
+                                        handleBookAppointment={this.handleBookAppointment}
                                     />
                                 )}
                             </div>
@@ -336,32 +367,41 @@ class DetailDetails extends Component {
 
     openBookingModal() {
         const { auth } = this.props;
+
         if (!auth) {
             this.props.toggleLoginModal();
         } else if (!dentistProfileExists(auth)) {
-            this.openModal('newDentist');
+            this.openNewDentistModal();
+        } else if (!get(auth, 'dentist.isVerified')) {
+            this.openVerifyUserModal();
         } else {
-            this.openModal('reservationOptions');
+            this.openReservationModal();
         }
     }
 
     async handleBookReservation(listing) {
         this.setState({ listing });
-        this.openBookingModal()
+        this.openBookingModal();
     }
 
-    openModal = modal_name => {
-        this.setState({ visibleModal: modal_name });
+    openModal = modalName => {
+        this.setState({ visibleModal: modalName });
     };
 
     openReservationModal = () => {
         this.openModal('reservationOptions');
     };
 
+    openVerifyUserModal = () => {
+        this.openModal('verifyUser');
+    }
+
+    openNewDentistModal = () => {
+        this.openModal('newDentist');
+    }
+
     closeModal = () => {
-        this.setState({
-            visibleModal: null
-        });
+        this.setState({ visibleModal: null });
     };
 
     renderEquipment(office) {
@@ -374,6 +414,16 @@ class DetailDetails extends Component {
             ));
         } else {
             return <div> No Equipment Available </div>;
+        }
+    }
+
+    handleVerifyUserSuccess = () => {
+        const { type } = this.props;
+
+        if (type === OFFICE) {
+            this.openReservationModal();
+        } else {
+            this.openBookAppointmentModal();
         }
     }
 
@@ -400,37 +450,37 @@ class DetailDetails extends Component {
             <StyledDetailsDiv>
                 {this.props.type === 'office' &&
                     obj.description && (
-                    <Box>
-                        <StyledDetailsHeadingBox fontSize={25}>
+                        <Box>
+                            <StyledDetailsHeadingBox fontSize={25}>
                                 Description
-                        </StyledDetailsHeadingBox>
-                        <hr />
-                        <StyledDescriptionBox
-                            overflow={
-                                this.state.descShowMore ? 'hidden' : 'auto'
-                            }
-                            maxHeight={this.state.descShowMore ? 68 : 300}
-                        >
-                            {obj.description}
-                        </StyledDescriptionBox>
-                        <Box mb={10} />
-                        {this.state.descShowMore && (
-                            <Box mt={10}>
-                                <StyledShowMoreBox
-                                    fontSize={1}
-                                    className="center"
-                                    onClick={this.handleShowMoreDescription}
-                                >
-                                    <StyledDownArrow
-                                        icon="downArrow"
-                                        width="20px"
-                                    />
+                            </StyledDetailsHeadingBox>
+                            <hr />
+                            <StyledDescriptionBox
+                                overflow={
+                                    this.state.descShowMore ? 'hidden' : 'auto'
+                                }
+                                maxHeight={this.state.descShowMore ? 68 : 300}
+                            >
+                                {obj.description}
+                            </StyledDescriptionBox>
+                            <Box mb={10} />
+                            {this.state.descShowMore && (
+                                <Box mt={10}>
+                                    <StyledShowMoreBox
+                                        fontSize={1}
+                                        className="center"
+                                        onClick={this.handleShowMoreDescription}
+                                    >
+                                        <StyledDownArrow
+                                            icon="downArrow"
+                                            width="20px"
+                                        />
                                         Show more
-                                </StyledShowMoreBox>
-                            </Box>
-                        )}
-                    </Box>
-                )}
+                                    </StyledShowMoreBox>
+                                </Box>
+                            )}
+                        </Box>
+                    )}
 
                 <Box mb={40} />
                 <StyledDetailsHeadingBox fontSize={25}>
@@ -507,20 +557,20 @@ class DetailDetails extends Component {
                 {reviews.length > 0 &&
                     reviews.length > this.state.reviewRowNum * reviewPerRow &&
                     auth && (
-                    <Box mt={20}>
-                        <StyledShowMoreBox
-                            fontSize={1}
-                            className="center"
-                            onClick={this.handleShowMoreReview}
-                        >
-                            <StyledDownArrow
-                                icon="downArrow"
-                                width="20px"
-                            />
+                        <Box mt={20}>
+                            <StyledShowMoreBox
+                                fontSize={1}
+                                className="center"
+                                onClick={this.handleShowMoreReview}
+                            >
+                                <StyledDownArrow
+                                    icon="downArrow"
+                                    width="20px"
+                                />
                                 Show more
-                        </StyledShowMoreBox>
-                    </Box>
-                )}
+                            </StyledShowMoreBox>
+                        </Box>
+                    )}
 
                 <Modal
                     closable
@@ -538,16 +588,29 @@ class DetailDetails extends Component {
                     id="newDentistForm"
                     open={this.state.visibleModal === 'newDentist'}
                     closeModal={this.closeModal}
-                    onSuccess={this.openReservationModal}
+                    onSuccess={this.openVerifyUserModal}
                     auth={auth}
                     message={
                         'Before you can book a reservation, we need you to create a dentist profile.'
                     }
+                />
+
+                <VerificationModal
+                    userType={this.props.type === OFFICE ? DENTIST : PATIENT}
+                    open={this.state.visibleModal === 'verifyUser'}
+                    closeModal={this.closeModal}
+                    onSuccess={this.handleVerifyUserSuccess}
                 />
             </StyledDetailsDiv>
         );
     }
 }
 
+const mapStateToProps = state => {
+    return {
+        auth: state.auth,
+    };
+};
+
 export { DetailDetails };
-export default connect(null, actions)(DetailDetails);
+export default connect(mapStateToProps, actions)(DetailDetails);

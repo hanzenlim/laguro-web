@@ -106,7 +106,7 @@ describe('<DetailDetails />', () => {
         let props = {
             ...defaultProps,
             toggleLoginModal: jest.fn(),
-            auth: { id: 123, dentistId: 123 }
+            auth: { id: 123, dentistId: 123, dentist: { isVerified: true } }
         };
         const detailsPage = shallow(<DetailDetails {...props} />);
         const listing = { id: '123' };

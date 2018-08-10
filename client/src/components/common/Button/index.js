@@ -27,6 +27,10 @@ const StyledButton = styled(MaterialUIButton)`
         &&:hover {
             background-color: #00BC98;
         }
+
+        &&:focus {
+            background-color: #0AD5B1;
+        }
     `};
 
     ${props =>
@@ -40,6 +44,10 @@ const StyledButton = styled(MaterialUIButton)`
         &&:hover {
             background-color: #DB5200;
         }
+
+        &&:focus {
+            background-color: #f46b13;
+        }
     `};
 
     ${props =>
@@ -52,6 +60,10 @@ const StyledButton = styled(MaterialUIButton)`
 
         &&:hover {
             background-color: #2F3538;
+        }
+
+        &&:focus {
+            background-color: #484E51;
         }
     `};
 
