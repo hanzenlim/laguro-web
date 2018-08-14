@@ -86,4 +86,5 @@ function mapStateToProps(state) {
     return { auth: state.auth };
 }
 
-export default connect(mapStateToProps)(Footer);
+export default Footer;
+// export default connect(mapStateToProps)(Footer);

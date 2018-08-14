@@ -118,4 +118,5 @@ LoginModal.propTypes = {
     open: PropTypes.bool.isRequired
 };
 
-export default connect(null, { fetchUser })(LoginModal);
+export default LoginModal;
+// export default connect(null, { fetchUser })(LoginModal);
