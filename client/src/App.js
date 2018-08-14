@@ -19,7 +19,7 @@ import Content from './components/Content';
 import Footer from './components/Footer';
 import ErrorBoundary from './components/ErrorBoundary';
 
-import theme from './theme';
+import theme from './components/theme';
 
 import './components/App.css';
 
