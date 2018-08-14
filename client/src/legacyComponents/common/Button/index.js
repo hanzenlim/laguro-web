@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { Button as MaterialUIButton } from '@material-ui/core';
 import Tooltip from '@material-ui/core/Tooltip';
-import theme from '../../../theme';
+import theme from '../../../legacyTheme';
 
 const StyledButton = styled(MaterialUIButton)`
     && {

@@ -18,11 +18,11 @@ const StyledButton = styled(AntdButton)`
         line-height: normal;
         letter-spacing: -0.6px;
         color: #ffffff;
-        font-size: 25px;
+        font-size: ${props => props.theme.fontSizes[3]};
     }
 
     i {
-        font-size: 25px;
+        font-size: ${props => props.theme.fontSizes[3]};
     }
 `;
 
