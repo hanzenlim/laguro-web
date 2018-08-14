@@ -25,7 +25,7 @@ import theme from './components/theme';
 
 const LandlordOnboarding = Loadable({
     loader: () => import('./legacyComponents/LandlordOnboarding'),
-    loading: LoadingComponent
+    loading: LoadingComponent,
 });
 
 const PrivateRoute = ({ auth, path, component: Component, ...props }) => {
@@ -91,7 +91,7 @@ class App extends Component {
 function mapStateToProps(state) {
     return {
         auth: state.auth,
-        isLoginModalVisible: state.ui.isLoginModalVisible
+        isLoginModalVisible: state.ui.isLoginModalVisible,
     };
 }
 
