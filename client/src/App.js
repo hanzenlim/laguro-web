@@ -5,26 +5,26 @@ import { connect } from 'react-redux';
 import Loadable from 'react-loadable';
 import * as actions from './actions';
 import { DENTIST, PAYMENT_OPTIONS } from './util/strings';
-import LoadingComponent from './components/LoadingComponent';
+import LoadingComponent from './legacyComponents/LoadingComponent';
 import history from './history';
 
-import Landing from './components/Landing';
+import Landing from './legacyComponents/Landing';
 import HomePage from './Pages/HomePage';
-import LoginModal from './components/LoginModal';
-import NotFound from './components/NotFound';
+import LoginModal from './legacyComponents/LoginModal';
+import NotFound from './legacyComponents/NotFound';
 
-import Layout from './components/Layout';
-import Header from './components/Header';
-import Content from './components/Content';
-import Footer from './components/Footer';
-import ErrorBoundary from './components/ErrorBoundary';
+import Layout from './legacyComponents/Layout';
+import Header from './legacyComponents/Header';
+import Content from './legacyComponents/Content';
+import Footer from './legacyComponents/Footer';
+import ErrorBoundary from './legacyComponents/ErrorBoundary';
 
 import theme from './components/theme';
 
-import './components/App.css';
+// import './components/App.css';
 
 const LandlordOnboarding = Loadable({
-    loader: () => import('./components/LandlordOnboarding'),
+    loader: () => import('./legacyComponents/LandlordOnboarding'),
     loading: LoadingComponent
 });
 
