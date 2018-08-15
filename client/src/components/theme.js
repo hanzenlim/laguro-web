@@ -1,12 +1,29 @@
 export default {
     colors: {
-        green: '#50e3c2',
-        black: '#524b59',
-        white: '#ffffff',
-        yellow: '#ffbf00',
-        red: '#ff2d55',
+        text: {
+            white: '#ffffff',
+            black: '#303549',
+            gray: '#c7c7c7',
+        },
+        background: {
+            green: '#50e3c2',
+        },
+        divider: {
+            gray: '#dbdbdb',
+        },
+        rating: {
+            yellow: '#ffbf00',
+            gray: '#c7c7c7',
+        },
+        mapPin: {
+            red: '#ff2d55',
+        },
+        arrow: {
+            gray: '#c7c7c7',
+            green: '#50e3c2',
+        },
     },
-    fontSizes: ['12px', '14px', '18px', '20px', '45px', '55px'],
+    fontSizes: ['12px', '14px', '18px', '20px', '30px', '45px', '55px'],
     fontWeights: {
         light: 300,
         regular: 400,
@@ -20,6 +37,20 @@ export default {
         header: 600,
         footer: 500,
     },
-    space: [0, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20],
+    space: [
+        '0px',
+        '2px',
+        '4px',
+        '6px',
+        '8px',
+        '10px',
+        '12px',
+        '14px',
+        '16px',
+        '18px',
+        '20px',
+        '22px',
+    ],
+    breakpoints: ['320px', '480px', '768px', '992px', '1200px'],
     maxContainerWidth: '1280px',
 };

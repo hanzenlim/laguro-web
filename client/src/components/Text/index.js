@@ -1,6 +1,12 @@
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { fontSize, space, color, responsiveStyle } from 'styled-system';
+import {
+    fontSize,
+    space,
+    color,
+    responsiveStyle,
+    lineHeight,
+} from 'styled-system';
 import theme from '../theme';
 
 export const caps = props =>
@@ -22,7 +28,7 @@ const align = responsiveStyle('text-align', 'align');
 
 const Text = styled.div`
     font-family: 'Ubuntu';
-    ${italic} ${fontSize} ${space} ${color} ${caps} ${regular} ${bold} ${align};
+    ${lineHeight} ${italic} ${fontSize} ${space} ${color} ${caps} ${regular} ${bold} ${align};
 `;
 
 Text.displayName = 'Text';
