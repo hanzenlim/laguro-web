@@ -23,8 +23,8 @@ const Payment = {
             input: {
                 partitionKey,
                 partitionValue,
-                options
-            }
+                options,
+            },
         });
         return response.data.queryPayments;
     },
@@ -34,7 +34,7 @@ const Payment = {
         }
         const response = await makeApiCall(getPaymentQuery, { id: paymentId });
         return response.data.getPayment;
-    }
+    },
 };
 
 export default Payment;

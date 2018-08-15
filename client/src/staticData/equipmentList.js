@@ -12,7 +12,7 @@ const equipmentList = [
     { id: 11, name: 'Ortho Supplies' },
     { id: 12, name: 'Microscope' },
     { id: 13, name: 'Anesthetic' },
-    { id: 14, name: 'Nitrous Oxide' }
+    { id: 14, name: 'Nitrous Oxide' },
 ];
 
 export default equipmentList;

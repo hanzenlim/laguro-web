@@ -6,7 +6,7 @@ export const getAppointment = appointmentId => async dispatch => {
     const appointment = await Appointment.get(appointmentId);
     dispatch({
         type: GET_SELECTED_APPOINTMENTS,
-        payload: appointment
+        payload: appointment,
     });
 };
 
@@ -26,7 +26,7 @@ export const createAppointment = params => async dispatch => {
         const appointment = response.data.createAppointment;
         dispatch({
             type: CREATE_APPOINTMENT,
-            payload: appointment
+            payload: appointment,
         });
         history.push(`/payment-success?appointmentId=${appointment.id}`);
     }

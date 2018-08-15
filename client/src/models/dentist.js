@@ -9,7 +9,7 @@ import {
     appointmentFragment,
     reviewerFragment,
     filterActive,
-    dentistProfilePageFragment
+    dentistProfilePageFragment,
 } from '../util/fragments';
 import {
     USER,
@@ -21,7 +21,7 @@ import {
     ALL_RESERVATIONS,
     STATUS,
     ACTIVE,
-    END_TIME
+    END_TIME,
 } from '../util/strings';
 
 const generateDentistResult = options => {
@@ -35,8 +35,8 @@ const generateDentistResult = options => {
         ? `reservations(options: {
             sortKey: "${END_TIME}",
             rangeStart: "${moment()
-        .startOf('day')
-        .format()}",
+                .startOf('day')
+                .format()}",
             filters: [
                 {
                     filterKey: "${STATUS}",
@@ -83,25 +83,21 @@ const generateDentistResult = options => {
     `;
 };
 
-const generateScanDentistsQuery = options => {
-    return `
+const generateScanDentistsQuery = options => `
     query {
         scanDentists {
             ${generateDentistResult(options)}
         }
     }
 `;
-};
 
-const generateGetDentistQuery = options => {
-    return `
+const generateGetDentistQuery = options => `
       query ($id: String!) {
           getDentist(id: $id) {
               ${generateDentistResult(options)}
           }
       }
   `;
-};
 
 const getActiveDentistsQuery = `
     query {
@@ -167,16 +163,16 @@ const Dentist = {
     },
     create: async params => {
         const response = await makeApiCall(createDentistQuery, {
-            input: params
+            input: params,
         });
         return response.data.createDentist;
     },
     update: async params => {
         const response = await makeApiCall(updateDentistQuery, {
-            input: params
+            input: params,
         });
         return response.data.updateDentist;
-    }
+    },
 };
 
 export default Dentist;

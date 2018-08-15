@@ -11,7 +11,7 @@ export const getDistances = (entities, filters) =>
                 origins: [filters.location],
                 destinations: officeAddresses,
                 travelMode: 'DRIVING',
-                unitSystem: google.maps.UnitSystem.IMPERIAL
+                unitSystem: google.maps.UnitSystem.IMPERIAL,
             },
             (response, status) => {
                 if (status !== 'OK') {
@@ -29,7 +29,7 @@ export const getDistances = (entities, filters) =>
                                 locationType: 'office',
                                 distance: results[index].distance.text.split(
                                     ' '
-                                )[0]
+                                )[0],
                             })
                         );
 

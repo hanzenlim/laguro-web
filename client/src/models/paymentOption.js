@@ -21,7 +21,7 @@ const PaymentOption = {
             return null;
         }
         const response = await makeApiCall(addPaymentOptionQuery, {
-            input: { userId, paymentToken }
+            input: { userId, paymentToken },
         });
         return response.data.addPaymentOption;
     },
@@ -30,7 +30,7 @@ const PaymentOption = {
             return null;
         }
         const response = await makeApiCall(removePaymentOptionQuery, {
-            input: { userId, paymentToken }
+            input: { userId, paymentToken },
         });
         return response.data.removePaymentOption;
     },

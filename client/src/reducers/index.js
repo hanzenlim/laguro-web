@@ -24,5 +24,5 @@ export default combineReducers({
     ui: uiReducer,
     form: formReducer,
     payments: paymentReducer,
-    patientProcedures: patientProcedureReducer
+    patientProcedures: patientProcedureReducer,
 });

@@ -43,8 +43,8 @@ const Appointment = {
             input: {
                 partitionKey,
                 partitionValue,
-                options
-            }
+                options,
+            },
         });
         return response.data.queryAppointments;
     },
@@ -53,13 +53,13 @@ const Appointment = {
             return null;
         }
         const response = await makeApiCall(getAppointmentQuery, {
-            id: appointmentId
+            id: appointmentId,
         });
         return response.data.getAppointment;
     },
     create: async params => {
         const response = await makeApiCall(createAppointmentQuery, {
-            input: params
+            input: params,
         });
 
         return response;
@@ -68,11 +68,11 @@ const Appointment = {
         const response = await makeApiCall(cancelAppointmentQuery, {
             input: {
                 id: appointmentId,
-                cancellationType: CANCELLED_BY_PATIENT
-            }
+                cancellationType: CANCELLED_BY_PATIENT,
+            },
         });
         return response.data.cancelAppointment;
-    }
+    },
 };
 
 export default Appointment;

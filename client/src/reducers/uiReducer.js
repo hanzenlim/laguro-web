@@ -7,12 +7,12 @@ export default function(
     action
 ) {
     switch (action.type) {
-    case TOGGLE_LOGIN_MODAL:
-        return Object.assign({}, state, {
-            ...state,
-            isLoginModalVisible: !state.isLoginModalVisible,
-        });
-    default:
-        return state;
+        case TOGGLE_LOGIN_MODAL:
+            return Object.assign({}, state, {
+                ...state,
+                isLoginModalVisible: !state.isLoginModalVisible,
+            });
+        default:
+            return state;
     }
 }

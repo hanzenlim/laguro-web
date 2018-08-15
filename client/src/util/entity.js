@@ -6,7 +6,6 @@ export const getEntityName = (entity, type) => {
         return entity.user.name;
     } else if (entity && type === OFFICE) {
         return entity.name;
-    } else {
-        return null;
     }
+    return null;
 };

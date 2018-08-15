@@ -1,42 +1,42 @@
-import styled from 'styled-components'
-import PropTypes from 'prop-types'
-import { fontSize, space, color, responsiveStyle } from 'styled-system'
-import theme from '../theme'
+import styled from 'styled-components';
+import PropTypes from 'prop-types';
+import { fontSize, space, color, responsiveStyle } from 'styled-system';
+import theme from '../theme';
 
 export const caps = props =>
     props.caps
         ? {
-            textTransform: 'uppercase'
-        }
-        : null
+              textTransform: 'uppercase',
+          }
+        : null;
 
 export const regular = props =>
-    props.regular ? { fontWeight: props.theme.regular } : null
+    props.regular ? { fontWeight: props.theme.regular } : null;
 
 export const bold = props =>
-    props.bold ? { fontWeight: props.theme.bold } : null
+    props.bold ? { fontWeight: props.theme.bold } : null;
 
-export const italic = props => (props.italic ? { fontStyle: 'italic' } : null)
+export const italic = props => (props.italic ? { fontStyle: 'italic' } : null);
 
-const align = responsiveStyle('text-align', 'align')
+const align = responsiveStyle('text-align', 'align');
 
 const Text = styled.div`
   ${italic} ${fontSize} ${space} ${color} ${caps} ${regular} ${bold} ${align};
-`
+`;
 
-Text.displayName = 'Text'
+Text.displayName = 'Text';
 
 const numberStringOrArray = PropTypes.oneOfType([
     PropTypes.number,
     PropTypes.string,
-    PropTypes.array
-])
+    PropTypes.array,
+]);
 
 Text.propTypes = {
     fontSize: PropTypes.oneOfType([
         PropTypes.number,
         PropTypes.string,
-        PropTypes.array
+        PropTypes.array,
     ]),
     align: PropTypes.oneOf(['left', 'center', 'right', 'justify']),
     caps: PropTypes.bool,
@@ -59,15 +59,15 @@ Text.propTypes = {
     pb: numberStringOrArray,
     pl: numberStringOrArray,
     px: numberStringOrArray,
-    py: numberStringOrArray
-}
+    py: numberStringOrArray,
+};
 
 Text.defaultProps = {
-    theme: theme
-}
+    theme,
+};
 
-Text.span = Text.withComponent('span')
-Text.p = Text.withComponent('p')
-Text.s = Text.withComponent('s')
+Text.span = Text.withComponent('span');
+Text.p = Text.withComponent('p');
+Text.s = Text.withComponent('s');
 
-export default Text
+export default Text;

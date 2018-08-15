@@ -54,21 +54,21 @@ const Review = {
             input: {
                 partitionKey,
                 partitionValue,
-                options
-            }
+                options,
+            },
         });
         return response.data.queryReviews;
     },
     create: async params => {
         const response = await makeApiCall(createReviewQuery, {
-            input: params
+            input: params,
         });
         return response.data.createReview;
     },
     delete: async reviewId => {
         const response = await makeApiCall(deleteReviewQuery, { id: reviewId });
         return response.data.deleteReview;
-    }
+    },
 };
 
 export default Review;

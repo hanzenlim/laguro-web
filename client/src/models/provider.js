@@ -16,14 +16,14 @@ const resetProviderPasswordQuery = `
 const Provider = {
     resetPassword: async id => {
         const response = await makeApiCall(resetProviderPasswordQuery, {
-            input: { id }
+            input: { id },
         });
         const { message } = response.data.resetProviderPassword;
         if (message !== SUCCESS_MESSAGE) {
             throw new Error('Failed to reset Open Dental passsword.');
         }
         return message;
-    }
+    },
 };
 
 export default Provider;

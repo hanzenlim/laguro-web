@@ -12,7 +12,7 @@ apolloFetch.use(({ request, options }, next) => {
 const makeApiCall = async (query, variables) => {
     const result = await apolloFetch({
         query,
-        variables
+        variables,
     });
 
     return result;

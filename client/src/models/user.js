@@ -3,13 +3,13 @@ import {
     APPOINTMENTS,
     DENTIST,
     PAYMENT_OPTIONS,
-    PAYOUT_LOGIN
+    PAYOUT_LOGIN,
 } from '../util/strings';
 import {
     appointmentFragment,
     userFragment,
     dentistFragment,
-    paymentOptionFragment
+    paymentOptionFragment,
 } from '../util/fragments';
 
 const generateUserResult = options => {
@@ -35,8 +35,7 @@ const generateUserResult = options => {
     return result;
 };
 
-const generateUpdateUserQuery = () => {
-    return `
+const generateUpdateUserQuery = () => `
         mutation UpdateUser($input: UpdateUserInput!) {
             updateUser(input: $input) {
                 ${userFragment}
@@ -44,7 +43,6 @@ const generateUpdateUserQuery = () => {
             }
         }
     `;
-};
 
 const addPayoutAccountQuery = `
     mutation AddPayoutAccount($input: AddPayoutAccountInput!) {
@@ -55,15 +53,13 @@ const addPayoutAccountQuery = `
     }
 `;
 
-const generateGetUserQuery = (options = []) => {
-    return `
+const generateGetUserQuery = (options = []) => `
         query ($id: String!) {
             getUser(id: $id) {
                 ${generateUserResult(options)}
             }
         }
     `;
-};
 
 const editUserPasswordQuery = `
     mutation ($input: EditUserPasswordInput!) {
@@ -81,13 +77,13 @@ const User = {
     updateProfile: async (userId, profile) => {
         const updateUserQuery = generateUpdateUserQuery();
         const response = await makeApiCall(updateUserQuery, {
-            input: { id: userId, ...profile }
+            input: { id: userId, ...profile },
         });
         return response.data.updateUser;
     },
     editPassword: async args => {
         const response = await makeApiCall(editUserPasswordQuery, {
-            input: args
+            input: args,
         });
         if (response.errors) {
             throw new Error(response.errors[0].message);
@@ -97,10 +93,10 @@ const User = {
     },
     addPayoutAccount: async (userId, accountToken) => {
         const response = await makeApiCall(addPayoutAccountQuery, {
-            input: { userId, accountToken }
+            input: { userId, accountToken },
         });
         return response.data.addPayoutAccount;
-    }
+    },
 };
 
 export default User;

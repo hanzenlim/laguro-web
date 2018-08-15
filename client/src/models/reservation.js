@@ -61,7 +61,7 @@ const Reservation = {
             return null;
         }
         const response = await makeApiCall(getReservationQuery, {
-            id: reservationId
+            id: reservationId,
         });
         return response.data.getReservation;
     },
@@ -70,21 +70,21 @@ const Reservation = {
             input: {
                 partitionKey,
                 partitionValue,
-                options
-            }
+                options,
+            },
         });
         return response.data.queryReservations;
     },
     create: async params => {
         const response = await makeApiCall(createReservationQuery, {
-            input: params
+            input: params,
         });
 
         return response;
     },
     update: async params => {
         const response = await makeApiCall(updateReservationQuery, {
-            input: params
+            input: params,
         });
         return response.data.updateReservation;
     },
@@ -92,11 +92,11 @@ const Reservation = {
         const response = await makeApiCall(deleteReservationQuery, {
             input: {
                 id: reservationId,
-                cancellationType: CANCELLED_BY_DENTIST
-            }
+                cancellationType: CANCELLED_BY_DENTIST,
+            },
         });
         return response.data.cancelReservation;
-    }
+    },
 };
 
 export default Reservation;

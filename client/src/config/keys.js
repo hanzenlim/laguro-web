@@ -3,5 +3,5 @@ module.exports = {
     secureFilestackKey: process.env.REACT_APP_SECURE_FILESTACK_KEY,
     stripeKey: process.env.REACT_APP_STRIPE_PUBLIC_KEY,
     stripeExpressClientKey: process.env.REACT_APP_STRIPE_CLIENT_KEY,
-    mapBoxApiKey: process.env.REACT_APP_MAP_BOX_API_KEY
+    mapBoxApiKey: process.env.REACT_APP_MAP_BOX_API_KEY,
 };

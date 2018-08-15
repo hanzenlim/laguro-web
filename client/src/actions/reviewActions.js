@@ -5,7 +5,7 @@ export const queryReviews = (key, value) => async dispatch => {
     const reviews = await Review.query(key, value);
     dispatch({
         type: FETCH_REVIEWS,
-        payload: reviews
+        payload: reviews,
     });
 };
 
@@ -13,7 +13,7 @@ export const createReview = values => async dispatch => {
     const review = await Review.create(values);
     dispatch({
         type: CREATE_REVIEW,
-        payload: review
+        payload: review,
     });
 };
 

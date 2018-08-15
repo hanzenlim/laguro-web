@@ -3,7 +3,7 @@ import {
     FETCH_PATIENT_PROCEDURE_HISTORY,
     GET_SELECTED_PATIENT_PROCEDURES,
     REQUEST_PATIENT_PROCEDURE_HISTORY,
-    UPDATE_PATIENT_PROCEDURES
+    UPDATE_PATIENT_PROCEDURES,
 } from './types';
 import PatientProcedure from '../models/patientProcedure';
 import makeApiCall from '../util/clientDataLoader';
@@ -26,11 +26,9 @@ const updatePatientProceduresQuery = `
     }
 `;
 
-const requestPatientProcedure = () => {
-    return {
-        type: REQUEST_PATIENT_PROCEDURE_HISTORY
-    };
-};
+const requestPatientProcedure = () => ({
+    type: REQUEST_PATIENT_PROCEDURE_HISTORY,
+});
 
 export const getProcedures = (ids, ...options) => async dispatch => {
     dispatch(requestPatientProcedure());
@@ -39,7 +37,7 @@ export const getProcedures = (ids, ...options) => async dispatch => {
     );
     dispatch({
         type: GET_SELECTED_PATIENT_PROCEDURES,
-        payload: patientProcedures
+        payload: patientProcedures,
     });
     dispatchChildren(patientProcedures, options, dispatch);
 };
@@ -49,7 +47,7 @@ export const queryPatientProcedure = (key, value) => async dispatch => {
     const patientProcedure = await PatientProcedure.query(key, value);
     dispatch({
         type: FETCH_PATIENT_PROCEDURE_HISTORY,
-        payload: patientProcedure
+        payload: patientProcedure,
     });
 };
 
@@ -59,13 +57,13 @@ export const updatePatientProcedure = procedures => async dispatch => {
     );
     dispatch({
         type: UPDATE_PATIENT_PROCEDURES,
-        payload: patientProcedure
+        payload: patientProcedure,
     });
 };
 
 export const updatePatientProcedures = procedures => async dispatch => {
     const response = await makeApiCall(updatePatientProceduresQuery, {
-        input: procedures
+        input: procedures,
     });
     if (response && response.errors) {
         alert(response.errors[0].message);
@@ -73,7 +71,7 @@ export const updatePatientProcedures = procedures => async dispatch => {
         const patientProcedures = response.data.updatePatientProcedures;
         dispatch({
             type: UPDATE_PATIENT_PROCEDURES,
-            payload: patientProcedures
+            payload: patientProcedures,
         });
         history.push(
             `/payment-success?procedureIds=${JSON.stringify(

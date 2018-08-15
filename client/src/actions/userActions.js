@@ -21,6 +21,6 @@ export const updateUserProfile = (userId, profile) => async dispatch => {
     const user = await User.updateProfile(userId, profile);
     dispatch({
         type: FETCH_USER,
-        payload: user
+        payload: user,
     });
 };

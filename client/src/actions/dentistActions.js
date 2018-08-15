@@ -5,13 +5,13 @@ import {
     REQUEST_DENTISTS,
     FETCH_DENTISTS,
     GET_ONE_DENTIST,
-    UPDATE_DENTIST_RESERVATIONS
+    UPDATE_DENTIST_RESERVATIONS,
 } from './types';
 import makeApiCall from '../util/clientDataLoader';
 
 function requestDentists() {
     return {
-        type: REQUEST_DENTISTS
+        type: REQUEST_DENTISTS,
     };
 }
 
@@ -20,9 +20,9 @@ export const fetchActiveDentists = filters => async dispatch => {
     const dentistsWithReservations = await Dentist.getActive();
     const dentists = dentistsWithReservations.map(obj => obj.dentist);
     // Get distances for each location that each dentist has reserved at
-    let distanceQueries = [];
+    const distanceQueries = [];
     const dentistEntries = [];
-    //for each dentist...
+    // for each dentist...
     for (let i = 0; i < dentistsWithReservations.length; i++) {
         // get reservations for this dentist
         const reservations = dentistsWithReservations[i].reservations;
@@ -34,34 +34,35 @@ export const fetchActiveDentists = filters => async dispatch => {
             }
             locationSchedule[location].push({
                 startTime: reservations[i].startTime,
-                endTime: reservations[i].endTime
+                endTime: reservations[i].endTime,
             });
         }
         // remove duplicate locations
         const uniqueLocations = [...new Set(Object.keys(locationSchedule))];
         // create array of new dentist objects with each of their unique locations
-        let dentistUniqueLocations = [];
+        const dentistUniqueLocations = [];
         for (let j = 0; j < uniqueLocations.length; j++) {
             const dentistEntry = {
                 ...dentists[i],
                 location: uniqueLocations[j],
-                schedule: locationSchedule[uniqueLocations[j]]
+                schedule: locationSchedule[uniqueLocations[j]],
             };
             dentistEntries.push(dentistEntry);
             dentistUniqueLocations.push(dentistEntry);
         }
 
         // use google api to calculate distance from search query and append distance onto dentist object
-        if (filters) {distanceQueries.push(getDistances(dentistUniqueLocations, filters));}
-
+        if (filters) {
+            distanceQueries.push(getDistances(dentistUniqueLocations, filters));
+        }
     }
     if (!filters || (filters && !filters.location)) {
         dispatch({
             type: FETCH_DENTISTS,
-            payload: dentistEntries
+            payload: dentistEntries,
         });
     } else {
-        let dentistsWithDistances = await Promise.all(distanceQueries);
+        const dentistsWithDistances = await Promise.all(distanceQueries);
 
         let mergedDentists = dentistsWithDistances[0];
         if (dentistsWithDistances.length > 1) {
@@ -74,7 +75,7 @@ export const fetchActiveDentists = filters => async dispatch => {
 
         dispatch({
             type: FETCH_DENTISTS,
-            payload: mergedDentists
+            payload: mergedDentists,
         });
     }
 };
@@ -85,7 +86,7 @@ export const loadDentistProfile = (query, dentistId) => async dispatch => {
     const dentist = response.data.getDentist;
     dispatch({
         type: GET_ONE_DENTIST,
-        payload: dentist
+        payload: dentist,
     });
     return dentist;
 };
@@ -93,7 +94,7 @@ export const loadDentistProfile = (query, dentistId) => async dispatch => {
 export const updateDentist = dentist => async dispatch => {
     dispatch({
         type: UPDATE_DENTIST_RESERVATIONS,
-        payload: dentist
+        payload: dentist,
     });
 };
 
@@ -102,7 +103,7 @@ export const getDentist = (id, ...options) => async dispatch => {
     const dentist = await Dentist.get(id, options);
     dispatch({
         type: GET_ONE_DENTIST,
-        payload: dentist
+        payload: dentist,
     });
     if (!dentist) {
         return;
@@ -116,7 +117,7 @@ export function createDentist(values) {
         const dentist = await Dentist.create(values);
         dispatch({
             type: GET_ONE_DENTIST,
-            payload: dentist
+            payload: dentist,
         });
     };
 }
@@ -126,7 +127,7 @@ export function editDentist(values) {
         const dentist = await Dentist.update(values);
         dispatch({
             type: GET_ONE_DENTIST,
-            payload: dentist
+            payload: dentist,
         });
     };
 }

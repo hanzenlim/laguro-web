@@ -11,7 +11,7 @@ const Box = styled.div`
 Box.displayName = 'Box';
 
 Box.defaultProps = {
-    theme: theme,
+    theme,
 };
 
 const numberStringOrArray = PropTypes.oneOfType([

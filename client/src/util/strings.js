@@ -66,7 +66,7 @@ export const PROCEDURES_ASSIGNED = 'Procedures assigned';
 export const CANCELLED = 'CANCELLED';
 
 export const APPOINTMENT_NUM = 'appointmentNum';
-//PatientProcedure
+// PatientProcedure
 export const PENDING = 'pending';
 // TODO delete following
 // const pluralizeMap = {

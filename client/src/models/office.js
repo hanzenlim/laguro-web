@@ -4,7 +4,7 @@ import {
     officeFragment,
     listingFragment,
     reviewerFragment,
-    filterActive
+    filterActive,
 } from '../util/fragments';
 
 const generateOfficeResult = options => {
@@ -31,25 +31,21 @@ const generateOfficeResult = options => {
     `;
 };
 
-const generateScanOfficesQuery = options => {
-    return `
+const generateScanOfficesQuery = options => `
         query {
             scanOffices {
                 ${generateOfficeResult(options)}
             }
         }
     `;
-};
 
-const generateGetOfficeQuery = options => {
-    return `
+const generateGetOfficeQuery = options => `
         query ($id: String!) {
             getOffice(id: $id) {
                 ${generateOfficeResult(options)}
             }
         }
     `;
-};
 
 const getActiveOfficesQuery = `
     query {
@@ -113,8 +109,8 @@ const Office = {
             input: {
                 partitionKey,
                 partitionValue,
-                options
-            }
+                options,
+            },
         });
         return response.data.queryOffices;
     },
@@ -128,22 +124,22 @@ const Office = {
     },
     create: async params => {
         const response = await makeApiCall(createOfficeQuery, {
-            input: params
+            input: params,
         });
         return response.data.createOffice;
     },
     update: async params => {
         const response = await makeApiCall(updateOfficeQuery, {
-            input: params
+            input: params,
         });
         return response.data.updateOffice;
     },
     delete: async officeId => {
         const response = await makeApiCall(deleteOfficeQuery, {
-            input: { id: officeId }
+            input: { id: officeId },
         });
         return response.data.deleteOffice;
-    }
+    },
 };
 
 export default Office;

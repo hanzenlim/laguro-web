@@ -31,7 +31,7 @@ const PatientProcedure = {
             return null;
         }
         const response = await makeApiCall(getPatientProcedureQuery, {
-            id: procedureId
+            id: procedureId,
         });
         return response.data.getPatientProcedure;
     },
@@ -40,17 +40,17 @@ const PatientProcedure = {
             input: {
                 partitionKey,
                 partitionValue,
-                options
-            }
+                options,
+            },
         });
         return response.data.queryPatientProcedure;
     },
     update: async params => {
         const response = await makeApiCall(updatePatientProcedureQuery, {
-            input: params
+            input: params,
         });
         return response.data.updatePatientProcedure;
-    }
+    },
 };
 
 export default PatientProcedure;

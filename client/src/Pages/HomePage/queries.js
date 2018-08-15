@@ -3,7 +3,7 @@ import {
     officeFragment,
     listingFragment,
     reviewerFragment,
-    filterActive
+    filterActive,
 } from '../../util/fragments';
 
 const hello = 'hello';

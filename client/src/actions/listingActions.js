@@ -6,7 +6,7 @@ export const fetchListings = () => async dispatch => {
     const listings = await Listing.scan();
     dispatch({
         type: FETCH_LISTINGS,
-        payload: listings
+        payload: listings,
     });
 };
 
@@ -14,15 +14,27 @@ export const fetchActiveListings = () => async dispatch => {
     const listings = await Listing.getActive();
     dispatch({
         type: FETCH_LISTINGS,
-        payload: listings
+        payload: listings,
     });
 };
 
-export const queryListings = (key, value, sortKey = null, rangeStart = null, rangeEnd = null) => async dispatch => {
-    const listings = await Listing.query(key, value, sortKey, rangeStart, rangeEnd);
+export const queryListings = (
+    key,
+    value,
+    sortKey = null,
+    rangeStart = null,
+    rangeEnd = null
+) => async dispatch => {
+    const listings = await Listing.query(
+        key,
+        value,
+        sortKey,
+        rangeStart,
+        rangeEnd
+    );
     dispatch({
         type: FETCH_LISTINGS,
-        payload: listings
+        payload: listings,
     });
 };
 
@@ -30,7 +42,7 @@ export const getListing = listingId => async dispatch => {
     const listing = await Listing.get(listingId);
     dispatch({
         type: GET_SELECTED_LISTINGS,
-        payload: listing
+        payload: listing,
     });
 };
 
@@ -38,7 +50,7 @@ export const createListing = values => async dispatch => {
     const listing = await Listing.create(values);
     dispatch({
         type: CREATE_LISTING,
-        payload: listing
+        payload: listing,
     });
     history.push('/profile');
 };
@@ -51,7 +63,7 @@ export const editListing = values => async dispatch => {
     const listing = await Listing.update(values);
     dispatch({
         type: GET_SELECTED_LISTINGS,
-        payload: listing
+        payload: listing,
     });
     history.push('/profile');
 };

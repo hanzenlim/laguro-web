@@ -4,7 +4,7 @@ import {
     dentistFragment,
     officeFragment,
     reviewerFragment,
-    filterActive
+    filterActive,
 } from '../util/fragments';
 
 const scanListingsQuery = `
@@ -105,8 +105,8 @@ const Listing = {
             input: {
                 partitionKey,
                 partitionValue,
-                options
-            }
+                options,
+            },
         });
         return response.data.queryListings;
     },
@@ -123,24 +123,24 @@ const Listing = {
     },
     create: async params => {
         const response = await makeApiCall(createListingQuery, {
-            input: params
+            input: params,
         });
         return response.data.createListing;
     },
     update: async params => {
         const response = await makeApiCall(updateListingQuery, {
-            input: params
+            input: params,
         });
         return response.data.updateListingQuery;
     },
     delete: async listingId => {
         const response = await makeApiCall(cancelListingQuery, {
             input: {
-                id: listingId
-            }
+                id: listingId,
+            },
         });
         return response.data.cancelListing;
-    }
+    },
 };
 
 export default Listing;
