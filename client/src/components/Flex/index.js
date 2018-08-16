@@ -1,34 +1,44 @@
-import styled from 'styled-components';
-import {
-    space,
-    width,
-    color,
-    alignItems,
-    justifyContent,
-    flexWrap,
-    flexDirection,
-    propTypes,
-} from 'styled-system';
-import theme from '../theme';
+import system from 'system-components';
 
-const Flex = styled.div`
-    display: flex;
-    ${space} ${width} ${color} ${alignItems} ${justifyContent} ${flexWrap} ${flexDirection};
-`;
-
-Flex.defaultProps = {
-    theme,
-};
-
-Flex.propTypes = {
-    ...propTypes.space,
-    ...propTypes.width,
-    ...propTypes.color,
-    ...propTypes.alignItems,
-    ...propTypes.justifyContent,
-    ...propTypes.flexWrap,
-    ...propTypes.flexDirection,
-};
+const Flex = system(
+    {
+        display: 'flex',
+    },
+    // core
+    'space',
+    'width',
+    'color',
+    'fontSize',
+    // borders
+    'borders',
+    'borderColor',
+    'borderRadius',
+    // layout
+    'display',
+    'maxWidth',
+    'minWidth',
+    'height',
+    'maxHeight',
+    'minHeight',
+    // flexbox
+    'alignItems',
+    'alignContent',
+    'justifyContent',
+    'flexWrap',
+    'flexDirection',
+    'flex',
+    'flexBasis',
+    'justifySelf',
+    'alignSelf',
+    'order',
+    // position
+    'position',
+    'zIndex',
+    'top',
+    'right',
+    'bottom',
+    'left'
+);
 
 Flex.displayName = 'Flex';
 
