@@ -21,7 +21,8 @@ export const italic = props => (props.italic ? { fontStyle: 'italic' } : null);
 const align = responsiveStyle('text-align', 'align');
 
 const Text = styled.div`
-  ${italic} ${fontSize} ${space} ${color} ${caps} ${regular} ${bold} ${align};
+    font-family: 'Ubuntu';
+    ${italic} ${fontSize} ${space} ${color} ${caps} ${regular} ${bold} ${align};
 `;
 
 Text.displayName = 'Text';
