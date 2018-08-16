@@ -1,6 +1,6 @@
 import React from 'react';
 
-const MapPin = props => (
+const pin = props => (
     <svg
         viewBox="0 0 32 39"
         version="1.1"
@@ -41,4 +41,4 @@ const MapPin = props => (
     </svg>
 );
 
-export default MapPin;
+export default pin;

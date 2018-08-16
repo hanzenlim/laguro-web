@@ -2,9 +2,10 @@ import styled from 'styled-components';
 import system from 'system-components';
 import { truncate } from '../utils';
 
-const SystemText = system(
+const Text = system(
     {
         fontFamily: `'Ubuntu', sans-serif`,
+        color: 'text.black',
     },
     // core
     'space',
@@ -48,7 +49,7 @@ const SystemText = system(
     'left'
 );
 
-const StyledText = styled(SystemText)`
+const StyledText = styled(Text)`
     ${props => props.truncate && truncate('auto')};
 `;
 

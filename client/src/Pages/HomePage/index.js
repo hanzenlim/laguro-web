@@ -24,7 +24,21 @@ class HomePage extends Component {
                         <Fragment>
                             <div>Home page</div>
                             <div>
-                                {JSON.stringify(data.getActiveOffices[0])}
+                                {JSON.stringify(data.getActiveOffices)}
+                                {JSON.stringify(data.getActiveOffices)}
+                                {JSON.stringify(data.getActiveOffices)}
+                                {JSON.stringify(data.getActiveOffices)}
+                                {JSON.stringify(data.getActiveOffices)}
+                                {JSON.stringify(data.getActiveOffices)}
+                                {JSON.stringify(data.getActiveOffices)}
+                                {JSON.stringify(data.getActiveOffices)}
+                                {JSON.stringify(data.getActiveOffices)}
+                                {JSON.stringify(data.getActiveOffices)}
+                                {JSON.stringify(data.getActiveOffices)}
+                                {JSON.stringify(data.getActiveOffices)}
+                                {JSON.stringify(data.getActiveOffices)}
+                                {JSON.stringify(data.getActiveOffices)}
+                                {JSON.stringify(data.getActiveOffices)}
                             </div>
                             <FeaturedList />
                         </Fragment>

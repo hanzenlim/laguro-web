@@ -1,7 +1,3 @@
-import styled from 'styled-components';
-import theme from '../theme';
-import { borderRadius } from 'styled-system';
-
 import system from 'system-components';
 
 const Image = system(
