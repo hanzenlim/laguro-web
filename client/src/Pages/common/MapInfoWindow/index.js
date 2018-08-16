@@ -34,7 +34,7 @@ const MapInfoWindow = props => {
                     <Text
                         fontSize={2}
                         lineHeight="1.29"
-                        color="black"
+                        color="text.black"
                         letterSpacing="-0.8px"
                     >
                         DR. Saba Khandani
@@ -43,12 +43,12 @@ const MapInfoWindow = props => {
                         fontWeight="bold"
                         italic
                         fontSize={1}
-                        color="black"
+                        color="text.black"
                         lineHeight="1"
                     >
                         tooth cleaning
                     </Text>
-                    <Text color="black" lineHeight="1.29" fontSize={1}>
+                    <Text color="text.black" lineHeight="1.29" fontSize={1}>
                         1825 E Gary St, Park City, KS 67219
                     </Text>
                 </Box>

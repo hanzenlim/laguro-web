@@ -19,7 +19,7 @@ const DentistList = () => (
     <Box width={['100%', '623px']}>
         <Text
             fontSize={4}
-            color="black"
+            color="text.black"
             mb={10}
             lineHeight="40px"
             letterSpacing="-0.8px"

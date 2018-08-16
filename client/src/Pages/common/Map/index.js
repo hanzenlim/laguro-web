@@ -1,18 +1,50 @@
 import React, { Component } from 'react';
-import ReactMapGL from 'react-map-gl';
+import ReactMapGL, { Marker, Popup, NavigationControl } from 'react-map-gl';
+import styled from 'styled-components';
 import fetch from 'unfetch';
 import 'mapbox-gl/dist/mapbox-gl.css';
 // import { mapBoxApiKey } from '../../../config/keys';
 
+import { Box } from '../../../components';
+
 import MapPin from '../MapPin';
 import MapInfoWindow from '../MapInfoWindow';
 
-import {
-    StyledPopup,
-    StyledMarkerContainer,
-    StyledMarkerOverlay,
-    StyledNavigationControl,
-} from './styles';
+const StyledContainer = styled.div`
+    width: 100%;
+    height: 900px;
+    background-color: red;
+
+    @media screen and (min-width: 1200px) {
+        width: 623px;
+    }
+`;
+
+const StyledPopup = styled(Popup)`
+    z-index: ${props => props.theme.zIndex.overlay};
+`;
+
+const StyledMarkerContainer = styled(Marker)`
+    width: 0;
+    height: 0;
+`;
+
+const StyledMarkerOverlay = styled.div`
+    height: 50px;
+    width: 50px;
+    top: -40px;
+    left: -25px;
+    background: transparent;
+    position: absolute;
+    /* TODO: Add z index list to theme file */
+    z-index: 1000;
+`;
+
+const StyledNavigationControl = styled(NavigationControl)`
+    position: absolute;
+    top: 10px;
+    left: 10px;
+`;
 
 const mapBoxApiKey =
     'pk.eyJ1IjoibGFndXJvLWFkbWluIiwiYSI6ImNqaWc3enk2bDE0dDAzd3Blb2dyOXRvc2oifQ.Ketzla96PFhKDE8-VwAI5g';
@@ -141,7 +173,14 @@ class ResultMap extends Component {
                     latitude={latitude}
                     longitude={longitude}
                 >
-                    <StyledMarkerOverlay
+                    <Box
+                        height="50px"
+                        width="50px"
+                        top="-40px"
+                        left="-40px"
+                        bg="transparent"
+                        position="absolute"
+                        zIndex="1000"
                         data-marker={JSON.stringify(marker)}
                         onClick={this.showPopup}
                     />

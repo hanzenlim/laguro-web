@@ -23,7 +23,7 @@ const DentistCard = () => (
             >
                 <Text
                     fontSize={1}
-                    color="black"
+                    color="text.black"
                     lineHeight="1.29"
                     letterSpacing="-0.5px"
                 >
@@ -33,7 +33,7 @@ const DentistCard = () => (
         </Box>
 
         <Box mt={5}>
-            <Text lineHeight="1.22" fontSize={2} letterSpacing="-0.8px">
+            <Text color="text.black" lineHeight="1.22" fontSize={2} letterSpacing="-0.8px">
                 DR. Michelle Choi
             </Text>
 
@@ -41,7 +41,7 @@ const DentistCard = () => (
                 is="i"
                 lineHeight="1.1"
                 fontSize={3}
-                color="black"
+                color="text.black"
                 fontWeight="bold"
             >
                 implant specialista
