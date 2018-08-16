@@ -51,6 +51,6 @@ export default {
         '20px',
         '22px',
     ],
-    breakpoints: ['320px', '480px', '768px', '992px', '1200px'],
+    breakpoints: ['1200px', '320px'],
     maxContainerWidth: '1280px',
 };

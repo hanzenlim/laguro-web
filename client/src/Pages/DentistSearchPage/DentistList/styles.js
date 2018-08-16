@@ -9,27 +9,11 @@ export const StyledContainer = styled.div`
     }
 `;
 
-export const StyledSectionTitle = styled(Text)`
-    line-height: 40px;
-    letter-spacing: -0.8px;
-`;
-
 export const StyledGridItem = styled(Box)`
     margin-bottom: 22px;
     margin-right: 32px;
 
     @media screen and (min-width: 1200px) {
         max-width: 186px;
-    }
-`;
-
-export const StyledDentistList = styled(Flex)`
-    width: 100%;
-    flex-wrap: wrap;
-
-    ${StyledGridItem}:nth-child(3n) {
-        @media screen and (min-width: 1200px) {
-            margin-right: 0;
-        }
     }
 `;

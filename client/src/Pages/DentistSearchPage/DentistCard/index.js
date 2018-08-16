@@ -37,7 +37,13 @@ const DentistCard = () => (
                 DR. Michelle Choi
             </Text>
 
-            <Text lineHeight="1.1" fontSize={3} color="black" bold italic>
+            <Text
+                is="i"
+                lineHeight="1.1"
+                fontSize={3}
+                color="black"
+                fontWeight="bold"
+            >
                 implant specialista
             </Text>
 

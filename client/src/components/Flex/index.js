@@ -8,7 +8,13 @@ const Flex = system(
     'space',
     'width',
     'color',
+    // typography
+    'fontFamily',
     'fontSize',
+    'textAlign',
+    'lineHeight',
+    'letterSpacing',
+    'fontWeight',
     // borders
     'borders',
     'borderColor',
@@ -20,7 +26,7 @@ const Flex = system(
     'height',
     'maxHeight',
     'minHeight',
-    // flexbox
+    // flexText
     'alignItems',
     'alignContent',
     'justifyContent',

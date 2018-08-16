@@ -5,7 +5,13 @@ const Box = system(
     'space',
     'width',
     'color',
+    // typography
+    'fontFamily',
     'fontSize',
+    'textAlign',
+    'lineHeight',
+    'letterSpacing',
+    'fontWeight',
     // borders
     'borders',
     'borderColor',
@@ -17,7 +23,7 @@ const Box = system(
     'height',
     'maxHeight',
     'minHeight',
-    // flexbox
+    // flexText
     'alignItems',
     'alignContent',
     'justifyContent',
