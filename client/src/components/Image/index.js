@@ -1,10 +1,15 @@
 import styled from 'styled-components';
-import system from 'system-components';
-import { truncate } from '../utils';
+import theme from '../theme';
+import { borderRadius } from 'styled-system';
 
-const SystemText = system(
+import system from 'system-components';
+
+const Image = system(
     {
-        fontFamily: `'Ubuntu', sans-serif`,
+        is: 'img',
+        display: 'block',
+        maxWidth: '100%',
+        height: 'auto',
     },
     // core
     'space',
@@ -48,10 +53,6 @@ const SystemText = system(
     'left'
 );
 
-const StyledText = styled(SystemText)`
-    ${props => props.truncate && truncate('auto')};
-`;
+Image.displayName = 'Image';
 
-StyledText.displayName = 'Text';
-
-export default StyledText;
+export default Image;

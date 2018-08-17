@@ -9,7 +9,7 @@ import LoadingComponent from './legacyComponents/LoadingComponent';
 import history from './history';
 
 import Landing from './legacyComponents/Landing';
-import HomePage from './Pages/HomePage';
+import HomePage from './pages/HomePage';
 import LoginModal from './legacyComponents/LoginModal';
 import NotFound from './legacyComponents/NotFound';
 
@@ -25,6 +25,16 @@ import theme from './components/theme';
 
 const LandlordOnboarding = Loadable({
     loader: () => import('./legacyComponents/LandlordOnboarding'),
+    loading: LoadingComponent,
+});
+
+const DentistSearchPage = Loadable({
+    loader: () => import('./pages/DentistSearchPage'),
+    loading: LoadingComponent,
+});
+
+const OfficeSearchPage = Loadable({
+    loader: () => import('./pages/OfficeSearchPage'),
     loading: LoadingComponent,
 });
 
@@ -70,7 +80,16 @@ class App extends Component {
                                             this.props.toggleLoginModal
                                         }
                                     />
+                                    <Route
+                                        path="/dentist/search"
+                                        component={DentistSearchPage}
+                                    />
+                                    <Route
+                                        path="/office/search"
+                                        component={OfficeSearchPage}
+                                    />
                                     <Route path="/" component={HomePage} />
+
                                     {/* Catch all unmatched routes. */}
                                     <Route component={NotFound} />
                                 </Switch>

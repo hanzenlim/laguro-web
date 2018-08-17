@@ -6,8 +6,8 @@ const StyledButton = styled(AntdButton)`
     &&.ant-btn-primary {
         height: 50px;
         border-radius: 4px;
-        color: ${props => props.theme.colors.white};
-        background-color: ${props => props.theme.colors.green};
+        color: ${props => props.theme.colors.text.white};
+        background-color: ${props => props.theme.colors.background.green};
         border: solid 1px #f2f2f2;
     }
 

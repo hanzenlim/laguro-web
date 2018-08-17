@@ -1,12 +1,11 @@
 import React from 'react';
 import { Container } from '../../../components';
-import { StyledWrapper } from './styles';
 
 const FeaturedList = () => (
     // For flexibility in layout, let's put max width containers here
     // instead inside of HomePage/index.js
     <Container>
-        <StyledWrapper>Featured List</StyledWrapper>
+        Featured List
     </Container>
 );
 

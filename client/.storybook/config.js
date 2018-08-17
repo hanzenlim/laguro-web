@@ -1,32 +1,28 @@
-import React, { Fragment } from 'react'
-import { configure, addDecorator } from '@storybook/react'
-import { injectGlobal, ThemeProvider } from 'styled-components'
+import React, { Fragment } from 'react';
+import { configure, addDecorator } from '@storybook/react';
+import { injectGlobal, ThemeProvider } from 'styled-components';
 import theme from '../src/components/theme';
-import 'antd/dist/antd.css'
+import 'antd/dist/antd.css';
 
 injectGlobal([], {
-  '*': {
-    boxSizing: 'border-box'
-  },
-  body: {
-    lineHeight: 1.5,
-    margin: 0,
-    fontFamily: 'Ubuntu',
-  }
-})
+    '*': {
+        boxSizing: 'border-box',
+    },
+    body: {
+        fontFamily: 'Ubuntu',
+    },
+});
 
 addDecorator(story => (
-  <ThemeProvider theme={theme}>
-    <Fragment>
-      {story()}
-    </Fragment>
-  </ThemeProvider>
-))
+    <ThemeProvider theme={theme}>
+        <Fragment>{story()}</Fragment>
+    </ThemeProvider>
+));
 
-const req = require.context('.', true, /\.js$/)
+const req = require.context('.', true, /\.js$/);
 
 const load = () => {
-  req.keys().forEach(req)
-}
+    req.keys().forEach(req);
+};
 
-configure(load, module)
+configure(load, module);
