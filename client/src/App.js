@@ -33,6 +33,11 @@ const DentistSearchPage = Loadable({
     loading: LoadingComponent,
 });
 
+const OfficeSearchPage = Loadable({
+    loader: () => import('./pages/OfficeSearchPage'),
+    loading: LoadingComponent,
+});
+
 const PrivateRoute = ({ auth, path, component: Component, ...props }) => {
     const { toggleLoginModal } = props;
 
@@ -76,8 +81,12 @@ class App extends Component {
                                         }
                                     />
                                     <Route
-                                        path="/search-dentist"
+                                        path="/dentist/search"
                                         component={DentistSearchPage}
+                                    />
+                                    <Route
+                                        path="/office/search"
+                                        component={OfficeSearchPage}
                                     />
                                     <Route path="/" component={HomePage} />
 

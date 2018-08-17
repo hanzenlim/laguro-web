@@ -3,8 +3,7 @@ import styled from 'styled-components';
 
 import { Container, Flex } from '../../components';
 
-import DentistCard from './DentistCard';
-import DentistList from './DentistList';
+import SearchResultsList from '../common/SearchResultsList';
 import Map from '../common/Map';
 
 const StyledContainer = styled.div`
@@ -22,7 +21,7 @@ class DentistSearchPage extends Component {
         return (
             <Container>
                 <StyledContainer>
-                    <DentistList />
+                    <SearchResultsList />
                     <Map />
                 </StyledContainer>
             </Container>

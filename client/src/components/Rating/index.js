@@ -35,7 +35,7 @@ const StyledRating = styled(AntdRate)`
 const Rating = props => {
     const { ...rest } = props;
 
-    return <StyledRating {...rest} allowHalf />;
+    return <StyledRating {...rest} allowHalf defaultValue={0} />;
 };
 
 export default Rating;
