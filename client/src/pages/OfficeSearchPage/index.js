@@ -1,32 +1,37 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
+import { Query } from 'react-apollo';
+import { getActiveOfficesQuery } from './queries';
+import OfficeSearchPageView from './view';
 
-import { Container, Flex } from '../../components';
-
-import SearchResultsList from '../common/SearchResultsList';
-import Map from '../common/Map';
-
-const StyledContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
-    @media screen and (min-width: 1200px) {
-        flex-direction: row;
-    }
-`;
-
-class OfficeSearchPage extends Component {
+class OfficeSearchPageContainer extends PureComponent {
     render() {
         return (
-            <Container>
-                <StyledContainer>
-                    <SearchResultsList />
-                    <Map />
-                </StyledContainer>
-            </Container>
+            <Query query={getActiveOfficesQuery}>
+                {({ loading, error, data }) => {
+                    if (loading) {
+                        return <div>Loading...</div>;
+                    }
+
+                    if (error) {
+                        return <div>Error</div>;
+                    }
+
+                    console.log(222, data);
+
+                    const mappedData = data.getActiveOffices.map(item => ({
+                        title: item.name,
+                        rating: 2.5,
+                        image: 'http://via.placeholder.com/186x186',
+                        address: item.location,
+                        subtitle: 'dental emergency',
+                    }));
+
+                    return <OfficeSearchPageView data={mappedData} />;
+                }}
+            </Query>
         );
     }
 }
 
-export default OfficeSearchPage;
+export default OfficeSearchPageContainer;

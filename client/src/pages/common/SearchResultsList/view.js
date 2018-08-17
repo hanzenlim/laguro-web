@@ -32,11 +32,13 @@ const SearchResultsList = props => {
                 find our highlights
             </Text>
             <StyledSearchResultsContainer>
-                {data.map(item => (
-                    <Box width="186px" mr="32px" mb="22px">
-                        <SearchResultsCard {...item} />
-                    </Box>
-                ))}
+                {console.log(data)}
+                {data &&
+                    data.map(item => (
+                        <Box width="186px" mr="32px" mb="22px">
+                            <SearchResultsCard {...item} />
+                        </Box>
+                    ))}
             </StyledSearchResultsContainer>
             <Flex justifyContent="flex-end">
                 <Pagination />

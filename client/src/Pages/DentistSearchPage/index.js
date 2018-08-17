@@ -1,32 +1,35 @@
-import React, { Component } from 'react';
-import styled from 'styled-components';
+import React, { PureComponent } from 'react';
+import { Query } from 'react-apollo';
+// scanDentistsQuery is for testing purposes only
+import { getActiveDentistsQuery, scanDentistsQuery } from './queries';
+import DentistSearchPageView from './view';
 
-import { Container, Flex } from '../../components';
-
-import SearchResultsList from '../common/SearchResultsList';
-import Map from '../common/Map';
-
-const StyledContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
-    @media screen and (min-width: 1200px) {
-        flex-direction: row;
-    }
-`;
-
-class DentistSearchPage extends Component {
+class OfficeSearchPageContainer extends PureComponent {
     render() {
         return (
-            <Container>
-                <StyledContainer>
-                    <SearchResultsList />
-                    <Map />
-                </StyledContainer>
-            </Container>
+            <Query query={scanDentistsQuery}>
+                {({ loading, error, data }) => {
+                    if (loading) {
+                        return <div>Loading...</div>;
+                    }
+
+                    if (error) {
+                        return <div>Error</div>;
+                    }
+
+                    const mappedData = data.scanDentists.map(item => ({
+                        title: `${item.user.firstName} ${item.user.lastName}`,
+                        rating: 2.5,
+                        image: 'http://via.placeholder.com/186x186',
+                        address: item.location,
+                        subtitle: item.specialty,
+                    }));
+
+                    return <DentistSearchPageView data={mappedData} />;
+                }}
+            </Query>
         );
     }
 }
 
-export default DentistSearchPage;
+export default OfficeSearchPageContainer;

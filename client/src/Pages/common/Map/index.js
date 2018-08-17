@@ -51,7 +51,7 @@ const mapBoxApiKey =
 
 const MAP_STYLE = 'mapbox://styles/mapbox/streets-v9';
 
-class ResultMap extends Component {
+class Map extends Component {
     constructor(props) {
         super(props);
 
@@ -201,7 +201,7 @@ class ResultMap extends Component {
                 onLoad={this.geocodeLocationList}
                 style={{
                     top: '0',
-                    bottom: '0'
+                    bottom: '0',
                 }}
             >
                 {this.renderPopup()}
@@ -213,4 +213,4 @@ class ResultMap extends Component {
         );
     }
 }
-export default ResultMap;
+export default Map;

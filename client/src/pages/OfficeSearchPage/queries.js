@@ -4,21 +4,18 @@ import {
     listingFragment,
     reviewerFragment,
     filterActive,
-} from '../../../util/fragments';
-
-const hello = 'hello';
-export default hello;
+} from '../../util/fragments';
 
 export const getActiveOfficesQuery = gql`
     query {
         getActiveOffices {
-            ${officeFragment}
-            listings(${filterActive}) {
-                ${listingFragment}
-            }
+            id
+            name
+            location
             reviews {
-                ${reviewerFragment}
+                rating
             }
+            imageUrls
         }
     }
 `;

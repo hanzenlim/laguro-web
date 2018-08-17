@@ -1,6 +1,8 @@
+import styled from 'styled-components';
 import system from 'system-components';
+import { truncate } from '../utils';
 
-const Text = system(
+const SystemText = system(
     {
         fontFamily: `'Ubuntu', sans-serif`,
     },
@@ -46,6 +48,10 @@ const Text = system(
     'left'
 );
 
-Text.displayName = 'Text';
+const StyledText = styled(SystemText)`
+    ${props => props.truncate && truncate('auto')};
+`;
 
-export default Text;
+StyledText.displayName = 'Text';
+
+export default StyledText;
