@@ -22,7 +22,7 @@ const DentistSearchPageView = props => {
     return (
         <Container>
             <StyledContainer>
-                <SearchResultsList data={data} context="dentist" />
+                <SearchResultsList data={data} />
                 <Map data={data} />
             </StyledContainer>
         </Container>

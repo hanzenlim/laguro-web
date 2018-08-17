@@ -13,7 +13,7 @@ const StyledPopup = styled(Popup)`
 `;
 
 const MapInfoWindow = props => {
-    const { onClose, longitude, latitude, id } = props;
+    const { onClose, longitude, latitude, title, subtitle, body, id } = props;
 
     return (
         <StyledPopup
@@ -36,8 +36,9 @@ const MapInfoWindow = props => {
                         lineHeight="1.29"
                         color="text.black"
                         letterSpacing="-0.8px"
+                        truncate
                     >
-                        DR. Saba Khandani
+                        {title}
                     </Text>
                     <Text
                         fontWeight="bold"
@@ -45,11 +46,12 @@ const MapInfoWindow = props => {
                         fontSize={1}
                         color="text.black"
                         lineHeight="1"
+                        truncate
                     >
-                        tooth cleaning
+                        {subtitle}
                     </Text>
                     <Text color="text.black" lineHeight="1.29" fontSize={1}>
-                        1825 E Gary St, Park City, KS 67219
+                        {body}
                     </Text>
                 </Box>
             </Flex>

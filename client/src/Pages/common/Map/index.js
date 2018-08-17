@@ -91,10 +91,10 @@ class Map extends Component {
     geocodeLocationList = () => {
         const locations = ['San Mateo'];
 
-        locations.map(query => {
+        this.props.data.map(query => {
             fetch(
                 `https://api.mapbox.com/geocoding/v5/mapbox.places/${
-                    query.location
+                    query.address
                 }.json?country=us&types=address%2Cplace&access_token=${mapBoxApiKey}`
             )
                 .then(response => response.json())
@@ -138,6 +138,9 @@ class Map extends Component {
         return (
             popupInfo && (
                 <MapInfoWindow
+                    title={popupInfo.title}
+                    subtitle={popupInfo.subtitle}
+                    body={popupInfo.address}
                     onClose={this.hidePopup}
                     longitude={popupInfo.longitude}
                     latitude={popupInfo.latitude}
