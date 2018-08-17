@@ -82,7 +82,7 @@ class ResultMap extends Component {
             viewport: {
                 ...this.state.viewport,
                 width: 623,
-                height: window.innerHeight,
+                height: 932,
             },
         });
     };
@@ -199,6 +199,10 @@ class ResultMap extends Component {
                 mapboxApiAccessToken={mapBoxApiKey}
                 onViewportChange={this.updateViewport}
                 onLoad={this.geocodeLocationList}
+                style={{
+                    top: '0',
+                    bottom: '0'
+                }}
             >
                 {this.renderPopup()}
                 {this.renderMapMarker()}

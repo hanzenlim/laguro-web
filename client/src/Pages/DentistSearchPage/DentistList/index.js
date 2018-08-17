@@ -7,6 +7,8 @@ import { Pagination, Flex, Text, Box } from '../../../components';
 const StyledDentistList = styled(Flex)`
     width: 100%;
     flex-wrap: wrap;
+    flex: 1;
+    align-content: start;
 
     > *:nth-child(3n) {
         @media screen and (min-width: 1200px) {
@@ -16,7 +18,7 @@ const StyledDentistList = styled(Flex)`
 `;
 
 const DentistList = () => (
-    <Box width={['100%', '623px']}>
+    <Flex width={['100%', '623px']} flexDirection="column">
         <Text
             fontSize={4}
             color="text.black"
@@ -27,32 +29,29 @@ const DentistList = () => (
             find our highlights
         </Text>
         <StyledDentistList>
-            <Box width="186px" mr={16} mb={11}>
+            <Box width="186px" mr="32px" mb="22px">
                 <DentistCard />
             </Box>
-            <Box width="186px" mr={16} mb={11}>
+            <Box width="186px" mr="32px" mb="22px">
                 <DentistCard />
             </Box>
-            <Box width="186px" mr={16} mb={11}>
+            <Box width="186px" mr="32px" mb="22px">
                 <DentistCard />
             </Box>
-            <Box width="186px" mr={16} mb={11}>
+            <Box width="186px" mr="32px" mb="22px">
                 <DentistCard />
             </Box>
-            <Box width="186px" mr={16} mb={11}>
+            <Box width="186px" mr="32px" mb="22px">
                 <DentistCard />
             </Box>
-            <Box width="186px" mr={16} mb={11}>
-                <DentistCard />
-            </Box>
-            <Box width="186px" mr={16} mb={11}>
+            <Box width="186px" mr="32px" mb="22px">
                 <DentistCard />
             </Box>
         </StyledDentistList>
         <Flex justifyContent="flex-end">
             <Pagination />
         </Flex>
-    </Box>
+    </Flex>
 );
 
 export default DentistList;
