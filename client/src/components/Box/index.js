@@ -1,4 +1,5 @@
 import system from 'system-components';
+import styled from 'styled-components';
 
 const Box = system(
     // core
@@ -40,9 +41,16 @@ const Box = system(
     'top',
     'right',
     'bottom',
-    'left'
+    'left',
+    // background
+    'background',
+    'backgroundSize'
 );
 
-Box.displayName = 'Box';
+const StyledText = styled(Box)`
+    ${props => props.transform && `transform: ${props.transform}`};
+`;
 
-export default Box;
+StyledText.displayName = 'Box';
+
+export default StyledText;

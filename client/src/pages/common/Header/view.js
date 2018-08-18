@@ -61,6 +61,8 @@ const Header = props => (
         flex="0 0 auto"
         alignItems="center"
         justifyContent="center"
+        zIndex={1}
+        position={props.onLandingPage ? 'absolute' : 'relative'}
     >
         <Container
             display="flex"

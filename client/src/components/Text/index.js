@@ -51,6 +51,7 @@ const Text = system(
 
 const StyledText = styled(Text)`
     ${props => props.truncate && truncate('auto')};
+    ${props => props.fontStyle && `font-style: ${props.fontStyle}`};
 `;
 
 StyledText.displayName = 'Text';

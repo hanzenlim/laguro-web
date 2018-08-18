@@ -1,6 +1,5 @@
 import React from 'react';
 import { Query } from 'react-apollo';
-
 import Header from './view';
 import headerQuery from './queries';
 

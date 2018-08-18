@@ -1,6 +1,6 @@
 import React from 'react';
 
-const pin = props => (
+const LocationPin = props => (
     <svg
         viewBox="0 0 32 39"
         version="1.1"
@@ -41,4 +41,4 @@ const pin = props => (
     </svg>
 );
 
-export default pin;
+export default LocationPin;
