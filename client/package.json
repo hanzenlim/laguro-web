@@ -25,7 +25,6 @@
     "history": "^4.7.2",
     "lodash": "^4.17.5",
     "mapbox-gl": "^0.45.0",
-    "materialize-css": "^1.0.0-beta",
     "moment": "^2.21.0",
     "nuka-carousel": "^4.2.1",
     "prop-types": "^15.6.1",

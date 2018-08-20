@@ -22,6 +22,9 @@ export default {
             gray: '#c7c7c7',
             green: '#50e3c2',
         },
+        icon: {
+            black: '#303549',
+        },
     },
     fontSizes: ['12px', '14px', '18px', '20px', '30px', '45px', '55px'],
     fontWeights: {
@@ -37,20 +40,7 @@ export default {
         header: 600,
         footer: 500,
     },
-    space: [
-        '0px',
-        '2px',
-        '4px',
-        '6px',
-        '8px',
-        '10px',
-        '12px',
-        '14px',
-        '16px',
-        '18px',
-        '20px',
-        '22px',
-    ],
     breakpoints: ['1200px', '320px'],
+    space: n => `${n}px`,
     maxContainerWidth: '1280px',
 };

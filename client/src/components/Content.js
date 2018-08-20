@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
+import theme from '../components/theme';
 
 const StyledContent = styled.div`
-    flex: 1;
-    margin-bottom: 80px;
+    flex: 1 0 auto;
+    max-width: ${theme.maxContainerWidth};
 `;
 
 const Content = props => {

@@ -1,11 +1,25 @@
 import Box from './Box';
 import Button from './Button';
-import Flex from './Flex';
-import Text from './Text';
 import Container from './Container';
-import Image from './Image';
-import Rating from './Rating';
+import Flex from './Flex';
 import Icon from './Icon';
+import Input from './Input';
+import Image from './Image';
+import Link from './Link';
+import Text from './Text';
+import Rating from './Rating';
 import Pagination from './Pagination';
 
-export { Box, Flex, Text, Button, Container, Image, Rating, Icon, Pagination };
+export {
+    Box,
+    Flex,
+    Text,
+    Input,
+    Link,
+    Button,
+    Container,
+    Image,
+    Rating,
+    Icon,
+    Pagination,
+};
