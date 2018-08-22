@@ -7,11 +7,25 @@ const StyledButton = styled(AntdButton)`
         height: 50px;
         border-radius: 4px;
         color: ${props => props.theme.colors.text.white};
-        background-color: ${props => props.theme.colors.background.green};
+        background-color: ${props => props.theme.colors.button.green};
         border: solid 1px #f2f2f2;
     }
 
-    span {
+    &&.ant-btn-primary.disabled,
+    &&.ant-btn-primary[disabled],
+    &&.ant-btn-primary.disabled:hover,
+    &&.ant-btn-primary[disabled]:hover,
+    &&.ant-btn-primary.disabled:focus,
+    &&.ant-btn-primary[disabled]:focus,
+    &&.ant-btn-primary.disabled:active,
+    &&.ant-btn-primary[disabled]:active,
+    &&.ant-btn-primary.disabled.active,
+    &&.ant-btn-primary[disabled].active {
+        color: ${props => props.theme.colors.text.white};
+        background-color: ${props => props.theme.colors.button.gray};
+    }
+
+    && span {
         font-weight: bold;
         font-style: italic;
         font-stretch: normal;

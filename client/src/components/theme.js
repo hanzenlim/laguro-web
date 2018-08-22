@@ -5,8 +5,9 @@ export default {
             black: '#303549',
             gray: '#c7c7c7',
         },
-        background: {
+        button: {
             green: '#50e3c2',
+            gray: '#c7c7c7',
         },
         divider: {
             gray: '#dbdbdb',
