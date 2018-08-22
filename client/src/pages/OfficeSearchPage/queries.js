@@ -1,11 +1,6 @@
 import { gql } from 'apollo-boost';
-import {
-    officeFragment,
-    listingFragment,
-    reviewerFragment,
-    filterActive,
-} from '../../util/fragments';
 
+// eslint-disable-next-line
 export const getActiveOfficesQuery = gql`
     query {
         getActiveOffices {

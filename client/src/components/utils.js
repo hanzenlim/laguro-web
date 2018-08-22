@@ -1,3 +1,4 @@
+// eslint-disable-next-line
 export function truncate(width) {
     return `
       display: block;

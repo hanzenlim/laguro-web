@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
-import { Container, Flex } from '../../components';
+import { Container } from '../../components';
 
 import SearchResultsList from '../common/SearchResultsList';
 import Map from '../common/Map';

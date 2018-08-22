@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Query } from 'react-apollo';
 // scanDentistsQuery is for testing purposes only
-import { getActiveDentistsQuery, scanDentistsQuery } from './queries';
+import { scanDentistsQuery } from './queries';
 import DentistSearchPageView from './view';
 
 class OfficeSearchPageContainer extends PureComponent {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ReactMapGL, { Marker, Popup, NavigationControl } from 'react-map-gl';
+import ReactMapGL, { Marker, NavigationControl } from 'react-map-gl';
 import styled from 'styled-components';
 import fetch from 'unfetch';
 import 'mapbox-gl/dist/mapbox-gl.css';
@@ -10,34 +10,9 @@ import { Box } from '../../../components';
 import MapPin from '../MapPin';
 import MapInfoWindow from '../MapInfoWindow';
 
-const StyledContainer = styled.div`
-    width: 100%;
-    height: 900px;
-    background-color: red;
-
-    @media screen and (min-width: 1200px) {
-        width: 623px;
-    }
-`;
-
-const StyledPopup = styled(Popup)`
-    z-index: ${props => props.theme.zIndex.overlay};
-`;
-
 const StyledMarkerContainer = styled(Marker)`
     width: 0;
     height: 0;
-`;
-
-const StyledMarkerOverlay = styled.div`
-    height: 50px;
-    width: 50px;
-    top: -40px;
-    left: -25px;
-    background: transparent;
-    position: absolute;
-    /* TODO: Add z index list to theme file */
-    z-index: 1000;
 `;
 
 const StyledNavigationControl = styled(NavigationControl)`
@@ -89,8 +64,6 @@ class Map extends Component {
 
     // NOTE: THIS METHOD WILL BE REMOVED ONCE WE SAVE LOCATION COORDINATES TO DB
     geocodeLocationList = () => {
-        const locations = ['San Mateo'];
-
         this.props.data.map(query => {
             fetch(
                 `https://api.mapbox.com/geocoding/v5/mapbox.places/${
@@ -122,6 +95,8 @@ class Map extends Component {
                             longitude,
                         },
                     });
+
+                    return null;
                 });
 
             return null;
@@ -157,8 +132,6 @@ class Map extends Component {
         const { currentTarget } = event;
         const popupInfo = JSON.parse(currentTarget.getAttribute('data-marker'));
 
-        console.log(1111);
-
         this.setState({ popupInfo });
     };
 
@@ -166,8 +139,8 @@ class Map extends Component {
         this.setState({ popupInfo: null });
     };
 
-    renderMapMarker = () => {
-        return this.state.markerData.map((marker, index) => {
+    renderMapMarker = () =>
+        this.state.markerData.map((marker, index) => {
             const { longitude, latitude } = marker;
 
             return (
@@ -191,7 +164,6 @@ class Map extends Component {
                 </StyledMarkerContainer>
             );
         });
-    };
 
     render() {
         return (
