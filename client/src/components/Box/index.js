@@ -24,6 +24,7 @@ const Box = system(
     'height',
     'maxHeight',
     'minHeight',
+    'opacity',
     // flexText
     'alignItems',
     'alignContent',
@@ -44,7 +45,9 @@ const Box = system(
     'left',
     // background
     'background',
-    'backgroundSize'
+    'backgroundSize',
+    // misc
+    'boxShadow'
 );
 
 const StyledBox = styled(Box)`
