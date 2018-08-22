@@ -55,8 +55,6 @@ const StyledPagination = styled(AntdPagination)`
     }
 `;
 
-const Pagination = () => {
-    return <StyledPagination defaultCurrent={1} total={50} />;
-};
+const Pagination = () => <StyledPagination defaultCurrent={1} total={50} />;
 
 export default Pagination;

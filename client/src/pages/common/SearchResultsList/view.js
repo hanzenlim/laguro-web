@@ -1,4 +1,4 @@
-import React, { Fragment, PureComponent } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import SearchResultsCard from '../SearchResultsCard';
@@ -32,7 +32,6 @@ const SearchResultsList = props => {
                 find our highlights
             </Text>
             <StyledSearchResultsContainer>
-                {console.log(data)}
                 {data &&
                     data.map(item => (
                         <Box width="186px" mr="32px" mb="22px">

@@ -13,7 +13,7 @@ const StyledPopup = styled(Popup)`
 `;
 
 const MapInfoWindow = props => {
-    const { onClose, longitude, latitude, title, subtitle, body, id } = props;
+    const { onClose, longitude, latitude, title, subtitle, body } = props;
 
     return (
         <StyledPopup

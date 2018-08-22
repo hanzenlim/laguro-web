@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
 import { Query } from 'react-apollo';
 import { getActiveOfficesQuery } from './queries';
 import OfficeSearchPageView from './view';
@@ -16,8 +15,6 @@ class OfficeSearchPageContainer extends PureComponent {
                     if (error) {
                         return <div>Error</div>;
                     }
-
-                    console.log(222, data);
 
                     const mappedData = data.getActiveOffices.map(item => ({
                         title: item.name,
