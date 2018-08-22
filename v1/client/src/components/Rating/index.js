@@ -27,8 +27,12 @@ const StyledRating = styled(AntdRate)`
         margin-right: 3px;
     }
 
+    && .ant-rate-star:last-child {
+        margin-right: 0;
+    }
+
     && .anticon-star:before {
-        font-size: 12px;
+        font-size: ${props => props.size || '12px'};
     }
 `;
 

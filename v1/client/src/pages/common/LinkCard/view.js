@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Rating, Text, Image } from '../../../components';
+import { Box, Rating, Text, Image, Truncate } from '../../../components';
 
 const LinkCard = props => {
     const {
@@ -46,20 +46,18 @@ const LinkCard = props => {
                     lineHeight="1.22"
                     fontSize={2}
                     letterSpacing="-0.8px"
-                    truncate
                 >
-                    {title}
+                    <Truncate lines={1}>{title}</Truncate>
                 </Text>
 
                 <Text
-                    is="i"
+                    fontStyle="italic"
                     lineHeight="1.1"
                     fontSize={3}
                     color="text.black"
                     fontWeight="bold"
-                    truncate
                 >
-                    {subtitle}
+                    <Truncate lines={1}>{subtitle}</Truncate>
                 </Text>
 
                 <Box mt={3}>{rating && <Rating disabled value={rating} />}</Box>

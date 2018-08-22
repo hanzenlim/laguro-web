@@ -31,13 +31,8 @@ const OfficeSearchPage = Loadable({
     loading: () => null,
 });
 
-const Payment = Loadable({
-    loader: () => import('./pages/Payment'),
-    loading: () => null,
-});
-
-const PaymentSuccess = Loadable({
-    loader: () => import('./pages/PaymentSuccess'),
+const DentistDetailsPage = Loadable({
+    loader: () => import('./pages/DentistDetailsPage'),
     loading: () => null,
 });
 
@@ -64,25 +59,13 @@ class App extends Component {
                                         component={OfficeSearchPage}
                                     />
                                     <Route
-                                        path="/office/search"
-                                        component={OfficeSearchPage}
-                                    />
-                                    <Route
-                                        path="/payment"
-                                        component={Payment}
-                                    />
-                                    <Route
-                                        path="/payment-success"
-                                        component={PaymentSuccess}
+                                        path="/dentist/:id"
+                                        component={DentistDetailsPage}
                                     />
                                     <Route path="/" component={HomePage} />
                                     {/* Catch all unmatched routes. */}
                                     {/* <Route component={NotFound} /> */}
                                 </Switch>
-                                {/* <LoginModal
-                                    open={this.props.isLoginModalVisible}
-                                    closeModal={this.props.toggleLoginModal}
-                                /> */}
                             </ErrorBoundary>
                         </Content>
                         <Footer />
