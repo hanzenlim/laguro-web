@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import SearchResultsCard from '../SearchResultsCard';
+import LinkCard from '../LinkCard';
 import { Pagination, Flex, Text, Box } from '../../../components';
 
 const StyledSearchResultsContainer = styled(Flex)`
@@ -35,7 +35,7 @@ const SearchResultsList = props => {
                 {data &&
                     data.map(item => (
                         <Box width="186px" mr="32px" mb="22px">
-                            <SearchResultsCard {...item} />
+                            <LinkCard {...item} />
                         </Box>
                     ))}
             </StyledSearchResultsContainer>

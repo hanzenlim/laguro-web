@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Rating, Text, Image } from '../../../components';
 
-const SearchResultsCard = props => {
+const LinkCard = props => {
     const {
         rating = 2.5,
         image = 'http://via.placeholder.com/186x186',
@@ -68,4 +68,4 @@ const SearchResultsCard = props => {
     );
 };
 
-export default SearchResultsCard;
+export default LinkCard;
