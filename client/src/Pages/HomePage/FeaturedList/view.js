@@ -9,15 +9,10 @@ import {
     Flex,
     Text,
 } from '../../../components';
-import SearchResultsCard from '../../common/SearchResultsCard';
+import LinkCard from '../../common/LinkCard';
 import hero1 from '../../../legacyComponents/images/Hero-img.jpg';
 
-const StyledImage = styled(Image)`
-    width: 100%;
-    height: 300px;
-`;
-
-const StyledSearchResultsContainer = styled(Flex)`
+const StyledSpecialtyContainer = styled(Flex)`
     width: 100%;
     flex-wrap: wrap;
     flex: 1;
@@ -69,13 +64,13 @@ const FeaturedListView = () => (
             Dentist Specialties
         </Text>
         <Box pb={30} />
-        <StyledSearchResultsContainer>
-            {specialties.map(item => (
-                <Box width="405px" mr="32px" mb="40px">
-                    <SearchResultsCard {...item} />
+        <StyledSpecialtyContainer data-name="specialties">
+            {specialties.map((item, index) => (
+                <Box width="405px" key={index} mr="32px" mb="40px">
+                    <LinkCard {...item} />
                 </Box>
             ))}
-        </StyledSearchResultsContainer>
+        </StyledSpecialtyContainer>
         <Text
             color="black"
             fontSize={4}
@@ -85,9 +80,9 @@ const FeaturedListView = () => (
             you are a...
         </Text>
         <Box pb={28} />
-        <Flex justifyContent="space-between">
+        <Flex data-name="role-boxes" justifyContent="space-between">
             <Box width="48%" position="relative">
-                <StyledImage src={hero1} alt="hero1" />
+                <Image width="100%" height="300px" src={hero1} alt="hero1" />
                 <Box pb={18} />
                 <Text color="black" fontSize={3} lineHeight="30px">
                     if you have chairs that can be rented out
@@ -122,7 +117,7 @@ const FeaturedListView = () => (
                 </Box>
             </Box>
             <Box width="48%" position="relative">
-                <StyledImage src={hero1} alt="hero1" />
+                <Image width="100%" height="300px" src={hero1} alt="hero1" />
                 <Box pb={18} />
                 <Text color="black" fontSize={3} lineHeight="30px">
                     if you are looking for chairs for your practice
@@ -188,8 +183,8 @@ const FeaturedListView = () => (
             </Text>
         </div>
         <Box pb={28} />
-        <Box position="relative">
-            <StyledImage src={hero1} alt="hero1" />
+        <Box data-name="explore" position="relative">
+            <Image width="100%" height="300px" src={hero1} alt="hero1" />
             <Flex
                 alignItems="center"
                 height="100%"
