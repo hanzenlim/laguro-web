@@ -18,6 +18,10 @@ import ErrorBoundary from './components/ErrorBoundary';
 import theme from './components/theme';
 import './App.css';
 
+const LandlordLandingPage = Loadable({
+    loader: () => import('./pages/LandlordLandingPage'),
+    loading: LoadingComponent,
+});
 const DentistSearchPage = Loadable({
     loader: () => import('./pages/DentistSearchPage'),
     loading: LoadingComponent,
@@ -49,6 +53,10 @@ class App extends Component {
                             <ErrorBoundary>
                                 <Switch>
                                     <Route
+                                        path="/landlord"
+                                        component={LandlordLandingPage}
+                                    />
+                                    <Route
                                         path="/dentist/search"
                                         component={DentistSearchPage}
                                     />
@@ -69,7 +77,6 @@ class App extends Component {
                                         component={PaymentSuccess}
                                     />
                                     <Route path="/" component={HomePage} />
-
                                     {/* Catch all unmatched routes. */}
                                     {/* <Route component={NotFound} /> */}
                                 </Switch>

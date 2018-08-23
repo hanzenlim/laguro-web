@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button as AntdButton } from 'antd';
-import { fontSize, width, height } from 'styled-system';
 import styled from 'styled-components';
+import { fontSize, height, propTypes, space, width } from 'styled-system';
 
 const StyledButton = styled(AntdButton)`
     &&.ant-btn-primary {
@@ -42,7 +42,13 @@ const StyledButton = styled(AntdButton)`
     i {
         ${fontSize};
     }
+
+    ${space};
 `;
+
+StyledButton.propTypes = {
+    ...propTypes.space,
+};
 
 const Button = props => {
     const { children, ...rest } = props;

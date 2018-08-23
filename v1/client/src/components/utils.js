@@ -1,3 +1,6 @@
+import styled from 'styled-components';
+import { style } from 'styled-system';
+
 // eslint-disable-next-line
 export function truncate(width) {
     return `
@@ -9,3 +12,13 @@ export function truncate(width) {
       width: ${width};
   `;
 }
+
+const stroke = style({
+    prop: 'stroke',
+    cssProperty: 'stroke',
+    key: 'colors',
+});
+
+export const StyledPath = styled.path`
+    ${stroke};
+`;
