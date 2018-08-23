@@ -1,9 +1,4 @@
-'*' {
-  box-sizing: 'border-box';
-}
-
-body {
-  line-height: 1.5;
-  margin: 0;
-  font-family: 'Ubuntu';
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
