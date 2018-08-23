@@ -15,22 +15,6 @@ import hero1 from '../../../legacyComponents/images/Hero-img.jpg';
 const StyledImage = styled(Image)`
     width: 100%;
     height: 300px;
-    object-fit: cover;
-`;
-
-const StyledImgBox = styled(Box)`
-    height: 300px;
-    overflow: hidden;
-`;
-
-const StyledButton = styled(Button)`
-    && {
-        position: absolute;
-    }
-    top: 150px;
-    left: 50%;
-    width: 180px;
-    transform: translate(-50%, -50%);
 `;
 
 const StyledSearchResultsContainer = styled(Flex)`
@@ -74,8 +58,6 @@ const specialties = [
 ];
 
 const FeaturedListView = () => (
-    // For flexibility in layout, let's put max width containers here
-    // instead inside of HomePage/index.js
     <Container>
         <Box pb={40} />
         <Text
@@ -105,9 +87,7 @@ const FeaturedListView = () => (
         <Box pb={28} />
         <Flex justifyContent="space-between">
             <Box width="48%" position="relative">
-                <StyledImgBox>
-                    <StyledImage src={hero1} alt="hero1" />
-                </StyledImgBox>
+                <StyledImage src={hero1} alt="hero1" />
                 <Box pb={18} />
                 <Text color="black" fontSize={3} lineHeight="30px">
                     if you have chairs that can be rented out
@@ -142,9 +122,7 @@ const FeaturedListView = () => (
                 </Box>
             </Box>
             <Box width="48%" position="relative">
-                <StyledImgBox>
-                    <StyledImage src={hero1} alt="hero1" />
-                </StyledImgBox>
+                <StyledImage src={hero1} alt="hero1" />
                 <Box pb={18} />
                 <Text color="black" fontSize={3} lineHeight="30px">
                     if you are looking for chairs for your practice
@@ -211,10 +189,17 @@ const FeaturedListView = () => (
         </div>
         <Box pb={28} />
         <Box position="relative">
-            <StyledImgBox>
-                <StyledImage src={hero1} alt="hero1" />
-            </StyledImgBox>
-            <StyledButton>explore</StyledButton>
+            <StyledImage src={hero1} alt="hero1" />
+            <Flex
+                alignItems="center"
+                height="100%"
+                justifyContent="center"
+                position="absolute"
+                top="0"
+                width="100%"
+            >
+                <Button width="180px">explore</Button>
+            </Flex>
         </Box>
     </Container>
 );

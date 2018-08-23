@@ -47,10 +47,10 @@ const Box = system(
     'backgroundSize'
 );
 
-const StyledText = styled(Box)`
+const StyledBox = styled(Box)`
     ${props => props.transform && `transform: ${props.transform}`};
 `;
 
-StyledText.displayName = 'Box';
+StyledBox.displayName = 'Box';
 
-export default StyledText;
+export default StyledBox;

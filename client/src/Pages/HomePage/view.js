@@ -4,8 +4,6 @@ import hero1 from '../../legacyComponents/images/Hero-img.jpg';
 import { Box, Icon, Input, Text } from '../../components';
 import FeaturedList from './FeaturedList';
 
-// NOTE: Ideally, we should limit styled components here in HomePage/index.js file
-
 const StyledInput = styled(Input)`
     && {
         width: 640px;
