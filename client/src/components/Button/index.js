@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 const StyledButton = styled(AntdButton)`
     &&.ant-btn-primary {
+        ${props => props.width && `width: ${props.width}`};
         height: 50px;
         border-radius: 4px;
         color: ${props => props.theme.colors.text.white};

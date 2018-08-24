@@ -18,11 +18,6 @@ import ErrorBoundary from './components/ErrorBoundary';
 import theme from './components/theme';
 import './App.css';
 
-const LandlordOnboarding = Loadable({
-    loader: () => import('./legacyComponents/LandlordOnboarding'),
-    loading: LoadingComponent,
-});
-
 const DentistSearchPage = Loadable({
     loader: () => import('./pages/DentistSearchPage'),
     loading: LoadingComponent,
@@ -43,10 +38,6 @@ class App extends Component {
                         <Content>
                             <ErrorBoundary>
                                 <Switch>
-                                    <Route
-                                        path="/landlord-onboarding/:step"
-                                        component={LandlordOnboarding}
-                                    />
                                     <Route
                                         path="/dentist/search"
                                         component={DentistSearchPage}

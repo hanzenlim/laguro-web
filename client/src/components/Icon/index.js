@@ -9,15 +9,15 @@ import {
     space,
     propTypes,
 } from 'styled-system';
-import Pin from './Pin';
+import LocationPin from './LocationPin';
 
 const Icon = props => {
     const { type, ...rest } = props;
 
     let ReturnIcon;
     switch (type) {
-        case 'Pin':
-            ReturnIcon = Pin;
+        case 'locationPin':
+            ReturnIcon = LocationPin;
             break;
         default:
             ReturnIcon = AntdIcon;
