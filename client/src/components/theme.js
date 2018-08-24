@@ -5,12 +5,19 @@ export default {
             black: '#303549',
             gray: '#c7c7c7',
         },
+        background: {
+            white: '#ffffff',
+            gray: '#c7c7c7',
+            lightGray: '#efeeee',
+        },
         button: {
             green: '#50e3c2',
             gray: '#c7c7c7',
         },
         divider: {
+            white: '#ffffff',
             gray: '#dbdbdb',
+            darkGray: '#c7c7c7',
         },
         rating: {
             yellow: '#ffbf00',
@@ -22,6 +29,10 @@ export default {
         arrow: {
             gray: '#c7c7c7',
             green: '#50e3c2',
+        },
+        datePicker: {
+            green: '#50e3c2',
+            white: '#ffffff',
         },
         icon: {
             black: '#303549',

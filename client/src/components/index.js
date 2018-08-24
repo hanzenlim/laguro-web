@@ -9,6 +9,8 @@ import Text from './Text';
 import Rating from './Rating';
 import Icon from './Icon';
 import Pagination from './Pagination';
+import DatePicker from './DatePicker';
+import Autocomplete from './Autocomplete';
 
 export {
     Box,
@@ -22,4 +24,6 @@ export {
     Rating,
     Icon,
     Pagination,
+    DatePicker,
+    Autocomplete,
 };

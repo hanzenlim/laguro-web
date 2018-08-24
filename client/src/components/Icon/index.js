@@ -10,6 +10,7 @@ import {
     propTypes,
 } from 'styled-system';
 import LocationPin from './LocationPin';
+import Calendar from './Calendar';
 
 const Icon = props => {
     const { type, ...rest } = props;
@@ -18,6 +19,9 @@ const Icon = props => {
     switch (type) {
         case 'locationPin':
             ReturnIcon = LocationPin;
+            break;
+        case 'calendar':
+            ReturnIcon = Calendar;
             break;
         default:
             ReturnIcon = AntdIcon;
