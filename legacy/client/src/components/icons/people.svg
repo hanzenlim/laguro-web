@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="13px" viewBox="0 0 16 13" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>users</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="UI-Screens" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="Desktop---Selected-Office" transform="translate(-419.000000, -610.000000)" stroke="#000000">
+            <g id="Group-6" transform="translate(417.000000, 609.000000)">
+                <g id="Group-22" transform="translate(3.000000, 0.000000)">
+                    <g id="Group-5" transform="translate(0.000000, 1.000000)">
+                        <g id="users" transform="translate(0.000000, 1.000000)">
+                            <path d="M10.1048891,11.3680003 L10.1048891,10.1048891 C10.1048891,8.7096951 8.9738609,7.57866686 7.57866686,7.57866686 L2.52622229,7.57866686 C1.13102824,7.57866686 1.40233507e-16,8.7096951 0,10.1048891 L0,11.3680003" id="Shape"></path>
+                            <circle id="Oval" cx="5.05244457" cy="2.52622229" r="2.52622229"></circle>
+                            <path d="M13.8942226,11.3680003 L13.8942226,10.1048891 C13.8933638,8.9536377 13.1142507,7.9485817 11.9995559,7.66076908" id="Shape"></path>
+                            <path d="M9.47333357,0.0821022243 C10.5911331,0.368304128 11.3729537,1.37552244 11.3729537,2.52938006 C11.3729537,3.68323768 10.5911331,4.690456 9.47333357,4.9766579" id="Shape"></path>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,67 @@
+@media screen and (min-width: 541px) {
+  .search form {
+    background-color: #FFF;
+  }
+
+  #map-pin-office-search {
+    float: left;
+    width: 18px;
+    height: 25.2px;
+    margin-top: 10px;
+  }
+
+  #calendar-office-search {
+    float: left;
+    margin-left: 3%;
+    width: 18px;
+    height: 25.2px;
+    margin-top: 10px;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .search form {
+    background-color: #FFF;
+    padding: 20px;
+  }
+
+  .searchModule {
+    padding-bottom: 0;
+  }
+
+  .form-buttons {
+    clear: left;
+  }
+
+  .container-search {
+    width: 94%;
+    margin: auto;
+  }
+
+  .container-search-date {
+    width: 94%;
+    margin-top: 25%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: auto;
+  }
+
+  #map-pin-office-search {
+    float: left;
+    width: 18px;
+    height: 25.2px;
+    margin-top: 10px;
+  }
+
+  #calendar-office-search {
+    float: left;
+    margin-left: 0;
+    width: 18px;
+    height: 25.2px;
+    margin-top: 10px;
+  }
+}
+
+input[type=text]:not(.browser-default) {
+    font-size: 20px;
+}
