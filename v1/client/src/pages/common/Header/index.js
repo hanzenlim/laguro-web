@@ -1,10 +1,10 @@
 import React from 'react';
 import { Query } from 'react-apollo';
 import Header from './view';
-import headerQuery from './queries';
+import { getUserQuery } from './queries';
 
 const HeaderContainer = () => (
-    <Query query={headerQuery}>
+    <Query query={getUserQuery}>
         {({ loading, error, data }) => {
             if (loading) {
                 return <div>loading...</div>;
