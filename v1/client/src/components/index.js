@@ -11,6 +11,7 @@ import Icon from './Icon';
 import Pagination from './Pagination';
 import DatePicker from './DatePicker';
 import Autocomplete from './Autocomplete';
+import Loading from './Loading';
 
 export {
     Box,
@@ -26,4 +27,5 @@ export {
     Pagination,
     DatePicker,
     Autocomplete,
+    Loading,
 };

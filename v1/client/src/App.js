@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Router, Route, Switch } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import Loadable from 'react-loadable';
-import LoadingComponent from './components/LoadingComponent';
 import history from './history';
 
 import HomePage from './pages/HomePage';
@@ -20,26 +19,26 @@ import './App.css';
 
 const LandlordLandingPage = Loadable({
     loader: () => import('./pages/LandlordLandingPage'),
-    loading: LoadingComponent,
+    loading: () => null,
 });
 const DentistSearchPage = Loadable({
     loader: () => import('./pages/DentistSearchPage'),
-    loading: LoadingComponent,
+    loading: () => null,
 });
 
 const OfficeSearchPage = Loadable({
     loader: () => import('./pages/OfficeSearchPage'),
-    loading: LoadingComponent,
+    loading: () => null,
 });
 
 const Payment = Loadable({
     loader: () => import('./pages/Payment'),
-    loading: LoadingComponent,
+    loading: () => null,
 });
 
 const PaymentSuccess = Loadable({
     loader: () => import('./pages/PaymentSuccess'),
-    loading: LoadingComponent,
+    loading: () => null,
 });
 
 class App extends Component {
