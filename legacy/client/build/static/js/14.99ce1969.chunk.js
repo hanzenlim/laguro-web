@@ -1,0 +1,2 @@
+webpackJsonp([14],{982:function(e,t,r){"use strict";Object.defineProperty(t,"__esModule",{value:!0});var a=r(1),l=r.n(a);t.default=function(){return l.a.createElement("div",null,l.a.createElement("iframe",{title:"Terms",width:"100%",style:{height:"95vh"},src:"https://app.termly.io/document/terms-of-use-for-online-marketplace/a4b7458f-6ad0-4fc8-adf4-b1712c3ee1f1",frameBorder:"0",allowFullScreen:!0},l.a.createElement("p",null,"Your browser does not support iframes.")))}}});
+//# sourceMappingURL=14.99ce1969.chunk.js.map

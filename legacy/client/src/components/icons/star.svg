@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="13px" height="13px" viewBox="0 0 13 13" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>Shape</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="UI-Screens" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="Desktop---Home" transform="translate(-106.000000, -913.000000)" fill="#FFD800" stroke="#FFD800">
+            <g id="Row-1" transform="translate(37.000000, 713.000000)">
+                <g id="card-1">
+                    <g id="Group-7">
+                        <g id="Group-4" transform="translate(8.000000, 200.000000)">
+                            <g id="Group-3" transform="translate(0.000000, 0.273973)">
+                                <g id="star" transform="translate(61.150685, 0.000000)">
+                                    <polygon id="Shape" points="6.36986301 0 8.33815068 3.98753425 12.739726 4.63089041 9.55479452 7.7330137 10.3064384 12.1154795 6.36986301 10.045274 2.43328767 12.1154795 3.18493151 7.7330137 0 4.63089041 4.40157534 3.98753425"></polygon>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

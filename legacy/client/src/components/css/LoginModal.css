@@ -1,0 +1,32 @@
+.modal-close {
+    margin-right: 1%;
+    margin-top: 1%;
+    color: #000;
+    float: right;
+}
+.modal-content {
+    margin: auto;
+    margin-top: 3%;
+}
+
+.modal-overlay {
+    z-index: 2;
+    display: block;
+    opacity: 0.5;
+}
+
+.modal1 {
+    width: 45%;
+}
+
+#googleLoginBtn {
+    width: 90%;
+    display: block;
+    margin-top: -3%;
+    margin-left: auto;
+    margin-right: auto;
+    color: black;
+    text-align: center;
+    border-radius: 5px;
+    border-color: #555;
+}

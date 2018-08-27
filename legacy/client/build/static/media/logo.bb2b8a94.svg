@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="152px" height="152px" viewBox="0 0 152 152" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>Group</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <circle id="path-1" cx="70" cy="70" r="70"></circle>
+        <filter x="-6.4%" y="-6.4%" width="112.9%" height="112.9%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="0" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="3" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.784313725   0 0 0 0 0.780392157   0 0 0 0 0.780392157  0 0 0 0.69 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="UI-Screens" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Green-Logo" transform="translate(-4.000000, -4.000000)">
+            <g id="Group" transform="translate(10.000000, 10.000000)">
+                <g id="Oval">
+                    <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                    <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-1"></use>
+                </g>
+                <path d="M83.4736182,99.2857143 L55,99.2857143 C53.8954305,99.2857143 53,98.3902838 53,97.2857143 L53,35 L53,35 C60.5307223,35 66.6355789,41.1048566 66.6355789,48.6355789 L66.6355789,84.7593325 L98,84.7593325 L98,84.7593325 C98,92.7820316 91.4963173,99.2857143 83.4736182,99.2857143 Z" id="L-🌈cubic-bezier(0.55,-0.06,-0.37,-0.55);lrgb;15" fill="#0AD5B1"></path>
+            </g>
+        </g>
+    </g>
+</svg>
