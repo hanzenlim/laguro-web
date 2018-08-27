@@ -10,7 +10,7 @@ import {
     Text,
 } from '../../../components';
 import LinkCard from '../../common/LinkCard';
-import hero1 from '../../../legacyComponents/images/Hero-img.jpg';
+import hero1 from '../../../images/Hero-img.jpg';
 
 const StyledSpecialtyContainer = styled(Flex)`
     width: 100%;

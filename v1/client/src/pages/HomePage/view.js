@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import hero1 from '../../legacyComponents/images/Hero-img.jpg';
+import hero1 from '../../images/Hero-img.jpg';
 import { Box, Icon, Input, Text } from '../../components';
 import FeaturedList from './FeaturedList';
 

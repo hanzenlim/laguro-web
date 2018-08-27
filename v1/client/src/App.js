@@ -6,8 +6,8 @@ import LoadingComponent from './components/LoadingComponent';
 import history from './history';
 
 import HomePage from './pages/HomePage';
-import LoginModal from './legacyComponents/LoginModal';
-import NotFound from './legacyComponents/NotFound';
+// import LoginModal from './components/LoginModal';
+// import NotFound from './components/NotFound';
 
 import Layout from './components/Layout';
 import Content from './components/Content';
@@ -71,12 +71,12 @@ class App extends Component {
                                     <Route path="/" component={HomePage} />
 
                                     {/* Catch all unmatched routes. */}
-                                    <Route component={NotFound} />
+                                    {/* <Route component={NotFound} /> */}
                                 </Switch>
-                                <LoginModal
+                                {/* <LoginModal
                                     open={this.props.isLoginModalVisible}
                                     closeModal={this.props.toggleLoginModal}
-                                />
+                                /> */}
                             </ErrorBoundary>
                         </Content>
                         <Footer />
