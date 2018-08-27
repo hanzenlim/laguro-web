@@ -35,6 +35,7 @@ export default {
             white: '#ffffff',
         },
         icon: {
+            white: '#FFFFFF',
             black: '#303549',
         },
     },

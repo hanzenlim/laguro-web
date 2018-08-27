@@ -1,14 +1,7 @@
 import React from 'react';
 import { Icon as AntdIcon } from 'antd';
 import styled from 'styled-components';
-import {
-    fontSize,
-    width,
-    height,
-    color,
-    space,
-    propTypes,
-} from 'styled-system';
+import { space, propTypes } from 'styled-system';
 import LocationPin from './LocationPin';
 import Calendar from './Calendar';
 
@@ -28,17 +21,16 @@ const Icon = props => {
     }
 
     const StyledIcon = styled(ReturnIcon)`
-        ${fontSize} ${width} ${height} ${color} ${space};
+        ${space};
     `;
 
     return <StyledIcon {...rest} />;
 };
 
 Icon.propTypes = {
-    ...propTypes.fontSize,
-    ...propTypes.width,
-    ...propTypes.height,
     ...propTypes.color,
+    ...propTypes.height,
+    ...propTypes.width,
     ...propTypes.space,
 };
 
