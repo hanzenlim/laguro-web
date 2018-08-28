@@ -10,14 +10,25 @@ import {
     width,
     color,
     borders,
+    position,
+    left,
+    right,
 } from 'styled-system';
+import { hoverColor } from '../utils';
 
 const StyledButton = styled(AntdButton)`
 
     && {
         padding: 0 10px;
         border-radius: 4px;
-        ${space} ${width} ${height} ${borders};
+        ${width} ${height} ${borders};
+        color: ${props => props.theme.colors.text.white};
+        background-color: ${props => props.theme.colors.button.green};
+        border: 'solid 1px #f2f2f2';
+        ${space};
+        ${position};
+        ${left};
+        ${right};
     }
 
         &&.ant-btn-primary {
@@ -40,6 +51,39 @@ const StyledButton = styled(AntdButton)`
     &&.ant-btn-primary[disabled]:active,
     &&.ant-btn-primary.disabled.active,
     &&.ant-btn-primary[disabled].active {
+        color: ${props => props.theme.colors.text.white};
+        background-color: ${props => props.theme.colors.button.gray};
+    }
+
+    &&.ant-btn-ghost {
+        ${width};
+        ${height};
+        padding: 0 10px;
+        color: ${props => props.theme.colors.text.white};
+        background-color: transparent;
+        outline: none;
+        border-style: none;
+        ${space};
+        ${position};
+        ${left};
+        ${right};
+    }
+
+    &&.ant-btn-ghost:hover,
+    &&.ant-btn-ghost:focus {
+        ${hoverColor};
+    }
+
+    &&.ant-btn-ghost.disabled,
+    &&.ant-btn-ghost[disabled],
+    &&.ant-btn-ghost.disabled:hover,
+    &&.ant-btn-ghost[disabled]:hover,
+    &&.ant-btn-ghost.disabled:focus,
+    &&.ant-btn-ghost[disabled]:focus,
+    &&.ant-btn-ghost.disabled:active,
+    &&.ant-btn-ghost[disabled]:active,
+    &&.ant-btn-ghost.disabled.active,
+    &&.ant-btn-ghost[disabled].active {
         color: ${props => props.theme.colors.text.white};
         background-color: ${props => props.theme.colors.button.gray};
     }
@@ -75,6 +119,7 @@ const Button = props => {
 };
 
 Button.defaultProps = {
+    type: 'primary',
     fontSize: 3,
     height: '50px',
     color: 'text.white',

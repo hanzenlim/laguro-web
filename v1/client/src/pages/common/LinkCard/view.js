@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Box, Rating, Text, Image, Truncate } from '../../../components';
+import { Box, Flex, Image, Rating, Text, Truncate } from '../../../components';
 
 const LinkCard = props => {
     const {
@@ -8,17 +8,30 @@ const LinkCard = props => {
         image = 'http://via.placeholder.com/186x186',
         address,
         title,
-        subtitle = 'implant specialista',
+        subtitle,
+        size,
+        type,
     } = props;
 
     return (
         <Box minWidth="186px" width="100%">
             <Box size="186px" position="relative" borderRadius="4px">
-                <Image borderRadius="4px" src={image} alt={title} />
+                <Box
+                    pb={type === 'rectangle' ? '75%' : '100%'}
+                    position="relative"
+                >
+                    <Image
+                        position="absolute"
+                        borderRadius="4px"
+                        src={image}
+                        height={props.height}
+                        alt={title}
+                    />
+                </Box>
                 {address && (
-                    <Box
+                    <Flex
                         pb={4}
-                        pl={5}
+                        pl={10}
                         pr={3}
                         pt={6}
                         width="100%"
@@ -27,16 +40,17 @@ const LinkCard = props => {
                         position="absolute"
                         bottom="0"
                         bg="rgba(242, 242, 242, 0.7)"
+                        alignItems="center"
                     >
                         <Text
-                            fontSize={1}
+                            fontSize={size === 'big' ? 3 : 1}
                             color="text.black"
                             lineHeight="1.29"
                             letterSpacing="-0.5px"
                         >
                             {address}
                         </Text>
-                    </Box>
+                    </Flex>
                 )}
             </Box>
 
@@ -44,7 +58,7 @@ const LinkCard = props => {
                 <Text
                     color="text.black"
                     lineHeight="1.22"
-                    fontSize={2}
+                    fontSize={size === 'big' ? 3 : 2}
                     letterSpacing="-0.8px"
                 >
                     <Truncate lines={1}>{title}</Truncate>

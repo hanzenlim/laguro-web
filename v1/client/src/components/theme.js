@@ -17,6 +17,7 @@ export default {
             gray: '#c7c7c7',
             facebookBlue: '#3B5998',
             googleBlue: '#4285F4',
+            white: '#ffffff',
         },
         divider: {
             white: '#ffffff',
@@ -41,8 +42,9 @@ export default {
             white: '#ffffff',
         },
         icon: {
-            white: '#FFFFFF',
+            white: '#ffffff',
             black: '#303549',
+            green: '#50e3c2',
         },
         loading: {
             green: '#50e3c2',

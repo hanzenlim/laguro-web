@@ -67,7 +67,7 @@ const FeaturedListView = () => (
         <StyledSpecialtyContainer data-name="specialties">
             {specialties.map((item, index) => (
                 <Box width="405px" key={index} mr="32px" mb="40px">
-                    <LinkCard {...item} />
+                    <LinkCard {...item} type="rectangle" />
                 </Box>
             ))}
         </StyledSpecialtyContainer>

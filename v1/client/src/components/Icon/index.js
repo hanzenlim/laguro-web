@@ -1,16 +1,34 @@
 import React from 'react';
 import { Icon as AntdIcon } from 'antd';
 import styled from 'styled-components';
-import { space, propTypes } from 'styled-system';
+import {
+    color,
+    space,
+    width,
+    height,
+    left,
+    right,
+    position,
+    cursor,
+    propTypes,
+} from 'styled-system';
 import LocationPin from './LocationPin';
 import Calendar from './Calendar';
 import LocationPinWithBackground from './LocationPinWithBackground';
+import LeftArrow from './LeftArrow';
+import RightArrow from './RightArrow';
 
 const Icon = props => {
-    const { type, ...rest } = props;
+    const { type } = props;
 
     let ReturnIcon;
     switch (type) {
+        case 'leftArrow':
+            ReturnIcon = LeftArrow;
+            break;
+        case 'rightArrow':
+            ReturnIcon = RightArrow;
+            break;
         case 'locationPin':
             ReturnIcon = LocationPin;
             break;
@@ -25,10 +43,22 @@ const Icon = props => {
     }
 
     const StyledIcon = styled(ReturnIcon)`
-        ${space};
+        ${space} ${width} ${height} ${position} ${color} ${left} ${right} ${cursor};
     `;
 
-    return <StyledIcon {...rest} type={type} />;
+    const StyledIconContainer = styled.div`
+        ${!props.isButton &&
+            (cssProps =>
+                cssProps.color
+                    ? color
+                    : `color: ${cssProps.theme.colors.icon.black}`)};
+    `;
+
+    return (
+        <StyledIconContainer>
+            <StyledIcon {...props} />{' '}
+        </StyledIconContainer>
+    );
 };
 
 Icon.propTypes = {
