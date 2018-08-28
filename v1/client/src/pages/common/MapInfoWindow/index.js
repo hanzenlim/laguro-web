@@ -2,7 +2,7 @@ import React from 'react';
 import { Popup } from 'react-map-gl';
 import styled from 'styled-components';
 
-import { Flex, Box, Text, Image } from '../../../components';
+import { Flex, Box, Text, Image, Truncate } from '../../../components';
 
 const StyledPopup = styled(Popup)`
     z-index: ${props => props.theme.zIndex.overlay};
@@ -36,22 +36,21 @@ const MapInfoWindow = props => {
                         lineHeight="1.29"
                         color="text.black"
                         letterSpacing="-0.8px"
-                        truncate
                     >
-                        {title}
+                        <Truncate lines={1}>{title}</Truncate>
                     </Text>
+
                     <Text
                         fontWeight="bold"
-                        italic
+                        fontStyle="italic"
                         fontSize={1}
                         color="text.black"
                         lineHeight="1"
-                        truncate
                     >
-                        {subtitle}
+                        <Truncate lines={1}>{subtitle}</Truncate>
                     </Text>
                     <Text color="text.black" lineHeight="1.29" fontSize={1}>
-                        {body}
+                        <Truncate lines={2}>{body}</Truncate>
                     </Text>
                 </Box>
             </Flex>

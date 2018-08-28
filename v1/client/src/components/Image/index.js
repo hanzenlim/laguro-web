@@ -1,8 +1,9 @@
 import system from 'system-components';
+import Img from 'react-image';
 
 const Image = system(
     {
-        is: 'img',
+        is: Img,
         display: 'block',
         maxWidth: '100%',
         height: 'auto',

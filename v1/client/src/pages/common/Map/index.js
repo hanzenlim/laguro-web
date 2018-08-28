@@ -37,7 +37,7 @@ class Map extends Component {
                 height: 0,
                 latitude: 37.7577,
                 longitude: -122.4376,
-                zoom: 8,
+                zoom: this.props.zoom || 8,
             },
         };
     }
@@ -55,14 +55,16 @@ class Map extends Component {
         this.setState({
             viewport: {
                 ...this.state.viewport,
-                width: 623,
-                height: 932,
+                width: this.props.width || 623,
+                height: this.props.height || 932,
             },
         });
     };
 
     // NOTE: THIS METHOD WILL BE REMOVED ONCE WE SAVE LOCATION COORDINATES TO DB
     geocodeLocationList = () => {
+        if (!this.props.data) return null;
+
         this.props.data.map(query => {
             fetch(
                 `https://api.mapbox.com/geocoding/v5/mapbox.places/${
@@ -100,6 +102,8 @@ class Map extends Component {
 
             return null;
         });
+
+        return null;
     };
 
     renderPopup = () => {

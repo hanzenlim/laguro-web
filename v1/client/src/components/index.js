@@ -12,6 +12,8 @@ import Pagination from './Pagination';
 import DatePicker from './DatePicker';
 import Autocomplete from './Autocomplete';
 import Loading from './Loading';
+import Truncate from './Truncate';
+import Sticky from './Sticky';
 
 export {
     Box,
@@ -28,4 +30,6 @@ export {
     DatePicker,
     Autocomplete,
     Loading,
+    Truncate,
+    Sticky,
 };

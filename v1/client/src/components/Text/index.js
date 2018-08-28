@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import system from 'system-components';
-import { truncate } from '../utils';
 
 const Text = system(
     {
@@ -50,7 +49,6 @@ const Text = system(
 );
 
 const StyledText = styled(Text)`
-    ${props => props.truncate && truncate('auto')};
     ${props => props.fontStyle && `font-style: ${props.fontStyle}`};
 `;
 
