@@ -3,6 +3,7 @@ import { Query } from 'react-apollo';
 // scanDentistsQuery is for testing purposes only
 import { scanDentistsQuery } from './queries';
 import DentistSearchPageView from './view';
+import { Loading } from '../../components';
 
 class OfficeSearchPageContainer extends PureComponent {
     render() {
@@ -10,7 +11,7 @@ class OfficeSearchPageContainer extends PureComponent {
             <Query query={scanDentistsQuery}>
                 {({ loading, error, data }) => {
                     if (loading) {
-                        return <div>Loading...</div>;
+                        return <Loading />;
                     }
 
                     if (error) {
