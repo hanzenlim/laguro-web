@@ -1,3 +1,4 @@
+import styled from 'styled-components';
 import system from 'system-components';
 import Img from 'react-image';
 
@@ -50,6 +51,10 @@ const Image = system(
     'left'
 );
 
-Image.displayName = 'Image';
+const StyledImage = styled(Image)`
+    ${props => (props.objectFit ? `object-fit: ${props.objectFit}` : '')};
+`;
 
-export default Image;
+StyledImage.displayName = 'Image';
+
+export default StyledImage;

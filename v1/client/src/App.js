@@ -42,6 +42,11 @@ const DentistDetailsPage = Loadable({
     loading: () => null,
 });
 
+const OfficeDetailsPage = Loadable({
+    loader: () => import('./pages/OfficeDetailsPage'),
+    loading: () => null,
+});
+
 class App extends Component {
     render() {
         return (
@@ -71,6 +76,10 @@ class App extends Component {
                                     <Route
                                         path="/dentist/:id"
                                         component={DentistDetailsPage}
+                                    />
+                                    <Route
+                                        path="/office/:id"
+                                        component={OfficeDetailsPage}
                                     />
                                     <Route path="/" component={HomePage} />
                                     {/* Catch all unmatched routes. */}

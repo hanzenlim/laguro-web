@@ -2,3 +2,12 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* TODO: Add focus visible from https://nelo.is/writing/styling-better-focus-states/ */
+*:focus {
+  outline: none;
+}
+
+[role="button"] {
+  cursor: pointer;
+}

@@ -17,6 +17,7 @@ import Sticky from './Sticky';
 import Form from './Form';
 import Modal from './Modal';
 import Popover from './Popover';
+import Carousel from './Carousel';
 
 export {
     Box,
@@ -38,4 +39,5 @@ export {
     Form,
     Modal,
     Popover,
+    Carousel,
 };
