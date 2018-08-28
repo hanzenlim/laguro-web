@@ -1,69 +1,89 @@
 import React from 'react';
+import styled from 'styled-components';
 import logo from '../../../components/Image/logo.svg';
 import whiteLogo from '../../../components/Image/whiteLogo.svg';
-import { Flex, Link, Container, Text, Image } from '../../../components';
+import {
+    Flex,
+    Link,
+    Container,
+    Text,
+    Image,
+    Popover,
+} from '../../../components';
+import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
+import LoginModal from '../../../components/Modal/LoginModal';
 
-const loginButton = (auth, onLandingPage) => {
-    if (!auth) {
-        return (
-            <Link ml={60} to={'/'}>
-                <Text
-                    color={onLandingPage ? 'text.white' : 'text.black'}
-                    fontSize={1}
-                    mb={4}
-                >
-                    sign in
-                </Text>
-            </Link>
-        );
+const NavBarLink = styled(Link)`
+    padding: 10px;
+    border-bottom: 7px solid rgba(0, 0, 0, 0);
+    margin-left: 60px;
+
+    &&:hover {
+        border-color: #50e3c2;
+        text-decoration: none;
     }
-    // user IS logged in
-    return (
-        <Link ml={60} to={'/'}>
+`;
+
+const ProfileMenu = ({ logout }) => (
+    <Flex flexDirection="column">
+        <Link to={'/'}>edit profile</Link>
+        <Link to={'/'}>invite friends</Link>
+        <Link to={'/'}>become a dentist</Link>
+        <Link to={'/'}>account settings</Link>
+        <Link to={'#'} onClick={logout}>
+            log out
+        </Link>
+    </Flex>
+);
+
+const ProfileButton = ({ auth, openLoginModal, logout, onLandingPage }) =>
+    auth ? (
+        <Popover
+            placement="bottomRight"
+            content={<ProfileMenu logout={logout} />}
+            arrowPointAtCenter
+        >
+            <Image src={defaultUserImage} width={70} height={70} ml={60} />
+        </Popover>
+    ) : (
+        <NavBarLink onClick={openLoginModal} to={'#'}>
             <Text
                 color={onLandingPage ? 'text.white' : 'text.black'}
                 fontSize={1}
                 mb={4}
             >
-                sign out
+                log in
             </Text>
-        </Link>
+        </NavBarLink>
     );
-};
 
-const profileButton = (auth, onLandingPage) => {
-    if (!auth) {
-        return null;
-    }
-
-    const firstName = auth && auth.firstName;
-    const lastName = auth && auth.lastName;
-
-    return (
-        <Link ml={60} to={'/'}>
-            <Text
-                color={onLandingPage ? 'text.white' : 'text.black'}
-                fontSize={1}
-                mb={4}
-            >{`${firstName.toLowerCase()} ${lastName.toLowerCase()}`}</Text>
-        </Link>
-    );
-};
-
-const Header = props => (
+const Header = ({
+    onLandingPage,
+    openLoginModal,
+    closeModal,
+    visibleModal,
+    login,
+    logout,
+    auth,
+}) => (
     <Flex
         is="header"
         width={1}
         height={120}
-        bg={props.onLandingPage ? 'rgba(0, 0, 0, 0.0)' : '#fff'}
-        borderBottom={props.onLandingPage ? 'none' : '1px solid'}
+        bg={onLandingPage ? 'rgba(0, 0, 0, 0.0)' : '#fff'}
+        borderBottom={onLandingPage ? 'none' : '1px solid'}
         borderColor="divider.gray"
         flex="0 0 auto"
         alignItems="center"
         justifyContent="center"
         zIndex={1}
-        position={props.onLandingPage ? 'absolute' : 'relative'}
+        position={onLandingPage ? 'absolute' : 'relative'}
     >
+        <LoginModal
+            login={login}
+            closeModal={closeModal}
+            visible={visibleModal === 'login'}
+        />
         <Container
             display="flex"
             flexDirection="row"
@@ -73,24 +93,26 @@ const Header = props => (
             <Link to={'/'}>
                 <Image
                     height={60}
-                    src={props.onLandingPage ? whiteLogo : logo}
+                    src={onLandingPage ? whiteLogo : logo}
                     alt="logo"
                 />
             </Link>
-            <Flex>
-                <Link ml={60} to={'/landlord-onboarding/add-office'}>
+            <Flex alignItems="center">
+                <NavBarLink to={'/landlord-onboarding/add-office'}>
                     <Text
-                        color={
-                            props.onLandingPage ? 'text.white' : 'text.black'
-                        }
+                        color={onLandingPage ? 'text.white' : 'text.black'}
                         fontSize={1}
                         mb={4}
                     >
                         rent your dental office
                     </Text>
-                </Link>
-                {profileButton(props.auth, props.onLandingPage)}
-                {loginButton(props.auth, props.onLandingPage)}
+                </NavBarLink>
+                <ProfileButton
+                    auth={auth}
+                    openLoginModal={openLoginModal}
+                    logout={logout}
+                    onLandingPage={onLandingPage}
+                />
             </Flex>
         </Container>
     </Flex>

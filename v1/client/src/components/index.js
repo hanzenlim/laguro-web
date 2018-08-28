@@ -14,6 +14,9 @@ import Autocomplete from './Autocomplete';
 import Loading from './Loading';
 import Truncate from './Truncate';
 import Sticky from './Sticky';
+import Form from './Form';
+import Modal from './Modal';
+import Popover from './Popover';
 
 export {
     Box,
@@ -32,4 +35,7 @@ export {
     Loading,
     Truncate,
     Sticky,
+    Form,
+    Modal,
+    Popover,
 };

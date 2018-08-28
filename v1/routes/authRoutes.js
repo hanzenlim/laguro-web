@@ -14,39 +14,35 @@ const {
     useResetPasswordRequestQuery,
     useResetPasswordRequestVariable,
     getResetPasswordRequestQuery,
-    getResetPasswordRequestVariable
+    getResetPasswordRequestVariable,
 } = serverDataLoader;
 
 const authRoutes = app => {
-    app.post('/api/signup', (req, res, next) => {
-        return passport.authenticate('local-signup', (err, user, info) => {
-            if (err) return next(err);
+    app.post('/api/signup', (req, res, next) =>
+        passport.authenticate('local-signup', (err, user, info) => {
+            if (err) {
+                return res.status(403).json(info);
+            }
 
-            req.logIn(user, err => {
-                if (err) {
-                    return res.status(403).json(info);
-                }
-
-                res.cookie('userId', user.id, { maxAge: 2592000000 });
-                return res.status(200).json(user);
+            res.cookie('user', JSON.stringify(user), {
+                maxAge: 2592000000,
             });
-        })(req, res, next);
-    });
+            return res.status(200).json(user);
+        })(req, res, next)
+    );
 
-    app.post('/api/login', (req, res, next) => {
-        return passport.authenticate('local-login', (err, user, info) => {
-            if (err) return next(err);
+    app.post('/api/login', (req, res, next) =>
+        passport.authenticate('local-login', (err, user, info) => {
+            if (err || !user) {
+                return res.json({ status: 403, info });
+            }
 
-            req.logIn(user, err => {
-                if (err) {
-                    return res.status(403).json(info);
-                }
-
-                res.cookie('userId', user.id, { maxAge: 2592000000 });
-                return res.status(200).json(user);
+            res.cookie('user', JSON.stringify(user), {
+                maxAge: 2592000000,
             });
-        })(req, res, next);
-    });
+            return res.json({ status: 200, user });
+        })(req, res, next)
+    );
 
     app.post('/api/forgot-password', async (req, res) => {
         const username = req.body.email;
@@ -62,7 +58,7 @@ const authRoutes = app => {
             if (getUserByEmail && getUserByEmail.googleId) {
                 return res.status(403).json({
                     message:
-                        'Either the credentials you supplied are invalid, or you signed up using an OpenID provider, such as Google.'
+                        'Either the credentials you supplied are invalid, or you signed up using an OpenID provider, such as Google.',
                 });
             }
 
@@ -72,13 +68,12 @@ const authRoutes = app => {
             );
 
             return res.status(200).json({
-                message: 'Email sent.'
-            });
-        } else {
-            return res.status(403).json({
-                message: 'Invalid login credentials.'
+                message: 'Email sent.',
             });
         }
+        return res.status(403).json({
+            message: 'Invalid login credentials.',
+        });
     });
 
     // Checks status of reset password request.
@@ -95,27 +90,27 @@ const authRoutes = app => {
 
         if (getResetPasswordRequest.status === 'EXPIRED') {
             return res.status(400).json({
-                message: 'Reset password request already expired.'
+                message: 'Reset password request already expired.',
             });
         }
 
         if (getResetPasswordRequest.status === 'USED') {
             return res.status(400).json({
-                message: 'Reset password request already used.'
+                message: 'Reset password request already used.',
             });
         }
 
         bcrypt.genSalt(10, async (err, salt) => {
             if (err) {
                 return res.status(403).json({
-                    message: 'Invalid request.'
+                    message: 'Invalid request.',
                 });
             }
 
             bcrypt.hash(password, salt, async (err, hashedPassword) => {
                 if (err) {
                     return res.status(403).json({
-                        message: 'Invalid request.'
+                        message: 'Invalid request.',
                     });
                 }
 
@@ -129,14 +124,14 @@ const authRoutes = app => {
                 if (useResetPasswordRequest) {
                     if (useResetPasswordRequest.status === 'EXPIRED') {
                         res.status(400).json({
-                            message: 'Reset password request already expired.'
+                            message: 'Reset password request already expired.',
                         });
                     } else {
                         return res.status(200).json(useResetPasswordRequest);
                     }
                 } else {
                     return res.status(400).json({
-                        message: 'Invalid request.'
+                        message: 'Invalid request.',
                     });
                 }
             });
@@ -153,7 +148,7 @@ const authRoutes = app => {
         },
         passport.authenticate('google', {
             prompt: 'select_account',
-            scope: ['profile', 'email']
+            scope: ['profile', 'email'],
         })
     );
 
@@ -162,19 +157,12 @@ const authRoutes = app => {
         '/auth/google/callback',
         passport.authenticate('google'),
         (req, res) => {
-            res.cookie('userId', req.user.id, { maxAge: 2592000000 });
+            res.cookie('user', JSON.stringify(req.user), {
+                maxAge: 2592000000,
+            });
             res.redirect(req.session.returnTo);
         }
     );
-
-    // visiting this route clears logged in user
-    app.get('/api/logout', (req, res) => {
-        req.logout();
-
-        // Clears the user id cookie.
-        res.cookie('userId', '');
-        res.redirect('/');
-    });
 };
 
 export default authRoutes;

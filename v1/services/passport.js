@@ -22,9 +22,7 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const LocalStrategy = require('passport-local').Strategy;
 
 // Define passport functions
-passport.serializeUser((user, done) => {
-    return done(null, user.id);
-});
+passport.serializeUser((user, done) => done(null, user.id));
 
 passport.deserializeUser(async (id, done) => {
     const result = await makeQuery(getUserQuery, getUserVariable(id));
@@ -37,7 +35,7 @@ passport.use(
             clientID: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
             callbackURL: '/auth/google/callback',
-            proxy: true
+            proxy: true,
         },
 
         async (accessToken, refreshToken, profile, done) => {
@@ -87,7 +85,7 @@ passport.use(
 
             if (getUserByEmail) {
                 return done(null, false, {
-                    message: 'This email address is already registered.'
+                    message: 'This email address is already registered.',
                 });
             }
 
@@ -120,7 +118,11 @@ passport.use(
 passport.use(
     'local-login',
     new LocalStrategy(
-        { passReqToCallback: true },
+        {
+            passReqToCallback: true,
+            usernameField: 'email',
+            passwordField: 'password',
+        },
         async (req, username, password, done) => {
             const result = await makeQuery(
                 getUserByEmailQuery,
@@ -132,14 +134,14 @@ passport.use(
 
             if (!getUserByEmail) {
                 return done(null, false, {
-                    message: 'Invalid username/password.'
+                    message: 'Invalid username/password.',
                 });
             }
 
             if (getUserByEmail && getUserByEmail.googleId) {
                 return done(null, false, {
                     message:
-                        'Either the credentials you supplied are invalid, or you signed up using an OpenID provider, such as Google.'
+                        'Either the credentials you supplied are invalid, or you signed up using an OpenID provider, such as Google.',
                 });
             }
 
@@ -150,7 +152,7 @@ passport.use(
                 )
             ) {
                 return done(null, false, {
-                    message: 'Invalid username/password.'
+                    message: 'Invalid username/password.',
                 });
             }
 

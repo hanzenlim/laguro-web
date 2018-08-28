@@ -2,17 +2,32 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button as AntdButton } from 'antd';
 import styled from 'styled-components';
-import { fontSize, height, propTypes, space, width } from 'styled-system';
+import {
+    fontSize,
+    height,
+    propTypes,
+    space,
+    width,
+    color,
+    borders,
+} from 'styled-system';
 
 const StyledButton = styled(AntdButton)`
-    &&.ant-btn-primary {
-        ${width};
-        ${height};
+
+    && {
         padding: 0 10px;
         border-radius: 4px;
+        ${space} ${width} ${height} ${borders};
+    }
+
+    &&.ant-btn-primary {
+        border: solid 1px #f2f2f2;
         color: ${props => props.theme.colors.text.white};
         background-color: ${props => props.theme.colors.button.green};
-        border: solid 1px #f2f2f2;
+    }
+
+    &&.ant-btn-default {
+        ${space} ${color};
     }
 
     &&.ant-btn-primary.disabled,
@@ -40,21 +55,20 @@ const StyledButton = styled(AntdButton)`
     }
 
     i {
-        ${fontSize};
+        ${fontSize} ${color};
     }
-
-    ${space};
 `;
 
 StyledButton.propTypes = {
     ...propTypes.space,
+    ...propTypes.color,
 };
 
 const Button = props => {
-    const { children, ...rest } = props;
+    const { children, type = 'primary', ...rest } = props;
 
     return (
-        <StyledButton {...rest} type="primary">
+        <StyledButton {...rest} type={type}>
             {children}
         </StyledButton>
     );
@@ -63,11 +77,12 @@ const Button = props => {
 Button.defaultProps = {
     fontSize: 3,
     height: '50px',
+    color: 'text.white',
 };
 
 Button.propTypes = {
     height: PropTypes.oneOf(['50px', '80px']),
-    fontSize: PropTypes.oneOf([2, 3]),
+    fontSize: PropTypes.oneOf([1, 2, 3]),
 };
 
 export default Button;

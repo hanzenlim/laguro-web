@@ -42,16 +42,18 @@ module.exports.getUserByEmailQuery = `
     query getUserByEmail($email: String!) {
         getUserByEmail(email: $email) {
             id
-            googleId
             firstName
             lastName
+            imageUrl
+            dentistId
+            googleId
             password
         }
     }
 `;
 
 module.exports.getUserByGoogleIdVariable = id => ({
-    googleId: id.toString()
+    googleId: id.toString(),
 });
 
 module.exports.getResetPasswordRequestQuery = `
@@ -65,15 +67,15 @@ module.exports.getResetPasswordRequestQuery = `
 `;
 
 module.exports.getUserVariable = id => ({
-    id: id.toString()
+    id: id.toString(),
 });
 
 module.exports.getUserByEmailVariable = email => ({
-    email: email
+    email,
 });
 
 module.exports.getResetPasswordRequestVariable = id => ({
-    id: id.toString()
+    id: id.toString(),
 });
 
 module.exports.createGoogleUserQuery = `
@@ -134,8 +136,8 @@ module.exports.createGoogleUserVariable = (
         lastName,
         googleId: id,
         email,
-        imageUrl: img
-    }
+        imageUrl: img,
+    },
 });
 
 module.exports.createLocalUserVariable = (
@@ -148,43 +150,43 @@ module.exports.createLocalUserVariable = (
         firstName,
         lastName,
         password,
-        email
-    }
+        email,
+    },
 });
 
 module.exports.updatePatientDocumentSignatureVariable = signatureRequestId => ({
     input: {
-        signatureRequestId: signatureRequestId
-    }
+        signatureRequestId,
+    },
 });
 
 module.exports.createResetPasswordRequestVariable = email => ({
     input: {
-        email
-    }
+        email,
+    },
 });
 
 module.exports.useResetPasswordRequestVariable = (id, token, password) => ({
     input: {
         id,
         token,
-        password
-    }
+        password,
+    },
 });
 
 module.exports.makeQuery = async (query, variables) => {
-    let result = await apolloFetch({
+    const result = await apolloFetch({
         query,
-        variables
+        variables,
     });
 
     return result;
 };
 
 module.exports.makeMutation = async (query, variables) => {
-    let result = await apolloFetch({
+    const result = await apolloFetch({
         query,
-        variables
+        variables,
     });
 
     return result;

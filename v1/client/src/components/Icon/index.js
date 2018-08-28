@@ -28,7 +28,7 @@ const Icon = props => {
         ${space};
     `;
 
-    return <StyledIcon {...rest} />;
+    return <StyledIcon {...rest} type={type} />;
 };
 
 Icon.propTypes = {

@@ -14,6 +14,8 @@ export default {
         button: {
             green: '#50e3c2',
             gray: '#c7c7c7',
+            facebookBlue: '#3B5998',
+            googleBlue: '#4285F4',
         },
         divider: {
             white: '#ffffff',
