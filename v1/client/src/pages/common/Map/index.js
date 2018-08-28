@@ -5,9 +5,8 @@ import fetch from 'unfetch';
 import 'mapbox-gl/dist/mapbox-gl.css';
 // import { mapBoxApiKey } from '../../../config/keys';
 
-import { Box } from '../../../components';
+import { Box, Icon } from '../../../components';
 
-import MapPin from '../MapPin';
 import MapInfoWindow from '../MapInfoWindow';
 
 const StyledMarkerContainer = styled(Marker)`
@@ -160,7 +159,11 @@ class Map extends Component {
                         data-marker={JSON.stringify(marker)}
                         onClick={this.showPopup}
                     />
-                    <MapPin size={30} />
+                    <Icon
+                        type="locationPinWithBackground"
+                        width="50px"
+                        height="50px"
+                    />
                 </StyledMarkerContainer>
             );
         });
