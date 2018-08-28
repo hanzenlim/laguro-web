@@ -61,10 +61,10 @@ const StyledLoadingComponent = styled.div`
 
 const Loading = () => (
     <StyledLoadingComponent>
-        <div class="loading">
-            <div class="bounce1" />
-            <div class="bounce2" />
-            <div class="bounce3" />
+        <div className="loading">
+            <div className="bounce1" />
+            <div className="bounce2" />
+            <div className="bounce3" />
         </div>
     </StyledLoadingComponent>
 );
