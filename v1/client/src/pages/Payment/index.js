@@ -8,7 +8,6 @@ class Payment extends PureComponent {
     render() {
         const { reservationId } = queryString.parse(this.props.location.search);
 
-        alert(reservationId);
         return (
             <Query
                 query={getReservationQuery}

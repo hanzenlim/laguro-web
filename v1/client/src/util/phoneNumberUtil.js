@@ -1,5 +1,12 @@
 import { conformToMask } from 'react-text-mask';
 
+// Removes spaces, parentheses and dashes
+export const trimPhoneNumber = phoneNumber => {
+    if (!phoneNumber) return '';
+
+    return phoneNumber.replace(/[- )(]/g, '').trim();
+};
+
 export const PHONE_NUMBER_MASK = [
     '(',
     /[1-9]/,
@@ -48,11 +55,4 @@ export const maskPhoneNumber = phoneNumber => {
     );
 
     return conformedValue;
-};
-
-// Removes spaces, parentheses and dashes
-export const trimPhoneNumber = phoneNumber => {
-    if (!phoneNumber) return '';
-
-    return phoneNumber.replace(/[- )(]/g, '').trim();
 };
