@@ -8,9 +8,7 @@
         "npm": "5.3.0"
     },
     "scripts": {
-        "prettier:fix": "eslint --ignore-path .eslintignore --fix client/src",
-        "eslint:fix": "eslint client/src server.js models routes services --fix",
-        "precommit": "npm run prettier:fix"
+        "precommit": "npm run prettier:fix --prefix v1"
     },
     "author": "currymich",
     "license": "ISC",
