@@ -3,7 +3,6 @@ export default {
         text: {
             white: '#ffffff',
             black: '#303549',
-            semiBlack: '#524b59',
             gray: '#c7c7c7',
             green: '#50e3c2',
         },

@@ -1,7 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { space } from 'styled-system';
+import { arrayOf, shape, bool, string, number } from 'prop-types';
 
 import {
     Box,
@@ -13,27 +11,33 @@ import {
     Loading,
 } from '../../../components';
 
-const StyledRating = styled(Rating)`
-    &&.ant-rate {
-        display: inline-block;
-        vertical-align: middle;
-    }
-    ${space};
-`;
-
-const ShowMore = () => (
-    <Text
-        color="text.green"
-        fontWeight="bold"
-        display="inline-block"
-        css="cursor:pointer;"
-    >
-        show more
-    </Text>
-);
-
 const ReviewContianer = props => {
-    const { reviews, loading } = props;
+    const { reviews, loading, totalRating, reviewsCount } = props;
+
+    const renderReviewsStats = (
+        <Flex alignItems="center" justifyContent="space-between" pt={40}>
+            <Flex alignItems="center">
+                <Flex alignItems="center" justifyContent="center">
+                    <Rating disabled mr={10} value={totalRating} size="18px" />
+                </Flex>
+                <Text
+                    display="inline"
+                    lineHeight="34px"
+                    fontSize={4}
+                >{`${reviewsCount} Review${reviewsCount > 1 ? 's' : ''}`}</Text>
+            </Flex>
+            <Text
+                is="a"
+                color="text.green"
+                fontSize={1}
+                fontWeight="bold"
+                lineHeight="22px"
+                alignSelf="flex-end"
+            >
+                add review
+            </Text>
+        </Flex>
+    );
 
     const renderReviews =
         reviews &&
@@ -51,28 +55,37 @@ const ReviewContianer = props => {
                         borderRadius="50%"
                         src={review.reviewer.imageUrl}
                     />
-                    <Box px={15}>
-                        <Text
-                            fontSize={18}
+                    <Box px={10}>
+                        <Flex
+                            alignItems="center"
+                            fontSize={2}
                             fontWeight="bold"
-                            color="text.semiBlack"
+                            color="text.black"
+                            lineHeight="22px"
                         >
-                            {`${review.reviewer.firstName} ${
-                                review.reviewer.lastName
-                            }`}
-                            <StyledRating
-                                disabled
-                                ml={15}
-                                value={review.rating}
-                            />
-                        </Text>
-                        <Text fontSize={14} color="text.semiBlack">
+                            {`${
+                                review.reviewer.firstName
+                            } ${review.reviewer.lastName.charAt(0)}.`}
+                            <Flex alignItems="center" justifyContent="center">
+                                <Rating
+                                    disabled
+                                    ml={10}
+                                    value={review.rating}
+                                />
+                            </Flex>
+                        </Flex>
+                        <Text
+                            fontSize={1}
+                            color="text.black"
+                            lineHeight="22px"
+                            width={720}
+                        >
                             {review.dateCreated}
                         </Text>
                     </Box>
                 </Flex>
-                <Text mt={15} fontSize={14} color="text.semiBlack">
-                    <Truncate lines={3} toggle={<ShowMore />}>
+                <Text mt={4} fontSize={1} color="text.black" lineHeight="22px">
+                    <Truncate lines={3} hasToggle>
                         {review.text}
                     </Truncate>
                 </Text>
@@ -81,14 +94,33 @@ const ReviewContianer = props => {
 
     return (
         <Box width={720} mx="auto">
+            {!loading && renderReviewsStats}
             {loading ? <Loading /> : renderReviews}
         </Box>
     );
 };
 
 ReviewContianer.propTypes = {
-    loading: PropTypes.bool.isRequired,
-    reviews: PropTypes.array,
+    loading: bool.isRequired,
+    reviews: arrayOf(
+        shape({
+            id: string,
+            reviewer: {
+                id: string,
+                firstName: string,
+                lastName: string,
+                imageUrl: string,
+            },
+            text: string,
+            rating: number,
+            dateCreated: string,
+        })
+    ),
+};
+
+ReviewContianer.defaultProps = {
+    totalRating: 0,
+    reviewsCount: 0,
 };
 
 export default ReviewContianer;
