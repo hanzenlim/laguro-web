@@ -20,14 +20,14 @@ const {
 const authRoutes = app => {
     app.post('/api/signup', (req, res, next) =>
         passport.authenticate('local-signup', (err, user, info) => {
-            if (err) {
-                return res.status(403).json(info);
+            if (err || !user) {
+                return res.json({ status: 403, info });
             }
 
             res.cookie('user', JSON.stringify(user), {
                 maxAge: 2592000000,
             });
-            return res.status(200).json(user);
+            return res.json({ status: 200, user });
         })(req, res, next)
     );
 

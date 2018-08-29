@@ -43,6 +43,7 @@ module.exports.getUserByEmailQuery = `
         getUserByEmail(email: $email) {
             id
             firstName
+            middleName
             lastName
             imageUrl
             dentistId
@@ -93,7 +94,13 @@ module.exports.createLocalUserQuery = `
     mutation createLocalUser($input: CreateLocalUserInput!) {
         createLocalUser(input: $input) {
             id
-            email
+            firstName
+            middleName
+            lastName
+            imageUrl
+            dentistId
+            googleId
+            password
         }
     }
 `;

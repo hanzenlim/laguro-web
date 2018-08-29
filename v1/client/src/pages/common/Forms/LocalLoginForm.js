@@ -1,13 +1,14 @@
 import React from 'react';
-import { Form, Input } from '..';
-import FormItem from './FormItem';
-import SubmitButton from './SubmitButton';
+import { Form, Input } from '../../../components';
+
+const { SubmitButton, FormItem } = Form;
 
 const LocalLoginForm = props => (
     <Form layout="vertical" {...props}>
         <FormItem
             name="email"
             label="email"
+            mb={14}
             rules={[
                 {
                     required: true,
@@ -23,6 +24,7 @@ const LocalLoginForm = props => (
         <FormItem
             name="password"
             label="password"
+            mb={14}
             rules={[
                 {
                     required: true,

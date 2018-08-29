@@ -20,15 +20,15 @@ const StyledButton = styled(AntdButton)`
         ${space} ${width} ${height} ${borders};
     }
 
-    &&.ant-btn-primary {
-        border: solid 1px #f2f2f2;
-        color: ${props => props.theme.colors.text.white};
-        background-color: ${props => props.theme.colors.button.green};
-    }
+        &&.ant-btn-primary {
+            border: solid 1px #f2f2f2;
+            color: ${props => props.theme.colors.text.white};
+            background-color: ${props => props.theme.colors.button.green};
+        }
 
-    &&.ant-btn-default {
-        ${space} ${color};
-    }
+        &&.ant-btn-default {
+            ${color};
+        }
 
     &&.ant-btn-primary.disabled,
     &&.ant-btn-primary[disabled],

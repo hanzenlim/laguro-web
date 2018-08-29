@@ -3,7 +3,7 @@ import { Query } from 'react-apollo';
 import cookies from 'browser-cookies';
 import { message } from 'antd';
 
-import Header from './view';
+import HeaderView from './view';
 import { getUserQuery } from './queries';
 import request from '../../../util/fetchUtil';
 import { ACTIVE_USER } from '../../../util/strings';
@@ -52,17 +52,21 @@ const HeaderContainer = () => (
             const openLoginModal = () => {
                 client.writeData({ data: { visibleModal: 'login' } });
             };
+            const openRegistrationModal = () => {
+                client.writeData({ data: { visibleModal: 'register' } });
+            };
             const closeModal = () => {
                 client.writeData({ data: { visibleModal: null } });
             };
 
             return (
-                <Header
+                <HeaderView
                     auth={data.activeUser}
                     visibleModal={data.visibleModal}
                     login={login}
                     logout={logout}
                     openLoginModal={openLoginModal}
+                    openRegistrationModal={openRegistrationModal}
                     closeModal={closeModal}
                     onLandingPage={onLandingPage}
                 />

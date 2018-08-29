@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import styled from 'styled-components';
 import logo from '../../../components/Image/logo.svg';
 import whiteLogo from '../../../components/Image/whiteLogo.svg';
@@ -11,14 +11,16 @@ import {
     Popover,
 } from '../../../components';
 import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
-import LoginModal from '../../../components/Modal/LoginModal';
+import LoginModal from '../Modals/LoginModal';
+import RegistrationModal from '../Modals/RegistrationModal';
 
 const NavBarLink = styled(Link)`
     padding: 10px;
     border-bottom: 7px solid rgba(0, 0, 0, 0);
     margin-left: 60px;
 
-    &&:hover {
+    &&:hover,
+    &&:focus {
         border-color: #50e3c2;
         text-decoration: none;
     }
@@ -36,7 +38,13 @@ const ProfileMenu = ({ logout }) => (
     </Flex>
 );
 
-const ProfileButton = ({ auth, openLoginModal, logout, onLandingPage }) =>
+const ProfileButton = ({
+    auth,
+    openLoginModal,
+    openRegistrationModal,
+    logout,
+    onLandingPage,
+}) =>
     auth ? (
         <Popover
             placement="bottomRight"
@@ -46,20 +54,32 @@ const ProfileButton = ({ auth, openLoginModal, logout, onLandingPage }) =>
             <Image src={defaultUserImage} width={70} height={70} ml={60} />
         </Popover>
     ) : (
-        <NavBarLink onClick={openLoginModal} to={'#'}>
-            <Text
-                color={onLandingPage ? 'text.white' : 'text.black'}
-                fontSize={1}
-                mb={4}
-            >
-                log in
-            </Text>
-        </NavBarLink>
+        <Fragment>
+            <NavBarLink onClick={openRegistrationModal} to={'#'}>
+                <Text
+                    color={onLandingPage ? 'text.white' : 'text.black'}
+                    fontSize={1}
+                    mb={4}
+                >
+                    sign up
+                </Text>
+            </NavBarLink>
+            <NavBarLink onClick={openLoginModal} to={'#'}>
+                <Text
+                    color={onLandingPage ? 'text.white' : 'text.black'}
+                    fontSize={1}
+                    mb={4}
+                >
+                    log in
+                </Text>
+            </NavBarLink>
+        </Fragment>
     );
 
 const Header = ({
     onLandingPage,
     openLoginModal,
+    openRegistrationModal,
     closeModal,
     visibleModal,
     login,
@@ -81,8 +101,13 @@ const Header = ({
     >
         <LoginModal
             login={login}
+            openRegistrationModal={openRegistrationModal}
             closeModal={closeModal}
             visible={visibleModal === 'login'}
+        />
+        <RegistrationModal
+            closeModal={closeModal}
+            visible={visibleModal === 'register'}
         />
         <Container
             display="flex"
@@ -110,6 +135,7 @@ const Header = ({
                 <ProfileButton
                     auth={auth}
                     openLoginModal={openLoginModal}
+                    openRegistrationModal={openRegistrationModal}
                     logout={logout}
                     onLandingPage={onLandingPage}
                 />

@@ -73,7 +73,11 @@ passport.use(
 passport.use(
     'local-signup',
     new LocalStrategy(
-        { passReqToCallback: true },
+        {
+            passReqToCallback: true,
+            usernameField: 'email',
+            passwordField: 'password',
+        },
         async (req, username, password, done) => {
             const result = await makeQuery(
                 getUserByEmailQuery,
@@ -90,25 +94,20 @@ passport.use(
             }
 
             bcrypt.genSalt(10, async (err, salt) => {
-                if (err) return done(err);
+                if (err)
+                    return done(null, false, {
+                        message:
+                            'There was an error creating your account, please try again.',
+                    });
 
-                bcrypt.hash(password, salt, async (err, hashedPassword) => {
-                    if (err) return done(err);
+                bcrypt.hash(password, salt, async (hashErr, hashedPassword) => {
+                    if (hashErr)
+                        return done(null, false, {
+                            message:
+                                'There was an error creating your account, please try again.',
+                        });
 
-                    const result = await makeMutation(
-                        createLocalUserQuery,
-                        createLocalUserVariable(
-                            req.body.firstName,
-                            req.body.lastName,
-                            hashedPassword,
-                            username
-                        )
-                    );
-
-                    const createLocalUser =
-                        result && result.data && result.data.createLocalUser;
-
-                    done(null, createLocalUser);
+                    done(null, { ...req.body, password: hashedPassword });
                 });
             });
         }
