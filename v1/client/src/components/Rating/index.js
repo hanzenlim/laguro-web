@@ -1,11 +1,13 @@
 import React from 'react';
 import { Rate as AntdRate } from 'antd';
 import styled from 'styled-components';
+import { space } from 'styled-system';
 
 const StyledRating = styled(AntdRate)`
     &&.ant-rate {
         display: block;
         font-size: 0;
+        ${space};
     }
 
     && .ant-rate-star-full,
@@ -29,6 +31,10 @@ const StyledRating = styled(AntdRate)`
 
     && .ant-rate-star:last-child {
         margin-right: 0;
+    }
+
+    && .anticon {
+        vertical-align: middle;
     }
 
     && .anticon-star:before {

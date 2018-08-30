@@ -2,6 +2,14 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import ReactTruncate from 'react-truncate';
 
+import { Text } from '../../components';
+
+const ShowMore = () => (
+    <Text is="a" color="text.green" fontWeight="bold" display="inline-block">
+        show more
+    </Text>
+);
+
 class Truncate extends PureComponent {
     constructor(props) {
         super(props);
@@ -11,6 +19,12 @@ class Truncate extends PureComponent {
         };
     }
 
+    renderToggle = () => (
+        <span onClick={() => this.setState({ open: true })}>
+            …{this.props.toggle || (this.props.hasToggle && <ShowMore />)}
+        </span>
+    );
+
     render() {
         if (this.state.open) return this.props.children;
 
@@ -18,13 +32,9 @@ class Truncate extends PureComponent {
             <ReactTruncate
                 lines={this.props.lines}
                 ellipsis={
-                    this.props.toggle ? (
-                        <span onClick={() => this.setState({ open: true })}>
-                            …{this.props.toggle}
-                        </span>
-                    ) : (
-                        '…'
-                    )
+                    this.props.toggle || this.props.hasToggle
+                        ? this.renderToggle()
+                        : '…'
                 }
             >
                 {this.props.children}
