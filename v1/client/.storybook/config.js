@@ -11,6 +11,13 @@ injectGlobal([], {
     body: {
         fontFamily: 'Ubuntu',
     },
+    // TODO: Add focus visible from https://nelo.is/writing/styling-better-focus-states/
+    '*:focus': {
+        outline: 'none',
+    },
+    '[role="button"]': {
+        cursor: 'pointer',
+    },
 });
 
 addDecorator(story => (

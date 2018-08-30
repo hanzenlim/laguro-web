@@ -1,14 +1,8 @@
 import React, { Component, Fragment } from 'react';
-import Carousel from 'nuka-carousel';
-import { Box, Button, Container, Icon, Text } from '../../../components';
+import { Box, Container, Text, Carousel } from '../../../components';
 import LinkCard from '../../common/LinkCard';
 
 class FeaturedListView extends Component {
-    constructor() {
-        super();
-        this.state = { arrowColor: 'icon.white' };
-    }
-
     render() {
         const { data } = this.props;
         return (
@@ -50,50 +44,14 @@ class FeaturedListView extends Component {
                     </Text>
                 </Container>
                 <Carousel
-                    renderBottomCenterControls={() => <div />}
+                    cellAlign="center"
                     slidesToShow={4}
                     slideWidth={1.33}
                     cellSpacing={35}
-                    cellAlign="center"
                     slideIndex={1.5}
-                    renderCenterLeftControls={({ previousSlide }) => (
-                        <Button
-                            type="ghost"
-                            hoverColor="icon.green"
-                            color="icon.white"
-                            mt="-100px"
-                            left="128px"
-                            position="absolute"
-                        >
-                            <Icon
-                                type="leftArrow"
-                                isButton={true}
-                                width="30px"
-                                height="48px"
-                                cursor="pointer"
-                                onClick={previousSlide}
-                            />
-                        </Button>
-                    )}
-                    renderCenterRightControls={({ nextSlide }) => (
-                        <Button
-                            type="ghost"
-                            hoverColor="icon.green"
-                            color="icon.white"
-                            mt="-100px"
-                            right="128px"
-                            position="absolute"
-                        >
-                            <Icon
-                                type="rightArrow"
-                                isButton={true}
-                                width="30px"
-                                height="48px"
-                                cursor="pointer"
-                                onClick={nextSlide}
-                            />
-                        </Button>
-                    )}
+                    controlsStyle={{
+                        top: '-100px',
+                    }}
                 >
                     {data.map((item, index) => (
                         <Box
