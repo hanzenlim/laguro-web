@@ -10,6 +10,7 @@ export default {
             white: '#ffffff',
             gray: '#c7c7c7',
             lightGray: '#efeeee',
+            transparent: 'rgba(0, 0, 0, 0)',
         },
         button: {
             green: '#50e3c2',
@@ -21,6 +22,8 @@ export default {
             white: '#ffffff',
             gray: '#dbdbdb',
             darkGray: '#c7c7c7',
+            transparent: 'rgba(0, 0, 0, 0)',
+            green: '#50e3c2',
         },
         rating: {
             yellow: '#ffbf00',

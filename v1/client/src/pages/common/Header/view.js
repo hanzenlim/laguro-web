@@ -1,5 +1,7 @@
 import React, { Fragment } from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
+
 import logo from '../../../components/Image/logo.svg';
 import whiteLogo from '../../../components/Image/whiteLogo.svg';
 import {
@@ -16,12 +18,13 @@ import RegistrationModal from '../Modals/RegistrationModal';
 
 const NavBarLink = styled(Link)`
     padding: 10px;
-    border-bottom: 7px solid rgba(0, 0, 0, 0);
+    border-bottom: 7px solid;
+    border-color: ${props => props.theme.colors.divider.transparent};
     margin-left: 60px;
 
     &&:hover,
     &&:focus {
-        border-color: #50e3c2;
+        border-color: ${props => props.theme.colors.divider.green};
         text-decoration: none;
     }
 `;
@@ -51,7 +54,13 @@ const ProfileButton = ({
             content={<ProfileMenu logout={logout} />}
             arrowPointAtCenter
         >
-            <Image src={defaultUserImage} width={70} height={70} ml={60} />
+            <Image
+                src={auth.imageUrl ? auth.imageUrl : defaultUserImage}
+                width={70}
+                height={70}
+                borderRadius={70}
+                ml={60}
+            />
         </Popover>
     ) : (
         <Fragment>
@@ -90,13 +99,13 @@ const Header = ({
         is="header"
         width={1}
         height={120}
-        bg={onLandingPage ? 'rgba(0, 0, 0, 0.0)' : '#fff'}
+        bg={onLandingPage ? 'background.transparent' : 'background.white'}
         borderBottom={onLandingPage ? 'none' : '1px solid'}
         borderColor="divider.gray"
         flex="0 0 auto"
         alignItems="center"
         justifyContent="center"
-        zIndex={1}
+        zIndex="zIndex.header"
         position={onLandingPage ? 'absolute' : 'relative'}
     >
         <LoginModal
@@ -143,5 +152,25 @@ const Header = ({
         </Container>
     </Flex>
 );
+
+Header.defaultProps = {
+    visibleModal: null,
+    auth: null,
+    login: () => {},
+    logout: () => {},
+    openLoginModal: () => {},
+    openRegistrationModal: () => {},
+    closeModal: () => {},
+};
+
+Header.propTypes = {
+    visibleModal: PropTypes.string,
+    auth: PropTypes.string,
+    login: PropTypes.func,
+    logout: PropTypes.func,
+    openLoginModal: PropTypes.func,
+    openRegistrationModal: PropTypes.func,
+    closeModal: PropTypes.func,
+};
 
 export default Header;

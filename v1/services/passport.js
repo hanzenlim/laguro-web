@@ -3,19 +3,20 @@ import bcrypt from 'bcryptjs';
 // External Packages
 const serverDataLoader = require('../util/serverDataLoader');
 
-const makeQuery = serverDataLoader.makeQuery;
-const makeMutation = serverDataLoader.makeMutation;
-const getUserQuery = serverDataLoader.getUserQuery;
-const getUserByGoogleIdQuery = serverDataLoader.getUserByGoogleIdQuery;
-const getUserVariable = serverDataLoader.getUserVariable;
-const getUserByGoogleIdVariable = serverDataLoader.getUserByGoogleIdVariable;
-const getUserByEmailQuery = serverDataLoader.getUserByEmailQuery;
-const getUserByEmailVariable = serverDataLoader.getUserByEmailVariable;
-const createGoogleUserQuery = serverDataLoader.createGoogleUserQuery;
-const createGoogleUserVariable = serverDataLoader.createGoogleUserVariable;
-
-const createLocalUserQuery = serverDataLoader.createLocalUserQuery;
-const createLocalUserVariable = serverDataLoader.createLocalUserVariable;
+const {
+    makeQuery,
+    makeMutation,
+    getUserQuery,
+    getUserByGoogleIdQuery,
+    getUserVariable,
+    getUserByGoogleIdVariable,
+    getUserByEmailQuery,
+    getUserByEmailVariable,
+    createGoogleUserQuery,
+    createGoogleUserVariable,
+    updateUserVariable,
+    updateUserQuery,
+} = serverDataLoader;
 
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
@@ -53,6 +54,22 @@ passport.use(
 
             const email = profile.emails[0].value;
 
+            result = await makeQuery(
+                getUserByEmailQuery,
+                getUserByEmailVariable(email)
+            );
+
+            const existingLocalUser =
+                result && result.data && result.data.getUserByEmail;
+
+            if (existingLocalUser) {
+                result = await makeMutation(
+                    updateUserQuery,
+                    updateUserVariable(existingLocalUser.id, profile.id)
+                );
+
+                return done(null, result.data.updateUser);
+            }
             // Create a brand new user.
             result = await makeMutation(
                 createGoogleUserQuery,
@@ -65,7 +82,7 @@ passport.use(
                 )
             );
 
-            done(null, result.data.createGoogleUser);
+            return done(null, result.data.createGoogleUser);
         }
     )
 );
@@ -140,7 +157,7 @@ passport.use(
             if (getUserByEmail && getUserByEmail.googleId) {
                 return done(null, false, {
                     message:
-                        'Either the credentials you supplied are invalid, or you signed up using an OpenID provider, such as Google.',
+                        'Your account is connected to a Google account. Please use the `Login with Google` button to continue.',
                 });
             }
 

@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import { Modal, Button, Box, Flex, Text, Link } from '../../../components';
 import LocalLoginForm from '../Forms/LocalLoginForm';
 
@@ -26,6 +28,9 @@ const LoginModal = ({ login, visible, openRegistrationModal, closeModal }) => (
                         block
                         icon="google"
                         fontSize={1}
+                        onClick={() => {
+                            window.location.href = '/auth/google';
+                        }}
                     >
                         Login with Google
                     </Button>
@@ -76,5 +81,19 @@ const LoginModal = ({ login, visible, openRegistrationModal, closeModal }) => (
         </Flex>
     </Modal>
 );
+
+LoginModal.defaultProps = {
+    login: () => {},
+    closeModal: () => {},
+    openRegistrationModal: () => {},
+    visible: false,
+};
+
+LoginModal.propTypes = {
+    login: PropTypes.func,
+    closeModal: PropTypes.func,
+    openRegistrationModal: PropTypes.func,
+    visible: PropTypes.bool,
+};
 
 export default LoginModal;

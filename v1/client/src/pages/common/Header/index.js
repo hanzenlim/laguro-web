@@ -11,14 +11,15 @@ import { ACTIVE_USER } from '../../../util/strings';
 const HeaderContainer = () => (
     <Query query={getUserQuery}>
         {({ loading, error, data, client }) => {
+            const onLandingPage = window.location.pathname === '/';
+
             if (loading) {
-                return '';
+                return <HeaderView onLandingPage={onLandingPage} />;
             }
 
             if (error) {
                 return <div>error...</div>;
             }
-            const onLandingPage = window.location.pathname === '/';
 
             const login = values => {
                 request('/api/login', {

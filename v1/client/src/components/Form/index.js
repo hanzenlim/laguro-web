@@ -9,11 +9,6 @@ const StyledForm = styled(AntdForm)`
 `;
 
 class Form extends Component {
-    componentDidMount() {
-        // Run form tests to make sure the form cant be submitted with failing tests
-        this.props.form.validateFields();
-    }
-
     handleSubmit = event => {
         event.preventDefault();
         this.props.form.validateFields(async (validationError, values) => {
@@ -89,16 +84,18 @@ const SubmitButton = ({ form, buttonText, ...rest }) => {
     );
 };
 
-const FormItem = ({ form, name, label, rules = [], input, ...rest }) => {
-    const {
-        getFieldDecorator,
-        isFieldTouched,
-        getFieldError,
-        isFieldValidating,
-    } = form;
+const FormItem = ({
+    form,
+    name,
+    label,
+    rules = [],
+    input,
+    validateTrigger = 'onChange',
+    ...rest
+}) => {
+    const { getFieldDecorator, getFieldError, isFieldValidating } = form;
 
-    const error =
-        isFieldTouched(name) && !isFieldValidating(name) && getFieldError(name);
+    const error = !isFieldValidating(name) && getFieldError(name);
 
     return (
         <StyledFormInput
@@ -107,7 +104,10 @@ const FormItem = ({ form, name, label, rules = [], input, ...rest }) => {
             help={error || ''}
             {...rest}
         >
-            {getFieldDecorator(name, { rules })(input)}
+            {getFieldDecorator(name, {
+                rules,
+                validateTrigger,
+            })(input)}
         </StyledFormInput>
     );
 };

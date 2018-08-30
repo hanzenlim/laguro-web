@@ -90,6 +90,21 @@ module.exports.createGoogleUserQuery = `
     }
 `;
 
+module.exports.updateUserQuery = `
+    mutation updateUser($input: UpdateUserInput!) {
+        updateUser(input: $input) {
+            id
+            firstName
+            middleName
+            lastName
+            imageUrl
+            dentistId
+            googleId
+            password
+        }
+    }
+`;
+
 module.exports.createLocalUserQuery = `
     mutation createLocalUser($input: CreateLocalUserInput!) {
         createLocalUser(input: $input) {
@@ -130,6 +145,13 @@ module.exports.useResetPasswordRequestQuery = `
         }
     }
 `;
+
+module.exports.updateUserVariable = (id, googleId) => ({
+    input: {
+        id,
+        googleId,
+    },
+});
 
 module.exports.createGoogleUserVariable = (
     firstName,

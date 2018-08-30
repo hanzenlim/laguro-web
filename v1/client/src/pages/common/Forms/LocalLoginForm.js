@@ -19,6 +19,7 @@ const LocalLoginForm = props => (
                     message: 'Please input a valid email!',
                 },
             ]}
+            validateTrigger="onBlur"
             input={<Input type="email" />}
         />
         <FormItem

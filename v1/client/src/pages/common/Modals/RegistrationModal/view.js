@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import { Modal, Box, Flex, Text, Form, Input } from '../../../../components';
 
 const { FormItem, SubmitButton } = Form;
@@ -62,6 +64,7 @@ const ReservationModalView = ({ closeModal, visible, signup }) => (
                                 message: 'Please input a valid email!',
                             },
                         ]}
+                        validateTrigger="onBlur"
                         input={<Input type="email" />}
                     />
                     <FormItem
@@ -73,7 +76,12 @@ const ReservationModalView = ({ closeModal, visible, signup }) => (
                                 required: true,
                                 message: 'Please input your password!',
                             },
+                            {
+                                min: 6,
+                                message: 'Please enter at least 6 characters!',
+                            },
                         ]}
+                        validateTrigger="onBlur"
                         input={<Input type="password" />}
                     />
 
@@ -83,5 +91,17 @@ const ReservationModalView = ({ closeModal, visible, signup }) => (
         </Flex>
     </Modal>
 );
+
+ReservationModalView.defaultProps = {
+    closeModal: () => {},
+    signup: () => {},
+    visible: false,
+};
+
+ReservationModalView.propTypes = {
+    closeModal: PropTypes.func,
+    signup: PropTypes.func,
+    visible: PropTypes.bool,
+};
 
 export default ReservationModalView;
