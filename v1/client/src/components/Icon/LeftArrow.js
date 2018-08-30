@@ -1,7 +1,7 @@
 import React from 'react';
 import theme from '../theme';
 
-const SvgComponent = props => (
+const LeftArrow = props => (
     <svg
         viewBox="0 0 38 56"
         version="1.1"
@@ -70,4 +70,4 @@ const SvgComponent = props => (
     </svg>
 );
 
-export default SvgComponent;
+export default LeftArrow;
