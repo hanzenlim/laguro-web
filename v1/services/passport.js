@@ -3,28 +3,27 @@ import bcrypt from 'bcryptjs';
 // External Packages
 const serverDataLoader = require('../util/serverDataLoader');
 
-const makeQuery = serverDataLoader.makeQuery;
-const makeMutation = serverDataLoader.makeMutation;
-const getUserQuery = serverDataLoader.getUserQuery;
-const getUserByGoogleIdQuery = serverDataLoader.getUserByGoogleIdQuery;
-const getUserVariable = serverDataLoader.getUserVariable;
-const getUserByGoogleIdVariable = serverDataLoader.getUserByGoogleIdVariable;
-const getUserByEmailQuery = serverDataLoader.getUserByEmailQuery;
-const getUserByEmailVariable = serverDataLoader.getUserByEmailVariable;
-const createGoogleUserQuery = serverDataLoader.createGoogleUserQuery;
-const createGoogleUserVariable = serverDataLoader.createGoogleUserVariable;
-
-const createLocalUserQuery = serverDataLoader.createLocalUserQuery;
-const createLocalUserVariable = serverDataLoader.createLocalUserVariable;
+const {
+    makeQuery,
+    makeMutation,
+    getUserQuery,
+    getUserByGoogleIdQuery,
+    getUserVariable,
+    getUserByGoogleIdVariable,
+    getUserByEmailQuery,
+    getUserByEmailVariable,
+    createGoogleUserQuery,
+    createGoogleUserVariable,
+    updateUserVariable,
+    updateUserQuery,
+} = serverDataLoader;
 
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const LocalStrategy = require('passport-local').Strategy;
 
 // Define passport functions
-passport.serializeUser((user, done) => {
-    return done(null, user.id);
-});
+passport.serializeUser((user, done) => done(null, user.id));
 
 passport.deserializeUser(async (id, done) => {
     const result = await makeQuery(getUserQuery, getUserVariable(id));
@@ -37,7 +36,7 @@ passport.use(
             clientID: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
             callbackURL: '/auth/google/callback',
-            proxy: true
+            proxy: true,
         },
 
         async (accessToken, refreshToken, profile, done) => {
@@ -55,6 +54,22 @@ passport.use(
 
             const email = profile.emails[0].value;
 
+            result = await makeQuery(
+                getUserByEmailQuery,
+                getUserByEmailVariable(email)
+            );
+
+            const existingLocalUser =
+                result && result.data && result.data.getUserByEmail;
+
+            if (existingLocalUser) {
+                result = await makeMutation(
+                    updateUserQuery,
+                    updateUserVariable(existingLocalUser.id, profile.id)
+                );
+
+                return done(null, result.data.updateUser);
+            }
             // Create a brand new user.
             result = await makeMutation(
                 createGoogleUserQuery,
@@ -67,7 +82,7 @@ passport.use(
                 )
             );
 
-            done(null, result.data.createGoogleUser);
+            return done(null, result.data.createGoogleUser);
         }
     )
 );
@@ -75,7 +90,11 @@ passport.use(
 passport.use(
     'local-signup',
     new LocalStrategy(
-        { passReqToCallback: true },
+        {
+            passReqToCallback: true,
+            usernameField: 'email',
+            passwordField: 'password',
+        },
         async (req, username, password, done) => {
             const result = await makeQuery(
                 getUserByEmailQuery,
@@ -87,30 +106,25 @@ passport.use(
 
             if (getUserByEmail) {
                 return done(null, false, {
-                    message: 'This email address is already registered.'
+                    message: 'This email address is already registered.',
                 });
             }
 
             bcrypt.genSalt(10, async (err, salt) => {
-                if (err) return done(err);
+                if (err)
+                    return done(null, false, {
+                        message:
+                            'There was an error creating your account, please try again.',
+                    });
 
-                bcrypt.hash(password, salt, async (err, hashedPassword) => {
-                    if (err) return done(err);
+                bcrypt.hash(password, salt, async (hashErr, hashedPassword) => {
+                    if (hashErr)
+                        return done(null, false, {
+                            message:
+                                'There was an error creating your account, please try again.',
+                        });
 
-                    const result = await makeMutation(
-                        createLocalUserQuery,
-                        createLocalUserVariable(
-                            req.body.firstName,
-                            req.body.lastName,
-                            hashedPassword,
-                            username
-                        )
-                    );
-
-                    const createLocalUser =
-                        result && result.data && result.data.createLocalUser;
-
-                    done(null, createLocalUser);
+                    done(null, { ...req.body, password: hashedPassword });
                 });
             });
         }
@@ -120,7 +134,11 @@ passport.use(
 passport.use(
     'local-login',
     new LocalStrategy(
-        { passReqToCallback: true },
+        {
+            passReqToCallback: true,
+            usernameField: 'email',
+            passwordField: 'password',
+        },
         async (req, username, password, done) => {
             const result = await makeQuery(
                 getUserByEmailQuery,
@@ -132,14 +150,14 @@ passport.use(
 
             if (!getUserByEmail) {
                 return done(null, false, {
-                    message: 'Invalid username/password.'
+                    message: 'Invalid username/password.',
                 });
             }
 
             if (getUserByEmail && getUserByEmail.googleId) {
                 return done(null, false, {
                     message:
-                        'Either the credentials you supplied are invalid, or you signed up using an OpenID provider, such as Google.'
+                        'Your account is connected to a Google account. Please use the `Login with Google` button to continue.',
                 });
             }
 
@@ -150,7 +168,7 @@ passport.use(
                 )
             ) {
                 return done(null, false, {
-                    message: 'Invalid username/password.'
+                    message: 'Invalid username/password.',
                 });
             }
 

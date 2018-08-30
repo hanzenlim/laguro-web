@@ -65,6 +65,9 @@ export const APPOINTMENT_BOOKED = 'Appointment booked';
 export const PROCEDURES_ASSIGNED = 'Procedures assigned';
 export const CANCELLED = 'CANCELLED';
 
+// Apollo TypeNames
+export const ACTIVE_USER = 'ActiveUser';
+
 export const APPOINTMENT_NUM = 'appointmentNum';
 // PatientProcedure
 export const PENDING = 'pending';

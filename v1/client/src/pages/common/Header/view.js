@@ -1,69 +1,123 @@
-import React from 'react';
+import React, { Fragment } from 'react';
+import styled from 'styled-components';
+import PropTypes from 'prop-types';
+
 import logo from '../../../components/Image/logo.svg';
 import whiteLogo from '../../../components/Image/whiteLogo.svg';
-import { Flex, Link, Container, Text, Image } from '../../../components';
+import {
+    Flex,
+    Link,
+    Container,
+    Text,
+    Image,
+    Popover,
+} from '../../../components';
+import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
+import LoginModal from '../Modals/LoginModal';
+import RegistrationModal from '../Modals/RegistrationModal';
 
-const loginButton = (auth, onLandingPage) => {
-    if (!auth) {
-        return (
-            <Link ml={60} to={'/'}>
+const NavBarLink = styled(Link)`
+    padding: 10px;
+    border-bottom: 7px solid;
+    border-color: ${props => props.theme.colors.divider.transparent};
+    margin-left: 60px;
+
+    &&:hover,
+    &&:focus {
+        border-color: ${props => props.theme.colors.divider.green};
+        text-decoration: none;
+    }
+`;
+
+const ProfileMenu = ({ logout }) => (
+    <Flex flexDirection="column">
+        <Link to={'/'}>edit profile</Link>
+        <Link to={'/'}>invite friends</Link>
+        <Link to={'/'}>become a dentist</Link>
+        <Link to={'/'}>account settings</Link>
+        <Link to={'#'} onClick={logout}>
+            log out
+        </Link>
+    </Flex>
+);
+
+const ProfileButton = ({
+    auth,
+    openLoginModal,
+    openRegistrationModal,
+    logout,
+    onLandingPage,
+}) =>
+    auth ? (
+        <Popover
+            placement="bottomRight"
+            content={<ProfileMenu logout={logout} />}
+            arrowPointAtCenter
+        >
+            <Image
+                src={auth.imageUrl ? auth.imageUrl : defaultUserImage}
+                width={70}
+                height={70}
+                borderRadius={70}
+                ml={60}
+            />
+        </Popover>
+    ) : (
+        <Fragment>
+            <NavBarLink onClick={openRegistrationModal} to={'#'}>
                 <Text
                     color={onLandingPage ? 'text.white' : 'text.black'}
                     fontSize={1}
                     mb={4}
                 >
-                    sign in
+                    sign up
                 </Text>
-            </Link>
-        );
-    }
-    // user IS logged in
-    return (
-        <Link ml={60} to={'/'}>
-            <Text
-                color={onLandingPage ? 'text.white' : 'text.black'}
-                fontSize={1}
-                mb={4}
-            >
-                sign out
-            </Text>
-        </Link>
+            </NavBarLink>
+            <NavBarLink onClick={openLoginModal} to={'#'}>
+                <Text
+                    color={onLandingPage ? 'text.white' : 'text.black'}
+                    fontSize={1}
+                    mb={4}
+                >
+                    log in
+                </Text>
+            </NavBarLink>
+        </Fragment>
     );
-};
 
-const profileButton = (auth, onLandingPage) => {
-    if (!auth) {
-        return null;
-    }
-
-    const firstName = auth && auth.firstName;
-    const lastName = auth && auth.lastName;
-
-    return (
-        <Link ml={60} to={'/'}>
-            <Text
-                color={onLandingPage ? 'text.white' : 'text.black'}
-                fontSize={1}
-                mb={4}
-            >{`${firstName.toLowerCase()} ${lastName.toLowerCase()}`}</Text>
-        </Link>
-    );
-};
-
-const Header = props => (
+const Header = ({
+    onLandingPage,
+    openLoginModal,
+    openRegistrationModal,
+    closeModal,
+    visibleModal,
+    login,
+    logout,
+    auth,
+}) => (
     <Flex
         is="header"
         width={1}
         height={120}
-        bg={props.onLandingPage ? 'rgba(0, 0, 0, 0.0)' : '#fff'}
-        borderBottom={props.onLandingPage ? 'none' : '1px solid'}
+        bg={onLandingPage ? 'background.transparent' : 'background.white'}
+        borderBottom={onLandingPage ? 'none' : '1px solid'}
         borderColor="divider.gray"
         flex="0 0 auto"
         alignItems="center"
         justifyContent="center"
-        zIndex={1}
-        position={props.onLandingPage ? 'absolute' : 'relative'}
+        zIndex="zIndex.header"
+        position={onLandingPage ? 'absolute' : 'relative'}
     >
+        <LoginModal
+            login={login}
+            openRegistrationModal={openRegistrationModal}
+            closeModal={closeModal}
+            visible={visibleModal === 'login'}
+        />
+        <RegistrationModal
+            closeModal={closeModal}
+            visible={visibleModal === 'register'}
+        />
         <Container
             display="flex"
             flexDirection="row"
@@ -73,27 +127,50 @@ const Header = props => (
             <Link to={'/'}>
                 <Image
                     height={60}
-                    src={props.onLandingPage ? whiteLogo : logo}
+                    src={onLandingPage ? whiteLogo : logo}
                     alt="logo"
                 />
             </Link>
-            <Flex>
-                <Link ml={60} to={'/landlord-onboarding/add-office'}>
+            <Flex alignItems="center">
+                <NavBarLink to={'/landlord-onboarding/add-office'}>
                     <Text
-                        color={
-                            props.onLandingPage ? 'text.white' : 'text.black'
-                        }
+                        color={onLandingPage ? 'text.white' : 'text.black'}
                         fontSize={1}
                         mb={4}
                     >
                         rent your dental office
                     </Text>
-                </Link>
-                {profileButton(props.auth, props.onLandingPage)}
-                {loginButton(props.auth, props.onLandingPage)}
+                </NavBarLink>
+                <ProfileButton
+                    auth={auth}
+                    openLoginModal={openLoginModal}
+                    openRegistrationModal={openRegistrationModal}
+                    logout={logout}
+                    onLandingPage={onLandingPage}
+                />
             </Flex>
         </Container>
     </Flex>
 );
+
+Header.defaultProps = {
+    visibleModal: null,
+    auth: null,
+    login: () => {},
+    logout: () => {},
+    openLoginModal: () => {},
+    openRegistrationModal: () => {},
+    closeModal: () => {},
+};
+
+Header.propTypes = {
+    visibleModal: PropTypes.string,
+    auth: PropTypes.string,
+    login: PropTypes.func,
+    logout: PropTypes.func,
+    openLoginModal: PropTypes.func,
+    openRegistrationModal: PropTypes.func,
+    closeModal: PropTypes.func,
+};
 
 export default Header;
