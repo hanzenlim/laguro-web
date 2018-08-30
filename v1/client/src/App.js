@@ -47,6 +47,11 @@ const OfficeDetailsPage = Loadable({
     loading: () => null,
 });
 
+const PaymentPage = Loadable({
+    loader: () => import('./pages/Payment'),
+    loading: () => null,
+});
+
 class App extends Component {
     render() {
         return (
@@ -80,6 +85,14 @@ class App extends Component {
                                     <Route
                                         path="/office/:id"
                                         component={OfficeDetailsPage}
+                                    />
+                                    <Route
+                                        path="/office/:id"
+                                        component={OfficeDetailsPage}
+                                    />
+                                    <Route
+                                        path="/payment"
+                                        component={PaymentPage}
                                     />
                                     <Route path="/" component={HomePage} />
                                     {/* Catch all unmatched routes. */}

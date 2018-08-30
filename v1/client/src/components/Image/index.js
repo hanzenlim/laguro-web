@@ -6,7 +6,7 @@ const Image = system(
     {
         is: Img,
         display: 'block',
-        maxWidth: '100%',
+        maxwidth: '100%',
         height: 'auto',
     },
     // core
