@@ -21,6 +21,12 @@ const LandlordLandingPage = Loadable({
     loader: () => import('./pages/LandlordLandingPage'),
     loading: () => null,
 });
+
+const DentistLandingPage = Loadable({
+    loader: () => import('./pages/DentistLandingPage'),
+    loading: () => null,
+});
+
 const DentistSearchPage = Loadable({
     loader: () => import('./pages/DentistSearchPage'),
     loading: () => null,
@@ -53,6 +59,10 @@ class App extends Component {
                                     <Route
                                         path="/dentist/search"
                                         component={DentistSearchPage}
+                                    />
+                                    <Route
+                                        path="/dentist"
+                                        component={DentistLandingPage}
                                     />
                                     <Route
                                         path="/office/search"
