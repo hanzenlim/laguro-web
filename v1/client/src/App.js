@@ -66,16 +66,16 @@ class App extends Component {
                                         component={DentistSearchPage}
                                     />
                                     <Route
+                                        path="/dentist/:id"
+                                        component={DentistDetailsPage}
+                                    />
+                                    <Route
                                         path="/dentist"
                                         component={DentistLandingPage}
                                     />
                                     <Route
                                         path="/office/search"
                                         component={OfficeSearchPage}
-                                    />
-                                    <Route
-                                        path="/dentist/:id"
-                                        component={DentistDetailsPage}
                                     />
                                     <Route
                                         path="/office/:id"

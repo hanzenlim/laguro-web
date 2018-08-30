@@ -31,15 +31,15 @@ const StyledButton = styled(AntdButton)`
         ${right};
     }
 
-        &&.ant-btn-primary {
-            border: solid 1px #f2f2f2;
-            color: ${props => props.theme.colors.text.white};
-            background-color: ${props => props.theme.colors.button.green};
-        }
+    &&.ant-btn-primary {
+        border: solid 1px #f2f2f2;
+        color: ${props => props.theme.colors.text.white};
+        background-color: ${props => props.theme.colors.button.green};
+    }
 
-        &&.ant-btn-default {
-            ${color};
-        }
+    &&.ant-btn-default {
+        ${color};
+    }
 
     &&.ant-btn-primary.disabled,
     &&.ant-btn-primary[disabled],
@@ -56,13 +56,13 @@ const StyledButton = styled(AntdButton)`
     }
 
     &&.ant-btn-ghost {
-        ${width};
-        ${height};
-        padding: 0 10px;
+        padding: 0;
         color: ${props => props.theme.colors.text.white};
         background-color: transparent;
         outline: none;
-        border-style: none;
+        border: none;
+        ${width};
+        ${height};
         ${space};
         ${position};
         ${left};
@@ -89,11 +89,9 @@ const StyledButton = styled(AntdButton)`
     }
 
     && span {
-        font-weight: bold;
-        font-style: italic;
         font-stretch: normal;
         line-height: normal;
-        letter-spacing: -0.6px;
+        letter-spacing: -0.4px;
         color: #ffffff;
         ${fontSize};
     }

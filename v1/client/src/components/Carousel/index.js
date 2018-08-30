@@ -9,8 +9,7 @@ const StyledNukaCarousel = styled(NukaCarousel)`
     }
 
     && .slider-control-centerright .button {
-        ${console.log(props => props.buttonStyle)} ${props =>
-            props.buttonStyle};
+        ${props => props.buttonStyle};
     }
 `;
 
