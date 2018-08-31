@@ -26,6 +26,7 @@ import {
     lessFifty,
     greaterZero
 } from './formValidation';
+import serializeLocation from '../../util/location'
 
 import history from '../../history';
 
@@ -133,9 +134,10 @@ class NewListing extends Component {
                 officeId
             } = this.urlParams;
             if (!this.state.isExistingOffice) {
+                const serializedLocation = await serializeLocation(location)
                 await this.props.createOffice({
                     name,
-                    location,
+                    location: serializedLocation,
                     hostId: this.props.auth.dentistId,
                     imageUrls: JSON.parse(imageUrls),
                     equipment: JSON.parse(equipment),

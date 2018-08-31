@@ -7,6 +7,7 @@ import { createDentist, fetchUser } from '../../actions';
 import { DENTIST } from '../../util/strings';
 import { required } from './formValidation';
 import { renderField, renderProcedureSelector } from './sharedComponents';
+import serializeLocation from '../../util/location'
 import dentistProfileExists from '../../util/userInfo';
 
 class NewDentist extends Component {
@@ -27,6 +28,7 @@ class NewDentist extends Component {
 
     async onSubmit(values) {
         const { auth } = this.props;
+        values.location = await serializeLocation(values.location)
         await this.props.createDentist({
             ...values,
             bio: ' ',

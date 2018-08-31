@@ -9,6 +9,7 @@ import * as actions from '../../actions';
 import { renderField, renderProcedureSelector } from './sharedComponents';
 import dentistProfileExists from '../../util/userInfo';
 import history from '../../history';
+import serializeLocation from '../../util/location'
 
 class EditDentist extends Component {
     constructor(props) {
@@ -23,7 +24,7 @@ class EditDentist extends Component {
             const { location, specialty, procedures } = dentist;
 
             this.props.initialize({
-                location,
+                location: location.name,
                 specialty,
                 procedures
             });
@@ -34,6 +35,7 @@ class EditDentist extends Component {
         const { auth } = this.props;
         const dentistId = auth.dentistId;
 
+        values.location = await serializeLocation(values.location);
         this.props.editDentist({ ...values, id: dentistId });
         history.push('/profile');
         this.props.closeModal();

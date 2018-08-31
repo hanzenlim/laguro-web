@@ -61,7 +61,7 @@ class NewOffice extends Component {
         });
     }
 
-    onSubmit = values => {
+    onSubmit = async values => {
         const params = queryString.stringify({
             ...this.urlParams,
             ...values,

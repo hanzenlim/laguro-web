@@ -46,7 +46,13 @@ export const userFragment = `
 export const dentistFragment = `
     id
     bio
-    location
+    location {
+        name
+        geoPoint {
+            lat
+            lon
+        }
+    }
     specialty
     isVerified
     procedures {
@@ -70,7 +76,13 @@ export const listingFragment = `
 export const officeFragment = `
     id
     name
-    location
+    location {
+        name
+        geoPoint {
+            lat
+            lon
+        }
+    }
     equipment {
         name
         price
@@ -110,7 +122,13 @@ export const appointmentFragment = `
             ${officeFragment}
         }
     }
-    location
+    location {
+        name
+        geoPoint {
+            lat
+            lon
+        }
+    }
     startTime
     endTime
     dateCreated
@@ -136,7 +154,13 @@ export const reservationFragment = `
     startTime
     endTime
     dateCreated
-    location
+    location {
+        name
+        geoPoint {
+            lat
+            lon
+        }
+    }
 `;
 
 export const reviewFragment = `
@@ -180,7 +204,13 @@ export const revieweeFragment = `
           lastName
         }
         specialty
-        location
+        location {
+            name
+            geoPoint {
+                lat
+                lon
+            }
+        }
         procedures
         dateCreated
       }
@@ -199,7 +229,13 @@ export const paymentFragment = `
     type
     status
     reservation {
-      location
+      location {
+          name
+          geoPoint {
+              lat
+              lon
+          }
+      }
       numChairsSelected
       startTime
       endTime
@@ -208,7 +244,13 @@ export const paymentFragment = `
         name
     }
     appointment {
-      location
+        location {
+            name
+            geoPoint {
+                lat
+                lon
+            }
+        }
       procedure {
         name
       }

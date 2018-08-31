@@ -116,7 +116,7 @@ class OfficeResult extends Component {
                                         fontWeight="regular"
                                         color="black"
                                     >
-                                        {this.props.location}
+                                        {this.props.location.name}
                                     </Typography>
                                 </Grid>
                                 <Padding bottom={5} />

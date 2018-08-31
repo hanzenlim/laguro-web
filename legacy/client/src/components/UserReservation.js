@@ -186,7 +186,7 @@ class UserReservation extends Component {
                                     <Padding right={4} />
 
                                     <Typography fontSize={2}>
-                                        {office.location}
+                                        {office.location.name}
                                     </Typography>
                                 </Flex>
 

@@ -132,7 +132,7 @@ class AppointmentDetails extends Component {
                                     <Padding right={4} />
 
                                     <Typography fontSize={2}>
-                                        {appointment.location}
+                                        {appointment.location.name}
                                     </Typography>
                                 </Grid>
 
