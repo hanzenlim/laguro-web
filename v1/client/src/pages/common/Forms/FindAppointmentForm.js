@@ -63,7 +63,7 @@ const FindAppointmentForm = () => (
             <SubmitButton
                 width="100%"
                 height="59px"
-                fontSize={2}
+                fontSize={3}
                 px={14}
                 buttonText="Find appointment"
             />

@@ -21,7 +21,7 @@ const SearchBox = props => {
             <Box mr={20}>
                 <DatePicker onChange={onDateFilterChange} />
             </Box>
-            <Button height="80px" fontSize={2} width="150px" onClick={onSubmit}>
+            <Button height="80px" fontSize={3} width="150px" onClick={onSubmit}>
                 find your smile
             </Button>
         </Flex>

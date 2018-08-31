@@ -52,7 +52,7 @@ export default {
             green: '#50e3c2',
         },
     },
-    fontSizes: ['12px', '14px', '18px', '20px', '30px', '45px', '55px'],
+    fontSizes: ['12px', '14px', '16px', '18px', '20px', '30px', '45px', '55px'],
     fontWeights: {
         light: 300,
         regular: 400,

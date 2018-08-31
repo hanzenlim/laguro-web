@@ -53,7 +53,7 @@ const HomePageView = () => (
                     <Text
                         fontWeight="bold"
                         color="text.white"
-                        fontSize={5}
+                        fontSize={6}
                         fontStyle="italic"
                         lineHeight="50px"
                     >
@@ -61,7 +61,7 @@ const HomePageView = () => (
                     </Text>
                     <Text
                         color="text.white"
-                        fontSize={6}
+                        fontSize={7}
                         fontStyle="italic"
                         fontWeight="light"
                         lineHeight="50px"
@@ -73,7 +73,7 @@ const HomePageView = () => (
                         color="text.white"
                         fontWeight="light"
                         fontStyle="italic"
-                        fontSize={5}
+                        fontSize={6}
                     >
                         and book an appointment
                     </Text>

@@ -10,7 +10,7 @@ class FeaturedListView extends Component {
                 <Container>
                     <Text
                         color="black"
-                        fontSize={4}
+                        fontSize={5}
                         lineHeight="34px"
                         letterSpacing="-0.8px"
                         textAlign="center"
@@ -20,7 +20,7 @@ class FeaturedListView extends Component {
                     </Text>
                     <Text
                         color="black"
-                        fontSize={3}
+                        fontSize={4}
                         lineHeight="34px"
                         fontWeight="light"
                         textAlign="center"
@@ -30,7 +30,7 @@ class FeaturedListView extends Component {
                     </Text>
                     <Text
                         color="black"
-                        fontSize={3}
+                        fontSize={4}
                         lineHeight="30px"
                         fontWeight="light"
                         textAlign="center"
@@ -67,7 +67,7 @@ class FeaturedListView extends Component {
                 <Container>
                     <Text
                         color="black"
-                        fontSize={4}
+                        fontSize={5}
                         lineHeight="34px"
                         letterSpacing="-0.8px"
                         textAlign="center"
@@ -76,7 +76,7 @@ class FeaturedListView extends Component {
                     </Text>
                     <Text
                         color="black"
-                        fontSize={3}
+                        fontSize={4}
                         lineHeight="34px"
                         fontWeight="light"
                         textAlign="center"
@@ -94,7 +94,7 @@ class FeaturedListView extends Component {
                     </Text>
                     <Text
                         color="black"
-                        fontSize={3}
+                        fontSize={4}
                         lineHeight="30px"
                         fontWeight="light"
                         textAlign="center"

@@ -33,14 +33,14 @@ const DentistDetailsPageView = props => {
                         <Box>
                             <Text
                                 color="text.black"
-                                fontSize={4}
+                                fontSize={5}
                                 lineHeight="1.13"
                             >
                                 {data.name}
                             </Text>
                             <Text
                                 fontStyle="italic"
-                                fontSize={3}
+                                fontSize={4}
                                 lineHeight="1.13"
                                 fontWeight="bold"
                                 letterSpacing="-0.8px"
@@ -73,7 +73,7 @@ const DentistDetailsPageView = props => {
                     {data.bio && (
                         // Added fixed width to fix bug in rendering truncated text
                         <Box pb={42} width="732px">
-                            <Text fontSize={3} lineHeight="1.3">
+                            <Text fontSize={4} lineHeight="1.3">
                                 professional experience
                             </Text>
                             <Text fontSize={1} lineHeight="1.86">
@@ -102,7 +102,7 @@ const DentistDetailsPageView = props => {
                     >
                         <Text
                             color="text.black"
-                            fontSize={3}
+                            fontSize={4}
                             lineHeight="1.5"
                             letterSpacing="1.5"
                         >
@@ -132,7 +132,7 @@ const DentistDetailsPageView = props => {
                 </Sticky>
             </Flex>
             <Box mt={40}>
-                <Text fontSize={4}>similar dentists</Text>
+                <Text fontSize={5}>similar dentists</Text>
 
                 <Flex justifyContent="space-between" mt={30}>
                     <Box width="295px">

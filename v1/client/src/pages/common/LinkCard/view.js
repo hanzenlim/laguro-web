@@ -67,7 +67,7 @@ const LinkCard = props => {
                 <Text
                     fontStyle="italic"
                     lineHeight="1.1"
-                    fontSize={3}
+                    fontSize={4}
                     color="text.black"
                     fontWeight="bold"
                 >

@@ -19,7 +19,7 @@ const BookAppointment = () => (
                 lineHeight="30px"
                 fontWeight="bold"
                 color="text.black"
-                fontSize={3}
+                fontSize={4}
             >
                 Make an appointment
             </Text>
@@ -30,7 +30,7 @@ const BookAppointment = () => (
                 lineHeight="30px"
                 fontWeight="bold"
                 color="text.black"
-                fontSize={3}
+                fontSize={4}
             >
                 Payment Summary
             </Text>
@@ -52,10 +52,10 @@ const BookAppointment = () => (
                 mb={10}
             />
             <Flex justifyContent="space-between">
-                <Text fontSize={2} color="text.green">
+                <Text fontSize={3} color="text.green">
                     Total
                 </Text>
-                <Text fontSize={2} color="text.green">
+                <Text fontSize={3} color="text.green">
                     $20.00
                 </Text>
             </Flex>

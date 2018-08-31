@@ -16,7 +16,7 @@ const ReviewContianer = props => {
                 <Text
                     display="inline"
                     lineHeight="34px"
-                    fontSize={4}
+                    fontSize={5}
                 >{`${reviewsCount} Review${reviewsCount > 1 ? 's' : ''}`}</Text>
             </Flex>
             <Text
@@ -50,7 +50,7 @@ const ReviewContianer = props => {
                 <Box px={10}>
                     <Flex
                         alignItems="center"
-                        fontSize={2}
+                        fontSize={3}
                         fontWeight="bold"
                         color="text.black"
                         lineHeight="22px"

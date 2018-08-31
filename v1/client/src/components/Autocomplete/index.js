@@ -16,7 +16,7 @@ const StyledInput = styled(AntdInput)`
             border: 1px solid ${props => props.theme.colors.divider.darkGray};
             color: ${props => props.theme.colors.text.black};
             font-style: italic;
-            font-size: ${props => props.theme.fontSizes[2]};
+            font-size: ${props => props.theme.fontSizes[3]};
             font-weight: 700;
             border-radius: ${props => (props.active ? '4px 4px 0 0' : '4px')};
             transition: none;
@@ -25,7 +25,7 @@ const StyledInput = styled(AntdInput)`
         .ant-input::placeholder {
             color: ${props => props.theme.colors.text.gray};
             font-style: italic;
-            font-size: ${props => props.theme.fontSizes[2]};
+            font-size: ${props => props.theme.fontSizes[3]};
             font-weight: 700;
             font-family: Ubuntu;
         }

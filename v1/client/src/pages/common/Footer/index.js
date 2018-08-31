@@ -67,13 +67,13 @@ const Footer = () => (
 
             <Flex alignSelf="center">
                 <Link mr={25} to={'/'}>
-                    <Icon color="icon.black" fontSize={3} type="facebook" />
+                    <Icon color="icon.black" fontSize={4} type="facebook" />
                 </Link>
                 <Link mr={25} to={'/'}>
-                    <Icon color="icon.black" fontSize={3} type="twitter" />
+                    <Icon color="icon.black" fontSize={4} type="twitter" />
                 </Link>
                 <Link mr={25} to={'/'}>
-                    <Icon color="icon.black" fontSize={3} type="instagram" />
+                    <Icon color="icon.black" fontSize={4} type="instagram" />
                 </Link>
             </Flex>
         </Flex>

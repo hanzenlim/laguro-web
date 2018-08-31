@@ -15,7 +15,7 @@ const DentistCard = props => {
                 <Text
                     color="text.black"
                     lineHeight="1.22"
-                    fontSize={3}
+                    fontSize={4}
                     letterSpacing="-0.8px"
                 >
                     <Truncate lines={1}>{name}</Truncate>
@@ -24,7 +24,7 @@ const DentistCard = props => {
                 <Text
                     fontStyle="italic"
                     lineHeight="1.1"
-                    fontSize={2}
+                    fontSize={3}
                     color="text.black"
                     fontWeight="bold"
                     truncate

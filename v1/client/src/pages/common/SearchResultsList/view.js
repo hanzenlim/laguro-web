@@ -23,7 +23,7 @@ const SearchResultsList = props => {
     return (
         <Flex width={['100%', '623px']} flexDirection="column">
             <Text
-                fontSize={4}
+                fontSize={5}
                 color="text.black"
                 mb={10}
                 lineHeight="40px"

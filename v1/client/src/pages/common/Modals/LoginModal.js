@@ -11,7 +11,7 @@ const LoginModal = ({ login, visible, openRegistrationModal, closeModal }) => (
             justifyContent="space-around"
             alignItems="center"
         >
-            <Text fontWeight="bold" fontSize={4}>
+            <Text fontWeight="bold" fontSize={5}>
                 sign in
             </Text>
             <Flex width={1} my={20} justifyContent="space-around">

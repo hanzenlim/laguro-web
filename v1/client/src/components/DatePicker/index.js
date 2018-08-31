@@ -99,7 +99,7 @@ class DatePicker extends PureComponent {
                             <Icon type="calendar" width="24px" height="24px" />
                         )}
                         <Text
-                            fontSize={2}
+                            fontSize={3}
                             color="text.black"
                             ml={this.state.dateString.length ? 6 : 0}
                         >

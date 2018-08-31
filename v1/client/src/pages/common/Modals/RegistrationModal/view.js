@@ -13,12 +13,12 @@ const ReservationModalView = ({ closeModal, visible, signup }) => (
             alignItems="center"
         >
             <Flex>
-                <Text fontSize={4}>welcome to&nbsp;</Text>
-                <Text fontSize={4} fontWeight="bold">
+                <Text fontSize={5}>welcome to&nbsp;</Text>
+                <Text fontSize={5} fontWeight="bold">
                     laguro,
                 </Text>
             </Flex>
-            <Text fontSize={3} mb={40}>
+            <Text fontSize={4} mb={40}>
                 let's get started on creating your profile
             </Text>
 
