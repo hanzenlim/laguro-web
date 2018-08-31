@@ -1,18 +1,11 @@
 import React from 'react';
-import { arrayOf, shape, bool, string, number } from 'prop-types';
+import { arrayOf, shape, string, number } from 'prop-types';
+import moment from 'moment';
 
-import {
-    Box,
-    Flex,
-    Image,
-    Text,
-    Rating,
-    Truncate,
-    Loading,
-} from '../../../components';
+import { Box, Flex, Image, Text, Rating, Truncate } from '../../../components';
 
 const ReviewContianer = props => {
-    const { reviews, loading, totalRating, reviewsCount } = props;
+    const { reviews, totalRating, reviewsCount } = props;
 
     const renderReviewsStats = (
         <Flex alignItems="center" justifyContent="space-between" pt={40}>
@@ -39,69 +32,63 @@ const ReviewContianer = props => {
         </Flex>
     );
 
-    const renderReviews =
-        reviews &&
-        reviews.map(review => (
-            <Box
-                py={40}
-                borderBottom="1px solid"
-                borderColor="divider.gray"
-                key={review.id}
-            >
-                <Flex alignItems="center">
-                    <Image
-                        width={82}
-                        height={82}
-                        borderRadius="50%"
-                        src={review.reviewer.imageUrl}
-                    />
-                    <Box px={10}>
-                        <Flex
-                            alignItems="center"
-                            fontSize={2}
-                            fontWeight="bold"
-                            color="text.black"
-                            lineHeight="22px"
-                        >
-                            {`${
-                                review.reviewer.firstName
-                            } ${review.reviewer.lastName.charAt(0)}.`}
-                            <Flex alignItems="center" justifyContent="center">
-                                <Rating
-                                    disabled
-                                    ml={10}
-                                    value={review.rating}
-                                />
-                            </Flex>
+    const renderReviews = reviews.map(review => (
+        <Box
+            py={40}
+            borderBottom="1px solid"
+            borderColor="divider.gray"
+            key={review.id}
+        >
+            <Flex alignItems="center">
+                <Image
+                    width={82}
+                    height={82}
+                    borderRadius="50%"
+                    src={review.reviewer.imageUrl}
+                    alt="reviewer-photo"
+                />
+                <Box px={10}>
+                    <Flex
+                        alignItems="center"
+                        fontSize={2}
+                        fontWeight="bold"
+                        color="text.black"
+                        lineHeight="22px"
+                    >
+                        {`${
+                            review.reviewer.firstName
+                        } ${review.reviewer.lastName.charAt(0)}.`}
+                        <Flex alignItems="center" justifyContent="center">
+                            <Rating disabled ml={10} value={review.rating} />
                         </Flex>
-                        <Text
-                            fontSize={1}
-                            color="text.black"
-                            lineHeight="22px"
-                            width={720}
-                        >
-                            {review.dateCreated}
-                        </Text>
-                    </Box>
-                </Flex>
-                <Text mt={4} fontSize={1} color="text.black" lineHeight="22px">
-                    <Truncate lines={3} hasToggle>
-                        {review.text}
-                    </Truncate>
-                </Text>
-            </Box>
-        ));
+                    </Flex>
+                    <Text
+                        fontSize={1}
+                        color="text.black"
+                        lineHeight="22px"
+                        width={720}
+                    >
+                        {moment(review.dateCreated).format('MMMM D YYYY')}
+                    </Text>
+                </Box>
+            </Flex>
+            <Text mt={4} fontSize={1} color="text.black" lineHeight="22px">
+                <Truncate lines={3} hasToggle>
+                    {review.text}
+                </Truncate>
+            </Text>
+        </Box>
+    ));
 
     return (
         <Box width={720} mx="auto">
-            {!loading && renderReviewsStats}
-            {loading ? <Loading /> : renderReviews}
+            {renderReviewsStats}
+            {renderReviews}
         </Box>
     );
 };
 
 ReviewContianer.propTypes = {
-    loading: bool.isRequired,
     reviews: arrayOf(
         shape({
             id: string,
