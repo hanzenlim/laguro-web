@@ -6,6 +6,19 @@ import { Button } from '../../components';
 
 const StyledForm = styled(AntdForm)`
     width: 100%;
+
+    .ant-form-item {
+        margin-bottom: 20px;
+    }
+
+    .ant-form-item-label {
+        margin-bottom: 10px;
+        line-height: 22px;
+    }
+
+    .ant-form-item-label > label {
+        font-size: 18px;
+    }
 `;
 
 class Form extends Component {
@@ -61,7 +74,6 @@ const StyledFormItem = styled(AntFormItem)`
 const StyledFormInput = styled(AntFormItem)`
     &&.ant-form-item {
         font-family: 'Ubuntu', sans-serif;
-        font-weight: bold;
         ${space};
     }
 `;
@@ -91,6 +103,7 @@ const FormItem = ({
     rules = [],
     input,
     validateTrigger = 'onChange',
+    initialValue,
     ...rest
 }) => {
     const { getFieldDecorator, getFieldError, isFieldValidating } = form;
@@ -99,6 +112,7 @@ const FormItem = ({
 
     return (
         <StyledFormInput
+            colon={false}
             label={label}
             validateStatus={error ? 'error' : ''}
             help={error || ''}
@@ -107,6 +121,7 @@ const FormItem = ({
             {getFieldDecorator(name, {
                 rules,
                 validateTrigger,
+                initialValue,
             })(input)}
         </StyledFormInput>
     );

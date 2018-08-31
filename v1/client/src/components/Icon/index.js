@@ -38,12 +38,6 @@ const Icon = props => {
         case 'calendar':
             ReturnIcon = Calendar;
             break;
-        case 'leftArrow':
-            ReturnIcon = LeftArrow;
-            break;
-        case 'rightArrow':
-            ReturnIcon = RightArrow;
-            break;
         default:
             ReturnIcon = AntdIcon;
     }

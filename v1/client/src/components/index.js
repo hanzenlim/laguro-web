@@ -18,6 +18,7 @@ import Form from './Form';
 import Modal from './Modal';
 import Popover from './Popover';
 import Carousel from './Carousel';
+import Select from './Select';
 
 export {
     Box,
@@ -40,4 +41,5 @@ export {
     Modal,
     Popover,
     Carousel,
+    Select,
 };

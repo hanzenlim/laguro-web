@@ -9,6 +9,7 @@ export default {
         background: {
             white: '#ffffff',
             gray: '#c7c7c7',
+            green: '#50e3c2',
             lightGray: '#efeeee',
             transparent: 'rgba(0, 0, 0, 0)',
         },
@@ -34,6 +35,7 @@ export default {
             red: '#ff2d55',
         },
         arrow: {
+            black: 'rgba(0, 0, 0, 0.7);',
             gray: '#c7c7c7',
             green: '#50e3c2',
         },
