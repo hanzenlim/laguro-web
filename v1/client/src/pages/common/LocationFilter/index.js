@@ -122,7 +122,6 @@ class LocationFilter extends PureComponent {
 
     render() {
         const { queryString, locationResults, dentistResults } = this.state;
-        const { width, withDentists } = this.props;
 
         return (
             <LocationFilterView
@@ -131,8 +130,7 @@ class LocationFilter extends PureComponent {
                 dentistResults={dentistResults}
                 handleChange={this.handleChange}
                 handleSuggestionSelect={this.handleSuggestionSelect}
-                withDentists={withDentists}
-                width={width}
+                {...this.props}
             />
         );
     }

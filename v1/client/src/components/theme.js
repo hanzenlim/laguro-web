@@ -4,6 +4,7 @@ export default {
     colors: {
         text: {
             white: '#ffffff',
+            trueBlack: '000000',
             black: '#303549',
             black50: 'rgba(0, 0, 0, 0.5)',
             gray: '#c7c7c7',

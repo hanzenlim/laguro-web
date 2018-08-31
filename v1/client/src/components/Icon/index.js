@@ -6,13 +6,18 @@ import {
     space,
     width,
     height,
+    fontSize,
+    fontWeight,
     left,
+    top,
+    bottom,
     right,
+    opacity,
     position,
     cursor,
     transform,
-    fontSize,
     propTypes,
+    lineHeight,
 } from 'styled-system';
 import LocationPin from './LocationPin';
 import LocationPinWithBackground from './LocationPinWithBackground';
@@ -23,6 +28,7 @@ import Minus from './Minus';
 import RightForwardArrow from './RightForwardArrow';
 import UpArrow from './UpArrow';
 import DownArrow from './DownArrow';
+import { Box } from '../../components';
 
 const Icon = props => {
     const { type, ...rest } = props;
@@ -47,7 +53,7 @@ const Icon = props => {
         case 'locationPinWithBackground':
             ReturnIcon = LocationPinWithBackground;
             break;
-        case 'plus':
+        case 'coloredPlus':
             ReturnIcon = Plus;
             break;
         case 'minus':
@@ -61,7 +67,10 @@ const Icon = props => {
     }
 
     const StyledIcon = styled(ReturnIcon)`
-        ${transform} ${space} ${width} ${height} ${fontSize} ${position} ${color} ${left} ${right} ${cursor};
+        && {
+            ${transform}  ${color} ${space} ${width} ${height} ${position} ${color} ${left} ${top} ${bottom}${right} ${fontSize} ${opacity} ${fontWeight}; ${cssProps =>
+        cssProps.cursor ? `cursor: ${cssProps.cursor}` : ''}; ${lineHeight}
+        }
     `;
 
     const StyledIconContainer = styled.span`
@@ -74,7 +83,7 @@ const Icon = props => {
 
     return (
         <StyledIconContainer>
-            <StyledIcon type={type} {...rest} />{' '}
+            <StyledIcon type={type} {...rest} />
         </StyledIconContainer>
     );
 };

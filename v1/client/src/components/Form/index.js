@@ -4,6 +4,7 @@ import { Form as AntdForm } from 'antd';
 import styled from 'styled-components';
 import { space, textAlign, height } from 'styled-system';
 import { Button } from '../../components';
+import BackButton from './BackButton';
 
 const StyledForm = styled(AntdForm)`
     width: 100%;
@@ -42,6 +43,11 @@ class Form extends Component {
         });
     };
 
+    componentDidMount() {
+        const { form, onSuccess, children, ...rest } = this.props;
+        this.props.form.setFieldsValue({ ...rest });
+    }
+
     render() {
         const { form, layout, children } = this.props;
 
@@ -50,6 +56,7 @@ class Form extends Component {
                 layout={layout}
                 onSubmit={this.handleSubmit}
                 hideRequiredMark={true}
+                {...this.props}
             >
                 {/* add form prop to each child element */}
                 {React.Children.map(children, child => {
@@ -69,7 +76,7 @@ class Form extends Component {
 
 const AntFormItem = AntdForm.Item;
 
-const StyledFormItem = styled(AntFormItem)`
+export const StyledFormItem = styled(AntFormItem)`
     text-align: center;
     &&.ant-form-item {
         ${textAlign};
@@ -87,7 +94,7 @@ const StyledFormInput = styled(AntFormItem)`
 `;
 
 // eslint-disable-next-line
-const SubmitButton = ({ form, buttonText, textAlign, height, ...rest }) => {
+const SubmitButton = ({ form, buttonText, textAlign, ...rest }) => {
     const { getFieldsError } = form;
     const hasErrors = fieldsError =>
         Object.keys(fieldsError).some(field => fieldsError[field]);
@@ -111,15 +118,14 @@ const FormItem = ({
     label,
     rules = null,
     input,
-    validateTrigger = 'onChange',
     initialValue,
+    validateTrigger,
     valuePropName = 'value',
     ...rest
 }) => {
     const { getFieldDecorator, getFieldError, isFieldValidating } = form;
 
     const error = !isFieldValidating(name) && getFieldError(name);
-
     return (
         <StyledFormInput
             colon={false}
@@ -140,6 +146,7 @@ const FormItem = ({
 
 const WrappedForm = AntdForm.create()(Form);
 WrappedForm.SubmitButton = SubmitButton;
+WrappedForm.BackButton = BackButton;
 WrappedForm.FormItem = FormItem;
 
 WrappedForm.defaultProps = {

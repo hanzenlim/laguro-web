@@ -28,6 +28,8 @@ import RangePicker from './RangePicker';
 import SlickCarousel from './SlickCarousel';
 import Alert from './Alert';
 import MaskedInput from './MaskedInput';
+import Steps from './Steps';
+import TimePicker from './TimePicker';
 
 export {
     Box,
@@ -56,8 +58,10 @@ export {
     CheckMarkAnimation,
     Checkbox,
     Counter,
+    TimePicker,
     RangePicker,
     SlickCarousel,
     Alert,
     MaskedInput,
+    Steps,
 };

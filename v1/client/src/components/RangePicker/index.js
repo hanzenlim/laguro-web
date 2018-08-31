@@ -71,7 +71,7 @@ class RangePicker extends PureComponent {
         const { ...rest } = this.props;
 
         return (
-            <StyledContainer>
+            <StyledContainer {...rest}>
                 <div ref="datePickerContainer">
                     <Box
                         position="absolute"

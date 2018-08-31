@@ -26,6 +26,7 @@ const SearchBox = props => {
         <Flex justifyContent="center">
             <Box mr={10}>
                 <LocationFilter
+                    height={60}
                     initialValue={initialLocationFilterValue}
                     onLocationChange={onLocationFilterChange}
                     width={size === 'large' ? 710 : 420}

@@ -47,7 +47,8 @@ const Box = system(
     'background',
     'backgroundSize',
     // misc
-    'boxShadow'
+    'boxShadow',
+    'bg'
 );
 
 const StyledBox = styled(Box)`
