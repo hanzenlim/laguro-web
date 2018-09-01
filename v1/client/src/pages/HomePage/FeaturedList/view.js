@@ -57,7 +57,7 @@ const FeaturedListView = () => (
         <Box pb={40} />
         <Text
             color="black"
-            fontSize={4}
+            fontSize={5}
             lineHeight="30px"
             letterSpacing="-0.8px"
         >
@@ -73,7 +73,7 @@ const FeaturedListView = () => (
         </StyledSpecialtyContainer>
         <Text
             color="black"
-            fontSize={4}
+            fontSize={5}
             lineHeight="30px"
             letterSpacing="-0.8px"
         >
@@ -84,7 +84,7 @@ const FeaturedListView = () => (
             <Box width="48%" position="relative">
                 <Image width="100%" height="300px" src={hero1} alt="hero1" />
                 <Box pb={18} />
-                <Text color="black" fontSize={3} lineHeight="30px">
+                <Text color="black" fontSize={4} lineHeight="30px">
                     if you have chairs that can be rented out
                 </Text>
                 <Box
@@ -107,7 +107,7 @@ const FeaturedListView = () => (
                         </Flex>
                         <Text
                             color="black"
-                            fontSize={5}
+                            fontSize={6}
                             lineHeight="51px"
                             float="right"
                         >
@@ -119,7 +119,7 @@ const FeaturedListView = () => (
             <Box width="48%" position="relative">
                 <Image width="100%" height="300px" src={hero1} alt="hero1" />
                 <Box pb={18} />
-                <Text color="black" fontSize={3} lineHeight="30px">
+                <Text color="black" fontSize={4} lineHeight="30px">
                     if you are looking for chairs for your practice
                 </Text>
                 <Box
@@ -142,7 +142,7 @@ const FeaturedListView = () => (
                         </Flex>
                         <Text
                             color="black"
-                            fontSize={5}
+                            fontSize={6}
                             lineHeight="51px"
                             float="right"
                         >
@@ -156,7 +156,7 @@ const FeaturedListView = () => (
         <Text
             is="span"
             color="black"
-            fontSize={4}
+            fontSize={5}
             lineHeight="30px"
             letterSpacing="-0.8px"
         >
@@ -165,7 +165,7 @@ const FeaturedListView = () => (
         <Text
             is="span"
             color="black"
-            fontSize={4}
+            fontSize={5}
             fontWeight="bold"
             lineHeight="30px"
             letterSpacing="-0.8px"
@@ -175,7 +175,7 @@ const FeaturedListView = () => (
         <div>
             <Text
                 color="black"
-                fontSize={3}
+                fontSize={4}
                 lineHeight="30px"
                 letterSpacing="-0.8px"
             >

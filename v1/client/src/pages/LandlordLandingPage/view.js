@@ -33,7 +33,7 @@ const LandlordLandingPageView = () => (
                             mr={8}
                         />
                     </Flex>
-                    <Text color="text.white" fontWeight="bold" fontSize={6}>
+                    <Text color="text.white" fontWeight="bold" fontSize={7}>
                         landlord
                     </Text>
                 </Flex>
@@ -41,7 +41,7 @@ const LandlordLandingPageView = () => (
                     lineHeight="30px"
                     color="text.white"
                     fontWeight="medium"
-                    fontSize={4}
+                    fontSize={5}
                     textAlign="center"
                 >
                     no more empty chairs

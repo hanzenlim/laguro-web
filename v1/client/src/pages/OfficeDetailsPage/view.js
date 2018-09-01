@@ -37,14 +37,14 @@ const OfficeDetailsPageView = props => {
                         >
                             <Text
                                 color="text.black"
-                                fontSize={4}
+                                fontSize={5}
                                 lineHeight="34px"
                                 letterSpacing="-0.8px"
                             >
                                 {data.name}
                             </Text>
                             <Text
-                                fontSize={3}
+                                fontSize={4}
                                 lineHeight="34px"
                                 letterSpacing="-0.8px"
                             >
@@ -65,7 +65,7 @@ const OfficeDetailsPageView = props => {
                         {data.description && (
                             // Added fixed width to fix bug in rendering truncated text
                             <Box pb={42} width="732px">
-                                <Text fontSize={3} lineHeight="1.3">
+                                <Text fontSize={4} lineHeight="1.3">
                                     description room
                                 </Text>
                                 <Text fontSize={1} lineHeight="1.86">
@@ -94,7 +94,7 @@ const OfficeDetailsPageView = props => {
                         >
                             <Text
                                 color="text.black"
-                                fontSize={3}
+                                fontSize={4}
                                 lineHeight="1.5"
                                 letterSpacing="1.5"
                             >
@@ -124,7 +124,7 @@ const OfficeDetailsPageView = props => {
                     </Sticky>
                 </Flex>
                 <Box mt={40}>
-                    <Text fontSize={4}>find our highlights</Text>
+                    <Text fontSize={5}>find our highlights</Text>
 
                     <Flex justifyContent="space-between" mt={30}>
                         <Box width="186px">

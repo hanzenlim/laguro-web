@@ -33,7 +33,7 @@ const DentistLandingPageView = () => (
                             mr={8}
                         />
                     </Flex>
-                    <Text color="text.white" fontWeight="bold" fontSize={6}>
+                    <Text color="text.white" fontWeight="bold" fontSize={7}>
                         dentist
                     </Text>
                 </Flex>
@@ -41,7 +41,7 @@ const DentistLandingPageView = () => (
                     lineHeight="30px"
                     color="text.white"
                     fontWeight="medium"
-                    fontSize={4}
+                    fontSize={5}
                     textAlign="center"
                 >
                     find your next office here

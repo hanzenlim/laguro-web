@@ -14,7 +14,7 @@ const StyledSelect = styled(AntdSelect)`
     }
 
     .ant-select-selection-selected-value {
-        font-size: ${props => props.theme.fontSizes[2]};
+        font-size: ${props => props.theme.fontSizes[3]};
         opacity: 50%;
         letter-spacing: -0.4px;
     }
@@ -22,7 +22,7 @@ const StyledSelect = styled(AntdSelect)`
     .ant-select-arrow {
         font-weight: bold;
         color: ${props => props.theme.colors.arrow.black};
-        font-size: ${props => props.theme.fontSizes[2]};
+        font-size: ${props => props.theme.fontSizes[3]};
     }
 `;
 

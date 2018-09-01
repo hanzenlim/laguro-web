@@ -32,7 +32,7 @@ const MapInfoWindow = props => {
                 />
                 <Box width="160px" ml={5}>
                     <Text
-                        fontSize={2}
+                        fontSize={3}
                         lineHeight="1.29"
                         color="text.black"
                         letterSpacing="-0.8px"

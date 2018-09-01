@@ -12,7 +12,7 @@ storiesOf('Carousel', module).add('default', () => (
                 alignItems="center"
                 justifyContent="center"
             >
-                <Text fontSize={4}>1</Text>
+                <Text fontSize={5}>1</Text>
             </Flex>
         </div>
         <div>
@@ -23,7 +23,7 @@ storiesOf('Carousel', module).add('default', () => (
                 alignItems="center"
                 justifyContent="center"
             >
-                <Text fontSize={4}>2</Text>
+                <Text fontSize={5}>2</Text>
             </Flex>
         </div>
         <div>
@@ -34,7 +34,7 @@ storiesOf('Carousel', module).add('default', () => (
                 alignItems="center"
                 justifyContent="center"
             >
-                <Text fontSize={4}>3</Text>
+                <Text fontSize={5}>3</Text>
             </Flex>
         </div>
         <div>
@@ -45,7 +45,7 @@ storiesOf('Carousel', module).add('default', () => (
                 alignItems="center"
                 justifyContent="center"
             >
-                <Text fontSize={4}>4</Text>
+                <Text fontSize={5}>4</Text>
             </Flex>
         </div>
         <div>
@@ -56,7 +56,7 @@ storiesOf('Carousel', module).add('default', () => (
                 alignItems="center"
                 justifyContent="center"
             >
-                <Text fontSize={4}>5</Text>
+                <Text fontSize={5}>5</Text>
             </Flex>
         </div>
     </Carousel>

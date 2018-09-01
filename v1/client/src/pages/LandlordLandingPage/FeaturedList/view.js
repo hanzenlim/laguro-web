@@ -6,7 +6,7 @@ const FeaturedListView = () => (
     <Container>
         <Text
             color="black"
-            fontSize={4}
+            fontSize={5}
             lineHeight="34px"
             letterSpacing="-0.8px"
             textAlign="center"
@@ -16,7 +16,7 @@ const FeaturedListView = () => (
         </Text>
         <Text
             color="black"
-            fontSize={3}
+            fontSize={4}
             lineHeight="34px"
             fontWeight="light"
             textAlign="center"
@@ -26,7 +26,7 @@ const FeaturedListView = () => (
         </Text>
         <Text
             color="black"
-            fontSize={3}
+            fontSize={4}
             lineHeight="30px"
             fontWeight="light"
             textAlign="center"
@@ -44,7 +44,7 @@ const FeaturedListView = () => (
         </Flex>
         <Text
             color="black"
-            fontSize={4}
+            fontSize={5}
             lineHeight="30px"
             letterSpacing="-0.8px"
             mt={40}
@@ -56,21 +56,21 @@ const FeaturedListView = () => (
             <Box width="48%" position="relative">
                 <Image width="100%" height="300px" src={hero1} alt="hero1" />{' '}
                 <Box pb={18} />
-                <Text color="black" fontSize={3} lineHeight="30px">
+                <Text color="black" fontSize={4} lineHeight="30px">
                     rent a large office with a complete set of implant equipment
                 </Text>
             </Box>
             <Box width="48%" position="relative">
                 <Image width="100%" height="300px" src={hero1} alt="hero1" />{' '}
                 <Box pb={18} />
-                <Text color="black" fontSize={3} lineHeight="30px">
+                <Text color="black" fontSize={4} lineHeight="30px">
                     rent an office near Bart
                 </Text>
             </Box>
         </Flex>
         <Text
             color="black"
-            fontSize={4}
+            fontSize={5}
             lineHeight="34px"
             letterSpacing="-0.8px"
             textAlign="center"
@@ -80,7 +80,7 @@ const FeaturedListView = () => (
         </Text>
         <Text
             color="black"
-            fontSize={3}
+            fontSize={4}
             lineHeight="34px"
             fontWeight="light"
             textAlign="center"
@@ -97,7 +97,7 @@ const FeaturedListView = () => (
         </Text>
         <Text
             color="black"
-            fontSize={3}
+            fontSize={4}
             lineHeight="30px"
             fontWeight="light"
             textAlign="center"

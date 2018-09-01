@@ -33,7 +33,7 @@ const SelectAppointment = props => {
                         }
                     >
                         <Text
-                            fontSize={2}
+                            fontSize={3}
                             letterSpacing="-0.4px"
                             color={
                                 selected === item

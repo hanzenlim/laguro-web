@@ -17,7 +17,7 @@ const StyledPagination = styled(AntdPagination)`
     && .ant-pagination-item > a {
         margin: 0;
         color: ${props => props.theme.colors.text.black};
-        font-size: ${props => props.theme.fontSizes[2]};
+        font-size: ${props => props.theme.fontSizes[3]};
     }
 
     && .ant-pagination-item-active {
