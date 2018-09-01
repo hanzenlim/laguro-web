@@ -1,11 +1,11 @@
 import React from 'react';
-import { arrayOf, shape, string, number } from 'prop-types';
+import { arrayOf, shape, string, number, func } from 'prop-types';
 import moment from 'moment';
 
 import { Box, Flex, Image, Text, Rating, Truncate } from '../../../components';
 
 const ReviewContianer = props => {
-    const { reviews, totalRating, reviewsCount } = props;
+    const { reviews, totalRating, reviewsCount, toggleModalState } = props;
 
     const renderReviewsStats = (
         <Flex alignItems="center" justifyContent="space-between" pt={40}>
@@ -26,6 +26,7 @@ const ReviewContianer = props => {
                 fontWeight="bold"
                 lineHeight="22px"
                 alignSelf="flex-end"
+                onClick={toggleModalState}
             >
                 add review
             </Text>
@@ -103,6 +104,9 @@ ReviewContianer.propTypes = {
             dateCreated: string,
         })
     ),
+    totalRating: number,
+    reviewsCount: number,
+    toggleModalState: func,
 };
 
 ReviewContianer.defaultProps = {
