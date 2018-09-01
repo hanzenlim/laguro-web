@@ -3,15 +3,7 @@ import styled from 'styled-components';
 import NukaCarousel from 'nuka-carousel';
 import { Icon, Button } from '../../components';
 
-const StyledNukaCarousel = styled(NukaCarousel)`
-    && .slider-control-centerleft .button {
-        ${props => props.buttonStyle};
-    }
-
-    && .slider-control-centerright .button {
-        ${props => props.buttonStyle};
-    }
-`;
+const StyledNukaCarousel = styled(NukaCarousel)``;
 
 class Carousel extends PureComponent {
     render() {
