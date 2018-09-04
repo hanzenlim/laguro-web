@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { Container } from '../../components';
+import { Container } from '../../../components';
 
 const StyledContainer = styled.div`
     display: flex;
