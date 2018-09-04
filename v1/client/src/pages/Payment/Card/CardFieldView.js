@@ -17,10 +17,6 @@ const style = {
     },
 };
 
-class CardField extends React.Component {
-    render() {
-        return <CardElement className="ant-input" style={style} />;
-    }
-}
+const CardField = () => <CardElement className="ant-input" style={style} />;
 
 export default CardField;

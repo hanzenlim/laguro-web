@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Radio as AntRadio } from 'antd';
+import { Radio as AntdRadio } from 'antd';
 
-const RadioGroup = AntRadio.Group;
+const RadioGroup = AntdRadio.Group;
 const StyledRadioGroup = styled(RadioGroup)`
     &&.ant-radio-group {
         width: 100%;
@@ -20,7 +20,7 @@ const StyledRadioGroup = styled(RadioGroup)`
     }
 `;
 
-const StyledRadio = styled(AntRadio)`
+const StyledRadio = styled(AntdRadio)`
     &&.ant-radio-wrapper {
         line-height: 30px;
         width: 94%;

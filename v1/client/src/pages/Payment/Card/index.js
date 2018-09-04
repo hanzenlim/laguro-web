@@ -7,10 +7,9 @@ import { Query, graphql } from 'react-apollo';
 
 import ExistingCardFormView from './ExistingCardFormView';
 import { Box, Loading, Button } from '../../../components';
+import { NEW_CARD_PAYMENT_METHOD } from '../../../util/strings';
 import { getPaymentOptionQuery, addPaymentOptionMutation } from './queries';
 import NewCardFormView from './NewCardFormView';
-
-const NEW_CARD_METHOD = 'new_card_method';
 
 class CardForm extends Component {
     constructor(props) {
@@ -95,6 +94,8 @@ class CardForm extends Component {
                         'getUser.paymentOptions'
                     );
 
+                    let { selectedCard } = this.state;
+
                     // Check if you have an existing card and user has not
                     // interacted with the radio group.
                     if (
@@ -105,31 +106,35 @@ class CardForm extends Component {
                             value => value.default === true
                         );
 
-                        this.setState({
-                            selectedCard: defaultCard[0].id,
-                        });
-                    } else if (this.state.selectedCard === '') {
-                        this.setState({
-                            selectedCard: NEW_CARD_METHOD,
-                        });
+                        selectedCard = defaultCard[0].id;
+                        // this.setState({
+                        // selectedCard: defaultCard[0].id,
+                        // });
                     }
+
+                    // else if (this.state.selectedCard === '') {
+                    //     this.setState({
+                    //         selectedCard: NEW_CARD_PAYMENT_METHOD,
+                    //     });
+                    // }
 
                     return (
                         <Box width={'100%'}>
                             {get(paymentOptionsCards, 'length') > 0 &&
                                 this.renderExistingCards(
                                     paymentOptionsCards,
-                                    this.state.selectedCard
+                                    selectedCard
                                 )}
 
-                            {this.state.selectedCard === NEW_CARD_METHOD && (
+                            {this.state.selectedCard ===
+                                NEW_CARD_PAYMENT_METHOD && (
                                 <NewCardFormView
                                     btnText={this.props.btnText}
                                     handleSubmit={this.handleCreateStripeToken}
                                 />
                             )}
 
-                            {this.state.selectedCard !== NEW_CARD_METHOD && (
+                            {selectedCard !== NEW_CARD_PAYMENT_METHOD && (
                                 <Button
                                     width={'100%'}
                                     fontSize={2}
