@@ -124,7 +124,10 @@ passport.use(
                                 'There was an error creating your account, please try again.',
                         });
 
-                    done(null, { ...req.body, password: hashedPassword });
+                    done(null, {
+                        ...req.body,
+                        password: hashedPassword,
+                    });
                 });
             });
         }
