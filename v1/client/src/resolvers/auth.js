@@ -7,8 +7,6 @@ if (user) {
     user = { ...parsedUser, __typename: ACTIVE_USER };
 }
 
-console.log('user', user);
-
 const AuthResolver = {
     defaults: {
         activeUser: user || null,

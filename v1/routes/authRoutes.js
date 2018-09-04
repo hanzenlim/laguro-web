@@ -24,7 +24,7 @@ const authRoutes = app => {
                 return res.json({ status: 403, info });
             }
 
-            res.cookie('user', JSON.stringify(user), {
+            res.cookie('user', JSON.stringify({ ...user, imageUrl: null }), {
                 maxAge: 2592000000,
             });
             return res.json({ status: 200, user });

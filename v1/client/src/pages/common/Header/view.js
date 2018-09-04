@@ -165,7 +165,7 @@ Header.defaultProps = {
 
 Header.propTypes = {
     visibleModal: PropTypes.string,
-    auth: PropTypes.string,
+    auth: PropTypes.object,
     login: PropTypes.func,
     logout: PropTypes.func,
     openLoginModal: PropTypes.func,
