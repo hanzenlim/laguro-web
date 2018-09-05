@@ -5,11 +5,9 @@ import get from 'lodash/get';
 import { injectStripe } from 'react-stripe-elements';
 import { Query, graphql } from 'react-apollo';
 
-import ExistingCardFormView from './ExistingCardFormView';
-import { Box, Loading, Button } from '../../../components';
-import { NEW_CARD_PAYMENT_METHOD } from '../../../util/strings';
+import { Loading } from '../../../components';
 import { getPaymentOptionQuery, addPaymentOptionMutation } from './queries';
-import NewCardFormView from './NewCardFormView';
+import CardView from './view';
 
 class CardForm extends Component {
     constructor(props) {
@@ -50,23 +48,11 @@ class CardForm extends Component {
         this.props.handleSubmit(this.state.selectedCard);
     };
 
-    onCardSelectChange = value => {
+    onChangeCardSelect = value => {
         this.setState({
             selectedCard: get(value, 'target.value'),
         });
     };
-
-    renderExistingCards(paymentOptionsCards, selectedCard) {
-        return (
-            <Box my={10}>
-                <ExistingCardFormView
-                    selectedCard={selectedCard}
-                    onChangeCardMethod={this.onCardSelectChange}
-                    paymentOptionsCards={paymentOptionsCards}
-                />
-            </Box>
-        );
-    }
 
     render() {
         const { userId } = this.props;
@@ -107,43 +93,19 @@ class CardForm extends Component {
                         );
 
                         selectedCard = defaultCard[0].id;
-                        // this.setState({
-                        // selectedCard: defaultCard[0].id,
-                        // });
                     }
 
-                    // else if (this.state.selectedCard === '') {
-                    //     this.setState({
-                    //         selectedCard: NEW_CARD_PAYMENT_METHOD,
-                    //     });
-                    // }
-
                     return (
-                        <Box width={'100%'}>
-                            {get(paymentOptionsCards, 'length') > 0 &&
-                                this.renderExistingCards(
-                                    paymentOptionsCards,
-                                    selectedCard
-                                )}
-
-                            {this.state.selectedCard ===
-                                NEW_CARD_PAYMENT_METHOD && (
-                                <NewCardFormView
-                                    btnText={this.props.btnText}
-                                    handleSubmit={this.handleCreateStripeToken}
-                                />
-                            )}
-
-                            {selectedCard !== NEW_CARD_PAYMENT_METHOD && (
-                                <Button
-                                    width={'100%'}
-                                    fontSize={2}
-                                    onClick={this.submitExistingCardPayment}
-                                >
-                                    {this.props.btnText}
-                                </Button>
-                            )}
-                        </Box>
+                        <CardView
+                            paymentOptionsCards={paymentOptionsCards}
+                            selectedCard={selectedCard}
+                            btnText={this.props.btnText}
+                            handleSubmitExistingCard={
+                                this.submitExistingCardPayment
+                            }
+                            handleSubmitNewCard={this.handleCreateStripeToken}
+                            onChangeCardSelect={this.onChangeCardSelect}
+                        />
                     );
                 }}
             </Query>

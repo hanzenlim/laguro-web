@@ -1,8 +1,24 @@
 import React from 'react';
-import { Form, Input } from '../../../components';
-import CardFieldView from './CardFieldView';
+import { CardElement } from 'react-stripe-elements';
+import { Form, Input } from '../../../../components';
 
 const { SubmitButton, FormItem } = Form;
+
+const style = {
+    base: {
+        fontSize: '16px',
+        color: '#424770',
+        lineHeight: '22px',
+        letterSpacing: '0.025em',
+        '::placeholder': {
+            color: '#aab7c4',
+        },
+        padding: '16px',
+    },
+    invalid: {
+        color: '#f5222d',
+    },
+};
 
 const NewCardFormView = ({ btnText, handleSubmit }) => (
     <Form layout="vertical" onSuccess={handleSubmit}>
@@ -10,7 +26,7 @@ const NewCardFormView = ({ btnText, handleSubmit }) => (
             name="card"
             label="credit card"
             mb={1}
-            input={<CardFieldView />}
+            input={<CardElement className="ant-input" style={style} />}
         />
         <FormItem
             name="name"
