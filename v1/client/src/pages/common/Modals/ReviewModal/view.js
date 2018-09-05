@@ -67,19 +67,12 @@ const OfficeInfo = props => {
 };
 
 const ReviewModal = props => {
-    const {
-        visible,
-        toggleModalState,
-        setRating,
-        info,
-        onSuccess,
-        rating,
-    } = props;
+    const { visible, onCancel, setRating, info, onSuccess, rating } = props;
 
     const isDentist = info.type === DENTIST;
 
     return (
-        <Modal visible={visible} onCancel={toggleModalState} destroyOnClose>
+        <Modal visible={visible} onCancel={onCancel} destroyOnClose>
             <Text textAlign="center" fontSize={4} lineHeight="1.7">
                 leave a review
             </Text>
@@ -115,7 +108,7 @@ const ReviewModal = props => {
 
 ReviewModal.defaultProps = {
     onSuccess: () => {},
-    toggleModalState: () => {},
+    onCancel: () => {},
     setRating: () => {},
 };
 
@@ -127,7 +120,7 @@ ReviewModal.propTypes = {
         specialty: string,
     }),
     onSuccess: func.isRequired,
-    toggleModalState: func.isRequired,
+    onCancel: func.isRequired,
     setRating: func.isRequired,
     rating: number.isRequired,
     visible: bool.isRequired,

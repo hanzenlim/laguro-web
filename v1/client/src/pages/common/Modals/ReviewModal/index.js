@@ -9,8 +9,15 @@ class ReviewModal extends PureComponent {
 
     setRating = rating => this.setState({ rating });
 
+    onCancel = () => {
+        this.setRating(0);
+        this.props.toggleModalState();
+    };
+
     // TODO: Add mutation here
-    onSuccess = () => {};
+    onSuccess = () => {
+        this.setRating(0);
+    };
 
     render() {
         return (
@@ -19,6 +26,7 @@ class ReviewModal extends PureComponent {
                 rating={this.state.rating}
                 setRating={this.setRating}
                 onSuccess={this.onSuccess}
+                onCancel={this.onCancel}
             />
         );
     }
