@@ -1,9 +1,9 @@
 import React from 'react';
-import { Box, Text, Image, Flex, Radio } from '../../../../components';
-import visa from '../../../../components/Image/visa.svg';
-import mastercard from '../../../../components/Image/mastercard.svg';
-import defaultPaymentcard from '../../../../components/Image/defaultCardPayment.svg';
-import { NEW_CARD_PAYMENT_METHOD } from '../../../../util/strings';
+import { Box, Text, Image, Flex, Radio } from '../../../../../components';
+import visa from '../../../../../components/Image/visa.svg';
+import mastercard from '../../../../../components/Image/mastercard.svg';
+import defaultPaymentcard from '../../../../../components/Image/defaultCardPayment.svg';
+import { NEW_CARD_PAYMENT_METHOD } from '../../../../../util/strings';
 
 const RadioGroup = Radio.Group;
 const cardLogoMapping = {

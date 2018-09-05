@@ -2,8 +2,8 @@ import React from 'react';
 import get from 'lodash/get';
 import ExistingCardFormView from './ExistingCardForm';
 import NewCardFormView from './NewCardForm';
-import { Box, Button } from '../../../components';
-import { NEW_CARD_PAYMENT_METHOD } from '../../../util/strings';
+import { Box, Button } from '../../../../components';
+import { NEW_CARD_PAYMENT_METHOD } from '../../../../util/strings';
 
 const renderExistingCards = (
     paymentOptionsCards,

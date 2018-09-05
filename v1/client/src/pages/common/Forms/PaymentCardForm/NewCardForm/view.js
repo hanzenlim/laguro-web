@@ -1,6 +1,6 @@
 import React from 'react';
 import { CardElement } from 'react-stripe-elements';
-import { Form, Input } from '../../../../components';
+import { Form, Input } from '../../../../../components';
 
 const { SubmitButton, FormItem } = Form;
 

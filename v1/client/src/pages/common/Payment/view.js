@@ -1,27 +1,24 @@
 import React from 'react';
-import styled from 'styled-components';
+import { StripeProvider, Elements } from 'react-stripe-elements';
 
-import { Container } from '../../../components';
-
-const StyledContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
-    @media screen and (min-width: 1200px) {
-        flex-direction: row;
-    }
-`;
+import { Box } from '../../../components';
+import PaymentCardForm from '../../common/Forms/PaymentCardForm';
 
 const PaymentPageView = props => {
-    const { data } = props;
+    const { stripe, btnText, userId, handleSubmit } = props;
 
     return (
-        <Container>
-            <StyledContainer>
-                <div>{JSON.stringify(data)}</div>
-            </StyledContainer>
-        </Container>
+        <Box width="420px" pl={10} pr={10}>
+            <StripeProvider stripe={stripe}>
+                <Elements>
+                    <PaymentCardForm
+                        btnText={btnText}
+                        userId={userId}
+                        handleSubmit={handleSubmit}
+                    />
+                </Elements>
+            </StripeProvider>
+        </Box>
     );
 };
 

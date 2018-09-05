@@ -5,7 +5,7 @@ import get from 'lodash/get';
 import { injectStripe } from 'react-stripe-elements';
 import { Query, graphql } from 'react-apollo';
 
-import { Loading } from '../../../components';
+import { Loading } from '../../../../components';
 import { getPaymentOptionQuery, addPaymentOptionMutation } from './queries';
 import CardView from './view';
 

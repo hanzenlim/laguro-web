@@ -1,12 +1,11 @@
 import React, { PureComponent } from 'react';
 import { Query } from 'react-apollo';
 import get from 'lodash/get';
-import { StripeProvider, Elements } from 'react-stripe-elements';
 
-import { Box, Loading } from '../../../components';
+import { Loading } from '../../../components';
 import { stripePublicKey } from '../../../config/keys';
-import CardForm from './Card';
 import { getUserQuery } from '../../common/Header/queries';
+import PaymentView from './view';
 
 class Payment extends PureComponent {
     constructor(props) {
@@ -44,22 +43,16 @@ class Payment extends PureComponent {
                     }
 
                     if (error) {
-                        console.log('Error::', error);
-                        return <div>Errorefwefwe</div>;
+                        return <div>Error</div>;
                     }
 
                     return (
-                        <Box width="420px" pl={10} pr={10}>
-                            <StripeProvider stripe={this.state.stripe}>
-                                <Elements>
-                                    <CardForm
-                                        btnText="Make an appointment"
-                                        userId={get(data, 'activeUser.id')}
-                                        handleSubmit={this.submitPayment}
-                                    />
-                                </Elements>
-                            </StripeProvider>
-                        </Box>
+                        <PaymentView
+                            stripe={this.state.stripe}
+                            btnText="Make an appointment"
+                            userId={get(data, 'activeUser.id')}
+                            handleSubmit={this.submitPayment}
+                        />
                     );
                 }}
             </Query>

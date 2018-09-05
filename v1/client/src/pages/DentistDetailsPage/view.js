@@ -12,6 +12,7 @@ import {
 } from '../../components';
 
 import Map from '../common/Map';
+import Payment from '../common/Payment';
 import DentistCard from './DentistCard';
 
 const DentistDetailsPageView = props => {
@@ -125,10 +126,11 @@ const DentistDetailsPageView = props => {
                 <Sticky offset="20px">
                     <Box
                         width="100%"
-                        height="200px"
                         border="1px solid"
                         borderColor="divider.gray"
-                    />
+                    >
+                        <Payment />
+                    </Box>
                 </Sticky>
             </Flex>
             <Box mt={40}>
