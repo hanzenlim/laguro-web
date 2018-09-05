@@ -9,6 +9,7 @@ import {
     Rating,
     Sticky,
     Truncate,
+    Button,
 } from '../../components';
 
 import Map from '../common/Map';
@@ -21,8 +22,8 @@ const DentistDetailsPageView = props => {
     return (
         <Container>
             <Flex>
-                <Box width="732px" mt={20} mr={34}>
-                    <Flex alignItems="center" mb={40}>
+                <Box width="732px" mt={30} mr={34}>
+                    <Flex mb={56}>
                         <Image
                             width="130px"
                             height="130px"
@@ -33,32 +34,24 @@ const DentistDetailsPageView = props => {
                         />
                         <Box>
                             <Text
-                                color="text.black"
-                                fontSize={5}
-                                lineHeight="1.13"
-                            >
-                                {data.name}
-                            </Text>
-                            <Text
-                                fontStyle="italic"
-                                fontSize={4}
-                                lineHeight="1.13"
+                                textTransform="uppercase"
+                                fontSize={3}
+                                color="#adadad"
+                                lineHeight="1"
                                 fontWeight="bold"
                                 letterSpacing="-0.8px"
                             >
                                 {data.specialization}
                             </Text>
                             <Text
-                                mt={10}
                                 color="text.black"
+                                fontSize={5}
                                 lineHeight="40px"
-                                fontSize={1}
-                                lineHeight="22px"
-                                letterSpacing="-0.4"
                             >
-                                {data.procedures}
+                                {data.name}
                             </Text>
-                            <Flex mt={8} alignItems="center">
+
+                            <Flex mt={5} alignItems="center">
                                 <Rating size="18px" value="3" disabled />
                                 <Text
                                     ml={10}
@@ -71,12 +64,37 @@ const DentistDetailsPageView = props => {
                             </Flex>
                         </Box>
                     </Flex>
+                    <Text fontSize={4} fontWeight="bold" mb="26px">
+                        available procedures
+                    </Text>
+                    <Flex flexWrap="wrap" mb="34px">
+                        {data.procedures.map(procedure => (
+                            <Button type="ghost">
+                                <Box
+                                    px={24}
+                                    py={10}
+                                    bg="background.green"
+                                    borderRadius="25px"
+                                    mr="6px"
+                                    mb="6px"
+                                >
+                                    <Text
+                                        textTransform="lowercase"
+                                        color="text.white"
+                                        lineHeight="22px"
+                                        fontSize={1}
+                                        lineHeight="22px"
+                                        letterSpacing="-0.4px"
+                                    >
+                                        {procedure}
+                                    </Text>
+                                </Box>
+                            </Button>
+                        ))}
+                    </Flex>
                     {data.bio && (
                         // Added fixed width to fix bug in rendering truncated text
                         <Box pb={42} width="732px">
-                            <Text fontSize={4} lineHeight="1.3">
-                                professional experience
-                            </Text>
                             <Text fontSize={1} lineHeight="1.86">
                                 <Truncate
                                     lines={3}
@@ -123,8 +141,10 @@ const DentistDetailsPageView = props => {
                         </Box>
                     </Box>
                 </Box>
-                <Sticky offset="20px">
+                <Sticky>
                     <Box
+                        boxShadow="1px 1px 7px 0 rgba(0, 0, 0, 0.15)"
+                        mt="44px"
                         width="100%"
                         border="1px solid"
                         borderColor="divider.gray"

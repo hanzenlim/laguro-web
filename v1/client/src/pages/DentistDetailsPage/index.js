@@ -21,12 +21,12 @@ class DentistDeatilsPageContainer extends PureComponent {
 
                     const dentist = data.getDentist;
                     const { user } = dentist;
-                    const procedures = dentist.procedures
-                        .map(procedure => procedure.name)
-                        .join(' - ');
+                    const procedures = dentist.procedures.map(
+                        procedure => procedure.name
+                    );
 
                     const mappedData = {
-                        name: `DR. ${user.firstName} ${user.lastName}`,
+                        name: `Dr. ${user.firstName} ${user.lastName}`,
                         specialization: dentist.specialty,
                         image: 'http://via.placeholder.com/186x186',
                         // image: user.imageUrl,
