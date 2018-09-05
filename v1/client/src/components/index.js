@@ -21,6 +21,7 @@ import Carousel from './Carousel';
 import Select from './Select';
 import TextArea from './TextArea';
 import Radio from './Radio';
+import CheckMarkAnimation from './CheckMarkAnimation';
 
 export {
     Box,
@@ -46,4 +47,5 @@ export {
     Select,
     TextArea,
     Radio,
+    CheckMarkAnimation,
 };

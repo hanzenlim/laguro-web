@@ -51,6 +51,7 @@ const Text = system(
 const StyledText = styled(Text)`
     ${props => props.fontStyle && `font-style: ${props.fontStyle}`};
     ${props => props.overflow && `font-style: ${props.overflow}`};
+    ${props => props.textTransform && `text-transform: ${props.textTransform}`};
 `;
 
 StyledText.displayName = 'Text';

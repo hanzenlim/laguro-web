@@ -1,33 +1,16 @@
 import React, { PureComponent } from 'react';
-import { Query } from 'react-apollo';
-import queryString from 'query-string';
-import { getAppointmentQuery } from './queries';
 import PaymentSuccessPageView from './view';
 
-class PaymentSuccess extends PureComponent {
+class PaymentConfirmation extends PureComponent {
     render() {
-        const { location } = this.props;
-        const { appointmentId } = queryString.parse(location.search);
-
         return (
-            <Query
-                query={getAppointmentQuery}
-                variables={{ id: appointmentId }}
-            >
-                {({ loading, error, data }) => {
-                    if (loading) {
-                        return <div>Loading...</div>;
-                    }
-
-                    if (error) {
-                        return <div>Error</div>;
-                    }
-
-                    return <PaymentSuccessPageView data={data} />;
-                }}
-            </Query>
+            <PaymentSuccessPageView
+                h1="Your booking is confirmed"
+                h2="Tuesday, August 28, 2018 , 5:30pm"
+                h3="535 Mission St. San Francisco, CA 94116"
+            />
         );
     }
 }
 
-export default PaymentSuccess;
+export default PaymentConfirmation;
