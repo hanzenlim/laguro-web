@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Form as AntdForm } from 'antd';
 import styled from 'styled-components';
 import { space, textAlign } from 'styled-system';
@@ -104,7 +105,7 @@ const FormItem = ({
     form,
     name,
     label,
-    rules = [],
+    rules = null,
     input,
     validateTrigger = 'onChange',
     initialValue,
@@ -134,4 +135,13 @@ const FormItem = ({
 const WrappedForm = AntdForm.create()(Form);
 WrappedForm.SubmitButton = SubmitButton;
 WrappedForm.FormItem = FormItem;
+
+WrappedForm.defaultProps = {
+    onSuccess: () => {},
+};
+
+WrappedForm.propTypes = {
+    onSuccess: PropTypes.func.isRequired,
+};
+
 export default WrappedForm;

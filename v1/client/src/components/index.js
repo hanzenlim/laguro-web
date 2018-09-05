@@ -20,6 +20,7 @@ import Popover from './Popover';
 import Carousel from './Carousel';
 import Select from './Select';
 import TextArea from './TextArea';
+import Radio from './Radio';
 
 export {
     Box,
@@ -44,4 +45,5 @@ export {
     Carousel,
     Select,
     TextArea,
+    Radio,
 };

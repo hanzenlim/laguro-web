@@ -52,6 +52,9 @@ export const AVAILABLE = 'available';
 export const CHARGED = 'CHARGED';
 export const REFUNDED = 'REFUNDED';
 
+// Payment method
+export const NEW_CARD_PAYMENT_METHOD = 'NEW_CARD_PAYMENT_METHOD';
+
 // Payment history
 export const PAYMENT_MADE = 'PAYMENT MADE';
 export const PAYMENT_RECEIVED = 'PAYMENT RECEIVED';
