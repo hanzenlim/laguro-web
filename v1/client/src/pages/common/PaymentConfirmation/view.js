@@ -1,27 +1,43 @@
 import React from 'react';
-import styled from 'styled-components';
 
-import { Container } from '../../../components';
-
-const StyledContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
-    @media screen and (min-width: 1200px) {
-        flex-direction: row;
-    }
-`;
+import { CheckMarkAnimation, Text, Box, Flex, Icon } from '../../../components';
 
 const PaymentSuccessPageView = props => {
-    const { data } = props;
+    const { h1, h2, h3 } = props;
 
     return (
-        <Container>
-            <StyledContainer>
-                <div>{JSON.stringify(data)}</div>
-            </StyledContainer>
-        </Container>
+        <div>
+            <Text textAlign="center">
+                <CheckMarkAnimation />
+                <Flex
+                    alignItems="center"
+                    flexDirection="row"
+                    height="100%"
+                    justifyContent="center"
+                >
+                    <Box width="400px">
+                        <Text fontSize={4} py={10} textTransform="uppercase">
+                            {h1}
+                        </Text>
+                        <Text fontSize={5}>{h2}</Text>
+                        <Flex
+                            mt={5}
+                            flexDirection="row"
+                            justifyContent="center"
+                        >
+                            <Icon
+                                type="locationPin"
+                                width="20px"
+                                height="20px"
+                                color="icon.gray"
+                                mx={5}
+                            />
+                            <Text color="text.green">{h3}</Text>
+                        </Flex>
+                    </Box>
+                </Flex>
+            </Text>
+        </div>
     );
 };
 

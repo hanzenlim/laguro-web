@@ -47,6 +47,7 @@ export default {
             white: '#ffffff',
             black: '#303549',
             green: '#50e3c2',
+            gray: '#c7c7c7',
         },
         loading: {
             green: '#50e3c2',

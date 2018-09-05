@@ -46,7 +46,7 @@ const Icon = props => {
         ${space} ${width} ${height} ${position} ${color} ${left} ${right} ${cursor};
     `;
 
-    const StyledIconContainer = styled.div`
+    const StyledIconContainer = styled.span`
         ${!props.isButton &&
             (cssProps =>
                 cssProps.color
