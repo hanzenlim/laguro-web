@@ -2,7 +2,7 @@ import { gql } from 'apollo-boost';
 
 import { reviewerFragment } from '../../../util/fragments';
 
-export const getDentistReviews = gql`
+export const GET_DENTIST_REVIEWS = gql`
     query($id: String!) {
         getDentist(id: $id) {
             specialty
@@ -18,7 +18,7 @@ export const getDentistReviews = gql`
     }
 `;
 
-export const getOfficeReviews = gql`
+export const GET_OFFICE_REVIEWS = gql`
     query($id: String!) {
         getOffice(id: $id) {
             name

@@ -1,5 +1,5 @@
 import RegistrationModal from './RegistrationModal';
 import LoginModal from './LoginModal';
-import ReviewModal from './ReviewModal';
+import NewReviewModal from './NewReviewModal';
 
-export { RegistrationModal, LoginModal, ReviewModal };
+export { RegistrationModal, LoginModal, NewReviewModal };

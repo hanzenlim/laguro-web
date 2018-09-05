@@ -1,11 +1,11 @@
 // TODO consider creating a pluralize function
 export const USER = 'user';
 export const HOST = 'host';
-export const DENTIST = 'dentist';
+export const DENTIST = 'DENTIST';
 export const DENTISTS = 'dentists';
 export const EQUIPMENT = 'equipment';
 export const PATIENT = 'patient';
-export const OFFICE = 'office';
+export const OFFICE = 'OFFICE';
 export const OFFICES = 'offices';
 export const LISTING = 'listing';
 export const LISTINGS = 'listings';

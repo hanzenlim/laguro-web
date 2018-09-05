@@ -37,7 +37,7 @@ class Truncate extends PureComponent {
                         : '…'
                 }
             >
-                {this.props.children}
+                {this.props.children || ''}
             </ReactTruncate>
         );
     }

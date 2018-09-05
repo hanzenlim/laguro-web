@@ -5,8 +5,8 @@ import { Query } from 'react-apollo';
 
 import ReviewList from './view';
 import { Loading } from '../../../components';
-import { ReviewModal } from '../../common/Modals';
-import { getDentistReviews, getOfficeReviews } from './queries';
+import { NewReviewModal } from '../../common/Modals';
+import { GET_DENTIST_REVIEWS, GET_OFFICE_REVIEWS } from './queries';
 import { DENTIST } from '../../../util/strings';
 
 class ReviewContainer extends PureComponent {
@@ -26,7 +26,9 @@ class ReviewContainer extends PureComponent {
         } = this.props;
 
         const isDentist = type === DENTIST;
-        const reviewsQuery = isDentist ? getDentistReviews : getOfficeReviews;
+        const reviewsQuery = isDentist
+            ? GET_DENTIST_REVIEWS
+            : GET_OFFICE_REVIEWS;
         const queryName = isDentist ? 'getDentist' : 'getOffice';
 
         return (
@@ -58,7 +60,7 @@ class ReviewContainer extends PureComponent {
                                 reviews={queryData.reviews}
                                 toggleModalState={this.toggleModalState}
                             />
-                            <ReviewModal
+                            <NewReviewModal
                                 visible={this.state.isModalOpen}
                                 toggleModalState={this.toggleModalState}
                                 info={mappedData}

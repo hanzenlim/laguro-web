@@ -13,6 +13,9 @@ import {
 
 import Map from '../common/Map';
 import DentistCard from './DentistCard';
+import ReviewContainer from '../common/ReviewContainer';
+
+import { DENTIST } from '../../util/strings';
 
 const DentistDetailsPageView = props => {
     const { data } = props;
@@ -120,6 +123,7 @@ const DentistDetailsPageView = props => {
                                 data={[{ address: data.address }]}
                             />
                         </Box>
+                        <ReviewContainer type={DENTIST} />
                     </Box>
                 </Box>
                 <Sticky offset="20px">

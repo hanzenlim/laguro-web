@@ -1,5 +1,6 @@
 import React from 'react';
 import { bool, func, string, shape, number } from 'prop-types';
+import { Alert } from 'antd';
 
 import {
     Modal,
@@ -66,8 +67,17 @@ const OfficeInfo = props => {
     );
 };
 
-const ReviewModal = props => {
-    const { visible, onCancel, setRating, info, onSuccess, rating } = props;
+const NewReviewModal = props => {
+    const {
+        visible,
+        onCancel,
+        setRating,
+        info,
+        onSuccess,
+        rating,
+        error,
+        mutationLoading,
+    } = props;
 
     const isDentist = info.type === DENTIST;
 
@@ -87,7 +97,13 @@ const ReviewModal = props => {
                 <OfficeInfo imageUrl={info.imageUrl} name={info.name} />
             )}
             <Box textAlign="center">
-                <Rating my={20} size="28px" onChange={setRating} />
+                <Rating
+                    my={20}
+                    size="28px"
+                    onChange={setRating}
+                    allowHalf={false}
+                    value={rating}
+                />
             </Box>
             <Text fontSize={3}>how was your experience with {info.name}?</Text>
             <Box mt={10}>
@@ -98,21 +114,23 @@ const ReviewModal = props => {
                         width="188px"
                         textAlign="right"
                         buttonText="Submit"
-                        disabled={rating === 0}
+                        disabled={rating === 0 || mutationLoading}
+                        loading={mutationLoading}
                     />
                 </Form>
+                {error && <Alert message={error} type="error" />}
             </Box>
         </Modal>
     );
 };
 
-ReviewModal.defaultProps = {
+NewReviewModal.defaultProps = {
     onSuccess: () => {},
     onCancel: () => {},
     setRating: () => {},
 };
 
-ReviewModal.propTypes = {
+NewReviewModal.propTypes = {
     info: shape({
         type: string.isRequired,
         name: string.isRequired,
@@ -124,6 +142,8 @@ ReviewModal.propTypes = {
     setRating: func.isRequired,
     rating: number.isRequired,
     visible: bool.isRequired,
+    error: string,
+    mutationLoading: bool,
 };
 
-export default ReviewModal;
+export default NewReviewModal;
