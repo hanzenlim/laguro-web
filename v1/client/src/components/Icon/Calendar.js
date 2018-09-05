@@ -1,6 +1,6 @@
 import React from 'react';
 
-const SvgComponent = props => (
+const Calendar = props => (
     <svg width={24} height={24} {...props}>
         <g fill="none" fillRule="evenodd">
             <path fill="#FFF" d="M0 0h24v24H0z" />
@@ -12,4 +12,4 @@ const SvgComponent = props => (
     </svg>
 );
 
-export default SvgComponent;
+export default Calendar;

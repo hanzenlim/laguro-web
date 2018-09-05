@@ -22,6 +22,9 @@ import Select from './Select';
 import TextArea from './TextArea';
 import Radio from './Radio';
 import CheckMarkAnimation from './CheckMarkAnimation';
+import Checkbox from './Checkbox';
+import Counter from './Counter';
+import RangePicker from './RangePicker';
 
 export {
     Box,
@@ -48,4 +51,7 @@ export {
     TextArea,
     Radio,
     CheckMarkAnimation,
+    Checkbox,
+    Counter,
+    RangePicker,
 };

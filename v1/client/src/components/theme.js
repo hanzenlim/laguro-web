@@ -3,11 +3,13 @@ export default {
         text: {
             white: '#ffffff',
             black: '#303549',
+            black50: 'rgba 0 0 0, 0.5',
             gray: '#c7c7c7',
             green: '#50e3c2',
         },
         background: {
             white: '#ffffff',
+            whiteSmoke: '#f1f1f1',
             gray: '#c7c7c7',
             green: '#50e3c2',
             lightGray: '#efeeee',

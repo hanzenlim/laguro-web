@@ -13,6 +13,7 @@ import {
     position,
     left,
     right,
+    opacity,
 } from 'styled-system';
 import { hoverColor } from '../utils';
 
@@ -29,6 +30,7 @@ const StyledButton = styled(AntdButton)`
         ${position};
         ${left};
         ${right};
+        ${opacity};
     }
 
     &&.ant-btn-primary {
@@ -61,8 +63,8 @@ const StyledButton = styled(AntdButton)`
         background-color: transparent;
         outline: none;
         border: none;
+        height: auto;
         ${width};
-        ${height};
         ${space};
         ${position};
         ${left};
@@ -72,6 +74,10 @@ const StyledButton = styled(AntdButton)`
     &&.ant-btn-ghost:hover,
     &&.ant-btn-ghost:focus {
         ${hoverColor};
+    }
+
+    &&.ant-btn-ghost:after {
+        display: none;
     }
 
     &&.ant-btn-ghost.disabled,
@@ -124,7 +130,7 @@ Button.defaultProps = {
 };
 
 Button.propTypes = {
-    height: PropTypes.oneOf(['50px', '80px']),
+    height: PropTypes.oneOf(['50px', '60px', '80px']),
     fontSize: PropTypes.oneOf([1, 2, 3]),
 };
 
