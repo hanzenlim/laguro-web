@@ -40,8 +40,6 @@
         "passport": "^0.3.2",
         "passport-google-oauth20": "^1.0.0",
         "passport-local": "^1.0.0",
-        "prettier": "^1.14.2",
-        "request-promise": "^4.2.2",
         "save": "^2.3.2",
         "serverless": "^1.28.0",
         "serverless-http": "^1.5.5"

@@ -72,55 +72,49 @@ class PaymentSuccess extends Component {
 
         const { type } = this.state;
 
-        let { startTime, endTime } =
+        const { startTime, endTime } =
             type === 'appointment' ? appointment : reservation;
 
         return formatListingTime(startTime, endTime);
     };
 
-    renderDate = startDate => {
-        return moment(startDate).format('ll');
-    };
+    renderDate = startDate => moment(startDate).format('ll');
 
-    renderProcedure = (pc, index, length) => {
-        return (
-            <ListingInfo key={index}>
-                <Grid container direction="column">
-                    <Grid container>
-                        <Typography fontSize={4} fontWeight="bold">
-                            {pc.definition}
-                        </Typography>
-                    </Grid>
-
-                    <Padding bottom={11} />
-
-                    <Grid container wrap="nowrap">
-                        <Typography fontSize={3}>
-                            {`Procedure: ${pc.name}`}
-                        </Typography>
-                    </Grid>
-
-                    <Grid container wrap="nowrap">
-                        <i className="material-icons tiny">date_range</i>
-
-                        <Padding right={4} />
-
-                        <Typography fontSize={3}>
-                            {`Date prescribed: ${this.renderDate(
-                                pc.dateCreated
-                            )}`}
-                        </Typography>
-                    </Grid>
-
-                    {index + 1 !== length && (
-                        <Padding vertical={8}>
-                            <Divider />
-                        </Padding>
-                    )}
+    renderProcedure = (pc, index, length) => (
+        <ListingInfo key={index}>
+            <Grid container direction="column">
+                <Grid container>
+                    <Typography fontSize={4} fontWeight="bold">
+                        {pc.definition}
+                    </Typography>
                 </Grid>
-            </ListingInfo>
-        );
-    };
+
+                <Padding bottom={11} />
+
+                <Grid container wrap="nowrap">
+                    <Typography fontSize={3}>
+                        {`Procedure: ${pc.name}`}
+                    </Typography>
+                </Grid>
+
+                <Grid container wrap="nowrap">
+                    <i className="material-icons tiny">date_range</i>
+
+                    <Padding right={4} />
+
+                    <Typography fontSize={3}>
+                        {`Date prescribed: ${this.renderDate(pc.dateCreated)}`}
+                    </Typography>
+                </Grid>
+
+                {index + 1 !== length && (
+                    <Padding vertical={8}>
+                        <Divider />
+                    </Padding>
+                )}
+            </Grid>
+        </ListingInfo>
+    );
 
     renderProceduresCard = () => {
         const { procedures } = this.props;
@@ -176,7 +170,7 @@ class PaymentSuccess extends Component {
 
     renderApptResCard = () => {
         const { type } = this.state;
-        let { appointment, reservation } = this.props;
+        const { appointment, reservation } = this.props;
         let office = {};
 
         // if the store is not fully loaded, wait
@@ -245,7 +239,11 @@ class PaymentSuccess extends Component {
                                             <Padding right={4} />
 
                                             <Typography fontSize={3}>
-                                                {`Location: ${office.location}`}
+                                                {`Location: ${
+                                                    office.location
+                                                        ? office.location.name
+                                                        : ''
+                                                }`}
                                             </Typography>
                                         </Grid>
 
@@ -320,9 +318,8 @@ class PaymentSuccess extends Component {
         const { procedures } = this.props;
         if (isEmpty(procedures)) {
             return this.renderApptResCard();
-        } else {
-            return this.renderProceduresCard();
         }
+        return this.renderProceduresCard();
     }
 }
 
@@ -331,8 +328,11 @@ function mapStateToProps(state) {
         auth: state.auth,
         reservation: state.reservations.selected,
         appointment: state.appointments.selected,
-        procedures: state.patientProcedures.selectedProcedures
+        procedures: state.patientProcedures.selectedProcedures,
     };
 }
 
-export default connect(mapStateToProps, actions)(PaymentSuccess);
+export default connect(
+    mapStateToProps,
+    actions
+)(PaymentSuccess);

@@ -66,7 +66,7 @@ class OfficeResultIndex extends Component {
 
         this.state = {
             activeView: 'list',
-            activeListingId: null
+            activeListingId: null,
         };
     }
 
@@ -76,8 +76,7 @@ class OfficeResultIndex extends Component {
     }
 
     renderMap(activeOffices) {
-        if (isMobile() && this.state.activeView !== 'map')
-            return null;
+        if (isMobile() && this.state.activeView !== 'map') return null;
 
         return (
             <MapContainer>
@@ -132,10 +131,10 @@ class OfficeResultIndex extends Component {
             }
             return (
                 <div
-                    data-id={office.id + office.location}
+                    data-id={office.id + office.location.name}
                     onMouseOver={this.setActiveListing}
                     onMouseOut={this.removeActiveListing}
-                    key={office.id + office.location}
+                    key={office.id + office.location.name}
                 >
                     <OfficeResult
                         name={office.name}
@@ -160,7 +159,7 @@ class OfficeResultIndex extends Component {
 
     toggleView = view => {
         this.setState({
-            activeView: view
+            activeView: view,
         });
     };
 
@@ -232,9 +231,7 @@ class OfficeResultIndex extends Component {
                         <Padding bottom={8} />
                         <Flex alignItems="center">
                             <Box mr={3}>
-                                <label>
-                                    Filter by date:
-                                </label>
+                                <label>Filter by date:</label>
                             </Box>
                             <DateFilter filters={this.props.filters} />
                         </Flex>
@@ -287,8 +284,11 @@ function mapStateToProps(state) {
         offices: getVisibleOffices(state.offices.all),
         isFetching: state.offices.isFetching,
         invalid: state.offices.invalid,
-        filters: state.filters
+        filters: state.filters,
     };
 }
 
-export default connect(mapStateToProps, actions)(OfficeResultIndex);
+export default connect(
+    mapStateToProps,
+    actions
+)(OfficeResultIndex);

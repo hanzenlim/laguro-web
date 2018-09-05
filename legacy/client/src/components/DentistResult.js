@@ -58,9 +58,7 @@ class DentistResult extends Component {
     }
 
     imgUrl() {
-        return this.props.img
-            ? this.props.img
-            : defaultProfilePhoto;
+        return this.props.img ? this.props.img : defaultProfilePhoto;
     }
 
     render() {
@@ -98,7 +96,7 @@ class DentistResult extends Component {
                                         color="black"
                                     >
                                         {this.props.specialty} -{' '}
-                                        {this.props.location}
+                                        {this.props.location.name}
                                     </Typography>
                                 </Grid>
                                 <Padding bottom={5} />
@@ -115,8 +113,8 @@ class DentistResult extends Component {
                                         fontWeight="regular"
                                         color="black"
                                     >{`(${
-                                            this.props.rating_count
-                                        }) Reviews`}</Typography>
+                                        this.props.rating_count
+                                    }) Reviews`}</Typography>
                                 </Grid>
                                 <Padding bottom={7} />
                                 <Grid container>

@@ -28,7 +28,7 @@ export const fetchActiveDentists = filters => async dispatch => {
         const reservations = dentistsWithReservations[i].reservations;
         const locationSchedule = {};
         for (let i = 0; i < reservations.length; i += 1) {
-            const location = reservations[i].location;
+            const location = reservations[i].location.name;
             if (!locationSchedule[location]) {
                 locationSchedule[location] = [];
             }

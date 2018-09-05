@@ -49,8 +49,8 @@ class ResultMap extends Component {
                 height: 0,
                 latitude: 37.7577,
                 longitude: -122.4376,
-                zoom: 8
-            }
+                zoom: 8,
+            },
         };
     }
 
@@ -67,15 +67,13 @@ class ResultMap extends Component {
         this.setState({
             viewport: {
                 ...this.state.viewport,
-                width:
-                    isMobile()
-                        ? window.innerWidth - 16
-                        : window.innerWidth / 2 - 12,
-                height:
-                    isMobile()
-                        ? window.innerHeight - 250
-                        : window.innerHeight - 67
-            }
+                width: isMobile()
+                    ? window.innerWidth - 16
+                    : window.innerWidth / 2 - 12,
+                height: isMobile()
+                    ? window.innerHeight - 250
+                    : window.innerHeight - 67,
+            },
         });
     };
 
@@ -84,7 +82,7 @@ class ResultMap extends Component {
         this.props.locations.map(query => {
             fetch(
                 `https://api.mapbox.com/geocoding/v5/mapbox.places/${
-                    query.location
+                    query.location.name
                 }.json?country=us&types=address%2Cplace&access_token=${mapBoxApiKey}`
             )
                 .then(response => response.json())
@@ -93,13 +91,13 @@ class ResultMap extends Component {
 
                     const [
                         longitude,
-                        latitude
+                        latitude,
                     ] = responseData.features[0].center;
 
                     const newMarker = {
                         latitude,
                         longitude,
-                        ...query
+                        ...query,
                     };
 
                     const markerData = [...this.state.markerData, newMarker];
@@ -109,8 +107,8 @@ class ResultMap extends Component {
                         viewport: {
                             ...this.state.viewport,
                             latitude,
-                            longitude
-                        }
+                            longitude,
+                        },
                     });
                 });
 
@@ -126,7 +124,7 @@ class ResultMap extends Component {
 
     renderPopup = () => {
         const activeListing = this.state.markerData.filter(
-            item => item.id + item.location === this.props.activeListingId
+            item => item.id + item.location.name === this.props.activeListingId
         )[0];
 
         const popupInfo = this.state.popupInfo || activeListing;
@@ -143,6 +141,8 @@ class ResultMap extends Component {
                 : popupInfo.name
             : '';
 
+        console.log(popupInfo);
+
         return (
             popupInfo && (
                 <StyledPopup
@@ -153,12 +153,16 @@ class ResultMap extends Component {
                     longitude={popupInfo.longitude}
                     latitude={popupInfo.latitude}
                 >
-                    <div data-id={popupInfo.id} onClick={this.goToListingPage} style={{width: '185px'}}>
+                    <div
+                        data-id={popupInfo.id}
+                        onClick={this.goToListingPage}
+                        style={{ width: '185px' }}
+                    >
                         {imageSrc && (
                             <img src={imageSrc} alt="office" width="175px" />
                         )}
                         <div>{name}</div>
-                        <div>{popupInfo.location}</div>
+                        <div>{popupInfo.location.name}</div>
                     </div>
                 </StyledPopup>
             )
@@ -171,6 +175,7 @@ class ResultMap extends Component {
 
     showPopup = event => {
         const { currentTarget } = event;
+        console.log(currentTarget);
         const popupInfo = JSON.parse(currentTarget.getAttribute('data-marker'));
 
         this.setState({ popupInfo });
@@ -178,10 +183,10 @@ class ResultMap extends Component {
 
     hidePopup = () => {
         this.setState({ popupInfo: null });
-    }
+    };
 
-    renderMapMarker = () => {
-        return this.state.markerData.map((marker, index) => {
+    renderMapMarker = () =>
+        this.state.markerData.map((marker, index) => {
             const { longitude, latitude } = marker;
 
             return (
@@ -198,7 +203,6 @@ class ResultMap extends Component {
                 </StyledMarkerContainer>
             );
         });
-    };
 
     render() {
         return (

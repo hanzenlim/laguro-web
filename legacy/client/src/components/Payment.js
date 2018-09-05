@@ -13,7 +13,7 @@ import {
     Grid,
     Flex,
     Box,
-    Container
+    Container,
 } from './common';
 import { Padding } from './common/Spacing';
 import AddPhoneNumber from './forms/AddPhoneNumber';
@@ -24,7 +24,7 @@ import {
     DENTIST,
     RESERVATION,
     PROCEDURE,
-    EQUIPMENT
+    EQUIPMENT,
 } from '../util/strings';
 import { stripeKey } from '../config/keys';
 import { formatListingTime } from '../util/timeUtil';
@@ -71,7 +71,7 @@ class Payment extends Component {
         this.state = {
             isButtonLoading: false,
             isFetching: true,
-            isModalOpen: !props.auth.phoneNumber
+            isModalOpen: !props.auth.phoneNumber,
         };
     }
 
@@ -134,7 +134,7 @@ class Payment extends Component {
             startTime,
             endTime,
             paymentOptionId: this.props.auth.paymentOptions[0].id,
-            totalPaid: this.urlParams.totalPaid
+            totalPaid: this.urlParams.totalPaid,
         };
 
         this.props.createReservation(reservationPayload);
@@ -149,7 +149,7 @@ class Payment extends Component {
             procedure: JSON.parse(this.urlParams.procedure),
             startTime,
             endTime,
-            paymentOptionId: this.props.auth.paymentOptions[0].id
+            paymentOptionId: this.props.auth.paymentOptions[0].id,
         };
 
         this.props.createAppointment(appointmentPayload);
@@ -158,7 +158,7 @@ class Payment extends Component {
     handleUpdateProcedures = () => {
         this.props.updatePatientProcedures({
             procedureIds: JSON.parse(this.urlParams.procedureIds),
-            paymentOptionId: this.props.auth.paymentOptions[0].id
+            paymentOptionId: this.props.auth.paymentOptions[0].id,
         });
     };
 
@@ -166,13 +166,11 @@ class Payment extends Component {
         this.props.updateReservation({
             id: this.urlParams.reservationId,
             equipmentSelected: JSON.parse(this.urlParams.equipment),
-            totalPaid: this.urlParams.totalPaid
+            totalPaid: this.urlParams.totalPaid,
         });
     };
 
-    renderTime = (startTime, endTime) => {
-        return formatListingTime(startTime, endTime);
-    };
+    renderTime = (startTime, endTime) => formatListingTime(startTime, endTime);
 
     renderPaymentOptions = () => {
         if (!this.props.auth.paymentOptions) return null;
@@ -183,7 +181,8 @@ class Payment extends Component {
                     <Grid container justify="space-between">
                         <Typography fontSize={2}>VISA</Typography>
                         <Typography fontSize={2} color="silver">
-                            ••••••••{paymentOption.last4}
+                            ••••••••
+                            {paymentOption.last4}
                         </Typography>
                     </Grid>
                 </Padding>
@@ -196,65 +195,60 @@ class Payment extends Component {
 
         if (type === APPOINTMENT || type === RESERVATION) {
             return this.renderEventCard();
-        } else {
-            return this.renderProcedureCards();
         }
+        return this.renderProcedureCards();
     };
 
     renderProcedureCards = () => {
-        let { procedures } = this.props;
+        const { procedures } = this.props;
 
-        return procedures.map((pc, index) => {
-            return (
-                <Box key={index} mb={2}>
-                    <Card>
-                        <Padding horizontal={20} vertical={20}>
-                            <Grid container alignItems="flex-start">
-                                <StyledListingInfo>
-                                    <Grid container direction="column">
-                                        <Grid container justify="space-between">
-                                            <Typography
-                                                fontSize={4}
-                                                fontWeight="bold"
-                                            >
-                                                {pc.name}
-                                            </Typography>
+        return procedures.map((pc, index) => (
+            <Box key={index} mb={2}>
+                <Card>
+                    <Padding horizontal={20} vertical={20}>
+                        <Grid container alignItems="flex-start">
+                            <StyledListingInfo>
+                                <Grid container direction="column">
+                                    <Grid container justify="space-between">
+                                        <Typography
+                                            fontSize={4}
+                                            fontWeight="bold"
+                                        >
+                                            {pc.name}
+                                        </Typography>
 
-                                            <Typography
-                                                fontSize={3}
-                                                fontWeight="bold"
-                                                color="black"
-                                            >
-                                                {renderPrice(
-                                                    pc.patientEstimate
-                                                )}
-                                            </Typography>
-                                        </Grid>
-                                        <Padding vertical={8}>
-                                            <Divider />
-                                        </Padding>
-
-                                        <Grid container wrap="nowrap">
-                                            <i className="material-icons tiny">
-                                                access_time
-                                            </i>
-
-                                            <Padding right={4} />
-
-                                            <Typography fontSize={3}>
-                                                {`Time: ${moment(
-                                                    pc.dateCreated
-                                                ).format('MM/DD/YYYY')}`}
-                                            </Typography>
-                                        </Grid>
+                                        <Typography
+                                            fontSize={3}
+                                            fontWeight="bold"
+                                            color="black"
+                                        >
+                                            {renderPrice(pc.patientEstimate)}
+                                        </Typography>
                                     </Grid>
-                                </StyledListingInfo>
-                            </Grid>
-                        </Padding>
-                    </Card>
-                </Box>
-            );
-        });
+                                    <Padding vertical={8}>
+                                        <Divider />
+                                    </Padding>
+
+                                    <Grid container wrap="nowrap">
+                                        <i className="material-icons tiny">
+                                            access_time
+                                        </i>
+
+                                        <Padding right={4} />
+
+                                        <Typography fontSize={3}>
+                                            {`Time: ${moment(
+                                                pc.dateCreated
+                                            ).format('MM/DD/YYYY')}`}
+                                        </Typography>
+                                    </Grid>
+                                </Grid>
+                            </StyledListingInfo>
+                        </Grid>
+                    </Padding>
+                </Card>
+            </Box>
+        ));
     };
 
     renderEventCard = () => {
@@ -302,7 +296,7 @@ class Payment extends Component {
                                     <Padding right={4} />
 
                                     <Typography fontSize={3}>
-                                        {`Location: ${office.location}`}
+                                        {`Location: ${office.location.name}`}
                                     </Typography>
                                 </Grid>
 
@@ -340,7 +334,7 @@ class Payment extends Component {
             bookingFee,
             cleaningFee,
             reservationFee,
-            procedurePatientEstimate
+            procedurePatientEstimate,
         } = this.urlParams;
 
         return (
@@ -530,15 +524,15 @@ class Payment extends Component {
         let header;
 
         switch (type) {
-        case PROCEDURE:
-            header = 'Review and pay for your procedures';
-            break;
-        case EQUIPMENT:
-            header = 'Review and pay for your additional equipment';
-            break;
-        default:
-            header = `Review and place your ${type}`;
-            break;
+            case PROCEDURE:
+                header = 'Review and pay for your procedures';
+                break;
+            case EQUIPMENT:
+                header = 'Review and pay for your additional equipment';
+                break;
+            default:
+                header = `Review and place your ${type}`;
+                break;
         }
 
         if (this.state.isFetching) return <div className="stretch_height" />;
@@ -590,8 +584,11 @@ function mapStateToProps(state) {
         listing: state.listings.selected,
         reservation: state.reservations.selected,
         auth: state.auth,
-        procedures: state.patientProcedures.selectedProcedures
+        procedures: state.patientProcedures.selectedProcedures,
     };
 }
 
-export default connect(mapStateToProps, actions)(Payment);
+export default connect(
+    mapStateToProps,
+    actions
+)(Payment);

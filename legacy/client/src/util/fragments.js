@@ -76,7 +76,7 @@ export const listingFragment = `
 export const officeFragment = `
     id
     name
-    location {
+    location  {
         name
         geoPoint {
             lat
@@ -244,13 +244,13 @@ export const paymentFragment = `
         name
     }
     appointment {
-        location {
-            name
-            geoPoint {
-                lat
-                lon
-            }
-        }
+      location {
+          name
+          geoPoint {
+              lat
+              lon
+          }
+      }
       procedure {
         name
       }
