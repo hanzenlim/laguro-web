@@ -1,14 +1,22 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import { shape, string } from 'prop-types';
 import { Query } from 'react-apollo';
 
 import ReviewList from './view';
 import { Loading } from '../../../components';
+import { ReviewModal } from '../../common/Modals';
 import { getDentistReviews, getOfficeReviews } from './queries';
 import { DENTIST } from '../../../util/strings';
 
 class ReviewContainer extends PureComponent {
+    state = {
+        isModalOpen: false,
+    };
+
+    toggleModalState = () =>
+        this.setState(({ isModalOpen }) => ({ isModalOpen: !isModalOpen }));
+
     render() {
         const {
             type,
@@ -16,16 +24,47 @@ class ReviewContainer extends PureComponent {
                 params: { id },
             },
         } = this.props;
-        const reviewsQuery =
-            type === DENTIST ? getDentistReviews : getOfficeReviews;
-        const queryName = type === DENTIST ? 'getDentist' : 'getOffice';
+
+        const isDentist = type === DENTIST;
+        const reviewsQuery = isDentist ? getDentistReviews : getOfficeReviews;
+        const queryName = isDentist ? 'getDentist' : 'getOffice';
 
         return (
             <Query query={reviewsQuery} variables={{ id }}>
                 {({ loading, error, data }) => {
                     if (error) return <div>Error</div>;
                     if (loading) return <Loading />;
-                    return <ReviewList reviews={data[queryName].reviews} />;
+
+                    const queryData = data[queryName];
+
+                    const mappedData = isDentist
+                        ? {
+                              type,
+                              name: `Dr. ${queryData.user.firstName} ${
+                                  queryData.user.lastName
+                              }`,
+                              imageUrl: queryData.user.imageUrl,
+                              specialty: queryData.specialty,
+                          }
+                        : {
+                              type,
+                              name: queryData.name,
+                              imageUrl: queryData.imageUrls[0],
+                          };
+
+                    return (
+                        <Fragment>
+                            <ReviewList
+                                reviews={queryData.reviews}
+                                toggleModalState={this.toggleModalState}
+                            />
+                            <ReviewModal
+                                visible={this.state.isModalOpen}
+                                toggleModalState={this.toggleModalState}
+                                info={mappedData}
+                            />
+                        </Fragment>
+                    );
                 }}
             </Query>
         );

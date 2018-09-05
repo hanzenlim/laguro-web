@@ -34,6 +34,5 @@ const reviews = [
 ]
 
 storiesOf('ReviewContainer', module).add('With Reviews', () => (
-    <ReviewContainer reviews={reviews} loading={false} totalRating={4} reviewsCount={2}/>
+    <ReviewContainer reviews={reviews} totalRating={4} reviewsCount={2}/>
 ));
-storiesOf('ReviewContainer', module).add('Data Loading', () => <ReviewContainer loading />);

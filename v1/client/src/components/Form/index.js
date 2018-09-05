@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Form as AntdForm } from 'antd';
 import styled from 'styled-components';
-import { space } from 'styled-system';
+import { space, textAlign } from 'styled-system';
 import { Button } from '../../components';
 
 const StyledForm = styled(AntdForm)`
@@ -69,6 +69,9 @@ const AntFormItem = AntdForm.Item;
 
 const StyledFormItem = styled(AntFormItem)`
     text-align: center;
+    &&.ant-form-item {
+        ${textAlign};
+    }
 `;
 
 const StyledFormInput = styled(AntFormItem)`
@@ -78,13 +81,14 @@ const StyledFormInput = styled(AntFormItem)`
     }
 `;
 
-const SubmitButton = ({ form, buttonText, ...rest }) => {
+// eslint-disable-next-line
+const SubmitButton = ({ form, buttonText, textAlign, ...rest }) => {
     const { getFieldsError } = form;
     const hasErrors = fieldsError =>
         Object.keys(fieldsError).some(field => fieldsError[field]);
 
     return (
-        <StyledFormItem>
+        <StyledFormItem textAlign={textAlign}>
             <Button
                 htmlType="submit"
                 disabled={hasErrors(getFieldsError())}
