@@ -8,6 +8,7 @@ import { Query, graphql } from 'react-apollo';
 import { Loading } from '../../../../components';
 import { getPaymentOptionQuery, addPaymentOptionMutation } from './queries';
 import CardView from './view';
+import { NEW_CARD_PAYMENT_METHOD } from '../../../../util/strings';
 
 class CardForm extends Component {
     constructor(props) {
@@ -86,13 +87,15 @@ class CardForm extends Component {
                     // interacted with the radio group.
                     if (
                         get(paymentOptionsCards, 'length') > 0 &&
-                        this.state.selectedCard === ''
+                        selectedCard === ''
                     ) {
                         const defaultCard = paymentOptionsCards.filter(
                             value => value.default === true
                         );
 
                         selectedCard = defaultCard[0].id;
+                    } else if (selectedCard === '') {
+                        selectedCard = NEW_CARD_PAYMENT_METHOD;
                     }
 
                     return (
