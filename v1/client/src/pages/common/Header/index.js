@@ -46,6 +46,31 @@ const HeaderContainer = () => (
                     }
                 });
             };
+            const signup = values => {
+                request('/api/signup', {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Origin': '*',
+                    },
+                    body: JSON.stringify({ ...values }),
+                }).then(res => {
+                    if (res.status === 200) {
+                        client.writeData({
+                            data: {
+                                activeUser: {
+                                    ...res.user,
+                                    __typename: ACTIVE_USER,
+                                },
+                                visibleModal: null,
+                            },
+                        });
+                    } else {
+                        message.error(res.info.message);
+                    }
+                });
+            };
             const logout = () => {
                 client.writeData({ data: { activeUser: null } });
                 cookies.erase('user');
@@ -66,6 +91,7 @@ const HeaderContainer = () => (
                     visibleModal={data.visibleModal}
                     login={login}
                     logout={logout}
+                    signup={signup}
                     openLoginModal={openLoginModal}
                     openRegistrationModal={openRegistrationModal}
                     closeModal={closeModal}
