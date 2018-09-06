@@ -20,7 +20,7 @@
         "webpack-analyzer": "npm run webpack-analyzer --prefix client",
         "domain": "env-cmd /home/runner/security.env.stage sls create_domain",
         "build-v1-assets": "PUBLIC_URL=https://s3.ca-central-1.amazonaws.com/laguro-v1-assets/$(date '+%m-%d-%Y:')$(git log --pretty=format:'%h' -n 1) env-cmd /home/runner/security.env.stage npm run build --prefix client",
-        "deploy-v1-assets": "s3-deploy './client/build/**' --cwd './client/build/' --region us-west-1 --bucket laguro-stage-assets --gzip js,css,jpg,png,svg,map --cache 2503982 --filePrefix $(date '+%m-%d-%Y:')$(git log --pretty=format:'%h' -n 1)",
+        "deploy-v1-assets": "s3-deploy './client/build/**' --cwd './client/build/' --region ca-central-1 --bucket laguro-v1-assets --gzip js,css,jpg,png,svg,map --cache 2503982 --filePrefix $(date '+%m-%d-%Y:')$(git log --pretty=format:'%h' -n 1)",
         "deploy-v1": "env-cmd /home/runner/security.env.stage sls deploy -v --stage v1",
         "build-prod-assets": "PUBLIC_URL=https://s3.us-west-1.amazonaws.com/laguro-prod-assets/$(date '+%m-%d-%Y:')$(git log --pretty=format:'%h' -n 1) env-cmd /home/runner/security.env.prod npm run build --prefix client",
         "deploy-prod-assets": "s3-deploy './client/build/**' --cwd './client/build/' --region us-west-1 --bucket laguro-prod-assets --gzip js,css,jpg,png,svg,map --cache 2503982 --filePrefix $(date '+%m-%d-%Y:')$(git log --pretty=format:'%h' -n 1)",
