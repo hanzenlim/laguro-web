@@ -6,7 +6,9 @@ export const getDentistQuery = gql`
         getDentist(id: $id) {
             bio
             specialty
-            location
+            location {
+                name
+            }
             procedures {
                 name
             }
