@@ -18,7 +18,7 @@ import {
     RESERVATION_PAYMENT_TYPE,
     EQUIPMENT_PAYMENT_TYPE,
     PROCEDURE_PAYMENT_TYPE,
-    PROCEDURES_ASSIGNED
+    PROCEDURES_ASSIGNED,
 } from '../util/strings';
 import { Box, Flex, Typography } from './common';
 import PaymentDetails from './PaymentDetails';
@@ -48,7 +48,13 @@ const paymentHistoryQuery = `
                 endTime
                 office {
                     id
-                    location
+                    location {
+                        name
+                        geoPoint {
+                            lat
+                            lon
+                        }
+                    }
                     name
                     imageUrls
                 }
@@ -64,7 +70,13 @@ const paymentHistoryQuery = `
                 reservation{
                     office {
                         id
-                        location
+                        location {
+                            name
+                            geoPoint {
+                                lat
+                                lon
+                            }
+                        }
                         name
                         imageUrls
                     }
@@ -116,8 +128,8 @@ export class PaymentHistory extends Component {
             startTime,
             endTime;
         let paymentObj = {};
-        let date = Number(created);
-        let paymentAmount = payment.nominalAmount;
+        const date = Number(created);
+        const paymentAmount = payment.nominalAmount;
         if (payment.type === RESERVATION_PAYMENT_TYPE && reservation) {
             action = RESERVATION_BOOKED;
             office = reservation.office;
@@ -160,7 +172,7 @@ export class PaymentHistory extends Component {
                 payerId: payment.payer.id,
                 startTime,
                 source,
-                type: payment.type
+                type: payment.type,
             };
         }
 
@@ -218,7 +230,7 @@ export class PaymentHistory extends Component {
                 type: payment.type,
                 date: refunds.data[0].created,
                 description: CANCELLED,
-                paymentAmount: -1 * refundAmount
+                paymentAmount: -1 * refundAmount,
             };
         }
 
@@ -284,7 +296,10 @@ function mapStateToProps(state) {
     return {
         auth: state.auth,
         isFetchingPaymentHistory: state.payments.isFetchingPayerPayments,
-        payerPayments: state.payments.payerPayments
+        payerPayments: state.payments.payerPayments,
     };
 }
-export default connect(mapStateToProps, { loadPaymentHistory })(PaymentHistory);
+export default connect(
+    mapStateToProps,
+    { loadPaymentHistory }
+)(PaymentHistory);

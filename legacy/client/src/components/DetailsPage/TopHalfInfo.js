@@ -129,7 +129,7 @@ class TopHalfInfo extends Component {
                         <Box mb={12} />
                         <Box fontSize={17}>
                             <StyledMapPinIcon icon="map-pin" width="15px" />
-                            {obj && obj.location ? obj.location : '_____'}
+                            {obj && obj.location.name ? obj.location.name : '_____'}
                         </Box>
                         <Padding bottom={18} />
                     </div>

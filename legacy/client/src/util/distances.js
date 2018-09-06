@@ -4,14 +4,14 @@ export const getDistances = (entities, filters) =>
         const { google } = window;
 
         const service = new google.maps.DistanceMatrixService();
-        const officeAddresses = entities.map(loc => loc.location);
+        const officeAddresses = entities.map(loc => loc.location.name);
 
         service.getDistanceMatrix(
             {
                 origins: [filters.location],
                 destinations: officeAddresses,
                 travelMode: 'DRIVING',
-                unitSystem: google.maps.UnitSystem.IMPERIAL
+                unitSystem: google.maps.UnitSystem.IMPERIAL,
             },
             (response, status) => {
                 if (status !== 'OK') {
@@ -29,7 +29,7 @@ export const getDistances = (entities, filters) =>
                                 locationType: 'office',
                                 distance: results[index].distance.text.split(
                                     ' '
-                                )[0]
+                                )[0],
                             })
                         );
 

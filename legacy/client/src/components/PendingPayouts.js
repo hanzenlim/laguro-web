@@ -13,19 +13,21 @@ class PendingPayouts extends Component {
         // TODO figure out what info to display
         this.props.receivable.map((receivable, index) => {
             const { reservation, procedures } = receivable;
-            let location = reservation
-                ? `Location: ${reservation.location}`
+            const location = reservation
+                ? `Location: ${reservation.location.name}`
                 : '';
-            let procedureNames =
-                procedures && procedures ? procedures.map(proc => proc.name).join(', ') : '';
-            let type =
+            const procedureNames =
+                procedures && procedures
+                    ? procedures.map(proc => proc.name).join(', ')
+                    : '';
+            const type =
                 receivable.type === 'RESERVATION' ? 'Reservation' : 'Procedure';
-            let percentage =
+            const percentage =
                 type === 'Reservation'
                     ? RESERVATION_PERCENTAGE
                     : PROCEDURE_PERCENTAGE;
 
-            //temporary stop gap until backend is ready to process procedure payouts
+            // temporary stop gap until backend is ready to process procedure payouts
             if (receivable.type !== 'RESERVATION')
                 receivable = { ...receivable, chargeStatus: 'pending' };
 
@@ -64,7 +66,9 @@ class PendingPayouts extends Component {
 
                         {procedures && (
                             <Flex flexDirection="column">
-                                <Typography mb={1}>{`Procedures: ${procedureNames}`}</Typography>
+                                <Typography
+                                    mb={1}
+                                >{`Procedures: ${procedureNames}`}</Typography>
                             </Flex>
                         )}
 

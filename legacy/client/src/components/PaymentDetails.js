@@ -73,7 +73,7 @@ class PaymentDetails extends Component {
             office,
             paymentAmount,
             startTime,
-            source
+            source,
         } = payment;
 
         if (isEmpty(payment)) {
@@ -113,7 +113,7 @@ class PaymentDetails extends Component {
                                 </div>
                                 <div data-name="office-location">
                                     <Typography fontSize={2}>
-                                        {office.location}
+                                        {office.location.name}
                                     </Typography>
                                 </div>
                                 <div>

@@ -67,7 +67,7 @@ class DentistResultIndex extends Component {
 
         this.state = {
             activeView: 'list',
-            activeListingId: null
+            activeListingId: null,
         };
     }
 
@@ -77,8 +77,7 @@ class DentistResultIndex extends Component {
     }
 
     renderMap(activeDentists) {
-        if (isMobile() && this.state.activeView !== 'map')
-            return null;
+        if (isMobile() && this.state.activeView !== 'map') return null;
 
         return (
             <MapContainer>
@@ -133,10 +132,10 @@ class DentistResultIndex extends Component {
 
             return (
                 <div
-                    data-id={dentist.id + dentist.location}
+                    data-id={dentist.id + dentist.location.name}
                     onMouseOver={this.setActiveListing}
                     onMouseOut={this.removeActiveListing}
-                    key={dentist.id + dentist.location}
+                    key={dentist.id + dentist.location.name}
                 >
                     <DentistResult
                         name={`${dentist.user.firstName} ${
@@ -163,7 +162,7 @@ class DentistResultIndex extends Component {
 
     toggleView = view => {
         this.setState({
-            activeView: view
+            activeView: view,
         });
     };
 
@@ -236,9 +235,7 @@ class DentistResultIndex extends Component {
                         <Padding bottom={8} />
                         <Flex alignItems="center">
                             <Box mr={3}>
-                                <label>
-                                    Filter by date:
-                                </label>
+                                <label>Filter by date:</label>
                             </Box>
                             <DateFilter filters={this.props.filters} />
                         </Flex>
@@ -292,8 +289,11 @@ function mapStateToProps(state) {
         dentists: getVisibleDentists(state.dentists.dentists),
         isFetching: state.dentists.isFetching,
         invalid: state.dentists.invalid,
-        filters: state.filters
+        filters: state.filters,
     };
 }
 
-export default connect(mapStateToProps, actions)(DentistResultIndex);
+export default connect(
+    mapStateToProps,
+    actions
+)(DentistResultIndex);

@@ -84,7 +84,9 @@ const ProfileHeader = ({ auth, dentist }) => {
             >{`Welcome back ${firstName} ${lastName}!`}</Typography>
             <Typography fontSize={3}>
                 {`${
-                    dentist && dentist.location ? `${dentist.location} - ` : ''
+                    dentist && dentist.location
+                        ? `${dentist.location.name} - `
+                        : ''
                 }Member since ${moment(auth.date_created).format('MMMM `YY')}`}
             </Typography>
         </Flex>
@@ -98,7 +100,7 @@ class Profile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isFetching: false
+            isFetching: false,
         };
     }
 
@@ -163,15 +165,15 @@ class Profile extends Component {
                         dentist &&
                         dentist.reviews &&
                         dentist.reviews.length > 0 && (
-                        <Box className="reviews profile-section">
-                            <h5>{`Reviews for ${auth.name}`}</h5>
-                            <ReviewContainer
-                                revieweeId={dentist.id}
-                                revieweeName={auth.name}
-                                reviews={dentist.reviews}
-                            />
-                        </Box>
-                    )}
+                            <Box className="reviews profile-section">
+                                <h5>{`Reviews for ${auth.name}`}</h5>
+                                <ReviewContainer
+                                    revieweeId={dentist.id}
+                                    revieweeName={auth.name}
+                                    reviews={dentist.reviews}
+                                />
+                            </Box>
+                        )}
                 </StyledMain>
             </StyledContainer>
         );
@@ -181,7 +183,7 @@ class Profile extends Component {
 function mapStateToProps(state) {
     return {
         auth: state.auth,
-        dentist: state.dentists.selectedDentist
+        dentist: state.dentists.selectedDentist,
     };
 }
 

@@ -60,15 +60,14 @@ class PhotoGrid extends Component {
         document.title = 'Laguro - Search Index';
     }
 
-    renderProcedures = procedures => {
-        return procedures.slice(0, maxNumProcedures).map(procedure => (
+    renderProcedures = procedures =>
+        procedures.slice(0, maxNumProcedures).map(procedure => (
             <Procedure key={procedure.name}>
                 <Typography fontSize={3} fontWeight="regular" color="white">
                     {procedure.name}
                 </Typography>
             </Procedure>
         ));
-    };
 
     render() {
         const { className, objects, header, message, type } = this.props;
@@ -85,79 +84,72 @@ class PhotoGrid extends Component {
                         <SoldOutDiv> {message} </SoldOutDiv>
                     </Box>
                 );
-            } else {
-                photoGridElements = objects.map(obj => {
-                    const objImg =
-                        obj.imageUrl ||
-                        (type === 'dentist'
-                            ? defaultProfilePhoto
-                            : officeImagePlaceholder);
+            }
+            photoGridElements = objects.map(obj => {
+                const objImg =
+                    obj.imageUrl ||
+                    (type === 'dentist'
+                        ? defaultProfilePhoto
+                        : officeImagePlaceholder);
 
-                    return (
-                        <a href={obj.detailPageUrl + '?referrer=home'} key={obj.id}>
-                            <div className="col offset-s1 s10 m6 l3">
-                                <ListingCard>
-                                    <div data-name="image">
-                                        <StyledContainer style={{ paddingTop }}>
-                                            <StyledImg
-                                                className="center"
-                                                id="element"
-                                                alt={objImg}
-                                                src={objImg}
-                                            />
-                                        </StyledContainer>
-                                    </div>
-                                    <Box p={2}>
-                                        <ListingInfo>
-                                            <div data-name="name">
-                                                <Typography
-                                                    fontSize={3}
-                                                    truncate
-                                                >
-                                                    {obj.name}
-                                                </Typography>
-                                            </div>
-                                            <div data-name="location">
+                return (
+                    <a href={`${obj.detailPageUrl}?referrer=home`} key={obj.id}>
+                        <div className="col offset-s1 s10 m6 l3">
+                            <ListingCard>
+                                <div data-name="image">
+                                    <StyledContainer style={{ paddingTop }}>
+                                        <StyledImg
+                                            className="center"
+                                            id="element"
+                                            alt={objImg}
+                                            src={objImg}
+                                        />
+                                    </StyledContainer>
+                                </div>
+                                <Box p={2}>
+                                    <ListingInfo>
+                                        <div data-name="name">
+                                            <Typography fontSize={3} truncate>
+                                                {obj.name}
+                                            </Typography>
+                                        </div>
+                                        <div data-name="location">
+                                            <Typography fontSize={1} truncate>
+                                                {obj.location.name}
+                                            </Typography>
+                                        </div>
+                                        {obj.chairHourlyPrice && (
+                                            <div data-name="chairHourlyPrice">
                                                 <Typography
                                                     fontSize={1}
+                                                    fontWeight={'light'}
                                                     truncate
                                                 >
-                                                    {obj.location}
+                                                    {`${renderPrice(
+                                                        obj.chairHourlyPrice
+                                                    )} per hour on average - ${
+                                                        obj.numChairsAvailable
+                                                    } chair(s) avail. usually`}
                                                 </Typography>
                                             </div>
-                                            {obj.chairHourlyPrice && (
-                                                <div data-name="chairHourlyPrice">
-                                                    <Typography
-                                                        fontSize={1}
-                                                        fontWeight={'light'}
-                                                        truncate
-                                                    >
-                                                        {`${renderPrice(
-                                                            obj.chairHourlyPrice
-                                                        )} per hour on average - ${
-                                                            obj.numChairsAvailable
-                                                        } chair(s) avail. usually`}
-                                                    </Typography>
-                                                </div>
-                                            )}
-                                        </ListingInfo>
-                                        <Box pb={2} />
-                                        {obj.procedures && (
-                                            <div data-name="procedures">
-                                                <Flex>
-                                                    {this.renderProcedures(
-                                                        obj.procedures
-                                                    )}
-                                                </Flex>
-                                            </div>
                                         )}
-                                    </Box>
-                                </ListingCard>
-                            </div>
-                        </a>
-                    );
-                });
-            }
+                                    </ListingInfo>
+                                    <Box pb={2} />
+                                    {obj.procedures && (
+                                        <div data-name="procedures">
+                                            <Flex>
+                                                {this.renderProcedures(
+                                                    obj.procedures
+                                                )}
+                                            </Flex>
+                                        </div>
+                                    )}
+                                </Box>
+                            </ListingCard>
+                        </div>
+                    </a>
+                );
+            });
         }
 
         photoGridElements =

@@ -136,7 +136,7 @@ class UserOffice extends Component {
                                             </Typography>
                                         </Link>
                                         <Typography fontSize={2}>
-                                            {office.location}
+                                            {office.location.name}
                                         </Typography>
                                         <Grid
                                             container
