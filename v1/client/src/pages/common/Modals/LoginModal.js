@@ -22,7 +22,7 @@ const LoginModal = ({ login, visible, openRegistrationModal, closeModal }) => (
                 >
                     <Button
                         bg="button.googleBlue"
-                        height={50}
+                        height="50px"
                         borderRadius="7px"
                         type="default"
                         block

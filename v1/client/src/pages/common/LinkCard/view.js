@@ -61,7 +61,7 @@ const LinkCard = props => {
                     fontSize={size === 'big' ? 3 : 2}
                     letterSpacing="-0.8px"
                 >
-                    <Truncate lines={1}>{title}</Truncate>
+                    <Truncate lines={1}>{title || ''}</Truncate>
                 </Text>
 
                 <Text

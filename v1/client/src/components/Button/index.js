@@ -4,6 +4,7 @@ import { Button as AntdButton } from 'antd';
 import styled from 'styled-components';
 import {
     fontSize,
+    fontWeight,
     height,
     propTypes,
     space,
@@ -25,7 +26,6 @@ const StyledButton = styled(AntdButton)`
         ${width} ${height} ${borders};
         color: ${props => props.theme.colors.text.white};
         background-color: ${props => props.theme.colors.button.green};
-        border: 'solid 1px #f2f2f2';
         ${space};
         ${position};
         ${left};
@@ -40,7 +40,7 @@ const StyledButton = styled(AntdButton)`
     }
 
     &&.ant-btn-default {
-        ${color};
+        ${color} ${borders};
     }
 
     &&.ant-btn-primary.disabled,
@@ -99,17 +99,19 @@ const StyledButton = styled(AntdButton)`
         line-height: normal;
         letter-spacing: -0.4px;
         color: #ffffff;
-        ${fontSize};
+        ${fontSize} ${fontWeight};
     }
 
     i {
-        ${fontSize} ${color};
+        ${fontSize} ${fontWeight} ${color};
     }
 `;
 
 StyledButton.propTypes = {
     ...propTypes.space,
     ...propTypes.color,
+    ...propTypes.fontSize,
+    ...propTypes.fontWeight,
 };
 
 const Button = props => {
@@ -125,6 +127,7 @@ const Button = props => {
 Button.defaultProps = {
     type: 'primary',
     fontSize: 3,
+    fontWeight: 'regular',
     height: '50px',
     color: 'text.white',
 };

@@ -11,10 +11,10 @@ import {
     position,
     cursor,
     transform,
+    fontSize,
     propTypes,
 } from 'styled-system';
 import LocationPin from './LocationPin';
-import Calendar from './Calendar';
 import LocationPinWithBackground from './LocationPinWithBackground';
 import LeftArrow from './LeftArrow';
 import RightArrow from './RightArrow';
@@ -47,9 +47,6 @@ const Icon = props => {
         case 'locationPinWithBackground':
             ReturnIcon = LocationPinWithBackground;
             break;
-        case 'calendar':
-            ReturnIcon = Calendar;
-            break;
         case 'plus':
             ReturnIcon = Plus;
             break;
@@ -64,7 +61,7 @@ const Icon = props => {
     }
 
     const StyledIcon = styled(ReturnIcon)`
-        ${transform} ${space} ${width} ${height} ${position} ${color} ${left} ${right} ${cursor};
+        ${transform} ${space} ${width} ${height} ${fontSize} ${position} ${color} ${left} ${right} ${cursor};
     `;
 
     const StyledIconContainer = styled.span`
@@ -87,6 +84,7 @@ Icon.propTypes = {
     ...propTypes.height,
     ...propTypes.width,
     ...propTypes.space,
+    ...propTypes.fontSize,
 };
 
 export default Icon;

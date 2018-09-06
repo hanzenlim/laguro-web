@@ -1,37 +1,8 @@
 import React from 'react';
-import styled from 'styled-components';
 import hero1 from '../../images/Hero-img.jpg';
-import { Box, Icon, Input, Text } from '../../components';
+import { Container, Box, Text } from '../../components';
 import FeaturedList from './FeaturedList';
-
-const StyledInput = styled(Input)`
-    && {
-        width: 640px;
-        height: 80px;
-        border-radius: 4px;
-
-        input::placeholder {
-            color: black;
-            font-style: italic;
-            font-size: 18px;
-            font-weight: 700;
-            font-family: Ubuntu;
-        }
-
-        input {
-            color: black;
-            font-style: italic;
-            font-size: 18px;
-            font-weight: 700;
-            font-family: Ubuntu;
-        }
-
-        input:not(:first-child) {
-            padding-left: 55px;
-        }
-    }
-    background-color: white;
-`;
+import SearchBox from '../common/SearchBox/index';
 
 const HomePageView = () => (
     <Box>
@@ -42,14 +13,14 @@ const HomePageView = () => (
             height="100vh"
             width="100%"
         >
-            <Box
+            <Container
                 color="text.white"
                 m="auto"
                 minWidth="840px"
                 pt="32vh"
-                width="45%"
+                textAlign="center"
             >
-                <Box width="65%">
+                <Box mb={80}>
                     <Text
                         fontWeight="bold"
                         color="text.white"
@@ -57,16 +28,7 @@ const HomePageView = () => (
                         fontStyle="italic"
                         lineHeight="50px"
                     >
-                        find your next
-                    </Text>
-                    <Text
-                        color="text.white"
-                        fontSize={7}
-                        fontStyle="italic"
-                        fontWeight="light"
-                        lineHeight="50px"
-                    >
-                        dentist or specialist
+                        find your next dentist,
                     </Text>
                     <Text
                         lineHeight="50px"
@@ -75,17 +37,11 @@ const HomePageView = () => (
                         fontStyle="italic"
                         fontSize={6}
                     >
-                        and book an appointment
+                        book an appointment today
                     </Text>
                 </Box>
-                <Box pb={30} />
-                <StyledInput
-                    placeholder="find your smile here"
-                    prefix={
-                        <Icon type="locationPin" width="40px" height="40px" />
-                    }
-                />
-            </Box>
+                <SearchBox size="large" />
+            </Container>
         </Box>
         <FeaturedList />
     </Box>

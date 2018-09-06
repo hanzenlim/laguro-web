@@ -29,7 +29,7 @@ const PaymentSuccessPageView = props => {
                                 type="locationPin"
                                 width="20px"
                                 height="20px"
-                                color="icon.gray"
+                                color="icon.lightGray"
                                 mx={5}
                             />
                             <Text color="text.green">{h3}</Text>

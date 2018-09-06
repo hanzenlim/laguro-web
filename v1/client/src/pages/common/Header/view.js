@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
+import SearchBox from '../SearchBox';
 import logo from '../../../components/Image/logo.svg';
 import whiteLogo from '../../../components/Image/whiteLogo.svg';
 import {
@@ -20,7 +21,7 @@ const NavBarLink = styled(Link)`
     padding: 10px;
     border-bottom: 7px solid;
     border-color: ${props => props.theme.colors.divider.transparent};
-    margin-left: 60px;
+    margin-left: ${props => props.ml || '60px'};
 
     &&:hover,
     &&:focus {
@@ -133,8 +134,9 @@ const Header = ({
                     alt="logo"
                 />
             </Link>
+            {!onLandingPage && <SearchBox size="small" />}
             <Flex alignItems="center">
-                <NavBarLink to={'/landlord-onboarding/add-office'}>
+                <NavBarLink ml="0px" to={'/landlord-onboarding/add-office'}>
                     <Text
                         color={onLandingPage ? 'text.white' : 'text.black'}
                         fontSize={1}

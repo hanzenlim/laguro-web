@@ -1,29 +1,65 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 
-import { Flex, Button, DatePicker, Box } from '../../../components';
+import { Flex, Button, DatePicker, Box, Icon, Text } from '../../../components';
 import LocationFilter from '../LocationFilter';
 
+const StyledButton = styled(Button)`
+    && {
+        border-width: 0;
+        border-radius: 2px;
+    }
+`;
+
 const SearchBox = props => {
-    const { onLocationFilterChange, onDateFilterChange, onSubmit } = props;
+    const {
+        onLocationFilterChange,
+        onDateFilterChange,
+        onSubmit,
+        size,
+    } = props;
 
     return (
-        <Flex
-            width="1060px"
-            p={40}
-            borderRadius="4px"
-            border="1px solid"
-            borderColor="divider.white"
-        >
-            <Box mr={20}>
-                <LocationFilter onChange={onLocationFilterChange} />
+        <Flex width={1} justifyContent="center">
+            <Box mr={10}>
+                <LocationFilter
+                    onLocationChange={onLocationFilterChange}
+                    width={size === 'large' ? 710 : 420}
+                />
             </Box>
-            <Box mr={20}>
-                <DatePicker onChange={onDateFilterChange} />
+            <Box mr={10}>
+                <DatePicker
+                    onDateChange={onDateFilterChange}
+                    width={size === 'large' ? 350 : 175}
+                />
             </Box>
-            <Button height="80px" fontSize={3} width="150px" onClick={onSubmit}>
-                find your smile
-            </Button>
+            <StyledButton
+                height="60px"
+                width={size === 'large' ? '140px' : '60px'}
+                type="default"
+                bg="background.green"
+                onClick={onSubmit}
+                pl={size === 'large' ? 20 : 10}
+            >
+                <Flex
+                    alignItems="center"
+                    justifyContent={size === 'large' ? 'flex-start' : 'center'}
+                >
+                    <Icon
+                        fontSize={3}
+                        style={{ fontWeight: 'bold' }}
+                        color="white"
+                        type="search"
+                        mr={size === 'large' ? 15 : 0}
+                    />
+                    {size === 'large' && (
+                        <Text fontSize={3} fontWeight="bold" color="white">
+                            Search
+                        </Text>
+                    )}
+                </Flex>
+            </StyledButton>
         </Flex>
     );
 };
