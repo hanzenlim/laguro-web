@@ -38,21 +38,6 @@ module.exports.getUserByGoogleIdQuery = `
     }
 `;
 
-module.exports.getUserByEmailQuery = `
-    query getUserByEmail($email: String!) {
-        getUserByEmail(email: $email) {
-            id
-            firstName
-            middleName
-            lastName
-            imageUrl
-            dentistId
-            googleId
-            password
-        }
-    }
-`;
-
 module.exports.getUserByGoogleIdVariable = id => ({
     googleId: id.toString(),
 });
@@ -79,13 +64,32 @@ module.exports.getResetPasswordRequestVariable = id => ({
     id: id.toString(),
 });
 
+module.exports.getUserByEmailQuery = `
+query getUserByEmail($email: String!) {
+    getUserByEmail(email: $email) {
+        id
+        firstName
+        middleName
+        lastName
+        imageUrl
+        dentistId
+        googleId
+        password
+    }
+}
+`;
+
 module.exports.createGoogleUserQuery = `
     mutation createGoogleUser($input: CreateGoogleUserInput!) {
         createGoogleUser(input: $input) {
             id
-            googleId
-            email
+            firstName
+            middleName
+            lastName
             imageUrl
+            dentistId
+            googleId
+            password
         }
     }
 `;
@@ -171,12 +175,14 @@ module.exports.createGoogleUserVariable = (
 
 module.exports.createLocalUserVariable = (
     firstName,
+    middleName,
     lastName,
     password,
     email
 ) => ({
     input: {
         firstName,
+        middleName,
         lastName,
         password,
         email,

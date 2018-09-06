@@ -14,6 +14,8 @@ const {
     getUserByEmailVariable,
     createGoogleUserQuery,
     createGoogleUserVariable,
+    createLocalUserQuery,
+    createLocalUserVariable,
     updateUserVariable,
     updateUserQuery,
 } = serverDataLoader;
@@ -82,7 +84,12 @@ passport.use(
                 )
             );
 
-            return done(null, result.data.createGoogleUser);
+            const createGoogleUser =
+                result && result.data && result.data.createGoogleUser;
+
+            delete createGoogleUser.password;
+
+            return done(null, createGoogleUser);
         }
     )
 );
@@ -124,10 +131,25 @@ passport.use(
                                 'There was an error creating your account, please try again.',
                         });
 
-                    done(null, {
-                        ...req.body,
-                        password: hashedPassword,
-                    });
+                    const createUserResult = await makeMutation(
+                        createLocalUserQuery,
+                        createLocalUserVariable(
+                            req.body.firstName,
+                            req.body.middleName,
+                            req.body.lastName,
+                            hashedPassword,
+                            username
+                        )
+                    );
+
+                    const newLocalUser =
+                        createUserResult &&
+                        createUserResult.data &&
+                        createUserResult.data.createLocalUser;
+
+                    delete newLocalUser.password;
+
+                    done(null, newLocalUser);
                 });
             });
         }
@@ -174,6 +196,8 @@ passport.use(
                     message: 'Invalid username/password.',
                 });
             }
+
+            delete getUserByEmail.password;
 
             done(null, getUserByEmail);
         }

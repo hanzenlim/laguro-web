@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Modal, Box, Flex, Text, Form, Input } from '../../../../components';
+import { Modal, Box, Flex, Text, Form, Input } from '../../../components';
 
 const { FormItem, SubmitButton } = Form;
 

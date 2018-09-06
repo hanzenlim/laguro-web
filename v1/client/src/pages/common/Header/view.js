@@ -91,6 +91,7 @@ const Header = ({
     openRegistrationModal,
     closeModal,
     visibleModal,
+    signup,
     login,
     logout,
     auth,
@@ -115,6 +116,7 @@ const Header = ({
             visible={visibleModal === 'login'}
         />
         <RegistrationModal
+            signup={signup}
             closeModal={closeModal}
             visible={visibleModal === 'register'}
         />
