@@ -22,6 +22,7 @@ module.exports.getUserQuery = `
             firstName
             lastName
             imageUrl
+            dentistId
         }
     }
 `;
@@ -30,6 +31,7 @@ module.exports.getUserByGoogleIdQuery = `
     query getUserByGoogleId($googleId: String!) {
         getUserByGoogleId(googleId: $googleId) {
             id
+            dentistId
             firstName
             lastName
             googleId
