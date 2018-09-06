@@ -83,7 +83,6 @@ const DentistDetailsPageView = props => {
                                         color="text.white"
                                         lineHeight="22px"
                                         fontSize={1}
-                                        lineHeight="22px"
                                         letterSpacing="-0.4px"
                                     >
                                         {procedure}
