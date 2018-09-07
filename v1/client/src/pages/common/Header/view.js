@@ -16,6 +16,7 @@ import {
 import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
 import LoginModal from '../Modals/LoginModal';
 import RegistrationModal from '../Modals/RegistrationModal';
+import ForgotPassModal from '../Modals/ForgotPassModal';
 
 const NavBarLink = styled(Link)`
     padding: 10px;
@@ -90,11 +91,13 @@ const Header = ({
     onLandingPage,
     openLoginModal,
     openRegistrationModal,
+    openForgotPassModal,
     closeModal,
     visibleModal,
     signup,
     login,
     logout,
+    sendPassResetLink,
     auth,
 }) => (
     <Flex
@@ -113,13 +116,21 @@ const Header = ({
         <LoginModal
             login={login}
             openRegistrationModal={openRegistrationModal}
+            openForgotPassModal={openForgotPassModal}
             closeModal={closeModal}
             visible={visibleModal === 'login'}
         />
         <RegistrationModal
             signup={signup}
+            openLoginModal={openLoginModal}
             closeModal={closeModal}
             visible={visibleModal === 'register'}
+        />
+        <ForgotPassModal
+            sendPassResetLink={sendPassResetLink}
+            openLoginModal={openLoginModal}
+            closeModal={closeModal}
+            visible={visibleModal === 'forgotPass'}
         />
         <Container
             display="flex"

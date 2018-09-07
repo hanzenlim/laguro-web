@@ -34,7 +34,7 @@ const LocalLoginForm = props => (
             ]}
             input={<Input type="password" />}
         />
-        <SubmitButton px={14} buttonText="log in" />
+        <SubmitButton px={30} buttonText="log in" />
     </Form>
 );
 

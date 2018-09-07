@@ -42,7 +42,7 @@ const HeaderContainer = () => (
                             },
                         });
                     } else {
-                        message.error(res.info.message);
+                        message.error(res.message);
                     }
                 });
             };
@@ -67,10 +67,28 @@ const HeaderContainer = () => (
                             },
                         });
                     } else {
-                        message.error(res.info.message);
+                        message.error(res.message);
                     }
                 });
             };
+            const sendPassResetLink = (values, onSuccess) => {
+                request('/api/forgot-password', {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Origin': '*',
+                    },
+                    body: JSON.stringify({ ...values }),
+                }).then(res => {
+                    if (res.status === 200) {
+                        onSuccess();
+                    } else {
+                        message.error(res.message);
+                    }
+                });
+            };
+
             const logout = () => {
                 client.writeData({ data: { activeUser: null } });
                 cookies.erase('user');
@@ -80,6 +98,9 @@ const HeaderContainer = () => (
             };
             const openRegistrationModal = () => {
                 client.writeData({ data: { visibleModal: 'register' } });
+            };
+            const openForgotPassModal = () => {
+                client.writeData({ data: { visibleModal: 'forgotPass' } });
             };
             const closeModal = () => {
                 client.writeData({ data: { visibleModal: null } });
@@ -92,8 +113,10 @@ const HeaderContainer = () => (
                     login={login}
                     logout={logout}
                     signup={signup}
+                    sendPassResetLink={sendPassResetLink}
                     openLoginModal={openLoginModal}
                     openRegistrationModal={openRegistrationModal}
+                    openForgotPassModal={openForgotPassModal}
                     closeModal={closeModal}
                     onLandingPage={onLandingPage}
                 />

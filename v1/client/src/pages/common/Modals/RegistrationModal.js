@@ -1,11 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Modal, Box, Flex, Text, Form, Input } from '../../../components';
+import { Modal, Box, Flex, Text, Form, Input, Link } from '../../../components';
 
 const { FormItem, SubmitButton } = Form;
 
-const ReservationModalView = ({ closeModal, visible, signup }) => (
+const ReservationModalView = ({
+    closeModal,
+    openLoginModal,
+    visible,
+    signup,
+}) => (
     <Modal onCancel={closeModal} destroyOnClose={true} visible={visible}>
         <Flex
             flexDirection="column"
@@ -19,7 +24,7 @@ const ReservationModalView = ({ closeModal, visible, signup }) => (
                 </Text>
             </Flex>
             <Text fontSize={4} mb={40}>
-                let's get started on creating your profile
+                let&#39;s get started on creating your profile
             </Text>
 
             <Box width={300}>
@@ -85,9 +90,17 @@ const ReservationModalView = ({ closeModal, visible, signup }) => (
                         input={<Input type="password" />}
                     />
 
-                    <SubmitButton px={14} buttonText="create account" />
+                    <SubmitButton px={30} buttonText="create account" />
                 </Form>
             </Box>
+            <Flex mt={10}>
+                <Text color="text.black">have an account?&nbsp;</Text>
+                <Link to={'#'} onClick={openLoginModal}>
+                    <Text color="text.green" fontWeight="bold">
+                        login
+                    </Text>
+                </Link>
+            </Flex>
         </Flex>
     </Modal>
 );
