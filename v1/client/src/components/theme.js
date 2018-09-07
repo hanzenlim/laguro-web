@@ -3,7 +3,7 @@ export default {
         text: {
             white: '#ffffff',
             black: '#303549',
-            black50: 'rgba 0 0 0, 0.5',
+            black50: 'rgba(0, 0, 0, 0.5)',
             gray: '#c7c7c7',
             green: '#50e3c2',
         },
@@ -43,13 +43,15 @@ export default {
         },
         datePicker: {
             green: '#50e3c2',
+            green75: 'rgba(80, 227, 194, 0.75)',
             white: '#ffffff',
         },
         icon: {
-            white: '#ffffff',
-            black: '#303549',
+            white: '#FFFFFF',
             green: '#50e3c2',
-            gray: '#c7c7c7',
+            black: '#303549',
+            darkGray: 'rgba(0, 0, 0, 0.6)',
+            lightGray: '#c7c7c7',
         },
         loading: {
             green: '#50e3c2',
@@ -68,6 +70,7 @@ export default {
         dropdown: 700,
         header: 600,
         footer: 500,
+        inputElement: 200,
     },
     breakpoints: ['1200px', '320px'],
     space: n => `${n}px`,

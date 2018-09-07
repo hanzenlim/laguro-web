@@ -1,5 +1,9 @@
 import React, { PureComponent } from 'react';
+import queryString from 'query-string';
+import moment from 'moment';
+
 import SearchBoxView from './view';
+import history from '../../../history';
 
 class SearchBox extends PureComponent {
     constructor(props) {
@@ -20,8 +24,31 @@ class SearchBox extends PureComponent {
     };
 
     handleSubmit = () => {
-        // eslint-disable-next-line
-        console.log(this.state.location, this.state.date);
+        const { date, location } = this.state;
+        const defaultLocation = {
+            name: 'San Francisco, California, United States',
+            lat: 37.7648,
+            long: -123.463,
+        };
+
+        const locationName = location ? location.name : defaultLocation.name;
+        const locationLat = location ? location.lat : defaultLocation.lat;
+        const locationLong = location ? location.long : defaultLocation.long;
+        const startTime = date
+            ? moment(date).startOf('day')
+            : moment().startOf('day');
+        const endTime = date
+            ? moment(date).endOf('day')
+            : moment().endOf('day');
+
+        const urlParams = {};
+        urlParams.startTime = startTime.format();
+        urlParams.endTime = endTime.format();
+        urlParams.location = locationName;
+        urlParams.lat = locationLat;
+        urlParams.long = locationLong;
+
+        history.push(`/dentist/search?${queryString.stringify(urlParams)}`);
     };
 
     render() {
@@ -30,6 +57,7 @@ class SearchBox extends PureComponent {
                 onLocationFilterChange={this.handleLocationFilterChange}
                 onDateFilterChange={this.handleDateFilterChange}
                 onSubmit={this.handleSubmit}
+                size={this.props.size}
             />
         );
     }

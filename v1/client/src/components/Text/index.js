@@ -52,6 +52,10 @@ const StyledText = styled(Text)`
     ${props => props.fontStyle && `font-style: ${props.fontStyle}`};
     ${props => props.overflow && `font-style: ${props.overflow}`};
     ${props => props.textTransform && `text-transform: ${props.textTransform}`};
+
+    :hover {
+        ${props => props.hoverColor && `color: ${props.hoverColor}`};
+    }
 `;
 
 StyledText.displayName = 'Text';

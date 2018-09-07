@@ -1,10 +1,9 @@
 import styled from 'styled-components';
 import system from 'system-components';
-import Img from 'react-image';
 
 const Image = system(
     {
-        is: Img,
+        is: 'img',
         display: 'block',
         maxwidth: '100%',
         height: 'auto',
