@@ -47,6 +47,11 @@ const OfficeDetailsPage = Loadable({
     loading: () => null,
 });
 
+const ResetPassPage = Loadable({
+    loader: () => import('./pages/ResetPassPage'),
+    loading: () => null,
+});
+
 class App extends Component {
     render() {
         return (
@@ -80,6 +85,10 @@ class App extends Component {
                                     <Route
                                         path="/office/:id"
                                         component={OfficeDetailsPage}
+                                    />
+                                    <Route
+                                        path="/reset-password"
+                                        component={ResetPassPage}
                                     />
                                     <Route path="/" component={HomePage} />
                                     {/* Catch all unmatched routes. */}

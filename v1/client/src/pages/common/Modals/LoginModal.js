@@ -4,17 +4,29 @@ import PropTypes from 'prop-types';
 import { Modal, Button, Box, Flex, Text, Link } from '../../../components';
 import LocalLoginForm from '../Forms/LocalLoginForm';
 
-const LoginModal = ({ login, visible, openRegistrationModal, closeModal }) => (
-    <Modal onCancel={closeModal} destroyOnClose={true} visible={visible}>
+const LoginModal = ({
+    login,
+    visible,
+    openRegistrationModal,
+    openForgotPassModal,
+    closeModal,
+}) => (
+    <Modal
+        onCancel={closeModal}
+        destroyOnClose={true}
+        visible={visible}
+        width={570}
+    >
         <Flex
             flexDirection="column"
             justifyContent="space-around"
             alignItems="center"
+            px={15}
         >
             <Text fontWeight="bold" fontSize={5}>
                 sign in
             </Text>
-            <Flex width={1} my={20} justifyContent="space-around">
+            <Flex width={1} my={30} justifyContent="space-around">
                 <Flex
                     width={210}
                     flexDirection="column"
@@ -41,7 +53,7 @@ const LoginModal = ({ login, visible, openRegistrationModal, closeModal }) => (
                     width={0}
                     flexDirection="column"
                     justifyContent="center"
-                    mx={40}
+                    mx={60}
                 >
                     <Flex
                         border={'1px solid'}
@@ -72,7 +84,7 @@ const LoginModal = ({ login, visible, openRegistrationModal, closeModal }) => (
                     </Text>
                 </Link>
                 <Text color="text.black">&nbsp;|&nbsp;</Text>
-                <Link to={'#'} width={120}>
+                <Link to={'#'} onClick={openForgotPassModal} width={120}>
                     <Text color="text.black" fontWeight="bold">
                         forgot password?
                     </Text>

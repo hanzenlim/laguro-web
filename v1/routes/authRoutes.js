@@ -21,7 +21,7 @@ const authRoutes = app => {
     app.post('/api/signup', (req, res, next) =>
         passport.authenticate('local-signup', (err, user, info) => {
             if (err || !user) {
-                return res.json({ status: 403, info });
+                return res.json({ status: 403, message: info.message });
             }
 
             res.cookie('user', JSON.stringify({ ...user, imageUrl: null }), {
@@ -34,7 +34,7 @@ const authRoutes = app => {
     app.post('/api/login', (req, res, next) =>
         passport.authenticate('local-login', (err, user, info) => {
             if (err || !user) {
-                return res.json({ status: 403, info });
+                return res.json({ status: 403, message: info.message });
             }
 
             res.cookie('user', JSON.stringify(user), {
@@ -56,7 +56,8 @@ const authRoutes = app => {
 
         if (getUserByEmail) {
             if (getUserByEmail && getUserByEmail.googleId) {
-                return res.status(403).json({
+                return res.json({
+                    status: 403,
                     message:
                         'Either the credentials you supplied are invalid, or you signed up using an OpenID provider, such as Google.',
                 });
@@ -67,11 +68,13 @@ const authRoutes = app => {
                 createResetPasswordRequestVariable(username)
             );
 
-            return res.status(200).json({
+            return res.json({
+                status: 200,
                 message: 'Email sent.',
             });
         }
-        return res.status(403).json({
+        return res.json({
+            status: 403,
             message: 'Invalid login credentials.',
         });
     });
@@ -79,7 +82,14 @@ const authRoutes = app => {
     // Checks status of reset password request.
     // Updates user password if link is not yet used or more then 24 hours.
     app.post('/api/reset-password', async (req, res) => {
-        const { id, token, password } = req && req.body;
+        const { id, token, password, passwordConfirmation } = req.body;
+
+        if (password !== passwordConfirmation) {
+            return res.json({
+                status: 400,
+                message: 'Passwords do not match.',
+            });
+        }
 
         const result = await makeQuery(
             getResetPasswordRequestQuery,
@@ -89,27 +99,31 @@ const authRoutes = app => {
         const { getResetPasswordRequest } = result && result.data;
 
         if (getResetPasswordRequest.status === 'EXPIRED') {
-            return res.status(400).json({
+            return res.json({
+                status: 400,
                 message: 'Reset password request already expired.',
             });
         }
 
         if (getResetPasswordRequest.status === 'USED') {
-            return res.status(400).json({
+            return res.json({
+                status: 400,
                 message: 'Reset password request already used.',
             });
         }
 
         bcrypt.genSalt(10, async (err, salt) => {
             if (err) {
-                return res.status(403).json({
+                return res.json({
+                    status: 403,
                     message: 'Invalid request.',
                 });
             }
 
             bcrypt.hash(password, salt, async (err, hashedPassword) => {
                 if (err) {
-                    return res.status(403).json({
+                    return res.json({
+                        status: 403,
                         message: 'Invalid request.',
                     });
                 }
@@ -123,14 +137,19 @@ const authRoutes = app => {
 
                 if (useResetPasswordRequest) {
                     if (useResetPasswordRequest.status === 'EXPIRED') {
-                        res.status(400).json({
+                        res.json({
+                            status: 400,
                             message: 'Reset password request already expired.',
                         });
                     } else {
-                        return res.status(200).json(useResetPasswordRequest);
+                        return res.json({
+                            status: 200,
+                            useResetPasswordRequest,
+                        });
                     }
                 } else {
-                    return res.status(400).json({
+                    return res.json({
+                        status: 400,
                         message: 'Invalid request.',
                     });
                 }
