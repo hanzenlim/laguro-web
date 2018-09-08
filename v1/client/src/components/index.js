@@ -25,6 +25,7 @@ import CheckMarkAnimation from './CheckMarkAnimation';
 import Checkbox from './Checkbox';
 import Counter from './Counter';
 import RangePicker from './RangePicker';
+import SlickCarousel from './SlickCarousel';
 
 export {
     Box,
@@ -54,4 +55,5 @@ export {
     Checkbox,
     Counter,
     RangePicker,
+    SlickCarousel,
 };

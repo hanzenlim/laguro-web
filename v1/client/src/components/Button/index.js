@@ -13,8 +13,10 @@ import {
     borders,
     position,
     left,
-    right,
+    top,
     bottom,
+    right,
+    zIndex,
     opacity,
 } from 'styled-system';
 import { hoverColor } from '../utils';
@@ -31,8 +33,10 @@ const StyledButton = styled(AntdButton)`
         ${position};
         ${left};
         ${right};
+        ${top};
         ${bottom};
         ${opacity};
+        ${zIndex};
     }
 
     &&.ant-btn-primary {

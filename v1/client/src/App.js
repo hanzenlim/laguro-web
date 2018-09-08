@@ -100,8 +100,6 @@ class App extends Component {
                                         component={ResetPassPage}
                                     />
                                     <Route path="/" component={HomePage} />
-                                    {/* Catch all unmatched routes. */}
-                                    {/* <Route component={NotFound} /> */}
                                 </Switch>
                             </ErrorBoundary>
                         </Content>
