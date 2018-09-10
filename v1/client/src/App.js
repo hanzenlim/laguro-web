@@ -22,6 +22,11 @@ const LandlordLandingPage = Loadable({
     loading: () => null,
 });
 
+const ProfilePage = Loadable({
+    loader: () => import('./pages/ProfilePage'),
+    loading: () => null,
+});
+
 const DentistLandingPage = Loadable({
     loader: () => import('./pages/DentistLandingPage'),
     loading: () => null,
@@ -62,6 +67,10 @@ class App extends Component {
                         <Content>
                             <ErrorBoundary>
                                 <Switch>
+                                    <Route
+                                        path="/profile"
+                                        component={ProfilePage}
+                                    />
                                     <Route
                                         path="/landlord"
                                         component={LandlordLandingPage}
