@@ -14,6 +14,7 @@ import {
     position,
     left,
     right,
+    bottom,
     opacity,
 } from 'styled-system';
 import { hoverColor } from '../utils';
@@ -30,6 +31,7 @@ const StyledButton = styled(AntdButton)`
         ${position};
         ${left};
         ${right};
+        ${bottom};
         ${opacity};
     }
 
@@ -63,12 +65,13 @@ const StyledButton = styled(AntdButton)`
         background-color: transparent;
         outline: none;
         border: none;
-        height: auto;
+        ${height}
         ${width};
         ${space};
         ${position};
         ${left};
         ${right};
+        ${bottom};
     }
 
     &&.ant-btn-ghost:hover,
@@ -99,7 +102,9 @@ const StyledButton = styled(AntdButton)`
         line-height: normal;
         letter-spacing: -0.4px;
         color: #ffffff;
-        ${fontSize} ${fontWeight};
+        ${fontSize}
+        ${fontWeight};
+        ${color};
     }
 
     i {

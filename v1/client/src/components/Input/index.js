@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Input as AntdInput } from 'antd';
 import styled from 'styled-components';
 
 const StyledInput = styled(AntdInput)``;
 
-const Input = props => {
-    const { ...rest } = props;
-
-    return <StyledInput {...rest} />;
-};
+class Input extends PureComponent {
+    render() {
+        const { ...rest } = this.props;
+        return <StyledInput {...rest} />;
+    }
+}
 
 export default Input;
