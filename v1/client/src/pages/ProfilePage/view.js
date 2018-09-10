@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Box, Container, Text } from '../../components/';
 import Menu from '../common/Menu';
+import { DENTIST, HOST, PATIENT } from '../../util/strings';
 
 const Grid = styled(Box)`
     display: grid;
@@ -9,7 +10,7 @@ const Grid = styled(Box)`
     grid-column-gap: 70px;
 `;
 
-class PaymentPageView extends Component {
+class ProfileView extends Component {
     constructor() {
         super();
         this.state = { panel: this.renderPanel('user-info') };
@@ -33,19 +34,19 @@ class PaymentPageView extends Component {
                         documents
                     </Text>
                 );
-            case 'patient':
+            case PATIENT:
                 return (
                     <Text fontSize={4} color="inherit" lineHeight="40px">
                         patient
                     </Text>
                 );
-            case 'dentist':
+            case DENTIST:
                 return (
                     <Text fontSize={4} color="inherit" lineHeight="40px">
                         dentist
                     </Text>
                 );
-            case 'host':
+            case HOST:
                 return (
                     <Text fontSize={4} color="inherit" lineHeight="40px">
                         host
@@ -59,27 +60,27 @@ class PaymentPageView extends Component {
     renderPersonaMenu = () => {
         const { persona } = this.props;
         switch (persona) {
-            case 'patient':
+            case DENTIST:
                 return (
-                    <Menu.Item key="patient">
-                        <Text fontSize={4} color="inherit" lineHeight="40px">
-                            patient
-                        </Text>
-                    </Menu.Item>
-                );
-            case 'dentist':
-                return (
-                    <Menu.Item key="dentist">
+                    <Menu.Item key={DENTIST}>
                         <Text fontSize={4} color="inherit" lineHeight="40px">
                             dentist
                         </Text>
                     </Menu.Item>
                 );
-            case 'host':
+            case HOST:
                 return (
-                    <Menu.Item key="host">
+                    <Menu.Item key={HOST}>
                         <Text fontSize={4} color="inherit" lineHeight="40px">
                             host
+                        </Text>
+                    </Menu.Item>
+                );
+            case PATIENT:
+                return (
+                    <Menu.Item key={PATIENT}>
+                        <Text fontSize={4} color="inherit" lineHeight="40px">
+                            patient
                         </Text>
                     </Menu.Item>
                 );
@@ -126,4 +127,4 @@ class PaymentPageView extends Component {
         );
     }
 }
-export default PaymentPageView;
+export default ProfileView;
