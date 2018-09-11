@@ -74,7 +74,7 @@ const Icon = props => {
 
     return (
         <StyledIconContainer>
-            <StyledIcon {...rest} />{' '}
+            <StyledIcon type={type} {...rest} />{' '}
         </StyledIconContainer>
     );
 };

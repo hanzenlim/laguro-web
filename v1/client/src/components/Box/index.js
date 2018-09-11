@@ -1,4 +1,3 @@
-import React from 'react';
 import system from 'system-components';
 import styled from 'styled-components';
 
