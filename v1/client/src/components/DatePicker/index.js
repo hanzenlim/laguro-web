@@ -4,7 +4,7 @@ import { DatePicker as AntdDatePicker } from 'antd';
 import moment from 'moment';
 import { width } from 'styled-system';
 
-import { Flex, Text, Icon } from '../../components';
+import { Icon, Input } from '../../components';
 
 const StyledContainer = styled.div`
     && {
@@ -14,14 +14,41 @@ const StyledContainer = styled.div`
         border-radius: 2px;
         background-color: ${props => props.theme.colors.background.white};
         border: 1px solid ${props => props.theme.colors.divider.darkGray};
-        font-size: ${props => props.theme.fontSizes[2]};
-        font-weight: ${props => props.theme.fontWeights.bold};
         cursor: pointer;
         text-align: left;
     }
 
     a {
         color: ${props => props.theme.colors.datePicker.green};
+    }
+    .ant-input-affix-wrapper {
+        height: 100%;
+        width: 100%;
+        padding: 5px 15px 5px 5px;
+
+        .ant-input-suffix {
+            visibility: hidden;
+        }
+
+        :hover {
+            .ant-input-suffix {
+                visibility: visible;
+            }
+        }
+    }
+
+    .ant-input-prefix {
+        margin-left: 5px;
+    }
+
+    .ant-input {
+        border: none;
+        height: 100%;
+        width: 100%;
+        margin-left: 15px;
+        color: ${props => props.theme.colors.text.black50};
+        font-weight: ${props => props.theme.fontWeights.bold};
+        font-size: ${props => props.theme.fontSizes[3]};
     }
 
     .ant-calendar-date {
@@ -77,38 +104,35 @@ class DatePicker extends PureComponent {
     getCalendarContainer = () => this.refs.datePickerContainer;
 
     render() {
-        const { open } = this.state;
+        const { open, dateString } = this.state;
 
         return (
             <StyledContainer width={this.props.width}>
-                <Flex
-                    width="100%"
-                    height="100%"
-                    position="absolute"
-                    alignItems="center"
-                    justifyContent="flex-start"
+                <Input
                     onClick={this.toggleDatePicker}
-                    py={20}
-                    px={10}
-                >
-                    <Icon
-                        type="calendar"
-                        ml={10}
-                        mt={2}
-                        fontSize={4}
-                        color="icon.green"
-                    />
-
-                    <Text
-                        fontSize={3}
-                        color={
-                            this.state.dateString ? 'text.black50' : 'text.gray'
-                        }
-                        ml={15}
-                    >
-                        {this.state.dateString || moment().format('ddd MM/DD')}
-                    </Text>
-                </Flex>
+                    value={dateString}
+                    placeholder={moment().format('ddd MM/DD')}
+                    prefix={
+                        <Icon
+                            type="calendar"
+                            mt={3}
+                            fontSize={4}
+                            color="icon.green"
+                        />
+                    }
+                    suffix={
+                        dateString ? (
+                            <Icon
+                                type="close-circle"
+                                fontSize={4}
+                                color="icon.lightGray"
+                                onClick={() =>
+                                    this.setState({ dateString: '' })
+                                }
+                            />
+                        ) : null
+                    }
+                />
                 <div ref="datePickerContainer" />
                 <AntdDatePicker
                     format={'ddd MM/DD'}
@@ -119,7 +143,7 @@ class DatePicker extends PureComponent {
                     style={{
                         visibility: 'hidden',
                         position: 'relative',
-                        top: '70px',
+                        top: '10px',
                     }}
                     popupStyle={{ borderRadius: '30px' }}
                 />
