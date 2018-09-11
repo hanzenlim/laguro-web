@@ -8,7 +8,7 @@ const PaymentPageView = props => {
     const { stripe, btnText, userId, handleSubmit } = props;
 
     return (
-        <Box width="420px" pl={10} pr={10}>
+        <Box width="100%">
             <StripeProvider stripe={stripe}>
                 <Elements>
                     <PaymentCardForm

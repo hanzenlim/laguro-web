@@ -45,10 +45,6 @@ class CardForm extends Component {
         }
     };
 
-    submitExistingCardPayment = () => {
-        this.props.handleSubmit(this.state.selectedCard);
-    };
-
     onChangeCardSelect = value => {
         this.setState({
             selectedCard: get(value, 'target.value'),
@@ -103,8 +99,8 @@ class CardForm extends Component {
                             paymentOptionsCards={paymentOptionsCards}
                             selectedCard={selectedCard}
                             btnText={this.props.btnText}
-                            handleSubmitExistingCard={
-                                this.submitExistingCardPayment
+                            handleSubmitExistingCard={() =>
+                                this.props.handleSubmit(selectedCard)
                             }
                             handleSubmitNewCard={this.handleCreateStripeToken}
                             onChangeCardSelect={this.onChangeCardSelect}

@@ -14,7 +14,7 @@ const StyledForm = styled(AntdForm)`
     }
 
     .ant-form-item-label {
-        margin-bottom: 0;
+        margin-bottom: 10px;
         line-height: 22px;
     }
 

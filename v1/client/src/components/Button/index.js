@@ -46,7 +46,12 @@ const StyledButton = styled(AntdButton)`
         ${zIndex};
     }
 
-    &.ant-btn-primary, &.ant-btn-submit {
+    &.ant-btn-primary,
+    &.ant-btn-submit,
+    &.ant-btn-primary:hover,
+    &.ant-btn-submit:hover,
+    &.ant-btn-primary:focus,
+    &.ant-btn-submit:focus {
         border: solid 1px #f2f2f2;
         color: ${props => props.theme.colors.text.white};
         background-color: ${props => props.theme.colors.button.green};
@@ -75,7 +80,7 @@ const StyledButton = styled(AntdButton)`
             color: ${props =>
                 props.inverted
                     ? props.theme.colors.text.green
-                    : props.theme.colors.text.white}; 
+                    : props.theme.colors.text.white};
         }
         padding: 0;
         border: none;
@@ -113,8 +118,8 @@ const StyledButton = styled(AntdButton)`
     }
 
     &&.ant-btn-background-ghost {
-        color: ${props => props.theme.colors.text.green}; 
-        border-color: ${props => props.theme.colors.text.green}; 
+        color: ${props => props.theme.colors.text.green};
+        border-color: ${props => props.theme.colors.text.green};
     }
 
     && span {

@@ -1,33 +1,62 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
+import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
+import { compose, graphql, withApollo } from 'react-apollo';
+import { getUserQuery } from './queries';
 import SelectAppointmentView from './view';
-
-// FOR UI DEMO
-const list = ['3:00PM', '4:00PM', '5:00PM', '8:00PM'];
 
 class SelectAppointmentContainer extends PureComponent {
     constructor(props) {
         super(props);
 
         this.state = {
-            selected: null,
+            selected: {},
         };
     }
 
     handleSelect = event => {
-        const { key } = event.currentTarget.dataset;
+        if (get(this, 'props.data.activeUser') === null) {
+            const writeData = get(this, 'props.client.writeData');
 
-        this.setState({ selected: list[key] });
+            if (writeData) {
+                writeData({
+                    data: { visibleModal: 'login' },
+                });
+                return null;
+            }
+        }
+
+        const { key } = event.currentTarget.dataset;
+        const selected = get(this, `props.appointments[${key}]`);
+
+        this.setState({ selected });
+
+        if (this.props.onSelect) {
+            this.props.onSelect(selected);
+        }
     };
 
     render() {
+        const { appointments, selected } = this.props;
+
         return (
             <SelectAppointmentView
-                list={list}
-                selected={this.state.selected}
+                appointments={appointments}
                 onSelect={this.handleSelect}
+                selected={isEmpty(selected) ? this.state.selected : selected}
             />
         );
     }
 }
 
-export default SelectAppointmentContainer;
+SelectAppointmentContainer.propTypes = {
+    appointments: PropTypes.array,
+    onSelect: PropTypes.func,
+    selected: PropTypes.string,
+};
+
+export default compose(
+    withApollo,
+    graphql(getUserQuery)
+)(SelectAppointmentContainer);

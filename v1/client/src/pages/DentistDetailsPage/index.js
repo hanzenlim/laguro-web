@@ -5,7 +5,7 @@ class DentistDeatilsPageContainer extends PureComponent {
     render() {
         const { id } = this.props.match.params;
 
-        return <DentistDetailsPageView dentistId={id} />;
+        return <DentistDetailsPageView id={id} />;
     }
 }
 

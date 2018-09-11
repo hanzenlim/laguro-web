@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
@@ -8,58 +8,67 @@ const StyledContainer = styled(Box)`
     display: grid;
     grid-column-gap: 10px;
     grid-row-gap: 10px;
-    grid-template-columns: auto auto auto;
+    grid-template-columns: 1fr 1fr 1fr;
 `;
 
-const SelectAppointment = props => {
-    const { selected, list, onSelect } = props;
+const SelectAppointmentView = props => {
+    const { appointments, selected, onSelect } = props;
 
     return (
-        <StyledContainer mb={40}>
-            {list.map((item, i) => (
-                <Button key={i} type="ghost" onClick={onSelect} data-key={i}>
-                    <Flex
-                        alignItems="center"
-                        justifyContent="center"
-                        width="144px"
-                        height="50px"
-                        borderRadius="2px"
-                        border="1px solid"
-                        borderColor="divider.green"
-                        bg={
-                            selected === item
-                                ? 'background.green'
-                                : 'background.white'
-                        }
-                    >
-                        <Text
-                            fontSize={3}
-                            letterSpacing="-0.4px"
-                            color={
-                                selected === item
-                                    ? 'background.white'
-                                    : 'background.green'
-                            }
+        <Fragment>
+            {appointments.length ? (
+                <StyledContainer mt={20}>
+                    {appointments.map((item, i) => (
+                        <Button
+                            key={i}
+                            data-key={i}
+                            type="ghost"
+                            onClick={onSelect}
                         >
-                            {item}
-                        </Text>
-                    </Flex>
-                </Button>
-            ))}
-        </StyledContainer>
+                            <Flex
+                                alignItems="center"
+                                justifyContent="center"
+                                width="144px"
+                                height="50px"
+                                borderRadius="2px"
+                                border="1px solid"
+                                borderColor="divider.green"
+                                bg={
+                                    selected.key === item.key
+                                        ? 'background.green'
+                                        : 'background.white'
+                                }
+                            >
+                                <Text
+                                    fontSize={3}
+                                    letterSpacing="-0.4px"
+                                    color={
+                                        selected.key === item.key
+                                            ? 'background.white'
+                                            : 'background.green'
+                                    }
+                                >
+                                    {item.key}
+                                </Text>
+                            </Flex>
+                        </Button>
+                    ))}
+                </StyledContainer>
+            ) : null}
+        </Fragment>
     );
 };
 
-SelectAppointment.propTypes = {
+SelectAppointmentView.propTypes = {
+    appointments: PropTypes.array,
     selected: PropTypes.string,
-    list: PropTypes.array,
     onSelect: PropTypes.func,
 };
 
-SelectAppointment.defaultProps = {
+SelectAppointmentView.defaultProps = {
+    appointments: [],
     selected: null,
-    list: [],
     onSelect: () => {},
 };
 
-export default SelectAppointment;
+export default SelectAppointmentView;

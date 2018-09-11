@@ -1,66 +1,104 @@
-import React from 'react';
-import { Box, Text, Flex } from '../../../components';
-import FindAppointmentForm from '../Forms/FindAppointmentForm';
-import SelectAppointment from '../SelectAppointment';
+import React, { PureComponent } from 'react';
+import get from 'lodash/get';
+import moment from 'moment';
+import { compose, Query, graphql, withApollo } from 'react-apollo';
+import {
+    getDentistQuery,
+    getUserQuery,
+    createAppointmentMutation,
+} from './queries';
 
-const BookAppointment = () => (
-    <Box width="513px">
-        <Box
-            boxShadow="1px 1px 7px 0 rgba(0, 0, 0, 0.15)"
-            border="1px solid"
-            borderColor="#dbdbdb"
-            pt={16}
-            pr={32}
-            pl={32}
-            pb={32}
-        >
-            <Text
-                mb={20}
-                lineHeight="30px"
-                fontWeight="bold"
-                color="text.black"
-                fontSize={4}
-            >
-                Make an appointment
-            </Text>
-            <FindAppointmentForm />
-            <SelectAppointment />
-            <Text
-                mb={16}
-                lineHeight="30px"
-                fontWeight="bold"
-                color="text.black"
-                fontSize={4}
-            >
-                Payment Summary
-            </Text>
-            <Text mb={40} fontSize={1} letterSpacing="0.4px" color="text.black">
-                * This is just a reservation fee. You will be refunded after
-                your appointment.
-            </Text>
-            <Flex mb={10} justifyContent="space-between">
-                <Text fontSize={1} color="text.black">
-                    Service fee
-                </Text>
-                <Text fontSize={1} color="text.black">
-                    $20.00
-                </Text>
-            </Flex>
-            <Box
-                borderBottom="1px solid"
-                borderColor="divider.darkGray"
-                mb={10}
-            />
-            <Flex justifyContent="space-between">
-                <Text fontSize={3} color="text.green">
-                    Total
-                </Text>
-                <Text fontSize={3} color="text.green">
-                    $20.00
-                </Text>
-            </Flex>
-        </Box>
-    </Box>
-);
+import BookAppointmentView from './view';
+import { Loading } from '../../../components';
 
-export default BookAppointment;
+class BookAppointment extends PureComponent {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            reservationId: null,
+            patientId: null,
+            location: null,
+            procedure: null,
+            startTime: null,
+            endTime: null,
+            isPaymentVisible: false,
+            bookedAppointment: null,
+        };
+    }
+
+    handleFilter = () => {
+        this.setState({ isPaymentVisible: false });
+    };
+
+    handleSelect = async data => {
+        this.setState({
+            reservationId: data.reservationId,
+            patientId: this.props.data.activeUser.id,
+            location: data.location,
+            procedure: data.procedure,
+            startTime: data.startTime,
+            endTime: data.endTime,
+            isPaymentVisible: true,
+        });
+    };
+
+    handlePaymentSuccess = async paymentOptionId => {
+        const result = await this.props.mutate({
+            variables: {
+                input: {
+                    reservationId: this.state.reservationId,
+                    patientId: this.props.data.activeUser.id,
+                    procedure: this.state.procedure,
+                    startTime: this.state.startTime,
+                    endTime: this.state.endTime,
+                    paymentOptionId,
+                },
+            },
+        });
+
+        this.setState({
+            bookedAppointment: {
+                location: this.state.location,
+                time: moment(this.state.startTime).format('LLLL'),
+            },
+        });
+
+        return result;
+    };
+
+    render() {
+        const { id } = this.props;
+
+        return (
+            <Query query={getDentistQuery} variables={{ id }}>
+                {({ loading, error, data }) => {
+                    if (loading) {
+                        return <Loading />;
+                    }
+
+                    if (error) {
+                        return <div>Error</div>;
+                    }
+
+                    return (
+                        <BookAppointmentView
+                            data={get(data, 'getDentist.reservations')}
+                            onFilter={this.handleFilter}
+                            isPaymentVisible={this.state.isPaymentVisible}
+                            onPaymentSuccess={this.handlePaymentSuccess}
+                            onSelect={this.handleSelect}
+                            bookedAppointment={this.state.bookedAppointment}
+                        />
+                    );
+                }}
+            </Query>
+        );
+    }
+}
+
+export default compose(
+    withApollo,
+    graphql(getUserQuery),
+    graphql(createAppointmentMutation)
+)(BookAppointment);

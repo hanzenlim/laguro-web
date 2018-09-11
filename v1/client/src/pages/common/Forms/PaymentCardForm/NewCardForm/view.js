@@ -54,7 +54,13 @@ const NewCardFormView = ({ btnText, handleSubmit }) => (
             ]}
             input={<Input type="string" />}
         />
-        <SubmitButton width={'100%'} px={24} buttonText={btnText} />
+        <SubmitButton
+            width="100%"
+            height={60}
+            px={24}
+            mt={28}
+            buttonText={btnText}
+        />
     </Form>
 );
 

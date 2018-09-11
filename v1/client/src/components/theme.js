@@ -75,6 +75,7 @@ export default {
         footer: 500,
         inputElement: 200,
     },
+    shadows: ['1px 1px 7px 0 rgba(0, 0, 0, 0.15)'],
     breakpoints: ['1200px', '320px'],
     space: n => `${n}px`,
     maxContainerWidth: `${numMaxContainerWidth}px`,

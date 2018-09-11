@@ -30,9 +30,13 @@ class Payment extends PureComponent {
         }
     }
 
-    submitPayment(cardId) {
+    submitPayment = cardId => {
         alert(`API call to payment with this card ${cardId}`);
-    }
+
+        if (this.props.onSuccess) {
+            this.props.onSuccess(cardId);
+        }
+    };
 
     render() {
         return (
