@@ -77,6 +77,9 @@ export const APPOINTMENT_BOOKED = 'Appointment booked';
 export const PROCEDURES_ASSIGNED = 'Procedures assigned';
 export const CANCELLED = 'CANCELLED';
 
+// Filestack container
+export const USER_PHOTOS_CONTAINER = 'user-photos';
+
 // Apollo TypeNames
 export const ACTIVE_USER = 'ActiveUser';
 

@@ -26,6 +26,8 @@ import Checkbox from './Checkbox';
 import Counter from './Counter';
 import RangePicker from './RangePicker';
 import SlickCarousel from './SlickCarousel';
+import Alert from './Alert';
+import MaskedInput from './MaskedInput';
 
 export {
     Box,
@@ -56,4 +58,6 @@ export {
     Counter,
     RangePicker,
     SlickCarousel,
+    Alert,
+    MaskedInput,
 };
