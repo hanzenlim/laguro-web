@@ -9,6 +9,7 @@ export const OFFICE = 'OFFICE';
 export const OFFICES = 'offices';
 export const LISTING = 'listing';
 export const LISTINGS = 'listings';
+export const LOCATION = 'LOCATION';
 export const RESERVATION = 'reservation';
 export const RESERVATIONS = 'reservations';
 export const PROCEDURE = 'procedure';

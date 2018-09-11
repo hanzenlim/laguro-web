@@ -29,6 +29,7 @@ const SearchBox = props => {
                     initialValue={initialLocationFilterValue}
                     onLocationChange={onLocationFilterChange}
                     width={size === 'large' ? 710 : 420}
+                    withDentists={true}
                 />
             </Box>
             <Box mr={10}>

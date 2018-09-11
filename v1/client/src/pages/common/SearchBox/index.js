@@ -33,28 +33,21 @@ class SearchBox extends PureComponent {
 
     handleSubmit = () => {
         const { date, location } = this.state;
-        const defaultLocation = {
-            name: 'San Francisco, California, United States',
-            lat: 37.7648,
-            long: -123.463,
-        };
-
-        const locationName = location ? location.name : defaultLocation.name;
-        const locationLat = location ? location.lat : defaultLocation.lat;
-        const locationLong = location ? location.long : defaultLocation.long;
-        const startTime = date
-            ? moment(date).startOf('day')
-            : moment().startOf('day');
-        const endTime = date
-            ? moment(date).endOf('day')
-            : moment().endOf('day');
 
         const urlParams = {};
-        urlParams.startTime = startTime.format();
-        urlParams.endTime = endTime.format();
-        urlParams.location = locationName;
-        urlParams.lat = locationLat;
-        urlParams.long = locationLong;
+        if (location) {
+            urlParams.location = location.name;
+            urlParams.lat = location.lat;
+            urlParams.long = location.long;
+        }
+
+        if (date) {
+            const startTime = moment(date).startOf('day');
+            const endTime = moment(date).endOf('day');
+
+            urlParams.startTime = startTime.format();
+            urlParams.endTime = endTime.format();
+        }
 
         history.push(`/dentist/search?${queryString.stringify(urlParams)}`);
     };
