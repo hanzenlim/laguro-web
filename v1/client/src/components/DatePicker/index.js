@@ -85,7 +85,7 @@ class DatePicker extends PureComponent {
         super(props);
 
         this.state = {
-            dateString: '',
+            dateString: props.initialValue || '',
             open: false,
         };
     }

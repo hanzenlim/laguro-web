@@ -89,7 +89,7 @@ class LocationFilter extends PureComponent {
         super(props);
 
         this.state = {
-            queryString: '',
+            queryString: props.initialValue || '',
             queryResults: [],
         };
     }

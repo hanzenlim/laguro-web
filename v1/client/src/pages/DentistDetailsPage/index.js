@@ -37,6 +37,8 @@ class DentistDeatilsPageContainer extends PureComponent {
                         rating: 4,
                         reviewsCount: 84,
                         address: dentist.location.name,
+                        latitude: 0,
+                        longitude: 0,
                     };
 
                     return <DentistDetailsPageView data={mappedData} />;

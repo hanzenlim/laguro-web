@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
+import get from 'lodash/get';
 import ReactMapGL, { Marker, NavigationControl } from 'react-map-gl';
 import styled from 'styled-components';
-import fetch from 'unfetch';
 import 'mapbox-gl/dist/mapbox-gl.css';
 // import { mapBoxApiKey } from '../../../config/keys';
 
@@ -25,19 +25,18 @@ const mapBoxApiKey =
 
 const MAP_STYLE = 'mapbox://styles/mapbox/streets-v9';
 
-class Map extends Component {
+class Map extends PureComponent {
     constructor(props) {
         super(props);
 
         this.state = {
-            markerData: [],
             popupInfo: null,
             viewport: {
                 width: 0,
                 height: 0,
-                latitude: 37.7577,
-                longitude: -122.4376,
-                zoom: this.props.zoom || 8,
+                latitude: get(props, 'data[0].latitude') || 0,
+                longitude: get(props, 'data[0].longitude') || 0,
+                zoom: props.zoom,
             },
         };
     }
@@ -61,72 +60,6 @@ class Map extends Component {
         });
     };
 
-    // NOTE: THIS METHOD WILL BE REMOVED ONCE WE SAVE LOCATION COORDINATES TO DB
-    geocodeLocationList = () => {
-        if (!this.props.data) return null;
-
-        this.props.data.map(query => {
-            fetch(
-                `https://api.mapbox.com/geocoding/v5/mapbox.places/${
-                    query.address
-                }.json?country=us&types=address%2Cplace&access_token=${mapBoxApiKey}`
-            )
-                .then(response => response.json())
-                .then(responseData => {
-                    if (!responseData.features.length) return null;
-
-                    const [
-                        longitude,
-                        latitude,
-                    ] = responseData.features[0].center;
-
-                    const newMarker = {
-                        latitude,
-                        longitude,
-                        ...query,
-                    };
-
-                    const markerData = [...this.state.markerData, newMarker];
-
-                    this.setState({
-                        markerData,
-                        viewport: {
-                            ...this.state.viewport,
-                            latitude,
-                            longitude,
-                        },
-                    });
-
-                    return null;
-                });
-
-            return null;
-        });
-
-        return null;
-    };
-
-    renderPopup = () => {
-        const activeListing = this.state.markerData.filter(
-            item => item.id + item.location === this.props.activeListingId
-        )[0];
-
-        const popupInfo = this.state.popupInfo || activeListing;
-
-        return (
-            popupInfo && (
-                <MapInfoWindow
-                    title={popupInfo.title}
-                    subtitle={popupInfo.subtitle}
-                    body={popupInfo.address}
-                    onClose={this.hidePopup}
-                    longitude={popupInfo.longitude}
-                    latitude={popupInfo.latitude}
-                />
-            )
-        );
-    };
-
     updateViewport = viewport => {
         this.setState({ viewport });
     };
@@ -142,37 +75,9 @@ class Map extends Component {
         this.setState({ popupInfo: null });
     };
 
-    renderMapMarker = () =>
-        this.state.markerData.map((marker, index) => {
-            const { longitude, latitude } = marker;
-
-            return (
-                <StyledMarkerContainer
-                    key={index}
-                    latitude={latitude}
-                    longitude={longitude}
-                >
-                    <Box
-                        height="50px"
-                        width="50px"
-                        top="-40px"
-                        left="-40px"
-                        bg="transparent"
-                        position="absolute"
-                        zIndex="1000"
-                        data-marker={JSON.stringify(marker)}
-                        onClick={this.showPopup}
-                    />
-                    <Icon
-                        type="locationPinWithBackground"
-                        width="50px"
-                        height="50px"
-                    />
-                </StyledMarkerContainer>
-            );
-        });
-
     render() {
+        const { data } = this.props;
+
         return (
             <ReactMapGL
                 {...this.state.viewport}
@@ -180,14 +85,45 @@ class Map extends Component {
                 mapStyle={MAP_STYLE}
                 mapboxApiAccessToken={mapBoxApiKey}
                 onViewportChange={this.updateViewport}
-                onLoad={this.geocodeLocationList}
                 style={{
                     top: '0',
                     bottom: '0',
                 }}
             >
-                {this.renderPopup()}
-                {this.renderMapMarker()}
+                {this.state.popupInfo && (
+                    <MapInfoWindow
+                        title={this.state.popupInfo.title}
+                        subtitle={this.state.popupInfo.subtitle}
+                        body={this.state.popupInfo.address}
+                        onClose={this.hidePopup}
+                        longitude={this.state.popupInfo.longitude}
+                        latitude={this.state.popupInfo.latitude}
+                    />
+                )}
+                {data.map((marker, index) => (
+                    <StyledMarkerContainer
+                        key={index}
+                        latitude={marker.latitude}
+                        longitude={marker.longitude}
+                    >
+                        <Box
+                            height="50px"
+                            width="50px"
+                            top="-40px"
+                            left="-40px"
+                            bg="transparent"
+                            position="absolute"
+                            zIndex="1000"
+                            data-marker={JSON.stringify(marker)}
+                            onClick={this.showPopup}
+                        />
+                        <Icon
+                            type="locationPinWithBackground"
+                            width="50px"
+                            height="50px"
+                        />
+                    </StyledMarkerContainer>
+                ))}
                 <StyledNavigationControl
                     onViewportChange={this.updateViewport}
                 />
@@ -195,4 +131,10 @@ class Map extends Component {
         );
     }
 }
+
+Map.defaultProps = {
+    data: [],
+    zoom: 8,
+};
+
 export default Map;

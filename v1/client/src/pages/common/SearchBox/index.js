@@ -13,6 +13,14 @@ class SearchBox extends PureComponent {
             location: '',
             date: '',
         };
+
+        this.urlParams = queryString.parse(history.location.search);
+
+        if (this.urlParams.startTime) {
+            this.urlParams.startTime = moment(this.urlParams.startTime).format(
+                'ddd MM/DD'
+            );
+        }
     }
 
     handleLocationFilterChange = location => {
@@ -54,6 +62,8 @@ class SearchBox extends PureComponent {
     render() {
         return (
             <SearchBoxView
+                initialLocationFilterValue={this.urlParams.location}
+                initialDateFilterValue={this.urlParams.startTime}
                 onLocationFilterChange={this.handleLocationFilterChange}
                 onDateFilterChange={this.handleDateFilterChange}
                 onSubmit={this.handleSubmit}

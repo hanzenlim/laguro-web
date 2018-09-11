@@ -138,7 +138,12 @@ const DentistDetailsPageView = props => {
                                 height={440}
                                 width={732}
                                 zoom={13}
-                                data={[{ address: data.address }]}
+                                data={[
+                                    {
+                                        latitude: data.latitude,
+                                        longitude: data.longitude,
+                                    },
+                                ]}
                             />
                         </Box>
                         <ReviewContainer type={DENTIST} />

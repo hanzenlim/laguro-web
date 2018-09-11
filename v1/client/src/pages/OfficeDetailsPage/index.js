@@ -35,6 +35,8 @@ class OfficeDeatilsPageContainer extends PureComponent {
                         rating: 4,
                         reviewsCount: 84,
                         address: office.location,
+                        latitude: 0,
+                        longitude: 0,
                     };
 
                     return <OfficeDetailsPageView data={mappedData} />;

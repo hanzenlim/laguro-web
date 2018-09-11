@@ -1,12 +1,12 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { Container } from '../../components';
+import { Container, Box } from '../../components';
 
 import SearchResultsList from '../common/SearchResultsList';
 import Map from '../common/Map';
 
-const StyledContainer = styled.div`
+const StyledContainer = styled(Box)`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -17,12 +17,12 @@ const StyledContainer = styled.div`
 `;
 
 const OfficeSearchPageView = props => {
-    const { data } = props;
+    const { data, total } = props;
 
     return (
         <Container>
-            <StyledContainer>
-                <SearchResultsList data={data} />
+            <StyledContainer mt={40}>
+                <SearchResultsList data={data} total={total} />
                 <Map data={data} />
             </StyledContainer>
         </Container>

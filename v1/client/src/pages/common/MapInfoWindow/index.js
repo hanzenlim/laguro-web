@@ -29,6 +29,8 @@ const MapInfoWindow = props => {
                     src="http://via.placeholder.com/60x60"
                     alt="dentist/office image"
                     borderRadius="50%"
+                    height={60}
+                    width={60}
                 />
                 <Box width="160px" ml={5}>
                     <Text

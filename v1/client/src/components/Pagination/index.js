@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Pagination as AntdPagination } from 'antd';
 import styled from 'styled-components';
 
@@ -55,6 +56,31 @@ const StyledPagination = styled(AntdPagination)`
     }
 `;
 
-const Pagination = () => <StyledPagination defaultCurrent={1} total={50} />;
+const Pagination = props => {
+    const { onChange, total, defaultCurrent, current } = props;
+
+    return (
+        <StyledPagination
+            current={current}
+            defaultCurrent={defaultCurrent}
+            total={total}
+            onChange={onChange}
+        />
+    );
+};
+
+Pagination.defaultProps = {
+    onChange: () => {},
+    total: 100,
+    current: 1,
+    defaultCurrent: 1,
+};
+
+Pagination.propTypes = {
+    onChange: PropTypes.func,
+    total: PropTypes.number,
+    current: PropTypes.number,
+    defaultCurrent: PropTypes.number,
+};
 
 export default Pagination;

@@ -2,7 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 import LinkCard from '../LinkCard';
-import { Pagination, Flex, Text, Box } from '../../../components';
+import SearchPagination from '../SearchPagination';
+import { Flex, Text, Box } from '../../../components';
 
 const StyledSearchResultsContainer = styled(Flex)`
     width: 100%;
@@ -18,29 +19,37 @@ const StyledSearchResultsContainer = styled(Flex)`
 `;
 
 const SearchResultsList = props => {
-    const { data } = props;
+    const { data, total } = props;
 
     return (
         <Flex width={['100%', '623px']} flexDirection="column">
-            <Text
-                fontSize={5}
-                color="text.black"
-                mb={10}
-                lineHeight="40px"
-                letterSpacing="-0.8px"
-            >
-                find our highlights
-            </Text>
+            {data.length ? (
+                <Text
+                    fontSize={5}
+                    color="text.black"
+                    mb={10}
+                    lineHeight="40px"
+                    letterSpacing="-0.8px"
+                >
+                    find our highlights
+                </Text>
+            ) : (
+                <Text fontSize={4} color="text.black">
+                    Unrecognized location, please check and re-enter. Start a
+                    new search or see below some tips.
+                </Text>
+            )}
             <StyledSearchResultsContainer>
-                {data &&
-                    data.map(item => (
-                        <Box width="186px" mr="32px" mb="22px">
-                            <LinkCard {...item} />
-                        </Box>
-                    ))}
+                {data.length
+                    ? data.map(item => (
+                          <Box key={item.url} width="186px" mr="32px" mb="22px">
+                              <LinkCard {...item} />
+                          </Box>
+                      ))
+                    : null}
             </StyledSearchResultsContainer>
             <Flex justifyContent="flex-end">
-                <Pagination />
+                {total ? <SearchPagination total={total} /> : null}
             </Flex>
         </Flex>
     );

@@ -14,6 +14,8 @@ const StyledButton = styled(Button)`
 
 const SearchBox = props => {
     const {
+        initialLocationFilterValue,
+        initialDateFilterValue,
         onLocationFilterChange,
         onDateFilterChange,
         onSubmit,
@@ -21,15 +23,17 @@ const SearchBox = props => {
     } = props;
 
     return (
-        <Flex width={1} justifyContent="center">
+        <Flex justifyContent="center">
             <Box mr={10}>
                 <LocationFilter
+                    initialValue={initialLocationFilterValue}
                     onLocationChange={onLocationFilterChange}
                     width={size === 'large' ? 710 : 420}
                 />
             </Box>
             <Box mr={10}>
                 <DatePicker
+                    initialValue={initialDateFilterValue}
                     onDateChange={onDateFilterChange}
                     width={size === 'large' ? 350 : 175}
                 />
