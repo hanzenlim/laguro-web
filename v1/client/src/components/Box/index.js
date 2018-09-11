@@ -1,3 +1,4 @@
+import React from 'react';
 import system from 'system-components';
 import styled from 'styled-components';
 
@@ -53,7 +54,6 @@ const Box = system(
 const StyledBox = styled(Box)`
     ${props => props.transform && `transform: ${props.transform}`};
 `;
-
 StyledBox.displayName = 'Box';
 
 export default StyledBox;

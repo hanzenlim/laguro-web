@@ -1,3 +1,5 @@
+export const numMaxContainerWidth = 1280;
+
 export default {
     colors: {
         text: {
@@ -74,5 +76,5 @@ export default {
     },
     breakpoints: ['1200px', '320px'],
     space: n => `${n}px`,
-    maxContainerWidth: '1280px',
+    maxContainerWidth: `${numMaxContainerWidth}px`,
 };

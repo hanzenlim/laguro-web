@@ -25,7 +25,7 @@ import UpArrow from './UpArrow';
 import DownArrow from './DownArrow';
 
 const Icon = props => {
-    const { type } = props;
+    const { type, ...rest } = props;
 
     let ReturnIcon;
     switch (type) {
@@ -74,7 +74,7 @@ const Icon = props => {
 
     return (
         <StyledIconContainer>
-            <StyledIcon {...props} />{' '}
+            <StyledIcon {...rest} />{' '}
         </StyledIconContainer>
     );
 };
