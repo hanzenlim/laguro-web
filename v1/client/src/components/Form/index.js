@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Form as AntdForm } from 'antd';
 import styled from 'styled-components';
-import { space, textAlign } from 'styled-system';
+import { space, textAlign, height } from 'styled-system';
 import { Button } from '../../components';
 
 const StyledForm = styled(AntdForm)`
@@ -52,9 +52,10 @@ class Form extends Component {
                 hideRequiredMark={true}
             >
                 {/* add form prop to each child element */}
-                {React.Children.map(children, child =>
-                    React.cloneElement(child, { form })
-                )}
+                {React.Children.map(children, child => {
+                    if (!child) return null;
+                    return React.cloneElement(child, { form });
+                })}
             </StyledForm>
         );
     }
@@ -80,10 +81,13 @@ const StyledFormInput = styled(AntFormItem)`
         font-family: 'Ubuntu', sans-serif;
         ${space};
     }
+    && .ant-input {
+        ${height};
+    }
 `;
 
 // eslint-disable-next-line
-const SubmitButton = ({ form, buttonText, textAlign, ...rest }) => {
+const SubmitButton = ({ form, buttonText, textAlign, height, ...rest }) => {
     const { getFieldsError } = form;
     const hasErrors = fieldsError =>
         Object.keys(fieldsError).some(field => fieldsError[field]);
@@ -109,6 +113,7 @@ const FormItem = ({
     input,
     validateTrigger = 'onChange',
     initialValue,
+    valuePropName = 'value',
     ...rest
 }) => {
     const { getFieldDecorator, getFieldError, isFieldValidating } = form;
@@ -127,6 +132,7 @@ const FormItem = ({
                 rules,
                 validateTrigger,
                 initialValue,
+                valuePropName,
             })(input)}
         </StyledFormInput>
     );

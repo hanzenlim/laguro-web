@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import { Checkbox as AntdCheckbox } from 'antd';
 import styled from 'styled-components';
 
@@ -27,10 +27,11 @@ const StyledCheckbox = styled(AntdCheckbox)`
     }
 `;
 
-const Checkbox = props => {
-    const { ...rest } = props;
-
-    return <StyledCheckbox {...rest} />;
-};
+class Checkbox extends PureComponent {
+    render() {
+        const { ...rest } = this.props;
+        return <StyledCheckbox {...rest} />;
+    }
+}
 
 export default Checkbox;

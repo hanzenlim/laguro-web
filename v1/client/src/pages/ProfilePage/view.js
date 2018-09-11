@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+
 import { Box, Container, Text } from '../../components/';
+import UpdateProfileForm from '../../pages/common/Forms/UpdateProfileForm';
 import Menu from '../common/Menu';
 import { DENTIST, HOST, PATIENT } from '../../util/strings';
 
@@ -23,11 +25,7 @@ class ProfileView extends Component {
     renderPanel = key => {
         switch (key) {
             case 'user-info':
-                return (
-                    <Text fontSize={4} color="inherit" lineHeight="40px">
-                        user info
-                    </Text>
-                );
+                return <UpdateProfileForm />;
             case 'documents':
                 return (
                     <Text fontSize={4} color="inherit" lineHeight="40px">
