@@ -17,11 +17,3 @@ export const getOfficeQuery = gql`
         }
     }
 `;
-
-export const getOfficeImageQuery = gql`
-    query($id: String!) {
-        getOffice(id: $id) {
-            imageUrls
-        }
-    }
-`;

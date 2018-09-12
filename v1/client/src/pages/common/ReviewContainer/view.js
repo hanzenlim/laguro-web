@@ -1,11 +1,17 @@
 import React from 'react';
-import { arrayOf, shape, string, number, func } from 'prop-types';
+import { arrayOf, shape, string, number, func, bool } from 'prop-types';
 import moment from 'moment';
 
 import { Box, Flex, Image, Text, Rating, Truncate } from '../../../components';
 
 const ReviewContianer = props => {
-    const { reviews, totalRating, reviewsCount, toggleModalState } = props;
+    const {
+        reviews,
+        totalRating,
+        reviewsCount,
+        toggleModalState,
+        viewOnly,
+    } = props;
 
     const renderReviewsStats = (
         <Flex alignItems="center" justifyContent="space-between" pt={40}>
@@ -19,17 +25,19 @@ const ReviewContianer = props => {
                     fontSize={5}
                 >{`${reviewsCount} Review${reviewsCount > 1 ? 's' : ''}`}</Text>
             </Flex>
-            <Text
-                is="a"
-                color="text.green"
-                fontSize={1}
-                fontWeight="bold"
-                lineHeight="22px"
-                alignSelf="flex-end"
-                onClick={toggleModalState}
-            >
-                add review
-            </Text>
+            {!viewOnly && (
+                <Text
+                    is="a"
+                    color="text.green"
+                    fontSize={1}
+                    fontWeight="bold"
+                    lineHeight="22px"
+                    alignSelf="flex-end"
+                    onClick={toggleModalState}
+                >
+                    add review
+                </Text>
+            )}
         </Flex>
     );
 
@@ -107,11 +115,13 @@ ReviewContianer.propTypes = {
     totalRating: number,
     reviewsCount: number,
     toggleModalState: func,
+    viewOnly: bool,
 };
 
 ReviewContianer.defaultProps = {
     totalRating: 0,
     reviewsCount: 0,
+    viewOnly: false,
 };
 
 export default ReviewContianer;

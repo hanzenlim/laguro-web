@@ -53,6 +53,14 @@ export const AVAILABLE = 'available';
 export const CHARGED = 'CHARGED';
 export const REFUNDED = 'REFUNDED';
 
+// Profile page
+export const MY_DOCUMENTS = 'my_documents';
+export const MY_PROFILE = 'my_profile';
+export const MY_APPOINTMENTS = 'my_appointments';
+export const PAYMENTS = 'payments';
+export const BALANCE = 'balance';
+export const PUBLIC_PROFILE = 'public_profile';
+
 // Payment method
 export const NEW_CARD_PAYMENT_METHOD = 'NEW_CARD_PAYMENT_METHOD';
 

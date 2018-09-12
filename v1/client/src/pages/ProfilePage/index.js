@@ -4,15 +4,15 @@ import { isEmpty, get } from 'lodash';
 
 import ProfileView from './view';
 import { Loading } from '../../components';
-import { getUserQuery, getUserQueryClient } from './queries';
+import { getUserQuery, getIdQueryClient } from './queries';
 import { DENTIST, HOST, PATIENT } from '../../util/strings';
 
 const ProfileContainer = () => (
-    <Query query={getUserQueryClient}>
+    <Query query={getIdQueryClient}>
         {({
             loading: loadingUserQueryClient,
             error: errorUserQueryClient,
-            data,
+            data: dataIdQueryClient,
         }) => {
             if (loadingUserQueryClient) {
                 return <Loading />;
@@ -21,10 +21,7 @@ const ProfileContainer = () => (
             if (errorUserQueryClient) {
                 return <div>error...</div>;
             }
-            const dentistId = get(data, 'activeUser.dentistId');
-            const id = get(data, 'activeUser.id');
-            const { visibleModal } = data;
-            let persona = dentistId ? DENTIST : PATIENT;
+            const id = get(dataIdQueryClient, 'activeUser.id');
             return (
                 <Query query={getUserQuery} variables={{ id }}>
                     {({
@@ -40,19 +37,30 @@ const ProfileContainer = () => (
                             return <div>error...</div>;
                         }
 
+                        const dentistId = get(
+                            dataUserQuery,
+                            'getUser.dentistId'
+                        );
                         const offices = get(
                             dataUserQuery,
                             'getUser.dentist.offices'
                         );
 
+                        let persona;
+
                         if (!isEmpty(offices)) {
                             persona = HOST;
+                        } else if (dentistId) {
+                            persona = DENTIST;
+                        } else {
+                            persona = PATIENT;
                         }
 
                         return (
                             <ProfileView
                                 persona={persona}
-                                visibleModal={visibleModal}
+                                dentistId={dentistId}
+                                offices={offices}
                             />
                         );
                     }}

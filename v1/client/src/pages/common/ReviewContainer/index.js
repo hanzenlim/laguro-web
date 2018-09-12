@@ -18,12 +18,7 @@ class ReviewContainer extends PureComponent {
         this.setState(({ isModalOpen }) => ({ isModalOpen: !isModalOpen }));
 
     render() {
-        const {
-            type,
-            match: {
-                params: { id },
-            },
-        } = this.props;
+        const { id, type } = this.props;
 
         const isDentist = type === DENTIST;
         const reviewsQuery = isDentist
@@ -59,12 +54,15 @@ class ReviewContainer extends PureComponent {
                             <ReviewList
                                 reviews={queryData.reviews}
                                 toggleModalState={this.toggleModalState}
+                                viewOnly={this.props.viewOnly}
                             />
-                            <NewReviewModal
-                                visible={this.state.isModalOpen}
-                                toggleModalState={this.toggleModalState}
-                                info={mappedData}
-                            />
+                            {!this.props.viewOnly && (
+                                <NewReviewModal
+                                    visible={this.state.isModalOpen}
+                                    toggleModalState={this.toggleModalState}
+                                    info={mappedData}
+                                />
+                            )}
                         </Fragment>
                     );
                 }}
@@ -78,6 +76,12 @@ ReviewContainer.propType = {
         params: shape({ id: string }),
     }).isRequired,
     type: string.isRequired,
+};
+
+ReviewContainer.defaultProps = {
+    id: '',
+    type: '',
+    viewOnly: false,
 };
 
 export default withRouter(ReviewContainer);
