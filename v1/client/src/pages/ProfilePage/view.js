@@ -4,7 +4,20 @@ import styled from 'styled-components';
 import { Box, Container, Text } from '../../components/';
 import UpdateProfileForm from '../../pages/common/Forms/UpdateProfileForm';
 import Menu from '../common/Menu';
-import { DENTIST, HOST, PATIENT } from '../../util/strings';
+import DentistDetails from '../common/DentistDetails';
+import OfficeDetails from '../common/OfficeDetails';
+import ReviewContainer from '../common/ReviewContainer';
+import {
+    DENTIST,
+    OFFICE,
+    HOST,
+    MY_DOCUMENTS,
+    MY_PROFILE,
+    MY_APPOINTMENTS,
+    PAYMENTS,
+    BALANCE,
+    PUBLIC_PROFILE,
+} from '../../util/strings';
 
 const Grid = styled(Box)`
     display: grid;
@@ -13,9 +26,9 @@ const Grid = styled(Box)`
 `;
 
 class ProfileView extends Component {
-    constructor() {
-        super();
-        this.state = { panel: this.renderPanel('user-info') };
+    constructor(props) {
+        super(props);
+        this.state = { panel: this.renderPanel(MY_PROFILE) };
     }
 
     handleClick = ({ key }) => {
@@ -23,64 +36,45 @@ class ProfileView extends Component {
     };
 
     renderPanel = key => {
+        const { persona, dentistId, offices } = this.props;
         switch (key) {
-            case 'user-info':
+            case MY_PROFILE:
                 return <UpdateProfileForm />;
-            case 'documents':
+            case MY_DOCUMENTS:
                 return (
                     <Text fontSize={4} color="inherit" lineHeight="40px">
-                        documents
+                        My documents
                     </Text>
                 );
-            case PATIENT:
+            case MY_APPOINTMENTS:
                 return (
                     <Text fontSize={4} color="inherit" lineHeight="40px">
-                        patient
+                        My appointments
                     </Text>
                 );
-            case DENTIST:
+            case PAYMENTS:
                 return (
                     <Text fontSize={4} color="inherit" lineHeight="40px">
-                        dentist
+                        Payment
                     </Text>
                 );
-            case HOST:
+            case BALANCE:
                 return (
                     <Text fontSize={4} color="inherit" lineHeight="40px">
-                        host
+                        Balance
                     </Text>
                 );
-            default:
-        }
-
-        return '';
-    };
-    renderPersonaMenu = () => {
-        const { persona } = this.props;
-        switch (persona) {
-            case DENTIST:
-                return (
-                    <Menu.Item key={DENTIST}>
-                        <Text fontSize={4} color="inherit" lineHeight="40px">
-                            dentist
-                        </Text>
-                    </Menu.Item>
-                );
-            case HOST:
-                return (
-                    <Menu.Item key={HOST}>
-                        <Text fontSize={4} color="inherit" lineHeight="40px">
-                            host
-                        </Text>
-                    </Menu.Item>
-                );
-            case PATIENT:
-                return (
-                    <Menu.Item key={PATIENT}>
-                        <Text fontSize={4} color="inherit" lineHeight="40px">
-                            patient
-                        </Text>
-                    </Menu.Item>
+            case PUBLIC_PROFILE:
+                return persona === DENTIST ? (
+                    <Box>
+                        <DentistDetails id={dentistId} viewOnly={true} />
+                        <ReviewContainer type={DENTIST} id={dentistId} />
+                    </Box>
+                ) : (
+                    <Box width="732px" mt={30} mr={34}>
+                        <OfficeDetails id={offices[0].id} viewOnly={true} />
+                        <ReviewContainer type={OFFICE} id={offices[0].id} />
+                    </Box>
                 );
             default:
         }
@@ -90,33 +84,74 @@ class ProfileView extends Component {
 
     render() {
         const { panel } = this.state;
+        const { persona } = this.props;
+
         return (
             <Container maxWidth="1050px">
                 <Grid mt={70}>
                     <Box>
                         <Menu
-                            defaultSelectedKeys={['user-info']}
+                            defaultSelectedKeys={[MY_PROFILE]}
                             onClick={this.handleClick}
                         >
-                            <Menu.Item key="user-info">
+                            <Menu.Item key={MY_PROFILE}>
                                 <Text
                                     fontSize={4}
                                     color="inherit"
                                     lineHeight="40px"
                                 >
-                                    user info
+                                    my profile
                                 </Text>
                             </Menu.Item>
-                            <Menu.Item key="documents">
+                            <Menu.Item key={MY_DOCUMENTS}>
                                 <Text
                                     fontSize={4}
                                     color="inherit"
                                     lineHeight="40px"
                                 >
-                                    documents
+                                    my documents
                                 </Text>
                             </Menu.Item>
-                            {this.renderPersonaMenu()}
+                            <Menu.Item key={MY_APPOINTMENTS}>
+                                <Text
+                                    fontSize={4}
+                                    color="inherit"
+                                    lineHeight="40px"
+                                >
+                                    my appointments
+                                </Text>
+                            </Menu.Item>
+                            <Menu.Item key={PAYMENTS}>
+                                <Text
+                                    fontSize={4}
+                                    color="inherit"
+                                    lineHeight="40px"
+                                >
+                                    payments
+                                </Text>
+                            </Menu.Item>
+                            {(persona === HOST || persona === DENTIST) && (
+                                <Menu.Item key={BALANCE}>
+                                    <Text
+                                        fontSize={4}
+                                        color="inherit"
+                                        lineHeight="40px"
+                                    >
+                                        balance
+                                    </Text>
+                                </Menu.Item>
+                            )}
+                            {(persona === HOST || persona === DENTIST) && (
+                                <Menu.Item key={PUBLIC_PROFILE}>
+                                    <Text
+                                        fontSize={4}
+                                        color="inherit"
+                                        lineHeight="40px"
+                                    >
+                                        public profile
+                                    </Text>
+                                </Menu.Item>
+                            )}
                         </Menu>
                     </Box>
                     {panel}

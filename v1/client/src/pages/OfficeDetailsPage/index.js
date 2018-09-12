@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
+import get from 'lodash/get';
 import { Query } from 'react-apollo';
-import { getOfficeQuery } from './queries';
+import { getOfficeImageQuery } from './queries';
 import OfficeDetailsPageView from './view';
 import { Loading } from '../../components';
 
@@ -9,7 +10,7 @@ class OfficeDeatilsPageContainer extends PureComponent {
         const { id } = this.props.match.params;
 
         return (
-            <Query query={getOfficeQuery} variables={{ id }}>
+            <Query query={getOfficeImageQuery} variables={{ id }}>
                 {({ loading, error, data }) => {
                     if (loading) {
                         return <Loading />;
@@ -18,28 +19,12 @@ class OfficeDeatilsPageContainer extends PureComponent {
                     if (error) {
                         return <div>Error</div>;
                     }
-
-                    const office = data.getOffice;
-
-                    const mappedData = {
-                        name: office.name,
-                        imageUrls: [
-                            'http://via.placeholder.com/186x186',
-                            'http://via.placeholder.com/1000x1000',
-                            'http://via.placeholder.com/500x500',
-                        ],
-                        // imageUrls: office.imageUrls,
-                        // description: office.description,
-                        description:
-                            'lorem ipsum blandit aptent phasellus viverra sollicitudin nostra netus fringilla, lobortis conubia eu auctor varius aliquam blandit faucibus donec, suspendisse nisl sapien turpis pretium diam arcu nostra, netus lectus faucibus rhoncus tellus ligula hendrerit vivamus. aenean hac ornare fermentum mi justo enim massa fames lorem ipsum blandit aptent phasellus viverra sollicitudin nostra netus fringilla, lobortis conubia eu auctor varius aliquam blandit faucibus donec, suspendisse nisl sapien turpis pretium diam arcu nostra, netus lectus faucibus rhoncus tellus ligula hendrerit vivamus. aenean hac ornare fermentum mi justo enim massa fames',
-                        rating: 4,
-                        reviewsCount: 84,
-                        address: office.location,
-                        latitude: 0,
-                        longitude: 0,
-                    };
-
-                    return <OfficeDetailsPageView data={mappedData} />;
+                    return (
+                        <OfficeDetailsPageView
+                            imageUrls={get(data, 'getOffice.imageUrls')}
+                            id={id}
+                        />
+                    );
                 }}
             </Query>
         );
