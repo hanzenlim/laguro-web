@@ -145,10 +145,21 @@ class NewListing extends Component {
                 });
             }
 
+            const availability = {
+                startTime: moment(values.startTime).format('HH:mm:ssZ'),
+                endTime: moment(values.endTime).format('HH:mm:ssZ'),
+                startDay: moment(values.startTime).format('YYYY-MM-DD'),
+                endDay: moment(values.endTime).format('YYYY-MM-DD'),
+            }
+
+            const cleanedValues = values;
+            delete cleanedValues.startTime;
+            delete cleanedValues.endTime;
             // if opened from an existing office, use that officeId, else use
             // the newly created office's id
             await this.props.createListing({
-                ...values,
+                ...cleanedValues,
+                availability,
                 chairHourlyPrice: values.chairHourlyPrice,
                 cleaningFee: values.cleaningFee,
                 officeId: this.state.isExistingOffice
@@ -160,7 +171,7 @@ class NewListing extends Component {
 
     calcTime() {
         const { startTime, endTime } = this.props;
-        const minutes = endTime.diff(startTime, 'minutes');
+        const minutes = endTime ? endTime.diff(startTime, 'minutes') : 0;
         this.hours = minutes / 60;
     }
 
