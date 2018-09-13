@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import ReactFilestack from 'filestack-react';
 
 import {
     Form,
@@ -11,7 +12,13 @@ import {
     Image,
     Icon,
     Button,
+    Alert,
+    MaskedInput,
 } from '../../../../components';
+
+import { filestackKey } from '../../../../config/keys';
+import { profileImageRatio } from '../../../../util/uiUtil';
+import { USER_PHOTOS_CONTAINER } from '../../../../util/strings';
 
 const { FormItem, SubmitButton } = Form;
 
@@ -40,31 +47,77 @@ const StyledForm = styled.div`
 `;
 
 const UpdateProfileForm = props => {
-    const { onSuccess, data } = props;
+    const {
+        data,
+        error,
+        isUpdated,
+        loading,
+        newProfileImage,
+        onSuccess,
+        setNewProfileImage,
+    } = props;
     return (
         <StyledForm>
             <Box>
+                {(error || isUpdated) && (
+                    <Box mb={20}>
+                        <Alert
+                            showIcon
+                            message={error ? 'Error' : 'Success'}
+                            description={
+                                error || 'User profile successfully updated!'
+                            }
+                            type={error ? 'error' : 'success'}
+                        />
+                    </Box>
+                )}
+
                 <Box mb={70} width={200} height={200} position="relative">
                     <Image
                         alt="profile photo"
                         borderRadius="50%"
                         width={200}
                         height={200}
-                        src={data.imageUrl}
+                        src={newProfileImage || data.imageUrl}
                     />
-                    <Button
-                        type="ghost"
-                        position="absolute"
-                        bottom={0}
-                        left={0}
-                        right={0}
-                        width="100%"
-                        height={40}
-                        color="text.black"
-                        fontSize={4}
-                    >
-                        <Icon type="form" />
-                    </Button>
+                    <ReactFilestack
+                        apikey={filestackKey}
+                        options={{
+                            accept: ['image/*'],
+                            imageMin: [300, 300],
+                            fromSources: [
+                                'local_file_system',
+                                'url',
+                                'imagesearch',
+                                'facebook',
+                                'instagram',
+                            ],
+                            transformations: {
+                                crop: {
+                                    aspectRatio: profileImageRatio,
+                                    force: true,
+                                },
+                            },
+                            storeTo: { container: USER_PHOTOS_CONTAINER },
+                        }}
+                        onSuccess={setNewProfileImage}
+                        render={({ onPick }) => (
+                            <Button
+                                onClick={onPick}
+                                type="ghost"
+                                position="absolute"
+                                bottom={0}
+                                left={0}
+                                right={0}
+                                width="100%"
+                                height={40}
+                                color="text.black"
+                                fontSize={4}
+                            >
+                                <Icon type="form" />
+                            </Button>
+                        )}
+                    />
                 </Box>
                 <Form layout="vertical" onSuccess={onSuccess}>
                     <FormItem
@@ -74,6 +127,26 @@ const UpdateProfileForm = props => {
                         mb={32}
                         height={50}
                         input={<Input type="text" />}
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input your first name!',
+                            },
+                        ]}
+                    />
+                    <FormItem
+                        name="middleName"
+                        label="Middle name"
+                        initialValue={data.middleName}
+                        mb={32}
+                        height={50}
+                        input={<Input type="text" />}
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input your middle name!',
+                            },
+                        ]}
                     />
                     <FormItem
                         name="lastName"
@@ -82,6 +155,12 @@ const UpdateProfileForm = props => {
                         mb={32}
                         height={50}
                         input={<Input type="text" />}
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input your last name!',
+                            },
+                        ]}
                     />
                     <FormItem
                         name="phoneNumber"
@@ -89,7 +168,33 @@ const UpdateProfileForm = props => {
                         initialValue={data.phoneNumber}
                         mb={32}
                         height={50}
-                        input={<Input type="text" />}
+                        input={
+                            <MaskedInput
+                                mask={[
+                                    '(',
+                                    /[1-9]/,
+                                    /\d/,
+                                    /\d/,
+                                    ')',
+                                    ' ',
+                                    /\d/,
+                                    /\d/,
+                                    /\d/,
+                                    '-',
+                                    /\d/,
+                                    /\d/,
+                                    /\d/,
+                                    /\d/,
+                                ]}
+                                height={50}
+                            />
+                        }
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please input your mobile number!',
+                            },
+                        ]}
                     />
                     {data.customName && (
                         <Text mb={20} fontSize={4} fontWeight="bold">
@@ -149,10 +254,16 @@ const UpdateProfileForm = props => {
                     <SubmitButton
                         px={14}
                         buttonText={
-                            <Text color="text.white" fontWeight="bold">
+                            <Text
+                                color="text.white"
+                                fontWeight="bold"
+                                display="inline"
+                                ml={loading ? 8 : 0}
+                            >
                                 Save changes
                             </Text>
                         }
+                        loading={loading}
                         textAlign="left"
                         width={450}
                         height={60}
@@ -164,16 +275,6 @@ const UpdateProfileForm = props => {
 };
 
 UpdateProfileForm.defaultProps = {
-    data: {
-        imageUrl:
-            'https://lh4.googleusercontent.com/-PKui8IQzV0U/AAAAAAAAAAI/AAAAAAAAAAA/APUIFaM6RN8lgfFTL4bJGQIvmdMqcaFn-Q/mo/photo.jpg?sz=300',
-        firstName: 'Paul Simon',
-        lastName: 'Ongpin',
-        phoneNumber: '+1-541-754-3010',
-        smsNotification: false,
-        emailNotification: true,
-        customName: 'paulsimon',
-    },
     onSuccess: () => {},
 };
 
@@ -181,13 +282,19 @@ UpdateProfileForm.propTypes = {
     data: PropTypes.shape({
         imageUrl: PropTypes.string,
         firstName: PropTypes.string,
+        middleName: PropTypes.string,
         lastName: PropTypes.string,
         phoneNumber: PropTypes.string,
         smsNotification: PropTypes.bool,
         emailNotification: PropTypes.bool,
         customName: PropTypes.string,
     }).isRequired,
+    error: PropTypes.string,
+    isUpdated: PropTypes.bool,
+    loading: PropTypes.bool,
+    newProfileImage: PropTypes.string,
     onSuccess: PropTypes.func.isRequired,
+    setNewProfileImage: PropTypes.func.isRequired,
 };
 
 export default UpdateProfileForm;
