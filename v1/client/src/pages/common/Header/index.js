@@ -90,6 +90,8 @@ const HeaderContainer = () => (
             };
 
             const logout = () => {
+                // eslint-disable-next-line
+                window && window.Intercom('shutdown');
                 client.writeData({ data: { activeUser: null } });
                 cookies.erase('user');
             };

@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import Intercom from 'react-intercom';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
@@ -17,6 +18,7 @@ import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
 import LoginModal from '../Modals/LoginModal';
 import RegistrationModal from '../Modals/RegistrationModal';
 import ForgotPassModal from '../Modals/ForgotPassModal';
+import { intercomKey } from '../../../config/keys';
 
 const NavBarLink = styled(Link)`
     padding: 10px;
@@ -87,6 +89,18 @@ const ProfileButton = ({
         </Fragment>
     );
 
+const IntercomContainer = ({ auth }) => {
+    const user = auth
+        ? {
+              user_id: auth.id,
+              email: auth.email,
+              name: auth.firstName,
+              user_hash: auth.intercomHash,
+          }
+        : {};
+    return <Intercom appID={intercomKey} {...user} />;
+};
+
 const Header = ({
     onLandingPage,
     openLoginModal,
@@ -113,6 +127,7 @@ const Header = ({
         zIndex="zIndex.header"
         position={onLandingPage ? 'absolute' : 'relative'}
     >
+        <IntercomContainer auth={auth} />
         <LoginModal
             login={login}
             openRegistrationModal={openRegistrationModal}

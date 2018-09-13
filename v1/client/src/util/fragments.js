@@ -41,6 +41,8 @@ export const userFragment = `
             sms
         }
     }
+    email
+    intercomHash
 `;
 
 export const dentistFragment = `

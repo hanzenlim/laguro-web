@@ -8,6 +8,8 @@ export const getUserQuery = gql`
             firstName
             lastName
             imageUrl
+            email
+            intercomHash
         }
         visibleModal @client
     }

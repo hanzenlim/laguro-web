@@ -23,6 +23,8 @@ module.exports.getUserQuery = `
             lastName
             imageUrl
             dentistId
+            email
+            intercomHash
         }
     }
 `;
@@ -36,6 +38,8 @@ module.exports.getUserByGoogleIdQuery = `
             lastName
             googleId
             imageUrl
+            email
+            intercomHash
         }
     }
 `;
@@ -77,6 +81,8 @@ query getUserByEmail($email: String!) {
         dentistId
         googleId
         password
+        email
+        intercomHash
     }
 }
 `;
@@ -92,6 +98,8 @@ module.exports.createGoogleUserQuery = `
             dentistId
             googleId
             password
+            email
+            intercomHash
         }
     }
 `;
@@ -107,6 +115,8 @@ module.exports.updateUserQuery = `
             dentistId
             googleId
             password
+            email
+            intercomHash
         }
     }
 `;
@@ -122,6 +132,8 @@ module.exports.createLocalUserQuery = `
             dentistId
             googleId
             password
+            email
+            intercomHash
         }
     }
 `;
