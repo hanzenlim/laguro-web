@@ -27,10 +27,9 @@ const StyledContainer = styled.div`
 `;
 
 class HostOnboarding extends Component {
-    constructor() {
-        super();
-        this.state = { isModalOpen: true };
-    }
+    state = {
+        isModalOpen: true,
+    };
 
     // isExistingOffice is true if officeId defined (when adding new listing)
     isExistingOffice() {

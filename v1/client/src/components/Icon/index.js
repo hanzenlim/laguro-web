@@ -28,7 +28,6 @@ import Minus from './Minus';
 import RightForwardArrow from './RightForwardArrow';
 import UpArrow from './UpArrow';
 import DownArrow from './DownArrow';
-import { Box } from '../../components';
 
 const Icon = props => {
     const { type, ...rest } = props;
@@ -68,8 +67,7 @@ const Icon = props => {
 
     const StyledIcon = styled(ReturnIcon)`
         && {
-            ${transform}  ${color} ${space} ${width} ${height} ${position} ${color} ${left} ${top} ${bottom}${right} ${fontSize} ${opacity} ${fontWeight}; ${cssProps =>
-        cssProps.cursor ? `cursor: ${cssProps.cursor}` : ''}; ${lineHeight}
+            ${transform} ${color} ${space} ${width} ${height} ${position} ${color} ${left} ${top} ${bottom}${right} ${fontSize} ${opacity} ${fontWeight} ${lineHeight};ˀ
         }
     `;
 

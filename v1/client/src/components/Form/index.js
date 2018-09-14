@@ -49,14 +49,13 @@ class Form extends Component {
     }
 
     render() {
-        const { form, layout, children } = this.props;
+        const { form, children, ...rest } = this.props;
 
         return (
             <StyledForm
-                layout={layout}
                 onSubmit={this.handleSubmit}
                 hideRequiredMark={true}
-                {...this.props}
+                {...rest}
             >
                 {/* add form prop to each child element */}
                 {React.Children.map(children, child => {

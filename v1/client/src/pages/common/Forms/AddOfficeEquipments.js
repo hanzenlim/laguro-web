@@ -9,6 +9,7 @@ import {
     Form,
     Icon,
     Input,
+    TextArea,
     Select,
     Text,
 } from '../../../components';
@@ -159,9 +160,11 @@ class AddOfficeInfo extends Component {
                                         },
                                     ]}
                                     input={
-                                        <Input
+                                        <TextArea
                                             height="180px"
-                                            placeHolder="describe your office"
+                                            py={16}
+                                            px={18}
+                                            placeholder="describe your office"
                                         />
                                     }
                                 />

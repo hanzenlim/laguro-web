@@ -76,10 +76,6 @@ const StyledRangePicker = styled(RangePicker)`
 `;
 
 class AddOfficeInfo extends Component {
-    constructor() {
-        super();
-        this.state = {};
-    }
     render() {
         return (
             <Card>

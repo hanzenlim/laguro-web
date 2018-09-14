@@ -160,7 +160,7 @@ class AddOfficeInfo extends Component {
                                 color="text.trueBlack"
                                 mb={54}
                             >
-                                let's start with some basic info about your
+                                let&#39;s start with some basic info about your
                                 office
                             </Text>
 
@@ -176,7 +176,7 @@ class AddOfficeInfo extends Component {
                             </Text>
 
                             <FormItem
-                                name="name"
+                                name="officeName"
                                 label="Office name"
                                 rules={[
                                     {
@@ -272,6 +272,7 @@ class AddOfficeInfo extends Component {
                                                         <Icon
                                                             type="plus"
                                                             fontSize="31px"
+                                                            lineHeight="41px"
                                                             color="rgba(182, 182, 182, 0.7)"
                                                             fontWeight="bold"
                                                         />
