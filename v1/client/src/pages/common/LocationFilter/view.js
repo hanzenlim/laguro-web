@@ -1,7 +1,7 @@
 import React from 'react';
 import { AutoComplete as AntdAutocomplete } from 'antd';
 import styled from 'styled-components';
-import { width } from 'styled-system';
+import { width, height } from 'styled-system';
 import PropTypes from 'prop-types';
 
 import { Icon, Flex } from '../../../components';
@@ -24,8 +24,7 @@ const StyledIcon = styled(Icon)`
 const StyledAutocomplete = styled(AntdAutocomplete)`
     && {
         position: relative;
-        height: 60px;
-        ${width};
+        ${height} ${width};
 
         && .ant-select-selection {
             background-color: ${props =>
@@ -33,7 +32,7 @@ const StyledAutocomplete = styled(AntdAutocomplete)`
         }
 
         && .ant-input {
-            height: 60px;
+            ${height};
             padding-left: 45px;
             border: 1px solid;
             border-color: ${props => props.theme.colors.divider.darkGray};
@@ -46,11 +45,11 @@ const StyledAutocomplete = styled(AntdAutocomplete)`
         }
 
         && .ant-select-selection__rendered {
-            height: 60px;
+            ${height};
         }
 
         && .ant-select-selection__placeholder {
-            height: 60px;
+            ${height};
             padding-left: 35px;
             color: ${props => props.theme.colors.text.gray};
             font-size: ${props => props.theme.fontSizes[3]};

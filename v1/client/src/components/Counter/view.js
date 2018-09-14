@@ -17,7 +17,7 @@ const Counter = props => {
             </Button>
             <Text>{count}</Text>
             <Button type="ghost" onClick={onAddClick} ml="22px">
-                <Icon type="plus" width="30px" height="30px" />
+                <Icon type="coloredPlus" width="30px" height="30px" />
             </Button>
         </Flex>
     );

@@ -57,6 +57,11 @@ const ResetPassPage = Loadable({
     loading: () => null,
 });
 
+const HostOnboarding = Loadable({
+    loader: () => import('./pages/HostOnboarding'),
+    loading: () => null,
+});
+
 class App extends Component {
     render() {
         return (
@@ -67,6 +72,10 @@ class App extends Component {
                         <Content>
                             <ErrorBoundary>
                                 <Switch>
+                                    <Route
+                                        path="/host-onboarding/:step"
+                                        component={HostOnboarding}
+                                    />
                                     <Route
                                         path="/profile"
                                         component={ProfilePage}

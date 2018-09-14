@@ -39,7 +39,7 @@ const StyledButton = styled(AntdButton)`
         ${zIndex};
     }
 
-    &&.ant-btn-primary {
+    &&.ant-btn-primary, &&.ant-btn-submit {
         border: solid 1px #f2f2f2;
         color: ${props => props.theme.colors.text.white};
         background-color: ${props => props.theme.colors.button.green};
@@ -64,11 +64,18 @@ const StyledButton = styled(AntdButton)`
     }
 
     &&.ant-btn-ghost {
+        && span {
+            color: ${props =>
+                props.inverted
+                    ? props.theme.colors.text.green
+                    : props.theme.colors.text.white}; 
+        }
         padding: 0;
-        color: ${props => props.theme.colors.text.white};
         background-color: transparent;
         outline: none;
-        border: none;
+        ${props =>
+            props.inverted &&
+            `border: solid 1px ${props.theme.colors.text.green}`};      
         ${height}
         ${width};
         ${space};
