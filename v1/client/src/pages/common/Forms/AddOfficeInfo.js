@@ -31,11 +31,11 @@ const Grid = styled(Box)`
     grid-template-columns: 188px 150px 942px;
 `;
 
-const imageBoxHeight = '94';
+const imageBoxHeight = '94px';
 
 class AddOfficeInfo extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.urlParams = queryString.parse(history.location.search);
         const { imageUrls, location } = this.urlParams;
@@ -88,8 +88,8 @@ class AddOfficeInfo extends Component {
         return imageUrls.map((url, index) => (
             <Box
                 position="relative"
-                width={`${imageBoxHeight}px`}
-                height={`${imageBoxHeight}px`}
+                width={imageBoxHeight}
+                height={imageBoxHeight}
             >
                 <Image
                     src={url}
@@ -108,9 +108,9 @@ class AddOfficeInfo extends Component {
                     borderRadius="9px"
                 >
                     <Icon
-                        fontSize="18px"
+                        fontSize={3}
                         data-url={url}
-                        color="#b9b9b9"
+                        color="icon.lightGray"
                         type="close-circle"
                         onClick={this.removeImage}
                     />
@@ -258,8 +258,8 @@ class AddOfficeInfo extends Component {
                                             }
                                             render={({ onPick }) => (
                                                 <Box
-                                                    width={`${imageBoxHeight}px`}
-                                                    height={`${imageBoxHeight}px`}
+                                                    width={imageBoxHeight}
+                                                    height={imageBoxHeight}
                                                     onClick={onPick}
                                                     bg="rgba(96, 96, 96, 0.1)"
                                                 >
@@ -271,7 +271,7 @@ class AddOfficeInfo extends Component {
                                                     >
                                                         <Icon
                                                             type="plus"
-                                                            fontSize="31px"
+                                                            fontSize={5}
                                                             lineHeight="41px"
                                                             color="rgba(182, 182, 182, 0.7)"
                                                             fontWeight="bold"

@@ -166,7 +166,7 @@ class NewListing extends Component {
                             color="text.trueBlack"
                             mb={54}
                         >
-                            It's time to create your first listing!
+                            It&#39;s time to create your first listing!
                         </Text>
                         <CreateListing />
                         <Flex mt={26}>
