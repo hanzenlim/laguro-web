@@ -43,7 +43,9 @@ const Flex = system(
     'top',
     'right',
     'bottom',
-    'left'
+    'left',
+    // misc
+    'opacity'
 );
 
 Flex.displayName = 'Flex';
