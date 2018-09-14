@@ -13,15 +13,6 @@ import CarouselLinkCard from '../../common/CarouselLinkCard';
 import hero1 from '../../../images/Hero-img.jpg';
 import { numMaxContainerWidth } from '../../../components/theme';
 
-const data = Array(30).fill({
-    name: 'John Smith',
-    specialty: 'General Dentist',
-    rating: 3,
-    numReview: 43,
-    image:
-        'https://www.absolutedental.com/wp-content/uploads/2017/03/las-vegas-dentist-smiling.jpg',
-});
-
 const carouselSpacing = 15;
 const slidesToShow = 5;
 
@@ -29,7 +20,7 @@ const slideWidth =
     (numMaxContainerWidth - carouselSpacing * slidesToShow) / slidesToShow +
     carouselSpacing;
 
-const FeaturedListView = () => (
+const FeaturedListView = props => (
     <Box mt={80}>
         <Container>
             <Text
@@ -47,7 +38,7 @@ const FeaturedListView = () => (
                 centerPadding={0}
                 variableWidth={true}
             >
-                {data.map((item, index) => (
+                {props.featuredDentists.map((item, index) => (
                     <Box
                         style={{
                             width: slideWidth + 3, // 3 is for aligning the pictures to the content width
@@ -56,7 +47,11 @@ const FeaturedListView = () => (
                         mb={90}
                         key={index}
                     >
-                        <CarouselLinkCard height="100%" size="big" {...item} />
+                        <CarouselLinkCard
+                            height="100%"
+                            size="big"
+                            {...item._source}
+                        />
                     </Box>
                 ))}
             </SlickCarousel>

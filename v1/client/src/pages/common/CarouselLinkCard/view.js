@@ -4,12 +4,12 @@ import { Box, Flex, Image, Rating, Text, Truncate } from '../../../components';
 
 const CarouselLinkCard = props => {
     const {
-        rating,
-        image = 'http://via.placeholder.com/186x186',
+        averageRating,
+        imageUrl = 'http://via.placeholder.com/186x186',
         specialty,
         name,
         type,
-        numReview,
+        numReviews,
     } = props;
 
     return (
@@ -24,7 +24,7 @@ const CarouselLinkCard = props => {
                         <Image
                             position="absolute"
                             borderRadius="4px"
-                            src={image}
+                            src={imageUrl}
                             width="100%"
                             height={props.height}
                             alt={name}
@@ -63,7 +63,7 @@ const CarouselLinkCard = props => {
                                 <Truncate lines={1}>{name}</Truncate>
                             </Text>
                             <Flex>
-                                {rating && <Rating disabled value={rating} />}
+                                <Rating disabled value={averageRating} />
                                 <Text
                                     ml={6}
                                     fontSize={0}
@@ -72,7 +72,7 @@ const CarouselLinkCard = props => {
                                     lineHeight="1"
                                     letterSpacing="-0.6px"
                                 >
-                                    ({numReview})
+                                    ({numReviews})
                                 </Text>
                             </Flex>
                         </Box>
