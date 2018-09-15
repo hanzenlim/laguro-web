@@ -90,7 +90,7 @@ class OfficeSearchPage extends PureComponent {
             filter.push({
                 geo_distance: {
                     distance: DISTANCE,
-                    'availability.geoPoint': {
+                    'location.geoPoint': {
                         lon: lon || DEFAULT_LOCATION.lon,
                         lat: lat || DEFAULT_LOCATION.lat,
                     },
@@ -102,14 +102,14 @@ class OfficeSearchPage extends PureComponent {
             filter.push(
                 {
                     range: {
-                        'availability.endTime': {
+                        'listings.endTime': {
                             gte: startTime,
                         },
                     },
                 },
                 {
                     range: {
-                        'availability.startTime': {
+                        'listings.startTime': {
                             lte: endTime,
                         },
                     },
