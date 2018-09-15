@@ -2,7 +2,7 @@ import { get } from 'lodash';
 
 import esClient from '../../../util/esClient';
 
-const myPosition = () => {
+const getMyPosition = () => {
     let fPosition = { lon: 122.1561, lat: 37.7249 }; // SanLeandro is the default location
     if (navigator.geolocation)
         navigator.geolocation.getCurrentPosition(position => {
@@ -16,9 +16,11 @@ const myPosition = () => {
 };
 
 const DENTISTS_INDEX = 'dentists';
+const MAX_DISTANCE = '100000km';
+const MAX_SIZE = 30;
 
 const getFeaturedDentists = async () => {
-    const SEARCH_LOCATION = await myPosition();
+    const searchLocation = await getMyPosition();
     const searchResponse = await esClient.search({
         index: DENTISTS_INDEX,
         body: {
@@ -29,15 +31,15 @@ const getFeaturedDentists = async () => {
                     },
                     filter: {
                         geo_distance: {
-                            distance: '100000km',
-                            'location.geoPoint': SEARCH_LOCATION,
+                            distance: MAX_DISTANCE,
+                            'location.geoPoint': searchLocation,
                         },
                     },
                 },
             },
         },
         from: 0,
-        size: 30,
+        size: MAX_SIZE,
     });
 
     return get(searchResponse, 'hits.hits');

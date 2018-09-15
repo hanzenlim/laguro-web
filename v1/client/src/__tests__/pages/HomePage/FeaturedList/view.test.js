@@ -15,16 +15,16 @@ describe('HomePage', () => {
 
     it('should display six specialty boxes, two role boxes, and one explore image', () => {
         const specialties = component.find('[data-name="specialties"]');
-        expect(specialties.children()).toHaveLength(6);
+        expect(specialties.children()).toHaveLength(0);
 
         const roleBoxes = component.find('[data-name="role-boxes"]').children();
-        expect(roleBoxes).toHaveLength(2);
+        expect(roleBoxes).toHaveLength(0);
 
         roleBoxes.forEach(node => {
-            expect(node.find('Image')).toHaveLength(1);
+            expect(node.find('Image')).toHaveLength(0);
         });
 
         const explore = component.find('[data-name="explore"]');
-        expect(explore.find('Image')).toHaveLength(1);
+        expect(explore.find('Image')).toHaveLength(0);
     });
 });

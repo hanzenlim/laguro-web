@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import FeaturedListView from './view';
 import getFeaturedDentists from './queries';
+import { Text } from '../../../components';
 
 class FeaturedList extends Component {
     constructor(props) {
@@ -24,7 +25,7 @@ class FeaturedList extends Component {
             );
         }
 
-        return <div />;
+        return <Text fontSize={5}>no dentists found near from you</Text>;
     }
 }
 
