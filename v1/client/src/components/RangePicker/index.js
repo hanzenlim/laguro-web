@@ -42,6 +42,9 @@ const StyledContainer = styled.div`
     }
 `;
 
+const rightArrowHeight = 16;
+const rightArrowWidth = 1.25 * rightArrowHeight;
+
 class RangePicker extends PureComponent {
     constructor(props) {
         super(props);
@@ -89,31 +92,59 @@ class RangePicker extends PureComponent {
                     </Box>
                     <Flex
                         width="100%"
-                        height="100%"
+                        px={30}
+                        py={12}
                         position="absolute"
                         alignItems="center"
-                        justifyContent="space-around"
                         onClick={this.toggleDatePicker}
                     >
-                        <Text
-                            fontSize={2}
-                            color="text.black50"
-                            ml={this.state.dateString.length ? 6 : 0}
+                        <Flex
+                            justifyContent="space-between"
+                            width={`calc((100% - ${rightArrowWidth}px) / 2)`}
                         >
-                            {this.state.dateString[0] || 'Start date'}
-                        </Text>
+                            <Text
+                                fontSize={3}
+                                fontWeight="regular"
+                                color="text.black50"
+                                lineHeight="26px"
+                                letterSpacing="-0.6px"
+                            >
+                                {this.state.dateString[0] || 'Start date'}
+                            </Text>
+                            <Icon
+                                type="calendar"
+                                color="text.black50"
+                                fontSize="26px"
+                                mr={30}
+                            />
+                        </Flex>
+
+                        {/* width is 1.25 * rightArrowWidth */}
                         <Icon
                             type="rightForwardArrow"
-                            width="20px"
-                            height="16px"
+                            height={`${rightArrowHeight}px`}
                         />
-                        <Text
-                            fontSize={2}
-                            color="text.black50"
-                            ml={this.state.dateString.length ? 6 : 0}
+
+                        <Flex
+                            justifyContent="space-between"
+                            width={`calc((100% - ${rightArrowWidth}px) / 2)`}
                         >
-                            {this.state.dateString[1] || 'End date'}
-                        </Text>
+                            <Text
+                                fontSize={3}
+                                fontWeight="regular"
+                                color="text.black50"
+                                ml={30}
+                                lineHeight="26px"
+                                letterSpacing="-0.6px"
+                            >
+                                {this.state.dateString[1] || 'End date'}
+                            </Text>
+                            <Icon
+                                type="calendar"
+                                color="text.black50"
+                                fontSize="26px"
+                            />
+                        </Flex>
                     </Flex>
                 </div>
             </StyledContainer>

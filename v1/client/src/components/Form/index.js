@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Form as AntdForm } from 'antd';
 import styled from 'styled-components';
-import { space, textAlign, height } from 'styled-system';
+import { space, textAlign, height, width } from 'styled-system';
 import { Button } from '../../components';
 import BackButton from './BackButton';
 
@@ -10,11 +10,11 @@ const StyledForm = styled(AntdForm)`
     width: 100%;
 
     .ant-form-item {
-        margin-bottom: 20px;
+        margin-bottom: 0px;
     }
 
     .ant-form-item-label {
-        margin-bottom: 10px;
+        margin-bottom: 0;
         line-height: 22px;
     }
 
@@ -23,7 +23,8 @@ const StyledForm = styled(AntdForm)`
     }
 `;
 
-class Form extends Component {
+// use this component and pass in a 'form' prop to allow multiple forms within an outer form
+export class InnerForm extends Component {
     handleSubmit = event => {
         event.preventDefault();
         this.props.form.validateFields(async (validationError, values) => {
@@ -86,6 +87,7 @@ const StyledFormInput = styled(AntFormItem)`
     &&.ant-form-item {
         font-family: 'Ubuntu', sans-serif;
         ${space};
+        ${width};
     }
     && .ant-input {
         ${height};
@@ -143,7 +145,11 @@ const FormItem = ({
     );
 };
 
-const WrappedForm = AntdForm.create()(Form);
+const WrappedForm = AntdForm.create()(InnerForm);
+
+InnerForm.SubmitButton = SubmitButton;
+InnerForm.BackButton = BackButton;
+InnerForm.FormItem = FormItem;
 WrappedForm.SubmitButton = SubmitButton;
 WrappedForm.BackButton = BackButton;
 WrappedForm.FormItem = FormItem;

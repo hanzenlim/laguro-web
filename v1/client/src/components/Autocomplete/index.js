@@ -27,7 +27,7 @@ const StyledInput = styled(AntdInput)`
             font-style: italic;
             font-size: ${props => props.theme.fontSizes[3]};
             font-weight: 700;
-            font-family: Ubuntu;
+            font-family: ${props => props.theme.fontFamily};
         }
 
         .ant-input:not(:first-child) {

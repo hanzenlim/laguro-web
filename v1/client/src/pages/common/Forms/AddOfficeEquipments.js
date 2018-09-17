@@ -254,8 +254,8 @@ class AddOfficeInfo extends Component {
                                 </Flex>
 
                                 <BackButton
+                                    ghost
                                     position="absolute"
-                                    type="ghost"
                                     width={188}
                                     height={60}
                                     top={230}

@@ -14,7 +14,7 @@ import Autocomplete from './Autocomplete';
 import Loading from './Loading';
 import Truncate from './Truncate';
 import Sticky from './Sticky';
-import Form from './Form';
+import Form, { InnerForm } from './Form';
 import Modal from './Modal';
 import Popover from './Popover';
 import Carousel from './Carousel';
@@ -30,9 +30,11 @@ import Alert from './Alert';
 import MaskedInput from './MaskedInput';
 import Steps from './Steps';
 import TimePicker from './TimePicker';
+import Card from './Card';
 
 export {
     Box,
+    Card,
     Flex,
     Text,
     Input,
@@ -64,4 +66,5 @@ export {
     Alert,
     MaskedInput,
     Steps,
+    InnerForm,
 };

@@ -21,14 +21,21 @@ import {
 } from 'styled-system';
 import { hoverColor } from '../utils';
 
+// explanation for each kind of button
+// type:
+//     primary: primary color background, white text
+//     submit: same as primary
+//     ghost: used for all interactive, clickable elements
+
+// prop:
+//     ghost={true}: primary color border color and text and transparent background
+
 const StyledButton = styled(AntdButton)`
 
     && {
         padding: 0 10px;
-        border-radius: 4px;
         ${width} ${height} ${borders};
         color: ${props => props.theme.colors.text.white};
-        background-color: ${props => props.theme.colors.button.green};
         ${space};
         ${position};
         ${left};
@@ -39,7 +46,7 @@ const StyledButton = styled(AntdButton)`
         ${zIndex};
     }
 
-    &&.ant-btn-primary, &&.ant-btn-submit {
+    &.ant-btn-primary, &.ant-btn-submit {
         border: solid 1px #f2f2f2;
         color: ${props => props.theme.colors.text.white};
         background-color: ${props => props.theme.colors.button.green};
@@ -71,12 +78,9 @@ const StyledButton = styled(AntdButton)`
                     : props.theme.colors.text.white}; 
         }
         padding: 0;
+        border: none;
         background-color: transparent;
-        outline: none;
-        ${props =>
-            props.inverted &&
-            `border: solid 1px ${props.theme.colors.text.green}`};      
-        ${height}
+        ${props => (props.height ? height : `height: auto`)}
         ${width};
         ${space};
         ${position};
@@ -108,11 +112,15 @@ const StyledButton = styled(AntdButton)`
         background-color: ${props => props.theme.colors.button.gray};
     }
 
+    &&.ant-btn-background-ghost {
+        color: ${props => props.theme.colors.text.green}; 
+        border-color: ${props => props.theme.colors.text.green}; 
+    }
+
     && span {
         font-stretch: normal;
         line-height: normal;
         letter-spacing: -0.4px;
-        color: #ffffff;
         ${fontSize}
         ${fontWeight};
         ${color};
@@ -144,8 +152,6 @@ Button.defaultProps = {
     type: 'primary',
     fontSize: 3,
     fontWeight: 'regular',
-    height: '50px',
-    color: 'text.white',
 };
 
 Button.propTypes = {

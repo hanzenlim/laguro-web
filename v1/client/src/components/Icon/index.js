@@ -14,7 +14,6 @@ import {
     right,
     opacity,
     position,
-    cursor,
     transform,
     propTypes,
     lineHeight,
@@ -67,11 +66,12 @@ const Icon = props => {
 
     const StyledIcon = styled(ReturnIcon)`
         && {
-            ${transform} ${color} ${space} ${width} ${height} ${position} ${color} ${left} ${top} ${bottom}${right} ${fontSize} ${opacity} ${fontWeight} ${lineHeight};ˀ
+            ${transform} ${color} ${space} ${width} ${height} ${position} ${color} ${fontSize} ${left} ${top} ${bottom}${right}  ${opacity} ${fontWeight};
         }
     `;
 
     const StyledIconContainer = styled.span`
+        ${lineHeight} ${fontSize};
         ${!props.isButton &&
             (cssProps =>
                 cssProps.color
@@ -79,8 +79,16 @@ const Icon = props => {
                     : `color: ${cssProps.theme.colors.icon.black}`)};
     `;
 
+    StyledIconContainer.defaultProps = {
+        lineHeight: 1,
+    };
+
+    StyledIcon.defaultProps = {
+        lineHeight: 1,
+    };
+
     return (
-        <StyledIconContainer>
+        <StyledIconContainer {...rest}>
             <StyledIcon type={type} {...rest} />
         </StyledIconContainer>
     );

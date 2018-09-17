@@ -4,13 +4,34 @@ import styled from 'styled-components';
 import { height, space, propTypes } from 'styled-system';
 
 const StyledTimePicker = styled(AntdTimePicker)`
+    && {
+        position: relative;
+        ${space} ${height};
+    }
     & .ant-time-picker-input {
         width: 100%;
-        ${space} ${height};
+        height: 100%;
+        padding: 0;
+        font-family: ${props => props.theme.fontFamily};
+        font-weight: ${props => props.theme.fontWeights.regular};
+        font-size: ${props => props.theme.fontSizes[3]};
+        letter-spacing: -0.6px;
+        ${props => props.borderless && `border: none;`};
+        ::placeholder {
+            color: ${props => props.theme.colors.text.black50};
+        }
     }
 
     & .ant-time-picker-icon {
-        ${props => props.iconless && `display: none;`};
+        margin: 0;
+        right: 30px;
+        width: 26px;
+        height: 26px;
+        top: 12px;
+        font-size: 26px;
+        :after {
+            color: ${props => props.theme.colors.text.black50};
+        }
     }
 
     &.ant-time-picker {
@@ -20,6 +41,7 @@ const StyledTimePicker = styled(AntdTimePicker)`
 
 StyledTimePicker.propTypes = {
     ...propTypes.height,
+    ...propTypes.space,
 };
 
 export default StyledTimePicker;

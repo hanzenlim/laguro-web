@@ -78,4 +78,5 @@ export default {
     breakpoints: ['1200px', '320px'],
     space: n => `${n}px`,
     maxContainerWidth: `${numMaxContainerWidth}px`,
+    fontFamily: "'Ubuntu', sans-serif",
 };
