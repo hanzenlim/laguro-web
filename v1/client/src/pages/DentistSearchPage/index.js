@@ -67,9 +67,9 @@ class DetailsSearchPage extends PureComponent {
                     title: source.name,
                     rating: 2.5,
                     image: 'http://via.placeholder.com/186x186',
-                    address: get(source, 'availability[0].address'),
-                    longitude: get(source, 'availability[0].geoPoint.lon'),
-                    latitude: get(source, 'availability[0].geoPoint.lat'),
+                    address: get(source, 'reservations[0].address'),
+                    longitude: get(source, 'reservations[0].geoPoint.lon'),
+                    latitude: get(source, 'reservations[0].geoPoint.lat'),
                     subtitle: source.specialty,
                     url: `/dentist/${item._id}`,
                 };
@@ -90,7 +90,7 @@ class DetailsSearchPage extends PureComponent {
             filter.push({
                 geo_distance: {
                     distance: DISTANCE,
-                    'availability.geoPoint': {
+                    'reservations.geoPoint': {
                         lon: lon || DEFAULT_LOCATION.lon,
                         lat: lat || DEFAULT_LOCATION.lat,
                     },
@@ -102,14 +102,14 @@ class DetailsSearchPage extends PureComponent {
             filter.push(
                 {
                     range: {
-                        'availability.endTime': {
+                        'reservations.availableTimes.endTime': {
                             gte: startTime,
                         },
                     },
                 },
                 {
                     range: {
-                        'availability.startTime': {
+                        'reservations.availableTimes.startTime': {
                             lte: endTime,
                         },
                     },
