@@ -113,6 +113,7 @@ const UpdateProfileForm = props => {
                                 height={40}
                                 color="text.black"
                                 fontSize={4}
+                                border="none"
                             >
                                 <Icon type="form" />
                             </Button>

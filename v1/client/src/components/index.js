@@ -31,6 +31,7 @@ import MaskedInput from './MaskedInput';
 import Steps from './Steps';
 import TimePicker from './TimePicker';
 import Card from './Card';
+import Tabs from './Tabs';
 
 export {
     Box,
@@ -67,4 +68,5 @@ export {
     MaskedInput,
     Steps,
     InnerForm,
+    Tabs,
 };
