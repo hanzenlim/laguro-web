@@ -8,8 +8,12 @@ export const getUserQuery = gql`
             firstName
             lastName
             imageUrl
+<<<<<<< HEAD
             email
             intercomHash
+=======
+            dentistId
+>>>>>>> Add dentistId to the header query
         }
         visibleModal @client
     }
