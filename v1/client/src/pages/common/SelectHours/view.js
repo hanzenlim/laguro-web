@@ -9,8 +9,10 @@ const StyledContainer = styled(Box)`
     grid-template-columns: auto auto auto auto;
 `;
 
-const SelectAppointment = props => {
+const SelectHoursView = props => {
     const {
+        formattedDateText,
+        priceRangeLength,
         selected,
         list,
         onSelect,
@@ -29,9 +31,9 @@ const SelectAppointment = props => {
                     color="text.black"
                     fontWeight="bold"
                 >
-                    Wed 8/29
+                    {formattedDateText}
                 </Text>
-                <Button type="ghost" onClick={onToggleContent}>
+                <Button height="20px" type="ghost" onClick={onToggleContent}>
                     {isOpen ? (
                         <Icon type="downArrow" />
                     ) : (
@@ -44,6 +46,9 @@ const SelectAppointment = props => {
                     <StyledContainer mb={10}>
                         {list.map((item, i) => (
                             <Button
+                                height={
+                                    priceRangeLength === 1 ? '50px' : '63px'
+                                }
                                 key={i}
                                 type="ghost"
                                 onClick={onSelect}
@@ -52,26 +57,41 @@ const SelectAppointment = props => {
                                 <Flex
                                     alignItems="center"
                                     justifyContent="center"
-                                    height="50px"
+                                    height={
+                                        priceRangeLength === 1 ? '50px' : '63px'
+                                    }
                                     border="1px solid"
                                     borderColor="divider.green"
                                     bg={
-                                        selected.includes(item)
+                                        selected.includes(item.time)
                                             ? 'background.green'
                                             : 'background.white'
                                     }
                                 >
-                                    <Text
-                                        fontSize={2}
-                                        letterSpacing="-0.4px"
-                                        color={
-                                            selected.includes(item)
-                                                ? 'text.white'
-                                                : 'text.black'
-                                        }
-                                    >
-                                        {item}
-                                    </Text>
+                                    <Box>
+                                        <Text
+                                            fontSize={2}
+                                            letterSpacing="-0.4px"
+                                            color={
+                                                selected.includes(item.time)
+                                                    ? 'text.white'
+                                                    : 'text.black'
+                                            }
+                                        >
+                                            {item.time}
+                                        </Text>
+                                        {priceRangeLength === 2 && (
+                                            <Text
+                                                color={
+                                                    selected.includes(item.time)
+                                                        ? 'text.white'
+                                                        : 'text.black'
+                                                }
+                                            >
+                                                ${item.price / 100}
+                                            </Text>
+                                        )}
+                                    </Box>
                                 </Flex>
                             </Button>
                         ))}
@@ -90,16 +110,17 @@ const SelectAppointment = props => {
     );
 };
 
-SelectAppointment.propTypes = {
+SelectHoursView.propTypes = {
     selected: PropTypes.string,
     list: PropTypes.array,
     onSelect: PropTypes.func,
     isAllSelected: PropTypes.bool,
     onToggleContent: PropTypes.func,
     onToggleSelectAll: PropTypes.func,
+    formattedDateText: PropTypes.string.isRequired,
 };
 
-SelectAppointment.defaultProps = {
+SelectHoursView.defaultProps = {
     selected: null,
     list: [],
     onSelect: () => {},
@@ -108,4 +129,4 @@ SelectAppointment.defaultProps = {
     isAllSelected: false,
 };
 
-export default SelectAppointment;
+export default SelectHoursView;

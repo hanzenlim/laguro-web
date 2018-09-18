@@ -1,32 +1,6 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import SelectEquipmentView from './view';
-
-const list = [
-    {
-        name: 'Digital X-Ray',
-        price: '$20.00',
-    },
-    {
-        name: 'Mobile Cabinets',
-        price: '$20.00',
-    },
-    {
-        name: 'Delivery Units',
-        price: '$20.00',
-    },
-    {
-        name: 'Clean Water Systems',
-        price: '$20.00',
-    },
-    {
-        name: 'Excavators',
-        price: '$20.00',
-    },
-    {
-        name: 'Probes',
-        price: '$20.00',
-    },
-];
 
 class SelectEquipment extends PureComponent {
     constructor(props) {
@@ -35,25 +9,36 @@ class SelectEquipment extends PureComponent {
         this.state = {
             selected: [],
         };
+
+        this.list = this.props.officeEquipment.map(value => ({
+            name: value.name,
+            price: value.price,
+        }));
     }
 
     handleSelect = event => {
         const { key } = event.currentTarget.dataset;
 
         let selected = [];
-        if (this.state.selected.includes(list[key])) {
-            selected = this.state.selected.filter(item => item !== list[key]);
+
+        // If equipment is already selected, remove it from the list.
+        if (this.state.selected.includes(this.list[key])) {
+            selected = this.state.selected.filter(
+                item => item !== this.list[key]
+            );
         } else {
-            selected = [...this.state.selected, list[key]];
+            selected = [...this.state.selected, this.list[key]];
         }
 
-        this.setState({ selected });
+        this.setState({ selected }, () => {
+            this.props.onSelectEquipment(selected);
+        });
     };
 
     render() {
         return (
             <SelectEquipmentView
-                list={list}
+                list={this.list}
                 selected={this.state.selected}
                 onSelect={this.handleSelect}
             />
@@ -61,4 +46,11 @@ class SelectEquipment extends PureComponent {
     }
 }
 
+SelectEquipment.defaultProps = {
+    onSelectEquipment: () => {},
+};
+
+SelectEquipment.PropTypes = {
+    onSelectEquipment: PropTypes.func.isRequired,
+};
 export default SelectEquipment;

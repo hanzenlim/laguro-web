@@ -101,6 +101,13 @@ export const ACTIVE_USER = 'ActiveUser';
 export const APPOINTMENT_NUM = 'appointmentNum';
 // PatientProcedure
 export const PENDING = 'pending';
+
+// Make a reservation
+export const SELECT_APPOINTMENT_VIEW = 'select_appointment_view';
+export const PAYMENT_VIEW = 'payment_view';
+export const CONFIRMATION_VIEW = 'confirmation_view';
+export const BOOKING_FEE_PERCENTAGE = 0.15;
+
 // TODO delete following
 // const pluralizeMap = {
 //     USER: 'users',

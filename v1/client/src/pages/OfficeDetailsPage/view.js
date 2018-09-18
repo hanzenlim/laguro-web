@@ -9,6 +9,7 @@ import {
 } from '../../components';
 import OfficeDetails from '../common/OfficeDetails';
 import Payment from '../common/Payment';
+import ReserveOffice from '../common/ReserveOffice';
 import { OFFICE } from '../../util/strings';
 import ReviewContainer from '../common/ReviewContainer';
 import FeaturedOffices from './FeaturedOffices';
@@ -16,7 +17,12 @@ import FeaturedOffices from './FeaturedOffices';
 const renderReservationModule = () => <Payment />;
 
 const OfficeDetailsPageView = props => {
-    const { id, imageUrls } = props;
+    const {
+        id,
+        imageUrls,
+        officeDetailsDoneLoadingHandler,
+        officeDetailsDoneLoading,
+    } = props;
 
     return (
         <Fragment>
@@ -33,12 +39,20 @@ const OfficeDetailsPageView = props => {
                         <OfficeDetails
                             id={id}
                             viewOnly={false}
+                            doneLoading={officeDetailsDoneLoadingHandler}
                             renderStickyComponent={renderReservationModule}
                         />
                         <ReviewContainer type={OFFICE} id={id} />
                     </Box>
-                    <Sticky offset="20px">
-                        <Payment />
+                    <Sticky mt={20} offset="20px">
+                        <Box
+                            mt="44px"
+                        >
+                            <ReserveOffice
+                                officeId={id}
+                                startLoading={officeDetailsDoneLoading}
+                            />
+                        </Box>
                     </Sticky>
                 </Flex>
                 <FeaturedOffices />
