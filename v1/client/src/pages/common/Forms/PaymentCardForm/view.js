@@ -2,7 +2,7 @@ import React from 'react';
 import get from 'lodash/get';
 import ExistingCardFormView from './ExistingCardForm';
 import NewCardFormView from './NewCardForm';
-import { Box, Button } from '../../../../components';
+import { Box, Button, Text } from '../../../../components';
 import { NEW_CARD_PAYMENT_METHOD } from '../../../../util/strings';
 
 const renderExistingCards = (
@@ -27,7 +27,10 @@ const CardView = ({
     handleSubmitNewCard,
     onChangeCardSelect,
 }) => (
-    <Box width={'100%'}>
+    <Box width="100%" mt={38}>
+        <Text fontSize={3} color="text.black" fontWeight="bold" mb={18}>
+            Card Info
+        </Text>
         {get(paymentOptionsCards, 'length') > 0 &&
             renderExistingCards(
                 paymentOptionsCards,
@@ -45,7 +48,10 @@ const CardView = ({
         {selectedCard !== NEW_CARD_PAYMENT_METHOD && (
             <Button
                 width={'100%'}
-                fontSize={2}
+                height={60}
+                fontSize={3}
+                px={14}
+                mt={28}
                 onClick={handleSubmitExistingCard}
             >
                 {btnText}

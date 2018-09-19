@@ -62,7 +62,11 @@ const ExistingCardFormView = ({
             </Flex>
         ))}
 
-        <Radio value={NEW_CARD_PAYMENT_METHOD}>Add a new card</Radio>
+        <Radio value={NEW_CARD_PAYMENT_METHOD}>
+            <Text is="span" fontSize={2}>
+                Add a new card
+            </Text>
+        </Radio>
     </RadioGroup>
 );
 

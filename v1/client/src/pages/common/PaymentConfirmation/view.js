@@ -1,8 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { CheckMarkAnimation, Text, Box, Flex, Icon } from '../../../components';
 
-const PaymentSuccessPageView = props => {
+const PaymentConfirmationView = props => {
     const { h1, h2, h3 } = props;
 
     return (
@@ -41,4 +42,16 @@ const PaymentSuccessPageView = props => {
     );
 };
 
-export default PaymentSuccessPageView;
+PaymentConfirmationView.propTypes = {
+    h1: PropTypes.string,
+    h2: PropTypes.string,
+    h3: PropTypes.string,
+};
+
+PaymentConfirmationView.defaultProps = {
+    h1: 'Your booking is confirmed',
+    h2: 'Tuesday, August 28, 2018 , 5:30pm',
+    h3: '535 Mission St. San Francisco, CA 94116',
+};
+
+export default PaymentConfirmationView;
