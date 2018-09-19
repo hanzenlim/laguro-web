@@ -7,6 +7,7 @@ import Menu from '../common/Menu';
 import DentistDetails from '../common/DentistDetails';
 import OfficeDetails from '../common/OfficeDetails';
 import ReviewContainer from '../common/ReviewContainer';
+import HostListings from '../common/HostListings';
 import {
     DENTIST,
     OFFICE,
@@ -14,6 +15,7 @@ import {
     MY_DOCUMENTS,
     MY_PROFILE,
     MY_APPOINTMENTS,
+    MY_LISTINGS,
     PAYMENTS,
     BALANCE,
     PUBLIC_PROFILE,
@@ -52,6 +54,8 @@ class ProfileView extends Component {
                         My appointments
                     </Text>
                 );
+            case MY_LISTINGS:
+                return <HostListings />;
             case PAYMENTS:
                 return (
                     <Text fontSize={4} color="inherit" lineHeight="40px">
@@ -121,6 +125,17 @@ class ProfileView extends Component {
                                     my appointments
                                 </Text>
                             </Menu.Item>
+                            {persona === HOST && (
+                                <Menu.Item key={MY_LISTINGS}>
+                                    <Text
+                                        fontSize={4}
+                                        color="inherit"
+                                        lineHeight="40px"
+                                    >
+                                        my listings
+                                    </Text>
+                                </Menu.Item>
+                            )}
                             <Menu.Item key={PAYMENTS}>
                                 <Text
                                     fontSize={4}
