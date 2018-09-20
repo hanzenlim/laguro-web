@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
+import moment from 'moment';
 import { DatePicker as AntdDatePicker } from 'antd';
 import { Flex, Text, Box, Icon } from '../../components';
 
@@ -71,7 +72,16 @@ class RangePicker extends PureComponent {
     getCalendarContainer = () => this.refs.datePickerContainer;
 
     render() {
-        const { ...rest } = this.props;
+        const { value, ...rest } = this.props;
+        const compValue = value;
+        // if (value && typeof value[0] === 'string') {
+        //     compValue[0] = moment(value[0]);
+        //     compValue[1] = moment(value[1]);
+        // } else {
+        //     compValue = value;
+        // }
+        console.log('styledrangePIcker', this.props);
+        console.log('value in rangePicker', value);
 
         return (
             <StyledContainer {...rest}>
@@ -83,6 +93,7 @@ class RangePicker extends PureComponent {
                         opacity="0"
                     >
                         <AntdDatePicker.RangePicker
+                            value={compValue}
                             {...rest}
                             format={'ddd M/D'}
                             getCalendarContainer={this.getCalendarContainer}
@@ -109,7 +120,10 @@ class RangePicker extends PureComponent {
                                 lineHeight="26px"
                                 letterSpacing="-0.6px"
                             >
-                                {this.state.dateString[0] || 'Start date'}
+                                {(compValue &&
+                                    compValue[0].format('ddd M/DD')) ||
+                                    this.state.dateString[0] ||
+                                    'Start date'}
                             </Text>
                             <Icon
                                 type="calendar"
@@ -137,7 +151,10 @@ class RangePicker extends PureComponent {
                                 lineHeight="26px"
                                 letterSpacing="-0.6px"
                             >
-                                {this.state.dateString[1] || 'End date'}
+                                {(compValue &&
+                                    compValue[1].format('ddd M/DD')) ||
+                                    this.state.dateString[1] ||
+                                    'End date'}
                             </Text>
                             <Icon
                                 type="calendar"

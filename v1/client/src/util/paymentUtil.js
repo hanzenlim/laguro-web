@@ -13,3 +13,5 @@ export const renderPrice = price => {
         Number(formattedPrice) / 100
     ).toFixed(2)}`;
 };
+
+export const renderCents = price => Number(removeSpecialChars(price));

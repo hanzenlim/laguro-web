@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import queryString from 'query-string';
 import ReactFilestack from 'filestack-react';
 import isEmpty from 'lodash/isEmpty';
-import history from '../../../history';
+import get from 'lodash/get';
 import { filestackKey } from '../../../config/keys';
 import { officeImageRatio } from '../../../util/uiUtil';
 import {
@@ -17,7 +16,6 @@ import {
     Text,
 } from '../../../components';
 import LocationFilter from '../LocationFilter';
-// import { addTooltip } from './sharedComponents';
 
 const { GridItem } = Grid;
 
@@ -28,14 +26,11 @@ const maxImageNum = 5;
 class AddOfficeInfo extends Component {
     constructor(props) {
         super(props);
-
-        this.urlParams = queryString.parse(history.location.search);
-        const { imageUrls, location } = this.urlParams;
+        const { imageUrls } = props;
 
         this.state = {
-            location: location || '',
             autoCompleteHasError: false,
-            imageUrls: imageUrls ? JSON.parse(imageUrls) : [],
+            imageUrls: (!isEmpty(imageUrls) && JSON.parse(imageUrls)) || [],
         };
     }
 
@@ -44,9 +39,15 @@ class AddOfficeInfo extends Component {
     }
 
     handleLocationChange = location => {
+        const { onSelect } = this.props;
         this.setState({
-            location,
+            locationLat: get(location, 'location.lat'),
+            locationLong: get(location, 'location.long'),
         });
+
+        if (onSelect) {
+            onSelect();
+        }
 
         this.checkIfAutoCompleteHasError();
     };
@@ -64,16 +65,6 @@ class AddOfficeInfo extends Component {
         this.setState({
             autoCompleteHasError: hasError,
         });
-    };
-
-    onSubmit = values => {
-        const params = queryString.stringify({
-            ...this.urlParams,
-            ...values,
-            imageUrls: JSON.stringify(this.state.imageUrls),
-        });
-
-        history.push(`/landlord-onboarding/add-equipments?${params}`);
     };
 
     loadPhotos = result => {
@@ -148,7 +139,6 @@ class AddOfficeInfo extends Component {
         const { form } = this.props;
         const locationFormValue = form.getFieldValue('location');
 
-        // console.log('autocomplete has error: ', locationFormValue);
         // if options is not empty and the location field is not found in the dropdown options and if location form input is not empty, autocomplete has error
         return (
             options &&
@@ -167,11 +157,11 @@ class AddOfficeInfo extends Component {
 
     // {addTooltip('Upload images of your office. The first image will show up on search results.')}
     render() {
-        const { form } = this.props;
+        const { form, ...rest } = this.props;
         const { autoCompleteHasError } = this.state;
 
         return (
-            <InnerForm form={form}>
+            <InnerForm form={form} {...rest}>
                 <Grid
                     gtc="294px 36px 294px"
                     gtr="auto auto auto auto auto auto auto auto"

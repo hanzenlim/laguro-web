@@ -1,129 +1,52 @@
 import React, { Component } from 'react';
-import moment from 'moment';
-import { get } from 'lodash';
-import queryString from 'query-string';
+import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
 import CreateListing from './CreateListing';
-import { Box, Button, Form, Flex, Text, Icon } from '../../../components';
-import history from '../../../history';
-
-const { SubmitButton, BackButton } = Form;
+import { Box, Button, Flex, Text, Icon } from '../../../components';
 
 class AddOfficeListing extends Component {
     constructor(props) {
         super(props);
+        const { form, ...rest } = this.props;
 
-        this.urlParams = queryString.parse(history.location.search);
-        const {
-            // cleaningFee,
-            // chairHourlyPrice,
-            // startTime,
-            // endTime,
-            // numChairsAvailable,
-            // name,
-            officeId,
-        } = this.urlParams;
+        const numCards = Object.keys(props).filter(key =>
+            key.startsWith('numChairs')
+        );
 
-        // if officeId is defined, office exists, no need
-        // to create a new office
+        const listings = numCards.map((item, index) => (
+            <CreateListing
+                active={false}
+                {...rest}
+                form={form}
+                key={index}
+                data-index={index}
+                onClick={this.handleClickListing}
+            />
+        ));
+
         this.state = {
-            isExistingOffice: officeId !== undefined,
-            listings: [
-                <CreateListing
-                    active
-                    key={0}
-                    data-index={0}
-                    onClick={this.handleClickListing}
-                />,
-            ],
-            activeListingIndex: 0,
+            // isExistingOffice: officeId !== undefined,
+            listings: !isEmpty(listings)
+                ? listings
+                : [
+                      <CreateListing
+                          active
+                          {...rest}
+                          form={form}
+                          key={0}
+                          data-index={0}
+                          onClick={this.handleClickListing}
+                      />,
+                  ],
+            activeListingIndex: '0',
         };
 
-        // this.props.initialize({
-        //     office: name,
-        //     cleaningFee: cleaningFee || 1500,
-        //     chairHourlyPrice: chairHourlyPrice || 5000,
-        //     startTime: startTime ? moment(startTime) : getNextHalfHour(),
-        //     endTime: endTime
-        //         ? moment(endTime)
-        //         : getNextHalfHour().add(2, 'hours'),
-        //     numChairsAvailable: numChairsAvailable
-        //         ? Number(numChairsAvailable)
-        //         : 1,
-        // });
+        this.showListing(0);
     }
 
     async componentWillMount() {
         document.title = 'Laguro - New Listing';
     }
-
-    handleBack = () => {
-        const {
-            chairHourlyPrice,
-            cleaningFee,
-            numChairsAvailable,
-            endTime,
-            startTime,
-        } = this.props;
-
-        const params = queryString.stringify({
-            ...this.urlParams,
-            startTime: moment(startTime).format(),
-            endTime: moment(endTime).format(),
-            chairHourlyPrice: chairHourlyPrice || 0,
-            cleaningFee: cleaningFee || 0,
-            numChairsAvailable,
-        });
-
-        history.push(`/landlord-onboarding/add-equipments?${params}`);
-    };
-
-    // async onSubmit(values) {
-    // if (
-    //     // if chosen duration is less than 2 hrs
-    //     moment(values.startTime)
-    //         .add(2, 'hours')
-    //         .isAfter(values.endTime)
-    // ) {
-    //     throw new SubmissionError({
-    //         endTime: 'Minimum reservation is 2 hours',
-    //     });
-    // } else if (!values.office) {
-    //     throw new SubmissionError({
-    //         office: 'Please select an office',
-    //         _error: 'Please select an office above',
-    //     });
-    // } else {
-    //     delete values.office;
-    //     const {
-    //         name,
-    //         location,
-    //         imageUrls,
-    //         equipment,
-    //         description,
-    //         officeId,
-    //     } = this.urlParams;
-    //     if (!this.state.isExistingOffice) {
-    //         await this.props.createOffice({
-    //             name,
-    //             location,
-    //             hostId: this.props.auth.dentistId,
-    //             imageUrls: JSON.parse(imageUrls),
-    //             equipment: JSON.parse(equipment),
-    //             description,
-    //         });
-    //     }
-    //     // if opened from an existing office, use that officeId, else use
-    //     // the newly created office's id
-    //     await this.props.createListing({
-    //         ...values,
-    //         chairHourlyPrice: values.chairHourlyPrice,
-    //         cleaningFee: values.cleaningFee,
-    //         officeId: this.state.isExistingOffice
-    //             ? officeId
-    //             : this.props.offices[0].id,
-    //     });
-    // }
-    // }
 
     hideListing = () => {
         const { activeListingIndex, listings } = this.state;
@@ -139,6 +62,7 @@ class AddOfficeListing extends Component {
         this.setState({
             listings: listings.concat([
                 <CreateListing
+                    {...this.props}
                     key={listings.length}
                     data-index={listings.length}
                     active
@@ -159,9 +83,9 @@ class AddOfficeListing extends Component {
     };
 
     showListing = listingIndex => {
-        if (!listingIndex) {
-            return;
-        }
+        // if (!listingIndex) {
+        //     return;
+        // }
         const { listings } = this.state;
 
         listings[listingIndex] = React.cloneElement(listings[listingIndex], {
@@ -205,28 +129,7 @@ class AddOfficeListing extends Component {
                 >
                     It&#39;s time to create your first listing!
                 </Text>
-                <Form>
-                    {listings}
-                    <BackButton
-                        position="absolute"
-                        type="primary"
-                        ghost
-                        width={188}
-                        height={60}
-                        top={230}
-                        right={484}
-                        buttonText="Previous"
-                    />
-
-                    <SubmitButton
-                        position="absolute"
-                        width={188}
-                        height={60}
-                        top={230}
-                        left={422}
-                        buttonText="Next"
-                    />
-                </Form>
+                <div>{listings}</div>
 
                 <Button type="ghost" mt={16} ml={30}>
                     <Flex width="100px" onClick={this.handleAddListing}>

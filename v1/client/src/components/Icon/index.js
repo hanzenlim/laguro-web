@@ -90,19 +90,19 @@ const Icon = props => {
     `;
 
     const StyledIconContainer = styled.span`
-        ${lineHeight};
-        ${fontSize};
-        ${!props.isButton &&
-            (cssProps =>
-                cssProps.color
-                    ? color
-                    : `color: ${cssProps.theme.colors.icon.black}`)};
+        &&&& {
+            ${lineHeight} ${fontSize} ${height} ${display};
+            ${!props.isButton &&
+                (cssProps =>
+                    cssProps.color
+                        ? color
+                        : `color: ${cssProps.theme.colors.icon.black}`)};
+        }
     `;
 
     StyledIconContainer.defaultProps = {
         display: 'inline-block',
         lineHeight: 1,
-        height: '1em',
     };
 
     StyledIcon.defaultProps = {
