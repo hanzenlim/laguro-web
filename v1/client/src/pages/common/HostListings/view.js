@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import moment from 'moment';
 
 import { Box, Tabs, Text, Flex, Image, Button } from '../../../components';
 
@@ -22,11 +23,11 @@ const StyledList = styled.ul`
 class HostListings extends PureComponent {
     renderTabPane = offices =>
         offices.map(office => {
-            const { id, name, listings } = office;
+            const { id, name, listings, equipment } = office;
             return (
                 <TabPane tab={name} key={id}>
                     {listings.length ? (
-                        this.renderListing(listings)
+                        this.renderListing(listings, equipment)
                     ) : (
                         <Text textAlign="center" color="text.gray" my={50}>
                             NO LISTINGS
@@ -36,19 +37,23 @@ class HostListings extends PureComponent {
             );
         });
 
-    renderListing = listings =>
-        listings.map((listing, index) => {
+    renderListing = (listings, equipment) =>
+        listings.map(listing => {
             const {
-                dateCreated,
-                startTime,
-                endTime,
+                id,
+                availability,
                 numChairsAvailable,
-                equipment,
                 reservations,
             } = listing;
+
+            const startDate = `${availability.startDay}T${
+                availability.startTime
+            }`;
+            const endDate = `${availability.endDay}T${availability.endTime}`;
             const isResevationsEmpty = reservations.length === 0;
+
             return (
-                <Box key={index}>
+                <Box key={id} mb={25}>
                     <Flex justifyContent="flex-end">
                         <Button type="ghost" border="none">
                             <Text
@@ -72,11 +77,13 @@ class HostListings extends PureComponent {
                         onClick={this.props.toggleModalState}
                     >
                         <Box fontSize={5} mb={22}>
-                            <Text fontWeight="bold" display="inline">
-                                {dateCreated} -{' '}
+                            <Text fontWeight="bold" display="inline" mr={15}>
+                                {moment(startDate).format('ddd, M/D')} -{' '}
+                                {moment(endDate).format('ddd, M/D')}
                             </Text>
                             <Text display="inline">
-                                {startTime} - {endTime}
+                                {moment(startDate).format('H:mmA')} -{' '}
+                                {moment(endDate).format('H:mmA')}
                             </Text>
                         </Box>
                         <Text fontSize={3} fontWeight="medium" mb={10}>
@@ -109,14 +116,24 @@ class HostListings extends PureComponent {
     renderEquipment = equipment =>
         equipment.map(({ name }, index) => <li key={index}>{name}</li>);
 
+    renderAvailableTimes = availableTimes =>
+        availableTimes.map(({ startTime, endTime }, index) => (
+            <Text fontWeight="bold" fontSize={4} key={index}>
+                {moment(startTime).format('H:mmA')} -{' '}
+                {moment(endTime).format('H:mmA')}
+            </Text>
+        ));
+
     renderReservation = reservations =>
-        reservations.map((reservation, index) => {
-            const { startTime, endTime, reservedBy, photoUrl } = reservation;
+        reservations.map(reservation => {
+            const { id, availableTimes, reservedBy } = reservation;
+            const { firstName, lastName, imageUrl } = reservedBy.user;
+            const name = `Dr. ${firstName} ${lastName}`;
             return (
                 <Flex
-                    key={index}
+                    key={id}
+                    alignItems="flex-start"
                     justifyContent="space-between"
-                    alignItems="center"
                     bg="background.white"
                     border="1px solid"
                     borderColor="divider.gray"
@@ -124,26 +141,19 @@ class HostListings extends PureComponent {
                     mb={10}
                     p={30}
                 >
-                    <Box>
-                        <Text
-                            display="inline"
-                            fontSize={4}
-                            fontWeight="medium"
-                            mr={30}
-                        >
-                            {startTime} - {endTime}
+                    <Flex alignItems="center">
+                        <Image
+                            src={imageUrl}
+                            alt={name}
+                            width={38}
+                            height={38}
+                            borderRadius="50%"
+                        />
+                        <Text ml={30} fontSize={4}>
+                            {name}
                         </Text>
-                        <Text display="inline" fontSize={4}>
-                            {reservedBy}
-                        </Text>
-                    </Box>
-                    <Image
-                        src={photoUrl}
-                        alt={reservedBy}
-                        width={38}
-                        height={38}
-                        borderRadius="50%"
-                    />
+                    </Flex>
+                    <Box>{this.renderAvailableTimes(availableTimes)}</Box>
                 </Flex>
             );
         });
@@ -163,122 +173,46 @@ class HostListings extends PureComponent {
 
 // PropTypes
 
+const userShape = PropTypes.shape({
+    firstName: PropTypes.string,
+    lastName: PropTypes.string,
+    imageUrl: PropTypes.string,
+});
+
 const equipmentShape = PropTypes.shape({ name: PropTypes.string });
 
 const reservationShape = PropTypes.shape({
-    startTime: PropTypes.string,
-    endTime: PropTypes.string,
-    reservedBy: PropTypes.string,
-    photoUrl: PropTypes.string,
+    id: PropTypes.string,
+    availableTimes: PropTypes.arrayOf(
+        PropTypes.shape({
+            startTime: PropTypes.string,
+            endTime: PropTypes.string,
+        })
+    ),
+    reservedBy: PropTypes.shape({ user: userShape }),
 });
 
 const listingShape = PropTypes.shape({
-    dateCreated: PropTypes.string,
-    startTime: PropTypes.string,
-    endTime: PropTypes.string,
+    id: PropTypes.string,
     numChairsAvailable: PropTypes.number,
-    equipment: PropTypes.arrayOf(equipmentShape),
+    availability: PropTypes.shape({
+        startTime: PropTypes.string,
+        endTime: PropTypes.string,
+        startDay: PropTypes.string,
+        endDay: PropTypes.string,
+    }),
     reservations: PropTypes.arrayOf(reservationShape),
 });
 
 const officeShape = PropTypes.shape({
     id: PropTypes.string,
     name: PropTypes.string,
+    equipment: PropTypes.arrayOf(equipmentShape),
     listings: PropTypes.arrayOf(listingShape),
 });
 
 HostListings.propTypes = {
     offices: PropTypes.arrayOf(officeShape),
-};
-
-HostListings.defaultProps = {
-    offices: [
-        {
-            id: 'b9e5ec50-b8fd-11e8-93dd-75b37d28b126',
-            name: 'hanzen office',
-            listings: [
-                {
-                    dateCreated: 'Tue, 8/29',
-                    startTime: '6:00PM',
-                    endTime: '7:00PM',
-                    numChairsAvailable: 2,
-                    equipment: [
-                        { name: 'Probes' },
-                        { name: 'Excavators' },
-                        { name: 'X-ray' },
-                    ],
-                    reservations: [
-                        {
-                            startTime: '6:00PM',
-                            endTime: '7:00PM',
-                            reservedBy: 'Dr. Sarah Parker',
-                            photoUrl:
-                                'https://cdn.filestackcontent.com/JXbUNxZqTLivfioMfCwV',
-                        },
-                        {
-                            startTime: '6:00PM',
-                            endTime: '7:00PM',
-                            reservedBy: 'Dr. Sarah Parker',
-                            photoUrl:
-                                'https://cdn.filestackcontent.com/JXbUNxZqTLivfioMfCwV',
-                        },
-                    ],
-                },
-            ],
-        },
-        {
-            id: 'b9e5ec50-b8fd-11e8-93dd-75b37d28b122',
-            name: 'test office',
-            listings: [
-                {
-                    dateCreated: 'Tue, 8/29',
-                    startTime: '6:00PM',
-                    endTime: '7:00PM',
-                    numChairsAvailable: 2,
-                    equipment: [
-                        { name: 'Probes' },
-                        { name: 'Excavators' },
-                        { name: 'X-ray' },
-                    ],
-                    reservations: [
-                        {
-                            startTime: '6:00PM',
-                            endTime: '7:00PM',
-                            reservedBy: 'Dr. Sarah Parker',
-                            photoUrl:
-                                'https://cdn.filestackcontent.com/JXbUNxZqTLivfioMfCwV',
-                        },
-                        {
-                            startTime: '6:00PM',
-                            endTime: '7:00PM',
-                            reservedBy: 'Dr. Sarah Parker',
-                            photoUrl:
-                                'https://cdn.filestackcontent.com/JXbUNxZqTLivfioMfCwV',
-                        },
-                    ],
-                },
-            ],
-        },
-        {
-            id: 'b9e5ec50-b8fd-11e8-93dd-75b37d28b127',
-            name: 'paul office',
-            listings: [
-                {
-                    dateCreated: 'Tue, 8/29',
-                    startTime: '6:00PM',
-                    endTime: '7:00PM',
-                    numChairsAvailable: 1,
-                    equipment: [],
-                    reservations: [],
-                },
-            ],
-        },
-        {
-            id: 'b9e5ec50-b8fd-11e8-93dd-75b37d28b121',
-            name: 'david office',
-            listings: [],
-        },
-    ],
 };
 
 export default HostListings;

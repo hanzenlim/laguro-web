@@ -60,6 +60,7 @@ export const MY_APPOINTMENTS = 'my_appointments';
 export const PAYMENTS = 'payments';
 export const BALANCE = 'balance';
 export const PUBLIC_PROFILE = 'public_profile';
+export const MY_LISTINGS = 'my_listings';
 
 // Payment method
 export const NEW_CARD_PAYMENT_METHOD = 'NEW_CARD_PAYMENT_METHOD';
