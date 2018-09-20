@@ -1,195 +1,215 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
+import styled from 'styled-components';
+import isEmpty from 'lodash/isEmpty';
 
 import { Box, Text, Flex, Image, Button } from '../../../components';
 
 import { CANCELLED } from '../../../util/strings';
 
-class DentistAppointments extends PureComponent {
-    renderReservations = (reservations, toggleModalState) =>
-        reservations.map(
-            (
-                {
-                    dateCreated,
-                    officeName,
-                    startTime,
-                    endTime,
-                    location,
-                    appointments,
-                },
-                index
-            ) => (
-                <Box mb={50} key={index}>
-                    <Flex
-                        justifyContent="space-between"
-                        alignItems="center"
-                        mb={24}
-                    >
-                        <Box>
-                            <Text fontSize={5} fontWeight="bold">
-                                {dateCreated} —
-                            </Text>
-                            <Text fontSize={5} fontWeight="light">
-                                {officeName} {`(${startTime} - ${endTime})`}
-                            </Text>
-                            <Text fontSize={2}>{location}</Text>
-                        </Box>
-                        <Button
-                            type="ghost"
-                            border="none"
-                            onClick={toggleModalState}
-                        >
-                            <Text color="text.gray" fontSize={2}>
-                                cancel
-                            </Text>
-                        </Button>
-                    </Flex>
-                    {appointments.length ? (
-                        this.renderAppointments(appointments)
-                    ) : (
-                        <Text textAlign="center" color="text.gray">
-                            NO APPOINTMENTS
-                        </Text>
-                    )}
-                </Box>
-            )
-        );
+const StyledList = styled.ul`
+    ${props => props.columns && `columns: ${props.columns}`};
+    list-style-position: inside;
+    padding: 0;
+    margin: 0;
+`;
 
-    renderAppointments = appointments =>
-        appointments.map(
-            ({ startTime, patientName, patientPhoto, status }, index) => {
-                const isCancelled = status === CANCELLED;
+class DentistAppointments extends PureComponent {
+    renderReservations = reservations =>
+        reservations.map(
+            ({
+                id,
+                office,
+                availableTimes,
+                numChairsSelected,
+                equipmentSelected,
+                appointments,
+            }) => {
+                const isAppointmentsEmpty = isEmpty(appointments);
                 return (
-                    <Flex
-                        key={index}
-                        justifyContent="space-between"
-                        alignItems="center"
-                        p={30}
-                        mb={12}
-                        border="1px solid"
-                        borderColor="divider.gray"
-                        borderRadius={2}
-                        opacity={isCancelled ? 0.2 : 1}
-                    >
-                        <Flex position="relative">
-                            <Text fontWeight="bold" fontSize={4} mr={20}>
-                                {startTime}
+                    <Box mb={50} key={id}>
+                        <Flex justifyContent="flex-end" mb={12}>
+                            <Button
+                                type="ghost"
+                                onClick={
+                                    isAppointmentsEmpty
+                                        ? this.props.toggleModalState
+                                        : null
+                                }
+                            >
+                                <Text
+                                    color={
+                                        isAppointmentsEmpty
+                                            ? 'text.green'
+                                            : 'text.gray'
+                                    }
+                                    fontSize={2}
+                                >
+                                    cancel
+                                </Text>
+                            </Button>
+                        </Flex>
+                        <Box bg="background.lightGray" px={28} py={16}>
+                            <Text fontWeight="bold" fontSize={5} mb={28}>
+                                {office.name}
                             </Text>
-                            <Text fontSize={4}>{patientName}</Text>
-                            {isCancelled && (
-                                <Box
-                                    borderBottom="1px solid"
-                                    borderColor="text.black"
-                                    position="absolute"
-                                    left={0}
-                                    right={0}
-                                    top="50%"
-                                />
-                            )}
-                        </Flex>
-                        <Flex alignItems="center">
-                            {isCancelled && <Text mr={20}>{CANCELLED}</Text>}
-                            <Image
-                                src={patientPhoto}
-                                alt={patientName}
-                                width={38}
-                                height={38}
-                                borderRadius="50%"
-                            />
-                        </Flex>
-                    </Flex>
+                            <Text fontWeight="bold" fontSize={3} mb={8}>
+                                My Bookings
+                            </Text>
+                            <StyledList>
+                                {this.renderAvailableTimes(availableTimes)}
+                            </StyledList>
+                            <Text fontWeight="bold" fontSize={3} mt={12} mb={8}>
+                                Equipments ordered
+                            </Text>
+                            <StyledList columns={3}>
+                                <li>
+                                    <Text display="inline">
+                                        {`${numChairsSelected} chair${
+                                            numChairsSelected > 1 ? 's' : ''
+                                        }`}
+                                    </Text>
+                                </li>
+                                {this.renderEquipment(equipmentSelected)}
+                            </StyledList>
+                            <Box mt={38}>
+                                {!isEmpty(appointments) ? (
+                                    this.renderAppointments(appointments)
+                                ) : (
+                                    <Text textAlign="center" color="text.gray">
+                                        NO APPOINTMENTS
+                                    </Text>
+                                )}
+                            </Box>
+                        </Box>
+                    </Box>
                 );
             }
         );
 
+    renderAvailableTimes = availableTimes =>
+        availableTimes.map((availableTime, index) => {
+            const date = moment(availableTime.startTime).format('ddd M/D/YYYY');
+            const start = moment(availableTime.startTime).format('h:mm A');
+            const end = moment(availableTime.endTime).format('h:mm A');
+
+            return (
+                <li key={index}>
+                    <Box fontSize={2} display="inline">
+                        <Text display="inline">{date}, </Text>
+                        <Text display="inline" fontWeight="light">
+                            {start} - {end}
+                        </Text>
+                    </Box>
+                </li>
+            );
+        });
+
+    renderEquipment = equipment =>
+        equipment.map((item, index) => (
+            <li key={index}>
+                <Text display="inline">{item}</Text>
+            </li>
+        ));
+
+    renderAppointments = appointments =>
+        appointments.map(({ id, startTime, patient, status }) => {
+            const name = `${patient.firstName} ${patient.lastName}`;
+            const isCancelled = status === CANCELLED;
+            return (
+                <Flex
+                    key={id}
+                    justifyContent="space-between"
+                    alignItems="center"
+                    py={20}
+                    px={30}
+                    mb={10}
+                    bg="background.white"
+                    border="1px solid"
+                    borderColor="divider.gray"
+                    borderRadius={2}
+                    opacity={isCancelled ? 0.5 : 1}
+                >
+                    <Flex
+                        justifyContent="space-between"
+                        alignItems="center"
+                        fontSize={4}
+                        position="relative"
+                    >
+                        <Box textAlign="center" mr={44}>
+                            <Text fontWeight="bold">
+                                {moment(startTime).format('ddd, M/D, YYYY')}
+                            </Text>
+                            <Text fontWeight="light">
+                                {moment(startTime).format('h:mm A')}
+                            </Text>
+                        </Box>
+                        <Text>{name}</Text>
+                    </Flex>
+                    <Image
+                        src={patient.imageUrl}
+                        alt={name}
+                        width={38}
+                        height={38}
+                        borderRadius="50%"
+                    />
+                </Flex>
+            );
+        });
+
     render() {
-        const { reservations, toggleModalState } = this.props;
+        const { reservations } = this.props;
 
         return (
             <Box>
-                <Text color="text.green" fontSize={4} fontWeight="bold" mb={40}>
-                    upcoming appointments
+                <Text color="text.green" fontSize={4} fontWeight="bold" mb={8}>
+                    my bookings
                 </Text>
                 <Box>
-                    {this.renderReservations(reservations, toggleModalState)}
+                    {!isEmpty(reservations) ? (
+                        this.renderReservations(reservations)
+                    ) : (
+                        <Text textAlign="center" color="text.gray" mt={38}>
+                            NO RESERVATIONS
+                        </Text>
+                    )}
                 </Box>
             </Box>
         );
     }
 }
 
-DentistAppointments.defaultProps = {
-    reservations: [
-        {
-            dateCreated: 'Tue, Aug 28, 2018',
-            officeName: 'Bell Dental Center',
-            startTime: '4PM',
-            endTime: '7PM',
-            location: '1598 Washington Ave, San Leandro, CA 94577',
-            appointments: [
-                {
-                    startTime: '5:30 PM',
-                    patientName: 'Will Choi',
-                    patientPhoto:
-                        'https://cdn.filestackcontent.com/JXbUNxZqTLivfioMfCwV',
-                },
-                {
-                    startTime: '6:00 PM',
-                    patientName: 'Sarah Parker',
-                    patientPhoto:
-                        'https://cdn.filestackcontent.com/JXbUNxZqTLivfioMfCwV',
-                },
-            ],
-        },
-        {
-            dateCreated: 'Wed, Aug 29, 2018',
-            officeName: 'Bell Dental Center',
-            startTime: '4PM',
-            endTime: '7PM',
-            location: '1598 Washington Ave, San Leandro, CA 94577',
-            appointments: [
-                {
-                    startTime: '5:30 PM',
-                    patientName: 'Will Choi',
-                    patientPhoto:
-                        'https://cdn.filestackcontent.com/JXbUNxZqTLivfioMfCwV',
-                    status: 'CANCELLED',
-                },
-                {
-                    startTime: '6:00 PM',
-                    patientName: 'Sarah Parker',
-                    patientPhoto:
-                        'https://cdn.filestackcontent.com/JXbUNxZqTLivfioMfCwV',
-                    status: 'CANCELLED',
-                },
-            ],
-        },
-        {
-            dateCreated: 'Thur, Aug 30, 2018',
-            officeName: 'Bell Dental Center',
-            startTime: '4PM',
-            endTime: '7PM',
-            location: '1598 Washington Ave, San Leandro, CA 94577',
-            appointments: [],
-        },
-    ],
-};
+// PropTypes
+const appointmentShape = PropTypes.shape({
+    id: PropTypes.string,
+    startTime: PropTypes.string,
+    patient: PropTypes.shape({
+        firstName: PropTypes.string,
+        lastName: PropTypes.string,
+        imageUrl: PropTypes.string,
+    }),
+    status: PropTypes.string,
+});
+
+const availableTimeShape = PropTypes.shape({
+    startTime: PropTypes.string,
+    endTime: PropTypes.string,
+});
+
+const officeShape = PropTypes.shape({
+    name: PropTypes.string,
+});
 
 DentistAppointments.propTypes = {
     reservations: PropTypes.arrayOf(
         PropTypes.shape({
-            dateCreated: PropTypes.string,
-            officeName: PropTypes.string,
-            startTime: PropTypes.string,
-            endTime: PropTypes.string,
-            location: PropTypes.string,
-            appointments: PropTypes.arrayOf(
-                PropTypes.shape({
-                    startTime: PropTypes.string,
-                    patientName: PropTypes.string,
-                    patientPhoto: PropTypes.string,
-                })
-            ),
+            id: PropTypes.string,
+            office: officeShape,
+            availableTimes: PropTypes.arrayOf(availableTimeShape),
+            numChairsSelected: PropTypes.number,
+            equipmentSelected: PropTypes.arrayOf(PropTypes.string),
+            appointments: PropTypes.arrayOf(appointmentShape),
         })
     ),
     toggleModalState: PropTypes.func.isRequired,

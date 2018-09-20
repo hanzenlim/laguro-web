@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Modal, Text, Button, Box } from '../../../../components';
+import { Modal, Text, Button, Box, Flex } from '../../../../components';
 
 const CancelReservationModal = props => {
     const { visible, onCancel, onSubmit } = props;
@@ -25,18 +25,25 @@ const CancelReservationModal = props => {
                     be made a full 24 hours prior to listing’s local check in
                     time.
                 </Text>
-                <Box mt={47} textAlign="right">
+                <Flex mt={47} justifyContent="flex-end" alignItems="center">
                     <Button
                         type="ghost"
-                        inverted
                         height="60px"
                         width={250}
                         onClick={onCancel}
-                        fontWeight="bold"
-                        fontSize={3}
                         mr={16}
                     >
-                        Cancel
+                        <Text
+                            fontWeight="bold"
+                            fontSize={3}
+                            color="text.green"
+                            border="2px solid"
+                            borderColor="divider.green"
+                            borderRadius="4px"
+                            lineHeight="54px"
+                        >
+                            Cancel
+                        </Text>
                     </Button>
                     <Button
                         height="60px"
@@ -47,7 +54,7 @@ const CancelReservationModal = props => {
                     >
                         Okay
                     </Button>
-                </Box>
+                </Flex>
             </Box>
         </Modal>
     );
