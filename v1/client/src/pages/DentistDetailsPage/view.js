@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Container, Flex, Box, Text, Sticky } from '../../components';
+import { Container, Flex, Box, Sticky } from '../../components';
 
-import DentistCard from './DentistCard';
+import FeaturedDentists from './FeaturedDentists';
 import ReviewContainer from '../common/ReviewContainer';
 import BookAppointment from '../common/BookAppointment';
 import DentistDetails from '../common/DentistDetails';
@@ -37,24 +37,7 @@ const DentistDetailsPageView = props => {
                 </Sticky>
             </Flex>
 
-            <Box mt={40}>
-                <Text fontSize={5}>similar dentists</Text>
-
-                <Flex justifyContent="space-between" mt={30}>
-                    <Box width="295px">
-                        <DentistCard />
-                    </Box>
-                    <Box width="295px">
-                        <DentistCard />
-                    </Box>
-                    <Box width="295px">
-                        <DentistCard />
-                    </Box>
-                    <Box width="295px">
-                        <DentistCard />
-                    </Box>
-                </Flex>
-            </Box>
+            <FeaturedDentists />
         </Container>
     );
 };

@@ -85,7 +85,7 @@ const LinkCard = props => {
                     </Text>
 
                     <Box mt={3}>
-                        {rating && <Rating disabled value={rating} />}
+                        <Rating disabled value={rating} />
                     </Box>
                 </Box>
             </Box>

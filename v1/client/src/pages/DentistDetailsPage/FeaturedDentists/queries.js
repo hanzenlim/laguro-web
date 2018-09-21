@@ -5,7 +5,7 @@ import { getMyPosition } from '../../../util/navigatorUtil';
 
 const DENTISTS_INDEX = 'dentists';
 const MAX_DISTANCE = '100000km';
-const MAX_SIZE = 30;
+const MAX_SIZE = 4;
 
 const getFeaturedDentists = async () => {
     const searchLocation = await getMyPosition();

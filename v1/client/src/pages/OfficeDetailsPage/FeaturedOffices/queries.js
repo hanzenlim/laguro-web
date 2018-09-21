@@ -3,14 +3,14 @@ import { get } from 'lodash';
 import esClient from '../../../util/esClient';
 import { getMyPosition } from '../../../util/navigatorUtil';
 
-const DENTISTS_INDEX = 'dentists';
+const OFFICES_INDEX = 'offices';
 const MAX_DISTANCE = '100000km';
-const MAX_SIZE = 30;
+const MAX_SIZE = 6;
 
-const getFeaturedDentists = async () => {
+const getFeaturedOffices = async () => {
     const searchLocation = await getMyPosition();
     const searchResponse = await esClient.search({
-        index: DENTISTS_INDEX,
+        index: OFFICES_INDEX,
         body: {
             query: {
                 bool: {
@@ -33,4 +33,4 @@ const getFeaturedDentists = async () => {
     return get(searchResponse, 'hits.hits');
 };
 
-export default getFeaturedDentists;
+export default getFeaturedOffices;

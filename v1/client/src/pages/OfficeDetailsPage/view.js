@@ -13,6 +13,7 @@ import OfficeDetails from '../common/OfficeDetails';
 import Payment from '../common/Payment';
 import { OFFICE } from '../../util/strings';
 import ReviewContainer from '../common/ReviewContainer';
+import FeaturedOffices from './FeaturedOffices';
 
 const renderReservationModule = () => <Payment />;
 
@@ -42,62 +43,7 @@ const OfficeDetailsPageView = props => {
                         <Payment />
                     </Sticky>
                 </Flex>
-            </Container>
-            <Container>
-                <Box mt={40}>
-                    <Text fontSize={5}>find our highlights</Text>
-
-                    <Flex justifyContent="space-between" mt={30}>
-                        <Box width="186px">
-                            <LinkCard
-                                title="Manhathan Dental"
-                                subtitle="dental emergency"
-                                address="1308 Terrace Dr Newton, KS 67114"
-                                rating={4}
-                            />
-                        </Box>
-                        <Box width="186px">
-                            <LinkCard
-                                title="Manhathan Dental"
-                                subtitle="dental emergency"
-                                address="1308 Terrace Dr Newton, KS 67114"
-                                rating={4}
-                            />
-                        </Box>
-                        <Box width="186px">
-                            <LinkCard
-                                title="Manhathan Dental"
-                                subtitle="dental emergency"
-                                address="1308 Terrace Dr Newton, KS 67114"
-                                rating={4}
-                            />
-                        </Box>
-                        <Box width="186px">
-                            <LinkCard
-                                title="Manhathan Dental"
-                                subtitle="dental emergency"
-                                address="1308 Terrace Dr Newton, KS 67114"
-                                rating={4}
-                            />
-                        </Box>
-                        <Box width="186px">
-                            <LinkCard
-                                title="Manhathan Dental"
-                                subtitle="dental emergency"
-                                address="1308 Terrace Dr Newton, KS 67114"
-                                rating={4}
-                            />
-                        </Box>
-                        <Box width="186px">
-                            <LinkCard
-                                title="Manhathan Dental"
-                                subtitle="dental emergency"
-                                address="1308 Terrace Dr Newton, KS 67114"
-                                rating={4}
-                            />
-                        </Box>
-                    </Flex>
-                </Box>
+                <FeaturedOffices />
             </Container>
         </Fragment>
     );

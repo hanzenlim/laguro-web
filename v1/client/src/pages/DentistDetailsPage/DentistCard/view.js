@@ -33,7 +33,7 @@ const DentistCard = props => {
                 </Text>
 
                 <Flex mt={10} alignItems="center">
-                    {rating && <Rating size="18px" value={rating} disabled />}
+                    <Rating size="18px" value={rating} disabled />
                     {reviewsCount && (
                         <Text
                             ml={10}
