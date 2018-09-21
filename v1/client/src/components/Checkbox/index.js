@@ -24,6 +24,11 @@ const StyledCheckbox = styled(AntdCheckbox)`
         .ant-checkbox-inner:after {
             top: 2px;
         }
+
+        .ant-checkbox-wrapper + span,
+        .ant-checkbox + span {
+            padding: 0;
+        }
     }
 `;
 
