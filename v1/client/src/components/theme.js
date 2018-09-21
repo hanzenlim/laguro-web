@@ -50,9 +50,10 @@ export default {
             white: '#ffffff',
         },
         icon: {
-            white: '#FFFFFF',
+            white: '#ffffff',
             green: '#50e3c2',
             black: '#303549',
+            gray: 'rgba(182, 182, 182, 0.7)',
             darkGray: 'rgba(0, 0, 0, 0.6)',
             lightGray: '#c7c7c7',
         },

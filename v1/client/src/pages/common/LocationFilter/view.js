@@ -8,7 +8,7 @@ import { Icon, Flex } from '../../../components';
 import { LOCATION, DENTIST } from '../../../util/strings';
 
 const StyledFlex = styled(Flex)`
-    height: 60px;
+    height: auto;
     align-items: center;
     justify-content: flex-start;
     position: relative;
@@ -88,6 +88,8 @@ const LocationFilterView = ({
     dentistResults,
     locationResults,
     withDentists,
+    onBlur,
+    onChange,
     ...rest
 }) => {
     const LocationOptions = locationResults.map(result => (
@@ -144,7 +146,9 @@ const LocationFilterView = ({
             <StyledAutocomplete
                 onSearch={handleChange}
                 onSelect={handleSuggestionSelect}
+                onBlur={onBlur}
                 value={queryString}
+                onChange={onChange}
                 placeholder="San Francisco, California"
                 backfill={true}
                 {...rest}

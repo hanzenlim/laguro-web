@@ -2,29 +2,11 @@ import React, { Component } from 'react';
 import moment from 'moment';
 import { get } from 'lodash';
 import queryString from 'query-string';
-import styled from 'styled-components';
 import CreateListing from './CreateListing';
-import {
-    Box,
-    Button,
-    Container,
-    Form,
-    Flex,
-    Text,
-    Icon,
-} from '../../../components';
+import { Box, Button, Form, Flex, Text, Icon } from '../../../components';
 import history from '../../../history';
 
 const { SubmitButton, BackButton } = Form;
-
-const Grid = styled(Box)`
-    display: grid;
-    grid-template-columns: 188px 150px 942px;
-
-    > :nth-child(4) {
-        grid-column: 1 / 4;
-    }
-`;
 
 class AddOfficeListing extends Component {
     constructor(props) {
@@ -32,12 +14,12 @@ class AddOfficeListing extends Component {
 
         this.urlParams = queryString.parse(history.location.search);
         const {
-            cleaningFee,
-            chairHourlyPrice,
-            startTime,
-            endTime,
-            numChairsAvailable,
-            name,
+            // cleaningFee,
+            // chairHourlyPrice,
+            // startTime,
+            // endTime,
+            // numChairsAvailable,
+            // name,
             officeId,
         } = this.urlParams;
 
@@ -95,53 +77,53 @@ class AddOfficeListing extends Component {
         history.push(`/landlord-onboarding/add-equipments?${params}`);
     };
 
-    async onSubmit(values) {
-        // if (
-        //     // if chosen duration is less than 2 hrs
-        //     moment(values.startTime)
-        //         .add(2, 'hours')
-        //         .isAfter(values.endTime)
-        // ) {
-        //     throw new SubmissionError({
-        //         endTime: 'Minimum reservation is 2 hours',
-        //     });
-        // } else if (!values.office) {
-        //     throw new SubmissionError({
-        //         office: 'Please select an office',
-        //         _error: 'Please select an office above',
-        //     });
-        // } else {
-        //     delete values.office;
-        //     const {
-        //         name,
-        //         location,
-        //         imageUrls,
-        //         equipment,
-        //         description,
-        //         officeId,
-        //     } = this.urlParams;
-        //     if (!this.state.isExistingOffice) {
-        //         await this.props.createOffice({
-        //             name,
-        //             location,
-        //             hostId: this.props.auth.dentistId,
-        //             imageUrls: JSON.parse(imageUrls),
-        //             equipment: JSON.parse(equipment),
-        //             description,
-        //         });
-        //     }
-        //     // if opened from an existing office, use that officeId, else use
-        //     // the newly created office's id
-        //     await this.props.createListing({
-        //         ...values,
-        //         chairHourlyPrice: values.chairHourlyPrice,
-        //         cleaningFee: values.cleaningFee,
-        //         officeId: this.state.isExistingOffice
-        //             ? officeId
-        //             : this.props.offices[0].id,
-        //     });
-        // }
-    }
+    // async onSubmit(values) {
+    // if (
+    //     // if chosen duration is less than 2 hrs
+    //     moment(values.startTime)
+    //         .add(2, 'hours')
+    //         .isAfter(values.endTime)
+    // ) {
+    //     throw new SubmissionError({
+    //         endTime: 'Minimum reservation is 2 hours',
+    //     });
+    // } else if (!values.office) {
+    //     throw new SubmissionError({
+    //         office: 'Please select an office',
+    //         _error: 'Please select an office above',
+    //     });
+    // } else {
+    //     delete values.office;
+    //     const {
+    //         name,
+    //         location,
+    //         imageUrls,
+    //         equipment,
+    //         description,
+    //         officeId,
+    //     } = this.urlParams;
+    //     if (!this.state.isExistingOffice) {
+    //         await this.props.createOffice({
+    //             name,
+    //             location,
+    //             hostId: this.props.auth.dentistId,
+    //             imageUrls: JSON.parse(imageUrls),
+    //             equipment: JSON.parse(equipment),
+    //             description,
+    //         });
+    //     }
+    //     // if opened from an existing office, use that officeId, else use
+    //     // the newly created office's id
+    //     await this.props.createListing({
+    //         ...values,
+    //         chairHourlyPrice: values.chairHourlyPrice,
+    //         cleaningFee: values.cleaningFee,
+    //         officeId: this.state.isExistingOffice
+    //             ? officeId
+    //             : this.props.offices[0].id,
+    //     });
+    // }
+    // }
 
     hideListing = () => {
         const { activeListingIndex, listings } = this.state;
@@ -198,82 +180,73 @@ class AddOfficeListing extends Component {
 
     render() {
         const { listings } = this.state;
-        const { steps } = this.props;
 
         return (
-            <Container>
-                <Grid>
-                    {steps}
-                    <Box />
-                    <Box maxWidth="667px">
+            <Box maxWidth="667px">
+                <Text
+                    fontWeight="bold"
+                    fontSize={5}
+                    lineHeight="1"
+                    letterSpacing="-0.6px"
+                    color="text.gray"
+                    mt={140}
+                    mb={18}
+                >
+                    Step 3
+                </Text>
+
+                <Text
+                    fontWeight="bold"
+                    fontSize={5}
+                    lineHeight="1"
+                    letterSpacing="-0.6px"
+                    color="text.trueBlack"
+                    mb={54}
+                >
+                    It&#39;s time to create your first listing!
+                </Text>
+                <Form>
+                    {listings}
+                    <BackButton
+                        position="absolute"
+                        type="primary"
+                        ghost
+                        width={188}
+                        height={60}
+                        top={230}
+                        right={484}
+                        buttonText="Previous"
+                    />
+
+                    <SubmitButton
+                        position="absolute"
+                        width={188}
+                        height={60}
+                        top={230}
+                        left={422}
+                        buttonText="Next"
+                    />
+                </Form>
+
+                <Button type="ghost" mt={16} ml={30}>
+                    <Flex width="100px" onClick={this.handleAddListing}>
+                        <Icon
+                            lineHeight="21px"
+                            mr={16}
+                            type="plus"
+                            fontSize="14px"
+                            color="icon.black"
+                        />
                         <Text
-                            fontWeight="bold"
-                            fontSize={5}
-                            lineHeight="1"
-                            letterSpacing="-0.6px"
-                            color="text.gray"
-                            mt={140}
-                            mb={18}
+                            fontSize={3}
+                            lineHeight={1}
+                            letterSpacing="-0.5px"
                         >
-                            Step 3
+                            Add more
                         </Text>
-
-                        <Text
-                            fontWeight="bold"
-                            fontSize={5}
-                            lineHeight="1"
-                            letterSpacing="-0.6px"
-                            color="text.trueBlack"
-                            mb={54}
-                        >
-                            It&#39;s time to create your first listing!
-                        </Text>
-                        <Form onSuccess={this.onSubmit}>
-                            {listings}
-                            <BackButton
-                                position="absolute"
-                                type="primary"
-                                ghost
-                                width={188}
-                                height={60}
-                                top={230}
-                                right={484}
-                                buttonText="Previous"
-                            />
-
-                            <SubmitButton
-                                position="absolute"
-                                width={188}
-                                height={60}
-                                top={230}
-                                left={422}
-                                buttonText="Next"
-                            />
-                        </Form>
-
-                        <Button type="ghost" mt={16} ml={30}>
-                            <Flex width="100px" onClick={this.handleAddListing}>
-                                <Icon
-                                    lineHeight="21px"
-                                    mr={16}
-                                    type="plus"
-                                    fontSize="14px"
-                                    color="icon.black"
-                                />
-                                <Text
-                                    fontSize={3}
-                                    lineHeight={1}
-                                    letterSpacing="-0.5px"
-                                >
-                                    Add more
-                                </Text>
-                            </Flex>
-                        </Button>
-                    </Box>
-
-                    <Box height={180} />
-                </Grid>
-            </Container>
+                    </Flex>
+                </Button>
+            </Box>
         );
     }
 }

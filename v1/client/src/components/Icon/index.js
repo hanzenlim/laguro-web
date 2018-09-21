@@ -3,6 +3,7 @@ import { Icon as AntdIcon } from 'antd';
 import styled from 'styled-components';
 import {
     color,
+    display,
     space,
     width,
     height,
@@ -66,12 +67,12 @@ const Icon = props => {
 
     const StyledIcon = styled(ReturnIcon)`
         && {
-            ${transform} ${color} ${space} ${width} ${height} ${position} ${color} ${fontSize} ${left} ${top} ${bottom}${right}  ${opacity} ${fontWeight};
+            ${transform} ${color} ${space} ${width} ${height} ${position} ${color} ${fontSize} ${left} ${top} ${bottom} ${right} ${opacity} ${fontWeight};
         }
     `;
 
     const StyledIconContainer = styled.span`
-        ${lineHeight} ${fontSize};
+        ${lineHeight} ${fontSize} ${height} ${display}
         ${!props.isButton &&
             (cssProps =>
                 cssProps.color
@@ -80,7 +81,9 @@ const Icon = props => {
     `;
 
     StyledIconContainer.defaultProps = {
+        display: 'inline-block',
         lineHeight: 1,
+        height: '1em',
     };
 
     StyledIcon.defaultProps = {

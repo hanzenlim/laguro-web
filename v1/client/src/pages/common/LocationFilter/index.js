@@ -83,6 +83,8 @@ class LocationFilter extends PureComponent {
                         dentistResults: formattedESResults,
                     });
 
+                    this.props.onSearch(formattedMapboxResults);
+
                     return null;
                 })
                 .catch(err => {
@@ -122,7 +124,7 @@ class LocationFilter extends PureComponent {
 
     render() {
         const { queryString, locationResults, dentistResults } = this.state;
-
+        const { onSearch, ...rest } = this.props;
         return (
             <LocationFilterView
                 queryString={queryString}
@@ -130,7 +132,7 @@ class LocationFilter extends PureComponent {
                 dentistResults={dentistResults}
                 handleChange={this.handleChange}
                 handleSuggestionSelect={this.handleSuggestionSelect}
-                {...this.props}
+                {...rest}
             />
         );
     }

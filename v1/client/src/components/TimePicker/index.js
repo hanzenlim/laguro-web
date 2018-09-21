@@ -1,4 +1,3 @@
-import React from 'react';
 import { TimePicker as AntdTimePicker } from 'antd';
 import styled from 'styled-components';
 import { height, space, propTypes } from 'styled-system';

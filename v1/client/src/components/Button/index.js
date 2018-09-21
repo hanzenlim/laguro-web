@@ -82,6 +82,7 @@ const StyledButton = styled(AntdButton)`
                     ? props.theme.colors.text.green
                     : props.theme.colors.text.white};
         }
+        line-height: 1;
         padding: 0;
         border: none;
         background-color: transparent;
@@ -122,7 +123,7 @@ const StyledButton = styled(AntdButton)`
         border-color: ${props => props.theme.colors.text.green};
     }
 
-    && span {
+    && > span {
         font-stretch: normal;
         line-height: normal;
         letter-spacing: -0.4px;

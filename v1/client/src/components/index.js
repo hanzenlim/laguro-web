@@ -32,6 +32,7 @@ import Steps from './Steps';
 import TimePicker from './TimePicker';
 import Card from './Card';
 import Tabs from './Tabs';
+import Grid from './Grid';
 
 export {
     Box,
@@ -69,4 +70,5 @@ export {
     Steps,
     InnerForm,
     Tabs,
+    Grid,
 };

@@ -49,6 +49,31 @@ export class InnerForm extends Component {
         this.props.form.setFieldsValue({ ...rest });
     }
 
+    renderWrappedChildren(children) {
+        const { form } = this.props;
+        // Traverse through all children with pretty functional way
+        return React.Children.map(children, child => {
+            // This is support for non-node elements (eg. pure text), they have no props
+            if (!child || !child.props) {
+                return child;
+            }
+
+            // If current component has additional children, traverse through them as well!
+            if (child.props.children) {
+                // You have to override also children here
+                return React.cloneElement(child, {
+                    children: this.renderWrappedChildren(child.props.children),
+                    form,
+                });
+            }
+
+            // Return new component with overridden `onChange` callback
+            return React.cloneElement(child, {
+                form,
+            });
+        });
+    }
+
     render() {
         const { form, children, ...rest } = this.props;
 
@@ -58,11 +83,8 @@ export class InnerForm extends Component {
                 hideRequiredMark={true}
                 {...rest}
             >
-                {/* add form prop to each child element */}
-                {React.Children.map(children, child => {
-                    if (!child) return null;
-                    return React.cloneElement(child, { form });
-                })}
+                {/* add form prop to each descendent element */}
+                {this.renderWrappedChildren(children)}
             </StyledForm>
         );
     }
@@ -94,6 +116,10 @@ const StyledFormInput = styled(AntFormItem)`
     }
 `;
 
+StyledFormInput.defaultProps = {
+    mb: 20,
+};
+
 // eslint-disable-next-line
 const SubmitButton = ({ form, buttonText, textAlign, ...rest }) => {
     const { getFieldsError } = form;
@@ -121,7 +147,6 @@ const FormItem = ({
     input,
     initialValue,
     validateTrigger,
-    valuePropName = 'value',
     ...rest
 }) => {
     const { getFieldDecorator, getFieldError, isFieldValidating } = form;
@@ -139,7 +164,6 @@ const FormItem = ({
                 rules,
                 validateTrigger,
                 initialValue,
-                valuePropName,
             })(input)}
         </StyledFormInput>
     );

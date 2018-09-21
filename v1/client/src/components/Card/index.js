@@ -1,4 +1,3 @@
-import React from 'react';
 import { Card as AntdCard } from 'antd';
 import styled from 'styled-components';
 import {

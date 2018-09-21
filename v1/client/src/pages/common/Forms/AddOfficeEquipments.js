@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import history from '../../../history';
 import {
     Box,
-    Container,
     Flex,
     Form,
     Icon,
@@ -16,11 +15,6 @@ import {
 // import { addTooltip } from './sharedComponents';
 const { FormItem, SubmitButton, BackButton } = Form;
 const { Option } = Select;
-
-const Grid = styled(Box)`
-    display: grid;
-    grid-template-columns: 188px 150px 942px;
-`;
 
 const StyledContainer = styled(Box)`
     form {
@@ -104,180 +98,162 @@ class AddOfficeInfo extends Component {
     };
 
     render() {
-        const { steps } = this.props;
         const { fields } = this.state;
 
         return (
-            <Container>
-                <Grid>
-                    {steps}
-                    <Box />
-                    <Box maxWidth="620px">
-                        <StyledContainer>
-                            <StyledForm onSuccess={this.onSubmit}>
-                                <Text
-                                    fontWeight="bold"
-                                    fontSize={5}
-                                    lineHeight="1"
-                                    letterSpacing="-0.6px"
-                                    color="text.gray"
-                                    mt={140}
-                                    mb={18}
-                                >
-                                    Step 2
-                                </Text>
+            <Box maxWidth="620px">
+                <StyledContainer>
+                    <StyledForm onSuccess={this.onSubmit}>
+                        <Text
+                            fontWeight="bold"
+                            fontSize={5}
+                            lineHeight="1"
+                            letterSpacing="-0.6px"
+                            color="text.gray"
+                            mt={140}
+                            mb={18}
+                        >
+                            Step 2
+                        </Text>
 
-                                <Text
-                                    fontWeight="bold"
-                                    fontSize={5}
-                                    lineHeight="1"
-                                    letterSpacing="-0.6px"
-                                    color="text.trueBlack"
-                                    mb={54}
-                                >
-                                    tell us more about your office.
-                                </Text>
+                        <Text
+                            fontWeight="bold"
+                            fontSize={5}
+                            lineHeight="1"
+                            letterSpacing="-0.6px"
+                            color="text.trueBlack"
+                            mb={54}
+                        >
+                            tell us more about your office.
+                        </Text>
 
-                                <Text
-                                    fontWeight="bold"
-                                    fontSize={4}
-                                    lineHeight="1"
-                                    letterSpacing="0px"
-                                    color="text.green"
-                                    mb={20}
-                                >
-                                    Summary
-                                </Text>
+                        <Text
+                            fontWeight="bold"
+                            fontSize={4}
+                            lineHeight="1"
+                            letterSpacing="0px"
+                            color="text.green"
+                            mb={20}
+                        >
+                            Summary
+                        </Text>
 
-                                <FormItem
-                                    name="name"
-                                    label="Office name"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message:
-                                                'Please input the name of your office',
-                                        },
-                                    ]}
-                                    input={
-                                        <TextArea
-                                            height="180px"
-                                            py={16}
-                                            px={18}
-                                            placeholder="describe your office"
-                                        />
-                                    }
+                        <FormItem
+                            name="name"
+                            label="Office name"
+                            rules={[
+                                {
+                                    required: true,
+                                    message:
+                                        'Please input the name of your office',
+                                },
+                            ]}
+                            input={
+                                <TextArea
+                                    height="180px"
+                                    py={16}
+                                    px={18}
+                                    placeholder="describe your office"
                                 />
+                            }
+                        />
 
-                                <Text
-                                    fontWeight="bold"
-                                    fontSize={4}
-                                    lineHeight="1"
-                                    letterSpacing="0px"
-                                    color="text.green"
-                                    mb={20}
-                                >
-                                    Equipment & Usage Fees
-                                </Text>
+                        <Text
+                            fontWeight="bold"
+                            fontSize={4}
+                            lineHeight="1"
+                            letterSpacing="0px"
+                            color="text.green"
+                            mb={20}
+                        >
+                            Equipment & Usage Fees
+                        </Text>
 
-                                {fields.map((equipment, index) => [
-                                    <FormItem
-                                        name={`equipment${index}`}
-                                        rules={[
-                                            {
-                                                required: true,
-                                                message:
-                                                    'please select equipment',
-                                            },
-                                        ]}
-                                        initialValue={'scanner'}
-                                        input={
-                                            <Select height={50}>
-                                                <Option value="xray">
-                                                    X-Ray
-                                                </Option>
-                                                <Option value="scanner">
-                                                    Scanner
-                                                </Option>
-                                                <Option value="cbtc">
-                                                    CBTC
-                                                </Option>
-                                            </Select>
-                                        }
-                                    />,
-                                    <FormItem
-                                        name={`equipmentPrice${index}`}
-                                        rules={[
-                                            {
-                                                required: true,
-                                                message:
-                                                    'please select equipment',
-                                            },
-                                        ]}
-                                        initialValue={'$20.00'}
-                                        input={
-                                            <Input
-                                                textAlign="right"
-                                                height="50px"
-                                                placeHolder="$20.00"
-                                            />
-                                        }
-                                    />,
-                                    <Flex
-                                        alignItems="center"
-                                        justifyContent="center"
-                                        height="100%"
-                                    >
-                                        <Icon
-                                            fontSize="18px"
-                                            data-index={index}
-                                            color="#b9b9b9"
-                                            type="close-circle"
-                                            onClick={this.removeEquipment}
-                                            cursor="pointer"
-                                        />
-                                    </Flex>,
-                                ])}
-
-                                <Flex
-                                    onClick={this.addEquipment}
-                                    cursor="pointer"
-                                >
-                                    <Icon
-                                        lineHeight="21px"
-                                        mr={16}
-                                        type="plus"
-                                        fontSize="14px"
-                                        color="icon.black"
+                        {fields.map((equipment, index) => [
+                            <FormItem
+                                name={`equipment${index}`}
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'please select equipment',
+                                    },
+                                ]}
+                                initialValue={'scanner'}
+                                input={
+                                    <Select height={50}>
+                                        <Option value="xray">X-Ray</Option>
+                                        <Option value="scanner">Scanner</Option>
+                                        <Option value="cbtc">CBTC</Option>
+                                    </Select>
+                                }
+                            />,
+                            <FormItem
+                                name={`equipmentPrice${index}`}
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'please select equipment',
+                                    },
+                                ]}
+                                initialValue={'$20.00'}
+                                input={
+                                    <Input
+                                        textAlign="right"
+                                        height="50px"
+                                        placeHolder="$20.00"
                                     />
-                                    <Box> Add more</Box>{' '}
-                                </Flex>
-
-                                <BackButton
-                                    ghost
-                                    position="absolute"
-                                    width={188}
-                                    height={60}
-                                    top={230}
-                                    right={650}
-                                    buttonText="Previous"
+                                }
+                            />,
+                            <Flex
+                                alignItems="center"
+                                justifyContent="center"
+                                height="100%"
+                            >
+                                <Icon
+                                    fontSize="18px"
+                                    data-index={index}
+                                    color="icon.white"
+                                    type="close-circle"
+                                    onClick={this.removeEquipment}
+                                    cursor="pointer"
                                 />
+                            </Flex>,
+                        ])}
 
-                                <SubmitButton
-                                    position="absolute"
-                                    width={188}
-                                    height={60}
-                                    top={230}
-                                    left={180}
-                                    buttonText="Next"
-                                />
+                        <Flex onClick={this.addEquipment} cursor="pointer">
+                            <Icon
+                                lineHeight="21px"
+                                mr={16}
+                                type="plus"
+                                fontSize="14px"
+                                color="icon.black"
+                            />
+                            <Box>Add more</Box>
+                        </Flex>
 
-                                <Box height={300} />
-                            </StyledForm>
-                        </StyledContainer>
-                    </Box>
-                </Grid>
-            </Container>
+                        <BackButton
+                            ghost
+                            position="absolute"
+                            width={188}
+                            height={60}
+                            top={230}
+                            right={650}
+                            buttonText="Previous"
+                        />
+
+                        <SubmitButton
+                            position="absolute"
+                            width={188}
+                            height={60}
+                            top={230}
+                            left={180}
+                            buttonText="Next"
+                        />
+
+                        <Box height={300} />
+                    </StyledForm>
+                </StyledContainer>
+            </Box>
         );
     }
 }
