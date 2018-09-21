@@ -19,14 +19,14 @@ const StyledCard = styled(AntdCard)`
     &.ant-card-bordered {
         border-radius: 4px;
         box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
-        ${space}
     }
 
     & .ant-card-body {
         padding: 28px 28px;
-        ${width} 
+        ${space}
+        ${width}
         ${color}
-        ${height} 
+        ${height}
         ${borders};
         ${position};
         ${left};

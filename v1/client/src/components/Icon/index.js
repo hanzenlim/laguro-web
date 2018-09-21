@@ -19,8 +19,10 @@ import {
     propTypes,
     lineHeight,
 } from 'styled-system';
+
 import LocationPin from './LocationPin';
 import LocationPinWithBackground from './LocationPinWithBackground';
+import LocationPinWithFill from './LocationPinWithFill';
 import LeftArrow from './LeftArrow';
 import RightArrow from './RightArrow';
 import Plus from './Plus';
@@ -52,6 +54,9 @@ const Icon = props => {
         case 'locationPinWithBackground':
             ReturnIcon = LocationPinWithBackground;
             break;
+        case 'locationPinWithFill':
+            ReturnIcon = LocationPinWithFill;
+            break;
         case 'coloredPlus':
             ReturnIcon = Plus;
             break;
@@ -67,12 +72,26 @@ const Icon = props => {
 
     const StyledIcon = styled(ReturnIcon)`
         && {
-            ${transform} ${color} ${space} ${width} ${height} ${position} ${color} ${fontSize} ${left} ${top} ${bottom} ${right} ${opacity} ${fontWeight};
+            ${transform};
+            ${color};
+            ${space};
+            ${width};
+            ${height};
+            ${position};
+            ${color};
+            ${fontSize};
+            ${left};
+            ${top};
+            ${bottom};
+            ${right};
+            ${opacity};
+            ${fontWeight};
         }
     `;
 
     const StyledIconContainer = styled.span`
-        ${lineHeight} ${fontSize} ${height} ${display}
+        ${lineHeight};
+        ${fontSize};
         ${!props.isButton &&
             (cssProps =>
                 cssProps.color

@@ -101,6 +101,7 @@ class CreateListing extends Component {
                     type="ghost"
                     mb={10}
                 >
+                    {/* TODO: Make props here explicit */}
                     <Card {...rest}>
                         <Flex justifyContent="space-between">
                             <Flex
