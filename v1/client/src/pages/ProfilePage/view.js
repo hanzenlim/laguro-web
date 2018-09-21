@@ -8,6 +8,7 @@ import DentistDetails from '../common/DentistDetails';
 import OfficeDetails from '../common/OfficeDetails';
 import ReviewContainer from '../common/ReviewContainer';
 import HostListings from '../common/HostListings';
+import DentistAppointments from '../common/DentistAppointments';
 import {
     DENTIST,
     OFFICE,
@@ -19,6 +20,7 @@ import {
     PAYMENTS,
     BALANCE,
     PUBLIC_PROFILE,
+    MY_BOOKINGS,
 } from '../../util/strings';
 
 const Grid = styled(Box)`
@@ -56,6 +58,8 @@ class ProfileView extends Component {
                 );
             case MY_LISTINGS:
                 return <HostListings />;
+            case MY_BOOKINGS:
+                return <DentistAppointments />;
             case PAYMENTS:
                 return (
                     <Text fontSize={4} color="inherit" lineHeight="40px">
@@ -133,6 +137,17 @@ class ProfileView extends Component {
                                         lineHeight="40px"
                                     >
                                         my listings
+                                    </Text>
+                                </Menu.Item>
+                            )}
+                            {persona === DENTIST && (
+                                <Menu.Item key={MY_BOOKINGS}>
+                                    <Text
+                                        fontSize={4}
+                                        color="inherit"
+                                        lineHeight="40px"
+                                    >
+                                        my bookings
                                     </Text>
                                 </Menu.Item>
                             )}

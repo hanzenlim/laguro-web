@@ -61,6 +61,7 @@ export const PAYMENTS = 'payments';
 export const BALANCE = 'balance';
 export const PUBLIC_PROFILE = 'public_profile';
 export const MY_LISTINGS = 'my_listings';
+export const MY_BOOKINGS = 'my_bookings';
 
 // Payment method
 export const NEW_CARD_PAYMENT_METHOD = 'NEW_CARD_PAYMENT_METHOD';
