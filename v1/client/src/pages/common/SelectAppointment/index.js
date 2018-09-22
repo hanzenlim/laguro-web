@@ -17,10 +17,8 @@ class SelectAppointmentContainer extends PureComponent {
 
     handleSelect = event => {
         if (get(this, 'props.data.activeUser') === null) {
-            const writeData = get(this, 'props.client.writeData');
-
-            if (writeData) {
-                writeData({
+            if (get(this, 'props.client.writeData')) {
+                this.props.client.writeData({
                     data: { visibleModal: 'login' },
                 });
                 return null;
@@ -35,6 +33,8 @@ class SelectAppointmentContainer extends PureComponent {
         if (this.props.onSelect) {
             this.props.onSelect(selected);
         }
+
+        return null;
     };
 
     render() {
