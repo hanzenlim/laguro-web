@@ -48,6 +48,10 @@ export const RESERVATION_PAYMENT_TYPE = 'RESERVATION';
 export const APPOINTMENT_PAYMENT_TYPE = 'APPOINTMENT';
 export const PROCEDURE_PAYMENT_TYPE = 'PROCEDURE';
 export const EQUIPMENT_PAYMENT_TYPE = 'EQUIPMENT';
+export const BOOKING_FEE_PAYMENT_TYPE = 'BOOKING_FEE';
+export const MATERIAL_PAYMENT_TYPE = 'MATERIAL';
+export const CLEANING_FEE_PAYMENT_TYPE = 'CLEANING_FEE';
+export const CHAIR_TIME_PAYMENT_TYPE = 'CHAIR_TIME';
 
 export const AVAILABLE = 'available';
 
@@ -69,7 +73,14 @@ export const MY_BOOKINGS = 'my_bookings';
 export const NEW_CARD_PAYMENT_METHOD = 'NEW_CARD_PAYMENT_METHOD';
 
 // Payment history
-export const PAYMENT_MADE = 'PAYMENT MADE';
+export const PAYMENT = 'PAYMENT';
+export const PAYMENT_CARD = 'PAYMENT';
+export const BALANCE_CARD = 'BALANCE';
+export const PAYMENT_REFUNDED = 'refunded';
+export const PAYMENT_WITHDRAWN = 'withdrawn';
+export const PAYMENT_AVAILABLE = 'available';
+export const PAYMENT_PENDING = 'pending';
+export const PAYMENT_MADE = 'payment made';
 export const PAYMENT_RECEIVED = 'PAYMENT RECEIVED';
 export const RESERVATION_CANCELLED_BY_DENTIST =
     'Reservation cancelled by dentist';

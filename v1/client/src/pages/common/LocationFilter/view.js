@@ -16,8 +16,8 @@ const StyledFlex = styled(Flex)`
 
 const StyledIcon = styled(Icon)`
     position: absolute;
-    top: 20px;
-    left: 15px;
+    top: 10px;
+    left: 9px;
     z-index: ${props => props.theme.zIndex.inputElement};
 `;
 

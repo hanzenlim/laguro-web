@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import queryString from 'query-string';
+import history from '../../history';
 
 import { Box, Container, Text } from '../../components/';
 import UpdateProfileForm from '../../pages/common/Forms/UpdateProfileForm';
@@ -9,6 +11,8 @@ import UpdateDentistProfileForm from '../../pages/common/Forms/UpdateDentistProf
 import OfficeDetails from '../common/OfficeDetails';
 import ReviewContainer from '../common/ReviewContainer';
 import HostListings from '../common/HostListings';
+import PaymentHistory from '../common/PaymentHistory';
+import BalanceHistory from '../common/BalanceHistory';
 import DentistAppointments from '../common/DentistAppointments';
 import PatientAppointments from '../common/PatientAppointments';
 import {
@@ -35,15 +39,29 @@ const Grid = styled(Box)`
 class ProfileView extends Component {
     constructor(props) {
         super(props);
-        this.state = { panel: this.renderPanel(MY_PROFILE) };
+
+        const params = queryString.parse(window.location.search);
+        const panelName = params.selectedTab;
+
+        this.state = {
+            panelName,
+            panel: this.renderPanel(panelName || MY_PROFILE),
+        };
     }
 
     handleClick = ({ key }) => {
+        const params = queryString.parse(window.location.search);
+        const newParams = queryString.stringify({
+            ...params,
+            selectedTab: key,
+        });
+        history.push(`/profile?${newParams}`);
         this.setState({ panel: this.renderPanel(key) });
     };
 
     renderPanel = key => {
-        const { persona, dentistId, offices } = this.props;
+        const { persona, dentistId, offices, userId } = this.props;
+
         switch (key) {
             case MY_PROFILE:
                 return <UpdateProfileForm />;
@@ -60,23 +78,16 @@ class ProfileView extends Component {
             case MY_BOOKINGS:
                 return <DentistAppointments />;
             case PAYMENTS:
-                return (
-                    <Text fontSize={4} color="inherit" lineHeight="40px">
-                        Payment
-                    </Text>
-                );
+                return <PaymentHistory userId={userId} />;
             case BALANCE:
-                return (
-                    <Text fontSize={4} color="inherit" lineHeight="40px">
-                        Balance
-                    </Text>
-                );
+                return <BalanceHistory userId={userId} />;
             case DENTIST_PROFILE:
                 return (
                     <Box>
                         <UpdateDentistProfileForm />
                     </Box>
                 );
+
             case PUBLIC_PROFILE:
                 return persona === DENTIST ? (
                     <Box>
@@ -104,7 +115,7 @@ class ProfileView extends Component {
     };
 
     render() {
-        const { panel } = this.state;
+        const { panel, panelName = MY_PROFILE } = this.state;
         const { persona } = this.props;
 
         return (
@@ -112,7 +123,7 @@ class ProfileView extends Component {
                 <Grid mt={70}>
                     <Box>
                         <Menu
-                            defaultSelectedKeys={[MY_PROFILE]}
+                            defaultSelectedKeys={[panelName]}
                             onClick={this.handleClick}
                         >
                             <Menu.Item key={MY_PROFILE}>

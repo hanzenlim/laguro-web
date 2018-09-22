@@ -1,12 +1,16 @@
 import React from 'react';
 import { Select as AntdSelect } from 'antd';
 import styled from 'styled-components';
+import { width } from 'styled-system';
 
 const StyledSelect = styled(AntdSelect)`
     .ant-select-selection {
+        border-radius: 2px;
+        border-color: ${props => props.theme.colors.divider.gray};
         display: flex;
         align-items: center;
         height: 50px;
+        ${width};
     }
 
     .ant-select-selection__rendered {

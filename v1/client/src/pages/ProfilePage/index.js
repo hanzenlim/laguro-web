@@ -55,12 +55,12 @@ const ProfileContainer = () => (
                         } else {
                             persona = PATIENT;
                         }
-
                         return (
                             <ProfileView
                                 persona={persona}
                                 dentistId={dentistId}
                                 offices={offices}
+                                userId={id}
                             />
                         );
                     }}

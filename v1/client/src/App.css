@@ -11,3 +11,23 @@
 [role="button"] {
   cursor: pointer;
 }
+
+@media print {
+    .ant-modal {
+        margin: 0;
+        border: none;
+        box-shadow: none;
+    }
+
+    .ant-modal-content {
+        box-shadow: none;
+    }
+
+    .ant-modal-close-x * {
+        display: none;
+    }
+
+    .print-btn * {
+        display: none;
+    }
+}

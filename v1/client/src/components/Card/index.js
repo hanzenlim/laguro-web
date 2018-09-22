@@ -17,7 +17,7 @@ import {
 
 const StyledCard = styled(AntdCard)`
     &.ant-card-bordered {
-        border-radius: 4px;
+        border-radius: 2px;
         box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
     }
 
@@ -35,6 +35,10 @@ const StyledCard = styled(AntdCard)`
         ${bottom};
         ${opacity};
         ${zIndex};
+    }
+
+    && {
+        ${width}
     }
 `;
 

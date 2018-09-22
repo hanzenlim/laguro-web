@@ -24,7 +24,7 @@ const StyledContainer = styled.div`
     .ant-input-affix-wrapper {
         height: 100%;
         width: 100%;
-        padding: 5px 15px 5px 5px;
+        padding: 5px 20px 5px 5px;
 
         .ant-input-suffix {
             visibility: hidden;
