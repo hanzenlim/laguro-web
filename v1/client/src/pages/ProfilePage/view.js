@@ -9,6 +9,7 @@ import OfficeDetails from '../common/OfficeDetails';
 import ReviewContainer from '../common/ReviewContainer';
 import HostListings from '../common/HostListings';
 import DentistAppointments from '../common/DentistAppointments';
+import PatientAppointments from '../common/PatientAppointments';
 import {
     DENTIST,
     OFFICE,
@@ -51,11 +52,7 @@ class ProfileView extends Component {
                     </Text>
                 );
             case MY_APPOINTMENTS:
-                return (
-                    <Text fontSize={4} color="inherit" lineHeight="40px">
-                        My appointments
-                    </Text>
-                );
+                return <PatientAppointments />;
             case MY_LISTINGS:
                 return <HostListings />;
             case MY_BOOKINGS:
