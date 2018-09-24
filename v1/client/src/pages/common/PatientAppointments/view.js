@@ -6,6 +6,7 @@ import isEmpty from 'lodash/isEmpty';
 import { Box, Text, Flex, Image, Button } from '../../../components';
 
 import { CANCELLED } from '../../../util/strings';
+import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
 
 class PatientAppointments extends PureComponent {
     renderAppointments = appointments =>
@@ -37,7 +38,7 @@ class PatientAppointments extends PureComponent {
                             </Text>
                         </Box>
                         <Image
-                            src={imageUrl}
+                            src={imageUrl || defaultUserImage}
                             alt={dentistName}
                             width={48}
                             height={48}

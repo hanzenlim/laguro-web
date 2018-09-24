@@ -19,6 +19,7 @@ import {
 import { filestackKey } from '../../../../config/keys';
 import { profileImageRatio } from '../../../../util/uiUtil';
 import { USER_PHOTOS_CONTAINER } from '../../../../util/strings';
+import defaultUserImage from '../../../../components/Image/defaultUserImage.svg';
 
 const { FormItem, SubmitButton } = Form;
 
@@ -78,7 +79,9 @@ const UpdateProfileForm = props => {
                         borderRadius="50%"
                         width={200}
                         height={200}
-                        src={newProfileImage || data.imageUrl}
+                        src={
+                            newProfileImage || data.imageUrl || defaultUserImage
+                        }
                     />
                     <ReactFilestack
                         apikey={filestackKey}

@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import moment from 'moment';
 
 import { Box, Tabs, Text, Flex, Image, Button } from '../../../components';
+import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
 
 const { TabPane } = Tabs;
 const StyledList = styled.ul`
@@ -143,7 +144,7 @@ class HostListings extends PureComponent {
                 >
                     <Flex alignItems="center">
                         <Image
-                            src={imageUrl}
+                            src={imageUrl || defaultUserImage}
                             alt={name}
                             width={38}
                             height={38}

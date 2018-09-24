@@ -7,6 +7,7 @@ import isEmpty from 'lodash/isEmpty';
 import { Box, Text, Flex, Image, Button } from '../../../components';
 
 import { CANCELLED } from '../../../util/strings';
+import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
 
 const StyledList = styled.ul`
     ${props => props.columns && `columns: ${props.columns}`};
@@ -148,7 +149,7 @@ class DentistAppointments extends PureComponent {
                         <Text>{name}</Text>
                     </Flex>
                     <Image
-                        src={patient.imageUrl}
+                        src={patient.imageUrl || defaultUserImage}
                         alt={name}
                         width={38}
                         height={38}
