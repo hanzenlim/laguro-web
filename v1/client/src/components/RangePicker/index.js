@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
-import moment from 'moment';
 import { DatePicker as AntdDatePicker } from 'antd';
 import { Flex, Text, Box, Icon } from '../../components';
 
@@ -74,14 +73,6 @@ class RangePicker extends PureComponent {
     render() {
         const { value, ...rest } = this.props;
         const compValue = value;
-        // if (value && typeof value[0] === 'string') {
-        //     compValue[0] = moment(value[0]);
-        //     compValue[1] = moment(value[1]);
-        // } else {
-        //     compValue = value;
-        // }
-        console.log('styledrangePIcker', this.props);
-        console.log('value in rangePicker', value);
 
         return (
             <StyledContainer {...rest}>

@@ -2,18 +2,19 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Query, Mutation } from 'react-apollo';
 import queryString from 'query-string';
-import { renderCents } from '../../util/paymentUtil';
 import moment from 'moment';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 import pick from 'lodash/pick';
 import _mapValues from 'lodash/mapValues';
+import { renderCents } from '../../util/paymentUtil';
 import { GET_USER, CREATE_OFFICE, CREATE_LISTING } from './queries';
 import history from '../../history';
-import { Container, Steps, Form, Grid } from '../../components';
+import { Button, Container, Steps, Form, Grid } from '../../components';
 import AddOfficeInfo from '../common/Forms/AddOfficeInfo';
 import AddOfficeEquipments from '../common/Forms/AddOfficeEquipments';
 import AddOfficeListing from '../common/Forms/AddOfficeListing';
+import ListingConfirmation from '../common/ListingConfirmation';
 
 const { GridItem } = Grid;
 
@@ -78,12 +79,12 @@ class HostOnboarding extends Component {
         } = urlParams;
 
         const equipment = Object.keys(urlParams)
-            .filter(key => key.startsWith('equipmentName'))
+            .filter(key => key.startsWith('equipmentPrice'))
             .map(key => ({
                 name: urlParams[key],
                 price: renderCents(
                     urlParams[
-                        `${EQUIPMENT_PRICE}${key.slice(EQUIPMENT_NAME.length)}`
+                        `${EQUIPMENT_NAME}${key.slice(EQUIPMENT_PRICE.length)}`
                     ]
                 ),
             }));
@@ -110,6 +111,10 @@ class HostOnboarding extends Component {
             });
         }
 
+        if (stepList.indexOf(step) === stepList.length - 2) {
+            return;
+        }
+
         const nextStep = stepList[stepList.indexOf(step) + 1];
         const url = `/host-onboarding/${nextStep}?${this.computeParams(
             values,
@@ -120,6 +125,8 @@ class HostOnboarding extends Component {
     };
 
     handleOfficeCreated = (id, batchCreateListings) => {
+        const { step } = this.props.match.params;
+
         const listings = Object.keys(this.values)
             .filter(key => key.startsWith('availability'))
             .map(key => {
@@ -165,6 +172,13 @@ class HostOnboarding extends Component {
                 input: listings,
             },
         });
+
+        const nextStep = stepList[stepList.indexOf(step) + 1];
+        const url = `/host-onboarding/${nextStep}?${queryString.stringify({
+            officeId: id,
+        })}`;
+
+        history.push(url);
     };
 
     handleBack = values => {
@@ -189,9 +203,16 @@ class HostOnboarding extends Component {
             Object.keys(urlParams).filter(key => !key.startsWith('equipment'))
         );
 
-        const computedUrlParams =
-            step === EQUIPMENT_STEP ? urlParamsEquipment : urlParams;
-        // equipment needs to be changed in form
+        let computedUrlParams;
+
+        switch (step) {
+            case EQUIPMENT_STEP:
+                computedUrlParams = urlParamsEquipment;
+                break;
+            default:
+                computedUrlParams = urlParams;
+        }
+
         const { ...restOfValues } = values;
         const dateTime = _mapValues(
             pick(
@@ -228,6 +249,10 @@ class HostOnboarding extends Component {
         return params;
     };
 
+    handleDone = () => {
+        this.props.history.push('/profile');
+    };
+
     // isExistingOffice is true if officeId defined (when adding new listing)
     // isExistingOffice() {
     //     this.urlParams = queryString.parse(history.location.search);
@@ -239,6 +264,8 @@ class HostOnboarding extends Component {
     render() {
         const { historyLocationSearch, submitDisabled } = this.state;
         const urlParams = queryString.parse(historyLocationSearch);
+        const { location } = this.props;
+        console.log('match', location);
         const { step } = this.props.match.params;
         let stepCount;
 
@@ -353,6 +380,13 @@ class HostOnboarding extends Component {
                                                             {...initialValues}
                                                         />
                                                     )}
+
+                                                    {step ===
+                                                        CONFIRMATION_STEP && (
+                                                        <ListingConfirmation
+                                                            location={location}
+                                                        />
+                                                    )}
                                                 </GridItem>
                                                 {step !== OFFICE_STEP &&
                                                     step !==
@@ -373,17 +407,33 @@ class HostOnboarding extends Component {
                                                         </GridItem>
                                                     )}
 
-                                                <GridItem gc="3 / 4">
-                                                    <SubmitButton
-                                                        disabled={
-                                                            submitDisabled
-                                                        }
-                                                        position="absolute"
-                                                        width={188}
-                                                        height={60}
-                                                        buttonText="Next"
-                                                    />
-                                                </GridItem>
+                                                {step !== CONFIRMATION_STEP ? (
+                                                    <GridItem gc="3 / 4">
+                                                        <SubmitButton
+                                                            // disabled={
+                                                            //     submitDisabled
+                                                            // }
+                                                            position="absolute"
+                                                            width={188}
+                                                            height={60}
+                                                            buttonText="Next"
+                                                        />
+                                                    </GridItem>
+                                                ) : (
+                                                    <GridItem gc="3 / 4">
+                                                        <Button
+                                                            position="absolute"
+                                                            type="primary"
+                                                            onClick={
+                                                                this.handleDone
+                                                            }
+                                                            width={188}
+                                                            height={60}
+                                                        >
+                                                            Done{' '}
+                                                        </Button>
+                                                    </GridItem>
+                                                )}
                                             </Grid>
                                         </Form>
                                     </StyledContainer>
