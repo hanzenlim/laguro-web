@@ -46,9 +46,9 @@ const ListingConfirmation = props => {
                 ({
                     id,
                     availability,
-                    equipments,
                     numChairsAvailable,
                     chairHourlyPrice,
+                    cleaningFee,
                 }) => (
                     <Box
                         key={id}
@@ -79,31 +79,7 @@ const ListingConfirmation = props => {
                         >
                             {availability}
                         </Text>
-                        <Text
-                            fontSize={4}
-                            fontWeight="bold"
-                            color="text.gray"
-                            lineHeight={1}
-                            pb={14}
-                            mt={10}
-                            borderBottom="1px solid"
-                            borderColor="divider.dustyGray"
-                            mb={20}
-                        >
-                            EQUIPMENTS
-                        </Text>
-                        {equipments.map((item, index) => (
-                            <Text
-                                key={index}
-                                fontSize={2}
-                                fontWeight="500"
-                                color="text.black"
-                                lineHeight={1}
-                                pb={18}
-                            >
-                                {item}
-                            </Text>
-                        ))}
+
                         <Flex justifyContent="space-between">
                             <Box width="256px">
                                 <Text
@@ -159,6 +135,27 @@ const ListingConfirmation = props => {
                                 </Text>
                             </Box>
                         </Flex>
+
+                        <Text
+                            fontSize={4}
+                            fontWeight="bold"
+                            color="text.gray"
+                            mt={10}
+                            pb={14}
+                            borderBottom="1px solid"
+                            borderColor="divider.dustyGray"
+                            mb={20}
+                        >
+                            CLEANING FEE
+                        </Text>
+                        <Text
+                            fontSize={2}
+                            fontWeight="500"
+                            color="text.black"
+                            pb={18}
+                        >
+                            {cleaningFee}
+                        </Text>
                     </Box>
                 )
             )}

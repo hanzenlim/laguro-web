@@ -6,6 +6,7 @@ import queryString from 'query-string';
 import ListingConfirmationView from './view';
 import { Loading } from '../../../components';
 import { getOfficeQuery } from './queries';
+import { renderPrice } from '../../../util/paymentUtil';
 
 const mapListings = (listings, equipment) =>
     listings.map(
@@ -13,6 +14,7 @@ const mapListings = (listings, equipment) =>
             id,
             availability: { startTime, endTime, startDay, endDay },
             numChairsAvailable,
+            cleaningFee,
             chairHourlyPrice,
         }) => {
             const startDate = `${startDay}T${startTime}`;
@@ -26,6 +28,7 @@ const mapListings = (listings, equipment) =>
             return {
                 id,
                 availability: formattedAvailability,
+                cleaningFee: renderPrice(cleaningFee),
                 equipments: equipment.map(item => item.name),
                 numChairsAvailable,
                 chairHourlyPrice: chairHourlyPrice.toFixed(2),

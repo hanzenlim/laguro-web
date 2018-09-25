@@ -125,8 +125,6 @@ class HostOnboarding extends Component {
     };
 
     handleOfficeCreated = (id, batchCreateListings) => {
-        const { step } = this.props.match.params;
-
         const listings = Object.keys(this.values)
             .filter(key => key.startsWith('availability'))
             .map(key => {
@@ -173,10 +171,15 @@ class HostOnboarding extends Component {
             },
         });
 
-        const nextStep = stepList[stepList.indexOf(step) + 1];
-        const url = `/host-onboarding/${nextStep}?${queryString.stringify({
-            officeId: id,
-        })}`;
+        this.officeId = id;
+    };
+
+    handleListingCreated = () => {
+        const url = `/host-onboarding/${CONFIRMATION_STEP}?${queryString.stringify(
+            {
+                officeId: this.officeId,
+            }
+        )}`;
 
         history.push(url);
     };
@@ -265,7 +268,6 @@ class HostOnboarding extends Component {
         const { historyLocationSearch, submitDisabled } = this.state;
         const urlParams = queryString.parse(historyLocationSearch);
         const { location } = this.props;
-        console.log('match', location);
         const { step } = this.props.match.params;
         let stepCount;
 
@@ -319,7 +321,10 @@ class HostOnboarding extends Component {
         return (
             <Query query={GET_USER}>
                 {({ data: userData }) => (
-                    <Mutation mutation={CREATE_LISTING}>
+                    <Mutation
+                        mutation={CREATE_LISTING}
+                        onCompleted={this.handleListingCreated}
+                    >
                         {batchCreateListings => (
                             <Mutation
                                 mutation={CREATE_OFFICE}
