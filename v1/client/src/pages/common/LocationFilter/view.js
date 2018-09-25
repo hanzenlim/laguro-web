@@ -16,8 +16,6 @@ const StyledFlex = styled(Flex)`
 
 const StyledIcon = styled(Icon)`
     position: absolute;
-    top: 10px;
-    left: 9px;
     z-index: ${props => props.theme.zIndex.inputElement};
 `;
 
@@ -142,7 +140,14 @@ const LocationFilterView = ({
 
     return (
         <StyledFlex>
-            <StyledIcon type="environment-o" color="icon.green" fontSize={4} />
+            <StyledIcon
+                width={20}
+                height={20}
+                ml={14}
+                type="environment-o"
+                color="icon.green"
+                fontSize={4}
+            />
             <StyledAutocomplete
                 onSearch={handleChange}
                 onSelect={handleSuggestionSelect}

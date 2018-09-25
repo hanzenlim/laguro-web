@@ -34,19 +34,27 @@ class AddOfficeInfo extends Component {
         };
     }
 
+    // this is to trigger an update of add-office step when getOffice data arrives
+    componentDidUpdate(prevProps) {
+        if (this.props.officeName !== prevProps.officeName) {
+            this.props.form.setFieldsValue(this.props);
+            this.setState({ imageUrls: this.props.imageUrls });
+        }
+    }
+
     componentWillMount() {
         document.title = 'Laguro - New Office';
     }
 
     handleLocationChange = location => {
-        const { onSelect } = this.props;
+        const { handleSelect } = this.props;
         this.setState({
             locationLat: get(location, 'lat'),
             locationLong: get(location, 'long'),
         });
 
-        if (onSelect) {
-            onSelect();
+        if (handleSelect && !isEmpty(location)) {
+            handleSelect();
         }
 
         this.checkIfAutoCompleteHasError();
@@ -87,7 +95,7 @@ class AddOfficeInfo extends Component {
     };
 
     removeImage = e => {
-        const { url } = e.target.dataset;
+        const { url } = e.currentTarget.dataset;
         this.setState({
             imageUrls: this.state.imageUrls.filter(item => item !== url),
         });
@@ -95,39 +103,41 @@ class AddOfficeInfo extends Component {
 
     renderUploadedImages = () => {
         const { imageUrls } = this.state;
-
-        return imageUrls.map((url, index) => (
-            <Box
-                position="relative"
-                width={imageBoxHeight}
-                height={imageBoxHeight}
-            >
-                <Image
-                    src={url}
-                    key={`img${index}`}
-                    alt="office"
-                    width="100%"
-                    height="100%"
-                    objectFit="cover"
-                />
-                <Button
-                    type="ghost"
-                    position="absolute"
-                    top="-9px"
-                    right="-9px"
+        return (
+            !isEmpty(imageUrls) &&
+            imageUrls.map((url, index) => (
+                <Box
+                    position="relative"
+                    width={imageBoxHeight}
+                    height={imageBoxHeight}
                 >
-                    <Box bg="background.white" borderRadius="9px">
-                        <Icon
-                            fontSize={3}
-                            data-url={url}
-                            color="icon.lightGray"
-                            type="close-circle"
-                            onClick={this.removeImage}
-                        />
-                    </Box>
-                </Button>
-            </Box>
-        ));
+                    <Image
+                        src={url}
+                        key={`img${index}`}
+                        alt="office"
+                        width="100%"
+                        height="100%"
+                        objectFit="cover"
+                    />
+                    <Button
+                        type="ghost"
+                        position="absolute"
+                        top="-9px"
+                        right="-9px"
+                        data-url={url}
+                        onClick={this.removeImage}
+                    >
+                        <Box bg="background.white" borderRadius="9px">
+                            <Icon
+                                fontSize={3}
+                                color="icon.lightGray"
+                                type="close-circle"
+                            />
+                        </Box>
+                    </Button>
+                </Box>
+            ))
+        );
     };
 
     handleSearch = options => {
@@ -157,7 +167,7 @@ class AddOfficeInfo extends Component {
 
     // {addTooltip('Upload images of your office. The first image will show up on search results.')}
     render() {
-        const { form, ...rest } = this.props;
+        const { form, locationDisabled, ...rest } = this.props;
         const { autoCompleteHasError } = this.state;
 
         return (
@@ -236,44 +246,51 @@ class AddOfficeInfo extends Component {
                             }
                         />
                     </GridItem>
-                    <GridItem gc="all">
-                        <FormItem
-                            name="location"
-                            label="Location"
-                            rules={[
-                                {
-                                    required: true,
-                                    message:
-                                        'Please input the address of your office',
-                                },
-                            ]}
-                            input={
-                                <LocationFilter
-                                    withDentists={false}
-                                    onLocationChange={this.handleLocationChange}
-                                    onBlur={this.handleBlur}
-                                    onChange={this.handleChange}
-                                    onSearch={this.handleSearch}
-                                    height={50}
-                                    type="hostOnboarding"
-                                />
-                            }
-                        />
-                        <Box>
-                            {autoCompleteHasError && (
-                                <Box mt={-18} mb={20}>
-                                    {this.renderError()}
-                                </Box>
-                            )}
-                        </Box>
-                    </GridItem>
-                    <GridItem gc="1/2">
-                        <FormItem
-                            name="addressDetail"
-                            label="Apartment, suite, unit, etc."
-                            input={<Input height="50px" placeHolder="" />}
-                        />
-                    </GridItem>
+                    {/* for edit office mode, location is disabled */}
+                    {!locationDisabled && (
+                        <GridItem gc="all">
+                            <FormItem
+                                name="location"
+                                label="Location"
+                                rules={[
+                                    {
+                                        required: true,
+                                        message:
+                                            'Please input the address of your office',
+                                    },
+                                ]}
+                                input={
+                                    <LocationFilter
+                                        withDentists={false}
+                                        onLocationChange={
+                                            this.handleLocationChange
+                                        }
+                                        onBlur={this.handleBlur}
+                                        onChange={this.handleChange}
+                                        onSearch={this.handleSearch}
+                                        height={50}
+                                        type="hostOnboarding"
+                                    />
+                                }
+                            />
+                            <Box>
+                                {autoCompleteHasError && (
+                                    <Box mt={-18} mb={20}>
+                                        {this.renderError()}
+                                    </Box>
+                                )}
+                            </Box>
+                        </GridItem>
+                    )}
+                    {!locationDisabled && (
+                        <GridItem gc="1/2">
+                            <FormItem
+                                name="addressDetail"
+                                label="Apartment, suite, unit, etc."
+                                input={<Input height="50px" placeHolder="" />}
+                            />
+                        </GridItem>
+                    )}
                     <GridItem gc="all">
                         <FormItem
                             name="photos"

@@ -7,7 +7,7 @@ const ListingConfirmation = props => {
     const { name, address, listings, equipment } = props;
 
     return (
-        <Box width={668}>
+        <Box width={668} mt={140}>
             <Text
                 fontSize={5}
                 fontWeight="bold"
