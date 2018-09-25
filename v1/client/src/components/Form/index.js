@@ -25,13 +25,22 @@ const StyledForm = styled(AntdForm)`
 
 // use this component and pass in a 'form' prop to allow multiple forms within an outer form
 export class InnerForm extends Component {
+    constructor(props) {
+        super(props);
+
+        this.state = { submitting: false };
+    }
+
     handleSubmit = event => {
         event.preventDefault();
-        this.props.form.validateFields(async (validationError, values) => {
-            if (!validationError) {
+
+        this.props.form.validateFields((validationError, values) => {
+            if (!validationError && this.state.submitting === false) {
                 try {
-                    await this.props.onSuccess(values);
+                    this.props.onSuccess(values);
+                    this.setState({ submitting: true });
                 } catch (submissionError) {
+                    this.setState({ submitting: false });
                     if (submissionError && submissionError.message) {
                         // eslint-disable-next-line
                         console.log(
@@ -69,6 +78,7 @@ export class InnerForm extends Component {
 
             // Return new component with overridden `onChange` callback
             return React.cloneElement(child, {
+                state: this.state,
                 form,
             });
         });
@@ -121,7 +131,7 @@ StyledFormInput.defaultProps = {
 };
 
 // eslint-disable-next-line
-const SubmitButton = ({ form, buttonText, textAlign, ...rest }) => {
+const SubmitButton = ({ form, state, buttonText, textAlign, ...rest }) => {
     const { getFieldsError } = form;
     const hasErrors = fieldsError =>
         Object.keys(fieldsError).some(field => fieldsError[field]);
@@ -130,10 +140,11 @@ const SubmitButton = ({ form, buttonText, textAlign, ...rest }) => {
         <StyledFormItem textAlign={textAlign}>
             <Button
                 htmlType="submit"
+                loading={state.submitting}
                 disabled={hasErrors(getFieldsError())}
                 {...rest}
             >
-                {buttonText}
+                {state.submitting ? 'submitting' : buttonText}
             </Button>
         </StyledFormItem>
     );
