@@ -73,12 +73,20 @@ class ProfileView extends Component {
                 return persona === DENTIST ? (
                     <Box>
                         <DentistDetails id={dentistId} viewOnly={true} />
-                        <ReviewContainer type={DENTIST} id={dentistId} />
+                        <ReviewContainer
+                            type={DENTIST}
+                            id={dentistId}
+                            viewOnly={true}
+                        />
                     </Box>
                 ) : (
                     <Box width="732px" mt={30} mr={34}>
                         <OfficeDetails id={offices[0].id} viewOnly={true} />
-                        <ReviewContainer type={OFFICE} id={offices[0].id} />
+                        <ReviewContainer
+                            type={OFFICE}
+                            id={offices[0].id}
+                            viewOnly={true}
+                        />
                     </Box>
                 );
             default:

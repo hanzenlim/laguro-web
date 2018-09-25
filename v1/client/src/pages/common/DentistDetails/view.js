@@ -110,7 +110,7 @@ const DentistDetailsView = props => {
                     lineHeight="1.5"
                     letterSpacing="1.5"
                 >
-                    address information{' '}
+                    address information
                     <Text is="span" fontWeight="bold">
                         - {data.address.name}
                     </Text>
