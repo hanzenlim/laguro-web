@@ -81,12 +81,11 @@ class HostOnboarding extends Component {
         const equipment = Object.keys(urlParams)
             .filter(key => key.startsWith('equipmentPrice'))
             .map(key => ({
-                name: urlParams[key],
-                price: renderCents(
+                name:
                     urlParams[
                         `${EQUIPMENT_NAME}${key.slice(EQUIPMENT_PRICE.length)}`
-                    ]
-                ),
+                    ],
+                price: renderCents(urlParams[key]),
             }));
 
         if (step === 'add-listing') {

@@ -67,12 +67,18 @@ class AddOfficeEquipments extends Component {
 
     addEquipment = () => {
         const { equipment } = this.state;
-        const lastEquipmentIndex = Object.keys(equipment)
-            .slice(-1)
-            .pop()
-            .slice(EQUIPMENT_PRICE.length);
+        let newIndex;
 
-        const newIndex = Number(lastEquipmentIndex) + 1;
+        if (!isEmpty(equipment)) {
+            const lastEquipmentIndex = Object.keys(equipment)
+                .slice(-1)
+                .pop()
+                .slice(EQUIPMENT_PRICE.length);
+
+            newIndex = Number(lastEquipmentIndex) + 1;
+        } else {
+            newIndex = 0;
+        }
 
         const key1 = `${EQUIPMENT_NAME}${newIndex}`;
         const key2 = `${EQUIPMENT_PRICE}${newIndex}`;
