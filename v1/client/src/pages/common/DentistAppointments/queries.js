@@ -3,7 +3,6 @@ import moment from 'moment';
 
 import { STATUS, ACTIVE, END_TIME } from '../../../util/strings';
 
-// eslint-disable-next-line
 export const getDentistIdQueryClient = gql`
     query activeUser {
         activeUser @client {
@@ -20,7 +19,10 @@ export const getDentistQuery = gql`
             reservations(
                 options: {
                     sortKey: "${END_TIME}",
-                    rangeStart: "${moment().format()}",
+                    rangeStart: "${moment()
+                        .startOf('hour')
+                        .startOf('days')
+                        .format()}",
                     filters: [
                         {
                             filterKey: "${STATUS}",
@@ -42,7 +44,10 @@ export const getDentistQuery = gql`
                 appointments(
                     options: {
                         sortKey: "${END_TIME}",
-                        rangeStart: "${moment().format()}",
+                        rangeStart: "${moment()
+                            .startOf('hour')
+                            .startOf('days')
+                            .format()}",
                         filters: [
                             {
                                 filterKey: "${STATUS}",

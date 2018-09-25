@@ -35,7 +35,7 @@ class DentistAppointments extends PureComponent {
                                 type="ghost"
                                 onClick={
                                     isAppointmentsEmpty
-                                        ? this.props.toggleModalState
+                                        ? this.props.toggleModalState(id)
                                         : null
                                 }
                             >
