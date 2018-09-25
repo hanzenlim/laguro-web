@@ -147,6 +147,8 @@ const FormItem = ({
     input,
     initialValue,
     validateTrigger,
+    valuePropName = 'value',
+    normalize,
     ...rest
 }) => {
     const { getFieldDecorator, getFieldError, isFieldValidating } = form;
@@ -164,6 +166,8 @@ const FormItem = ({
                 rules,
                 validateTrigger,
                 initialValue,
+                valuePropName,
+                normalize,
             })(input)}
         </StyledFormInput>
     );

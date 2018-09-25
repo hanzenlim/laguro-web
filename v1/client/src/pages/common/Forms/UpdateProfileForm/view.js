@@ -56,7 +56,10 @@ const UpdateProfileForm = props => {
         newProfileImage,
         onSuccess,
         setNewProfileImage,
+        onSMSNotificationChange,
+        smsNotificationStatus,
     } = props;
+
     return (
         <StyledForm>
             <Box>
@@ -144,13 +147,8 @@ const UpdateProfileForm = props => {
                         initialValue={data.middleName}
                         mb={32}
                         height={50}
+                        normalize={value => value || null}
                         input={<Input type="text" />}
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please input your middle name!',
-                            },
-                        ]}
                     />
                     <FormItem
                         name="lastName"
@@ -172,6 +170,7 @@ const UpdateProfileForm = props => {
                         initialValue={data.phoneNumber}
                         mb={32}
                         height={50}
+                        normalize={value => value || null}
                         input={
                             <MaskedInput
                                 mask={[
@@ -195,7 +194,7 @@ const UpdateProfileForm = props => {
                         }
                         rules={[
                             {
-                                required: true,
+                                required: smsNotificationStatus,
                                 message: 'Please input your mobile number!',
                             },
                         ]}
@@ -243,7 +242,7 @@ const UpdateProfileForm = props => {
                         initialValue={data.smsNotification}
                         mb={32}
                         input={
-                            <Checkbox>
+                            <Checkbox onChange={onSMSNotificationChange}>
                                 <Text
                                     color="text.black"
                                     fontSize={3}

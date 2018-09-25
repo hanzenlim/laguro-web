@@ -31,6 +31,7 @@ export const getUserQuery = gql`
 export const updateUserMutation = gql`
     mutation updateUser($input: UpdateUserInput!) {
         updateUser(input: $input) {
+            id
             imageUrl
             firstName
             middleName
