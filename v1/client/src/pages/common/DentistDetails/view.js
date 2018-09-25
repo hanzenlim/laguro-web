@@ -9,7 +9,7 @@ import {
     Truncate,
     Button,
 } from '../../../components';
-
+import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
 import Map from '../Map';
 
 const TAG_COLORS = [
@@ -28,7 +28,7 @@ const DentistDetailsView = props => {
                 <Image
                     width="130px"
                     height="130px"
-                    src={data.image}
+                    src={data.image || defaultUserImage}
                     alt={data.name}
                     borderRadius="50%"
                     mr={20}

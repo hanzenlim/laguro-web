@@ -20,6 +20,7 @@ const renderExistingCards = (
 );
 
 const CardView = ({
+    isButtonOutside,
     paymentOptionsCards,
     selectedCard,
     btnText,
@@ -27,7 +28,7 @@ const CardView = ({
     handleSubmitNewCard,
     onChangeCardSelect,
 }) => (
-    <Box width="100%" mt={38}>
+    <Box width="100%" position="relative">
         <Text fontSize={3} color="text.black" fontWeight="bold" mb={18}>
             Card Info
         </Text>
@@ -41,6 +42,7 @@ const CardView = ({
         {selectedCard === NEW_CARD_PAYMENT_METHOD && (
             <NewCardFormView
                 btnText={btnText}
+                isButtonOutside={isButtonOutside}
                 handleSubmit={handleSubmitNewCard}
             />
         )}
@@ -53,6 +55,18 @@ const CardView = ({
                 px={14}
                 mt={28}
                 onClick={handleSubmitExistingCard}
+                style={
+                    // Temporary solution before we can figure out
+                    // how to connect an external button to a form
+                    isButtonOutside
+                        ? {
+                              position: 'absolute',
+                              width: '200px',
+                              bottom: '-124px',
+                              right: '-40px',
+                          }
+                        : {}
+                }
             >
                 {btnText}
             </Button>

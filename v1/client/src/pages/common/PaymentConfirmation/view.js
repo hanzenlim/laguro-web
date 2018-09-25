@@ -21,20 +21,22 @@ const PaymentConfirmationView = props => {
                             {h1}
                         </Text>
                         <Text fontSize={5}>{h2}</Text>
-                        <Flex
-                            mt={5}
-                            flexDirection="row"
-                            justifyContent="center"
-                        >
-                            <Icon
-                                type="locationPin"
-                                width="20px"
-                                height="20px"
-                                color="icon.lightGray"
-                                mx={5}
-                            />
-                            <Text color="text.green">{h3}</Text>
-                        </Flex>
+                        {h3 ? (
+                            <Flex
+                                mt={5}
+                                flexDirection="row"
+                                justifyContent="center"
+                            >
+                                <Icon
+                                    type="locationPin"
+                                    width="20px"
+                                    height="20px"
+                                    color="icon.lightGray"
+                                    mx={5}
+                                />
+                                <Text color="text.green">{h3}</Text>
+                            </Flex>
+                        ) : null}
                     </Box>
                 </Flex>
             </Text>

@@ -31,14 +31,14 @@ class Payment extends PureComponent {
     }
 
     submitPayment = cardId => {
-        alert(`API call to payment with this card ${cardId}`);
-
         if (this.props.onSuccess) {
             this.props.onSuccess(cardId);
         }
     };
 
     render() {
+        const { btnText, isButtonOutside } = this.props;
+
         return (
             <Query query={getUserQuery}>
                 {({ loading, error, data }) => {
@@ -53,7 +53,8 @@ class Payment extends PureComponent {
                     return (
                         <PaymentView
                             stripe={this.state.stripe}
-                            btnText="Make an appointment"
+                            btnText={btnText}
+                            isButtonOutside={isButtonOutside}
                             userId={get(data, 'activeUser.id')}
                             handleSubmit={this.submitPayment}
                         />

@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Box, Flex, Text, Checkbox } from '../../../components';
+import { Box, Flex, Text } from '../../../components';
 
-const ConsentAndPayment = props => {
-    const { doctor, procedures, serviceFee, totalPrice } = props;
+const ProcedureSummaryView = props => {
+    const { procedures, serviceFee, totalPrice } = props;
 
     return (
-        <Box width={662}>
+        <Box maxWidth={662} width="100%">
             <Text
                 fontSize={5}
                 lineHeight={1}
@@ -137,24 +137,11 @@ const ConsentAndPayment = props => {
                     </Box>
                 </Flex>
             </Box>
-
-            <Box ml={36} mt={16}>
-                <Checkbox>
-                    <Text is="span" color="text.black" fontSize={2} pl={10}>
-                        I agree upon the above procedures to be performed by{' '}
-                        <Text is="span" fontWeight="bold">
-                            {doctor}
-                        </Text>
-                        .
-                    </Text>
-                </Checkbox>
-            </Box>
         </Box>
     );
 };
 
-ConsentAndPayment.propTypes = {
-    doctor: PropTypes.string,
+ProcedureSummaryView.propTypes = {
     procedures: PropTypes.arrayOf(
         PropTypes.shape({
             name: PropTypes.string,
@@ -166,8 +153,7 @@ ConsentAndPayment.propTypes = {
     totalPrice: PropTypes.string,
 };
 
-ConsentAndPayment.defaultProps = {
-    doctor: 'Dr. Choi',
+ProcedureSummaryView.defaultProps = {
     procedures: [
         {
             name: 'Surgical Placement of Implant Body:  Endosteal Implant',
@@ -184,4 +170,4 @@ ConsentAndPayment.defaultProps = {
     totalPrice: '$1252.51',
 };
 
-export default ConsentAndPayment;
+export default ProcedureSummaryView;

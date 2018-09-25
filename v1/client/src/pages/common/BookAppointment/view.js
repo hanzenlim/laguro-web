@@ -33,7 +33,7 @@ const BookAppointmentView = props => {
             />
             {isPaymentVisible ? (
                 <Fragment>
-                    <Box mt={40}>
+                    <Box mt={40} mb={38}>
                         <Text
                             mb={16}
                             lineHeight="30px"

@@ -7,10 +7,10 @@ import { Query, graphql } from 'react-apollo';
 
 import { Loading } from '../../../../components';
 import { getPaymentOptionQuery, addPaymentOptionMutation } from './queries';
-import CardView from './view';
+import PaymentCardFormView from './view';
 import { NEW_CARD_PAYMENT_METHOD } from '../../../../util/strings';
 
-class CardForm extends Component {
+class PaymentCardForm extends Component {
     constructor(props) {
         super(props);
 
@@ -52,7 +52,7 @@ class CardForm extends Component {
     };
 
     render() {
-        const { userId } = this.props;
+        const { userId, btnText, isButtonOutside } = this.props;
         const isSkipped = !userId;
 
         return (
@@ -95,10 +95,11 @@ class CardForm extends Component {
                     }
 
                     return (
-                        <CardView
+                        <PaymentCardFormView
                             paymentOptionsCards={paymentOptionsCards}
                             selectedCard={selectedCard}
-                            btnText={this.props.btnText}
+                            btnText={btnText}
+                            isButtonOutside={isButtonOutside}
                             handleSubmitExistingCard={() =>
                                 this.props.handleSubmit(selectedCard)
                             }
@@ -112,16 +113,16 @@ class CardForm extends Component {
     }
 }
 
-CardForm.defaultProps = {
+PaymentCardForm.defaultProps = {
     btnText: 'Submit',
     userId: '',
     handleSubmit: () => {},
 };
 
-CardForm.propTypes = {
+PaymentCardForm.propTypes = {
     btnText: PropTypes.string.isRequired,
     userId: PropTypes.string,
     handleSubmit: PropTypes.func,
 };
 
-export default graphql(addPaymentOptionMutation)(injectStripe(CardForm));
+export default graphql(addPaymentOptionMutation)(injectStripe(PaymentCardForm));

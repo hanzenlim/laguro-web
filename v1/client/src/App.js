@@ -59,6 +59,11 @@ const HostOnboarding = Loadable({
     loading: () => null,
 });
 
+const ConsentAndPaymentPage = Loadable({
+    loader: () => import('./pages/ConsentAndPaymentPage'),
+    loading: () => null,
+});
+
 class App extends Component {
     render() {
         return (
@@ -104,6 +109,10 @@ class App extends Component {
                                     <Route
                                         path="/reset-password"
                                         component={ResetPassPage}
+                                    />
+                                    <Route
+                                        path="/consent-and-payment"
+                                        component={ConsentAndPaymentPage}
                                     />
                                     <Route path="/" component={HomePage} />
                                 </Switch>

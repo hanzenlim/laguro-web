@@ -4,8 +4,8 @@ import { StripeProvider, Elements } from 'react-stripe-elements';
 import { Box } from '../../../components';
 import PaymentCardForm from '../../common/Forms/PaymentCardForm';
 
-const PaymentPageView = props => {
-    const { stripe, btnText, userId, handleSubmit } = props;
+const PaymentView = props => {
+    const { stripe, btnText, isButtonOutside, userId, handleSubmit } = props;
 
     return (
         <Box width="100%">
@@ -13,6 +13,7 @@ const PaymentPageView = props => {
                 <Elements>
                     <PaymentCardForm
                         btnText={btnText}
+                        isButtonOutside={isButtonOutside}
                         userId={userId}
                         handleSubmit={handleSubmit}
                     />
@@ -22,4 +23,4 @@ const PaymentPageView = props => {
     );
 };
 
-export default PaymentPageView;
+export default PaymentView;

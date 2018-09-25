@@ -20,7 +20,7 @@ const style = {
     },
 };
 
-const NewCardFormView = ({ btnText, handleSubmit }) => (
+const NewCardFormView = ({ btnText, isButtonOutside, handleSubmit }) => (
     <Form layout="vertical" onSuccess={handleSubmit}>
         <FormItem
             name="card"
@@ -60,6 +60,18 @@ const NewCardFormView = ({ btnText, handleSubmit }) => (
             px={24}
             mt={28}
             buttonText={btnText}
+            style={
+                // Temporary solution before we can figure out
+                // how to connect an external button to a form
+                isButtonOutside
+                    ? {
+                          position: 'absolute',
+                          width: '200px',
+                          top: '30px',
+                          left: '135px',
+                      }
+                    : {}
+            }
         />
     </Form>
 );

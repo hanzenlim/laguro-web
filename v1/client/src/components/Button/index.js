@@ -31,7 +31,6 @@ import { hoverColor } from '../utils';
 //     ghost={true}: primary color border color and text and transparent background
 
 const StyledButton = styled(AntdButton)`
-
     && {
         padding: 0 10px;
         ${width} ${height} ${borders};
