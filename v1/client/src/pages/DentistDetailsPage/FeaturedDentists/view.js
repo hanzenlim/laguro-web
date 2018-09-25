@@ -18,7 +18,7 @@ const FeaturedDentistsView = props => {
                         <DentistCard
                             name={item.name}
                             specialty={item.specialty}
-                            reviewsCount={item.numReviews}
+                            numReviews={item.numReviews}
                             rating={item.totalRating}
                         />
                     </Box>
@@ -33,7 +33,6 @@ FeaturedDentistsView.propTypes = {
         PropTypes.shape({
             name: PropTypes.string,
             specialty: PropTypes.string,
-            reviewsCount: PropTypes.string,
             numReviews: PropTypes.string,
             totalRating: PropTypes.number,
         })

@@ -3,12 +3,10 @@ import {
     Container,
     Flex,
     Box,
-    Text,
     Carousel,
     Image,
     Sticky,
 } from '../../components';
-import LinkCard from '../common/LinkCard';
 import OfficeDetails from '../common/OfficeDetails';
 import Payment from '../common/Payment';
 import { OFFICE } from '../../util/strings';

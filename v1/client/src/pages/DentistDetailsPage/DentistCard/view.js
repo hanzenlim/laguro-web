@@ -3,7 +3,7 @@ import React from 'react';
 import { Box, Rating, Text, Image, Flex, Truncate } from '../../../components';
 
 const DentistCard = props => {
-    const { rating, image, name, specialty, reviewsCount } = props;
+    const { rating, image, name, specialty, numReviews } = props;
 
     return (
         <Box minWidth="186px" width="100%">
@@ -34,14 +34,14 @@ const DentistCard = props => {
 
                 <Flex mt={10} alignItems="center">
                     <Rating size="18px" value={rating} disabled />
-                    {reviewsCount && (
+                    {numReviews && (
                         <Text
                             ml={10}
                             lineHeight="16px"
                             color="text.black"
                             fontSize={1}
                         >
-                            {reviewsCount}
+                            {numReviews}
                         </Text>
                     )}
                 </Flex>
@@ -53,7 +53,7 @@ const DentistCard = props => {
 DentistCard.defaultProps = {
     name: 'DR. Michelle Choi',
     specialty: 'implant specialista',
-    reviewsCount: '20 reviews',
+    numReviews: '20 reviews',
     rating: 2.5,
     image: 'http://via.placeholder.com/186x186',
 };

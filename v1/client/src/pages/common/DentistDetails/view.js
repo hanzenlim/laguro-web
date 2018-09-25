@@ -1,5 +1,5 @@
 import React from 'react';
-import get from 'lodash/get';
+import _get from 'lodash/get';
 import {
     Flex,
     Image,
@@ -49,21 +49,23 @@ const DentistDetailsView = props => {
                     </Text>
 
                     <Flex mt={5} alignItems="center">
-                        <Rating size="18px" value="3" disabled />
+                        <Rating size="18px" value={1} disabled />
                         <Text
                             ml={10}
                             lineHeight="16px"
                             color="text.black"
                             fontSize={1}
                         >
-                            {data.reviewsCount} reviews
+                            {data.numReviews} reviews
                         </Text>
                     </Flex>
                 </Box>
             </Flex>
+
             <Text fontSize={4} fontWeight="bold" mb="26px">
                 available procedures
             </Text>
+
             <Flex flexWrap="wrap" mb="34px">
                 {data.procedures.map((procedure, index) => (
                     <Button type="ghost">
@@ -88,6 +90,7 @@ const DentistDetailsView = props => {
                     </Button>
                 ))}
             </Flex>
+
             {data.bio && (
                 // Added fixed width to fix bug in rendering truncated text
                 <Box pb={42} width="732px">
@@ -110,34 +113,43 @@ const DentistDetailsView = props => {
                 </Box>
             )}
 
-            <Box pt={40} borderTop="1px solid" borderColor="divider.gray">
-                <Text
-                    color="text.black"
-                    fontSize={4}
-                    lineHeight="1.5"
-                    letterSpacing="1.5"
-                >
-                    address information
-                    {data.locations.map(location => (
-                        <Text is="span" fontWeight="bold">
-                            - {location.name}
+            {data.locations &&
+                data.locations.length > 0 && (
+                    <Box
+                        pt={40}
+                        borderTop="1px solid"
+                        borderColor="divider.gray"
+                    >
+                        <Text
+                            color="text.black"
+                            fontSize={4}
+                            lineHeight="1.5"
+                            letterSpacing="1.5"
+                        >
+                            address information
+                            {data.locations.map(location => (
+                                <Box>
+                                    <Text is="span" fontWeight="bold">
+                                        - {location.name}
+                                    </Text>
+                                </Box>
+                            ))}
                         </Text>
-                    ))}
-                </Text>
 
-                <Box width="100%" height="440px" mt={20}>
-                    <Map
-                        height={440}
-                        width={732}
-                        zoom={13}
-                        data={data.locations.map(location => ({
-                            address: location.name,
-                            latitude: get(location, 'geoPoint.lat'),
-                            longitude: get(location, 'geoPoint.lon'),
-                        }))}
-                    />
-                </Box>
-            </Box>
+                        <Box width="100%" height="440px" mt={20}>
+                            <Map
+                                height={440}
+                                width={732}
+                                zoom={13}
+                                data={data.locations.map(location => ({
+                                    address: location.name,
+                                    latitude: _get(location, 'geoPoint.lat'),
+                                    longitude: _get(location, 'geoPoint.lon'),
+                                }))}
+                            />
+                        </Box>
+                    </Box>
+                )}
         </Box>
     );
 };

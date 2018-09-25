@@ -4,11 +4,11 @@ import moment from 'moment';
 
 import { Box, Flex, Image, Text, Rating, Truncate } from '../../../components';
 
-const ReviewContianer = props => {
+const ReviewContainer = props => {
     const {
         reviews,
         totalRating,
-        reviewsCount,
+        numReviews,
         toggleModalState,
         viewOnly,
     } = props;
@@ -23,7 +23,7 @@ const ReviewContianer = props => {
                     display="inline"
                     lineHeight="34px"
                     fontSize={5}
-                >{`${reviewsCount} Review${reviewsCount > 1 ? 's' : ''}`}</Text>
+                >{`${numReviews} Review${numReviews > 1 ? 's' : ''}`}</Text>
             </Flex>
             {!viewOnly && (
                 <Text
@@ -97,7 +97,7 @@ const ReviewContianer = props => {
     );
 };
 
-ReviewContianer.propTypes = {
+ReviewContainer.propTypes = {
     reviews: arrayOf(
         shape({
             id: string,
@@ -113,15 +113,15 @@ ReviewContianer.propTypes = {
         })
     ),
     totalRating: number,
-    reviewsCount: number,
+    numReviews: number,
     toggleModalState: func,
     viewOnly: bool,
 };
 
-ReviewContianer.defaultProps = {
+ReviewContainer.defaultProps = {
     totalRating: 0,
-    reviewsCount: 0,
+    numReviews: 0,
     viewOnly: false,
 };
 
-export default ReviewContianer;
+export default ReviewContainer;

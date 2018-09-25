@@ -33,6 +33,7 @@ class ReviewContainer extends PureComponent {
                     if (loading) return <Loading />;
 
                     const queryData = data[queryName];
+                    const { reviews, numReviews, totalRating } = queryData;
 
                     const mappedData = isDentist
                         ? {
@@ -52,7 +53,9 @@ class ReviewContainer extends PureComponent {
                     return (
                         <Fragment>
                             <ReviewList
-                                reviews={queryData.reviews}
+                                numReviews={numReviews}
+                                totalRating={totalRating}
+                                reviews={reviews}
                                 toggleModalState={this.toggleModalState}
                                 viewOnly={this.props.viewOnly}
                             />

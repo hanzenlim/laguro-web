@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
+import _uniq from 'lodash/uniq';
 import { getDentistQuery } from './queries';
 import DentistDetailsView from './view';
 import { Loading, Box } from '../../../components';
@@ -27,7 +28,10 @@ class DentistDetails extends PureComponent {
                     const dentist = data.getDentist;
                     const { user } = dentist;
                     const procedures = dentist.procedures.map(p => p.group);
-
+                    const locations =
+                        dentist.reservations.length > 0
+                            ? _uniq(dentist.reservations.map(r => r.location))
+                            : [];
                     const mappedData = {
                         name: `Dr. ${user.firstName} ${user.lastName}`,
                         specialization: dentist.specialty,
@@ -35,11 +39,8 @@ class DentistDetails extends PureComponent {
                         procedures,
                         bio: dentist.bio.trim(),
                         rating: dentist.averageRating,
-                        reviewsCount: dentist.numReviews,
-                        locations:
-                            dentist.appointments.lenght > 0
-                                ? dentist.appointments[0].location
-                                : [],
+                        numReviews: dentist.numReviews,
+                        locations,
                     };
 
                     return <DentistDetailsView data={mappedData} />;

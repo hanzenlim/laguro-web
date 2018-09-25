@@ -30,7 +30,7 @@ const OfficeDetailsView = props => {
                             color="text.black"
                             fontSize={1}
                         >
-                            {data.reviewsCount} reviews
+                            {data.numReviews} reviews
                         </Text>
                     </Flex>
                 </Flex>
