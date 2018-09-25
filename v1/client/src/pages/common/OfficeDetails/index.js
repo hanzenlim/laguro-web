@@ -30,13 +30,6 @@ class OfficeDetails extends PureComponent {
                     }
 
                     const office = data.getOffice;
-                    const {
-                        name,
-                        imageUrls,
-                        description,
-                        totalRating,
-                        numReviews,
-                    } = office;
 
                     const mappedData = {
                         name: office.name,
