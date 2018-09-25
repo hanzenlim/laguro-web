@@ -1,12 +1,20 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import { Query, Mutation } from 'react-apollo';
 import queryString from 'query-string';
-import { get } from 'lodash';
+import moment from 'moment';
+import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
+import pick from 'lodash/pick';
+import _mapValues from 'lodash/mapValues';
+import { renderCents } from '../../util/paymentUtil';
+import { GET_USER, CREATE_OFFICE, CREATE_LISTING } from './queries';
 import history from '../../history';
-import { Container, Steps, Form, Grid } from '../../components';
+import { Button, Container, Steps, Form, Grid } from '../../components';
 import AddOfficeInfo from '../common/Forms/AddOfficeInfo';
 import AddOfficeEquipments from '../common/Forms/AddOfficeEquipments';
 import AddOfficeListing from '../common/Forms/AddOfficeListing';
+import ListingConfirmation from '../common/ListingConfirmation';
 
 const { GridItem } = Grid;
 
@@ -14,10 +22,12 @@ const OFFICE_STEP = 'add-office';
 const EQUIPMENT_STEP = 'add-equipments';
 const LISTING_STEP = 'add-listing';
 const CONFIRMATION_STEP = 'listing-confirmation';
-
 const stepList = [OFFICE_STEP, EQUIPMENT_STEP, LISTING_STEP, CONFIRMATION_STEP];
 const DEFAULT_STEP_COUNT = 0;
 
+const EQUIPMENT = 'equipment';
+const EQUIPMENT_NAME = `${EQUIPMENT}Name`;
+const EQUIPMENT_PRICE = `${EQUIPMENT}Price`;
 const StyledContainer = styled(Container)`
     min-height: 100vh;
 `;
@@ -28,52 +38,264 @@ class HostOnboarding extends Component {
     constructor(props) {
         super(props);
 
-        this.urlParams = queryString.parse(history.location.search);
-        const { imageUrls, location } = this.urlParams;
+        const historyLocationSearch = get(this.props, 'location.search');
 
         this.state = {
-            submitDisabled: false,
-            location,
-            imageUrls: imageUrls ? JSON.parse(imageUrls) : [],
+            historyLocationSearch,
+            submitDisabled: true,
         };
     }
 
-    // isExistingOffice is true if officeId defined (when adding new listing)
-    isExistingOffice() {
-        this.urlParams = queryString.parse(history.location.search);
-        const { officeId } = this.urlParams;
+    // this is for url transition
+    componentDidUpdate() {
+        const { historyLocationSearch } = this.state;
+        const currentLocationSearch = get(this.props, 'location.search');
 
-        return officeId !== undefined;
+        if (currentLocationSearch !== historyLocationSearch) {
+            this.setState({
+                historyLocationSearch: currentLocationSearch,
+            });
+        }
     }
 
-    disableSubmit = () => {
-        this.setState({ submitDisabled: true });
+    enableSubmit = () => {
+        this.setState({ submitDisabled: false });
     };
 
-    onSubmit = values => {
+    onSubmit = (values, createOffice, id) => {
         const { step } = this.props.match.params;
+        const { historyLocationSearch } = this.state;
+        const urlParams = queryString.parse(historyLocationSearch);
 
-        // do not need location in text
-        const { locationInText, ...restOfValues } = values;
-        const { imageUrls, location } = get(this, 'addOfficeInfo.state');
-        console.log(this.addOfficeInfo.state);
-        const params = queryString.stringify({
-            ...this.urlParams,
-            ...restOfValues,
-            imageUrls: JSON.stringify(imageUrls),
+        this.values = values;
+        const {
+            addressDetail,
+            imageUrls,
             location,
+            locationLat,
+            locationLong,
+            officeDescription,
+            officeName,
+        } = urlParams;
+
+        const equipment = Object.keys(urlParams)
+            .filter(key => key.startsWith('equipmentPrice'))
+            .map(key => ({
+                name:
+                    urlParams[
+                        `${EQUIPMENT_NAME}${key.slice(EQUIPMENT_PRICE.length)}`
+                    ],
+                price: renderCents(urlParams[key]),
+            }));
+
+        if (step === 'add-listing') {
+            createOffice({
+                variables: {
+                    input: {
+                        hostId: id,
+                        name: officeName,
+                        location: {
+                            name: location,
+                            geoPoint: {
+                                lat: locationLat,
+                                lon: locationLong,
+                            },
+                            addressDetails: addressDetail,
+                        },
+                        imageUrls: JSON.parse(imageUrls),
+                        equipment,
+                        description: officeDescription,
+                    },
+                },
+            });
+
+            // url transition to confirmation page happens in handleListingCreated. skip transition in current function with a return
+            return;
+        }
+
+        // for all pages before CONFIRMATION_STEP, move on to the next step with computed params
+        const nextStep = stepList[stepList.indexOf(step) + 1];
+        const url = `/host-onboarding/${nextStep}?${this.computeParams(
+            values,
+            urlParams
+        )}`;
+
+        history.push(url);
+    };
+
+    handleOfficeCreated = (id, batchCreateListings) => {
+        const listings = Object.keys(this.values)
+            .filter(key => key.startsWith('availability'))
+            .map(key => {
+                const startTime = this.values[
+                    `startTime${key.slice('availability'.length)}`
+                ];
+                const endTime = this.values[
+                    `endTime${key.slice('availability'.length)}`
+                ];
+
+                const startDay = this.values[key][0];
+                const endDay = this.values[key][1];
+
+                return {
+                    officeId: id,
+
+                    cleaningFee: renderCents(
+                        this.values[
+                            `cleaningFee${key.slice('availability'.length)}`
+                        ]
+                    ),
+                    chairHourlyPrice: renderCents(
+                        this.values[
+                            `hourlyChairPrice${key.slice(
+                                'availability'.length
+                            )}`
+                        ]
+                    ),
+                    numChairsAvailable: this.values[
+                        `numChairs${key.slice('availability'.length)}`
+                    ],
+                    availability: {
+                        startTime: startTime.format().split('T')[1],
+                        endTime: endTime.format().split('T')[1],
+                        startDay: startDay.format().split('T')[0],
+                        endDay: endDay.format().split('T')[0],
+                    },
+                };
+            });
+
+        batchCreateListings({
+            variables: {
+                input: listings,
+            },
         });
 
-        const nextStep = stepList[stepList.indexOf(step) + 1];
-
-        history.push(`/host-onboarding/${nextStep}?${params}`);
+        this.officeId = id;
     };
 
-    render() {
-        const { submitDisabled } = this.state;
+    handleListingCreated = () => {
+        const url = `/host-onboarding/${CONFIRMATION_STEP}?${queryString.stringify(
+            {
+                officeId: this.officeId,
+            }
+        )}`;
+
+        history.push(url);
+    };
+
+    handleBack = values => {
+        const { step } = this.props.match.params;
+        const { historyLocationSearch } = this.state;
+        const urlParams = queryString.parse(historyLocationSearch);
+
+        const previousStep = stepList[stepList.indexOf(step) - 1];
+        history.push(
+            `/host-onboarding/${previousStep}?${this.computeParams(
+                values,
+                urlParams
+            )}`
+        );
+    };
+
+    computeParams = (values, urlParams) => {
         const { step } = this.props.match.params;
 
+        const urlParamsEquipment = pick(
+            urlParams,
+            Object.keys(urlParams).filter(key => !key.startsWith('equipment'))
+        );
+
+        let computedUrlParams;
+
+        switch (step) {
+            case EQUIPMENT_STEP:
+                computedUrlParams = urlParamsEquipment;
+                break;
+            default:
+                computedUrlParams = urlParams;
+        }
+
+        const dateTime = _mapValues(
+            pick(
+                values,
+                Object.keys(values).filter(
+                    key =>
+                        key.startsWith('availability') ||
+                        key.startsWith('startTime') ||
+                        key.startsWith('endTime')
+                )
+            ),
+            JSON.stringify
+        );
+
+        const addOfficeState = get(this, 'addOfficeInfo.state');
+        const { imageUrls, ...restOfAddOffice } = !isEmpty(addOfficeState)
+            ? addOfficeState
+            : {};
+
+        const params = queryString.stringify({
+            // state variables from children
+            imageUrls: JSON.stringify(imageUrls),
+            // url params
+            ...computedUrlParams,
+            // form values
+            ...restOfAddOffice,
+            ...values,
+            ...dateTime,
+        });
+
+        return params;
+    };
+
+    handleDone = () => {
+        this.props.history.push('/profile');
+    };
+
+    // isExistingOffice is true if officeId defined (when adding new listing)
+    // isExistingOffice() {
+    //     this.urlParams = queryString.parse(history.location.search);
+    //     const { officeId } = this.urlParams;
+
+    //     return officeId !== undefined;
+    // }
+
+    render() {
+        const { historyLocationSearch, submitDisabled } = this.state;
+        const urlParams = queryString.parse(historyLocationSearch);
+        const { location } = this.props;
+        const { step } = this.props.match.params;
         let stepCount;
+
+        const availabilities = _mapValues(
+            pick(
+                urlParams,
+                Object.keys(urlParams).filter(key =>
+                    key.startsWith('availability')
+                )
+            ),
+            availability => [
+                moment(JSON.parse(availability)[0]),
+                moment(JSON.parse(availability)[1]),
+            ]
+        );
+
+        const times = _mapValues(
+            pick(
+                urlParams,
+                Object.keys(urlParams).filter(
+                    key =>
+                        key.startsWith('startTime') || key.startsWith('endTime')
+                )
+            ),
+            time => moment(JSON.parse(time))
+        );
+
+        const initialValues = {
+            ...urlParams,
+            ...availabilities,
+            ...times,
+        };
+
         switch (step) {
             case OFFICE_STEP:
                 stepCount = stepList.indexOf(OFFICE_STEP);
@@ -92,52 +314,135 @@ class HostOnboarding extends Component {
         }
 
         return (
-            <StyledContainer>
-                <Form onSuccess={this.onSubmit}>
-                    <Grid
-                        gtc="188px 624px 188px"
-                        gtr="auto 60px"
-                        gcg="140px"
-                        grg="304px"
+            <Query query={GET_USER}>
+                {({ data: userData }) => (
+                    <Mutation
+                        mutation={CREATE_LISTING}
+                        onCompleted={this.handleListingCreated}
                     >
-                        <Steps
-                            mt={210}
-                            mb={46}
-                            current={stepCount}
-                            direction="vertical"
-                            size={4}
-                        />
-                        {step === OFFICE_STEP && (
-                            <AddOfficeInfo
-                                ref={value => {
-                                    this.addOfficeInfo = value;
+                        {batchCreateListings => (
+                            <Mutation
+                                mutation={CREATE_OFFICE}
+                                onCompleted={data => {
+                                    this.handleOfficeCreated(
+                                        data.createOffice.id,
+                                        batchCreateListings
+                                    );
                                 }}
-                            />
-                        )}
-                        {step === EQUIPMENT_STEP && <AddOfficeEquipments />}
-                        {step === LISTING_STEP && <AddOfficeListing />}
-                        <GridItem gc="1 / 2">
-                            <BackButton
-                                type="primary"
-                                ghost
-                                width={188}
-                                height={60}
-                                buttonText="Previous"
-                            />
-                        </GridItem>
+                            >
+                                {createOffice => (
+                                    <StyledContainer>
+                                        <Form
+                                            onSuccess={values =>
+                                                this.onSubmit(
+                                                    values,
+                                                    createOffice,
+                                                    userData.activeUser
+                                                        .dentistId
+                                                )
+                                            }
+                                        >
+                                            <Grid
+                                                gtc="188px 624px 188px"
+                                                gtr="auto 60px"
+                                                gcg="140px"
+                                                grg="100px"
+                                            >
+                                                <Steps
+                                                    mt={210}
+                                                    mb={46}
+                                                    current={stepCount}
+                                                    direction="vertical"
+                                                    size={4}
+                                                />
 
-                        <GridItem gc="3 / 4">
-                            <SubmitButton
-                                disabled={submitDisabled}
-                                position="absolute"
-                                width={188}
-                                height={60}
-                                buttonText="Next"
-                            />
-                        </GridItem>
-                    </Grid>
-                </Form>
-            </StyledContainer>
+                                                <GridItem gc="2 / 4">
+                                                    {step === OFFICE_STEP && (
+                                                        <AddOfficeInfo
+                                                            ref={value => {
+                                                                this.addOfficeInfo = value;
+                                                            }}
+                                                            onSelect={
+                                                                this
+                                                                    .enableSubmit
+                                                            }
+                                                            {...initialValues}
+                                                        />
+                                                    )}
+                                                    {step ===
+                                                        EQUIPMENT_STEP && (
+                                                        <AddOfficeEquipments
+                                                            {...initialValues}
+                                                        />
+                                                    )}
+                                                    {step === LISTING_STEP && (
+                                                        <AddOfficeListing
+                                                            {...initialValues}
+                                                        />
+                                                    )}
+
+                                                    {step ===
+                                                        CONFIRMATION_STEP && (
+                                                        <ListingConfirmation
+                                                            location={location}
+                                                        />
+                                                    )}
+                                                </GridItem>
+                                                {step !== OFFICE_STEP &&
+                                                    step !==
+                                                        CONFIRMATION_STEP && (
+                                                        <GridItem gc="1 / 2">
+                                                            <BackButton
+                                                                disabled={false}
+                                                                onBack={
+                                                                    this
+                                                                        .handleBack
+                                                                }
+                                                                type="primary"
+                                                                ghost
+                                                                width={188}
+                                                                height={60}
+                                                                buttonText="Previous"
+                                                            />
+                                                        </GridItem>
+                                                    )}
+
+                                                {step !== CONFIRMATION_STEP ? (
+                                                    <GridItem gc="3 / 4">
+                                                        <SubmitButton
+                                                            disabled={
+                                                                submitDisabled
+                                                            }
+                                                            position="absolute"
+                                                            width={188}
+                                                            height={60}
+                                                            buttonText="Next"
+                                                        />
+                                                    </GridItem>
+                                                ) : (
+                                                    <GridItem gc="3 / 4">
+                                                        <Button
+                                                            position="absolute"
+                                                            type="primary"
+                                                            onClick={
+                                                                this.handleDone
+                                                            }
+                                                            width={188}
+                                                            height={60}
+                                                        >
+                                                            Done
+                                                        </Button>
+                                                    </GridItem>
+                                                )}
+                                            </Grid>
+                                        </Form>
+                                    </StyledContainer>
+                                )}
+                            </Mutation>
+                        )}
+                    </Mutation>
+                )}
+            </Query>
         );
     }
 }

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
+import moment from 'moment';
 import {
     Box,
     Button,
     Card,
-    Counter,
+    Grid,
     Flex,
     Icon,
     InnerForm,
@@ -13,51 +14,11 @@ import {
     Text,
     TimePicker,
 } from '../../../components';
+import { renderPrice } from '../../../util/paymentUtil';
 
+const { GridItem } = Grid;
 const { FormItem } = InnerForm;
 const format = 'HH:mm';
-
-const StyledContainer = styled(Box)`
-    form {
-        display: grid;
-        grid-template-columns: 282px 22px 22px 282px;
-        grid-template-rows: auto 20px auto auto 40px auto 20px 35px 25px auto;
-        align-items: center;
-
-        > :nth-child(1) {
-            grid-column: 1 / 5;
-        }
-
-        > :nth-child(3) {
-            grid-column: 1 / 5;
-        }
-
-        > :nth-child(4) {
-            grid-column: 1 / 5;
-        }
-
-        > :nth-child(n + 5) {
-            grid-column: 1 / 5;
-        }
-
-        > :nth-child(8) {
-            grid-column: 1 / 3;
-        }
-
-        > :nth-child(9) {
-            grid-column: 4 / 5;
-            justify-self: end;
-        }
-
-        > :nth-child(11) {
-            grid-column: 1 / 2;
-        }
-
-        > :nth-child(12) {
-            grid-column: 4 / 5;
-        }
-    }
-`;
 
 const StyledForm = styled(InnerForm)`
     .ant-form-item {
@@ -93,7 +54,7 @@ class CreateListing extends Component {
         const endDate = availability && availability[1];
 
         return (
-            <Box>
+            <InnerForm form={form} {...rest}>
                 <StyledButton
                     width="100%"
                     height="auto"
@@ -116,7 +77,7 @@ class CreateListing extends Component {
                                     color="text.black"
                                 >
                                     {(startDate &&
-                                        startDate.format('ddd M/DD')) ||
+                                        moment(startDate).format('ddd M/DD')) ||
                                         'Start date'}
                                 </Text>
                                 <Icon
@@ -130,7 +91,8 @@ class CreateListing extends Component {
                                     letterSpacing="-0.6px"
                                     color="text.black"
                                 >
-                                    {(endDate && endDate.format('ddd M/DD')) ||
+                                    {(endDate &&
+                                        moment(endDate).format('ddd M/DD')) ||
                                         'End date'}
                                 </Text>
                             </Flex>
@@ -206,177 +168,194 @@ class CreateListing extends Component {
                 </StyledButton>
                 <StyledCard mb={10} visible={active} {...rest}>
                     <Box maxWidth="620px">
-                        <StyledContainer>
-                            <StyledForm form={form}>
-                                {/* child 1 */}
-                                <Text
-                                    fontWeight="bold"
-                                    fontSize={4}
-                                    lineHeight="1"
-                                    letterSpacing="0px"
-                                    color="text.green"
-                                >
-                                    Select Availability
-                                </Text>
+                        <StyledForm form={form}>
+                            <Grid
+                                gtc="282px 22px 22px 282px"
+                                alignItems="center"
+                            >
+                                <Grid gc="all">
+                                    <Text
+                                        fontWeight="bold"
+                                        fontSize={4}
+                                        mb={22}
+                                        lineHeight="1"
+                                        letterSpacing="0px"
+                                        color="text.green"
+                                    >
+                                        Select Availability
+                                    </Text>
+                                </Grid>
 
-                                {/* child 2 */}
-                                <Box />
+                                <GridItem gc="all">
+                                    <FormItem
+                                        name={`availability${index}`}
+                                        label="Availability"
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message:
+                                                    'Please input the name of your office',
+                                            },
+                                        ]}
+                                        input={
+                                            <StyledRangePicker
+                                                onDateChange={() => {}}
+                                                width={608}
+                                            />
+                                        }
+                                    />
+                                </GridItem>
 
-                                {/* child 3 */}
-                                <FormItem
-                                    name={`availability${index}`}
-                                    label="Availability"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message:
-                                                'Please input the name of your office',
-                                        },
-                                    ]}
-                                    input={
-                                        <StyledRangePicker
-                                            onDateChange={() => {}}
-                                            width={608}
+                                <GridItem gc="all" mb={40}>
+                                    <Flex position="relative">
+                                        <Box
+                                            width="100%"
+                                            height="50px"
+                                            position="absolute"
+                                            border="1px solid #dbdbdb"
                                         />
-                                    }
-                                />
-                                {/* child 4 */}
-                                <Flex position="relative">
-                                    <Box
-                                        width="100%"
-                                        height="50px"
-                                        position="absolute"
-                                        border="1px solid #dbdbdb"
-                                    />
+                                        <FormItem
+                                            form={form}
+                                            width={`calc((100% - ${rightArrowWidth}px) / 2)`}
+                                            name={`startTime${index}`}
+                                            rules={[
+                                                {
+                                                    required: true,
+                                                    message:
+                                                        'Please input your first name!',
+                                                },
+                                            ]}
+                                            input={
+                                                <TimePicker
+                                                    px={30}
+                                                    py={12}
+                                                    height={50}
+                                                    borderless
+                                                    use12Hours
+                                                    minuteStep={60}
+                                                    placeholder="Daily start time"
+                                                    format={format}
+                                                />
+                                            }
+                                        />
+
+                                        {/* width is 1.25 * rightArrowWidth */}
+                                        <Icon
+                                            lineHeight="50px"
+                                            type="rightForwardArrow"
+                                            fontSize={`${rightArrowHeight}px`}
+                                        />
+
+                                        <FormItem
+                                            form={form}
+                                            width={`calc((100% - ${rightArrowWidth}px) / 2)`}
+                                            name={`endTime${index}`}
+                                            rules={[
+                                                {
+                                                    required: true,
+                                                    message:
+                                                        'Please input your first name!',
+                                                },
+                                            ]}
+                                            input={
+                                                <TimePicker
+                                                    px={30}
+                                                    py={12}
+                                                    height={50}
+                                                    borderless
+                                                    use12Hours
+                                                    minuteStep={60}
+                                                    placeholder="Daily end time"
+                                                    format={format}
+                                                />
+                                            }
+                                        />
+                                    </Flex>
+                                </GridItem>
+
+                                <GridItem gc="all">
+                                    <Text
+                                        fontWeight="bold"
+                                        fontSize={4}
+                                        mb={22}
+                                        lineHeight="1"
+                                        letterSpacing="0px"
+                                        color="text.green"
+                                    >
+                                        DENTAL CHAIR
+                                    </Text>
+                                </GridItem>
+
+                                <GridItem gc="all">
                                     <FormItem
-                                        form={form}
-                                        width={`calc((100% - ${rightArrowWidth}px) / 2)`}
-                                        name={`startTime${index}`}
+                                        name={`numChairs${index}`}
+                                        label="Number of chairs available"
+                                        initialValue={1}
                                         rules={[
                                             {
                                                 required: true,
                                                 message:
-                                                    'Please input your first name!',
+                                                    'Please input the name of your office',
                                             },
                                         ]}
-                                        input={
-                                            <TimePicker
-                                                px={30}
-                                                py={12}
-                                                height={50}
-                                                borderless
-                                                use12Hours
-                                                minuteStep={60}
-                                                placeholder="Daily start time"
-                                                format={format}
-                                            />
-                                        }
+                                        input={<Input />}
                                     />
+                                </GridItem>
 
-                                    {/* width is 1.25 * rightArrowWidth */}
-                                    <Icon
-                                        lineHeight="50px"
-                                        type="rightForwardArrow"
-                                        fontSize={`${rightArrowHeight}px`}
-                                    />
-
+                                <GridItem gc="1 / 2">
                                     <FormItem
-                                        form={form}
-                                        width={`calc((100% - ${rightArrowWidth}px) / 2)`}
-                                        name={`endTime${index}`}
+                                        name={`hourlyChairPrice${index}`}
+                                        label="Hourly Chair Price"
+                                        getValueFromEvent={e => {
+                                            if (!e || !e.target) {
+                                                return e;
+                                            }
+                                            const { target } = e;
+                                            return target.type === 'checkbox'
+                                                ? target.checked
+                                                : renderPrice(target.value);
+                                        }}
                                         rules={[
                                             {
                                                 required: true,
                                                 message:
-                                                    'Please input your first name!',
+                                                    'Please input the name of your office',
                                             },
                                         ]}
-                                        input={
-                                            <TimePicker
-                                                px={30}
-                                                py={12}
-                                                height={50}
-                                                borderless
-                                                use12Hours
-                                                minuteStep={60}
-                                                placeholder="Daily end time"
-                                                format={format}
-                                            />
-                                        }
+                                        initialValue={'$50.00'}
+                                        input={<Input height="50px" />}
                                     />
-                                </Flex>
+                                </GridItem>
 
-                                {/* child 6 */}
-                                <Box />
-
-                                {/* child 7 */}
-                                <Text
-                                    fontWeight="bold"
-                                    fontSize={4}
-                                    lineHeight="1"
-                                    letterSpacing="0px"
-                                    color="text.green"
-                                >
-                                    DENTAL CHAIR
-                                </Text>
-
-                                {/* child 8 */}
-                                <Box />
-
-                                {/* child 9 */}
-                                <FormItem
-                                    name={`numChairs${index}`}
-                                    label="Number of chairs available"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message:
-                                                'Please input the name of your office',
-                                        },
-                                    ]}
-                                    input={<div />}
-                                />
-
-                                {/* child 10 */}
-                                <Counter />
-
-                                {/* child 11 */}
-                                <Box />
-
-                                {/* child 12 */}
-                                <FormItem
-                                    name={`hourlyChairPrice${index}`}
-                                    label="Hourly Chair Price"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message:
-                                                'Please input the name of your office',
-                                        },
-                                    ]}
-                                    initialValue={'$50.00'}
-                                    input={<Input height="50px" />}
-                                />
-
-                                {/* child 13 */}
-                                <FormItem
-                                    name={`cleaningFee${index}`}
-                                    label="Cleaning fee"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message:
-                                                'Please input the name of your office',
-                                        },
-                                    ]}
-                                    initialValue={'$20.00'}
-                                    input={<Input height="50px" />}
-                                />
-                            </StyledForm>
-                        </StyledContainer>
+                                <GridItem gc="4 / 5">
+                                    <FormItem
+                                        name={`cleaningFee${index}`}
+                                        label="Cleaning fee"
+                                        getValueFromEvent={e => {
+                                            if (!e || !e.target) {
+                                                return e;
+                                            }
+                                            const { target } = e;
+                                            return target.type === 'checkbox'
+                                                ? target.checked
+                                                : renderPrice(target.value);
+                                        }}
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message:
+                                                    'Please input the name of your office',
+                                            },
+                                        ]}
+                                        initialValue={'$20.00'}
+                                        input={<Input height="50px" />}
+                                    />
+                                </GridItem>
+                            </Grid>
+                        </StyledForm>
                     </Box>
                 </StyledCard>
-            </Box>
+            </InnerForm>
         );
     }
 }

@@ -4,14 +4,7 @@ import PropTypes from 'prop-types';
 import { Box, Flex, Text, Icon } from '../../../components';
 
 const ListingConfirmation = props => {
-    const {
-        name,
-        address,
-        availability,
-        equipments,
-        numOfChairs,
-        hourlyPriceOfChair,
-    } = props;
+    const { name, address, listings } = props;
 
     return (
         <Box width={668}>
@@ -31,7 +24,7 @@ const ListingConfirmation = props => {
                 lineHeight={1}
                 pb={50}
             >
-                Your first listing has been created.
+                Your first listings have been created.
             </Text>
             <Text
                 fontSize={6}
@@ -48,127 +41,139 @@ const ListingConfirmation = props => {
                     {address}
                 </Text>
             </Flex>
-            <Box
-                pl={50}
-                pr={44}
-                py={32}
-                boxShadow={1}
-                bg="background.white"
-                borderRadius="4px"
-            >
-                <Text
-                    fontSize={4}
-                    fontWeight="bold"
-                    color="text.gray"
-                    pb={14}
-                    borderBottom="1px solid"
-                    borderColor="divider.dustyGray"
-                    mb={20}
-                >
-                    AVAILABILITY
-                </Text>
-                <Text fontSize={2} fontWeight="500" color="text.black" pb={18}>
-                    {availability}
-                </Text>
-                <Text
-                    fontSize={4}
-                    fontWeight="bold"
-                    color="text.gray"
-                    lineHeight={1}
-                    pb={14}
-                    mt={10}
-                    borderBottom="1px solid"
-                    borderColor="divider.dustyGray"
-                    mb={20}
-                >
-                    EQUIPMENTS
-                </Text>
-                {equipments.map(item => (
-                    <Text
-                        fontSize={2}
-                        fontWeight="500"
-                        color="text.black"
-                        lineHeight={1}
-                        pb={18}
+
+            {listings.map(
+                ({
+                    id,
+                    availability,
+                    numChairsAvailable,
+                    chairHourlyPrice,
+                    cleaningFee,
+                }) => (
+                    <Box
+                        key={id}
+                        pl={50}
+                        pr={44}
+                        py={32}
+                        mb={10}
+                        boxShadow={1}
+                        bg="background.white"
+                        borderRadius="4px"
                     >
-                        {item}
-                    </Text>
-                ))}
-                <Flex justifyContent="space-between">
-                    <Box width="256px">
                         <Text
                             fontSize={4}
                             fontWeight="bold"
                             color="text.gray"
                             pb={14}
-                            mt={10}
                             borderBottom="1px solid"
                             borderColor="divider.dustyGray"
                             mb={20}
                         >
-                            NUMBER OF CHAIRS
+                            AVAILABILITY
                         </Text>
                         <Text
-                            fontSize={3}
+                            fontSize={2}
                             fontWeight="500"
                             color="text.black"
-                            lineHeight={1}
                             pb={18}
                         >
-                            <Text is="span" fontWeight="bold">
-                                {numOfChairs}{' '}
-                            </Text>
-                            chairs
+                            {availability}
                         </Text>
-                    </Box>
-                    <Box width="262px">
+
+                        <Flex justifyContent="space-between">
+                            <Box width="256px">
+                                <Text
+                                    fontSize={4}
+                                    fontWeight="bold"
+                                    color="text.gray"
+                                    pb={14}
+                                    mt={10}
+                                    borderBottom="1px solid"
+                                    borderColor="divider.dustyGray"
+                                    mb={20}
+                                >
+                                    NUMBER OF CHAIRS
+                                </Text>
+                                <Text
+                                    fontSize={3}
+                                    fontWeight="500"
+                                    color="text.black"
+                                    lineHeight={1}
+                                    pb={18}
+                                >
+                                    <Text is="span" fontWeight="bold">
+                                        {numChairsAvailable}{' '}
+                                    </Text>
+                                    chair
+                                    {numChairsAvailable > 1 ? 's' : ''}
+                                </Text>
+                            </Box>
+                            <Box width="262px">
+                                <Text
+                                    fontSize={4}
+                                    fontWeight="bold"
+                                    color="text.gray"
+                                    pb={14}
+                                    mt={10}
+                                    borderBottom="1px solid"
+                                    borderColor="divider.dustyGray"
+                                    mb={20}
+                                >
+                                    HOURLY CHAIR PRICE
+                                </Text>
+                                <Text
+                                    fontSize={3}
+                                    fontWeight="500"
+                                    color="text.black"
+                                    lineHeight={1}
+                                    pb={18}
+                                >
+                                    <Text is="span" fontWeight="bold">
+                                        ${chairHourlyPrice}{' '}
+                                    </Text>
+                                    per hour
+                                </Text>
+                            </Box>
+                        </Flex>
+
                         <Text
                             fontSize={4}
                             fontWeight="bold"
                             color="text.gray"
-                            pb={14}
                             mt={10}
+                            pb={14}
                             borderBottom="1px solid"
                             borderColor="divider.dustyGray"
                             mb={20}
                         >
-                            HOURLY CHAIR PRICE
+                            CLEANING FEE
                         </Text>
                         <Text
-                            fontSize={3}
+                            fontSize={2}
                             fontWeight="500"
                             color="text.black"
-                            lineHeight={1}
                             pb={18}
                         >
-                            <Text is="span" fontWeight="bold">
-                                {hourlyPriceOfChair}{' '}
-                            </Text>
-                            per hour
+                            {cleaningFee}
                         </Text>
                     </Box>
-                </Flex>
-            </Box>
+                )
+            )}
         </Box>
     );
 };
 
+const listingShape = PropTypes.shape({
+    availability: PropTypes.string,
+    equipments: PropTypes.arrayOf(PropTypes.string),
+    numChairsAvailable: PropTypes.number,
+    chairHourlyPrice: PropTypes.string,
+});
+
 ListingConfirmation.propTypes = {
     name: PropTypes.string,
     address: PropTypes.string,
-    availability: PropTypes.string,
-    equipments: PropTypes.string.array,
-    numOfChairs: PropTypes.string,
-    hourlyPriceOfChairnumOfChairs: PropTypes.string,
-};
-
-ListingConfirmation.defaultProps = {
-    name: 'Bell Dental',
-    address: '1598 Washington Ave, San Leandro, CA 94577',
-    availability: 'Sep 1, 2018 — Oct 3, 2018 , 9AM - 6PM',
-    equipments: ['Mobile Cabinets', 'Excavators', 'Curetts', 'Operative burs'],
-    numOfChairs: '3',
-    hourlyPriceOfChair: '$84.17',
+    listings: PropTypes.arrayOf(listingShape),
 };
 
 export default ListingConfirmation;

@@ -11,8 +11,8 @@ import { Box } from '../';
 //          gcg:      grid-column-gap
 
 //     GridItem:
-//           gc:      grid-column
-//           gr:      grid-row
+//           gc:      grid-column    --> 'all' means 'spans all columns'
+//           gr:      grid-row       --> 'all' means 'spans all columns'
 
 const GridSystem = system(
     {
@@ -26,6 +26,7 @@ const GridSystem = system(
         'grid-row-gap': props.grg,
     }),
     'alignItems',
+    'justifyItems',
     'space'
 );
 
@@ -34,7 +35,8 @@ const GridItemSystem = system(
         'grid-column': props.gc === 'all' ? '1 / -1' : props.gc,
         'grid-row': props.gr === 'all' ? '1 / -1' : props.gr,
     }),
-    'alignItems'
+    'alignItems',
+    'space'
 );
 
 class Grid extends Component {

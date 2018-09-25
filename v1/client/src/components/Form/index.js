@@ -179,6 +179,7 @@ const FormItem = ({
                 initialValue,
                 valuePropName,
                 normalize,
+                ...rest,
             })(input)}
         </StyledFormInput>
     );

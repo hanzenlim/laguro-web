@@ -1,35 +1,24 @@
 import React, { Component } from 'react';
-import queryString from 'query-string';
 import styled from 'styled-components';
-import history from '../../../history';
+import pick from 'lodash/pick';
+import isEmpty from 'lodash/isEmpty';
 import {
     Box,
+    Button,
     Flex,
     Form,
+    Grid,
     Icon,
     Input,
     TextArea,
     Select,
     Text,
 } from '../../../components';
+import { renderPrice } from '../../../util/paymentUtil';
 // import { addTooltip } from './sharedComponents';
-const { FormItem, SubmitButton, BackButton } = Form;
+const { FormItem } = Form;
 const { Option } = Select;
-
-const StyledContainer = styled(Box)`
-    form {
-        display: grid;
-        grid-column-gap: 8px;
-        grid-template-columns: 430px 128px auto;
-        grid-template-rows: auto;
-        grid-row-gap: 20px;
-        justify-items: 'center';
-
-        > :nth-child(-n + 5) {
-            grid-column: 1 / 4;
-        }
-    }
-`;
+const { GridItem } = Grid;
 
 const StyledForm = styled(Form)`
     .ant-form-item {
@@ -37,188 +26,243 @@ const StyledForm = styled(Form)`
     }
 `;
 
-class AddOfficeInfo extends Component {
+const NUM_INITIAL_EQUIPMENT = 3;
+const EQUIPMENT = 'equipment';
+const EQUIPMENT_NAME = `${EQUIPMENT}Name`;
+const EQUIPMENT_PRICE = `${EQUIPMENT}Price`;
+const EQUIPMENT_LIST = ['Digital X-ray', 'CBCT', 'Pano', 'a', 'b'];
+
+class AddOfficeEquipments extends Component {
     constructor(props) {
         super(props);
 
-        this.urlParams = queryString.parse(history.location.search);
+        const defaultEquipmentList = Array.from(EQUIPMENT_LIST)
+            .splice(0, NUM_INITIAL_EQUIPMENT)
+            .map((eq, index) => {
+                const key = `${EQUIPMENT_NAME}${index}`;
+                const price = `${EQUIPMENT_PRICE}${index}`;
+                return {
+                    [key]: eq,
+                    [price]: 2000,
+                };
+            })
+            .reduce((a, b) => ({ ...a, ...b }), {});
 
-        this.equipment = this.urlParams.equipment;
+        const urlEquipment = pick(
+            props,
+            Object.keys(props).filter(key => key.startsWith(EQUIPMENT))
+        );
 
-        this.equipment = this.equipment
-            ? JSON.parse(this.equipment)
-            : [
-                  { name: 'Digital X-Ray', price: 2000 },
-                  { name: 'CBCT', price: 2000 },
-                  { name: 'Pano', price: 2000 },
-              ];
-
-        this.state = { fields: this.equipment };
+        this.state = {
+            defaultEquipmentList,
+            equipment: !isEmpty(urlEquipment)
+                ? urlEquipment
+                : defaultEquipmentList,
+        };
     }
 
     componentWillMount() {
         document.title = 'Laguro - New Office';
     }
 
-    onSubmit = values => {
-        const params = queryString.stringify({
-            ...this.urlParams,
-            ...values,
-            imageUrls: JSON.stringify(this.state.imageUrls),
-        });
-
-        history.push(`/host-onboarding/add-equipments?${params}`);
-    };
-
-    handleBack = values => {
-        const params = queryString.stringify({
-            ...this.urlParams,
-            description: values.description,
-            equipment: values.equipment ? JSON.stringify(values.equipment) : [],
-        });
-
-        history.push(`/host-onboarding/add-office?${params}`);
-    };
-
     addEquipment = () => {
+        const { equipment } = this.state;
+        let newIndex;
+
+        if (!isEmpty(equipment)) {
+            const lastEquipmentIndex = Object.keys(equipment)
+                .slice(-1)
+                .pop()
+                .slice(EQUIPMENT_PRICE.length);
+
+            newIndex = Number(lastEquipmentIndex) + 1;
+        } else {
+            newIndex = 0;
+        }
+
+        const key1 = `${EQUIPMENT_NAME}${newIndex}`;
+        const key2 = `${EQUIPMENT_PRICE}${newIndex}`;
+
+        const newEquipment = {
+            ...equipment,
+            [key1]: EQUIPMENT_LIST[0],
+            [key2]: 2000,
+        };
+
         this.setState({
-            fields: this.state.fields.concat([{ name: '', price: '$20.00' }]),
+            equipment: newEquipment,
         });
     };
 
     removeEquipment = e => {
         const { index } = e.target.dataset;
-        const { fields } = this.state;
+        const { form } = this.props;
+        const { equipment } = this.state;
 
         this.setState({
-            fields: fields.filter(
-                (item, currIndex) => currIndex !== parseInt(index, 10)
+            equipment: pick(
+                equipment,
+                Object.keys(equipment).filter(eq => !eq.endsWith(index))
             ),
         });
+
+        const key = `${EQUIPMENT_PRICE}${index}`;
+        form.setFieldsValue({ [key]: undefined });
+    };
+
+    renderEquipment = () => {
+        const { equipment } = this.state;
+        const eqNameKeys = Object.keys(equipment).filter(eq =>
+            eq.startsWith(EQUIPMENT_PRICE)
+        );
+
+        return eqNameKeys.map(key => [
+            <FormItem
+                name={`${EQUIPMENT_NAME}${key.slice(EQUIPMENT_PRICE.length)}`}
+                rules={[
+                    {
+                        required: true,
+                        message: 'Please select equipment',
+                    },
+                ]}
+                initialValue={
+                    equipment[
+                        `${EQUIPMENT_NAME}${key.slice(EQUIPMENT_PRICE.length)}`
+                    ]
+                }
+                input={
+                    <Select height={50}>
+                        {EQUIPMENT_LIST.map((eq2, index2) => (
+                            <Option key={index2} value={eq2}>
+                                {eq2}
+                            </Option>
+                        ))}
+                    </Select>
+                }
+            />,
+            <FormItem
+                name={key}
+                rules={[
+                    {
+                        required: true,
+                        message: 'Please provide equipment price',
+                    },
+                ]}
+                getValueFromEvent={e => {
+                    if (!e || !e.target) {
+                        return e;
+                    }
+                    const { target } = e;
+                    return target.type === 'checkbox'
+                        ? target.checked
+                        : renderPrice(target.value);
+                }}
+                initialValue={renderPrice(equipment[key])}
+                input={<Input textAlign="right" height="50px" />}
+            />,
+            <Button
+                type="ghost"
+                height={50}
+                data-index={key.slice(EQUIPMENT_NAME.length)}
+                onClick={this.removeEquipment}
+            >
+                <Icon
+                    lineHeight="50px"
+                    fontSize={3}
+                    color="text.gray"
+                    type="close-circle"
+                />
+            </Button>,
+        ]);
     };
 
     render() {
-        const { fields } = this.state;
+        const { form, officeDescription } = this.props;
 
         return (
             <Box maxWidth="620px">
-                <StyledContainer>
-                    <StyledForm onSuccess={this.onSubmit}>
-                        <Text
-                            fontWeight="bold"
-                            fontSize={5}
-                            lineHeight="1"
-                            letterSpacing="-0.6px"
-                            color="text.gray"
-                            mt={140}
-                            mb={18}
-                        >
-                            Step 2
-                        </Text>
+                <StyledForm
+                    form={form}
+                    officeDescription={officeDescription}
+                    onSuccess={this.onSubmit}
+                >
+                    <Grid
+                        gcg="8px"
+                        gtc="430px 128px auto"
+                        justifyItems="center"
+                    >
+                        <GridItem gc="all">
+                            <Text
+                                fontWeight="bold"
+                                fontSize={5}
+                                lineHeight="1"
+                                letterSpacing="-0.6px"
+                                color="text.gray"
+                                mt={140}
+                                mb={18}
+                            >
+                                Step 2
+                            </Text>
+                        </GridItem>
 
-                        <Text
-                            fontWeight="bold"
-                            fontSize={5}
-                            lineHeight="1"
-                            letterSpacing="-0.6px"
-                            color="text.trueBlack"
-                            mb={54}
-                        >
-                            tell us more about your office.
-                        </Text>
-
-                        <Text
-                            fontWeight="bold"
-                            fontSize={4}
-                            lineHeight="1"
-                            letterSpacing="0px"
-                            color="text.green"
-                            mb={20}
-                        >
-                            Summary
-                        </Text>
-
-                        <FormItem
-                            name="name"
-                            label="Office name"
-                            rules={[
-                                {
-                                    required: true,
-                                    message:
-                                        'Please input the name of your office',
-                                },
-                            ]}
-                            input={
-                                <TextArea
-                                    height="180px"
-                                    py={16}
-                                    px={18}
-                                    placeholder="describe your office"
-                                />
-                            }
-                        />
-
-                        <Text
-                            fontWeight="bold"
-                            fontSize={4}
-                            lineHeight="1"
-                            letterSpacing="0px"
-                            color="text.green"
-                            mb={20}
-                        >
-                            Equipment & Usage Fees
-                        </Text>
-
-                        {fields.map((equipment, index) => [
+                        <GridItem gc="all">
+                            <Text
+                                fontWeight="bold"
+                                fontSize={5}
+                                lineHeight="1"
+                                letterSpacing="-0.6px"
+                                color="text.trueBlack"
+                                mb={54}
+                            >
+                                tell us more about your office.
+                            </Text>
+                        </GridItem>
+                        <GridItem gc="all">
+                            <Text
+                                fontWeight="bold"
+                                fontSize={4}
+                                lineHeight="1"
+                                letterSpacing="0px"
+                                color="text.green"
+                                mb={20}
+                            >
+                                Summary (max 300 characters)
+                            </Text>
+                        </GridItem>
+                        <GridItem gc="all">
                             <FormItem
-                                name={`equipment${index}`}
+                                name="officeDescription"
                                 rules={[
                                     {
                                         required: true,
-                                        message: 'please select equipment',
+                                        message:
+                                            'Please input the name of your office',
                                     },
                                 ]}
-                                initialValue={'scanner'}
                                 input={
-                                    <Select height={50}>
-                                        <Option value="xray">X-Ray</Option>
-                                        <Option value="scanner">Scanner</Option>
-                                        <Option value="cbtc">CBTC</Option>
-                                    </Select>
-                                }
-                            />,
-                            <FormItem
-                                name={`equipmentPrice${index}`}
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'please select equipment',
-                                    },
-                                ]}
-                                initialValue={'$20.00'}
-                                input={
-                                    <Input
-                                        textAlign="right"
-                                        height="50px"
-                                        placeHolder="$20.00"
+                                    <TextArea
+                                        height="180px"
+                                        py={16}
+                                        px={18}
+                                        placeholder="describe your office"
                                     />
                                 }
-                            />,
-                            <Flex
-                                alignItems="center"
-                                justifyContent="center"
-                                height="100%"
+                            />
+                        </GridItem>
+                        <GridItem gc="all">
+                            <Text
+                                fontWeight="bold"
+                                fontSize={4}
+                                lineHeight="1"
+                                letterSpacing="0px"
+                                color="text.green"
+                                mb={20}
                             >
-                                <Icon
-                                    fontSize="18px"
-                                    data-index={index}
-                                    color="icon.white"
-                                    type="close-circle"
-                                    onClick={this.removeEquipment}
-                                    cursor="pointer"
-                                />
-                            </Flex>,
-                        ])}
+                                Equipment &amp; Usage Fees
+                            </Text>
+                        </GridItem>
+
+                        {this.renderEquipment()}
 
                         <Flex onClick={this.addEquipment} cursor="pointer">
                             <Icon
@@ -230,32 +274,11 @@ class AddOfficeInfo extends Component {
                             />
                             <Box>Add more</Box>
                         </Flex>
-
-                        <BackButton
-                            ghost
-                            position="absolute"
-                            width={188}
-                            height={60}
-                            top={230}
-                            right={650}
-                            buttonText="Previous"
-                        />
-
-                        <SubmitButton
-                            position="absolute"
-                            width={188}
-                            height={60}
-                            top={230}
-                            left={180}
-                            buttonText="Next"
-                        />
-
-                        <Box height={300} />
-                    </StyledForm>
-                </StyledContainer>
+                    </Grid>
+                </StyledForm>
             </Box>
         );
     }
 }
 
-export default AddOfficeInfo;
+export default AddOfficeEquipments;

@@ -71,7 +71,7 @@ class RangePicker extends PureComponent {
     getCalendarContainer = () => this.refs.datePickerContainer;
 
     render() {
-        const { ...rest } = this.props;
+        const { value, ...rest } = this.props;
 
         return (
             <StyledContainer {...rest}>
@@ -83,6 +83,7 @@ class RangePicker extends PureComponent {
                         opacity="0"
                     >
                         <AntdDatePicker.RangePicker
+                            value={value}
                             {...rest}
                             format={'ddd M/D'}
                             getCalendarContainer={this.getCalendarContainer}
@@ -109,7 +110,9 @@ class RangePicker extends PureComponent {
                                 lineHeight="26px"
                                 letterSpacing="-0.6px"
                             >
-                                {this.state.dateString[0] || 'Start date'}
+                                {(value && value[0].format('ddd M/DD')) ||
+                                    this.state.dateString[0] ||
+                                    'Start date'}
                             </Text>
                             <Icon
                                 type="calendar"
@@ -137,7 +140,9 @@ class RangePicker extends PureComponent {
                                 lineHeight="26px"
                                 letterSpacing="-0.6px"
                             >
-                                {this.state.dateString[1] || 'End date'}
+                                {(value && value[1].format('ddd M/DD')) ||
+                                    this.state.dateString[1] ||
+                                    'End date'}
                             </Text>
                             <Icon
                                 type="calendar"
