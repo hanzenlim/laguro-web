@@ -9,6 +9,8 @@ export default {
             black50: 'rgba(0, 0, 0, 0.5)',
             gray: '#c7c7c7',
             green: '#50e3c2',
+            darkGreen: '#59b09c',
+            yellow: '#ffbf00',
         },
         background: {
             white: '#ffffff',

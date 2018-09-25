@@ -5,9 +5,6 @@ import Loadable from 'react-loadable';
 import history from './history';
 
 import HomePage from './pages/HomePage';
-// import LoginModal from './components/LoginModal';
-// import NotFound from './components/NotFound';
-
 import Layout from './components/Layout';
 import Content from './components/Content';
 import Header from './pages/common/Header';

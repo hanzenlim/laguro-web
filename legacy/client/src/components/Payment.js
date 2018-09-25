@@ -124,21 +124,23 @@ class Payment extends Component {
     };
 
     handleCreateReservation = () => {
-        const { startTime, endTime } = this.urlParams;
+         const { startTime, endTime } = this.urlParams;
 
-        const reservationPayload = {
-            numChairsSelected: this.urlParams.numChairs,
-            equipmentSelected: JSON.parse(this.urlParams.equipmentSelected),
-            listingId: this.urlParams.listingId,
-            reservedBy: this.urlParams.reservedBy,
-            startTime,
-            endTime,
-            paymentOptionId: this.props.auth.paymentOptions[0].id,
-            totalPaid: this.urlParams.totalPaid,
-        };
+         const reservationPayload = {
+             numChairsSelected: this.urlParams.numChairs,
+             equipmentSelected: JSON.parse(this.urlParams.equipmentSelected),
+             listingId: this.urlParams.listingId,
+             reservedBy: this.urlParams.reservedBy,
+             paymentOptionId: this.props.auth.paymentOptions[0].id,
+             totalPaid: this.urlParams.totalPaid,
+             availableTimes: {
+                 startTime,
+                 endTime
+             }
+         };
 
-        this.props.createReservation(reservationPayload);
-    };
+         this.props.createReservation(reservationPayload);
+     };
 
     handleCreateAppointment = () => {
         const { startTime, endTime } = this.urlParams;

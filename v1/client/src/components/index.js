@@ -31,6 +31,7 @@ import MaskedInput from './MaskedInput';
 import Steps from './Steps';
 import TimePicker from './TimePicker';
 import Card from './Card';
+import Skeleton from './Skeleton';
 import Tabs from './Tabs';
 import Grid from './Grid';
 
@@ -69,6 +70,7 @@ export {
     MaskedInput,
     Steps,
     InnerForm,
+    Skeleton,
     Tabs,
     Grid,
 };

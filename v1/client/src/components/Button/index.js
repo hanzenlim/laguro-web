@@ -61,20 +61,6 @@ const StyledButton = styled(AntdButton)`
         ${color} ${borders};
     }
 
-    &&.ant-btn-primary.disabled,
-    &&.ant-btn-primary[disabled],
-    &&.ant-btn-primary.disabled:hover,
-    &&.ant-btn-primary[disabled]:hover,
-    &&.ant-btn-primary.disabled:focus,
-    &&.ant-btn-primary[disabled]:focus,
-    &&.ant-btn-primary.disabled:active,
-    &&.ant-btn-primary[disabled]:active,
-    &&.ant-btn-primary.disabled.active,
-    &&.ant-btn-primary[disabled].active {
-        color: ${props => props.theme.colors.text.white};
-        background-color: ${props => props.theme.colors.button.gray};
-    }
-
     &&.ant-btn-ghost {
         && span {
             color: ${props =>
@@ -84,9 +70,12 @@ const StyledButton = styled(AntdButton)`
         }
         line-height: 1;
         padding: 0;
-        border: none;
+        ${props => (props.height ? height : `height: auto`)};
+        color: ${props => props.theme.colors.text.green};
         background-color: transparent;
-        ${props => (props.height ? height : `height: auto`)}
+        outline: none;
+        border-color: transparent;
+        ${borders};
         ${width};
         ${space};
         ${position};
@@ -104,6 +93,34 @@ const StyledButton = styled(AntdButton)`
         display: none;
     }
 
+    && > span {
+        font-stretch: normal;
+        line-height: normal;
+        letter-spacing: -0.4px;
+        ${fontSize};
+        ${fontWeight};
+        ${color};
+    }
+
+    i {
+        ${fontSize} ${fontWeight} ${color};
+    }
+
+    &&.ant-btn-background-ghost {
+        color: ${props => props.theme.colors.text.green};
+        border-color: ${props => props.theme.colors.text.green};
+    }
+
+    &&.ant-btn-primary.disabled,
+    &&.ant-btn-primary[disabled],
+    &&.ant-btn-primary.disabled:hover,
+    &&.ant-btn-primary[disabled]:hover,
+    &&.ant-btn-primary.disabled:focus,
+    &&.ant-btn-primary[disabled]:focus,
+    &&.ant-btn-primary.disabled:active,
+    &&.ant-btn-primary[disabled]:active,
+    &&.ant-btn-primary.disabled.active,
+    &&.ant-btn-primary[disabled].active,
     &&.ant-btn-ghost.disabled,
     &&.ant-btn-ghost[disabled],
     &&.ant-btn-ghost.disabled:hover,
@@ -114,26 +131,13 @@ const StyledButton = styled(AntdButton)`
     &&.ant-btn-ghost[disabled]:active,
     &&.ant-btn-ghost.disabled.active,
     &&.ant-btn-ghost[disabled].active {
-        color: ${props => props.theme.colors.text.white};
         background-color: ${props => props.theme.colors.button.gray};
-    }
+        border-color: ${props => props.theme.colors.divider.white};
 
-    &&.ant-btn-background-ghost {
-        color: ${props => props.theme.colors.text.green};
-        border-color: ${props => props.theme.colors.text.green};
-    }
-
-    && > span {
-        font-stretch: normal;
-        line-height: normal;
-        letter-spacing: -0.4px;
-        ${fontSize}
-        ${fontWeight};
-        ${color};
-    }
-
-    i {
-        ${fontSize} ${fontWeight} ${color};
+        && span,
+        && i {
+            color: ${props => props.theme.colors.text.white};
+        }
     }
 `;
 
@@ -158,6 +162,7 @@ Button.defaultProps = {
     type: 'primary',
     fontSize: 3,
     fontWeight: 'regular',
+    height: '50px',
 };
 
 Button.propTypes = {

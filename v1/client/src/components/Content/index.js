@@ -1,7 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Box } from '../../components';
 
-const StyledContent = styled.div`
+const StyledContent = styled(Box)`
     flex: 1;
     margin-bottom: 80px;
     width: 100%;
@@ -10,7 +11,7 @@ const StyledContent = styled.div`
 const Content = props => {
     const { children } = props;
 
-    return <StyledContent>{children}</StyledContent>;
+    return <StyledContent is="main">{children}</StyledContent>;
 };
 
 export default Content;
