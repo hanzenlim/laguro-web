@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Query, Mutation } from 'react-apollo';
 import get from 'lodash/get';
+import cookies from 'browser-cookies';
 
 import UpdateProfileFormView from './view';
 import { Loading } from '../../../../components';
@@ -119,6 +120,15 @@ class UpdateProfileContainer extends PureComponent {
                                             // on request authentication details and not set activeUser based on
                                             // events (login, update, ...)
                                             if (_updateUserData) {
+                                                cookies.set(
+                                                    'user',
+                                                    JSON.stringify(
+                                                        _updateUserData.updateUser
+                                                    ),
+                                                    {
+                                                        maxAge: 86400000,
+                                                    }
+                                                );
                                                 client.writeData({
                                                     data: {
                                                         activeUser: {

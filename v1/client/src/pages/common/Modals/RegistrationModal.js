@@ -69,7 +69,6 @@ const ReservationModalView = ({
                                 message: 'Please input a valid email!',
                             },
                         ]}
-                        validateTrigger="onBlur"
                         input={<Input type="email" />}
                     />
                     <FormItem
@@ -86,7 +85,6 @@ const ReservationModalView = ({
                                 message: 'Please enter at least 6 characters!',
                             },
                         ]}
-                        validateTrigger="onBlur"
                         input={<Input type="password" />}
                     />
 

@@ -37,6 +37,11 @@ export const updateUserMutation = gql`
             middleName
             lastName
             phoneNumber
+            dentistId
+            googleId
+            password
+            email
+            intercomHash
             notificationSettings {
                 general {
                     email

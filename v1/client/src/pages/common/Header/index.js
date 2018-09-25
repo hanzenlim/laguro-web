@@ -2,6 +2,7 @@ import React from 'react';
 import { Query } from 'react-apollo';
 import cookies from 'browser-cookies';
 import { message } from 'antd';
+import history from '../../../history';
 
 import HeaderView from './view';
 import { getUserQuery } from './queries';
@@ -94,6 +95,7 @@ const HeaderContainer = () => (
                 window && window.Intercom('shutdown');
                 client.writeData({ data: { activeUser: null } });
                 cookies.erase('user');
+                history.push('/');
             };
             const openLoginModal = () => {
                 client.writeData({ data: { visibleModal: 'login' } });

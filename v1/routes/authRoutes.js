@@ -25,7 +25,7 @@ const authRoutes = app => {
             }
 
             res.cookie('user', JSON.stringify({ ...user, imageUrl: null }), {
-                maxAge: 2592000000,
+                maxAge: 86400000,
             });
             return res.json({ status: 200, user });
         })(req, res, next)
@@ -38,7 +38,7 @@ const authRoutes = app => {
             }
 
             res.cookie('user', JSON.stringify(user), {
-                maxAge: 2592000000,
+                maxAge: 86400000,
             });
             return res.json({ status: 200, user });
         })(req, res, next)
@@ -177,7 +177,7 @@ const authRoutes = app => {
         passport.authenticate('google'),
         (req, res) => {
             res.cookie('user', JSON.stringify(req.user), {
-                maxAge: 2592000000,
+                maxAge: 86400000,
             });
             res.redirect(req.session.returnTo);
         }
