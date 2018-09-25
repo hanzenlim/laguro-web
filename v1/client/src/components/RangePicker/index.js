@@ -72,7 +72,6 @@ class RangePicker extends PureComponent {
 
     render() {
         const { value, ...rest } = this.props;
-        const compValue = value;
 
         return (
             <StyledContainer {...rest}>
@@ -84,7 +83,7 @@ class RangePicker extends PureComponent {
                         opacity="0"
                     >
                         <AntdDatePicker.RangePicker
-                            value={compValue}
+                            value={value}
                             {...rest}
                             format={'ddd M/D'}
                             getCalendarContainer={this.getCalendarContainer}
@@ -111,8 +110,7 @@ class RangePicker extends PureComponent {
                                 lineHeight="26px"
                                 letterSpacing="-0.6px"
                             >
-                                {(compValue &&
-                                    compValue[0].format('ddd M/DD')) ||
+                                {(value && value[0].format('ddd M/DD')) ||
                                     this.state.dateString[0] ||
                                     'Start date'}
                             </Text>
@@ -142,8 +140,7 @@ class RangePicker extends PureComponent {
                                 lineHeight="26px"
                                 letterSpacing="-0.6px"
                             >
-                                {(compValue &&
-                                    compValue[1].format('ddd M/DD')) ||
+                                {(value && value[1].format('ddd M/DD')) ||
                                     this.state.dateString[1] ||
                                     'End date'}
                             </Text>

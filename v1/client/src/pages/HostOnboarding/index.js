@@ -108,12 +108,12 @@ class HostOnboarding extends Component {
                     },
                 },
             });
-        }
 
-        if (stepList.indexOf(step) === stepList.length - 2) {
+            // url transition to confirmation page happens in handleListingCreated. skip transition in current function with a return
             return;
         }
 
+        // for all pages before CONFIRMATION_STEP, move on to the next step with computed params
         const nextStep = stepList[stepList.indexOf(step) + 1];
         const url = `/host-onboarding/${nextStep}?${this.computeParams(
             values,
@@ -215,7 +215,6 @@ class HostOnboarding extends Component {
                 computedUrlParams = urlParams;
         }
 
-        const { ...restOfValues } = values;
         const dateTime = _mapValues(
             pick(
                 values,
@@ -230,12 +229,9 @@ class HostOnboarding extends Component {
         );
 
         const addOfficeState = get(this, 'addOfficeInfo.state');
-        const {
-            imageUrls,
-            options,
-            autoCompleteHasError,
-            ...restOfAddOffice
-        } = !isEmpty(addOfficeState) ? addOfficeState : {};
+        const { imageUrls, ...restOfAddOffice } = !isEmpty(addOfficeState)
+            ? addOfficeState
+            : {};
 
         const params = queryString.stringify({
             // state variables from children
@@ -244,7 +240,7 @@ class HostOnboarding extends Component {
             ...computedUrlParams,
             // form values
             ...restOfAddOffice,
-            ...restOfValues,
+            ...values,
             ...dateTime,
         });
 
@@ -414,9 +410,9 @@ class HostOnboarding extends Component {
                                                 {step !== CONFIRMATION_STEP ? (
                                                     <GridItem gc="3 / 4">
                                                         <SubmitButton
-                                                            // disabled={
-                                                            //     submitDisabled
-                                                            // }
+                                                            disabled={
+                                                                submitDisabled
+                                                            }
                                                             position="absolute"
                                                             width={188}
                                                             height={60}
@@ -434,7 +430,7 @@ class HostOnboarding extends Component {
                                                             width={188}
                                                             height={60}
                                                         >
-                                                            Done{' '}
+                                                            Done
                                                         </Button>
                                                     </GridItem>
                                                 )}

@@ -9,6 +9,7 @@ class AddOfficeListing extends Component {
         super(props);
         const { form, ...rest } = this.props;
 
+        // inspect how many numChairsFields are currently in the url to know how many cards to initialize
         const numCards = Object.keys(props).filter(key =>
             key.startsWith('numChairs')
         );
@@ -25,7 +26,6 @@ class AddOfficeListing extends Component {
         ));
 
         this.state = {
-            // isExistingOffice: officeId !== undefined,
             listings: !isEmpty(listings)
                 ? listings
                 : [
@@ -83,9 +83,6 @@ class AddOfficeListing extends Component {
     };
 
     showListing = listingIndex => {
-        // if (!listingIndex) {
-        //     return;
-        // }
         const { listings } = this.state;
 
         listings[listingIndex] = React.cloneElement(listings[listingIndex], {
