@@ -17,6 +17,9 @@ export default {
             green: '#50e3c2',
             lightGray: '#efeeee',
             transparent: 'rgba(0, 0, 0, 0)',
+            yellow: '#ffbf00',
+            orange: '#f5a623',
+            darkGreen: '#5fa595',
         },
         button: {
             green: '#50e3c2',
@@ -24,6 +27,7 @@ export default {
             facebookBlue: '#3B5998',
             googleBlue: '#4285F4',
             white: '#ffffff',
+            ghost: 'rgba(255, 255, 255, 0.7)',
         },
         divider: {
             white: '#ffffff',

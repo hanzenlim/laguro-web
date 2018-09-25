@@ -12,6 +12,13 @@ import {
 
 import Map from '../Map';
 
+const TAG_COLORS = [
+    'background.green',
+    'background.yellow',
+    'background.orange',
+    'background.darkGreen',
+];
+
 const DentistDetailsView = props => {
     const { data } = props;
 
@@ -58,12 +65,12 @@ const DentistDetailsView = props => {
                 available procedures
             </Text>
             <Flex flexWrap="wrap" mb="34px">
-                {data.procedures.map(procedure => (
+                {data.procedures.map((procedure, index) => (
                     <Button type="ghost">
                         <Box
                             px={24}
                             py={10}
-                            bg="background.green"
+                            bg={TAG_COLORS[index % 4]}
                             borderRadius="25px"
                             mr="6px"
                             mb="6px"
@@ -111,9 +118,11 @@ const DentistDetailsView = props => {
                     letterSpacing="1.5"
                 >
                     address information
-                    <Text is="span" fontWeight="bold">
-                        - {data.address.name}
-                    </Text>
+                    {data.locations.map(location => (
+                        <Text is="span" fontWeight="bold">
+                            - {location.name}
+                        </Text>
+                    ))}
                 </Text>
 
                 <Box width="100%" height="440px" mt={20}>
@@ -121,13 +130,11 @@ const DentistDetailsView = props => {
                         height={440}
                         width={732}
                         zoom={13}
-                        data={[
-                            {
-                                address: data.address.name,
-                                latitude: get(data, 'address.geoPoint.lat'),
-                                longitude: get(data, 'address.geoPoint.lon'),
-                            },
-                        ]}
+                        data={data.locations.map(location => ({
+                            address: location.name,
+                            latitude: get(location, 'geoPoint.lat'),
+                            longitude: get(location, 'geoPoint.lon'),
+                        }))}
                     />
                 </Box>
             </Box>

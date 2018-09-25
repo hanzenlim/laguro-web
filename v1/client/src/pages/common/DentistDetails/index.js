@@ -26,22 +26,20 @@ class DentistDetails extends PureComponent {
 
                     const dentist = data.getDentist;
                     const { user } = dentist;
-                    const procedures = dentist.procedures.map(
-                        procedure => procedure.name
-                    );
+                    const procedures = dentist.procedures.map(p => p.group);
 
                     const mappedData = {
                         name: `Dr. ${user.firstName} ${user.lastName}`,
                         specialization: dentist.specialty,
-                        image: 'http://via.placeholder.com/186x186',
-                        // image: user.imageUrl,
+                        image: user.imageUrl,
                         procedures,
-                        // bio: dentist.bio.trim(),
-                        bio:
-                            'lorem ipsum blandit aptent phasellus viverra sollicitudin nostra netus fringilla, lobortis conubia eu auctor varius aliquam blandit faucibus donec, suspendisse nisl sapien turpis pretium diam arcu nostra, netus lectus faucibus rhoncus tellus ligula hendrerit vivamus. aenean hac ornare fermentum mi justo enim massa fames lorem ipsum blandit aptent phasellus viverra sollicitudin nostra netus fringilla, lobortis conubia eu auctor varius aliquam blandit faucibus donec, suspendisse nisl sapien turpis pretium diam arcu nostra, netus lectus faucibus rhoncus tellus ligula hendrerit vivamus. aenean hac ornare fermentum mi justo enim massa fames',
-                        rating: 4,
-                        reviewsCount: 84,
-                        address: dentist.location,
+                        bio: dentist.bio.trim(),
+                        rating: dentist.averageRating,
+                        reviewsCount: dentist.numReviews,
+                        locations:
+                            dentist.appointments.lenght > 0
+                                ? dentist.appointments[0].location
+                                : [],
                     };
 
                     return <DentistDetailsView data={mappedData} />;

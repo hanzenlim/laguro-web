@@ -6,15 +6,17 @@ export const getDentistQuery = gql`
         getDentist(id: $id) {
             bio
             specialty
-            location {
-                name
-                geoPoint {
-                    lat
-                    lon
+            appointments {
+                location {
+                    name
+                    geoPoint {
+                        lat
+                        lon
+                    }
                 }
             }
             procedures {
-                name
+                group
             }
             user {
                 firstName
@@ -24,6 +26,9 @@ export const getDentistQuery = gql`
             reviews {
                 rating
             }
+            totalRating
+            numReviews
+            averageRating
         }
     }
 `;

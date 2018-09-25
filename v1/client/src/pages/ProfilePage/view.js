@@ -5,6 +5,7 @@ import { Box, Container, Text } from '../../components/';
 import UpdateProfileForm from '../../pages/common/Forms/UpdateProfileForm';
 import Menu from '../common/Menu';
 import DentistDetails from '../common/DentistDetails';
+import UpdateDentistProfileForm from '../../pages/common/Forms/UpdateDentistProfileForm';
 import OfficeDetails from '../common/OfficeDetails';
 import ReviewContainer from '../common/ReviewContainer';
 import HostListings from '../common/HostListings';
@@ -21,6 +22,7 @@ import {
     PAYMENTS,
     BALANCE,
     PUBLIC_PROFILE,
+    DENTIST_PROFILE,
     MY_BOOKINGS,
 } from '../../util/strings';
 
@@ -69,6 +71,12 @@ class ProfileView extends Component {
                         Balance
                     </Text>
                 );
+            case DENTIST_PROFILE:
+                return (
+                    <Box>
+                        <UpdateDentistProfileForm />
+                    </Box>
+                );
             case PUBLIC_PROFILE:
                 return persona === DENTIST ? (
                     <Box>
@@ -116,6 +124,17 @@ class ProfileView extends Component {
                                     my profile
                                 </Text>
                             </Menu.Item>
+                            {(persona === HOST || persona === DENTIST) && (
+                                <Menu.Item key={DENTIST_PROFILE}>
+                                    <Text
+                                        fontSize={4}
+                                        color="inherit"
+                                        lineHeight="40px"
+                                    >
+                                        dentist profile
+                                    </Text>
+                                </Menu.Item>
+                            )}
                             <Menu.Item key={MY_DOCUMENTS}>
                                 <Text
                                     fontSize={4}

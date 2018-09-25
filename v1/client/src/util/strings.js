@@ -13,6 +13,7 @@ export const LOCATION = 'LOCATION';
 export const RESERVATION = 'reservation';
 export const RESERVATIONS = 'reservations';
 export const PROCEDURE = 'procedure';
+export const PROCEDURES = 'procedures';
 export const ALL_RESERVATIONS = 'all_reservations';
 export const APPOINTMENT = 'appointment';
 export const APPOINTMENTS = 'appointments';
@@ -60,6 +61,7 @@ export const MY_APPOINTMENTS = 'my_appointments';
 export const PAYMENTS = 'payments';
 export const BALANCE = 'balance';
 export const PUBLIC_PROFILE = 'public_profile';
+export const DENTIST_PROFILE = 'dentist_profile';
 export const MY_LISTINGS = 'my_listings';
 export const MY_BOOKINGS = 'my_bookings';
 
