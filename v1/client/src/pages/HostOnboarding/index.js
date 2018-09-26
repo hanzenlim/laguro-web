@@ -174,8 +174,14 @@ class HostOnboarding extends Component {
                         `numChairs${key.slice('availability'.length)}`
                     ],
                     availability: {
-                        startTime: startTime.format().split('T')[1],
-                        endTime: endTime.format().split('T')[1],
+                        startTime: startTime
+                            .startOf('hour')
+                            .format()
+                            .split('T')[1],
+                        endTime: endTime
+                            .startOf('hour')
+                            .format()
+                            .split('T')[1],
                         startDay: startDay.format().split('T')[0],
                         endDay: endDay.format().split('T')[0],
                     },
