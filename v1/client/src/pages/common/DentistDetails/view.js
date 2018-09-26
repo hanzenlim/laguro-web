@@ -25,6 +25,7 @@ const DentistDetailsView = props => {
     return (
         <Box>
             <Flex mb={56}>
+                {}
                 <Image
                     width="130px"
                     height="130px"

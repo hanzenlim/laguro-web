@@ -6,6 +6,15 @@ import OfficeDetailsPageView from './view';
 import { Loading } from '../../components';
 
 class OfficeDeatilsPageContainer extends PureComponent {
+    state = {
+        officeDetailsDoneLoading: false,
+    };
+
+    officeDetailsDoneLoadingHandler = () => {
+        this.setState({
+            officeDetailsDoneLoading: true,
+        });
+    };
     render() {
         const { id } = this.props.match.params;
 
@@ -21,6 +30,12 @@ class OfficeDeatilsPageContainer extends PureComponent {
                     }
                     return (
                         <OfficeDetailsPageView
+                            officeDetailsDoneLoadingHandler={
+                                this.officeDetailsDoneLoadingHandler
+                            }
+                            officeDetailsDoneLoading={
+                                this.state.officeDetailsDoneLoading
+                            }
                             imageUrls={get(data, 'getOffice.imageUrls')}
                             id={id}
                         />

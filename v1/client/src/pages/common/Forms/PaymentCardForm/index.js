@@ -105,6 +105,7 @@ class PaymentCardForm extends Component {
                             }
                             handleSubmitNewCard={this.handleCreateStripeToken}
                             onChangeCardSelect={this.onChangeCardSelect}
+                            onBackButton={this.props.onBackButton}
                         />
                     );
                 }}
@@ -123,6 +124,7 @@ PaymentCardForm.propTypes = {
     btnText: PropTypes.string.isRequired,
     userId: PropTypes.string,
     handleSubmit: PropTypes.func,
+    onBackButton: PropTypes.func,
 };
 
 export default graphql(addPaymentOptionMutation)(injectStripe(PaymentCardForm));

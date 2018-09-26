@@ -5,7 +5,14 @@ import { Box } from '../../../components';
 import PaymentCardForm from '../../common/Forms/PaymentCardForm';
 
 const PaymentView = props => {
-    const { stripe, btnText, isButtonOutside, userId, handleSubmit } = props;
+    const {
+        stripe,
+        btnText,
+        isButtonOutside,
+        userId,
+        handleSubmit,
+        onBackButton,
+    } = props;
 
     return (
         <Box width="100%">
@@ -16,6 +23,7 @@ const PaymentView = props => {
                         isButtonOutside={isButtonOutside}
                         userId={userId}
                         handleSubmit={handleSubmit}
+                        onBackButton={onBackButton}
                     />
                 </Elements>
             </StripeProvider>

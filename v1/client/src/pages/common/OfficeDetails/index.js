@@ -6,7 +6,7 @@ import { Box, Loading } from '../../../components';
 
 class OfficeDetails extends PureComponent {
     render() {
-        const { id } = this.props;
+        const { id, doneLoading } = this.props;
 
         return (
             <Query query={getOfficeQuery} variables={{ id }}>
@@ -17,6 +17,12 @@ class OfficeDetails extends PureComponent {
                                 <Loading />
                             </Box>
                         );
+                    }
+
+                    // Notify parent container that it's done loading.
+                    // This will trigger an event to load up the sticky side bar.
+                    if (doneLoading) {
+                        doneLoading();
                     }
 
                     if (error) {

@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import get from 'lodash/get';
 
@@ -34,6 +35,11 @@ class Payment extends PureComponent {
         if (this.props.onSuccess) {
             this.props.onSuccess(cardId);
         }
+        this.props.onPay(cardId);
+    };
+
+    onBackButton = () => {
+        this.props.onBackButton();
     };
 
     render() {
@@ -57,6 +63,7 @@ class Payment extends PureComponent {
                             isButtonOutside={isButtonOutside}
                             userId={get(data, 'activeUser.id')}
                             handleSubmit={this.submitPayment}
+                            onBackButton={this.onBackButton}
                         />
                     );
                 }}
@@ -64,5 +71,16 @@ class Payment extends PureComponent {
         );
     }
 }
+
+Payment.defaultProps = {
+    onPay: () => {},
+    onBackButton: () => {},
+};
+
+Payment.PropTypes = {
+    onPay: PropTypes.func.isRequired,
+    onBackButton: PropTypes.func.isRequired,
+    btnText: PropTypes.string.isRequired,
+};
 
 export default Payment;

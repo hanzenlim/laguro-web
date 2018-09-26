@@ -54,7 +54,7 @@ const SelectEquipmentView = props => {
                                 {item.name}
                             </Text>
                             <Text color="inherit" fontSize={1}>
-                                {item.price}
+                                ${parseInt(item.price, 10) / 100}
                             </Text>
                         </Flex>
                     </Button>

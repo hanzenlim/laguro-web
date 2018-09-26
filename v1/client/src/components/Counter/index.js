@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import CounterView from './view';
 
 class CounterContainer extends PureComponent {
@@ -6,21 +7,35 @@ class CounterContainer extends PureComponent {
         super(props);
 
         this.state = {
-            count: 0,
+            count: 1,
         };
     }
 
+    componentDidMount() {
+        this.props.onCounterCountHandler(this.state.count);
+    }
+
     handleAddClick = () => {
-        this.setState({
-            count: this.state.count + 1,
-        });
+        this.setState(
+            {
+                count: this.state.count + 1,
+            },
+            () => {
+                this.props.onCounterCountHandler(this.state.count);
+            }
+        );
     };
 
     handleMinusClick = () => {
         if (this.state.count !== 0) {
-            this.setState({
-                count: this.state.count - 1,
-            });
+            this.setState(
+                {
+                    count: this.state.count - 1,
+                },
+                () => {
+                    this.props.onCounterCountHandler(this.state.count);
+                }
+            );
         }
     };
 
@@ -34,5 +49,13 @@ class CounterContainer extends PureComponent {
         );
     }
 }
+
+CounterContainer.defaultProps = {
+    onCounterCountHandler: () => {},
+};
+
+CounterContainer.PropTypes = {
+    onCounterCountHandler: PropTypes.func.isRequired,
+};
 
 export default CounterContainer;

@@ -27,33 +27,53 @@ const CardView = ({
     handleSubmitExistingCard,
     handleSubmitNewCard,
     onChangeCardSelect,
+    onBackButton,
 }) => (
     <Box width="100%" position="relative">
         <Text fontSize={3} color="text.black" fontWeight="bold" mb={18}>
             Card Info
         </Text>
-        {get(paymentOptionsCards, 'length') > 0 &&
-            renderExistingCards(
-                paymentOptionsCards,
-                selectedCard,
-                onChangeCardSelect
+
+        <Text fontWeight="bold" fontSize={3}>
+            Choose a card
+        </Text>
+        <Box mb={28}>
+            {get(paymentOptionsCards, 'length') > 0 &&
+                renderExistingCards(
+                    paymentOptionsCards,
+                    selectedCard,
+                    onChangeCardSelect
+                )}
+
+            {selectedCard === NEW_CARD_PAYMENT_METHOD && (
+                <NewCardFormView
+                    btnText={btnText}
+                    handleSubmit={handleSubmitNewCard}
+                    isButtonOutside={isButtonOutside}
+                />
             )}
+        </Box>
 
-        {selectedCard === NEW_CARD_PAYMENT_METHOD && (
-            <NewCardFormView
-                btnText={btnText}
-                isButtonOutside={isButtonOutside}
-                handleSubmit={handleSubmitNewCard}
-            />
-        )}
-
+        {selectedCard !== NEW_CARD_PAYMENT_METHOD &&
+            onBackButton && (
+                <Button
+                    ghost={true}
+                    height={55}
+                    mb={10}
+                    width={'100%'}
+                    fontSize={2}
+                    color="text.green"
+                    onClick={onBackButton}
+                >
+                    Back
+                </Button>
+            )}
         {selectedCard !== NEW_CARD_PAYMENT_METHOD && (
             <Button
                 width={'100%'}
                 height={60}
                 fontSize={3}
                 px={14}
-                mt={28}
                 onClick={handleSubmitExistingCard}
                 style={
                     // Temporary solution before we can figure out
