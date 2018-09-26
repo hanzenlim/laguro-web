@@ -35,7 +35,10 @@ export const getDentistQuery = gql`
                 listings(
                     options: {
                         sortKey: "${END_TIME}",
-                        rangeStart: "${moment().format()}",
+                        rangeStart: "${moment()
+                            .startOf('hour')
+                            .startOf('days')
+                            .format()}",
                         filters: [
                             {
                                 filterKey: "${STATUS}",
@@ -55,7 +58,10 @@ export const getDentistQuery = gql`
                     reservations(
                         options: {
                             sortKey: "${END_TIME}",
-                            rangeStart: "${moment().format()}",
+                            rangeStart: "${moment()
+                                .startOf('hour')
+                                .startOf('days')
+                                .format()}",
                             filters: [
                                 {
                                     filterKey: "${STATUS}",
