@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import cookies from 'browser-cookies';
 import styled from 'styled-components';
 import { Query, Mutation } from 'react-apollo';
 import queryString from 'query-string';
@@ -15,6 +16,7 @@ import AddOfficeInfo from '../common/Forms/AddOfficeInfo';
 import AddOfficeEquipments from '../common/Forms/AddOfficeEquipments';
 import AddOfficeListing from '../common/Forms/AddOfficeListing';
 import ListingConfirmation from '../common/ListingConfirmation';
+import { ACTIVE_USER } from '../../util/strings';
 
 const { GridItem } = Grid;
 
@@ -62,7 +64,7 @@ class HostOnboarding extends Component {
         this.setState({ submitDisabled: false });
     };
 
-    onSubmit = (values, createOffice, id) => {
+    onSubmit = async (values, createOffice, id, client) => {
         const { step } = this.props.match.params;
         const { historyLocationSearch } = this.state;
         const urlParams = queryString.parse(historyLocationSearch);
@@ -89,10 +91,10 @@ class HostOnboarding extends Component {
             }));
 
         if (step === 'add-listing') {
-            createOffice({
+            const result = await createOffice({
                 variables: {
                     input: {
-                        hostId: id,
+                        userId: id,
                         name: officeName,
                         location: {
                             name: location,
@@ -108,6 +110,22 @@ class HostOnboarding extends Component {
                     },
                 },
             });
+
+            if (result) {
+                // Need to update the cookie and local cache to populate the dentist id.
+                const user = get(result, 'data.createUserOffice.host.user');
+                cookies.set('user', JSON.stringify(user), {
+                    maxAge: 86400000,
+                });
+                client.writeData({
+                    data: {
+                        activeUser: {
+                            ...user,
+                            __typename: ACTIVE_USER,
+                        },
+                    },
+                });
+            }
 
             // url transition to confirmation page happens in handleListingCreated. skip transition in current function with a return
             return;
@@ -325,20 +343,20 @@ class HostOnboarding extends Component {
                                 mutation={CREATE_OFFICE}
                                 onCompleted={data => {
                                     this.handleOfficeCreated(
-                                        data.createOffice.id,
+                                        data.createUserOffice.id,
                                         batchCreateListings
                                     );
                                 }}
                             >
-                                {createOffice => (
+                                {(createOffice, { client }) => (
                                     <StyledContainer>
                                         <Form
                                             onSuccess={values =>
                                                 this.onSubmit(
                                                     values,
                                                     createOffice,
-                                                    userData.activeUser
-                                                        .dentistId
+                                                    userData.activeUser.id,
+                                                    client
                                                 )
                                             }
                                         >
