@@ -1,5 +1,6 @@
 import React, { PureComponent, Fragment } from 'react';
 import { Query } from 'react-apollo';
+import get from 'lodash/get';
 
 import DentistAppointments from './view';
 import CancelReservationModal from '../Modals/CancelReservationModal';
@@ -7,53 +8,53 @@ import { Loading } from '../../../components';
 
 import { getDentistIdQueryClient, getDentistQuery } from './queries';
 
-class DentistAppointmentsContainer extends PureComponent {
+const DentistAppointmentsContainer = () => (
+    <Query query={getDentistIdQueryClient}>
+        {({ data: clientData }) => (
+            <Query
+                query={getDentistQuery}
+                variables={{ id: clientData.activeUser.dentistId }}
+            >
+                {({ loading, error, data }) => {
+                    if (error) return <div>Error</div>;
+                    if (loading) return <Loading />;
+
+                    const { reservations } = get(data, 'getDentist');
+                    return (
+                        <DentistAppointmentsView reservations={reservations} />
+                    );
+                }}
+            </Query>
+        )}
+    </Query>
+);
+
+class DentistAppointmentsView extends PureComponent {
     state = {
         isModalOpen: false,
+        reservationId: null,
     };
 
-    toggleModalState = () =>
-        this.setState(({ isModalOpen }) => ({ isModalOpen: !isModalOpen }));
+    toggleModalState = reservationId => () =>
+        this.setState(({ isModalOpen }) => ({
+            isModalOpen: !isModalOpen,
+            reservationId,
+        }));
 
-    onSubmit = () => {
-        // Do ok logic here
-        this.toggleModalState();
-    };
-
-    onCancel = () => {
-        // Do cancel logic here
-        this.toggleModalState();
-    };
     render() {
+        const { reservationId, isModalOpen } = this.state;
         return (
-            <Query query={getDentistIdQueryClient}>
-                {({ data: clientData }) => (
-                    <Query
-                        query={getDentistQuery}
-                        variables={{ id: clientData.activeUser.dentistId }}
-                    >
-                        {({ loading, error, data }) => {
-                            if (error) return <div>Error</div>;
-                            if (loading) return <Loading />;
-                            return (
-                                <Fragment>
-                                    <DentistAppointments
-                                        reservations={
-                                            data.getDentist.reservations
-                                        }
-                                        toggleModalState={this.toggleModalState}
-                                    />
-                                    <CancelReservationModal
-                                        visible={this.state.isModalOpen}
-                                        onSubmit={this.onSubmit}
-                                        onCancel={this.onCancel}
-                                    />
-                                </Fragment>
-                            );
-                        }}
-                    </Query>
-                )}
-            </Query>
+            <Fragment>
+                <DentistAppointments
+                    reservations={this.props.reservations}
+                    toggleModalState={this.toggleModalState}
+                />
+                <CancelReservationModal
+                    reservationId={reservationId}
+                    visible={isModalOpen}
+                    toggleModalState={this.toggleModalState(reservationId)}
+                />
+            </Fragment>
         );
     }
 }

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Modal, Text, Button, Box, Flex } from '../../../../components';
 
 const CancelReservationModal = props => {
-    const { visible, onCancel, onSubmit } = props;
+    const { visible, onCancel, onSubmit, loading } = props;
 
     return (
         <Modal visible={visible} onCancel={onCancel} destroyOnClose width={760}>
@@ -46,6 +46,7 @@ const CancelReservationModal = props => {
                         </Text>
                     </Button>
                     <Button
+                        loading={loading}
                         height="60px"
                         width={250}
                         onClick={onSubmit}
@@ -69,6 +70,7 @@ CancelReservationModal.propTypes = {
     visible: PropTypes.bool.isRequired,
     onCancel: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
+    loading: PropTypes.bool,
 };
 
 export default CancelReservationModal;
