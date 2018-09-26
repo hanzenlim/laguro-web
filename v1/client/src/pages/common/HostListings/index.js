@@ -3,7 +3,6 @@ import { Query } from 'react-apollo';
 import get from 'lodash/get';
 
 import HostListings from './view';
-import EditListingModal from '../Modals/EditListingModal';
 import CancelListingModal from '../Modals/CancelListingModal';
 import { Loading } from '../../../components';
 
@@ -30,16 +29,9 @@ const HostListingsContainer = () => (
 
 class HostListingsView extends PureComponent {
     state = {
-        isEditModalOpen: false,
         isCancelModalOpen: false,
         listingId: null,
     };
-
-    toggleEditModalState = listingId => () =>
-        this.setState(({ isEditModalOpen }) => ({
-            isEditModalOpen: !isEditModalOpen,
-            listingId,
-        }));
 
     toggleCancelModalState = listingId => () =>
         this.setState(({ isCancelModalOpen }) => ({
@@ -48,19 +40,14 @@ class HostListingsView extends PureComponent {
         }));
 
     render() {
-        const { listingId, isCancelModalOpen, isEditModalOpen } = this.state;
+        const { listingId, isCancelModalOpen } = this.state;
         return (
             <Fragment>
                 <HostListings
                     offices={this.props.offices}
-                    toggleEditModalState={this.toggleEditModalState}
                     toggleCancelModalState={this.toggleCancelModalState}
                 />
-                <EditListingModal
-                    listingId={listingId}
-                    visible={isEditModalOpen}
-                    toggleModalState={this.toggleEditModalState(listingId)}
-                />
+
                 <CancelListingModal
                     listingId={listingId}
                     visible={isCancelModalOpen}

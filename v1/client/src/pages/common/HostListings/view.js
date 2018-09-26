@@ -77,14 +77,7 @@ class HostListings extends PureComponent {
                             </Text>
                         </Button>
                     </Flex>
-                    <Box
-                        px={28}
-                        py={16}
-                        mt={5}
-                        bg="background.lightGray"
-                        css="cursor: pointer;"
-                        onClick={this.props.toggleEditModalState(id)}
-                    >
+                    <Box px={28} py={16} mt={5} bg="background.lightGray">
                         <Box fontSize={5} mb={22}>
                             <Text fontWeight="bold" display="inline" mr={15}>
                                 {moment(startDate).format('ddd, M/D')} -{' '}
@@ -223,7 +216,6 @@ const officeShape = PropTypes.shape({
 HostListings.propTypes = {
     offices: PropTypes.arrayOf(officeShape),
     toggleCancelModalState: PropTypes.func,
-    toggleEditModalState: PropTypes.func,
 };
 
 export default HostListings;
