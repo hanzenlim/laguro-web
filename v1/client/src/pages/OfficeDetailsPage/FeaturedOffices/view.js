@@ -12,14 +12,15 @@ const FeaturedOfficesView = props => {
         <Box mt={40}>
             <Text fontSize={5}>find our highlights</Text>
 
-            <Flex justifyContent="space-between" mt={30}>
+            <Flex justifyContent="flex-start" mt={30}>
                 {featuredOffices.map(item => (
-                    <Box key={item.id} width="186px">
+                    <Box width="186px" key={item.id} mr={30}>
                         <LinkCard
                             title={item.name}
                             subtitle={item.description}
                             address={item.address}
                             rating={item.totalRating}
+                            image={item.imageUrls[0]}
                         />
                     </Box>
                 ))}

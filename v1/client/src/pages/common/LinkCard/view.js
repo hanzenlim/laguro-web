@@ -36,6 +36,11 @@ const LinkCard = props => {
                             src={image}
                             height={props.height}
                             alt={title}
+                            style={{
+                                height: '100%',
+                                width: '100%',
+                                objectFit: 'cover',
+                            }}
                         />
                     </Box>
                     {address && (

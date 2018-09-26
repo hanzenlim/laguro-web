@@ -30,6 +30,7 @@ class FeaturedList extends Component {
             address: item._source.location.name,
             numReviews: `${item._source.numReviews} reviews`,
             totalRating: item._source.totalRating,
+            imageUrls: item._source.imageUrls,
         }));
 
         return <FeaturedOfficesView featuredOffices={mappedData} />;

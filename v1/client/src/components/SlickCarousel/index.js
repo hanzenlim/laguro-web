@@ -8,7 +8,7 @@ const PrevArrow = props => (
     <Button
         type="ghost"
         color="icon.white"
-        className={props.className}
+        className={`${props.className} leftArrow`}
         position="absolute"
         style={{ ...props.style, display: 'block' }}
         onClick={props.onClick}
@@ -30,7 +30,7 @@ const NextArrow = props => (
     <Button
         type="ghost"
         color="icon.white"
-        className={props.className}
+        className={`${props.className} rightArrow`}
         position="absolute"
         style={{ ...props.style, display: 'block' }}
         onClick={props.onClick}

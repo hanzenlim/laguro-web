@@ -38,7 +38,7 @@ export class InnerForm extends Component {
             if (!validationError && this.state.submitting === false) {
                 try {
                     this.props.onSuccess(values);
-                    if (this.props.debounce) {
+                    if (this.props.debounce !== 'false') {
                         this.setState({ submitting: true });
                     }
                 } catch (submissionError) {
@@ -198,12 +198,12 @@ WrappedForm.FormItem = FormItem;
 
 WrappedForm.defaultProps = {
     onSuccess: () => {},
-    debounce: false,
+    debounce: 'false',
 };
 
 WrappedForm.propTypes = {
     onSuccess: PropTypes.func.isRequired,
-    debounce: PropTypes.bool,
+    debounce: PropTypes.string,
 };
 
 export default WrappedForm;
