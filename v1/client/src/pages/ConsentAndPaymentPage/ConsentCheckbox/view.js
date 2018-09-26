@@ -10,10 +10,11 @@ const ConsentCheckboxView = props => {
         <Box ml={36} my={16}>
             <Checkbox onChange={onClickCheckbox} checked={hasConsented}>
                 <Text is="span" color="text.black" fontSize={2} pl={10}>
-                    I agree upon the above procedures to be performed by
+                    I agree upon the above procedures to be performed by{' '}
                     <Text is="span" fontWeight="bold">
                         {dentistName}
                     </Text>
+                    .
                 </Text>
             </Checkbox>
         </Box>
