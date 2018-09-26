@@ -6,7 +6,7 @@ import { Text, Flex, Button, Box, Checkbox, Icon } from '../../../components';
 
 const StyledContainer = styled(Box)`
     display: grid;
-    grid-template-columns: auto auto auto auto;
+    grid-template-columns: repeat(4, 25%);
 `;
 
 const SelectHoursView = props => {
@@ -51,6 +51,7 @@ const SelectHoursView = props => {
                                 }
                                 key={i}
                                 type="ghost"
+                                border="none"
                                 onClick={onSelect}
                                 data-key={i}
                             >

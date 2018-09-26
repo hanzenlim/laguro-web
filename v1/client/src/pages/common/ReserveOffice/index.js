@@ -207,8 +207,8 @@ class ReserveOffice extends Component {
                     'MMM D, YYYY'
                 )} - ${earliestReservationEndTime.format('MMM D, YYYY')}`,
                 paymentConfirmationH3Text: `${earliestReservationStartTime.format(
-                    'Ha'
-                )} - ${earliestReservationEndTime.format('Ha')}`,
+                    'ha'
+                )} - ${earliestReservationEndTime.format('ha')}`,
             });
         }
     };
