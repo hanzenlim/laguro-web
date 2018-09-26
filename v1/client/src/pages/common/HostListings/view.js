@@ -1,24 +1,25 @@
-import React, { PureComponent } from 'react';
+import React, { Fragment, PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import moment from 'moment';
 
-import { Box, Tabs, Text, Flex, Image, Button } from '../../../components';
+import {
+    Box,
+    Tabs,
+    Text,
+    Flex,
+    Image,
+    Button,
+    Link,
+} from '../../../components';
 import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
 
 const { TabPane } = Tabs;
 const StyledList = styled.ul`
     columns: 3;
-    list-style: none;
-
-    li:first-child {
-        font-weight: ${props => props.theme.fontWeights.medium};
-    }
-
-    li:before {
-        content: '•';
-        margin-right: 10px;
-    }
+    list-style-position: inside;
+    padding: 0;
+    margin: 0;
 `;
 
 class HostListings extends PureComponent {
@@ -27,8 +28,32 @@ class HostListings extends PureComponent {
             const { id, name, listings, equipment } = office;
             return (
                 <TabPane tab={name} key={id}>
+                    <Flex justifyContent="flex-end" mt={12}>
+                        <Link to="/" type="ghost">
+                            <Text color="text.green" fontSize={1} mr={24}>
+                                edit
+                            </Text>
+                        </Link>
+                        <Link to="/" type="ghost">
+                            <Text color="text.green" fontSize={1}>
+                                add a new listing
+                            </Text>
+                        </Link>
+                    </Flex>
+                    <Box px={28} py={16} mt={13} bg="background.lightGray">
+                        <Text fontSize={3} fontWeight="medium" mb={14}>
+                            Equipments offered in this office
+                        </Text>
+                        <StyledList>
+                            {equipment.map(({ name: itemName }, index) => (
+                                <li key={index}>
+                                    <Text display="inline">{itemName}</Text>
+                                </li>
+                            ))}
+                        </StyledList>
+                    </Box>
                     {listings.length ? (
-                        this.renderListing(listings, equipment)
+                        this.renderListing(listings)
                     ) : (
                         <Text textAlign="center" color="text.gray" my={50}>
                             NO LISTINGS
@@ -38,14 +63,9 @@ class HostListings extends PureComponent {
             );
         });
 
-    renderListing = (listings, equipment) =>
+    renderListing = listings =>
         listings.map(listing => {
-            const {
-                id,
-                availability,
-                numChairsAvailable,
-                reservations,
-            } = listing;
+            const { id, availability, reservations } = listing;
 
             const startDate = `${availability.startDay}T${
                 availability.startTime
@@ -54,7 +74,7 @@ class HostListings extends PureComponent {
             const isResevationsEmpty = reservations.length === 0;
 
             return (
-                <Box key={id} mb={42}>
+                <Box key={id} mt={28}>
                     <Flex justifyContent="flex-end">
                         <Button
                             type="ghost"
@@ -63,7 +83,8 @@ class HostListings extends PureComponent {
                                     ? this.props.toggleCancelModalState(id)
                                     : null
                             }
-                            mb={12}
+                            height="40px"
+                            mb={10}
                         >
                             <Text
                                 fontSize={1}
@@ -73,13 +94,13 @@ class HostListings extends PureComponent {
                                         : 'text.gray'
                                 }
                             >
-                                delete
+                                delete listing
                             </Text>
                         </Button>
                     </Flex>
                     <Box px={28} py={16} mt={5} bg="background.lightGray">
-                        <Box fontSize={5} mb={22}>
-                            <Text fontWeight="bold" display="inline" mr={15}>
+                        <Box fontSize={5} mb={30}>
+                            <Text fontWeight="medium" display="inline" mr={15}>
                                 {moment(startDate).format('ddd, M/D')} -{' '}
                                 {moment(endDate).format('ddd, M/D')}
                             </Text>
@@ -88,15 +109,6 @@ class HostListings extends PureComponent {
                                 {moment(endDate).format('H:mmA')}
                             </Text>
                         </Box>
-                        <Text fontSize={3} fontWeight="medium" mb={10}>
-                            Available Equipments
-                        </Text>
-                        <StyledList>
-                            <li>{`${numChairsAvailable} chair${
-                                numChairsAvailable > 1 ? 's' : ''
-                            }`}</li>
-                            {this.renderEquipment(equipment)}
-                        </StyledList>
                         <Box mt={18}>
                             {reservations.length ? (
                                 this.renderReservation(reservations)
@@ -115,35 +127,37 @@ class HostListings extends PureComponent {
             );
         });
 
-    renderEquipment = equipment =>
-        equipment.map(({ name }, index) => <li key={index}>{name}</li>);
-
-    renderAvailableTimes = availableTimes =>
-        availableTimes.map(({ startTime, endTime }, index) => (
-            <Text fontWeight="bold" fontSize={4} key={index}>
-                {moment(startTime).format('H:mmA')} -{' '}
-                {moment(endTime).format('H:mmA')}
-            </Text>
-        ));
-
     renderReservation = reservations =>
         reservations.map(reservation => {
-            const { id, availableTimes, reservedBy } = reservation;
+            const {
+                id,
+                availableTimes,
+                reservedBy,
+                numChairsSelected,
+                equipmentSelected,
+            } = reservation;
             const { firstName, lastName, imageUrl } = reservedBy.user;
             const name = `Dr. ${firstName} ${lastName}`;
             return (
-                <Flex
+                <Box
                     key={id}
-                    alignItems="flex-start"
-                    justifyContent="space-between"
                     bg="background.white"
                     border="1px solid"
                     borderColor="divider.gray"
                     borderRadius={2}
                     mb={10}
-                    p={30}
                 >
-                    <Flex alignItems="center">
+                    <Flex
+                        alignItems="center"
+                        justifyContent="space-between"
+                        p={26}
+                    >
+                        <Box textAlign="center">
+                            {this.renderAvailableTimes(availableTimes)}
+                        </Box>
+                        <Text mx={15} fontSize={4}>
+                            {name}
+                        </Text>
                         <Image
                             src={imageUrl || defaultUserImage}
                             alt={name}
@@ -151,14 +165,52 @@ class HostListings extends PureComponent {
                             height={38}
                             borderRadius="50%"
                         />
-                        <Text ml={30} fontSize={4}>
-                            {name}
-                        </Text>
                     </Flex>
-                    <Box>{this.renderAvailableTimes(availableTimes)}</Box>
-                </Flex>
+                    <Box
+                        borderTop="1px solid"
+                        borderColor="divider.gray"
+                        px={26}
+                        py={20}
+                    >
+                        <Box fontSize={1} mb={8}>
+                            Equipments ordered by{' '}
+                            <Text fontWeight="medium" is="span">
+                                {name}
+                            </Text>
+                        </Box>
+                        <StyledList>
+                            <li>
+                                <Text display="inline" fontWeight="medium">
+                                    {`${numChairsSelected} chair${
+                                        numChairsSelected > 1 ? 's' : ''
+                                    }`}
+                                </Text>
+                            </li>
+                            {equipmentSelected.map((item, index) => (
+                                <li key={index}>
+                                    <Text display="inline">{item}</Text>
+                                </li>
+                            ))}
+                        </StyledList>
+                    </Box>
+                </Box>
             );
         });
+
+    renderAvailableTimes = availableTimes =>
+        availableTimes.map(({ startTime, endTime }, index) => (
+            <Fragment key={index}>
+                {index === 0 && (
+                    <Text fontSize={4} fontWeight="medium">
+                        {moment(startTime).format('ddd, MMM/D/YYY')}
+                    </Text>
+                )}
+                <Text fontSize={4}>
+                    {moment(startTime).format('H:mmA')} -{' '}
+                    {moment(endTime).format('H:mmA')}
+                </Text>
+            </Fragment>
+        ));
 
     render() {
         const { offices } = this.props;
@@ -192,11 +244,12 @@ const reservationShape = PropTypes.shape({
         })
     ),
     reservedBy: PropTypes.shape({ user: userShape }),
+    numChairsSelected: PropTypes.number,
+    equipmentSelected: PropTypes.arrayOf(PropTypes.string),
 });
 
 const listingShape = PropTypes.shape({
     id: PropTypes.string,
-    numChairsAvailable: PropTypes.number,
     availability: PropTypes.shape({
         startTime: PropTypes.string,
         endTime: PropTypes.string,

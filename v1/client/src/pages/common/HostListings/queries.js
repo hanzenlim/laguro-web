@@ -54,7 +54,6 @@ export const getDentistQuery = gql`
                         startTime
                         endTime
                     }
-                    numChairsAvailable
                     reservations(
                         options: {
                             sortKey: "${END_TIME}",
@@ -82,6 +81,8 @@ export const getDentistQuery = gql`
                                 imageUrl
                             }
                         }
+                        numChairsSelected
+                        equipmentSelected
                     }
                 }
             }
