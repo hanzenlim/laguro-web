@@ -206,7 +206,7 @@ class ProfileView extends Component {
                                     </Text>
                                 </Menu.Item>
                             )}
-                            {(persona === HOST || persona === DENTIST) && (
+                            {persona === DENTIST && (
                                 <Menu.Item key={PUBLIC_PROFILE}>
                                     <Text
                                         fontSize={4}

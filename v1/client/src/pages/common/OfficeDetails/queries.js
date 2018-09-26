@@ -14,6 +14,8 @@ export const getOfficeQuery = gql`
             }
             description
             imageUrls
+            averageRating
+            numReviews
         }
     }
 `;

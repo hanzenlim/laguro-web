@@ -33,17 +33,10 @@ class OfficeDetails extends PureComponent {
 
                     const mappedData = {
                         name: office.name,
-                        imageUrls: [
-                            'http://dental-care.dentistinhamilton-nj.com/wp-content/uploads/2015/12/2489226_xxl.jpg',
-                            'http://via.placeholder.com/1000x1000',
-                            'http://via.placeholder.com/500x500',
-                        ],
-                        // imageUrls: office.imageUrls,
-                        // description: office.description,
-                        description:
-                            'lorem ipsum blandit aptent phasellus viverra sollicitudin nostra netus fringilla, lobortis conubia eu auctor varius aliquam blandit faucibus donec, suspendisse nisl sapien turpis pretium diam arcu nostra, netus lectus faucibus rhoncus tellus ligula hendrerit vivamus. aenean hac ornare fermentum mi justo enim massa fames lorem ipsum blandit aptent phasellus viverra sollicitudin nostra netus fringilla, lobortis conubia eu auctor varius aliquam blandit faucibus donec, suspendisse nisl sapien turpis pretium diam arcu nostra, netus lectus faucibus rhoncus tellus ligula hendrerit vivamus. aenean hac ornare fermentum mi justo enim massa fames',
-                        rating: 4,
-                        numReviews: 84,
+                        imageUrls: office.imageUrls,
+                        description: office.description,
+                        rating: office.averageRating,
+                        numReviews: office.numReviews,
                         address: office.location,
                     };
 

@@ -23,7 +23,7 @@ const OfficeDetailsView = props => {
                         {data.address.name}
                     </Text>
                     <Flex mt={10} alignItems="center">
-                        <Rating size="18px" value="3" disabled />
+                        <Rating size="18px" disabled />
                         <Text
                             ml={10}
                             lineHeight="16px"

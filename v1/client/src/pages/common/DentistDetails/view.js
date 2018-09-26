@@ -50,7 +50,7 @@ const DentistDetailsView = props => {
                     </Text>
 
                     <Flex mt={5} alignItems="center">
-                        <Rating size="18px" value={1} disabled />
+                        <Rating size="18px" value={data.rating} disabled />
                         <Text
                             ml={10}
                             lineHeight="16px"
