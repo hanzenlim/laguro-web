@@ -6,7 +6,6 @@ import { Icon, Button } from '../../components';
 
 const PrevArrow = props => (
     <Button
-        hoverColor="icon.green"
         type="ghost"
         color="icon.white"
         className={props.className}
@@ -29,7 +28,6 @@ const PrevArrow = props => (
 
 const NextArrow = props => (
     <Button
-        hoverColor="icon.green"
         type="ghost"
         color="icon.white"
         className={props.className}

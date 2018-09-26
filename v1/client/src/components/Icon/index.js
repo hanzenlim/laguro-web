@@ -32,7 +32,7 @@ import UpArrow from './UpArrow';
 import DownArrow from './DownArrow';
 
 const Icon = props => {
-    const { type, ...rest } = props;
+    const { type, isButton, ...rest } = props;
 
     let ReturnIcon;
     switch (type) {
@@ -92,7 +92,7 @@ const Icon = props => {
     const StyledIconContainer = styled.span`
         &&&& {
             ${lineHeight} ${fontSize} ${height} ${display};
-            ${!props.isButton &&
+            ${!isButton &&
                 (cssProps =>
                     cssProps.color
                         ? color
@@ -105,9 +105,7 @@ const Icon = props => {
         lineHeight: 1,
     };
 
-    StyledIcon.defaultProps = {
-        lineHeight: 1,
-    };
+    StyledIcon.defaultProps = {};
 
     return (
         <StyledIconContainer {...rest}>

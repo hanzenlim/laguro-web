@@ -17,7 +17,6 @@ class Carousel extends PureComponent {
                     <Button
                         style={rest.controlsStyle}
                         type="ghost"
-                        hoverColor="icon.green"
                         color="icon.white"
                         left="128px"
                         asdf
@@ -37,7 +36,6 @@ class Carousel extends PureComponent {
                     <Button
                         style={rest.controlsStyle}
                         type="ghost"
-                        hoverColor="icon.green"
                         color="icon.white"
                         right="128px"
                         position="absolute"

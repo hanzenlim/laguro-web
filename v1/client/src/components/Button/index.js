@@ -165,8 +165,8 @@ Button.defaultProps = {
 };
 
 Button.propTypes = {
-    height: PropTypes.oneOf(['50px', '60px', '80px']),
-    fontSize: PropTypes.oneOf([1, 2, 3]),
+    height: PropTypes.oneOf(['40px', '50px', '60px', '80px']),
+    fontSize: PropTypes.oneOf([1, 2, 3, 4]),
 };
 
 export default Button;
