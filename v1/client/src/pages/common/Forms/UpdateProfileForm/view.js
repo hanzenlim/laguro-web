@@ -116,7 +116,7 @@ const UpdateProfileForm = props => {
                                 left={0}
                                 right={0}
                                 width="100%"
-                                height={40}
+                                height={'40px'}
                                 color="text.black"
                                 fontSize={4}
                                 border="none"
@@ -269,7 +269,7 @@ const UpdateProfileForm = props => {
                         loading={loading}
                         textAlign="left"
                         width={450}
-                        height={60}
+                        height={'60px'}
                     />
                 </Form>
             </Box>
@@ -278,7 +278,7 @@ const UpdateProfileForm = props => {
 };
 
 UpdateProfileForm.defaultProps = {
-    onSuccess: () => {},
+    onSuccess: async () => {},
 };
 
 UpdateProfileForm.propTypes = {

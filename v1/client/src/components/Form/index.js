@@ -37,8 +37,10 @@ export class InnerForm extends Component {
         this.props.form.validateFields((validationError, values) => {
             if (!validationError && this.state.submitting === false) {
                 try {
-                    this.props.onSuccess(values);
                     this.setState({ submitting: true });
+                    this.props.onSuccess(values).then(() => {
+                        this.setState({ submitting: false });
+                    });
                 } catch (submissionError) {
                     this.setState({ submitting: false });
                     if (submissionError && submissionError.message) {
@@ -85,7 +87,7 @@ export class InnerForm extends Component {
     }
 
     render() {
-        const { form, children, ...rest } = this.props;
+        const { form, children, onSuccess, ...rest } = this.props;
 
         return (
             <StyledForm
