@@ -28,7 +28,7 @@ const ReservationModalView = ({
             </Text>
 
             <Box width={300}>
-                <Form layout="vertical" onSuccess={signup}>
+                <Form layout="vertical" onSuccess={signup} debounce>
                     <FormItem
                         name="firstName"
                         label="first name"

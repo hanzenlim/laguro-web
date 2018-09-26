@@ -37,10 +37,10 @@ export class InnerForm extends Component {
         this.props.form.validateFields((validationError, values) => {
             if (!validationError && this.state.submitting === false) {
                 try {
-                    this.setState({ submitting: true });
-                    this.props.onSuccess(values).then(() => {
-                        this.setState({ submitting: false });
-                    });
+                    this.props.onSuccess(values);
+                    if (this.props.debounce) {
+                        this.setState({ submitting: true });
+                    }
                 } catch (submissionError) {
                     this.setState({ submitting: false });
                     if (submissionError && submissionError.message) {
@@ -198,10 +198,12 @@ WrappedForm.FormItem = FormItem;
 
 WrappedForm.defaultProps = {
     onSuccess: () => {},
+    debounce: false,
 };
 
 WrappedForm.propTypes = {
     onSuccess: PropTypes.func.isRequired,
+    debounce: PropTypes.bool,
 };
 
 export default WrappedForm;
