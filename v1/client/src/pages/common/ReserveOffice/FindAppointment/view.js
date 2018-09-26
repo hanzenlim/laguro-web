@@ -16,7 +16,7 @@ const FindAppointment = ({ onDateChange, onSubmit, disableButton }) => (
             <SubmitButton
                 disabled={disableButton}
                 width="100%"
-                height="59px"
+                height="60px"
                 fontSize={3}
                 px={14}
                 buttonText="Find appointment"
@@ -25,7 +25,7 @@ const FindAppointment = ({ onDateChange, onSubmit, disableButton }) => (
     </Box>
 );
 
-FindAppointment.PropTypes = {
+FindAppointment.propTypes = {
     onDateChange: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
     disableButton: PropTypes.bool.isRequired,

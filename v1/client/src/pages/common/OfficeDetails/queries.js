@@ -12,6 +12,8 @@ export const getOfficeQuery = gql`
                     lon
                 }
             }
+            totalRating
+            numReviews
             description
             imageUrls
             averageRating

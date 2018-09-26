@@ -99,10 +99,10 @@ const ReserveOfficeView = ({
     </Box>
 );
 
-ReserveOfficeView.PropTypes = {
+ReserveOfficeView.propTypes = {
     findAvailabilityHandler: PropTypes.func.isRequired,
     selectedDates: PropTypes.string,
-    triggerFindReservations: PropTypes.func.isRequired,
+    triggerFindReservations: PropTypes.bool.isRequired,
     officeId: PropTypes.string.isRequired,
     onChangeCurrentDisplay: PropTypes.func.isRequired,
     currentDisplay: PropTypes.string.isRequired,

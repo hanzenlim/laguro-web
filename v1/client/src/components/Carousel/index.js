@@ -19,7 +19,6 @@ class Carousel extends PureComponent {
                         type="ghost"
                         color="icon.white"
                         left="128px"
-                        asdf
                         position="absolute"
                     >
                         <Icon

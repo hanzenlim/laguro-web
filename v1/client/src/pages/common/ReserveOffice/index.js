@@ -313,7 +313,7 @@ class ReserveOffice extends Component {
     }
 }
 
-ReserveOffice.PropTypes = {
+ReserveOffice.propTypes = {
     officeId: PropTypes.string.isRequired,
     startLoading: PropTypes.bool.isRequired,
 };

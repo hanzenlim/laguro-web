@@ -27,8 +27,8 @@ const OfficeDetailsPageView = props => {
     return (
         <Fragment>
             <Carousel>
-                {imageUrls.map(imageUrl => (
-                    <Box height="370px">
+                {imageUrls.map((imageUrl, index) => (
+                    <Box key={index} height="370px">
                         <Image src={imageUrl} width="100%" height="100%" />
                     </Box>
                 ))}
@@ -45,9 +45,7 @@ const OfficeDetailsPageView = props => {
                         <ReviewContainer type={OFFICE} id={id} />
                     </Box>
                     <Sticky mt={20} offset="20px">
-                        <Box
-                            mt="44px"
-                        >
+                        <Box mt="44px">
                             <ReserveOffice
                                 officeId={id}
                                 startLoading={officeDetailsDoneLoading}

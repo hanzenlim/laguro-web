@@ -23,16 +23,14 @@ class FeaturedList extends Component {
     render() {
         if (!this.state.featuredOffices) return null;
 
-        const mappedData = this.state.featuredOffices.map(item => {
-            return {
-                id: item._id,
-                name: item._source.name,
-                description: item._source.description,
-                address: item._source.location.name,
-                numReviews: `${item._source.numReviews} reviews`,
-                totalRating: item._source.totalRating,
-            };
-        });
+        const mappedData = this.state.featuredOffices.map(item => ({
+            id: item._id,
+            name: item._source.name,
+            description: item._source.description,
+            address: item._source.location.name,
+            numReviews: `${item._source.numReviews} reviews`,
+            totalRating: item._source.totalRating,
+        }));
 
         return <FeaturedOfficesView featuredOffices={mappedData} />;
     }

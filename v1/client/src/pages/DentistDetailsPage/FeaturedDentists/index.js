@@ -23,15 +23,13 @@ class FeaturedList extends Component {
     render() {
         if (!this.state.featuredDentists) return null;
 
-        const mappedData = this.state.featuredDentists.map(item => {
-            return {
-                id: item._id,
-                name: item._source.name,
-                specialty: item._source.specialty,
-                numReviews: `${item._source.numReviews} reviews`,
-                totalRating: item._source.totalRating,
-            };
-        });
+        const mappedData = this.state.featuredDentists.map(item => ({
+            id: item._id,
+            name: item._source.name,
+            specialty: item._source.specialty,
+            numReviews: `${item._source.numReviews} reviews`,
+            totalRating: item._source.totalRating,
+        }));
 
         return <FeaturedListView featuredDentists={mappedData} />;
     }

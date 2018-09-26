@@ -5,7 +5,7 @@ import { getOfficeImageQuery } from './queries';
 import OfficeDetailsPageView from './view';
 import { Loading } from '../../components';
 
-class OfficeDeatilsPageContainer extends PureComponent {
+class OfficeDetailsPageContainer extends PureComponent {
     state = {
         officeDetailsDoneLoading: false,
     };
@@ -46,4 +46,4 @@ class OfficeDeatilsPageContainer extends PureComponent {
     }
 }
 
-export default OfficeDeatilsPageContainer;
+export default OfficeDetailsPageContainer;

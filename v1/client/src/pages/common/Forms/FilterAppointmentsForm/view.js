@@ -59,15 +59,13 @@ const StyledFormContainer = styled.div`
     }
 `;
 
-const renderOptions = list => {
-    return (
-        <Select>
-            {list.map(item => (
-                <Select.Option value={item.key}>{item.value}</Select.Option>
-            ))}
-        </Select>
-    );
-};
+const renderOptions = list => (
+    <Select>
+        {list.map(item => (
+            <Select.Option value={item.key}>{item.value}</Select.Option>
+        ))}
+    </Select>
+);
 
 const FilterAppointmentsFormView = props => {
     const { handleSubmit, availableDateList, locationList } = props;

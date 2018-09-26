@@ -14,7 +14,7 @@ const FeaturedOfficesView = props => {
 
             <Flex justifyContent="space-between" mt={30}>
                 {featuredOffices.map(item => (
-                    <Box width="186px">
+                    <Box key={item.id} width="186px">
                         <LinkCard
                             title={item.name}
                             subtitle={item.description}

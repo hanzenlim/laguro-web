@@ -459,7 +459,7 @@ class SelectReservation extends Component {
         const selectedListingsId = [];
         //
         Object.keys(this.selectedDatesAndHours).forEach(key => {
-            this.selectedDatesAndHours[key].map(value => {
+            this.selectedDatesAndHours[key].forEach(value => {
                 selectedListingsId.push(value.listingId);
             });
         });
@@ -732,7 +732,7 @@ SelectReservation.defaultProps = {
     onChangeCurrentDisplay: () => {},
 };
 
-SelectReservation.PropTypes = {
+SelectReservation.propTypes = {
     officeId: PropTypes.string.isRequired,
     selectedDates: PropTypes.string.isRequired,
     triggerQuery: PropTypes.bool.isRequired,

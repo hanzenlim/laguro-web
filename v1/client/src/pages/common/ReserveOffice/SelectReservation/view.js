@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Box, Text, Flex, Button, Counter } from '../../../../components';
 import SelectHours from '../../SelectHours';
 import SelectEquipment from '../../SelectEquipment';

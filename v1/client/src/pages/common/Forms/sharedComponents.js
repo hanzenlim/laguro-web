@@ -17,7 +17,7 @@ import {
     Typography,
     Flex,
     Button,
-    Box
+    Box,
 } from '../common';
 import { Padding } from '../common/Spacing';
 import { renderPrice, removeSpecialChars } from '../../util/paymentUtil';
@@ -36,42 +36,37 @@ const StyledUl = styled.ul`
     margin: 0;
 `;
 
-export const addTooltip = (text, fontSize = '0.8rem') => {
-    return (
-        <Tooltip id="tooltip-right" title={text} placement="right">
-            <i
-                className="material-icons tiny"
-                style={{
-                    fontSize: `${fontSize}`,
-                    marginLeft: '3px',
-                    padding: '3px'
-                }}
-            >
-                help_outline
-            </i>
-        </Tooltip>
-    );
-};
+export const addTooltip = (text, fontSize = '0.8rem') => (
+    <Tooltip id="tooltip-right" title={text} placement="right">
+        <i
+            className="material-icons tiny"
+            style={{
+                fontSize: `${fontSize}`,
+                marginLeft: '3px',
+                padding: '3px',
+            }}
+        >
+            help_outline
+        </i>
+    </Tooltip>
+);
 
-export const renderOptionsFromList = (list, selected = null) => {
-    return list.map(object => {
-        return (
-            <Option
-                value={object.name}
-                key={object.id}
-                disabled={checkIfAlreadySelected(object.name, selected)}
-            >
-                {object.name}
-            </Option>
-        );
-    });
-};
+export const renderOptionsFromList = (list, selected = null) =>
+    list.map(object => (
+        <Option
+            value={object.name}
+            key={object.id}
+            disabled={checkIfAlreadySelected(object.name, selected)}
+        >
+            {object.name}
+        </Option>
+    ));
 
 export const checkIfAlreadySelected = (objectName, selectedObjects) => {
     // get list of all currently selected equipment from the form reducer
     if (!selectedObjects) return false;
     // parse out a list of names
-    let selectedNames = selectedObjects.map(obj => obj.name);
+    const selectedNames = selectedObjects.map(obj => obj.name);
     // return true if that option is already selected, otherwise false
     return selectedNames.includes(objectName);
 };
@@ -80,67 +75,65 @@ export const renderEquipmentSelector = ({
     fields,
     className,
     selected,
-    meta: { error }
-}) => {
-    return (
-        <ul className={className}>
-            {fields.map((equipment, index) => (
-                <li key={index}>
-                    <Grid container alignItems="flex-end">
-                        <Grid item xs={4}>
-                            <Field
-                                name={`${equipment}.name`}
-                                component={renderSelect}
-                                validate={required}
-                            >
-                                {renderOptionsFromList(equipmentList, selected)}
-                            </Field>
+    meta: { error },
+}) => (
+    <ul className={className}>
+        {fields.map((equipment, index) => (
+            <li key={index}>
+                <Grid container alignItems="flex-end">
+                    <Grid item xs={4}>
+                        <Field
+                            name={`${equipment}.name`}
+                            component={renderSelect}
+                            validate={required}
+                        >
+                            {renderOptionsFromList(equipmentList, selected)}
+                        </Field>
 
-                            <Padding bottom="16" />
-                        </Grid>
-                        <Grid item xs={1} />
-                        <Grid item xs={4}>
-                            <Field
-                                name={`${equipment}.price`}
-                                type="text"
-                                placeholder="15"
-                                component={renderField}
-                                label="Usage Price"
-                                tooltip="How much do you want to charge dentists to use this equipment? (one-time charge)"
-                                validate={[required, dollarMinimum]}
-                                format={value => renderPrice(value)}
-                                normalize={value => removeSpecialChars(value)}
-                            />
-                            <Padding bottom="16" />
-                        </Grid>
-                        <Grid item xs={1} />
-                        <Grid item xs={2}>
-                            <StyledRemoveButton
-                                type="button"
-                                title="Remove Equipment"
-                                onClick={() => fields.remove(index)}
-                            >
-                                <img src={exitSVG} alt="Remove Equipment" />
-                            </StyledRemoveButton>
-                            <Padding bottom="16" />
-                        </Grid>
+                        <Padding bottom="16" />
                     </Grid>
-                </li>
-            ))}
-            <li>
-                <Button
-                    type="button"
-                    color="primary"
-                    onClick={() => fields.push({ name: '', price: 2000 })}
-                >
-                    Add Equipment
-                </Button>
+                    <Grid item xs={1} />
+                    <Grid item xs={4}>
+                        <Field
+                            name={`${equipment}.price`}
+                            type="text"
+                            placeholder="15"
+                            component={renderField}
+                            label="Usage Price"
+                            tooltip="How much do you want to charge dentists to use this equipment? (one-time charge)"
+                            validate={[required, dollarMinimum]}
+                            format={value => renderPrice(value)}
+                            normalize={value => removeSpecialChars(value)}
+                        />
+                        <Padding bottom="16" />
+                    </Grid>
+                    <Grid item xs={1} />
+                    <Grid item xs={2}>
+                        <StyledRemoveButton
+                            type="button"
+                            title="Remove Equipment"
+                            onClick={() => fields.remove(index)}
+                        >
+                            <img src={exitSVG} alt="Remove Equipment" />
+                        </StyledRemoveButton>
+                        <Padding bottom="16" />
+                    </Grid>
+                </Grid>
             </li>
-            {error && <span>{error}</span>}
-            <Padding bottom="16" />
-        </ul>
-    );
-};
+        ))}
+        <li>
+            <Button
+                type="button"
+                color="primary"
+                onClick={() => fields.push({ name: '', price: 2000 })}
+            >
+                Add Equipment
+            </Button>
+        </li>
+        {error && <span>{error}</span>}
+        <Padding bottom="16" />
+    </ul>
+);
 
 export const renderProcedureSelector = ({ fields, className, selected }) => (
     <div>
@@ -214,7 +207,7 @@ export const durationOptions = [
     </option>,
     <option value={90} key={90}>
         90 minutes
-    </option>
+    </option>,
 ];
 
 export const generateListItems = set => {
@@ -238,12 +231,12 @@ const getMinTime = (dateType, listing) => {
             .hours(0)
             .minutes(0);
     switch (dateType) {
-    case 'startTime':
-        return moment(listing.startTime);
-    default:
-        return moment()
-            .hours(0)
-            .minutes(0);
+        case 'startTime':
+            return moment(listing.startTime);
+        default:
+            return moment()
+                .hours(0)
+                .minutes(0);
     }
 };
 
@@ -253,12 +246,12 @@ const getMaxTime = (dateType, listing) => {
             .hours(23)
             .minutes(59);
     switch (dateType) {
-    case 'startTime':
-        return moment(listing.endTime).subtract(1, 'hours');
-    default:
-        return moment()
-            .hours(23)
-            .minutes(59);
+        case 'startTime':
+            return moment(listing.endTime).subtract(1, 'hours');
+        default:
+            return moment()
+                .hours(23)
+                .minutes(59);
     }
 };
 
@@ -269,7 +262,7 @@ export const renderDatePicker = ({
     tooltip,
     dateType,
     listing,
-    meta: { touched, error }
+    meta: { touched, error },
 }) => (
     <div className={className}>
         <label>
@@ -304,18 +297,16 @@ export const renderField = ({
     label,
     meta: { touched, error },
     ...custom
-}) => {
-    return (
-        <Grid className={className} container direction="column">
-            <label>
-                {label && `${label} `}
-                {tooltip && addTooltip(tooltip)}
-            </label>
-            <Input {...input} {...custom} />
-            {touched && error && <span className="red-text">{error}</span>}
-        </Grid>
-    );
-};
+}) => (
+    <Grid className={className} container direction="column">
+        <label>
+            {label && `${label} `}
+            {tooltip && addTooltip(tooltip)}
+        </label>
+        <Input {...input} {...custom} />
+        {touched && error && <span className="red-text">{error}</span>}
+    </Grid>
+);
 
 export const renderMaskedField = props => {
     const {
@@ -358,7 +349,7 @@ export const renderOfficeOptions = offices => {
                 value={JSON.stringify({
                     id: office.id,
                     office_name: office.name,
-                    chairs: office.numChairs
+                    chairs: office.numChairs,
                 })}
                 key={index}
             >
@@ -376,7 +367,7 @@ export const renderSelect = props => {
         disabled,
         tooltip,
         meta: { touched, error },
-        children
+        children,
     } = props;
 
     return (
@@ -403,25 +394,23 @@ export const renderCheckbox = ({
     label,
     tooltip,
     input: { onChange, value },
-    meta: { touched, error }
-}) => {
-    return (
-        <div>
-            <Flex alignItems="center">
-                <Checkbox
-                    checked={value ? true : false}
-                    onClick={() => {
-                        onChange(value ? false : true);
-                    }}
-                />
-                <Typography pl={2}>
-                    {label} {tooltip && addTooltip(tooltip, '16px')}
-                </Typography>
-            </Flex>
-            {touched && (error && <Typography color="red">{error}</Typography>)}
-        </div>
-    );
-};
+    meta: { touched, error },
+}) => (
+    <div>
+        <Flex alignItems="center">
+            <Checkbox
+                checked={!!value}
+                onClick={() => {
+                    onChange(!value);
+                }}
+            />
+            <Typography pl={2}>
+                {label} {tooltip && addTooltip(tooltip, '16px')}
+            </Typography>
+        </Flex>
+        {touched && (error && <Typography color="red">{error}</Typography>)}
+    </div>
+);
 
 export const charCount = (numChar, total) => {
     const StyledCharCountBox = styled(Box)`

@@ -37,7 +37,7 @@ class FindAppointment extends PureComponent {
     }
 }
 
-FindAppointment.PropTypes = {
+FindAppointment.propTypes = {
     findAvailabilityHandler: PropTypes.func.isRequired,
 };
 export default FindAppointment;
