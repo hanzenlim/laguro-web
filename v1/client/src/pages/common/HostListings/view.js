@@ -54,9 +54,17 @@ class HostListings extends PureComponent {
             const isResevationsEmpty = reservations.length === 0;
 
             return (
-                <Box key={id} mb={25}>
+                <Box key={id} mb={42}>
                     <Flex justifyContent="flex-end">
-                        <Button type="ghost" border="none">
+                        <Button
+                            type="ghost"
+                            onClick={
+                                isResevationsEmpty
+                                    ? this.props.toggleCancelModalState(id)
+                                    : null
+                            }
+                            mb={12}
+                        >
                             <Text
                                 fontSize={1}
                                 color={
@@ -69,14 +77,7 @@ class HostListings extends PureComponent {
                             </Text>
                         </Button>
                     </Flex>
-                    <Box
-                        px={28}
-                        py={16}
-                        mt={5}
-                        bg="background.lightGray"
-                        css="cursor: pointer;"
-                        onClick={this.props.toggleModalState}
-                    >
+                    <Box px={28} py={16} mt={5} bg="background.lightGray">
                         <Box fontSize={5} mb={22}>
                             <Text fontWeight="bold" display="inline" mr={15}>
                                 {moment(startDate).format('ddd, M/D')} -{' '}
@@ -214,6 +215,7 @@ const officeShape = PropTypes.shape({
 
 HostListings.propTypes = {
     offices: PropTypes.arrayOf(officeShape),
+    toggleCancelModalState: PropTypes.func,
 };
 
 export default HostListings;

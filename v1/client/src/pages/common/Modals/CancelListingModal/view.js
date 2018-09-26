@@ -3,38 +3,45 @@ import PropTypes from 'prop-types';
 
 import { Modal, Text, Button, Box, Flex } from '../../../../components';
 
-const EditListingModal = props => {
-    const { visible, onCancel, onSubmit } = props;
+const CancelListingModal = props => {
+    const { visible, onCancel, onSubmit, loading } = props;
 
     return (
         <Modal visible={visible} onCancel={onCancel} destroyOnClose width={550}>
-            <Box py={10} px={50}>
+            <Box py={27} px={75} textAlign="center">
                 <Text
-                    fontSize={20}
+                    fontSize={4}
                     fontWeight="light"
                     textAlign="center"
                     mb={18}
                 >
-                    edit listings
+                    delete listing
                 </Text>
-                <Text fontSize={3} textAlign="center" mb={28}>
-                    Would you like to edit your listing? You will be redirected
-                    to another page.
+                <Text fontSize={3} mb={20}>
+                    Are you sure you want to delete this listing?
                 </Text>
-                <Flex mt={47} justifyContent="center">
+                <Flex justifyContent="flex-end" alignItems="center">
                     <Button
                         type="ghost"
-                        inverted
                         height="60px"
                         width={188}
                         onClick={onCancel}
-                        fontWeight="bold"
-                        fontSize={3}
                         mr={20}
                     >
-                        Cancel
+                        <Text
+                            fontWeight="bold"
+                            fontSize={3}
+                            color="text.green"
+                            border="2px solid"
+                            borderColor="divider.green"
+                            borderRadius="4px"
+                            lineHeight="54px"
+                        >
+                            Cancel
+                        </Text>
                     </Button>
                     <Button
+                        loading={loading}
                         height="60px"
                         width={188}
                         onClick={onSubmit}
@@ -49,15 +56,16 @@ const EditListingModal = props => {
     );
 };
 
-EditListingModal.defaultProps = {
+CancelListingModal.defaultProps = {
     onSubmit: () => {},
     onCancel: () => {},
 };
 
-EditListingModal.propTypes = {
+CancelListingModal.propTypes = {
     visible: PropTypes.bool.isRequired,
     onCancel: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
+    loading: PropTypes.bool,
 };
 
-export default EditListingModal;
+export default CancelListingModal;
