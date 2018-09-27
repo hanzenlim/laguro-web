@@ -21,6 +21,7 @@ const FeaturedOfficesView = props => {
                             address={item.address}
                             rating={item.totalRating}
                             image={item.imageUrls[0]}
+                            url={`/office/${item.id}`}
                         />
                     </Box>
                 ))}

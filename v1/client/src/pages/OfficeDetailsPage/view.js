@@ -21,6 +21,15 @@ const renderReservationModule = () => <Payment />;
 const StyledCarousel = styled(SlickCarousel)`
     && {
         margin-bottom: 20px;
+        height: 20vw;
+    }
+
+    &&.expanded {
+        height: 66vw;
+
+        @media (min-width: 1300px) {
+            height: 850px;
+        }
     }
 
     && .slick-slide {
@@ -83,7 +92,7 @@ class OfficeDetailsPageView extends PureComponent {
         } = this.props;
         return (
             <Fragment>
-                {_get(imageUrls, 'length') > 0 && (
+                {_get(imageUrls, 'length') > 0 ? (
                     <StyledCarousel
                         className={this.state.carouselClass}
                         infinite={true}
@@ -105,6 +114,8 @@ class OfficeDetailsPageView extends PureComponent {
                             </Flex>
                         ))}
                     </StyledCarousel>
+                ) : (
+                    <Box mb={30} />
                 )}
                 <Container>
                     <Flex>
@@ -126,7 +137,7 @@ class OfficeDetailsPageView extends PureComponent {
                             </Box>
                         </Sticky>
                     </Flex>
-                    <FeaturedOffices />
+                    <FeaturedOffices currentOffice={id} />
                 </Container>
             </Fragment>
         );

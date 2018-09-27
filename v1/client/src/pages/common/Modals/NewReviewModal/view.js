@@ -23,11 +23,12 @@ const DentistInfo = props => {
             <Image
                 src={imageUrl}
                 alt="dentist-image"
-                width={73}
-                height={73}
                 mx="auto"
                 mb={10}
                 borderRadius="50%"
+                height={73}
+                width={73}
+                objectFit="cover"
             />
             <Text
                 lineHeight={2.83}
@@ -48,7 +49,14 @@ const OfficeInfo = props => {
     return (
         <Flex mt={24}>
             <Box width="33.33%">
-                <Image src={imageUrl} alt="office-image" />
+                <Image
+                    src={imageUrl}
+                    height="100%"
+                    width="100%"
+                    objectFit="cover"
+                    alt="office-image"
+                    borderRadius="4px"
+                />
             </Box>
             <Box width="66.66%" pl={16}>
                 <Text

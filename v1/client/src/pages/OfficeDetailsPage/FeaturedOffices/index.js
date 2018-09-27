@@ -23,7 +23,7 @@ class FeaturedList extends Component {
     render() {
         if (!this.state.featuredOffices) return null;
 
-        const mappedData = this.state.featuredOffices.map(item => ({
+        let mappedData = this.state.featuredOffices.map(item => ({
             id: item._id,
             name: item._source.name,
             description: item._source.description,
@@ -32,6 +32,10 @@ class FeaturedList extends Component {
             totalRating: item._source.totalRating,
             imageUrls: item._source.imageUrls,
         }));
+
+        mappedData = mappedData.filter(
+            office => office.id !== this.props.currentOffice
+        );
 
         return <FeaturedOfficesView featuredOffices={mappedData} />;
     }
