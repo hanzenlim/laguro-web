@@ -27,13 +27,11 @@ const StyledForm = styled(AntdForm)`
 export class InnerForm extends Component {
     constructor(props) {
         super(props);
-
         this.state = { submitting: false };
     }
 
     handleSubmit = event => {
         event.preventDefault();
-
         this.props.form.validateFields((validationError, values) => {
             if (!validationError && this.state.submitting === false) {
                 try {

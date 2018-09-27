@@ -26,11 +26,28 @@ const StyledForm = styled(Form)`
     }
 `;
 
-const NUM_INITIAL_EQUIPMENT = 3;
+const NUM_INITIAL_EQUIPMENT = 1;
 const EQUIPMENT = 'equipment';
 const EQUIPMENT_NAME = `${EQUIPMENT}Name`;
 const EQUIPMENT_PRICE = `${EQUIPMENT}Price`;
-const EQUIPMENT_LIST = ['Digital X-ray', 'CBCT', 'Pano', 'a', 'b'];
+const EQUIPMENT_LIST = [
+    'Digital Xray sensors',
+    'Panoramic',
+    'Lateral Ceph',
+    'CBCT',
+    'Intraoral Camera',
+    'Caries Detection Cameras',
+    'Cerec CAD/CAM',
+    'Digital Scanner',
+    'Endodontic Microscope',
+    'Endo Rotary Instruments',
+    'Periodontic Scalers',
+    'Cavitron/Piezo Unit and Tips',
+    'Hard Tissue Laser',
+    'Soft Tissue Laser',
+    'Implant System',
+    'Nitrous Oxide',
+];
 
 class AddOfficeEquipments extends Component {
     constructor(props) {
@@ -43,7 +60,7 @@ class AddOfficeEquipments extends Component {
                 const price = `${EQUIPMENT_PRICE}${index}`;
                 return {
                     [key]: eq,
-                    [price]: 2000,
+                    [price]: '$0.00',
                 };
             })
             .reduce((a, b) => ({ ...a, ...b }), {});
@@ -86,7 +103,7 @@ class AddOfficeEquipments extends Component {
         const newEquipment = {
             ...equipment,
             [key1]: EQUIPMENT_LIST[0],
-            [key2]: 2000,
+            [key2]: 0,
         };
 
         this.setState({
@@ -110,8 +127,7 @@ class AddOfficeEquipments extends Component {
         form.setFieldsValue({ [key]: undefined });
     };
 
-    renderEquipment = () => {
-        const { equipment } = this.state;
+    renderEquipment = equipment => {
         const eqNameKeys = Object.keys(equipment).filter(eq =>
             eq.startsWith(EQUIPMENT_PRICE)
         );
@@ -178,6 +194,7 @@ class AddOfficeEquipments extends Component {
 
     render() {
         const { form, officeDescription } = this.props;
+        const { equipment } = this.state;
 
         return (
             <Box maxWidth="620px">
@@ -185,6 +202,7 @@ class AddOfficeEquipments extends Component {
                     form={form}
                     officeDescription={officeDescription}
                     onSuccess={this.onSubmit}
+                    {...equipment}
                 >
                     <Grid
                         gcg="8px"
@@ -262,7 +280,7 @@ class AddOfficeEquipments extends Component {
                             </Text>
                         </GridItem>
 
-                        {this.renderEquipment()}
+                        {this.renderEquipment(equipment)}
 
                         <Flex onClick={this.addEquipment} cursor="pointer">
                             <Icon
