@@ -4,14 +4,22 @@ import { Box, Text, RangePicker, Form } from '../../../../components';
 
 const { SubmitButton } = Form;
 
-const FindAppointment = ({ onDateChange, onSubmit, disableButton }) => (
+const FindAppointment = ({
+    onDateChange,
+    onSubmit,
+    disableButton,
+    disabledDate,
+}) => (
     <Box>
         <Text mb={6} lineHeight="22px" fontSize={2} color="text.black">
             dates
         </Text>
         <Form onSuccess={onSubmit}>
             <Box mb={28} width="100%">
-                <RangePicker onChange={onDateChange} />
+                <RangePicker
+                    onChange={onDateChange}
+                    disabledDate={disabledDate}
+                />
             </Box>
             <SubmitButton
                 disabled={disableButton}

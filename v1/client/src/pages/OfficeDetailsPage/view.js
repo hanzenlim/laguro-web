@@ -1,5 +1,6 @@
 import React, { Fragment, PureComponent } from 'react';
 import styled from 'styled-components';
+import _get from 'lodash/get';
 import {
     Container,
     Flex,
@@ -82,23 +83,29 @@ class OfficeDetailsPageView extends PureComponent {
         } = this.props;
         return (
             <Fragment>
-                <StyledCarousel
-                    className={this.state.carouselClass}
-                    infinite={true}
-                    centerPadding={0}
-                    variableWidth={true}
-                >
-                    {imageUrls.map((imageUrl, index) => (
-                        <Flex
-                            className="image-container"
-                            key={index}
-                            alignItems="center"
-                            onClick={this.toggleCarouselHeight}
-                        >
-                            <Image src={imageUrl} width="100%" height="100%" />
-                        </Flex>
-                    ))}
-                </StyledCarousel>
+                {_get(imageUrls, 'length') > 0 && (
+                    <StyledCarousel
+                        className={this.state.carouselClass}
+                        infinite={true}
+                        centerPadding={0}
+                        variableWidth={true}
+                    >
+                        {imageUrls.map((imageUrl, index) => (
+                            <Flex
+                                className="image-container"
+                                key={index}
+                                alignItems="center"
+                                onClick={this.toggleCarouselHeight}
+                            >
+                                <Image
+                                    src={imageUrl}
+                                    width="100%"
+                                    height="100%"
+                                />
+                            </Flex>
+                        ))}
+                    </StyledCarousel>
+                )}
                 <Container>
                     <Flex>
                         <Box>

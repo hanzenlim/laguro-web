@@ -34,9 +34,6 @@ const CardView = ({
             Card Info
         </Text>
 
-        <Text fontWeight="bold" fontSize={3}>
-            Choose a card
-        </Text>
         <Box mb={28}>
             {get(paymentOptionsCards, 'length') > 0 &&
                 renderExistingCards(
@@ -50,6 +47,7 @@ const CardView = ({
                     btnText={btnText}
                     handleSubmit={handleSubmitNewCard}
                     isButtonOutside={isButtonOutside}
+                    onBackButton={onBackButton}
                 />
             )}
         </Box>

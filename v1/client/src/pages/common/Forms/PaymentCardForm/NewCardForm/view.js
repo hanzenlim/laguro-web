@@ -1,6 +1,6 @@
 import React from 'react';
 import { CardElement } from 'react-stripe-elements';
-import { Form, Input } from '../../../../../components';
+import { Form, Input, Button } from '../../../../../components';
 
 const { SubmitButton, FormItem } = Form;
 
@@ -20,7 +20,12 @@ const style = {
     },
 };
 
-const NewCardFormView = ({ btnText, isButtonOutside, handleSubmit }) => (
+const NewCardFormView = ({
+    btnText,
+    isButtonOutside,
+    handleSubmit,
+    onBackButton,
+}) => (
     <Form layout="vertical" onSuccess={handleSubmit}>
         <FormItem
             name="card"
@@ -45,7 +50,7 @@ const NewCardFormView = ({ btnText, isButtonOutside, handleSubmit }) => (
         <FormItem
             name="address"
             label="address"
-            mb={1}
+            mb={35}
             rules={[
                 {
                     required: true,
@@ -54,11 +59,25 @@ const NewCardFormView = ({ btnText, isButtonOutside, handleSubmit }) => (
             ]}
             input={<Input type="string" />}
         />
+        {onBackButton && (
+            // Temporary solution before we can figure out
+            // how to connect an external button to a form
+            <Button
+                ghost={true}
+                height={55}
+                mb={10}
+                width={'100%'}
+                fontSize={2}
+                color="text.green"
+                onClick={onBackButton}
+            >
+                Back
+            </Button>
+        )}
         <SubmitButton
             width="100%"
             height={60}
             px={24}
-            mt={28}
             buttonText={btnText}
             style={
                 // Temporary solution before we can figure out

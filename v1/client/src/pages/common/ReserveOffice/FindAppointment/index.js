@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import moment from 'moment';
 import PropTypes from 'prop-types';
 import FindAppointmentView from './view';
 
@@ -26,12 +27,21 @@ class FindAppointment extends PureComponent {
         findAvailabilityHandler([selectedStartDate, selectedEndDate]);
     };
 
+    // This function is used by antd datepicker to determin which days are disabled.
+    disabledDate = currentDate => {
+        const today = moment()
+            .startOf('day')
+            .startOf('hour');
+        return currentDate.isBefore(today);
+    };
+
     render() {
         return (
             <FindAppointmentView
                 onSubmit={this.onSubmit}
                 onDateChange={this.onDateChange}
                 disableButton={this.state.disableButton}
+                disabledDate={this.disabledDate}
             />
         );
     }

@@ -689,10 +689,6 @@ class SelectReservation extends Component {
                                 hourSlotsFromReservation
                             );
 
-                            window.chair = getHourlyChairPriceRange(
-                                data.queryListings
-                            );
-
                             return (
                                 <SelectReservationView
                                     hourSlotsData={mergedHourSlotsData}
