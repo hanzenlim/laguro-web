@@ -31,7 +31,7 @@ const mapListings = (listings, equipment) =>
                 cleaningFee: renderPrice(cleaningFee),
                 equipments: equipment.map(item => item.name),
                 numChairsAvailable,
-                chairHourlyPrice: chairHourlyPrice.toFixed(2),
+                chairHourlyPrice: renderPrice(chairHourlyPrice),
             };
         }
     );
@@ -61,6 +61,7 @@ class ListingConfirmationContainer extends PureComponent {
                             name={name}
                             address={location.name}
                             listings={mappedListings}
+                            equipment={equipment}
                         />
                     );
                 }}

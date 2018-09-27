@@ -272,7 +272,7 @@ class HostOnboarding extends Component {
     };
 
     handleDone = () => {
-        this.props.history.push('/profile');
+        this.props.history.push('/profile?selectedTab=my_listings');
     };
 
     // isExistingOffice is true if officeId defined (when adding new listing)

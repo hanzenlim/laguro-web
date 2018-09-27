@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Box, Flex, Text, Icon } from '../../../components';
 
 const ListingConfirmation = props => {
-    const { name, address, listings } = props;
+    const { name, address, listings, equipment } = props;
 
     return (
         <Box width={668}>
@@ -80,6 +80,52 @@ const ListingConfirmation = props => {
                             {availability}
                         </Text>
 
+                        {equipment.length > 0 && (
+                            <Text
+                                fontSize={4}
+                                fontWeight="bold"
+                                color="text.gray"
+                                mt={10}
+                                pb={14}
+                                borderBottom="1px solid"
+                                borderColor="divider.dustyGray"
+                                mb={20}
+                            >
+                                EQUIPMENT
+                            </Text>
+                        )}
+                        {equipment.map(e => (
+                            <Text
+                                fontSize={'16px'}
+                                fontWeight="500"
+                                color="text.black"
+                                pb={16}
+                            >
+                                {e.name}
+                            </Text>
+                        ))}
+
+                        <Text
+                            fontSize={4}
+                            fontWeight="bold"
+                            color="text.gray"
+                            mt={10}
+                            pb={14}
+                            borderBottom="1px solid"
+                            borderColor="divider.dustyGray"
+                            mb={20}
+                        >
+                            CLEANING FEE
+                        </Text>
+                        <Text
+                            fontSize={2}
+                            fontWeight="500"
+                            color="text.black"
+                            pb={18}
+                        >
+                            {cleaningFee}
+                        </Text>
+
                         <Flex justifyContent="space-between">
                             <Box width="256px">
                                 <Text
@@ -129,33 +175,12 @@ const ListingConfirmation = props => {
                                     pb={18}
                                 >
                                     <Text is="span" fontWeight="bold">
-                                        ${chairHourlyPrice}{' '}
+                                        {chairHourlyPrice}{' '}
                                     </Text>
                                     per hour
                                 </Text>
                             </Box>
                         </Flex>
-
-                        <Text
-                            fontSize={4}
-                            fontWeight="bold"
-                            color="text.gray"
-                            mt={10}
-                            pb={14}
-                            borderBottom="1px solid"
-                            borderColor="divider.dustyGray"
-                            mb={20}
-                        >
-                            CLEANING FEE
-                        </Text>
-                        <Text
-                            fontSize={2}
-                            fontWeight="500"
-                            color="text.black"
-                            pb={18}
-                        >
-                            {cleaningFee}
-                        </Text>
                     </Box>
                 )
             )}
