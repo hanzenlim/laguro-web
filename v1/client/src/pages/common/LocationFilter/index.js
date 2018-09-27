@@ -47,6 +47,7 @@ class LocationFilter extends PureComponent {
 
     handleChange = async value => {
         await this.setState({ queryString: value });
+        const { onSearch } = this.props;
 
         if (value.length > 2) {
             Promise.all(
@@ -83,7 +84,7 @@ class LocationFilter extends PureComponent {
                         dentistResults: formattedESResults,
                     });
 
-                    this.props.onSearch(formattedMapboxResults);
+                    if (onSearch) onSearch(formattedMapboxResults);
 
                     return null;
                 })
@@ -111,7 +112,7 @@ class LocationFilter extends PureComponent {
 
     handleSuggestionSelect = async (value, option) => {
         if (option.props.data.type === LOCATION) {
-            this.props.onLocationChange(option.props.data);
+            this.props.onLocationChange(option.props.data.location);
             await this.setState({
                 queryString: value,
                 locationResults: [],
