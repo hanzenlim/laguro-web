@@ -5,6 +5,8 @@ export const getIdQueryClient = gql`
     query activeUser {
         activeUser @client {
             id
+            isDentist
+            isHost
         }
     }
 `;

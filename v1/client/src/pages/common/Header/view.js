@@ -33,17 +33,60 @@ const NavBarLink = styled(Link)`
     }
 `;
 
-const ProfileMenu = ({ logout }) => (
-    <Flex flexDirection="column">
-        <Link to={'/'}>edit profile</Link>
-        <Link to={'/'}>invite friends</Link>
-        <Link to={'/'}>become a dentist</Link>
-        <Link to={'/'}>account settings</Link>
-        <Link to={'#'} onClick={logout}>
-            log out
-        </Link>
-    </Flex>
-);
+const ProfileMenu = ({ logout, isDentist, isHost }) => {
+    // Menu link for dentist
+    if (isDentist) {
+        return (
+            <Flex flexDirection="column">
+                <Link to={'/profile'}>my page</Link>
+                <Link to={'/profile?selectedTab=my_bookings'}>
+                    bookings/appointments
+                </Link>
+                <Link to={'/profile?selectedTab=payments'}>
+                    laguro payments
+                </Link>
+                <Link to={'/profile?selectedTab=balance'}>laguro balance</Link>
+                <Link to={'#'} onClick={logout}>
+                    log out
+                </Link>
+            </Flex>
+        );
+    }
+
+    // Menu link for host
+    if (isHost) {
+        return (
+            <Flex flexDirection="column">
+                <Link to={'/profile'}>my page</Link>
+                <Link to={'/profile?selectedTab=my_listings'}>my listings</Link>
+                <Link to={'/profile?selectedTab=my_bookings'}>
+                    bookings/appointments
+                </Link>
+                <Link to={'/profile?selectedTab=payments'}>
+                    laguro payments
+                </Link>
+                <Link to={'/profile?selectedTab=balance'}>laguro balance</Link>
+                <Link to={'#'} onClick={logout}>
+                    log out
+                </Link>
+            </Flex>
+        );
+    }
+
+    // Menu link for patient
+    return (
+        <Flex flexDirection="column">
+            <Link to={'/profile'}>my page</Link>
+            <Link to={'/profile?selectedTab=my_listings'}>my listings</Link>
+            <Link to={'/profile?selectedTab=my_appointments'}>
+                my appointments
+            </Link>
+            <Link to={'#'} onClick={logout}>
+                log out
+            </Link>
+        </Flex>
+    );
+};
 
 const ProfileButton = ({
     auth,
@@ -51,11 +94,19 @@ const ProfileButton = ({
     openRegistrationModal,
     logout,
     onLandingPage,
+    isDentist,
+    isHost,
 }) =>
     auth ? (
         <Popover
             placement="bottomRight"
-            content={<ProfileMenu logout={logout} />}
+            content={
+                <ProfileMenu
+                    isDentist={isDentist}
+                    isHost={isHost}
+                    logout={logout}
+                />
+            }
             arrowPointAtCenter
         >
             <Image
@@ -113,6 +164,8 @@ const Header = ({
     logout,
     sendPassResetLink,
     auth,
+    isDentist,
+    isHost,
 }) => (
     <Flex
         is="header"
@@ -172,6 +225,8 @@ const Header = ({
                     </Text>
                 </NavBarLink>
                 <ProfileButton
+                    isDentist={isDentist}
+                    isHost={isHost}
                     auth={auth}
                     openLoginModal={openLoginModal}
                     openRegistrationModal={openRegistrationModal}

@@ -216,9 +216,6 @@ class HostListings extends PureComponent {
         const { offices } = this.props;
         return (
             <Box width={600}>
-                <Text color="text.green" fontSize={4} fontWeight="bold" mb={40}>
-                    my reservations
-                </Text>
                 <Tabs>{this.renderTabPane(offices)}</Tabs>
             </Box>
         );

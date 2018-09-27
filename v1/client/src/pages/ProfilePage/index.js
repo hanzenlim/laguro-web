@@ -1,11 +1,10 @@
 import React from 'react';
 import { Query } from 'react-apollo';
-import { isEmpty, get } from 'lodash';
+import { get } from 'lodash';
 
 import ProfileView from './view';
 import { Loading } from '../../components';
 import { getUserQuery, getIdQueryClient } from './queries';
-import { DENTIST, HOST, PATIENT } from '../../util/strings';
 
 const ProfileContainer = () => (
     <Query query={getIdQueryClient}>
@@ -46,19 +45,14 @@ const ProfileContainer = () => (
                             'getUser.dentist.offices'
                         );
 
-                        let persona;
-
-                        if (!isEmpty(offices)) {
-                            persona = HOST;
-                        } else if (dentistId) {
-                            persona = DENTIST;
-                        } else {
-                            persona = PATIENT;
-                        }
                         return (
                             <ProfileView
-                                persona={persona}
                                 dentistId={dentistId}
+                                isDentist={get(
+                                    dataUserQuery,
+                                    'getUser.isDentist'
+                                )}
+                                isHost={get(dataUserQuery, 'getUser.isHost')}
                                 offices={offices}
                                 userId={id}
                             />

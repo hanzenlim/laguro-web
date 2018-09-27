@@ -1,4 +1,5 @@
 import React from 'react';
+import _get from 'lodash/get';
 import { Query } from 'react-apollo';
 import cookies from 'browser-cookies';
 import { message } from 'antd';
@@ -113,6 +114,8 @@ const HeaderContainer = () => (
             return (
                 <HeaderView
                     auth={data.activeUser}
+                    isDentist={_get(data, 'activeUser.isDentist')}
+                    isHost={_get(data, 'activeUser.isHost')}
                     visibleModal={data.visibleModal}
                     login={login}
                     logout={logout}

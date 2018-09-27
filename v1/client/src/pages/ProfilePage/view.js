@@ -18,7 +18,6 @@ import PatientAppointments from '../common/PatientAppointments';
 import {
     DENTIST,
     OFFICE,
-    HOST,
     MY_DOCUMENTS,
     MY_PROFILE,
     MY_APPOINTMENTS,
@@ -32,7 +31,7 @@ import {
 
 const Grid = styled(Box)`
     display: grid;
-    grid-template-columns: 280px 632px;
+    grid-template-columns: 290px 632px;
     grid-column-gap: 70px;
 `;
 
@@ -60,7 +59,7 @@ class ProfileView extends Component {
     };
 
     renderPanel = key => {
-        const { persona, dentistId, offices, userId } = this.props;
+        const { isHost, dentistId, offices, userId } = this.props;
 
         switch (key) {
             case MY_PROFILE:
@@ -89,21 +88,21 @@ class ProfileView extends Component {
                 );
 
             case PUBLIC_PROFILE:
-                return persona === DENTIST ? (
-                    <Box>
-                        <DentistDetails id={dentistId} viewOnly={true} />
-                        <ReviewContainer
-                            type={DENTIST}
-                            id={dentistId}
-                            viewOnly={true}
-                        />
-                    </Box>
-                ) : (
+                return isHost === true ? (
                     <Box width="732px" mt={30} mr={34}>
                         <OfficeDetails id={offices[0].id} viewOnly={true} />
                         <ReviewContainer
                             type={OFFICE}
                             id={offices[0].id}
+                            viewOnly={true}
+                        />
+                    </Box>
+                ) : (
+                    <Box>
+                        <DentistDetails id={dentistId} viewOnly={true} />
+                        <ReviewContainer
+                            type={DENTIST}
+                            id={dentistId}
                             viewOnly={true}
                         />
                     </Box>
@@ -116,7 +115,7 @@ class ProfileView extends Component {
 
     render() {
         const { panel, panelName = MY_PROFILE } = this.state;
-        const { persona } = this.props;
+        const { isDentist, isHost } = this.props;
 
         return (
             <Container maxWidth="1050px">
@@ -135,7 +134,7 @@ class ProfileView extends Component {
                                     my profile
                                 </Text>
                             </Menu.Item>
-                            {(persona === HOST || persona === DENTIST) && (
+                            {(isDentist || isHost) && (
                                 <Menu.Item key={DENTIST_PROFILE}>
                                     <Text
                                         fontSize={4}
@@ -155,16 +154,19 @@ class ProfileView extends Component {
                                     my documents
                                 </Text>
                             </Menu.Item>
-                            <Menu.Item key={MY_APPOINTMENTS}>
-                                <Text
-                                    fontSize={4}
-                                    color="inherit"
-                                    lineHeight="40px"
-                                >
-                                    my appointments
-                                </Text>
-                            </Menu.Item>
-                            {persona === HOST && (
+                            {!isDentist &&
+                                !isHost && (
+                                    <Menu.Item key={MY_APPOINTMENTS}>
+                                        <Text
+                                            fontSize={4}
+                                            color="inherit"
+                                            lineHeight="40px"
+                                        >
+                                            my appointments
+                                        </Text>
+                                    </Menu.Item>
+                                )}
+                            {isHost && (
                                 <Menu.Item key={MY_LISTINGS}>
                                     <Text
                                         fontSize={4}
@@ -175,14 +177,14 @@ class ProfileView extends Component {
                                     </Text>
                                 </Menu.Item>
                             )}
-                            {persona === DENTIST && (
+                            {isDentist && (
                                 <Menu.Item key={MY_BOOKINGS}>
                                     <Text
                                         fontSize={4}
                                         color="inherit"
                                         lineHeight="40px"
                                     >
-                                        my bookings
+                                        bookings and appointments
                                     </Text>
                                 </Menu.Item>
                             )}
@@ -195,7 +197,7 @@ class ProfileView extends Component {
                                     payments
                                 </Text>
                             </Menu.Item>
-                            {(persona === HOST || persona === DENTIST) && (
+                            {(isHost || isDentist) && (
                                 <Menu.Item key={BALANCE}>
                                     <Text
                                         fontSize={4}
@@ -206,7 +208,7 @@ class ProfileView extends Component {
                                     </Text>
                                 </Menu.Item>
                             )}
-                            {persona === DENTIST && (
+                            {(isDentist || isHost) && (
                                 <Menu.Item key={PUBLIC_PROFILE}>
                                     <Text
                                         fontSize={4}

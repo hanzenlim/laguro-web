@@ -14,6 +14,8 @@ export const getUserQuery = gql`
         getUser(id: $id) {
             id
             dentistId
+            isHost
+            isDentist
             dentist {
                 offices {
                     id

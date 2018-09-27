@@ -19,12 +19,14 @@ module.exports.getUserQuery = `
     query getUser($id: String!) {
         getUser(id: $id) {
             id
+            dentistId
             firstName
             lastName
             imageUrl
-            dentistId
             email
             intercomHash
+            isDentist
+            isHost
         }
     }
 `;
@@ -40,6 +42,8 @@ module.exports.getUserByGoogleIdQuery = `
             imageUrl
             email
             intercomHash
+            isDentist
+            isHost
         }
     }
 `;
@@ -83,6 +87,8 @@ query getUserByEmail($email: String!) {
         password
         email
         intercomHash
+        isDentist
+        isHost
     }
 }
 `;
@@ -100,6 +106,8 @@ module.exports.createGoogleUserQuery = `
             password
             email
             intercomHash
+            isDentist
+            isHost
         }
     }
 `;
@@ -117,6 +125,8 @@ module.exports.updateUserQuery = `
             password
             email
             intercomHash
+            isDentist
+            isHost
         }
     }
 `;
@@ -134,6 +144,8 @@ module.exports.createLocalUserQuery = `
             password
             email
             intercomHash
+            isDentist
+            isHost
         }
     }
 `;

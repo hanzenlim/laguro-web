@@ -71,9 +71,6 @@ class PatientAppointments extends PureComponent {
         const { appointments } = this.props;
         return (
             <Box>
-                <Text color="text.green" fontSize={4} fontWeight="bold" mb={40}>
-                    upcoming appointments
-                </Text>
                 {!isEmpty(appointments) ? (
                     this.renderAppointments(appointments)
                 ) : (

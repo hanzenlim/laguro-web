@@ -24,6 +24,7 @@ const authRoutes = app => {
                 return res.json({ status: 403, message: info.message });
             }
 
+            console.log('new lefeocal user signup::', user);
             res.cookie('user', JSON.stringify({ ...user, imageUrl: null }), {
                 maxAge: 86400000,
             });
@@ -176,6 +177,8 @@ const authRoutes = app => {
         '/auth/google/callback',
         passport.authenticate('google'),
         (req, res) => {
+            console.log('new googl user signup::', req.user);
+
             res.cookie('user', JSON.stringify(req.user), {
                 maxAge: 86400000,
             });

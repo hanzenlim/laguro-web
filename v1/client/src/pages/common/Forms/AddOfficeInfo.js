@@ -41,8 +41,8 @@ class AddOfficeInfo extends Component {
     handleLocationChange = location => {
         const { onSelect } = this.props;
         this.setState({
-            locationLat: get(location, 'location.lat'),
-            locationLong: get(location, 'location.long'),
+            locationLat: get(location, 'lat'),
+            locationLong: get(location, 'long'),
         });
 
         if (onSelect) {

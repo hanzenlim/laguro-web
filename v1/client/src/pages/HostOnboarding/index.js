@@ -117,6 +117,7 @@ class HostOnboarding extends Component {
                 cookies.set('user', JSON.stringify(user), {
                     maxAge: 86400000,
                 });
+
                 client.writeData({
                     data: {
                         activeUser: {

@@ -13,6 +13,8 @@ export const CREATE_OFFICE = gql`
                     email
                     intercomHash
                     dentistId
+                    isDentist
+                    isHost
                 }
             }
         }

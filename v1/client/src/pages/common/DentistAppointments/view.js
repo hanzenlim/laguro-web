@@ -55,9 +55,6 @@ class DentistAppointments extends PureComponent {
                             <Text fontWeight="bold" fontSize={5} mb={28}>
                                 {office.name}
                             </Text>
-                            <Text fontWeight="bold" fontSize={3} mb={8}>
-                                My Bookings
-                            </Text>
                             <StyledList>
                                 {this.renderAvailableTimes(availableTimes)}
                             </StyledList>
@@ -164,15 +161,12 @@ class DentistAppointments extends PureComponent {
 
         return (
             <Box>
-                <Text color="text.green" fontSize={4} fontWeight="bold" mb={8}>
-                    my bookings
-                </Text>
                 <Box>
                     {!isEmpty(reservations) ? (
                         this.renderReservations(reservations)
                     ) : (
                         <Text textAlign="center" color="text.gray" mt={38}>
-                            NO RESERVATIONS
+                            NO BOOKINGS OR APPOINTMENTS
                         </Text>
                     )}
                 </Box>
