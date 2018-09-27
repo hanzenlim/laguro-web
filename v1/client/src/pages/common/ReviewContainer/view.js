@@ -7,7 +7,7 @@ import { Box, Flex, Image, Text, Rating, Truncate } from '../../../components';
 const ReviewContainer = props => {
     const {
         reviews,
-        totalRating,
+        averageRating,
         numReviews,
         toggleModalState,
         viewOnly,
@@ -17,7 +17,12 @@ const ReviewContainer = props => {
         <Flex alignItems="center" justifyContent="space-between" pt={40}>
             <Flex alignItems="center">
                 <Flex alignItems="center" justifyContent="center">
-                    <Rating disabled mr={10} value={totalRating} size="18px" />
+                    <Rating
+                        disabled
+                        mr={10}
+                        value={averageRating}
+                        size="18px"
+                    />
                 </Flex>
                 <Text
                     display="inline"

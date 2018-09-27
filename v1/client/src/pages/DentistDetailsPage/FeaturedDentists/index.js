@@ -28,7 +28,7 @@ class FeaturedList extends Component {
             name: item._source.name,
             specialty: item._source.specialty,
             numReviews: `${item._source.numReviews} reviews`,
-            totalRating: item._source.totalRating,
+            averageRating: item._source.averageRating,
         }));
 
         return <FeaturedListView featuredDentists={mappedData} />;

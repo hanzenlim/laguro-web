@@ -13,6 +13,7 @@ export const GET_DENTIST_REVIEWS = gql`
             }
             numReviews
             totalRating
+            averageRating
             reviews {
                 ${reviewerFragment}
             }
@@ -27,6 +28,7 @@ export const GET_OFFICE_REVIEWS = gql`
             imageUrls
             numReviews
             totalRating
+            averageRating
             reviews {
                 ${reviewerFragment}
             }

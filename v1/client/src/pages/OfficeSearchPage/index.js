@@ -65,7 +65,7 @@ class OfficeSearchPage extends PureComponent {
 
                 return {
                     title: source.name,
-                    rating: 2.5,
+                    rating: source.averageRating,
                     image: 'http://via.placeholder.com/186x186',
                     address: get(source, 'location.name'),
                     longitude: get(source, 'location.geoPoint.lon'),

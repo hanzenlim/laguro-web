@@ -65,7 +65,7 @@ class DetailsSearchPage extends PureComponent {
 
                 return {
                     title: source.name,
-                    rating: 2.5,
+                    rating: source.averageRating,
                     image: 'http://via.placeholder.com/186x186',
                     address: get(source, 'reservations[0].address'),
                     longitude: get(source, 'reservations[0].geoPoint.lon'),

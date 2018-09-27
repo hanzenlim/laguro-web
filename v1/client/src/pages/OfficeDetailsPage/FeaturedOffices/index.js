@@ -29,7 +29,7 @@ class FeaturedList extends Component {
             description: item._source.description,
             address: item._source.location.name,
             numReviews: `${item._source.numReviews} reviews`,
-            totalRating: item._source.totalRating,
+            averageRating: item._source.averageRating,
             imageUrls: item._source.imageUrls,
         }));
 

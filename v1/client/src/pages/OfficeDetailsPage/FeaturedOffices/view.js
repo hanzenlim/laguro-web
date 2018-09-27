@@ -19,7 +19,7 @@ const FeaturedOfficesView = props => {
                             title={item.name}
                             subtitle={item.description}
                             address={item.address}
-                            rating={item.totalRating}
+                            rating={item.averageRating}
                             image={item.imageUrls[0]}
                             url={`/office/${item.id}`}
                         />
@@ -38,7 +38,7 @@ FeaturedOfficesView.propTypes = {
             description: PropTypes.string,
             address: PropTypes.string,
             numReviews: PropTypes.string,
-            totalRating: PropTypes.number,
+            averageRating: PropTypes.number,
         })
     ),
 };

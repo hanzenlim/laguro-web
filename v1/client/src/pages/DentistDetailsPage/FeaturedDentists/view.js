@@ -19,7 +19,7 @@ const FeaturedDentistsView = props => {
                             name={item.name}
                             specialty={item.specialty}
                             numReviews={item.numReviews}
-                            rating={item.totalRating}
+                            rating={item.averageRating}
                         />
                     </Box>
                 ))}
@@ -34,7 +34,7 @@ FeaturedDentistsView.propTypes = {
             name: PropTypes.string,
             specialty: PropTypes.string,
             numReviews: PropTypes.string,
-            totalRating: PropTypes.number,
+            averageRating: PropTypes.number,
         })
     ),
 };
