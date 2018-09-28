@@ -1,6 +1,5 @@
 import { gql } from 'apollo-boost';
 
-// eslint-disable-next-line
 export const getIdQueryClient = gql`
     query activeUser {
         activeUser @client {
@@ -40,6 +39,8 @@ export const updateUserMutation = gql`
             lastName
             phoneNumber
             dentistId
+            isDentist
+            isHost
             googleId
             password
             email

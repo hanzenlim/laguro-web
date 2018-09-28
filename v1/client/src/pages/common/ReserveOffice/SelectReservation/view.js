@@ -8,29 +8,35 @@ import SummaryCost from '../SummaryCost';
 
 const renderHourSlotsBlocks = (list, priceRange, selectedHoursHandler) => {
     const dateList = Object.keys(list);
-    return dateList.map(dateText => (
-        <Box mb={26}>
-            <SelectHours
-                priceRangeLength={Object.keys(priceRange).length}
-                hourList={list[dateText]}
-                formattedDateText={moment(dateText).format('ddd M/D')}
-                selectedHoursHandler={(
-                    selectedHours,
-                    selectedPrice,
-                    selectedCleaningFee,
-                    selectedListingId
-                ) =>
-                    selectedHoursHandler(
-                        dateText,
+    return dateList.map(dateText => {
+        if (_isEmpty(list[dateText])) {
+            return null;
+        }
+
+        return (
+            <Box mb={26}>
+                <SelectHours
+                    priceRangeLength={Object.keys(priceRange).length}
+                    hourList={list[dateText]}
+                    formattedDateText={moment(dateText).format('ddd M/D')}
+                    selectedHoursHandler={(
                         selectedHours,
                         selectedPrice,
                         selectedCleaningFee,
                         selectedListingId
-                    )
-                }
-            />
-        </Box>
-    ));
+                    ) =>
+                        selectedHoursHandler(
+                            dateText,
+                            selectedHours,
+                            selectedPrice,
+                            selectedCleaningFee,
+                            selectedListingId
+                        )
+                    }
+                />
+            </Box>
+        );
+    });
 };
 
 const getFormattedPriceRange = priceRange =>

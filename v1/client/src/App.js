@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import { Router, Route, Switch } from 'react-router-dom';
+import { Query } from 'react-apollo';
+import { gql } from 'apollo-boost';
+import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import Loadable from 'react-loadable';
 import history from './history';
@@ -73,6 +75,43 @@ const GeneralErrorPage = Loadable({
     loader: () => import('./pages/GeneralErrorPage'),
     loading: () => null,
 });
+const LoginPage = Loadable({
+    loader: () => import('./pages/LoginPage'),
+    loading: () => null,
+});
+
+const getIdQueryClient = gql`
+    {
+        activeUser @client {
+            id
+        }
+        visibleModal @client
+    }
+`;
+
+const PrivateRoute = ({
+    isUserLoggedin,
+    component: ComponentToBeRendered,
+    ...rest
+}) => (
+    <Route
+        {...rest}
+        render={props =>
+            isUserLoggedin ? (
+                <ComponentToBeRendered {...props} />
+            ) : (
+                <Redirect
+                    preserveQueryString
+                    to={{
+                        pathname: '/login',
+                        search: `?redirectTo=${props.location.pathname}`,
+                        state: { from: props.location },
+                    }}
+                />
+            )
+        }
+    />
+);
 
 class App extends Component {
     render() {
@@ -83,58 +122,71 @@ class App extends Component {
                         <Header />
                         <Content>
                             <ErrorBoundary>
-                                <Switch>
-                                    <Route
-                                        path="/host-onboarding/:step"
-                                        component={HostOnboarding}
-                                    />
-                                    <Route
-                                        path="/profile"
-                                        component={ProfilePage}
-                                    />
-                                    <Route
-                                        path="/landlord"
-                                        component={LandlordLandingPage}
-                                    />
-                                    <Route
-                                        path="/dentist/search"
-                                        component={DentistSearchPage}
-                                    />
-                                    <Route
-                                        path="/dentist/:id"
-                                        component={DentistDetailsPage}
-                                    />
-                                    <Route
-                                        path="/dentist"
-                                        component={DentistLandingPage}
-                                    />
-                                    <Route
-                                        path="/office/search"
-                                        component={OfficeSearchPage}
-                                    />
-                                    <Route
-                                        path="/office/:id"
-                                        component={OfficeDetailsPage}
-                                    />
-                                    <Route
-                                        path="/reset-password"
-                                        component={ResetPassPage}
-                                    />
-                                    <Route
-                                        path="/consent-and-payment"
-                                        component={ConsentAndPaymentPage}
-                                    />
-                                    <Route
-                                        path="/error"
-                                        component={GeneralErrorPage}
-                                    />
-                                    <Route
-                                        path="/"
-                                        exact
-                                        component={HomePage}
-                                    />
-                                    <Route component={Error404Page} />
-                                </Switch>
+                                <Query query={getIdQueryClient}>
+                                    {({ data }) => (
+                                        <Switch>
+                                            <Route
+                                                path="/login"
+                                                component={LoginPage}
+                                            />
+                                            <PrivateRoute
+                                                path="/host-onboarding/:step"
+                                                component={HostOnboarding}
+                                                isUserLoggedin={data.activeUser}
+                                            />
+                                            <PrivateRoute
+                                                path="/consent-and-payment"
+                                                component={
+                                                    ConsentAndPaymentPage
+                                                }
+                                                isUserLoggedin={data.activeUser}
+                                            />
+                                            <PrivateRoute
+                                                path="/profile"
+                                                component={ProfilePage}
+                                                isUserLoggedin={data.activeUser}
+                                            />
+                                            <Route
+                                                path="/landlord"
+                                                component={LandlordLandingPage}
+                                            />
+                                            <Route
+                                                path="/dentist/search"
+                                                component={DentistSearchPage}
+                                            />
+                                            <Route
+                                                path="/dentist/:id"
+                                                component={DentistDetailsPage}
+                                            />
+                                            <Route
+                                                path="/dentist"
+                                                component={DentistLandingPage}
+                                            />
+                                            <Route
+                                                path="/office/search"
+                                                component={OfficeSearchPage}
+                                            />
+                                            <Route
+                                                path="/office/:id"
+                                                component={OfficeDetailsPage}
+                                            />
+                                            <Route
+                                                path="/reset-password"
+                                                component={ResetPassPage}
+                                            />
+                                            <Route
+                                                path="/error"
+                                                component={GeneralErrorPage}
+                                            />
+                                            <Route
+                                                path="/"
+                                                exact
+                                                component={HomePage}
+                                            />
+                                            <Route component={Error404Page} />
+                                        </Switch>
+                                    )}
+                                </Query>
                             </ErrorBoundary>
                         </Content>
                         <Footer />

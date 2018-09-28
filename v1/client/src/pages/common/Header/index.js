@@ -1,15 +1,20 @@
 import React from 'react';
 import _get from 'lodash/get';
 import { Query } from 'react-apollo';
-import cookies from 'browser-cookies';
-import { message } from 'antd';
-import history from '../../../history';
 
 import HeaderView from './view';
-import { getUserQuery } from './queries';
-import request from '../../../util/fetchUtil';
-import { ACTIVE_USER } from '../../../util/strings';
 import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
+import { getUserQuery } from './queries';
+import {
+    onLogin,
+    onSignup,
+    sendPassResetLink,
+    onLogout,
+    openLoginModal,
+    openRegistrationModal,
+    openForgotPassModal,
+    closeModal,
+} from '../../../util/authUtils';
 
 const HeaderContainer = () => (
     <Query query={getUserQuery}>
@@ -24,108 +29,20 @@ const HeaderContainer = () => (
                 return <RedirectErrorPage />;
             }
 
-            const login = values => {
-                request('/api/login', {
-                    method: 'POST',
-                    credentials: 'same-origin',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Access-Control-Origin': '*',
-                    },
-                    body: JSON.stringify({ ...values }),
-                }).then(res => {
-                    if (res.status === 200) {
-                        client.writeData({
-                            data: {
-                                activeUser: {
-                                    ...res.user,
-                                    __typename: ACTIVE_USER,
-                                },
-                                visibleModal: null,
-                            },
-                        });
-                    } else {
-                        message.error(res.message);
-                    }
-                });
-            };
-            const signup = values => {
-                request('/api/signup', {
-                    method: 'POST',
-                    credentials: 'same-origin',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Access-Control-Origin': '*',
-                    },
-                    body: JSON.stringify({ ...values }),
-                }).then(res => {
-                    if (res.status === 200) {
-                        client.writeData({
-                            data: {
-                                activeUser: {
-                                    ...res.user,
-                                    __typename: ACTIVE_USER,
-                                },
-                                visibleModal: null,
-                            },
-                        });
-                    } else {
-                        message.error(res.message);
-                    }
-                });
-            };
-            const sendPassResetLink = (values, onSuccess) => {
-                request('/api/forgot-password', {
-                    method: 'POST',
-                    credentials: 'same-origin',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Access-Control-Origin': '*',
-                    },
-                    body: JSON.stringify({ ...values }),
-                }).then(res => {
-                    if (res.status === 200) {
-                        onSuccess();
-                    } else {
-                        message.error(res.message);
-                    }
-                });
-            };
-
-            const logout = () => {
-                // eslint-disable-next-line
-                window && window.Intercom('shutdown');
-                client.writeData({ data: { activeUser: null } });
-                cookies.erase('user');
-                history.push('/');
-            };
-            const openLoginModal = () => {
-                client.writeData({ data: { visibleModal: 'login' } });
-            };
-            const openRegistrationModal = () => {
-                client.writeData({ data: { visibleModal: 'register' } });
-            };
-            const openForgotPassModal = () => {
-                client.writeData({ data: { visibleModal: 'forgotPass' } });
-            };
-            const closeModal = () => {
-                client.writeData({ data: { visibleModal: null } });
-            };
-
             return (
                 <HeaderView
                     auth={data.activeUser}
                     isDentist={_get(data, 'activeUser.isDentist')}
                     isHost={_get(data, 'activeUser.isHost')}
                     visibleModal={data.visibleModal}
-                    login={login}
-                    logout={logout}
-                    signup={signup}
+                    login={values => onLogin(client, values)}
+                    logout={() => onLogout(client)}
+                    signup={values => onSignup(client, values)}
                     sendPassResetLink={sendPassResetLink}
-                    openLoginModal={openLoginModal}
-                    openRegistrationModal={openRegistrationModal}
-                    openForgotPassModal={openForgotPassModal}
-                    closeModal={closeModal}
+                    openLoginModal={() => openLoginModal(client)}
+                    openRegistrationModal={() => openRegistrationModal(client)}
+                    openForgotPassModal={() => openForgotPassModal(client)}
+                    closeModal={() => closeModal(client)}
                     onLandingPage={onLandingPage}
                 />
             );

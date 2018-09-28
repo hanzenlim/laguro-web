@@ -1,5 +1,7 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { Alert } from 'antd';
 
 import { Modal, Button, Box, Flex, Text, Link } from '../../../components';
 import LocalLoginForm from '../Forms/LocalLoginForm';
@@ -10,12 +12,16 @@ const LoginModal = ({
     openRegistrationModal,
     openForgotPassModal,
     closeModal,
+    message,
+    location,
+    closable,
 }) => (
     <Modal
         onCancel={closeModal}
         destroyOnClose={true}
         visible={visible}
         width={570}
+        closable={closable}
     >
         <Flex
             flexDirection="column"
@@ -23,6 +29,7 @@ const LoginModal = ({
             alignItems="center"
             px={15}
         >
+            {message && <Alert message={message} type="info" />}
             <Text fontWeight="bold" fontSize={5}>
                 sign in
             </Text>
@@ -74,7 +81,11 @@ const LoginModal = ({
                 </Box>
             </Flex>
             <Flex>
-                <Link to={'#'} onClick={openRegistrationModal} width={120}>
+                <Link
+                    to={{ hash: '#', search: location.search }}
+                    onClick={openRegistrationModal}
+                    width={120}
+                >
                     <Text
                         color="text.green"
                         textAlign="right"
@@ -84,7 +95,11 @@ const LoginModal = ({
                     </Text>
                 </Link>
                 <Text color="text.black">&nbsp;|&nbsp;</Text>
-                <Link to={'#'} onClick={openForgotPassModal} width={120}>
+                <Link
+                    to={{ hash: '#', search: location.search }}
+                    onClick={openForgotPassModal}
+                    width={120}
+                >
                     <Text color="text.black" fontWeight="bold">
                         forgot password?
                     </Text>
@@ -99,6 +114,8 @@ LoginModal.defaultProps = {
     closeModal: () => {},
     openRegistrationModal: () => {},
     visible: false,
+    message: '',
+    closable: true,
 };
 
 LoginModal.propTypes = {
@@ -106,6 +123,8 @@ LoginModal.propTypes = {
     closeModal: PropTypes.func,
     openRegistrationModal: PropTypes.func,
     visible: PropTypes.bool,
+    message: PropTypes.string,
+    closable: PropTypes.bool,
 };
 
-export default LoginModal;
+export default withRouter(LoginModal);
