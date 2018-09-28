@@ -6,6 +6,7 @@ import { Query } from 'react-apollo';
 import ReviewList from './view';
 import { Loading } from '../../../components';
 import { NewReviewModal } from '../../common/Modals';
+import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
 import { GET_DENTIST_REVIEWS, GET_OFFICE_REVIEWS } from './queries';
 import { DENTIST } from '../../../util/strings';
 
@@ -29,7 +30,7 @@ class ReviewContainer extends PureComponent {
         return (
             <Query query={reviewsQuery} variables={{ id }}>
                 {({ loading, error, data }) => {
-                    if (error) return <div>Error</div>;
+                    if (error) return <RedirectErrorPage />;
                     if (loading) return <Loading />;
 
                     const queryData = data[queryName];

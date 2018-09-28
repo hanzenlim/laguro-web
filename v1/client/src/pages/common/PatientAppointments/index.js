@@ -6,6 +6,7 @@ import get from 'lodash/get';
 import PatientAppoinments from './view';
 import { Loading } from '../../../components';
 import CancelAppoinmentModal from '../Modals/CancelAppointmentModal';
+import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
 
 import { getAppointmentsQuery, getPatientIdQueryClient } from './queries';
 import { PATIENT_ID, END_TIME, STATUS, ACTIVE } from '../../../util/strings';
@@ -36,7 +37,7 @@ const PatientAppoinmentsContainer = () => (
                 }}
             >
                 {({ loading, error, data }) => {
-                    if (error) return <div>Error</div>;
+                    if (error) return <RedirectErrorPage />;
                     if (loading) return <Loading />;
 
                     const appointments = get(data, 'queryAppointments');

@@ -6,6 +6,7 @@ import moment from 'moment';
 
 import BalanceHistoryView from './view';
 import { CardLoading } from '../PaymentHistory';
+import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
 
 import { GET_PAYMENTS } from './queries';
 import {
@@ -74,7 +75,7 @@ class BalanceHistoryContainer extends PureComponent {
                     if (loading) return <CardLoading title="Balance" />;
 
                     if (error) {
-                        return <div>error...</div>;
+                        return <RedirectErrorPage />;
                     }
 
                     const cardType = BALANCE_CARD;

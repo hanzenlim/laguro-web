@@ -3,6 +3,7 @@ import { Query } from 'react-apollo';
 import { isEmpty } from 'lodash';
 import { getActiveOfficesQuery } from './queries';
 import FeaturedListView from './view';
+import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
 
 class FeaturedListContainer extends PureComponent {
     render() {
@@ -14,7 +15,7 @@ class FeaturedListContainer extends PureComponent {
                     }
 
                     if (error) {
-                        return <div>Error</div>;
+                        return <RedirectErrorPage />;
                     }
 
                     const mappedData = data.getActiveOffices.map(item => ({

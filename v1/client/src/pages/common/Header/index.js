@@ -9,6 +9,7 @@ import HeaderView from './view';
 import { getUserQuery } from './queries';
 import request from '../../../util/fetchUtil';
 import { ACTIVE_USER } from '../../../util/strings';
+import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
 
 const HeaderContainer = () => (
     <Query query={getUserQuery}>
@@ -20,7 +21,7 @@ const HeaderContainer = () => (
             }
 
             if (error) {
-                return <div>error...</div>;
+                return <RedirectErrorPage />;
             }
 
             const login = values => {

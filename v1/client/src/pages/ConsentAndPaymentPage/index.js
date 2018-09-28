@@ -8,6 +8,7 @@ import {
 } from './queries';
 import ConsentAndPaymentPageView from './view';
 import { Loading } from '../../components';
+import { RedirectErrorPage } from '../../pages/GeneralErrorPage';
 import { PATIENT_ID, STATUS, PENDING } from '../../util/strings';
 
 class ConsentAndPaymentPage extends PureComponent {
@@ -67,7 +68,7 @@ class ConsentAndPaymentPage extends PureComponent {
             >
                 {({ loading, error, data }) => {
                     if (loading) return <Loading />;
-                    if (error) return <div>Error</div>;
+                    if (error) return <RedirectErrorPage />;
 
                     const patientProcedures = _get(
                         data,

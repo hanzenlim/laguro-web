@@ -7,6 +7,7 @@ import { Loading } from '../../../components';
 import { stripePublicKey } from '../../../config/keys';
 import { getUserQuery } from '../../common/Header/queries';
 import PaymentView from './view';
+import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
 
 class Payment extends PureComponent {
     constructor(props) {
@@ -54,7 +55,7 @@ class Payment extends PureComponent {
                     }
 
                     if (error) {
-                        return <div>Error.....</div>;
+                        return <RedirectErrorPage />;
                     }
 
                     return (

@@ -4,6 +4,7 @@ import cookies from 'browser-cookies';
 
 import UpdateDentistProfileFormView from './view';
 import { Loading } from '../../../../components';
+import { RedirectErrorPage } from '../../../GeneralErrorPage';
 import {
     getIdQueryClient,
     getUserDentistQuery,
@@ -78,7 +79,7 @@ class UpdateDentistProfileContainer extends PureComponent {
                         onCompleted={this.onCompleted}
                     >
                         {({ loading, error, data: dentistData }) => {
-                            if (error) return <div>Error</div>;
+                            if (error) return <RedirectErrorPage />;
                             if (loading) return <Loading />;
 
                             const {

@@ -5,6 +5,7 @@ import get from 'lodash/get';
 import DentistAppointments from './view';
 import CancelReservationModal from '../Modals/CancelReservationModal';
 import { Loading } from '../../../components';
+import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
 
 import { getDentistIdQueryClient, getDentistQuery } from './queries';
 
@@ -16,7 +17,7 @@ const DentistAppointmentsContainer = () => (
                 variables={{ id: clientData.activeUser.dentistId }}
             >
                 {({ loading, error, data }) => {
-                    if (error) return <div>Error</div>;
+                    if (error) return <RedirectErrorPage />;
                     if (loading) return <Loading />;
 
                     const { reservations } = get(data, 'getDentist');

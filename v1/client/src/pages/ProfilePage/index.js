@@ -4,6 +4,7 @@ import { get } from 'lodash';
 
 import ProfileView from './view';
 import { Loading } from '../../components';
+import { RedirectErrorPage } from '../../pages/GeneralErrorPage';
 import { getUserQuery, getIdQueryClient } from './queries';
 
 const ProfileContainer = () => (
@@ -18,7 +19,7 @@ const ProfileContainer = () => (
             }
 
             if (errorUserQueryClient) {
-                return <div>error...</div>;
+                return <RedirectErrorPage />;
             }
             const id = get(dataIdQueryClient, 'activeUser.id');
 
@@ -34,7 +35,7 @@ const ProfileContainer = () => (
                         }
 
                         if (errorUserQuery) {
-                            return <div>error...</div>;
+                            return <RedirectErrorPage />;
                         }
 
                         const dentistId = get(

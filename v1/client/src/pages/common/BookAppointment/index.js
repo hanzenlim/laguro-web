@@ -11,6 +11,7 @@ import {
 
 import BookAppointmentView from './view';
 import { Loading } from '../../../components';
+import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
 
 class BookAppointment extends PureComponent {
     constructor(props) {
@@ -112,7 +113,7 @@ class BookAppointment extends PureComponent {
                     }
 
                     if (error) {
-                        return <div>Error</div>;
+                        return <RedirectErrorPage />;
                     }
 
                     return (

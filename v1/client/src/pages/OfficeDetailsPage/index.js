@@ -4,6 +4,7 @@ import { Query } from 'react-apollo';
 import { getOfficeImageQuery } from './queries';
 import OfficeDetailsPageView from './view';
 import { Loading } from '../../components';
+import { RedirectErrorPage } from '../../pages/GeneralErrorPage';
 
 class OfficeDetailsPageContainer extends PureComponent {
     state = {
@@ -26,7 +27,7 @@ class OfficeDetailsPageContainer extends PureComponent {
                     }
 
                     if (error) {
-                        return <div>Error</div>;
+                        return <RedirectErrorPage />;
                     }
                     return (
                         <OfficeDetailsPageView

@@ -5,6 +5,7 @@ import { GET_PAYOUT_LINK, PAYOUT_USER, ADD_PAYOUT_LINK } from './queries';
 
 import { stripeExpressClientKey } from '../../../config/keys';
 import { renderPrice } from '../../../util/paymentUtil';
+import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
 
 import { Flex, Box, Button, Modal, Loading } from '../../../components';
 
@@ -16,7 +17,7 @@ const StripePayoutButtons = ({ userId, accountToken, totalAvailable }) => (
             data: dataPayoutLink,
         }) => {
             if (loadingPayoutLink) return <Loading />;
-            if (errorPayoutLink) return <div>Error...</div>;
+            if (errorPayoutLink) return <RedirectErrorPage />;
 
             const { getUser } = dataPayoutLink;
             const { payoutLoginLink } = getUser;
@@ -31,7 +32,7 @@ const StripePayoutButtons = ({ userId, accountToken, totalAvailable }) => (
                                 return <Loading />;
                             }
                             if (addPayoutError) {
-                                return <div>Error</div>;
+                                return <RedirectErrorPage />;
                             }
 
                             if (!payoutLoginLink && accountToken) {

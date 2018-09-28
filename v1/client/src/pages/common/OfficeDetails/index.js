@@ -3,6 +3,7 @@ import { Query } from 'react-apollo';
 import { getOfficeQuery } from './queries';
 import OfficeDetailsView from './view';
 import { Box, Loading } from '../../../components';
+import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
 
 class OfficeDetails extends PureComponent {
     componentDidUpdate(prevProps) {
@@ -32,7 +33,7 @@ class OfficeDetails extends PureComponent {
                     }
 
                     if (error) {
-                        return <div>Error</div>;
+                        return <RedirectErrorPage />;
                     }
 
                     const office = data.getOffice;

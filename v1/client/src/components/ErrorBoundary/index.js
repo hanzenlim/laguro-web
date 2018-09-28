@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import GeneralErrorPage from '../../pages/GeneralErrorPage';
+
 class ErrorBoundary extends Component {
     constructor(props) {
         super(props);
@@ -14,11 +16,7 @@ class ErrorBoundary extends Component {
 
     render() {
         if (this.state.hasError) {
-            return (
-                <div className="stretch_height">
-                    <h4>Something went wrong. Please try again later.</h4>
-                </div>
-            );
+            return <GeneralErrorPage />;
         }
         return this.props.children;
     }

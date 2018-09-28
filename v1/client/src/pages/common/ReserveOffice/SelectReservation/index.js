@@ -15,6 +15,7 @@ import _reduce from 'lodash/reduce';
 import get from 'lodash/get';
 import { Loading } from '../../../../components';
 import SelectReservationView from './view';
+import { RedirectErrorPage } from '../../../../pages/GeneralErrorPage';
 import { getListingQuery, getOfficeEquipments } from './queries';
 import {
     OFFICE_ID,
@@ -666,7 +667,7 @@ class SelectReservation extends Component {
                             }
 
                             if (error) {
-                                return <div>Error</div>;
+                                return <RedirectErrorPage />;
                             }
 
                             const officeEquipment = get(

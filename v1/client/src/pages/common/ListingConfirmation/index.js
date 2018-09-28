@@ -5,6 +5,7 @@ import moment from 'moment';
 import queryString from 'query-string';
 import ListingConfirmationView from './view';
 import { Loading } from '../../../components';
+import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
 import { getOfficeQuery } from './queries';
 import { renderPrice } from '../../../util/paymentUtil';
 
@@ -46,7 +47,7 @@ class ListingConfirmationContainer extends PureComponent {
         return (
             <Query query={getOfficeQuery} variables={{ id }}>
                 {({ loading, error, data }) => {
-                    if (error) return <div>Error</div>;
+                    if (error) return <RedirectErrorPage />;
                     if (loading) return <Loading />;
 
                     const { name, location, listings, equipment } = get(

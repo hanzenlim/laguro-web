@@ -64,6 +64,16 @@ const ConsentAndPaymentPage = Loadable({
     loading: () => null,
 });
 
+const Error404Page = Loadable({
+    loader: () => import('./pages/Error404Page'),
+    loading: () => null,
+});
+
+const GeneralErrorPage = Loadable({
+    loader: () => import('./pages/GeneralErrorPage'),
+    loading: () => null,
+});
+
 class App extends Component {
     render() {
         return (
@@ -114,7 +124,16 @@ class App extends Component {
                                         path="/consent-and-payment"
                                         component={ConsentAndPaymentPage}
                                     />
-                                    <Route path="/" component={HomePage} />
+                                    <Route
+                                        path="/error"
+                                        component={GeneralErrorPage}
+                                    />
+                                    <Route
+                                        path="/"
+                                        exact
+                                        component={HomePage}
+                                    />
+                                    <Route component={Error404Page} />
                                 </Switch>
                             </ErrorBoundary>
                         </Content>

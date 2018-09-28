@@ -5,6 +5,7 @@ import { GET_PAYMENTS } from '../BalanceHistory/queries';
 import { Skeleton, Card, Text, Flex, Box } from '../../../components';
 import PaymentCard from '../PaymentCard';
 import { PAYER_ID, PAYMENT, PAYMENT_MADE } from '../../../util/strings';
+import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
 
 export const CardLoading = ({ title }) => (
     <Flex flexDirection="column" width={720}>
@@ -59,7 +60,7 @@ const PaymentHistoryContainer = ({ userId }) => (
             if (loading) return <CardLoading title="Payment History" />;
 
             if (error) {
-                return <div>error...</div>;
+                return <RedirectErrorPage />;
             }
 
             return (

@@ -8,6 +8,7 @@ import { Query, graphql } from 'react-apollo';
 import { Loading } from '../../../../components';
 import { getPaymentOptionQuery, addPaymentOptionMutation } from './queries';
 import PaymentCardFormView from './view';
+import { RedirectErrorPage } from '../../../../pages/GeneralErrorPage';
 import { NEW_CARD_PAYMENT_METHOD } from '../../../../util/strings';
 
 class PaymentCardForm extends Component {
@@ -69,7 +70,7 @@ class PaymentCardForm extends Component {
                     }
 
                     if (error) {
-                        return <div>Error</div>;
+                        return <RedirectErrorPage />;
                     }
 
                     const paymentOptionsCards = get(

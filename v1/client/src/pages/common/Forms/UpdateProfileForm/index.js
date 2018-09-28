@@ -5,6 +5,7 @@ import cookies from 'browser-cookies';
 
 import UpdateProfileFormView from './view';
 import { Loading } from '../../../../components';
+import { RedirectErrorPage } from '../../../../pages/GeneralErrorPage';
 import { getIdQueryClient, getUserQuery, updateUserMutation } from './queries';
 import { ACTIVE_USER } from '../../../../util/strings';
 
@@ -43,7 +44,7 @@ class UpdateProfileContainer extends PureComponent {
                         onCompleted={this.onCompleted}
                     >
                         {({ loading, error, data: userData }) => {
-                            if (error) return <div>Error</div>;
+                            if (error) return <RedirectErrorPage />;
                             if (loading) return <Loading />;
 
                             return (

@@ -5,6 +5,7 @@ import _uniq from 'lodash/uniq';
 import { getDentistQuery } from './queries';
 import DentistDetailsView from './view';
 import { Loading, Box } from '../../../components';
+import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
 
 class DentistDetails extends PureComponent {
     render() {
@@ -22,7 +23,7 @@ class DentistDetails extends PureComponent {
                     }
 
                     if (error) {
-                        return <div>Error</div>;
+                        return <RedirectErrorPage />;
                     }
 
                     const dentist = data.getDentist;
