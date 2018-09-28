@@ -3,10 +3,10 @@ import get from 'lodash/get';
 import ReactMapGL, { Marker, NavigationControl } from 'react-map-gl';
 import styled from 'styled-components';
 import 'mapbox-gl/dist/mapbox-gl.css';
-// import { mapBoxApiKey } from '../../../config/keys';
+import isEqual from 'lodash/isEqual';
 
 import { Box, Icon } from '../../../components';
-
+import { cleanAddress } from '../../../util/styleUtil';
 import MapInfoWindow from '../MapInfoWindow';
 
 const StyledMarkerContainer = styled(Marker)`
@@ -44,6 +44,18 @@ class Map extends PureComponent {
     componentDidMount() {
         window.addEventListener('resize', this.resize);
         this.resize();
+    }
+
+    componentDidUpdate(prevProps) {
+        if (!isEqual(this.props.data[0], prevProps.data[0])) {
+            this.setState({
+                viewport: {
+                    ...this.state.viewport,
+                    latitude: this.props.data[0].latitude,
+                    longitude: this.props.data[0].longitude,
+                },
+            });
+        }
     }
 
     componentWillUnmount() {
@@ -94,10 +106,11 @@ class Map extends PureComponent {
                     <MapInfoWindow
                         title={this.state.popupInfo.title}
                         subtitle={this.state.popupInfo.subtitle}
-                        body={this.state.popupInfo.address}
+                        body={cleanAddress(this.state.popupInfo.address)}
                         onClose={this.hidePopup}
                         longitude={this.state.popupInfo.longitude}
                         latitude={this.state.popupInfo.latitude}
+                        image={this.state.popupInfo.image}
                     />
                 )}
                 {data.map((marker, index) => (

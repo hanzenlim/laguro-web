@@ -21,10 +21,17 @@ const renderReservationModule = () => <Payment />;
 const StyledCarousel = styled(SlickCarousel)`
     && {
         margin-bottom: 20px;
-        height: 20vw;
     }
 
-    &&.expanded {
+    &&,
+    && div {
+        margin-bottom: 20px;
+        height: 20vw;
+        transition: height 0.2s;
+    }
+
+    &&.expanded,
+    &&.expanded div {
         height: 66vw;
 
         @media (min-width: 1300px) {
@@ -38,16 +45,6 @@ const StyledCarousel = styled(SlickCarousel)`
 
     && .image-container {
         overflow: hidden;
-        height: 20vw;
-        transition: height 0.2s;
-    }
-
-    &&.expanded .image-container {
-        height: 66vw;
-
-        @media (min-width: 1300px) {
-            height: 850px;
-        }
     }
 
     && .image-container img {
@@ -91,7 +88,7 @@ class OfficeDetailsPageView extends PureComponent {
             officeDetailsDoneLoading,
         } = this.props;
         return (
-            <Fragment>
+            <Flex flexDirection="column" height="100%">
                 {_get(imageUrls, 'length') > 0 ? (
                     <StyledCarousel
                         className={this.state.carouselClass}
@@ -117,29 +114,39 @@ class OfficeDetailsPageView extends PureComponent {
                 ) : (
                     <Box mb={30} />
                 )}
-                <Container>
-                    <Flex>
-                        <Box>
-                            <OfficeDetails
-                                id={id}
-                                viewOnly={false}
-                                doneLoading={officeDetailsDoneLoadingHandler}
-                                renderStickyComponent={renderReservationModule}
-                            />
-                            <ReviewContainer type={OFFICE} id={id} />
-                        </Box>
-                        <Sticky mt={20} offset="20px">
-                            <Box mt="44px">
-                                <ReserveOffice
-                                    officeId={id}
-                                    startLoading={officeDetailsDoneLoading}
+                <Container style={{ flex: 1 }}>
+                    <Flex
+                        height="100%"
+                        flexDirection="column"
+                        justifyContent="space-between"
+                    >
+                        <Flex>
+                            <Box>
+                                <OfficeDetails
+                                    id={id}
+                                    viewOnly={false}
+                                    doneLoading={
+                                        officeDetailsDoneLoadingHandler
+                                    }
+                                    renderStickyComponent={
+                                        renderReservationModule
+                                    }
                                 />
+                                <ReviewContainer type={OFFICE} id={id} />
                             </Box>
-                        </Sticky>
+                            <Sticky mt={20} offset="20px">
+                                <Box mt="44px">
+                                    <ReserveOffice
+                                        officeId={id}
+                                        startLoading={officeDetailsDoneLoading}
+                                    />
+                                </Box>
+                            </Sticky>
+                        </Flex>
+                        <FeaturedOffices currentOffice={id} />
                     </Flex>
-                    <FeaturedOffices currentOffice={id} />
                 </Container>
-            </Fragment>
+            </Flex>
         );
     }
 }

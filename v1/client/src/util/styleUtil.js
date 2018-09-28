@@ -48,3 +48,6 @@ export function fade(length) {
 
     `;
 }
+
+export const cleanAddress = addressString =>
+    addressString.replace(/ [\d]{5}, United States/, '');

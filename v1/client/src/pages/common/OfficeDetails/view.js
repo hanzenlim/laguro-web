@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import get from 'lodash/get';
 import { Flex, Box, Text, Rating, Truncate } from '../../../components';
+import { cleanAddress } from '../../../util/styleUtil';
 
 import Map from '../../common/Map';
 
@@ -17,7 +18,7 @@ const OfficeDetailsView = props => {
                         lineHeight="34px"
                         letterSpacing="-0.8px"
                     >
-                        {data.name}
+                        {data.officeName}
                     </Text>
                     <Text fontSize={4} lineHeight="34px" letterSpacing="-0.8px">
                         {data.address.name}
@@ -41,18 +42,7 @@ const OfficeDetailsView = props => {
                             description room
                         </Text>
                         <Text fontSize={1} lineHeight="1.86">
-                            <Truncate
-                                lines={3}
-                                toggle={
-                                    <Text
-                                        is="span"
-                                        color="text.green"
-                                        fontWeight="bold"
-                                    >
-                                        show more
-                                    </Text>
-                                }
-                            >
+                            <Truncate lines={3} hasToggle>
                                 {data.description}
                             </Truncate>
                         </Text>
@@ -68,7 +58,7 @@ const OfficeDetailsView = props => {
                     >
                         address information{' '}
                         <Text is="span" fontWeight="bold">
-                            - {data.address.name}
+                            - {cleanAddress(data.address.name)}
                         </Text>
                     </Text>
 
@@ -77,8 +67,14 @@ const OfficeDetailsView = props => {
                             height={440}
                             width={732}
                             zoom={13}
+                            center={[
+                                data.address.geoPoint.lon,
+                                data.address.geoPoint.lat,
+                            ]}
                             data={[
                                 {
+                                    title: data.officeName,
+                                    image: data.imageUrls[0],
                                     address: data.address.name,
                                     latitude: get(data, 'address.geoPoint.lat'),
                                     longitude: get(

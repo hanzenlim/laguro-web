@@ -1,4 +1,5 @@
 import React from 'react';
+import officePlaceholder from '../../../components/Image/office-placeholder.png';
 
 import {
     Box,
@@ -13,7 +14,7 @@ import {
 const LinkCard = props => {
     const {
         rating,
-        image = 'http://via.placeholder.com/186x186',
+        image = officePlaceholder,
         address,
         title,
         subtitle,

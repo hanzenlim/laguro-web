@@ -2,6 +2,7 @@ import React from 'react';
 import { Popup } from 'react-map-gl';
 import styled from 'styled-components';
 
+import officePlaceholder from '../../../components/Image/office-placeholder.png';
 import { Flex, Box, Text, Image, Truncate } from '../../../components';
 
 const StyledPopup = styled(Popup)`
@@ -13,7 +14,15 @@ const StyledPopup = styled(Popup)`
 `;
 
 const MapInfoWindow = props => {
-    const { onClose, longitude, latitude, title, subtitle, body } = props;
+    const {
+        onClose,
+        longitude,
+        latitude,
+        title,
+        subtitle,
+        body,
+        image,
+    } = props;
 
     return (
         <StyledPopup
@@ -26,11 +35,12 @@ const MapInfoWindow = props => {
         >
             <Flex alignItems="center">
                 <Image
-                    src="http://via.placeholder.com/60x60"
+                    src={image || officePlaceholder}
                     alt="dentist/office image"
                     borderRadius="50%"
                     height={60}
                     width={60}
+                    objectFit="cover"
                 />
                 <Box width="160px" ml={5}>
                     <Text
@@ -52,7 +62,7 @@ const MapInfoWindow = props => {
                         <Truncate lines={1}>{subtitle}</Truncate>
                     </Text>
                     <Text color="text.black" lineHeight="1.29" fontSize={1}>
-                        <Truncate lines={2}>{body}</Truncate>
+                        <Truncate lines={3}>{body}</Truncate>
                     </Text>
                 </Box>
             </Flex>

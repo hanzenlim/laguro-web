@@ -215,7 +215,7 @@ const Header = ({
             </Link>
             {!onLandingPage && <SearchBox size="small" />}
             <Flex alignItems="center">
-                <NavBarLink ml="0px" to={'/landlord-onboarding/add-office'}>
+                <NavBarLink ml="0px" to={'/host-onboarding/add-office/'}>
                     <Text
                         color={onLandingPage ? 'text.white' : 'text.black'}
                         fontSize={1}

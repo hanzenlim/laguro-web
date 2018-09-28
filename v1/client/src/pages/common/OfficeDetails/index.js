@@ -5,6 +5,12 @@ import OfficeDetailsView from './view';
 import { Box, Loading } from '../../../components';
 
 class OfficeDetails extends PureComponent {
+    componentDidUpdate(prevProps) {
+        if (this.props.id !== prevProps.id) {
+            window.scrollTo(0, 0);
+        }
+    }
+
     render() {
         const { id, doneLoading } = this.props;
 
@@ -32,7 +38,7 @@ class OfficeDetails extends PureComponent {
                     const office = data.getOffice;
 
                     const mappedData = {
-                        name: office.name,
+                        officeName: office.name,
                         imageUrls: office.imageUrls,
                         description: office.description,
                         rating: office.averageRating,

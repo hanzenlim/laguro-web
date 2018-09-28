@@ -5,7 +5,13 @@ import ReactTruncate from 'react-truncate';
 import { Text } from '../../components';
 
 const ShowMore = () => (
-    <Text is="a" color="text.green" fontWeight="bold" display="inline-block">
+    <Text
+        is="a"
+        color="text.green"
+        fontWeight="bold"
+        display="inline-block"
+        cursor="pointer"
+    >
         show more
     </Text>
 );

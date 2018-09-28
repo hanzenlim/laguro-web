@@ -1,6 +1,8 @@
 import React from 'react';
 import { bool, func, string, shape, number } from 'prop-types';
 import { Alert } from 'antd';
+import defaultUserImage from '../../../../components/Image/defaultUserImage.svg';
+import officePlaceholder from '../../../../components/Image/office-placeholder.png';
 
 import {
     Modal,
@@ -21,7 +23,7 @@ const DentistInfo = props => {
     return (
         <Box textAlign="center" mt={10}>
             <Image
-                src={imageUrl}
+                src={imageUrl || defaultUserImage}
                 alt="dentist-image"
                 mx="auto"
                 mb={10}
@@ -50,7 +52,7 @@ const OfficeInfo = props => {
         <Flex mt={24}>
             <Box width="33.33%">
                 <Image
-                    src={imageUrl}
+                    src={imageUrl || officePlaceholder}
                     height="100%"
                     width="100%"
                     objectFit="cover"

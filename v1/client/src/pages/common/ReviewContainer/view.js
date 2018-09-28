@@ -28,7 +28,7 @@ const ReviewContainer = props => {
                     display="inline"
                     lineHeight="34px"
                     fontSize={5}
-                >{`${numReviews} Review${numReviews > 1 ? 's' : ''}`}</Text>
+                >{`${numReviews} Review${numReviews !== 1 ? 's' : ''}`}</Text>
             </Flex>
             {!viewOnly && (
                 <Text
