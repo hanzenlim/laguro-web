@@ -108,6 +108,10 @@ export const PAYMENT_VIEW = 'payment_view';
 export const CONFIRMATION_VIEW = 'confirmation_view';
 export const BOOKING_FEE_PERCENTAGE = 0.15;
 
+// host onboarding
+export const EDIT_OFFICE_MODE = 'edit-office';
+export const ADD_LISTING_MODE = 'add-listing';
+
 // TODO delete following
 // const pluralizeMap = {
 //     USER: 'users',

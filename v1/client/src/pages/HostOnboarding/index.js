@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import cookies from 'browser-cookies';
 import styled from 'styled-components';
+import { message } from 'antd';
 import { Query, Mutation } from 'react-apollo';
 import queryString from 'query-string';
 import moment from 'moment';
@@ -22,15 +23,16 @@ import AddOfficeInfo from '../common/Forms/AddOfficeInfo';
 import AddOfficeEquipments from '../common/Forms/AddOfficeEquipments';
 import AddOfficeListing from '../common/Forms/AddOfficeListing';
 import ListingConfirmation from '../common/ListingConfirmation';
-import { ACTIVE_USER } from '../../util/strings';
+import {
+    ACTIVE_USER,
+    EDIT_OFFICE_MODE,
+    ADD_LISTING_MODE,
+} from '../../util/strings';
 
 // modes:
 //      edit-office
 //      add-listing
 //      default(host onboarding)
-
-const EDIT_OFFICE_MODE = 'edit-office';
-const ADD_LISTING_MODE = 'add-listing';
 
 const { GridItem } = Grid;
 
@@ -47,7 +49,7 @@ const EQUIPMENT_STEP_URL = `${HOST_ONBOARDING}${EQUIPMENT_STEP}/`;
 const LISTING_STEP_URL = `${HOST_ONBOARDING}${LISTING_STEP}/`;
 const CONFIRMATION_STEP_URL = `${HOST_ONBOARDING}${CONFIRMATION_STEP}/`;
 
-const HOST_PROFILE_URL = '/profile';
+const HOST_PROFILE_URL = '/profile?selectedTab=my_listings';
 
 const EQUIPMENT = 'equipment';
 const EQUIPMENT_NAME = `${EQUIPMENT}Name`;
@@ -81,7 +83,7 @@ class HostOnboarding extends Component {
                     EQUIPMENT_STEP_URL,
                     HOST_PROFILE_URL,
                 ];
-                this.headerList = ['Edit', 'Edit'];
+                this.headerList = ['', ''];
                 this.buttonTexts = ['Next', 'Save Changes'];
 
                 // edit office does not show location
@@ -154,13 +156,21 @@ class HostOnboarding extends Component {
     // given form values and current urlParams, compute next url and add computedParams to url
     advanceStep = (values, urlParams) => {
         const { pathname } = this.props.location;
-        const nextStep = this.urlList[this.urlList.indexOf(pathname) + 1];
 
-        const url = `${nextStep}?${this.buildUrlParams(
-            values,
-            urlParams,
-            this.officeId
-        )}`;
+        const nextIndex = this.urlList.indexOf(pathname) + 1;
+        const nextUrl = this.urlList[this.urlList.indexOf(pathname) + 1];
+
+        // when redirecting to profile pages, no query params
+        let url = nextUrl;
+
+        // all other times, add query params to url
+        if (nextIndex !== this.urlList.length - 1) {
+            url = `${nextUrl}?${this.buildUrlParams(
+                values,
+                urlParams,
+                this.officeId
+            )}`;
+        }
 
         history.push(url);
     };
@@ -182,13 +192,13 @@ class HostOnboarding extends Component {
     // createOffice: gql mutation function for creating an office
     // updateOffice: gql mutation function for updating an office
     onSubmit = async (values, createOffice, updateOffice, id, client) => {
-         // save listing step values to create listings after creating office, in handleOfficeCreated
-         this.values = values;
+        // save listing step values to create listings after creating office, in handleOfficeCreated
+        this.values = values;
         const { step } = this.props.match.params;
         const { historyLocationSearch } = this.state;
         const urlParams = queryString.parse(historyLocationSearch);
         const { mode } = queryString.parse(historyLocationSearch);
-       
+
         // due to form value bugs, equipmentNames will not be deleted upon equipment delete. therefore, select all equipment prices form urlParams and find matching equipment names and drop equipment names that do not have a price
         const urlEquipment = Object.keys(urlParams)
             .filter(key => key.startsWith('equipmentPrice'))
@@ -328,10 +338,10 @@ class HostOnboarding extends Component {
                 const endDay = this.values[key][1];
 
                 if (startTime >= endTime) {
-                    alert(
+                    message.error(
                         'Your daily end time has to be after your daily start time'
                     );
-                    return;
+                    return {};
                 }
 
                 return {
@@ -525,13 +535,16 @@ class HostOnboarding extends Component {
         const { officeId, mode } = urlParams;
 
         let submitDisabled;
+        let numSteps;
         switch (mode) {
             case EDIT_OFFICE_MODE:
                 submitDisabled = !numImage;
+                numSteps = 2;
                 break;
             // host onboarding
             default:
                 submitDisabled = !numImage || locationSelected;
+                numSteps = 4;
                 break;
         }
 
@@ -542,6 +555,7 @@ class HostOnboarding extends Component {
                         query={GET_OFFICE}
                         variables={{ id: officeId }}
                         onCompleted={this.handleGetOffice}
+                        fetchPolicy="network-only"
                     >
                         {() => (
                             <Mutation
@@ -593,7 +607,9 @@ class HostOnboarding extends Component {
                                                                         stepCount
                                                                     }
                                                                     direction="vertical"
-                                                                    size={4}
+                                                                    size={
+                                                                        numSteps
+                                                                    }
                                                                 />
 
                                                                 <GridItem gc="2 / 4">
@@ -626,6 +642,9 @@ class HostOnboarding extends Component {
                                                                             header={
                                                                                 this
                                                                                     .headerList[0]
+                                                                            }
+                                                                            mode={
+                                                                                mode
                                                                             }
                                                                             {...initialFormValues}
                                                                         />

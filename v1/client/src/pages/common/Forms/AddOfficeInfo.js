@@ -16,6 +16,7 @@ import {
     Text,
 } from '../../../components';
 import LocationFilter from '../LocationFilter';
+import { EDIT_OFFICE_MODE } from '../../../util/strings';
 
 const { GridItem } = Grid;
 
@@ -184,6 +185,7 @@ class AddOfficeInfo extends Component {
             firstName,
             lastName,
             header,
+            mode,
             ...rest
         } = this.props;
         const { autoCompleteHasError } = this.state;
@@ -207,7 +209,7 @@ class AddOfficeInfo extends Component {
                             Step 1
                         </Text>
                     </GridItem>
-                    {header !== 'Edit' && (
+                    {mode !== EDIT_OFFICE_MODE && (
                         <GridItem gc="all">
                             <Text
                                 fontWeight="bold"
@@ -266,53 +268,56 @@ class AddOfficeInfo extends Component {
                         />
                     </GridItem>
                     {/* for edit office mode, location is disabled */}
-                    {!locationDisabled && (
-                        <GridItem gc="all">
-                            <FormItem
-                                name="location"
-                                label="Address"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message:
-                                            'Please enter the address of your office',
-                                    },
-                                ]}
-                                input={
-                                    <LocationFilter
-                                        withDentists={false}
-                                        onLocationChange={
-                                            this.handleLocationChange
-                                        }
-                                        onBlur={this.handleBlur}
-                                        onChange={this.handleChange}
-                                        onSearch={this.handleSearch}
-                                        height={50}
-                                        placeHolder={
-                                            '1598 Washington Ave San Leandro, CA 94577'
-                                        }
-                                        type="hostOnboarding"
-                                    />
-                                }
-                            />
-                            <Box>
-                                {autoCompleteHasError && (
-                                    <Box mt={-18} mb={20}>
-                                        {this.renderError()}
-                                    </Box>
-                                )}
-                            </Box>
-                        </GridItem>
-                    )}
-                    {!locationDisabled && (
-                        <GridItem gc="1/2">
-                            <FormItem
-                                name="addressDetail"
-                                label="Suite, unit, building, etc. (optional)"
-                                input={<Input height="50px" placeHolder="" />}
-                            />
-                        </GridItem>
-                    )}
+                    <GridItem gc="all">
+                        <FormItem
+                            name="location"
+                            label="Address"
+                            rules={[
+                                {
+                                    required: mode !== EDIT_OFFICE_MODE,
+                                    message:
+                                        'Please enter the address of your office',
+                                },
+                            ]}
+                            input={
+                                <LocationFilter
+                                    withDentists={false}
+                                    onLocationChange={this.handleLocationChange}
+                                    onBlur={this.handleBlur}
+                                    onChange={this.handleChange}
+                                    onSearch={this.handleSearch}
+                                    disabled={locationDisabled}
+                                    height={50}
+                                    placeHolder={
+                                        '1598 Washington Ave San Leandro, CA 94577'
+                                    }
+                                    type="hostOnboarding"
+                                />
+                            }
+                        />
+                        <Box>
+                            {autoCompleteHasError && (
+                                <Box mt={-18} mb={20}>
+                                    {this.renderError()}
+                                </Box>
+                            )}
+                        </Box>
+                    </GridItem>
+
+                    <GridItem gc="1/2">
+                        <FormItem
+                            name="addressDetail"
+                            label="Suite, unit, building, etc. (optional)"
+                            input={
+                                <Input
+                                    disabled={locationDisabled}
+                                    height="50px"
+                                    placeHolder=""
+                                />
+                            }
+                        />
+                    </GridItem>
+
                     <GridItem gc="all">
                         <FormItem
                             name="photos"

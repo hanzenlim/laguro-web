@@ -42,6 +42,10 @@ const StyledAutocomplete = styled(AntdAutocomplete)`
             transition: none;
         }
 
+        && .ant-input-disabled {
+            background-color: #f5f5f5;
+        }
+
         && .ant-select-selection__rendered {
             ${height};
         }
@@ -89,6 +93,7 @@ const LocationFilterView = ({
     onBlur,
     onChange,
     placeHolder,
+    disabled,
     ...rest
 }) => {
     const LocationOptions = locationResults.map(result => (
@@ -155,6 +160,7 @@ const LocationFilterView = ({
                 onBlur={onBlur}
                 value={queryString}
                 onChange={onChange}
+                disabled={disabled}
                 placeholder={placeHolder || 'San Francisco, California'}
                 backfill={true}
                 {...rest}
