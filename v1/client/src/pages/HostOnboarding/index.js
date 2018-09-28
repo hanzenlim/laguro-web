@@ -23,11 +23,7 @@ import AddOfficeInfo from '../common/Forms/AddOfficeInfo';
 import AddOfficeEquipments from '../common/Forms/AddOfficeEquipments';
 import AddOfficeListing from '../common/Forms/AddOfficeListing';
 import ListingConfirmation from '../common/ListingConfirmation';
-import {
-    ACTIVE_USER,
-    EDIT_OFFICE_MODE,
-    ADD_LISTING_MODE,
-} from '../../util/strings';
+import { ACTIVE_USER, EDIT_OFFICE_MODE } from '../../util/strings';
 
 // modes:
 //      edit-office
