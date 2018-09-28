@@ -4,6 +4,7 @@ import ReactMapGL, { Marker, NavigationControl } from 'react-map-gl';
 import styled from 'styled-components';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import isEqual from 'lodash/isEqual';
+import { getMyPosition } from '../../../util/navigatorUtil';
 
 import { Box, Icon } from '../../../components';
 import { cleanAddress } from '../../../util/styleUtil';
@@ -29,16 +30,41 @@ class Map extends PureComponent {
     constructor(props) {
         super(props);
 
+        const { urlParams } = props;
+
+        // TODO plugin url lat/lon as a prop
+        this.defaultPosition = getMyPosition();
+        this.currentPosition =
+            this.getPosition(urlParams) || this.defaultPosition;
+
         this.state = {
             popupInfo: null,
             viewport: {
                 width: 0,
                 height: 0,
-                latitude: get(props, 'data[0].latitude') || 0,
-                longitude: get(props, 'data[0].longitude') || 0,
+                // TODO figure out how to compute optimal bounding box
+                latitude:
+                    get(props, 'data[0].latitude') || this.currentPosition.lat,
+                longitude:
+                    get(props, 'data[0].longitude') || this.currentPosition.lon,
                 zoom: props.zoom,
             },
         };
+    }
+
+    getPosition(urlParams) {
+        if (!urlParams) {
+            return null;
+        }
+
+        const lat = parseFloat(urlParams.lat);
+        const lon = parseFloat(urlParams.long);
+        // eslint-disable-next-line
+        if (!isNaN(lat) && !isNaN(lon)) {
+            return { lat, lon };
+        }
+
+        return null;
     }
 
     componentDidMount() {
@@ -47,12 +73,28 @@ class Map extends PureComponent {
     }
 
     componentDidUpdate(prevProps) {
-        if (!isEqual(this.props.data[0], prevProps.data[0])) {
+        const currentIds = this.props.data.map(e => e.id);
+        const prevIds = prevProps.data.map(e => e.id);
+        currentIds.sort();
+        prevIds.sort();
+
+        if (
+            !isEqual(this.props.urlParams, prevProps.urlParams) ||
+            !isEqual(currentIds, prevIds)
+        ) {
+            const { urlParams } = this.props;
+            this.currentPosition =
+                this.getPosition({
+                    lat: get(this.props, 'data[0].latitude'),
+                    lon: get(this.props, 'data[0].longitude'),
+                }) || this.getPosition(urlParams);
+            this.currentPosition = this.currentPosition || this.defaultPosition;
+
             this.setState({
                 viewport: {
                     ...this.state.viewport,
-                    latitude: this.props.data[0].latitude,
-                    longitude: this.props.data[0].longitude,
+                    latitude: this.currentPosition.lat,
+                    longitude: this.currentPosition.lon,
                 },
             });
         }
@@ -113,30 +155,33 @@ class Map extends PureComponent {
                         image={this.state.popupInfo.image}
                     />
                 )}
-                {data.map((marker, index) => (
-                    <StyledMarkerContainer
-                        key={index}
-                        latitude={marker.latitude}
-                        longitude={marker.longitude}
-                    >
-                        <Box
-                            height="50px"
-                            width="50px"
-                            top="-40px"
-                            left="-40px"
-                            bg="transparent"
-                            position="absolute"
-                            zIndex="1000"
-                            data-marker={JSON.stringify(marker)}
-                            onClick={this.showPopup}
-                        />
-                        <Icon
-                            type="locationPinWithBackground"
-                            width="50px"
-                            height="50px"
-                        />
-                    </StyledMarkerContainer>
-                ))}
+                {data.map(
+                    (marker, index) =>
+                        marker.address && (
+                            <StyledMarkerContainer
+                                key={index}
+                                latitude={marker.latitude}
+                                longitude={marker.longitude}
+                            >
+                                <Box
+                                    height="50px"
+                                    width="50px"
+                                    top="-40px"
+                                    left="-40px"
+                                    bg="transparent"
+                                    position="absolute"
+                                    zIndex="1000"
+                                    data-marker={JSON.stringify(marker)}
+                                    onClick={this.showPopup}
+                                />
+                                <Icon
+                                    type="locationPinWithBackground"
+                                    width="50px"
+                                    height="50px"
+                                />
+                            </StyledMarkerContainer>
+                        )
+                )}
                 <StyledNavigationControl
                     onViewportChange={this.updateViewport}
                 />

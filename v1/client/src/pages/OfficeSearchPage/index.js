@@ -5,13 +5,14 @@ import OfficeSearchPageView from './view';
 import esClient from '../../util/esClient';
 import { OFFICES } from '../../util/strings';
 import { Loading } from '../../components';
+import { getMyPosition } from '../../util/navigatorUtil';
 
 const PAGE_SIZE = 9;
 const DISTANCE = '100km';
-const DEFAULT_LOCATION = {
-    lon: -123.463,
-    lat: 37.7648,
-};
+// most documents are standardized around 1
+// having this boost prioritizes location/data filter over prefix matching
+// on fields such as name, bio, specialty, etc.
+const FILTER_BOOST = 5;
 
 class OfficeSearchPage extends PureComponent {
     constructor(props) {
@@ -30,7 +31,7 @@ class OfficeSearchPage extends PureComponent {
         const mappedData = this.getMappedData(response);
         const total = this.getDataCount(response);
 
-        this.setState({ data: mappedData, total, loading: false });
+        this.setState({ data: mappedData, total, loading: false, urlParams });
     };
 
     componentDidUpdate = async prevProps => {
@@ -40,7 +41,11 @@ class OfficeSearchPage extends PureComponent {
             const mappedData = this.getMappedData(response);
             const total = this.getDataCount(response);
 
-            this.setState({ data: mappedData, total });
+            this.setState({
+                data: mappedData,
+                total,
+                urlParams: nextUrlParams,
+            });
         }
     };
 
@@ -64,6 +69,7 @@ class OfficeSearchPage extends PureComponent {
                 const source = item._source;
 
                 return {
+                    id: item._id,
                     title: source.name,
                     rating: source.averageRating,
                     image: 'http://via.placeholder.com/186x186',
@@ -82,17 +88,34 @@ class OfficeSearchPage extends PureComponent {
     getDataCount = data => data.hits.total;
 
     fetchData = async params => {
-        const { endTime, startTime, lat, long: lon, page } = params;
+        const { endTime, startTime, lat, long: lon, page, text } = params;
         const from = this.getOffset(page, PAGE_SIZE);
+        const should = [];
         const filter = [];
 
-        if (lat && lon) {
+        const defaultLocation = getMyPosition();
+
+        if (text) {
+            // do not prefix match on document fields if location is specified
+            should.push({
+                multi_match: {
+                    query: text,
+                    type: 'phrase_prefix',
+                    fields: [
+                        // the carrot syntax multiplies the score of the result
+                        'name^2',
+                        'location.name',
+                        'equipment.name',
+                    ],
+                },
+            });
+        } else if (lat && lon) {
             filter.push({
                 geo_distance: {
                     distance: DISTANCE,
                     'location.geoPoint': {
-                        lon: lon || DEFAULT_LOCATION.lon,
-                        lat: lat || DEFAULT_LOCATION.lat,
+                        lon: lon || defaultLocation.lon,
+                        lat: lat || defaultLocation.lat,
                     },
                 },
             });
@@ -117,6 +140,21 @@ class OfficeSearchPage extends PureComponent {
             );
         }
 
+        if (filter.length > 0) {
+            should.push({
+                bool: {
+                    must: [
+                        filter.map(f => ({
+                            constant_score: {
+                                filter: f,
+                                boost: FILTER_BOOST,
+                            },
+                        })),
+                    ],
+                },
+            });
+        }
+
         const res = await esClient.search({
             index: OFFICES,
             size: PAGE_SIZE,
@@ -124,7 +162,7 @@ class OfficeSearchPage extends PureComponent {
             body: {
                 query: {
                     bool: {
-                        filter,
+                        should,
                     },
                 },
             },
@@ -140,6 +178,7 @@ class OfficeSearchPage extends PureComponent {
             <OfficeSearchPageView
                 data={this.state.data}
                 total={this.state.total}
+                urlParams={this.state.urlParams}
             />
         );
     }

@@ -16,6 +16,7 @@ const SearchBox = props => {
     const {
         initialLocationFilterValue,
         initialDateFilterValue,
+        onTextChange,
         onLocationFilterChange,
         onDateFilterChange,
         onSubmit,
@@ -28,6 +29,7 @@ const SearchBox = props => {
                 <LocationFilter
                     height={60}
                     initialValue={initialLocationFilterValue}
+                    onTextChange={onTextChange}
                     onLocationChange={onLocationFilterChange}
                     width={size === 'large' ? 710 : 420}
                     withDentists={true}

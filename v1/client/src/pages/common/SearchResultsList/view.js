@@ -35,8 +35,7 @@ const SearchResultsList = props => {
                 </Text>
             ) : (
                 <Text fontSize={4} color="text.black">
-                    Unrecognized location, please check and re-enter. Start a
-                    new search or see below some tips.
+                    No results, please start a new search.
                 </Text>
             )}
             <StyledSearchResultsContainer>

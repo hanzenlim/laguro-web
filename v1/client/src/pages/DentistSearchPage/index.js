@@ -5,13 +5,14 @@ import DentistSearchPageView from './view';
 import esClient from '../../util/esClient';
 import { DENTISTS } from '../../util/strings';
 import { Loading } from '../../components';
+import { getMyPosition } from '../../util/navigatorUtil';
 
 const PAGE_SIZE = 9;
 const DISTANCE = '100km';
-const DEFAULT_LOCATION = {
-    lon: -123.463,
-    lat: 37.7648,
-};
+// most documents are standardized around 1
+// having this boost prioritizes location/data filter over prefix matching
+// on fields such as name, bio, specialty, etc.
+const FILTER_BOOST = 5;
 
 class DetailsSearchPage extends PureComponent {
     constructor(props) {
@@ -30,7 +31,7 @@ class DetailsSearchPage extends PureComponent {
         const mappedData = this.getMappedData(response);
         const total = this.getDataCount(response);
 
-        this.setState({ data: mappedData, total, loading: false });
+        this.setState({ data: mappedData, total, loading: false, urlParams });
     };
 
     componentDidUpdate = async prevProps => {
@@ -40,7 +41,11 @@ class DetailsSearchPage extends PureComponent {
             const mappedData = this.getMappedData(response);
             const total = this.getDataCount(response);
 
-            this.setState({ data: mappedData, total });
+            this.setState({
+                data: mappedData,
+                total,
+                urlParams: nextUrlParams,
+            });
         }
     };
 
@@ -82,17 +87,34 @@ class DetailsSearchPage extends PureComponent {
     getDataCount = data => data.hits.total;
 
     fetchData = async params => {
-        const { endTime, startTime, lat, long: lon, page } = params;
+        const { endTime, startTime, lat, long: lon, page, text } = params;
         const from = this.getOffset(page, PAGE_SIZE);
+        const should = [];
         const filter = [];
 
-        if (lat && lon) {
+        const defaultPosition = getMyPosition();
+
+        if (text) {
+            should.push({
+                multi_match: {
+                    query: text,
+                    type: 'phrase_prefix',
+                    fields: [
+                        // the carrot syntax multiplies the score of the result
+                        'name^2',
+                        'specialty',
+                        'procedures.name',
+                        'location.name',
+                    ],
+                },
+            });
+        } else if (lat && lon) {
             filter.push({
                 geo_distance: {
                     distance: DISTANCE,
                     'reservations.geoPoint': {
-                        lon: lon || DEFAULT_LOCATION.lon,
-                        lat: lat || DEFAULT_LOCATION.lat,
+                        lon: lon || defaultPosition.lon,
+                        lat: lat || defaultPosition.lat,
                     },
                 },
             });
@@ -117,6 +139,21 @@ class DetailsSearchPage extends PureComponent {
             );
         }
 
+        if (filter.length > 0) {
+            should.push({
+                bool: {
+                    must: [
+                        filter.map(f => ({
+                            constant_score: {
+                                filter: f,
+                                boost: FILTER_BOOST,
+                            },
+                        })),
+                    ],
+                },
+            });
+        }
+
         const res = await esClient.search({
             index: DENTISTS,
             size: PAGE_SIZE,
@@ -124,7 +161,7 @@ class DetailsSearchPage extends PureComponent {
             body: {
                 query: {
                     bool: {
-                        filter,
+                        should,
                     },
                 },
             },
@@ -140,6 +177,7 @@ class DetailsSearchPage extends PureComponent {
             <DentistSearchPageView
                 data={this.state.data}
                 total={this.state.total}
+                urlParams={this.state.urlParams}
             />
         );
     }

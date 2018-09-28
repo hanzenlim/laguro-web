@@ -17,13 +17,13 @@ const StyledContainer = styled(Box)`
 `;
 
 const DentistSearchPageView = props => {
-    const { data, total } = props;
+    const { data, total, urlParams } = props;
 
     return (
         <Container>
             <StyledContainer mt={40}>
                 <SearchResultsList data={data} total={total} />
-                <Map data={data} />
+                <Map data={data} urlParams={urlParams} />
             </StyledContainer>
         </Container>
     );

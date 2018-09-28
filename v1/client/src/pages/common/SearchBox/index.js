@@ -1,9 +1,13 @@
 import React, { PureComponent } from 'react';
 import queryString from 'query-string';
 import moment from 'moment';
+import _get from 'lodash/get';
 
 import SearchBoxView from './view';
 import history from '../../../history';
+
+const OFFICE_PATH = '/office/search';
+const DENTIST_PATH = '/dentist/search';
 
 class SearchBox extends PureComponent {
     constructor(props) {
@@ -12,6 +16,7 @@ class SearchBox extends PureComponent {
         this.state = {
             location: '',
             date: '',
+            text: '',
         };
 
         this.urlParams = queryString.parse(history.location.search);
@@ -23,8 +28,12 @@ class SearchBox extends PureComponent {
         }
     }
 
+    handleTextChange = text => {
+        this.setState({ text, location: '' });
+    };
+
     handleLocationFilterChange = location => {
-        this.setState({ location });
+        this.setState({ location, text: '' });
     };
 
     handleDateFilterChange = date => {
@@ -32,7 +41,7 @@ class SearchBox extends PureComponent {
     };
 
     handleSubmit = () => {
-        const { date, location } = this.state;
+        const { date, location, text } = this.state;
 
         const urlParams = {};
         if (location) {
@@ -49,15 +58,27 @@ class SearchBox extends PureComponent {
             urlParams.endTime = endTime.format();
         }
 
-        history.push(`/dentist/search?${queryString.stringify(urlParams)}`);
+        if (text) {
+            urlParams.text = text;
+        }
+
+        const currentPath = _get(history, 'location.pathname') || DENTIST_PATH;
+        const path = currentPath.includes(OFFICE_PATH)
+            ? OFFICE_PATH
+            : DENTIST_PATH;
+
+        history.push(`${path}?${queryString.stringify(urlParams)}`);
     };
 
     render() {
         return (
             <SearchBoxView
-                initialLocationFilterValue={this.urlParams.location}
+                initialLocationFilterValue={
+                    this.urlParams.location || this.urlParams.text
+                }
                 initialDateFilterValue={this.urlParams.startTime}
                 onLocationFilterChange={this.handleLocationFilterChange}
+                onTextChange={this.handleTextChange}
                 onDateFilterChange={this.handleDateFilterChange}
                 onSubmit={this.handleSubmit}
                 size={this.props.size}
