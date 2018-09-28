@@ -13,10 +13,16 @@ export const getUserQuery = gql`
     query($id: String!) {
         getUser(id: $id) {
             id
+            firstName
+            lastName
+            middleName
+            isVerified
             dentistId
             isHost
             isDentist
             dentist {
+                id
+                deaRegistrationNumber
                 offices {
                     id
                 }

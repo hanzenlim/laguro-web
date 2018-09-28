@@ -19,10 +19,6 @@ const { FormItem, SubmitButton } = Form;
 const { Option } = Select;
 
 const StyledForm = styled.div`
-    && {
-        width: 720px;
-    }
-
     && .ant-btn-ghost {
         background: ${props => props.theme.colors.button.ghost};
     }
@@ -169,7 +165,6 @@ const UpdateDentitstProfileForm = props => {
                     <Flex alignItems="center" mb={20}>
                         <ProcedureFilter
                             height={50}
-                            width={650}
                             handleSuggestionSelect={addProcedureTag}
                         />
                         <StyledButton
@@ -198,6 +193,7 @@ const UpdateDentitstProfileForm = props => {
                                 procedure={procedures[key]}
                                 closeFunction={removeProcedureTag}
                                 index={index}
+                                key={procedures[key]}
                             />
                         ))}
                     </Flex>
@@ -207,7 +203,6 @@ const UpdateDentitstProfileForm = props => {
                         buttonText={
                             <Text
                                 color="text.white"
-                                fontWeight="bold"
                                 display="inline"
                                 ml={loading}
                             >
@@ -216,7 +211,7 @@ const UpdateDentitstProfileForm = props => {
                         }
                         loading={loading}
                         textAlign="left"
-                        width={450}
+                        width="100%"
                         height={60}
                     />
                 </Form>

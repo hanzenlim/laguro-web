@@ -4,15 +4,19 @@ import PaymentConfirmation from '../PaymentConfirmation';
 import Payment from '../Payment';
 
 import { Text, Flex, Box } from '../../../components';
+import UserVerificationModal from '../Modals/UserVerificationModal';
+import { PATIENT } from '../../../util/strings';
 
 const BookAppointmentView = props => {
     const {
         data,
         bookedAppointment,
         isPaymentVisible,
-        onPaymentSuccess,
+        onPay,
         onSelect,
         onFilter,
+        showVerificationModal,
+        onVerificationResult,
     } = props;
 
     if (bookedAppointment)
@@ -26,6 +30,12 @@ const BookAppointmentView = props => {
 
     return (
         <Fragment>
+            <UserVerificationModal
+                persona={PATIENT}
+                visible={showVerificationModal}
+                closeModal={onVerificationResult}
+                onVerificationComplete={onVerificationResult}
+            />
             <SearchAvailableAppointments
                 data={data}
                 onSelect={onSelect}
@@ -74,7 +84,7 @@ const BookAppointmentView = props => {
                             </Text>
                         </Flex>
                     </Box>
-                    <Payment onSuccess={onPaymentSuccess} />
+                    <Payment onPay={onPay} />
                 </Fragment>
             ) : null}
         </Fragment>

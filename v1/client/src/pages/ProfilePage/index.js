@@ -21,6 +21,7 @@ const ProfileContainer = () => (
                 return <div>error...</div>;
             }
             const id = get(dataIdQueryClient, 'activeUser.id');
+
             return (
                 <Query query={getUserQuery} variables={{ id }}>
                     {({

@@ -37,3 +37,12 @@ export const getUserQuery = gql`
         }
     }
 `;
+
+export const checkPatientVerified = gql`
+    query($id: String!) {
+        getUser(id: $id) {
+            id
+            isVerified
+        }
+    }
+`;

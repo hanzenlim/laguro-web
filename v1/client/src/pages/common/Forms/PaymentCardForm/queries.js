@@ -13,6 +13,7 @@ export const addPaymentOptionMutation = gql`
 export const getPaymentOptionQuery = gql`
     query($id: String!) {
         getUser(id: $id) {
+            id
             paymentOptions {
                 id
                 address_city

@@ -11,6 +11,7 @@ const StyledFlex = styled(Flex)`
     align-items: center;
     justify-content: flex-start;
     position: relative;
+    flex: 1;
 `;
 
 const StyledAutocomplete = styled(AntdAutocomplete)`

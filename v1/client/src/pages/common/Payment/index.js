@@ -35,6 +35,7 @@ class Payment extends PureComponent {
         if (this.props.onSuccess) {
             this.props.onSuccess(cardId);
         }
+
         this.props.onPay(cardId);
     };
 
@@ -53,7 +54,7 @@ class Payment extends PureComponent {
                     }
 
                     if (error) {
-                        return <div>Error</div>;
+                        return <div>Error.....</div>;
                     }
 
                     return (

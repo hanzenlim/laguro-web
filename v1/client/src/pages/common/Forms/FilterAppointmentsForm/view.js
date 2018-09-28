@@ -80,7 +80,7 @@ const FilterAppointmentsFormView = props => {
                     rules={[
                         {
                             required: true,
-                            message: 'Please input your first name!',
+                            message: 'Please select a Location',
                         },
                     ]}
                     initialValue={locationList[0]}
@@ -93,7 +93,7 @@ const FilterAppointmentsFormView = props => {
                     rules={[
                         {
                             required: true,
-                            message: 'Please input your first name!',
+                            message: 'Please select a date',
                         },
                     ]}
                     initialValue={
@@ -108,7 +108,7 @@ const FilterAppointmentsFormView = props => {
                     rules={[
                         {
                             required: true,
-                            message: 'Please input your first name!',
+                            message: 'Please select a time',
                         },
                     ]}
                     initialValue={INTIAL_TIME_SLOT}

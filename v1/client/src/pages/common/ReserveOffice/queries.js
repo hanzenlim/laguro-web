@@ -10,6 +10,18 @@ export const getUserQuery = gql`
     }
 `;
 
+export const checkUserDentistVerifiedQuery = gql`
+    query($id: String!) {
+        getUser(id: $id) {
+            id
+            dentist {
+                id
+                isVerified
+            }
+        }
+    }
+`;
+
 export const createReservationMutation = gql`
     mutation CreateReservation($input: CreateReservationInput!) {
         createReservation(input: $input) {
@@ -19,6 +31,7 @@ export const createReservationMutation = gql`
             reservedBy {
                 id
                 user {
+                    id
                     firstName
                     lastName
                 }

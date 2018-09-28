@@ -274,3 +274,14 @@ export const patientProcedureFragment = `
     status
     dentistId
 `;
+
+export const patientDocumentFragment = `
+    id
+    signatureRequestId
+    healthInsuranceImages
+    license
+    dentistPhotoId
+    stateDentalLicense
+    deaRegistration
+    warranty
+`;

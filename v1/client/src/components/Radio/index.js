@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Radio as AntdRadio } from 'antd';
+import { fontSize } from 'styled-system';
 
 const RadioGroup = AntdRadio.Group;
 const StyledRadioGroup = styled(RadioGroup)`
@@ -26,6 +27,7 @@ const StyledRadio = styled(AntdRadio)`
         width: 94%;
         height: 32px;
         margin: 5px 0;
+        ${fontSize};
     }
 `;
 

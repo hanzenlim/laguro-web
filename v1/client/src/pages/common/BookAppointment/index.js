@@ -6,6 +6,7 @@ import {
     getDentistQuery,
     getUserQuery,
     createAppointmentMutation,
+    checkPatientVerified,
 } from './queries';
 
 import BookAppointmentView from './view';
@@ -24,6 +25,8 @@ class BookAppointment extends PureComponent {
             endTime: null,
             isPaymentVisible: false,
             bookedAppointment: null,
+
+            showVerificationModal: false,
         };
     }
 
@@ -41,34 +44,65 @@ class BookAppointment extends PureComponent {
             endTime: data.endTime,
             isPaymentVisible: true,
         });
+
+        return false;
     };
 
-    handlePaymentSuccess = async paymentOptionId => {
-        const result = await this.props.mutate({
-            variables: {
-                input: {
-                    reservationId: this.state.reservationId,
-                    patientId: this.props.data.activeUser.id,
-                    procedure: this.state.procedure,
-                    startTime: this.state.startTime,
-                    endTime: this.state.endTime,
-                    paymentOptionId,
-                },
-            },
-        });
-
+    handleCloseVerificationModal = () => {
         this.setState({
-            bookedAppointment: {
-                location: this.state.location,
-                time: moment(this.state.startTime).format('LLLL'),
-            },
+            showVerificationModal: false,
+        });
+    };
+
+    handlePay = async paymentOptionId => {
+        const {
+            client,
+            data: { activeUser },
+        } = this.props;
+
+        const {
+            data: { getUser },
+        } = await client.query({
+            query: checkPatientVerified,
+            variables: { id: activeUser.id },
         });
 
-        return result;
+        if (getUser && getUser.isVerified) {
+            await this.props.mutate({
+                variables: {
+                    input: {
+                        reservationId: this.state.reservationId,
+                        patientId: this.props.data.activeUser.id,
+                        procedure: this.state.procedure,
+                        startTime: this.state.startTime,
+                        endTime: this.state.endTime,
+                        paymentOptionId,
+                    },
+                },
+            });
+
+            this.setState({
+                bookedAppointment: {
+                    location: this.state.location,
+                    time: moment(this.state.startTime).format('LLLL'),
+                },
+            });
+        }
+
+        this.setState({ showVerificationModal: true });
+    };
+
+    handleVerificationResult = () => {
+        this.setState({ showVerificationModal: false });
     };
 
     render() {
         const { id } = this.props;
+        const {
+            isPaymentVisible,
+            bookedAppointment,
+            showVerificationModal,
+        } = this.state;
 
         return (
             <Query query={getDentistQuery} variables={{ id }}>
@@ -84,11 +118,13 @@ class BookAppointment extends PureComponent {
                     return (
                         <BookAppointmentView
                             data={get(data, 'getDentist.reservations')}
+                            isPaymentVisible={isPaymentVisible}
+                            bookedAppointment={bookedAppointment}
+                            showVerificationModal={showVerificationModal}
                             onFilter={this.handleFilter}
-                            isPaymentVisible={this.state.isPaymentVisible}
-                            onPaymentSuccess={this.handlePaymentSuccess}
+                            onPay={this.handlePay}
                             onSelect={this.handleSelect}
-                            bookedAppointment={this.state.bookedAppointment}
+                            onVerificationResult={this.handleVerificationResult}
                         />
                     );
                 }}

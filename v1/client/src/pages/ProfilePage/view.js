@@ -15,8 +15,11 @@ import PaymentHistory from '../common/PaymentHistory';
 import BalanceHistory from '../common/BalanceHistory';
 import DentistAppointments from '../common/DentistAppointments';
 import PatientAppointments from '../common/PatientAppointments';
+import UserVerification from '../common/UserVerification';
 import {
     DENTIST,
+    PATIENT,
+    HOST,
     OFFICE,
     MY_DOCUMENTS,
     MY_PROFILE,
@@ -59,17 +62,20 @@ class ProfileView extends Component {
     };
 
     renderPanel = key => {
-        const { isHost, dentistId, offices, userId } = this.props;
+        const { isHost, isDentist, dentistId, offices, userId } = this.props;
+
+        let persona = PATIENT;
+        if (isHost) {
+            persona = HOST;
+        } else if (isDentist) {
+            persona = DENTIST;
+        }
 
         switch (key) {
             case MY_PROFILE:
                 return <UpdateProfileForm />;
             case MY_DOCUMENTS:
-                return (
-                    <Text fontSize={4} color="inherit" lineHeight="40px">
-                        My documents
-                    </Text>
-                );
+                return <UserVerification persona={persona} />;
             case MY_APPOINTMENTS:
                 return <PatientAppointments />;
             case MY_LISTINGS:

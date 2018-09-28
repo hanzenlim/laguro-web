@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+
+import isObject from 'lodash/isObject';
+
 import { Form as AntdForm } from 'antd';
 import styled from 'styled-components';
 import { space, textAlign, height, width } from 'styled-system';
@@ -130,11 +133,17 @@ StyledFormInput.defaultProps = {
     mb: 20,
 };
 
+// handle nested forms properly
 // eslint-disable-next-line
 const SubmitButton = ({ form, state, buttonText, textAlign, ...rest }) => {
     const { getFieldsError } = form;
     const hasErrors = fieldsError =>
-        Object.keys(fieldsError).some(field => fieldsError[field]);
+        Object.keys(fieldsError).some(
+            field =>
+                isObject(fieldsError[field])
+                    ? hasErrors(fieldsError[field])
+                    : fieldsError[field] !== undefined
+        );
 
     return (
         <StyledFormItem textAlign={textAlign}>

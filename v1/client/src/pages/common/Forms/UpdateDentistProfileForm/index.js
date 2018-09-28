@@ -1,31 +1,32 @@
 import React, { PureComponent } from 'react';
-import { Query, Mutation } from 'react-apollo';
-import get from 'lodash/get';
+import { Query, graphql, compose } from 'react-apollo';
+import cookies from 'browser-cookies';
 
 import UpdateDentistProfileFormView from './view';
 import { Loading } from '../../../../components';
 import {
     getIdQueryClient,
-    getDentistQuery,
+    getUserDentistQuery,
     updateDentistMutation,
+    createDentistMutation,
+    getActiveUserQuery,
 } from './queries';
 
 class UpdateDentistProfileContainer extends PureComponent {
-    constructor(props) {
-        super(props);
-        this.initialLoad = true;
-    }
     state = {
         isUpdated: false,
         procedures: {},
+        updateDentistError: null,
     };
 
     addProcedureTag = (value, option) => {
+        const { data } = option.props;
+
         const procedure = {
-            code: option.props.data.code,
-            name: option.props.data.name,
-            group: option.props.data.group,
-            duration: option.props.data.duration,
+            code: data.code,
+            name: data.name,
+            group: data.group,
+            duration: data.duration,
         };
 
         if (!(procedure.group in this.state.procedures)) {
@@ -43,109 +44,114 @@ class UpdateDentistProfileContainer extends PureComponent {
         }
     };
 
+    onCompleted = ({ getUser, updateDentist, createDentist }) => {
+        const data = getUser.dentist || updateDentist || createDentist;
+
+        if (data) {
+            const { procedures } = data;
+
+            const _procedures = {};
+            procedures.forEach(p => {
+                _procedures[p.group] = {
+                    code: p.code,
+                    name: p.name,
+                    group: p.group,
+                    duration: p.duration,
+                };
+            });
+
+            this.setState({
+                procedures: _procedures,
+            });
+        }
+    };
+
     render() {
+        const { updateDentist, createDentist } = this.props;
+
         return (
             <Query query={getIdQueryClient}>
                 {({ data }) => (
                     <Query
-                        query={getDentistQuery}
-                        variables={{ id: data.activeUser.dentistId }}
+                        query={getUserDentistQuery}
+                        variables={{ id: data.activeUser.id }}
+                        onCompleted={this.onCompleted}
                     >
                         {({ loading, error, data: dentistData }) => {
                             if (error) return <div>Error</div>;
                             if (loading) return <Loading />;
 
+                            const {
+                                getUser: { dentist },
+                            } = dentistData;
+
+                            const { procedures, isUpdated } = this.state;
+
+                            const { id, specialty, bio } = dentist || {};
+                            const mappedData = {
+                                id,
+                                specialty,
+                                bio,
+                                procedures,
+                            };
+
+                            const onSuccess = async values => {
+                                const inputBase = {
+                                    specialty: values.specialty,
+                                    bio: values.bio,
+                                    procedures: Object.keys(
+                                        this.state.procedures
+                                    ).map(k => this.state.procedures[k]),
+                                };
+
+                                if (dentist) {
+                                    const {
+                                        error: updateDentistError,
+                                    } = await updateDentist({
+                                        id: dentist.id,
+                                        ...inputBase,
+                                    });
+
+                                    this.setState({
+                                        updateDentistError,
+                                    });
+                                } else {
+                                    const {
+                                        error: updateDentistError,
+                                    } = await createDentist({
+                                        userId: data.activeUser.id,
+                                        ...inputBase,
+                                    });
+
+                                    this.setState({
+                                        updateDentistError,
+                                    });
+                                }
+
+                                window.scrollTo(0, 0);
+                                this.setState({
+                                    isUpdated: true,
+                                });
+
+                                if (this.props.onComplete) {
+                                    this.props.onComplete();
+                                }
+                            };
+
                             return (
-                                <Mutation mutation={updateDentistMutation}>
-                                    {(
-                                        updateDentist,
-                                        {
-                                            data: updateDentistData,
-                                            loading: updateDentistLoading,
-                                            error: updateDentistError,
-                                        }
-                                    ) => {
-                                        const {
-                                            id,
-                                            specialty,
-                                            bio,
-                                            procedures,
-                                        } =
-                                            get(
-                                                updateDentistData,
-                                                'updateDentist'
-                                            ) || get(dentistData, 'getDentist');
-
-                                        if (this.initialLoad) {
-                                            const _procedures = {};
-                                            procedures.forEach(p => {
-                                                _procedures[p.group] = {
-                                                    code: p.code,
-                                                    name: p.name,
-                                                    group: p.group,
-                                                    duration: p.duration,
-                                                };
-                                            });
-                                            this.setState({
-                                                procedures: _procedures,
-                                            });
-                                            this.initialLoad = false;
-                                        }
-
-                                        const mappedData = {
-                                            id,
-                                            specialty,
-                                            bio,
-                                            procedures,
-                                        };
-
-                                        const onSuccess = async values => {
-                                            const input = {
-                                                id: mappedData.id,
-                                                specialty: values.specialty,
-                                                bio: values.bio,
-                                                procedures: Object.keys(
-                                                    this.state.procedures
-                                                ).map(
-                                                    k =>
-                                                        this.state.procedures[k]
-                                                ),
-                                            };
-
-                                            await updateDentist({
-                                                variables: { input },
-                                            });
-
-                                            window.scrollTo(0, 0);
-
-                                            this.setState({
-                                                isUpdated: true,
-                                            });
-                                        };
-
-                                        return (
-                                            <UpdateDentistProfileFormView
-                                                data={mappedData}
-                                                loading={updateDentistLoading}
-                                                addProcedureTag={
-                                                    this.addProcedureTag
-                                                }
-                                                removeProcedureTag={
-                                                    this.removeProcedureTag
-                                                }
-                                                error={
-                                                    updateDentistError &&
-                                                    'Something went wrong. Please try again later.'
-                                                }
-                                                procedures={
-                                                    this.state.procedures
-                                                }
-                                                onSuccess={onSuccess}
-                                                isUpdated={this.state.isUpdated}
-                                            />
-                                        );
-                                    }}
-                                </Mutation>
+                                <UpdateDentistProfileFormView
+                                    data={mappedData}
+                                    loading={false}
+                                    addProcedureTag={this.addProcedureTag}
+                                    removeProcedureTag={this.removeProcedureTag}
+                                    error={
+                                        this.state.updateDentistError &&
+                                        'Something went wrong. Please try again later.'
+                                    }
+                                    onSuccess={onSuccess}
+                                    procedures={procedures}
+                                    isUpdated={isUpdated}
+                                />
                             );
                         }}
                     </Query>
@@ -155,4 +161,45 @@ class UpdateDentistProfileContainer extends PureComponent {
     }
 }
 
-export default UpdateDentistProfileContainer;
+export default compose(
+    graphql(createDentistMutation, {
+        props: ({ mutate }) => ({
+            createDentist: input =>
+                mutate({
+                    variables: {
+                        input,
+                    },
+                    update: (proxy, { data: { createDentist } }) => {
+                        const data = proxy.readQuery({
+                            query: getActiveUserQuery,
+                        });
+
+                        data.activeUser = {
+                            ...data.activeUser,
+                            ...createDentist.user,
+                            dentistId: createDentist.id,
+                        };
+
+                        cookies.set('user', JSON.stringify(data.activeUser), {
+                            maxAge: 86400000,
+                        });
+
+                        proxy.writeQuery({
+                            query: getActiveUserQuery,
+                            data,
+                        });
+                    },
+                }),
+        }),
+    }),
+    graphql(updateDentistMutation, {
+        props: ({ mutate }) => ({
+            updateDentist: input =>
+                mutate({
+                    variables: {
+                        input,
+                    },
+                }),
+        }),
+    })
+)(UpdateDentistProfileContainer);

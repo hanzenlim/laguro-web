@@ -7,13 +7,18 @@ import _reduce from 'lodash/reduce';
 import _get from 'lodash/get';
 import { Box } from '../../../components';
 import ReserveOfficeView from './view';
-import { getUserQuery, createReservationMutation } from './queries';
+import {
+    getUserQuery,
+    createReservationMutation,
+    checkUserDentistVerifiedQuery,
+} from './queries';
 import {
     SELECT_APPOINTMENT_VIEW,
     CONFIRMATION_VIEW,
     BOOKING_FEE_PERCENTAGE,
     PAYMENT_VIEW,
 } from '../../../util/strings';
+import DentistVerificationModal from '../Modals/DentistVerificationModal';
 
 class ReserveOffice extends Component {
     constructor(props) {
@@ -30,6 +35,7 @@ class ReserveOffice extends Component {
             summaryList: [],
             paymentConfirmationH2Text: '',
             paymentConfirmationH3Text: '',
+            showVerificationModal: false,
         };
 
         this.reservationObject = '';
@@ -219,14 +225,29 @@ class ReserveOffice extends Component {
         });
     };
 
-    onMakeReservation = data => {
+    onMakeReservation = async data => {
         this.reservationObject = data;
 
-        // @atian YOU CAN ADD YOUR VERIFICATION FLOW LOGIC HERE.
+        const {
+            client,
+            data: { activeUser },
+        } = this.props;
 
-        this.setState({
-            currentDisplay: PAYMENT_VIEW,
+        const result = await client.query({
+            query: checkUserDentistVerifiedQuery,
+            variables: {
+                id: activeUser.id,
+            },
+            fetchPolicy: 'network-only',
         });
+
+        if (_get(result, 'data.getUser.dentist.isVerified')) {
+            return this.setState({
+                currentDisplay: PAYMENT_VIEW,
+            });
+        }
+
+        return this.setState({ showVerificationModal: true });
     };
 
     updateSummaryDetailsData = data => {
@@ -256,11 +277,38 @@ class ReserveOffice extends Component {
         });
     };
 
+    handleDentistVerificationModalClose = () => {
+        this.setState({
+            showVerificationModal: false,
+        });
+    };
+
+    handleDentistVerificationComplete = ({ verified }) => {
+        if (verified) {
+            return this.setState({
+                currentDisplay: PAYMENT_VIEW,
+                showVerificationModal: false,
+            });
+        }
+
+        this.setState({
+            showVerificationModal: false,
+        });
+
+        return null;
+    };
+
     render() {
         const { officeId, startLoading } = this.props;
+        const { showVerificationModal } = this.state;
 
         return (
             <Fragment>
+                <DentistVerificationModal
+                    onCancel={this.handleDentistVerificationModalClose}
+                    onComplete={this.handleDentistVerificationComplete}
+                    visible={showVerificationModal}
+                />
                 {startLoading && (
                     <Box>
                         <ReserveOfficeView

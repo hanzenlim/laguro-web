@@ -17,7 +17,7 @@ import {
     Typography,
     Flex,
     Button,
-    Box
+    Box,
 } from '../common';
 import { Padding } from '../common/Spacing';
 import { renderPrice, removeSpecialChars } from '../../util/paymentUtil';
