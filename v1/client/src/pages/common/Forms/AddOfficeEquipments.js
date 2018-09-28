@@ -193,7 +193,7 @@ class AddOfficeEquipments extends Component {
     };
 
     render() {
-        const { form, officeDescription } = this.props;
+        const { form, officeDescription, header } = this.props;
         const { equipment } = this.state;
 
         return (
@@ -232,7 +232,7 @@ class AddOfficeEquipments extends Component {
                                 color="text.trueBlack"
                                 mb={54}
                             >
-                                tell us more about your office.
+                                {header}
                             </Text>
                         </GridItem>
                         <GridItem gc="all">
@@ -244,7 +244,7 @@ class AddOfficeEquipments extends Component {
                                 color="text.green"
                                 mb={20}
                             >
-                                Summary (max 300 characters)
+                                Summary (up to 300 characters)
                             </Text>
                         </GridItem>
                         <GridItem gc="all">
@@ -253,8 +253,7 @@ class AddOfficeEquipments extends Component {
                                 rules={[
                                     {
                                         required: true,
-                                        message:
-                                            'Please input the name of your office',
+                                        message: 'Please describe your office',
                                     },
                                 ]}
                                 input={
@@ -262,7 +261,7 @@ class AddOfficeEquipments extends Component {
                                         height="180px"
                                         py={16}
                                         px={18}
-                                        placeholder="describe your office"
+                                        placeholder="Bell Dental Center is a premier Bay Area dental office…"
                                     />
                                 }
                             />
@@ -282,16 +281,23 @@ class AddOfficeEquipments extends Component {
 
                         {this.renderEquipment(equipment)}
 
-                        <Flex onClick={this.addEquipment} cursor="pointer">
-                            <Icon
-                                lineHeight="21px"
-                                mr={16}
-                                type="plus"
-                                fontSize="14px"
-                                color="icon.black"
-                            />
-                            <Box>Add more</Box>
-                        </Flex>
+                        <Button type="ghost" width={115} height={18}>
+                            <Flex onClick={this.addEquipment}>
+                                <Icon
+                                    mr={16}
+                                    type="plus"
+                                    fontSize="14px"
+                                    color="icon.black"
+                                />
+                                <Text
+                                    color="text.black"
+                                    fontSize={3}
+                                    letterSpacing="-0.5px"
+                                >
+                                    Add more
+                                </Text>
+                            </Flex>
+                        </Button>
                     </Grid>
                 </StyledForm>
             </Box>

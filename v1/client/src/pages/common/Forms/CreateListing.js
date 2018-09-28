@@ -44,6 +44,30 @@ const StyledButton = styled(Button)`
 const rightArrowHeight = 16;
 const rightArrowWidth = 1.25 * rightArrowHeight;
 
+// This function is used by antd datepicker to determin which days are disabled.
+const disabledDate = currentDate => {
+    const today = moment()
+        .startOf('day')
+        .startOf('hour');
+    return currentDate.isBefore(today);
+};
+
+const priceValidator = (rule, value, callback) => {
+    if (value === '$0.00') {
+        callback('Price cannot be $0.00');
+    }
+
+    callback();
+};
+
+const chairsValidator = (rule, value, callback) => {
+    if (value <= 0) {
+        callback('Numbers of chairs cannot be less than 1');
+    }
+
+    callback();
+};
+
 class CreateListing extends Component {
     render() {
         const { active, form, ...rest } = this.props;
@@ -173,19 +197,6 @@ class CreateListing extends Component {
                                 gtc="282px 22px 22px 282px"
                                 alignItems="center"
                             >
-                                <Grid gc="all">
-                                    <Text
-                                        fontWeight="bold"
-                                        fontSize={4}
-                                        mb={22}
-                                        lineHeight="1"
-                                        letterSpacing="0px"
-                                        color="text.green"
-                                    >
-                                        Select Availability
-                                    </Text>
-                                </Grid>
-
                                 <GridItem gc="all">
                                     <FormItem
                                         name={`availability${index}`}
@@ -194,12 +205,13 @@ class CreateListing extends Component {
                                             {
                                                 required: true,
                                                 message:
-                                                    'Please input the name of your office',
+                                                    'Please select your dates',
                                             },
                                         ]}
                                         input={
                                             <StyledRangePicker
                                                 onDateChange={() => {}}
+                                                disabledDate={disabledDate}
                                                 width={608}
                                             />
                                         }
@@ -222,7 +234,7 @@ class CreateListing extends Component {
                                                 {
                                                     required: true,
                                                     message:
-                                                        'Please input your first name!',
+                                                        'Please select your daily start time',
                                                 },
                                             ]}
                                             input={
@@ -254,7 +266,7 @@ class CreateListing extends Component {
                                                 {
                                                     required: true,
                                                     message:
-                                                        'Please input your first name!',
+                                                        'Please select your daily end time',
                                                 },
                                             ]}
                                             input={
@@ -274,28 +286,16 @@ class CreateListing extends Component {
                                 </GridItem>
 
                                 <GridItem gc="all">
-                                    <Text
-                                        fontWeight="bold"
-                                        fontSize={4}
-                                        mb={22}
-                                        lineHeight="1"
-                                        letterSpacing="0px"
-                                        color="text.green"
-                                    >
-                                        DENTAL CHAIR
-                                    </Text>
-                                </GridItem>
-
-                                <GridItem gc="all">
                                     <FormItem
                                         name={`numChairs${index}`}
-                                        label="Number of chairs available"
+                                        label="Number of Chairs Available"
                                         initialValue={1}
                                         rules={[
                                             {
                                                 required: true,
+                                                validator: chairsValidator,
                                                 message:
-                                                    'Please input the name of your office',
+                                                    'Please enter a vaild number',
                                             },
                                         ]}
                                         input={<Input />}
@@ -318,12 +318,18 @@ class CreateListing extends Component {
                                         rules={[
                                             {
                                                 required: true,
+                                                validator: priceValidator,
                                                 message:
-                                                    'Please input the name of your office',
+                                                    'Please enter a value greater than $0.00',
                                             },
                                         ]}
-                                        initialValue={'$50.00'}
-                                        input={<Input height="50px" />}
+                                        input={
+                                            <Input
+                                                placeholder="$0.00"
+                                                textAlign="right"
+                                                height="50px"
+                                            />
+                                        }
                                     />
                                 </GridItem>
 
@@ -343,12 +349,18 @@ class CreateListing extends Component {
                                         rules={[
                                             {
                                                 required: true,
+                                                validator: priceValidator,
                                                 message:
-                                                    'Please input the name of your office',
+                                                    'Please enter a value greater than $0.00',
                                             },
                                         ]}
-                                        initialValue={'$20.00'}
-                                        input={<Input height="50px" />}
+                                        input={
+                                            <Input
+                                                placeholder="$0.00"
+                                                textAlign="right"
+                                                height="50px"
+                                            />
+                                        }
                                     />
                                 </GridItem>
                             </Grid>

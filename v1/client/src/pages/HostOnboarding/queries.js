@@ -31,6 +31,8 @@ export const GET_USER = gql`
     {
         activeUser @client {
             id
+            firstName
+            lastName
         }
     }
 `;

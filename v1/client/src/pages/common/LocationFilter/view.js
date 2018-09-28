@@ -88,6 +88,7 @@ const LocationFilterView = ({
     withDentists,
     onBlur,
     onChange,
+    placeHolder,
     ...rest
 }) => {
     const LocationOptions = locationResults.map(result => (
@@ -154,7 +155,7 @@ const LocationFilterView = ({
                 onBlur={onBlur}
                 value={queryString}
                 onChange={onChange}
-                placeholder="San Francisco, California"
+                placeholder={placeHolder || 'San Francisco, California'}
                 backfill={true}
                 {...rest}
             >

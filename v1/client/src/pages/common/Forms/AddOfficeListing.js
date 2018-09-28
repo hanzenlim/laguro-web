@@ -142,7 +142,7 @@ class AddOfficeListing extends Component {
                             lineHeight={1}
                             letterSpacing="-0.5px"
                         >
-                            Add more
+                            Add another listing
                         </Text>
                     </Flex>
                 </Button>

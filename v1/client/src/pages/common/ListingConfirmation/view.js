@@ -24,7 +24,7 @@ const ListingConfirmation = props => {
                 lineHeight={1}
                 pb={50}
             >
-                Your first listings have been created.
+                You're all set!
             </Text>
             <Text
                 fontSize={6}

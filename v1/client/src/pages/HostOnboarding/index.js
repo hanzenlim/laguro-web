@@ -30,6 +30,7 @@ import { ACTIVE_USER } from '../../util/strings';
 //      default(host onboarding)
 
 const EDIT_OFFICE_MODE = 'edit-office';
+const ADD_LISTING_MODE = 'add-listing';
 
 const { GridItem } = Grid;
 
@@ -66,7 +67,8 @@ class HostOnboarding extends Component {
         const historyLocationSearch = get(this.props, 'location.search'); // same thing as history.location.search but with less bugs
         const { mode } = queryString.parse(historyLocationSearch);
         // will be used as state variable for disabling submit button when the user has not selected from autocomplete
-        let submitDisabled;
+
+        let locationSelected;
 
         switch (mode) {
             case EDIT_OFFICE_MODE:
@@ -79,9 +81,11 @@ class HostOnboarding extends Component {
                     EQUIPMENT_STEP_URL,
                     HOST_PROFILE_URL,
                 ];
+                this.headerList = ['Edit', 'Edit'];
                 this.buttonTexts = ['Next', 'Save Changes'];
-                // for edit office, never disable submit button because location autocomplete is not shown
-                submitDisabled = false;
+
+                // edit office does not show location
+                locationSelected = true;
                 break;
 
             // usual host onboarding
@@ -101,14 +105,24 @@ class HostOnboarding extends Component {
                     CONFIRMATION_STEP_URL,
                     HOST_PROFILE_URL,
                 ];
-                this.buttonTexts = ['Next', 'Next', 'Next', 'Done'];
-                // by default, disable submit button. refer to enableSubmit
-                submitDisabled = true;
+                this.buttonTexts = [
+                    'Next',
+                    'Next',
+                    'Publish',
+                    'Go to My Listings',
+                ];
+                this.headerList = [
+                    "let's start with some basic info about your office",
+                    'Tell us more about your office',
+                ];
+
+                locationSelected = false;
         }
 
         this.state = {
             historyLocationSearch,
-            submitDisabled,
+            locationSelected,
+            imageSelected: false,
             defaultValues: {},
         };
     }
@@ -127,8 +141,14 @@ class HostOnboarding extends Component {
 
     // mode: host onboarding
     // to be called by OFFICE_STEP, when the user clicks on the first object
-    enableSubmit = () => {
-        this.setState({ submitDisabled: false });
+    handleLocationSelected = () => {
+        this.setState({ locationSelected: true });
+    };
+
+    // mode: host onboarding
+    // to be called by OFFICE_STEP, when the user clicks on the first object
+    handleImageChange = numImage => {
+        this.setState({ numImage });
     };
 
     // given form values and current urlParams, compute next url and add computedParams to url
@@ -162,13 +182,13 @@ class HostOnboarding extends Component {
     // createOffice: gql mutation function for creating an office
     // updateOffice: gql mutation function for updating an office
     onSubmit = async (values, createOffice, updateOffice, id, client) => {
+         // save listing step values to create listings after creating office, in handleOfficeCreated
+         this.values = values;
         const { step } = this.props.match.params;
         const { historyLocationSearch } = this.state;
         const urlParams = queryString.parse(historyLocationSearch);
         const { mode } = queryString.parse(historyLocationSearch);
-        // save listing step values to create listings after creating office, in handleOfficeCreated
-        this.values = values;
-
+       
         // due to form value bugs, equipmentNames will not be deleted upon equipment delete. therefore, select all equipment prices form urlParams and find matching equipment names and drop equipment names that do not have a price
         const urlEquipment = Object.keys(urlParams)
             .filter(key => key.startsWith('equipmentPrice'))
@@ -238,7 +258,9 @@ class HostOnboarding extends Component {
                                         lat: locationLat,
                                         lon: locationLong,
                                     },
-                                    addressDetails: addressDetail,
+                                    addressDetails: !isEmpty(addressDetail)
+                                        ? addressDetail
+                                        : undefined,
                                 },
                                 imageUrls: JSON.parse(imageUrls),
                                 equipment: urlEquipment,
@@ -304,6 +326,13 @@ class HostOnboarding extends Component {
                 // this.values[key] is availability array
                 const startDay = this.values[key][0];
                 const endDay = this.values[key][1];
+
+                if (startTime >= endTime) {
+                    alert(
+                        'Your daily end time has to be after your daily start time'
+                    );
+                    return;
+                }
 
                 return {
                     officeId,
@@ -453,7 +482,8 @@ class HostOnboarding extends Component {
         const {
             historyLocationSearch,
             defaultValues,
-            submitDisabled,
+            locationSelected,
+            numImage,
         } = this.state;
         const urlParams = queryString.parse(historyLocationSearch);
         const { location } = this.props;
@@ -493,6 +523,17 @@ class HostOnboarding extends Component {
 
         const stepCount = this.stepList.indexOf(step);
         const { officeId, mode } = urlParams;
+
+        let submitDisabled;
+        switch (mode) {
+            case EDIT_OFFICE_MODE:
+                submitDisabled = !numImage;
+                break;
+            // host onboarding
+            default:
+                submitDisabled = !numImage || locationSelected;
+                break;
+        }
 
         return (
             <Query query={GET_USER}>
@@ -570,12 +611,32 @@ class HostOnboarding extends Component {
                                                                                 this
                                                                                     .enableSubmit
                                                                             }
+                                                                            firstName={get(
+                                                                                userData,
+                                                                                'activeUser.firstName'
+                                                                            )}
+                                                                            lastName={get(
+                                                                                userData,
+                                                                                'activeUser.lastName'
+                                                                            )}
+                                                                            onImageChange={
+                                                                                this
+                                                                                    .handleImageChange
+                                                                            }
+                                                                            header={
+                                                                                this
+                                                                                    .headerList[0]
+                                                                            }
                                                                             {...initialFormValues}
                                                                         />
                                                                     )}
                                                                     {step ===
                                                                         EQUIPMENT_STEP && (
                                                                         <AddOfficeEquipments
+                                                                            header={
+                                                                                this
+                                                                                    .headerList[1]
+                                                                            }
                                                                             {...initialFormValues}
                                                                         />
                                                                     )}

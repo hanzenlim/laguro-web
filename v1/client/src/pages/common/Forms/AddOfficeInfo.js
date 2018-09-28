@@ -27,18 +27,25 @@ class AddOfficeInfo extends Component {
     constructor(props) {
         super(props);
         const { imageUrls } = props;
+        const imageUrlsForState =
+            (!isEmpty(imageUrls) && JSON.parse(imageUrls)) || [];
 
         this.state = {
             autoCompleteHasError: false,
-            imageUrls: (!isEmpty(imageUrls) && JSON.parse(imageUrls)) || [],
+            imageUrls: imageUrlsForState,
         };
+
+        props.onImageChange(imageUrlsForState.length);
     }
 
     // this is to trigger an update of add-office step when getOffice data arrives
     componentDidUpdate(prevProps) {
         if (this.props.officeName !== prevProps.officeName) {
-            this.props.form.setFieldsValue(this.props);
-            this.setState({ imageUrls: this.props.imageUrls });
+            const { imageUrls, form, onImageChange } = this.props;
+            form.setFieldsValue(this.props);
+            this.setState({ imageUrls });
+
+            onImageChange(imageUrls.length);
         }
     }
 
@@ -87,6 +94,7 @@ class AddOfficeInfo extends Component {
 
         const newImageUrls = imageUrls.concat(allUrls);
         this.setState({ imageUrls: newImageUrls });
+        this.props.onImageChange(newImageUrls.length);
     };
 
     canUploadPhotos = () => {
@@ -96,9 +104,12 @@ class AddOfficeInfo extends Component {
 
     removeImage = e => {
         const { url } = e.currentTarget.dataset;
+        const { imageUrls } = this.state;
         this.setState({
-            imageUrls: this.state.imageUrls.filter(item => item !== url),
+            imageUrls: imageUrls.filter(item => item !== url),
         });
+
+        this.props.onImageChange(imageUrls.length - 1);
     };
 
     renderUploadedImages = () => {
@@ -167,7 +178,14 @@ class AddOfficeInfo extends Component {
 
     // {addTooltip('Upload images of your office. The first image will show up on search results.')}
     render() {
-        const { form, locationDisabled, ...rest } = this.props;
+        const {
+            form,
+            locationDisabled,
+            firstName,
+            lastName,
+            header,
+            ...rest
+        } = this.props;
         const { autoCompleteHasError } = this.state;
 
         return (
@@ -189,18 +207,20 @@ class AddOfficeInfo extends Component {
                             Step 1
                         </Text>
                     </GridItem>
-                    <GridItem gc="all">
-                        <Text
-                            fontWeight="bold"
-                            fontSize={5}
-                            lineHeight="1"
-                            letterSpacing="-0.6px"
-                            color="text.trueBlack"
-                            mr={8}
-                        >
-                            Hi Andrew,
-                        </Text>
-                    </GridItem>
+                    {header !== 'Edit' && (
+                        <GridItem gc="all">
+                            <Text
+                                fontWeight="bold"
+                                fontSize={5}
+                                lineHeight="1"
+                                letterSpacing="-0.6px"
+                                color="text.trueBlack"
+                                mr={8}
+                            >
+                                {`Hi ${firstName} ${lastName},`}
+                            </Text>
+                        </GridItem>
+                    )}
                     <GridItem gc="all">
                         <Text
                             fontWeight="bold"
@@ -210,8 +230,7 @@ class AddOfficeInfo extends Component {
                             color="text.trueBlack"
                             mb={54}
                         >
-                            let&#39;s start with some basic info about your
-                            office
+                            {header}
                         </Text>
                     </GridItem>
 
@@ -224,24 +243,24 @@ class AddOfficeInfo extends Component {
                             color="text.green"
                             mb={20}
                         >
-                            Office Details
+                            OFFICE DETAILS
                         </Text>
                     </GridItem>
                     <GridItem gc="all">
                         <FormItem
                             name="officeName"
-                            label="Office name"
+                            label="Office Name"
                             rules={[
                                 {
                                     required: true,
                                     message:
-                                        'Please input the name of your office',
+                                        'Please enter the name of your office',
                                 },
                             ]}
                             input={
                                 <Input
                                     height="50px"
-                                    placeHolder="Bell Dental"
+                                    placeHolder="Bell Dental Center"
                                 />
                             }
                         />
@@ -251,12 +270,12 @@ class AddOfficeInfo extends Component {
                         <GridItem gc="all">
                             <FormItem
                                 name="location"
-                                label="Location"
+                                label="Address"
                                 rules={[
                                     {
                                         required: true,
                                         message:
-                                            'Please input the address of your office',
+                                            'Please enter the address of your office',
                                     },
                                 ]}
                                 input={
@@ -269,6 +288,9 @@ class AddOfficeInfo extends Component {
                                         onChange={this.handleChange}
                                         onSearch={this.handleSearch}
                                         height={50}
+                                        placeHolder={
+                                            '1598 Washington Ave San Leandro, CA 94577'
+                                        }
                                         type="hostOnboarding"
                                     />
                                 }
@@ -286,7 +308,7 @@ class AddOfficeInfo extends Component {
                         <GridItem gc="1/2">
                             <FormItem
                                 name="addressDetail"
-                                label="Apartment, suite, unit, etc."
+                                label="Suite, unit, building, etc. (optional)"
                                 input={<Input height="50px" placeHolder="" />}
                             />
                         </GridItem>
@@ -294,7 +316,7 @@ class AddOfficeInfo extends Component {
                     <GridItem gc="all">
                         <FormItem
                             name="photos"
-                            label={`photos (max ${maxImageNum})`}
+                            label={`Featured Images (up to ${maxImageNum})`}
                             input={
                                 <Grid
                                     gcg="10px"

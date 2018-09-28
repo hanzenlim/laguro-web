@@ -29,7 +29,10 @@ class HostListings extends PureComponent {
             return (
                 <TabPane tab={name} key={id}>
                     <Flex justifyContent="flex-end" mt={12}>
-                        <Link to="/" type="ghost">
+                        <Link
+                            to={`/host-onboarding/add-office/?mode=edit-office&officeId=${id}`}
+                            type="ghost"
+                        >
                             <Text color="text.green" fontSize={1} mr={24}>
                                 edit
                             </Text>
