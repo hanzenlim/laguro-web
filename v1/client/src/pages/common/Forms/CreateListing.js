@@ -13,6 +13,7 @@ import {
     RangePicker,
     Text,
     TimePicker,
+    Counter,
 } from '../../../components';
 import { renderPrice } from '../../../util/paymentUtil';
 
@@ -69,6 +70,13 @@ const chairsValidator = (rule, value, callback) => {
 };
 
 class CreateListing extends Component {
+    onChairCounterHandler = fieldName => chairCount => {
+        this.props.form.setFieldsValue({
+            [fieldName]: chairCount,
+        });
+        this.props.form.validateFields([fieldName]);
+    };
+
     render() {
         const { active, form, ...rest } = this.props;
         const values = form.getFieldsValue();
@@ -286,9 +294,16 @@ class CreateListing extends Component {
                                 </GridItem>
 
                                 <GridItem gc="all">
+                                    <Text fontSize={3}>
+                                        Number of Chairs Available
+                                    </Text>
+                                    <Counter
+                                        onCounterCountHandler={this.onChairCounterHandler(
+                                            `numChairs${index}`
+                                        )}
+                                    />
                                     <FormItem
                                         name={`numChairs${index}`}
-                                        label="Number of Chairs Available"
                                         initialValue={1}
                                         rules={[
                                             {
@@ -298,7 +313,7 @@ class CreateListing extends Component {
                                                     'Please enter a vaild number',
                                             },
                                         ]}
-                                        input={<Input />}
+                                        input={<Input type="hidden" />}
                                     />
                                 </GridItem>
 

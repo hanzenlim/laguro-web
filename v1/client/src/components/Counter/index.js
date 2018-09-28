@@ -54,7 +54,7 @@ CounterContainer.defaultProps = {
     onCounterCountHandler: () => {},
 };
 
-CounterContainer.PropTypes = {
+CounterContainer.propTypes = {
     onCounterCountHandler: PropTypes.func.isRequired,
 };
 
