@@ -307,7 +307,7 @@ class UserVerification extends Component {
         window.scrollTo(0, 0);
 
         if (this.props.onComplete) {
-            await this.fetchData();
+            await this.loadData();
             this.props.onComplete({ persona, verified: true });
         }
     };
