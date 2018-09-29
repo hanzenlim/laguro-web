@@ -25,12 +25,12 @@ const StyledSteps = styled(AntdSteps)`
     }
 
     && .ant-steps-item-finish .ant-steps-item-tail:after {
-        background-color: ${props => props.theme.colors.background.green};
+        background-color: ${props => props.theme.colors.background.blue};
     }
 
     .ant-steps-item-finish .ant-steps-item-icon,
     .ant-steps-item-process .ant-steps-item-icon {
-        background: ${props => props.theme.colors.icon.green};
+        background: ${props => props.theme.colors.icon.blue};
         border: 0px;
     }
 

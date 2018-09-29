@@ -22,7 +22,7 @@ const StyledPagination = styled(AntdPagination)`
     }
 
     && .ant-pagination-item-active {
-        background-color: ${props => props.theme.colors.button.green};
+        background-color: ${props => props.theme.colors.button.blue};
     }
 
     && .ant-pagination-item-active > a {
@@ -47,7 +47,7 @@ const StyledPagination = styled(AntdPagination)`
     && .ant-pagination-next:focus .ant-pagination-item-link,
     && .ant-pagination-prev:hover .ant-pagination-item-link,
     && .ant-pagination-next:hover .ant-pagination-item-link {
-        color: ${props => props.theme.colors.arrow.green};
+        color: ${props => props.theme.colors.arrow.blue};
     }
 
     && .ant-pagination-prev.ant-pagination-disabled .ant-pagination-item-link,

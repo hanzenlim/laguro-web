@@ -42,7 +42,7 @@ class DentistAppointments extends PureComponent {
                                 <Text
                                     color={
                                         isAppointmentsEmpty
-                                            ? 'text.green'
+                                            ? 'text.blue'
                                             : 'text.gray'
                                     }
                                     fontSize={2}

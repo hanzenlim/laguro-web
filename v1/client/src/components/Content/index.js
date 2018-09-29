@@ -4,7 +4,6 @@ import { Box } from '../../components';
 
 const StyledContent = styled(Box)`
     flex: 1;
-    margin-bottom: 80px;
     width: 100%;
 `;
 

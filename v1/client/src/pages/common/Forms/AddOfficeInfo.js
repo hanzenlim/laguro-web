@@ -242,7 +242,7 @@ class AddOfficeInfo extends Component {
                             fontSize={4}
                             lineHeight="1"
                             letterSpacing="0px"
-                            color="text.green"
+                            color="text.blue"
                             mb={20}
                         >
                             OFFICE DETAILS
@@ -283,14 +283,12 @@ class AddOfficeInfo extends Component {
                                 <LocationFilter
                                     withDentists={false}
                                     onLocationChange={this.handleLocationChange}
+                                    placeholder="San Francisco, California"
                                     onBlur={this.handleBlur}
                                     onChange={this.handleChange}
                                     onSearch={this.handleSearch}
                                     disabled={locationDisabled}
                                     height={50}
-                                    placeHolder={
-                                        '1598 Washington Ave San Leandro, CA 94577'
-                                    }
                                     type="hostOnboarding"
                                 />
                             }

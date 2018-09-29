@@ -5,20 +5,20 @@ import styled from 'styled-components';
 const StyledCheckbox = styled(AntdCheckbox)`
     && {
         .ant-checkbox-checked .ant-checkbox-inner {
-            border-color: ${props => props.theme.colors.divider.green};
-            background-color: ${props => props.theme.colors.background.green};
+            border-color: ${props => props.theme.colors.divider.blue};
+            background-color: ${props => props.theme.colors.background.blue};
         }
 
         .ant-checkbox-wrapper:hover .ant-checkbox-inner,
         .ant-checkbox:hover .ant-checkbox-inner,
         .ant-checkbox-input:focus + .ant-checkbox-inner {
-            border-color: ${props => props.theme.colors.divider.green};
+            border-color: ${props => props.theme.colors.divider.blue};
         }
 
         .ant-checkbox-inner {
             width: 18px;
             height: 18px;
-            border: 2px solid ${props => props.theme.colors.divider.green};
+            border: 2px solid ${props => props.theme.colors.divider.blue};
         }
 
         .ant-checkbox-inner:after {

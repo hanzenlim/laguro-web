@@ -50,10 +50,10 @@ const StyledButton = styled(Button)`
 `;
 
 const TAG_COLORS = [
-    'background.green',
+    'background.blue',
     'background.yellow',
     'background.orange',
-    'background.darkGreen',
+    'background.darkBlue',
 ];
 
 const SPECIALTIES = [
@@ -171,7 +171,7 @@ const UpdateDentitstProfileForm = props => {
                             height="50px"
                             width={'60px'}
                             type="default"
-                            bg="background.green"
+                            bg="background.blue"
                             pl={20}
                             ml={10}
                         >

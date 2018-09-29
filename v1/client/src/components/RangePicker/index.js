@@ -14,30 +14,30 @@ const StyledContainer = styled.div`
 
     && {
         a {
-            color: ${props => props.theme.colors.datePicker.green};
+            color: ${props => props.theme.colors.datePicker.blue};
         }
 
         .ant-calendar-today .ant-calendar-date {
-            border-color: ${props => props.theme.colors.datePicker.green};
+            border-color: ${props => props.theme.colors.datePicker.blue};
             font-weight: bold;
-            color: ${props => props.theme.colors.datePicker.green};
+            color: ${props => props.theme.colors.datePicker.blue};
         }
 
         .ant-calendar-selected-day .ant-calendar-date {
             color: ${props => props.theme.colors.datePicker.white};
-            background-color: ${props => props.theme.colors.datePicker.green};
+            background-color: ${props => props.theme.colors.datePicker.blue};
         }
 
         .ant-calendar-selected-date .ant-calendar-date,
         .ant-calendar-selected-start-date .ant-calendar-date,
         .ant-calendar-selected-end-date .ant-calendar-date {
             color: ${props => props.theme.colors.datePicker.white};
-            background-color: ${props => props.theme.colors.datePicker.green};
+            background-color: ${props => props.theme.colors.datePicker.blue};
         }
 
         .ant-calendar-date:hover {
             background: ${props => props.theme.colors.datePicker.white};
-            color: ${props => props.theme.colors.datePicker.green};
+            color: ${props => props.theme.colors.datePicker.blue};
         }
     }
 `;

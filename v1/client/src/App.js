@@ -13,21 +13,12 @@ import Header from './pages/common/Header';
 import Footer from './pages/common/Footer';
 import ErrorBoundary from './components/ErrorBoundary';
 
+import './Silka.css';
 import theme from './components/theme';
 import './App.css';
 
-const LandlordLandingPage = Loadable({
-    loader: () => import('./pages/LandlordLandingPage'),
-    loading: () => null,
-});
-
 const ProfilePage = Loadable({
     loader: () => import('./pages/ProfilePage'),
-    loading: () => null,
-});
-
-const DentistLandingPage = Loadable({
-    loader: () => import('./pages/DentistLandingPage'),
     loading: () => null,
 });
 
@@ -147,20 +138,12 @@ class App extends Component {
                                                 isUserLoggedin={data.activeUser}
                                             />
                                             <Route
-                                                path="/landlord"
-                                                component={LandlordLandingPage}
-                                            />
-                                            <Route
                                                 path="/dentist/search"
                                                 component={DentistSearchPage}
                                             />
                                             <Route
                                                 path="/dentist/:id"
                                                 component={DentistDetailsPage}
-                                            />
-                                            <Route
-                                                path="/dentist"
-                                                component={DentistLandingPage}
                                             />
                                             <Route
                                                 path="/office/search"

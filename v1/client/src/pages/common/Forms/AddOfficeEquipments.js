@@ -241,7 +241,7 @@ class AddOfficeEquipments extends Component {
                                 fontSize={4}
                                 lineHeight="1"
                                 letterSpacing="0px"
-                                color="text.green"
+                                color="text.blue"
                                 mb={20}
                             >
                                 Summary (up to 300 characters)
@@ -272,7 +272,7 @@ class AddOfficeEquipments extends Component {
                                 fontSize={4}
                                 lineHeight="1"
                                 letterSpacing="0px"
-                                color="text.green"
+                                color="text.blue"
                                 mb={20}
                             >
                                 Equipment &amp; Usage Fees

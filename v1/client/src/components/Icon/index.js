@@ -30,12 +30,16 @@ import Minus from './Minus';
 import RightForwardArrow from './RightForwardArrow';
 import UpArrow from './UpArrow';
 import DownArrow from './DownArrow';
+import Calendar from './Calendar';
 
 const Icon = props => {
     const { type, isButton, ...rest } = props;
 
     let ReturnIcon;
     switch (type) {
+        case 'calendar':
+            ReturnIcon = Calendar;
+            break;
         case 'upArrow':
             ReturnIcon = UpArrow;
             break;

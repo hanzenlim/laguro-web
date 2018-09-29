@@ -31,7 +31,7 @@ const StyledAutocomplete = styled(AntdAutocomplete)`
 
         && .ant-input {
             ${height};
-            padding-left: 45px;
+            padding-left: ${props => (props.withDentists ? '20px' : '45px')};
             border: 1px solid;
             border-color: ${props => props.theme.colors.divider.darkGray};
             background-color: ${props => props.theme.colors.background.white};
@@ -52,12 +52,16 @@ const StyledAutocomplete = styled(AntdAutocomplete)`
 
         && .ant-select-selection__placeholder {
             ${height};
-            padding-left: 35px;
+            padding-left: ${props => (props.withDentists ? '10px' : '35px')};
             color: ${props => props.theme.colors.text.gray};
             font-size: ${props => props.theme.fontSizes[3]};
             z-index: ${props => props.theme.zIndex.inputElement};
             font-weight: 700;
-            font-family: Ubuntu;
+            font-family: Silka;
+        }
+
+        && .ant-select-search__field__mirror {
+            display: none;
         }
     }
 `;
@@ -73,7 +77,7 @@ const StyledOption = styled(Flex)`
     }
 
     ${`.ant-select-dropdown-menu-item-active`} & {
-        background-color: ${props => props.theme.colors.background.green};
+        background-color: ${props => props.theme.colors.background.blue};
         color: ${props => props.theme.colors.text.white};
         font-weight: bold;
 
@@ -90,6 +94,7 @@ const LocationFilterView = ({
     dentistResults,
     locationResults,
     withDentists,
+    placeholder,
     onBlur,
     onChange,
     placeHolder,
@@ -146,14 +151,16 @@ const LocationFilterView = ({
 
     return (
         <StyledFlex>
-            <StyledIcon
-                width={20}
-                height={20}
-                ml={14}
-                type="environment-o"
-                color="icon.green"
-                fontSize={4}
-            />
+            {!withDentists && (
+                <StyledIcon
+                    width={20}
+                    height={20}
+                    ml={14}
+                    type="environment-o"
+                    color="icon.green"
+                    fontSize={4}
+                />
+            )}
             <StyledAutocomplete
                 onSearch={handleChange}
                 onSelect={handleSuggestionSelect}
@@ -161,7 +168,11 @@ const LocationFilterView = ({
                 value={queryString}
                 onChange={onChange}
                 disabled={disabled}
-                placeholder={placeHolder || 'San Francisco, California'}
+                withDentists={withDentists}
+                placeholder={
+                    placeholder ||
+                    'Start searching for dental offices or dentists near you'
+                }
                 backfill={true}
                 {...rest}
             >

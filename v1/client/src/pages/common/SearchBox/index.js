@@ -82,6 +82,7 @@ class SearchBox extends PureComponent {
                 onDateFilterChange={this.handleDateFilterChange}
                 onSubmit={this.handleSubmit}
                 size={this.props.size}
+                locationPlaceholder={this.props.placeholder}
             />
         );
     }

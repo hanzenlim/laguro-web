@@ -13,10 +13,10 @@ import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
 import Map from '../Map';
 
 const TAG_COLORS = [
-    'background.green',
+    'background.blue',
     'background.yellow',
     'background.orange',
-    'background.darkGreen',
+    'background.darkBlue',
 ];
 
 const DentistDetailsView = props => {
@@ -101,7 +101,7 @@ const DentistDetailsView = props => {
                             toggle={
                                 <Text
                                     is="span"
-                                    color="text.green"
+                                    color="text.blue"
                                     fontWeight="bold"
                                 >
                                     … show more.

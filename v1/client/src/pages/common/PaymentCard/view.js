@@ -57,7 +57,7 @@ const PaymentCard = ({
     const totalColor = () => {
         switch (paymentStatus) {
             case AVAILABLE:
-                return 'text.green';
+                return 'text.blue';
             case PENDING:
                 return 'text.yellow';
             default:
@@ -137,7 +137,7 @@ const PaymentCard = ({
                     style={{ fontWeight: 'bold' }}
                     mr={6}
                 />
-                <Text color="text.darkGreen">{office.location.name}</Text>
+                <Text color="text.darkBlue">{office.location.name}</Text>
             </Flex>
         </StyledCard>
     );

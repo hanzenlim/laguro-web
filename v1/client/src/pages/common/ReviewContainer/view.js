@@ -33,7 +33,7 @@ const ReviewContainer = props => {
             {!viewOnly && (
                 <Text
                     is="a"
-                    color="text.green"
+                    color="text.blue"
                     fontSize={1}
                     fontWeight="bold"
                     lineHeight="22px"

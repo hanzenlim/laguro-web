@@ -76,10 +76,10 @@ const BookAppointmentView = props => {
                             mb={10}
                         />
                         <Flex justifyContent="space-between">
-                            <Text fontSize={3} color="text.green">
+                            <Text fontSize={3} color="text.blue">
                                 Total
                             </Text>
-                            <Text fontSize={3} color="text.green">
+                            <Text fontSize={3} color="text.blue">
                                 $20.00
                             </Text>
                         </Flex>

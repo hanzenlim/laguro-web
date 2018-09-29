@@ -14,10 +14,8 @@ describe('HomePage', () => {
     });
 
     it('should display text inside the top picture', () => {
-        const heroShot = component.find('[data-name="hero-shot"]');
         const heroShotText = component.find('Text');
 
-        expect(heroShot).toHaveLength(1);
         expect(heroShotText).toBeTruthy();
         expect(
             heroShotText

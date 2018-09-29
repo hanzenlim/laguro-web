@@ -135,7 +135,7 @@ class CreateListing extends Component {
                                         fontSize={2}
                                         lineHeight="18px"
                                         letterSpacing="-0.4px"
-                                        color="text.green"
+                                        color="text.blue"
                                         textAlign="right"
                                     >
                                         {values[`numChairs${index}`] || '0'}
@@ -145,7 +145,7 @@ class CreateListing extends Component {
                                         fontSize={2}
                                         lineHeight="18px"
                                         letterSpacing="-0.4px"
-                                        color="text.green"
+                                        color="text.blue"
                                         textAlign="right"
                                     >
                                         {values[`hourlyChairPrice${index}`] ||
@@ -156,7 +156,7 @@ class CreateListing extends Component {
                                         fontSize={2}
                                         lineHeight="18px"
                                         letterSpacing="-0.4px"
-                                        color="text.green"
+                                        color="text.blue"
                                         textAlign="right"
                                     >
                                         {values[`cleaningFee${index}`] || '$0'}

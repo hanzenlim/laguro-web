@@ -3,7 +3,7 @@ import system from 'system-components';
 
 const Text = system(
     {
-        fontFamily: `'Ubuntu', sans-serif`,
+        fontFamily: `'Silka', sans-serif`,
         color: 'text.black',
     },
     // core

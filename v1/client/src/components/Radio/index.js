@@ -13,11 +13,11 @@ const StyledRadioGroup = styled(RadioGroup)`
     && .ant-radio-inner:after,
     && .ant-radio-wrapper:hover .ant-radio .ant-radio-inner,
     && .ant-radio:hover .ant-radio-inner {
-        border-color: ${props => props.theme.colors.background.green};
+        border-color: ${props => props.theme.colors.background.blue};
     }
 
     && .ant-radio-inner:after {
-        background: ${props => props.theme.colors.background.green};
+        background: ${props => props.theme.colors.background.blue};
     }
 `;
 

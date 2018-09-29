@@ -15,7 +15,7 @@ const StyledTabs = styled(AntdTabs)`
     }
 
     && .ant-tabs-ink-bar {
-        background-color: ${props => props.theme.colors.divider.green};
+        background-color: ${props => props.theme.colors.divider.blue};
     }
 `;
 

@@ -59,7 +59,7 @@ class PatientAppointments extends PureComponent {
                         border="none"
                         onClick={this.props.toggleModalState(id)}
                     >
-                        <Text color="text.green" fontSize={2}>
+                        <Text color="text.blue" fontSize={2}>
                             cancel
                         </Text>
                     </Button>

@@ -120,7 +120,7 @@ export const StyledFormItem = styled(AntFormItem)`
 
 const StyledFormInput = styled(AntFormItem)`
     &&.ant-form-item {
-        font-family: 'Ubuntu', sans-serif;
+        font-family: 'Silka', sans-serif;
         ${space};
         ${width};
     }

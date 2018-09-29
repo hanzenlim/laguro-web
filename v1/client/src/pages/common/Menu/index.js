@@ -12,7 +12,7 @@ const StyledItem = styled(Item)`
     &&&.ant-menu-item-selected,
     &&&.ant-menu-item-active,
     &&&.ant-menu-item:hover {
-        color: ${props => props.theme.colors.text.green};
+        color: ${props => props.theme.colors.text.blue};
     }
 
     &&&.ant-menu-item-selected {

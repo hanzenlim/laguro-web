@@ -31,7 +31,7 @@ const LoginModal = ({
         >
             {message && <Alert message={message} type="info" />}
             <Text fontWeight="bold" fontSize={5}>
-                sign in
+                log in
             </Text>
             <Flex width={1} my={30} justifyContent="space-around">
                 <Flex
@@ -84,13 +84,9 @@ const LoginModal = ({
                 <Link
                     to={{ hash: '#', search: location.search }}
                     onClick={openRegistrationModal}
-                    width={120}
+                    width={140}
                 >
-                    <Text
-                        color="text.green"
-                        textAlign="right"
-                        fontWeight="bold"
-                    >
+                    <Text color="text.blue" textAlign="right" fontWeight="bold">
                         register now
                     </Text>
                 </Link>
@@ -98,7 +94,7 @@ const LoginModal = ({
                 <Link
                     to={{ hash: '#', search: location.search }}
                     onClick={openForgotPassModal}
-                    width={120}
+                    width={140}
                 >
                     <Text color="text.black" fontWeight="bold">
                         forgot password?

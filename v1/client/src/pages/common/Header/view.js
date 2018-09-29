@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 import SearchBox from '../SearchBox';
-import logo from '../../../components/Image/logo.svg';
-import whiteLogo from '../../../components/Image/whiteLogo.svg';
+import logo from '../../../components/Image/logo.png';
+import whiteLogo from '../../../components/Image/whiteLogo.png';
 import {
     Flex,
     Link,
@@ -28,7 +28,7 @@ const NavBarLink = styled(Link)`
 
     &&:hover,
     &&:focus {
-        border-color: ${props => props.theme.colors.divider.green};
+        border-color: ${props => props.theme.colors.divider.blue};
         text-decoration: none;
     }
 `;
@@ -122,7 +122,8 @@ const ProfileButton = ({
             <NavBarLink onClick={openRegistrationModal} to={'#'}>
                 <Text
                     color={onLandingPage ? 'text.white' : 'text.black'}
-                    fontSize={1}
+                    fontSize={2}
+                    fontWeight="bold"
                     mb={4}
                 >
                     sign up
@@ -131,7 +132,8 @@ const ProfileButton = ({
             <NavBarLink onClick={openLoginModal} to={'#'}>
                 <Text
                     color={onLandingPage ? 'text.white' : 'text.black'}
-                    fontSize={1}
+                    fontSize={2}
+                    fontWeight="bold"
                     mb={4}
                 >
                     log in
@@ -177,7 +179,7 @@ const Header = ({
         flex="0 0 auto"
         alignItems="center"
         justifyContent="center"
-        zIndex="zIndex.header"
+        style={{ zIndex: 600 }}
         position={onLandingPage ? 'absolute' : 'relative'}
     >
         <IntercomContainer auth={auth} />
@@ -208,20 +210,26 @@ const Header = ({
         >
             <Link to={'/'}>
                 <Image
-                    height={60}
+                    height={40}
                     src={onLandingPage ? whiteLogo : logo}
                     alt="logo"
                 />
             </Link>
-            {!onLandingPage && <SearchBox size="small" />}
+            {!onLandingPage &&
+                (window.location.pathname === '/office/search' ? (
+                    <SearchBox placeholder="Search offices" size="small" />
+                ) : (
+                    <SearchBox placeholder="Search dentists" size="small" />
+                ))}
             <Flex alignItems="center">
-                <NavBarLink ml="0px" to={'/host-onboarding/add-office/'}>
+                <NavBarLink ml="0px" to={'/host-onboarding/add-office'}>
                     <Text
                         color={onLandingPage ? 'text.white' : 'text.black'}
-                        fontSize={1}
+                        fontSize={2}
+                        fontWeight="bold"
                         mb={4}
                     >
-                        rent your dental office
+                        become a host
                     </Text>
                 </NavBarLink>
                 <ProfileButton

@@ -13,7 +13,7 @@ const StyledLoadingComponent = styled.div`
     .loading > div {
         width: 12px;
         height: 12px;
-        background-color: ${props => props.theme.colors.loading.green};
+        background-color: ${props => props.theme.colors.loading.blue};
         border-radius: 100%;
         display: inline-block;
         -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;

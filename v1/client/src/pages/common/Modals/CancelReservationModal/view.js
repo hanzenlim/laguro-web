@@ -36,9 +36,9 @@ const CancelReservationModal = props => {
                         <Text
                             fontWeight="bold"
                             fontSize={3}
-                            color="text.green"
+                            color="text.blue"
                             border="2px solid"
-                            borderColor="divider.green"
+                            borderColor="divider.blue"
                             borderRadius="4px"
                             lineHeight="54px"
                         >

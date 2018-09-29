@@ -21,6 +21,7 @@ const SearchBox = props => {
         onDateFilterChange,
         onSubmit,
         size,
+        locationPlaceholder,
     } = props;
 
     return (
@@ -29,9 +30,10 @@ const SearchBox = props => {
                 <LocationFilter
                     height={60}
                     initialValue={initialLocationFilterValue}
+                    placeholder={locationPlaceholder}
                     onTextChange={onTextChange}
                     onLocationChange={onLocationFilterChange}
-                    width={size === 'large' ? 710 : 420}
+                    width={size === 'large' ? 720 : 420}
                     withDentists={true}
                 />
             </Box>
@@ -40,13 +42,14 @@ const SearchBox = props => {
                     initialValue={initialDateFilterValue}
                     onDateChange={onDateFilterChange}
                     width={size === 'large' ? 350 : 175}
+                    format={size === 'large' ? 'ddd MM/DD' : 'MM/DD'}
                 />
             </Box>
             <StyledButton
                 height="60px"
-                width={size === 'large' ? '140px' : '60px'}
+                width={size === 'large' ? '210px' : '60px'}
                 type="default"
-                bg="background.green"
+                bg="background.blue"
                 onClick={onSubmit}
                 pl={size === 'large' ? 20 : 10}
             >

@@ -33,12 +33,12 @@ class HostListings extends PureComponent {
                             to={`/host-onboarding/add-office/?mode=edit-office&officeId=${id}`}
                             type="ghost"
                         >
-                            <Text color="text.green" fontSize={1} mr={24}>
+                            <Text color="text.blue" fontSize={1} mr={24}>
                                 edit
                             </Text>
                         </Link>
                         <Link to="/" type="ghost">
-                            <Text color="text.green" fontSize={1}>
+                            <Text color="text.blue" fontSize={1}>
                                 add a new listing
                             </Text>
                         </Link>
@@ -93,7 +93,7 @@ class HostListings extends PureComponent {
                                 fontSize={1}
                                 color={
                                     isResevationsEmpty
-                                        ? 'text.green'
+                                        ? 'text.blue'
                                         : 'text.gray'
                                 }
                             >

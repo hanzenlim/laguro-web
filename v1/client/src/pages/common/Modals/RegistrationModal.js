@@ -94,7 +94,7 @@ const ReservationModalView = ({
             <Flex mt={10}>
                 <Text color="text.black">have an account?&nbsp;</Text>
                 <Link to={'#'} onClick={openLoginModal}>
-                    <Text color="text.green" fontWeight="bold">
+                    <Text color="text.blue" fontWeight="bold">
                         login
                     </Text>
                 </Link>

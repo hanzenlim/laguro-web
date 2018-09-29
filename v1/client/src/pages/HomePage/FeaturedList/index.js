@@ -2,12 +2,11 @@ import React, { Component } from 'react';
 
 import FeaturedListView from './view';
 import getFeaturedDentists from './queries';
-import { Text } from '../../../components';
 
 class FeaturedList extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = { featuredDentists: [] };
     }
 
     componentDidMount() {
@@ -17,15 +16,9 @@ class FeaturedList extends Component {
     }
 
     render() {
-        if (this.state && this.state.featuredDentists) {
-            return (
-                <FeaturedListView
-                    featuredDentists={this.state.featuredDentists}
-                />
-            );
-        }
-
-        return <Text fontSize={5}>no dentists found near from you</Text>;
+        return (
+            <FeaturedListView featuredDentists={this.state.featuredDentists} />
+        );
     }
 }
 

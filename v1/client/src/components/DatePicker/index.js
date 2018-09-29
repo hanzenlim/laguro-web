@@ -19,7 +19,7 @@ const StyledContainer = styled.div`
     }
 
     a {
-        color: ${props => props.theme.colors.datePicker.green};
+        color: ${props => props.theme.colors.datePicker.blue};
     }
     .ant-input-affix-wrapper {
         height: 100%;
@@ -56,26 +56,26 @@ const StyledContainer = styled.div`
     }
 
     .ant-calendar-today .ant-calendar-date {
-        border-color: ${props => props.theme.colors.datePicker.green};
+        border-color: ${props => props.theme.colors.datePicker.blue};
         font-weight: bold;
         color: ${props => props.theme.colors.text.black};
     }
 
     .ant-calendar-selected-day .ant-calendar-date {
         color: ${props => props.theme.colors.text.white};
-        background-color: ${props => props.theme.colors.datePicker.green};
+        background-color: ${props => props.theme.colors.datePicker.blue};
     }
 
     .ant-calendar-selected-date .ant-calendar-date,
     .ant-calendar-selected-start-date .ant-calendar-date,
     .ant-calendar-selected-end-date .ant-calendar-date {
         color: ${props => props.theme.colors.datePicker.white};
-        background-color: ${props => props.theme.colors.datePicker.green};
+        background-color: ${props => props.theme.colors.datePicker.blue};
     }
 
     .ant-calendar-date:hover,
     .ant-calendar-selected-day .ant-calendar-date:hover {
-        background: ${props => props.theme.colors.datePicker.green75};
+        background: ${props => props.theme.colors.datePicker.blue75};
         color: ${props => props.theme.colors.text.black};
     }
 `;
@@ -85,7 +85,9 @@ class DatePicker extends PureComponent {
         super(props);
 
         this.state = {
-            dateString: props.initialValue || '',
+            dateString: props.initialValue
+                ? moment(props.initialValue).format(this.props.format)
+                : '',
             open: false,
         };
     }
@@ -111,13 +113,13 @@ class DatePicker extends PureComponent {
                 <Input
                     onClick={this.toggleDatePicker}
                     value={dateString}
-                    placeholder={moment().format('ddd MM/DD')}
+                    placeholder={moment().format(this.props.format)}
                     prefix={
                         <Icon
                             type="calendar"
                             mt={3}
                             fontSize={4}
-                            color="icon.green"
+                            color="icon.blue"
                         />
                     }
                     suffix={
@@ -135,7 +137,7 @@ class DatePicker extends PureComponent {
                 />
                 <div ref="datePickerContainer" />
                 <AntdDatePicker
-                    format={'ddd MM/DD'}
+                    format={this.props.format}
                     open={open}
                     onChange={this.onSelectDate}
                     getCalendarContainer={this.getCalendarContainer}

@@ -46,7 +46,7 @@ const StyledAutocomplete = styled(AntdAutocomplete)`
             font-size: ${props => props.theme.fontSizes[3]};
             z-index: ${props => props.theme.zIndex.inputElement};
             font-weight: 700;
-            font-family: Ubuntu;
+            font-family: Silka;
         }
     }
 `;
@@ -62,7 +62,7 @@ const StyledOption = styled(Flex)`
     }
 
     ${`.ant-select-dropdown-menu-item-active`} & {
-        background-color: ${props => props.theme.colors.background.green};
+        background-color: ${props => props.theme.colors.background.blue};
         color: ${props => props.theme.colors.text.white};
         font-weight: bold;
 

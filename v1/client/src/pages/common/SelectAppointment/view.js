@@ -32,10 +32,10 @@ const SelectAppointmentView = props => {
                                 height="50px"
                                 borderRadius="2px"
                                 border="1px solid"
-                                borderColor="divider.green"
+                                borderColor="divider.blue"
                                 bg={
                                     selected.key === item.key
-                                        ? 'background.green'
+                                        ? 'background.blue'
                                         : 'background.white'
                                 }
                             >
@@ -45,7 +45,7 @@ const SelectAppointmentView = props => {
                                     color={
                                         selected.key === item.key
                                             ? 'background.white'
-                                            : 'background.green'
+                                            : 'background.blue'
                                     }
                                 >
                                     {item.key}

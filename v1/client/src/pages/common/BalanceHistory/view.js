@@ -60,7 +60,7 @@ const BalanceHistoryView = ({
                     fontSize={5}
                     fontWeight="bold"
                     lineHeight="1.1"
-                    color="text.green"
+                    color="text.blue"
                 >
                     {renderPrice(totalAvailable * 0.8)}
                 </Text>

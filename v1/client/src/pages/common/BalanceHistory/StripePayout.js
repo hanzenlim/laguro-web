@@ -113,9 +113,9 @@ const StripePayoutButtons = ({ userId, accountToken, totalAvailable }) => (
                                     return (
                                         <Button
                                             type="ghost"
-                                            color="text.green"
+                                            color="text.blue"
                                             border="1px solid"
-                                            borderColor="divider.green"
+                                            borderColor="divider.blue"
                                             px={30}
                                             onClick={handleClick}
                                         >

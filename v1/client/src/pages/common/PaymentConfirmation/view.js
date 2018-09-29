@@ -34,7 +34,7 @@ const PaymentConfirmationView = props => {
                                     color="icon.lightGray"
                                     mx={5}
                                 />
-                                <Text color="text.green">{h3}</Text>
+                                <Text color="text.blue">{h3}</Text>
                             </Flex>
                         ) : null}
                     </Box>

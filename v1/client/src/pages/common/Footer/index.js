@@ -1,82 +1,75 @@
 import React from 'react';
 
-import { Text, Flex, Box, Link, Icon, Container } from '../../../components';
-
-const StyledLink = ({ target = '/', name }) => (
-    <Link to={target}>
-        <Text fontSize={1} mb={2}>
-            {name}
-        </Text>
-    </Link>
-);
-
-const LinkGroup = ({ title, children }) => (
-    <Box mr={100}>
-        <Text fontWeight="bold" mb={14}>
-            {title}
-        </Text>
-        {children}
-    </Box>
-);
+import { Text, Flex, Link, Icon, Container } from '../../../components';
 
 const Footer = () => (
     <Flex
         is="footer"
         width={1}
         height={345}
-        bg={'#fff'}
         borderTop="1px solid"
-        borderColor="divider.gray"
+        borderColor={
+            window.location.pathname === '/'
+                ? 'divider.transparent'
+                : 'divider.gray'
+        }
+        bg={
+            window.location.pathname === '/'
+                ? 'background.lightBlue'
+                : 'background.white'
+        }
         flex="0 0 auto"
         flexDirection="column"
         alignItems="center"
         justifyContent="space-between"
     >
-        <Flex
-            flexDirection="row"
-            flexWrap="wrap"
-            width={1}
-            justifyContent="center"
-            alignItems="flex-start"
-            mt={100}
+        <Container
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
         >
-            <LinkGroup title="laguro">
-                <StyledLink target="/" name="contact" />
-                <StyledLink target="/" name="about us" />
-            </LinkGroup>
-
-            <LinkGroup title="landlord">
-                <StyledLink target="/" name="create office" />
-                <StyledLink target="/" name="profile page" />
-                <StyledLink target="/" name="payment history" />
-                <StyledLink target="/" name="payout funds" />
-            </LinkGroup>
-
-            <LinkGroup title="dentist">
-                <StyledLink target="/" name="reserve office space" />
-                <StyledLink target="/" name="profile page" />
-                <StyledLink target="/" name="payment history" />
-                <StyledLink target="/" name="payout funds" />
-            </LinkGroup>
-
-            <LinkGroup title="patient">
-                <StyledLink target="/" name="book appointment" />
-                <StyledLink target="/" name="profile page" />
-                <StyledLink target="/" name="payment history" />
-            </LinkGroup>
+            <Flex flexDirection="column" width={900} my={100}>
+                <Text color="text.black50" fontSize={4} mb={36}>
+                    LET'S CONNECT
+                </Text>
+                <Text color="text.black" fontSize={4}>
+                    Laguro is here to provide support and answers for any
+                    questions you may have. Send us your inquiries through our
+                    chat box or to support@laguro.com, and we will be in touch
+                    with lightning speed!
+                </Text>
+            </Flex>
 
             <Flex alignSelf="center">
-                <Link mr={25} to={'/'}>
-                    <Icon color="icon.black" fontSize={4} type="facebook" />
+                <Link
+                    mr={25}
+                    to={'https://www.facebook.com/LaguroDental/'}
+                    target="_blank"
+                >
+                    <Icon color="icon.black" fontSize={5} type="facebook" />
                 </Link>
-                <Link mr={25} to={'/'}>
-                    <Icon color="icon.black" fontSize={4} type="twitter" />
+                <Link
+                    mr={25}
+                    to={'https://twitter.com/LaguroDental'}
+                    target="_blank"
+                >
+                    <Icon color="icon.black" fontSize={5} type="twitter" />
                 </Link>
-                <Link mr={25} to={'/'}>
-                    <Icon color="icon.black" fontSize={4} type="instagram" />
+                <Link
+                    mr={25}
+                    to={'https://www.instagram.com/lagurodental/'}
+                    target="_blank"
+                >
+                    <Icon color="icon.black" fontSize={5} type="instagram" />
+                </Link>
+                <Link
+                    to={'https://www.linkedin.com/company/lagurodental/'}
+                    target="_blank"
+                >
+                    <Icon color="icon.black" fontSize={5} type="linkedin" />
                 </Link>
             </Flex>
-        </Flex>
+        </Container>
 
         <Container
             display="flex"
@@ -87,10 +80,16 @@ const Footer = () => (
             alignItems="center"
         >
             <Flex alignItems="center">
-                <Icon width={20} height={20} mr={8} type="Pin" alt="logo" />
+                <Icon
+                    width={20}
+                    height={20}
+                    mr={8}
+                    type="locationPin"
+                    alt="logo"
+                />
                 <Text>© 2018&nbsp;</Text>
-                <Text fontWeight="bold">laguro</Text>
-                <Text>&nbsp;LLC. all rights reserved.</Text>
+                <Text fontWeight="bold">laguro.</Text>
+                <Text>&nbsp; all rights reserved.</Text>
             </Flex>
             <Flex>
                 <Link ml={50} to={'/terms'}>
@@ -101,11 +100,6 @@ const Footer = () => (
                 <Link ml={50} to={'/privacy'}>
                     <Text fontSize={1} mb={2} color="black">
                         privacy
-                    </Text>
-                </Link>
-                <Link ml={50} to={'/'}>
-                    <Text fontSize={1} mb={2}>
-                        site map
                     </Text>
                 </Link>
             </Flex>

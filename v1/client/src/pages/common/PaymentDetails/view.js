@@ -7,7 +7,7 @@ import { formatListingTime } from '../../../util/timeUtil';
 import { renderPrice } from '../../../util/paymentUtil';
 import visa from '../../../components/Image/visa.svg';
 import mastercard from '../../../components/Image/mastercard.svg';
-import whiteLogo from '../../../components/Image/whiteLogo.svg';
+import whiteLogo from '../../../components/Image/whiteLogo.png';
 import americanExpress from '../../../components/Image/americanExpress.svg';
 import discover from '../../../components/Image/discover.svg';
 import {
@@ -64,7 +64,7 @@ const PaymentDetailsView = ({
                     style={{ fontWeight: 'bold' }}
                     mr={6}
                 />
-                <Text color="text.darkGreen">{office.location.name}</Text>
+                <Text color="text.darkBlue">{office.location.name}</Text>
             </Flex>
 
             <Section

@@ -33,7 +33,7 @@ const PreSubmitContent = ({ handleSubmit, openLoginModal }) => (
         <Flex mt={10}>
             <Text color="text.black">know your password?&nbsp;</Text>
             <Link to={'#'} onClick={openLoginModal}>
-                <Text color="text.green" fontWeight="bold">
+                <Text color="text.blue" fontWeight="bold">
                     login
                 </Text>
             </Link>

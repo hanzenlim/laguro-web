@@ -5,7 +5,7 @@ const Minus = props => (
     <svg viewBox="0 0 30 30" width="1em" height="1em" {...props}>
         <g
             transform="translate(1 1)"
-            stroke={theme.colors.icon.green}
+            stroke={theme.colors.icon.blue}
             strokeWidth={2}
             fill="none"
             fillRule="evenodd"

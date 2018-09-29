@@ -34,7 +34,7 @@ const SelectEquipmentView = props => {
                             flexDirection="column"
                             bg={
                                 selected.includes(item)
-                                    ? 'background.green'
+                                    ? 'background.blue'
                                     : 'background.whiteSmoke'
                             }
                             borderRadius="29px"

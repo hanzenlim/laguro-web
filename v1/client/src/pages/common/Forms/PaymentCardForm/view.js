@@ -60,7 +60,7 @@ const CardView = ({
                     mb={10}
                     width={'100%'}
                     fontSize={2}
-                    color="text.green"
+                    color="text.blue"
                     onClick={onBackButton}
                 >
                     Back

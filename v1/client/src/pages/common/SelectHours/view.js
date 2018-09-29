@@ -62,10 +62,10 @@ const SelectHoursView = props => {
                                         priceRangeLength === 1 ? '50px' : '63px'
                                     }
                                     border="1px solid"
-                                    borderColor="divider.green"
+                                    borderColor="divider.blue"
                                     bg={
                                         selected.includes(item.time)
-                                            ? 'background.green'
+                                            ? 'background.blue'
                                             : 'background.white'
                                     }
                                 >

@@ -46,8 +46,9 @@ class LocationFilter extends PureComponent {
     }
 
     handleChange = async value => {
+        const { onTextChange } = this.props;
         await this.setState({ queryString: value });
-        this.props.onTextChange(value);
+        if (onTextChange) onTextChange(value);
         const { onSearch } = this.props;
 
         if (value.length > 2) {
