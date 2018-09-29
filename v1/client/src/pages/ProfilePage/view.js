@@ -58,6 +58,13 @@ class ProfileView extends Component {
         };
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        const params = queryString.parse(window.location.search);
+        if (params.selectedTab !== prevState.panel) {
+            this.setState({ panel: params.selectedTab });
+        }
+    }
+
     handleClick = ({ key }) => {
         const params = queryString.parse(window.location.search);
         const newParams = queryString.stringify({
@@ -65,7 +72,7 @@ class ProfileView extends Component {
             selectedTab: key,
         });
         history.push(`/profile?${newParams}`);
-        this.setState({ panel: this.renderPanel(key) });
+        this.setState({ panel: key });
     };
 
     renderPanel = key => {
@@ -247,7 +254,7 @@ class ProfileView extends Component {
                             )}
                         </Menu>
                     </Box>
-                    {panel}
+                    {this.renderPanel(panel)}
                 </Grid>
             </Container>
         );
