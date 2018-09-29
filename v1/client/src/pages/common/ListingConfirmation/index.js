@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Query } from 'react-apollo';
 import get from 'lodash/get';
+import isEmpty from 'lodash/isEmpty';
 import moment from 'moment';
 import queryString from 'query-string';
 import ListingConfirmationView from './view';
@@ -43,9 +44,13 @@ class ListingConfirmationContainer extends PureComponent {
             get(this.props, 'location.search')
         );
 
-        const { officeId: id } = historyLocationSearch;
+        const { officeId, data: listingIds } = historyLocationSearch;
         return (
-            <Query query={getOfficeQuery} variables={{ id }}>
+            <Query
+                query={getOfficeQuery}
+                fetchPolicy="network-only"
+                variables={{ id: officeId }}
+            >
                 {({ loading, error, data }) => {
                     if (error) return <RedirectErrorPage />;
                     if (loading) return <Loading />;
@@ -55,7 +60,18 @@ class ListingConfirmationContainer extends PureComponent {
                         'getOffice'
                     );
 
-                    const mappedListings = mapListings(listings, equipment);
+                    const addedListings = listings.filter(lng =>
+                        listingIds.includes(lng.id)
+                    );
+
+                    const listingsToBeUsed = !isEmpty(addedListings)
+                        ? addedListings
+                        : listings;
+
+                    const mappedListings = mapListings(
+                        listingsToBeUsed,
+                        equipment
+                    );
 
                     return (
                         <ListingConfirmationView

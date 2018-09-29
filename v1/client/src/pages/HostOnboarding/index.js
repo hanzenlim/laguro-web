@@ -23,7 +23,11 @@ import AddOfficeInfo from '../common/Forms/AddOfficeInfo';
 import AddOfficeEquipments from '../common/Forms/AddOfficeEquipments';
 import AddOfficeListing from '../common/Forms/AddOfficeListing';
 import ListingConfirmation from '../common/ListingConfirmation';
-import { ACTIVE_USER, EDIT_OFFICE_MODE } from '../../util/strings';
+import {
+    ACTIVE_USER,
+    EDIT_OFFICE_MODE,
+    ADD_LISTING_MODE,
+} from '../../util/strings';
 
 // modes:
 //      edit-office
@@ -86,6 +90,19 @@ class HostOnboarding extends Component {
                 locationSelected = true;
                 break;
 
+            case ADD_LISTING_MODE:
+                this.stepList = [LISTING_STEP, CONFIRMATION_STEP];
+                this.urlList = [
+                    LISTING_STEP_URL,
+                    CONFIRMATION_STEP_URL,
+                    HOST_PROFILE_URL,
+                ];
+                this.buttonTexts = ['Publish', 'Go to My Listings'];
+
+                // doesn't need to select location for add listing
+                locationSelected = true;
+                break;
+
             // usual host onboarding
             default:
                 this.stepList = [
@@ -95,7 +112,6 @@ class HostOnboarding extends Component {
                     CONFIRMATION_STEP,
                 ];
 
-                // will take the user back to HOST_PROFILE_URL after clicking 'Done' in CONFIRMATION_STEP
                 this.urlList = [
                     OFFICE_STEP_URL,
                     EQUIPMENT_STEP_URL,
@@ -150,7 +166,9 @@ class HostOnboarding extends Component {
     };
 
     // given form values and current urlParams, compute next url and add computedParams to url
-    advanceStep = (values, urlParams) => {
+    advanceStep = (values, data = { key: [] }) => {
+        const { historyLocationSearch } = this.state;
+        const urlParams = queryString.parse(historyLocationSearch);
         const { pathname } = this.props.location;
 
         const nextIndex = this.urlList.indexOf(pathname) + 1;
@@ -164,6 +182,8 @@ class HostOnboarding extends Component {
             url = `${nextUrl}?${this.buildUrlParams(
                 values,
                 urlParams,
+                // grab the graphql data
+                Object.values(data)[0],
                 this.officeId
             )}`;
         }
@@ -187,8 +207,15 @@ class HostOnboarding extends Component {
     // id: hostId from link state
     // createOffice: gql mutation function for creating an office
     // updateOffice: gql mutation function for updating an office
-    onSubmit = async (values, createOffice, updateOffice, id, client) => {
-        // save listing step values to create listings after creating office, in handleOfficeCreated
+    onSubmit = async (
+        values,
+        createOffice,
+        updateOffice,
+        batchCreateListings,
+        id,
+        client
+    ) => {
+        // save listing step values to create listings after creating office, in createListings
         this.values = values;
         const { step } = this.props.match.params;
         const { historyLocationSearch } = this.state;
@@ -236,7 +263,17 @@ class HostOnboarding extends Component {
                         },
                     });
                 } else {
-                    this.advanceStep(values, urlParams);
+                    this.advanceStep(values);
+                }
+                break;
+
+            case ADD_LISTING_MODE:
+                if (step === LISTING_STEP) {
+                    const { officeId } = urlParams;
+
+                    this.createListings(officeId, batchCreateListings);
+                } else {
+                    this.advanceStep(values);
                 }
                 break;
 
@@ -297,14 +334,14 @@ class HostOnboarding extends Component {
 
                     // url transition to confirmation page happens in handleListingCreated. skip transition in current function
                 } else {
-                    this.advanceStep(values, urlParams);
+                    this.advanceStep(values);
                 }
                 break;
         }
     };
 
     // host onboarding
-    handleOfficeCreated = (officeId, batchCreateListings) => {
+    createListings = (officeId, batchCreateListings) => {
         // save officeId to pass to confirmation step
         this.officeId = officeId;
 
@@ -367,11 +404,11 @@ class HostOnboarding extends Component {
         });
     };
 
-    buildUrlParams = (values = {}, urlParams = {}, officeId = '') => {
+    buildUrlParams = (values = {}, urlParams = {}, data, officeId) => {
         const { step } = this.props.match.params;
         const { defaultValues } = this.state;
 
-        // drop equipmentNames and equipmentPrices from url params, so that only current equipment values will make up new equipmentNames and equipmentPrices. This is due to deleting feature of equipment. For other pages, since there is no deleting of form items, we can just use urlParams for computedUrlParams
+        // drop equipmentNames and equipmentPrices from url params, so that only current equipment values will make up new equipmentNames and equipmentPrices. This is due to deleting feature of equipment.
         const urlParamsWithoutEquipment = pick(
             urlParams,
             Object.keys(urlParams).filter(key => !key.startsWith('equipment'))
@@ -445,13 +482,19 @@ class HostOnboarding extends Component {
             // form values
             ...computedValues,
             ...dateTime,
+            data: JSON.stringify(data),
         });
         return params;
     };
 
     // save office data to state to trigger render
     handleGetOffice = data => {
-        this.setState({ defaultValues: data.getOffice });
+        const historyLocationSearch = get(this.props, 'location.search');
+        const { mode } = queryString.parse(historyLocationSearch);
+
+        if (mode === EDIT_OFFICE_MODE) {
+            this.setState({ defaultValues: data.getOffice });
+        }
     };
 
     // after receiving existing office data, turn it into urlParams
@@ -483,6 +526,8 @@ class HostOnboarding extends Component {
             ...equipmentParams,
         };
     };
+
+    handleOnCompleted = data => this.advanceStep({}, data);
 
     render() {
         const {
@@ -537,6 +582,10 @@ class HostOnboarding extends Component {
                 submitDisabled = !numImage;
                 numSteps = 2;
                 break;
+            case ADD_LISTING_MODE:
+                submitDisabled = false;
+                numSteps = 2;
+                break;
             // host onboarding
             default:
                 submitDisabled = !numImage || locationSelected;
@@ -556,18 +605,18 @@ class HostOnboarding extends Component {
                         {() => (
                             <Mutation
                                 mutation={UPDATE_OFFICE}
-                                onCompleted={this.advanceStep}
+                                onCompleted={this.handleOnCompleted}
                             >
                                 {updateOffice => (
                                     <Mutation
                                         mutation={CREATE_LISTING}
-                                        onCompleted={this.advanceStep}
+                                        onCompleted={this.handleOnCompleted}
                                     >
                                         {batchCreateListings => (
                                             <Mutation
                                                 mutation={CREATE_OFFICE}
                                                 onCompleted={data => {
-                                                    this.handleOfficeCreated(
+                                                    this.createListings(
                                                         data.createUserOffice
                                                             .id,
                                                         batchCreateListings
@@ -582,6 +631,7 @@ class HostOnboarding extends Component {
                                                                     values,
                                                                     createOffice,
                                                                     updateOffice,
+                                                                    batchCreateListings,
                                                                     get(
                                                                         userData,
                                                                         'activeUser.id'

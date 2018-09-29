@@ -42,7 +42,7 @@ class AddOfficeInfo extends Component {
     // this is to trigger an update of add-office step when getOffice data arrives
     componentDidUpdate(prevProps) {
         if (this.props.officeName !== prevProps.officeName) {
-            const { imageUrls, form, onImageChange } = this.props;
+            const { imageUrls = [], form, onImageChange } = this.props;
             form.setFieldsValue(this.props);
             this.setState({ imageUrls });
 
@@ -105,7 +105,13 @@ class AddOfficeInfo extends Component {
 
     removeImage = e => {
         const { url } = e.currentTarget.dataset;
-        const { imageUrls } = this.state;
+        let { imageUrls } = this.state;
+
+        // TODO standardize whether params at all strings or objects
+        if (imageUrls.length > 5) {
+            imageUrls = JSON.parse(imageUrls);
+        }
+
         this.setState({
             imageUrls: imageUrls.filter(item => item !== url),
         });
@@ -114,7 +120,13 @@ class AddOfficeInfo extends Component {
     };
 
     renderUploadedImages = () => {
-        const { imageUrls } = this.state;
+        let { imageUrls } = this.state;
+
+        // TODO standardize whether params at all strings or objects
+        if (imageUrls.length > 5) {
+            imageUrls = JSON.parse(imageUrls);
+        }
+
         return (
             !isEmpty(imageUrls) &&
             imageUrls.map((url, index) => (
