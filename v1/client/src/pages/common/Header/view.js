@@ -15,7 +15,7 @@ import ForgotPassModal from '../Modals/ForgotPassModal';
 import { intercomKey } from '../../../config/keys';
 
 const NavBarLink = styled(Link)`
-    padding: 10px;
+    padding: 17px 10px 10px 10px;
     border-bottom: 7px solid;
     border-color: ${props => props.theme.colors.divider.transparent};
     margin-left: ${props => props.ml || '60px'};

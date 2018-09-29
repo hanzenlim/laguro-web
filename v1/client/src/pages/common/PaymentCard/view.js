@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import PaymentDetails from '../PaymentDetails';
 
 import { renderPrice } from '../../../util/paymentUtil';
-import { Card, Text, Flex, Box, Icon } from '../../../components';
+import { Card, Text, Flex, Box, Icon, Button } from '../../../components';
 import { AVAILABLE, PENDING, PAYMENT_CARD } from '../../../util/strings';
 
 const StyledCard = styled(Card)`
@@ -102,12 +102,14 @@ const PaymentCard = ({
                     mt={6}
                     onClick={() => opentDetailModal(payment.id)}
                 >
-                    <Icon
-                        fontSize={3}
-                        style={{ fontWeight: 'bold' }}
-                        type="eye-o"
-                    />
-                    <Text>view details</Text>
+                    <Button type="ghost">
+                        <Icon
+                            fontSize={3}
+                            style={{ fontWeight: 'bold', color: '#000000' }}
+                            type="eye-o"
+                        />
+                        <Text mt="5px">view details</Text>
+                    </Button>
                 </Flex>
             }
         >

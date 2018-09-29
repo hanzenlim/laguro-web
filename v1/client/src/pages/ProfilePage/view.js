@@ -132,7 +132,7 @@ class ProfileView extends Component {
 
         return (
             <Container maxWidth="1050px">
-                <Grid mt={70}>
+                <Grid mt={70} pb={50}>
                     <Box>
                         <Menu
                             defaultSelectedKeys={[panelName]}

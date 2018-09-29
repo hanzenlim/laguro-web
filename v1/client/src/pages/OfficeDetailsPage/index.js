@@ -5,6 +5,7 @@ import { getOfficeImageQuery } from './queries';
 import OfficeDetailsPageView from './view';
 import { Loading } from '../../components';
 import { RedirectErrorPage } from '../../pages/GeneralErrorPage';
+import Error404Page from '../Error404Page';
 
 class OfficeDetailsPageContainer extends PureComponent {
     state = {
@@ -29,6 +30,12 @@ class OfficeDetailsPageContainer extends PureComponent {
                     if (error) {
                         return <RedirectErrorPage />;
                     }
+
+                    // TODO: add SSR 404
+                    if (!data.getOffice) {
+                        return <Error404Page />;
+                    }
+
                     return (
                         <OfficeDetailsPageView
                             officeDetailsDoneLoadingHandler={

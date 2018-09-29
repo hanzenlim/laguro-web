@@ -44,7 +44,13 @@ const StyledStep = styled(Step)``;
 const Steps = props => {
     const { size } = props;
     return (
-        <StyledSteps {...props}>{Array(size).fill(<StyledStep />)}</StyledSteps>
+        <StyledSteps {...props}>
+            {Array(size)
+                .fill()
+                .map((_v, i) => (
+                    <StyledStep key={i} />
+                ))}
+        </StyledSteps>
     );
 };
 

@@ -74,6 +74,7 @@ const StyledButton = styled(AntdButton)`
         background-color: transparent;
         outline: none;
         border-color: transparent;
+        box-shadow: none;
         ${borders};
         ${width};
         ${space};
