@@ -13,7 +13,7 @@ class SelectHours extends PureComponent {
             selectedPrice: [],
             selectedCleaningFee: [],
             selectedListingId: [],
-            isOpen: true,
+            isOpen: props.isToggleOpen,
             isAllSelected: false,
         };
     }
@@ -130,10 +130,16 @@ class SelectHours extends PureComponent {
         );
     }
 }
+
+SelectHours.defaultProps = {
+    isToggleOpen: true,
+};
+
 SelectHours.PropTypes = {
     priceRangeLength: PropTypes.string.isRequired,
     hourList: PropTypes.array.isRequired,
     formattedDateText: PropTypes.string.isRequired,
     selectedHoursHandler: PropTypes.func.isRequired,
+    isToggleOpen: PropTypes.bool,
 };
 export default SelectHours;

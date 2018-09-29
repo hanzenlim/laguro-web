@@ -8,14 +8,17 @@ import SummaryCost from '../SummaryCost';
 
 const renderHourSlotsBlocks = (list, priceRange, selectedHoursHandler) => {
     const dateList = Object.keys(list);
+    let counter = 0;
     return dateList.map(dateText => {
         if (_isEmpty(list[dateText])) {
             return null;
         }
 
+        counter++;
         return (
             <Box mb={26}>
                 <SelectHours
+                    isToggleOpen={counter <= 3}
                     priceRangeLength={Object.keys(priceRange).length}
                     hourList={list[dateText]}
                     formattedDateText={moment(dateText).format('ddd M/D')}

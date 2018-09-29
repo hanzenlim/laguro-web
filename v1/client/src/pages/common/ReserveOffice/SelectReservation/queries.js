@@ -1,7 +1,6 @@
 import { gql } from 'apollo-boost';
 import moment from 'moment';
 
-// eslint-disable-next-line
 export const getOfficeEquipments = gql`
     query($id: String!) {
         getOffice(id: $id) {
@@ -53,5 +52,11 @@ export const getListingQuery = gql`
                 status
             }
         }
+    }
+`;
+
+export const getNumRemainingChairsQuery = gql`
+    query($input: GetNumRemainingChairsInput!) {
+        getNumRemainingChairs(input: $input)
     }
 `;

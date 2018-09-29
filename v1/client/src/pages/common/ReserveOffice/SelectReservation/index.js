@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Query } from 'react-apollo';
+import { Query, ApolloConsumer } from 'react-apollo';
 import moment from 'moment';
+import { message } from 'antd';
 import _uniqWith from 'lodash/uniqWith';
 import _filter from 'lodash/filter';
+import _isEmpty from 'lodash/isEmpty';
 import _uniq from 'lodash/uniq';
 import _isEqual from 'lodash/isEqual';
 import _remove from 'lodash/remove';
@@ -12,11 +14,15 @@ import _max from 'lodash/max';
 import _findIndex from 'lodash/findIndex';
 import _indexOf from 'lodash/indexOf';
 import _reduce from 'lodash/reduce';
-import get from 'lodash/get';
+import _get from 'lodash/get';
 import { Loading } from '../../../../components';
 import SelectReservationView from './view';
 import { RedirectErrorPage } from '../../../../pages/GeneralErrorPage';
-import { getListingQuery, getOfficeEquipments } from './queries';
+import {
+    getListingQuery,
+    getOfficeEquipments,
+    getNumRemainingChairsQuery,
+} from './queries';
 import {
     OFFICE_ID,
     END_TIME,
@@ -452,7 +458,7 @@ class SelectReservation extends Component {
     };
 
     // This one gets called when user clicks pay.
-    createReservationObject = () => {
+    createReservationObject = async clientCache => {
         // clear the object everytime. This handles the case when user reselected time slot.
         this.reservationObject = {};
 
@@ -488,6 +494,54 @@ class SelectReservation extends Component {
             });
         });
 
+        const listingIds = Object.keys(this.reservationObject);
+
+        const numOfChairsAvailList = [];
+
+        // Iterate over the listing ids and make an api call and check for num of chairs available.
+        // We need to get the lowest number of chair a user can reserve.
+        await Promise.all(
+            listingIds.map(async listingId => {
+                const timeIntervals = this.reservationObject[listingId].map(
+                    timeSlot => ({
+                        startTime: timeSlot.startDate,
+                        endTime: timeSlot.endDate,
+                    })
+                );
+                const variables = {
+                    input: {
+                        timeIntervals,
+                        listingId,
+                    },
+                };
+                const result = await clientCache.query({
+                    query: getNumRemainingChairsQuery,
+                    variables,
+                });
+
+                numOfChairsAvailList.push(
+                    _get(result, 'data.getNumRemainingChairs')
+                );
+            })
+        );
+
+        const numOfChairsAvailable = _min(numOfChairsAvailList);
+
+        if (numOfChairsAvailable < this.chairCount) {
+            message.warning(
+                `Sorry there are only ${numOfChairsAvailable} chairs available.`
+            );
+
+            return null;
+        }
+
+        // Dont' go to the next page if there are no selection.
+        if (_isEmpty(this.reservationObject)) {
+            message.warning('Please select a time slot');
+
+            return null;
+        }
+
         this.props.onMakeReservation({
             reservation: this.reservationObject,
             selectedEquipment: this.selectedEquipment,
@@ -501,12 +555,12 @@ class SelectReservation extends Component {
                 ...this.state.equipmentsSummaryDetailsData,
             ],
         });
+
+        return null;
     };
 
-    makeReservationHandler = e => {
-        e.preventDefault();
-
-        this.createReservationObject();
+    makeReservationHandler = clientCache => {
+        this.createReservationObject(clientCache);
     };
 
     updateSummaryDetails = selectedDatesAndHours => {
@@ -618,7 +672,6 @@ class SelectReservation extends Component {
 
     render() {
         const { officeId, triggerQuery, selectedDates } = this.props;
-        window.selectedDates = selectedDates;
         const listingVariables = {
             partitionKey: OFFICE_ID,
             partitionValue: officeId,
@@ -639,87 +692,100 @@ class SelectReservation extends Component {
         };
 
         return (
-            <Query
-                query={getOfficeEquipments}
-                variables={{ id: officeId }}
-                skip={!triggerQuery}
-            >
-                {({
-                    loading: loadingOfficeEquipment,
-                    data: officeEquipmentData,
-                }) => (
+            <ApolloConsumer>
+                {client => (
                     <Query
-                        query={getListingQuery}
-                        variables={{ input: listingVariables }}
+                        query={getOfficeEquipments}
+                        variables={{ id: officeId }}
                         skip={!triggerQuery}
                     >
-                        {({ loading: loadingListingQuery, error, data }) => {
-                            if (
-                                (loadingOfficeEquipment ||
-                                    loadingListingQuery) &&
-                                triggerQuery
-                            ) {
-                                return <Loading />;
-                            }
-
-                            if (!triggerQuery) {
-                                return null;
-                            }
-
-                            if (error) {
-                                return <RedirectErrorPage />;
-                            }
-
-                            const officeEquipment = get(
-                                officeEquipmentData,
-                                'getOffice.equipment'
-                            );
-
-                            const hourSlotsFromListing = getHourSlotsFromListings(
-                                data.queryListings,
-                                selectedDates
-                            );
-
-                            const hourSlotsFromReservation = getHourSlotsFromReservation(
-                                data.queryListings,
-                                selectedDates
-                            );
-
-                            const mergedHourSlotsData = removeUnavailableHourSlots(
-                                hourSlotsFromListing,
-                                hourSlotsFromReservation
-                            );
-
-                            return (
-                                <SelectReservationView
-                                    hourSlotsData={mergedHourSlotsData}
-                                    priceRange={getHourlyChairPriceRange(
-                                        data.queryListings
-                                    )}
-                                    selectedHoursHandler={
-                                        this.selectedHoursHandler
+                        {({
+                            loading: loadingOfficeEquipment,
+                            data: officeEquipmentData,
+                        }) => (
+                            <Query
+                                query={getListingQuery}
+                                variables={{ input: listingVariables }}
+                                skip={!triggerQuery}
+                            >
+                                {({
+                                    loading: loadingListingQuery,
+                                    error,
+                                    data,
+                                }) => {
+                                    if (
+                                        (loadingOfficeEquipment ||
+                                            loadingListingQuery) &&
+                                        triggerQuery
+                                    ) {
+                                        return <Loading />;
                                     }
-                                    makeReservationHandler={
-                                        this.makeReservationHandler
+
+                                    if (!triggerQuery) {
+                                        return null;
                                     }
-                                    summaryDetailsData={
-                                        this.state.summaryDetailsData
+
+                                    if (error) {
+                                        return <RedirectErrorPage />;
                                     }
-                                    totalPrice={this.state.totalPrice}
-                                    equipmentsSummaryDetailsData={
-                                        this.state.equipmentsSummaryDetailsData
-                                    }
-                                    onChairCounterHandler={
-                                        this.onChairCounterHandler
-                                    }
-                                    officeEquipment={officeEquipment}
-                                    onSelectEquipment={this.onSelectEquipment}
-                                />
-                            );
-                        }}
+
+                                    const officeEquipment = _get(
+                                        officeEquipmentData,
+                                        'getOffice.equipment'
+                                    );
+
+                                    const hourSlotsFromListing = getHourSlotsFromListings(
+                                        data.queryListings,
+                                        selectedDates
+                                    );
+
+                                    const hourSlotsFromReservation = getHourSlotsFromReservation(
+                                        data.queryListings,
+                                        selectedDates
+                                    );
+
+                                    const mergedHourSlotsData = removeUnavailableHourSlots(
+                                        hourSlotsFromListing,
+                                        hourSlotsFromReservation
+                                    );
+
+                                    return (
+                                        <SelectReservationView
+                                            hourSlotsData={mergedHourSlotsData}
+                                            priceRange={getHourlyChairPriceRange(
+                                                data.queryListings
+                                            )}
+                                            selectedHoursHandler={
+                                                this.selectedHoursHandler
+                                            }
+                                            makeReservationHandler={() => {
+                                                this.makeReservationHandler(
+                                                    client
+                                                );
+                                            }}
+                                            summaryDetailsData={
+                                                this.state.summaryDetailsData
+                                            }
+                                            totalPrice={this.state.totalPrice}
+                                            equipmentsSummaryDetailsData={
+                                                this.state
+                                                    .equipmentsSummaryDetailsData
+                                            }
+                                            onChairCounterHandler={
+                                                this.onChairCounterHandler
+                                            }
+                                            officeEquipment={officeEquipment}
+                                            onSelectEquipment={
+                                                this.onSelectEquipment
+                                            }
+                                        />
+                                    );
+                                }}
+                            </Query>
+                        )}
                     </Query>
                 )}
-            </Query>
+            </ApolloConsumer>
         );
     }
 }

@@ -63,14 +63,6 @@ class ReserveOffice extends Component {
         this.setState({
             currentDisplay: display,
         });
-
-        if (window) {
-            window.scroll({
-                top: 10,
-                left: 0,
-                behavior: 'smooth',
-            });
-        }
     };
 
     onPay = async cardId => {
@@ -241,6 +233,12 @@ class ReserveOffice extends Component {
             fetchPolicy: 'network-only',
         });
 
+        window.scrollTo({
+            top: 500,
+            left: 0,
+            behavior: 'smooth',
+        });
+        // If user is verified go to payment page.
         if (_get(result, 'data.getUser.dentist.isVerified')) {
             return this.setState({
                 currentDisplay: PAYMENT_VIEW,
