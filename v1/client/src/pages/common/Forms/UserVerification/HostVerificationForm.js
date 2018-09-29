@@ -25,6 +25,10 @@ const HostVerificationForm = props => (
                         required: true,
                         message: 'DEA Registration Number is required',
                     },
+                    {
+                        pattern: /^[A-Z][A-Z9][0-9]{7}(-\w+)?/,
+                        message: 'DEA Registration Number must appear valid',
+                    },
                 ]}
                 validateTrigger="onBlur"
                 initialValue={get(props.data, 'deaRegistrationNumber')}

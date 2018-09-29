@@ -44,7 +44,7 @@ const patientDocumentFragment = `
     }
 `;
 
-export const queryPatientDocumentQuery = `
+export const queryPatientDocumentQuery = gql`
     query ($input: QueryParams!) {
         queryPatientDocument(input: $input){
             ${patientDocumentFragment}
@@ -168,7 +168,7 @@ export const createPatientDocumentMutation = graphql(
     gql`
         mutation CreatePatientDocument($input: CreatePatientDocumentInput!) {
             createPatientDocument(input: $input) {
-                id
+                ${patientDocumentFragment}
             }
         }
     `,

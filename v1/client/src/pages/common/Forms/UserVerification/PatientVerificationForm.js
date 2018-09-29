@@ -4,7 +4,7 @@ import get from 'lodash/get';
 import { Form, Select } from 'antd';
 import styled from 'styled-components';
 
-import { Input, Radio } from '../../../../components';
+import { Input, Radio, MaskedInput } from '../../../../components';
 import { PreText, FrontBackDocumentsSelector } from './components';
 
 import supportedPayerList from '../../../../staticData/supportedPayerList';
@@ -176,7 +176,7 @@ class PatientVerificationForm extends React.Component {
                                     rules: [
                                         {
                                             required: useInsurance,
-                                            message: 'Birthdate',
+                                            message: 'Birthdate is required',
                                         },
                                         {
                                             pattern: /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/,
@@ -185,7 +185,23 @@ class PatientVerificationForm extends React.Component {
                                         },
                                     ],
                                 }
-                            )(<Input mb={32} height={50} />)}
+                            )(
+                                <MaskedInput
+                                    mask={[
+                                        /[1-9]/,
+                                        /[1-9]/,
+                                        /[1-9]/,
+                                        /[1-9]/,
+                                        '-',
+                                        /[1-9]/,
+                                        /[1-9]/,
+                                        '-',
+                                        /[1-9]/,
+                                        /[1-9]/,
+                                    ]}
+                                    height={50}
+                                />
+                            )}
                         </FormItem>
                         <FormItem label="Insurance Provider">
                             {getFieldDecorator(

@@ -160,13 +160,14 @@ class UserVerification extends Component {
         const {
             data: { queryPatientDocument },
         } = await client.query({
-            query: gql(queryPatientDocumentQuery),
+            query: queryPatientDocumentQuery,
             variables: {
                 input: {
                     partitionKey: 'patientId',
                     partitionValue: user.id,
                 },
             },
+            fetchPolicy: 'network-only',
         });
 
         if (_get(queryPatientDocument, '[0]')) {
@@ -263,7 +264,6 @@ class UserVerification extends Component {
         await Promise.all(uploadResults);
 
         if (persona === PATIENT) {
-            const { firstName, lastName } = user;
             const {
                 insurancePreference: { useInsurance },
                 insurancePreference,
@@ -275,11 +275,7 @@ class UserVerification extends Component {
                 insurancePreference: {
                     ...insurancePreference,
                     insurance: useInsurance
-                        ? {
-                              ...insurancePreference.insurance,
-                              firstName,
-                              lastName,
-                          }
+                        ? insurancePreference.insurance
                         : null,
                 },
             });
@@ -311,6 +307,7 @@ class UserVerification extends Component {
         window.scrollTo(0, 0);
 
         if (this.props.onComplete) {
+            await this.fetchData();
             this.props.onComplete({ persona, verified: true });
         }
     };
@@ -339,6 +336,7 @@ class UserVerification extends Component {
             <Form onSuccess={this.handleSubmit}>
                 {hasUpdated && (
                     <StyledAlert
+                        showIcon
                         message={'You have been verified!'}
                         type={'success'}
                     />
