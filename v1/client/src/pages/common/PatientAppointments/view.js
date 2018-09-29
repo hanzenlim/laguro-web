@@ -3,10 +3,23 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import isEmpty from 'lodash/isEmpty';
 
-import { Box, Text, Flex, Image, Button } from '../../../components';
+import { Box, Text, Flex, Image, Button, Card } from '../../../components';
 
 import { CANCELLED } from '../../../util/strings';
 import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
+
+export const NoAppointmentsCard = ({ text }) => (
+    <Card
+        width={720}
+        style={{ boxShadow: '1px 1px 7px 0 rgba(0, 0, 0, 0.15)' }}
+    >
+        <Flex alignItems="center" justifyContent="center">
+            <Text fontSize={3} fontWeight="bold" color="text.black50">
+                {text}
+            </Text>
+        </Flex>
+    </Card>
+);
 
 class PatientAppointments extends PureComponent {
     renderAppointments = appointments =>
@@ -74,9 +87,7 @@ class PatientAppointments extends PureComponent {
                 {!isEmpty(appointments) ? (
                     this.renderAppointments(appointments)
                 ) : (
-                    <Text textAlign="center" color="text.gray">
-                        NO APPOINTMENTS
-                    </Text>
+                    <NoAppointmentsCard text="You have no appointments yet!" />
                 )}
             </Box>
         );

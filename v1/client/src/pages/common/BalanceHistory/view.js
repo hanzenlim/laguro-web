@@ -44,9 +44,6 @@ const BalanceHistoryView = ({
     ...rest
 }) => (
     <Flex flexDirection="column" width={720}>
-        <Text mb={35} fontSize={4} fontStyle="italic" fontWeight="bold">
-            Balance
-        </Text>
         <StyledFlex
             height={100}
             width={720}

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
 import queryString from 'query-string';
 import history from '../../history';
@@ -36,6 +36,13 @@ const Grid = styled(Box)`
     display: grid;
     grid-template-columns: 290px 632px;
     grid-column-gap: 70px;
+`;
+
+const StyledMenuItem = styled(Menu.Item)`
+    &&.ant-menu-item-selected {
+        border-right: 4px solid;
+        border-color: ${props => props.theme.colors.divider.blue};
+    }
 `;
 
 class ProfileView extends Component {
@@ -131,99 +138,112 @@ class ProfileView extends Component {
                             defaultSelectedKeys={[panelName]}
                             onClick={this.handleClick}
                         >
-                            <Menu.Item key={MY_PROFILE}>
+                            <Text
+                                fontSize={4}
+                                color="text.blue"
+                                mr={200}
+                                mb={30}
+                                fontWeight="bold"
+                            >
+                                my page
+                            </Text>
+                            <StyledMenuItem key={MY_PROFILE}>
                                 <Text
                                     fontSize={4}
                                     color="inherit"
                                     lineHeight="40px"
                                 >
-                                    my profile
+                                    My Account
                                 </Text>
-                            </Menu.Item>
+                            </StyledMenuItem>
                             {(isDentist || isHost) && (
-                                <Menu.Item key={DENTIST_PROFILE}>
+                                <StyledMenuItem key={DENTIST_PROFILE}>
                                     <Text
                                         fontSize={4}
                                         color="inherit"
                                         lineHeight="40px"
                                     >
-                                        dentist profile
+                                        My Profile
                                     </Text>
-                                </Menu.Item>
+                                </StyledMenuItem>
                             )}
-                            <Menu.Item key={MY_DOCUMENTS}>
+                            <StyledMenuItem key={MY_DOCUMENTS}>
                                 <Text
                                     fontSize={4}
                                     color="inherit"
                                     lineHeight="40px"
                                 >
-                                    my documents
+                                    My Documents
                                 </Text>
-                            </Menu.Item>
+                            </StyledMenuItem>
                             {!isDentist &&
                                 !isHost && (
-                                    <Menu.Item key={MY_APPOINTMENTS}>
+                                    <StyledMenuItem key={MY_APPOINTMENTS}>
                                         <Text
                                             fontSize={4}
                                             color="inherit"
                                             lineHeight="40px"
                                         >
-                                            my appointments
+                                            My Appointments
                                         </Text>
-                                    </Menu.Item>
+                                    </StyledMenuItem>
                                 )}
                             {isHost && (
-                                <Menu.Item key={MY_LISTINGS}>
+                                <StyledMenuItem key={MY_LISTINGS}>
                                     <Text
                                         fontSize={4}
                                         color="inherit"
                                         lineHeight="40px"
                                     >
-                                        my listings
+                                        My Listings
                                     </Text>
-                                </Menu.Item>
+                                </StyledMenuItem>
                             )}
                             {isDentist && (
-                                <Menu.Item key={MY_BOOKINGS}>
+                                <StyledMenuItem key={MY_BOOKINGS}>
                                     <Text
                                         fontSize={4}
                                         color="inherit"
                                         lineHeight="40px"
                                     >
-                                        bookings and appointments
+                                        Bookings & Appointments
                                     </Text>
-                                </Menu.Item>
+                                </StyledMenuItem>
                             )}
-                            <Menu.Item key={PAYMENTS}>
+                            <Box mt={40} />
+                            <StyledMenuItem key={PAYMENTS}>
                                 <Text
                                     fontSize={4}
                                     color="inherit"
                                     lineHeight="40px"
                                 >
-                                    payments
+                                    Payment History
                                 </Text>
-                            </Menu.Item>
+                            </StyledMenuItem>
                             {(isHost || isDentist) && (
-                                <Menu.Item key={BALANCE}>
+                                <StyledMenuItem key={BALANCE}>
                                     <Text
                                         fontSize={4}
                                         color="inherit"
                                         lineHeight="40px"
                                     >
-                                        balance
+                                        Laguro Balance
                                     </Text>
-                                </Menu.Item>
+                                </StyledMenuItem>
                             )}
                             {(isDentist || isHost) && (
-                                <Menu.Item key={PUBLIC_PROFILE}>
-                                    <Text
-                                        fontSize={4}
-                                        color="inherit"
-                                        lineHeight="40px"
-                                    >
-                                        public profile
-                                    </Text>
-                                </Menu.Item>
+                                <Fragment>
+                                    <Box mt={40} />
+                                    <StyledMenuItem key={PUBLIC_PROFILE}>
+                                        <Text
+                                            fontSize={4}
+                                            color="inherit"
+                                            lineHeight="40px"
+                                        >
+                                            Preview Public Profile
+                                        </Text>
+                                    </StyledMenuItem>
+                                </Fragment>
                             )}
                         </Menu>
                     </Box>

@@ -38,16 +38,33 @@ const ProfileMenu = ({ logout, isDentist, isHost }) => {
     if (isDentist) {
         return (
             <Flex flexDirection="column">
-                <Link to={'/profile'}>my page</Link>
+                <Link to={'/profile'}>
+                    <Text color="text.black" fontSize={2}>
+                        my page
+                    </Text>
+                </Link>
                 <Link to={'/profile?selectedTab=my_bookings'}>
-                    bookings/appointments
+                    <Text color="text.black" fontSize={2}>
+                        bookings/appointments
+                    </Text>
                 </Link>
                 <Link to={'/profile?selectedTab=payments'}>
-                    laguro payments
+                    <Text color="text.black" fontSize={2}>
+                        payments
+                    </Text>
                 </Link>
-                <Link to={'/profile?selectedTab=balance'}>laguro balance</Link>
+                <Link to={'/profile?selectedTab=balance'}>
+                    <Text color="text.black" fontSize={2}>
+                        laguro balance
+                    </Text>
+                </Link>
+                <Text color="text.black" fontWeight="bold" fontSize={2}>
+                    -
+                </Text>
                 <Link to={'#'} onClick={logout}>
-                    log out
+                    <Text color="text.blue" fontSize={2}>
+                        log out
+                    </Text>
                 </Link>
             </Flex>
         );
@@ -57,17 +74,38 @@ const ProfileMenu = ({ logout, isDentist, isHost }) => {
     if (isHost) {
         return (
             <Flex flexDirection="column">
-                <Link to={'/profile'}>my page</Link>
-                <Link to={'/profile?selectedTab=my_listings'}>my listings</Link>
+                <Link to={'/profile'}>
+                    <Text color="text.black" fontSize={2}>
+                        my page
+                    </Text>
+                </Link>
+                <Link to={'/profile?selectedTab=my_listings'}>
+                    <Text color="text.black" fontSize={2}>
+                        my listings
+                    </Text>
+                </Link>
                 <Link to={'/profile?selectedTab=my_bookings'}>
-                    bookings/appointments
+                    <Text color="text.black" fontSize={2}>
+                        bookings/appointments
+                    </Text>
                 </Link>
                 <Link to={'/profile?selectedTab=payments'}>
-                    laguro payments
+                    <Text color="text.black" fontSize={2}>
+                        payments
+                    </Text>
                 </Link>
-                <Link to={'/profile?selectedTab=balance'}>laguro balance</Link>
+                <Link to={'/profile?selectedTab=balance'}>
+                    <Text color="text.black" fontSize={2}>
+                        laguro balance
+                    </Text>
+                </Link>
+                <Text color="text.black" fontWeight="bold" fontSize={2}>
+                    -
+                </Text>
                 <Link to={'#'} onClick={logout}>
-                    log out
+                    <Text color="text.blue" fontSize={2}>
+                        log out
+                    </Text>
                 </Link>
             </Flex>
         );
@@ -76,13 +114,23 @@ const ProfileMenu = ({ logout, isDentist, isHost }) => {
     // Menu link for patient
     return (
         <Flex flexDirection="column">
-            <Link to={'/profile'}>my page</Link>
-            <Link to={'/profile?selectedTab=my_listings'}>my listings</Link>
-            <Link to={'/profile?selectedTab=my_appointments'}>
-                my appointments
+            <Link to={'/profile'}>
+                <Text color="text.black" fontSize={2}>
+                    my page
+                </Text>
             </Link>
+            <Link to={'/profile?selectedTab=my_appointments'}>
+                <Text color="text.black" fontSize={2}>
+                    my appointments
+                </Text>
+            </Link>
+            <Text color="text.black" fontWeight="bold" fontSize={2}>
+                -
+            </Text>
             <Link to={'#'} onClick={logout}>
-                log out
+                <Text color="text.blue" fontSize={2}>
+                    log out
+                </Text>
             </Link>
         </Flex>
     );

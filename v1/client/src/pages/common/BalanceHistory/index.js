@@ -72,7 +72,7 @@ class BalanceHistoryContainer extends PureComponent {
                 }}
             >
                 {({ loading, error, data: paymentData }) => {
-                    if (loading) return <CardLoading title="Balance" />;
+                    if (loading) return <CardLoading />;
 
                     if (error) {
                         return <RedirectErrorPage />;
