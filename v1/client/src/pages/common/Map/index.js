@@ -4,7 +4,6 @@ import ReactMapGL, { Marker, NavigationControl } from 'react-map-gl';
 import styled from 'styled-components';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import isEqual from 'lodash/isEqual';
-import { getMyPosition } from '../../../util/navigatorUtil';
 
 import { Box, Icon } from '../../../components';
 import { cleanAddress } from '../../../util/styleUtil';
@@ -32,10 +31,8 @@ class Map extends PureComponent {
 
         const { urlParams } = props;
 
-        // TODO plugin url lat/lon as a prop
-        this.defaultPosition = getMyPosition();
         this.currentPosition =
-            this.getPosition(urlParams) || this.defaultPosition;
+            this.getPosition(urlParams) || this.props.defaultPosition;
 
         this.state = {
             popupInfo: null,
@@ -88,7 +85,8 @@ class Map extends PureComponent {
                     lat: get(this.props, 'data[0].latitude'),
                     lon: get(this.props, 'data[0].longitude'),
                 }) || this.getPosition(urlParams);
-            this.currentPosition = this.currentPosition || this.defaultPosition;
+            this.currentPosition =
+                this.currentPosition || this.props.defaultPosition;
 
             this.setState({
                 viewport: {

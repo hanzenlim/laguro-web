@@ -27,9 +27,14 @@ class DetailsSearchPage extends PureComponent {
 
     componentDidMount = async () => {
         const urlParams = queryString.parse(this.props.location.search);
-        const response = await this.fetchData(urlParams);
+        const [response, defaultPosition] = await Promise.all([
+            this.fetchData(urlParams),
+            getMyPosition(),
+        ]);
         const mappedData = this.getMappedData(response);
         const total = this.getDataCount(response);
+
+        this.defaultPosition = defaultPosition;
 
         this.setState({ data: mappedData, total, loading: false, urlParams });
     };
@@ -92,8 +97,6 @@ class DetailsSearchPage extends PureComponent {
         const should = [];
         const filter = [];
 
-        const defaultPosition = getMyPosition();
-
         if (text) {
             should.push({
                 multi_match: {
@@ -113,8 +116,8 @@ class DetailsSearchPage extends PureComponent {
                 geo_distance: {
                     distance: DISTANCE,
                     'reservations.geoPoint': {
-                        lon: lon || defaultPosition.lon,
-                        lat: lat || defaultPosition.lat,
+                        lon: lon || this.defaultPosition.lon,
+                        lat: lat || this.defaultPosition.lat,
                     },
                 },
             });
@@ -177,6 +180,7 @@ class DetailsSearchPage extends PureComponent {
             <DentistSearchPageView
                 data={this.state.data}
                 total={this.state.total}
+                defaultPosition={this.defaultPosition}
                 urlParams={this.state.urlParams}
             />
         );

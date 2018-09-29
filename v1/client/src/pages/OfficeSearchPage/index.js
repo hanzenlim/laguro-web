@@ -27,9 +27,14 @@ class OfficeSearchPage extends PureComponent {
 
     componentDidMount = async () => {
         const urlParams = queryString.parse(this.props.location.search);
-        const response = await this.fetchData(urlParams);
+        const [response, defaultPosition] = await Promise.all([
+            this.fetchData(urlParams),
+            getMyPosition(),
+        ]);
         const mappedData = this.getMappedData(response);
         const total = this.getDataCount(response);
+
+        this.defaultPosition = defaultPosition;
 
         this.setState({ data: mappedData, total, loading: false, urlParams });
     };
@@ -93,8 +98,6 @@ class OfficeSearchPage extends PureComponent {
         const should = [];
         const filter = [];
 
-        const defaultLocation = getMyPosition();
-
         if (text) {
             // do not prefix match on document fields if location is specified
             should.push({
@@ -114,8 +117,8 @@ class OfficeSearchPage extends PureComponent {
                 geo_distance: {
                     distance: DISTANCE,
                     'location.geoPoint': {
-                        lon: lon || defaultLocation.lon,
-                        lat: lat || defaultLocation.lat,
+                        lon: lon || this.defaultLocation.lon,
+                        lat: lat || this.defaultLocation.lat,
                     },
                 },
             });
@@ -176,6 +179,7 @@ class OfficeSearchPage extends PureComponent {
 
         return (
             <OfficeSearchPageView
+                defaultPosition={this.defaultPosition}
                 data={this.state.data}
                 total={this.state.total}
                 urlParams={this.state.urlParams}
