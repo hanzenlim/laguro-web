@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Box, Flex, Text } from '../../../components';
+import { Box, Flex, Text, Link } from '../../../components';
 import DentistCard from '../DentistCard';
 
 const FeaturedDentistsView = props => {
@@ -15,12 +15,14 @@ const FeaturedDentistsView = props => {
             <Flex justifyContent="space-between" mt={30}>
                 {featuredDentists.map(item => (
                     <Box width="295px">
-                        <DentistCard
-                            name={item.name}
-                            specialty={item.specialty}
-                            numReviews={item.numReviews}
-                            rating={item.averageRating}
-                        />
+                        <Link type="ghost" to={`/dentist/${item.id}`}>
+                            <DentistCard
+                                name={item.name}
+                                specialty={item.specialty}
+                                numReviews={item.numReviews}
+                                rating={item.averageRating}
+                            />
+                        </Link>
                     </Box>
                 ))}
             </Flex>

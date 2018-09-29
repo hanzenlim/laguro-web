@@ -45,6 +45,7 @@ const FeaturedListView = props => (
                                 <CarouselLinkCard
                                     height="100%"
                                     size="big"
+                                    url={`/dentist/${item._id}`}
                                     {...item._source}
                                 />
                             </Box>
