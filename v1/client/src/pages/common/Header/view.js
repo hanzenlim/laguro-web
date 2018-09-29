@@ -2,18 +2,12 @@ import React, { Fragment } from 'react';
 import Intercom from 'react-intercom';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { Menu, Dropdown } from 'antd';
 
 import SearchBox from '../SearchBox';
 import logo from '../../../components/Image/logo.png';
 import whiteLogo from '../../../components/Image/whiteLogo.png';
-import {
-    Flex,
-    Link,
-    Container,
-    Text,
-    Image,
-    Popover,
-} from '../../../components';
+import { Flex, Link, Container, Text, Image } from '../../../components';
 import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
 import LoginModal from '../Modals/LoginModal';
 import RegistrationModal from '../Modals/RegistrationModal';
@@ -33,108 +27,148 @@ const NavBarLink = styled(Link)`
     }
 `;
 
-const ProfileMenu = ({ logout, isDentist, isHost }) => {
-    // Menu link for dentist
+const StyledMenu = styled(Menu)`
+    && {
+        border-radius: 0;
+    }
+
+    .ant-dropdown-menu-item {
+        padding: 8px 16px;
+    }
+`;
+
+const ProfileMenu = props => {
+    const { logout, isDentist, isHost, ...rest } = props;
+
     if (isDentist) {
         return (
-            <Flex flexDirection="column">
-                <Link to={'/profile'}>
-                    <Text color="text.black" fontSize={2}>
-                        my page
-                    </Text>
-                </Link>
-                <Link to={'/profile?selectedTab=my_bookings'}>
-                    <Text color="text.black" fontSize={2}>
-                        bookings/appointments
-                    </Text>
-                </Link>
-                <Link to={'/profile?selectedTab=payments'}>
-                    <Text color="text.black" fontSize={2}>
-                        payments
-                    </Text>
-                </Link>
-                <Link to={'/profile?selectedTab=balance'}>
-                    <Text color="text.black" fontSize={2}>
-                        laguro balance
-                    </Text>
-                </Link>
-                <Text color="text.black" fontWeight="bold" fontSize={2}>
-                    -
-                </Text>
-                <Link to={'#'} onClick={logout}>
-                    <Text color="text.blue" fontSize={2}>
-                        log out
-                    </Text>
-                </Link>
-            </Flex>
+            <StyledMenu {...rest}>
+                <Menu.Item>
+                    <Link to={'/profile?selectedTab=my_profile'}>
+                        <Text color="text.black" fontSize={2}>
+                            my page
+                        </Text>
+                    </Link>
+                </Menu.Item>
+                <Menu.Item>
+                    <Link to={'/profile?selectedTab=my_bookings'}>
+                        <Text color="text.black" fontSize={2}>
+                            bookings/appointments
+                        </Text>
+                    </Link>
+                </Menu.Item>
+                <Menu.Item>
+                    <Link to={'/profile?selectedTab=payments'}>
+                        <Text color="text.black" fontSize={2}>
+                            payments
+                        </Text>
+                    </Link>
+                </Menu.Item>
+                <Menu.Item>
+                    <Link to={'/profile?selectedTab=balance'}>
+                        <Text color="text.black" fontSize={2}>
+                            laguro balance
+                        </Text>
+                    </Link>
+                </Menu.Item>
+                <Menu.Divider />
+                <Menu.Item>
+                    <Link to={'#'} onClick={logout}>
+                        <Text color="text.blue" fontSize={2}>
+                            log out
+                        </Text>
+                    </Link>
+                </Menu.Item>
+            </StyledMenu>
         );
     }
 
     // Menu link for host
     if (isHost) {
         return (
-            <Flex flexDirection="column">
-                <Link to={'/profile'}>
-                    <Text color="text.black" fontSize={2}>
-                        my page
-                    </Text>
-                </Link>
-                <Link to={'/profile?selectedTab=my_listings'}>
-                    <Text color="text.black" fontSize={2}>
-                        my listings
-                    </Text>
-                </Link>
-                <Link to={'/profile?selectedTab=my_bookings'}>
-                    <Text color="text.black" fontSize={2}>
-                        bookings/appointments
-                    </Text>
-                </Link>
-                <Link to={'/profile?selectedTab=payments'}>
-                    <Text color="text.black" fontSize={2}>
-                        payments
-                    </Text>
-                </Link>
-                <Link to={'/profile?selectedTab=balance'}>
-                    <Text color="text.black" fontSize={2}>
-                        laguro balance
-                    </Text>
-                </Link>
-                <Text color="text.black" fontWeight="bold" fontSize={2}>
-                    -
-                </Text>
-                <Link to={'#'} onClick={logout}>
-                    <Text color="text.blue" fontSize={2}>
-                        log out
-                    </Text>
-                </Link>
-            </Flex>
+            <StyledMenu {...rest}>
+                <Menu.Item>
+                    <Link to={'/profile?selectedTab=my_profile'}>
+                        <Text color="text.black" fontSize={2}>
+                            my page
+                        </Text>
+                    </Link>
+                </Menu.Item>
+                <Menu.Item>
+                    <Link to={'/profile?selectedTab=my_listings'}>
+                        <Text color="text.black" fontSize={2}>
+                            my listings
+                        </Text>
+                    </Link>
+                </Menu.Item>
+                <Menu.Item>
+                    <Link to={'/profile?selectedTab=my_bookings'}>
+                        <Text color="text.black" fontSize={2}>
+                            bookings/appointments
+                        </Text>
+                    </Link>
+                </Menu.Item>
+                <Menu.Item>
+                    <Link to={'/profile?selectedTab=payments'}>
+                        <Text color="text.black" fontSize={2}>
+                            payments
+                        </Text>
+                    </Link>
+                </Menu.Item>
+
+                <Menu.Item>
+                    <Link to={'/profile?selectedTab=balance'}>
+                        <Text color="text.black" fontSize={2}>
+                            laguro balance
+                        </Text>
+                    </Link>
+                </Menu.Item>
+                <Menu.Divider />
+                <Menu.Item>
+                    <Link to={'#'} onClick={logout}>
+                        <Text color="text.blue" fontSize={2}>
+                            log out
+                        </Text>
+                    </Link>
+                </Menu.Item>
+            </StyledMenu>
         );
     }
 
     // Menu link for patient
     return (
-        <Flex flexDirection="column">
-            <Link to={'/profile'}>
-                <Text color="text.black" fontSize={2}>
-                    my page
-                </Text>
-            </Link>
-            <Link to={'/profile?selectedTab=my_appointments'}>
-                <Text color="text.black" fontSize={2}>
-                    my appointments
-                </Text>
-            </Link>
-            <Text color="text.black" fontWeight="bold" fontSize={2}>
-                -
-            </Text>
-            <Link to={'#'} onClick={logout}>
-                <Text color="text.blue" fontSize={2}>
-                    log out
-                </Text>
-            </Link>
-        </Flex>
+        <StyledMenu {...rest}>
+            <Menu.Item>
+                <Link to={'/profile?selectedTab=my_profile'}>
+                    <Text color="text.black" fontSize={2}>
+                        my page
+                    </Text>
+                </Link>
+            </Menu.Item>
+
+            <Menu.Item>
+                <Link to={'/profile?selectedTab=my_appointments'}>
+                    <Text color="text.black" fontSize={2}>
+                        my appointments
+                    </Text>
+                </Link>
+            </Menu.Item>
+            <Menu.Divider />
+
+            <Menu.Item>
+                <Link to={'#'} onClick={logout}>
+                    <Text color="text.blue" fontSize={2}>
+                        log out
+                    </Text>
+                </Link>
+            </Menu.Item>
+        </StyledMenu>
     );
 };
+
+const ProfileImage = styled(Image)`
+    cursor: pointer;
+`;
 
 const ProfileButton = ({
     auth,
@@ -146,25 +180,25 @@ const ProfileButton = ({
     isHost,
 }) =>
     auth ? (
-        <Popover
-            placement="bottomRight"
-            content={
+        <Dropdown
+            overlay={
                 <ProfileMenu
                     isDentist={isDentist}
                     isHost={isHost}
                     logout={logout}
                 />
             }
-            arrowPointAtCenter
+            placement="bottomRight"
+            trigger={['hover']}
         >
-            <Image
+            <ProfileImage
                 src={auth.imageUrl ? auth.imageUrl : defaultUserImage}
                 width={70}
                 height={70}
                 borderRadius={70}
                 ml={60}
             />
-        </Popover>
+        </Dropdown>
     ) : (
         <Fragment>
             <NavBarLink onClick={openRegistrationModal} to={'#'}>
