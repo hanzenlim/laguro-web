@@ -92,13 +92,11 @@ const HomePageView = () => (
                         color="text.white"
                         fontSize={5}
                         lineHeight={1.4}
-                        lineHeight="50px"
                         fontWeight="medium"
                     >
                         Find your next dentist
                     </Text>
                     <Text
-                        lineHeight="50px"
                         color="text.white"
                         lineHeight={1.4}
                         fontSize={5}
