@@ -9,7 +9,7 @@ const FeaturedDentistsView = props => {
     if (!featuredDentists) return null;
 
     return (
-        <Box mt={40}>
+        <Box mt={40} mb={80}>
             <Text fontSize={5}>similar dentists</Text>
 
             <Flex justifyContent="space-between" mt={30}>

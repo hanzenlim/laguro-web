@@ -10,7 +10,7 @@ const FeaturedOfficesView = props => {
     if (!featuredOffices) return null;
 
     return (
-        <Box mt={40} height={360} mb={-80}>
+        <Box mt={40} height={360} mb={80}>
             <Text fontSize={5}>find our highlights</Text>
 
             <Flex justifyContent="flex-start" mt={30}>

@@ -63,7 +63,7 @@ class SearchBox extends PureComponent {
         }
 
         const currentPath = _get(history, 'location.pathname') || DENTIST_PATH;
-        const path = currentPath.includes(OFFICE_PATH)
+        const path = currentPath.includes('office')
             ? OFFICE_PATH
             : DENTIST_PATH;
 
