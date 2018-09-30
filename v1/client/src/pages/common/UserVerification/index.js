@@ -1,3 +1,3 @@
-import UserVerification from './UserVerification';
+import UserVerification from './view';
 
 export default UserVerification;
