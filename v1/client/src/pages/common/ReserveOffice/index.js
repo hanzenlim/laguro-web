@@ -179,7 +179,7 @@ class ReserveOffice extends Component {
                                 listingId,
                                 reservedBy,
                                 paymentOptionId: cardId,
-                                totalPaid: totalPrice,
+                                totalPaid: Math.round(totalPrice),
                                 availableTimes,
                             },
                         },
