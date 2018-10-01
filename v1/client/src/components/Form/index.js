@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import isObject from 'lodash/isObject';
+import debounce from 'lodash/debounce';
+import delay from 'lodash/delay';
 
 import { Form as AntdForm } from 'antd';
 import styled from 'styled-components';
@@ -31,19 +33,26 @@ export class InnerForm extends Component {
     constructor(props) {
         super(props);
         this.state = { submitting: false };
+
+        this.debouncedSuccess = debounce(this.handleSuccess, 3000, {
+            leading: true,
+            trailing: false,
+        });
     }
+
+    handleSuccess = values => {
+        this.props.onSuccess(values);
+    };
 
     handleSubmit = event => {
         event.preventDefault();
-        this.props.form.validateFields((validationError, values) => {
-            if (!validationError && this.state.submitting === false) {
+
+        this.props.form.validateFields(async (validationError, values) => {
+            if (!validationError) {
+                this.setState({ submitting: true });
                 try {
-                    this.props.onSuccess(values);
-                    if (this.props.debounce !== 'false') {
-                        this.setState({ submitting: true });
-                    }
+                    await this.debouncedSuccess(values);
                 } catch (submissionError) {
-                    this.setState({ submitting: false });
                     if (submissionError && submissionError.message) {
                         // eslint-disable-next-line
                         console.log(
@@ -52,6 +61,9 @@ export class InnerForm extends Component {
                         );
                     }
                 }
+                delay(() => {
+                    this.setState({ submitting: false });
+                }, 750);
             }
         });
     };

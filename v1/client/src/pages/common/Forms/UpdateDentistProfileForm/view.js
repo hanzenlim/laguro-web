@@ -137,7 +137,7 @@ const UpdateDentitstProfileForm = props => {
                     <FormItem
                         name="specialty"
                         label="Title"
-                        initialValue={data.specialty || 'general_dentist'}
+                        initialValue={data.specialty || 'General Dentist'}
                         mb={32}
                         height={50}
                         input={<Select>{SpecialtyOptions}</Select>}
