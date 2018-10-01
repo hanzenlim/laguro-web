@@ -75,6 +75,7 @@ class UpdateDentistProfileContainer extends PureComponent {
                 {({ data }) => (
                     <Query
                         query={getUserDentistQuery}
+                        fetchPolicy="cache-and-network"
                         variables={{ id: data.activeUser.id }}
                         onCompleted={this.onCompleted}
                     >
