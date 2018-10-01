@@ -25,6 +25,7 @@ const NewCardFormView = ({
     isButtonOutside,
     handleSubmit,
     onBackButton,
+    hasBackButton,
 }) => (
     <Form layout="vertical" onSuccess={handleSubmit}>
         <FormItem
@@ -59,21 +60,22 @@ const NewCardFormView = ({
             ]}
             input={<Input type="string" />}
         />
-        {onBackButton && (
-            // Temporary solution before we can figure out
-            // how to connect an external button to a form
-            <Button
-                ghost={true}
-                height={55}
-                mb={10}
-                width={'100%'}
-                fontSize={2}
-                color="text.blue"
-                onClick={onBackButton}
-            >
-                Back
-            </Button>
-        )}
+        {hasBackButton &&
+            onBackButton && (
+                // Temporary solution before we can figure out
+                // how to connect an external button to a form
+                <Button
+                    ghost={true}
+                    height={55}
+                    mb={10}
+                    width={'100%'}
+                    fontSize={2}
+                    color="text.blue"
+                    onClick={onBackButton}
+                >
+                    Back
+                </Button>
+            )}
         <SubmitButton
             width="100%"
             height={60}

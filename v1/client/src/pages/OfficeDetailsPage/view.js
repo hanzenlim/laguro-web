@@ -16,7 +16,7 @@ import { OFFICE } from '../../util/strings';
 import ReviewContainer from '../common/ReviewContainer';
 import FeaturedOffices from './FeaturedOffices';
 
-const renderReservationModule = () => <Payment />;
+const renderReservationModule = () => <Payment hasBackButton />;
 
 const StyledCarousel = styled(SlickCarousel)`
     && {
