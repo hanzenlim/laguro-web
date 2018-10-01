@@ -58,6 +58,20 @@ class BalanceHistoryContainer extends PureComponent {
         this.setState({ dateRange: dates });
     };
 
+    totalMany = (allPayments, statusName) => {
+        let invoiceItems = [];
+
+        allPayments
+            .filter(payment => payment.paymentStatus === statusName)
+            .forEach(payment => {
+                invoiceItems = [...invoiceItems, ...payment.invoice.items];
+            });
+
+        return invoiceItems
+            .map(item => item.payoutAmount)
+            .reduce((acc, val) => acc + val, 0);
+    };
+
     render() {
         const { userId } = this.props;
         const { accountToken } = this.state;
@@ -89,16 +103,15 @@ class BalanceHistoryContainer extends PureComponent {
                         }
                     );
 
-                    const totalMany = statusName =>
-                        allPayments
-                            .filter(
-                                payment => payment.paymentStatus === statusName
-                            )
-                            .map(payment => payment.nominalAmount)
-                            .reduce((acc, val) => Number(acc) + Number(val), 0);
+                    const totalAvailable = this.totalMany(
+                        allPayments,
+                        PAYMENT_AVAILABLE
+                    );
 
-                    const totalAvailable = totalMany(PAYMENT_AVAILABLE);
-                    const totalPending = totalMany(PAYMENT_PENDING);
+                    const totalPending = this.totalMany(
+                        allPayments,
+                        PAYMENT_PENDING
+                    );
 
                     let filteredPayments = allPayments.filter(
                         payment =>
