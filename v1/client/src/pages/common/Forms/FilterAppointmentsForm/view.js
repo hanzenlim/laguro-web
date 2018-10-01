@@ -84,7 +84,15 @@ const FilterAppointmentsFormView = props => {
                         },
                     ]}
                     initialValue={locationList[0]}
-                    input={renderOptions(locationList)}
+                    input={
+                        <Select>
+                            {locationList.map(location => (
+                                <Select.Option value={location}>
+                                    {location}
+                                </Select.Option>
+                            ))}
+                        </Select>
+                    }
                 />
                 <FormItem
                     name="date"

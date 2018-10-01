@@ -50,11 +50,9 @@ class ProfileView extends Component {
         super(props);
 
         const params = queryString.parse(window.location.search);
-        const panelName = params.selectedTab;
 
         this.state = {
-            panelName,
-            panel: this.renderPanel(panelName || MY_PROFILE),
+            panel: params.selectedTab || MY_PROFILE,
         };
     }
 
@@ -134,7 +132,7 @@ class ProfileView extends Component {
     };
 
     render() {
-        const { panel, panelName = MY_PROFILE } = this.state;
+        const { panel } = this.state;
         const { isDentist, isHost } = this.props;
 
         return (
@@ -142,7 +140,8 @@ class ProfileView extends Component {
                 <Grid mt={70} pb={50}>
                     <Box>
                         <Menu
-                            defaultSelectedKeys={[panelName]}
+                            selectedKeys={[panel]}
+                            defaultSelectedKeys={[panel]}
                             onClick={this.handleClick}
                         >
                             <Text
