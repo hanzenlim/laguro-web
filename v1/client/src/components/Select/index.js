@@ -15,6 +15,7 @@ const StyledSelect = styled(AntdSelect)`
 
     .ant-select-selection__rendered {
         line-height: 1;
+        width: 90%;
     }
 
     .ant-select-selection-selected-value {

@@ -37,7 +37,7 @@ const StyledFormContainer = styled.div`
     > form {
         display: grid;
         grid-column-gap: 15px;
-        grid-template-columns: 50%;
+        grid-template-columns: 1fr 1fr;
 
         > div:nth-child(1) {
             grid-column-start: 1;
