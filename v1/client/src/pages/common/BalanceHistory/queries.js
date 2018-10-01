@@ -8,7 +8,6 @@ export const GET_PAYMENTS = gql`
                 items {
                     name
                     payoutAmount
-                    id
                     quantity
                     type
                     totalPrice
