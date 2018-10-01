@@ -59,12 +59,12 @@ class BalanceHistoryContainer extends PureComponent {
     };
 
     totalMany = (allPayments, statusName) => {
-        let invoiceItems = [];
+        const invoiceItems = [];
 
         allPayments
             .filter(payment => payment.paymentStatus === statusName)
             .forEach(payment => {
-                invoiceItems = [...invoiceItems, ...payment.invoice.items];
+                invoiceItems.push(...payment.invoice.items);
             });
 
         return invoiceItems
