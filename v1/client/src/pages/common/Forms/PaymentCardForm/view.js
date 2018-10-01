@@ -28,6 +28,7 @@ const CardView = ({
     handleSubmitNewCard,
     onChangeCardSelect,
     onBackButton,
+    hasBackButton,
 }) => (
     <Box width="100%" position="relative">
         <Text fontSize={3} color="text.black" fontWeight="bold" mb={18}>
@@ -48,11 +49,13 @@ const CardView = ({
                     handleSubmit={handleSubmitNewCard}
                     isButtonOutside={isButtonOutside}
                     onBackButton={onBackButton}
+                    hasBackButton={hasBackButton}
                 />
             )}
         </Box>
 
-        {selectedCard !== NEW_CARD_PAYMENT_METHOD &&
+        {hasBackButton &&
+            selectedCard !== NEW_CARD_PAYMENT_METHOD &&
             onBackButton && (
                 <Button
                     ghost={true}

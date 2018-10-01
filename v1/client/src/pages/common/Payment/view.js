@@ -12,6 +12,7 @@ const PaymentView = props => {
         userId,
         handleSubmit,
         onBackButton,
+        hasBackButton,
     } = props;
 
     return (
@@ -24,6 +25,7 @@ const PaymentView = props => {
                         userId={userId}
                         handleSubmit={handleSubmit}
                         onBackButton={onBackButton}
+                        hasBackButton={hasBackButton}
                     />
                 </Elements>
             </StripeProvider>
