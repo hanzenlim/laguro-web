@@ -59,7 +59,7 @@ const BalanceHistoryView = ({
                     lineHeight="1.1"
                     color="text.blue"
                 >
-                    {renderPrice(totalAvailable * 0.8)}
+                    {renderPrice(totalAvailable)}
                 </Text>
             </Box>
             <Box>
@@ -70,7 +70,7 @@ const BalanceHistoryView = ({
                     lineHeight="1.1"
                     color="text.yellow"
                 >
-                    {renderPrice(totalPending * 0.8)}
+                    {renderPrice(totalPending)}
                 </Text>
             </Box>
             <Box>
@@ -81,7 +81,7 @@ const BalanceHistoryView = ({
                     lineHeight="1.1"
                     color="text.black"
                 >
-                    {renderPrice((totalPending + totalAvailable) * 0.8)}
+                    {renderPrice(totalPending + totalAvailable)}
                 </Text>
             </Box>
         </StyledFlex>
