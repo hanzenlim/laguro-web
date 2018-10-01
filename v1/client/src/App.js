@@ -4,6 +4,8 @@ import { gql } from 'apollo-boost';
 import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import Loadable from 'react-loadable';
+import ReactGA from 'react-ga';
+import withTracker from './util/analytics';
 import history from './history';
 
 import HomePage from './pages/HomePage';
@@ -71,6 +73,10 @@ const LoginPage = Loadable({
     loading: () => null,
 });
 
+const initializeGoogleAnalytics = () => {
+    ReactGA.initialize('UA-126544900-1');
+};
+
 const getIdQueryClient = gql`
     {
         activeUser @client {
@@ -106,6 +112,7 @@ const PrivateRoute = ({
 
 class App extends Component {
     render() {
+        initializeGoogleAnalytics();
         return (
             <ThemeProvider theme={theme}>
                 <Router history={history}>
@@ -118,55 +125,79 @@ class App extends Component {
                                         <Switch>
                                             <Route
                                                 path="/login"
-                                                component={LoginPage}
+                                                component={withTracker(
+                                                    LoginPage
+                                                )}
                                             />
                                             <PrivateRoute
                                                 path="/host-onboarding/:step"
-                                                component={HostOnboarding}
+                                                component={withTracker(
+                                                    HostOnboarding
+                                                )}
                                                 isUserLoggedin={data.activeUser}
                                             />
                                             <PrivateRoute
                                                 path="/consent-and-payment"
-                                                component={
+                                                component={withTracker(
                                                     ConsentAndPaymentPage
-                                                }
+                                                )}
                                                 isUserLoggedin={data.activeUser}
                                             />
                                             <PrivateRoute
                                                 path="/profile"
-                                                component={ProfilePage}
+                                                component={withTracker(
+                                                    ProfilePage
+                                                )}
                                                 isUserLoggedin={data.activeUser}
                                             />
                                             <Route
                                                 path="/dentist/search"
-                                                component={DentistSearchPage}
+                                                component={withTracker(
+                                                    DentistSearchPage
+                                                )}
                                             />
                                             <Route
                                                 path="/dentist/:id"
-                                                component={DentistDetailsPage}
+                                                component={withTracker(
+                                                    DentistDetailsPage
+                                                )}
                                             />
                                             <Route
                                                 path="/office/search"
-                                                component={OfficeSearchPage}
+                                                component={withTracker(
+                                                    OfficeSearchPage
+                                                )}
                                             />
                                             <Route
                                                 path="/office/:id"
-                                                component={OfficeDetailsPage}
+                                                component={withTracker(
+                                                    OfficeDetailsPage
+                                                )}
                                             />
                                             <Route
                                                 path="/reset-password"
-                                                component={ResetPassPage}
+                                                component={withTracker(
+                                                    ResetPassPage
+                                                )}
                                             />
                                             <Route
                                                 path="/error"
-                                                component={GeneralErrorPage}
+                                                component={withTracker(
+                                                    GeneralErrorPage
+                                                )}
                                             />
                                             <Route
                                                 path="/"
                                                 exact
-                                                component={HomePage}
+                                                component={withTracker(
+                                                    HomePage
+                                                )}
                                             />
-                                            <Route component={Error404Page} />
+                                            <Route
+                                                component={withTracker(
+                                                    Error404Page
+                                                )}
+                                            />
                                         </Switch>
                                     )}
                                 </Query>
