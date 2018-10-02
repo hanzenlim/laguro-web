@@ -36,8 +36,7 @@ const StyledModal = styled(Modal)`
 
 const TabContainer = styled.div`
     display: flex;
-    border-top: 1px solid #f2f2f2;
-    border-bottom: 1px solid #f2f2f2;
+    border-top: 2px solid #f2f2f2;
 `;
 
 const Tab = styled.div`
@@ -52,7 +51,8 @@ const Tab = styled.div`
     display: flex;
     justify-content: center;
 
-    background: #f9f9f9;
+    background: ${props => (props.active ? '#ffffff' : '#f2f2f2')};
+    color: ${props => (props.active ? '#ffffff' : '#727272')};
 
     > span {
         color: #727272;
@@ -239,7 +239,6 @@ class DentistVerificationModal extends Component {
                 {...this.props}
             >
                 <TabContainer>
-                    <Icon type="right" style={{ color: '#B2B2B2' }} />
                     <Tab
                         onClick={this.handleChangeStep(DENTIST_PROFILE_STEP)}
                         status={
@@ -253,7 +252,7 @@ class DentistVerificationModal extends Component {
                             <Icon
                                 type="check-circle"
                                 theme="twoTone"
-                                twoToneColor="#50e3c2"
+                                twoToneColor="#3481F8"
                             />
                         ) : (
                             <Icon type="user" />
