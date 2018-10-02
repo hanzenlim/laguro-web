@@ -30,6 +30,7 @@ import {
     ACTIVE,
     BOOKING_FEE_PERCENTAGE,
 } from '../../../../util/strings';
+import { renderPrice } from '../../../../util/paymentUtil';
 
 const hourList = [
     '12am',
@@ -352,7 +353,6 @@ class SelectReservation extends Component {
 
         this.state = {
             summaryDetailsData: [],
-            equipmentsSummaryDetailsData: [],
             totalPrice: 0,
         };
 
@@ -550,10 +550,7 @@ class SelectReservation extends Component {
 
         this.props.updateSummarySectionData({
             totalPrice: this.state.totalPrice,
-            summaryList: [
-                ...this.state.summaryDetailsData,
-                ...this.state.equipmentsSummaryDetailsData,
-            ],
+            summaryList: [...this.state.summaryDetailsData],
         });
 
         return null;
@@ -565,16 +562,17 @@ class SelectReservation extends Component {
 
     updateSummaryDetails = selectedDatesAndHours => {
         const summaryList = [];
-        const totalEquipmentPrice = _reduce(
+        const equipmentPrice = _reduce(
             this.selectedEquipment,
             (sum, n) => sum + n.price,
             0
         );
 
-        let totalPrice = totalEquipmentPrice;
-        Object.keys(selectedDatesAndHours).map(key => {
+        let totalPrice = 0;
+        let totalChairCost = 0;
+        Object.keys(selectedDatesAndHours).forEach(key => {
             // Iterate over the dates.
-            selectedDatesAndHours[key].map(value => {
+            selectedDatesAndHours[key].forEach(value => {
                 const hours = moment(value.endDate).diff(
                     moment(value.startDate),
                     'hours'
@@ -582,15 +580,13 @@ class SelectReservation extends Component {
                 const { price } = value;
                 const { cleaningFee } = value;
 
-                // Total = (price * chair cost * numChair) + booking fee + cleaning fee
-                const totalChairCost = Math.round(
-                    price * hours * this.chairCount
-                );
-                const bookingFeeCost = totalChairCost * BOOKING_FEE_PERCENTAGE;
+                // Total = (price * chair cost * numChair) + cleaning fee + equipment fee
+                const chairCost = Math.round(price * hours * this.chairCount);
                 const timeSlotTotalPrice =
-                    totalChairCost + bookingFeeCost + cleaningFee;
+                    chairCost + cleaningFee + equipmentPrice;
 
                 totalPrice += timeSlotTotalPrice;
+                totalChairCost += chairCost;
 
                 const obj = {
                     headerText: `${moment(value.startDate).format(
@@ -606,12 +602,7 @@ class SelectReservation extends Component {
                             ).toFixed(2)} x ${
                                 this.chairCount
                             } chair x ${hours}hr)`,
-                            cost: `${totalChairCost}`,
-                        },
-                        {
-                            description:
-                                'Booking Fee (20% of the total hourly chair price)',
-                            cost: `${bookingFeeCost}`,
+                            cost: `${chairCost}`,
                         },
                         {
                             description: 'Cleaning fee',
@@ -620,26 +611,44 @@ class SelectReservation extends Component {
                     ],
                 };
 
+                this.selectedEquipment.forEach(e => {
+                    obj.summaryDetails.push({
+                        description: e.name,
+                        cost: e.price,
+                    });
+                });
+
                 summaryList.push(obj);
-
-                return null;
             });
-
-            this.setState(
-                {
-                    summaryDetailsData: summaryList,
-                    totalPrice,
-                },
-                () => {
-                    // Update the parent container.
-                    this.props.updateSummaryDetailsData(
-                        this.state.summaryDetailsData
-                    );
-                }
-            );
-
-            return null;
         });
+
+        const bookingFee = Math.round(totalChairCost * BOOKING_FEE_PERCENTAGE);
+        totalPrice += bookingFee;
+        summaryList.push({
+            headerText: 'Booking Fee',
+            headerCost: bookingFee,
+            summaryDetails: [
+                {
+                    description: `15% of the aggregate chair price (${renderPrice(
+                        totalChairCost
+                    )})`,
+                    cost: bookingFee,
+                },
+            ],
+        });
+
+        this.setState(
+            {
+                summaryDetailsData: summaryList,
+                totalPrice,
+            },
+            () => {
+                // Update the parent container.
+                this.props.updateSummaryDetailsData(
+                    this.state.summaryDetailsData
+                );
+            }
+        );
     };
 
     onChairCounterHandler = chairCount => {
@@ -650,24 +659,8 @@ class SelectReservation extends Component {
     onSelectEquipment = selectedEquipment => {
         this.selectedEquipment = selectedEquipment;
 
-        const equipmentsSummaryDetailsData = [];
-        selectedEquipment.map(value => {
-            equipmentsSummaryDetailsData.push({
-                headerText: value.name,
-                headerCost: value.price,
-            });
-
-            return null;
-        });
-        this.setState({
-            equipmentsSummaryDetailsData: [...equipmentsSummaryDetailsData],
-        });
-
         // Updates the summary details data
         this.updateSummaryDetails(this.selectedDatesAndHours);
-
-        // This is to update the parent state. This data is used in the payment page.
-        this.props.updateEquipmentDetailsData(equipmentsSummaryDetailsData);
     };
 
     render() {
@@ -767,10 +760,6 @@ class SelectReservation extends Component {
                                                 this.state.summaryDetailsData
                                             }
                                             totalPrice={this.state.totalPrice}
-                                            equipmentsSummaryDetailsData={
-                                                this.state
-                                                    .equipmentsSummaryDetailsData
-                                            }
                                             onChairCounterHandler={
                                                 this.onChairCounterHandler
                                             }

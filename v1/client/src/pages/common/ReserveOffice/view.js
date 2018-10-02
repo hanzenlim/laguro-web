@@ -81,6 +81,7 @@ const ReserveOfficeView = ({
                             btnText="Pay"
                             onPay={onPay}
                             onBackButton={onPayBackButton}
+                            hasBackButton={true}
                         />
                     </Box>
                 </Fragment>

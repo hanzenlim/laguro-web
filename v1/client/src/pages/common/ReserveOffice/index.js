@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Alert } from 'antd';
+import { message } from 'antd';
 import { compose, graphql, withApollo } from 'react-apollo';
 import PropTypes from 'prop-types';
 import moment from 'moment';
@@ -195,9 +195,7 @@ class ReserveOffice extends Component {
 
         if (errors.length > 0) {
             const msg = errors.join(':');
-            this.setState({
-                mutationError: msg,
-            });
+            message.error(msg);
         } else {
             this.setState({
                 currentDisplay: CONFIRMATION_VIEW,
@@ -346,12 +344,6 @@ class ReserveOffice extends Component {
                                 this.state.paymentConfirmationH2Text
                             }
                         />
-                        {this.state.mutationError && (
-                            <Alert
-                                message={this.state.mutationError}
-                                type="error"
-                            />
-                        )}
                     </Box>
                 )}
             </Fragment>

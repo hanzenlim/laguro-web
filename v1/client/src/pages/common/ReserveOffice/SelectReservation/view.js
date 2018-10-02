@@ -56,7 +56,6 @@ const SelectReservationView = ({
     officeEquipment,
     onSelectEquipment,
     summaryDetailsData,
-    equipmentsSummaryDetailsData,
     totalPrice,
 }) => {
     if (_isEmpty(hourSlotsData)) {
@@ -102,10 +101,7 @@ const SelectReservationView = ({
             />
             <box mt={30}>
                 <SummaryCost
-                    summaryData={[
-                        ...summaryDetailsData,
-                        ...equipmentsSummaryDetailsData,
-                    ]}
+                    summaryData={summaryDetailsData}
                     totalPrice={totalPrice}
                 />
             </box>
