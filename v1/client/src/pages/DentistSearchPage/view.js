@@ -22,7 +22,11 @@ const DentistSearchPageView = props => {
     return (
         <Container>
             <StyledContainer mt={40}>
-                <SearchResultsList data={data} total={total} />
+                <SearchResultsList
+                    title="Dentist Results"
+                    data={data}
+                    total={total}
+                />
                 <Map
                     data={data}
                     urlParams={urlParams}

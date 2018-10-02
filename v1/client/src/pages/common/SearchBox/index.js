@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import queryString from 'query-string';
 import moment from 'moment';
 import _get from 'lodash/get';
-
+import _isEmpty from 'lodash/isEmpty';
 import SearchBoxView from './view';
 import history from '../../../history';
 
@@ -42,6 +42,15 @@ class SearchBox extends PureComponent {
 
     handleSubmit = () => {
         const { date, location, text } = this.state;
+
+        // location search requires date, text search doesn't
+        const locationSearch = !_isEmpty(location) && !_isEmpty(date);
+        const textSearch = !_isEmpty(text);
+
+        // if current data doesn't support either search, stop search
+        if (!locationSearch && !textSearch) {
+            return;
+        }
 
         const urlParams = {};
         if (location) {

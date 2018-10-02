@@ -19,7 +19,7 @@ const StyledSearchResultsContainer = styled(Flex)`
 `;
 
 const SearchResultsList = props => {
-    const { data, total } = props;
+    const { data, total, title } = props;
 
     return (
         <Flex width={['100%', '623px']} flexDirection="column">
@@ -31,7 +31,7 @@ const SearchResultsList = props => {
                     lineHeight="40px"
                     letterSpacing="-0.8px"
                 >
-                    find our highlights
+                    {title}
                 </Text>
             ) : (
                 <Text fontSize={4} color="text.black">

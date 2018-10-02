@@ -31,12 +31,20 @@ import RightForwardArrow from './RightForwardArrow';
 import UpArrow from './UpArrow';
 import DownArrow from './DownArrow';
 import Calendar from './Calendar';
+import WhiteDentistLogo from './WhiteDentistLogo';
+import DentistLogo from './DentistLogo';
 
 const Icon = props => {
     const { type, isButton, ...rest } = props;
 
     let ReturnIcon;
     switch (type) {
+        case 'whiteDentistLogo':
+            ReturnIcon = WhiteDentistLogo;
+            break;
+        case 'dentistLogo':
+            ReturnIcon = DentistLogo;
+            break;
         case 'calendar':
             ReturnIcon = Calendar;
             break;

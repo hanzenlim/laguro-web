@@ -22,7 +22,11 @@ const OfficeSearchPageView = props => {
     return (
         <Container>
             <StyledContainer mt={40}>
-                <SearchResultsList data={data} total={total} />
+                <SearchResultsList
+                    title="Office Results"
+                    data={data}
+                    total={total}
+                />
                 <Map
                     data={data}
                     urlParams={urlParams}
