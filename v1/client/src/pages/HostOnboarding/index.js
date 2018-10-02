@@ -530,12 +530,7 @@ class HostOnboarding extends Component {
     handleOnCompleted = data => this.advanceStep({}, data);
 
     render() {
-        const {
-            historyLocationSearch,
-            defaultValues,
-            locationSelected,
-            numImage,
-        } = this.state;
+        const { historyLocationSearch, defaultValues } = this.state;
         const urlParams = queryString.parse(historyLocationSearch);
         const { location } = this.props;
         const { step } = this.props.match.params;
@@ -575,20 +570,16 @@ class HostOnboarding extends Component {
         const stepCount = this.stepList.indexOf(step);
         const { officeId, mode } = urlParams;
 
-        let submitDisabled;
         let numSteps;
         switch (mode) {
             case EDIT_OFFICE_MODE:
-                submitDisabled = !numImage;
                 numSteps = 2;
                 break;
             case ADD_LISTING_MODE:
-                submitDisabled = false;
                 numSteps = 2;
                 break;
             // host onboarding
             default:
-                submitDisabled = !numImage || locationSelected;
                 numSteps = 4;
                 break;
         }
@@ -755,9 +746,6 @@ class HostOnboarding extends Component {
 
                                                                 <GridItem gc="3 / 4">
                                                                     <SubmitButton
-                                                                        disabled={
-                                                                            submitDisabled
-                                                                        }
                                                                         position="absolute"
                                                                         width={
                                                                             188
