@@ -56,10 +56,6 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
         const appointmentProps = {
             reservationId: selectedTime.value,
             location: this.state.filters.location,
-            procedure: {
-                name: 'Cleaning',
-                duration: 10000,
-            },
             startTime,
             endTime,
         };
