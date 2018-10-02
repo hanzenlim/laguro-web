@@ -124,6 +124,11 @@ const LocationFilterView = ({
         <OptGroup key="Search by Location">{LocationOptions}</OptGroup>
     );
 
+    const DentistResultString = result =>
+        result.location
+            ? `${result.name} - ${result.specialty} at ${result.location}`
+            : `${result.name} - ${result.specialty}`;
+
     const DentistOptions = (
         <OptGroup key="Go to Dentist Profile">
             {dentistResults.map((result, index) => (
@@ -140,9 +145,7 @@ const LocationFilterView = ({
                             ml={6}
                             mr={10}
                         />
-                        {`${result.name} - ${result.specialty} at ${
-                            result.location
-                        }`}
+                        {DentistResultString(result)}
                     </StyledOption>
                 </Option>
             ))}

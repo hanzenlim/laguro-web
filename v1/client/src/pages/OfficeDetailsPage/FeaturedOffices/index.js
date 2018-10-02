@@ -33,9 +33,9 @@ class FeaturedList extends Component {
             imageUrls: item._source.imageUrls,
         }));
 
-        mappedData = mappedData.filter(
-            office => office.id !== this.props.currentOffice
-        );
+        mappedData = mappedData
+            .filter(office => office.id !== this.props.currentOffice)
+            .splice(0, 6);
 
         return <FeaturedOfficesView featuredOffices={mappedData} />;
     }

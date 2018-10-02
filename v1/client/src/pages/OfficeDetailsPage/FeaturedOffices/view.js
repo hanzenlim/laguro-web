@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Box, Flex, Text } from '../../../components';
 import LinkCard from '../../common/LinkCard';
 import { cleanAddress } from '../../../util/styleUtil';
+import officePlaceholder from '../../../components/Image/office-placeholder.png';
 
 const FeaturedOfficesView = props => {
     const { featuredOffices } = props;
@@ -20,7 +21,7 @@ const FeaturedOfficesView = props => {
                             subtitle={item.name}
                             address={cleanAddress(item.address)}
                             rating={item.averageRating}
-                            image={item.imageUrls[0]}
+                            image={item.imageUrls[0] || officePlaceholder}
                             url={`/office/${item.id}`}
                         />
                     </Box>

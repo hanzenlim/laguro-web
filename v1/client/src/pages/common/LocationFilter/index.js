@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import fetch from 'unfetch';
+import get from 'lodash/get';
 
 import LocationFilterView from './view';
 import esClient from '../../../util/esClient';
@@ -75,7 +76,10 @@ class LocationFilter extends PureComponent {
                               name: dentist._source.name,
                               dentistId: dentist._id,
                               specialty: dentist._source.specialty,
-                              location: dentist._source.location.name,
+                              location: get(
+                                  dentist._source,
+                                  'reservations[0].address'
+                              ),
                           }))
                         : [];
 

@@ -5,6 +5,18 @@ import SelectAppointment from '../SelectAppointment';
 
 import { Text } from '../../../components';
 
+const NoAppointmentsMessage = () => (
+    <Text
+        textAlign="center"
+        fontSize={3}
+        letterSpacing="-0.6px"
+        color="text.black"
+        mt={20}
+    >
+        There is no appointment available at this time.
+    </Text>
+);
+
 const SearchAvailableAppointments = props => {
     const {
         appointments,
@@ -18,36 +30,34 @@ const SearchAvailableAppointments = props => {
 
     return (
         <Fragment>
-            <Text
-                mb={20}
-                lineHeight="30px"
-                fontWeight="bold"
-                color="text.black"
-                fontSize={4}
-            >
-                Make an appointment
-            </Text>
-            <FilterAppointmentsForm
-                handleSubmit={onFilter}
-                locationList={locationList}
-                availableDateList={availableDateList}
-            />
-            {hasFiltered && !appointments.length ? (
-                <Text
-                    textAlign="center"
-                    fontSize={3}
-                    letterSpacing="-0.6px"
-                    color="text.gray"
-                    mt={20}
-                >
-                    There is no appointent available at this time
-                </Text>
+            {locationList.length > 0 ? (
+                <Fragment>
+                    <Text
+                        mb={20}
+                        lineHeight="30px"
+                        fontWeight="bold"
+                        color="text.black"
+                        fontSize={4}
+                    >
+                        Make an appointment
+                    </Text>
+                    <FilterAppointmentsForm
+                        handleSubmit={onFilter}
+                        locationList={locationList}
+                        availableDateList={availableDateList}
+                    />
+                    {hasFiltered && !appointments.length ? (
+                        <NoAppointmentsMessage />
+                    ) : (
+                        <SelectAppointment
+                            appointments={appointments}
+                            selected={selected}
+                            onSelect={onSelect}
+                        />
+                    )}
+                </Fragment>
             ) : (
-                <SelectAppointment
-                    appointments={appointments}
-                    selected={selected}
-                    onSelect={onSelect}
-                />
+                <NoAppointmentsMessage />
             )}
         </Fragment>
     );

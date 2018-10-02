@@ -13,7 +13,7 @@ class FeaturedList extends Component {
     }
 
     componentDidMount = async () => {
-        const featuredDentists = await getFeaturedDentists();
+        const featuredDentists = await getFeaturedDentists(this.props.currentDentist);
 
         if (featuredDentists) {
             this.setState({ featuredDentists });
@@ -23,13 +23,18 @@ class FeaturedList extends Component {
     render() {
         if (!this.state.featuredDentists) return null;
 
-        const mappedData = this.state.featuredDentists.map(item => ({
+        let mappedData = this.state.featuredDentists.map(item => ({
             id: item._id,
             name: item._source.name,
             specialty: item._source.specialty,
             numReviews: `${item._source.numReviews} reviews`,
             averageRating: item._source.averageRating,
+            imageUrl: item._source.imageUrl,
         }));
+
+        mappedData = mappedData
+            .filter(dentist => dentist.id !== this.props.currentDentist)
+            .splice(0, 4);
 
         return <FeaturedListView featuredDentists={mappedData} />;
     }

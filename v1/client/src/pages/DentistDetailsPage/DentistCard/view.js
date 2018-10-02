@@ -7,8 +7,20 @@ const DentistCard = props => {
 
     return (
         <Box minWidth="186px" width="100%">
-            <Box size="186px" position="relative" borderRadius="4px">
-                <Image borderRadius="4px" width="100%" src={image} alt={name} />
+            <Box
+                height="300px"
+                width="300px"
+                position="relative"
+                borderRadius="4px"
+            >
+                <Image
+                    borderRadius="4px"
+                    width="100%"
+                    height="100%"
+                    objectFit="cover"
+                    src={image}
+                    alt={name}
+                />
             </Box>
 
             <Box mt={10}>

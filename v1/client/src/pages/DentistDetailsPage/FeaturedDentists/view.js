@@ -21,6 +21,7 @@ const FeaturedDentistsView = props => {
                                 specialty={item.specialty}
                                 numReviews={item.numReviews}
                                 rating={item.averageRating}
+                                image={item.imageUrl}
                             />
                         </Link>
                     </Box>

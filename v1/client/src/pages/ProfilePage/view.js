@@ -45,6 +45,28 @@ const StyledMenuItem = styled(Menu.Item)`
     }
 `;
 
+const MenuTitle = styled(Menu.SubMenu)`
+    ${`.ant-menu`} & {
+        position: relative;
+    }
+
+    && {
+        position: relative;
+        left: -15px;
+        color: ${props => props.theme.colors.text.blue};
+
+        div {
+            cursor: default;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        i {
+            display: none;
+        }
+    }
+`;
+
 class ProfileView extends Component {
     constructor(props) {
         super(props);
@@ -144,15 +166,8 @@ class ProfileView extends Component {
                             defaultSelectedKeys={[panel]}
                             onClick={this.handleClick}
                         >
-                            <Text
-                                fontSize={4}
-                                color="text.blue"
-                                mr={200}
-                                mb={30}
-                                fontWeight="bold"
-                            >
-                                my page
-                            </Text>
+                            <MenuTitle title="my page" />
+
                             <StyledMenuItem key={MY_PROFILE}>
                                 <Text
                                     fontSize={4}

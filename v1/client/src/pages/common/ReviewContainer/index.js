@@ -34,6 +34,7 @@ class ReviewContainer extends PureComponent {
                     if (loading) return <Loading />;
 
                     const queryData = data[queryName];
+                    if (!queryData) return null;
                     const { reviews, numReviews, averageRating } = queryData;
 
                     const mappedData = isDentist
