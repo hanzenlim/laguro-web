@@ -22,7 +22,6 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
         this.setState({
             hasFiltered: true,
             filters: {
-                time: filter.time,
                 date: filter.date,
                 location: filter.location,
             },
@@ -90,17 +89,6 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
             key: moment(a.key).format('LT'),
             value: a.value,
         }));
-
-    /**
-     * Removes reservation objects that is before the timeFilter
-     * @param {string} timeFilter Time string
-     * @param {array} list Array of objects with key value pairs
-     * @returns {array} Array of objects with key value pairs
-     */
-    filterByTime = (list, timeFilter) =>
-        list.filter(
-            item => !moment(item.key).isBefore(moment(timeFilter).format())
-        );
 
     /**
      * Removes reservation objects that isn't the same day as the date filter
@@ -278,9 +266,6 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
 
         const locationFilter = this.state.filters.location || locationList[0];
         const dateFilter = this.state.filters.date;
-        const timeFilter = `${this.state.filters.date} ${
-            this.state.filters.time
-        }`;
 
         // FILTER LIST BY LOCATION
         const filteredByLocation = this.filterByLocation(
@@ -303,10 +288,8 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
             timeSlotsWithoutAppointments
         );
 
-        const filteredByTime = this.filterByTime(filteredByDate, timeFilter);
-
         // GET TIME BLOCKS
-        const timeBlocks = this.formatTime(filteredByTime);
+        const timeBlocks = this.formatTime(filteredByDate);
 
         // GET READABLE DATE LIST
         const formattedAvailableDateList = this.formatDate(availableDateList);
