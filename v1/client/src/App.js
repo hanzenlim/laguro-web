@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { Query } from 'react-apollo';
 import { gql } from 'apollo-boost';
+import { message } from 'antd';
 import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import Loadable from 'react-loadable';
 import ReactGA from 'react-ga';
 import withTracker from './util/analytics';
 import history from './history';
-
 import HomePage from './pages/HomePage';
 import Layout from './components/Layout';
 import Content from './components/Content';
@@ -113,6 +113,12 @@ const PrivateRoute = ({
 class App extends Component {
     render() {
         initializeGoogleAnalytics();
+        if (window.screen.width < 500) {
+            message.info(
+                "Currently, Laguro is not optimized for mobile browsers, even though you may still access all of Laguro's functionalities. Please use a desktop or a laptop computer.",
+                7
+            );
+        }
         return (
             <ThemeProvider theme={theme}>
                 <Router history={history}>

@@ -31,3 +31,11 @@
         display: none;
     }
 }
+
+.ant-message .ant-message-info span {
+    font-size: 60px
+}
+
+.ant-message .ant-message-info i {
+    font-size: 60px;
+}

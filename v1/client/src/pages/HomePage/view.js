@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-
 import hero from '../../components/Image/hero.jpg';
 import {
     Box,
@@ -14,7 +13,6 @@ import {
 } from '../../components';
 import FeaturedList from './FeaturedList';
 import SearchBox from '../common/SearchBox/index';
-
 import aboutUs from '../../components/Image/aboutUs.svg';
 import Wave from '../../components/Image/wave';
 import chair from '../../components/Image/chair.svg';
