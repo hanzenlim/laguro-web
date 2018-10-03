@@ -115,7 +115,7 @@ class App extends Component {
         initializeGoogleAnalytics();
         if (window.screen.width < 500) {
             message.info(
-                "Currently, Laguro is not optimized for mobile browsers, even though you may still access all of Laguro's functionalities. Please use a desktop or a laptop computer.",
+                "Currently, Laguro is not optimized for mobile browsers, even though you may still access all of Laguro's functionalities. Please use a desktop or laptop computer.",
                 7
             );
         }
