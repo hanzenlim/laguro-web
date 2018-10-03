@@ -3,7 +3,6 @@ import { Query } from 'react-apollo';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 import moment from 'moment';
-import queryString from 'query-string';
 import ListingConfirmationView from './view';
 import { Loading } from '../../../components';
 import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';

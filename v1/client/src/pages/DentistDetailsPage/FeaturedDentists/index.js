@@ -13,7 +13,9 @@ class FeaturedList extends Component {
     }
 
     componentDidMount = async () => {
-        const featuredDentists = await getFeaturedDentists(this.props.currentDentist);
+        const featuredDentists = await getFeaturedDentists(
+            this.props.currentDentist
+        );
 
         if (featuredDentists) {
             this.setState({ featuredDentists });
