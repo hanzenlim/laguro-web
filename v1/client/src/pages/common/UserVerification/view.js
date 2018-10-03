@@ -355,6 +355,7 @@ class UserVerification extends Component {
                     fetchSignedURL={this.fetchSignedURL}
                 />
                 <SubmitButton
+                    dynamicDisable={false}
                     width="100%"
                     textAlign="center"
                     buttonText="Submit Verification"

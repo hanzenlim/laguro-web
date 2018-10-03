@@ -147,7 +147,14 @@ StyledFormInput.defaultProps = {
 
 // handle nested forms properly
 // eslint-disable-next-line
-const SubmitButton = ({ form, state, buttonText, textAlign, ...rest }) => {
+const SubmitButton = ({
+    form,
+    state,
+    buttonText,
+    textAlign,
+    dynamicDisable = true,
+    ...rest
+}) => {
     const { getFieldsError } = form;
     const hasErrors = fieldsError =>
         Object.keys(fieldsError).some(
@@ -162,7 +169,7 @@ const SubmitButton = ({ form, state, buttonText, textAlign, ...rest }) => {
             <Button
                 htmlType="submit"
                 loading={state.submitting}
-                disabled={hasErrors(getFieldsError())}
+                disabled={dynamicDisable && hasErrors(getFieldsError())}
                 {...rest}
             >
                 {state.submitting ? 'submitting' : buttonText}
