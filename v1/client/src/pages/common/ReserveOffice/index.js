@@ -199,12 +199,8 @@ class ReserveOffice extends Component {
         } else {
             this.setState({
                 currentDisplay: CONFIRMATION_VIEW,
-                paymentConfirmationH2Text: `${earliestReservationStartTime.format(
-                    'MMM D, YYYY'
-                )} - ${earliestReservationEndTime.format('MMM D, YYYY')}`,
-                paymentConfirmationH3Text: `${earliestReservationStartTime.format(
-                    'ha'
-                )} - ${earliestReservationEndTime.format('ha')}`,
+                paymentConfirmationH2Text: null,
+                paymentConfirmationH3Text: null,
             });
         }
     };
