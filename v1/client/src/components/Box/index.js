@@ -47,6 +47,8 @@ const Box = system(
     // background
     'background',
     'backgroundSize',
+    'backgroundPosition',
+    'backgroundRepeat',
     // misc
     'boxShadow',
     'bg'

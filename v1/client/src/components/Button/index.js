@@ -18,6 +18,7 @@ import {
     right,
     zIndex,
     opacity,
+    minWidth,
 } from 'styled-system';
 import { hoverColor } from '../utils';
 
@@ -43,6 +44,7 @@ const StyledButton = styled(AntdButton)`
         ${bottom};
         ${opacity};
         ${zIndex};
+        ${minWidth};
     }
 
     &.ant-btn-primary,

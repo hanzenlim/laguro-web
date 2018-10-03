@@ -68,6 +68,7 @@ const GeneralErrorPage = Loadable({
     loader: () => import('./pages/GeneralErrorPage'),
     loading: () => null,
 });
+
 const LoginPage = Loadable({
     loader: () => import('./pages/LoginPage'),
     loading: () => null,
@@ -76,6 +77,11 @@ const LoginPage = Loadable({
 const initializeGoogleAnalytics = () => {
     ReactGA.initialize('UA-126544900-1');
 };
+
+const CountdownPage = Loadable({
+    loader: () => import('./pages/CountdownPage'),
+    loading: () => null,
+});
 
 const getIdQueryClient = gql`
     {
@@ -192,6 +198,13 @@ class App extends Component {
                                             />
                                             <Route
                                                 path="/"
+                                                exact
+                                                component={withTracker(
+                                                    CountdownPage
+                                                )}
+                                            />
+                                            <Route
+                                                path="/home"
                                                 exact
                                                 component={withTracker(
                                                     HomePage
