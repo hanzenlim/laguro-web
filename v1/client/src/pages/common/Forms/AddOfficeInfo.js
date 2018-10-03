@@ -200,7 +200,6 @@ class AddOfficeInfo extends Component {
             lastName,
             header,
             mode,
-            ...rest
         } = this.props;
         const { autoCompleteHasError } = this.state;
 

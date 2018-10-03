@@ -5,13 +5,10 @@ import { Alert, message } from 'antd';
 
 import { Query, Mutation } from 'react-apollo';
 import queryString from 'query-string';
-import moment from 'moment';
 import get from 'lodash/get';
-import pick from 'lodash/pick';
 import isEmpty from 'lodash/isEmpty';
-import _mapValues from 'lodash/mapValues';
 
-import { renderCents, renderPrice } from '../../util/paymentUtil';
+import { renderCents } from '../../util/paymentUtil';
 import {
     GET_USER,
     GET_OFFICE,
@@ -296,7 +293,7 @@ class HostOnboarding extends Component {
     };
 
     // given values, compute next url and add computedParams to url
-    handleBack = values => {
+    handleBack = () => {
         const { pathname } = this.props.location;
         const nextStep = this.urlList[this.urlList.indexOf(pathname) - 1];
         const url = this.buildNextIntermediateURL(nextStep);
@@ -348,7 +345,6 @@ class HostOnboarding extends Component {
         this.values = values;
 
         const { step } = this.props.match.params;
-        const { historyLocationSearch } = this.state;
 
         const wizardState = this.fetchWizardState();
 
@@ -571,9 +567,6 @@ class HostOnboarding extends Component {
 
     // save office data to state to trigger render
     handleGetOffice = data => {
-        const historyLocationSearch = get(this.props, 'location.search');
-        const { mode } = queryString.parse(historyLocationSearch);
-
         this.setState({ defaultValues: data.getOffice });
     };
 
@@ -597,7 +590,7 @@ class HostOnboarding extends Component {
         };
     };
 
-    handleOnCompleted = data => this.advanceStep();
+    handleOnCompleted = () => this.advanceStep();
 
     handleRestart = () => {
         this.destroyWizardState();
@@ -661,10 +654,7 @@ class HostOnboarding extends Component {
                                         mutation={CREATE_LISTING}
                                         // onCompleted={this.handleOnCompleted}
                                     >
-                                        {(
-                                            batchCreateListings,
-                                            { data: batchCreateListingsData }
-                                        ) => (
+                                        {batchCreateListings => (
                                             <Mutation
                                                 mutation={CREATE_OFFICE}
                                                 onCompleted={data => {
@@ -675,13 +665,7 @@ class HostOnboarding extends Component {
                                                     );
                                                 }}
                                             >
-                                                {(
-                                                    createOffice,
-                                                    {
-                                                        client,
-                                                        data: createOfficeData,
-                                                    }
-                                                ) => (
+                                                {(createOffice, { client }) => (
                                                     <StyledContainer>
                                                         <Form
                                                             onSuccess={values => {
@@ -856,40 +840,36 @@ class HostOnboarding extends Component {
                                                                         alignItems="center"
                                                                     >
                                                                         {stepCount !==
-                                                                        0 ? (
-                                                                            this.stepList.indexOf(
-                                                                                step
-                                                                            ) !==
+                                                                            0 &&
+                                                                        this.stepList.indexOf(
+                                                                            step
+                                                                        ) !==
                                                                             this
                                                                                 .stepList
                                                                                 .length -
                                                                                 1 ? (
-                                                                                <BackButton
-                                                                                    disabled={
-                                                                                        false
-                                                                                    }
-                                                                                    onBack={
-                                                                                        this
-                                                                                            .handleBack
-                                                                                    }
-                                                                                    type="primary"
-                                                                                    ghost
-                                                                                    width={
-                                                                                        188
-                                                                                    }
-                                                                                    height={
-                                                                                        60
-                                                                                    }
-                                                                                    buttonText="Previous"
-                                                                                    mt={
-                                                                                        20
-                                                                                    }
-                                                                                />
-                                                                            ) : (
-                                                                                <div />
-                                                                            )
+                                                                            <BackButton
+                                                                                disabled={
+                                                                                    false
+                                                                                }
+                                                                                onBack={
+                                                                                    this
+                                                                                        .handleBack
+                                                                                }
+                                                                                type="primary"
+                                                                                ghost
+                                                                                width={
+                                                                                    188
+                                                                                }
+                                                                                height={
+                                                                                    60
+                                                                                }
+                                                                                buttonText="Previous"
+                                                                                mt={
+                                                                                    20
+                                                                                }
+                                                                            />
                                                                         ) : (
-                                                                            // Added this so that flex space between will work
                                                                             <div />
                                                                         )}
 

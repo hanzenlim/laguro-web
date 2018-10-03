@@ -75,7 +75,7 @@ class AddOfficeListing extends Component {
         });
     };
 
-    handleDeleteListing = (e, hi) => {
+    handleDeleteListing = e => {
         e.stopPropagation();
 
         const index = get(e, 'currentTarget.dataset.index');
