@@ -42,6 +42,7 @@ class UserVerification extends Component {
         isLoading: true,
         data: null,
         uploadPolicySignature: null,
+        error: null,
     };
 
     constructor(props) {
@@ -233,7 +234,7 @@ class UserVerification extends Component {
         this.formRef = formRef;
     };
 
-    handleSubmit = async formData => {
+    processFormData = async formData => {
         const { user, persona } = this.props;
         const { documents } = formData;
 
@@ -252,15 +253,11 @@ class UserVerification extends Component {
         const uploadResults = Object.keys(documents).map(async documentKind => {
             const kindDocuments = documents[documentKind];
 
-            const { error } = await this.props.saveUploadedImages({
+            await this.props.saveUploadedImages({
                 id: existingPatientDocument.id,
                 documentList: kindDocuments,
                 documentType: documentKind,
             });
-
-            if (error) {
-                throw error;
-            }
         });
 
         await Promise.all(uploadResults);
@@ -320,9 +317,17 @@ class UserVerification extends Component {
         }
     };
 
+    handleSubmit = async formData => {
+        try {
+            await this.processFormData(formData);
+        } catch (e) {
+            this.setState({ error: e });
+        }
+    };
+
     render() {
         const { persona } = this.props;
-        const { hasUpdated } = this.state;
+        const { hasUpdated, error } = this.state;
 
         const FormRender = props => {
             if (persona === DENTIST) {
@@ -346,7 +351,14 @@ class UserVerification extends Component {
                     <StyledAlert
                         showIcon
                         message={'You have been verified!'}
-                        type={'success'}
+                        type="success"
+                    />
+                )}
+                {error && (
+                    <StyledAlert
+                        showIcon
+                        type="error"
+                        message="There was an issue processing your verification. Please try again later"
                     />
                 )}
                 <FormRender
