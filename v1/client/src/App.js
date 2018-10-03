@@ -185,12 +185,12 @@ class App extends Component {
                                             <Route
                                                 path="/"
                                                 exact
-                                                component={CountdownPage}
+                                                component={HomePage}
                                             />
                                             <Route
-                                                path="/home"
+                                                path="/countdown"
                                                 exact
-                                                component={HomePage}
+                                                component={CountdownPage}
                                             />
                                             <Route component={Error404Page} />
                                         </Switch>

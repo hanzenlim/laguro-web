@@ -151,7 +151,7 @@ const SubmitButton = ({
     form,
     state,
     buttonText,
-    textAlign,
+    textAlign: textAlignStyle,
     dynamicDisable = true,
     ...rest
 }) => {
@@ -165,7 +165,7 @@ const SubmitButton = ({
         );
 
     return (
-        <StyledFormItem textAlign={textAlign}>
+        <StyledFormItem textAlign={textAlignStyle}>
             <Button
                 htmlType="submit"
                 loading={state.submitting}
