@@ -3,6 +3,7 @@ import get from 'lodash/get';
 
 import { Form, Select } from 'antd';
 import styled from 'styled-components';
+import moment from 'moment';
 
 import { Input, Radio, MaskedInput } from '../../../../components';
 import { PreText, FrontBackDocumentsSelector } from './components';
@@ -102,6 +103,14 @@ class PatientVerificationForm extends React.Component {
 
         const { useInsurance } = this.state;
 
+        const insuranceBirthdate = get(
+            data,
+            'insurancePreference.insurance.birthdate'
+        );
+        const birthdateDisplay = insuranceBirthdate
+            ? moment(insuranceBirthdate).format('MM/DD/YYYY')
+            : null;
+
         return (
             <div>
                 <PreText>
@@ -169,35 +178,32 @@ class PatientVerificationForm extends React.Component {
                             {getFieldDecorator(
                                 'insurancePreference.insurance.birthdate',
                                 {
-                                    initialValue: get(
-                                        props.data,
-                                        'insurancePreference.insurance.birthdate'
-                                    ),
+                                    initialValue: birthdateDisplay,
                                     rules: [
                                         {
                                             required: useInsurance,
                                             message: 'Birthdate is required',
                                         },
                                         {
-                                            pattern: /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/,
+                                            pattern: /^[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/,
                                             message:
-                                                'Birthdate must follow the format YYYY-MM-DD (e.g. 1996-03-09)',
+                                                'Birthdate must follow the format MM/DD/YYYY (e.g. 03/09/1996)',
                                         },
                                     ],
                                 }
                             )(
                                 <MaskedInput
                                     mask={[
-                                        /[1-9]/,
-                                        /[1-9]/,
-                                        /[1-9]/,
-                                        /[1-9]/,
-                                        '-',
-                                        /[1-9]/,
-                                        /[1-9]/,
-                                        '-',
-                                        /[1-9]/,
-                                        /[1-9]/,
+                                        /[0-9]/,
+                                        /[0-9]/,
+                                        '/',
+                                        /[0-9]/,
+                                        /[0-9]/,
+                                        '/',
+                                        /[0-9]/,
+                                        /[0-9]/,
+                                        /[0-9]/,
+                                        /[0-9]/,
                                     ]}
                                     height={50}
                                 />

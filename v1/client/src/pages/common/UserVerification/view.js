@@ -3,6 +3,7 @@ import { compose, withApollo } from 'react-apollo';
 import { gql } from 'apollo-boost';
 import { Alert } from 'antd';
 import styled from 'styled-components';
+import moment from 'moment';
 
 import _get from 'lodash/get';
 import _pick from 'lodash/pick';
@@ -115,6 +116,7 @@ class UserVerification extends Component {
             } = await client.query({
                 query: userInsurancePreferencesQuery,
                 variables: { id },
+                fetchPolicy: 'network-only',
             });
 
             if (_get(getUser, 'insurancePreference')) {
@@ -275,7 +277,13 @@ class UserVerification extends Component {
                 insurancePreference: {
                     ...insurancePreference,
                     insurance: useInsurance
-                        ? insurancePreference.insurance
+                        ? {
+                              ...insurancePreference.insurance,
+                              birthdate: moment(
+                                  insurancePreference.insurance.birthdate,
+                                  'MM/DD/YYYY'
+                              ).format('YYYY-MM-DD'),
+                          }
                         : null,
                 },
             });
@@ -306,8 +314,8 @@ class UserVerification extends Component {
         this.setState({ hasUpdated: true });
         window.scrollTo(0, 0);
 
+        await this.loadData();
         if (this.props.onComplete) {
-            await this.loadData();
             this.props.onComplete({ persona, verified: true });
         }
     };
