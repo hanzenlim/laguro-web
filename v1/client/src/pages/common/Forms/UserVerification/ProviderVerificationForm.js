@@ -4,6 +4,7 @@ import {
     PreText,
     FrontBackDocumentsSelector,
     SingleDocumentSelector,
+    VerificationFormContainer,
 } from './components';
 import { Form, Input, InnerForm } from '../../../../components';
 
@@ -12,7 +13,7 @@ const { FormItem } = Form;
 const ProviderVerificationForm = props => {
     const { form } = props;
     return (
-        <div>
+        <VerificationFormContainer>
             <PreText>
                 Before you can book a reservation, we need you to upload some
                 documents for verification.
@@ -58,7 +59,7 @@ const ProviderVerificationForm = props => {
                     label="Upload a document of your Malpractice Insurance"
                 />
             </InnerForm>
-        </div>
+        </VerificationFormContainer>
     );
 };
 

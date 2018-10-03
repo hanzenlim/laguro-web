@@ -61,7 +61,7 @@ const DocumentUploadSelector = styled.div`
     width: 140px;
     height: 110px;
 
-    margin-right: 20px;
+    margin-right: 14px;
 
     font-size: 16px;
     color: #303549;

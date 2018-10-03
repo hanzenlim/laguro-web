@@ -37,6 +37,18 @@ export const StyledForm = styled(Form)`
     }
 `;
 
+export const VerificationFormContainer = styled.div`
+    .ant-form {
+        .ant-form-item-label {
+            margin-bottom: 16px;
+        }
+
+        .ant-form-item {
+            margin-bottom: 50px;
+        }
+    }
+`;
+
 export { default as PatientVerificationForm } from '../PatientVerificationForm';
 export {
     default as ProviderVerificationForm,
