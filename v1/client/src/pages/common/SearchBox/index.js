@@ -60,8 +60,12 @@ class SearchBox extends PureComponent {
         }
 
         if (date) {
-            const startTime = moment(date).startOf('day');
-            const endTime = moment(date).endOf('day');
+            const startTime = moment(date)
+                .startOf('day')
+                .utc();
+            const endTime = moment(date)
+                .endOf('day')
+                .utc();
 
             urlParams.startTime = startTime.format();
             urlParams.endTime = endTime.format();
@@ -72,7 +76,7 @@ class SearchBox extends PureComponent {
         }
 
         const currentPath = _get(history, 'location.pathname') || DENTIST_PATH;
-        const path = currentPath.includes('office')
+        const path = currentPath.startsWith('/office')
             ? OFFICE_PATH
             : DENTIST_PATH;
 
