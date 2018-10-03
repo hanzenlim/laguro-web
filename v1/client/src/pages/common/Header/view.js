@@ -318,7 +318,11 @@ const Header = ({
                     <SearchBox placeholder={placeholder} size="small" />
                 )}
                 <Flex alignItems="center">
-                    <NavBarLink ml="0px" to={'/host-onboarding/add-office'}>
+                    <NavBarLink
+                        ml="0px"
+                        to={auth ? '/host-onboarding/add-office' : '/'}
+                        onClick={auth ? () => {} : openLoginModal}
+                    >
                         <Text
                             color={onLandingPage ? 'text.white' : 'text.black'}
                             fontSize={2}
