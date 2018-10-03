@@ -30,6 +30,7 @@ const Image = system(
     'height',
     'maxHeight',
     'minHeight',
+    'opacity',
     // flexText
     'alignItems',
     'alignContent',

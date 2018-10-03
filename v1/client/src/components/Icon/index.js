@@ -33,6 +33,7 @@ import DownArrow from './DownArrow';
 import Calendar from './Calendar';
 import WhiteDentistLogo from './WhiteDentistLogo';
 import DentistLogo from './DentistLogo';
+import MacaroniPattern from './MacaroniPattern';
 
 const Icon = props => {
     const { type, isButton, ...rest } = props;
@@ -77,6 +78,9 @@ const Icon = props => {
             break;
         case 'rightForwardArrow':
             ReturnIcon = RightForwardArrow;
+            break;
+        case 'macaroniPattern':
+            ReturnIcon = MacaroniPattern;
             break;
         default:
             ReturnIcon = AntdIcon;

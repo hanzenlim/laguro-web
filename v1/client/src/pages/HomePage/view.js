@@ -178,7 +178,7 @@ const HomePageView = () => (
                     <Text color="text.black" fontSize={4} mb={50}>
                         learn more about what we do!
                     </Text>
-                    <Link to="/about-us">
+                    <Link to="/about">
                         <Button width="260px" height="80px">
                             <Text
                                 color="text.white"

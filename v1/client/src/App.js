@@ -74,6 +74,11 @@ const LoginPage = Loadable({
     loading: () => null,
 });
 
+const AboutPage = Loadable({
+    loader: () => import('./pages/AboutPage'),
+    loading: () => null,
+});
+
 const initializeGoogleAnalytics = () => {
     ReactGA.initialize('UA-126544900-1');
 };
@@ -188,6 +193,12 @@ class App extends Component {
                                                 path="/reset-password"
                                                 component={withTracker(
                                                     ResetPassPage
+                                                )}
+                                            />
+                                            <Route
+                                                path="/about"
+                                                component={withTracker(
+                                                    AboutPage
                                                 )}
                                             />
                                             <Route
