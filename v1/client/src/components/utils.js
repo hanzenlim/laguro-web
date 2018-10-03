@@ -17,3 +17,9 @@ export const hoverColor = style({
     cssProperty: 'color',
     key: 'colors',
 });
+
+export const zIndex = style({
+    prop: 'zIndex',
+    cssProperty: 'z-index',
+    key: 'zIndex',
+});

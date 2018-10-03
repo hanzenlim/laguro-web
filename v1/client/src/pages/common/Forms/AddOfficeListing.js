@@ -8,7 +8,6 @@ class AddOfficeListing extends Component {
     constructor(props) {
         super(props);
         const { form, ...rest } = this.props;
-
         // inspect how many numChairsFields are currently in the url to know how many cards to initialize
         const numCards = Object.keys(props).filter(key =>
             key.startsWith('numChairs')
@@ -21,6 +20,7 @@ class AddOfficeListing extends Component {
                 form={form}
                 key={index}
                 data-index={index}
+                onDelete={this.handleDeleteListing}
                 onClick={this.handleClickListing}
             />
         ));
@@ -35,6 +35,7 @@ class AddOfficeListing extends Component {
                           form={form}
                           key={0}
                           data-index={0}
+                          onDelete={this.handleDeleteListing}
                           onClick={this.handleClickListing}
                       />,
                   ],
@@ -66,11 +67,27 @@ class AddOfficeListing extends Component {
                     key={listings.length}
                     data-index={listings.length}
                     active
+                    onDelete={this.handleDeleteListing}
                     onClick={this.handleClickListing}
                 />,
             ]),
             activeListingIndex: listings.length,
         });
+    };
+
+    handleDeleteListing = (e, hi) => {
+        e.stopPropagation();
+
+        const index = get(e, 'currentTarget.dataset.index');
+
+        const { listings } = this.state;
+        listings.splice(index, 1);
+
+        this.setState({
+            listings,
+        });
+
+        this.showListing(this.state.activeListingIndex - 1);
     };
 
     handleClickListing = e => {

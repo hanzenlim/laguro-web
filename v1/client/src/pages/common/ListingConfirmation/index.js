@@ -40,11 +40,8 @@ const mapListings = (listings, equipment) =>
 
 class ListingConfirmationContainer extends PureComponent {
     render() {
-        const historyLocationSearch = queryString.parse(
-            get(this.props, 'location.search')
-        );
+        const { officeId, listingIds } = this.props;
 
-        const { officeId, data: listingIds } = historyLocationSearch;
         return (
             <Query
                 query={getOfficeQuery}

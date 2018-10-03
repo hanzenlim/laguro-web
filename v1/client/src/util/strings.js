@@ -111,6 +111,7 @@ export const BOOKING_FEE_PERCENTAGE = 0.15;
 // host onboarding
 export const EDIT_OFFICE_MODE = 'edit-office';
 export const ADD_LISTING_MODE = 'add-listing';
+export const HOST_ONBOARDING_CREATE_MODE = 'onboarding-create';
 
 // TODO delete following
 // const pluralizeMap = {

@@ -97,7 +97,6 @@ const LocationFilterView = ({
     placeholder,
     onBlur,
     onChange,
-    placeHolder,
     disabled,
     ...rest
 }) => {

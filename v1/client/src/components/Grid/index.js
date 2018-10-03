@@ -27,7 +27,8 @@ const GridSystem = system(
     }),
     'alignItems',
     'justifyItems',
-    'space'
+    'space',
+    'position'
 );
 
 const GridItemSystem = system(
@@ -36,7 +37,8 @@ const GridItemSystem = system(
         'grid-row': props.gr === 'all' ? '1 / -1' : props.gr,
     }),
     'alignItems',
-    'space'
+    'space',
+    'position'
 );
 
 class Grid extends Component {

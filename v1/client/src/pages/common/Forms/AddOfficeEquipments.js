@@ -65,16 +65,20 @@ class AddOfficeEquipments extends Component {
             })
             .reduce((a, b) => ({ ...a, ...b }), {});
 
-        const urlEquipment = pick(
-            props,
-            Object.keys(props).filter(key => key.startsWith(EQUIPMENT))
-        );
+        const { equipment } = this.props;
 
         this.state = {
             defaultEquipmentList,
-            equipment: !isEmpty(urlEquipment)
-                ? urlEquipment
-                : defaultEquipmentList,
+            equipment: isEmpty(equipment)
+                ? defaultEquipmentList
+                : equipment.reduce(
+                      (acc, { name, price }, i) => ({
+                          ...acc,
+                          [`${EQUIPMENT_NAME}${i}`]: name,
+                          [`${EQUIPMENT_PRICE}${i}`]: price,
+                      }),
+                      {}
+                  ),
         };
     }
 
@@ -126,6 +130,27 @@ class AddOfficeEquipments extends Component {
         const key = `${EQUIPMENT_PRICE}${index}`;
         form.setFieldsValue({ [key]: undefined });
     };
+
+    componentDidUpdate(prevProps) {
+        const { officeDescription, equipment } = this.props;
+
+        if (prevProps.officeDescription !== officeDescription) {
+            this.props.form.setFieldsValue({
+                officeDescription,
+            });
+
+            this.setState({
+                equipment: equipment.reduce(
+                    (acc, { name, price }, i) => ({
+                        ...acc,
+                        [`${EQUIPMENT_NAME}${i}`]: name,
+                        [`${EQUIPMENT_PRICE}${i}`]: price,
+                    }),
+                    {}
+                ),
+            });
+        }
+    }
 
     renderEquipment = equipment => {
         const eqNameKeys = Object.keys(equipment).filter(eq =>
@@ -200,9 +225,8 @@ class AddOfficeEquipments extends Component {
             <Box maxWidth="620px">
                 <StyledForm
                     form={form}
-                    officeDescription={officeDescription}
                     onSuccess={this.onSubmit}
-                    {...equipment}
+                    officeDescription={officeDescription}
                 >
                     <Grid
                         gcg="8px"

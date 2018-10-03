@@ -137,9 +137,7 @@ class App extends Component {
                                             />
                                             <PrivateRoute
                                                 path="/host-onboarding/:step"
-                                                component={withTracker(
-                                                    HostOnboarding
-                                                )}
+                                                component={HostOnboarding}
                                                 isUserLoggedin={data.activeUser}
                                             />
                                             <PrivateRoute

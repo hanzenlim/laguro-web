@@ -1,5 +1,6 @@
 import system from 'system-components';
 import styled from 'styled-components';
+import { zIndex } from '../utils';
 
 const Box = system(
     // core
@@ -52,6 +53,7 @@ const Box = system(
 );
 
 const StyledBox = styled(Box)`
+    ${zIndex};
     ${props => props.transform && `transform: ${props.transform}`};
 `;
 StyledBox.displayName = 'Box';

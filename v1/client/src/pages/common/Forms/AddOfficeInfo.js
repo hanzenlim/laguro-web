@@ -27,13 +27,14 @@ const maxImageNum = 5;
 class AddOfficeInfo extends Component {
     constructor(props) {
         super(props);
-        const { imageUrls } = props;
-        const imageUrlsForState =
-            (!isEmpty(imageUrls) && JSON.parse(imageUrls)) || [];
+        const { imageUrls, locationLat, locationLong } = props;
+        const imageUrlsForState = imageUrls || [];
 
         this.state = {
             autoCompleteHasError: false,
             imageUrls: imageUrlsForState,
+            locationLat,
+            locationLong,
         };
 
         props.onImageChange(imageUrlsForState.length);
@@ -131,6 +132,7 @@ class AddOfficeInfo extends Component {
             !isEmpty(imageUrls) &&
             imageUrls.map((url, index) => (
                 <Box
+                    key={index}
                     position="relative"
                     width={imageBoxHeight}
                     height={imageBoxHeight}
@@ -203,7 +205,7 @@ class AddOfficeInfo extends Component {
         const { autoCompleteHasError } = this.state;
 
         return (
-            <InnerForm form={form} {...rest}>
+            <InnerForm form={form} {...this.props}>
                 <Grid
                     gtc="294px 36px 294px"
                     gtr="auto auto auto auto auto auto auto auto"
@@ -274,7 +276,7 @@ class AddOfficeInfo extends Component {
                             input={
                                 <Input
                                     height="50px"
-                                    placeHolder="Bell Dental Center"
+                                    placeholder="Bell Dental Center"
                                 />
                             }
                         />
@@ -322,7 +324,7 @@ class AddOfficeInfo extends Component {
                                 <Input
                                     disabled={locationDisabled}
                                     height="50px"
-                                    placeHolder=""
+                                    placeholder=""
                                 />
                             }
                         />

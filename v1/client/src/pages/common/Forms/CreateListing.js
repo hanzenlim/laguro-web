@@ -19,7 +19,7 @@ import { renderPrice } from '../../../util/paymentUtil';
 
 const { GridItem } = Grid;
 const { FormItem } = InnerForm;
-const format = 'HH:mm';
+const format = 'h:mm a';
 
 const StyledForm = styled(InnerForm)`
     .ant-form-item {
@@ -78,7 +78,7 @@ class CreateListing extends Component {
     };
 
     render() {
-        const { active, form, ...rest } = this.props;
+        const { active, form, onDelete, ...rest } = this.props;
         const values = form.getFieldsValue();
         const index = this.props['data-index'];
         const availability = values[`availability${index}`];
@@ -199,7 +199,25 @@ class CreateListing extends Component {
                     </Card>
                 </StyledButton>
                 <StyledCard mb={10} visible={active} {...rest}>
-                    <Box maxWidth="620px">
+                    <Box maxWidth="620px" position="relative">
+                        {this.props['data-index'] !== 0 && (
+                            <Button
+                                position="absolute"
+                                right="0"
+                                type="ghost"
+                                data-index={this.props['data-index']}
+                                onClick={onDelete}
+                                height="40px"
+                                zIndex="100"
+                                // HACK (NOTE: AVOID USING MAGIC NUMBERS)
+                                top="-5px"
+                            >
+                                <Text fontSize={1} color="text.blue">
+                                    delete listing
+                                </Text>
+                            </Button>
+                        )}
+
                         <StyledForm form={form}>
                             <Grid
                                 gtc="282px 22px 22px 282px"
@@ -251,6 +269,10 @@ class CreateListing extends Component {
                                                     py={12}
                                                     height={50}
                                                     borderless
+                                                    defaultOpenValue={moment(
+                                                        '12:00',
+                                                        format
+                                                    )}
                                                     use12Hours
                                                     minuteStep={60}
                                                     placeholder="Daily start time"
@@ -283,6 +305,10 @@ class CreateListing extends Component {
                                                     py={12}
                                                     height={50}
                                                     borderless
+                                                    defaultOpenValue={moment(
+                                                        '12:00',
+                                                        format
+                                                    )}
                                                     use12Hours
                                                     minuteStep={60}
                                                     placeholder="Daily end time"
@@ -294,14 +320,16 @@ class CreateListing extends Component {
                                 </GridItem>
 
                                 <GridItem gc="all">
-                                    <Text fontSize={3}>
-                                        Number of Chairs Available
-                                    </Text>
-                                    <Counter
-                                        onCounterCountHandler={this.onChairCounterHandler(
-                                            `numChairs${index}`
-                                        )}
-                                    />
+                                    <Flex justifyContent="space-between">
+                                        <Text fontSize={3}>
+                                            Number of Chairs Available
+                                        </Text>
+                                        <Counter
+                                            onCounterCountHandler={this.onChairCounterHandler(
+                                                `numChairs${index}`
+                                            )}
+                                        />
+                                    </Flex>
                                     <FormItem
                                         name={`numChairs${index}`}
                                         initialValue={1}

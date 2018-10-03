@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import cookies from 'browser-cookies';
 import styled from 'styled-components';
-import { message } from 'antd';
+import { Alert, message } from 'antd';
+
 import { Query, Mutation } from 'react-apollo';
 import queryString from 'query-string';
 import moment from 'moment';
@@ -9,6 +10,7 @@ import get from 'lodash/get';
 import pick from 'lodash/pick';
 import isEmpty from 'lodash/isEmpty';
 import _mapValues from 'lodash/mapValues';
+
 import { renderCents, renderPrice } from '../../util/paymentUtil';
 import {
     GET_USER,
@@ -18,7 +20,7 @@ import {
     UPDATE_OFFICE,
 } from './queries';
 import history from '../../history';
-import { Container, Steps, Form, Grid } from '../../components';
+import { Container, Steps, Form, Grid, Box, Flex } from '../../components';
 import AddOfficeInfo from '../common/Forms/AddOfficeInfo';
 import AddOfficeEquipments from '../common/Forms/AddOfficeEquipments';
 import AddOfficeListing from '../common/Forms/AddOfficeListing';
@@ -27,6 +29,7 @@ import {
     ACTIVE_USER,
     EDIT_OFFICE_MODE,
     ADD_LISTING_MODE,
+    HOST_ONBOARDING_CREATE_MODE,
 } from '../../util/strings';
 
 // modes:
@@ -59,52 +62,144 @@ const StyledContainer = styled(Container)`
 `;
 
 const AVAILABILITY = 'availability';
+const HOST_ONBOARDING_LOCALSTORAGE_KEY = 'host-onboarding-localstorage-key';
 
 const { BackButton, SubmitButton } = Form;
+
+const stepURLs = {
+    [OFFICE_STEP]: OFFICE_STEP_URL,
+    [EQUIPMENT_STEP]: EQUIPMENT_STEP_URL,
+    [LISTING_STEP]: LISTING_STEP_URL,
+    [CONFIRMATION_STEP]: CONFIRMATION_STEP_URL,
+};
+
+const parseEquipmentFormData = values =>
+    Object.keys(values)
+        .filter(key => key.startsWith('equipmentPrice'))
+        .map(key => ({
+            name:
+                values[`${EQUIPMENT_NAME}${key.slice(EQUIPMENT_PRICE.length)}`],
+            price: renderCents(values[key]),
+        }));
+
+const parseListingFormData = values =>
+    Object.keys(values)
+        .filter(key => key.startsWith(AVAILABILITY))
+        .map(key => {
+            const startTime =
+                values[`startTime${key.slice(AVAILABILITY.length)}`];
+            const endTime = values[`endTime${key.slice(AVAILABILITY.length)}`];
+            const cleaningFee = renderCents(
+                values[`cleaningFee${key.slice(AVAILABILITY.length)}`]
+            );
+            const chairHourlyPrice = renderCents(
+                values[`hourlyChairPrice${key.slice(AVAILABILITY.length)}`]
+            );
+            const numChairsAvailable =
+                values[`numChairs${key.slice(AVAILABILITY.length)}`];
+            // this.values[key] is availability array
+            const startDay = values[key][0];
+            const endDay = values[key][1];
+
+            if (startTime >= endTime) {
+                message.error(
+                    'Your daily end time has to be after your daily start time'
+                );
+                return {};
+            }
+
+            return {
+                cleaningFee,
+                chairHourlyPrice,
+                numChairsAvailable,
+                availability: {
+                    startTime: startTime
+                        .startOf('hour')
+                        .format()
+                        .split('T')[1],
+                    endTime: endTime
+                        .startOf('hour')
+                        .format()
+                        .split('T')[1],
+                    startDay: startDay.format().split('T')[0],
+                    endDay: endDay.format().split('T')[0],
+                },
+            };
+        });
+
+const StyledAlert = styled(Alert)`
+    && {
+        max-width: 620px;
+        position: absolute;
+        top: 20px;
+        padding-right: 60px;
+    }
+`;
+
+const RestartText = styled.span`
+    font-weight: bold;
+    text-decoration: underline;
+    cursor: pointer;
+`;
 
 class HostOnboarding extends Component {
     constructor(props) {
         super(props);
 
         const historyLocationSearch = get(this.props, 'location.search'); // same thing as history.location.search but with less bugs
-        const { mode } = queryString.parse(historyLocationSearch);
+        const { mode, officeId } = queryString.parse(historyLocationSearch);
         // will be used as state variable for disabling submit button when the user has not selected from autocomplete
 
-        let locationSelected;
+        let locationSelected = false;
+        let resumeWarning = false;
+        let numImage = 0;
 
         switch (mode) {
-            case EDIT_OFFICE_MODE:
+            case EDIT_OFFICE_MODE: {
                 // repeat EQUIPMENT_STEP because there is no confirmation page for edit office, this is used for displaying previous buttons
                 // TODO: come up with a better way for displaying previous buttons
                 this.stepList = [OFFICE_STEP, EQUIPMENT_STEP, EQUIPMENT_STEP];
                 // will take the user back to HOST_PROFILE_URL after clicking 'Save Changes'
+
                 this.urlList = [
                     OFFICE_STEP_URL,
                     EQUIPMENT_STEP_URL,
                     HOST_PROFILE_URL,
                 ];
+
                 this.headerList = ['', ''];
                 this.buttonTexts = ['Next', 'Save Changes'];
 
+                this.mode = EDIT_OFFICE_MODE;
+                this.officeId = officeId;
+
                 // edit office does not show location
                 locationSelected = true;
-                break;
 
+                const { step } = this.props.match.params;
+                if (step === OFFICE_STEP) {
+                    this.destroyWizardState();
+                }
+
+                break;
+            }
             case ADD_LISTING_MODE:
                 this.stepList = [LISTING_STEP, CONFIRMATION_STEP];
+
                 this.urlList = [
                     LISTING_STEP_URL,
                     CONFIRMATION_STEP_URL,
                     HOST_PROFILE_URL,
                 ];
-                this.buttonTexts = ['Publish', 'Go to My Listings'];
 
+                this.buttonTexts = ['Publish', 'Go to My Listings'];
+                this.mode = ADD_LISTING_MODE;
                 // doesn't need to select location for add listing
                 locationSelected = true;
                 break;
 
             // usual host onboarding
-            default:
+            default: {
                 this.stepList = [
                     OFFICE_STEP,
                     EQUIPMENT_STEP,
@@ -130,14 +225,31 @@ class HostOnboarding extends Component {
                     'Tell us more about your office',
                 ];
 
+                this.mode = HOST_ONBOARDING_CREATE_MODE;
+
+                const wizardState = this.fetchWizardState();
+
+                if (wizardState.imageUrls) {
+                    numImage = wizardState.imageUrls.length;
+                } else {
+                    numImage = 0;
+                }
+
+                if (!isEmpty(wizardState)) {
+                    resumeWarning = true;
+                }
+
                 locationSelected = false;
+            }
         }
 
         this.state = {
             historyLocationSearch,
             locationSelected,
             imageSelected: false,
+            numImage,
             defaultValues: {},
+            resumeWarning,
         };
     }
 
@@ -166,41 +278,58 @@ class HostOnboarding extends Component {
     };
 
     // given form values and current urlParams, compute next url and add computedParams to url
-    advanceStep = (values, data = { key: [] }) => {
-        const { historyLocationSearch } = this.state;
-        const urlParams = queryString.parse(historyLocationSearch);
-        const { pathname } = this.props.location;
+    advanceStep = () => {
+        const { step } = this.props.match.params;
 
-        const nextIndex = this.urlList.indexOf(pathname) + 1;
-        const nextUrl = this.urlList[this.urlList.indexOf(pathname) + 1];
+        const _currentURL = stepURLs[step];
 
-        // when redirecting to profile pages, no query params
-        let url = nextUrl;
+        const nextIndex = this.urlList.indexOf(_currentURL) + 1;
+        const nextURL = this.urlList[nextIndex];
 
-        // all other times, add query params to url
-        if (nextIndex !== this.urlList.length - 1) {
-            url = `${nextUrl}?${this.buildUrlParams(
-                values,
-                urlParams,
-                // grab the graphql data
-                Object.values(data)[0],
-                this.officeId
-            )}`;
+        if (nextIndex === this.urlList.length - 1) {
+            this.destroyWizardState();
+
+            return history.push(nextURL);
         }
 
-        history.push(url);
+        return history.push(this.buildNextIntermediateURL(nextURL));
     };
 
     // given values, compute next url and add computedParams to url
     handleBack = values => {
+        const { pathname } = this.props.location;
+        const nextStep = this.urlList[this.urlList.indexOf(pathname) - 1];
+        const url = this.buildNextIntermediateURL(nextStep);
+
+        history.push(url);
+    };
+
+    buildNextIntermediateURL = nextURL => {
         const { historyLocationSearch } = this.state;
         const urlParams = queryString.parse(historyLocationSearch);
 
-        const { pathname } = this.props.location;
-        const nextStep = this.urlList[this.urlList.indexOf(pathname) - 1];
-        const url = `${nextStep}?${this.buildUrlParams(values, urlParams)}`;
+        return `${nextURL}?${queryString.stringify(urlParams)}`;
+    };
 
-        history.push(url);
+    saveWizardState = state => {
+        localStorage.setItem(
+            `${this.mode}-${HOST_ONBOARDING_LOCALSTORAGE_KEY}`,
+            JSON.stringify(state)
+        );
+    };
+
+    destroyWizardState = () => {
+        localStorage.removeItem(
+            `${this.mode}-${HOST_ONBOARDING_LOCALSTORAGE_KEY}`
+        );
+    };
+
+    fetchWizardState = () => {
+        const wizardState = localStorage.getItem(
+            `${this.mode}-${HOST_ONBOARDING_LOCALSTORAGE_KEY}`
+        );
+
+        return wizardState ? JSON.parse(wizardState) : {};
     };
 
     // values: form values that are submitted
@@ -217,69 +346,87 @@ class HostOnboarding extends Component {
     ) => {
         // save listing step values to create listings after creating office, in createListings
         this.values = values;
+
         const { step } = this.props.match.params;
         const { historyLocationSearch } = this.state;
-        const urlParams = queryString.parse(historyLocationSearch);
-        const { mode } = queryString.parse(historyLocationSearch);
 
-        // due to form value bugs, equipmentNames will not be deleted upon equipment delete. therefore, select all equipment prices form urlParams and find matching equipment names and drop equipment names that do not have a price
-        const urlEquipment = Object.keys(urlParams)
-            .filter(key => key.startsWith('equipmentPrice'))
-            .map(key => ({
-                name:
-                    urlParams[
-                        `${EQUIPMENT_NAME}${key.slice(EQUIPMENT_PRICE.length)}`
-                    ],
-                price: renderCents(urlParams[key]),
-            }));
+        const wizardState = this.fetchWizardState();
 
         // same process as above, but for form values
-        const valueEquipment = Object.keys(values)
-            .filter(key => key.startsWith('equipmentPrice'))
-            .map(key => ({
-                name:
-                    values[
-                        `${EQUIPMENT_NAME}${key.slice(EQUIPMENT_PRICE.length)}`
-                    ],
-                price: renderCents(values[key]),
-            }));
 
-        switch (mode) {
+        if (step === OFFICE_STEP) {
+            const addOfficeState = get(this, 'addOfficeInfo.state', {});
+
+            const { imageUrls, locationLat, locationLong } = addOfficeState;
+            const { officeName, location, addressDetail } = values;
+
+            this.saveWizardState({
+                ...wizardState,
+                officeName,
+                location,
+                addressDetail,
+                locationLat,
+                locationLong,
+                imageUrls,
+            });
+        }
+
+        switch (this.mode) {
             case EDIT_OFFICE_MODE:
                 if (step === EQUIPMENT_STEP) {
-                    const { officeId, officeName, imageUrls } = urlParams;
+                    const { officeName, imageUrls } = wizardState;
                     const { officeDescription } = values;
+                    const equipment = parseEquipmentFormData(values);
 
                     // makes the api call to submit changes to office
                     updateOffice({
                         variables: {
                             input: {
-                                id: officeId,
+                                id: this.officeId,
                                 name: officeName,
                                 description: officeDescription,
-                                imageUrls: JSON.parse(imageUrls),
-                                equipment: valueEquipment,
+                                imageUrls,
+                                equipment,
                             },
                         },
                     });
+
+                    this.destroyWizardState();
                 } else {
-                    this.advanceStep(values);
+                    this.advanceStep();
                 }
                 break;
 
             case ADD_LISTING_MODE:
                 if (step === LISTING_STEP) {
-                    const { officeId } = urlParams;
+                    const { officeId } = wizardState;
 
                     this.createListings(officeId, batchCreateListings);
                 } else {
-                    this.advanceStep(values);
+                    this.advanceStep();
                 }
                 break;
 
             // usual host onboarding
-            default:
+            default: {
+                if (step === EQUIPMENT_STEP) {
+                    const { officeDescription } = values;
+                    const equipment = parseEquipmentFormData(values);
+
+                    this.saveWizardState({
+                        ...wizardState,
+                        officeDescription,
+                        equipment,
+                    });
+                }
+
                 if (step === LISTING_STEP) {
+                    const listings = parseListingFormData(values);
+                    this.saveWizardState({
+                        ...wizardState,
+                        listings,
+                    });
+
                     const {
                         addressDetail,
                         imageUrls,
@@ -288,13 +435,17 @@ class HostOnboarding extends Component {
                         locationLong,
                         officeDescription,
                         officeName,
-                    } = urlParams;
+                        equipment,
+                    } = wizardState;
 
                     const result = await createOffice({
                         variables: {
                             input: {
                                 userId: id,
                                 name: officeName,
+                                imageUrls,
+                                equipment,
+                                description: officeDescription,
                                 location: {
                                     name: location,
                                     geoPoint: {
@@ -305,9 +456,6 @@ class HostOnboarding extends Component {
                                         ? addressDetail
                                         : undefined,
                                 },
-                                imageUrls: JSON.parse(imageUrls),
-                                equipment: urlEquipment,
-                                description: officeDescription,
                             },
                         },
                     });
@@ -334,14 +482,16 @@ class HostOnboarding extends Component {
 
                     // url transition to confirmation page happens in handleListingCreated. skip transition in current function
                 } else {
-                    this.advanceStep(values);
+                    this.advanceStep();
                 }
+
                 break;
+            }
         }
     };
 
     // host onboarding
-    createListings = (officeId, batchCreateListings) => {
+    createListings = async (officeId, batchCreateListings) => {
         // save officeId to pass to confirmation step
         this.officeId = officeId;
 
@@ -397,94 +547,26 @@ class HostOnboarding extends Component {
                 };
             });
 
-        batchCreateListings({
+        const result = await batchCreateListings({
             variables: {
                 input: listings,
             },
         });
-    };
 
-    buildUrlParams = (values = {}, urlParams = {}, data, officeId) => {
-        const { step } = this.props.match.params;
-        const { defaultValues } = this.state;
+        const wizardState = this.fetchWizardState();
 
-        // drop equipmentNames and equipmentPrices from url params, so that only current equipment values will make up new equipmentNames and equipmentPrices. This is due to deleting feature of equipment.
-        const urlParamsWithoutEquipment = pick(
-            urlParams,
-            Object.keys(urlParams).filter(key => !key.startsWith('equipment'))
-        );
-        // same process for imageUrls deletions
-        const urlParamsWithoutImageUrls = pick(
-            urlParams,
-            Object.keys(urlParams).filter(key => !key.startsWith('imageUrls'))
-        );
-        let computedUrlParams;
-        switch (step) {
-            case OFFICE_STEP:
-                computedUrlParams = urlParamsWithoutImageUrls;
-                break;
-            case EQUIPMENT_STEP:
-                computedUrlParams = urlParamsWithoutEquipment;
-                break;
-            default:
-                computedUrlParams = urlParams;
+        if (get(result, 'data.batchCreateListings')) {
+            await this.saveWizardState({
+                ...wizardState,
+                officeId,
+                listingIds: get(result, 'data.batchCreateListings').map(
+                    ({ id }) => id
+                ),
+            });
+
+            await this.setState({});
+            await this.handleOnCompleted();
         }
-
-        // to address weird bug where equipmentName values are accessble in listing step. this is only for antd Select components
-        const valuesWithoutEquipment = pick(
-            values,
-            Object.keys(values).filter(key => !key.startsWith('equipment'))
-        );
-
-        let computedValues;
-        switch (step) {
-            case OFFICE_STEP:
-                computedValues = valuesWithoutEquipment;
-                break;
-            case LISTING_STEP:
-                computedValues = valuesWithoutEquipment;
-                break;
-            default:
-                computedValues = values;
-                break;
-        }
-
-        // since availability and startTime and endTime are moment objects, need to JSON.stringify
-        const dateTime = _mapValues(
-            pick(
-                values,
-                Object.keys(values).filter(
-                    key =>
-                        key.startsWith(AVAILABILITY) ||
-                        key.startsWith('startTime') ||
-                        key.startsWith('endTime')
-                )
-            ),
-            JSON.stringify
-        );
-
-        // these are from state variables of OFFICE_STEP
-        const addOfficeState = get(this, 'addOfficeInfo.state');
-        const imageUrls = get(addOfficeState, 'imageUrls');
-        const locationLat = get(addOfficeState, 'locationLat');
-        const locationLong = get(addOfficeState, 'locationLong');
-
-        const params = queryString.stringify({
-            officeId,
-            // params from backend data for office for edit office
-            ...this.turnOfficeDataIntoParams(defaultValues),
-            // state variables from children. imageUrls is an array, and needs to be stringified.
-            imageUrls: JSON.stringify(imageUrls),
-            locationLat,
-            locationLong,
-            // url params
-            ...computedUrlParams,
-            // form values
-            ...computedValues,
-            ...dateTime,
-            data: JSON.stringify(data),
-        });
-        return params;
     };
 
     // save office data to state to trigger render
@@ -492,9 +574,7 @@ class HostOnboarding extends Component {
         const historyLocationSearch = get(this.props, 'location.search');
         const { mode } = queryString.parse(historyLocationSearch);
 
-        if (mode === EDIT_OFFICE_MODE) {
-            this.setState({ defaultValues: data.getOffice });
-        }
+        this.setState({ defaultValues: data.getOffice });
     };
 
     // after receiving existing office data, turn it into urlParams
@@ -505,16 +585,6 @@ class HostOnboarding extends Component {
 
         // going from [{name: "equipmentName", price: $20.00}...] to { equipmentName: 'equipmentName', equipmentPrice: '$20.00' }
         const { equipment, name, location, imageUrls, description } = data;
-        const equipmentParams = equipment
-            .map((eq, index) => {
-                const key = `${EQUIPMENT_NAME}${index}`;
-                const price = `${EQUIPMENT_PRICE}${index}`;
-                return {
-                    [key]: eq.name,
-                    [price]: renderPrice(eq.price),
-                };
-            })
-            .reduce((a, b) => ({ ...a, ...b }), {});
 
         return {
             officeName: name,
@@ -523,55 +593,43 @@ class HostOnboarding extends Component {
             locationLong: location.geoPoint.lon,
             imageUrls,
             officeDescription: description,
-            ...equipmentParams,
+            equipment,
         };
     };
 
-    handleOnCompleted = data => this.advanceStep({}, data);
+    handleOnCompleted = data => this.advanceStep();
 
+    handleRestart = () => {
+        this.destroyWizardState();
+        window.location.href = OFFICE_STEP_URL;
+    };
+
+    handleResumeWarningClose = () => {
+        this.setState({
+            resumeWarning: false,
+        });
+    };
+
+    // forms should not be embedded within forms
     render() {
         const { historyLocationSearch, defaultValues } = this.state;
         const urlParams = queryString.parse(historyLocationSearch);
-        const { location } = this.props;
         const { step } = this.props.match.params;
+        const { mode } = this;
 
-        // turn urlparams availability and time into parsed, moment objects to pass to add-listing step for initial values
-        const availabilities = _mapValues(
-            pick(
-                urlParams,
-                Object.keys(urlParams).filter(key =>
-                    key.startsWith(AVAILABILITY)
-                )
-            ),
-            availability => [
-                moment(JSON.parse(availability)[0]),
-                moment(JSON.parse(availability)[1]),
-            ]
-        );
-        const times = _mapValues(
-            pick(
-                urlParams,
-                Object.keys(urlParams).filter(
-                    key =>
-                        key.startsWith('startTime') || key.startsWith('endTime')
-                )
-            ),
-            time => moment(JSON.parse(time))
-        );
+        const wizardState = this.fetchWizardState();
 
         const initialFormValues = {
             // office data for edit-office mode
             ...this.turnOfficeDataIntoParams(defaultValues),
-            ...urlParams,
-            ...availabilities,
-            ...times,
+            ...wizardState,
         };
 
         const stepCount = this.stepList.indexOf(step);
-        const { officeId, mode } = urlParams;
+        const { officeId } = urlParams;
 
         let numSteps;
-        switch (mode) {
+        switch (this.mode) {
             case EDIT_OFFICE_MODE:
                 numSteps = 2;
                 break;
@@ -601,9 +659,12 @@ class HostOnboarding extends Component {
                                 {updateOffice => (
                                     <Mutation
                                         mutation={CREATE_LISTING}
-                                        onCompleted={this.handleOnCompleted}
+                                        // onCompleted={this.handleOnCompleted}
                                     >
-                                        {batchCreateListings => (
+                                        {(
+                                            batchCreateListings,
+                                            { data: batchCreateListingsData }
+                                        ) => (
                                             <Mutation
                                                 mutation={CREATE_OFFICE}
                                                 onCompleted={data => {
@@ -614,7 +675,13 @@ class HostOnboarding extends Component {
                                                     );
                                                 }}
                                             >
-                                                {(createOffice, { client }) => (
+                                                {(
+                                                    createOffice,
+                                                    {
+                                                        client,
+                                                        data: createOfficeData,
+                                                    }
+                                                ) => (
                                                     <StyledContainer>
                                                         <Form
                                                             onSuccess={values => {
@@ -649,7 +716,58 @@ class HostOnboarding extends Component {
                                                                     }
                                                                 />
 
-                                                                <GridItem gc="2 / 4">
+                                                                <GridItem
+                                                                    gc="2 / 4"
+                                                                    position="relative"
+                                                                >
+                                                                    {step !==
+                                                                        CONFIRMATION_STEP &&
+                                                                        this
+                                                                            .state
+                                                                            .resumeWarning && (
+                                                                            <StyledAlert
+                                                                                type="info"
+                                                                                showIcon
+                                                                                closeText="Close"
+                                                                                afterClose={
+                                                                                    this
+                                                                                        .handleResumeWarningClose
+                                                                                }
+                                                                                message={
+                                                                                    <React.Fragment
+                                                                                    >
+                                                                                        Looks
+                                                                                        like
+                                                                                        you
+                                                                                        were
+                                                                                        middle
+                                                                                        of
+                                                                                        creating
+                                                                                        an
+                                                                                        office!
+                                                                                        We&#39;ve
+                                                                                        saved
+                                                                                        your
+                                                                                        changes
+                                                                                        or{' '}
+                                                                                        <RestartText
+                                                                                            onClick={
+                                                                                                this
+                                                                                                    .handleRestart
+                                                                                            }
+                                                                                        >
+                                                                                            you
+                                                                                            can
+                                                                                            start
+                                                                                            over
+                                                                                        </RestartText>
+
+                                                                                        .
+                                                                                    </React.Fragment>
+                                                                                }
+                                                                            />
+                                                                        )}
+
                                                                     {step ===
                                                                         OFFICE_STEP && (
                                                                         <AddOfficeInfo
@@ -704,64 +822,100 @@ class HostOnboarding extends Component {
                                                                     )}
 
                                                                     {step ===
-                                                                        CONFIRMATION_STEP && (
-                                                                        <ListingConfirmation
-                                                                            location={
-                                                                                location
-                                                                            }
-                                                                        />
-                                                                    )}
-                                                                </GridItem>
-                                                                {/* previous button is shown when the user is not on the first page or the last page. using indexOf for edit office */}
-                                                                {stepCount !==
-                                                                    0 &&
-                                                                    this.stepList.indexOf(
-                                                                        step
-                                                                    ) !==
-                                                                        this
-                                                                            .stepList
-                                                                            .length -
-                                                                            1 && (
-                                                                        <GridItem gc="1 / 2">
-                                                                            <BackButton
-                                                                                disabled={
-                                                                                    false
+                                                                        CONFIRMATION_STEP &&
+                                                                        wizardState.officeId &&
+                                                                        wizardState
+                                                                            .listingIds
+                                                                            .length && (
+                                                                            <ListingConfirmation
+                                                                                officeId={
+                                                                                    wizardState.officeId
                                                                                 }
-                                                                                onBack={
-                                                                                    this
-                                                                                        .handleBack
+                                                                                listingIds={
+                                                                                    wizardState.listingIds
                                                                                 }
-                                                                                type="primary"
-                                                                                ghost
-                                                                                width={
-                                                                                    188
-                                                                                }
-                                                                                height={
-                                                                                    60
-                                                                                }
-                                                                                buttonText="Previous"
                                                                             />
-                                                                        </GridItem>
-                                                                    )}
-
-                                                                <GridItem gc="3 / 4">
-                                                                    <SubmitButton
-                                                                        position="absolute"
-                                                                        width={
-                                                                            188
-                                                                        }
-                                                                        height={
-                                                                            60
-                                                                        }
-                                                                        buttonText={
-                                                                            this
-                                                                                .buttonTexts[
-                                                                                stepCount
-                                                                            ]
-                                                                        }
-                                                                    />
+                                                                        )}
                                                                 </GridItem>
                                                             </Grid>
+                                                            {/* previous button is shown when the user is not on the first page or the last page. using indexOf for edit office */}
+                                                            <Box
+                                                                position="fixed"
+                                                                bg="white"
+                                                                left="0"
+                                                                right="0"
+                                                                bottom="0"
+                                                                height="100px"
+                                                                border="1px solid"
+                                                                borderColor="divider.gray"
+                                                                zIndex="modal"
+                                                            >
+                                                                <Container>
+                                                                    <Flex
+                                                                        justifyContent="space-between"
+                                                                        alignItems="center"
+                                                                    >
+                                                                        {stepCount !==
+                                                                        0 ? (
+                                                                            this.stepList.indexOf(
+                                                                                step
+                                                                            ) !==
+                                                                            this
+                                                                                .stepList
+                                                                                .length -
+                                                                                1 ? (
+                                                                                <BackButton
+                                                                                    disabled={
+                                                                                        false
+                                                                                    }
+                                                                                    onBack={
+                                                                                        this
+                                                                                            .handleBack
+                                                                                    }
+                                                                                    type="primary"
+                                                                                    ghost
+                                                                                    width={
+                                                                                        188
+                                                                                    }
+                                                                                    height={
+                                                                                        60
+                                                                                    }
+                                                                                    buttonText="Previous"
+                                                                                    mt={
+                                                                                        20
+                                                                                    }
+                                                                                />
+                                                                            ) : (
+                                                                                <div />
+                                                                            )
+                                                                        ) : (
+                                                                            // Added this so that flex space between will work
+                                                                            <div />
+                                                                        )}
+
+                                                                        <SubmitButton
+                                                                            width={
+                                                                                188
+                                                                            }
+                                                                            height={
+                                                                                60
+                                                                            }
+                                                                            mt={
+                                                                                20
+                                                                            }
+                                                                            mr={
+                                                                                30
+                                                                            }
+                                                                            buttonText={
+                                                                                this
+                                                                                    .buttonTexts[
+                                                                                    stepCount
+                                                                                ]
+                                                                            }
+                                                                        />
+                                                                    </Flex>
+                                                                </Container>
+                                                            </Box>
                                                         </Form>
                                                     </StyledContainer>
                                                 )}

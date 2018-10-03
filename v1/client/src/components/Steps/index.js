@@ -43,6 +43,7 @@ const StyledStep = styled(Step)``;
 
 const Steps = props => {
     const { size } = props;
+
     return (
         <StyledSteps {...props}>
             {Array(size)
@@ -55,7 +56,7 @@ const Steps = props => {
 };
 
 Steps.propTypes = {
-    size: PropTypes.number.isRequired,
+    size: PropTypes.string.isRequired,
     current: PropTypes.number.isRequired,
 };
 

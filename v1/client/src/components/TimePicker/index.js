@@ -28,9 +28,10 @@ const StyledTimePicker = styled(AntdTimePicker)`
         height: 26px;
         top: 12px;
         font-size: 26px;
-        :after {
-            color: ${props => props.theme.colors.text.black50};
-        }
+    }
+
+    & .ant-time-picker-icon .anticon {
+        color: ${props => props.theme.colors.icon.blue};
     }
 
     &.ant-time-picker {
