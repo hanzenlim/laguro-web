@@ -4,6 +4,7 @@ import { gql } from 'apollo-boost';
 export const getOfficeQuery = gql`
     query($id: String!) {
         getOffice(id: $id) {
+            id
             name
             location {
                 name

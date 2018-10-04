@@ -4,6 +4,7 @@ import { gql } from 'apollo-boost';
 export const getOfficeImageQuery = gql`
     query($id: String!) {
         getOffice(id: $id) {
+            id
             imageUrls
         }
     }
