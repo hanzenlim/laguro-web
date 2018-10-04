@@ -3,6 +3,7 @@ import { gql } from 'apollo-boost';
 export const getDentistQuery = gql`
     query($id: String!) {
         getDentist(id: $id) {
+            id
             reservations {
                 id
                 location {

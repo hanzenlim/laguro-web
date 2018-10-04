@@ -8,6 +8,7 @@ export const GET_DENTIST_REVIEWS = gql`
             id
             specialty
             user {
+                id
                 firstName
                 lastName
                 imageUrl
