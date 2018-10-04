@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 import queryString from 'query-string';
 import history from '../../history';
@@ -8,7 +8,6 @@ import UpdateProfileForm from '../../pages/common/Forms/UpdateProfileForm';
 import Menu from '../common/Menu';
 import DentistDetails from '../common/DentistDetails';
 import UpdateDentistProfileForm from '../../pages/common/Forms/UpdateDentistProfileForm';
-import OfficeDetails from '../common/OfficeDetails';
 import ReviewContainer from '../common/ReviewContainer';
 import HostListings from '../common/HostListings';
 import PaymentHistory from '../common/PaymentHistory';
@@ -20,7 +19,6 @@ import {
     DENTIST,
     PATIENT,
     HOST,
-    OFFICE,
     MY_DOCUMENTS,
     MY_PROFILE,
     MY_APPOINTMENTS,
@@ -53,11 +51,31 @@ const MenuTitle = styled(Menu.SubMenu)`
     && {
         position: relative;
         left: -15px;
-        color: ${props => props.theme.colors.text.blue};
 
         div {
             cursor: default;
-            font-weight: bold;
+            font-size: 20px;
+        }
+
+        i {
+            display: none;
+        }
+
+        .ant-menu-submenu-title:hover {
+            color: inherit;
+    }
+`;
+
+const StyledPreviewMenuItem = styled(Menu.Item)`
+    ${`.ant-menu`} & {
+        position: relative;
+    }
+
+    && {
+        position: relative;
+        left: -15px;
+
+        div {
             font-size: 20px;
         }
 
@@ -96,7 +114,7 @@ class ProfileView extends Component {
     };
 
     renderPanel = key => {
-        const { isHost, isDentist, dentistId, offices, userId } = this.props;
+        const { isHost, isDentist, dentistId, userId } = this.props;
 
         let persona = PATIENT;
         if (isHost) {
@@ -126,18 +144,8 @@ class ProfileView extends Component {
                         <UpdateDentistProfileForm />
                     </Box>
                 );
-
             case PUBLIC_PROFILE:
-                return isHost === true ? (
-                    <Box width="732px" mt={30} mr={34}>
-                        <OfficeDetails id={offices[0].id} viewOnly={true} />
-                        <ReviewContainer
-                            type={OFFICE}
-                            id={offices[0].id}
-                            viewOnly={true}
-                        />
-                    </Box>
-                ) : (
+                return (
                     <Box>
                         <DentistDetails id={dentistId} viewOnly={true} />
                         <ReviewContainer
@@ -166,7 +174,7 @@ class ProfileView extends Component {
                             defaultSelectedKeys={[panel]}
                             onClick={this.handleClick}
                         >
-                            <MenuTitle title="my page" />
+                            <MenuTitle title="My Page" />
 
                             <StyledMenuItem key={MY_PROFILE}>
                                 <Text
@@ -241,6 +249,7 @@ class ProfileView extends Component {
                                     Payment History
                                 </Text>
                             </StyledMenuItem>
+
                             {(isHost || isDentist) && (
                                 <StyledMenuItem key={BALANCE}>
                                     <Text
@@ -252,10 +261,10 @@ class ProfileView extends Component {
                                     </Text>
                                 </StyledMenuItem>
                             )}
-                            {(isDentist || isHost) && (
-                                <Fragment>
-                                    <Box mt={40} />
-                                    <StyledMenuItem key={PUBLIC_PROFILE}>
+                            <Box mt={40} />
+                            {isDentist &&
+                                !isHost && (
+                                    <StyledPreviewMenuItem key={PUBLIC_PROFILE}>
                                         <Text
                                             fontSize={4}
                                             color="inherit"
@@ -263,9 +272,8 @@ class ProfileView extends Component {
                                         >
                                             Preview Public Profile
                                         </Text>
-                                    </StyledMenuItem>
-                                </Fragment>
-                            )}
+                                    </StyledPreviewMenuItem>
+                                )}
                         </Menu>
                     </Box>
                     {this.renderPanel(panel)}
