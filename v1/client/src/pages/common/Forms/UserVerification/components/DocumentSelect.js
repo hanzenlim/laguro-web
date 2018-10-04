@@ -28,16 +28,42 @@ const DeleteIcon = ({ onClick }) => (
     </DeleteIconWrapper>
 );
 
+const UploadIconSvg = () => (
+    <svg width="20" height="20" viewBox="0 0 158 158">
+        <defs>
+            <style
+                dangerouslySetInnerHTML={{
+                    __html: `.cls-1{fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:10px;`,
+                }}
+            />
+        </defs>
+        <path
+            class="cls-1"
+            d="M151.65,96.27v44.18a12,12,0,0,1-12,12H18a12,12,0,0,1-12-12V96.27"
+        />
+        <polyline class="cls-1" points="77.84 110.76 77.84 5.35 29.04 57.91" />
+        <line class="cls-1" x1="77.84" y1="5.35" x2="128.65" y2="56.15" />
+    </svg>
+);
+
+const StyledIcon = styled(Icon)`
+    flex-basis: 40px;
+    display: flex;
+    align-items: center;
+`;
+
+const UploadIcon = props => <StyledIcon component={UploadIconSvg} {...props} />;
+
 const DocumentUploadSelector = styled.div`
-    border: 1px solid #d9d9d9;
-    background: #e7e7e7;
+    border: 1px solid #d3d3d3;
+    background: #fbfbfb;
 
     width: 140px;
     height: 110px;
 
-    margin-right: 20px;
+    margin-right: 14px;
 
-    font-size: 20px;
+    font-size: 16px;
     color: #303549;
     border-radius: 2px;
     cursor: pointer;
@@ -54,17 +80,18 @@ const DocumentUploadSelector = styled.div`
 `;
 
 DocumentUploadSelector.Label = styled.span`
-    font-weight: bold;
-    margin-left: 8px;
-    font-style: italic;
+    font-size: 16px;
+    line-height: 16px;
+    margin-top: 6px;
 `;
 
 const DocumentPreview = styled.div`
     display: flex;
     align-items: center;
+    flex-direction: column;
 
     overflow: hidden;
-    height: 100%;
+    justify-content: center;
 `;
 
 const DocumentImagePreview = styled.img`
@@ -96,7 +123,7 @@ class SelectDocument extends React.Component {
                     </DocumentPreview>
                 ) : (
                     <DocumentPreview>
-                        <Icon type="picture" />
+                        <UploadIcon />
                         {side && (
                             <DocumentUploadSelector.Label>
                                 {side}

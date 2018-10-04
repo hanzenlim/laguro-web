@@ -6,7 +6,11 @@ import styled from 'styled-components';
 import moment from 'moment';
 
 import { Input, Radio, MaskedInput } from '../../../../components';
-import { PreText, FrontBackDocumentsSelector } from './components';
+import {
+    PreText,
+    FrontBackDocumentsSelector,
+    VerificationFormContainer,
+} from './components';
 
 import supportedPayerList from '../../../../staticData/supportedPayerList';
 
@@ -112,7 +116,7 @@ class PatientVerificationForm extends React.Component {
             : null;
 
         return (
-            <div>
+            <VerificationFormContainer>
                 <PreText>
                     Before you can book an appointment, we need you to upload
                     some documents for verification.
@@ -248,7 +252,7 @@ class PatientVerificationForm extends React.Component {
                         label="Upload photos of your Government-Issued Photo ID"
                     />
                 </StyledForm>
-            </div>
+            </VerificationFormContainer>
         );
     }
 }
