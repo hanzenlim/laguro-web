@@ -27,14 +27,16 @@ const maxImageNum = 5;
 class AddOfficeInfo extends Component {
     constructor(props) {
         super(props);
-        const { imageUrls, locationLat, locationLong } = props;
+        const { imageUrls, locationLat, locationLong, location } = props;
         const imageUrlsForState = imageUrls || [];
 
         this.state = {
-            autoCompleteHasError: false,
             imageUrls: imageUrlsForState,
             locationLat,
             locationLong,
+            options: [],
+            location,
+            isAutocompleteTouched: false,
         };
 
         props.onImageChange(imageUrlsForState.length);
@@ -62,26 +64,11 @@ class AddOfficeInfo extends Component {
             locationLong: get(location, 'long'),
         });
 
+        this.setState({ location: get(location, 'name') });
+
         if (handleSelect && !isEmpty(location)) {
             handleSelect();
         }
-
-        this.checkIfAutoCompleteHasError();
-    };
-
-    handleBlur = () => {
-        this.checkIfAutoCompleteHasError();
-    };
-
-    handleChange = () => {
-        this.setState({ autoCompleteHasError: false });
-    };
-
-    checkIfAutoCompleteHasError = () => {
-        const hasError = this.autoCompleteHasError();
-        this.setState({
-            autoCompleteHasError: hasError,
-        });
     };
 
     loadPhotos = result => {
@@ -170,26 +157,29 @@ class AddOfficeInfo extends Component {
         this.setState({ options });
     };
 
-    autoCompleteHasError = () => {
+    validateLocation = (rule, value, callback) => {
         const { options } = this.state;
         const { form } = this.props;
-        const locationFormValue = form.getFieldValue('location');
+        const location = form.getFieldValue('location');
+
+        if (this.props.locationDisabled) {
+            callback();
+        }
+
+        if (location === this.state.location) {
+            callback();
+        }
 
         // if options is not empty and the location field is not found in the dropdown options and if location form input is not empty, autocomplete has error
-        return (
+        const hasError =
             options &&
-            !options.map(item => item.text).includes(locationFormValue) &&
-            !isEmpty(locationFormValue)
-        );
-    };
+            !options.map(item => item.text).includes(location) &&
+            !isEmpty(location);
 
-    renderError = () => (
-        <Box className="has-error">
-            <Text className="ant-form-explain">
-                Please select an address from the dropdown!
-            </Text>
-        </Box>
-    );
+        if (hasError) {
+            callback('Please select an address from the dropdown!');
+        }
+    };
 
     // {addTooltip('Upload images of your office. The first image will show up on search results.')}
     render() {
@@ -201,7 +191,6 @@ class AddOfficeInfo extends Component {
             header,
             mode,
         } = this.props;
-        const { autoCompleteHasError } = this.state;
 
         return (
             <InnerForm form={form} {...this.props}>
@@ -291,28 +280,22 @@ class AddOfficeInfo extends Component {
                                     message:
                                         'Please enter the address of your office',
                                 },
+                                {
+                                    validator: this.validateLocation,
+                                },
                             ]}
                             input={
                                 <LocationFilter
                                     withDentists={false}
                                     onLocationChange={this.handleLocationChange}
-                                    placeholder="San Francisco, California"
-                                    onBlur={this.handleBlur}
-                                    onChange={this.handleChange}
                                     onSearch={this.handleSearch}
+                                    placeholder="San Francisco, California"
                                     disabled={locationDisabled}
                                     height={50}
                                     type="hostOnboarding"
                                 />
                             }
                         />
-                        <Box>
-                            {autoCompleteHasError && (
-                                <Box mt={-18} mb={20}>
-                                    {this.renderError()}
-                                </Box>
-                            )}
-                        </Box>
                     </GridItem>
 
                     <GridItem gc="1/2">

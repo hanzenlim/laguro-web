@@ -26,12 +26,11 @@ const StyledForm = styled(Form)`
     }
 `;
 
-const NUM_INITIAL_EQUIPMENT = 1;
 const EQUIPMENT = 'equipment';
 const EQUIPMENT_NAME = `${EQUIPMENT}Name`;
 const EQUIPMENT_PRICE = `${EQUIPMENT}Price`;
 const EQUIPMENT_LIST = [
-    'Digital Xray sensors',
+    'Digital Xray Sensors',
     'Panoramic',
     'Lateral Ceph',
     'CBCT',
@@ -40,7 +39,7 @@ const EQUIPMENT_LIST = [
     'Cerec CAD/CAM',
     'Digital Scanner',
     'Endodontic Microscope',
-    'Endo Rotary Instruments',
+    'Endo Rotary Instruments (Motor and New Files)',
     'Periodontic Scalers',
     'Cavitron/Piezo Unit and Tips',
     'Hard Tissue Laser',
@@ -49,28 +48,34 @@ const EQUIPMENT_LIST = [
     'Nitrous Oxide',
 ];
 
+const PRICE_MAP = {
+    'Digital Xray Sensors': '$20.00',
+    Panoramic: '$20.00',
+    'Lateral Ceph': '$20.00',
+    CBCT: '$100.00',
+    'Intraoral Camera': '$20.00',
+    'Caries Detection Cameras': '$20.00',
+    'Cerec CAD/CAM': '$200.00',
+    'Digital Scanner': '$75.00',
+    'Endodontic Microscope': '$50.00',
+    'Endo Rotary Instruments (Motor and New Files)': '$100.00',
+    'Periodontic Scalers': '$10.00',
+    'Cavitron/Piezo Unit and Tips': '$25.00',
+    'Hard Tissue Laser': '$50.00',
+    'Soft Tissue Laser': '$50.00',
+    'Implant System': '$200.00',
+    'Nitrous Oxide': '$50.00',
+};
+
 class AddOfficeEquipments extends Component {
     constructor(props) {
         super(props);
 
-        const defaultEquipmentList = Array.from(EQUIPMENT_LIST)
-            .splice(0, NUM_INITIAL_EQUIPMENT)
-            .map((eq, index) => {
-                const key = `${EQUIPMENT_NAME}${index}`;
-                const price = `${EQUIPMENT_PRICE}${index}`;
-                return {
-                    [key]: eq,
-                    [price]: '$0.00',
-                };
-            })
-            .reduce((a, b) => ({ ...a, ...b }), {});
-
         const { equipment } = this.props;
 
         this.state = {
-            defaultEquipmentList,
             equipment: isEmpty(equipment)
-                ? defaultEquipmentList
+                ? []
                 : equipment.reduce(
                       (acc, { name, price }, i) => ({
                           ...acc,
@@ -107,7 +112,7 @@ class AddOfficeEquipments extends Component {
         const newEquipment = {
             ...equipment,
             [key1]: EQUIPMENT_LIST[0],
-            [key2]: 0,
+            [key2]: PRICE_MAP[EQUIPMENT_LIST[0]],
         };
 
         this.setState({
@@ -129,6 +134,13 @@ class AddOfficeEquipments extends Component {
 
         const key = `${EQUIPMENT_PRICE}${index}`;
         form.setFieldsValue({ [key]: undefined });
+    };
+
+    handleEquipmentChange = (value, options) => {
+        const { form } = this.props;
+        form.setFieldsValue({
+            [options.props['data-price-key']]: PRICE_MAP[value],
+        });
     };
 
     componentDidUpdate(prevProps) {
@@ -172,9 +184,13 @@ class AddOfficeEquipments extends Component {
                     ]
                 }
                 input={
-                    <Select height={50}>
+                    <Select height={50} onSelect={this.handleEquipmentChange}>
                         {EQUIPMENT_LIST.map((eq2, index2) => (
-                            <Option key={index2} value={eq2}>
+                            <Option
+                                key={index2}
+                                data-price-key={key}
+                                value={eq2}
+                            >
                                 {eq2}
                             </Option>
                         ))}
@@ -268,7 +284,7 @@ class AddOfficeEquipments extends Component {
                                 color="text.blue"
                                 mb={20}
                             >
-                                Summary (up to 300 characters)
+                                Summary
                             </Text>
                         </GridItem>
                         <GridItem gc="all">
@@ -318,7 +334,7 @@ class AddOfficeEquipments extends Component {
                                     fontSize={3}
                                     letterSpacing="-0.5px"
                                 >
-                                    Add more
+                                    Add equipment
                                 </Text>
                             </Flex>
                         </Button>

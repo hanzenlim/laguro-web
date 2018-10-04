@@ -7,7 +7,13 @@ import delay from 'lodash/delay';
 
 import { Form as AntdForm } from 'antd';
 import styled from 'styled-components';
-import { space, textAlign, height, width } from 'styled-system';
+import {
+    space,
+    // Fix naming issue with text align prop
+    textAlign as styledTextAlign,
+    height,
+    width,
+} from 'styled-system';
 import { Button } from '../../components';
 import BackButton from './BackButton';
 
@@ -49,9 +55,16 @@ export class InnerForm extends Component {
 
         this.props.form.validateFields(async (validationError, values) => {
             if (!validationError) {
-                this.setState({ submitting: true });
+                if (this.props.debounce === 'true') {
+                    this.setState({ submitting: true });
+                }
+
                 try {
-                    await this.debouncedSuccess(values);
+                    if (this.props.debounce === 'true') {
+                        await this.debouncedSuccess(values);
+                    } else {
+                        this.handleSuccess(values);
+                    }
                 } catch (submissionError) {
                     if (submissionError && submissionError.message) {
                         // eslint-disable-next-line
@@ -126,7 +139,7 @@ const AntFormItem = AntdForm.Item;
 export const StyledFormItem = styled(AntFormItem)`
     text-align: center;
     &&.ant-form-item {
-        ${textAlign};
+        ${styledTextAlign};
     }
 `;
 
@@ -224,11 +237,12 @@ WrappedForm.FormItem = FormItem;
 
 WrappedForm.defaultProps = {
     onSuccess: () => {},
-    debounce: 'false',
+    debounce: 'true',
 };
 
 WrappedForm.propTypes = {
     onSuccess: PropTypes.func.isRequired,
+    // Using a boolean causes an error
     debounce: PropTypes.string,
 };
 

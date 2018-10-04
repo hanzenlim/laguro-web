@@ -102,7 +102,7 @@ const parseListingFormData = values =>
                 message.error(
                     'Your daily end time has to be after your daily start time'
                 );
-                return {};
+                return null;
             }
 
             return {
@@ -247,6 +247,7 @@ class HostOnboarding extends Component {
             numImage,
             defaultValues: {},
             resumeWarning,
+            submitting: false,
         };
     }
 
@@ -275,7 +276,7 @@ class HostOnboarding extends Component {
     };
 
     // given form values and current urlParams, compute next url and add computedParams to url
-    advanceStep = () => {
+    advanceStep = async () => {
         const { step } = this.props.match.params;
 
         const _currentURL = stepURLs[step];
@@ -285,10 +286,11 @@ class HostOnboarding extends Component {
 
         if (nextIndex === this.urlList.length - 1) {
             this.destroyWizardState();
-
+            await this.setState({ submitting: false });
             return history.push(nextURL);
         }
 
+        await this.setState({ submitting: false });
         return history.push(this.buildNextIntermediateURL(nextURL));
     };
 
@@ -341,6 +343,7 @@ class HostOnboarding extends Component {
         id,
         client
     ) => {
+        await this.setState({ submitting: true });
         // save listing step values to create listings after creating office, in createListings
         this.values = values;
 
@@ -375,7 +378,7 @@ class HostOnboarding extends Component {
                     const equipment = parseEquipmentFormData(values);
 
                     // makes the api call to submit changes to office
-                    updateOffice({
+                    await updateOffice({
                         variables: {
                             input: {
                                 id: this.officeId,
@@ -397,7 +400,7 @@ class HostOnboarding extends Component {
                 if (step === LISTING_STEP) {
                     const { officeId } = wizardState;
 
-                    this.createListings(officeId, batchCreateListings);
+                    await this.createListings(officeId, batchCreateListings);
                 } else {
                     this.advanceStep();
                 }
@@ -418,6 +421,11 @@ class HostOnboarding extends Component {
 
                 if (step === LISTING_STEP) {
                     const listings = parseListingFormData(values);
+                    if (!listings || listings.includes(null)) {
+                        this.setState({ submitting: false });
+                        break;
+                    }
+
                     this.saveWizardState({
                         ...wizardState,
                         listings,
@@ -520,7 +528,7 @@ class HostOnboarding extends Component {
                     message.error(
                         'Your daily end time has to be after your daily start time'
                     );
-                    return {};
+                    return null;
                 }
 
                 return {
@@ -543,25 +551,32 @@ class HostOnboarding extends Component {
                 };
             });
 
-        const result = await batchCreateListings({
-            variables: {
-                input: listings,
-            },
-        });
-
-        const wizardState = this.fetchWizardState();
-
-        if (get(result, 'data.batchCreateListings')) {
-            await this.saveWizardState({
-                ...wizardState,
-                officeId,
-                listingIds: get(result, 'data.batchCreateListings').map(
-                    ({ id }) => id
-                ),
+        try {
+            const result = await batchCreateListings({
+                variables: {
+                    input: listings,
+                },
             });
 
-            await this.setState({});
-            await this.handleOnCompleted();
+            const wizardState = this.fetchWizardState();
+
+            if (get(result, 'data.batchCreateListings')) {
+                await this.saveWizardState({
+                    ...wizardState,
+                    officeId,
+                    listingIds: get(result, 'data.batchCreateListings').map(
+                        ({ id }) => id
+                    ),
+                });
+
+                await this.setState({});
+                await this.handleOnCompleted();
+            }
+        } catch (error) {
+            if (get(error, 'graphQLErrors[0].message')) {
+                message.error(get(error, 'graphQLErrors[0].message'));
+            }
+            this.setState({ submitting: false });
         }
     };
 
@@ -582,6 +597,7 @@ class HostOnboarding extends Component {
         return {
             officeName: name,
             location: location.name,
+            addressDetail: location.addressDetails,
             locationLat: location.geoPoint.lat,
             locationLong: location.geoPoint.lon,
             imageUrls,
@@ -668,6 +684,7 @@ class HostOnboarding extends Component {
                                                 {(createOffice, { client }) => (
                                                     <StyledContainer>
                                                         <Form
+                                                            debounce="false"
                                                             onSuccess={values => {
                                                                 this.onSubmit(
                                                                     values,
@@ -874,6 +891,17 @@ class HostOnboarding extends Component {
                                                                         )}
 
                                                                         <SubmitButton
+                                                                            disabled={
+                                                                                this
+                                                                                    .state
+                                                                                    .numImage ===
+                                                                                0
+                                                                            }
+                                                                            loading={
+                                                                                this
+                                                                                    .state
+                                                                                    .submitting
+                                                                            }
                                                                             width={
                                                                                 188
                                                                             }

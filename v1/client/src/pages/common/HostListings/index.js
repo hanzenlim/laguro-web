@@ -15,6 +15,7 @@ const HostListingsContainer = () => (
             <Query
                 query={getDentistQuery}
                 variables={{ id: clientData.activeUser.dentistId }}
+                fetchPolicy="cache-and-network"
             >
                 {({ loading, error, data }) => {
                     if (error) return <RedirectErrorPage />;

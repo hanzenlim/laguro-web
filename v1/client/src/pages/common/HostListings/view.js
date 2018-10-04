@@ -108,8 +108,8 @@ class HostListings extends PureComponent {
                                 {moment(endDate).format('ddd, M/D')}
                             </Text>
                             <Text display="inline">
-                                {moment(startDate).format('H:mmA')} -{' '}
-                                {moment(endDate).format('H:mmA')}
+                                {moment(startDate).format('h:mm a')} -{' '}
+                                {moment(endDate).format('h:mm a')}
                             </Text>
                         </Box>
                         <Box mt={18}>

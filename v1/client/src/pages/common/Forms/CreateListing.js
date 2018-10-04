@@ -320,16 +320,16 @@ class CreateListing extends Component {
                                 </GridItem>
 
                                 <GridItem gc="all">
-                                    <Flex justifyContent="space-between">
-                                        <Text fontSize={3}>
-                                            Number of Chairs Available
-                                        </Text>
+                                    <Text fontSize={3}>
+                                        Number of Chairs Available
+                                    </Text>
+                                    <Box position="relative" left="-10px">
                                         <Counter
                                             onCounterCountHandler={this.onChairCounterHandler(
                                                 `numChairs${index}`
                                             )}
                                         />
-                                    </Flex>
+                                    </Box>
                                     <FormItem
                                         name={`numChairs${index}`}
                                         initialValue={1}

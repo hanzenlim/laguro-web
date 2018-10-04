@@ -20,6 +20,9 @@ const HeaderContainer = () => (
     <Query query={getUserQuery}>
         {({ loading, error, data, client }) => {
             const onLandingPage = window.location.pathname === '/';
+            const onOnboardingPage = window.location.pathname.includes(
+                'host-onboarding'
+            );
 
             if (loading) {
                 return <HeaderView onLandingPage={onLandingPage} />;
@@ -44,6 +47,7 @@ const HeaderContainer = () => (
                     openForgotPassModal={() => openForgotPassModal(client)}
                     closeModal={() => closeModal(client)}
                     onLandingPage={onLandingPage}
+                    onOnboardingPage={onOnboardingPage}
                 />
             );
         }}

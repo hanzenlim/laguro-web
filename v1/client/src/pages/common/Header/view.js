@@ -251,6 +251,7 @@ const Header = ({
     auth,
     isDentist,
     isHost,
+    onOnboardingPage,
 }) => {
     let placeholder;
     let logoType;
@@ -318,20 +319,24 @@ const Header = ({
                     <SearchBox placeholder={placeholder} size="small" />
                 )}
                 <Flex alignItems="center">
-                    <NavBarLink
-                        ml="0px"
-                        to={auth ? '/host-onboarding/add-office' : '/'}
-                        onClick={auth ? () => {} : openLoginModal}
-                    >
-                        <Text
-                            color={onLandingPage ? 'text.white' : 'text.black'}
-                            fontSize={2}
-                            fontWeight="bold"
-                            mb={4}
+                    {!onOnboardingPage && (
+                        <NavBarLink
+                            ml="0px"
+                            to={auth ? '/host-onboarding/add-office' : '/'}
+                            onClick={auth ? () => {} : openLoginModal}
                         >
-                            become a host
-                        </Text>
-                    </NavBarLink>
+                            <Text
+                                color={
+                                    onLandingPage ? 'text.white' : 'text.black'
+                                }
+                                fontSize={2}
+                                fontWeight="bold"
+                                mb={4}
+                            >
+                                become a host
+                            </Text>
+                        </NavBarLink>
+                    )}
                     <ProfileButton
                         isDentist={isDentist}
                         isHost={isHost}

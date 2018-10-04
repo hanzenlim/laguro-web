@@ -77,6 +77,8 @@ export const sendPassResetLink = (values, onSuccess) => {
 export const onLogout = clientCache => {
     // eslint-disable-next-line
     window && window.Intercom('shutdown');
+    // eslint-disable-next-line
+    window.localStorage && window.localStorage.clear();
     clientCache.writeData({ data: { activeUser: null } });
     cookies.erase('user');
     history.push('/');
