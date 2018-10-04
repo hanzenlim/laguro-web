@@ -13,16 +13,30 @@ class SearchBox extends PureComponent {
     constructor(props) {
         super(props);
 
+        const urlParams = queryString.parse(history.location.search);
+
         this.state = {
             location: '',
             date: '',
             text: '',
+            urlParams,
         };
 
-        this.urlParams = queryString.parse(history.location.search);
+        history.listen(location => {
+            const nextParams = queryString.parse(location.search);
+            if (nextParams.location) {
+                nextParams.location = nextParams.location.replace(/_/g, ' ');
+            }
 
-        if (this.urlParams.startTime) {
-            this.urlParams.startTime = moment(this.urlParams.startTime).format(
+            if (this.state.location !== nextParams.location) {
+                this.setState({
+                    urlParams: nextParams,
+                });
+            }
+        });
+
+        if (urlParams.startTime) {
+            urlParams.startTime = moment(urlParams.startTime).format(
                 'ddd MM/DD'
             );
         }
@@ -87,9 +101,9 @@ class SearchBox extends PureComponent {
         return (
             <SearchBoxView
                 initialLocationFilterValue={
-                    this.urlParams.location || this.urlParams.text
+                    this.state.urlParams.location || this.state.urlParams.text
                 }
-                initialDateFilterValue={this.urlParams.startTime}
+                initialDateFilterValue={this.state.urlParams.startTime}
                 onLocationFilterChange={this.handleLocationFilterChange}
                 onTextChange={this.handleTextChange}
                 onDateFilterChange={this.handleDateFilterChange}

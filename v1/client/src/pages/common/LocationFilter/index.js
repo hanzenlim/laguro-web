@@ -46,6 +46,12 @@ class LocationFilter extends PureComponent {
         };
     }
 
+    componentDidUpdate(prevProps) {
+        if (prevProps.initialValue !== this.props.initialValue) {
+            this.setState({ queryString: this.props.initialValue });
+        }
+    }
+
     handleChange = async value => {
         const { onTextChange, onSearch } = this.props;
         await this.setState({ queryString: value });

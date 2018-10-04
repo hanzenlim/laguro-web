@@ -8,7 +8,7 @@ import { Loading } from '../../components';
 import { getMyPosition } from '../../util/navigatorUtil';
 
 const PAGE_SIZE = 9;
-const DISTANCE = '100km';
+const DISTANCE = '75km';
 // most documents are standardized around 1
 // having this boost prioritizes location/data filter over prefix matching
 // on fields such as name, bio, specialty, etc.
