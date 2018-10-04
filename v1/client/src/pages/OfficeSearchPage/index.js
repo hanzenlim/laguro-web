@@ -9,10 +9,6 @@ import { getMyPosition } from '../../util/navigatorUtil';
 
 const PAGE_SIZE = 9;
 const DISTANCE = '75km';
-// most documents are standardized around 1
-// having this boost prioritizes location/data filter over prefix matching
-// on fields such as name, bio, specialty, etc.
-const FILTER_BOOST = 5;
 
 class OfficeSearchPage extends PureComponent {
     constructor(props) {
@@ -95,12 +91,12 @@ class OfficeSearchPage extends PureComponent {
     fetchData = async params => {
         const { endTime, startTime, lat, long: lon, page, text } = params;
         const from = this.getOffset(page, PAGE_SIZE);
-        const should = [];
-        const filter = [];
+        const must = [];
+        let distanceFilter = null;
 
         if (text) {
             // do not prefix match on document fields if location is specified
-            should.push({
+            must.push({
                 multi_match: {
                     query: text,
                     type: 'phrase_prefix',
@@ -112,8 +108,8 @@ class OfficeSearchPage extends PureComponent {
                     ],
                 },
             });
-        } else if (lat && lon) {
-            filter.push({
+        } else {
+            distanceFilter = {
                 geo_distance: {
                     distance: DISTANCE,
                     'location.geoPoint': {
@@ -121,11 +117,11 @@ class OfficeSearchPage extends PureComponent {
                         lat: lat || this.defaultLocation.lat,
                     },
                 },
-            });
+            };
         }
 
         if (startTime && endTime) {
-            filter.push(
+            must.push(
                 {
                     range: {
                         'listings.endTime': {
@@ -143,21 +139,6 @@ class OfficeSearchPage extends PureComponent {
             );
         }
 
-        if (filter.length > 0) {
-            should.push({
-                bool: {
-                    must: [
-                        filter.map(f => ({
-                            constant_score: {
-                                filter: f,
-                                boost: FILTER_BOOST,
-                            },
-                        })),
-                    ],
-                },
-            });
-        }
-
         const res = await esClient.search({
             index: OFFICES,
             size: PAGE_SIZE,
@@ -165,7 +146,8 @@ class OfficeSearchPage extends PureComponent {
             body: {
                 query: {
                     bool: {
-                        should,
+                        must,
+                        filter: distanceFilter,
                     },
                 },
             },

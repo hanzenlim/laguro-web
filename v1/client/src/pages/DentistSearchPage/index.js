@@ -9,10 +9,9 @@ import { getMyPosition } from '../../util/navigatorUtil';
 
 const PAGE_SIZE = 9;
 const DISTANCE = '75km';
-// most documents are standardized around 1
-// having this boost prioritizes location/data filter over prefix matching
-// on fields such as name, bio, specialty, etc.
-const FILTER_BOOST = 5;
+
+// ignore timezone-related characters in timestamp
+const TIME_PRECISION = 19;
 
 class DetailsSearchPage extends PureComponent {
     constructor(props) {
@@ -94,11 +93,13 @@ class DetailsSearchPage extends PureComponent {
     fetchData = async params => {
         const { endTime, startTime, lat, long: lon, page, text } = params;
         const from = this.getOffset(page, PAGE_SIZE);
-        const should = [];
-        const filter = [];
+        // must in the elasticsearch context
+        // see https://www.elastic.co/guide/en/elasticsearch/reference/6.3/query-dsl-bool-query.html
+        const must = [];
+        let distanceFilter = null;
 
         if (text) {
-            should.push({
+            must.push({
                 multi_match: {
                     query: text,
                     type: 'phrase_prefix',
@@ -111,8 +112,8 @@ class DetailsSearchPage extends PureComponent {
                     ],
                 },
             });
-        } else if (lat && lon) {
-            filter.push({
+        } else {
+            distanceFilter = {
                 geo_distance: {
                     distance: DISTANCE,
                     'reservations.geoPoint': {
@@ -120,41 +121,26 @@ class DetailsSearchPage extends PureComponent {
                         lat: lat || this.defaultPosition.lat,
                     },
                 },
-            });
+            };
         }
 
         if (startTime && endTime) {
-            filter.push(
+            must.push(
                 {
                     range: {
                         'reservations.availableTimes.endTime': {
-                            gte: startTime,
+                            gte: startTime.substring(0, TIME_PRECISION),
                         },
                     },
                 },
                 {
                     range: {
                         'reservations.availableTimes.startTime': {
-                            lte: endTime,
+                            lte: endTime.substring(0, TIME_PRECISION),
                         },
                     },
                 }
             );
-        }
-
-        if (filter.length > 0) {
-            should.push({
-                bool: {
-                    must: [
-                        filter.map(f => ({
-                            constant_score: {
-                                filter: f,
-                                boost: FILTER_BOOST,
-                            },
-                        })),
-                    ],
-                },
-            });
         }
 
         const res = await esClient.search({
@@ -164,7 +150,8 @@ class DetailsSearchPage extends PureComponent {
             body: {
                 query: {
                     bool: {
-                        should,
+                        must,
+                        filter: distanceFilter,
                     },
                 },
             },
