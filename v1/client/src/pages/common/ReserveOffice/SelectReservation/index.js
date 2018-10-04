@@ -11,7 +11,6 @@ import _isEqual from 'lodash/isEqual';
 import _remove from 'lodash/remove';
 import _min from 'lodash/min';
 import _max from 'lodash/max';
-import _findIndex from 'lodash/findIndex';
 import _indexOf from 'lodash/indexOf';
 import _reduce from 'lodash/reduce';
 import _get from 'lodash/get';
@@ -77,7 +76,8 @@ const getPriceAndHourSlot = (
     price,
     cleaningFee,
     listingId,
-    removePastHourTimeSlot = false
+    removePastHourTimeSlot = false,
+    numChairsSelected
 ) => {
     // Filter out past hour time slot
     let startTime;
@@ -101,6 +101,7 @@ const getPriceAndHourSlot = (
                     price,
                     cleaningFee,
                     listingId,
+                    numChairsSelected,
                 });
             }
         }
@@ -156,7 +157,8 @@ const getListingUIData = (
     userSelectedEndDate,
     chairHourlyPrice,
     cleaningFee,
-    listingId
+    listingId,
+    numChairsSelected
 ) => {
     const formattedData = {};
     // Check if user selected start date is now or in the future.
@@ -173,7 +175,9 @@ const getListingUIData = (
         moment(listingEndDate),
         chairHourlyPrice,
         cleaningFee,
-        listingId
+        listingId,
+        false,
+        numChairsSelected
     );
 
     const beginningListingStartDate = moment(listingStartDate).startOf('day');
@@ -207,7 +211,8 @@ const getListingUIData = (
                     chairHourlyPrice,
                     cleaningFee,
                     listingId,
-                    true
+                    true,
+                    numChairsSelected
                 );
                 formattedData[key] = shortenedHourSlot;
             } else {
@@ -243,6 +248,28 @@ const mergeListingUIData = (first, second) => {
 };
 
 /**
+ * This merges two objects of type listingUIData object
+ * @first getListingUIData object
+ * @second getListingUIData object
+ * @return getListingUIData object
+ */
+const mergeReservationUIData = (first, second) => {
+    const keys = Object.keys(second);
+    const combinedData = first;
+    for (let i = 0; i < keys.length; i++) {
+        if (!combinedData[keys[i]]) {
+            combinedData[keys[i]] = [];
+        }
+
+        combinedData[keys[i]] = sortPriceAndHourSlot(
+            combinedData[keys[i]].concat(second[keys[i]])
+        );
+    }
+
+    return combinedData;
+};
+
+/**
  * Iterate over the listings and returns an array of type listingUIData object
  */
 const getHourSlotsFromListings = (listings, userSelectedDates) => {
@@ -265,7 +292,8 @@ const getHourSlotsFromListings = (listings, userSelectedDates) => {
             userSelectedEndDate,
             chairHourlyPrice,
             cleaningFee,
-            listings[i].id
+            listings[i].id,
+            listings[i].numChairsAvailable
         );
         accumulatedData = mergeListingUIData(accumulatedData, data);
     }
@@ -296,9 +324,13 @@ const getHourSlotsFromReservation = (listings, userSelectedDates) => {
                         userSelectedEndDate,
                         listings[i].chairHourlyPrice,
                         listings[i].cleaningFee,
-                        listings[i].id
+                        listings[i].id,
+                        reservations.numChairsSelected
                     );
-                    accumulatedData = mergeListingUIData(accumulatedData, data);
+                    accumulatedData = mergeReservationUIData(
+                        accumulatedData,
+                        data
+                    );
                 }
             }
         }
@@ -318,16 +350,26 @@ const removeUnavailableHourSlots = (listings, reservations) => {
     for (let i = 0; i < keys.length; i++) {
         if (modifiedListings[keys[i]]) {
             _remove(modifiedListings[keys[i]], n => {
+                const listingSlot = n;
+                const reservationHourList = reservations[keys[i]];
+                let removeFromlist = false;
+
                 // Check if the reservation hour slot exists in the listing hour slot.
                 // If so, remove the hour slot from the listing hour slot
-                const reservationHourList = reservations[keys[i]];
+                reservationHourList.forEach(timeSlot => {
+                    if (timeSlot.time === n.time) {
+                        listingSlot.numChairsSelected -=
+                            timeSlot.numChairsSelected;
+                    }
 
-                const index = _findIndex(
-                    reservationHourList,
-                    obj => obj.time === n.time
-                );
+                    if (n.numChairsSelected <= 0) {
+                        removeFromlist = true;
+                        return true;
+                    }
+                    return false;
+                });
 
-                return index !== -1;
+                return removeFromlist;
             });
         }
     }
@@ -742,11 +784,39 @@ class SelectReservation extends Component {
                                         hourSlotsFromReservation
                                     );
 
+                                    const currentListings = data.queryListings.filter(
+                                        listing => {
+                                            const listingEnd = moment(
+                                                listing.endTime
+                                            );
+                                            const listingStart = moment(
+                                                listing.startTime
+                                            );
+
+                                            // the argument [] means isBetween includes
+                                            // items at the boundary
+                                            return (
+                                                listingStart.isBetween(
+                                                    selectedDates[0],
+                                                    selectedDates[1],
+                                                    null,
+                                                    []
+                                                ) ||
+                                                listingEnd.isBetween(
+                                                    selectedDates[0],
+                                                    selectedDates[1],
+                                                    null,
+                                                    []
+                                                )
+                                            );
+                                        }
+                                    );
+
                                     return (
                                         <SelectReservationView
                                             hourSlotsData={mergedHourSlotsData}
                                             priceRange={getHourlyChairPriceRange(
-                                                data.queryListings
+                                                currentListings
                                             )}
                                             selectedHoursHandler={
                                                 this.selectedHoursHandler

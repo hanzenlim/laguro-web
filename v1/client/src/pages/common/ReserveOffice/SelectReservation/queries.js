@@ -49,6 +49,7 @@ export const getListingQuery = gql`
                     startTime
                     endTime
                 }
+                numChairsSelected
                 status
             }
         }

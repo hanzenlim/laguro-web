@@ -29,6 +29,7 @@ const ReserveOfficeView = ({
     summaryList,
     paymentConfirmationH2Text,
     paymentConfirmationH3Text,
+    onPayBtnText,
 }) => (
     <Box width="513px">
         <Box
@@ -78,7 +79,7 @@ const ReserveOfficeView = ({
                     </Box>
                     <Box mt={60}>
                         <Payment
-                            btnText="Pay"
+                            btnText={onPayBtnText}
                             onPay={onPay}
                             onBackButton={onPayBackButton}
                             hasBackButton={true}

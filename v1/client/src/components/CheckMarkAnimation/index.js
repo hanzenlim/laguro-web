@@ -7,7 +7,7 @@ const StyledCheckWrap = styled.div`
         width: 134px;
         height: 129px;
         border-radius: 50%;
-        border: 2px solid #74e8ce;
+        border: 2px solid #3481F8;
         position: relative;
         overflow: hidden;
         animation: wrap 0.3s ease-in-out forwards;
@@ -47,7 +47,7 @@ const StyledCheckWrap = styled.div`
             transform: scale(0);
         }
         100% {
-            background-color: #74e8ce
+            background-color: #3481F8
             transform: scale(1);
         }
     }

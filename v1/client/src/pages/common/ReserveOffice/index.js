@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import _reduce from 'lodash/reduce';
 import _get from 'lodash/get';
+import _debounce from 'lodash/debounce';
 import { Box } from '../../../components';
 import ReserveOfficeView from './view';
 import {
@@ -26,7 +27,6 @@ class ReserveOffice extends Component {
 
         this.state = {
             triggerFindReservations: false,
-            mutationError: '',
             selectedDates: '',
             currentDisplay: SELECT_APPOINTMENT_VIEW,
             summaryDetailsData: '',
@@ -36,6 +36,7 @@ class ReserveOffice extends Component {
             paymentConfirmationH2Text: '',
             paymentConfirmationH3Text: '',
             showVerificationModal: false,
+            onPayBtnText: 'Pay',
         };
 
         this.reservationObject = '';
@@ -65,145 +66,171 @@ class ReserveOffice extends Component {
         });
     };
 
-    onPay = async cardId => {
-        // Iterate over the reservation list to make api call.
-        // Reservation object shape
-        // {
-        //     "reservation":{
-        //        "704a2a40-bad1-11e8-a1d6-df4539fbc4cc":[
-        //           {
-        //              "startDate":"2018-09-24T13:00:00-07:00",
-        //              "endDate":"2018-09-24T14:00:00-07:00",
-        //              "cleaningFee":1500,
-        //              "price":40000,
-        //              "listingId":"704a2a40-bad1-11e8-a1d6-df4539fbc4cc"
-        //           },
-        //           {
-        //              "startDate":"2018-09-26T12:00:00-07:00",
-        //              "endDate":"2018-09-26T13:00:00-07:00",
-        //              "cleaningFee":1500,
-        //              "price":40000,
-        //              "listingId":"704a2a40-bad1-11e8-a1d6-df4539fbc4cc"
-        //           }
-        //        ]
-        //     },
-        //     "selectedEquipment":[
-        //        {
-        //           "name":"Digital X-Ray",
-        //           "price":2000
-        //        }
-        //     ],
-        //     "chairCount":1
-        //  }
+    onPay = _debounce(
+        async cardId => {
+            // Iterate over the reservation list to make api call.
+            // Reservation object shape
+            // {
+            //     "reservation":{
+            //        "704a2a40-bad1-11e8-a1d6-df4539fbc4cc":[
+            //           {
+            //              "startDate":"2018-09-24T13:00:00-07:00",
+            //              "endDate":"2018-09-24T14:00:00-07:00",
+            //              "cleaningFee":1500,
+            //              "price":40000,
+            //              "listingId":"704a2a40-bad1-11e8-a1d6-df4539fbc4cc"
+            //           },
+            //           {
+            //              "startDate":"2018-09-26T12:00:00-07:00",
+            //              "endDate":"2018-09-26T13:00:00-07:00",
+            //              "cleaningFee":1500,
+            //              "price":40000,
+            //              "listingId":"704a2a40-bad1-11e8-a1d6-df4539fbc4cc"
+            //           }
+            //        ]
+            //     },
+            //     "selectedEquipment":[
+            //        {
+            //           "name":"Digital X-Ray",
+            //           "price":2000
+            //        }
+            //     ],
+            //     "chairCount":1
+            //  }
 
-        const reservations = this.reservationObject.reservation;
-
-        // Gets the total equipment cost.
-        const totalEquipmentPrice = _reduce(
-            this.reservationObject.selectedEquipment,
-            (sum, n) => sum + n.price,
-            0
-        );
-
-        const errors = [];
-        let earliestReservationStartTime = '';
-        let earliestReservationEndTime = '';
-        await Promise.all(
-            Object.keys(reservations).map(async listingId => {
-                let totalPrice = 0;
-                const numChairsSelected = this.reservationObject.chairCount;
-                const equipmentSelected = this.reservationObject.selectedEquipment.map(
-                    value => value.name
-                );
-                const reservedBy = _get(
-                    this,
-                    'props.data.activeUser.dentistId'
-                );
-
-                // calculate all the time slots.
-                const availableTimes = reservations[listingId].map(value => {
-                    // Calculate the earliest and latest end time.
-                    // This is used to show the date range on the confirmation page.
-                    if (!earliestReservationStartTime) {
-                        earliestReservationStartTime = moment(value.startDate);
-                    } else if (
-                        earliestReservationStartTime.isBefore(value.startDate)
-                    ) {
-                        earliestReservationStartTime = moment(value.startDate);
-                    }
-
-                    if (!earliestReservationEndTime) {
-                        earliestReservationEndTime = moment(value.endDate);
-                    } else if (
-                        earliestReservationEndTime.isBefore(value.endDate)
-                    ) {
-                        earliestReservationEndTime = moment(value.endDate);
-                    }
-
-                    const hours = moment(value.endDate).diff(
-                        moment(value.startDate),
-                        'hours'
-                    );
-
-                    const totalChairCost = Math.round(
-                        value.price * hours * numChairsSelected
-                    );
-                    const bookingFeeCost =
-                        totalChairCost * BOOKING_FEE_PERCENTAGE;
-                    const timeSlotTotalPrice =
-                        totalChairCost +
-                        bookingFeeCost +
-                        value.cleaningFee +
-                        totalEquipmentPrice;
-
-                    totalPrice += timeSlotTotalPrice;
-
-                    return {
-                        startTime: moment(value.startDate)
-                            .local()
-                            .format(),
-                        endTime: moment(value.endDate)
-                            .local()
-                            .format(),
-                    };
-                });
-
-                let result;
-
-                try {
-                    result = await this.props.mutate({
-                        variables: {
-                            input: {
-                                numChairsSelected,
-                                equipmentSelected,
-                                listingId,
-                                reservedBy,
-                                paymentOptionId: cardId,
-                                totalPaid: Math.round(totalPrice),
-                                availableTimes,
-                            },
-                        },
-                    });
-
-                    return result;
-                } catch (error) {
-                    errors.push(error.graphQLErrors[0].message);
-                    return Promise.resolve(error.graphQLErrors[0].message);
-                }
-            })
-        );
-
-        if (errors.length > 0) {
-            const msg = errors.join(':');
-            message.error(msg);
-        } else {
             this.setState({
-                currentDisplay: CONFIRMATION_VIEW,
-                paymentConfirmationH2Text: null,
-                paymentConfirmationH3Text: null,
+                onPayBtnText: 'Submitting',
             });
-        }
-    };
+
+            const reservations = this.reservationObject.reservation;
+
+            // Gets the total equipment cost.
+            const totalEquipmentPrice = _reduce(
+                this.reservationObject.selectedEquipment,
+                (sum, n) => sum + n.price,
+                0
+            );
+
+            const errors = [];
+            let earliestReservationStartTime = '';
+            let earliestReservationEndTime = '';
+            await Promise.all(
+                Object.keys(reservations).map(async listingId => {
+                    let totalPrice = 0;
+                    const numChairsSelected = this.reservationObject.chairCount;
+                    const equipmentSelected = this.reservationObject.selectedEquipment.map(
+                        value => value.name
+                    );
+                    const reservedBy = _get(
+                        this,
+                        'props.data.activeUser.dentistId'
+                    );
+
+                    // calculate all the time slots.
+                    const availableTimes = reservations[listingId].map(
+                        value => {
+                            // Calculate the earliest and latest end time.
+                            // This is used to show the date range on the confirmation page.
+                            if (!earliestReservationStartTime) {
+                                earliestReservationStartTime = moment(
+                                    value.startDate
+                                );
+                            } else if (
+                                earliestReservationStartTime.isBefore(
+                                    value.startDate
+                                )
+                            ) {
+                                earliestReservationStartTime = moment(
+                                    value.startDate
+                                );
+                            }
+
+                            if (!earliestReservationEndTime) {
+                                earliestReservationEndTime = moment(
+                                    value.endDate
+                                );
+                            } else if (
+                                earliestReservationEndTime.isBefore(
+                                    value.endDate
+                                )
+                            ) {
+                                earliestReservationEndTime = moment(
+                                    value.endDate
+                                );
+                            }
+
+                            const hours = moment(value.endDate).diff(
+                                moment(value.startDate),
+                                'hours'
+                            );
+
+                            const totalChairCost = Math.round(
+                                value.price * hours * numChairsSelected
+                            );
+                            const bookingFeeCost =
+                                totalChairCost * BOOKING_FEE_PERCENTAGE;
+                            const timeSlotTotalPrice =
+                                totalChairCost +
+                                bookingFeeCost +
+                                value.cleaningFee +
+                                totalEquipmentPrice;
+
+                            totalPrice += timeSlotTotalPrice;
+
+                            return {
+                                startTime: moment(value.startDate)
+                                    .local()
+                                    .format(),
+                                endTime: moment(value.endDate)
+                                    .local()
+                                    .format(),
+                            };
+                        }
+                    );
+
+                    let result;
+
+                    try {
+                        result = await this.props.mutate({
+                            variables: {
+                                input: {
+                                    numChairsSelected,
+                                    equipmentSelected,
+                                    listingId,
+                                    reservedBy,
+                                    paymentOptionId: cardId,
+                                    totalPaid: Math.round(totalPrice),
+                                    availableTimes,
+                                },
+                            },
+                        });
+
+                        return result;
+                    } catch (error) {
+                        errors.push(error.graphQLErrors[0].message);
+                        return Promise.resolve(error.graphQLErrors[0].message);
+                    }
+                })
+            );
+
+            if (errors.length > 0) {
+                const msg = errors.join(':');
+                message.error(msg);
+            } else {
+                this.setState({
+                    currentDisplay: CONFIRMATION_VIEW,
+                    paymentConfirmationH2Text: `${earliestReservationStartTime.format(
+                        'MMM D, YYYY'
+                    )} - ${earliestReservationEndTime.format('MMM D, YYYY')}`,
+                    paymentConfirmationH3Text: `${earliestReservationStartTime.format(
+                        'ha'
+                    )} - ${earliestReservationEndTime.format('ha')}`,
+                });
+            }
+        },
+        5000,
+        { leading: true, maxWait: 5000 }
+    );
 
     onPayBackButton = () => {
         this.setState({
@@ -339,6 +366,7 @@ class ReserveOffice extends Component {
                             paymentConfirmationH2Text={
                                 this.state.paymentConfirmationH2Text
                             }
+                            onPayBtnText={this.state.onPayBtnText}
                         />
                     </Box>
                 )}
