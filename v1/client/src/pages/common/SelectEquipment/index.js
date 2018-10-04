@@ -9,8 +9,9 @@ class SelectEquipment extends PureComponent {
         this.state = {
             selected: [],
         };
+        const { officeEquipment = [] } = this.props;
 
-        this.list = this.props.officeEquipment.map(value => ({
+        this.list = officeEquipment.map(value => ({
             name: value.name,
             price: value.price,
         }));
