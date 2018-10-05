@@ -35,7 +35,7 @@ class FeaturedList extends Component {
         }));
 
         mappedData = mappedData
-            .filter(dentist => dentist.id !== this.props.currentDentist)
+            .filter(dentist => dentist.id !== this.props.currentDentist.id)
             .splice(0, 4);
 
         return <FeaturedListView featuredDentists={mappedData} />;

@@ -7,6 +7,7 @@ import { STATUS, ACTIVE, END_TIME } from '../../../util/strings';
 export const getDentistQuery = gql`
     query($id: String!) {
         getDentist(id: $id) {
+            id
             bio
             specialty
             reservations(
