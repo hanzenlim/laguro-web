@@ -219,7 +219,8 @@ class AddOfficeEquipments extends Component {
             />,
             <Button
                 type="ghost"
-                height={50}
+                mb={20}
+                height="auto"
                 data-index={key.slice(EQUIPMENT_NAME.length)}
                 onClick={this.removeEquipment}
             >
@@ -321,8 +322,8 @@ class AddOfficeEquipments extends Component {
 
                         {this.renderEquipment(equipment)}
 
-                        <Button type="ghost" width={115} height={18}>
-                            <Flex onClick={this.addEquipment}>
+                        <Button type="ghost" onClick={this.addEquipment}>
+                            <Flex>
                                 <Icon
                                     mr={16}
                                     type="plus"

@@ -354,11 +354,14 @@ class AddOfficeInfo extends Component {
                                         }
                                         render={({ onPick }) =>
                                             this.canUploadPhotos() && (
-                                                <Button type="ghost">
+                                                <Button
+                                                    type="ghost"
+                                                    onClick={onPick}
+                                                    height="auto"
+                                                >
                                                     <Box
                                                         width={imageBoxHeight}
                                                         height={imageBoxHeight}
-                                                        onClick={onPick}
                                                         bg="rgba(96, 96, 96, 0.1)"
                                                     >
                                                         <Flex
