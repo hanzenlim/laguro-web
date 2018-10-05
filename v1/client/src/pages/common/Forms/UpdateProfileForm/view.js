@@ -58,6 +58,7 @@ const UpdateProfileForm = props => {
         setNewProfileImage,
         onSMSNotificationChange,
         smsNotificationStatus,
+        onFormRef,
     } = props;
 
     return (
@@ -126,7 +127,11 @@ const UpdateProfileForm = props => {
                         )}
                     />
                 </Box>
-                <Form layout="vertical" onSuccess={onSuccess}>
+                <Form
+                    layout="vertical"
+                    onSuccess={onSuccess}
+                    wrappedComponentRef={ref => onFormRef(ref)}
+                >
                     <FormItem
                         name="firstName"
                         label="First name"
@@ -168,9 +173,9 @@ const UpdateProfileForm = props => {
                         name="phoneNumber"
                         label="Mobile number"
                         initialValue={data.phoneNumber}
+                        normalize={value => value || null}
                         mb={32}
                         height={50}
-                        normalize={value => value || null}
                         input={
                             <MaskedInput
                                 mask={[
