@@ -58,7 +58,7 @@ class SearchBox extends PureComponent {
         const { date, location, text } = this.state;
 
         // location search requires date, text search doesn't
-        const locationSearch = !_isEmpty(location) && !_isEmpty(date);
+        const locationSearch = !_isEmpty(location);
         const textSearch = !_isEmpty(text);
 
         // if current data doesn't support either search, stop search

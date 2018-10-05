@@ -5,7 +5,7 @@ import OfficeSearchPageView from './view';
 import esClient from '../../util/esClient';
 import { OFFICES } from '../../util/strings';
 import { Loading } from '../../components';
-import { getMyPosition } from '../../util/navigatorUtil';
+import { getMyPosition, DEFAULT_LOCATION } from '../../util/navigatorUtil';
 
 const PAGE_SIZE = 9;
 const DISTANCE = '75km';
@@ -18,6 +18,7 @@ class OfficeSearchPage extends PureComponent {
             data: [],
             total: 0,
             loading: true,
+            defaultPosition: DEFAULT_LOCATION,
         };
     }
 
@@ -30,9 +31,13 @@ class OfficeSearchPage extends PureComponent {
         const mappedData = this.getMappedData(response);
         const total = this.getDataCount(response);
 
-        this.defaultPosition = defaultPosition;
-
-        this.setState({ data: mappedData, total, loading: false, urlParams });
+        this.setState({
+            data: mappedData,
+            total,
+            loading: false,
+            urlParams,
+            defaultPosition,
+        });
     };
 
     componentDidUpdate = async prevProps => {
@@ -92,6 +97,8 @@ class OfficeSearchPage extends PureComponent {
         const { endTime, startTime, lat, long: lon, page, text } = params;
         const from = this.getOffset(page, PAGE_SIZE);
         const must = [];
+        const { defaultPosition } = this.state;
+
         let distanceFilter = null;
 
         if (text) {
@@ -113,8 +120,8 @@ class OfficeSearchPage extends PureComponent {
                 geo_distance: {
                     distance: DISTANCE,
                     'location.geoPoint': {
-                        lon: lon || this.defaultLocation.lon,
-                        lat: lat || this.defaultLocation.lat,
+                        lon: lon || defaultPosition.lon,
+                        lat: lat || defaultPosition.lat,
                     },
                 },
             };
@@ -161,7 +168,7 @@ class OfficeSearchPage extends PureComponent {
 
         return (
             <OfficeSearchPageView
-                defaultPosition={this.defaultPosition}
+                defaultPosition={this.state.defaultPosition}
                 data={this.state.data}
                 total={this.state.total}
                 urlParams={this.state.urlParams}
