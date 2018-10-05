@@ -1,5 +1,6 @@
 import React from 'react';
 import get from 'lodash/get';
+import { Alert } from 'antd';
 import ExistingCardFormView from './ExistingCardForm';
 import NewCardFormView from './NewCardForm';
 import { Box, Button, Text } from '../../../../components';
@@ -29,12 +30,12 @@ const CardView = ({
     onChangeCardSelect,
     onBackButton,
     hasBackButton,
+    stripeError,
 }) => (
     <Box width="100%" position="relative">
         <Text fontSize={3} color="text.black" fontWeight="bold" mb={18}>
             Card Info
         </Text>
-
         <Box mb={28}>
             {get(paymentOptionsCards, 'length') > 0 &&
                 renderExistingCards(
@@ -42,6 +43,10 @@ const CardView = ({
                     selectedCard,
                     onChangeCardSelect
                 )}
+
+            {stripeError && (
+                <Alert type="error" message={stripeError.message} />
+            )}
 
             {selectedCard === NEW_CARD_PAYMENT_METHOD && (
                 <NewCardFormView

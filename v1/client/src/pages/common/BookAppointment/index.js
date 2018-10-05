@@ -28,6 +28,7 @@ class BookAppointment extends PureComponent {
             bookedAppointment: null,
 
             showVerificationModal: false,
+            paymentError: null,
         };
     }
 
