@@ -784,6 +784,10 @@ class SelectReservation extends Component {
                                         hourSlotsFromReservation
                                     );
 
+                                    const [
+                                        selectedStartDate,
+                                        selectedEndDate,
+                                    ] = selectedDates;
                                     const currentListings = data.queryListings.filter(
                                         listing => {
                                             const listingEnd = moment(
@@ -797,14 +801,14 @@ class SelectReservation extends Component {
                                             // items at the boundary
                                             return (
                                                 listingStart.isBetween(
-                                                    selectedDates[0],
-                                                    selectedDates[1],
+                                                    selectedStartDate,
+                                                    selectedEndDate,
                                                     null,
                                                     []
                                                 ) ||
-                                                listingEnd.isBetween(
-                                                    selectedDates[0],
-                                                    selectedDates[1],
+                                                selectedStartDate.isBetween(
+                                                    listingStart,
+                                                    listingEnd,
                                                     null,
                                                     []
                                                 )
