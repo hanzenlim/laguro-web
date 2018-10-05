@@ -4,6 +4,7 @@ import moment from 'moment';
 export const getOfficeEquipments = gql`
     query($id: String!) {
         getOffice(id: $id) {
+            id
             equipment {
                 name
                 price
