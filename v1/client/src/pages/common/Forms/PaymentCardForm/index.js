@@ -17,20 +17,24 @@ class PaymentCardForm extends Component {
 
         this.state = {
             selectedCard: '',
+            stripeError: null,
         };
     }
 
     handleCreateStripeToken = async values => {
         // Within the context of `Elements`, this call to createToken knows which Element to
         // tokenize, since there's only one in this group.
-        const stripeToken = await this.props.stripe.createToken({
+        const { token, error } = await this.props.stripe.createToken({
             name: values.name,
             address_line1: values.address,
         });
 
-        const id = get(stripeToken, 'token.id');
+        if (error) {
+            return this.setState({ stripeError: error });
+        }
 
-        if (!id) {
+        const id = get(token, 'id');
+        if (!token) {
             return;
         }
 
@@ -108,6 +112,7 @@ class PaymentCardForm extends Component {
                             onChangeCardSelect={this.onChangeCardSelect}
                             onBackButton={this.props.onBackButton}
                             hasBackButton={this.props.hasBackButton}
+                            stripeError={this.state.stripeError}
                         />
                     );
                 }}
