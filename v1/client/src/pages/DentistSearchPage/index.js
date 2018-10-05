@@ -5,7 +5,7 @@ import DentistSearchPageView from './view';
 import esClient from '../../util/esClient';
 import { DENTISTS } from '../../util/strings';
 import { Loading } from '../../components';
-import { getMyPosition } from '../../util/navigatorUtil';
+import { getMyPosition, DEFAULT_LOCATION } from '../../util/navigatorUtil';
 
 const PAGE_SIZE = 9;
 const DISTANCE = '75km';
@@ -21,6 +21,7 @@ class DetailsSearchPage extends PureComponent {
             data: [],
             total: 0,
             loading: true,
+            defaultPosition: DEFAULT_LOCATION,
         };
     }
 
@@ -33,9 +34,13 @@ class DetailsSearchPage extends PureComponent {
         const mappedData = this.getMappedData(response);
         const total = this.getDataCount(response);
 
-        this.defaultPosition = defaultPosition;
-
-        this.setState({ data: mappedData, total, loading: false, urlParams });
+        this.setState({
+            data: mappedData,
+            total,
+            loading: false,
+            urlParams,
+            defaultPosition,
+        });
     };
 
     componentDidUpdate = async prevProps => {
@@ -93,6 +98,7 @@ class DetailsSearchPage extends PureComponent {
     fetchData = async params => {
         const { endTime, startTime, lat, long: lon, page, text } = params;
         const from = this.getOffset(page, PAGE_SIZE);
+        const { defaultPosition } = this.state;
         // must in the elasticsearch context
         // see https://www.elastic.co/guide/en/elasticsearch/reference/6.3/query-dsl-bool-query.html
         const must = [];
@@ -108,7 +114,7 @@ class DetailsSearchPage extends PureComponent {
                         'name^2',
                         'specialty',
                         'procedures.name',
-                        'location.name',
+                        'reservations.address',
                     ],
                 },
             });
@@ -117,8 +123,8 @@ class DetailsSearchPage extends PureComponent {
                 geo_distance: {
                     distance: DISTANCE,
                     'reservations.geoPoint': {
-                        lon: lon || this.defaultPosition.lon,
-                        lat: lat || this.defaultPosition.lat,
+                        lon: lon || defaultPosition.lon,
+                        lat: lat || defaultPosition.lat,
                     },
                 },
             };
@@ -167,7 +173,7 @@ class DetailsSearchPage extends PureComponent {
             <DentistSearchPageView
                 data={this.state.data}
                 total={this.state.total}
-                defaultPosition={this.defaultPosition}
+                defaultPosition={this.state.defaultPosition}
                 urlParams={this.state.urlParams}
             />
         );

@@ -1,6 +1,6 @@
 import get from 'lodash/get';
 
-const DEFAULT_LOCATION = { lon: -122.1561, lat: 37.7249 };
+export const DEFAULT_LOCATION = { lon: -122.1561, lat: 37.7249 };
 
 // eslint-disable-next-line
 export const getMyPosition = async () => {
