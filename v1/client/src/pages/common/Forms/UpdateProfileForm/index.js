@@ -23,7 +23,11 @@ class UpdateProfileContainer extends PureComponent {
     };
 
     handleSMSNotificationChange = e => {
-        this.setState({ smsNotificationStatus: e.target.checked });
+        this.setState({ smsNotificationStatus: e.target.checked }, () => {
+            this.formRef.props.form.validateFields(['phoneNumber'], {
+                force: true,
+            });
+        });
     };
 
     onCompleted = ({ getUser, updateUser }) => {
@@ -32,6 +36,10 @@ class UpdateProfileContainer extends PureComponent {
         this.setState({
             smsNotificationStatus: notificationSettings.general.sms,
         });
+    };
+
+    handleFormRef = ref => {
+        this.formRef = ref;
     };
 
     render() {
@@ -173,6 +181,7 @@ class UpdateProfileContainer extends PureComponent {
                                                 smsNotificationStatus={
                                                     smsNotificationStatus
                                                 }
+                                                onFormRef={this.handleFormRef}
                                             />
                                         );
                                     }}
