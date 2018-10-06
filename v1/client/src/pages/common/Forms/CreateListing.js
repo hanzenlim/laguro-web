@@ -53,6 +53,21 @@ const disabledDate = currentDate => {
     return currentDate.isBefore(today);
 };
 
+const minPriceValidator = (rule, value, callback) => {
+    if (!value) {
+        callback('Price cannot less than $1.00');
+    }
+
+    // strip off the $ character
+    const price = parseFloat(value.substring(1));
+    // eslint-disable-next-line
+    if (isNaN(price) || price < 1) {
+        callback('Price cannot less than $1.00');
+    }
+
+    callback();
+};
+
 const priceValidator = (rule, value, callback) => {
     if (value === '$0.00') {
         callback('Price cannot be $0.00');
@@ -361,9 +376,9 @@ class CreateListing extends Component {
                                         rules={[
                                             {
                                                 required: true,
-                                                validator: priceValidator,
+                                                validator: minPriceValidator,
                                                 message:
-                                                    'Please enter a value greater than $0.00',
+                                                    'Please enter a value no less than $1.00',
                                             },
                                         ]}
                                         input={
