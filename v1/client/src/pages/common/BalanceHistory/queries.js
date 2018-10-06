@@ -6,6 +6,7 @@ export const GET_PAYMENTS = gql`
             id
             invoice {
                 items {
+                    id
                     name
                     payoutAmount
                     quantity
@@ -16,6 +17,7 @@ export const GET_PAYMENTS = gql`
             type
             status
             reservation {
+                id
                 startTime
                 endTime
                 office {
@@ -27,10 +29,13 @@ export const GET_PAYMENTS = gql`
                 }
             }
             appointment {
+                id
                 startTime
                 endTime
                 reservation {
+                    id
                     office {
+                        id
                         location {
                             name
                         }
@@ -39,9 +44,11 @@ export const GET_PAYMENTS = gql`
                 }
             }
             procedures {
+                id
                 name
             }
             stripePayment {
+                id
                 created
                 amount
                 source {

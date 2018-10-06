@@ -92,8 +92,8 @@ const ReserveOfficeView = ({
                 <Fragment>
                     <PaymentConfirmation
                         h1="YOUR BOOKING HAS BEEN MADE"
-                        h2={paymentConfirmationH2Text}
-                        h3={paymentConfirmationH3Text}
+                        h2={null}
+                        h3={null}
                     />
                 </Fragment>
             )}
