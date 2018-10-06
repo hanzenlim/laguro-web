@@ -22,7 +22,7 @@ const BookAppointmentView = props => {
     if (bookedAppointment)
         return (
             <PaymentConfirmation
-                h1="YOUR BOOKING IS COMFIRMED"
+                h1="YOUR BOOKING IS CONFIRMED"
                 h2={bookedAppointment.time}
                 h3={bookedAppointment.location}
             />
