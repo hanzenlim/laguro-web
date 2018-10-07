@@ -35,7 +35,7 @@ class PaymentCardForm extends Component {
 
         const id = get(token, 'id');
         if (!token) {
-            return;
+            return null;
         }
 
         const result = await this.props.mutate({
@@ -48,6 +48,8 @@ class PaymentCardForm extends Component {
         if (newCardId) {
             this.props.handleSubmit(newCardId);
         }
+
+        return null;
     };
 
     onChangeCardSelect = value => {

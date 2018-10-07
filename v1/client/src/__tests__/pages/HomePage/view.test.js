@@ -2,6 +2,8 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import HomePage from '../../../pages/HomePage';
 
+jest.mock('react-ga');
+
 describe('HomePage', () => {
     let component;
 

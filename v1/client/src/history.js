@@ -13,7 +13,7 @@ ReactGA.set({ page: window.location.pathname + window.location.search });
 ReactGA.pageview(window.location.pathname + window.location.search);
 
 // Tracks the subsequest page navigation.
-history.listen((location) => {
+history.listen(location => {
     ReactGA.set({ page: location.pathname + location.search });
     ReactGA.pageview(location.pathname);
 });

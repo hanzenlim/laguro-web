@@ -2,6 +2,8 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import FeaturedList from '../../../../pages/HomePage/FeaturedList';
 
+jest.mock('react-ga');
+
 describe('HomePage', () => {
     let component;
 
