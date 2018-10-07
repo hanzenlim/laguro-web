@@ -6,7 +6,6 @@ export const GET_PAYMENTS = gql`
             id
             invoice {
                 items {
-                    id
                     name
                     payoutAmount
                     quantity

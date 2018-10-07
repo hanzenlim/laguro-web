@@ -27,8 +27,6 @@ const ReserveOfficeView = ({
     totalPrice,
     updateSummarySectionData,
     summaryList,
-    paymentConfirmationH2Text,
-    paymentConfirmationH3Text,
     onPayBtnText,
 }) => (
     <Box width="513px">
