@@ -4,9 +4,11 @@ import _uniq from 'lodash/uniq';
 import DentistDetailsView from './view';
 
 class DentistDetails extends PureComponent {
-    render() {
+    componentDidMount() {
         window.scrollTo(0, 0);
+    }
 
+    render() {
         const { dentist } = this.props;
         const { user } = dentist;
         const procedures = dentist.procedures.map(p => p.group);
