@@ -1,21 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import {
-    Container,
-    Text,
-    Box,
-    Flex,
-    Image,
-    Button,
-    Link,
-    Icon,
-} from '../../components';
-
-import dentistImage from '../../images/dentist.png';
-import patientImage from '../../images/patient.png';
-import dentistIllustration from '../../images/dentist_illustration.svg';
-import wave from '../../images/wave.png';
+import { Text, Box, Button, Link, Icon } from '../../components';
 
 const Pattern = styled(Box)`
     ${props => props.order === 1 && `transform: rotate(145deg);`};
@@ -28,13 +14,10 @@ const StyledBox = styled(Box)`
 `;
 
 const AboutPage = () => (
-    <StyledBox
-        background={`url(${wave}) no-repeat bottom`}
-        backgroundSize="contain"
-    >
-        <Container pt={150}>
-            <Box position="relative">
-                <Box width={1010} position="relative" zIndex={2}>
+    <StyledBox pb={300}>
+        <Box pt={250} maxWidth={1102} mx="auto">
+            <Box position="relative" mb={274}>
+                <Box position="relative" zIndex={2}>
                     <Text fontSize={36} fontWeight="bold">
                         About us
                     </Text>
@@ -46,22 +29,19 @@ const AboutPage = () => (
                         administered for both dentists and patients.
                     </Text>
                 </Box>
-                <Pattern position="absolute" top={-200} right={-50} order={1}>
-                    <Icon type="macaroniPattern" fontSize={550} opacity={0.1} />
+                <Pattern position="absolute" top={-250} right={-300} order={1}>
+                    <Icon type="macaroniPattern" fontSize={600} opacity={0.1} />
                 </Pattern>
             </Box>
 
-            <Box position="relative">
+            <Box position="relative" mb={124}>
                 <Box position="relative" zIndex={2}>
-                    <Text mt={200} mb={50} fontSize={40} fontWeight="bold">
+                    <Text mb={30} fontSize={5} fontWeight="bold">
                         For Dentists –
                     </Text>
-                    <Flex>
-                        <Box flex="0 0 300px" mr={130}>
-                            <Image src={dentistImage} width="100%" />
-                        </Box>
-                        <Box width="100%" fontSize={4}>
-                            <Text mb={30}>
+                    <Box pl={216}>
+                        <Box fontSize={2}>
+                            <Text mb={30} lineHeight="30px">
                                 Today, dentists are forced to juggle the
                                 responsibilities of providing excellent
                                 treatment while sustaining a business and
@@ -71,7 +51,7 @@ const AboutPage = () => (
                                 cancellations, slow office days, and
                                 ever-growing costs.
                             </Text>
-                            <Text>
+                            <Text lineHeight="30px">
                                 At Laguro, we are here to change and close that
                                 gap. Laguro, an idea and vision thoughtfully
                                 created, is{' '}
@@ -99,45 +79,49 @@ const AboutPage = () => (
                                 their Laguro practice immediately by utilizing
                                 their network of family and friends.
                             </Text>
-                            <Box textAlign="right" mt={55}>
+                            <Box textAlign="right" mt={36}>
                                 <Link to="/office/search">
-                                    <Button
-                                        mr={14}
-                                        width={260}
-                                        height={75}
-                                        fontSize={4}
-                                    >
-                                        Book a chair
+                                    <Button type="ghost" mr={100}>
+                                        <Text
+                                            color="text.blue"
+                                            fontSize={4}
+                                            fontWeight="medium"
+                                        >
+                                            Book a chair ➞
+                                        </Text>
                                     </Button>
                                 </Link>
                                 <Link to="/host-onboarding/add-office">
-                                    <Button
-                                        width={260}
-                                        height={75}
-                                        fontSize={4}
-                                    >
-                                        Become a host
+                                    <Button type="ghost">
+                                        <Text
+                                            color="text.blue"
+                                            fontSize={4}
+                                            fontWeight="medium"
+                                        >
+                                            Become a host ➞
+                                        </Text>
                                     </Button>
                                 </Link>
                             </Box>
                         </Box>
-                    </Flex>
+                    </Box>
                 </Box>
-                <Pattern position="absolute" top={-100} left={-450} order={2}>
-                    <Icon type="macaroniPattern" fontSize={900} opacity={0.1} />
+                <Pattern position="absolute" top={-150} left={-600} order={2}>
+                    <Icon
+                        type="macaroniPattern"
+                        fontSize={1000}
+                        opacity={0.1}
+                    />
                 </Pattern>
             </Box>
 
             <Box position="relative">
                 <Box position="relative" zIndex={2}>
-                    <Text mt={50} mb={50} fontSize={40} fontWeight="bold">
+                    <Text mb={30} fontSize={5} fontWeight="bold">
                         For Patients –
                     </Text>
-                    <Flex mb={137}>
-                        <Box flex="0 0 300px" mr={130}>
-                            <Image src={patientImage} width="100%" />
-                        </Box>
-                        <Box width="100%" fontSize={4}>
+                    <Box pl={216}>
+                        <Box fontSize={2}>
                             <Text mb={30}>
                                 Patients have always been the main priority in
                                 the healthcare industry. However, that is not
@@ -160,32 +144,27 @@ const AboutPage = () => (
                                 records-- all conveniently available for
                                 whenever and wherever they want.
                             </Text>
-                            <Box textAlign="right" mt={55}>
+                            <Box textAlign="right" mt={36}>
                                 <Link to="/host-onboarding/add-office">
-                                    <Button
-                                        width={260}
-                                        height={75}
-                                        fontSize={4}
-                                    >
-                                        Become a host
+                                    <Button type="ghost">
+                                        <Text
+                                            color="text.blue"
+                                            fontSize={4}
+                                            fontWeight="medium"
+                                        >
+                                            Book an appointment ➞
+                                        </Text>
                                     </Button>
                                 </Link>
                             </Box>
                         </Box>
-                    </Flex>
+                    </Box>
                 </Box>
-                <Pattern position="absolute" top={-50} right={0} order={3}>
-                    <Icon type="macaroniPattern" fontSize={700} opacity={0.1} />
+                <Pattern position="absolute" top={80} right={-100} order={3}>
+                    <Icon type="macaroniPattern" fontSize={800} opacity={0.1} />
                 </Pattern>
             </Box>
-            <Image
-                src={dentistIllustration}
-                alt="dentist illustration"
-                width={515}
-                ml="auto"
-                mb={30}
-            />
-        </Container>
+        </Box>
     </StyledBox>
 );
 
