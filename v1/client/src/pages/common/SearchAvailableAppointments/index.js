@@ -141,8 +141,8 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
      * @returns {array} Array of objects with key value pairs
      */
     getTimeSlotsWithoutAppointments = reservations => {
-        let reservedTimeSlots = [];
-        let timeSlotsWithAppointments = [];
+        const reservedTimeSlots = [];
+        const timeSlotsWithAppointments = [];
 
         reservations.forEach(reservation => {
             reservation.availableTimes.forEach(availableTime => {
@@ -152,13 +152,10 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
                 );
 
                 timeSlotsPerHour.forEach(timeSlot => {
-                    reservedTimeSlots = [
-                        ...reservedTimeSlots,
-                        {
-                            key: timeSlot,
-                            value: reservation.id,
-                        },
-                    ];
+                    reservedTimeSlots.push({
+                        key: timeSlot,
+                        value: reservation.id,
+                    });
                 });
             });
 
@@ -169,13 +166,10 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
                 );
 
                 timeSlotsPerHour.forEach(timeSlot => {
-                    timeSlotsWithAppointments = [
-                        ...timeSlotsWithAppointments,
-                        {
-                            key: timeSlot,
-                            value: reservation.id,
-                        },
-                    ];
+                    timeSlotsWithAppointments.push({
+                        key: timeSlot,
+                        value: reservation.id,
+                    });
                 });
             });
         });
@@ -194,7 +188,7 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
      * @returns {array} Array of date strings
      */
     getAvailableDateList = dateList => {
-        let list = [];
+        const list = [];
 
         const today = moment().subtract(1, 'days');
         const days = dateList.map(item =>
@@ -206,7 +200,7 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
         days.forEach(day => {
             if (!list.includes(day)) {
                 if (!moment(day).isBefore(today)) {
-                    list = [...list, day];
+                    list.push(day);
                 }
             }
         });
@@ -247,10 +241,10 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
      * @returns {array} Array of strings
      */
     getLocationList = reservations => {
-        let list = [];
+        const list = [];
         reservations.forEach(item => {
             if (!list.includes(item.location.name)) {
-                list = [...list, item.location.name];
+                list.push(item.location.name);
             }
         });
         return list;
