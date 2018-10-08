@@ -398,7 +398,10 @@ class HostOnboarding extends Component {
 
             case ADD_LISTING_MODE:
                 if (step === LISTING_STEP) {
-                    const { officeId } = wizardState;
+                    const urlParams = queryString.parse(
+                        this.state.historyLocationSearch
+                    );
+                    const { officeId } = urlParams;
 
                     await this.createListings(officeId, batchCreateListings);
                 } else {
@@ -440,48 +443,68 @@ class HostOnboarding extends Component {
                         officeDescription,
                         officeName,
                         equipment,
+                        officeId,
                     } = wizardState;
 
-                    const result = await createOffice({
-                        variables: {
-                            input: {
-                                userId: id,
-                                name: officeName,
-                                imageUrls,
-                                equipment,
-                                description: officeDescription,
-                                location: {
-                                    name: location,
-                                    geoPoint: {
-                                        lat: locationLat,
-                                        lon: locationLong,
+                    let result = null;
+
+                    /**
+                     * Only create an office on first try
+                     */
+                    if (!officeId) {
+                        result = await createOffice({
+                            variables: {
+                                input: {
+                                    userId: id,
+                                    name: officeName,
+                                    imageUrls,
+                                    equipment,
+                                    description: officeDescription,
+                                    location: {
+                                        name: location,
+                                        geoPoint: {
+                                            lat: locationLat,
+                                            lon: locationLong,
+                                        },
+                                        addressDetails: !isEmpty(addressDetail)
+                                            ? addressDetail
+                                            : undefined,
                                     },
-                                    addressDetails: !isEmpty(addressDetail)
-                                        ? addressDetail
-                                        : undefined,
                                 },
                             },
-                        },
-                    });
+                        });
 
-                    if (result) {
-                        // Need to update the cookie and local cache to populate the dentist id.
-                        const user = get(
-                            result,
-                            'data.createUserOffice.host.user'
+                        if (result) {
+                            // Need to update the cookie and local cache to populate the dentist id.
+                            const user = get(
+                                result,
+                                'data.createUserOffice.host.user'
+                            );
+                            cookies.set('user', JSON.stringify(user), {
+                                maxAge: 86400000,
+                            });
+
+                            client.writeData({
+                                data: {
+                                    activeUser: {
+                                        ...user,
+                                        __typename: ACTIVE_USER,
+                                    },
+                                },
+                            });
+                        }
+
+                        await this.saveWizardState({
+                            ...wizardState,
+                            officeId: result.data.createUserOffice.id,
+                        });
+
+                        await this.createListings(
+                            result.data.createUserOffice.id,
+                            batchCreateListings
                         );
-                        cookies.set('user', JSON.stringify(user), {
-                            maxAge: 86400000,
-                        });
-
-                        client.writeData({
-                            data: {
-                                activeUser: {
-                                    ...user,
-                                    __typename: ACTIVE_USER,
-                                },
-                            },
-                        });
+                    } else {
+                        this.createListings(officeId, batchCreateListings);
                     }
 
                     // url transition to confirmation page happens in handleListingCreated. skip transition in current function
@@ -551,6 +574,11 @@ class HostOnboarding extends Component {
                 };
             });
 
+        if (listings.includes(null)) {
+            this.setState({ submitting: false });
+            return null;
+        }
+
         try {
             const result = await batchCreateListings({
                 variables: {
@@ -578,6 +606,8 @@ class HostOnboarding extends Component {
             }
             this.setState({ submitting: false });
         }
+
+        return null;
     };
 
     // save office data to state to trigger render
@@ -671,16 +701,7 @@ class HostOnboarding extends Component {
                                         // onCompleted={this.handleOnCompleted}
                                     >
                                         {batchCreateListings => (
-                                            <Mutation
-                                                mutation={CREATE_OFFICE}
-                                                onCompleted={data => {
-                                                    this.createListings(
-                                                        data.createUserOffice
-                                                            .id,
-                                                        batchCreateListings
-                                                    );
-                                                }}
-                                            >
+                                            <Mutation mutation={CREATE_OFFICE}>
                                                 {(createOffice, { client }) => (
                                                     <StyledContainer>
                                                         <Form
@@ -818,6 +839,11 @@ class HostOnboarding extends Component {
                                                                     {step ===
                                                                         LISTING_STEP && (
                                                                         <AddOfficeListing
+                                                                            isOnboarding={
+                                                                                this
+                                                                                    .mode !==
+                                                                                ADD_LISTING_MODE
+                                                                            }
                                                                             {...initialFormValues}
                                                                         />
                                                                     )}
@@ -893,9 +919,13 @@ class HostOnboarding extends Component {
                                                                         <SubmitButton
                                                                             disabled={
                                                                                 this
-                                                                                    .state
-                                                                                    .numImage ===
-                                                                                0
+                                                                                    .mode ===
+                                                                                LISTING_STEP
+                                                                                    ? false
+                                                                                    : this
+                                                                                          .state
+                                                                                          .numImage ===
+                                                                                      0
                                                                             }
                                                                             loading={
                                                                                 this

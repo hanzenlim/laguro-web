@@ -117,6 +117,7 @@ class AddOfficeListing extends Component {
     }
 
     render() {
+        const { isOnboarding } = this.props;
         const { listings } = this.state;
 
         return (
@@ -130,7 +131,7 @@ class AddOfficeListing extends Component {
                     mt={140}
                     mb={18}
                 >
-                    Step 3
+                    {isOnboarding && 'Step 3'}
                 </Text>
 
                 <Text
@@ -141,7 +142,9 @@ class AddOfficeListing extends Component {
                     color="text.trueBlack"
                     mb={54}
                 >
-                    It&#39;s time to create your first listing!
+                    {isOnboarding
+                        ? "It's time to create your first listing!"
+                        : 'Add a new listing'}
                 </Text>
                 <div>{listings}</div>
 

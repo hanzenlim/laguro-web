@@ -37,11 +37,14 @@ class HostListings extends PureComponent {
                                 edit
                             </Text>
                         </Link>
-                        {/* <Link to="/" type="ghost">
+                        <Link
+                            to={`/host-onboarding/add-listing/?mode=add-listing&officeId=${id}`}
+                            type="ghost"
+                        >
                             <Text color="text.blue" fontSize={1}>
                                 add a new listing
                             </Text>
-                        </Link> */}
+                        </Link>
                     </Flex>
                     <Box px={28} py={16} mt={13} bg="background.lightGray">
                         <Text fontSize={3} fontWeight="medium" mb={14}>
