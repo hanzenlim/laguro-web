@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import _uniq from 'lodash/uniq';
+import _get from 'lodash/get';
 import DentistDetailsView from './view';
 
 class DentistDetails extends PureComponent {
@@ -11,7 +12,7 @@ class DentistDetails extends PureComponent {
         const { user } = dentist;
         const procedures = dentist.procedures.map(p => p.group);
         const locations =
-            dentist.reservations.length > 0
+            _get(dentist, 'reservations.length') > 0
                 ? _uniq(dentist.reservations.map(r => r.location))
                 : [];
         const mappedData = {

@@ -42,6 +42,7 @@ const ProfileContainer = () => (
                             dataUserQuery,
                             'getUser.dentistId'
                         );
+                        const dentist = get(dataUserQuery, 'getUser.dentist');
                         const offices = get(
                             dataUserQuery,
                             'getUser.dentist.offices'
@@ -54,6 +55,7 @@ const ProfileContainer = () => (
                                     dataUserQuery,
                                     'getUser.isDentist'
                                 )}
+                                dentist={dentist}
                                 isHost={get(dataUserQuery, 'getUser.isHost')}
                                 offices={offices}
                                 userId={id}

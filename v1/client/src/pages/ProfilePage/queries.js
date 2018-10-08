@@ -26,6 +26,19 @@ export const getUserQuery = gql`
                 offices {
                     id
                 }
+                bio
+                specialty
+                procedures {
+                    name
+                }
+                user {
+                    firstName
+                    lastName
+                    imageUrl
+                }
+                reviews {
+                    rating
+                }
             }
         }
     }
