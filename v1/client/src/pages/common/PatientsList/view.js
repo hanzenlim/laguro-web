@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { Box, Text, Input, Icon } from '../../../components';
 import PatientCard from './PatientCard';
@@ -44,6 +45,20 @@ const PatientsList = props => {
             </Box>
         </Box>
     );
+};
+
+const patientShape = PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    lastVisit: PropTypes.string.isRequired,
+    imageUrl: PropTypes.string,
+    patientImages: PropTypes.arrayOf(PropTypes.string.isRequired),
+}).isRequired;
+
+PatientsList.propTypes = {
+    dentistId: PropTypes.string.isRequired,
+    onFilterPatients: PropTypes.func.isRequired,
+    patients: PropTypes.arrayOf(patientShape),
 };
 
 export default PatientsList;

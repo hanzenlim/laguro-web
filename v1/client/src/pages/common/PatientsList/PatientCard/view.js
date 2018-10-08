@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import ReactFilestack from 'filestack-react';
 
 import { Box, Text, Flex, Image, Button, Icon } from '../../../../components';
@@ -56,6 +57,7 @@ class PatientCard extends PureComponent {
             toggleDocumentList,
             loadPhotos,
             patientImages,
+            documentUrl,
         } = this.props;
         return (
             <Box p={15} mb={12} border="1px solid" borderColor="divider.gray">
@@ -152,11 +154,33 @@ class PatientCard extends PureComponent {
                                 )}
                             />
                         </Flex>
+                        {documentUrl && (
+                            <Text fontSize={1} mt={15}>
+                                Held History Form{' '}
+                                <a href={documentUrl} target="_blank">
+                                    <Text is="span" color="text.blue">
+                                        View
+                                    </Text>
+                                </a>
+                            </Text>
+                        )}
                     </Box>
                 )}
             </Box>
         );
     }
 }
+
+PatientCard.propTypes = {
+    toggleDocumentList: PropTypes.func,
+    loadPhotos: PropTypes.func,
+    removeImage: PropTypes.func,
+    patientImages: PropTypes.arrayOf(PropTypes.string.isRequired),
+    isDocumentListOpen: PropTypes.bool,
+    name: PropTypes.string.isRequired,
+    imageUrl: PropTypes.string,
+    lastVisit: PropTypes.string.isRequired,
+    documentUrl: PropTypes.string,
+};
 
 export default PatientCard;

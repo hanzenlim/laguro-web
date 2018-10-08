@@ -10,3 +10,9 @@ export const updatePatientImagesMutation = gql`
         }
     }
 `;
+
+export const getHistoryFormQuery = gql`
+    query getHealthHistoryFormDownloadableUrl($id: String!) {
+        getHealthHistoryFormDownloadableUrl(id: $id)
+    }
+`;

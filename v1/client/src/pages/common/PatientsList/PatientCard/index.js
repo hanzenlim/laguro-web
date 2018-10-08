@@ -1,11 +1,13 @@
 import React, { PureComponent } from 'react';
-import { graphql, compose } from 'react-apollo';
+import { graphql, compose, Query } from 'react-apollo';
 import { withRouter } from 'react-router-dom';
 import get from 'lodash/get';
 
 import PatientCard from './view';
+import { Loading } from '../../../../components';
+import { RedirectErrorPage } from '../../../../pages/GeneralErrorPage';
 
-import { updatePatientImagesMutation } from './queries';
+import { updatePatientImagesMutation, getHistoryFormQuery } from './queries';
 import { getPatientsQuery } from '../queries';
 
 class PatientCardContainer extends PureComponent {
@@ -100,16 +102,34 @@ class PatientCardContainer extends PureComponent {
         const { name, imageUrl, lastVisit } = this.props;
         const { patientImages, isDocumentListOpen } = this.state;
         return (
-            <PatientCard
-                toggleDocumentList={this.toggleDocumentList}
-                loadPhotos={this.loadPhotos}
-                removeImage={this.removeImage}
-                patientImages={patientImages}
-                isDocumentListOpen={isDocumentListOpen}
-                name={name}
-                imageUrl={imageUrl}
-                lastVisit={lastVisit}
-            />
+            <Query
+                query={getHistoryFormQuery}
+                variables={{ id: this.props.patientId }}
+            >
+                {({ loading, error, data }) => {
+                    if (error) return <RedirectErrorPage />;
+                    if (loading) return <Loading />;
+
+                    const documentUrl = get(
+                        data,
+                        'getHealthHistoryFormDownloadableUrl'
+                    );
+
+                    return (
+                        <PatientCard
+                            toggleDocumentList={this.toggleDocumentList}
+                            loadPhotos={this.loadPhotos}
+                            removeImage={this.removeImage}
+                            patientImages={patientImages}
+                            isDocumentListOpen={isDocumentListOpen}
+                            name={name}
+                            imageUrl={imageUrl}
+                            lastVisit={lastVisit}
+                            documentUrl={documentUrl}
+                        />
+                    );
+                }}
+            </Query>
         );
     }
 }
