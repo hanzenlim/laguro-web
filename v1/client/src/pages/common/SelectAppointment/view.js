@@ -24,6 +24,7 @@ const SelectAppointmentView = props => {
                             data-key={i}
                             type="ghost"
                             onClick={onSelect}
+                            height="auto"
                         >
                             <Flex
                                 alignItems="center"
