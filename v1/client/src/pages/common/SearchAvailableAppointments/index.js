@@ -259,6 +259,15 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
     filterByLocation = (reservations, locationFilter) =>
         reservations.filter(item => item.location.name === locationFilter);
 
+    handleSelectLocation = value => {
+        this.setState({
+            filters: {
+                ...this.state.filters,
+                location: value,
+            },
+        });
+    };
+
     render() {
         const reservations = this.props.data;
         // GET LOCATION LIST
@@ -303,6 +312,7 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
                 hasFiltered={this.state.hasFiltered}
                 onFilter={this.handleFilter}
                 onSelect={this.handleSelect}
+                onSelectLocation={this.handleSelectLocation}
             />
         );
     }

@@ -26,6 +26,7 @@ const SearchAvailableAppointments = props => {
         selected,
         availableDateList,
         locationList,
+        onSelectLocation,
     } = props;
 
     return (
@@ -42,6 +43,7 @@ const SearchAvailableAppointments = props => {
                         Make an appointment
                     </Text>
                     <FilterAppointmentsForm
+                        onSelectLocation={onSelectLocation}
                         handleSubmit={onFilter}
                         locationList={locationList}
                         availableDateList={availableDateList}
