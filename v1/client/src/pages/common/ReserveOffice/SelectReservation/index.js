@@ -784,6 +784,12 @@ class SelectReservation extends Component {
                                         hourSlotsFromReservation
                                     );
 
+                                    const [
+                                        selectedStartDate,
+                                        selectedEndDate,
+                                    ] = selectedDates;
+
+                                    // retrieve all listings within the selected date range
                                     const currentListings = data.queryListings.filter(
                                         listing => {
                                             const listingEnd = moment(
@@ -795,16 +801,20 @@ class SelectReservation extends Component {
 
                                             // the argument [] means isBetween includes
                                             // items at the boundary
+                                            // if selected start date is between the
+                                            // listing start date or the listing start date
+                                            // is between the selected interval, they intersect,
+                                            // so we include that listing
                                             return (
                                                 listingStart.isBetween(
-                                                    selectedDates[0],
-                                                    selectedDates[1],
+                                                    selectedStartDate,
+                                                    selectedEndDate,
                                                     null,
                                                     []
                                                 ) ||
-                                                listingEnd.isBetween(
-                                                    selectedDates[0],
-                                                    selectedDates[1],
+                                                selectedStartDate.isBetween(
+                                                    listingStart,
+                                                    listingEnd,
                                                     null,
                                                     []
                                                 )
