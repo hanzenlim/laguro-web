@@ -97,6 +97,12 @@ class SearchBox extends PureComponent {
         history.push(`${path}?${queryString.stringify(urlParams)}`);
     };
 
+    handleKeyPress = event => {
+        if (event.key === 'Enter') {
+            this.handleSubmit();
+        }
+    };
+
     render() {
         return (
             <SearchBoxView
@@ -110,6 +116,7 @@ class SearchBox extends PureComponent {
                 onSubmit={this.handleSubmit}
                 size={this.props.size}
                 locationPlaceholder={this.props.placeholder}
+                onKeyPress={this.handleKeyPress}
             />
         );
     }

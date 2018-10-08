@@ -22,10 +22,11 @@ const SearchBox = props => {
         onSubmit,
         size,
         locationPlaceholder,
+        onKeyPress,
     } = props;
 
     return (
-        <Flex justifyContent="center">
+        <Flex justifyContent="center" onKeyPress={onKeyPress}>
             <Box mr={10}>
                 <LocationFilter
                     height={60}
@@ -79,12 +80,14 @@ SearchBox.defaultProps = {
     onLocationFilterChange: null,
     onDateFilterChange: null,
     onSubmit: null,
+    onKeyPress: null,
 };
 
 SearchBox.propTypes = {
     onLocationFilterChange: PropTypes.func,
     onDateFilterChange: PropTypes.func,
     onSubmit: PropTypes.func,
+    onKeyPress: PropTypes.func,
 };
 
 export default SearchBox;
