@@ -15,8 +15,8 @@ const StyledBox = styled(Box)`
 
 const AboutPage = () => (
     <StyledBox pb={300}>
-        <Box pt={250} maxWidth={1103} mx="auto">
-            <Box position="relative" mb={275}>
+        <Box pt={250} maxWidth={1102} mx="auto">
+            <Box position="relative" mb={274}>
                 <Box position="relative" zIndex={2}>
                     <Text fontSize={36} fontWeight="bold">
                         About us
