@@ -14,11 +14,7 @@ const Footer = () => {
             width={1}
             height={345}
             borderTop="1px solid"
-            borderColor={
-                window.location.pathname === '/'
-                    ? 'divider.transparent'
-                    : 'divider.gray'
-            }
+            borderColor={'divider.gray'}
             bg={
                 window.location.pathname === '/'
                     ? 'background.lightBlue'
@@ -38,7 +34,7 @@ const Footer = () => {
                     <Text color="text.black50" fontSize={4} mb={36}>
                         LET'S CONNECT
                     </Text>
-                    <Text color="text.black" fontSize={4}>
+                    <Text color="text.black" fontSize={1}>
                         Laguro is here to provide support and answers for any
                         questions you may have. Send us your inquiries through
                         our chat box or to support@laguro.com, and we will be in
@@ -46,20 +42,28 @@ const Footer = () => {
                     </Text>
                 </Flex>
 
-                <Flex alignSelf="center">
+                <Flex mt={30}>
                     <Link
                         mr={25}
                         to={'https://www.facebook.com/LaguroDental/'}
                         target="_blank"
                     >
-                        <Icon color="icon.black" fontSize={5} type="facebook" />
+                        <Icon
+                            color="icon.black"
+                            fontSize="25px"
+                            type="facebook"
+                        />
                     </Link>
                     <Link
                         mr={25}
                         to={'https://twitter.com/LaguroDental'}
                         target="_blank"
                     >
-                        <Icon color="icon.black" fontSize={5} type="twitter" />
+                        <Icon
+                            color="icon.black"
+                            fontSize="25px"
+                            type="twitter"
+                        />
                     </Link>
                     <Link
                         mr={25}
@@ -68,7 +72,7 @@ const Footer = () => {
                     >
                         <Icon
                             color="icon.black"
-                            fontSize={5}
+                            fontSize="25px"
                             type="instagram"
                         />
                     </Link>
@@ -76,7 +80,11 @@ const Footer = () => {
                         to={'https://www.linkedin.com/company/lagurodental/'}
                         target="_blank"
                     >
-                        <Icon color="icon.black" fontSize={5} type="linkedin" />
+                        <Icon
+                            color="icon.black"
+                            fontSize="25px"
+                            type="linkedin"
+                        />
                     </Link>
                 </Flex>
             </Container>

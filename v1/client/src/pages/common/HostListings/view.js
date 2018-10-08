@@ -43,7 +43,15 @@ class HostListings extends PureComponent {
                             </Text>
                         </Link> */}
                     </Flex>
-                    <Box px={28} py={16} mt={13} bg="background.lightGray">
+                    <Box
+                        px={28}
+                        py={16}
+                        mt={13}
+                        bg="background.white"
+                        border="1px solid"
+                        borderColor="divider.gray"
+                        borderRadius={2}
+                    >
                         <Text fontSize={3} fontWeight="medium" mb={14}>
                             Equipments offered in this office
                         </Text>
@@ -101,7 +109,15 @@ class HostListings extends PureComponent {
                             </Text>
                         </Button>
                     </Flex>
-                    <Box px={28} py={16} mt={5} bg="background.lightGray">
+                    <Box
+                        px={28}
+                        py={16}
+                        mt={5}
+                        bg="background.white"
+                        border="1px solid"
+                        borderColor="divider.gray"
+                        borderRadius={2}
+                    >
                         <Box fontSize={5} mb={30}>
                             <Text fontWeight="medium" display="inline" mr={15}>
                                 {moment(startDate).format('ddd, M/D')} -{' '}
@@ -205,12 +221,12 @@ class HostListings extends PureComponent {
             <Fragment key={index}>
                 {index === 0 && (
                     <Text fontSize={4} fontWeight="medium">
-                        {moment(startTime).format('ddd, MMM/D/YYY')}
+                        {moment(startTime).format('ddd, MMM/D/YY')}
                     </Text>
                 )}
                 <Text fontSize={4}>
-                    {moment(startTime).format('H:mmA')} -{' '}
-                    {moment(endTime).format('H:mmA')}
+                    {moment(startTime).format('h:mmA')} -{' '}
+                    {moment(endTime).format('h:mmA')}
                 </Text>
             </Fragment>
         ));

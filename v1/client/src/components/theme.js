@@ -8,6 +8,7 @@ export default {
             black: '#303549',
             black50: 'rgba(0, 0, 0, 0.5)',
             gray: '#c7c7c7',
+            darkGray: '#4a4a4a',
             blue: '#3481F8',
             darkBlue: '#286ABA',
             yellow: '#FFCE70',

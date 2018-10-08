@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import Intercom from 'react-intercom';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { Menu, Dropdown } from 'antd';
+import { Dropdown } from 'antd';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 import SearchBox from '../SearchBox';
@@ -14,6 +14,8 @@ import LoginModal from '../Modals/LoginModal';
 import RegistrationModal from '../Modals/RegistrationModal';
 import ForgotPassModal from '../Modals/ForgotPassModal';
 import { intercomKey } from '../../../config/keys';
+
+import ProfileMenu from './ProfileMenu';
 
 const NavBarLink = styled(Link)`
     padding: 17px 10px 10px 10px;
@@ -27,145 +29,6 @@ const NavBarLink = styled(Link)`
         text-decoration: none;
     }
 `;
-
-const StyledMenu = styled(Menu)`
-    && {
-        border-radius: 0;
-    }
-
-    .ant-dropdown-menu-item {
-        padding: 8px 16px;
-    }
-`;
-
-const ProfileMenu = props => {
-    const { logout, isDentist, isHost, ...rest } = props;
-
-    if (isDentist) {
-        return (
-            <StyledMenu {...rest}>
-                <Menu.Item>
-                    <Link to={'/profile?selectedTab=my_profile'}>
-                        <Text color="text.black" fontSize={2}>
-                            my page
-                        </Text>
-                    </Link>
-                </Menu.Item>
-                <Menu.Item>
-                    <Link to={'/profile?selectedTab=my_bookings'}>
-                        <Text color="text.black" fontSize={2}>
-                            bookings/appointments
-                        </Text>
-                    </Link>
-                </Menu.Item>
-                <Menu.Item>
-                    <Link to={'/profile?selectedTab=payments'}>
-                        <Text color="text.black" fontSize={2}>
-                            payments
-                        </Text>
-                    </Link>
-                </Menu.Item>
-                <Menu.Item>
-                    <Link to={'/profile?selectedTab=balance'}>
-                        <Text color="text.black" fontSize={2}>
-                            laguro balance
-                        </Text>
-                    </Link>
-                </Menu.Item>
-                <Menu.Divider />
-                <Menu.Item>
-                    <Link to={'#'} onClick={logout}>
-                        <Text color="text.blue" fontSize={2}>
-                            log out
-                        </Text>
-                    </Link>
-                </Menu.Item>
-            </StyledMenu>
-        );
-    }
-
-    // Menu link for host
-    if (isHost) {
-        return (
-            <StyledMenu {...rest}>
-                <Menu.Item>
-                    <Link to={'/profile?selectedTab=my_profile'}>
-                        <Text color="text.black" fontSize={2}>
-                            my page
-                        </Text>
-                    </Link>
-                </Menu.Item>
-                <Menu.Item>
-                    <Link to={'/profile?selectedTab=my_listings'}>
-                        <Text color="text.black" fontSize={2}>
-                            my listings
-                        </Text>
-                    </Link>
-                </Menu.Item>
-                <Menu.Item>
-                    <Link to={'/profile?selectedTab=my_bookings'}>
-                        <Text color="text.black" fontSize={2}>
-                            bookings/appointments
-                        </Text>
-                    </Link>
-                </Menu.Item>
-                <Menu.Item>
-                    <Link to={'/profile?selectedTab=payments'}>
-                        <Text color="text.black" fontSize={2}>
-                            payments
-                        </Text>
-                    </Link>
-                </Menu.Item>
-
-                <Menu.Item>
-                    <Link to={'/profile?selectedTab=balance'}>
-                        <Text color="text.black" fontSize={2}>
-                            laguro balance
-                        </Text>
-                    </Link>
-                </Menu.Item>
-                <Menu.Divider />
-                <Menu.Item>
-                    <Link to={'#'} onClick={logout}>
-                        <Text color="text.blue" fontSize={2}>
-                            log out
-                        </Text>
-                    </Link>
-                </Menu.Item>
-            </StyledMenu>
-        );
-    }
-
-    // Menu link for patient
-    return (
-        <StyledMenu {...rest}>
-            <Menu.Item>
-                <Link to={'/profile?selectedTab=my_profile'}>
-                    <Text color="text.black" fontSize={2}>
-                        my page
-                    </Text>
-                </Link>
-            </Menu.Item>
-
-            <Menu.Item>
-                <Link to={'/profile?selectedTab=my_appointments'}>
-                    <Text color="text.black" fontSize={2}>
-                        my appointments
-                    </Text>
-                </Link>
-            </Menu.Item>
-            <Menu.Divider />
-
-            <Menu.Item>
-                <Link to={'#'} onClick={logout}>
-                    <Text color="text.blue" fontSize={2}>
-                        log out
-                    </Text>
-                </Link>
-            </Menu.Item>
-        </StyledMenu>
-    );
-};
 
 const ProfileImage = styled(Image)`
     cursor: pointer;
@@ -205,7 +68,7 @@ const ProfileButton = ({
             <NavBarLink onClick={openRegistrationModal} to={'#'}>
                 <Text
                     color={onLandingPage ? 'text.white' : 'text.black'}
-                    fontSize={2}
+                    fontSize={1}
                     fontWeight="bold"
                     mb={4}
                 >
@@ -215,7 +78,7 @@ const ProfileButton = ({
             <NavBarLink onClick={openLoginModal} to={'#'}>
                 <Text
                     color={onLandingPage ? 'text.white' : 'text.black'}
-                    fontSize={2}
+                    fontSize={1}
                     fontWeight="bold"
                     mb={4}
                 >
@@ -319,24 +182,27 @@ const Header = ({
                     <SearchBox placeholder={placeholder} size="small" />
                 )}
                 <Flex alignItems="center">
-                    {!onOnboardingPage && (
-                        <NavBarLink
-                            ml="0px"
-                            to={auth ? '/host-onboarding/add-office' : '/'}
-                            onClick={auth ? () => {} : openLoginModal}
-                        >
-                            <Text
-                                color={
-                                    onLandingPage ? 'text.white' : 'text.black'
-                                }
-                                fontSize={2}
-                                fontWeight="bold"
-                                mb={4}
+                    {!onOnboardingPage &&
+                        auth && (
+                            <NavBarLink
+                                ml="0px"
+                                to={auth ? '/host-onboarding/add-office' : '/'}
+                                onClick={auth ? () => {} : openLoginModal}
                             >
-                                become a host
-                            </Text>
-                        </NavBarLink>
-                    )}
+                                <Text
+                                    color={
+                                        onLandingPage
+                                            ? 'text.white'
+                                            : 'text.black'
+                                    }
+                                    fontSize={1}
+                                    fontWeight="bold"
+                                    mb={4}
+                                >
+                                    become a host
+                                </Text>
+                            </NavBarLink>
+                        )}
                     <ProfileButton
                         isDentist={isDentist}
                         isHost={isHost}

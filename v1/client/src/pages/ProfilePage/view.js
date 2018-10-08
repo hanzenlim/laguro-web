@@ -65,6 +65,7 @@ const MenuTitle = styled(Menu.SubMenu)`
 
         .ant-menu-submenu-title:hover {
             color: inherit;
+        }
     }
 `;
 
@@ -220,18 +221,17 @@ class ProfileView extends Component {
                                     My Documents
                                 </Text>
                             </StyledMenuItem>
-                            {!isDentist &&
-                                !isHost && (
-                                    <StyledMenuItem key={MY_APPOINTMENTS}>
-                                        <Text
-                                            fontSize={4}
-                                            color="inherit"
-                                            lineHeight="40px"
-                                        >
-                                            My Appointments
-                                        </Text>
-                                    </StyledMenuItem>
-                                )}
+
+                            <StyledMenuItem key={MY_APPOINTMENTS}>
+                                <Text
+                                    fontSize={4}
+                                    color="inherit"
+                                    lineHeight="40px"
+                                >
+                                    My Appointments
+                                </Text>
+                            </StyledMenuItem>
+
                             {isHost && (
                                 <StyledMenuItem key={MY_LISTINGS}>
                                     <Text
@@ -250,7 +250,7 @@ class ProfileView extends Component {
                                         color="inherit"
                                         lineHeight="40px"
                                     >
-                                        Bookings & Appointments
+                                        My Bookings
                                     </Text>
                                 </StyledMenuItem>
                             )}
