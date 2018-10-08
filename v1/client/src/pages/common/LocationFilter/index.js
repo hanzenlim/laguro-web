@@ -14,8 +14,21 @@ const fetchDentistsFromES = async queryString => {
         index: DENTISTS,
         body: {
             query: {
-                match_phrase_prefix: {
-                    name: queryString,
+                bool: {
+                    must: [
+                        {
+                            term: {
+                                isVerified: {
+                                    value: true,
+                                },
+                            },
+                        },
+                        {
+                            match_phrase_prefix: {
+                                name: queryString,
+                            },
+                        },
+                    ],
                 },
             },
         },
@@ -54,7 +67,7 @@ class LocationFilter extends PureComponent {
 
     handleChange = async value => {
         const { onTextChange, onSearch } = this.props;
-        await this.setState({ queryString: value });
+        this.setState({ queryString: value });
         if (onTextChange) onTextChange(value);
 
         if (value.length > 2) {
@@ -110,13 +123,13 @@ class LocationFilter extends PureComponent {
                     // eslint-disable-next-line
                     console.warn(err);
                 });
+        } else {
+            this.setState({
+                error: false,
+                locationResults: [],
+                dentistResults: [],
+            });
         }
-
-        this.setState({
-            error: false,
-            locationResults: [],
-            dentistResults: [],
-        });
 
         return null;
     };

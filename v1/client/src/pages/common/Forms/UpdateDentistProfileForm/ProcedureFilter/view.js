@@ -95,6 +95,7 @@ const ProcedureFilterView = ({
             {groupedResults[group].map(result => (
                 <Option
                     key={result.code}
+                    text={`${result.code} - ${result.name}`}
                     data={{
                         code: result.code,
                         name: result.name,
@@ -119,6 +120,8 @@ const ProcedureFilterView = ({
                 value={queryString}
                 placeholder="Search and add your group of procedures..."
                 backfill={true}
+                optionLabelProp="text"
+                defaultActiveFirstOption={false}
                 {...rest}
             >
                 {ResultGroups}

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { width, height } from 'styled-system';
 import PropTypes from 'prop-types';
 
-import { Icon, Flex } from '../../../components';
+import { Icon, Flex, Truncate, Box } from '../../../components';
 import { LOCATION, DENTIST } from '../../../util/strings';
 
 const StyledFlex = styled(Flex)`
@@ -98,11 +98,14 @@ const LocationFilterView = ({
     onBlur,
     onChange,
     disabled,
+    // eslint-disable-next-line
+    width,
     ...rest
 }) => {
     const LocationOptions = locationResults.map(result => (
         <Option
             key={result.text}
+            text={result.text}
             data={{ type: LOCATION, location: result.value }}
             style={{ padding: 0, backgroundColor: 'white' }}
         >
@@ -114,7 +117,11 @@ const LocationFilterView = ({
                     ml={6}
                     mr={10}
                 />
-                {result.text}
+                <Box width={width - 50}>
+                    <Truncate lines={1} ellipsis trimWhitespace>
+                        {result.text}
+                    </Truncate>
+                </Box>
             </StyledOption>
         </Option>
     ));
@@ -123,18 +130,28 @@ const LocationFilterView = ({
         <OptGroup key="Search by Location">{LocationOptions}</OptGroup>
     );
 
-    const DentistResultString = result =>
-        result.location
-            ? `${result.name} - ${result.specialty} at ${result.location}`
-            : `${result.name} - ${result.specialty}`;
+    const DentistResultString = result => {
+        if (result.location && result.specialty) {
+            return `${result.name} - ${result.specialty} at ${result.location}`;
+        } else if (result.location) {
+            return `${result.name} - Dentist at ${result.location}`;
+        } else if (result.specialty) {
+            return `${result.name} - ${result.specialty}`;
+        }
+        return `${result.name}`;
+    };
 
     const DentistOptions = (
         <OptGroup key="Go to Dentist Profile">
             {dentistResults.map((result, index) => (
                 <Option
                     key={index}
+                    text={DentistResultString(result)}
                     data={{ type: DENTIST, id: result.dentistId }}
-                    style={{ padding: 0, backgroundColor: 'white' }}
+                    style={{
+                        padding: 0,
+                        backgroundColor: 'white',
+                    }}
                 >
                     <StyledOption>
                         <Icon
@@ -144,7 +161,11 @@ const LocationFilterView = ({
                             ml={6}
                             mr={10}
                         />
-                        {DentistResultString(result)}
+                        <Box width={width - 50}>
+                            <Truncate lines={1} ellipsis trimWhitespace>
+                                {DentistResultString(result)}
+                            </Truncate>
+                        </Box>
                     </StyledOption>
                 </Option>
             ))}
@@ -171,11 +192,13 @@ const LocationFilterView = ({
                 onChange={onChange}
                 disabled={disabled}
                 withDentists={withDentists}
+                width={width}
+                optionLabelProp="text"
                 placeholder={
                     placeholder ||
                     'Start searching for dental offices or dentists near you'
                 }
-                backfill={true}
+                defaultActiveFirstOption={false}
                 {...rest}
             >
                 {withDentists && DentistOptions}
