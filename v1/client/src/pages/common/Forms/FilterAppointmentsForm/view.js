@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import moment from 'moment';
 import { Form, Select } from '../../../../components';
 
 const { SubmitButton, FormItem } = Form;
@@ -19,9 +20,17 @@ const StyledFormContainer = styled.div`
 
 const renderOptions = list => (
     <Select>
-        {list.map(item => (
-            <Select.Option value={item.key}>{item.value}</Select.Option>
-        ))}
+        {list.map(item => {
+            if (item.key === 'Today')
+                return (
+                    <Select.Option value={item.key}>{'Today'}</Select.Option>
+                );
+            return (
+                <Select.Option value={item.key}>
+                    {moment(item.value).format('ddd, MM/DD/YYYY')}
+                </Select.Option>
+            );
+        })}
     </Select>
 );
 
