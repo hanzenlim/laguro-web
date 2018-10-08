@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Text, Flex, Button, Box } from '../../../components';
+import { renderPrice } from '../../../util/paymentUtil';
 
 const SelectEquipmentView = props => {
     const { selected, list, onSelect } = props;
@@ -54,7 +55,7 @@ const SelectEquipmentView = props => {
                                 {item.name}
                             </Text>
                             <Text color="inherit" fontSize={1}>
-                                ${parseInt(item.price, 10) / 100}
+                                {renderPrice(parseInt(item.price, 10))}
                             </Text>
                         </Flex>
                     </Button>
