@@ -15,6 +15,7 @@ import BalanceHistory from '../common/BalanceHistory';
 import DentistAppointments from '../common/DentistAppointments';
 import PatientAppointments from '../common/PatientAppointments';
 import UserVerification from '../common/UserVerification';
+import PatientsList from '../common/PatientsList';
 import {
     DENTIST,
     PATIENT,
@@ -28,6 +29,7 @@ import {
     PUBLIC_PROFILE,
     DENTIST_PROFILE,
     MY_BOOKINGS,
+    MY_PATIENTS,
 } from '../../util/strings';
 
 const Grid = styled(Box)`
@@ -138,6 +140,8 @@ class ProfileView extends Component {
                 return <PaymentHistory userId={userId} />;
             case BALANCE:
                 return <BalanceHistory userId={userId} />;
+            case MY_PATIENTS:
+                return <PatientsList />;
             case DENTIST_PROFILE:
                 return (
                     <Box>
@@ -193,6 +197,17 @@ class ProfileView extends Component {
                                         lineHeight="40px"
                                     >
                                         My Profile
+                                    </Text>
+                                </StyledMenuItem>
+                            )}
+                            {isDentist && (
+                                <StyledMenuItem key={MY_PATIENTS}>
+                                    <Text
+                                        fontSize={4}
+                                        color="inherit"
+                                        lineHeight="40px"
+                                    >
+                                        My Patients
                                     </Text>
                                 </StyledMenuItem>
                             )}

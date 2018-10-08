@@ -68,6 +68,7 @@ export const PUBLIC_PROFILE = 'public_profile';
 export const DENTIST_PROFILE = 'dentist_profile';
 export const MY_LISTINGS = 'my_listings';
 export const MY_BOOKINGS = 'my_bookings';
+export const MY_PATIENTS = 'my_patients';
 
 // Payment method
 export const NEW_CARD_PAYMENT_METHOD = 'NEW_CARD_PAYMENT_METHOD';

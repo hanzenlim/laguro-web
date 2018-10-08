@@ -1,11 +1,23 @@
 import React, { PureComponent } from 'react';
 import { Input as AntdInput } from 'antd';
 import styled from 'styled-components';
-import { width, height, zIndex, textAlign } from 'styled-system';
+import {
+    width,
+    height,
+    zIndex,
+    textAlign,
+    borderRadius,
+    space,
+} from 'styled-system';
 
 const StyledInput = styled(AntdInput)`
     && {
-        ${width} ${height} ${zIndex} ${textAlign};
+        ${width}
+        ${height}
+        ${zIndex}
+        ${textAlign};
+        ${borderRadius};
+        ${space};
     }
 `;
 
