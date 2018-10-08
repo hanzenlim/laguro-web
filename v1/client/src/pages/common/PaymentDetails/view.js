@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import _get from 'lodash/get';
 
 import { Text, Flex, Icon, Image, Box } from '../../../components';
 import { formatListingTime } from '../../../util/timeUtil';
@@ -31,7 +32,7 @@ const PaymentDetailsView = ({
     payment,
     total,
 }) => {
-    const { stripePayment, type, invoice } = payment;
+    const { stripePayment, type, invoice, reservation } = payment;
 
     const totalPrice = item =>
         cardType === PAYMENT ? item.totalPrice : item.payoutAmount;
@@ -75,9 +76,20 @@ const PaymentDetailsView = ({
                         : 'Appointment Time'
                 }
             >
-                <Text fontSize={3} color="text.black">
-                    {formatListingTime(startTime, endTime)}
-                </Text>
+                {_get(reservation, 'availableTimes.length') ? (
+                    reservation.availableTimes.map(availableTime => (
+                        <Text fontSize={3} color="text.black">
+                            {formatListingTime(
+                                availableTime.startTime,
+                                availableTime.endTime
+                            )}
+                        </Text>
+                    ))
+                ) : (
+                    <Text fontSize={3} color="text.black">
+                        {formatListingTime(startTime, endTime)}
+                    </Text>
+                )}
             </Section>
 
             {/* Reservation receipt details */}

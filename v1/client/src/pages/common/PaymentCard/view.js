@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { Fragment } from 'react';
+import _get from 'lodash/get';
 import styled from 'styled-components';
 import moment from 'moment';
 import PropTypes from 'prop-types';
@@ -123,14 +124,37 @@ const PaymentCard = ({
                 startTime={startTime}
                 endTime={endTime}
             />
-            <Text fontSize={5} fontWeight="bold" lineHeight="1.1">
-                {moment(startTime).format('ddd, MMM D, YYYY')}
-            </Text>
-            <Text fontSize={5} lineHeight="1.1">
-                {`${office.name} (${moment(startTime).format('hA')} - ${moment(
-                    endTime
-                ).format('hA')})`}
-            </Text>
+
+            {_get(reservation, 'availableTimes.length') ? (
+                reservation.availableTimes.map(availableTime => (
+                    <Fragment>
+                        <Text fontSize={5} fontWeight="bold" lineHeight="1.1">
+                            {moment(availableTime.startTime).format(
+                                'ddd, MMM D, YYYY'
+                            )}
+                        </Text>
+                        <Text fontSize={5} lineHeight="1.1">
+                            {`${office.name} (${moment(
+                                availableTime.startTime
+                            ).format('hA')} - ${moment(
+                                availableTime.endTime
+                            ).format('hA')})`}
+                        </Text>
+                    </Fragment>
+                ))
+            ) : (
+                <Fragment>
+                    <Text fontSize={5} fontWeight="bold" lineHeight="1.1">
+                        {moment(startTime).format('ddd, MMM D, YYYY')}
+                    </Text>
+                    <Text fontSize={5} lineHeight="1.1">
+                        {`${office.name} (${moment(startTime).format(
+                            'hA'
+                        )} - ${moment(endTime).format('hA')})`}
+                    </Text>
+                </Fragment>
+            )}
+
             <Flex mt={5}>
                 <Icon
                     fontSize={4}

@@ -26,6 +26,10 @@ export const GET_PAYMENTS = gql`
                     }
                     name
                 }
+                availableTimes {
+                    startTime
+                    endTime
+                }
             }
             appointment {
                 id
