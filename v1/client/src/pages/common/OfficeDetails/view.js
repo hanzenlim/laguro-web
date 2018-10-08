@@ -39,7 +39,7 @@ const OfficeDetailsView = props => {
                     // Added fixed width to fix bug in rendering truncated text
                     <Box pb={42} width="732px">
                         <Text fontSize={4} lineHeight="1.3">
-                            description room
+                            description
                         </Text>
                         <Text fontSize={1} lineHeight="1.86">
                             <Truncate lines={3} hasToggle>
