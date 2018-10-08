@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import ReactFilestack from 'filestack-react';
 
 import { Box, Text, Flex, Image, Button, Icon } from '../../../../components';
@@ -169,5 +170,17 @@ class PatientCard extends PureComponent {
         );
     }
 }
+
+PatientCard.propTypes = {
+    toggleDocumentList: PropTypes.func,
+    loadPhotos: PropTypes.func,
+    removeImage: PropTypes.func,
+    patientImages: PropTypes.arrayOf(PropTypes.string.isRequired),
+    isDocumentListOpen: PropTypes.bool,
+    name: PropTypes.string.isRequired,
+    imageUrl: PropTypes.string,
+    lastVisit: PropTypes.string.isRequired,
+    documentUrl: PropTypes.string,
+};
 
 export default PatientCard;
