@@ -56,6 +56,7 @@ class PatientCard extends PureComponent {
             toggleDocumentList,
             loadPhotos,
             patientImages,
+            documentUrl,
         } = this.props;
         return (
             <Box p={15} mb={12} border="1px solid" borderColor="divider.gray">
@@ -152,6 +153,16 @@ class PatientCard extends PureComponent {
                                 )}
                             />
                         </Flex>
+                        {documentUrl && (
+                            <Text fontSize={1} mt={15}>
+                                Held History Form{' '}
+                                <a href={documentUrl} target="_blank">
+                                    <Text is="span" color="text.blue">
+                                        View
+                                    </Text>
+                                </a>
+                            </Text>
+                        )}
                     </Box>
                 )}
             </Box>
