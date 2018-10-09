@@ -1,5 +1,5 @@
 import React from 'react';
-import officePlaceholder from '../../../components/Image/office-placeholder.png';
+import defaultDentistProfileImg from '../../../components/Image/default_dentist_profile_img_square.svg';
 
 import {
     Box,
@@ -14,7 +14,7 @@ import {
 const LinkCard = props => {
     const {
         rating,
-        image = officePlaceholder,
+        image = defaultDentistProfileImg,
         address,
         title,
         subtitle,

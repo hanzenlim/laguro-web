@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Box, Rating, Text, Image, Flex, Truncate } from '../../../components';
+import defaultDentistProfileImg from '../../../components/Image/default_dentist_profile_img_square.svg';
 
 const DentistCard = props => {
     const { rating, image, name, specialty, numReviews } = props;
@@ -67,7 +68,7 @@ DentistCard.defaultProps = {
     specialty: 'implant specialista',
     numReviews: '20 reviews',
     rating: 2.5,
-    image: 'http://via.placeholder.com/186x186',
+    image: defaultDentistProfileImg,
 };
 
 export default DentistCard;
