@@ -56,6 +56,7 @@ const disabledDate = currentDate => {
 const minPriceValidator = (rule, value, callback) => {
     if (!value) {
         callback('Price cannot less than $1.00');
+        return;
     }
 
     // strip off the $ character
