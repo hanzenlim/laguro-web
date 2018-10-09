@@ -29,6 +29,7 @@ class BookAppointment extends PureComponent {
 
             showVerificationModal: false,
             paymentError: null,
+            isSubmitting: false,
         };
     }
 
@@ -70,6 +71,8 @@ class BookAppointment extends PureComponent {
         });
 
         if (getUser && getUser.isVerified) {
+            this.setState({ isSubmitting: true });
+
             await this.props.mutate({
                 variables: {
                     input: {
@@ -88,10 +91,15 @@ class BookAppointment extends PureComponent {
                     location: this.state.location,
                     time: moment(this.state.startTime).format('LLLL'),
                 },
+                isSubmitting: false,
             });
+        } else {
+            this.setState({ showVerificationModal: true, isSubmitting: false });
         }
+    };
 
-        this.setState({ showVerificationModal: true });
+    updateSubmittingState = isSubmitting => {
+        this.setState({ isSubmitting });
     };
 
     handleVerificationResult = () => {
@@ -127,6 +135,8 @@ class BookAppointment extends PureComponent {
                             onPay={this.handlePay}
                             onSelect={this.handleSelect}
                             onVerificationResult={this.handleVerificationResult}
+                            isSubmitting={this.state.isSubmitting}
+                            updateSubmittingState={this.updateSubmittingState}
                         />
                     );
                 }}

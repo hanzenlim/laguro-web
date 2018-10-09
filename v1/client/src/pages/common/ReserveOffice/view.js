@@ -28,6 +28,8 @@ const ReserveOfficeView = ({
     updateSummarySectionData,
     summaryList,
     onPayBtnText,
+    isSubmitting,
+    updateSubmittingState,
 }) => (
     <Box width="513px">
         <Box
@@ -79,6 +81,8 @@ const ReserveOfficeView = ({
                         <Payment
                             btnText={onPayBtnText}
                             onPay={onPay}
+                            isSubmitting={isSubmitting}
+                            updateSubmittingState={updateSubmittingState}
                             onBackButton={onPayBackButton}
                             hasBackButton={true}
                         />

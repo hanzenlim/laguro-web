@@ -22,6 +22,9 @@ class PaymentCardForm extends Component {
     }
 
     handleCreateStripeToken = async values => {
+        if (this.props.updateSubmittingState) {
+            await this.props.updateSubmittingState(true);
+        }
         // Within the context of `Elements`, this call to createToken knows which Element to
         // tokenize, since there's only one in this group.
         const { token, error } = await this.props.stripe.createToken({
@@ -47,6 +50,8 @@ class PaymentCardForm extends Component {
         const newCardId = get(result, 'data.addPaymentOption.id');
         if (newCardId) {
             this.props.handleSubmit(newCardId);
+        } else {
+            await this.props.updateSubmittingState(false);
         }
 
         return null;
@@ -59,7 +64,7 @@ class PaymentCardForm extends Component {
     };
 
     render() {
-        const { userId, btnText, isButtonOutside } = this.props;
+        const { userId, btnText, isButtonOutside, isSubmitting } = this.props;
         const isSkipped = !userId;
 
         return (
@@ -107,14 +112,15 @@ class PaymentCardForm extends Component {
                             selectedCard={selectedCard}
                             btnText={btnText}
                             isButtonOutside={isButtonOutside}
-                            handleSubmitExistingCard={() =>
-                                this.props.handleSubmit(selectedCard)
-                            }
+                            handleSubmitExistingCard={() => {
+                                this.props.handleSubmit(selectedCard);
+                            }}
                             handleSubmitNewCard={this.handleCreateStripeToken}
                             onChangeCardSelect={this.onChangeCardSelect}
                             onBackButton={this.props.onBackButton}
                             hasBackButton={this.props.hasBackButton}
                             stripeError={this.state.stripeError}
+                            isSubmitting={isSubmitting}
                         />
                     );
                 }}
@@ -127,14 +133,18 @@ PaymentCardForm.defaultProps = {
     btnText: 'Submit',
     userId: '',
     handleSubmit: () => {},
+    isSubmitting: false,
+    updateSubmittingState: () => {},
 };
 
 PaymentCardForm.propTypes = {
     btnText: PropTypes.string.isRequired,
     userId: PropTypes.string,
     handleSubmit: PropTypes.func,
+    updateSubmittingState: PropTypes.func,
     onBackButton: PropTypes.func,
     hasBackButton: PropTypes.bool,
+    isSubmitting: PropTypes.bool,
 };
 
 export default graphql(addPaymentOptionMutation)(injectStripe(PaymentCardForm));

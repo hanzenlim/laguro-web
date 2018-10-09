@@ -45,7 +45,13 @@ class Payment extends PureComponent {
     };
 
     render() {
-        const { btnText, isButtonOutside, hasBackButton } = this.props;
+        const {
+            btnText,
+            isButtonOutside,
+            hasBackButton,
+            isSubmitting,
+            updateSubmittingState,
+        } = this.props;
 
         return (
             <Query query={getUserQuery}>
@@ -67,6 +73,8 @@ class Payment extends PureComponent {
                             handleSubmit={this.submitPayment}
                             onBackButton={this.onBackButton}
                             hasBackButton={hasBackButton}
+                            isSubmitting={isSubmitting}
+                            updateSubmittingState={updateSubmittingState}
                         />
                     );
                 }}
@@ -79,6 +87,7 @@ Payment.defaultProps = {
     onPay: () => {},
     onBackButton: () => {},
     hasBackButton: false,
+    isSubmitting: false,
 };
 
 Payment.PropTypes = {
@@ -86,6 +95,7 @@ Payment.PropTypes = {
     onBackButton: PropTypes.func.isRequired,
     btnText: PropTypes.string.isRequired,
     hasBackButton: PropTypes.bool,
+    isSubmitting: PropTypes.bool,
 };
 
 export default Payment;

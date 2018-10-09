@@ -37,6 +37,7 @@ class ReserveOffice extends Component {
             paymentConfirmationH3Text: '',
             showVerificationModal: false,
             onPayBtnText: 'Pay',
+            isSubmitting: false,
         };
 
         this.reservationObject = '';
@@ -99,7 +100,7 @@ class ReserveOffice extends Component {
             //  }
 
             this.setState({
-                onPayBtnText: 'Submitting',
+                isSubmitting: true,
             });
 
             const reservations = this.reservationObject.reservation;
@@ -216,6 +217,7 @@ class ReserveOffice extends Component {
             if (errors.length > 0) {
                 const msg = errors.join(':');
                 message.error(msg);
+                this.setState({ isSubmitting: false });
             } else {
                 this.setState({
                     currentDisplay: CONFIRMATION_VIEW,
@@ -225,6 +227,7 @@ class ReserveOffice extends Component {
                     paymentConfirmationH3Text: `${earliestReservationStartTime.format(
                         'ha'
                     )} - ${earliestReservationEndTime.format('ha')}`,
+                    isSubmitting: false,
                 });
             }
         },
@@ -317,6 +320,10 @@ class ReserveOffice extends Component {
         return null;
     };
 
+    updateSubmittingState = isSubmitting => {
+        this.setState({ isSubmitting });
+    };
+
     render() {
         const { officeId, startLoading } = this.props;
         const { showVerificationModal } = this.state;
@@ -367,6 +374,8 @@ class ReserveOffice extends Component {
                                 this.state.paymentConfirmationH2Text
                             }
                             onPayBtnText={this.state.onPayBtnText}
+                            isSubmitting={this.state.isSubmitting}
+                            updateSubmittingState={this.updateSubmittingState}
                         />
                     </Box>
                 )}

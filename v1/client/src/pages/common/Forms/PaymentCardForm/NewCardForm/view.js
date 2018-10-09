@@ -26,8 +26,9 @@ const NewCardFormView = ({
     handleSubmit,
     onBackButton,
     hasBackButton,
+    isSubmitting,
 }) => (
-    <Form layout="vertical" onSuccess={handleSubmit}>
+    <Form layout="vertical" onSuccess={handleSubmit} debounce={false}>
         <FormItem
             name="card"
             label="credit card"
@@ -81,6 +82,7 @@ const NewCardFormView = ({
             height={60}
             px={24}
             buttonText={btnText}
+            loading={isSubmitting}
             style={
                 // Temporary solution before we can figure out
                 // how to connect an external button to a form

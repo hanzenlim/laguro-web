@@ -17,6 +17,8 @@ const BookAppointmentView = props => {
         onFilter,
         showVerificationModal,
         onVerificationResult,
+        isSubmitting,
+        updateSubmittingState,
     } = props;
 
     if (bookedAppointment)
@@ -84,7 +86,11 @@ const BookAppointmentView = props => {
                             </Text>
                         </Flex>
                     </Box>
-                    <Payment onPay={onPay} />
+                    <Payment
+                        onPay={onPay}
+                        isSubmitting={isSubmitting}
+                        updateSubmittingState={updateSubmittingState}
+                    />
                 </Fragment>
             ) : null}
         </Fragment>

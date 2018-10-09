@@ -14,7 +14,7 @@ const FindAppointment = ({
         <Text mb={6} lineHeight="22px" fontSize={2} color="text.black">
             dates
         </Text>
-        <Form onSuccess={onSubmit}>
+        <Form onSuccess={onSubmit} debounce={false}>
             <Box mb={28} width="100%">
                 <RangePicker
                     onChange={onDateChange}

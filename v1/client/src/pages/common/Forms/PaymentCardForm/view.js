@@ -31,6 +31,7 @@ const CardView = ({
     onBackButton,
     hasBackButton,
     stripeError,
+    isSubmitting,
 }) => (
     <Box width="100%" position="relative">
         <Text fontSize={3} color="text.black" fontWeight="bold" mb={18}>
@@ -55,6 +56,7 @@ const CardView = ({
                     isButtonOutside={isButtonOutside}
                     onBackButton={onBackButton}
                     hasBackButton={hasBackButton}
+                    isSubmitting={isSubmitting}
                 />
             )}
         </Box>
@@ -81,6 +83,7 @@ const CardView = ({
                 fontSize={3}
                 px={14}
                 onClick={handleSubmitExistingCard}
+                loading={isSubmitting}
                 style={
                     // Temporary solution before we can figure out
                     // how to connect an external button to a form
