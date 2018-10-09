@@ -32,11 +32,13 @@ export const getUserQuery = gql`
                     name
                 }
                 user {
+                    id
                     firstName
                     lastName
                     imageUrl
                 }
                 reviews {
+                    id
                     rating
                 }
             }
