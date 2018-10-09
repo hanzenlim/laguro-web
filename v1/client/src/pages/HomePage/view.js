@@ -120,7 +120,7 @@ const HomePageView = () => (
                     <Text fontSize={5} color="text.black" mb={8}>
                         Become a host
                     </Text>
-                    <Text fontSize={4} color="text.black" mb={22}>
+                    <Text fontSize={2} color="text.black" mb={22}>
                         Have empty chairs and unused equipment in your office?
                         List them here and start sharing your space today!
                     </Text>
@@ -139,7 +139,7 @@ const HomePageView = () => (
                     <Text fontSize={5} color="text.black" mb={8}>
                         Book a chair
                     </Text>
-                    <Text fontSize={4} color="text.black" mb={22}>
+                    <Text fontSize={2} color="text.black" mb={22}>
                         Want to see your patients when you want, where you want?
                         Book a chair and equipment you need here.
                     </Text>
@@ -156,14 +156,19 @@ const HomePageView = () => (
                 </StyledCard>
             </Flex>
 
-            <Flex width="100%" height="520px" mb={-170}>
+            <Flex
+                width="100%"
+                height="366px"
+                justifyContent="space-around"
+                mb={-170}
+            >
                 <Image
-                    width="810px"
+                    width="566px"
                     src={aboutUs}
                     alt="about us cartoon"
                     style={{ zIndex: 100 }}
                 />
-                <Flex width={450} flexDirection="column" pt={120} pl={80}>
+                <Flex width={450} flexDirection="column" pt={60} pl={80}>
                     <Text
                         color="text.black"
                         fontWeight="bold"

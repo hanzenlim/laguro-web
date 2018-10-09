@@ -37,7 +37,7 @@ const StyledAutocomplete = styled(AntdAutocomplete)`
             background-color: ${props => props.theme.colors.background.white};
             border-radius: 2px;
             color: ${props => props.theme.colors.text.black50};
-            font-size: ${props => props.theme.fontSizes[3]};
+            font-size: ${props => props.theme.fontSizes[2]};
             font-weight: 700;
             transition: none;
         }
@@ -54,7 +54,7 @@ const StyledAutocomplete = styled(AntdAutocomplete)`
             ${height};
             padding-left: ${props => (props.withDentists ? '10px' : '35px')};
             color: ${props => props.theme.colors.text.gray};
-            font-size: ${props => props.theme.fontSizes[3]};
+            font-size: ${props => props.theme.fontSizes[2]};
             z-index: ${props => props.theme.zIndex.inputElement};
             font-weight: 700;
             font-family: Silka;
@@ -73,7 +73,7 @@ const StyledOption = styled(Flex)`
         background-color: ${props => props.theme.colors.background.white};
         cursor: pointer;
         padding: 10px;
-        font-size: ${props => props.theme.fontSizes[3]};
+        font-size: ${props => props.theme.fontSizes[2]};
     }
 
     ${`.ant-select-dropdown-menu-item-active`} & {
@@ -113,7 +113,7 @@ const LocationFilterView = ({
                 <Icon
                     type="environment-o"
                     color="icon.darkGray"
-                    fontSize={3}
+                    fontSize={2}
                     ml={6}
                     mr={10}
                 />
@@ -157,7 +157,7 @@ const LocationFilterView = ({
                         <Icon
                             type="user"
                             color="icon.darkGray"
-                            fontSize={3}
+                            fontSize={2}
                             ml={6}
                             mr={10}
                         />
@@ -181,7 +181,7 @@ const LocationFilterView = ({
                     ml={14}
                     type="environment-o"
                     color="icon.green"
-                    fontSize={4}
+                    fontSize={3}
                 />
             )}
             <StyledAutocomplete

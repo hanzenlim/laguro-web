@@ -11,7 +11,6 @@ import {
     sendPassResetLink,
     onLogout,
     openLoginModal,
-    openRegistrationModal,
     openForgotPassModal,
     closeModal,
 } from '../../../util/authUtils';
@@ -43,7 +42,6 @@ const HeaderContainer = () => (
                     signup={values => onSignup(client, values)}
                     sendPassResetLink={sendPassResetLink}
                     openLoginModal={() => openLoginModal(client)}
-                    openRegistrationModal={() => openRegistrationModal(client)}
                     openForgotPassModal={() => openForgotPassModal(client)}
                     closeModal={() => closeModal(client)}
                     onLandingPage={onLandingPage}

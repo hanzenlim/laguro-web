@@ -51,7 +51,14 @@ class DentistAppointments extends PureComponent {
                                 </Text>
                             </Button>
                         </Flex>
-                        <Box bg="background.lightGray" px={28} py={16}>
+                        <Box
+                            bg="background.white"
+                            border="1px solid"
+                            borderColor="divider.gray"
+                            borderRadius={2}
+                            px={28}
+                            py={16}
+                        >
                             <Text fontWeight="bold" fontSize={5} mb={28}>
                                 {office.name}
                             </Text>

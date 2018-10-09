@@ -27,10 +27,10 @@ const getSubSectionDetails = summaryDetails => {
     const details = summaryDetails.map(value => (
         <Box ml="30px" pr="0px">
             <Flex justifyContent="space-between">
-                <Text fontSize={1} color="text.gray">
+                <Text fontSize={1} color="text.darkGray">
                     {value.description}
                 </Text>
-                <Text fontSize={1} color="text.gray">
+                <Text fontSize={1} color="text.darkGrays">
                     ${(value.cost / 100).toFixed(2)}
                 </Text>
             </Flex>

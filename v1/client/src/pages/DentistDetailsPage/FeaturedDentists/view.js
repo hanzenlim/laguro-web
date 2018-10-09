@@ -6,7 +6,7 @@ import DentistCard from '../DentistCard';
 const FeaturedDentistsView = props => {
     const { featuredDentists } = props;
 
-    if (!featuredDentists) return null;
+    if (featuredDentists.length === 0) return null;
 
     return (
         <Box mt={40} mb={80}>

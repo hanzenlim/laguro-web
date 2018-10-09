@@ -88,19 +88,25 @@ const ProcedureTag = ({ procedure, closeFunction, index }) => (
             >
                 {procedure.group}
             </Text>
-            <Box
+            <Button
+                type="ghost"
                 position="absolute"
                 top="-3px"
                 right="-3px"
-                bg="background.gray"
-                borderRadius="25px"
-                width="23.2px"
-                height="23.2px"
-                onClick={event => closeFunction(event, procedure.group)}
+                height="20px"
+                width="20px"
+                style={{ background: 'transparent' }}
                 code={procedure.group}
+                onClick={event => closeFunction(event, procedure.group)}
             >
-                x
-            </Box>
+                <Box bg="background.white" borderRadius="10px">
+                    <Icon
+                        fontSize={3}
+                        color="icon.lightGray"
+                        type="close-circle"
+                    />
+                </Box>
+            </Button>
         </Box>
     </Button>
 );

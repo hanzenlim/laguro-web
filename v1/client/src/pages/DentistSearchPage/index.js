@@ -27,10 +27,10 @@ class DetailsSearchPage extends PureComponent {
 
     componentDidMount = async () => {
         const urlParams = queryString.parse(this.props.location.search);
-        const [response, defaultPosition] = await Promise.all([
-            this.fetchData(urlParams),
-            getMyPosition(),
-        ]);
+        if (!urlParams.lat || !urlParams.long) {
+            this.setState({ defaultPosition: await getMyPosition() });
+        }
+        const response = await this.fetchData(urlParams);
         const mappedData = this.getMappedData(response);
         const total = this.getDataCount(response);
 
@@ -39,7 +39,6 @@ class DetailsSearchPage extends PureComponent {
             total,
             loading: false,
             urlParams,
-            defaultPosition,
         });
     };
 

@@ -10,6 +10,13 @@ const getFeaturedDentists = async dentist => {
         index: DENTISTS_INDEX,
         body: {
             query: {
+                bool: {
+                    must: [
+                        {
+                            term: { isVerified: { value: true } },
+                        },
+                    ],
+                },
                 match_phrase_prefix: {
                     specialty: dentist.specialty,
                 },

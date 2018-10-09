@@ -8,7 +8,10 @@ export const getMyPosition = async () => {
     if (get(window, 'navigator.geolocation')) {
         try {
             const position = await new Promise((res, rej) => {
-                navigator.geolocation.getCurrentPosition(res, rej);
+                navigator.geolocation.getCurrentPosition(res, rej, {
+                    timeout: 3000,
+                    maximumAge: 900000, // 15 min
+                });
             });
             fPosition = {
                 lon: position.coords.longitude,

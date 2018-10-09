@@ -44,7 +44,7 @@ class PatientAppointments extends PureComponent {
                     <Flex alignItems="center" justifyContent="space-between">
                         <Box textAlign="center" fontSize={4} mr={35}>
                             <Text fontWeight="bold">
-                                {moment(startTime).format('ddd, M/D, YYYY')}
+                                {moment(startTime).format('ddd, M/D/YY')}
                             </Text>
                             <Text fontWeight="light">
                                 {moment(startTime).format('h:mm A')}

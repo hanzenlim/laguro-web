@@ -48,7 +48,7 @@ const StyledContainer = styled.div`
         margin-left: 15px;
         color: ${props => props.theme.colors.text.black50};
         font-weight: ${props => props.theme.fontWeights.bold};
-        font-size: ${props => props.theme.fontSizes[3]};
+        font-size: ${props => props.theme.fontSizes[2]};
     }
 
     .ant-calendar-date {
@@ -118,7 +118,7 @@ class DatePicker extends PureComponent {
                         <Icon
                             type="calendar"
                             mt={3}
-                            fontSize={4}
+                            fontSize={3}
                             color="icon.blue"
                         />
                     }
@@ -126,7 +126,7 @@ class DatePicker extends PureComponent {
                         dateString ? (
                             <Icon
                                 type="close-circle"
-                                fontSize={4}
+                                fontSize={3}
                                 color="icon.lightGray"
                                 onClick={() =>
                                     this.setState({ dateString: '' })
