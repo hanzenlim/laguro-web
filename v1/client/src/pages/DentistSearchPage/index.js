@@ -64,7 +64,7 @@ class DetailsSearchPage extends PureComponent {
         let offset = page - 1;
 
         if (page > 1) {
-            offset *= pageSize + 1;
+            offset *= pageSize;
         }
 
         return offset;
