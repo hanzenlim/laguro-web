@@ -52,10 +52,7 @@ const ProviderVerificationForm = props => {
                     name="documents.dentistPhotoId"
                     initialValue={get(props.data, 'documents.dentistPhotoId')}
                     label="Upload a front and back photo of your Government-Issued ID"
-                    tooltip="We accept valid driver’s license and passport. For passport,
-                    please upload only once. (Can host/dentists upload only ONE picture for their passport
-                    and still be able to continue their verification process, or do they need to upload 2 of the
-                    same picture?)"
+                    tooltip="We accept valid driver’s license."
                 />
                 <SingleDocumentSelector
                     {...props}
