@@ -37,7 +37,6 @@ const ProfileImage = styled(Image)`
 const ProfileButton = ({
     auth,
     openLoginModal,
-    openRegistrationModal,
     logout,
     onLandingPage,
     isDentist,
@@ -65,16 +64,6 @@ const ProfileButton = ({
         </Dropdown>
     ) : (
         <Fragment>
-            <NavBarLink onClick={openRegistrationModal} to={'#'}>
-                <Text
-                    color={onLandingPage ? 'text.white' : 'text.black'}
-                    fontSize={1}
-                    fontWeight="bold"
-                    mb={4}
-                >
-                    sign up
-                </Text>
-            </NavBarLink>
             <NavBarLink onClick={openLoginModal} to={'#'}>
                 <Text
                     color={onLandingPage ? 'text.white' : 'text.black'}
@@ -182,27 +171,24 @@ const Header = ({
                     <SearchBox placeholder={placeholder} size="small" />
                 )}
                 <Flex alignItems="center">
-                    {!onOnboardingPage &&
-                        auth && (
-                            <NavBarLink
-                                ml="0px"
-                                to={auth ? '/host-onboarding/add-office' : '/'}
-                                onClick={auth ? () => {} : openLoginModal}
+                    {!onOnboardingPage && (
+                        <NavBarLink
+                            ml="0px"
+                            to={auth ? '/host-onboarding/add-office' : '/'}
+                            onClick={auth ? () => {} : openLoginModal}
+                        >
+                            <Text
+                                color={
+                                    onLandingPage ? 'text.white' : 'text.black'
+                                }
+                                fontSize={1}
+                                fontWeight="bold"
+                                mb={4}
                             >
-                                <Text
-                                    color={
-                                        onLandingPage
-                                            ? 'text.white'
-                                            : 'text.black'
-                                    }
-                                    fontSize={1}
-                                    fontWeight="bold"
-                                    mb={4}
-                                >
-                                    become a host
-                                </Text>
-                            </NavBarLink>
-                        )}
+                                become a host
+                            </Text>
+                        </NavBarLink>
+                    )}
                     <ProfileButton
                         isDentist={isDentist}
                         isHost={isHost}
@@ -224,7 +210,6 @@ Header.defaultProps = {
     login: () => {},
     logout: () => {},
     openLoginModal: () => {},
-    openRegistrationModal: () => {},
     closeModal: () => {},
 };
 
@@ -234,7 +219,6 @@ Header.propTypes = {
     login: PropTypes.func,
     logout: PropTypes.func,
     openLoginModal: PropTypes.func,
-    openRegistrationModal: PropTypes.func,
     closeModal: PropTypes.func,
 };
 

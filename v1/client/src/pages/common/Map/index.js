@@ -41,9 +41,11 @@ class Map extends PureComponent {
                 height: 0,
                 // TODO figure out how to compute optimal bounding box
                 latitude:
-                    get(props, 'data[0].latitude') || this.currentPosition.lat,
+                    get(this.currentPosition, 'lat') ||
+                    get(props, 'data[0].latitude'),
                 longitude:
-                    get(props, 'data[0].longitude') || this.currentPosition.lon,
+                    get(this.currentPosition, 'lon') ||
+                    get(props, 'data[0].longitude'),
                 zoom: props.zoom,
             },
         };

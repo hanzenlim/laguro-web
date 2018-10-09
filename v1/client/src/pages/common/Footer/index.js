@@ -32,7 +32,7 @@ const Footer = () => {
             >
                 <Flex flexDirection="column" width={900} my={100}>
                     <Text color="text.black50" fontSize={4} mb={36}>
-                        LET'S CONNECT
+                        LET&#39;S CONNECT
                     </Text>
                     <Text color="text.black" fontSize={1}>
                         Laguro is here to provide support and answers for any
