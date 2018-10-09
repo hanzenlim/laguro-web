@@ -5,6 +5,7 @@ import { message } from 'antd';
 import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import Loadable from 'react-loadable';
+
 import history from './history';
 import HomePage from './pages/HomePage';
 import Layout from './components/Layout';
