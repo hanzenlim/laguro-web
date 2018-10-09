@@ -26,11 +26,16 @@ const renderOptions = list => (
 );
 
 const FilterAppointmentsFormView = props => {
-    const { handleSubmit, availableDateList, locationList } = props;
+    const {
+        handleSubmit,
+        availableDateList,
+        locationList,
+        onSelectLocation,
+    } = props;
 
     return (
         <StyledFormContainer>
-            <Form onSuccess={handleSubmit}>
+            <Form onSuccess={handleSubmit} debounce="false">
                 <FormItem
                     mb={20}
                     name="location"
@@ -43,7 +48,7 @@ const FilterAppointmentsFormView = props => {
                     ]}
                     initialValue={locationList[0]}
                     input={
-                        <Select>
+                        <Select onSelect={onSelectLocation}>
                             {locationList.map(location => (
                                 <Select.Option value={location}>
                                     {location}
