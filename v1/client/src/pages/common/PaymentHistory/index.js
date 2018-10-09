@@ -1,10 +1,18 @@
 import React from 'react';
 import { Query } from 'react-apollo';
 
-import { GET_PAYMENTS } from '../BalanceHistory/queries';
+import { GET_PAYMENT_HISTORY_QUERY } from './queries';
 import { Skeleton, Card, Text, Flex, Box } from '../../../components';
 import PaymentCard from '../PaymentCard';
-import { PAYER_ID, PAYMENT, PAYMENT_MADE } from '../../../util/strings';
+import ProcedurePaymentCard from '../PaymentCard/ProcedurePaymentCard';
+import {
+    PAYER_ID,
+    PAYMENT,
+    PAYMENT_MADE,
+    APPOINTMENT_PAYMENT_TYPE,
+    RESERVATION_PAYMENT_TYPE,
+    PROCEDURE_PAYMENT_TYPE,
+} from '../../../util/strings';
 import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
 
 export const CardLoading = () => (
@@ -42,7 +50,7 @@ export const NoPaymentsCard = ({ text }) => (
 
 const PaymentHistoryContainer = ({ userId }) => (
     <Query
-        query={GET_PAYMENTS}
+        query={GET_PAYMENT_HISTORY_QUERY}
         variables={{
             input: {
                 partitionKey: PAYER_ID,
@@ -62,14 +70,33 @@ const PaymentHistoryContainer = ({ userId }) => (
 
             return (
                 <Flex flexDirection="column">
-                    {paymentData.queryPayments.map((payment, index) => (
-                        <PaymentCard
-                            key={index}
-                            payment={payment}
-                            cardType={PAYMENT}
-                            paymentStatus={PAYMENT_MADE}
-                        />
-                    ))}
+                    {paymentData.queryPayments.map((payment, index) => {
+                        if (
+                            payment.type === APPOINTMENT_PAYMENT_TYPE ||
+                            payment.type === RESERVATION_PAYMENT_TYPE
+                        ) {
+                            return (
+                                <PaymentCard
+                                    key={index}
+                                    payment={payment}
+                                    cardType={PAYMENT}
+                                    paymentStatus={PAYMENT_MADE}
+                                />
+                            );
+                        } else if (payment.type === PROCEDURE_PAYMENT_TYPE) {
+                            return (
+                                <ProcedurePaymentCard
+                                    key={index}
+                                    payment={payment}
+                                    cardType={PAYMENT}
+                                    paymentStatus={PAYMENT_MADE}
+                                />
+                            );
+                        }
+
+                        // In theory this should never happen.
+                        return null;
+                    })}
                     {paymentData.queryPayments.length === 0 && (
                         <NoPaymentsCard text="You have no payments yet!" />
                     )}

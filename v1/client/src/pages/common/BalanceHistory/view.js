@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import { NoPaymentsCard } from '../PaymentHistory';
 import PaymentCard from '../PaymentCard';
+import ProcedurePaymentCard from '../PaymentCard/ProcedurePaymentCard';
 import StripePayoutButtons from './StripePayout';
 import { renderPrice } from '../../../util/paymentUtil';
 
@@ -13,6 +14,9 @@ import {
     PAYMENT_AVAILABLE,
     PAYMENT_REFUNDED,
     PAYMENT_WITHDRAWN,
+    PROCEDURE_PAYMENT_TYPE,
+    APPOINTMENT_PAYMENT_TYPE,
+    RESERVATION_PAYMENT_TYPE,
 } from '../../../util/strings';
 
 const { Option } = Select;
@@ -104,14 +108,32 @@ const BalanceHistoryView = ({
             <RangePicker onChange={handleDateSelectChange} />
         </Flex>
 
-        {filteredPayments.map((payment, index) => (
-            <PaymentCard
-                key={index}
-                payment={payment}
-                paymentStatus={payment.paymentStatus}
-                {...rest}
-            />
-        ))}
+        {filteredPayments.map((payment, index) => {
+            if (
+                payment.type === APPOINTMENT_PAYMENT_TYPE ||
+                payment.type === RESERVATION_PAYMENT_TYPE
+            ) {
+                return (
+                    <PaymentCard
+                        key={index}
+                        payment={payment}
+                        paymentStatus={payment.paymentStatus}
+                        {...rest}
+                    />
+                );
+            } else if (payment.type === PROCEDURE_PAYMENT_TYPE) {
+                return (
+                    <ProcedurePaymentCard
+                        key={index}
+                        payment={payment}
+                        paymentStatus={payment.paymentStatus}
+                        {...rest}
+                    />
+                );
+            }
+
+            return null;
+        })}
         {filteredPayments.length === 0 && (
             <NoPaymentsCard
                 text={`You have no ${visiblePayments} payments yet!`}

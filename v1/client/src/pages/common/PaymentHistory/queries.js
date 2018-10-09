@@ -1,6 +1,7 @@
 import { gql } from 'apollo-boost';
 
-export const GET_BALANCE_QUERY = gql`
+// eslint-disable-next-line
+export const GET_PAYMENT_HISTORY_QUERY = gql`
     query QueryPayments($input: QueryParams!) {
         queryPayments(input: $input) {
             id
@@ -26,10 +27,6 @@ export const GET_BALANCE_QUERY = gql`
                         name
                     }
                     name
-                }
-                availableTimes {
-                    startTime
-                    endTime
                 }
             }
             appointment {
@@ -73,39 +70,6 @@ export const GET_BALANCE_QUERY = gql`
             chargeStatus
             nominalAmount
             refundAmount
-        }
-    }
-`;
-
-export const GET_PAYOUT_LINK = gql`
-    query GetUser($id: String!) {
-        getUser(id: $id) {
-            id
-            payoutLoginLink
-        }
-    }
-`;
-
-export const PAYOUT_USER = gql`
-    mutation($userId: String!) {
-        payoutUser(userId: $userId)
-    }
-`;
-
-export const ADD_PAYOUT_LINK = gql`
-    mutation AddPayoutAccount($input: AddPayoutAccountInput!) {
-        addPayoutAccount(input: $input) {
-            id
-            firstName
-            middleName
-            lastName
-            imageUrl
-            dentistId
-            googleId
-            password
-            email
-            intercomHash
-            payoutLoginLink
         }
     }
 `;

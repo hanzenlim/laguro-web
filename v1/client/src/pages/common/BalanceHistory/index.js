@@ -8,7 +8,7 @@ import BalanceHistoryView from './view';
 import { CardLoading } from '../PaymentHistory';
 import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
 
-import { GET_PAYMENTS } from './queries';
+import { GET_BALANCE_QUERY } from './queries';
 import {
     PAYMENT_PENDING,
     PAYMENT_AVAILABLE,
@@ -77,7 +77,7 @@ class BalanceHistoryContainer extends PureComponent {
         const { accountToken } = this.state;
         return (
             <Query
-                query={GET_PAYMENTS}
+                query={GET_BALANCE_QUERY}
                 variables={{
                     input: {
                         partitionKey: PAYEE_ID,
