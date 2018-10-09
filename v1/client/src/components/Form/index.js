@@ -14,8 +14,10 @@ import {
     height,
     width,
 } from 'styled-system';
-import { Button } from '../../components';
+import { Button, Tooltip } from '../../components';
 import BackButton from './BackButton';
+
+const formItemLabelLineHeightInPixels = 22;
 
 const StyledForm = styled(AntdForm)`
     width: 100%;
@@ -26,7 +28,7 @@ const StyledForm = styled(AntdForm)`
 
     .ant-form-item-label {
         margin-bottom: 10px;
-        line-height: 22px;
+        line-height: ${formItemLabelLineHeightInPixels}px;
     }
 
     .ant-form-item-label > label {
@@ -195,6 +197,7 @@ const FormItem = ({
     form,
     name,
     label,
+    tooltip,
     rules = null,
     input,
     initialValue,
@@ -209,7 +212,21 @@ const FormItem = ({
     return (
         <StyledFormInput
             colon={false}
-            label={label}
+            label={
+                label && (
+                    <span>
+                        {label}
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        {tooltip && (
+                            <Tooltip
+                                inForm
+                                size={formItemLabelLineHeightInPixels}
+                                text={tooltip}
+                            />
+                        )}
+                    </span>
+                )
+            }
             validateStatus={error ? 'error' : ''}
             help={error || ''}
             {...rest}

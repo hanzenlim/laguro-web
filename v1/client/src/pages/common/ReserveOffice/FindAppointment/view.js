@@ -27,7 +27,7 @@ const FindAppointment = ({
                 height="60px"
                 fontSize={3}
                 px={14}
-                buttonText="Find appointment"
+                buttonText="Find"
             />
         </Form>
     </Box>

@@ -34,6 +34,7 @@ import Card from './Card';
 import Skeleton from './Skeleton';
 import Tabs from './Tabs';
 import Grid from './Grid';
+import Tooltip from './Tooltip';
 
 export {
     Box,
@@ -64,6 +65,7 @@ export {
     Checkbox,
     Counter,
     TimePicker,
+    Tooltip,
     RangePicker,
     SlickCarousel,
     Alert,

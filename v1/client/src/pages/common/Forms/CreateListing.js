@@ -363,6 +363,7 @@ class CreateListing extends Component {
                                 <GridItem gc="1 / 2">
                                     <FormItem
                                         name={`hourlyChairPrice${index}`}
+                                        tooltip="The cost of booking a chair on an hourly basis."
                                         label="Hourly Chair Price"
                                         getValueFromEvent={e => {
                                             if (!e || !e.target) {
@@ -395,6 +396,7 @@ class CreateListing extends Component {
                                     <FormItem
                                         name={`cleaningFee${index}`}
                                         label="Cleaning fee"
+                                        tooltip="The total cost that the Host will charge for cleaning the chair and equipments after the Dentist is done. Rates will vary."
                                         getValueFromEvent={e => {
                                             if (!e || !e.target) {
                                                 return e;

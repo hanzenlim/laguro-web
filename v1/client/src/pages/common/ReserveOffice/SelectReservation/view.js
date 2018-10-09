@@ -112,7 +112,7 @@ const SelectReservationView = ({
                 height={60}
                 onClick={makeReservationHandler}
             >
-                make a reservation
+                book a chair
             </Button>
         </Box>
     );

@@ -47,7 +47,7 @@ const ReserveOfficeView = ({
                     color="text.black"
                     fontSize={3}
                 >
-                    Make a reservation
+                    Book a chair
                 </Text>
             )}
             {currentDisplay === SELECT_APPOINTMENT_VIEW && (

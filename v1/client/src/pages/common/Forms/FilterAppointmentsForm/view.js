@@ -77,7 +77,7 @@ const FilterAppointmentsFormView = props => {
                     height="59px"
                     fontSize={3}
                     px={14}
-                    buttonText="Find appointment"
+                    buttonText="Find"
                 />
             </Form>
         </StyledFormContainer>

@@ -34,12 +34,16 @@ import Calendar from './Calendar';
 import WhiteDentistLogo from './WhiteDentistLogo';
 import DentistLogo from './DentistLogo';
 import MacaroniPattern from './MacaroniPattern';
+import Tooltip from './Tooltip';
 
 const Icon = props => {
     const { type, isButton, ...rest } = props;
 
     let ReturnIcon;
     switch (type) {
+        case 'tooltip':
+            ReturnIcon = Tooltip;
+            break;
         case 'whiteDentistLogo':
             ReturnIcon = WhiteDentistLogo;
             break;

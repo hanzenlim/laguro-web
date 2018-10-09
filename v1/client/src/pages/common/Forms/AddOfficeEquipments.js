@@ -13,9 +13,10 @@ import {
     TextArea,
     Select,
     Text,
+    Tooltip,
 } from '../../../components';
 import { renderPrice } from '../../../util/paymentUtil';
-// import { addTooltip } from './sharedComponents';
+
 const { FormItem } = Form;
 const { Option } = Select;
 const { GridItem } = Grid;
@@ -308,16 +309,21 @@ class AddOfficeEquipments extends Component {
                             />
                         </GridItem>
                         <GridItem gc="all">
-                            <Text
-                                fontWeight="bold"
-                                fontSize={4}
-                                lineHeight="1"
-                                letterSpacing="0px"
-                                color="text.blue"
-                                mb={20}
-                            >
-                                Equipment &amp; Usage Fees
-                            </Text>
+                            <Flex alignItems="center" mb={20}>
+                                <Text
+                                    fontWeight="bold"
+                                    fontSize={4}
+                                    lineHeight="1"
+                                    letterSpacing="0px"
+                                    color="text.blue"
+                                >
+                                    Equipment &amp; Usage Fees
+                                </Text>
+                                <Tooltip
+                                    size={22}
+                                    text="The rates will vary at each dental office as the Host will set the prices for each equipment used."
+                                />
+                            </Flex>
                         </GridItem>
 
                         {this.renderEquipment(equipment)}

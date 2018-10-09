@@ -181,7 +181,6 @@ class AddOfficeInfo extends Component {
         }
     };
 
-    // {addTooltip('Upload images of your office. The first image will show up on search results.')}
     render() {
         const {
             form,
@@ -316,6 +315,7 @@ class AddOfficeInfo extends Component {
                     <GridItem gc="all">
                         <FormItem
                             name="photos"
+                            tooltip="Upload images of your office. The first image will show up on search results."
                             label={`Featured Images (up to ${maxImageNum})`}
                             input={
                                 <Grid

@@ -13,6 +13,7 @@ import {
     Icon,
     Button,
     Alert,
+    Tooltip,
     MaskedInput,
 } from '../../../../components';
 
@@ -238,6 +239,11 @@ const UpdateProfileForm = props => {
                                 >
                                     Email
                                 </Text>
+                                <Tooltip
+                                    inCheckbox
+                                    size={22}
+                                    text="By checking this box, I agree to receive updates about Laguro, my account, and appointments. This may contain special offers, information on local providers, and requests for feedback about your experience. Your personal data will be processed in accordance with our Privacy Policy."
+                                />
                             </Checkbox>
                         }
                     />
@@ -256,6 +262,11 @@ const UpdateProfileForm = props => {
                                 >
                                     Text Message
                                 </Text>
+                                <Tooltip
+                                    inCheckbox
+                                    size={22}
+                                    text="By checking this box, I agree to receive text messages for information pertaining to my account and appointments."
+                                />
                             </Checkbox>
                         }
                     />
