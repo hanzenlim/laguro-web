@@ -48,15 +48,15 @@ const SearchAvailableAppointments = props => {
                         locationList={locationList}
                         availableDateList={availableDateList}
                     />
-                    {hasFiltered && !appointments.length ? (
-                        <NoAppointmentsMessage />
-                    ) : (
-                        <SelectAppointment
-                            appointments={appointments}
-                            selected={selected}
-                            onSelect={onSelect}
-                        />
-                    )}
+                    {hasFiltered &&
+                        appointments &&
+                        appointments.length > 0 && (
+                            <SelectAppointment
+                                appointments={appointments}
+                                selected={selected}
+                                onSelect={onSelect}
+                            />
+                        )}
                 </Fragment>
             ) : (
                 <NoAppointmentsMessage />

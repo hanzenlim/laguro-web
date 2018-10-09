@@ -13,7 +13,6 @@ const StyledContainer = styled(Box)`
 
 const SelectAppointmentView = props => {
     const { appointments, selected, onSelect } = props;
-
     return (
         <Fragment>
             {appointments.length ? (
