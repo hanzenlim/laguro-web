@@ -116,7 +116,7 @@ class ProfileView extends Component {
     };
 
     renderPanel = key => {
-        const { isHost, isDentist, dentistId, userId } = this.props;
+        const { isHost, isDentist, dentistId, userId, dentist } = this.props;
 
         let persona = PATIENT;
         if (isHost) {
@@ -151,7 +151,7 @@ class ProfileView extends Component {
             case PUBLIC_PROFILE:
                 return (
                     <Box>
-                        <DentistDetails id={dentistId} viewOnly={true} />
+                        <DentistDetails dentist={dentist} viewOnly={true} />
                         <ReviewContainer
                             type={DENTIST}
                             id={dentistId}
