@@ -24,6 +24,7 @@ export const getDentistQuery = gql`
                     ]
                 }
             ) {
+                id
                 location {
                     name
                     geoPoint {
@@ -33,6 +34,7 @@ export const getDentistQuery = gql`
                 }
             }
             appointments {
+                id
                 location {
                     name
                     geoPoint {
@@ -45,11 +47,13 @@ export const getDentistQuery = gql`
                 group
             }
             user {
+                id
                 firstName
                 lastName
                 imageUrl
             }
             reviews {
+                id
                 rating
             }
             totalRating

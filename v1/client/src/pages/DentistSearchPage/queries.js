@@ -32,6 +32,7 @@ export const scanDentistsQuery = gql`
             location
             specialty
             user {
+                id
                 firstName
                 lastName
             }

@@ -8,6 +8,7 @@ export const getActiveOfficesQuery = gql`
             name
             location
             reviews {
+                id
                 rating
             }
             imageUrls

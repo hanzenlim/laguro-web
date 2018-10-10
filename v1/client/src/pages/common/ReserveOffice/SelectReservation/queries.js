@@ -16,7 +16,9 @@ export const getOfficeEquipments = gql`
 export const getListingQuery = gql`
     query QueryListing($input: QueryParams!) {
         queryListings(input: $input) {
-            office{id}
+            office {
+                id
+            }
             id
             officeId
             numChairsAvailable
