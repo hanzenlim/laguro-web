@@ -48,6 +48,11 @@ export const GET_PAYMENT_HISTORY_QUERY = gql`
                 id
                 name
             }
+            payer {
+                id
+                firstName
+                lastName
+            }
             payee {
                 id
                 firstName

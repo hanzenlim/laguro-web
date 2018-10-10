@@ -56,6 +56,11 @@ export const GET_BALANCE_QUERY = gql`
                 firstName
                 lastName
             }
+            payer {
+                id
+                firstName
+                lastName
+            }
             stripePayment {
                 id
                 created

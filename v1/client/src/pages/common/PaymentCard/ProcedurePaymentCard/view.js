@@ -5,7 +5,12 @@ import PropTypes from 'prop-types';
 
 import { renderPrice } from '../../../../util/paymentUtil';
 import { Card, Text, Flex, Box } from '../../../../components';
-import { AVAILABLE, PENDING, PAYMENT_CARD } from '../../../../util/strings';
+import {
+    AVAILABLE,
+    PENDING,
+    PAYMENT_CARD,
+    PATIENT,
+} from '../../../../util/strings';
 
 const StyledCard = styled(Card)`
     && {
@@ -38,7 +43,7 @@ const StyledCard = styled(Card)`
     }
 `;
 
-const renderInvoiceItem = (procedures, dateCreated) =>
+const renderInvoiceItem = (procedures, persona) =>
     procedures.map(procedure => (
         <Box>
             <Flex justifyContent="space-between">
@@ -46,10 +51,11 @@ const renderInvoiceItem = (procedures, dateCreated) =>
                     {procedure.name}
                 </Box>
                 <Box fontSize={2} fontWeight="bold">
-                    {renderPrice(procedure.totalPrice)}
+                    {persona === PATIENT
+                        ? renderPrice(procedure.totalPrice)
+                        : renderPrice(procedure.payoutAmount)}
                 </Box>
             </Flex>
-            <Box>{moment(dateCreated).format('h:mma MMM M YYYY')}</Box>
             <Box
                 my={15}
                 borderBottom="1px solid"
@@ -68,6 +74,7 @@ const PaymentCardView = ({
     startTime,
     endTime,
     office,
+    persona,
     ...rest
 }) => {
     const totalColor = () => {
@@ -113,20 +120,22 @@ const PaymentCardView = ({
             }
         >
             <Text fontSize={5} fontWeight="bold" lineHeight="1.1">
-                Dr. {payment.payee.firstName} {payment.payee.lastName}
+                {persona === PATIENT
+                    ? `Dr. ${payment.payee.firstName} ${payment.payee.lastName}`
+                    : `${payment.payer.firstName} ${payment.payer.lastName}`}
             </Text>
             <Box ml={30} mt={30}>
                 <Text fontSize={3} mb={10}>
                     Procedure Summary
                 </Text>
-                {renderInvoiceItem(payment.invoice.items)}
+                {renderInvoiceItem(payment.invoice.items, persona)}
                 <Flex
                     fontSize={2}
                     fontWeight="bold"
                     justifyContent="space-between"
                 >
                     <Box>Total</Box>
-                    <Box>{renderPrice(payment.nominalAmount)}</Box>
+                    <Box>{renderPrice(totalAmount)}</Box>
                 </Flex>
             </Box>
         </StyledCard>
@@ -138,6 +147,7 @@ PaymentCardView.propTypes = {
     cardType: PropTypes.string,
     payment: PropTypes.object,
     paymentStatus: PropTypes.string,
+    persona: PropTypes.string,
     totalAmount: PropTypes.number,
     reservation: PropTypes.object,
     startTime: PropTypes.object,

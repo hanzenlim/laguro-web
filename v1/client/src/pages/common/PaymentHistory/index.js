@@ -12,6 +12,7 @@ import {
     APPOINTMENT_PAYMENT_TYPE,
     RESERVATION_PAYMENT_TYPE,
     PROCEDURE_PAYMENT_TYPE,
+    PATIENT,
 } from '../../../util/strings';
 import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
 
@@ -88,6 +89,7 @@ const PaymentHistoryContainer = ({ userId }) => (
                                 <ProcedurePaymentCard
                                     key={index}
                                     payment={payment}
+                                    persona={PATIENT}
                                     cardType={PAYMENT}
                                     paymentStatus={PAYMENT_MADE}
                                 />

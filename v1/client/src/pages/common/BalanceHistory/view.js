@@ -45,6 +45,7 @@ const BalanceHistoryView = ({
     handleSelectChange,
     handleDateSelectChange,
     visiblePayments,
+    persona,
     ...rest
 }) => (
     <Flex flexDirection="column" width={720}>
@@ -125,6 +126,7 @@ const BalanceHistoryView = ({
                 return (
                     <ProcedurePaymentCard
                         key={index}
+                        persona={persona}
                         payment={payment}
                         paymentStatus={payment.paymentStatus}
                         {...rest}
@@ -147,6 +149,7 @@ BalanceHistoryView.propTypes = {
     totalAvailable: PropTypes.number,
     totalPending: PropTypes.number,
     userId: PropTypes.string,
+    persona: PropTypes.string,
     accountToken: PropTypes.string,
     handleSelectChange: PropTypes.func,
     handleDateSelectChange: PropTypes.func,

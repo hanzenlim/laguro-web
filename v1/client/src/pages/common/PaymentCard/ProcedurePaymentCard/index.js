@@ -7,12 +7,14 @@ import { Box } from '../../../../components';
 import {
     APPOINTMENT_PAYMENT_TYPE,
     PAYMENT_CARD,
+    PATIENT,
 } from '../../../../util/strings';
 
 const PaymentCardContainer = ({
     payment,
     cardType,
     paymentStatus,
+    persona,
     ...rest
 }) => {
     const { invoice } = payment;
@@ -26,13 +28,21 @@ const PaymentCardContainer = ({
             </Box>
         );
 
-    const totalAmount = invoice.items
-        .map(item => item.totalPrice)
-        .reduce((acc, val) => acc + val, 0);
+    let totalAmount = 0;
+    if (persona === PATIENT) {
+        totalAmount = invoice.items
+            .map(item => item.totalPrice)
+            .reduce((acc, val) => acc + val, 0);
+    } else {
+        totalAmount = invoice.items
+            .map(item => item.payoutAmount)
+            .reduce((acc, val) => acc + val, 0);
+    }
 
     return (
         <PaymentCardView
             payment={payment}
+            persona={persona}
             totalAmount={totalAmount}
             paymentStatus={paymentStatus}
             cardType={cardType}

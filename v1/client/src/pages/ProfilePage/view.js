@@ -140,7 +140,7 @@ class ProfileView extends Component {
             case PAYMENTS:
                 return <PaymentHistory userId={userId} />;
             case BALANCE:
-                return <BalanceHistory userId={userId} />;
+                return <BalanceHistory userId={userId} persona={persona} />;
             case MY_PATIENTS:
                 return <PatientsList />;
             case DENTIST_PROFILE:

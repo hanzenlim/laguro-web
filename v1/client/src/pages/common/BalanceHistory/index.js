@@ -73,7 +73,7 @@ class BalanceHistoryContainer extends PureComponent {
     };
 
     render() {
-        const { userId } = this.props;
+        const { userId, persona } = this.props;
         const { accountToken } = this.state;
         return (
             <Query
@@ -143,6 +143,7 @@ class BalanceHistoryContainer extends PureComponent {
                             totalPending={totalPending}
                             cardType={cardType}
                             userId={userId}
+                            persona={persona}
                             accountToken={accountToken}
                             handleSelectChange={this.handleSelectChange}
                             handleDateSelectChange={this.handleDateSelectChange}
