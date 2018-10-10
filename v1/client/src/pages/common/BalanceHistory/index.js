@@ -20,6 +20,7 @@ import {
     PAYMENT_WITHDRAWN,
     PAYEE_ID,
     APPOINTMENT_PAYMENT_TYPE,
+    RESERVATION_PAYMENT_TYPE,
 } from '../../../util/strings';
 
 const paymentStatus = (cardType, payment) => {
@@ -34,6 +35,28 @@ const paymentStatus = (cardType, payment) => {
             return PAYMENT_PENDING;
         default:
             return PAYMENT_WITHDRAWN;
+    }
+};
+
+const getStartTime = payment => {
+    switch (payment.type) {
+        case APPOINTMENT_PAYMENT_TYPE:
+            return payment.appointment.startTime;
+        case RESERVATION_PAYMENT_TYPE:
+            return payment.reservation.startTime;
+        default:
+            return payment.dateCreated;
+    }
+};
+
+const getEndTime = payment => {
+    switch (payment.type) {
+        case APPOINTMENT_PAYMENT_TYPE:
+            return payment.appointment.endTime;
+        case RESERVATION_PAYMENT_TYPE:
+            return payment.reservation.endTime;
+        default:
+            return payment.dateCreated;
     }
 };
 
@@ -70,6 +93,23 @@ class BalanceHistoryContainer extends PureComponent {
         return invoiceItems
             .map(item => item.payoutAmount)
             .reduce((acc, val) => acc + val, 0);
+    };
+
+    filterPayments = allPayments => {
+        const filteredPayments = allPayments.filter(
+            payment => payment.paymentStatus === this.state.visiblePayments
+        );
+        if (isEmpty(this.state.dateRange)) return filteredPayments;
+
+        return filteredPayments.filter(payment => {
+            const startTime = getStartTime(payment);
+            const endTime = getEndTime(payment);
+            const { dateRange } = this.state;
+            return (
+                moment(endTime).isSameOrAfter(dateRange[0]) &&
+                moment(startTime).isSameOrBefore(dateRange[1])
+            );
+        });
     };
 
     render() {
@@ -113,28 +153,7 @@ class BalanceHistoryContainer extends PureComponent {
                         PAYMENT_PENDING
                     );
 
-                    let filteredPayments = allPayments.filter(
-                        payment =>
-                            payment.paymentStatus === this.state.visiblePayments
-                    );
-
-                    if (!isEmpty(this.state.dateRange)) {
-                        filteredPayments = filteredPayments.filter(payment => {
-                            const startTime =
-                                payment.type === APPOINTMENT_PAYMENT_TYPE
-                                    ? payment.appointment.startTime
-                                    : payment.reservation.startTime;
-                            const endTime =
-                                payment.type === APPOINTMENT_PAYMENT_TYPE
-                                    ? payment.appointment.endTime
-                                    : payment.reservation.endTime;
-                            const { dateRange } = this.state;
-                            return (
-                                moment(endTime).isSameOrAfter(dateRange[0]) &&
-                                moment(startTime).isSameOrBefore(dateRange[1])
-                            );
-                        });
-                    }
+                    const filteredPayments = this.filterPayments(allPayments);
 
                     return (
                         <BalanceHistoryView

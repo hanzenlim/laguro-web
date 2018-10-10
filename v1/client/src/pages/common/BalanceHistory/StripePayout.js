@@ -1,5 +1,6 @@
 import React from 'react';
 import { Query, Mutation } from 'react-apollo';
+import { Modal } from 'antd';
 
 import { GET_PAYOUT_LINK, PAYOUT_USER, ADD_PAYOUT_LINK } from './queries';
 
@@ -7,7 +8,7 @@ import { stripeExpressClientKey } from '../../../config/keys';
 import { renderPrice } from '../../../util/paymentUtil';
 import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
 
-import { Flex, Box, Button, Modal, Loading } from '../../../components';
+import { Flex, Box, Button, Loading, Text } from '../../../components';
 
 const StripePayoutButtons = ({ userId, accountToken, totalAvailable }) => (
     <Query query={GET_PAYOUT_LINK} variables={{ id: userId }}>
@@ -79,7 +80,7 @@ const StripePayoutButtons = ({ userId, accountToken, totalAvailable }) => (
                         }}
                     </Mutation>
                     <Box>
-                        {totalAvailable > 0 ? (
+                        {totalAvailable > 0 && payoutLoginLink ? (
                             <Mutation mutation={PAYOUT_USER}>
                                 {(
                                     payoutUser,
@@ -114,13 +115,17 @@ const StripePayoutButtons = ({ userId, accountToken, totalAvailable }) => (
                                     return (
                                         <Button
                                             type="ghost"
-                                            color="text.blue"
                                             border="1px solid"
                                             borderColor="divider.blue"
                                             px={30}
                                             onClick={handleClick}
                                         >
-                                            Send available funds to Stripe
+                                            <Text
+                                                color="text.blue"
+                                                fontSize={2}
+                                            >
+                                                Send available funds to Stripe
+                                            </Text>
                                         </Button>
                                     );
                                 }}
