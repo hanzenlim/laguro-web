@@ -48,10 +48,17 @@ const ProfileMenu = props => {
                         </Text>
                     </Link>
                 </Menu.Item>
+                <Menu.Item>
+                    <Link to={'/office/search'}>
+                        <Text color="text.blue" fontWeight="bold" fontSize={2}>
+                            search for chairs
+                        </Text>
+                    </Link>
+                </Menu.Item>
                 <Menu.Divider />
                 <Menu.Item>
                     <Link to={'#'} onClick={logout}>
-                        <Text color="text.blue" fontSize={2}>
+                        <Text color="text.black" fontSize={2}>
                             log out
                         </Text>
                     </Link>
@@ -97,6 +104,14 @@ const ProfileMenu = props => {
                     <Link to={'/profile?selectedTab=balance'}>
                         <Text color="text.black" fontSize={2}>
                             laguro balance
+                        </Text>
+                    </Link>
+                </Menu.Item>
+
+                <Menu.Item>
+                    <Link to={'/office/search'}>
+                        <Text color="text.blue" fontWeight="bold" fontSize={2}>
+                            search for chairs
                         </Text>
                     </Link>
                 </Menu.Item>

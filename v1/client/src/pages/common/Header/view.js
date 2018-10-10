@@ -30,7 +30,7 @@ const NavBarLink = styled(Link)`
     }
 `;
 
-const ProfileImage = styled(Image)`
+const ProfileImage = styled(Flex)`
     cursor: pointer;
 `;
 
@@ -54,13 +54,21 @@ const ProfileButton = ({
             placement="bottomRight"
             trigger={['hover']}
         >
-            <ProfileImage
-                src={auth.imageUrl ? auth.imageUrl : defaultUserImage}
-                width={70}
-                height={70}
-                borderRadius={70}
-                ml={60}
-            />
+            <ProfileImage alignItems="center">
+                <Image
+                    src={auth.imageUrl ? auth.imageUrl : defaultUserImage}
+                    width={50}
+                    height={50}
+                    borderRadius={50}
+                    ml={60}
+                />
+                <Icon
+                    ml={4}
+                    transform="scale(0.8)"
+                    fill={onLandingPage ? '#FFF' : '#3481F8'}
+                    type="downArrow"
+                />
+            </ProfileImage>
         </Dropdown>
     ) : (
         <Fragment>
@@ -185,7 +193,7 @@ const Header = ({
                                 fontWeight="bold"
                                 mb={4}
                             >
-                                become a host
+                                {isHost ? 'add a new office' : 'become a host'}
                             </Text>
                         </NavBarLink>
                     )}
