@@ -145,7 +145,7 @@ const AboutPage = () => (
                                 whenever and wherever they want.
                             </Text>
                             <Box textAlign="right" mt={36}>
-                                <Link to="/host-onboarding/add-office">
+                                <Link to="/dentist/search">
                                     <Button type="ghost">
                                         <Text
                                             color="text.blue"
