@@ -29,7 +29,7 @@ export const getUserQuery = gql`
                 bio
                 specialty
                 procedures {
-                    name
+                    group
                 }
                 user {
                     id
