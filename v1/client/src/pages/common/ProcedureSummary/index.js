@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import moment from 'moment';
 import ProcedureSummaryView from './view';
+import { renderPrice } from './../../../util/paymentUtil';
 
 const SERVICE_FEE = 30;
 
@@ -14,7 +15,7 @@ class ProcedureSummary extends PureComponent {
 
         totalPrice += serviceFee;
 
-        return `$${totalPrice}`;
+        return `${renderPrice(totalPrice)}`;
     };
 
     getProcedures = patientProcedures =>
