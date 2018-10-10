@@ -2,6 +2,8 @@ import React, { PureComponent } from 'react';
 import get from 'lodash/get';
 import moment from 'moment';
 import { compose, Query, graphql, withApollo } from 'react-apollo';
+import { message } from 'antd';
+
 import {
     getDentistQuery,
     getUserQuery,
@@ -71,28 +73,35 @@ class BookAppointment extends PureComponent {
         });
 
         if (getUser && getUser.isVerified) {
-            this.setState({ isSubmitting: true });
+            try {
+                this.setState({ isSubmitting: true });
 
-            await this.props.mutate({
-                variables: {
-                    input: {
-                        reservationId: this.state.reservationId,
-                        patientId: this.props.data.activeUser.id,
-                        procedure: this.state.procedure,
-                        localStartTime: this.state.startTime,
-                        localEndTime: this.state.endTime,
-                        paymentOptionId,
+                await this.props.mutate({
+                    variables: {
+                        input: {
+                            reservationId: this.state.reservationId,
+                            patientId: this.props.data.activeUser.id,
+                            procedure: this.state.procedure,
+                            localStartTime: this.state.startTime,
+                            localEndTime: this.state.endTime,
+                            paymentOptionId,
+                        },
                     },
-                },
-            });
+                });
 
-            this.setState({
-                bookedAppointment: {
-                    location: this.state.location,
-                    time: moment(this.state.startTime).format('LLLL'),
-                },
-                isSubmitting: false,
-            });
+                this.setState({
+                    bookedAppointment: {
+                        location: this.state.location,
+                        time: moment(this.state.startTime).format('LLLL'),
+                    },
+                    isSubmitting: false,
+                });
+            } catch (error) {
+                const timeSlotErrorMsg = 'Timeslot is in the past';
+                if (error.graphQLErrors[0].message === timeSlotErrorMsg)
+                    message.error(timeSlotErrorMsg);
+                this.setState({ isSubmitting: false });
+            }
         } else {
             this.setState({ showVerificationModal: true, isSubmitting: false });
         }

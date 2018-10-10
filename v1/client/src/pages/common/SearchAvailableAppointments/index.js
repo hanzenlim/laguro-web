@@ -105,6 +105,20 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
         );
 
     /**
+     * Removes reservation objects that are before current time
+     * @param {array} list Array of objects with key value pairs
+     * @returns {array} Array of objects with key value pairs
+     */
+    filterByCurrentTime = list =>
+        list.filter(item => {
+            const currentTime = moment().format('YYYY MM DD h:mm:ss a');
+            const formattedItem = moment(item.key).format(
+                'YYYY MM DD h:mm:ss a'
+            );
+            return moment(formattedItem).isAfter(currentTime);
+        });
+
+    /**
      * Returns an array of time strings by 1 hour blocks
      * @param {string} start Start time
      * @param {string} end End time
@@ -191,7 +205,7 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
     getAvailableDateList = dateList => {
         const list = [];
 
-        const today = moment();
+        const today = moment().startOf('day');
         const days = dateList.map(item =>
             moment(item.key)
                 .startOf('day')
@@ -200,7 +214,7 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
 
         days.forEach(day => {
             if (!list.includes(day)) {
-                if (!moment(day).isBefore(today)) {
+                if (moment(day).isSameOrAfter(today)) {
                     list.push(day);
                 }
             }
@@ -215,21 +229,10 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
      * @returns {array} Array of objects with key value pairs
      */
     formatDate = list => {
-        const dateToday = moment().startOf('day');
-
-        const formattedList = list.map(day => {
-            if (moment(day).isSame(dateToday, 'day')) {
-                return {
-                    key: 'Today',
-                    value: moment(day),
-                };
-            }
-
-            return {
-                key: day,
-                value: moment(day),
-            };
-        });
+        const formattedList = list.map(day => ({
+            key: day,
+            value: moment(day),
+        }));
 
         return formattedList.sort((a, b) =>
             moment(a.value).diff(b.value, 'days')
@@ -293,8 +296,10 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
             timeSlotsWithoutAppointments
         );
 
+        const filteredByCurrentTime = this.filterByCurrentTime(filteredByDate);
+
         // GET TIME BLOCKS
-        const timeBlocks = this.formatTime(filteredByDate);
+        const timeBlocks = this.formatTime(filteredByCurrentTime);
 
         // GET READABLE DATE LIST
         const formattedAvailableDateList = this.formatDate(availableDateList);
