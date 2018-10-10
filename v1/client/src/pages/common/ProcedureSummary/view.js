@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Box, Flex, Text } from '../../../components';
+import { renderPrice } from '../../../util/paymentUtil';
 
 const ProcedureSummaryView = props => {
     const { procedures, serviceFee, totalPrice } = props;
@@ -76,7 +77,7 @@ const ProcedureSummaryView = props => {
                                 letterSpacing="-0.6px"
                                 color="text.black"
                             >
-                                {procedure.price}
+                                {renderPrice(procedure.price)}
                             </Text>
                         </Box>
                     </Flex>
@@ -108,7 +109,7 @@ const ProcedureSummaryView = props => {
                             letterSpacing="-0.6px"
                             color="text.black"
                         >
-                            {serviceFee}
+                            {renderPrice(serviceFee)}
                         </Text>
                     </Box>
                 </Flex>
