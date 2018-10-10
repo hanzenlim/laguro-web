@@ -9,12 +9,13 @@ import {
     Truncate,
     Link,
 } from '../../../components';
+import defaultDentistProfileImg from '../../../components/Image/default_dentist_profile_img_square.svg';
 
 const CarouselLinkCard = props => {
     const {
         averageRating,
-        imageUrl = 'http://via.placeholder.com/186x186',
         specialty,
+        imageUrl = defaultDentistProfileImg,
         name,
         type,
         numReviews,
