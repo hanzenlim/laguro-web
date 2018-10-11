@@ -78,7 +78,11 @@ const CarouselLinkCard = props => {
                                     <Truncate lines={1}>{name}</Truncate>
                                 </Text>
                                 <Flex>
-                                    <Rating disabled value={averageRating} />
+                                    <Rating
+                                        fontSize="8px"
+                                        disabled
+                                        value={averageRating}
+                                    />
                                     <Text
                                         ml={6}
                                         fontSize={0}

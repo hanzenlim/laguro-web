@@ -1,12 +1,13 @@
 import React from 'react';
 import { Rate as AntdRate } from 'antd';
 import styled from 'styled-components';
-import { space } from 'styled-system';
+import { space, fontSize } from 'styled-system';
 
 const StyledRating = styled(AntdRate)`
     &&.ant-rate {
         display: block;
         ${space};
+        ${fontSize};
     }
 
     && .ant-rate-star-full,
