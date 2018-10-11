@@ -3,7 +3,7 @@ import moment from 'moment';
 import ProcedureSummaryView from './view';
 import { renderPrice } from './../../../util/paymentUtil';
 
-const SERVICE_FEE = 30;
+const SERVICE_FEE = 0;
 
 class ProcedureSummary extends PureComponent {
     getTotalPrice = (patientProcedures, serviceFee) => {

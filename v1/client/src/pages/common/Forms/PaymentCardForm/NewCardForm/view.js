@@ -90,7 +90,7 @@ const NewCardFormView = ({
                     ? {
                           position: 'absolute',
                           width: '200px',
-                          top: '30px',
+                          top: '80px',
                           left: '135px',
                       }
                     : {}

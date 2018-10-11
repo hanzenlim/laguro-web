@@ -18,6 +18,7 @@ class ConsentAndPaymentPage extends PureComponent {
         this.state = {
             hasConsented: false,
             isPaymentSuccessful: false,
+            isSubmitting: false,
         };
     }
 
@@ -28,6 +29,7 @@ class ConsentAndPaymentPage extends PureComponent {
     }
 
     handlePaymentSuccess = async (paymentOptionId, patientProcedures) => {
+        await this.setState({ isSubmitting: true });
         const procedureIds = patientProcedures.map(item => item.id);
         const result = await this.props.mutate({
             variables: {
@@ -41,10 +43,16 @@ class ConsentAndPaymentPage extends PureComponent {
         if (result) {
             this.setState({ isPaymentSuccessful: true });
         }
+
+        this.setState({ isSubmitting: false });
     };
 
     handleClickCheckbox = () => {
         this.setState({ hasConsented: !this.state.hasConsented });
+    };
+
+    updateSubmittingState = isSubmitting => {
+        this.setState({ isSubmitting });
     };
 
     render() {
@@ -89,6 +97,8 @@ class ConsentAndPaymentPage extends PureComponent {
                             onClickCheckbox={this.handleClickCheckbox}
                             hasConsented={this.state.hasConsented}
                             onPaymentSuccess={handlePaymentSuccess}
+                            isSubmitting={this.state.isSubmitting}
+                            updateSubmittingState={this.updateSubmittingState}
                         />
                     );
                 }}

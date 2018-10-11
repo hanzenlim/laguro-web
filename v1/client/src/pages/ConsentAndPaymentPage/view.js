@@ -15,6 +15,8 @@ const ConsentAndPaymentPageView = props => {
         onClickCheckbox,
         patientProcedures,
         isPaymentSuccessful,
+        isSubmitting,
+        updateSubmittingState,
     } = props;
 
     if (!patientProcedures.length)
@@ -46,8 +48,10 @@ const ConsentAndPaymentPageView = props => {
                 {hasConsented ? (
                     <Box px={38} py={26} boxShadow={0}>
                         <Payment
+                            isSubmitting={isSubmitting}
                             onSuccess={onPaymentSuccess}
                             btnText="Submit"
+                            updateSubmittingState={updateSubmittingState}
                             isButtonOutside={true}
                         />
                     </Box>
@@ -61,8 +65,10 @@ ConsentAndPaymentPageView.propTypes = {
     onPaymentSuccess: PropTypes.func.isRequired,
     hasConsented: PropTypes.bool.isRequired,
     onClickCheckbox: PropTypes.func.isRequired,
+    updateSubmittingState: PropTypes.func.isRequired,
     patientProcedures: PropTypes.array.isRequired,
     isPaymentSuccessful: PropTypes.bool.isRequired,
+    isSubmitting: PropTypes.bool.isRequired,
 };
 
 export default ConsentAndPaymentPageView;

@@ -91,7 +91,7 @@ const CardView = ({
                         ? {
                               position: 'absolute',
                               width: '200px',
-                              bottom: '-124px',
+                              bottom: '-134px',
                               right: '-40px',
                           }
                         : {}

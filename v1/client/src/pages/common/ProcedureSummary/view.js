@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Box, Flex, Text } from '../../../components';
 import { renderPrice } from '../../../util/paymentUtil';
+import { Box, Flex, Text } from '../../../components';
 
 const ProcedureSummaryView = props => {
     const { procedures, serviceFee, totalPrice } = props;
@@ -83,36 +83,39 @@ const ProcedureSummaryView = props => {
                     </Flex>
                 ))}
 
-                <Flex
-                    borderBottom="1px solid"
-                    pb={10}
-                    mb={12}
-                    borderColor="divider.black"
-                    alignItems="flex-end"
-                    justifyContent="space-between"
-                >
-                    <Box>
-                        <Text
-                            fontSize={2}
-                            lineHeight="20px"
-                            fontWeight="500"
-                            letterSpacing="-0.6px"
-                            color="text.black"
-                        >
-                            Service fee
-                        </Text>
-                    </Box>
-                    <Box>
-                        <Text
-                            fontSize={2}
-                            lineHeight={1}
-                            letterSpacing="-0.6px"
-                            color="text.black"
-                        >
-                            {renderPrice(serviceFee)}
-                        </Text>
-                    </Box>
-                </Flex>
+                {serviceFee > 0 ? (
+                    <Flex
+                        borderBottom="1px solid"
+                        pb={10}
+                        mb={12}
+                        borderColor="divider.black"
+                        alignItems="flex-end"
+                        justifyContent="space-between"
+                    >
+                        <Box>
+                            <Text
+                                fontSize={2}
+                                lineHeight="20px"
+                                fontWeight="500"
+                                letterSpacing="-0.6px"
+                                color="text.black"
+                            >
+                                Service fee
+                            </Text>
+                        </Box>
+                        <Box>
+                            <Text
+                                fontSize={2}
+                                lineHeight={1}
+                                letterSpacing="-0.6px"
+                                color="text.black"
+                            >
+                                {renderPrice(serviceFee)}
+                            </Text>
+                        </Box>
+                    </Flex>
+                ) : null}
+
                 <Flex alignItems="flex-end" justifyContent="space-between">
                     <Box>
                         <Text
@@ -133,7 +136,7 @@ const ProcedureSummaryView = props => {
                             letterSpacing="-0.6px"
                             color="text.black"
                         >
-                            {totalPrice}
+                            {renderPrice(totalPrice)}
                         </Text>
                     </Box>
                 </Flex>
