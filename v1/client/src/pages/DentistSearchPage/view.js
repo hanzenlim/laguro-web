@@ -5,6 +5,10 @@ import { Container, Box } from '../../components';
 
 import SearchResultsList from '../common/SearchResultsList';
 import Map from '../common/Map';
+import { numMaxContainerWidth } from '../../components/theme';
+
+const contentWidth =
+    Math.min(window.innerWidth * 0.8, numMaxContainerWidth) * 0.45;
 
 const StyledContainer = styled(Box)`
     display: flex;
@@ -68,7 +72,7 @@ const DentistSearchPageView = props => {
                     total={total}
                 />
                 <Map
-                    width={Math.min(window.innerWidth * 0.8, 1280) * 0.45}
+                    width={contentWidth}
                     data={markers}
                     urlParams={urlParams}
                     defaultPosition={defaultPosition}

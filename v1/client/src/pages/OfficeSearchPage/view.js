@@ -5,6 +5,10 @@ import { Container, Box } from '../../components';
 
 import SearchResultsList from '../common/SearchResultsList';
 import Map from '../common/Map';
+import { numMaxContainerWidth } from '../../components/theme';
+
+const contentWidth =
+    Math.min(window.innerWidth * 0.8, numMaxContainerWidth) * 0.45;
 
 const StyledContainer = styled(Box)`
     display: flex;
@@ -29,6 +33,7 @@ const OfficeSearchPageView = props => {
                 />
                 <Map
                     data={data}
+                    width={contentWidth}
                     urlParams={urlParams}
                     defaultPosition={defaultPosition}
                 />

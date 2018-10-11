@@ -17,6 +17,8 @@ const FindAppointment = ({
         <Form onSuccess={onSubmit} debounce={false}>
             <Box mb={28} width="100%">
                 <RangePicker
+                    width="100%"
+                    dateSize={1}
                     onChange={onDateChange}
                     disabledDate={disabledDate}
                 />

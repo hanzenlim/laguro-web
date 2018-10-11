@@ -35,6 +35,7 @@ const ReviewContainer = props => {
                     is="a"
                     color="text.blue"
                     fontSize={1}
+                    mr={20}
                     fontWeight="bold"
                     lineHeight="22px"
                     alignSelf="flex-end"
