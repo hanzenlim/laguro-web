@@ -2,8 +2,11 @@ import React, { Fragment } from 'react';
 import get from 'lodash/get';
 import { Flex, Box, Text, Rating, Truncate } from '../../../components';
 import { cleanAddress } from '../../../util/styleUtil';
-
 import Map from '../../common/Map';
+import { numMaxContainerWidth } from '../../../components/theme';
+
+const contentWidth =
+    Math.min(window.innerWidth * 0.8, numMaxContainerWidth) - 490;
 
 const OfficeDetailsView = props => {
     const { data } = props;
@@ -37,7 +40,7 @@ const OfficeDetailsView = props => {
                 </Flex>
                 {data.description && (
                     // Added fixed width to fix bug in rendering truncated text
-                    <Box pb={42} width="656px">
+                    <Box pb={42} width={`${contentWidth}px`}>
                         <Text fontSize={4} lineHeight="1.3">
                             description
                         </Text>
@@ -65,7 +68,7 @@ const OfficeDetailsView = props => {
                     <Box width="100%" height="440px" mt={20}>
                         <Map
                             height={440}
-                            width={656}
+                            width={contentWidth}
                             zoom={13}
                             center={[
                                 data.address.geoPoint.lon,

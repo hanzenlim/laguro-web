@@ -11,6 +11,7 @@ import {
 } from '../../../components';
 import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
 import Map from '../Map';
+import { numMaxContainerWidth } from '../../../components/theme';
 
 const TAG_COLORS = [
     'background.blue',
@@ -18,6 +19,9 @@ const TAG_COLORS = [
     'background.orange',
     'background.darkBlue',
 ];
+
+const contentWidth =
+    Math.min(window.innerWidth * 0.8, numMaxContainerWidth) - 490;
 
 const DentistDetailsView = props => {
     const { data } = props;
@@ -93,7 +97,7 @@ const DentistDetailsView = props => {
 
             {data.bio && (
                 // Added fixed width to fix bug in rendering truncated text
-                <Box pb={42} width="732px">
+                <Box pb={42} width={contentWidth}>
                     <Text fontSize={1} lineHeight="1.86">
                         <Truncate
                             lines={3}
@@ -139,7 +143,7 @@ const DentistDetailsView = props => {
                         <Box width="100%" height="440px" mt={20}>
                             <Map
                                 height={440}
-                                width={732}
+                                width={contentWidth}
                                 zoom={13}
                                 data={data.locations.map(location => ({
                                     address: location.name,
