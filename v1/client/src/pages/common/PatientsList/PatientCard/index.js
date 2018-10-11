@@ -14,6 +14,8 @@ class PatientCardContainer extends PureComponent {
     state = {
         isDocumentListOpen: false,
         patientImages: this.props.patientImages,
+        modalVisible: false,
+        clickedImgUrl: '',
     };
 
     toggleDocumentList = () => {
@@ -98,9 +100,23 @@ class PatientCardContainer extends PureComponent {
         this.setState({ patientImages: newPatientImages });
     };
 
+    handleImageClick = e => {
+        const { url } = e.currentTarget.dataset;
+        this.setState({ clickedImgUrl: url, modalVisible: true });
+    };
+
+    handleOnCancel = () => {
+        this.setState({ modalVisible: false });
+    };
+
     render() {
         const { name, imageUrl, lastVisit } = this.props;
-        const { patientImages, isDocumentListOpen } = this.state;
+        const {
+            patientImages,
+            isDocumentListOpen,
+            modalVisible,
+            clickedImgUrl,
+        } = this.state;
         return (
             <Query
                 query={getHistoryFormQuery}
@@ -126,6 +142,10 @@ class PatientCardContainer extends PureComponent {
                             imageUrl={imageUrl}
                             lastVisit={lastVisit}
                             documentUrl={documentUrl}
+                            modalVisible={modalVisible}
+                            onImageClick={this.handleImageClick}
+                            clickedImgUrl={clickedImgUrl}
+                            onCancel={this.handleOnCancel}
                         />
                     );
                 }}

@@ -1,16 +1,31 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
 import ReactFilestack from 'filestack-react';
 
-import { Box, Text, Flex, Image, Button, Icon } from '../../../../components';
+import {
+    Box,
+    Text,
+    Flex,
+    Image,
+    Button,
+    Icon,
+    Modal,
+} from '../../../../components';
 import { filestackKey } from '../../../../config/keys';
 
 const imageBoxHeight = '94px';
 const maxImageNum = 4;
 
+const StyledModal = styled(Modal)`
+    && {
+        width: 950px;
+    }
+`;
+
 class PatientCard extends PureComponent {
     renderUploadedImages = () => {
-        const { patientImages, removeImage } = this.props;
+        const { patientImages, removeImage, onImageClick } = this.props;
         return patientImages.map((url, index) => (
             <Box
                 key={index}
@@ -20,19 +35,27 @@ class PatientCard extends PureComponent {
                 mr={10}
                 mb={10}
             >
-                <Image
-                    src={url}
-                    key={`img${index}`}
-                    alt="office"
-                    width="100%"
+                <Button
+                    type="ghost"
                     height="100%"
-                    objectFit="cover"
-                />
+                    data-url={url}
+                    onClick={onImageClick}
+                >
+                    <Image
+                        src={url}
+                        key={`img${index}`}
+                        alt="office"
+                        width="100%"
+                        height="100%"
+                        objectFit="cover"
+                    />
+                </Button>
                 <Button
                     type="ghost"
                     position="absolute"
                     top="-9px"
                     right="-9px"
+                    height="auto"
                     data-url={url}
                     onClick={removeImage}
                 >
@@ -58,6 +81,9 @@ class PatientCard extends PureComponent {
             loadPhotos,
             patientImages,
             documentUrl,
+            clickedImgUrl,
+            modalVisible,
+            onCancel,
         } = this.props;
         return (
             <Box p={15} mb={12} border="1px solid" borderColor="divider.gray">
@@ -166,6 +192,20 @@ class PatientCard extends PureComponent {
                         )}
                     </Box>
                 )}
+                <StyledModal
+                    visible={modalVisible}
+                    onCancel={onCancel}
+                    width="1000px"
+                >
+                    <Flex width={952} p={20}>
+                        <Image
+                            src={clickedImgUrl}
+                            alt="My patient's document"
+                            width="100%"
+                            height="100%"
+                        />
+                    </Flex>
+                </StyledModal>
             </Box>
         );
     }
