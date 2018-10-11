@@ -120,7 +120,7 @@ class OfficeDetailsPageView extends PureComponent {
                         flexDirection="column"
                         justifyContent="space-between"
                     >
-                        <Flex>
+                        <Flex justifyContent="space-between">
                             <Box width="57%">
                                 <OfficeDetails
                                     id={id}
@@ -134,18 +134,14 @@ class OfficeDetailsPageView extends PureComponent {
                                 />
                                 <ReviewContainer type={OFFICE} id={id} />
                             </Box>
-                            <Box width="40%">
-                                <Sticky mt={20} offset="20px">
-                                    <Box mt="44px">
-                                        <ReserveOffice
-                                            officeId={id}
-                                            startLoading={
-                                                officeDetailsDoneLoading
-                                            }
-                                        />
-                                    </Box>
-                                </Sticky>
-                            </Box>
+                            <Sticky mt={20} offset="20px">
+                                <Box mt="44px" width="460px">
+                                    <ReserveOffice
+                                        officeId={id}
+                                        startLoading={officeDetailsDoneLoading}
+                                    />
+                                </Box>
+                            </Sticky>
                         </Flex>
                         <FeaturedOffices currentOffice={id} />
                     </Flex>

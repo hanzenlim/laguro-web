@@ -37,7 +37,7 @@ const OfficeDetailsView = props => {
                 </Flex>
                 {data.description && (
                     // Added fixed width to fix bug in rendering truncated text
-                    <Box pb={42} width="732px">
+                    <Box pb={42} width="656px">
                         <Text fontSize={4} lineHeight="1.3">
                             description
                         </Text>
@@ -65,7 +65,7 @@ const OfficeDetailsView = props => {
                     <Box width="100%" height="440px" mt={20}>
                         <Map
                             height={440}
-                            width={732}
+                            width={656}
                             zoom={13}
                             center={[
                                 data.address.geoPoint.lon,

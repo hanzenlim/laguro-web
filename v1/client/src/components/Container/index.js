@@ -4,7 +4,7 @@ import Box from '../Box';
 
 const StyledContainer = styled(Box)`
     max-width: ${props => props.maxWidth || props.theme.maxContainerWidth};
-    width: 80%;
+    width: 1152px;
     margin: 0 auto;
 `;
 

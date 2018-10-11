@@ -6,7 +6,7 @@ const StyledSticky = styled.div`
     position: sticky;
     top: ${props => props.offset};
     height: 100%;
-    width: 100%;
+    width: auto;
 `;
 
 const Sticky = props => (
