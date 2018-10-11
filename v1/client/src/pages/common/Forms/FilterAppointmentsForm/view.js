@@ -1,22 +1,8 @@
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
 import moment from 'moment';
 import { Form, Select } from '../../../../components';
 
 const { SubmitButton, FormItem } = Form;
-
-const StyledFormContainer = styled.div`
-    > form {
-        display: grid;
-        grid-column-gap: 15px;
-        grid-template-columns: 1fr 1fr;
-
-        > div {
-            grid-column-start: 1;
-            grid-column-end: 3;
-        }
-    }
-`;
 
 const renderOptions = list => (
     <Select>
@@ -59,57 +45,55 @@ class FilterAppointmentsFormView extends PureComponent {
         const { handleSubmit, availableDateList, locationList } = this.props;
 
         return (
-            <StyledFormContainer>
-                <Form
-                    onSuccess={handleSubmit}
-                    debounce="false"
-                    wrappedComponentRef={this.wrapComponentRef}
-                >
-                    <FormItem
-                        mb={20}
-                        name="location"
-                        label="location"
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please select a Location',
-                            },
-                        ]}
-                        initialValue={locationList[0]}
-                        input={
-                            <Select onSelect={this.handleSelectLocation}>
-                                {locationList.map(location => (
-                                    <Select.Option value={location}>
-                                        {location}
-                                    </Select.Option>
-                                ))}
-                            </Select>
-                        }
-                    />
-                    <FormItem
-                        name="date"
-                        label="date"
-                        mb={20}
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please select a date',
-                            },
-                        ]}
-                        initialValue={
-                            availableDateList[0] && availableDateList[0].key
-                        }
-                        input={renderOptions(availableDateList)}
-                    />
-                    <SubmitButton
-                        width="100%"
-                        height="59px"
-                        fontSize={3}
-                        px={14}
-                        buttonText="Find"
-                    />
-                </Form>
-            </StyledFormContainer>
+            <Form
+                onSuccess={handleSubmit}
+                debounce="false"
+                wrappedComponentRef={this.wrapComponentRef}
+            >
+                <FormItem
+                    mb={20}
+                    name="location"
+                    label="location"
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please select a Location',
+                        },
+                    ]}
+                    initialValue={locationList[0]}
+                    input={
+                        <Select onSelect={this.handleSelectLocation}>
+                            {locationList.map(location => (
+                                <Select.Option value={location}>
+                                    {location}
+                                </Select.Option>
+                            ))}
+                        </Select>
+                    }
+                />
+                <FormItem
+                    name="date"
+                    label="date"
+                    mb={20}
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Please select a date',
+                        },
+                    ]}
+                    initialValue={
+                        availableDateList[0] && availableDateList[0].key
+                    }
+                    input={renderOptions(availableDateList)}
+                />
+                <SubmitButton
+                    width="100%"
+                    height="59px"
+                    fontSize={3}
+                    px={14}
+                    buttonText="Find"
+                />
+            </Form>
         );
     }
 }
