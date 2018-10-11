@@ -1,8 +1,8 @@
 import { gql } from 'apollo-boost';
 
 export const GET_BALANCE_QUERY = gql`
-    query QueryPayments($input: QueryParams!) {
-        queryPayments(input: $input) {
+    query GetUserAccountReceivable($input: GetUserAccountReceivableInput!) {
+        getUserAccountReceivable(input: $input) {
             id
             dateCreated
             invoice {

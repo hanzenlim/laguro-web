@@ -18,7 +18,6 @@ import {
     BALANCE_CARD,
     REFUNDED,
     PAYMENT_WITHDRAWN,
-    PAYEE_ID,
     APPOINTMENT_PAYMENT_TYPE,
     RESERVATION_PAYMENT_TYPE,
 } from '../../../util/strings';
@@ -120,8 +119,7 @@ class BalanceHistoryContainer extends PureComponent {
                 query={GET_BALANCE_QUERY}
                 variables={{
                     input: {
-                        partitionKey: PAYEE_ID,
-                        partitionValue: userId,
+                        userId,
                     },
                 }}
             >
@@ -133,7 +131,7 @@ class BalanceHistoryContainer extends PureComponent {
                     }
 
                     const cardType = BALANCE_CARD;
-                    const allPayments = paymentData.queryPayments.map(
+                    const allPayments = paymentData.getUserAccountReceivable.map(
                         payment => {
                             const statusName = paymentStatus(cardType, payment);
                             return {

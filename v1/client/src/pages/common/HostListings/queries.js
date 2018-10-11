@@ -75,6 +75,7 @@ export const getDentistQuery = gql`
                             endTime
                         }
                         reservedBy {
+                            id
                             user {
                                 id
                                 firstName

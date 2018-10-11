@@ -5,6 +5,7 @@ export const CREATE_OFFICE = gql`
         createUserOffice(input: $input) {
             id
             host {
+                id
                 user {
                     id
                     firstName
