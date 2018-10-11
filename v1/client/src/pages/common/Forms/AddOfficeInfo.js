@@ -287,6 +287,7 @@ class AddOfficeInfo extends Component {
                                 <LocationFilter
                                     withDentists={false}
                                     width={624}
+                                    locationType="address"
                                     onLocationChange={this.handleLocationChange}
                                     onSearch={this.handleSearch}
                                     placeholder="San Francisco, California"

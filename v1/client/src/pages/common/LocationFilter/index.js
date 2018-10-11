@@ -37,9 +37,10 @@ const fetchDentistsFromES = async queryString => {
     return res;
 };
 
-const fetchLocationsFromMapbox = async queryString => {
+const fetchLocationsFromMapbox = async (queryString, locationType) => {
     const header = { 'Content-Type': 'application/json' };
-    const path = `https://api.mapbox.com/geocoding/v5/mapbox.places/${queryString}.json?access_token=${mapBoxApiKey}&country=us`;
+    const locationTypeFilter = locationType ? `&types=${locationType}` : '';
+    const path = `https://api.mapbox.com/geocoding/v5/mapbox.places/${queryString}.json?access_token=${mapBoxApiKey}&country=us${locationTypeFilter}`;
 
     const result = await fetch(path, {
         headers: header,
@@ -54,6 +55,7 @@ class LocationFilter extends PureComponent {
 
         this.state = {
             queryString: props.initialValue || '',
+            locationType: props.locationType,
             locationResults: [],
             dentistResults: [],
         };
@@ -67,6 +69,8 @@ class LocationFilter extends PureComponent {
 
     handleChange = async value => {
         const { onTextChange, onSearch } = this.props;
+        const { locationType } = this.state;
+
         this.setState({ queryString: value });
         if (onTextChange) onTextChange(value);
 
@@ -74,10 +78,10 @@ class LocationFilter extends PureComponent {
             Promise.all(
                 this.props.withDentists
                     ? [
-                          fetchLocationsFromMapbox(value),
+                          fetchLocationsFromMapbox(value, locationType),
                           fetchDentistsFromES(value),
                       ]
-                    : [fetchLocationsFromMapbox(value)]
+                    : [fetchLocationsFromMapbox(value, locationType)]
             )
                 .then(async results => {
                     const formattedMapboxResults = results[0].features.map(
