@@ -43,6 +43,7 @@ const ReservationModalView = ({
                     <FormItem
                         name="middleName"
                         label="middle name"
+                        normalize={value => value || null}
                         input={<Input />}
                     />
                     <FormItem
