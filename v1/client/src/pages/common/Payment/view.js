@@ -15,6 +15,7 @@ const PaymentView = props => {
         hasBackButton,
         isSubmitting,
         updateSubmittingState,
+        checkIfVerified,
     } = props;
 
     return (
@@ -30,6 +31,7 @@ const PaymentView = props => {
                         hasBackButton={hasBackButton}
                         isSubmitting={isSubmitting}
                         updateSubmittingState={updateSubmittingState}
+                        checkIfVerified={checkIfVerified}
                     />
                 </Elements>
             </StripeProvider>

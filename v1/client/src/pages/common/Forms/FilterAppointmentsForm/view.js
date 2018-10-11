@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
 import { Form, Select } from '../../../../components';
@@ -34,63 +34,84 @@ const renderOptions = list => (
     </Select>
 );
 
-const FilterAppointmentsFormView = props => {
-    const {
-        handleSubmit,
-        availableDateList,
-        locationList,
-        onSelectLocation,
-    } = props;
+class FilterAppointmentsFormView extends PureComponent {
+    constructor(props) {
+        super(props);
 
-    return (
-        <StyledFormContainer>
-            <Form onSuccess={handleSubmit} debounce="false">
-                <FormItem
-                    mb={20}
-                    name="location"
-                    label="location"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please select a Location',
-                        },
-                    ]}
-                    initialValue={locationList[0]}
-                    input={
-                        <Select onSelect={onSelectLocation}>
-                            {locationList.map(location => (
-                                <Select.Option value={location}>
-                                    {location}
-                                </Select.Option>
-                            ))}
-                        </Select>
-                    }
-                />
-                <FormItem
-                    name="date"
-                    label="date"
-                    mb={20}
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please select a date',
-                        },
-                    ]}
-                    initialValue={
-                        availableDateList[0] && availableDateList[0].key
-                    }
-                    input={renderOptions(availableDateList)}
-                />
-                <SubmitButton
-                    width="100%"
-                    height="59px"
-                    fontSize={3}
-                    px={14}
-                    buttonText="Find"
-                />
-            </Form>
-        </StyledFormContainer>
-    );
-};
+        this.form = null;
+    }
+
+    handleSelectLocation = async location => {
+        await this.props.onSelectLocation(location);
+
+        this.form.props.form.setFieldsValue({
+            date:
+                this.props.availableDateList[0] &&
+                this.props.availableDateList[0].key,
+        });
+    };
+
+    wrapComponentRef = form => {
+        this.form = form;
+    };
+
+    render() {
+        const { handleSubmit, availableDateList, locationList } = this.props;
+
+        return (
+            <StyledFormContainer>
+                <Form
+                    onSuccess={handleSubmit}
+                    debounce="false"
+                    wrappedComponentRef={this.wrapComponentRef}
+                >
+                    <FormItem
+                        mb={20}
+                        name="location"
+                        label="location"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please select a Location',
+                            },
+                        ]}
+                        initialValue={locationList[0]}
+                        input={
+                            <Select onSelect={this.handleSelectLocation}>
+                                {locationList.map(location => (
+                                    <Select.Option value={location}>
+                                        {location}
+                                    </Select.Option>
+                                ))}
+                            </Select>
+                        }
+                    />
+                    <FormItem
+                        name="date"
+                        label="date"
+                        mb={20}
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please select a date',
+                            },
+                        ]}
+                        initialValue={
+                            availableDateList[0] && availableDateList[0].key
+                        }
+                        input={renderOptions(availableDateList)}
+                    />
+                    <SubmitButton
+                        width="100%"
+                        height="59px"
+                        fontSize={3}
+                        px={14}
+                        buttonText="Find"
+                    />
+                </Form>
+            </StyledFormContainer>
+        );
+    }
+}
 
 export default FilterAppointmentsFormView;

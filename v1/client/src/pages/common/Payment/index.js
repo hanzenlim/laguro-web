@@ -51,6 +51,7 @@ class Payment extends PureComponent {
             hasBackButton,
             isSubmitting,
             updateSubmittingState,
+            checkIfVerified,
         } = this.props;
 
         return (
@@ -75,6 +76,7 @@ class Payment extends PureComponent {
                             hasBackButton={hasBackButton}
                             isSubmitting={isSubmitting}
                             updateSubmittingState={updateSubmittingState}
+                            checkIfVerified={checkIfVerified}
                         />
                     );
                 }}

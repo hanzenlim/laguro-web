@@ -22,6 +22,14 @@ class PaymentCardForm extends Component {
     }
 
     handleCreateStripeToken = async values => {
+        if (this.props.checkIfVerified) {
+            const isVerified = await this.props.checkIfVerified();
+
+            if (!isVerified) {
+                return null;
+            }
+        }
+
         if (this.props.updateSubmittingState) {
             await this.props.updateSubmittingState(true);
         }
@@ -33,6 +41,7 @@ class PaymentCardForm extends Component {
         });
 
         if (error) {
+            this.props.updateSubmittingState(false);
             return this.setState({ stripeError: error });
         }
 
@@ -61,6 +70,19 @@ class PaymentCardForm extends Component {
         this.setState({
             selectedCard: get(value, 'target.value'),
         });
+    };
+
+    handleSubmitExistingCard = async selectedCard => {
+        if (this.props.checkIfVerified) {
+            const isVerified = await this.props.checkIfVerified();
+
+            if (!isVerified) {
+                return null;
+            }
+        }
+
+        this.props.handleSubmit(selectedCard);
+        return null;
     };
 
     render() {
@@ -112,9 +134,9 @@ class PaymentCardForm extends Component {
                             selectedCard={selectedCard}
                             btnText={btnText}
                             isButtonOutside={isButtonOutside}
-                            handleSubmitExistingCard={() => {
-                                this.props.handleSubmit(selectedCard);
-                            }}
+                            handleSubmitExistingCard={() =>
+                                this.handleSubmitExistingCard(selectedCard)
+                            }
                             handleSubmitNewCard={this.handleCreateStripeToken}
                             onChangeCardSelect={this.onChangeCardSelect}
                             onBackButton={this.props.onBackButton}
@@ -145,6 +167,7 @@ PaymentCardForm.propTypes = {
     onBackButton: PropTypes.func,
     hasBackButton: PropTypes.bool,
     isSubmitting: PropTypes.bool,
+    checkIfVerified: PropTypes.func,
 };
 
 export default graphql(addPaymentOptionMutation)(injectStripe(PaymentCardForm));

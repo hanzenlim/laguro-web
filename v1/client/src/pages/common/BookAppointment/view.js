@@ -19,6 +19,7 @@ const BookAppointmentView = props => {
         onVerificationResult,
         isSubmitting,
         updateSubmittingState,
+        checkIfVerified,
     } = props;
 
     if (bookedAppointment)
@@ -90,6 +91,7 @@ const BookAppointmentView = props => {
                         onPay={onPay}
                         isSubmitting={isSubmitting}
                         updateSubmittingState={updateSubmittingState}
+                        checkIfVerified={checkIfVerified}
                     />
                 </Fragment>
             ) : null}

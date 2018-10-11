@@ -107,6 +107,27 @@ class BookAppointment extends PureComponent {
         }
     };
 
+    checkIfVerified = async () => {
+        const {
+            client,
+            data: { activeUser },
+        } = this.props;
+
+        const {
+            data: { getUser },
+        } = await client.query({
+            query: checkPatientVerified,
+            variables: { id: activeUser.id },
+        });
+
+        if (getUser && getUser.isVerified) {
+            return true;
+        }
+
+        this.setState({ showVerificationModal: true, isSubmitting: false });
+        return false;
+    };
+
     updateSubmittingState = isSubmitting => {
         this.setState({ isSubmitting });
     };
@@ -146,6 +167,7 @@ class BookAppointment extends PureComponent {
                             onVerificationResult={this.handleVerificationResult}
                             isSubmitting={this.state.isSubmitting}
                             updateSubmittingState={this.updateSubmittingState}
+                            checkIfVerified={this.checkIfVerified}
                         />
                     );
                 }}
