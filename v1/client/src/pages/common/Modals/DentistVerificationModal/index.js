@@ -3,7 +3,7 @@ import { compose, graphql, withApollo } from 'react-apollo';
 import styled from 'styled-components';
 import get from 'lodash/get';
 import { Modal, Icon, Alert } from 'antd';
-import UpdateDentitstProfileForm from '../../../common/Forms/UpdateDentistProfileForm';
+import UpdateDentistProfileForm from '../../../common/Forms/UpdateDentistProfileForm';
 import { getActiveUserQuery, getUserQuery } from './queries';
 import UserVerification from '../../UserVerification';
 import { DENTIST } from '../../../../util/strings';
@@ -86,7 +86,7 @@ const DentistProfileStepContent = ({ onComplete, completed }) => (
                 <p>You need to be a dentist to continue.</p>
             </Fragment>
         )}
-        <UpdateDentitstProfileForm onComplete={onComplete} />
+        <UpdateDentistProfileForm onComplete={onComplete} />
     </ContentWrap>
 );
 

@@ -43,6 +43,7 @@ class UserVerification extends Component {
         data: null,
         uploadPolicySignature: null,
         error: null,
+        isSubmitting: false,
     };
 
     constructor(props) {
@@ -308,7 +309,7 @@ class UserVerification extends Component {
             });
         }
 
-        this.setState({ hasUpdated: true });
+        this.setState({ hasUpdated: true, isSubmitting: false });
         window.scrollTo(0, 0);
 
         await this.loadData();
@@ -319,9 +320,10 @@ class UserVerification extends Component {
 
     handleSubmit = async formData => {
         try {
+            this.setState({ isSubmitting: true });
             await this.processFormData(formData);
         } catch (e) {
-            this.setState({ error: e });
+            this.setState({ error: e, isSubmitting: false });
         }
     };
 
@@ -348,7 +350,7 @@ class UserVerification extends Component {
         if (!data) return <Loading />;
 
         return (
-            <Form onSuccess={this.handleSubmit}>
+            <Form onSuccess={this.handleSubmit} debounce="false">
                 {hasUpdated && (
                     <StyledAlert
                         showIcon
@@ -373,6 +375,7 @@ class UserVerification extends Component {
                     width="100%"
                     textAlign="center"
                     buttonText="Submit Verification"
+                    loading={this.state.isSubmitting}
                 />
             </Form>
         );

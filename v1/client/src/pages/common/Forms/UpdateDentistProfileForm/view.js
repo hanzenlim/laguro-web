@@ -111,16 +111,16 @@ const ProcedureTag = ({ procedure, closeFunction, index }) => (
     </Button>
 );
 
-const UpdateDentitstProfileForm = props => {
+const UpdateDentistProfileForm = props => {
     const {
         data,
         error,
         isUpdated,
-        loading,
         onSuccess,
         addProcedureTag,
         removeProcedureTag,
         procedures,
+        isSubmitting,
     } = props;
 
     return (
@@ -139,7 +139,7 @@ const UpdateDentitstProfileForm = props => {
                     </Box>
                 )}
 
-                <Form layout="vertical" onSuccess={onSuccess}>
+                <Form layout="vertical" onSuccess={onSuccess} debounce="false">
                     <FormItem
                         name="specialty"
                         label="Title"
@@ -206,19 +206,11 @@ const UpdateDentitstProfileForm = props => {
 
                     <SubmitButton
                         px={14}
-                        buttonText={
-                            <Text
-                                color="text.white"
-                                display="inline"
-                                ml={loading}
-                            >
-                                Save changes
-                            </Text>
-                        }
-                        loading={loading}
+                        buttonText="Save changes"
                         textAlign="left"
                         width="100%"
                         height={60}
+                        loading={isSubmitting}
                     />
                 </Form>
             </Box>
@@ -226,19 +218,20 @@ const UpdateDentitstProfileForm = props => {
     );
 };
 
-UpdateDentitstProfileForm.defaultProps = {
+UpdateDentistProfileForm.defaultProps = {
     onSuccess: () => {},
+    isSubmitting: false,
 };
 
-UpdateDentitstProfileForm.propTypes = {
+UpdateDentistProfileForm.propTypes = {
     data: PropTypes.shape({
         specialty: PropTypes.string,
         bio: PropTypes.string,
     }).isRequired,
     error: PropTypes.string,
     isUpdated: PropTypes.bool,
-    loading: PropTypes.bool,
     onSuccess: PropTypes.func.isRequired,
+    isSubmitting: PropTypes.bool,
 };
 
-export default UpdateDentitstProfileForm;
+export default UpdateDentistProfileForm;

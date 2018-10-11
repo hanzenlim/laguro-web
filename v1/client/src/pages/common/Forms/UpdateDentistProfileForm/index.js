@@ -18,6 +18,7 @@ class UpdateDentistProfileContainer extends PureComponent {
         isUpdated: false,
         procedures: {},
         updateDentistError: null,
+        isSubmitting: false,
     };
 
     addProcedureTag = (value, option) => {
@@ -98,6 +99,7 @@ class UpdateDentistProfileContainer extends PureComponent {
                             };
 
                             const onSuccess = async values => {
+                                await this.setState({ isSubmitting: true });
                                 const inputBase = {
                                     specialty: values.specialty,
                                     bio: values.bio,
@@ -133,6 +135,7 @@ class UpdateDentistProfileContainer extends PureComponent {
                                 window.scrollTo(0, 0);
                                 this.setState({
                                     isUpdated: true,
+                                    isSubmitting: false,
                                 });
 
                                 if (this.props.onComplete) {
@@ -143,7 +146,6 @@ class UpdateDentistProfileContainer extends PureComponent {
                             return (
                                 <UpdateDentistProfileFormView
                                     data={mappedData}
-                                    loading={false}
                                     addProcedureTag={this.addProcedureTag}
                                     removeProcedureTag={this.removeProcedureTag}
                                     error={
@@ -153,6 +155,7 @@ class UpdateDentistProfileContainer extends PureComponent {
                                     onSuccess={onSuccess}
                                     procedures={procedures}
                                     isUpdated={isUpdated}
+                                    isSubmitting={this.state.isSubmitting}
                                 />
                             );
                         }}
