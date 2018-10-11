@@ -9,7 +9,9 @@ const carouselSpacing = 15;
 const slidesToShow = 5;
 
 const slideWidth =
-    (numMaxContainerWidth - carouselSpacing * slidesToShow) / slidesToShow +
+    (Math.min(window.innerWidth * 0.74, numMaxContainerWidth) -
+        carouselSpacing * slidesToShow) /
+        slidesToShow +
     carouselSpacing;
 
 const StyledCarousel = styled(SlickCarousel)`

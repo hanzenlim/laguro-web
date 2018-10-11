@@ -17,7 +17,7 @@ import {
 import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
 
 export const CardLoading = () => (
-    <Flex flexDirection="column" width={720}>
+    <Flex flexDirection="column">
         <Box mb={40}>
             <Card>
                 <Skeleton active />
@@ -37,10 +37,7 @@ export const CardLoading = () => (
 );
 
 export const NoPaymentsCard = ({ text }) => (
-    <Card
-        width={720}
-        style={{ boxShadow: '1px 1px 7px 0 rgba(0, 0, 0, 0.15)' }}
-    >
+    <Card style={{ boxShadow: '1px 1px 7px 0 rgba(0, 0, 0, 0.15)' }}>
         <Flex alignItems="center" justifyContent="center">
             <Text fontSize={3} fontWeight="bold" color="text.black50">
                 {text}

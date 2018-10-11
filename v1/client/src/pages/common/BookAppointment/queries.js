@@ -13,10 +13,17 @@ export const getDentistQuery = gql`
                     startTime
                     endTime
                 }
-                appointments {
+                appointments(
+                    options: {
+                        filters: [
+                            { filterKey: "status", filterValue: "ACTIVE" }
+                        ]
+                    }
+                ) {
                     id
                     startTime
                     endTime
+                    status
                 }
             }
         }

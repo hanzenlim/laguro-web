@@ -12,7 +12,6 @@ import { AVAILABLE, PENDING, PAYMENT_CARD } from '../../../util/strings';
 
 const StyledCard = styled(Card)`
     && {
-        width: 720px;
         margin-bottom: 40px;
         box-shadow: 1px 1px 7px 0 rgba(0, 0, 0, 0.15);
         border-color: ${props => props.theme.colors.divider.gray};
@@ -36,7 +35,6 @@ const StyledCard = styled(Card)`
         display: block;
         margin: 0 auto;
 
-        width: 680px;
         border-bottom: 1px solid ${props => props.theme.colors.divider.gray};
     }
 `;

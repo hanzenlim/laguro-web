@@ -30,7 +30,7 @@ const Footer = () => {
                 justifyContent="space-between"
                 alignItems="center"
             >
-                <Flex flexDirection="column" width={900} my={100}>
+                <Flex flexDirection="column" width="70%" my={100}>
                     <Text color="text.black50" fontSize={4} mb={36}>
                         LET&#39;S CONNECT
                     </Text>

@@ -48,10 +48,9 @@ const BalanceHistoryView = ({
     persona,
     ...rest
 }) => (
-    <Flex flexDirection="column" width={720}>
+    <Flex flexDirection="column">
         <StyledFlex
             height={100}
-            width={720}
             mb={20}
             justifyContent="space-around"
             alignItems="center"

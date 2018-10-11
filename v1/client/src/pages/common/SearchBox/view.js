@@ -26,23 +26,27 @@ const SearchBox = props => {
     } = props;
 
     return (
-        <Flex justifyContent="center" onKeyPress={onKeyPress}>
-            <Box mr={10}>
+        <Flex
+            width={size === 'large' ? '100%' : '53%'}
+            justifyContent="center"
+            onKeyPress={onKeyPress}
+        >
+            <Box width={size === 'large' ? '56%' : '62%'} mr={10}>
                 <LocationFilter
                     height={60}
                     initialValue={initialLocationFilterValue}
                     placeholder={locationPlaceholder}
                     onTextChange={onTextChange}
                     onLocationChange={onLocationFilterChange}
-                    width={size === 'large' ? 720 : 420}
+                    width="100%"
                     withDentists={true}
                 />
             </Box>
-            <Box mr={10}>
+            <Box width={size === 'large' ? '27%' : '26%'} mr={10}>
                 <DatePicker
                     initialValue={initialDateFilterValue}
                     onDateChange={onDateFilterChange}
-                    width={size === 'large' ? 350 : 175}
+                    width="100%"
                     format={size === 'large' ? 'ddd MM/DD' : 'MM/DD'}
                 />
             </Box>

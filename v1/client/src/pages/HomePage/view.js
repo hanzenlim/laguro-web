@@ -20,10 +20,10 @@ import office from '../../components/Image/office.svg';
 
 const StyledCard = styled(Card)`
     && {
-        width: 620px;
         box-shadow: ${props => props.theme.shadows[2]};
         border-color: ${props => props.theme.colors.divider.gray};
         padding: 40px 70px;
+        height: 100%;
     }
 
     && .ant-card-head {
@@ -116,44 +116,49 @@ const HomePageView = () => (
                 ARE YOU A DENTIST?
             </Text>
             <Flex data-name="role-boxes" justifyContent="space-between" mb={75}>
-                <StyledCard title={<Image src={office} />}>
-                    <Text fontSize={5} color="text.black" mb={8}>
-                        Become a host
-                    </Text>
-                    <Text fontSize={2} color="text.black" mb={22}>
-                        Have empty chairs and unused equipment in your office?
-                        List them here and start sharing your space today!
-                    </Text>
-                    <Link to="/host-onboarding/add-office">
-                        <Text
-                            fontSize={4}
-                            mr={5}
-                            color="text.blue"
-                            fontWeight="bold"
-                        >
-                            Create a listing ➞
+                <Box width="48.5%" minHeight="360px">
+                    <StyledCard title={<Image src={office} />}>
+                        <Text fontSize={5} color="text.black" mb={8}>
+                            Become a host
                         </Text>
-                    </Link>
-                </StyledCard>
-                <StyledCard title={<Image src={chair} />}>
-                    <Text fontSize={5} color="text.black" mb={8}>
-                        Book a chair
-                    </Text>
-                    <Text fontSize={2} color="text.black" mb={22}>
-                        Want to see your patients when you want, where you want?
-                        Book a chair and equipment you need here.
-                    </Text>
-                    <Link to="/office/search">
-                        <Text
-                            fontSize={4}
-                            mr={5}
-                            color="text.blue"
-                            fontWeight="bold"
-                        >
-                            Search for chairs ➞
+                        <Text fontSize={2} color="text.black" mb={22}>
+                            Have empty chairs and unused equipment in your
+                            office? List them here and start sharing your space
+                            today!
                         </Text>
-                    </Link>
-                </StyledCard>
+                        <Link to="/host-onboarding/add-office">
+                            <Text
+                                fontSize={4}
+                                mr={5}
+                                color="text.blue"
+                                fontWeight="bold"
+                            >
+                                Create a listing ➞
+                            </Text>
+                        </Link>
+                    </StyledCard>
+                </Box>
+                <Box width="48.5%" minHeight="360px">
+                    <StyledCard title={<Image src={chair} />}>
+                        <Text fontSize={5} color="text.black" mb={8}>
+                            Book a chair
+                        </Text>
+                        <Text fontSize={2} color="text.black" mb={22}>
+                            Want to see your patients when you want, where you
+                            want? Book a chair and equipment you need here.
+                        </Text>
+                        <Link to="/office/search">
+                            <Text
+                                fontSize={4}
+                                mr={5}
+                                color="text.blue"
+                                fontWeight="bold"
+                            >
+                                Search for chairs ➞
+                            </Text>
+                        </Link>
+                    </StyledCard>
+                </Box>
             </Flex>
         </Container>
         <Box mb={-5}>

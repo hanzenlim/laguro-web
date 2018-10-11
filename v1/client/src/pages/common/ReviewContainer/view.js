@@ -76,12 +76,7 @@ const ReviewContainer = props => {
                             <Rating disabled ml={10} value={review.rating} />
                         </Flex>
                     </Flex>
-                    <Text
-                        fontSize={1}
-                        color="text.black"
-                        lineHeight="22px"
-                        width={720}
-                    >
+                    <Text fontSize={1} color="text.black" lineHeight="22px">
                         {moment(review.dateCreated).format('MMMM D YYYY')}
                     </Text>
                 </Box>
@@ -95,7 +90,7 @@ const ReviewContainer = props => {
     ));
 
     return (
-        <Box width={720} mx="auto">
+        <Box mx="auto">
             {renderReviewsStats}
             {renderReviews}
         </Box>

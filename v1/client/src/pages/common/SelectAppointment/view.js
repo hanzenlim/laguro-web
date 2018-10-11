@@ -28,7 +28,7 @@ const SelectAppointmentView = props => {
                             <Flex
                                 alignItems="center"
                                 justifyContent="center"
-                                width="144px"
+                                width="100%"
                                 height="50px"
                                 borderRadius="2px"
                                 border="1px solid"
