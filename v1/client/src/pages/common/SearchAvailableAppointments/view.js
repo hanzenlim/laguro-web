@@ -1,8 +1,9 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
+import get from 'lodash/get';
+
 import FilterAppointmentsForm from '../Forms/FilterAppointmentsForm';
 import SelectAppointment from '../SelectAppointment';
-
 import { Text } from '../../../components';
 
 const NoAppointmentsMessage = () => (
@@ -31,7 +32,8 @@ const SearchAvailableAppointments = props => {
 
     return (
         <Fragment>
-            {locationList.length > 0 ? (
+            {locationList.length > 0 &&
+            get(props, 'availableDateList').length > 0 ? (
                 <Fragment>
                     <Text
                         mb={20}

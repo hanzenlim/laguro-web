@@ -55,6 +55,7 @@ class Carousel extends Component {
             dots: false,
             speed: 500,
             slidesToScroll: 1,
+            draggable: false,
             centerMode: true,
         };
 

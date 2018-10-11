@@ -71,7 +71,7 @@ const HeroContent = styled(Container)`
 `;
 
 const HomePageView = () => (
-    <Box mb={-5}>
+    <Flex flexDirection="column" height="100%" justifyContent="space-between">
         <Box height="720px" width="100%" position="relative">
             <Filter />
             <Background />
@@ -155,50 +155,53 @@ const HomePageView = () => (
                     </Link>
                 </StyledCard>
             </Flex>
-
-            <Flex
-                width="100%"
-                height="366px"
-                justifyContent="space-around"
-                mb={-170}
-            >
-                <Image
-                    width="566px"
-                    src={aboutUs}
-                    alt="about us cartoon"
-                    style={{ zIndex: 100 }}
-                />
-                <Flex width={450} flexDirection="column" pt={60} pl={80}>
-                    <Text
-                        color="text.black"
-                        fontWeight="bold"
-                        fontSize={5}
-                        mb={20}
-                    >
-                        Laguro has arrived
-                    </Text>
-                    <Text color="text.black" fontSize={4}>
-                        Meet Laguro and
-                    </Text>
-                    <Text color="text.black" fontSize={4} mb={50}>
-                        learn more about what we do!
-                    </Text>
-                    <Link to="/about">
-                        <Button width="260px" height="80px">
-                            <Text
-                                color="text.white"
-                                fontSize={4}
-                                fontWeight="bold"
-                            >
-                                About us
-                            </Text>
-                        </Button>
-                    </Link>
-                </Flex>
-            </Flex>
         </Container>
-        <Wave />
-    </Box>
+        <Box mb={-5}>
+            <Container>
+                <Flex
+                    width="100%"
+                    height="366px"
+                    justifyContent="space-around"
+                    mb={-170}
+                >
+                    <Image
+                        width="566px"
+                        src={aboutUs}
+                        alt="about us cartoon"
+                        style={{ zIndex: 100 }}
+                    />
+                    <Flex width={450} flexDirection="column" pt={60} pl={80}>
+                        <Text
+                            color="text.black"
+                            fontWeight="bold"
+                            fontSize={5}
+                            mb={20}
+                        >
+                            Laguro has arrived
+                        </Text>
+                        <Text color="text.black" fontSize={4}>
+                            Meet Laguro and
+                        </Text>
+                        <Text color="text.black" fontSize={4} mb={50}>
+                            learn more about what we do!
+                        </Text>
+                        <Link to="/about">
+                            <Button width="260px" height="80px">
+                                <Text
+                                    color="text.white"
+                                    fontSize={4}
+                                    fontWeight="bold"
+                                >
+                                    About us
+                                </Text>
+                            </Button>
+                        </Link>
+                    </Flex>
+                </Flex>
+            </Container>
+            <Wave />
+        </Box>
+    </Flex>
 );
 
 export default HomePageView;
