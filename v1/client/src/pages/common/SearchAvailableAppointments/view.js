@@ -30,10 +30,11 @@ const SearchAvailableAppointments = props => {
         onSelectLocation,
     } = props;
 
+    const hasAvailableDateList = get(props, 'availableDateList.length') > 0;
+
     return (
         <Fragment>
-            {locationList.length > 0 &&
-            get(props, 'availableDateList').length > 0 ? (
+            {locationList.length > 0 ? (
                 <Fragment>
                     <Text
                         mb={20}
@@ -49,7 +50,9 @@ const SearchAvailableAppointments = props => {
                         handleSubmit={onFilter}
                         locationList={locationList}
                         availableDateList={availableDateList}
+                        hasTimeFilter={hasAvailableDateList}
                     />
+                    {hasAvailableDateList ? null : <NoAppointmentsMessage />}
                     {hasFiltered &&
                         appointments &&
                         appointments.length > 0 && (

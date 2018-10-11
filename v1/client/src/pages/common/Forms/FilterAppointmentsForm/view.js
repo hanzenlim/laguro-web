@@ -42,7 +42,12 @@ class FilterAppointmentsFormView extends PureComponent {
     };
 
     render() {
-        const { handleSubmit, availableDateList, locationList } = this.props;
+        const {
+            handleSubmit,
+            availableDateList,
+            locationList,
+            hasTimeFilter,
+        } = this.props;
 
         return (
             <Form
@@ -71,21 +76,24 @@ class FilterAppointmentsFormView extends PureComponent {
                         </Select>
                     }
                 />
-                <FormItem
-                    name="date"
-                    label="date"
-                    mb={20}
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Please select a date',
-                        },
-                    ]}
-                    initialValue={
-                        availableDateList[0] && availableDateList[0].key
-                    }
-                    input={renderOptions(availableDateList)}
-                />
+                {hasTimeFilter ? (
+                    <FormItem
+                        name="date"
+                        label="date"
+                        mb={20}
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please select a date',
+                            },
+                        ]}
+                        initialValue={
+                            availableDateList[0] && availableDateList[0].key
+                        }
+                        input={renderOptions(availableDateList)}
+                    />
+                ) : null}
+
                 <SubmitButton
                     width="100%"
                     height="59px"
@@ -97,5 +105,9 @@ class FilterAppointmentsFormView extends PureComponent {
         );
     }
 }
+
+FilterAppointmentsFormView.defaultProps = {
+    hasTimeFilter: true,
+};
 
 export default FilterAppointmentsFormView;
