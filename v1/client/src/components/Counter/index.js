@@ -27,7 +27,9 @@ class CounterContainer extends PureComponent {
     };
 
     handleMinusClick = () => {
-        if (this.state.count !== 0) {
+        // TODO requiring count to be >= 1 makes the component less flexible
+        // refactor this logic if we have a use case requiring count < 1
+        if (this.state.count > 1) {
             this.setState(
                 {
                     count: this.state.count - 1,
