@@ -28,6 +28,7 @@ const DentistSearchPageView = props => {
                     total={total}
                 />
                 <Map
+                    width={Math.min(window.innerWidth * 0.8, 1280) * 0.45}
                     data={data}
                     urlParams={urlParams}
                     defaultPosition={defaultPosition}

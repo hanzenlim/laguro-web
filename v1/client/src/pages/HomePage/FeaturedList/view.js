@@ -9,7 +9,7 @@ const carouselSpacing = 15;
 const slidesToShow = 5;
 
 const slideWidth =
-    (Math.min(window.innerWidth * 0.74, numMaxContainerWidth) -
+    (Math.min(window.innerWidth * 0.8, numMaxContainerWidth) -
         carouselSpacing * slidesToShow) /
         slidesToShow +
     carouselSpacing;

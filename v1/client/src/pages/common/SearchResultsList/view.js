@@ -14,12 +14,6 @@ const StyledSearchResultsContainer = styled(Flex)`
     flex-wrap: wrap;
     flex: 1;
     align-content: start;
-
-    > *:nth-child(3n) {
-        @media screen and (min-width: 1200px) {
-            margin-right: 0;
-        }
-    }
 `;
 
 class SearchResultsList extends PureComponent {
@@ -41,7 +35,7 @@ class SearchResultsList extends PureComponent {
         const type = title === 'Office Results' ? OFFICES : DENTISTS;
 
         return (
-            <Flex width={['100%', '623px']} flexDirection="column">
+            <Flex width="55%" flexDirection="column">
                 {data.length > 0 ? (
                     <Text
                         fontSize={5}
@@ -65,7 +59,7 @@ class SearchResultsList extends PureComponent {
                               <Box
                                   key={item.url}
                                   width="186px"
-                                  mr="32px"
+                                  mr="24px"
                                   mb="22px"
                               >
                                   <LinkCard {...item} />

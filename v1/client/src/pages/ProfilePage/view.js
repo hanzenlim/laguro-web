@@ -32,7 +32,7 @@ import {
     MY_PATIENTS,
 } from '../../util/strings';
 
-const contentWidth = Math.min(window.innerWidth * 0.74, 1050);
+const contentWidth = Math.min(window.innerWidth * 0.8, 1050);
 const menuColumnWidth = contentWidth * 0.28;
 const contentColumnWidth = contentWidth * 0.6;
 
