@@ -16,6 +16,7 @@ import DentistAppointments from '../common/DentistAppointments';
 import PatientAppointments from '../common/PatientAppointments';
 import UserVerification from '../common/UserVerification';
 import PatientsList from '../common/PatientsList';
+import ConsentAndPayment from '../../pages/ConsentAndPaymentPage';
 import {
     DENTIST,
     PATIENT,
@@ -30,6 +31,7 @@ import {
     DENTIST_PROFILE,
     MY_BOOKINGS,
     MY_PATIENTS,
+    PROCEDURES_CONSENT,
 } from '../../util/strings';
 
 const contentWidth = Math.min(window.innerWidth * 0.8, 1050);
@@ -164,6 +166,8 @@ class ProfileView extends Component {
                         />
                     </Box>
                 );
+            case PROCEDURES_CONSENT:
+                return <ConsentAndPayment />;
             default:
         }
 
@@ -293,6 +297,17 @@ class ProfileView extends Component {
                                         </Text>
                                     </StyledPreviewMenuItem>
                                 )}
+
+                            <Box mt={40} />
+                            <StyledMenuItem key={PROCEDURES_CONSENT}>
+                                <Text
+                                    fontSize={4}
+                                    color="inherit"
+                                    lineHeight="40px"
+                                >
+                                    Procedure Consent
+                                </Text>
+                            </StyledMenuItem>
                         </Menu>
                     </Box>
                     {this.renderPanel(panel)}
