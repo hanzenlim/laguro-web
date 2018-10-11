@@ -75,11 +75,11 @@ class DetailsSearchPage extends PureComponent {
         if (data.hits.hits.length > 0) {
             mappedData = data.hits.hits.map(item => {
                 const source = item._source;
-
                 return {
                     title: source.name,
                     rating: source.averageRating,
                     image: source.imageUrl,
+                    reservations: get(source, 'reservations'),
                     address: get(source, 'reservations[0].address'),
                     longitude: get(source, 'reservations[0].geoPoint.lon'),
                     latitude: get(source, 'reservations[0].geoPoint.lat'),
