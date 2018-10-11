@@ -20,7 +20,7 @@ const DentistDetailsPageView = props => {
                 flexDirection="column"
                 justifyContent="space-between"
             >
-                <Flex>
+                <Flex justifyContent="space-between">
                     <Box mt={30} mr={34} width="57%">
                         <DentistDetails dentist={dentist} />
                         <ReviewContainer type={DENTIST} id={id} />

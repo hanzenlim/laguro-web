@@ -144,7 +144,7 @@ const DentistDetailsView = props => {
                             <Map
                                 height={440}
                                 width={contentWidth}
-                                zoom={13}
+                                zoom={data.locations.length === 1 ? 13 : 3}
                                 data={data.locations.map(location => ({
                                     address: location.name,
                                     latitude: _get(location, 'geoPoint.lat'),
