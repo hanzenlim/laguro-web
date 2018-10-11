@@ -74,7 +74,7 @@ class PatientCard extends PureComponent {
     render() {
         const {
             name,
-            lastVisit,
+            visitDate,
             imageUrl,
             isDocumentListOpen,
             toggleDocumentList,
@@ -84,7 +84,9 @@ class PatientCard extends PureComponent {
             clickedImgUrl,
             modalVisible,
             onCancel,
+            hasNextAppointment,
         } = this.props;
+
         return (
             <Box p={15} mb={12} border="1px solid" borderColor="divider.gray">
                 <Flex alignItems="center">
@@ -106,7 +108,10 @@ class PatientCard extends PureComponent {
                             alignItems="center"
                         >
                             <Text fontSize={3} fontWeight="light">
-                                Last visit: {lastVisit}
+                                {hasNextAppointment
+                                    ? 'Next visit:'
+                                    : 'Last visit:'}{' '}
+                                {visitDate}
                             </Text>
                             <Button
                                 type="ghost"
@@ -219,8 +224,9 @@ PatientCard.propTypes = {
     isDocumentListOpen: PropTypes.bool,
     name: PropTypes.string.isRequired,
     imageUrl: PropTypes.string,
-    lastVisit: PropTypes.string.isRequired,
+    visitDate: PropTypes.string.isRequired,
     documentUrl: PropTypes.string,
+    hasNextAppointment: PropTypes.bool,
 };
 
 export default PatientCard;

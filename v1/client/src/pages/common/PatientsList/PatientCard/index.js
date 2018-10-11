@@ -110,7 +110,7 @@ class PatientCardContainer extends PureComponent {
     };
 
     render() {
-        const { name, imageUrl, lastVisit } = this.props;
+        const { name, imageUrl, visitDate, hasNextAppointment } = this.props;
         const {
             patientImages,
             isDocumentListOpen,
@@ -140,7 +140,8 @@ class PatientCardContainer extends PureComponent {
                             isDocumentListOpen={isDocumentListOpen}
                             name={name}
                             imageUrl={imageUrl}
-                            lastVisit={lastVisit}
+                            visitDate={visitDate}
+                            hasNextAppointment={hasNextAppointment}
                             documentUrl={documentUrl}
                             modalVisible={modalVisible}
                             onImageClick={this.handleImageClick}

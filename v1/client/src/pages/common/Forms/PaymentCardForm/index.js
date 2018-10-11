@@ -94,6 +94,7 @@ class PaymentCardForm extends Component {
                 query={getPaymentOptionQuery}
                 variables={{ id: userId }}
                 skip={isSkipped}
+                fetchPolicy="cache-and-network"
             >
                 {({ loading, error, data }) => {
                     // Loading evaluates to true even if the skip is set to true so

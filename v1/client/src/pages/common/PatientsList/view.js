@@ -30,15 +30,23 @@ const PatientsList = props => {
             </Box>
             <Box>
                 {patients.map(
-                    ({ id, name, imageUrl, lastVisit, patientImages }) => (
+                    ({
+                        id,
+                        name,
+                        imageUrl,
+                        visitDate,
+                        patientImages,
+                        hasNextAppointment,
+                    }) => (
                         <PatientCard
                             key={id}
                             dentistId={dentistId}
                             patientId={id}
                             name={name}
                             imageUrl={imageUrl}
-                            lastVisit={lastVisit}
+                            visitDate={visitDate}
                             patientImages={patientImages}
+                            hasNextAppointment={hasNextAppointment}
                         />
                     )
                 )}
@@ -50,7 +58,7 @@ const PatientsList = props => {
 const patientShape = PropTypes.shape({
     id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
-    lastVisit: PropTypes.string.isRequired,
+    visitDate: PropTypes.string.isRequired,
     imageUrl: PropTypes.string,
     patientImages: PropTypes.arrayOf(PropTypes.string.isRequired),
 }).isRequired;
