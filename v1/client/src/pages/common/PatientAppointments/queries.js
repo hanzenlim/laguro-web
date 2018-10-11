@@ -14,6 +14,7 @@ export const getAppointmentsQuery = gql`
         queryAppointments(input: $input) {
             id
             dentist {
+                id
                 user {
                     firstName
                     lastName
@@ -22,6 +23,7 @@ export const getAppointmentsQuery = gql`
             }
             reservation {
                 office {
+                    id
                     name
                 }
             }

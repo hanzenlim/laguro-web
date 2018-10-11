@@ -15,14 +15,14 @@ const CancelReservationModal = props => {
                     borderColor="divider.gray"
                     mb={35}
                 >
-                    Cancel Reservation
+                    Cancel Booking
                 </Text>
                 <Text fontSize={4} fontWeight="medium" mb={20}>
-                    Are you sure you want to cancel this reservation?
+                    Are you sure you want to cancel this booking?
                 </Text>
-                <Text fontSize={2} color="text.gray">
+                <Text fontSize={2} color="text.darkGray">
                     * For a full refund of accommodation fees, cancellation must
-                    be made a full 24 hours prior to listing’s local check in
+                    be made a full 24 hours prior to booking's local check in
                     time.
                 </Text>
                 <Flex mt={47} justifyContent="flex-end" alignItems="center">

@@ -4,7 +4,8 @@ import moment from 'moment';
 import styled from 'styled-components';
 import isEmpty from 'lodash/isEmpty';
 
-import { Box, Text, Flex, Image, Button } from '../../../components';
+import { Box, Text, Flex, Image, Button, Link } from '../../../components';
+import { NoAppointmentsCard } from '../PatientAppointments/view';
 
 import { CANCELLED } from '../../../util/strings';
 import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
@@ -59,9 +60,11 @@ class DentistAppointments extends PureComponent {
                             px={28}
                             py={16}
                         >
-                            <Text fontWeight="bold" fontSize={5} mb={28}>
-                                {office.name}
-                            </Text>
+                            <Link to={`/office/${office.id}`}>
+                                <Text fontWeight="bold" fontSize={5} mb={28}>
+                                    {office.name}
+                                </Text>
+                            </Link>
                             <StyledList>
                                 {this.renderAvailableTimes(availableTimes)}
                             </StyledList>
@@ -82,7 +85,10 @@ class DentistAppointments extends PureComponent {
                                 {!isEmpty(appointments) ? (
                                     this.renderAppointments(appointments)
                                 ) : (
-                                    <Text textAlign="center" color="text.gray">
+                                    <Text
+                                        textAlign="center"
+                                        color="text.darkGray"
+                                    >
                                         NO APPOINTMENTS
                                     </Text>
                                 )}
@@ -172,9 +178,7 @@ class DentistAppointments extends PureComponent {
                     {!isEmpty(reservations) ? (
                         this.renderReservations(reservations)
                     ) : (
-                        <Text textAlign="center" color="text.gray" mt={38}>
-                            NO BOOKINGS OR APPOINTMENTS
-                        </Text>
+                        <NoAppointmentsCard text="You have no bookings or appointments yet!" />
                     )}
                 </Box>
             </Box>

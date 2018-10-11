@@ -6,7 +6,6 @@ import DentistAppointments from './view';
 import CancelReservationModal from '../Modals/CancelReservationModal';
 import { Loading } from '../../../components';
 import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
-
 import { getDentistIdQueryClient, getDentistQuery } from './queries';
 
 const DentistAppointmentsContainer = () => (

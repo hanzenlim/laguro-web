@@ -3,7 +3,15 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import isEmpty from 'lodash/isEmpty';
 
-import { Box, Text, Flex, Image, Button, Card } from '../../../components';
+import {
+    Box,
+    Text,
+    Flex,
+    Image,
+    Button,
+    Card,
+    Link,
+} from '../../../components';
 
 import { CANCELLED } from '../../../util/strings';
 import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
@@ -26,7 +34,7 @@ class PatientAppointments extends PureComponent {
         appointments.map(({ id, startTime, dentist, reservation, status }) => {
             const { lastName, firstName, imageUrl } = dentist.user;
             const dentistName = `Dr. ${firstName} ${lastName}`;
-            const officeName = reservation.office.name;
+            const { name: officeName, id: officeId } = reservation.office;
             const isCancelled = status === CANCELLED;
 
             return (
@@ -59,12 +67,16 @@ class PatientAppointments extends PureComponent {
                             mr={35}
                         />
                         <Box>
-                            <Text fontWeight="medium" fontSize={4}>
-                                {dentistName}
-                            </Text>
-                            <Text fontWeight="light" fontSize={4}>
-                                {officeName}
-                            </Text>
+                            <Link to={`/dentist/${dentist.id}`}>
+                                <Text fontWeight="medium" fontSize={4}>
+                                    {dentistName}
+                                </Text>
+                            </Link>
+                            <Link to={`/office/${officeId}`}>
+                                <Text fontWeight="light" fontSize={4}>
+                                    {officeName}
+                                </Text>
+                            </Link>
                         </Box>
                     </Flex>
                     <Button

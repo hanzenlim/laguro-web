@@ -17,56 +17,6 @@ const StyledMenu = styled(Menu)`
 const ProfileMenu = props => {
     const { logout, isDentist, isHost, ...rest } = props;
 
-    if (isDentist) {
-        return (
-            <StyledMenu {...rest}>
-                <Menu.Item>
-                    <Link to={'/profile?selectedTab=my_profile'}>
-                        <Text color="text.black" fontSize={2}>
-                            my page
-                        </Text>
-                    </Link>
-                </Menu.Item>
-                <Menu.Item>
-                    <Link to={'/profile?selectedTab=my_bookings'}>
-                        <Text color="text.black" fontSize={2}>
-                            bookings/appointments
-                        </Text>
-                    </Link>
-                </Menu.Item>
-                <Menu.Item>
-                    <Link to={'/profile?selectedTab=payments'}>
-                        <Text color="text.black" fontSize={2}>
-                            payments
-                        </Text>
-                    </Link>
-                </Menu.Item>
-                <Menu.Item>
-                    <Link to={'/profile?selectedTab=balance'}>
-                        <Text color="text.black" fontSize={2}>
-                            laguro balance
-                        </Text>
-                    </Link>
-                </Menu.Item>
-                <Menu.Item>
-                    <Link to={'/office/search'}>
-                        <Text color="text.blue" fontWeight="bold" fontSize={2}>
-                            search for chairs
-                        </Text>
-                    </Link>
-                </Menu.Item>
-                <Menu.Divider />
-                <Menu.Item>
-                    <Link to={'#'} onClick={logout}>
-                        <Text color="text.black" fontSize={2}>
-                            log out
-                        </Text>
-                    </Link>
-                </Menu.Item>
-            </StyledMenu>
-        );
-    }
-
     // Menu link for host
     if (isHost) {
         return (
@@ -118,7 +68,57 @@ const ProfileMenu = props => {
                 <Menu.Divider />
                 <Menu.Item>
                     <Link to={'#'} onClick={logout}>
-                        <Text color="text.blue" fontSize={2}>
+                        <Text color="text.black" fontSize={2}>
+                            log out
+                        </Text>
+                    </Link>
+                </Menu.Item>
+            </StyledMenu>
+        );
+    }
+
+    if (isDentist) {
+        return (
+            <StyledMenu {...rest}>
+                <Menu.Item>
+                    <Link to={'/profile?selectedTab=my_profile'}>
+                        <Text color="text.black" fontSize={2}>
+                            my page
+                        </Text>
+                    </Link>
+                </Menu.Item>
+                <Menu.Item>
+                    <Link to={'/profile?selectedTab=my_bookings'}>
+                        <Text color="text.black" fontSize={2}>
+                            bookings/appointments
+                        </Text>
+                    </Link>
+                </Menu.Item>
+                <Menu.Item>
+                    <Link to={'/profile?selectedTab=payments'}>
+                        <Text color="text.black" fontSize={2}>
+                            payments
+                        </Text>
+                    </Link>
+                </Menu.Item>
+                <Menu.Item>
+                    <Link to={'/profile?selectedTab=balance'}>
+                        <Text color="text.black" fontSize={2}>
+                            laguro balance
+                        </Text>
+                    </Link>
+                </Menu.Item>
+                <Menu.Item>
+                    <Link to={'/office/search'}>
+                        <Text color="text.blue" fontWeight="bold" fontSize={2}>
+                            search for chairs
+                        </Text>
+                    </Link>
+                </Menu.Item>
+                <Menu.Divider />
+                <Menu.Item>
+                    <Link to={'#'} onClick={logout}>
+                        <Text color="text.black" fontSize={2}>
                             log out
                         </Text>
                     </Link>

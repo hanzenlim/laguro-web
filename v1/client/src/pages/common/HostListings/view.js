@@ -29,6 +29,11 @@ class HostListings extends PureComponent {
             return (
                 <TabPane tab={name} key={id}>
                     <Flex justifyContent="flex-end" mt={12}>
+                        <Link to={`/office/${id}`} type="ghost">
+                            <Text color="text.blue" fontSize={1} mr={24}>
+                                view office
+                            </Text>
+                        </Link>
                         <Link
                             to={`/host-onboarding/add-office/?mode=edit-office&officeId=${id}`}
                             type="ghost"
@@ -69,7 +74,7 @@ class HostListings extends PureComponent {
                     {listings.length ? (
                         this.renderListing(listings)
                     ) : (
-                        <Text textAlign="center" color="text.gray" my={50}>
+                        <Text textAlign="center" color="text.darkGray" my={50}>
                             NO LISTINGS
                         </Text>
                     )}
@@ -137,10 +142,10 @@ class HostListings extends PureComponent {
                             ) : (
                                 <Text
                                     textAlign="center"
-                                    color="text.gray"
+                                    color="text.darkGray"
                                     my={50}
                                 >
-                                    NO APPOINTMENTS
+                                    NO BOOKINGS
                                 </Text>
                             )}
                         </Box>

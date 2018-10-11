@@ -33,6 +33,7 @@ export const getDentistQuery = gql`
             ) {
                 id
                 office {
+                    id
                     name
                 }
                 availableTimes {
