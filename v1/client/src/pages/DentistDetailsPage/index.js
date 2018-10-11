@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { Query } from 'react-apollo';
 
 import DentistDetailsPageView from './view';
-import { getDentistQuery } from '../common/DentistDetails/queries';
+import { getDentistQuery } from './queries';
 import { Loading, Box } from '../../components';
 import { RedirectErrorPage } from '../GeneralErrorPage';
 

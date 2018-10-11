@@ -32,6 +32,7 @@ export const getDentistQuery = gql`
                 }
             ) {
                 id
+                status
                 office {
                     id
                     name

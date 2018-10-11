@@ -8,7 +8,7 @@ export const getDentistQuery = gql`
             bio
             specialty
             procedures {
-                name
+                group
             }
             user {
                 id
@@ -20,6 +20,9 @@ export const getDentistQuery = gql`
                 id
                 rating
             }
+            totalRating
+            numReviews
+            averageRating
         }
     }
 `;
