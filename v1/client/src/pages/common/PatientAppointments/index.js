@@ -16,6 +16,7 @@ const PatientAppoinmentsContainer = () => (
         {({ data: clientData }) => (
             <Query
                 query={getAppointmentsQuery}
+                fetchPolicy="cache-and-network"
                 variables={{
                     input: {
                         partitionKey: PATIENT_ID,

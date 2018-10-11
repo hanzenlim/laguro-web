@@ -19,6 +19,7 @@ export const getPatientsQuery = gql`
                 lastName
                 imageUrl
                 appointments {
+                    id
                     endTime
                 }
                 patientImages {

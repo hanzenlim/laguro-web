@@ -32,6 +32,7 @@ export const getDentistQuery = gql`
                 }
             ) {
                 id
+                status
                 office {
                     id
                     name
@@ -60,6 +61,7 @@ export const getDentistQuery = gql`
                     id
                     startTime
                     patient {
+                        id
                         lastName
                         firstName
                         imageUrl

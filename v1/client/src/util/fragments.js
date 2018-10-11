@@ -79,6 +79,7 @@ export const officeFragment = `
     }
     description
     reviews {
+        id
         rating
     }
     imageUrls
@@ -101,6 +102,7 @@ export const appointmentFragment = `
     dentist {
         id
         user {
+            id
             firstName
             lastName
             imageUrl
@@ -125,6 +127,7 @@ export const reservationFragment = `
     reservedBy {
         id
         user {
+            id
             firstName
             lastName
         }
@@ -201,30 +204,35 @@ export const paymentFragment = `
     type
     status
     reservation {
-      location
-      numChairsSelected
-      startTime
-      endTime
+        id
+        location
+        numChairsSelected
+        startTime
+        endTime
     }
     procedures {
+        id
         name
     }
     appointment {
-      location
-      procedure {
-        name
-      }
-      startTime
-      endTime
+        id
+        location
+        procedure {
+            name
+        }
+        startTime
+        endTime
     }
     nominalAmount
     currency
     stripePayment {
-      amount
-      source {
-        brand
-        last4
-      }
+        id
+        amount
+        source {
+            id
+            brand
+            last4
+        }
     }
     chargeStatus
     dateCreated

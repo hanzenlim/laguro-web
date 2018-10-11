@@ -16,12 +16,14 @@ export const getAppointmentsQuery = gql`
             dentist {
                 id
                 user {
+                    id
                     firstName
                     lastName
                     imageUrl
                 }
             }
             reservation {
+                id
                 office {
                     id
                     name

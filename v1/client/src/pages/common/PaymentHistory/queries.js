@@ -8,6 +8,7 @@ export const GET_PAYMENT_HISTORY_QUERY = gql`
             dateCreated
             invoice {
                 items {
+                    id
                     name
                     payoutAmount
                     quantity

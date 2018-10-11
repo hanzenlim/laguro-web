@@ -76,6 +76,7 @@ export const getDentistQuery = gql`
                         }
                         reservedBy {
                             user {
+                                id
                                 firstName
                                 lastName
                                 imageUrl
