@@ -25,11 +25,14 @@ const mapPatients = patients =>
         }) => ({
             id,
             name: `${firstName} ${lastName}`,
-            lastVisit: moment(
+            visitDate: moment(
                 appointments[appointments.length - 1].endTime
             ).format('hA MMM. D, YYYY'),
             imageUrl: imageUrl || defaultUserImage,
             patientImages: mapPatientImages(patientImages),
+            hasNextAppointment: moment(
+                appointments[appointments.length - 1].endTime
+            ).isAfter(moment()),
         })
     );
 
