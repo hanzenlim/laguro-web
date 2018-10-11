@@ -16,6 +16,7 @@ const LoginPageView = ({
     visibleModal,
     sendPassResetLink,
     message,
+    isSubmitting,
 }) => (
     <Box>
         <LoginModal
@@ -26,18 +27,21 @@ const LoginPageView = ({
             closable={closable}
             visible={visibleModal === 'login'}
             message={message}
+            isSubmitting={isSubmitting}
         />
         <RegistrationModal
             signup={signup}
             openLoginModal={openLoginModal}
             closeModal={closeModal}
             visible={visibleModal === 'register'}
+            isSubmitting={isSubmitting}
         />
         <ForgotPassModal
             sendPassResetLink={sendPassResetLink}
             openLoginModal={openLoginModal}
             closeModal={closeModal}
             visible={visibleModal === 'forgotPass'}
+            isSubmitting={isSubmitting}
         />
     </Box>
 );
@@ -54,6 +58,7 @@ LoginPageView.propTypes = {
     closeModal: PropTypes.func,
     openRegistrationModal: PropTypes.func,
     visible: PropTypes.bool,
+    isSubmitting: PropTypes.bool,
 };
 
 export default LoginPageView;

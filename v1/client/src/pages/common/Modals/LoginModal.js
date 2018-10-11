@@ -15,6 +15,7 @@ const LoginModal = ({
     message,
     location,
     closable,
+    isSubmitting,
 }) => (
     <Modal
         onCancel={closeModal}
@@ -77,7 +78,10 @@ const LoginModal = ({
                     </Flex>
                 </Flex>
                 <Box width={210}>
-                    <LocalLoginForm onSuccess={login} />
+                    <LocalLoginForm
+                        onSuccess={login}
+                        isSubmitting={isSubmitting}
+                    />
                 </Box>
             </Flex>
             <Flex>
@@ -112,6 +116,7 @@ LoginModal.defaultProps = {
     visible: false,
     message: '',
     closable: true,
+    isSubmitting: false,
 };
 
 LoginModal.propTypes = {
@@ -121,6 +126,7 @@ LoginModal.propTypes = {
     visible: PropTypes.bool,
     message: PropTypes.string,
     closable: PropTypes.bool,
+    isSubmitting: PropTypes.bool,
 };
 
 export default withRouter(LoginModal);

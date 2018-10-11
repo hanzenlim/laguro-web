@@ -10,6 +10,7 @@ import { onLogin, onSignup, sendPassResetLink } from '../../util/authUtils';
 class LoginPage extends Component {
     state = {
         currentModal: 'login',
+        isSubmitting: false,
     };
 
     openLoginModal = () => {
@@ -36,6 +37,39 @@ class LoginPage extends Component {
         });
     };
 
+    handleLogin = async (client, values) => {
+        await this.setState({ isSubmitting: true });
+        onLogin(client, values)
+            .then(() => {
+                this.setState({ isSubmitting: false });
+            })
+            .catch(() => {
+                this.setState({ isSubmitting: false });
+            });
+    };
+
+    handleSignup = async (client, values) => {
+        await this.setState({ isSubmitting: true });
+        onSignup(client, values)
+            .then(() => {
+                this.setState({ isSubmitting: false });
+            })
+            .catch(() => {
+                this.setState({ isSubmitting: false });
+            });
+    };
+
+    handleSendResetPasswordLink = async (values, onSuccess) => {
+        await this.setState({ isSubmitting: true });
+        sendPassResetLink(values, onSuccess)
+            .then(() => {
+                this.setState({ isSubmitting: false });
+            })
+            .catch(() => {
+                this.setState({ isSubmitting: false });
+            });
+    };
+
     render() {
         const location = queryString.parse(_get(this.props, 'location.search'));
 
@@ -58,15 +92,12 @@ class LoginPage extends Component {
                             closeModal={this.closeModal}
                             openLoginModal={this.openLoginModal}
                             closable={false}
-                            signup={values => {
-                                onSignup(client, values);
-                            }}
-                            onLogin={values => {
-                                onLogin(client, values);
-                            }}
+                            signup={values => this.handleSignup(client, values)}
+                            onLogin={values => this.handleLogin(client, values)}
                             visibleModal={this.state.currentModal}
-                            sendPassResetLink={sendPassResetLink}
+                            sendPassResetLink={this.handleSendResetPasswordLink}
                             message="You need to login first before you can view this page"
+                            isSubmitting={this.state.isSubmitting}
                         />
                     );
                 }}

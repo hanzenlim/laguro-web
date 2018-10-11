@@ -10,6 +10,7 @@ const ReservationModalView = ({
     openLoginModal,
     visible,
     signup,
+    isSubmitting,
 }) => (
     <Modal onCancel={closeModal} destroyOnClose={true} visible={visible}>
         <Flex
@@ -28,7 +29,7 @@ const ReservationModalView = ({
             </Text>
 
             <Box width={300}>
-                <Form layout="vertical" onSuccess={signup} debounce="true">
+                <Form layout="vertical" onSuccess={signup} debounce="false">
                     <FormItem
                         name="firstName"
                         label="first name"
@@ -89,7 +90,11 @@ const ReservationModalView = ({
                         input={<Input type="password" />}
                     />
 
-                    <SubmitButton px={30} buttonText="create account" />
+                    <SubmitButton
+                        px={30}
+                        buttonText="create account"
+                        loading={isSubmitting}
+                    />
                 </Form>
             </Box>
             <Flex mt={10}>
@@ -108,12 +113,14 @@ ReservationModalView.defaultProps = {
     closeModal: () => {},
     signup: () => {},
     visible: false,
+    isSubmitting: false,
 };
 
 ReservationModalView.propTypes = {
     closeModal: PropTypes.func,
     signup: PropTypes.func,
     visible: PropTypes.bool,
+    isSubmitting: PropTypes.bool,
 };
 
 export default ReservationModalView;

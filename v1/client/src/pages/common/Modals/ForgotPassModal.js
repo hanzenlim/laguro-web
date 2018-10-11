@@ -6,14 +6,14 @@ import Checkmark from '../../../components/CheckMarkAnimation';
 
 const { FormItem, SubmitButton } = Form;
 
-const PreSubmitContent = ({ handleSubmit, openLoginModal }) => (
+const PreSubmitContent = ({ handleSubmit, openLoginModal, isSubmitting }) => (
     <Fragment>
         <Text fontSize={4} mt={10} mb={40}>
             enter the email address associated with your account and we will
             send you a password reset link.
         </Text>
 
-        <Form onSuccess={handleSubmit}>
+        <Form onSuccess={handleSubmit} debounce="false">
             <FormItem
                 name="email"
                 label="your email"
@@ -27,7 +27,11 @@ const PreSubmitContent = ({ handleSubmit, openLoginModal }) => (
                 validateTrigger="onBlur"
                 input={<Input type="email" />}
             />
-            <SubmitButton px={30} buttonText="send link" />
+            <SubmitButton
+                px={30}
+                buttonText="send link"
+                loading={isSubmitting}
+            />
         </Form>
 
         <Flex mt={10}>
@@ -57,7 +61,12 @@ class ForgotPassModal extends PureComponent {
     };
 
     render() {
-        const { visible, openLoginModal, closeModal } = this.props;
+        const {
+            visible,
+            openLoginModal,
+            closeModal,
+            isSubmitting,
+        } = this.props;
         return (
             <Modal
                 onCancel={closeModal}
@@ -93,6 +102,7 @@ class ForgotPassModal extends PureComponent {
                         </Fragment>
                     ) : (
                         <PreSubmitContent
+                            isSubmitting={isSubmitting}
                             openLoginModal={openLoginModal}
                             handleSubmit={this.handleSubmit}
                         />
@@ -108,6 +118,7 @@ ForgotPassModal.defaultProps = {
     closeModal: () => {},
     sendPassResetLink: () => {},
     visible: false,
+    isSubmitting: false,
 };
 
 ForgotPassModal.propTypes = {
@@ -115,6 +126,7 @@ ForgotPassModal.propTypes = {
     closeModal: PropTypes.func,
     sendPassResetLink: PropTypes.func,
     visible: PropTypes.bool,
+    isSubmitting: PropTypes.bool,
 };
 
 export default ForgotPassModal;

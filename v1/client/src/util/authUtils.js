@@ -4,7 +4,7 @@ import history from '../history';
 import request from './fetchUtil';
 import { ACTIVE_USER } from './strings';
 
-export const onLogin = (clientCache, values) => {
+export const onLogin = (clientCache, values) =>
     request('/api/login', {
         method: 'POST',
         credentials: 'same-origin',
@@ -28,9 +28,8 @@ export const onLogin = (clientCache, values) => {
             message.error(res.message);
         }
     });
-};
 
-export const onSignup = (clientCache, values) => {
+export const onSignup = (clientCache, values) =>
     request('/api/signup', {
         method: 'POST',
         credentials: 'same-origin',
@@ -54,9 +53,8 @@ export const onSignup = (clientCache, values) => {
             message.error(res.message);
         }
     });
-};
 
-export const sendPassResetLink = (values, onSuccess) => {
+export const sendPassResetLink = (values, onSuccess) =>
     request('/api/forgot-password', {
         method: 'POST',
         credentials: 'same-origin',
@@ -72,7 +70,6 @@ export const sendPassResetLink = (values, onSuccess) => {
             message.error(res.message);
         }
     });
-};
 
 export const onLogout = clientCache => {
     // eslint-disable-next-line

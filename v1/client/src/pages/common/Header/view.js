@@ -112,6 +112,7 @@ const Header = ({
     isDentist,
     isHost,
     onOnboardingPage,
+    isSubmitting,
 }) => {
     let placeholder;
     let logoType;
@@ -145,18 +146,21 @@ const Header = ({
                 openForgotPassModal={openForgotPassModal}
                 closeModal={closeModal}
                 visible={visibleModal === 'login'}
+                isSubmitting={isSubmitting}
             />
             <RegistrationModal
                 signup={signup}
                 openLoginModal={openLoginModal}
                 closeModal={closeModal}
                 visible={visibleModal === 'register'}
+                isSubmitting={isSubmitting}
             />
             <ForgotPassModal
                 sendPassResetLink={sendPassResetLink}
                 openLoginModal={openLoginModal}
                 closeModal={closeModal}
                 visible={visibleModal === 'forgotPass'}
+                isSubmitting={isSubmitting}
             />
             <Container
                 display="flex"
@@ -219,6 +223,7 @@ Header.defaultProps = {
     logout: () => {},
     openLoginModal: () => {},
     closeModal: () => {},
+    isSubmitting: false,
 };
 
 Header.propTypes = {
@@ -228,6 +233,7 @@ Header.propTypes = {
     logout: PropTypes.func,
     openLoginModal: PropTypes.func,
     closeModal: PropTypes.func,
+    isSubmitting: PropTypes.bool,
 };
 
 export default Header;
