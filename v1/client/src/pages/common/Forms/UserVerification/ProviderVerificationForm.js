@@ -23,7 +23,11 @@ const ProviderVerificationForm = props => {
                     name="deaRegistrationNumber"
                     label="DEA Registration Number"
                     input={<Input mb={32} height={50} />}
-                    normalize={value => value || null}
+                    normalize={
+                        get(props.data, 'deaRegistrationNumber')
+                            ? value => value || null
+                            : null
+                    }
                     rules={[
                         {
                             pattern: /^[A-Z][A-Z9][0-9]{7}(-\w+)?/,
