@@ -21,11 +21,8 @@ const HostVerificationForm = props => (
                 name="deaRegistrationNumber"
                 label="DEA Registration Number"
                 input={<Input mb={32} height={50} />}
+                normalize={value => value || null}
                 rules={[
-                    {
-                        required: true,
-                        message: 'DEA Registration Number is required',
-                    },
                     {
                         pattern: /^[A-Z][A-Z9][0-9]{7}(-\w+)?/,
                         message: 'DEA Registration Number must appear valid',
@@ -34,11 +31,11 @@ const HostVerificationForm = props => (
                 validateTrigger="onBlur"
                 initialValue={get(props.data, 'deaRegistrationNumber')}
             />
-            <FrontBackDocumentsSelector
+            <SingleDocumentSelector
                 {...props}
                 name="documents.stateDentalLicense"
                 initialValue={get(props.data, 'documents.stateDentalLicense')}
-                label="Upload a front and back of your State Dental License"
+                label="Upload a front of your State Dental License"
             />
             <FrontBackDocumentsSelector
                 {...props}

@@ -12,7 +12,7 @@ import _isString from 'lodash/isString';
 import PatientVerificationForm from '../../common/Forms/UserVerification/PatientVerificationForm';
 import ProviderVerificationForm from '../../common/Forms/UserVerification/ProviderVerificationForm';
 import HostVerificationForm from '../../common/Forms/UserVerification/HostVerificationForm';
-import { Form } from '../../../components';
+import { Form, Loading } from '../../../components';
 
 import { documentKinds } from '../../../staticData/documentTypeList';
 import { HOST, DENTIST, PATIENT } from '../../../util/strings';
@@ -327,7 +327,7 @@ class UserVerification extends Component {
 
     render() {
         const { persona } = this.props;
-        const { hasUpdated, error } = this.state;
+        const { hasUpdated, error, data } = this.state;
 
         const FormRender = props => {
             if (persona === DENTIST) {
@@ -344,6 +344,8 @@ class UserVerification extends Component {
 
             return null;
         };
+
+        if (!data) return <Loading />;
 
         return (
             <Form onSuccess={this.handleSubmit}>

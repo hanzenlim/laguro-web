@@ -28,7 +28,7 @@ export const SingleDocumentSelector = props => {
 
     const initialValue = isEmpty(props.initialValue)
         ? [{}]
-        : props.initialValue;
+        : [props.initialValue[0]];
 
     return (
         <FormItem
