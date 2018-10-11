@@ -31,7 +31,7 @@ const ReserveOfficeView = ({
     isSubmitting,
     updateSubmittingState,
 }) => (
-    <Box width="513px">
+    <Box>
         <Box
             boxShadow="1px 1px 7px 0 rgba(0, 0, 0, 0.15)"
             border="1px solid"

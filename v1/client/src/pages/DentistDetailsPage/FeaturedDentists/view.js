@@ -14,7 +14,7 @@ const FeaturedDentistsView = props => {
 
             <Flex justifyContent="space-between" mt={30}>
                 {featuredDentists.map(item => (
-                    <Box width="295px">
+                    <Box width="23%">
                         <Link type="ghost" to={`/dentist/${item.id}`}>
                             <DentistCard
                                 name={item.name}

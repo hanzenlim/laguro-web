@@ -121,7 +121,7 @@ class OfficeDetailsPageView extends PureComponent {
                         justifyContent="space-between"
                     >
                         <Flex>
-                            <Box>
+                            <Box width="57%">
                                 <OfficeDetails
                                     id={id}
                                     viewOnly={false}
@@ -134,14 +134,18 @@ class OfficeDetailsPageView extends PureComponent {
                                 />
                                 <ReviewContainer type={OFFICE} id={id} />
                             </Box>
-                            <Sticky mt={20} offset="20px">
-                                <Box mt="44px">
-                                    <ReserveOffice
-                                        officeId={id}
-                                        startLoading={officeDetailsDoneLoading}
-                                    />
-                                </Box>
-                            </Sticky>
+                            <Box width="40%">
+                                <Sticky mt={20} offset="20px">
+                                    <Box mt="44px">
+                                        <ReserveOffice
+                                            officeId={id}
+                                            startLoading={
+                                                officeDetailsDoneLoading
+                                            }
+                                        />
+                                    </Box>
+                                </Sticky>
+                            </Box>
                         </Flex>
                         <FeaturedOffices currentOffice={id} />
                     </Flex>

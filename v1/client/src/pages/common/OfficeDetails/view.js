@@ -10,7 +10,7 @@ const OfficeDetailsView = props => {
 
     return (
         <Fragment>
-            <Box width="732px" mt={20} mr={34}>
+            <Box mt={20} mr={34}>
                 <Flex alignItems="center" mb={40} flexDirection="column">
                     <Text
                         color="text.black"

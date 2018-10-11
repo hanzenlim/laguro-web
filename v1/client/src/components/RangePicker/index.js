@@ -5,7 +5,7 @@ import { Flex, Text, Box, Icon } from '../../components';
 
 const StyledContainer = styled.div`
     position: relative;
-    width: 455px;
+    width: ${props => (props.width ? props.width : '455px')};
     height: 50px;
     border-radius: 2px;
     background-color: ${props => props.theme.colors.background.white};
@@ -71,7 +71,7 @@ class RangePicker extends PureComponent {
     getCalendarContainer = () => this.refs.datePickerContainer;
 
     render() {
-        const { value, ...rest } = this.props;
+        const { value, dateSize, ...rest } = this.props;
 
         return (
             <StyledContainer {...rest}>
@@ -104,7 +104,7 @@ class RangePicker extends PureComponent {
                             width={`calc((100% - ${rightArrowWidth}px) / 2)`}
                         >
                             <Text
-                                fontSize={3}
+                                fontSize={dateSize || 3}
                                 fontWeight="regular"
                                 color="text.black50"
                                 lineHeight="26px"
@@ -133,7 +133,7 @@ class RangePicker extends PureComponent {
                             width={`calc((100% - ${rightArrowWidth}px) / 2)`}
                         >
                             <Text
-                                fontSize={3}
+                                fontSize={dateSize || 3}
                                 fontWeight="regular"
                                 color="text.black50"
                                 ml={30}
