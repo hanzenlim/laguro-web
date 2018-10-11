@@ -9,7 +9,7 @@ export const getMyPosition = async () => {
         try {
             const position = await new Promise((res, rej) => {
                 navigator.geolocation.getCurrentPosition(res, rej, {
-                    timeout: 3000,
+                    timeout: 500,
                     maximumAge: 900000, // 15 min
                 });
             });
