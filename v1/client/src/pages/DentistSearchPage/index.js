@@ -100,7 +100,11 @@ class DetailsSearchPage extends PureComponent {
         const { defaultPosition } = this.state;
         // must in the elasticsearch context
         // see https://www.elastic.co/guide/en/elasticsearch/reference/6.3/query-dsl-bool-query.html
-        const must = [];
+        const must = [
+            {
+                term: { isVerified: { value: true } },
+            },
+        ];
         let distanceFilter = null;
 
         if (text) {
