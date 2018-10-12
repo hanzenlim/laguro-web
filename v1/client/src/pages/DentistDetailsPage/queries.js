@@ -20,6 +20,7 @@ export const getDentistQuery = gql`
                 id
                 rating
             }
+            isVerified
             totalRating
             numReviews
             averageRating

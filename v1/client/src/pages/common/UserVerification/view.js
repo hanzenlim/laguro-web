@@ -271,7 +271,9 @@ class UserVerification extends Component {
 
             await this.props.saveUser({
                 id: user.id,
+                // TODO delete line below and rely on user agents to update
                 isVerified: true,
+                sentVerificationDocuments: true,
                 insurancePreference: {
                     ...insurancePreference,
                     insurance: useInsurance
@@ -294,7 +296,9 @@ class UserVerification extends Component {
             await this.props.updateDentist({
                 id: dentist.id,
                 deaRegistrationNumber,
+                // TODO delete line below and rely on user agents to update
                 isVerified: true,
+                sentVerificationDocuments: true,
             });
         }
 

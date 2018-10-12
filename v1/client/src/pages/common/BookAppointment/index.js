@@ -72,7 +72,10 @@ class BookAppointment extends PureComponent {
             variables: { id: activeUser.id },
         });
 
-        if (getUser && getUser.isVerified) {
+        if (
+            getUser &&
+            (getUser.isVerified || getUser.sentVerificationDocuments)
+        ) {
             try {
                 this.setState({ isSubmitting: true });
 

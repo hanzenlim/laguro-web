@@ -263,7 +263,10 @@ class ReserveOffice extends Component {
             behavior: 'smooth',
         });
         // If user is verified go to payment page.
-        if (_get(result, 'data.getUser.dentist.isVerified')) {
+        if (
+            _get(result, 'data.getUser.dentist.isVerified') ||
+            _get(result, 'data.getUser.dentist.sentVerificationDocuments')
+        ) {
             return this.setState({
                 currentDisplay: PAYMENT_VIEW,
             });

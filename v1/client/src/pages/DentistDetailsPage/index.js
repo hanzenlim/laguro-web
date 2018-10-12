@@ -27,6 +27,10 @@ class DentistDetailsPageContainer extends PureComponent {
 
                     const dentist = data.getDentist;
 
+                    if (!dentist.isVerified) {
+                        return <RedirectErrorPage />;
+                    }
+
                     return <DentistDetailsPageView dentist={dentist} id={id} />;
                 }}
             </Query>

@@ -17,6 +17,7 @@ export const checkUserDentistVerifiedQuery = gql`
             dentist {
                 id
                 isVerified
+                sentVerificationDocuments
             }
         }
     }

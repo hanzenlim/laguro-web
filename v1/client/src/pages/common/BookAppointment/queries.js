@@ -69,6 +69,7 @@ export const checkPatientVerified = gql`
         getUser(id: $id) {
             id
             isVerified
+            sentVerificationDocuments
         }
     }
 `;
