@@ -25,9 +25,9 @@
         "deploy-v1-countdown-assets": "s3-deploy './client/build/**' --cwd './client/build/' --region us-west-1 --bucket laguro-v1-countdown --gzip js,css,jpg,png,svg,map --cache 2503982 --filePrefix $(date '+%m-%d-%Y:')$(git log --pretty=format:'%h' -n 1)",
         "deploy-v1": "env-cmd /home/runner/security.env.stage sls deploy -v --stage v1",
         "deploy-v1-countdown": "env-cmd /home/runner/security.env.stage sls deploy -v --stage countdown",
-        "build-prod-assets": "PUBLIC_URL=https://d3smeczt2xieia.cloudfront.net/$(date '+%m-%d-%Y:')$(git log --pretty=format:'%h' -n 1) env-cmd /home/runner/security.env.stage npm run build --prefix client",
+        "build-prod-assets": "PUBLIC_URL=https://d3smeczt2xieia.cloudfront.net/$(date '+%m-%d-%Y:')$(git log --pretty=format:'%h' -n 1) env-cmd /home/runner/security.env.prod npm run build --prefix client",
         "deploy-prod-assets": "s3-deploy './client/build/**' --cwd './client/build/' --region us-west-1 --bucket laguro-prod-assets --gzip js,css,jpg,png,svg,map --cache 2503982 --filePrefix $(date '+%m-%d-%Y:')$(git log --pretty=format:'%h' -n 1)",
-        "deploy-prod": "env-cmd /home/runner/security.env.stage sls deploy -v --stage prod"
+        "deploy-prod": "env-cmd /home/runner/security.env.prod sls deploy -v --stage prod"
     },
     "author": "currymich",
     "license": "ISC",
