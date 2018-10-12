@@ -15,11 +15,23 @@ import {
     openForgotPassModal,
     closeModal,
 } from '../../../util/authUtils';
+import history from '../../../history';
 
 class HeaderContainer extends PureComponent {
-    state = {
-        isSubmitting: false,
-    };
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            isSubmitting: false,
+            pathname: window.location.pathname,
+        };
+
+        history.listen(location => {
+            this.setState({
+                pathname: location.pathname,
+            });
+        });
+    }
 
     handleLogin = async (client, values) => {
         await this.setState({ isSubmitting: true });
@@ -58,13 +70,8 @@ class HeaderContainer extends PureComponent {
         return (
             <Query query={getUserQuery}>
                 {({ loading, error, data, client }) => {
-                    const onLandingPage = window.location.pathname === '/';
-                    const onOnboardingPage = window.location.pathname.includes(
-                        'host-onboarding'
-                    );
-
                     if (loading) {
-                        return <HeaderView onLandingPage={onLandingPage} />;
+                        return <HeaderView />;
                     }
 
                     if (error) {
@@ -90,8 +97,7 @@ class HeaderContainer extends PureComponent {
                                 openForgotPassModal(client)
                             }
                             closeModal={() => closeModal(client)}
-                            onLandingPage={onLandingPage}
-                            onOnboardingPage={onOnboardingPage}
+                            pathname={this.state.pathname}
                         />
                     );
                 }}

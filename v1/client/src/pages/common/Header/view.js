@@ -3,7 +3,6 @@ import Intercom from 'react-intercom';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { Dropdown } from 'antd';
-import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 import SearchBox from '../SearchBox';
 import logo from '../../../components/Image/logo.png';
@@ -98,7 +97,7 @@ const IntercomContainer = ({ auth }) => {
 };
 
 const Header = ({
-    onLandingPage,
+    pathname,
     openLoginModal,
     openRegistrationModal,
     openForgotPassModal,
@@ -111,13 +110,13 @@ const Header = ({
     auth,
     isDentist,
     isHost,
-    onOnboardingPage,
     isSubmitting,
 }) => {
     let placeholder;
     let logoType;
-    const pathname = get(window, 'location.pathname');
 
+    const onLandingPage = pathname === '/';
+    const onOnboardingPage = pathname.includes('host-onboarding');
     if (pathname.startsWith('/office')) {
         logoType = onLandingPage ? 'whiteDentistLogo' : 'dentistLogo';
         placeholder = 'Search offices';
