@@ -36,7 +36,18 @@ const getOtherLocationResults = async (state = null, index) => {
     let searchFilter = { match_all: {} };
     if (index === DENTISTS)
         searchFilter = {
-            exists: { field: 'reservations' },
+            bool: {
+                must: [
+                    { exists: { field: 'reservations' } },
+                    {
+                        term: {
+                            isVerified: {
+                                value: true,
+                            },
+                        },
+                    },
+                ],
+            },
         };
 
     const searchResponse = await esClient.search({
