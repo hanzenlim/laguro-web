@@ -3,6 +3,7 @@ import { arrayOf, shape, string, number, func, bool } from 'prop-types';
 import moment from 'moment';
 
 import { Box, Flex, Image, Text, Rating, Truncate } from '../../../components';
+import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
 
 const ReviewContainer = props => {
     const {
@@ -59,7 +60,7 @@ const ReviewContainer = props => {
                     width={82}
                     height={82}
                     borderRadius="50%"
-                    src={review.reviewer.imageUrl}
+                    src={review.reviewer.imageUrl || defaultUserImage}
                     alt="reviewer-photo"
                 />
                 <Box px={10}>
