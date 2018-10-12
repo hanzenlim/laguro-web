@@ -18,9 +18,13 @@ export const getPatientsQuery = gql`
                 firstName
                 lastName
                 imageUrl
-                appointments {
+                appointments(
+                    options: {
+                        filters: [{ filterKey: "dentistId", filterValue: $id }]
+                    }
+                ) {
                     id
-                    endTime
+                    localStartTime
                 }
                 patientImages {
                     imageUrl
