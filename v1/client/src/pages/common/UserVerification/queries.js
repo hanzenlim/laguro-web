@@ -139,6 +139,7 @@ export const saveUserMutation = graphql(
             updateUser(input: $input) {
                 id
                 isVerified
+                sentVerificationDocuments
                 insurancePreference {
                     useInsurance
                     insurance {
