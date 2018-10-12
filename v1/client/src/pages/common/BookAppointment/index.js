@@ -123,7 +123,10 @@ class BookAppointment extends PureComponent {
             variables: { id: activeUser.id },
         });
 
-        if (getUser && getUser.isVerified) {
+        if (
+            (getUser && getUser.sentVerificationDocuments) ||
+            getUser.isVerified
+        ) {
             return true;
         }
 
