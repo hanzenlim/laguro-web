@@ -83,6 +83,16 @@ const CountdownPage = Loadable({
     loading: () => null,
 });
 
+const TermsPage = Loadable({
+    loader: () => import('./pages/TermsPage'),
+    loading: () => null,
+});
+
+const PrivacyPage = Loadable({
+    loader: () => import('./pages/PrivacyPage'),
+    loading: () => null,
+});
+
 const getIdQueryClient = gql`
     {
         activeUser @client {
@@ -192,6 +202,16 @@ class App extends Component {
                                                 path="/countdown"
                                                 exact
                                                 component={CountdownPage}
+                                            />
+                                            <Route
+                                                path="/terms"
+                                                exact
+                                                component={TermsPage}
+                                            />
+                                            <Route
+                                                path="/privacy"
+                                                exact
+                                                component={PrivacyPage}
                                             />
                                             <Route component={Error404Page} />
                                         </Switch>
