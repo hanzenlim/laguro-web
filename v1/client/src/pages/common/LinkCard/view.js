@@ -12,16 +12,7 @@ import {
 } from '../../../components';
 
 const LinkCard = props => {
-    const {
-        rating,
-        image = defaultDentistProfileImg,
-        address,
-        title,
-        subtitle,
-        size,
-        type,
-        url,
-    } = props;
+    const { rating, image, address, title, subtitle, size, type, url } = props;
 
     return (
         <Link type="ghost" to={url}>
@@ -34,7 +25,7 @@ const LinkCard = props => {
                         <Image
                             position="absolute"
                             borderRadius="4px"
-                            src={image}
+                            src={image || defaultDentistProfileImg}
                             height={props.height}
                             alt={title}
                             style={{
