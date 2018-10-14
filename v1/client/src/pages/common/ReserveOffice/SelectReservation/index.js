@@ -76,19 +76,9 @@ const getPriceAndHourSlot = (
     price,
     cleaningFee,
     listingId,
-    removePastHourTimeSlot = false,
     numChairsSelected
 ) => {
-    // Filter out past hour time slot
-    let startTime;
-    if (removePastHourTimeSlot) {
-        startTime = moment()
-            .startOf('hour')
-            .add(1, 'hours');
-    } else {
-        startTime = moment(start);
-    }
-
+    const startTime = moment(start);
     const endTime = moment(end);
     const diffHours = endTime.hour() - startTime.hour();
 
@@ -176,7 +166,6 @@ const getListingUIData = (
         chairHourlyPrice,
         cleaningFee,
         listingId,
-        false,
         numChairsSelected
     );
 
@@ -205,13 +194,29 @@ const getListingUIData = (
                 dayIterator.isSame(today, 'month') &&
                 dayIterator.isSame(today, 'day')
             ) {
+                let startDate;
+
+                // If current time is before the listing start date then we start
+                // the hour slot according to the listing start hour.
+                if (moment().isBefore(moment(listingStartDate), 'hour')) {
+                    startDate = moment(listingStartDate);
+                }
+                // If current time is after the listing start hour then we start at the
+                // next hour of the current time.
+                else if (
+                    moment().isSameOrBefore(moment(listingEndDate), 'hour')
+                ) {
+                    startDate = moment()
+                        .startOf('hour')
+                        .add(1, 'hours');
+                }
+
                 const shortenedHourSlot = getPriceAndHourSlot(
-                    moment(listingStartDate),
+                    moment(startDate),
                     moment(listingEndDate),
                     chairHourlyPrice,
                     cleaningFee,
                     listingId,
-                    true,
                     numChairsSelected
                 );
                 formattedData[key] = shortenedHourSlot;
