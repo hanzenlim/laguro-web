@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import get from 'lodash/get';
 import ReactMapGL, { Marker, NavigationControl } from 'react-map-gl';
+import WebMercatorViewport from 'viewport-mercator-project';
 import styled from 'styled-components';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import isEqual from 'lodash/isEqual';
@@ -37,9 +38,8 @@ class Map extends PureComponent {
         this.state = {
             popupInfo: null,
             viewport: {
-                width: 0,
-                height: 0,
-                // TODO figure out how to compute optimal bounding box
+                width: 440,
+                height: 662,
                 latitude:
                     get(this.currentPosition, 'lat') ||
                     get(props, 'data[0].latitude'),
@@ -66,10 +66,48 @@ class Map extends PureComponent {
         return null;
     }
 
-    componentDidMount() {
+    componentDidMount = async () => {
         window.addEventListener('resize', this.resize);
+
+        if (this.props.data.length > 1) {
+            const fitBounds = this.getFitBounds(this.props.data);
+
+            const { longitude, latitude, zoom } = new WebMercatorViewport(
+                this.state.viewport
+            ).fitBounds(fitBounds, {
+                padding: 30,
+                offset: [0, 0],
+            });
+
+            await this.setState({
+                viewport: {
+                    ...this.state.viewport,
+                    longitude,
+                    latitude,
+                    zoom,
+                },
+            });
+        }
+
         this.resize();
-    }
+    };
+
+    getFitBounds = coordinates => {
+        const latitudeList = coordinates.map(item => item.latitude);
+        const longitudeList = coordinates.map(item => item.longitude);
+
+        const minCoordinates = [
+            Math.min.apply(null, longitudeList),
+            Math.min.apply(null, latitudeList),
+        ];
+
+        const maxCooridnates = [
+            Math.max.apply(null, longitudeList),
+            Math.max.apply(null, latitudeList),
+        ];
+
+        return [minCoordinates, maxCooridnates];
+    };
 
     componentDidUpdate(prevProps) {
         const currentIds = this.props.data.map(e => e.id);
