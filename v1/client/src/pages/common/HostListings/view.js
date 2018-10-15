@@ -20,6 +20,11 @@ const StyledList = styled.ul`
     list-style-position: inside;
     padding: 0;
     margin: 0;
+
+    > li {
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
 `;
 
 class HostListings extends PureComponent {
