@@ -291,22 +291,32 @@ class UserVerification extends Component {
             const { dentist } = this.state;
             const { deaRegistrationNumber } = formData;
 
-            await this.props.updateDentist({
+            const variables = {
                 id: dentist.id,
-                deaRegistrationNumber,
                 sentVerificationDocuments: true,
-            });
+            };
+
+            if (deaRegistrationNumber && deaRegistrationNumber.length) {
+                variables.deaRegistrationNumber = deaRegistrationNumber;
+            }
+
+            await this.props.updateDentist(variables);
         }
 
         if (persona === HOST) {
             const { dentist } = this.state;
             const { deaRegistrationNumber } = formData;
 
-            await this.props.updateDentist({
+            const variables = {
                 id: dentist.id,
-                deaRegistrationNumber,
                 isHostVerified: true,
-            });
+            };
+
+            if (deaRegistrationNumber && deaRegistrationNumber.length) {
+                variables.deaRegistrationNumber = deaRegistrationNumber;
+            }
+
+            await this.props.updateDentist(variables);
         }
 
         this.setState({ hasUpdated: true, isSubmitting: false });
