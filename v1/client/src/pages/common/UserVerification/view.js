@@ -352,7 +352,9 @@ class UserVerification extends Component {
                 {hasUpdated && (
                     <StyledAlert
                         showIcon
-                        message={'You have been verified!'}
+                        message={
+                            'Your request for verification has been submitted.'
+                        }
                         type="success"
                     />
                 )}
