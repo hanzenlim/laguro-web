@@ -1,4 +1,4 @@
-import React, { Fragment, PureComponent } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import moment from 'moment';
@@ -179,9 +179,7 @@ class HostListings extends PureComponent {
                         justifyContent="space-between"
                         p={26}
                     >
-                        <Box textAlign="center">
-                            {this.renderAvailableTimes(availableTimes)}
-                        </Box>
+                        <Box>{this.renderAvailableTimes(availableTimes)}</Box>
                         <Text mx={15} fontSize={4}>
                             {name}
                         </Text>
@@ -226,17 +224,15 @@ class HostListings extends PureComponent {
 
     renderAvailableTimes = availableTimes =>
         availableTimes.map(({ startTime, endTime }, index) => (
-            <Fragment key={index}>
-                {index === 0 && (
-                    <Text fontSize={4} fontWeight="medium">
-                        {moment(startTime).format('ddd, MMM/D/YY')}
-                    </Text>
-                )}
-                <Text fontSize={4}>
+            <Box key={index} py={10}>
+                <Text fontSize={4} fontWeight="medium">
+                    {moment(startTime).format('ddd, MMM/D/YY')}
+                </Text>
+                <Text fontSize={2}>
                     {moment(startTime).format('h:mmA')} -{' '}
                     {moment(endTime).format('h:mmA')}
                 </Text>
-            </Fragment>
+            </Box>
         ));
 
     render() {
