@@ -106,6 +106,7 @@ const UpdateProfileForm = props => {
                                     force: true,
                                 },
                             },
+                            uploadInBackground: false,
                             storeTo: { container: USER_PHOTOS_CONTAINER },
                         }}
                         onSuccess={setNewProfileImage}
