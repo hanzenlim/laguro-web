@@ -12,6 +12,7 @@ const fetchFromES = async queryString => {
             query: {
                 multi_match: {
                     query: queryString,
+                    type: 'phrase_prefix',
                     fields: ['code', 'name', 'group'],
                 },
             },
