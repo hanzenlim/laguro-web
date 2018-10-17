@@ -33,8 +33,9 @@ class LoginPage extends Component {
 
     closeModal = () => {
         this.setState({
-            currentModal: 'login',
+            currentModal: null,
         });
+        this.props.history.push('/');
     };
 
     handleLogin = async (client, values) => {
@@ -91,7 +92,7 @@ class LoginPage extends Component {
                             openForgotPassModal={this.onOpenForgotPassModal}
                             closeModal={this.closeModal}
                             openLoginModal={this.openLoginModal}
-                            closable={false}
+                            closable
                             signup={values => this.handleSignup(client, values)}
                             onLogin={values => this.handleLogin(client, values)}
                             visibleModal={this.state.currentModal}
