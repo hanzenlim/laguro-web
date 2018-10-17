@@ -113,10 +113,12 @@ const PaymentDetailsView = ({
             {(type === RESERVATION_PAYMENT_TYPE || EQUIPMENT_PAYMENT_TYPE) &&
                 getInvoiceItems(EQUIPMENT_PAYMENT_TYPE).length > 0 && (
                     <Section title="Equipment">
-                        <LineItemGroup
-                            withQuantity
-                            itemType={EQUIPMENT_PAYMENT_TYPE}
-                        />
+                        <Box width={360}>
+                            <LineItemGroup
+                                withQuantity
+                                itemType={EQUIPMENT_PAYMENT_TYPE}
+                            />
+                        </Box>
                     </Section>
                 )}
             {type === RESERVATION_PAYMENT_TYPE &&
@@ -224,7 +226,7 @@ const Section = ({ title, children }) => (
 
 const LineItem = ({ quantity, name, price }) => (
     <Flex justifyContent="space-between">
-        <Flex>
+        <Flex pr={10}>
             {quantity && (
                 <Text fontSize={3} fontWeight="bold" color="text.black">
                     {quantity}
