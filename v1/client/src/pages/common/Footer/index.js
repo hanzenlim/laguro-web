@@ -12,8 +12,8 @@ const Footer = () => {
         <Flex
             is="footer"
             width={1}
-            height={['auto', '', 345]}
-            borderTop={window.location.pathname === '/' ? '' : '1px solid'}
+            height={345}
+            borderTop="1px solid"
             borderColor={'divider.gray'}
             bg={
                 window.location.pathname === '/'
@@ -26,24 +26,15 @@ const Footer = () => {
             justifyContent="space-between"
         >
             <Container
-                display={['block', '', 'flex']}
+                display="flex"
                 justifyContent="space-between"
                 alignItems="center"
             >
-                <Flex
-                    flexDirection="column"
-                    width={['auto', '', '70%']}
-                    my={[0, 0, 100]}
-                >
-                    <Text
-                        color="text.black50"
-                        fontSize={[1, 1, 4]}
-                        mb={[10, 10, 36]}
-                        fontWeight="bold"
-                    >
+                <Flex flexDirection="column" width="70%" my={100}>
+                    <Text color="text.black50" fontSize={4} mb={36}>
                         LET&#39;S CONNECT
                     </Text>
-                    <Text color="text.black" fontSize={[0, 0, 1]}>
+                    <Text color="text.black" fontSize={1}>
                         Laguro is here to provide support and answers for any
                         questions you may have. Send us your inquiries through
                         our chat box or to support@laguro.com, and we will be in
@@ -51,11 +42,7 @@ const Footer = () => {
                     </Text>
                 </Flex>
 
-                <Flex
-                    mt={[42, 42, 30]}
-                    mb={[20, 20, 0]}
-                    justifyContent={['center', '', 'flex-end']}
-                >
+                <Flex mt={30}>
                     <Link
                         mr={25}
                         to={'https://www.facebook.com/LaguroDental/'}
@@ -104,13 +91,11 @@ const Footer = () => {
 
             <Container
                 display="flex"
-                height={['auto', '', 64]}
+                height={64}
                 borderTop="1px solid"
                 borderColor="divider.gray"
                 justifyContent="space-between"
                 alignItems="center"
-                flexDirection={['column', '', 'row']}
-                py={[20, 20, 0]}
             >
                 <Flex alignItems="center">
                     <Icon
@@ -120,22 +105,18 @@ const Footer = () => {
                         type="locationPin"
                         alt="logo"
                     />
-                    <Text fontSize={[0, 0, 1]}>© 2018&nbsp;</Text>
-                    <Text fontSize={[0, 0, 1]} fontWeight="bold">
-                        laguro.
-                    </Text>
-                    <Text fontSize={[0, 0, 1]}>
-                        &nbsp; all rights reserved.
-                    </Text>
+                    <Text>© 2018&nbsp;</Text>
+                    <Text fontWeight="bold">laguro.</Text>
+                    <Text>&nbsp; all rights reserved.</Text>
                 </Flex>
-                <Flex mt={[20, 20, 0]}>
-                    <Link ml={[0, 0, 50]} to={'/terms'}>
-                        <Text fontSize={[0, 0, 1]} mb={2} color="black">
+                <Flex>
+                    <Link ml={50} to={'/terms'}>
+                        <Text fontSize={1} mb={2} color="black">
                             terms
                         </Text>
                     </Link>
                     <Link ml={50} to={'/privacy'}>
-                        <Text fontSize={[0, 0, 1]} mb={2} color="black">
+                        <Text fontSize={1} mb={2} color="black">
                             privacy
                         </Text>
                     </Link>
