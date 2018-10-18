@@ -25,15 +25,21 @@ const SearchBox = props => {
         onKeyPress,
     } = props;
 
+    const isLarge = size === 'large';
     return (
         <Flex
-            width={size === 'large' ? '100%' : '53%'}
+            width={isLarge ? '100%' : '53%'}
             justifyContent="center"
             onKeyPress={onKeyPress}
+            flexDirection={isLarge ? ['column', '', 'row'] : 'row'}
         >
-            <Box width={size === 'large' ? '56%' : '62%'} mr={10}>
+            <Box
+                width={isLarge ? ['100%', '', '56%'] : '62%'}
+                mr={10}
+                mb={[8, 8, 0]}
+            >
                 <LocationFilter
-                    height={60}
+                    height={isLarge ? [50, 50, 60] : 60}
                     initialValue={initialLocationFilterValue}
                     placeholder={locationPlaceholder}
                     onTextChange={onTextChange}
@@ -42,35 +48,46 @@ const SearchBox = props => {
                     withDentists={true}
                 />
             </Box>
-            <Box width={size === 'large' ? '27%' : '26%'} mr={10}>
+            <Box
+                width={isLarge ? ['100%', '', '56%'] : '26%'}
+                mr={10}
+                mb={[8, 8, 0]}
+            >
                 <DatePicker
                     initialValue={initialDateFilterValue}
                     onDateChange={onDateFilterChange}
                     width="100%"
-                    format={size === 'large' ? 'ddd MM/DD' : 'MM/DD'}
+                    height={isLarge ? [50, 50, 60] : 60}
+                    format={isLarge ? 'ddd MM/DD' : 'MM/DD'}
                 />
             </Box>
             <StyledButton
-                height="60px"
-                width={size === 'large' ? '210px' : '60px'}
+                height={['50px', '50px', '60px']}
+                width={isLarge ? ['100%', '', '210px'] : '60px'}
                 type="default"
                 bg="background.blue"
                 onClick={onSubmit}
-                pl={size === 'large' ? 40 : 10}
+                pl={isLarge ? [10, 10, 40] : 10}
             >
                 <Flex
                     alignItems="center"
-                    justifyContent={size === 'large' ? 'flex-start' : 'center'}
+                    justifyContent={
+                        isLarge ? ['center', '', 'flex-start'] : 'center'
+                    }
                 >
                     <Icon
                         fontSize={3}
                         style={{ fontWeight: 'bold' }}
                         color="white"
                         type="search"
-                        mr={size === 'large' ? 15 : 0}
+                        mr={isLarge ? 15 : 0}
                     />
-                    {size === 'large' && (
-                        <Text fontSize={3} fontWeight="bold" color="white">
+                    {isLarge && (
+                        <Text
+                            fontSize={[0, 0, 3]}
+                            fontWeight="bold"
+                            color="white"
+                        >
                             Search
                         </Text>
                     )}

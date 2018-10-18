@@ -22,7 +22,8 @@ const StyledIcon = styled(Icon)`
 const StyledAutocomplete = styled(AntdAutocomplete)`
     && {
         position: relative;
-        ${height} ${width};
+        ${height};
+        ${width};
 
         && .ant-select-selection {
             background-color: ${props =>
@@ -37,9 +38,13 @@ const StyledAutocomplete = styled(AntdAutocomplete)`
             background-color: ${props => props.theme.colors.background.white};
             border-radius: 2px;
             color: ${props => props.theme.colors.text.black50};
-            font-size: ${props => props.theme.fontSizes[2]};
+            font-size: ${props => props.theme.fontSizes[0]};
             font-weight: 700;
             transition: none;
+
+            @media (min-width: 992px) {
+                font-size: ${props => props.theme.fontSizes[2]};
+            }
         }
 
         && .ant-input-disabled {
@@ -54,10 +59,14 @@ const StyledAutocomplete = styled(AntdAutocomplete)`
             ${height};
             padding-left: ${props => (props.withDentists ? '10px' : '35px')};
             color: ${props => props.theme.colors.text.gray};
-            font-size: ${props => props.theme.fontSizes[2]};
+            font-size: ${props => props.theme.fontSizes[0]};
             z-index: ${props => props.theme.zIndex.inputElement};
             font-weight: 700;
             font-family: Silka;
+
+            @media (min-width: 992px) {
+                font-size: ${props => props.theme.fontSizes[2]};
+            }
         }
 
         && .ant-select-search__field__mirror {
