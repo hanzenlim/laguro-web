@@ -20,32 +20,15 @@ import office from '../../components/Image/office.svg';
 
 const StyledCard = styled(Card)`
     && {
-        box-shadow: ${props => props.theme.shadows[1]};
+        box-shadow: ${props => props.theme.shadows[2]};
         border-color: ${props => props.theme.colors.divider.gray};
-        padding: 20px;
+        padding: 40px 70px;
         height: 100%;
-
-        @media (min-width: 992px) {
-            padding: 40px 70px;
-        }
     }
 
     && .ant-card-head {
         border-bottom: none;
         padding: 0;
-        min-height: auto;
-
-        @media (min-width: 992px) {
-            min-height: 48px;
-        }
-    }
-
-    && .ant-card-head-title {
-        padding: 0 0 16px 0;
-
-        @media (min-width: 992px) {
-            padding: 16px 0;
-        }
     }
 
     && .ant-card-body {
@@ -56,17 +39,12 @@ const StyledCard = styled(Card)`
 const Background = styled(Box)`
     width: 100%;
     height: 100%;
-    background: url(${hero}) no-repeat center scroll;
+    background: url(${hero}) no-repeat center -175px scroll;
     background-size: cover;
     z-index: 1;
     position: absolute;
     top: 0;
     left: 0;
-
-    @media (min-width: 992px) {
-        background: url(${hero}) no-repeat center -175px scroll;
-        background-size: cover;
-    }
 `;
 
 const Filter = styled(Box)`
@@ -86,7 +64,7 @@ const HeroContent = styled(Container)`
         position: relative;
     }
 
-    && > * {
+    && * {
         z-index: 100;
         opacity: 1;
     }
@@ -94,30 +72,23 @@ const HeroContent = styled(Container)`
 
 const HomePageView = () => (
     <Flex flexDirection="column" height="100%" justifyContent="space-between">
-        <Box
-            height={[250, 350, 720]}
-            width="100%"
-            position="relative"
-            mb={[200, 200, 0]}
-        >
+        <Box height="720px" width="100%" position="relative">
             <Filter />
             <Background />
             <HeroContent
                 color="text.white"
-                pt={[120, 175, 280]}
+                m="auto"
+                pt={280}
+                minWidth="840px"
                 textAlign="left"
             >
-                <Box mb={[80, 110, 70]}>
-                    <Text
-                        fontWeight="bold"
-                        color="text.white"
-                        fontSize={[2, 4, 6]}
-                    >
+                <Box mb={70}>
+                    <Text fontWeight="bold" color="text.white" fontSize={6}>
                         Smile anywhere.
                     </Text>
                     <Text
                         color="text.white"
-                        fontSize={[2, 3, 5]}
+                        fontSize={5}
                         lineHeight={1.4}
                         fontWeight="medium"
                     >
@@ -126,7 +97,7 @@ const HomePageView = () => (
                     <Text
                         color="text.white"
                         lineHeight={1.4}
-                        fontSize={[2, 3, 5]}
+                        fontSize={5}
                         fontWeight="medium"
                     >
                         and book an appointment today
@@ -141,81 +112,47 @@ const HomePageView = () => (
         <FeaturedList />
 
         <Container>
-            <Text
-                color="text.black50"
-                fontSize={[1, 1, 4]}
-                mb={[10, 10, 36]}
-                fontWeight={['bold', '', 'regular']}
-            >
+            <Text color="text.black50" fontSize={4} mb={36}>
                 ARE YOU A DENTIST?
             </Text>
-            <Flex
-                data-name="role-boxes"
-                justifyContent="space-between"
-                mb={[10, 10, 75]}
-                flexDirection={['column', '', 'row']}
-            >
-                <Box
-                    width={['100%', '100%', '48.5%']}
-                    minHeight={['auto', '', '360px']}
-                    mb={[20, 20, 0]}
-                >
-                    <StyledCard
-                        title={<Image src={office} width={[25, 25, 'auto']} />}
-                    >
-                        <Text
-                            fontSize={[1, 1, 5]}
-                            fontWeight={['medium', '', 'regular']}
-                            color="text.black"
-                            mb={8}
-                        >
+            <Flex data-name="role-boxes" justifyContent="space-between" mb={75}>
+                <Box width="48.5%" minHeight="360px">
+                    <StyledCard title={<Image src={office} />}>
+                        <Text fontSize={5} color="text.black" mb={8}>
                             Become a host
                         </Text>
-                        <Text fontSize={[0, 0, 2]} color="text.black" mb={22}>
+                        <Text fontSize={2} color="text.black" mb={22}>
                             Have empty chairs and unused equipment in your
                             office? List them here and start sharing your space
                             today!
                         </Text>
                         <Link to="/host-onboarding/add-office">
                             <Text
-                                fontSize={[1, 1, 4]}
+                                fontSize={4}
                                 mr={5}
                                 color="text.blue"
-                                fontWeight={['medium', '', 'bold']}
-                                textAlign={['right', '', 'left']}
+                                fontWeight="bold"
                             >
                                 Create a listing ➞
                             </Text>
                         </Link>
                     </StyledCard>
                 </Box>
-                <Box
-                    width={['100%', '100%', '48.5%']}
-                    minHeight={['auto', '', '360px']}
-                    mb={[20, 20, 0]}
-                >
-                    <StyledCard
-                        title={<Image src={chair} width={[25, 25, 'auto']} />}
-                    >
-                        <Text
-                            fontSize={[1, 1, 5]}
-                            fontWeight={['medium', '', 'regular']}
-                            color="text.black"
-                            mb={8}
-                        >
+                <Box width="48.5%" minHeight="360px">
+                    <StyledCard title={<Image src={chair} />}>
+                        <Text fontSize={5} color="text.black" mb={8}>
                             Book a chair
                         </Text>
-                        <Text fontSize={[0, 0, 2]} color="text.black" mb={22}>
+                        <Text fontSize={2} color="text.black" mb={22}>
                             Want to see your patients when you want, where you
                             want? Book a chair and equipment you need here.
                         </Text>
                         <Link to="/office/search">
                             <Text
-                                fontSize={[1, 1, 4]}
+                                fontSize={4}
                                 mr={5}
                                 color="text.blue"
-                                fontWeight={['medium', '', 'bold']}
-                                textAlign={['right', '', 'left']}
+                                fontWeight="bold"
                             >
                                 Search for chairs ➞
                             </Text>
@@ -228,50 +165,36 @@ const HomePageView = () => (
             <Container>
                 <Flex
                     width="100%"
-                    height={['auto', '', 366]}
+                    height="366px"
                     justifyContent="space-around"
-                    flexDirection={['column', '', 'row']}
-                    mb={[0, 0, -170]}
+                    mb={-170}
                 >
                     <Image
-                        width={['100%', '100%', 566]}
+                        width="566px"
                         src={aboutUs}
                         alt="about us cartoon"
                         style={{ zIndex: 100 }}
                     />
-                    <Flex
-                        width={['100%', '100%', 450]}
-                        flexDirection="column"
-                        pt={[0, 0, 60]}
-                        pl={[0, 0, 80]}
-                    >
+                    <Flex width={450} flexDirection="column" pt={60} pl={80}>
                         <Text
-                            color={['text.black50', '', 'text.black']}
+                            color="text.black"
                             fontWeight="bold"
-                            fontSize={[1, 1, 5]}
-                            mb={[10, 10, 20]}
+                            fontSize={5}
+                            mb={20}
                         >
                             Laguro has arrived
                         </Text>
-                        <Text
-                            color="text.black"
-                            fontSize={[0, 0, 4]}
-                            mb={[20, 20, 50]}
-                        >
+                        <Text color="text.black" fontSize={4}>
                             Meet Laguro and
-                            {''}
-                            <Text is="br" display={['none', '', 'inline']} />
+                        </Text>
+                        <Text color="text.black" fontSize={4} mb={50}>
                             learn more about what we do!
                         </Text>
                         <Link to="/about">
-                            <Button
-                                width={['100%', '100%', 260]}
-                                height={['50px', '50px', '80px']}
-                                mb={[50, 50, 0]}
-                            >
+                            <Button width="260px" height="80px">
                                 <Text
                                     color="text.white"
-                                    fontSize={[0, 0, 4]}
+                                    fontSize={4}
                                     fontWeight="bold"
                                 >
                                     About us
