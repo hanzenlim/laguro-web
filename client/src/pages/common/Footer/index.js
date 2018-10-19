@@ -5,7 +5,9 @@ import { Text, Flex, Link, Icon, Container } from '../../../components';
 
 const Footer = () => {
     const pathname = _get(window, 'location.pathname');
-    const shouldShowFooter = !pathname.startsWith('/host-onboarding');
+    const shouldShowFooter =
+        !pathname.startsWith('/host-onboarding') &&
+        !pathname.includes('search');
     if (!shouldShowFooter) return null;
 
     return (

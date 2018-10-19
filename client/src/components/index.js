@@ -35,6 +35,7 @@ import Skeleton from './Skeleton';
 import Tabs from './Tabs';
 import Grid from './Grid';
 import Tooltip from './Tooltip';
+import Responsive from './Responsive';
 
 export {
     Box,
@@ -75,4 +76,5 @@ export {
     Skeleton,
     Tabs,
     Grid,
+    Responsive,
 };

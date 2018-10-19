@@ -16,7 +16,7 @@ const LinkCard = props => {
 
     return (
         <Link type="ghost" to={url}>
-            <Box minWidth="186px" width="100%">
+            <Box width="100%">
                 <Box size="186px" position="relative" borderRadius="4px">
                     <Box
                         pb={type === 'rectangle' ? '75%' : '100%'}

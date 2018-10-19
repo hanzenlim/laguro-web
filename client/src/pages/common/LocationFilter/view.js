@@ -179,8 +179,8 @@ const LocationFilterView = ({
                     width={20}
                     height={20}
                     ml={14}
-                    type="environment-o"
-                    color="icon.green"
+                    type="locationPin"
+                    color="icon.blue"
                     fontSize={3}
                 />
             )}

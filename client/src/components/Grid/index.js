@@ -19,12 +19,19 @@ const GridSystem = system(
         is: Box,
         display: 'grid',
     },
+    // Avoid using these custom props. Will be deprecating these.
     props => ({
         'grid-template-columns': props.gtc,
         'grid-template-rows': props.gtr,
         'grid-column-gap': props.gcg,
         'grid-row-gap': props.grg,
     }),
+    // Use these instead
+    'gridTemplateColumns',
+    'gridTemplateRows',
+    'gridColumnGap',
+    'gridRowGap',
+    //
     'alignItems',
     'justifyItems',
     'space',

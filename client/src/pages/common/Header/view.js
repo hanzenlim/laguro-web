@@ -7,7 +7,15 @@ import isEmpty from 'lodash/isEmpty';
 import SearchBox from '../SearchBox';
 import logo from '../../../components/Image/logo.png';
 import whiteLogo from '../../../components/Image/whiteLogo.png';
-import { Flex, Link, Container, Icon, Text, Image } from '../../../components';
+import {
+    Flex,
+    Link,
+    Container,
+    Icon,
+    Text,
+    Image,
+    Responsive,
+} from '../../../components';
 import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
 import LoginModal from '../Modals/LoginModal';
 import RegistrationModal from '../Modals/RegistrationModal';
@@ -15,6 +23,8 @@ import ForgotPassModal from '../Modals/ForgotPassModal';
 import { intercomKey } from '../../../config/keys';
 
 import ProfileMenu from './ProfileMenu';
+
+const { Desktop } = Responsive;
 
 const NavBarLink = styled(Link)`
     padding: 17px 10px 10px 10px;
@@ -124,10 +134,20 @@ const Header = ({
         placeholder = 'Search dentists';
     }
 
+    const onSearchPage =
+        pathname.includes('/office/search') ||
+        pathname.includes('/dentist/search');
+
+    const position = () => {
+        if (onSearchPage) return 'fixed';
+        if (onLandingPage) return 'absolute';
+        return 'relative';
+    };
+
     return (
         <Flex
             is="header"
-            width={1}
+            width="100vw"
             height={120}
             bg={onLandingPage ? 'background.transparent' : 'background.white'}
             borderBottom={onLandingPage ? 'none' : '1px solid'}
@@ -136,7 +156,7 @@ const Header = ({
             alignItems="center"
             justifyContent="center"
             style={{ zIndex: 600 }}
-            position={onLandingPage ? 'absolute' : 'relative'}
+            position={position()}
         >
             <IntercomContainer auth={auth} />
             <LoginModal
@@ -178,28 +198,38 @@ const Header = ({
                         />
                     )}
                 </Link>
-                {!onLandingPage && (
-                    <SearchBox placeholder={placeholder} size="small" />
-                )}
-                <Flex alignItems="center">
-                    {!onOnboardingPage && (
-                        <NavBarLink
-                            ml="0px"
-                            to={auth ? '/host-onboarding/add-office' : '/'}
-                            onClick={auth ? () => {} : openLoginModal}
-                        >
-                            <Text
-                                color={
-                                    onLandingPage ? 'text.white' : 'text.black'
-                                }
-                                fontSize={1}
-                                fontWeight="bold"
-                                mb={4}
-                            >
-                                {isHost ? 'add a new office' : 'become a host'}
-                            </Text>
-                        </NavBarLink>
+
+                <Desktop>
+                    {!onLandingPage && (
+                        <SearchBox placeholder={placeholder} size="small" />
                     )}
+                </Desktop>
+
+                <Flex alignItems="center">
+                    <Desktop>
+                        {!onOnboardingPage && (
+                            <NavBarLink
+                                ml="0px"
+                                to={auth ? '/host-onboarding/add-office' : '/'}
+                                onClick={auth ? () => {} : openLoginModal}
+                            >
+                                <Text
+                                    color={
+                                        onLandingPage
+                                            ? 'text.white'
+                                            : 'text.black'
+                                    }
+                                    fontSize={1}
+                                    fontWeight="bold"
+                                    mb={4}
+                                >
+                                    {isHost
+                                        ? 'add a new office'
+                                        : 'become a host'}
+                                </Text>
+                            </NavBarLink>
+                        )}
+                    </Desktop>
                     <ProfileButton
                         isDentist={isDentist}
                         isHost={isHost}

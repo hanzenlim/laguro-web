@@ -17,6 +17,7 @@ class OfficeDetailsPageContainer extends PureComponent {
             officeDetailsDoneLoading: true,
         });
     };
+
     render() {
         const { id } = this.props.match.params;
 

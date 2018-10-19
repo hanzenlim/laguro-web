@@ -1,10 +1,12 @@
 import React, { PureComponent } from 'react';
 import queryString from 'query-string';
 
-import { Flex, Text, Box } from '../../../components';
+import { Flex, Text, Box, Grid, Responsive } from '../../../components';
 import getOtherLocationResults from './queries';
 import history from '../../../history';
 import MajorCities from '../../../staticData/majorCities';
+
+const { Desktop } = Responsive;
 
 class NoResults extends PureComponent {
     constructor(props) {
@@ -63,14 +65,23 @@ class NoResults extends PureComponent {
 
         return (
             <Flex flexDirection="column">
-                <Flex mb={55}>
-                    <Text fontSize={5} color="text.black">
-                        Search Results for&nbsp;
-                    </Text>
-                    <Text fontSize={5} color="text.black" fontWeight="bold">
-                        {searchCity || searchState || text}
-                    </Text>
-                </Flex>
+                {searchCity || searchState || text ? (
+                    <Desktop>
+                        <Flex mb={55}>
+                            <Text fontSize={5} color="text.black">
+                                Search Results for&nbsp;
+                            </Text>
+                            <Text
+                                fontSize={5}
+                                color="text.black"
+                                fontWeight="bold"
+                            >
+                                {searchCity || searchState || text}
+                            </Text>
+                        </Flex>
+                    </Desktop>
+                ) : null}
+
                 <Text fontSize={4} color="text.black" mb={10}>
                     {`Oh no! It seems like there are no ${type} near you${extraText}.`}
                 </Text>
@@ -79,7 +90,11 @@ class NoResults extends PureComponent {
                         ? `We found some ${type} in other locations:`
                         : 'Please modify your search and try again.'}
                 </Text>
-                <Flex flexWrap="wrap">
+                <Grid
+                    gridColumnGap="14px"
+                    gridRowGap="10px"
+                    gridTemplateColumns={['1fr 1fr', '', '1fr 1fr 1fr']}
+                >
                     {suggestedLocations.map((location, index) => (
                         <SuggestedSearchCard
                             key={index}
@@ -90,7 +105,7 @@ class NoResults extends PureComponent {
                             docCount={location.docCount}
                         />
                     ))}
-                </Flex>
+                </Grid>
             </Flex>
         );
     }
@@ -109,13 +124,11 @@ const SuggestedSearchCard = ({ location, docCount, type }) => {
 
     return (
         <Box
-            px={30}
-            py={20}
+            px={[18, '', 30]}
+            py={[11, '', 20]}
             border="1px solid"
             borderColor="divider.dustyGray"
             borderRadius="4px"
-            mr={15}
-            mb={15}
         >
             <Text fontWeight="bold" color="text.black" fontSize={4}>
                 {location.name.replace(/_/g, ' ')}

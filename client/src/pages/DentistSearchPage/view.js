@@ -1,24 +1,10 @@
 import React from 'react';
-import styled from 'styled-components';
-
-import { Container, Box } from '../../components';
-
+import { Container, Box, Grid, Responsive } from '../../components';
+import SearchBox from '../common/SearchBox';
 import SearchResultsList from '../common/SearchResultsList';
 import Map from '../common/Map';
-import { numMaxContainerWidth } from '../../components/theme';
 
-const contentWidth =
-    Math.min(window.innerWidth * 0.8, numMaxContainerWidth) * 0.45;
-
-const StyledContainer = styled(Box)`
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-
-    @media screen and (min-width: 1200px) {
-        flex-direction: row;
-    }
-`;
+const { Desktop } = Responsive;
 
 const handleMultiLocation = reservations => {
     // Pull just the string addresses from reservations into an array
@@ -36,7 +22,7 @@ const handleMultiLocation = reservations => {
 };
 
 const DentistSearchPageView = props => {
-    const { data, total, urlParams, defaultPosition } = props;
+    const { data, total, urlParams, defaultPosition, mapDimensions } = props;
 
     data.forEach((dentist, index) => {
         const { reservations } = dentist;
@@ -64,20 +50,56 @@ const DentistSearchPageView = props => {
     });
 
     return (
-        <Container>
-            <StyledContainer mt={40}>
-                <SearchResultsList
-                    title="Dentist Results"
-                    data={data}
-                    total={total}
-                />
-                <Map
-                    width={contentWidth}
-                    data={markers}
-                    urlParams={urlParams}
-                    defaultPosition={defaultPosition}
-                />
-            </StyledContainer>
+        <Container pt={160}>
+            <Grid
+                gridColumnGap={['', '', '33px']}
+                gridTemplateColumns={[
+                    '1fr',
+                    '',
+                    `${total > 0 ? '1fr 1fr' : ''}`,
+                ]}
+            >
+                <Box>
+                    <Desktop>
+                        {matches =>
+                            matches ? null : (
+                                <Box mb={20}>
+                                    <SearchBox
+                                        size="large"
+                                        placeholder="Search for dentists by name, location, or specialty"
+                                    />
+                                </Box>
+                            )
+                        }
+                    </Desktop>
+                    <SearchResultsList
+                        title="Dentist Results"
+                        data={data}
+                        total={total}
+                    />
+                </Box>
+
+                {total > 0 ? (
+                    <Desktop>
+                        <Box
+                            position="fixed"
+                            transform="translateX(calc(100% + 34px))"
+                            top="160px"
+                            height="calc(100vh - 160px)"
+                            mb="30px"
+                            bottom="0"
+                        >
+                            <Map
+                                data={markers}
+                                width={mapDimensions.width}
+                                height={mapDimensions.height}
+                                urlParams={urlParams}
+                                defaultPosition={defaultPosition}
+                            />
+                        </Box>
+                    </Desktop>
+                ) : null}
+            </Grid>
         </Container>
     );
 };

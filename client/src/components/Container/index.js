@@ -4,7 +4,7 @@ import Box from '../Box';
 
 const StyledContainer = styled(Box)`
     max-width: ${props => props.maxWidth || props.theme.maxContainerWidth};
-    width: 80%;
+    width: 100%;
     margin: 0 auto;
 `;
 
@@ -12,6 +12,11 @@ const Container = props => {
     const { children, ...rest } = props;
 
     return <StyledContainer {...rest}>{children}</StyledContainer>;
+};
+
+Container.defaultProps = {
+    pl: '25px',
+    pr: '25px',
 };
 
 export default Container;
