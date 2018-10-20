@@ -14,7 +14,7 @@ const PrevArrow = props => (
         onClick={props.onClick}
         width="40px"
         left="-80px"
-        top="135px"
+        top="50%"
     >
         <Icon
             type="leftArrow"
@@ -36,7 +36,7 @@ const NextArrow = props => (
         onClick={props.onClick}
         width="40px"
         right="-80px"
-        top="135px"
+        top="50%"
     >
         <Icon
             type="rightArrow"
