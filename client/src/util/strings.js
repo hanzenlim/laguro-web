@@ -78,6 +78,7 @@ export const NEW_CARD_PAYMENT_METHOD = 'NEW_CARD_PAYMENT_METHOD';
 export const PAYMENT = 'PAYMENT';
 export const PAYMENT_CARD = 'PAYMENT';
 export const BALANCE_CARD = 'BALANCE';
+export const PAID_OUT = 'PAID_OUT';
 export const PAYMENT_REFUNDED = 'refunded';
 export const PAYMENT_WITHDRAWN = 'withdrawn';
 export const PAYMENT_AVAILABLE = 'available';
