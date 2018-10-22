@@ -1,9 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Box } from '../../components';
+import { Box, Responsive } from '../../components';
 import LoginModal from '../common/Modals/LoginModal';
 import RegistrationModal from '../common/Modals/RegistrationModal';
 import ForgotPassModal from '../common/Modals/ForgotPassModal';
+import Login from '../common/Login';
+
+const { Mobile, TabletDesktop } = Responsive;
 
 const LoginPageView = ({
     onLogin,
@@ -19,16 +22,27 @@ const LoginPageView = ({
     isSubmitting,
 }) => (
     <Box>
-        <LoginModal
-            login={onLogin}
-            openRegistrationModal={openRegistrationModal}
-            openForgotPassModal={openForgotPassModal}
-            closeModal={closeModal}
-            closable={closable}
-            visible={visibleModal === 'login'}
-            message={message}
-            isSubmitting={isSubmitting}
-        />
+        <Mobile>
+            <Login
+                login={onLogin}
+                openRegistrationModal={openRegistrationModal}
+                openForgotPassModal={openForgotPassModal}
+                message={message}
+                isSubmitting={isSubmitting}
+            />
+        </Mobile>
+        <TabletDesktop>
+            <LoginModal
+                login={onLogin}
+                openRegistrationModal={openRegistrationModal}
+                openForgotPassModal={openForgotPassModal}
+                closeModal={closeModal}
+                closable={closable}
+                visible={visibleModal === 'login'}
+                message={message}
+                isSubmitting={isSubmitting}
+            />
+        </TabletDesktop>
         <RegistrationModal
             signup={signup}
             openLoginModal={openLoginModal}

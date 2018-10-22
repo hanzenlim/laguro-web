@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Component, Fragment } from 'react';
 import Intercom from 'react-intercom';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
@@ -24,7 +24,7 @@ import { intercomKey } from '../../../config/keys';
 
 import ProfileMenu from './ProfileMenu';
 
-const { Desktop } = Responsive;
+const { Desktop, Mobile } = Responsive;
 
 const NavBarLink = styled(Link)`
     padding: 17px 10px 10px 10px;
@@ -43,56 +43,76 @@ const ProfileImage = styled(Flex)`
     cursor: pointer;
 `;
 
-const ProfileButton = ({
-    auth,
-    openLoginModal,
-    logout,
-    onLandingPage,
-    isDentist,
-    isHost,
-}) =>
-    auth ? (
-        <Dropdown
-            overlay={
-                <ProfileMenu
-                    isDentist={isDentist}
-                    isHost={isHost}
-                    logout={logout}
-                />
-            }
-            placement="bottomRight"
-            trigger={['hover']}
-        >
-            <ProfileImage alignItems="center">
-                <Image
-                    src={auth.imageUrl ? auth.imageUrl : defaultUserImage}
-                    width={50}
-                    height={50}
-                    borderRadius={50}
-                    ml={60}
-                />
-                <Icon
-                    ml={4}
-                    transform="scale(0.8)"
-                    fill={onLandingPage ? '#FFF' : '#3481F8'}
-                    type="downArrow"
-                />
-            </ProfileImage>
-        </Dropdown>
-    ) : (
-        <Fragment>
-            <NavBarLink onClick={openLoginModal} to={'#'}>
-                <Text
-                    color={onLandingPage ? 'text.white' : 'text.black'}
-                    fontSize={1}
-                    fontWeight="bold"
-                    mb={4}
-                >
-                    log in
-                </Text>
-            </NavBarLink>
-        </Fragment>
-    );
+class ProfileButton extends Component {
+    openLoginForLogIn = isMobile => () => {
+        const { openLoginModal } = this.props;
+        if (!isMobile) {
+            openLoginModal();
+        }
+    };
+
+    render() {
+        const {
+            auth,
+            pathname,
+            logout,
+            onLandingPage,
+            isDentist,
+            isHost,
+        } = this.props;
+        return auth ? (
+            <Dropdown
+                overlay={
+                    <ProfileMenu
+                        isDentist={isDentist}
+                        isHost={isHost}
+                        logout={logout}
+                    />
+                }
+                placement="bottomRight"
+                trigger={['hover']}
+            >
+                <ProfileImage alignItems="center">
+                    <Image
+                        src={auth.imageUrl ? auth.imageUrl : defaultUserImage}
+                        width={50}
+                        height={50}
+                        borderRadius={50}
+                        ml={60}
+                    />
+                    <Icon
+                        ml={4}
+                        transform="scale(0.8)"
+                        fill={onLandingPage ? '#FFF' : '#3481F8'}
+                        type="downArrow"
+                    />
+                </ProfileImage>
+            </Dropdown>
+        ) : (
+            <Fragment>
+                <Mobile>
+                    {matches => (
+                        <NavBarLink
+                            onClick={this.openLoginForLogIn(matches)}
+                            to={matches ? `/login?redirectTo=${pathname}` : '#'}
+                        >
+                            <Text
+                                color={
+                                    onLandingPage ? 'text.white' : 'text.black'
+                                }
+                                fontSize={1}
+                                fontWeight="bold"
+                                mb={4}
+                            >
+                                log in
+                            </Text>
+                        </NavBarLink>
+                    )}
+                </Mobile>
+            </Fragment>
+        );
+    }
+}
 
 const IntercomContainer = ({ auth }) => {
     const user = auth
@@ -106,144 +126,164 @@ const IntercomContainer = ({ auth }) => {
     return <Intercom appID={intercomKey} {...user} />;
 };
 
-const Header = ({
-    pathname,
-    openLoginModal,
-    openRegistrationModal,
-    openForgotPassModal,
-    closeModal,
-    visibleModal,
-    signup,
-    login,
-    logout,
-    sendPassResetLink,
-    auth,
-    isDentist,
-    isHost,
-    isSubmitting,
-}) => {
-    let placeholder;
-    let logoType;
-
-    const onLandingPage = pathname === '/';
-    const onOnboardingPage = pathname.includes('host-onboarding');
-    if (pathname.startsWith('/office')) {
-        logoType = onLandingPage ? 'whiteDentistLogo' : 'dentistLogo';
-        placeholder = 'Search offices';
-    } else {
-        placeholder = 'Search dentists';
-    }
-
-    const onSearchPage =
-        pathname.includes('/office/search') ||
-        pathname.includes('/dentist/search');
-
-    const position = () => {
-        if (onSearchPage) return 'fixed';
-        if (onLandingPage) return 'absolute';
-        return 'relative';
+class Header extends Component {
+    openLoginForBecomeAHost = isMobile => () => {
+        const { openLoginModal } = this.props;
+        if (!isMobile) {
+            openLoginModal();
+        }
     };
 
-    return (
-        <Flex
-            is="header"
-            width="100vw"
-            height={120}
-            bg={onLandingPage ? 'background.transparent' : 'background.white'}
-            borderBottom={onLandingPage ? 'none' : '1px solid'}
-            borderColor="divider.gray"
-            flex="0 0 auto"
-            alignItems="center"
-            justifyContent="center"
-            style={{ zIndex: 600 }}
-            position={position()}
-        >
-            <IntercomContainer auth={auth} />
-            <LoginModal
-                login={login}
-                openRegistrationModal={openRegistrationModal}
-                openForgotPassModal={openForgotPassModal}
-                closeModal={closeModal}
-                visible={visibleModal === 'login'}
-                isSubmitting={isSubmitting}
-            />
-            <RegistrationModal
-                signup={signup}
-                openLoginModal={openLoginModal}
-                closeModal={closeModal}
-                visible={visibleModal === 'register'}
-                isSubmitting={isSubmitting}
-            />
-            <ForgotPassModal
-                sendPassResetLink={sendPassResetLink}
-                openLoginModal={openLoginModal}
-                closeModal={closeModal}
-                visible={visibleModal === 'forgotPass'}
-                isSubmitting={isSubmitting}
-            />
-            <Container
-                display="flex"
-                flexDirection="row"
-                justifyContent="space-between"
+    render() {
+        const {
+            pathname,
+            openLoginModal,
+            openRegistrationModal,
+            openForgotPassModal,
+            closeModal,
+            visibleModal,
+            signup,
+            login,
+            logout,
+            sendPassResetLink,
+            auth,
+            isDentist,
+            isHost,
+            isSubmitting,
+        } = this.props;
+
+        let placeholder;
+        let logoType;
+
+        const onLandingPage = pathname === '/';
+        const onOnboardingPage = pathname.includes('host-onboarding');
+        if (pathname.startsWith('/office')) {
+            logoType = onLandingPage ? 'whiteDentistLogo' : 'dentistLogo';
+            placeholder = 'Search offices';
+        } else {
+            placeholder = 'Search dentists';
+        }
+
+        const onSearchPage =
+            pathname.includes('/office/search') ||
+            pathname.includes('/dentist/search');
+
+        const position = () => {
+            if (onSearchPage) return 'fixed';
+            if (onLandingPage) return 'absolute';
+            return 'relative';
+        };
+
+        return (
+            <Flex
+                is="header"
+                width="100vw"
+                height={120}
+                bg={
+                    onLandingPage
+                        ? 'background.transparent'
+                        : 'background.white'
+                }
+                borderBottom={onLandingPage ? 'none' : '1px solid'}
+                borderColor="divider.gray"
+                flex="0 0 auto"
                 alignItems="center"
+                justifyContent="center"
+                style={{ zIndex: 600 }}
+                position={position()}
             >
-                <Link to={'/'}>
-                    {!isEmpty(logoType) ? (
-                        <Icon fontSize={40} type={logoType} alt="logo" />
-                    ) : (
-                        <Image
-                            height={40}
-                            src={onLandingPage ? whiteLogo : logo}
-                            alt="logo"
-                        />
-                    )}
-                </Link>
+                <IntercomContainer auth={auth} />
+                <LoginModal
+                    login={login}
+                    openRegistrationModal={openRegistrationModal}
+                    openForgotPassModal={openForgotPassModal}
+                    closeModal={closeModal}
+                    visible={visibleModal === 'login'}
+                    isSubmitting={isSubmitting}
+                />
+                <RegistrationModal
+                    signup={signup}
+                    openLoginModal={openLoginModal}
+                    closeModal={closeModal}
+                    visible={visibleModal === 'register'}
+                    isSubmitting={isSubmitting}
+                />
+                <ForgotPassModal
+                    sendPassResetLink={sendPassResetLink}
+                    openLoginModal={openLoginModal}
+                    closeModal={closeModal}
+                    visible={visibleModal === 'forgotPass'}
+                    isSubmitting={isSubmitting}
+                />
+                <Container
+                    display="flex"
+                    flexDirection="row"
+                    justifyContent="space-between"
+                    alignItems="center"
+                >
+                    <Link to={'/'}>
+                        {!isEmpty(logoType) ? (
+                            <Icon fontSize={40} type={logoType} alt="logo" />
+                        ) : (
+                            <Image
+                                height={40}
+                                src={onLandingPage ? whiteLogo : logo}
+                                alt="logo"
+                            />
+                        )}
+                    </Link>
 
-                <Desktop>
-                    {!onLandingPage && (
-                        <SearchBox placeholder={placeholder} size="small" />
-                    )}
-                </Desktop>
-
-                <Flex alignItems="center">
                     <Desktop>
-                        {!onOnboardingPage && (
-                            <NavBarLink
-                                ml="0px"
-                                to={auth ? '/host-onboarding/add-office' : '/'}
-                                onClick={auth ? () => {} : openLoginModal}
-                            >
-                                <Text
-                                    color={
-                                        onLandingPage
-                                            ? 'text.white'
-                                            : 'text.black'
-                                    }
-                                    fontSize={1}
-                                    fontWeight="bold"
-                                    mb={4}
-                                >
-                                    {isHost
-                                        ? 'add a new office'
-                                        : 'become a host'}
-                                </Text>
-                            </NavBarLink>
+                        {!onLandingPage && (
+                            <SearchBox placeholder={placeholder} size="small" />
                         )}
                     </Desktop>
-                    <ProfileButton
-                        isDentist={isDentist}
-                        isHost={isHost}
-                        auth={auth}
-                        openLoginModal={openLoginModal}
-                        openRegistrationModal={openRegistrationModal}
-                        logout={logout}
-                        onLandingPage={onLandingPage}
-                    />
-                </Flex>
-            </Container>
-        </Flex>
-    );
-};
+
+                    <Flex alignItems="center">
+                        <Desktop>
+                            {!onOnboardingPage && (
+                                <NavBarLink
+                                    ml="0px"
+                                    to={
+                                        auth
+                                            ? '/host-onboarding/add-office'
+                                            : '/'
+                                    }
+                                    onClick={auth ? () => {} : openLoginModal}
+                                >
+                                    <Text
+                                        color={
+                                            onLandingPage
+                                                ? 'text.white'
+                                                : 'text.black'
+                                        }
+                                        fontSize={1}
+                                        fontWeight="bold"
+                                        mb={4}
+                                    >
+                                        {isHost
+                                            ? 'add a new office'
+                                            : 'become a host'}
+                                    </Text>
+                                </NavBarLink>
+                            )}
+                        </Desktop>
+                        <ProfileButton
+                            pathname={pathname}
+                            isDentist={isDentist}
+                            isHost={isHost}
+                            auth={auth}
+                            openLoginModal={openLoginModal}
+                            openRegistrationModal={openRegistrationModal}
+                            logout={logout}
+                            onLandingPage={onLandingPage}
+                        />
+                    </Flex>
+                </Container>
+            </Flex>
+        );
+    }
+}
 
 Header.defaultProps = {
     visibleModal: null,

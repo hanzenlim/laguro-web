@@ -12,4 +12,8 @@ Responsive.Tablet = props => (
 );
 Responsive.Mobile = props => <ReactResponsive {...props} maxWidth={767} />;
 
+Responsive.TabletDesktop = props => (
+    <ReactResponsive {...props} minWidth={768} />
+);
+
 export default Responsive;
