@@ -61,6 +61,7 @@ class ConsentAndPaymentPage extends PureComponent {
         return (
             <Query
                 query={getProceduresQuery}
+                fetchPolicy="network-only"
                 variables={{
                     input: {
                         partitionKey: PATIENT_ID,
