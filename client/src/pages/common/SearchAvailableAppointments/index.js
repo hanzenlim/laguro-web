@@ -111,10 +111,8 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
      */
     filterByCurrentTime = list =>
         list.filter(item => {
-            const currentTime = moment().format('YYYY MM DD h:mm:ss a');
-            const formattedItem = moment(item.key).format(
-                'YYYY MM DD h:mm:ss a'
-            );
+            const currentTime = moment();
+            const formattedItem = moment(item.key);
             return moment(formattedItem).isAfter(currentTime);
         });
 
