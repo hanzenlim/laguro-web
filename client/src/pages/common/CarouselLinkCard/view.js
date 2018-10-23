@@ -24,7 +24,7 @@ const CarouselLinkCard = props => {
 
     return (
         <Link type="ghost" to={url}>
-            <Box width="100%" height="100%">
+            <Box maxWidth={[130, 160, 230]} width="100%" height="100%">
                 <Box borderRadius="4px" height="100%" position="relative">
                     <Flex
                         height="100%"

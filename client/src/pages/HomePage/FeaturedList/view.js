@@ -37,7 +37,7 @@ const FeaturedListView = props => (
                                     slidesToShow: 3,
                                     arrows: false,
                                     draggable: true,
-                                    centerPadding: 10,
+                                    centerPadding: 50,
                                 },
                             },
                             {
@@ -46,7 +46,7 @@ const FeaturedListView = props => (
                                     slidesToShow: 2,
                                     arrows: false,
                                     draggable: true,
-                                    centerPadding: 10,
+                                    centerPadding: 20,
                                 },
                             },
                         ]}
