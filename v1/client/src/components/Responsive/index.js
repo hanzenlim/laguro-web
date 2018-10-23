@@ -33,11 +33,11 @@ Responsive.TabletDesktop = props => (
 );
 
 const withScreenSizes = withSizes(({ width }) => ({
-    mobileOnly: width > sizes.minTablet, // 767px and below
-    tabletOnly: width < sizes.maxMobile && width > sizes.minDesktop, // 768px - 991px
+    mobileOnly: width < sizes.minTablet, // 767px and below
+    tabletOnly: width > sizes.maxMobile && width < sizes.minDesktop, // 768px - 991px
     desktopOnly: width > sizes.maxTablet, // 992px and above
-    tabletMobileOnly: width > sizes.minDesktop, // 991px and below
-    tabletDesktopOnly: width < sizes.maxMobile, // 768px and above
+    tabletMobileOnly: width < sizes.minDesktop, // 991px and below
+    tabletDesktopOnly: width > sizes.maxMobile, // 768px and above
     screenWidth: width,
 }));
 
