@@ -28,7 +28,7 @@ class DentistAppointments extends PureComponent {
             ({
                 id,
                 office,
-                availableTimes,
+                localAvailableTimes,
                 numChairsSelected,
                 equipmentSelected,
                 appointments,
@@ -71,7 +71,7 @@ class DentistAppointments extends PureComponent {
                                 </Text>
                             </Link>
                             <StyledList>
-                                {this.renderAvailableTimes(availableTimes)}
+                                {this.renderAvailableTimes(localAvailableTimes)}
                             </StyledList>
                             <Text fontWeight="bold" fontSize={3} mt={12} mb={8}>
                                 Equipments ordered
@@ -104,8 +104,8 @@ class DentistAppointments extends PureComponent {
             }
         );
 
-    renderAvailableTimes = availableTimes =>
-        availableTimes.map((availableTime, index) => {
+    renderAvailableTimes = localAvailableTimes =>
+        localAvailableTimes.map((availableTime, index) => {
             const date = moment(availableTime.startTime).format('ddd M/D/YYYY');
             const start = moment(availableTime.startTime).format('h:mm A');
             const end = moment(availableTime.endTime).format('h:mm A');
@@ -203,7 +203,7 @@ const appointmentShape = PropTypes.shape({
     status: PropTypes.string,
 });
 
-const availableTimeShape = PropTypes.shape({
+const localAvailableTimeshape = PropTypes.shape({
     startTime: PropTypes.string,
     endTime: PropTypes.string,
 });
@@ -217,7 +217,7 @@ DentistAppointments.propTypes = {
         PropTypes.shape({
             id: PropTypes.string,
             office: officeShape,
-            availableTimes: PropTypes.arrayOf(availableTimeShape),
+            localAvailableTimes: PropTypes.arrayOf(localAvailableTimeshape),
             numChairsSelected: PropTypes.number,
             equipmentSelected: PropTypes.arrayOf(PropTypes.string),
             appointments: PropTypes.arrayOf(appointmentShape),

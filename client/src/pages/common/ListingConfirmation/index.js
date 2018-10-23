@@ -13,13 +13,15 @@ const mapListings = (listings, equipment) =>
     listings.map(
         ({
             id,
-            availability: { startTime, endTime, startDay, endDay },
+            availability: { startDay, endDay },
             numChairsAvailable,
             cleaningFee,
             chairHourlyPrice,
+            localStartTime,
+            localEndTime,
         }) => {
-            const startDate = `${startDay}T${startTime}`;
-            const endDate = `${endDay}T${endTime}`;
+            const startDate = localStartTime;
+            const endDate = localEndTime;
             const formattedStartTime = moment(startDate).format('hA');
             const formattedEndTime = moment(endDate).format('hA');
             const formattedStartDay = moment(startDay).format('MMM. D, YYYY');

@@ -28,66 +28,73 @@ export const NoAppointmentsCard = ({ text }) => (
 
 class PatientAppointments extends PureComponent {
     renderAppointments = appointments =>
-        appointments.map(({ id, startTime, dentist, reservation, status }) => {
-            const { lastName, firstName, imageUrl } = dentist.user;
-            const dentistName = `Dr. ${firstName} ${lastName}`;
-            const { name: officeName, id: officeId } = reservation.office;
-            const isCancelled = status === CANCELLED;
+        appointments.map(
+            ({ id, localStartTime, dentist, reservation, status }) => {
+                const { lastName, firstName, imageUrl } = dentist.user;
+                const dentistName = `Dr. ${firstName} ${lastName}`;
+                const { name: officeName, id: officeId } = reservation.office;
+                const isCancelled = status === CANCELLED;
 
-            return (
-                <Flex
-                    key={id}
-                    justifyContent="space-between"
-                    alignItems="center"
-                    p={30}
-                    mb={12}
-                    border="1px solid"
-                    borderColor="divider.gray"
-                    borderRadius={2}
-                    opacity={isCancelled ? 0.5 : 1}
-                >
-                    <Flex alignItems="center" justifyContent="space-between">
-                        <Box textAlign="center" fontSize={4} mr={35}>
-                            <Text fontWeight="bold">
-                                {moment(startTime).format('ddd, M/D/YY')}
-                            </Text>
-                            <Text fontWeight="light">
-                                {moment(startTime).format('h:mm A')}
-                            </Text>
-                        </Box>
-                        <Image
-                            src={imageUrl || defaultUserImage}
-                            alt={dentistName}
-                            width={48}
-                            height={48}
-                            borderRadius="50%"
-                            mr={35}
-                        />
-                        <Box>
-                            <Link to={`/dentist/${dentist.id}`}>
-                                <Text fontWeight="medium" fontSize={4}>
-                                    {dentistName}
-                                </Text>
-                            </Link>
-                            <Link to={`/office/${officeId}`}>
-                                <Text fontWeight="light" fontSize={4}>
-                                    {officeName}
-                                </Text>
-                            </Link>
-                        </Box>
-                    </Flex>
-                    <Button
-                        type="ghost"
-                        border="none"
-                        onClick={this.props.toggleModalState(id)}
+                return (
+                    <Flex
+                        key={id}
+                        justifyContent="space-between"
+                        alignItems="center"
+                        p={30}
+                        mb={12}
+                        border="1px solid"
+                        borderColor="divider.gray"
+                        borderRadius={2}
+                        opacity={isCancelled ? 0.5 : 1}
                     >
-                        <Text color="text.blue" fontSize={2}>
-                            cancel
-                        </Text>
-                    </Button>
-                </Flex>
-            );
-        });
+                        <Flex
+                            alignItems="center"
+                            justifyContent="space-between"
+                        >
+                            <Box textAlign="center" fontSize={4} mr={35}>
+                                <Text fontWeight="bold">
+                                    {moment(localStartTime).format(
+                                        'ddd, M/D/YY'
+                                    )}
+                                </Text>
+                                <Text fontWeight="light">
+                                    {moment(localStartTime).format('h:mm A')}
+                                </Text>
+                            </Box>
+                            <Image
+                                src={imageUrl || defaultUserImage}
+                                alt={dentistName}
+                                width={48}
+                                height={48}
+                                borderRadius="50%"
+                                mr={35}
+                            />
+                            <Box>
+                                <Link to={`/dentist/${dentist.id}`}>
+                                    <Text fontWeight="medium" fontSize={4}>
+                                        {dentistName}
+                                    </Text>
+                                </Link>
+                                <Link to={`/office/${officeId}`}>
+                                    <Text fontWeight="light" fontSize={4}>
+                                        {officeName}
+                                    </Text>
+                                </Link>
+                            </Box>
+                        </Flex>
+                        <Button
+                            type="ghost"
+                            border="none"
+                            onClick={this.props.toggleModalState(id)}
+                        >
+                            <Text color="text.blue" fontSize={2}>
+                                cancel
+                            </Text>
+                        </Button>
+                    </Flex>
+                );
+            }
+        );
 
     render() {
         const { appointments } = this.props;
@@ -123,7 +130,7 @@ PatientAppointments.propTypes = {
             id: PropTypes.string,
             dentist: dentistShape,
             reservation: reservationShape,
-            startTime: PropTypes.string,
+            localStartTime: PropTypes.string,
             status: PropTypes.string,
         })
     ),
