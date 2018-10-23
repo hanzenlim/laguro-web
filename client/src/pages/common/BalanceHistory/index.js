@@ -10,6 +10,7 @@ import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
 
 import { GET_BALANCE_QUERY } from './queries';
 import {
+    PAID_OUT,
     PAYMENT_PENDING,
     PAYMENT_AVAILABLE,
     PAYMENT_REFUNDED,
@@ -23,18 +24,15 @@ import {
 } from '../../../util/strings';
 
 const paymentStatus = (cardType, payment) => {
-    const { refundAmount, nominalAmount, status, chargeStatus } = payment;
+    const { status, isPayoutAvailable } = payment;
     if (cardType === PAYMENT_CARD) return PAYMENT_MADE;
-    if (status === REFUNDED && refundAmount >= nominalAmount)
-        return PAYMENT_REFUNDED;
-    switch (chargeStatus) {
-        case PAYMENT_AVAILABLE:
-            return PAYMENT_AVAILABLE;
-        case PAYMENT_PENDING:
-            return PAYMENT_PENDING;
-        default:
-            return PAYMENT_WITHDRAWN;
+    if (status === REFUNDED) return PAYMENT_REFUNDED;
+    else if (status === PAID_OUT) {
+        return PAYMENT_WITHDRAWN;
+    } else if (isPayoutAvailable) {
+        return PAYMENT_AVAILABLE;
     }
+    return PAYMENT_PENDING;
 };
 
 const getStartTime = payment => {

@@ -7,7 +7,6 @@ export const GET_BALANCE_QUERY = gql`
             dateCreated
             invoice {
                 items {
-                    id
                     name
                     payoutAmount
                     quantity
@@ -76,6 +75,7 @@ export const GET_BALANCE_QUERY = gql`
                     }
                 }
             }
+            isPayoutAvailable
             chargeStatus
             nominalAmount
             refundAmount
