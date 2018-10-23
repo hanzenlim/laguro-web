@@ -1,8 +1,10 @@
 import React from 'react';
 import { Menu } from 'antd';
 import styled from 'styled-components';
+import { space, borderBottom, borderColor } from 'styled-system';
 
 import { Link, Text } from '../../../components';
+import theme from '../../../components/theme';
 
 const StyledMenu = styled(Menu)`
     && {
@@ -10,7 +12,21 @@ const StyledMenu = styled(Menu)`
     }
 
     .ant-dropdown-menu-item {
-        padding: 8px 16px;
+        ${space};
+        ${borderBottom};
+        ${borderColor};
+
+        &:last-of-type {
+            border: none;
+        }
+    }
+
+    .ant-dropdown-menu-item-divider {
+        display: none;
+
+        @media (min-width: ${theme.breakpoints[1]}) {
+            display: list-item;
+        }
     }
 `;
 
@@ -20,7 +36,12 @@ const ProfileMenu = props => {
     // Menu link for host
     if (isHost) {
         return (
-            <StyledMenu {...rest}>
+            <StyledMenu
+                p={['18px 16px', '', '8px 16px']}
+                borderBottom={['1px solid', '', 'none']}
+                borderColor="divider.gray"
+                {...rest}
+            >
                 <Menu.Item>
                     <Link to={'/profile?selectedTab=my_profile'}>
                         <Text color="text.black" fontSize={2}>

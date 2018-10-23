@@ -50,7 +50,7 @@ const DentistSearchPageView = props => {
     });
 
     return (
-        <Container pt={160}>
+        <Container pt={[100, '', 160]}>
             <Grid
                 gridColumnGap={['', '', '33px']}
                 gridTemplateColumns={[

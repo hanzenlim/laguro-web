@@ -21,26 +21,49 @@ import LoginModal from '../Modals/LoginModal';
 import RegistrationModal from '../Modals/RegistrationModal';
 import ForgotPassModal from '../Modals/ForgotPassModal';
 import { intercomKey } from '../../../config/keys';
+import theme from '../../../components/theme';
+import { withScreenSizes } from '../../../components/Responsive';
 
 import ProfileMenu from './ProfileMenu';
 
 const { Desktop, Mobile } = Responsive;
 
 const NavBarLink = styled(Link)`
-    padding: 17px 10px 10px 10px;
-    border-bottom: 7px solid;
-    border-color: ${props => props.theme.colors.divider.transparent};
-    margin-left: ${props => props.ml || '60px'};
-
     &&:hover,
     &&:focus {
-        border-color: ${props => props.theme.colors.divider.blue};
         text-decoration: none;
+    }
+
+    @media (min-width: ${theme.breakpoints[1]}) {
+        padding: 17px 10px 10px 10px;
+        border-bottom: 7px solid;
+        border-color: ${theme.colors.divider.transparent};
+        margin-left: ${props => props.ml || '60px'};
+        transition: all 0.2s ease-in-out;
+
+        &&:hover,
+        &&:focus {
+            border-color: ${theme.colors.divider.blue};
+            text-decoration: none;
+        }
     }
 `;
 
 const ProfileImage = styled(Flex)`
     cursor: pointer;
+`;
+
+const StyledDropContainer = styled.div`
+    @media (max-width: 991px) {
+        .ant-dropdown {
+            height: calc(100vh - 60px);
+            overflow-y: auto;
+            background-color: ${theme.colors.background.lightGray};
+            top: 60px !important;
+            left: 0 !important;
+            right: 0 !important;
+        }
+    }
 `;
 
 class ProfileButton extends Component {
@@ -59,35 +82,44 @@ class ProfileButton extends Component {
             onLandingPage,
             isDentist,
             isHost,
+            desktopOnly,
         } = this.props;
         return auth ? (
-            <Dropdown
-                overlay={
-                    <ProfileMenu
-                        isDentist={isDentist}
-                        isHost={isHost}
-                        logout={logout}
-                    />
-                }
-                placement="bottomRight"
-                trigger={['hover']}
-            >
-                <ProfileImage alignItems="center">
-                    <Image
-                        src={auth.imageUrl ? auth.imageUrl : defaultUserImage}
-                        width={50}
-                        height={50}
-                        borderRadius={50}
-                        ml={60}
-                    />
-                    <Icon
-                        ml={4}
-                        transform="scale(0.8)"
-                        fill={onLandingPage ? '#FFF' : '#3481F8'}
-                        type="downArrow"
-                    />
-                </ProfileImage>
-            </Dropdown>
+            <Fragment>
+                <Dropdown
+                    overlay={
+                        <ProfileMenu
+                            isDentist={isDentist}
+                            isHost={isHost}
+                            logout={logout}
+                        />
+                    }
+                    placement={'bottomRight'}
+                    trigger={desktopOnly ? ['hover'] : ['click']}
+                    getPopupContainer={() =>
+                        document.getElementById('dropdownContainer')
+                    }
+                >
+                    <ProfileImage alignItems="center">
+                        <Image
+                            src={
+                                auth.imageUrl ? auth.imageUrl : defaultUserImage
+                            }
+                            width={[30, '', 50]}
+                            height={[30, '', 50]}
+                            borderRadius={50}
+                            ml={60}
+                        />
+                        <Icon
+                            ml={4}
+                            transform="scale(0.8)"
+                            fill={onLandingPage ? '#FFF' : '#3481F8'}
+                            type="downArrow"
+                        />
+                    </ProfileImage>
+                </Dropdown>
+                <StyledDropContainer id="dropdownContainer" />
+            </Fragment>
         ) : (
             <Fragment>
                 <Mobile>
@@ -100,9 +132,9 @@ class ProfileButton extends Component {
                                 color={
                                     onLandingPage ? 'text.white' : 'text.black'
                                 }
-                                fontSize={1}
+                                fontSize={[0, '', 1]}
                                 fontWeight="bold"
-                                mb={4}
+                                mb={[0, '', 4]}
                             >
                                 log in
                             </Text>
@@ -150,6 +182,7 @@ class Header extends Component {
             isDentist,
             isHost,
             isSubmitting,
+            desktopOnly,
         } = this.props;
 
         let placeholder;
@@ -177,8 +210,8 @@ class Header extends Component {
         return (
             <Flex
                 is="header"
-                width="100vw"
-                height={120}
+                width="100%"
+                height={[60, '', 120]}
                 bg={
                     onLandingPage
                         ? 'background.transparent'
@@ -223,10 +256,14 @@ class Header extends Component {
                 >
                     <Link to={'/'}>
                         {!isEmpty(logoType) ? (
-                            <Icon fontSize={40} type={logoType} alt="logo" />
+                            <Icon
+                                fontSize={desktopOnly ? 40 : 18}
+                                type={logoType}
+                                alt="logo"
+                            />
                         ) : (
                             <Image
-                                height={40}
+                                height={desktopOnly ? 40 : 18}
                                 src={onLandingPage ? whiteLogo : logo}
                                 alt="logo"
                             />
@@ -259,7 +296,7 @@ class Header extends Component {
                                         }
                                         fontSize={1}
                                         fontWeight="bold"
-                                        mb={4}
+                                        mb={[0, '', 4]}
                                     >
                                         {isHost
                                             ? 'add a new office'
@@ -277,6 +314,7 @@ class Header extends Component {
                             openRegistrationModal={openRegistrationModal}
                             logout={logout}
                             onLandingPage={onLandingPage}
+                            desktopOnly={desktopOnly}
                         />
                     </Flex>
                 </Container>
@@ -303,6 +341,7 @@ Header.propTypes = {
     openLoginModal: PropTypes.func,
     closeModal: PropTypes.func,
     isSubmitting: PropTypes.bool,
+    desktopOnly: PropTypes.bool,
 };
 
-export default Header;
+export default withScreenSizes(Header);
