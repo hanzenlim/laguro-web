@@ -63,7 +63,7 @@ const StyledButton = styled(AntdButton)`
     }
 
     &&.ant-btn-ghost {
-        && span {
+        && > span {
             color: ${props =>
                 props.inverted
                     ? props.theme.colors.text.blue
