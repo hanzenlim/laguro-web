@@ -7,7 +7,9 @@ const passport = require('passport');
 const path = require('path');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
-const makeQuery = require('./util/serverDataLoader').makeQuery;
+const jwt = require('jsonwebtoken');
+
+const { makeQuery } = require('./util/serverDataLoader');
 
 // Services
 require('./services/passport');
@@ -29,26 +31,20 @@ app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.post('/api/graphql', async (req, res) => {
-    let variables;
+    const context = {};
 
-    // Check if user is authenticated
-    if (
-        req.user &&
-        req.body &&
-        req.body.variables &&
-        req.body.variables.id === req.user.id
-    ) {
-        variables = {
-            ...req.body.variables,
-            authenticated: true,
-        };
-    } else {
-        variables = {
-            ...req.body.variables,
+    if (req.user) {
+        const token = jwt.sign(
+            { user: req.user },
+            process.env.SHARED_SERVER_SECRET
+        );
+
+        context.headers = {
+            authorization: `bearer ${token}`,
         };
     }
 
-    const result = await makeQuery(req.body.query, variables);
+    const result = await makeQuery(req.body.query, req.body.variables, context);
     res.send(JSON.stringify(result));
 });
 
