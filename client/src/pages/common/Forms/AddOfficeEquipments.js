@@ -47,6 +47,10 @@ const EQUIPMENT_LIST = [
     'Soft Tissue Laser',
     'Implant System',
     'Nitrous Oxide',
+    'Composite set up',
+    'Crown and bridge set up',
+    'Removable set up',
+    'Extraction set up',
 ];
 
 const PRICE_MAP = {
@@ -66,6 +70,10 @@ const PRICE_MAP = {
     'Soft Tissue Laser': '$50.00',
     'Implant System': '$200.00',
     'Nitrous Oxide': '$50.00',
+    'Composite set up': '$25.00',
+    'Crown and bridge set up': '$25.00',
+    'Removable set up': '$25.00',
+    'Extraction set up': '$25.00',
 };
 
 class AddOfficeEquipments extends Component {
