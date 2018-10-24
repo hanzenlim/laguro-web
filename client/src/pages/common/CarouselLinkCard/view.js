@@ -15,7 +15,7 @@ const CarouselLinkCard = props => {
     const {
         averageRating,
         specialty,
-        imageUrl = defaultDentistProfileImg,
+        imageUrl,
         name,
         type,
         numReviews,
@@ -39,7 +39,7 @@ const CarouselLinkCard = props => {
                             <Image
                                 position="absolute"
                                 borderRadius="4px"
-                                src={imageUrl}
+                                src={imageUrl || defaultDentistProfileImg}
                                 width="100%"
                                 height={props.height}
                                 alt={name}
