@@ -1,4 +1,5 @@
-export const numMaxContainerWidth = 1280;
+const containerPaddings = 50;
+export const numMaxContainerWidth = 1280 + containerPaddings;
 
 export default {
     colors: {

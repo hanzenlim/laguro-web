@@ -131,7 +131,7 @@ class OfficeDetailsPageView extends PureComponent {
                 ) : (
                     <Box mb={30} />
                 )}
-                <Container style={{ flex: 1 }} px={[25, '', 0]}>
+                <Container style={{ flex: 1 }}>
                     <Flex
                         height="100%"
                         flexDirection="column"
@@ -141,7 +141,7 @@ class OfficeDetailsPageView extends PureComponent {
                             justifyContent="space-between"
                             flexDirection={['column', '', 'row']}
                         >
-                            <Box width="100%">
+                            <Box width={['100%', '', 'calc(100% - 460px)']}>
                                 <OfficeDetails
                                     id={id}
                                     viewOnly={false}
