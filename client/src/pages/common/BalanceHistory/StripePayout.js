@@ -50,7 +50,10 @@ const StripePayoutButtons = ({ userId, accountToken, totalAvailable }) => (
                             return (
                                 <Box mb={1} mr={40}>
                                     {payoutLoginLink ? (
-                                        <a href={payoutLoginLink}>
+                                        <a
+                                            href={payoutLoginLink}
+                                            target="_blank"
+                                        >
                                             <Button
                                                 my={1}
                                                 fullWidth
