@@ -34,7 +34,8 @@ app.post('/api/graphql', async (req, res) => {
     const context = {};
 
     if (req.user) {
-        const user = { id: req.user.id, email: req.user.email };
+        const { id, email, dentistId } = req.user;
+        const user = { id, email, dentistId };
         const token = jwt.sign({ user }, process.env.SHARED_SERVER_SECRET);
 
         context.headers = {
