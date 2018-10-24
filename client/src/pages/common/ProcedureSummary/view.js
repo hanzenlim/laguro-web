@@ -8,34 +8,14 @@ const ProcedureSummaryView = props => {
 
     return (
         <Box maxWidth={662} width="100%">
-            <Text
-                fontSize={5}
-                lineHeight={1}
-                fontWeight="bold"
-                letterSpacing="-0.6px"
-                color="text.gray"
-                mb={20}
-            >
-                Consent and Payment
-            </Text>
-            <Text
-                mb={30}
-                fontSize={5}
-                lineHeight={1}
-                fontWeight="bold"
-                letterSpacing="-0.6px"
-                color="text.black"
-            >
-                Review and pay for your procedure
-            </Text>
-            <Box px={38} py={26} boxShadow={0}>
+            <Box px={[0, '', 38]} py={[0, '', 26]} boxShadow={['none', '', 0]}>
                 <Text
-                    fontSize={4}
+                    fontSize={[3, '', 4]}
                     lineHeight={1}
                     fontWeight="bold"
-                    letterSpacing="-0.6px"
+                    letterSpacing={['-0.5px', '', '-0.6px']}
                     color="text.black"
-                    pb={28}
+                    mb={[16, '', 28]}
                 >
                     Procedure Summary
                 </Text>
@@ -43,28 +23,28 @@ const ProcedureSummaryView = props => {
                 {procedures.map(procedure => (
                     <Flex
                         borderBottom="1px solid"
-                        pb={10}
-                        mb={12}
+                        pb={[8, '', 10]}
+                        mb={[10, '', 12]}
                         borderColor="divider.black"
                         alignItems="flex-end"
                         justifyContent="space-between"
                     >
                         <Box>
                             <Text
-                                fontSize={2}
+                                fontSize={[1, '', 2]}
                                 lineHeight="20px"
                                 fontWeight="500"
-                                letterSpacing="-0.6px"
+                                letterSpacing={['-0.4px', '', '-0.6px']}
                                 color="text.black"
                             >
                                 {procedure.name}
                             </Text>
 
                             <Text
-                                fontSize={2}
+                                fontSize={[1, '', 2]}
                                 lineHeight="20px"
                                 fontWeight="300"
-                                letterSpacing="-0.6px"
+                                letterSpacing={['-0.4px', '', '-0.6px']}
                                 color="text.black"
                             >
                                 {procedure.date}
@@ -72,9 +52,9 @@ const ProcedureSummaryView = props => {
                         </Box>
                         <Box>
                             <Text
-                                fontSize={2}
+                                fontSize={[1, '', 2]}
                                 lineHeight={1}
-                                letterSpacing="-0.6px"
+                                letterSpacing={['-0.4px', '', '-0.6px']}
                                 color="text.black"
                             >
                                 {renderPrice(procedure.price)}
@@ -86,18 +66,18 @@ const ProcedureSummaryView = props => {
                 {serviceFee > 0 ? (
                     <Flex
                         borderBottom="1px solid"
-                        pb={10}
-                        mb={12}
+                        pb={[8, '', 10]}
+                        mb={[10, '', 12]}
                         borderColor="divider.black"
                         alignItems="flex-end"
                         justifyContent="space-between"
                     >
                         <Box>
                             <Text
-                                fontSize={2}
+                                fontSize={[1, '', 2]}
                                 lineHeight="20px"
                                 fontWeight="500"
-                                letterSpacing="-0.6px"
+                                letterSpacing={['-0.4px', '', '-0.6px']}
                                 color="text.black"
                             >
                                 Service fee
@@ -105,9 +85,9 @@ const ProcedureSummaryView = props => {
                         </Box>
                         <Box>
                             <Text
-                                fontSize={2}
+                                fontSize={[1, '', 2]}
                                 lineHeight={1}
-                                letterSpacing="-0.6px"
+                                letterSpacing={['-0.4px', '', '-0.6px']}
                                 color="text.black"
                             >
                                 {renderPrice(serviceFee)}
@@ -119,10 +99,10 @@ const ProcedureSummaryView = props => {
                 <Flex alignItems="flex-end" justifyContent="space-between">
                     <Box>
                         <Text
-                            fontSize={2}
+                            fontSize={[1, '', 2]}
                             lineHeight="20px"
                             fontWeight="bold"
-                            letterSpacing="-0.6px"
+                            letterSpacing={['-0.4px', '', '-0.6px']}
                             color="text.black"
                         >
                             Total
@@ -130,10 +110,10 @@ const ProcedureSummaryView = props => {
                     </Box>
                     <Box>
                         <Text
-                            fontSize={2}
+                            fontSize={[1, '', 2]}
                             lineHeight={1}
                             fontWeight="bold"
-                            letterSpacing="-0.6px"
+                            letterSpacing={['-0.4px', '', '-0.6px']}
                             color="text.black"
                         >
                             {renderPrice(totalPrice)}

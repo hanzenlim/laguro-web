@@ -133,12 +133,12 @@ const StyledButton = styled(AntdButton)`
     &&.ant-btn-ghost[disabled]:active,
     &&.ant-btn-ghost.disabled.active,
     &&.ant-btn-ghost[disabled].active {
-        background-color: ${props => props.theme.colors.button.gray};
-        border-color: ${props => props.theme.colors.divider.white};
+        background-color: ${props => props.theme.colors.button.white};
+        border-color: ${props => props.theme.colors.button.gray};
 
         && span,
         && i {
-            color: ${props => props.theme.colors.text.white};
+            color: ${props => props.theme.colors.text.gray};
         }
     }
 `;

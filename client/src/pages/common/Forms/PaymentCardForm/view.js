@@ -4,6 +4,7 @@ import { Alert } from 'antd';
 import ExistingCardFormView from './ExistingCardForm';
 import NewCardFormView from './NewCardForm';
 import { Box, Button, Text } from '../../../../components';
+import { withScreenSizes } from '../../../../components/Responsive';
 import { NEW_CARD_PAYMENT_METHOD } from '../../../../util/strings';
 
 const renderExistingCards = (
@@ -32,12 +33,18 @@ const CardView = ({
     hasBackButton,
     stripeError,
     isSubmitting,
+    tabletMobileOnly,
 }) => (
     <Box width="100%" position="relative">
-        <Text fontSize={3} color="text.black" fontWeight="bold" mb={18}>
+        <Text
+            fontSize={3}
+            color="text.black"
+            fontWeight="bold"
+            mb={[16, '', 18]}
+        >
             Card Info
         </Text>
-        <Box mb={28}>
+        <Box mb={[104, '', 28]}>
             {get(paymentOptionsCards, 'length') > 0 &&
                 renderExistingCards(
                     paymentOptionsCards,
@@ -89,10 +96,10 @@ const CardView = ({
                     // how to connect an external button to a form
                     isButtonOutside
                         ? {
-                              position: 'absolute',
-                              width: '200px',
-                              bottom: '-134px',
-                              right: '-40px',
+                              position: tabletMobileOnly ? 'auto' : 'absolute',
+                              width: tabletMobileOnly ? '100%' : '200px',
+                              bottom: tabletMobileOnly ? '0' : '-134px',
+                              right: tabletMobileOnly ? '0' : '-40px',
                           }
                         : {}
                 }
@@ -103,4 +110,4 @@ const CardView = ({
     </Box>
 );
 
-export default CardView;
+export default withScreenSizes(CardView);
