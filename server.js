@@ -34,10 +34,8 @@ app.post('/api/graphql', async (req, res) => {
     const context = {};
 
     if (req.user) {
-        const token = jwt.sign(
-            { user: req.user },
-            process.env.SHARED_SERVER_SECRET
-        );
+        const user = { id: req.user.id, email: req.user.email };
+        const token = jwt.sign({ user }, process.env.SHARED_SERVER_SECRET);
 
         context.headers = {
             authorization: `bearer ${token}`,
