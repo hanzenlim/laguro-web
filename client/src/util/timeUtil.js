@@ -119,3 +119,9 @@ export const calculateTimeslots = (reservation, appointments) => {
     }
     return timeslots;
 };
+
+const LOCAL_TIME_LENGTH = 19;
+// remove the timezone offset from a timestamp
+// 2018-11-04T00:00:00-07:00 becomes 2018-11-04T00:00:00
+export const stripTimezone = timezone =>
+    timezone.substring(0, LOCAL_TIME_LENGTH);

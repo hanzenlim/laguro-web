@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { message } from 'antd';
 import { compose, graphql, withApollo } from 'react-apollo';
 import PropTypes from 'prop-types';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import _reduce from 'lodash/reduce';
 import _get from 'lodash/get';
 import _debounce from 'lodash/debounce';
@@ -20,6 +20,7 @@ import {
     PAYMENT_VIEW,
 } from '../../../util/strings';
 import DentistVerificationModal from '../Modals/DentistVerificationModal';
+import { stripTimezone } from '../../../util/timeUtil';
 
 class ReserveOffice extends Component {
     constructor(props) {
@@ -179,12 +180,8 @@ class ReserveOffice extends Component {
                             totalPrice += timeSlotTotalPrice;
 
                             return {
-                                startTime: moment(value.startDate)
-                                    .local()
-                                    .format(),
-                                endTime: moment(value.endDate)
-                                    .local()
-                                    .format(),
+                                startTime: stripTimezone(value.startDate),
+                                endTime: stripTimezone(value.endDate),
                             };
                         }
                     );

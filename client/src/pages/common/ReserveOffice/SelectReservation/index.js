@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Query, ApolloConsumer } from 'react-apollo';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import { message } from 'antd';
 import _uniqWith from 'lodash/uniqWith';
 import _filter from 'lodash/filter';
@@ -281,12 +281,8 @@ const getHourSlotsFromListings = (listings, userSelectedDates) => {
     let accumulatedData = {};
     const [userSelectedStartDate, userSelectedEndDate] = userSelectedDates;
     for (let i = 0; i < listings.length; i++) {
-        const listingStartDate = `${listings[i].availability.startDay}T${
-            listings[i].availability.startTime
-        }`;
-        const listingEndDate = `${listings[i].availability.endDay}T${
-            listings[i].availability.endTime
-        }`;
+        const listingStartDate = listings[i].localStartTime;
+        const listingEndDate = listings[i].localEndTime;
 
         const { chairHourlyPrice, cleaningFee } = listings[i];
 
@@ -315,22 +311,26 @@ const getHourSlotsFromReservation = (listings, userSelectedDates) => {
     // Iterate over the listings, reservations and the availabilityTime inside the reservation object.
     for (let i = 0; i < listings.length; i++) {
         for (let y = 0; y < listings[i].reservations.length; y++) {
-            const reservations = listings[i].reservations[y];
+            const reservation = listings[i].reservations[y];
 
             if (
-                reservations.availableTimes &&
-                reservations.availableTimes.length > 0
+                reservation.localAvailableTimes &&
+                reservation.localAvailableTimes.length > 0
             ) {
-                for (let z = 0; z < reservations.availableTimes.length; z++) {
+                for (
+                    let z = 0;
+                    z < reservation.localAvailableTimes.length;
+                    z++
+                ) {
                     const data = getListingUIData(
-                        reservations.availableTimes[z].startTime,
-                        reservations.availableTimes[z].endTime,
+                        reservation.localAvailableTimes[z].startTime,
+                        reservation.localAvailableTimes[z].endTime,
                         userSelectedStartDate,
                         userSelectedEndDate,
                         listings[i].chairHourlyPrice,
                         listings[i].cleaningFee,
                         listings[i].id,
-                        reservations.numChairsSelected
+                        reservation.numChairsSelected
                     );
                     accumulatedData = mergeReservationUIData(
                         accumulatedData,
@@ -798,10 +798,10 @@ class SelectReservation extends Component {
                                     const currentListings = data.queryListings.filter(
                                         listing => {
                                             const listingEnd = moment(
-                                                listing.endTime
+                                                listing.localEndTime
                                             );
                                             const listingStart = moment(
-                                                listing.startTime
+                                                listing.localStartTime
                                             );
 
                                             // the argument [] means isBetween includes

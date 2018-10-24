@@ -4,6 +4,8 @@ import moment from 'moment';
 import { compose, Query, graphql, withApollo } from 'react-apollo';
 import { message } from 'antd';
 
+import { stripTimezone } from '../../../util/timeUtil';
+
 import {
     getDentistQuery,
     getUserQuery,
@@ -45,8 +47,8 @@ class BookAppointment extends PureComponent {
             patientId: this.props.data.activeUser.id,
             location: data.location,
             procedure: data.procedure,
-            startTime: data.startTime,
-            endTime: data.endTime,
+            startTime: stripTimezone(data.startTime),
+            endTime: stripTimezone(data.endTime),
             isPaymentVisible: true,
         });
 

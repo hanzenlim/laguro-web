@@ -20,6 +20,8 @@ export const getOfficeQuery = gql`
                     startTime
                     endTime
                 }
+                localStartTime
+                localEndTime
                 cleaningFee
                 numChairsAvailable
                 chairHourlyPrice

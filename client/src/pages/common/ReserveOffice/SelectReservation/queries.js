@@ -25,6 +25,8 @@ export const getListingQuery = gql`
             chairHourlyPrice
             cleaningFee
             status
+            localStartTime
+            localEndTime
             startTime
             endTime
             availability {
@@ -49,6 +51,10 @@ export const getListingQuery = gql`
             }) {
                 id
                 availableTimes {
+                    startTime
+                    endTime
+                }
+                localAvailableTimes {
                     startTime
                     endTime
                 }

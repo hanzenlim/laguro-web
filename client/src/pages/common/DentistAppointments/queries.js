@@ -37,7 +37,7 @@ export const getDentistQuery = gql`
                     id
                     name
                 }
-                availableTimes {
+                localAvailableTimes {
                     startTime
                     endTime
                 }

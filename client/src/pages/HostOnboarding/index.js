@@ -563,11 +563,15 @@ class HostOnboarding extends Component {
                         startTime: startTime
                             .startOf('hour')
                             .format()
-                            .split('T')[1],
+                            .split('T')[1]
+                            .split('+')[0]
+                            .split('-')[0],
                         endTime: endTime
                             .startOf('hour')
                             .format()
-                            .split('T')[1],
+                            .split('T')[1]
+                            .split('+')[0]
+                            .split('-')[0],
                         startDay: startDay.format().split('T')[0],
                         endDay: endDay.format().split('T')[0],
                     },
