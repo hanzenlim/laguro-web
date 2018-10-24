@@ -32,11 +32,20 @@ const Footer = () => {
                 justifyContent="space-between"
                 alignItems="center"
             >
-                <Flex flexDirection="column" width="70%" my={100}>
-                    <Text color="text.black50" fontSize={4} mb={36}>
+                <Flex
+                    flexDirection="column"
+                    width={['auto', '', '70%']}
+                    my={[10, '', 100]}
+                >
+                    <Text
+                        color="text.black50"
+                        fontSize={[1, '', 4]}
+                        mb={[10, '', 36]}
+                        fontWeight="bold"
+                    >
                         LET&#39;S CONNECT
                     </Text>
-                    <Text color="text.black" fontSize={1}>
+                    <Text color="text.black" fontSize={[0, '', 1]}>
                         Laguro is here to provide support and answers for any
                         questions you may have. Send us your inquiries through
                         our chat box or to support@laguro.com, and we will be in
@@ -44,7 +53,11 @@ const Footer = () => {
                     </Text>
                 </Flex>
 
-                <Flex mt={30}>
+                <Flex
+                    mt={[42, '', 30]}
+                    mb={[20, '', 0]}
+                    justifyContent={['center', '', 'flex-end']}
+                >
                     <Link
                         mr={25}
                         to={'https://www.facebook.com/LaguroDental/'}
@@ -98,6 +111,8 @@ const Footer = () => {
                 borderColor="divider.gray"
                 justifyContent="space-between"
                 alignItems="center"
+                flexDirection={['column', '', 'row']}
+                py={[20, '', 0]}
             >
                 <Flex alignItems="center">
                     <Icon
@@ -107,18 +122,22 @@ const Footer = () => {
                         type="locationPin"
                         alt="logo"
                     />
-                    <Text>© 2018&nbsp;</Text>
-                    <Text fontWeight="bold">laguro.</Text>
-                    <Text>&nbsp; all rights reserved.</Text>
+                    <Text fontSize={[0, '', 1]}>© 2018&nbsp;</Text>
+                    <Text fontSize={[0, '', 1]} fontWeight="bold">
+                        laguro.
+                    </Text>
+                    <Text fontSize={[0, '', 1]}>
+                        &nbsp; all rights reserved.
+                    </Text>
                 </Flex>
-                <Flex>
-                    <Link ml={50} to={'/terms'}>
-                        <Text fontSize={1} mb={2} color="black">
+                <Flex mt={[20, '', 0]}>
+                    <Link ml={[0, '', 50]} to={'/terms'}>
+                        <Text fontSize={[0, '', 1]} mb={2} color="black">
                             terms
                         </Text>
                     </Link>
                     <Link ml={50} to={'/privacy'}>
-                        <Text fontSize={1} mb={2} color="black">
+                        <Text fontSize={[0, '', 1]} mb={2} color="black">
                             privacy
                         </Text>
                     </Link>
