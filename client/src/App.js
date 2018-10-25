@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Query } from 'react-apollo';
 import { gql } from 'apollo-boost';
-import { message } from 'antd';
 import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import Loadable from 'react-loadable';
@@ -141,12 +140,6 @@ const PrivateRoute = ({
 
 class App extends Component {
     render() {
-        if (window.screen.width < 500) {
-            message.info(
-                "Currently, Laguro is not optimized for mobile browsers, even though you may still access all of Laguro's functionalities. Please use a desktop or laptop computer.",
-                7
-            );
-        }
         return (
             <ThemeProvider theme={theme}>
                 <Router history={history}>
