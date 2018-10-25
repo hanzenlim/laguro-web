@@ -3,11 +3,11 @@ import queryString from 'query-string';
 import { Query } from 'react-apollo';
 import { Redirect } from 'react-router-dom';
 import _get from 'lodash/get';
-import LoginPageView from './view';
+import RegisterPageView from './view';
 import { getActiveUserQuery } from './queries';
 import { onLogin, onSignup, sendPassResetLink } from '../../util/authUtils';
 
-class LoginPage extends Component {
+class RegisterPage extends Component {
     state = {
         currentModal: 'login',
         isSubmitting: false,
@@ -16,12 +16,6 @@ class LoginPage extends Component {
     openLoginModal = () => {
         this.setState({
             currentModal: 'login',
-        });
-    };
-
-    onOpenRegistrationModal = () => {
-        this.setState({
-            currentModal: 'register',
         });
     };
 
@@ -72,24 +66,22 @@ class LoginPage extends Component {
     };
 
     render() {
-        const search = queryString.parse(_get(this.props, 'location.search'));
+        const location = queryString.parse(_get(this.props, 'location.search'));
 
         return (
             <Query query={getActiveUserQuery}>
                 {({ loading, data, client }) => {
-                    const { location } = this.props;
                     if (loading) {
                         return <div>loading...</div>;
                     }
 
                     // Check if user is logged in or not.
                     if (_get(data, 'activeUser.id')) {
-                        return <Redirect to={search.redirectTo} />;
+                        return <Redirect to={location.redirectTo} />;
                     }
 
                     return (
-                        <LoginPageView
-                            openRegistrationModal={this.onOpenRegistrationModal}
+                        <RegisterPageView
                             openForgotPassModal={this.onOpenForgotPassModal}
                             closeModal={this.closeModal}
                             openLoginModal={this.openLoginModal}
@@ -98,7 +90,7 @@ class LoginPage extends Component {
                             onLogin={values => this.handleLogin(client, values)}
                             visibleModal={this.state.currentModal}
                             sendPassResetLink={this.handleSendResetPasswordLink}
-                            message={_get(location, 'state.message')}
+                            message="You need to login first before you can view this page"
                             isSubmitting={this.state.isSubmitting}
                         />
                     );
@@ -107,4 +99,4 @@ class LoginPage extends Component {
         );
     }
 }
-export default LoginPage;
+export default RegisterPage;

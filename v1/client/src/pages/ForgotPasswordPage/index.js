@@ -3,11 +3,11 @@ import queryString from 'query-string';
 import { Query } from 'react-apollo';
 import { Redirect } from 'react-router-dom';
 import _get from 'lodash/get';
-import LoginPageView from './view';
+import ForgotPasswordPageView from './view';
 import { getActiveUserQuery } from './queries';
 import { onLogin, onSignup, sendPassResetLink } from '../../util/authUtils';
 
-class LoginPage extends Component {
+class ForgotPasswordPage extends Component {
     state = {
         currentModal: 'login',
         isSubmitting: false,
@@ -77,7 +77,6 @@ class LoginPage extends Component {
         return (
             <Query query={getActiveUserQuery}>
                 {({ loading, data, client }) => {
-                    const { location } = this.props;
                     if (loading) {
                         return <div>loading...</div>;
                     }
@@ -88,7 +87,7 @@ class LoginPage extends Component {
                     }
 
                     return (
-                        <LoginPageView
+                        <ForgotPasswordPageView
                             openRegistrationModal={this.onOpenRegistrationModal}
                             openForgotPassModal={this.onOpenForgotPassModal}
                             closeModal={this.closeModal}
@@ -98,8 +97,9 @@ class LoginPage extends Component {
                             onLogin={values => this.handleLogin(client, values)}
                             visibleModal={this.state.currentModal}
                             sendPassResetLink={this.handleSendResetPasswordLink}
-                            message={_get(location, 'state.message')}
+                            message="You need to login first before you can view this page"
                             isSubmitting={this.state.isSubmitting}
+                            location={this.props.location}
                         />
                     );
                 }}
@@ -107,4 +107,4 @@ class LoginPage extends Component {
         );
     }
 }
-export default LoginPage;
+export default ForgotPasswordPage;

@@ -73,6 +73,15 @@ const LoginPage = Loadable({
     loading: () => null,
 });
 
+const registerPage = Loadable({
+    loader: () => import('./pages/RegisterPage'),
+    loading: () => null,
+});
+const forgotPasswordPage = Loadable({
+    loader: () => import('./pages/ForgotPasswordPage'),
+    loading: () => null,
+});
+
 const AboutPage = Loadable({
     loader: () => import('./pages/AboutPage'),
     loading: () => null,
@@ -118,7 +127,11 @@ const PrivateRoute = ({
                     to={{
                         pathname: '/login',
                         search: `?redirectTo=${props.location.pathname}`,
-                        state: { from: props.location },
+                        state: {
+                            from: props.location,
+                            message:
+                                'You need to login first before you can view this page',
+                        },
                     }}
                 />
             )
@@ -147,6 +160,14 @@ class App extends Component {
                                             <Route
                                                 path="/login"
                                                 component={LoginPage}
+                                            />
+                                            <Route
+                                                path="/register"
+                                                component={registerPage}
+                                            />
+                                            <Route
+                                                path="/forgot-password"
+                                                component={forgotPasswordPage}
                                             />
                                             <PrivateRoute
                                                 path="/host-onboarding/:step"
