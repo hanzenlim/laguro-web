@@ -22,13 +22,12 @@ const StyledIcon = styled(Icon)`
 const StyledAutocomplete = styled(AntdAutocomplete)`
     && {
         position: relative;
-        ${height} ${width};
-
+        ${height};
+        ${width};
         && .ant-select-selection {
             background-color: ${props =>
                 props.theme.colors.background.transparent};
         }
-
         && .ant-input {
             ${height};
             padding-left: ${props => (props.withDentists ? '20px' : '45px')};
@@ -37,29 +36,31 @@ const StyledAutocomplete = styled(AntdAutocomplete)`
             background-color: ${props => props.theme.colors.background.white};
             border-radius: 2px;
             color: ${props => props.theme.colors.text.black50};
-            font-size: ${props => props.theme.fontSizes[2]};
+            font-size: ${props => props.theme.fontSizes[0]};
             font-weight: 700;
             transition: none;
+            @media (min-width: 992px) {
+                font-size: ${props => props.theme.fontSizes[2]};
+            }
         }
-
         && .ant-input-disabled {
             background-color: #f5f5f5;
         }
-
         && .ant-select-selection__rendered {
             ${height};
         }
-
         && .ant-select-selection__placeholder {
             ${height};
             padding-left: ${props => (props.withDentists ? '10px' : '35px')};
             color: ${props => props.theme.colors.text.gray};
-            font-size: ${props => props.theme.fontSizes[2]};
+            font-size: ${props => props.theme.fontSizes[0]};
             z-index: ${props => props.theme.zIndex.inputElement};
             font-weight: 700;
             font-family: Silka;
+            @media (min-width: 992px) {
+                font-size: ${props => props.theme.fontSizes[2]};
+            }
         }
-
         && .ant-select-search__field__mirror {
             display: none;
         }
@@ -75,12 +76,10 @@ const StyledOption = styled(Flex)`
         padding: 10px;
         font-size: ${props => props.theme.fontSizes[2]};
     }
-
     ${`.ant-select-dropdown-menu-item-active`} & {
         background-color: ${props => props.theme.colors.background.blue};
         color: ${props => props.theme.colors.text.white};
         font-weight: bold;
-
         i {
             color: ${props => props.theme.colors.text.white};
         }

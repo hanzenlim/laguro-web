@@ -36,7 +36,6 @@ const SearchBox = props => {
     } = props;
 
     const isLarge = size === 'large';
-
     return (
         <Flex
             width={['100%', '', isLarge ? '100%' : '53%']}
@@ -50,7 +49,7 @@ const SearchBox = props => {
                 mb={[7, '', 0]}
             >
                 <LocationFilter
-                    height={60}
+                    height={isLarge ? [50, 50, 60] : 60}
                     initialValue={initialLocationFilterValue}
                     placeholder={locationPlaceholder}
                     onTextChange={onTextChange}
@@ -68,7 +67,8 @@ const SearchBox = props => {
                     initialValue={initialDateFilterValue}
                     onDateChange={onDateFilterChange}
                     width="100%"
-                    format={size === 'large' ? 'ddd MM/DD' : 'MM/DD'}
+                    height={isLarge ? [50, 50, 60] : 60}
+                    format={isLarge ? 'ddd MM/DD' : 'MM/DD'}
                 />
             </Box>
             <StyledButton

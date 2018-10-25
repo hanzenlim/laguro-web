@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { DatePicker as AntdDatePicker } from 'antd';
 import moment from 'moment';
-import { width } from 'styled-system';
+import { width, height } from 'styled-system';
 
 import { Icon, Input } from '../../components';
 
@@ -10,7 +10,7 @@ const StyledContainer = styled.div`
     && {
         position: relative;
         ${width};
-        height: 60px;
+        ${height};
         border-radius: 2px;
         background-color: ${props => props.theme.colors.background.white};
         border: 1px solid ${props => props.theme.colors.divider.darkGray};
@@ -48,7 +48,11 @@ const StyledContainer = styled.div`
         margin-left: 15px;
         color: ${props => props.theme.colors.text.black50};
         font-weight: ${props => props.theme.fontWeights.bold};
-        font-size: ${props => props.theme.fontSizes[2]};
+        font-size: ${props => props.theme.fontSizes[0]};
+
+        @media (min-width: 992px) {
+            font-size: ${props => props.theme.fontSizes[2]};
+        }
     }
 
     .ant-calendar-date {
@@ -109,7 +113,10 @@ class DatePicker extends PureComponent {
         const { open, dateString } = this.state;
 
         return (
-            <StyledContainer width={this.props.width}>
+            <StyledContainer
+                width={this.props.width}
+                height={this.props.height}
+            >
                 <Input
                     onClick={this.toggleDatePicker}
                     value={dateString}

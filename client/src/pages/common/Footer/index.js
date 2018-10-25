@@ -14,8 +14,8 @@ const Footer = () => {
         <Flex
             is="footer"
             width={1}
-            height={345}
-            borderTop="1px solid"
+            height={['auto', '', 345]}
+            borderTop={window.location.pathname === '/' ? '' : '1px solid'}
             borderColor={'divider.gray'}
             bg={
                 window.location.pathname === '/'
@@ -28,7 +28,7 @@ const Footer = () => {
             justifyContent="space-between"
         >
             <Container
-                display="flex"
+                display={['block', '', 'flex']}
                 justifyContent="space-between"
                 alignItems="center"
             >
@@ -106,7 +106,7 @@ const Footer = () => {
 
             <Container
                 display="flex"
-                height={64}
+                height={['auto', '', 64]}
                 borderTop="1px solid"
                 borderColor="divider.gray"
                 justifyContent="space-between"
