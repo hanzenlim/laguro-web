@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Container, Flex, Box, Sticky } from '../../components';
+import { Container, Flex, Box, Sticky, Responsive } from '../../components';
 
 import FeaturedDentists from './FeaturedDentists';
 import ReviewContainer from '../common/ReviewContainer';
@@ -9,6 +9,8 @@ import BookAppointment from '../common/BookAppointment';
 import DentistDetails from '../common/DentistDetails';
 
 import { DENTIST } from '../../util/strings';
+
+const { Desktop } = Responsive;
 
 const DentistDetailsPageView = props => {
     const { dentist, id } = props;
@@ -20,29 +22,37 @@ const DentistDetailsPageView = props => {
                 flexDirection="column"
                 justifyContent="space-between"
             >
-                <Flex justifyContent="space-between">
-                    <Box mt={30} mr={34} width="57%">
-                        <DentistDetails dentist={dentist} />
-                        <ReviewContainer type={DENTIST} id={id} />
-                    </Box>
-                    <Sticky>
-                        <Box
-                            mt="44px"
-                            width="460px"
-                            border="1px solid"
-                            borderColor="divider.gray"
-                            boxShadow={0}
-                            pt={16}
-                            pr={32}
-                            pl={32}
-                            pb={32}
-                        >
-                            <BookAppointment id={id} />
+                <Flex
+                    justifyContent="space-between"
+                    flexDirection={['column', '', 'row']}
+                >
+                    <Box width={['100%', '', 'calc(100% - 460px)']}>
+                        <Box mt={30} mr={[0, '', 34]}>
+                            <DentistDetails dentist={dentist} />
+                            <ReviewContainer type={DENTIST} id={id} />
                         </Box>
-                    </Sticky>
+                    </Box>
+                    <Desktop>
+                        <Sticky>
+                            <Box
+                                mt="44px"
+                                width="460px"
+                                border="1px solid"
+                                borderColor="divider.gray"
+                                boxShadow={0}
+                                pt={16}
+                                pr={32}
+                                pl={32}
+                                pb={32}
+                            >
+                                <BookAppointment id={id} />
+                            </Box>
+                        </Sticky>
+                    </Desktop>
                 </Flex>
-
-                <FeaturedDentists currentDentist={dentist} />
+                <Desktop>
+                    <FeaturedDentists currentDentist={dentist} />
+                </Desktop>
             </Flex>
         </Container>
     );
