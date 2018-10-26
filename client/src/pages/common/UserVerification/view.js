@@ -148,6 +148,8 @@ class UserVerification extends Component {
                         ...this.state.data,
                         ...documents,
                         deaRegistrationNumber: dentist.deaRegistrationNumber,
+                        npiNumber: dentist.npiNumber,
+                        ssnOrEinOrTin: dentist.ssnOrEinOrTin,
                     },
                 });
             }
@@ -289,7 +291,11 @@ class UserVerification extends Component {
 
         if (persona === DENTIST) {
             const { dentist } = this.state;
-            const { deaRegistrationNumber } = formData;
+            const {
+                deaRegistrationNumber,
+                npiNumber,
+                ssnOrEinOrTin,
+            } = formData;
 
             const variables = {
                 id: dentist.id,
@@ -298,6 +304,14 @@ class UserVerification extends Component {
 
             if (deaRegistrationNumber && deaRegistrationNumber.length) {
                 variables.deaRegistrationNumber = deaRegistrationNumber;
+            }
+
+            if (npiNumber && npiNumber.length) {
+                variables.npiNumber = npiNumber;
+            }
+
+            if (ssnOrEinOrTin && ssnOrEinOrTin.length) {
+                variables.ssnOrEinOrTin = ssnOrEinOrTin;
             }
 
             await this.props.updateDentist(variables);

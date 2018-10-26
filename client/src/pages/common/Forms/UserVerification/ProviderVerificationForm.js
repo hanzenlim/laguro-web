@@ -6,7 +6,7 @@ import {
     SingleDocumentSelector,
     VerificationFormContainer,
 } from './components';
-import { Form, Input, InnerForm } from '../../../../components';
+import { Form, Input, InnerForm, Text } from '../../../../components';
 
 const { FormItem } = Form;
 
@@ -20,23 +20,27 @@ const ProviderVerificationForm = props => {
             </PreText>
             <InnerForm form={form}>
                 <FormItem
-                    name="deaRegistrationNumber"
-                    label="DEA Registration Number"
-                    input={<Input mb={32} height={50} />}
+                    mb={40}
+                    name="ssnOrEinOrTin"
+                    label="SSN or EIN/TIN Number"
+                    input={<Input height={50} />}
                     normalize={
-                        get(props.data, 'deaRegistrationNumber')
+                        get(props.data, 'ssnOrEinOrTin')
                             ? value => value || null
                             : null
                     }
                     rules={[
                         {
-                            pattern: /^[A-Z][A-Z9][0-9]{7}(-\w+)?/,
-                            message:
-                                'DEA Registration Number must appear valid',
+                            required: true,
+                            message: 'SSN or EIN/TIN is required',
+                        },
+                        {
+                            pattern: /^\d{9}$/,
+                            message: 'SSN or EIN/TIN number must appear valid',
                         },
                     ]}
                     validateTrigger="onBlur"
-                    initialValue={get(props.data, 'deaRegistrationNumber')}
+                    initialValue={get(props.data, 'ssnOrEinOrTin')}
                 />
                 <SingleDocumentSelector
                     {...props}
@@ -63,6 +67,58 @@ const ProviderVerificationForm = props => {
                     tooltip="Commonly known as medical professional liability insurance.
                     This insurance covers bodily injury, property damage, and personal injury such as
                     mental anguish."
+                />
+                <FormItem
+                    mt={40}
+                    name="deaRegistrationNumber"
+                    label={
+                        <span>
+                            <span>DEA Registration Number </span>
+                            <Text display="inline" color="text.gray">
+                                (optional)
+                            </Text>
+                        </span>
+                    }
+                    input={<Input height={50} />}
+                    normalize={
+                        get(props.data, 'deaRegistrationNumber')
+                            ? value => value || null
+                            : null
+                    }
+                    rules={[
+                        {
+                            pattern: /^[A-Z][A-Z9][0-9]{7}(-\w+)?/,
+                            message:
+                                'DEA Registration Number must appear valid',
+                        },
+                    ]}
+                    validateTrigger="onBlur"
+                    initialValue={get(props.data, 'deaRegistrationNumber')}
+                />
+                <FormItem
+                    name="npiNumber"
+                    label={
+                        <span>
+                            <span>NPI Number </span>
+                            <Text display="inline" color="text.gray">
+                                (optional)
+                            </Text>
+                        </span>
+                    }
+                    input={<Input height={50} />}
+                    normalize={
+                        get(props.data, 'npiNumber')
+                            ? value => value || null
+                            : null
+                    }
+                    rules={[
+                        {
+                            pattern: /^[0-9]{10}(-\w+)?/,
+                            message: 'NPI number must appear valid',
+                        },
+                    ]}
+                    validateTrigger="onBlur"
+                    initialValue={get(props.data, 'npiNumber')}
                 />
             </InnerForm>
         </VerificationFormContainer>

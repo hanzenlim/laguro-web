@@ -42,10 +42,6 @@ export const VerificationFormContainer = styled.div`
         .ant-form-item-label {
             margin-bottom: 16px;
         }
-
-        .ant-form-item {
-            margin-bottom: 50px;
-        }
     }
 `;
 
