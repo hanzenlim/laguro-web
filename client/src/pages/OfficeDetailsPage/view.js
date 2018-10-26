@@ -11,6 +11,7 @@ import {
     Responsive,
 } from '../../components';
 import theme from '../../components/theme';
+import { withScreenSizes } from '../../components/Responsive';
 import OfficeDetails from '../common/OfficeDetails';
 import Payment from '../common/Payment';
 import ReserveOffice from '../common/ReserveOffice';
@@ -77,7 +78,10 @@ class OfficeDetailsPageView extends PureComponent {
     constructor(props) {
         super(props);
 
-        this.state = { carouselClass: '' };
+        this.state = {
+            carouselClass: '',
+            isReserveOfficeVisible: this.props.desktopOnly,
+        };
     }
 
     toggleCarouselHeight = () => {
@@ -88,6 +92,11 @@ class OfficeDetailsPageView extends PureComponent {
         }
     };
 
+    toggleReserveOffice = () =>
+        this.setState(({ isReserveOfficeVisible }) => ({
+            isReserveOfficeVisible: !isReserveOfficeVisible,
+        }));
+
     render() {
         const {
             id,
@@ -95,11 +104,18 @@ class OfficeDetailsPageView extends PureComponent {
             officeDetailsDoneLoadingHandler,
             officeDetailsDoneLoading,
         } = this.props;
+
+        const { isReserveOfficeVisible, carouselClass } = this.state;
+
+        const isContentVisible = this.props.desktopOnly
+            ? true
+            : !isReserveOfficeVisible;
+
         return (
             <Flex flexDirection="column" height="100%">
                 {_get(imageUrls, 'length') > 0 ? (
                     <StyledCarousel
-                        className={this.state.carouselClass}
+                        className={carouselClass}
                         infinite={true}
                         centerPadding={0}
                         variableWidth={true}
@@ -142,21 +158,37 @@ class OfficeDetailsPageView extends PureComponent {
                             flexDirection={['column', '', 'row']}
                         >
                             <Box width={['100%', '', 'calc(100% - 460px)']}>
-                                <OfficeDetails
-                                    id={id}
-                                    viewOnly={false}
-                                    doneLoading={
-                                        officeDetailsDoneLoadingHandler
-                                    }
-                                    renderStickyComponent={
-                                        renderReservationModule
-                                    }
-                                />
-                                <ReviewContainer type={OFFICE} id={id} />
+                                <Box mt={20} mr={[0, '', 34]}>
+                                    <OfficeDetails
+                                        id={id}
+                                        viewOnly={false}
+                                        doneLoading={
+                                            officeDetailsDoneLoadingHandler
+                                        }
+                                        renderStickyComponent={
+                                            renderReservationModule
+                                        }
+                                        toggleReserveOffice={
+                                            this.toggleReserveOffice
+                                        }
+                                        isReserveOfficeVisible={
+                                            isReserveOfficeVisible
+                                        }
+                                    />
+                                    {isContentVisible && (
+                                        <ReviewContainer
+                                            type={OFFICE}
+                                            id={id}
+                                        />
+                                    )}
+                                </Box>
                             </Box>
-                            <Desktop>
-                                <Sticky mt={20} offset="20px">
-                                    <Box mt="44px" width="460px">
+                            {isReserveOfficeVisible && (
+                                <Sticky mt={[0, '', 20]} offset="20px">
+                                    <Box
+                                        mt={[20, '', 44]}
+                                        width={['100%', '', 460]}
+                                    >
                                         <ReserveOffice
                                             officeId={id}
                                             startLoading={
@@ -165,7 +197,7 @@ class OfficeDetailsPageView extends PureComponent {
                                         />
                                     </Box>
                                 </Sticky>
-                            </Desktop>
+                            )}
                         </Flex>
                         <Desktop>
                             <FeaturedOffices currentOffice={id} />
@@ -177,4 +209,4 @@ class OfficeDetailsPageView extends PureComponent {
     }
 }
 
-export default OfficeDetailsPageView;
+export default withScreenSizes(OfficeDetailsPageView);

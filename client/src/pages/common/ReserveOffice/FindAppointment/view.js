@@ -11,7 +11,12 @@ const FindAppointment = ({
     disabledDate,
 }) => (
     <Box>
-        <Text mb={6} lineHeight="22px" fontSize={2} color="text.black">
+        <Text
+            mb={[12, '', 6]}
+            lineHeight="22px"
+            fontSize={[1, '', 2]}
+            color="text.black"
+        >
             dates
         </Text>
         <Form onSuccess={onSubmit} debounce={false}>
@@ -26,8 +31,8 @@ const FindAppointment = ({
             <SubmitButton
                 disabled={disableButton}
                 width="100%"
-                height="60px"
-                fontSize={3}
+                height={['50px', '', '60px']}
+                fontSize={[1, '', 3]}
                 px={14}
                 buttonText="Find"
             />

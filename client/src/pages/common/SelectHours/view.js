@@ -3,10 +3,15 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Text, Flex, Button, Box, Checkbox, Icon } from '../../../components';
+import theme from '../../../components/theme';
 
 const StyledContainer = styled(Box)`
     display: grid;
-    grid-template-columns: repeat(4, 25%);
+    grid-template-columns: repeat(3, 33.33%);
+
+    @media (min-width: ${theme.breakpoints[2]}) {
+        grid-template-columns: repeat(4, 25%);
+    }
 `;
 
 const SelectHoursView = props => {
@@ -27,7 +32,7 @@ const SelectHoursView = props => {
             <Flex mb={14} justifyContent="space-between">
                 <Text
                     lineHeight="22px"
-                    fontSize={2}
+                    fontSize={[1, '', 2]}
                     color="text.black"
                     fontWeight="bold"
                 >
@@ -71,7 +76,7 @@ const SelectHoursView = props => {
                                 >
                                     <Box>
                                         <Text
-                                            fontSize={2}
+                                            fontSize={[1, '', 2]}
                                             letterSpacing="-0.4px"
                                             color={
                                                 selected.includes(item.time)
@@ -83,10 +88,12 @@ const SelectHoursView = props => {
                                         </Text>
                                         {priceRangeLength === 2 && (
                                             <Text
+                                                mt={4}
+                                                fontWeight="medium"
                                                 color={
                                                     selected.includes(item.time)
                                                         ? 'text.white'
-                                                        : 'text.black'
+                                                        : 'text.gray'
                                                 }
                                             >
                                                 ${item.price / 100}

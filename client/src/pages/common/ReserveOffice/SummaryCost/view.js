@@ -12,12 +12,26 @@ const StyledPanel = styled(Panel)`
     }
 `;
 
+const StyledCollapse = styled(Collapse)`
+    &&.ant-collapse > .ant-collapse-item > .ant-collapse-header .arrow {
+        left: 0;
+    }
+`;
+
 const generateHeaderText = (headerText, amount) => (
     <Flex justifyContent="space-between">
-        <Text fontSize={2} fontWeight="bold" color="text.black">
+        <Text
+            fontSize={[1, '', 2]}
+            fontWeight={['medium', '', 'bold']}
+            color="text.black"
+        >
             {headerText}
         </Text>
-        <Text fontSize={2} fontWeight="bold" color="text.black">
+        <Text
+            fontSize={[1, '', 2]}
+            fontWeight={['medium', '', 'bold']}
+            color="text.black"
+        >
             ${(amount / 100).toFixed(2)}
         </Text>
     </Flex>
@@ -27,10 +41,10 @@ const getSubSectionDetails = summaryDetails => {
     const details = summaryDetails.map(value => (
         <Box ml="30px" pr="0px">
             <Flex justifyContent="space-between">
-                <Text fontSize={1} color="text.darkGray">
+                <Text fontSize={[0, '', 1]} color="text.darkGray" pr={16}>
                     {value.description}
                 </Text>
-                <Text fontSize={1} color="text.darkGrays">
+                <Text fontSize={[0, '', 1]} color="text.darkGrays">
                     ${(value.cost / 100).toFixed(2)}
                 </Text>
             </Flex>
@@ -56,8 +70,10 @@ const generatePanelView = list => {
 
 const SummaryCostView = ({ summaryData, totalPrice }) => (
     <Fragment>
-        <Collapse bordered={false}>{generatePanelView(summaryData)}</Collapse>
-        <Flex justifyContent="space-between" mt={10} ml={5}>
+        <StyledCollapse bordered={false}>
+            {generatePanelView(summaryData)}
+        </StyledCollapse>
+        <Flex justifyContent="space-between" mt={16} ml={[0, '', 5]}>
             <Text fontSize={2} color="text.black" fontWeight="bold">
                 Total
             </Text>
