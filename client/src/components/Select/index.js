@@ -27,7 +27,8 @@ const StyledSelect = styled(AntdSelect)`
     .ant-select-arrow {
         font-weight: bold;
         color: ${props => props.theme.colors.arrow.black};
-        font-size: ${props => props.theme.fontSizes[1]};
+        font-size: ${props => props.theme.fontSizes[0]};
+
         @media (min-width: ${props => props.theme.breakpoints[1]}) {
             font-size: ${props => props.theme.fontSizes[3]};
         }

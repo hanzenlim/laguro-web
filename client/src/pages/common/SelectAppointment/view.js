@@ -29,7 +29,7 @@ const SelectAppointmentView = props => {
                                 alignItems="center"
                                 justifyContent="center"
                                 width="100%"
-                                height="50px"
+                                height={[46, '', 48]}
                                 borderRadius="2px"
                                 border="1px solid"
                                 borderColor="divider.blue"
@@ -40,7 +40,7 @@ const SelectAppointmentView = props => {
                                 }
                             >
                                 <Text
-                                    fontSize={3}
+                                    fontSize={[1, '', 3]}
                                     letterSpacing="-0.4px"
                                     color={
                                         selected.key === item.key

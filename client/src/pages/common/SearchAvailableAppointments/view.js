@@ -9,7 +9,7 @@ import { Text } from '../../../components';
 const NoAppointmentsMessage = () => (
     <Text
         textAlign="center"
-        fontSize={3}
+        fontSize={[1, '', 3]}
         letterSpacing="-0.6px"
         color="text.black"
         mt={20}
@@ -41,7 +41,7 @@ const SearchAvailableAppointments = props => {
                         lineHeight="30px"
                         fontWeight="bold"
                         color="text.black"
-                        fontSize={4}
+                        fontSize={[1, '', 3]}
                     >
                         Make an appointment
                     </Text>

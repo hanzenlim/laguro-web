@@ -56,12 +56,16 @@ const ProfileImage = styled(Flex)`
 const StyledDropContainer = styled.div`
     @media (max-width: 991px) {
         .ant-dropdown {
-            height: calc(100vh - 60px);
+            height: calc(100vh - 48px);
             overflow-y: auto;
             background-color: ${theme.colors.background.lightGray};
-            top: 60px !important;
+            top: 48px !important;
             left: 0 !important;
             right: 0 !important;
+        }
+
+        .ant-dropdown-menu {
+            padding: 0;
         }
     }
 `;
@@ -211,7 +215,7 @@ class Header extends Component {
             <Flex
                 is="header"
                 width="100%"
-                height={[60, '', 120]}
+                height={[48, '', 120]}
                 bg={
                     onLandingPage
                         ? 'background.transparent'
