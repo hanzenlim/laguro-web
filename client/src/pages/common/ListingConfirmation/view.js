@@ -1,43 +1,46 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Box, Flex, Text, Icon, Card } from '../../../components';
+import { Box, Flex, Text, Card } from '../../../components';
 
 const ListingConfirmation = props => {
     const { name, address, listings, equipment } = props;
 
     return (
-        <Box width="100%" mt={140} mb={60}>
+        <Box width="100%" mt={[0, '', 140]} mb={60}>
             <Text
-                fontSize={5}
+                fontSize={[2, '', 5]}
                 fontWeight="bold"
                 color="text.gray"
-                lineHeight={1}
-                pb={14}
+                lineHeight={[1.88, '', 1]}
+                pb={[0, '', 14]}
             >
                 Confirmation
             </Text>
             <Text
-                fontSize={5}
+                fontSize={[2, '', 5]}
                 fontWeight="bold"
                 color="text.trueBlack"
                 lineHeight={1}
-                pb={50}
+                pb={[16, '', 50]}
             >
                 You're all set!
             </Text>
             <Text
-                fontSize={6}
+                fontSize={[5, '', 6]}
                 fontWeight="bold"
                 color="text.trueBlack"
-                lineHeight={1}
-                pb={10}
+                lineHeight={[1.43, '', 1]}
+                pb={[0, '', 10]}
             >
                 {name}
             </Text>
             <Flex alignItems="center" pb={36}>
-                <Icon type="locationPinWithFill" fontSize={2} mr={12} />
-                <Text fontSize={4} color="text.trueBlack" lineHeight={1}>
+                <Text
+                    fontSize={[0, '', 4]}
+                    color="text.trueBlack"
+                    lineHeight={[1.43, '', 1]}
+                >
                     {address}
                 </Text>
             </Flex>
@@ -53,11 +56,8 @@ const ListingConfirmation = props => {
                         <Text
                             fontSize={[1, '', 4]}
                             fontWeight="bold"
-                            color="text.gray"
-                            pb={14}
-                            borderBottom="1px solid"
-                            borderColor="divider.dustyGray"
-                            mb={20}
+                            color="text.blue"
+                            pb={10}
                         >
                             AVAILABILITY
                         </Text>
@@ -66,6 +66,7 @@ const ListingConfirmation = props => {
                             fontWeight="500"
                             color="text.black"
                             pb={18}
+                            lineHeight={1}
                         >
                             {availability}
                         </Text>
@@ -73,7 +74,8 @@ const ListingConfirmation = props => {
                             <Text
                                 fontSize={[1, '', 4]}
                                 fontWeight="bold"
-                                color="text.gray"
+                                color="text.blue"
+                                pb={10}
                                 mt={10}
                                 pb={14}
                                 borderBottom="1px solid"
@@ -85,10 +87,11 @@ const ListingConfirmation = props => {
                         )}
                         {equipment.map(e => (
                             <Text
-                                fontSize={'16px'}
+                                fontSize={2}
                                 fontWeight="500"
                                 color="text.black"
                                 pb={16}
+                                lineHeight={1}
                             >
                                 {e.name}
                             </Text>
@@ -96,12 +99,9 @@ const ListingConfirmation = props => {
                         <Text
                             fontSize={[1, '', 4]}
                             fontWeight="bold"
-                            color="text.gray"
                             mt={10}
-                            pb={14}
-                            borderBottom="1px solid"
-                            borderColor="divider.dustyGray"
-                            mb={20}
+                            color="text.blue"
+                            pb={10}
                         >
                             CLEANING FEE
                         </Text>
@@ -110,6 +110,7 @@ const ListingConfirmation = props => {
                             fontWeight="500"
                             color="text.black"
                             pb={18}
+                            lineHeight={1}
                         >
                             {cleaningFee}
                         </Text>
@@ -121,53 +122,42 @@ const ListingConfirmation = props => {
                                 <Text
                                     fontSize={[1, '', 4]}
                                     fontWeight="bold"
-                                    color="text.gray"
-                                    pb={14}
+                                    color="text.blue"
+                                    pb={10}
                                     mt={10}
-                                    borderBottom="1px solid"
-                                    borderColor="divider.dustyGray"
-                                    mb={20}
                                 >
                                     NUMBER OF CHAIRS
                                 </Text>
                                 <Text
-                                    fontSize={3}
+                                    fontSize={2}
                                     fontWeight="500"
                                     color="text.black"
                                     lineHeight={1}
                                     pb={18}
                                 >
-                                    <Text is="span" fontWeight="bold">
-                                        {numChairsAvailable}{' '}
-                                    </Text>
-                                    chair
-                                    {numChairsAvailable > 1 ? 's' : ''}
+                                    {`${numChairsAvailable} chair${
+                                        numChairsAvailable > 1 ? 's' : ''
+                                    }`}
                                 </Text>
                             </Box>
                             <Box width={['100%', '', '262px']}>
                                 <Text
                                     fontSize={[1, '', 4]}
                                     fontWeight="bold"
-                                    color="text.gray"
-                                    pb={14}
+                                    color="text.blue"
+                                    pb={10}
                                     mt={10}
-                                    borderBottom="1px solid"
-                                    borderColor="divider.dustyGray"
-                                    mb={20}
                                 >
                                     HOURLY CHAIR PRICE
                                 </Text>
                                 <Text
-                                    fontSize={3}
+                                    fontSize={2}
                                     fontWeight="500"
                                     color="text.black"
                                     lineHeight={1}
                                     pb={18}
                                 >
-                                    <Text is="span" fontWeight="bold">
-                                        {chairHourlyPrice}{' '}
-                                    </Text>
-                                    per hour
+                                    {`${chairHourlyPrice} per hour`}
                                 </Text>
                             </Box>
                         </Flex>

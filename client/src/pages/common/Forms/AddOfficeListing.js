@@ -128,7 +128,7 @@ class AddOfficeListing extends Component {
                     lineHeight={['1.88', '', '1']}
                     letterSpacing="-0.6px"
                     color="text.gray"
-                    mt={['', '', 140]}
+                    mt={[0, '', 140]}
                     mb={[0, '', 18]}
                 >
                     {isOnboarding && 'Step 3'}
