@@ -9,6 +9,8 @@ export const getDentistQuery = gql`
             dentist {
                 id
                 deaRegistrationNumber
+                ssnOrEinOrTin
+                npiNumber
                 isVerified
                 isHostVerified
             }
@@ -58,6 +60,8 @@ export const updateDentistMutation = graphql(
             updateDentist(input: $input) {
                 id
                 deaRegistrationNumber
+                npiNumber
+                ssnOrEinOrTin
             }
         }
     `,
