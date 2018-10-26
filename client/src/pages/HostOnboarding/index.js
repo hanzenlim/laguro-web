@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import cookies from 'browser-cookies';
 import styled from 'styled-components';
 import { Alert, message } from 'antd';
@@ -17,7 +17,15 @@ import {
     UPDATE_OFFICE,
 } from './queries';
 import history from '../../history';
-import { Container, Steps, Form, Grid, Box, Flex } from '../../components';
+import {
+    Container,
+    Steps,
+    Form,
+    Box,
+    Flex,
+    Progress,
+    Responsive,
+} from '../../components';
 import AddOfficeInfo from '../common/Forms/AddOfficeInfo';
 import AddOfficeEquipments from '../common/Forms/AddOfficeEquipments';
 import AddOfficeListing from '../common/Forms/AddOfficeListing';
@@ -29,12 +37,27 @@ import {
     HOST_ONBOARDING_CREATE_MODE,
 } from '../../util/strings';
 
+import { withScreenSizes } from '../../components/Responsive';
+
+const { TabletMobile } = Responsive;
+
+const StyledAlert = styled(Alert)`
+    && {
+        padding: relative;
+        padding-right: 60px;
+        margin-bottom: 12px;
+        @media (min-width: ${props => props.theme.breakpoints[1]}) {
+            top: 20px;
+            position: absolute;
+            margin-bottom: 0;
+        }
+    }
+`;
+
 // modes:
 //      edit-office
 //      add-listing
 //      default(host onboarding)
-
-const { GridItem } = Grid;
 
 // to be used to distinguish between each step and to decide when to show previous buttona and what kind of submit buttons
 const OFFICE_STEP = 'add-office';
@@ -123,15 +146,6 @@ const parseListingFormData = values =>
                 },
             };
         });
-
-const StyledAlert = styled(Alert)`
-    && {
-        max-width: 620px;
-        position: absolute;
-        top: 20px;
-        padding-right: 60px;
-    }
-`;
 
 const RestartText = styled.span`
     font-weight: bold;
@@ -647,18 +661,17 @@ class HostOnboarding extends Component {
         window.location.href = OFFICE_STEP_URL;
     };
 
-    handleResumeWarningClose = () => {
-        this.setState({
-            resumeWarning: false,
-        });
-    };
-
     // forms should not be embedded within forms
     render() {
-        const { historyLocationSearch, defaultValues } = this.state;
+        const {
+            historyLocationSearch,
+            defaultValues,
+            resumeWarning,
+        } = this.state;
         const urlParams = queryString.parse(historyLocationSearch);
         const { step } = this.props.match.params;
         const { mode } = this;
+        const isConfirmationStep = step !== CONFIRMATION_STEP;
 
         const wizardState = this.fetchWizardState();
 
@@ -685,6 +698,8 @@ class HostOnboarding extends Component {
                 break;
         }
 
+        const progressBarPercent = ((stepCount + 1) / numSteps) * 100;
+
         return (
             <Query query={GET_USER}>
                 {({ data: userData }) => (
@@ -700,100 +715,133 @@ class HostOnboarding extends Component {
                                 onCompleted={this.handleOnCompleted}
                             >
                                 {updateOffice => (
-                                    <Mutation
-                                        mutation={CREATE_LISTING}
-                                        // onCompleted={this.handleOnCompleted}
-                                    >
+                                    <Mutation mutation={CREATE_LISTING}>
                                         {batchCreateListings => (
                                             <Mutation mutation={CREATE_OFFICE}>
                                                 {(createOffice, { client }) => (
-                                                    <StyledContainer>
-                                                        <Form
-                                                            debounce="false"
-                                                            onSuccess={values => {
-                                                                this.onSubmit(
-                                                                    values,
-                                                                    createOffice,
-                                                                    updateOffice,
-                                                                    batchCreateListings,
-                                                                    get(
-                                                                        userData,
-                                                                        'activeUser.id'
-                                                                    ),
-                                                                    client
-                                                                );
-                                                            }}
+                                                    <Fragment>
+                                                        <TabletMobile>
+                                                            <Progress
+                                                                strokeLinecap="square"
+                                                                strokeWidth="3px"
+                                                                percent={
+                                                                    progressBarPercent
+                                                                }
+                                                            />
+                                                        </TabletMobile>
+                                                        <Container
+                                                            position="relative"
+                                                            maxWidth={[
+                                                                '',
+                                                                '',
+                                                                624,
+                                                            ]}
+                                                            px={[25, '', 0]}
                                                         >
-                                                            <Grid
-                                                                gtc="188px 624px 188px"
-                                                                gtr="auto 60px"
-                                                                gcg="140px"
-                                                                grg="100px"
+                                                            {isConfirmationStep &&
+                                                                resumeWarning && (
+                                                                    <StyledAlert
+                                                                        type="info"
+                                                                        showIcon
+                                                                        message={
+                                                                            <Fragment
+                                                                            >
+                                                                                Looks
+                                                                                like
+                                                                                you
+                                                                                were
+                                                                                middle
+                                                                                of
+                                                                                creating
+                                                                                an
+                                                                                office!
+                                                                                We&#39;ve
+                                                                                saved
+                                                                                your
+                                                                                changes
+                                                                                or{' '}
+                                                                                <RestartText
+                                                                                    onClick={
+                                                                                        this
+                                                                                            .handleRestart
+                                                                                    }
+                                                                                >
+                                                                                    you
+                                                                                    can
+                                                                                    start
+                                                                                    over
+                                                                                </RestartText>
+
+                                                                                .
+                                                                            </Fragment>
+                                                                        }
+                                                                    />
+                                                                )}
+                                                        </Container>
+                                                        <StyledContainer
+                                                            pb={[100, '', 200]}
+                                                        >
+                                                            <Form
+                                                                debounce="false"
+                                                                onSuccess={values => {
+                                                                    this.onSubmit(
+                                                                        values,
+                                                                        createOffice,
+                                                                        updateOffice,
+                                                                        batchCreateListings,
+                                                                        get(
+                                                                            userData,
+                                                                            'activeUser.id'
+                                                                        ),
+                                                                        client
+                                                                    );
+                                                                }}
                                                             >
-                                                                <Steps
-                                                                    mt={210}
-                                                                    mb={46}
-                                                                    current={
-                                                                        stepCount
-                                                                    }
-                                                                    direction="vertical"
-                                                                    size={
-                                                                        numSteps
-                                                                    }
-                                                                />
+                                                                {this.props
+                                                                    .desktopOnly && (
+                                                                    <Box
+                                                                        position="absolute"
+                                                                        top={
+                                                                            200
+                                                                        }
+                                                                    >
+                                                                        <Steps
+                                                                            mt={[
+                                                                                0,
+                                                                                '',
+                                                                                210,
+                                                                            ]}
+                                                                            mb={[
+                                                                                0,
+                                                                                '',
+                                                                                46,
+                                                                            ]}
+                                                                            current={
+                                                                                stepCount
+                                                                            }
+                                                                            size={
+                                                                                numSteps
+                                                                            }
+                                                                            direction={
+                                                                                this
+                                                                                    .props
+                                                                                    .desktopOnly
+                                                                                    ? 'vertical'
+                                                                                    : 'horizontal'
+                                                                            }
+                                                                        />
+                                                                    </Box>
+                                                                )}
 
-                                                                <GridItem
-                                                                    gc="2 / 4"
+                                                                <Container
                                                                     position="relative"
+                                                                    maxWidth={[
+                                                                        '',
+                                                                        '',
+                                                                        624,
+                                                                    ]}
+                                                                    px={0}
                                                                 >
-                                                                    {step !==
-                                                                        CONFIRMATION_STEP &&
-                                                                        this
-                                                                            .state
-                                                                            .resumeWarning && (
-                                                                            <StyledAlert
-                                                                                type="info"
-                                                                                showIcon
-                                                                                closeText="Close"
-                                                                                afterClose={
-                                                                                    this
-                                                                                        .handleResumeWarningClose
-                                                                                }
-                                                                                message={
-                                                                                    <React.Fragment
-                                                                                    >
-                                                                                        Looks
-                                                                                        like
-                                                                                        you
-                                                                                        were
-                                                                                        middle
-                                                                                        of
-                                                                                        creating
-                                                                                        an
-                                                                                        office!
-                                                                                        We&#39;ve
-                                                                                        saved
-                                                                                        your
-                                                                                        changes
-                                                                                        or{' '}
-                                                                                        <RestartText
-                                                                                            onClick={
-                                                                                                this
-                                                                                                    .handleRestart
-                                                                                            }
-                                                                                        >
-                                                                                            you
-                                                                                            can
-                                                                                            start
-                                                                                            over
-                                                                                        </RestartText>
-
-                                                                                        .
-                                                                                    </React.Fragment>
-                                                                                }
-                                                                            />
-                                                                        )}
-
                                                                     {step ===
                                                                         OFFICE_STEP && (
                                                                         <AddOfficeInfo
@@ -867,99 +915,140 @@ class HostOnboarding extends Component {
                                                                                 }
                                                                             />
                                                                         )}
-                                                                </GridItem>
-                                                            </Grid>
-                                                            {/* previous button is shown when the user is not on the first page or the last page. using indexOf for edit office */}
-                                                            <Box
-                                                                position="fixed"
-                                                                bg="white"
-                                                                left="0"
-                                                                right="0"
-                                                                bottom="0"
-                                                                height="100px"
-                                                                border="1px solid"
-                                                                borderColor="divider.gray"
-                                                                zIndex="modal"
-                                                            >
-                                                                <Container>
-                                                                    <Flex
-                                                                        justifyContent="space-between"
-                                                                        alignItems="center"
+                                                                </Container>
+                                                                {/* previous button is shown when the user is not on the first page or the last page. using indexOf for edit office */}
+                                                                <Box
+                                                                    position={[
+                                                                        'relative',
+                                                                        '',
+                                                                        'fixed',
+                                                                    ]}
+                                                                    bg="white"
+                                                                    left="0"
+                                                                    right="0"
+                                                                    bottom="0"
+                                                                    height={[
+                                                                        '',
+                                                                        '',
+                                                                        100,
+                                                                    ]}
+                                                                    border={[
+                                                                        'none',
+                                                                        '',
+                                                                        '1px solid',
+                                                                    ]}
+                                                                    borderColor={[
+                                                                        'none',
+                                                                        '',
+                                                                        'divider.gray',
+                                                                    ]}
+                                                                    zIndex="modal"
+                                                                >
+                                                                    <Container
+                                                                        px={[
+                                                                            0,
+                                                                            '',
+                                                                            25,
+                                                                        ]}
                                                                     >
-                                                                        {stepCount !==
-                                                                            0 &&
-                                                                        this.stepList.indexOf(
-                                                                            step
-                                                                        ) !==
-                                                                            this
-                                                                                .stepList
-                                                                                .length -
-                                                                                1 ? (
-                                                                            <BackButton
+                                                                        <Flex
+                                                                            justifyContent="space-between"
+                                                                            alignItems="center"
+                                                                            flexDirection={[
+                                                                                'column',
+                                                                                '',
+                                                                                'row',
+                                                                            ]}
+                                                                        >
+                                                                            {stepCount !==
+                                                                                0 &&
+                                                                            this.stepList.indexOf(
+                                                                                step
+                                                                            ) !==
+                                                                                this
+                                                                                    .stepList
+                                                                                    .length -
+                                                                                    1 ? (
+                                                                                <BackButton
+                                                                                    disabled={
+                                                                                        false
+                                                                                    }
+                                                                                    onBack={
+                                                                                        this
+                                                                                            .handleBack
+                                                                                    }
+                                                                                    type="primary"
+                                                                                    ghost
+                                                                                    width={[
+                                                                                        'calc(100vw - 50px)',
+                                                                                        '',
+                                                                                        188,
+                                                                                    ]}
+                                                                                    height={[
+                                                                                        50,
+                                                                                        '',
+                                                                                        60,
+                                                                                    ]}
+                                                                                    mt={[
+                                                                                        10,
+                                                                                        '',
+                                                                                        20,
+                                                                                    ]}
+                                                                                    buttonText="Previous"
+                                                                                />
+                                                                            ) : (
+                                                                                <div />
+                                                                            )}
+
+                                                                            <SubmitButton
                                                                                 disabled={
-                                                                                    false
-                                                                                }
-                                                                                onBack={
                                                                                     this
-                                                                                        .handleBack
+                                                                                        .mode ===
+                                                                                    LISTING_STEP
+                                                                                        ? false
+                                                                                        : this
+                                                                                              .state
+                                                                                              .numImage ===
+                                                                                          0
                                                                                 }
-                                                                                type="primary"
-                                                                                ghost
-                                                                                width={
-                                                                                    188
+                                                                                loading={
+                                                                                    this
+                                                                                        .state
+                                                                                        .submitting
                                                                                 }
-                                                                                height={
-                                                                                    60
-                                                                                }
-                                                                                buttonText="Previous"
-                                                                                mt={
-                                                                                    20
+                                                                                width={[
+                                                                                    'calc(100vw - 50px)',
+                                                                                    '',
+                                                                                    188,
+                                                                                ]}
+                                                                                height={[
+                                                                                    50,
+                                                                                    '',
+                                                                                    60,
+                                                                                ]}
+                                                                                mt={[
+                                                                                    10,
+                                                                                    '',
+                                                                                    20,
+                                                                                ]}
+                                                                                mr={[
+                                                                                    0,
+                                                                                    '',
+                                                                                    30,
+                                                                                ]}
+                                                                                buttonText={
+                                                                                    this
+                                                                                        .buttonTexts[
+                                                                                        stepCount
+                                                                                    ]
                                                                                 }
                                                                             />
-                                                                        ) : (
-                                                                            <div />
-                                                                        )}
-
-                                                                        <SubmitButton
-                                                                            disabled={
-                                                                                this
-                                                                                    .mode ===
-                                                                                LISTING_STEP
-                                                                                    ? false
-                                                                                    : this
-                                                                                          .state
-                                                                                          .numImage ===
-                                                                                      0
-                                                                            }
-                                                                            loading={
-                                                                                this
-                                                                                    .state
-                                                                                    .submitting
-                                                                            }
-                                                                            width={
-                                                                                188
-                                                                            }
-                                                                            height={
-                                                                                60
-                                                                            }
-                                                                            mt={
-                                                                                20
-                                                                            }
-                                                                            mr={
-                                                                                30
-                                                                            }
-                                                                            buttonText={
-                                                                                this
-                                                                                    .buttonTexts[
-                                                                                    stepCount
-                                                                                ]
-                                                                            }
-                                                                        />
-                                                                    </Flex>
-                                                                </Container>
-                                                            </Box>
-                                                        </Form>
-                                                    </StyledContainer>
+                                                                        </Flex>
+                                                                    </Container>
+                                                                </Box>
+                                                            </Form>
+                                                        </StyledContainer>
+                                                    </Fragment>
                                                 )}
                                             </Mutation>
                                         )}
@@ -974,4 +1063,4 @@ class HostOnboarding extends Component {
     }
 }
 
-export default HostOnboarding;
+export default withScreenSizes(HostOnboarding);

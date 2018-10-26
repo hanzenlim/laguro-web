@@ -12,22 +12,25 @@ const StyledSelect = styled(AntdSelect)`
         height: 50px;
         ${width};
     }
-
     .ant-select-selection__rendered {
         line-height: 1;
         width: 90%;
     }
-
     .ant-select-selection-selected-value {
-        font-size: ${props => props.theme.fontSizes[3]};
+        font-size: ${props => props.theme.fontSizes[0]};
         opacity: 50%;
         letter-spacing: -0.4px;
+        @media (min-width: ${props => props.theme.breakpoints[1]}) {
+            font-size: ${props => props.theme.fontSizes[3]};
+        }
     }
-
     .ant-select-arrow {
         font-weight: bold;
         color: ${props => props.theme.colors.arrow.black};
-        font-size: ${props => props.theme.fontSizes[3]};
+        font-size: ${props => props.theme.fontSizes[1]};
+        @media (min-width: ${props => props.theme.breakpoints[1]}) {
+            font-size: ${props => props.theme.fontSizes[3]};
+        }
     }
 `;
 

@@ -14,10 +14,8 @@ import {
     height,
     width,
 } from 'styled-system';
-import { Button, Tooltip } from '../../components';
+import { Button, Tooltip, Box } from '../../components';
 import BackButton from './BackButton';
-
-const formItemLabelLineHeightInPixels = 22;
 
 const StyledForm = styled(AntdForm)`
     width: 100%;
@@ -26,13 +24,30 @@ const StyledForm = styled(AntdForm)`
         margin-bottom: 0px;
     }
 
+    .ant-form-item .ant-input::placeholder {
+        font-size: ${props => props.theme.fontSizes[0]};
+
+        @media (min-width: ${props => props.theme.breakpoints[1]}) {
+            font-size: ${props => props.theme.fontSizes[3]};
+        }
+    }
+
     .ant-form-item-label {
-        margin-bottom: 10px;
-        line-height: ${formItemLabelLineHeightInPixels}px;
+        padding-bottom: 8px;
+        line-height: 18px;
+
+        @media (min-width: ${props => props.theme.breakpoints[1]}) {
+            padding-bottom: 10px;
+            line-height: 22px;
+        }
     }
 
     .ant-form-item-label > label {
-        font-size: 18px;
+        font-size: ${props => props.theme.fontSizes[0]};
+
+        @media (min-width: ${props => props.theme.breakpoints[1]}) {
+            font-size: ${props => props.theme.fontSizes[3]};
+        }
     }
 `;
 
@@ -214,17 +229,18 @@ const FormItem = ({
             colon={false}
             label={
                 label && (
-                    <span>
-                        {label}
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <Box display="inline-flex">
+                        <Box is="span">{label}</Box>
                         {tooltip && (
-                            <Tooltip
-                                inForm
-                                size={formItemLabelLineHeightInPixels}
-                                text={tooltip}
-                            />
+                            <Box ml="12px">
+                                <Tooltip
+                                    inForm
+                                    size={[18, '', 22]}
+                                    text={tooltip}
+                                />
+                            </Box>
                         )}
-                    </span>
+                    </Box>
                 )
             }
             validateStatus={error ? 'error' : ''}

@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Box, Flex, Text, Icon } from '../../../components';
+import { Box, Flex, Text, Icon, Card } from '../../../components';
 
 const ListingConfirmation = props => {
     const { name, address, listings, equipment } = props;
 
     return (
-        <Box width={668} mt={140}>
+        <Box width="100%" mt={140} mb={60}>
             <Text
                 fontSize={5}
                 fontWeight="bold"
@@ -41,7 +41,6 @@ const ListingConfirmation = props => {
                     {address}
                 </Text>
             </Flex>
-
             {listings.map(
                 ({
                     id,
@@ -50,18 +49,9 @@ const ListingConfirmation = props => {
                     chairHourlyPrice,
                     cleaningFee,
                 }) => (
-                    <Box
-                        key={id}
-                        pl={50}
-                        pr={44}
-                        py={32}
-                        mb={10}
-                        boxShadow={1}
-                        bg="background.white"
-                        borderRadius="4px"
-                    >
+                    <Card key={id} p={[20, '', 28]} mb={10}>
                         <Text
-                            fontSize={4}
+                            fontSize={[1, '', 4]}
                             fontWeight="bold"
                             color="text.gray"
                             pb={14}
@@ -79,10 +69,9 @@ const ListingConfirmation = props => {
                         >
                             {availability}
                         </Text>
-
                         {equipment.length > 0 && (
                             <Text
-                                fontSize={4}
+                                fontSize={[1, '', 4]}
                                 fontWeight="bold"
                                 color="text.gray"
                                 mt={10}
@@ -104,9 +93,8 @@ const ListingConfirmation = props => {
                                 {e.name}
                             </Text>
                         ))}
-
                         <Text
-                            fontSize={4}
+                            fontSize={[1, '', 4]}
                             fontWeight="bold"
                             color="text.gray"
                             mt={10}
@@ -125,11 +113,13 @@ const ListingConfirmation = props => {
                         >
                             {cleaningFee}
                         </Text>
-
-                        <Flex justifyContent="space-between">
-                            <Box width="256px">
+                        <Flex
+                            justifyContent="space-between"
+                            flexDirection={['column', '', 'row']}
+                        >
+                            <Box width={['100%', '', '256px']}>
                                 <Text
-                                    fontSize={4}
+                                    fontSize={[1, '', 4]}
                                     fontWeight="bold"
                                     color="text.gray"
                                     pb={14}
@@ -154,9 +144,9 @@ const ListingConfirmation = props => {
                                     {numChairsAvailable > 1 ? 's' : ''}
                                 </Text>
                             </Box>
-                            <Box width="262px">
+                            <Box width={['100%', '', '262px']}>
                                 <Text
-                                    fontSize={4}
+                                    fontSize={[1, '', 4]}
                                     fontWeight="bold"
                                     color="text.gray"
                                     pb={14}
@@ -181,24 +171,21 @@ const ListingConfirmation = props => {
                                 </Text>
                             </Box>
                         </Flex>
-                    </Box>
+                    </Card>
                 )
             )}
         </Box>
     );
 };
-
 const listingShape = PropTypes.shape({
     availability: PropTypes.string,
     equipments: PropTypes.arrayOf(PropTypes.string),
     numChairsAvailable: PropTypes.number,
     chairHourlyPrice: PropTypes.string,
 });
-
 ListingConfirmation.propTypes = {
     name: PropTypes.string,
     address: PropTypes.string,
     listings: PropTypes.arrayOf(listingShape),
 };
-
 export default ListingConfirmation;

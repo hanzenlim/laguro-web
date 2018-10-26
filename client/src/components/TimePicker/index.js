@@ -5,7 +5,8 @@ import { height, space, propTypes } from 'styled-system';
 const StyledTimePicker = styled(AntdTimePicker)`
     && {
         position: relative;
-        ${space} ${height};
+        ${space};
+        ${height};
     }
     & .ant-time-picker-input {
         width: 100%;
@@ -13,14 +14,16 @@ const StyledTimePicker = styled(AntdTimePicker)`
         padding: 0;
         font-family: ${props => props.theme.fontFamily};
         font-weight: ${props => props.theme.fontWeights.regular};
-        font-size: ${props => props.theme.fontSizes[3]};
+        font-size: ${props => props.theme.fontSizes[0]};
         letter-spacing: -0.6px;
         ${props => props.borderless && `border: none;`};
         ::placeholder {
             color: ${props => props.theme.colors.text.black50};
         }
+        @media (min-width: ${props => props.theme.breakpoints[1]}) {
+            font-size: ${props => props.theme.fontSizes[3]};
+        }
     }
-
     & .ant-time-picker-icon {
         margin: 0;
         right: 30px;
@@ -29,11 +32,9 @@ const StyledTimePicker = styled(AntdTimePicker)`
         top: 12px;
         font-size: 26px;
     }
-
     & .ant-time-picker-icon .anticon {
         color: ${props => props.theme.colors.icon.blue};
     }
-
     &.ant-time-picker {
         width: 100%;
     }

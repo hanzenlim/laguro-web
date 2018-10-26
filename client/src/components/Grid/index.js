@@ -32,10 +32,10 @@ const GridSystem = system(
     'gridColumnGap',
     'gridRowGap',
     //
-    'alignItems',
-    'justifyItems',
     'space',
-    'position'
+    'position',
+    'alignItems',
+    'justifyItems'
 );
 
 const GridItemSystem = system(

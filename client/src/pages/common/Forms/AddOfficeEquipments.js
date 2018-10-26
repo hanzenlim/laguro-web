@@ -182,69 +182,89 @@ class AddOfficeEquipments extends Component {
             eq.startsWith(EQUIPMENT_PRICE)
         );
 
-        return eqNameKeys.map(key => [
-            <FormItem
-                name={`${EQUIPMENT_NAME}${key.slice(EQUIPMENT_PRICE.length)}`}
-                rules={[
-                    {
-                        required: true,
-                        message: 'Please select equipment',
-                    },
-                ]}
-                initialValue={
-                    equipment[
-                        `${EQUIPMENT_NAME}${key.slice(EQUIPMENT_PRICE.length)}`
-                    ]
-                }
-                input={
-                    <Select height={50} onSelect={this.handleEquipmentChange}>
-                        {EQUIPMENT_LIST.map((eq2, index2) => (
-                            <Option
-                                key={index2}
-                                data-price-key={key}
-                                value={eq2}
+        return eqNameKeys.map(key => (
+            <Flex flexDirection={['column', '', 'row']}>
+                <Box mr={[0, '', 23]} width={['auto', '', 431]}>
+                    <FormItem
+                        name={`${EQUIPMENT_NAME}${key.slice(
+                            EQUIPMENT_PRICE.length
+                        )}`}
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Please select equipment',
+                            },
+                        ]}
+                        initialValue={
+                            equipment[
+                                `${EQUIPMENT_NAME}${key.slice(
+                                    EQUIPMENT_PRICE.length
+                                )}`
+                            ]
+                        }
+                        input={
+                            <Select
+                                height={50}
+                                onSelect={this.handleEquipmentChange}
                             >
-                                {eq2}
-                            </Option>
-                        ))}
-                    </Select>
-                }
-            />,
-            <FormItem
-                name={key}
-                rules={[
-                    {
-                        required: true,
-                        message: 'Please provide equipment price',
-                    },
-                ]}
-                getValueFromEvent={e => {
-                    if (!e || !e.target) {
-                        return e;
-                    }
-                    const { target } = e;
-                    return target.type === 'checkbox'
-                        ? target.checked
-                        : renderPrice(target.value);
-                }}
-                initialValue={renderPrice(equipment[key])}
-                input={<Input textAlign="right" height="50px" />}
-            />,
-            <Button
-                type="ghost"
-                mb={20}
-                height="auto"
-                data-index={key.slice(EQUIPMENT_NAME.length)}
-                onClick={this.removeEquipment}
-            >
-                <Icon
-                    lineHeight="50px"
-                    fontSize={3}
-                    color="text.gray"
-                    type="close-circle"
-                />
-            </Button>,
-        ]);
+                                {EQUIPMENT_LIST.map((eq2, index2) => (
+                                    <Option
+                                        key={index2}
+                                        data-price-key={key}
+                                        value={eq2}
+                                    >
+                                        {eq2}
+                                    </Option>
+                                ))}
+                            </Select>
+                        }
+                    />
+                </Box>
+
+                <Flex>
+                    <Box
+                        mr={[0, '', 17]}
+                        width={['calc(100% - 48px)', '', '128px']}
+                    >
+                        <FormItem
+                            name={key}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Please provide equipment price',
+                                },
+                            ]}
+                            getValueFromEvent={e => {
+                                if (!e || !e.target) {
+                                    return e;
+                                }
+                                const { target } = e;
+                                return target.type === 'checkbox'
+                                    ? target.checked
+                                    : renderPrice(target.value);
+                            }}
+                            initialValue={renderPrice(equipment[key])}
+                            input={<Input textAlign="right" height="50px" />}
+                        />
+                    </Box>
+                    <Button
+                        type="ghost"
+                        width={[48, '', 'auto']}
+                        mb={20}
+                        height={[48, '', 'auto']}
+                        data-index={key.slice(EQUIPMENT_NAME.length)}
+                        onClick={this.removeEquipment}
+                    >
+                        <Icon
+                            lineHeight="50px"
+                            fontSize={[1, '', 3]}
+                            color="text.gray"
+                            type="close-circle"
+                        />
+                    </Button>
+                </Flex>
+            </Flex>
+        ));
     };
 
     render() {
@@ -258,20 +278,16 @@ class AddOfficeEquipments extends Component {
                     onSuccess={this.onSubmit}
                     officeDescription={officeDescription}
                 >
-                    <Grid
-                        gcg="8px"
-                        gtc="430px 128px auto"
-                        justifyItems="center"
-                    >
+                    <Grid gridTemplateColumns={'100%'} justifyItems="center">
                         <GridItem gc="all">
                             <Text
                                 fontWeight="bold"
-                                fontSize={5}
-                                lineHeight="1"
+                                fontSize={[2, '', 5]}
+                                lineHeight={['1.88', '', '1']}
                                 letterSpacing="-0.6px"
                                 color="text.gray"
-                                mt={140}
-                                mb={18}
+                                mt={['', '', 140]}
+                                mb={[0, '', 18]}
                             >
                                 Step 2
                             </Text>
@@ -280,11 +296,11 @@ class AddOfficeEquipments extends Component {
                         <GridItem gc="all">
                             <Text
                                 fontWeight="bold"
-                                fontSize={5}
+                                fontSize={[2, '', 5]}
                                 lineHeight="1"
                                 letterSpacing="-0.6px"
                                 color="text.trueBlack"
-                                mb={54}
+                                mb={[21, '', 54]}
                             >
                                 {header}
                             </Text>
@@ -292,7 +308,7 @@ class AddOfficeEquipments extends Component {
                         <GridItem gc="all">
                             <Text
                                 fontWeight="bold"
-                                fontSize={4}
+                                fontSize={[0, '', 4]}
                                 lineHeight="1"
                                 letterSpacing="0px"
                                 color="text.blue"
@@ -324,7 +340,7 @@ class AddOfficeEquipments extends Component {
                             <Flex alignItems="center" mb={20}>
                                 <Text
                                     fontWeight="bold"
-                                    fontSize={4}
+                                    fontSize={[0, '', 4]}
                                     lineHeight="1"
                                     letterSpacing="0px"
                                     color="text.blue"
@@ -332,31 +348,33 @@ class AddOfficeEquipments extends Component {
                                     Equipment &amp; Usage Fees
                                 </Text>
                                 <Tooltip
-                                    size={22}
+                                    size={[18, '', 22]}
                                     text="The rates will vary at each dental office as the Host will set the prices for each equipment used."
                                 />
                             </Flex>
                         </GridItem>
 
-                        {this.renderEquipment(equipment)}
+                        <Flex flexDirection="column">
+                            {this.renderEquipment(equipment)}
 
-                        <Button type="ghost" onClick={this.addEquipment}>
-                            <Flex>
-                                <Icon
-                                    mr={16}
-                                    type="plus"
-                                    fontSize="14px"
-                                    color="icon.black"
-                                />
-                                <Text
-                                    color="text.black"
-                                    fontSize={3}
-                                    letterSpacing="-0.5px"
-                                >
-                                    Add equipment
-                                </Text>
-                            </Flex>
-                        </Button>
+                            <Button type="ghost" onClick={this.addEquipment}>
+                                <Flex>
+                                    <Icon
+                                        mr={16}
+                                        type="plus"
+                                        fontSize="14px"
+                                        color="icon.black"
+                                    />
+                                    <Text
+                                        color="text.black"
+                                        fontSize={[1, '', 3]}
+                                        letterSpacing="-0.5px"
+                                    >
+                                        Add equipment
+                                    </Text>
+                                </Flex>
+                            </Button>
+                        </Flex>
                     </Grid>
                 </StyledForm>
             </Box>

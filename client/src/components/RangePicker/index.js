@@ -1,16 +1,23 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { DatePicker as AntdDatePicker } from 'antd';
-import { Flex, Text, Box, Icon } from '../../components';
+import { Flex, Text, Box, Icon, Grid } from '../../components';
+import Responsive from '../../components/Responsive';
+
+const { Desktop } = Responsive;
 
 const StyledContainer = styled.div`
     position: relative;
     width: ${props => (props.width ? props.width : '455px')};
-    height: 50px;
     border-radius: 2px;
     background-color: ${props => props.theme.colors.background.white};
     border: 1px solid ${props => props.theme.colors.divider.gray};
+    height: 100px;
     cursor: pointer;
+
+    @media (min-width: ${props => props.theme.breakpoints[1]}) {
+        height: 50px;
+    }
 
     && {
         a {
@@ -75,36 +82,41 @@ class RangePicker extends PureComponent {
 
         return (
             <StyledContainer {...rest}>
-                <div ref="datePickerContainer">
-                    <Box
-                        position="absolute"
+                <div ref="datePickerContainer" />
+                <Box position="absolute" width="100%" height="100%" opacity="0">
+                    <AntdDatePicker.RangePicker
+                        value={value}
+                        {...rest}
+                        format={'ddd M/D'}
+                        getCalendarContainer={this.getCalendarContainer}
+                        open={this.state.open}
+                        onChange={this.onSelectDate}
+                    />
+                </Box>
+                <Box position="absolute" width="100%" height={[100, '', 50]}>
+                    <Grid
                         width="100%"
-                        height="100%"
-                        opacity="0"
-                    >
-                        <AntdDatePicker.RangePicker
-                            value={value}
-                            {...rest}
-                            format={'ddd M/D'}
-                            getCalendarContainer={this.getCalendarContainer}
-                            open={this.state.open}
-                            onChange={this.onSelectDate}
-                        />
-                    </Box>
-                    <Flex
-                        width="100%"
-                        px={30}
-                        py={12}
-                        position="absolute"
+                        height={[100, '', 50]}
+                        gridTemplateRows={['auto auto', '', 'auto']}
+                        gridTemplateColumns={[
+                            '100%',
+                            '',
+                            `1fr ${rightArrowWidth}px 1fr`,
+                        ]}
                         alignItems="center"
                         onClick={this.toggleDatePicker}
                     >
                         <Flex
                             justifyContent="space-between"
-                            width={`calc((100% - ${rightArrowWidth}px) / 2)`}
+                            width="100%"
+                            height="50px"
+                            px={30}
+                            py={12}
+                            borderBottom={['1px solid', '', 'none']}
+                            borderColor="divider.gray"
                         >
                             <Text
-                                fontSize={dateSize || 3}
+                                fontSize={[0, '', dateSize || 3]}
                                 fontWeight="regular"
                                 color="text.black50"
                                 lineHeight="26px"
@@ -118,25 +130,28 @@ class RangePicker extends PureComponent {
                                 type="calendar"
                                 color="text.black50"
                                 fontSize="26px"
-                                mr={30}
                             />
                         </Flex>
 
                         {/* width is 1.25 * rightArrowWidth */}
-                        <Icon
-                            type="rightForwardArrow"
-                            height={`${rightArrowHeight}px`}
-                        />
+                        <Desktop>
+                            <Icon
+                                type="rightForwardArrow"
+                                height={`${rightArrowHeight}px`}
+                            />
+                        </Desktop>
 
                         <Flex
                             justifyContent="space-between"
-                            width={`calc((100% - ${rightArrowWidth}px) / 2)`}
+                            width="100%"
+                            height="50px"
+                            px={30}
+                            py={12}
                         >
                             <Text
-                                fontSize={dateSize || 3}
+                                fontSize={[0, '', dateSize || 3]}
                                 fontWeight="regular"
                                 color="text.black50"
-                                ml={30}
                                 lineHeight="26px"
                                 letterSpacing="-0.6px"
                             >
@@ -150,8 +165,8 @@ class RangePicker extends PureComponent {
                                 fontSize="26px"
                             />
                         </Flex>
-                    </Flex>
-                </div>
+                    </Grid>
+                </Box>
             </StyledContainer>
         );
     }

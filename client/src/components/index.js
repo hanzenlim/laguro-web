@@ -36,6 +36,7 @@ import Tabs from './Tabs';
 import Grid from './Grid';
 import Tooltip from './Tooltip';
 import Responsive from './Responsive';
+import Progress from './Progress';
 
 export {
     Box,
@@ -77,4 +78,5 @@ export {
     Tabs,
     Grid,
     Responsive,
+    Progress,
 };
