@@ -1,6 +1,7 @@
 import React from 'react';
 import { CardElement } from 'react-stripe-elements';
 import { Form, Input, Button } from '../../../../../components';
+import { withScreenSizes } from '../../../../../components/Responsive';
 
 const { SubmitButton, FormItem } = Form;
 
@@ -27,6 +28,7 @@ const NewCardFormView = ({
     onBackButton,
     hasBackButton,
     isSubmitting,
+    tabletMobileOnly,
 }) => (
     <Form layout="vertical" onSuccess={handleSubmit} debounce={false}>
         <FormItem
@@ -67,10 +69,10 @@ const NewCardFormView = ({
                 // how to connect an external button to a form
                 <Button
                     ghost={true}
-                    height={55}
+                    height={['50px', '', '60px']}
+                    fontSize={[1, '', 3]}
                     mb={10}
                     width={'100%'}
-                    fontSize={2}
                     color="text.blue"
                     onClick={onBackButton}
                 >
@@ -79,7 +81,8 @@ const NewCardFormView = ({
             )}
         <SubmitButton
             width="100%"
-            height={60}
+            height={['50px', '', '60px']}
+            fontSize={[1, '', 3]}
             px={24}
             buttonText={btnText}
             loading={isSubmitting}
@@ -88,10 +91,10 @@ const NewCardFormView = ({
                 // how to connect an external button to a form
                 isButtonOutside
                     ? {
-                          position: 'absolute',
-                          width: '200px',
-                          top: '80px',
-                          left: '135px',
+                          position: tabletMobileOnly ? 'auto' : 'absolute',
+                          width: tabletMobileOnly ? '100%' : '200px',
+                          top: tabletMobileOnly ? '0' : '80px',
+                          left: tabletMobileOnly ? '0' : '135px',
                       }
                     : {}
             }
@@ -99,4 +102,4 @@ const NewCardFormView = ({
     </Form>
 );
 
-export default NewCardFormView;
+export default withScreenSizes(NewCardFormView);
