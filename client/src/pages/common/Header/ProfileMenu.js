@@ -34,23 +34,32 @@ const ProfileMenu = props => {
     const { logout, isDentist, isHost, ...rest } = props;
 
     const hostMenuItems = [
+        'home',
         'my page',
         'my listings',
         'bookings/appointments',
         'payments',
         'laguro balance',
+        'add a new office',
         'search for chairs',
     ];
 
     const dentistMenuItems = [
+        'home',
         'my page',
         'bookings/appointments',
         'payments',
         'laguro balance',
+        'add a new office',
         'search for chairs',
     ];
 
-    const patientMenuItems = ['my page', 'my appointments'];
+    const patientMenuItems = [
+        'home',
+        'my page',
+        'my appointments',
+        'add a new office',
+    ];
 
     const boldedMenuItems = ['search for chairs'];
 
@@ -60,6 +69,7 @@ const ProfileMenu = props => {
     }
 
     const itemLinkMap = {
+        home: '/',
         'my page': '/profile?selectedTab=my_profile',
         'my listings': '/profile?selectedTab=my_listings',
         'bookings/appointments': '/profile?selectedTab=my_bookings',
@@ -68,6 +78,7 @@ const ProfileMenu = props => {
         'search for chairs': '/office/search',
         'log out': '#',
         'my appointments': '/profile?selectedTab=my_appointments',
+        'add a new office': '/host-onboarding/add-office',
     };
 
     let menuItems;

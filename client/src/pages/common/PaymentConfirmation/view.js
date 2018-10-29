@@ -16,11 +16,15 @@ const PaymentConfirmationView = props => {
                     height="100%"
                     justifyContent="center"
                 >
-                    <Box width="400px">
-                        <Text fontSize={4} py={10} textTransform="uppercase">
+                    <Box width={['100%', '', '400px']}>
+                        <Text
+                            fontSize={[2, '', 4]}
+                            py={10}
+                            textTransform="uppercase"
+                        >
                             {h1}
                         </Text>
-                        <Text fontSize={5}>{h2}</Text>
+                        <Text fontSize={[3, '', 5]}>{h2}</Text>
                         {h3 ? (
                             <Flex
                                 mt={5}
