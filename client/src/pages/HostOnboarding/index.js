@@ -46,6 +46,8 @@ const StyledAlert = styled(Alert)`
         padding: relative;
         padding-right: 60px;
         margin-bottom: 12px;
+        z-index: ${props => props.theme.zIndex.header};
+
         @media (min-width: ${props => props.theme.breakpoints[1]}) {
             top: 20px;
             position: absolute;
