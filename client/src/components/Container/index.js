@@ -14,9 +14,11 @@ const Container = props => {
     return <StyledContainer {...rest}>{children}</StyledContainer>;
 };
 
+export const ContainerPaddingInPixels = 25;
+
 Container.defaultProps = {
-    pl: '25px',
-    pr: '25px',
+    pl: `${ContainerPaddingInPixels}px`,
+    pr: `${ContainerPaddingInPixels}px`,
 };
 
 export default Container;

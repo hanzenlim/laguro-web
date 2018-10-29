@@ -28,6 +28,8 @@ import ProfileMenu from './ProfileMenu';
 
 const { Desktop, Mobile } = Responsive;
 
+export const HEADER_HEIGHT = 48;
+
 const NavBarLink = styled(Link)`
     &&:hover,
     &&:focus {
@@ -56,10 +58,10 @@ const ProfileImage = styled(Flex)`
 const StyledDropContainer = styled.div`
     @media (max-width: 991px) {
         .ant-dropdown {
-            height: calc(100vh - 48px);
+            height: calc(100vh - ${HEADER_HEIGHT}px);
             overflow-y: auto;
             background-color: ${theme.colors.background.lightGray};
-            top: 48px !important;
+            top: ${HEADER_HEIGHT}px !important;
             left: 0 !important;
             right: 0 !important;
         }
@@ -68,6 +70,10 @@ const StyledDropContainer = styled.div`
             padding: 0;
         }
     }
+`;
+
+const StyledFlex = styled(Flex)`
+    box-shadow: ${props => props.boxShadow};
 `;
 
 class ProfileButton extends Component {
@@ -212,16 +218,18 @@ class Header extends Component {
         };
 
         return (
-            <Flex
+            <StyledFlex
                 is="header"
                 width="100%"
-                height={[48, '', 120]}
+                height={[HEADER_HEIGHT, '', 120]}
                 bg={
                     onLandingPage
                         ? 'background.transparent'
                         : 'background.white'
                 }
-                borderBottom={onLandingPage ? 'none' : '1px solid'}
+                boxShadow={
+                    onLandingPage ? 'none' : '0 2px 4px 0 rgba(0, 0, 0, 0.1);'
+                }
                 borderColor="divider.gray"
                 flex="0 0 auto"
                 alignItems="center"
@@ -322,7 +330,7 @@ class Header extends Component {
                         />
                     </Flex>
                 </Container>
-            </Flex>
+            </StyledFlex>
         );
     }
 }
