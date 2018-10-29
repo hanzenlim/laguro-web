@@ -15,6 +15,7 @@ import {
     TimePicker,
     Counter,
 } from '../../../components';
+import { withScreenSizes } from '../../../components/Responsive';
 import { renderPrice } from '../../../util/paymentUtil';
 
 const { FormItem } = InnerForm;
@@ -92,8 +93,32 @@ class CreateListing extends Component {
         this.props.form.validateFields([fieldName]);
     };
 
+    validateStartAndEndTime = (rule, value, callback) => {
+        const index = this.props['data-index'];
+        // const { options } = this.state;
+        const { form, desktopOnly } = this.props;
+        const startTime = form.getFieldValue(`startTime${index}`);
+        const endTime = form.getFieldValue(`endTime${index}`);
+
+        if (desktopOnly) {
+            if (!startTime && rule.field.startsWith('startTime')) {
+                return callback('Please select your daily start time');
+            }
+
+            if (!endTime && rule.field.startsWith('endTime')) {
+                return callback('Please select your daily end time');
+            }
+        }
+
+        if (rule.field.startsWith('endTime') && (!startTime || !endTime)) {
+            return callback('Please select your daily start time and end time');
+        }
+
+        return callback();
+    };
+
     render() {
-        const { active, form, onDelete, ...rest } = this.props;
+        const { active, form, onDelete, desktopOnly, ...rest } = this.props;
         const values = form.getFieldsValue();
         const index = this.props['data-index'];
         const availability = values[`availability${index}`];
@@ -282,9 +307,8 @@ class CreateListing extends Component {
                                         name={`startTime${index}`}
                                         rules={[
                                             {
-                                                required: true,
-                                                message:
-                                                    'Please select your daily start time',
+                                                validator: this
+                                                    .validateStartAndEndTime,
                                             },
                                         ]}
                                         input={
@@ -322,9 +346,8 @@ class CreateListing extends Component {
                                     name={`endTime${index}`}
                                     rules={[
                                         {
-                                            required: true,
-                                            message:
-                                                'Please select your daily end time',
+                                            validator: this
+                                                .validateStartAndEndTime,
                                         },
                                     ]}
                                     input={
@@ -454,4 +477,4 @@ class CreateListing extends Component {
     }
 }
 
-export default CreateListing;
+export default withScreenSizes(CreateListing);
