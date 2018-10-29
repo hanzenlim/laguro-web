@@ -29,6 +29,7 @@ const StyledCheckbox = styled(AntdCheckbox)`
         .ant-checkbox + span {
             padding: 0;
             padding-left: 3px;
+            font-family: ${props => props.theme.fontFamily};
         }
     }
 `;

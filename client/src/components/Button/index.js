@@ -102,6 +102,7 @@ const StyledButton = styled(AntdButton)`
         ${fontSize};
         ${fontWeight};
         ${color};
+        font-family: ${props => props.theme.fontFamily};
     }
 
     i {

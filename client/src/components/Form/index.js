@@ -19,6 +19,13 @@ import BackButton from './BackButton';
 
 const StyledForm = styled(AntdForm)`
     width: 100%;
+    &&,
+    && .ant-radio-wrapper,
+    && .ant-form-item,
+    && .ant-select,
+    && .ant-input {
+        font-family: ${props => props.theme.fontFamily};
+    }
 
     .ant-form-item {
         margin-bottom: 0px;
