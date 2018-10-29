@@ -2,7 +2,9 @@ import React from 'react';
 import { arrayOf, shape, string, number, func, bool } from 'prop-types';
 import moment from 'moment';
 import isEmpty from 'lodash/isEmpty';
-
+import _get from 'lodash/get';
+import queryString from 'query-string';
+import history from '../../../history';
 import { Box, Flex, Image, Text, Rating, Truncate } from '../../../components';
 import { withScreenSizes } from '../../../components/Responsive';
 import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
@@ -15,6 +17,8 @@ const ReviewContainer = props => {
         toggleModalState,
         viewOnly,
         tabletMobileOnly,
+        match,
+        info,
     } = props;
 
     const renderReviewsStats = (
@@ -48,7 +52,17 @@ const ReviewContainer = props => {
                     fontWeight={['medium', '', 'bold']}
                     lineHeight="22px"
                     alignSelf={['center', '', 'flex-end']}
-                    onClick={toggleModalState}
+                    onClick={
+                        tabletMobileOnly
+                            ? () =>
+                                  history.push(
+                                      `/review/${_get(
+                                          match,
+                                          'params.id'
+                                      )}?${queryString.stringify(info)}`
+                                  )
+                            : toggleModalState
+                    }
                 >
                     add review
                 </Text>

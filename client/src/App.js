@@ -101,6 +101,11 @@ const PrivacyPage = Loadable({
     loading: () => null,
 });
 
+const NewReviewPage = Loadable({
+    loader: () => import('./pages/NewReviewPage'),
+    loading: () => null,
+});
+
 const getIdQueryClient = gql`
     {
         activeUser @client {
@@ -194,6 +199,10 @@ class App extends Component {
                                             <Route
                                                 path="/office/:id"
                                                 component={OfficeDetailsPage}
+                                            />
+                                            <Route
+                                                path="/review/:id"
+                                                component={NewReviewPage}
                                             />
                                             <Route
                                                 path="/reset-password"
