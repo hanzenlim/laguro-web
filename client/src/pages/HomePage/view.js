@@ -64,7 +64,7 @@ const Background = styled(Box)`
     left: 0;
 
     @media (min-width: 992px) {
-        background: url(${hero}) no-repeat center -175px scroll;
+        background: url(${hero}) no-repeat center;
         background-size: cover;
     }
 `;
