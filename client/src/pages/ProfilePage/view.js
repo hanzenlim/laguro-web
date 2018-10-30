@@ -373,7 +373,7 @@ class ProfileView extends Component {
                             document.getElementById('profileDropdownContainer')
                         }
                     >
-                        <a className="ant-dropdown-link" href="#">
+                        <a className="ant-dropdown-link">
                             <Text
                                 is="span"
                                 fontSize={1}
