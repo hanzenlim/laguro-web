@@ -62,7 +62,7 @@ const OfficeInfo = props => {
             />
         </Flex>,
         <Flex
-            justifyContent="center"
+            justifyContent={['center', '', 'flex-start']}
             width={['100%', '', '66.66%']}
             pl={[0, '', 16]}
             m="auto"
@@ -142,7 +142,7 @@ const NewReview = props => {
                     value={rating}
                 />
             </Box>
-            <Text fontSize={[2, '', 3]}>
+            <Text fontSize={[2, '', 3]} textAlign={['center', '', 'left']}>
                 how was your experience with {info.name}?
             </Text>
             <Box mt={10}>
