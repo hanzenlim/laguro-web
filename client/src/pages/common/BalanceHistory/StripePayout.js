@@ -66,7 +66,6 @@ const StripePayoutButtons = ({ userId, accountToken, totalAvailable }) => (
                                     ) : (
                                         <a
                                             href={`https://connect.stripe.com/express/oauth/authorize?client_id=${stripeExpressClientKey}`}
-                                            target="_blank"
                                         >
                                             <Button
                                                 my={1}
