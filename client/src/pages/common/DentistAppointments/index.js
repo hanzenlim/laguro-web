@@ -13,6 +13,7 @@ const DentistAppointmentsContainer = () => (
         {({ data: clientData }) => (
             <Query
                 query={getDentistQuery}
+                fetchPolicy="cache-and-network"
                 variables={{ id: clientData.activeUser.dentistId }}
             >
                 {({ loading, error, data }) => {

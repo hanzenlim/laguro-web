@@ -49,6 +49,7 @@ export const NoPaymentsCard = ({ text }) => (
 const PaymentHistoryContainer = ({ userId }) => (
     <Query
         query={GET_PAYMENT_HISTORY_QUERY}
+        fetchPolicy="cache-and-network"
         variables={{
             input: {
                 partitionKey: PAYER_ID,

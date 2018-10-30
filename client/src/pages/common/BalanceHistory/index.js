@@ -115,6 +115,7 @@ class BalanceHistoryContainer extends PureComponent {
         return (
             <Query
                 query={GET_BALANCE_QUERY}
+                fetchPolicy="cache-and-network"
                 variables={{
                     input: {
                         userId,
