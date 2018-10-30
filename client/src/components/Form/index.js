@@ -31,6 +31,15 @@ const StyledForm = styled(AntdForm)`
         margin-bottom: 0px;
     }
 
+    && .ant-input,
+    && .ant-form-explain {
+        font-size: ${props => props.theme.fontSizes[0]};
+
+        @media (min-width: ${props => props.theme.breakpoints[1]}) {
+            font-size: ${props => props.theme.fontSizes[1]};
+        }
+    }
+
     .ant-form-item .ant-input::placeholder {
         font-size: ${props => props.theme.fontSizes[0]};
 
