@@ -8,6 +8,7 @@ import UpdateDentistProfileForm from '../../../common/Forms/UpdateDentistProfile
 import { getActiveUserQuery, getUserQuery } from './queries';
 import UserVerification from '../../UserVerification';
 import { DENTIST } from '../../../../util/strings';
+import { withScreenSizes } from '../../../../components/Responsive';
 
 const DENTIST_PROFILE_STEP = 'dentist_profile_step';
 const DENTIST_VERIFICATION_STEP = 'dentist_verification_step';
@@ -37,7 +38,12 @@ const StyledModal = styled(Modal)`
 
 const TabContainer = styled.div`
     display: flex;
+    flex-direction: column;
     border-top: 2px solid #f2f2f2;
+
+    @media (min-width: ${props => props.theme.breakpoints[1]}) {
+        flex-direction: row;
+    }
 `;
 
 const Tab = styled.div`
@@ -228,15 +234,27 @@ class DentistVerificationModal extends Component {
     };
 
     render() {
-        const { visible } = this.props;
+        const { visible, desktopOnly } = this.props;
         const { currentStep, completedSteps } = this.state;
 
         return (
             <StyledModal
                 title="Verification"
-                width={620}
                 visible={visible}
                 footer={null}
+                width={desktopOnly ? 620 : '100%'}
+                style={
+                    desktopOnly
+                        ? null
+                        : {
+                              top: '0',
+                              left: '0',
+                              right: '0',
+                              bottom: '0',
+                              margin: '0',
+                              height: '100%',
+                          }
+                }
                 {...this.props}
             >
                 <TabContainer>
@@ -283,5 +301,6 @@ class DentistVerificationModal extends Component {
 
 export default compose(
     withApollo,
-    graphql(getActiveUserQuery)
+    graphql(getActiveUserQuery),
+    withScreenSizes
 )(DentistVerificationModal);
