@@ -64,7 +64,7 @@ const UpdateProfileForm = props => {
 
     return (
         <StyledForm>
-            <Box>
+            <Box mt={[22, '', 0]} mb={[42, '', 0]}>
                 {(error || isUpdated) && (
                     <Box mb={20}>
                         <Alert
@@ -78,12 +78,19 @@ const UpdateProfileForm = props => {
                     </Box>
                 )}
 
-                <Box mb={70} width={200} height={200} position="relative">
+                <Box
+                    mb={[22, '', 70]}
+                    ml={['auto', '', 0]}
+                    mr={['auto', '', 0]}
+                    width={[118, '', 200]}
+                    height={[118, '', 200]}
+                    position="relative"
+                >
                     <Image
                         alt="profile photo"
                         borderRadius="50%"
-                        width={200}
-                        height={200}
+                        width={[118, '', 200]}
+                        height={[118, '', 200]}
                         src={
                             newProfileImage || data.imageUrl || defaultUserImage
                         }
@@ -119,9 +126,9 @@ const UpdateProfileForm = props => {
                                 left={0}
                                 right={0}
                                 width="100%"
-                                height={'40px'}
+                                height={['24px', '', '40px']}
                                 color="text.black"
-                                fontSize={4}
+                                fontSize={[0, '', 4]}
                                 border="none"
                             >
                                 <Icon type="form" />
@@ -138,7 +145,7 @@ const UpdateProfileForm = props => {
                         name="firstName"
                         label="First name"
                         initialValue={data.firstName}
-                        mb={32}
+                        mb={[18, '', 32]}
                         height={50}
                         input={<Input type="text" />}
                         rules={[
@@ -152,7 +159,7 @@ const UpdateProfileForm = props => {
                         name="middleName"
                         label="Middle name"
                         initialValue={data.middleName}
-                        mb={32}
+                        mb={[18, '', 32]}
                         height={50}
                         normalize={value => value || null}
                         input={<Input type="text" />}
@@ -161,7 +168,7 @@ const UpdateProfileForm = props => {
                         name="lastName"
                         label="Last name"
                         initialValue={data.lastName}
-                        mb={32}
+                        mb={[18, '', 32]}
                         height={50}
                         input={<Input type="text" />}
                         rules={[
@@ -176,7 +183,7 @@ const UpdateProfileForm = props => {
                         label="Mobile number"
                         initialValue={data.phoneNumber}
                         normalize={value => value || null}
-                        mb={32}
+                        mb={[18, '', 32]}
                         height={50}
                         input={
                             <MaskedInput
@@ -207,7 +214,11 @@ const UpdateProfileForm = props => {
                         ]}
                     />
                     {data.customName && (
-                        <Text mb={20} fontSize={4} fontWeight="bold">
+                        <Text
+                            mb={20}
+                            fontSize={[0, '', 4]}
+                            fontWeight={['regular', '', 'bold']}
+                        >
                             Create custom link for your profile
                         </Text>
                     )}
@@ -216,27 +227,31 @@ const UpdateProfileForm = props => {
                             name="customName"
                             label="laguro.com/dentist/"
                             initialValue={data.customName}
-                            mb={32}
+                            mb={[18, '', 32]}
                             height={50}
                             className="form-item-custom-name"
                             input={<Input type="text" />}
                         />
                     )}
-                    <Text fontSize={4} fontWeight="bold" mb={20}>
+                    <Text
+                        fontSize={[0, '', 4]}
+                        fontWeight={['regular', '', 'bold']}
+                        mb={20}
+                    >
                         Notification Settings
                     </Text>
                     <FormItem
                         name="emailNotification"
                         valuePropName="checked"
                         initialValue={data.emailNotification}
-                        mb={32}
+                        mb={[18, '', 32]}
                         input={
                             <Checkbox>
                                 <Text
                                     color="text.black"
-                                    fontSize={3}
+                                    fontSize={[0, '', 3]}
                                     display="inline"
-                                    ml={20}
+                                    ml={[12, '', 20]}
                                 >
                                     Email
                                 </Text>
@@ -252,14 +267,14 @@ const UpdateProfileForm = props => {
                         name="smsNotification"
                         valuePropName="checked"
                         initialValue={data.smsNotification}
-                        mb={32}
+                        mb={[18, '', 32]}
                         input={
                             <Checkbox onChange={onSMSNotificationChange}>
                                 <Text
                                     color="text.black"
-                                    fontSize={3}
+                                    fontSize={[0, '', 3]}
                                     display="inline"
-                                    ml={20}
+                                    ml={[12, '', 20]}
                                 >
                                     Text Message
                                 </Text>
@@ -272,21 +287,14 @@ const UpdateProfileForm = props => {
                         }
                     />
                     <SubmitButton
+                        buttonText="Save changes"
                         px={14}
-                        buttonText={
-                            <Text
-                                color="text.white"
-                                fontWeight="bold"
-                                display="inline"
-                                ml={loading ? 8 : 0}
-                            >
-                                Save changes
-                            </Text>
-                        }
+                        fontSize={[1, '', 3]}
+                        fontWeight="bold"
                         loading={loading}
                         textAlign="left"
-                        width={450}
-                        height={'60px'}
+                        width={['100%', '', 450]}
+                        height={['50px', '', '60px']}
                     />
                 </Form>
             </Box>
