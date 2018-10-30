@@ -77,7 +77,6 @@ const ListingConfirmation = props => {
                                 color="text.blue"
                                 pb={10}
                                 mt={10}
-                                pb={14}
                                 borderBottom="1px solid"
                                 borderColor="divider.dustyGray"
                                 mb={20}
