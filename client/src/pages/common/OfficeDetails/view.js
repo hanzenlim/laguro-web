@@ -21,16 +21,21 @@ const GUTTER = 34;
 const CONTAINER_PADDINGS = 50;
 
 class OfficeDetailsView extends PureComponent {
-    state = {
-        contentWidth:
-            Math.min(window.innerWidth, numMaxContainerWidth) -
-            (SIDEBAR_WIDTH + GUTTER + CONTAINER_PADDINGS),
-    };
+    constructor(props) {
+        super(props);
+        this.screenWidthRef = React.createRef();
+        this.state = {
+            contentWidth: 0,
+        };
+    }
 
     setContentWidth = () =>
         this.setState({
             contentWidth:
-                Math.min(window.innerWidth, numMaxContainerWidth) -
+                Math.min(
+                    this.screenWidthRef.current.offsetWidth,
+                    numMaxContainerWidth
+                ) -
                 (SIDEBAR_WIDTH + GUTTER + CONTAINER_PADDINGS),
         });
 
@@ -47,7 +52,6 @@ class OfficeDetailsView extends PureComponent {
         const {
             data,
             tabletMobileOnly,
-            screenWidth,
             toggleReserveOffice,
             isReserveOfficeVisible,
         } = this.props;
@@ -57,8 +61,18 @@ class OfficeDetailsView extends PureComponent {
             ? !isReserveOfficeVisible
             : true;
 
+        const screenWidth = this.screenWidthRef.current
+            ? this.screenWidthRef.current.offsetWidth
+            : 0;
+
         return (
             <Fragment>
+                <Box
+                    width="100vw"
+                    position="fixed"
+                    left={0}
+                    innerRef={this.screenWidthRef}
+                />
                 <Flex
                     alignItems={['left', '', 'center']}
                     mb={[0, '', 40]}
@@ -119,7 +133,11 @@ class OfficeDetailsView extends PureComponent {
                             // Added fixed width to fix bug in rendering truncated text
                             <Box
                                 pb={[0, '', 42]}
-                                width={['100%', '', `${contentWidth}px`]}
+                                width={
+                                    tabletMobileOnly
+                                        ? screenWidth - 50
+                                        : contentWidth
+                                }
                             >
                                 <Text
                                     fontSize={[1, '', 4]}

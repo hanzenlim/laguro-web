@@ -29,16 +29,21 @@ const GUTTER = 34;
 const CONTAINER_PADDINGS = 50;
 
 class DentistDetailsView extends PureComponent {
-    state = {
-        contentWidth:
-            Math.min(window.innerWidth, numMaxContainerWidth) -
-            (SIDEBAR_WIDTH + GUTTER + CONTAINER_PADDINGS),
-    };
+    constructor(props) {
+        super(props);
+        this.screenWidthRef = React.createRef();
+        this.state = {
+            contentWidth: 0,
+        };
+    }
 
     setContentWidth = () =>
         this.setState({
             contentWidth:
-                Math.min(window.innerWidth, numMaxContainerWidth) -
+                Math.min(
+                    this.screenWidthRef.current.offsetWidth,
+                    numMaxContainerWidth
+                ) -
                 (SIDEBAR_WIDTH + GUTTER + CONTAINER_PADDINGS),
         });
 
@@ -55,7 +60,6 @@ class DentistDetailsView extends PureComponent {
         const {
             data,
             tabletMobileOnly,
-            screenWidth,
             isBookAppointmentVisible,
             toggleBookAppointment,
         } = this.props;
@@ -65,8 +69,18 @@ class DentistDetailsView extends PureComponent {
             ? !isBookAppointmentVisible
             : true;
 
+        const screenWidth = this.screenWidthRef.current
+            ? this.screenWidthRef.current.offsetWidth
+            : 0;
+
         return (
             <Box>
+                <Box
+                    width="100vw"
+                    position="fixed"
+                    left={0}
+                    innerRef={this.screenWidthRef}
+                />
                 <Flex
                     mb={[0, '', 56]}
                     flexDirection={['column', '', 'row']}
