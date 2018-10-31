@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
 import queryString from 'query-string';
 import { Dropdown } from 'antd';
@@ -363,7 +363,7 @@ class ProfileView extends Component {
         const { panel } = this.state;
 
         return (
-            <Container maxWidth="1050px">
+            <Fragment>
                 <TabletMobile>
                     <Dropdown
                         overlay={this.renderMenu()}
@@ -373,30 +373,34 @@ class ProfileView extends Component {
                             document.getElementById('profileDropdownContainer')
                         }
                     >
-                        <a className="ant-dropdown-link">
-                            <Text
-                                is="span"
-                                fontSize={1}
-                                mr={6}
-                                fontWeight="medium"
-                                lineHeight="50px"
-                                color="text.blue"
-                            >
-                                {this.keyTextMap[panel]}
-                            </Text>
-                            <Icon color="text.blue" type="down" />
-                        </a>
+                        <Container>
+                            <a className="ant-dropdown-link">
+                                <Text
+                                    is="span"
+                                    fontSize={1}
+                                    mr={6}
+                                    fontWeight="medium"
+                                    lineHeight="50px"
+                                    color="text.blue"
+                                >
+                                    {this.keyTextMap[panel]}
+                                </Text>
+                                <Icon color="text.blue" type="down" />
+                            </a>
+                        </Container>
                     </Dropdown>
                     <StyledDropContainer id="profileDropdownContainer" />
                     {this.renderPanel(panel)}
                 </TabletMobile>
                 <Desktop>
-                    <Grid mt={70} pb={50}>
-                        {this.renderMenu()}
-                        {this.renderPanel(panel)}
-                    </Grid>
+                    <Container maxWidth="1050px">
+                        <Grid mt={70} pb={50}>
+                            {this.renderMenu()}
+                            {this.renderPanel(panel)}
+                        </Grid>
+                    </Container>
                 </Desktop>
-            </Container>
+            </Fragment>
         );
     }
 }
