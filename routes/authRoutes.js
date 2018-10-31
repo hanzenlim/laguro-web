@@ -27,7 +27,32 @@ const authRoutes = app => {
             res.cookie('user', JSON.stringify({ ...user, imageUrl: null }), {
                 maxAge: 86400000,
             });
-            return res.json({ status: 200, user });
+
+            req.login(user, loginError => {
+                if (loginError) {
+                    return next(err);
+                }
+                return res.json({ status: 200, user });
+            });
+        })(req, res, next)
+    );
+
+    app.post('/api/ehr-login', (req, res, next) =>
+        passport.authenticate('ehr-login', (err, user, info) => {
+            if (err || !user) {
+                return res.json({ status: 403, message: info.message });
+            }
+
+            res.cookie('user', JSON.stringify(user), {
+                maxAge: 86400000,
+            });
+
+            req.login(user, loginError => {
+                if (loginError) {
+                    return next(err);
+                }
+                return res.json({ status: 200, user });
+            });
         })(req, res, next)
     );
 
@@ -40,9 +65,20 @@ const authRoutes = app => {
             res.cookie('user', JSON.stringify(user), {
                 maxAge: 86400000,
             });
-            return res.json({ status: 200, user });
+
+            req.login(user, loginError => {
+                if (loginError) {
+                    return next(err);
+                }
+                return res.json({ status: 200, user });
+            });
         })(req, res, next)
     );
+
+    app.post('/api/logout', (req, res) => {
+        req.logout();
+        return res.json({ status: 200 });
+    });
 
     app.post('/api/forgot-password', async (req, res) => {
         const username = req.body.email;

@@ -1,4 +1,6 @@
 import bcrypt from 'bcryptjs';
+import _get from 'lodash/get';
+import moment from 'moment';
 
 // External Packages
 const serverDataLoader = require('../util/serverDataLoader');
@@ -157,6 +159,52 @@ passport.use(
 );
 
 passport.use(
+    'ehr-login',
+    new LocalStrategy(
+        {
+            passReqToCallback: true,
+            usernameField: 'email',
+            passwordField: 'password',
+        },
+        async (req, username, password, done) => {
+            const result = await makeQuery(
+                getUserByEmailQuery,
+                getUserByEmailVariable(username)
+            );
+
+            const getUserByEmail =
+                result && result.data && result.data.getUserByEmail;
+
+            if (!getUserByEmail) {
+                return done(null, false, {
+                    message: 'Invalid username/password.',
+                });
+            }
+
+            const userPin = _get(getUserByEmail, 'pin.value') || '';
+            // comparison with undefined is always false
+            const expiry = _get(getUserByEmail, 'pin.expiry');
+
+            const pinsMatch =
+                bcrypt.compareSync(password, userPin) &&
+                moment()
+                    .utc()
+                    .format() < expiry;
+
+            if (!pinsMatch) {
+                return done(null, false, {
+                    message: 'Invalid username/password.',
+                });
+            }
+
+            delete getUserByEmail.password;
+
+            return done(null, getUserByEmail);
+        }
+    )
+);
+
+passport.use(
     'local-login',
     new LocalStrategy(
         {
@@ -186,12 +234,11 @@ passport.use(
                 });
             }
 
-            if (
-                !bcrypt.compareSync(
-                    password,
-                    getUserByEmail && getUserByEmail.password
-                )
-            ) {
+            const userPassword = _get(getUserByEmail, 'password') || '';
+
+            const passwordsMatch = bcrypt.compareSync(password, userPassword);
+
+            if (!passwordsMatch) {
                 return done(null, false, {
                     message: 'Invalid username/password.',
                 });
@@ -199,7 +246,7 @@ passport.use(
 
             delete getUserByEmail.password;
 
-            done(null, getUserByEmail);
+            return done(null, getUserByEmail);
         }
     )
 );
