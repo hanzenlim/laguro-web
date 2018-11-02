@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import moment from 'moment';
 import { Form, Select } from '../../../../components';
+import { withScreenSizes } from '../../../../components/Responsive';
 
 const { SubmitButton, FormItem } = Form;
 
@@ -97,9 +98,11 @@ class FilterAppointmentsFormView extends PureComponent {
                 <SubmitButton
                     width="100%"
                     height="59px"
-                    fontSize={3}
+                    fontSize={[1, '', 3]}
                     px={14}
-                    buttonText="Find"
+                    buttonText={
+                        this.props.desktopOnly ? 'Find' : 'Find appointment'
+                    }
                 />
             </Form>
         );
@@ -110,4 +113,4 @@ FilterAppointmentsFormView.defaultProps = {
     hasTimeFilter: true,
 };
 
-export default FilterAppointmentsFormView;
+export default withScreenSizes(FilterAppointmentsFormView);

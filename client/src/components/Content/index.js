@@ -5,6 +5,7 @@ import { Box } from '../../components';
 const StyledContent = styled(Box)`
     flex: 1;
     width: 100%;
+    background: white;
 `;
 
 const Content = props => {

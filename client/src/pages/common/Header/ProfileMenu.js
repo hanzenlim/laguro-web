@@ -1,8 +1,10 @@
 import React from 'react';
 import { Menu } from 'antd';
 import styled from 'styled-components';
+import { space, borderBottom, borderColor } from 'styled-system';
 
 import { Link, Text } from '../../../components';
+import theme from '../../../components/theme';
 
 const StyledMenu = styled(Menu)`
     && {
@@ -10,146 +12,123 @@ const StyledMenu = styled(Menu)`
     }
 
     .ant-dropdown-menu-item {
-        padding: 8px 16px;
+        ${space};
+        ${borderBottom};
+        ${borderColor};
+
+        &:last-of-type {
+            border: none;
+        }
+    }
+
+    .ant-dropdown-menu-item-divider {
+        display: none;
+
+        @media (min-width: ${theme.breakpoints[1]}) {
+            display: list-item;
+        }
     }
 `;
 
 const ProfileMenu = props => {
     const { logout, isDentist, isHost, ...rest } = props;
 
-    // Menu link for host
+    const hostMenuItems = [
+        'home',
+        'my page',
+        'my listings',
+        'bookings/appointments',
+        'payments',
+        'laguro balance',
+        'add a new office',
+        'search for chairs',
+    ];
+
+    const dentistMenuItems = [
+        'home',
+        'my page',
+        'bookings/appointments',
+        'payments',
+        'laguro balance',
+        'add a new office',
+        'search for chairs',
+    ];
+
+    const patientMenuItems = [
+        'home',
+        'my page',
+        'my appointments',
+        'add a new office',
+    ];
+
+    const boldedMenuItems = ['search for chairs'];
+
+    const blueMenuItems = ['search for chairs'];
+    if (!isHost && !isDentist) {
+        blueMenuItems.push('log out');
+    }
+
+    const itemLinkMap = {
+        home: '/',
+        'my page': '/profile?selectedTab=my_profile',
+        'my listings': '/profile?selectedTab=my_listings',
+        'bookings/appointments': '/profile?selectedTab=my_bookings',
+        payments: '/profile?selectedTab=payments',
+        'laguro balance': '/profile?selectedTab=balance',
+        'search for chairs': '/office/search',
+        'log out': '#',
+        'my appointments': '/profile?selectedTab=my_appointments',
+        'add a new office': '/host-onboarding/add-office',
+    };
+
+    let menuItems;
     if (isHost) {
-        return (
-            <StyledMenu {...rest}>
-                <Menu.Item>
-                    <Link to={'/profile?selectedTab=my_profile'}>
-                        <Text color="text.black" fontSize={2}>
-                            my page
-                        </Text>
-                    </Link>
-                </Menu.Item>
-                <Menu.Item>
-                    <Link to={'/profile?selectedTab=my_listings'}>
-                        <Text color="text.black" fontSize={2}>
-                            my listings
-                        </Text>
-                    </Link>
-                </Menu.Item>
-                <Menu.Item>
-                    <Link to={'/profile?selectedTab=my_bookings'}>
-                        <Text color="text.black" fontSize={2}>
-                            bookings/appointments
-                        </Text>
-                    </Link>
-                </Menu.Item>
-                <Menu.Item>
-                    <Link to={'/profile?selectedTab=payments'}>
-                        <Text color="text.black" fontSize={2}>
-                            payments
-                        </Text>
-                    </Link>
-                </Menu.Item>
-
-                <Menu.Item>
-                    <Link to={'/profile?selectedTab=balance'}>
-                        <Text color="text.black" fontSize={2}>
-                            laguro balance
-                        </Text>
-                    </Link>
-                </Menu.Item>
-
-                <Menu.Item>
-                    <Link to={'/office/search'}>
-                        <Text color="text.blue" fontWeight="bold" fontSize={2}>
-                            search for chairs
-                        </Text>
-                    </Link>
-                </Menu.Item>
-                <Menu.Divider />
-                <Menu.Item>
-                    <Link to={'#'} onClick={logout}>
-                        <Text color="text.black" fontSize={2}>
-                            log out
-                        </Text>
-                    </Link>
-                </Menu.Item>
-            </StyledMenu>
-        );
+        menuItems = hostMenuItems;
+    } else if (isDentist) {
+        menuItems = dentistMenuItems;
+    } else {
+        menuItems = patientMenuItems;
     }
 
-    if (isDentist) {
-        return (
-            <StyledMenu {...rest}>
-                <Menu.Item>
-                    <Link to={'/profile?selectedTab=my_profile'}>
-                        <Text color="text.black" fontSize={2}>
-                            my page
-                        </Text>
-                    </Link>
-                </Menu.Item>
-                <Menu.Item>
-                    <Link to={'/profile?selectedTab=my_bookings'}>
-                        <Text color="text.black" fontSize={2}>
-                            bookings/appointments
-                        </Text>
-                    </Link>
-                </Menu.Item>
-                <Menu.Item>
-                    <Link to={'/profile?selectedTab=payments'}>
-                        <Text color="text.black" fontSize={2}>
-                            payments
-                        </Text>
-                    </Link>
-                </Menu.Item>
-                <Menu.Item>
-                    <Link to={'/profile?selectedTab=balance'}>
-                        <Text color="text.black" fontSize={2}>
-                            laguro balance
-                        </Text>
-                    </Link>
-                </Menu.Item>
-                <Menu.Item>
-                    <Link to={'/office/search'}>
-                        <Text color="text.blue" fontWeight="bold" fontSize={2}>
-                            search for chairs
-                        </Text>
-                    </Link>
-                </Menu.Item>
-                <Menu.Divider />
-                <Menu.Item>
-                    <Link to={'#'} onClick={logout}>
-                        <Text color="text.black" fontSize={2}>
-                            log out
-                        </Text>
-                    </Link>
-                </Menu.Item>
-            </StyledMenu>
-        );
-    }
-
-    // Menu link for patient
     return (
-        <StyledMenu {...rest}>
-            <Menu.Item>
-                <Link to={'/profile?selectedTab=my_profile'}>
-                    <Text color="text.black" fontSize={2}>
-                        my page
-                    </Text>
-                </Link>
-            </Menu.Item>
-
-            <Menu.Item>
-                <Link to={'/profile?selectedTab=my_appointments'}>
-                    <Text color="text.black" fontSize={2}>
-                        my appointments
-                    </Text>
-                </Link>
-            </Menu.Item>
+        <StyledMenu
+            p={['18px 16px', '', '8px 16px']}
+            borderBottom={['1px solid', '', 'none']}
+            borderColor="divider.gray"
+            {...rest}
+        >
+            {menuItems.map(item => (
+                <Menu.Item>
+                    <Link to={itemLinkMap[item]}>
+                        <Text
+                            color={
+                                blueMenuItems.includes(item)
+                                    ? 'text.blue'
+                                    : 'text.black'
+                            }
+                            fontSize={2}
+                            fontWeight={
+                                boldedMenuItems.includes(item)
+                                    ? 'bold'
+                                    : 'regular'
+                            }
+                        >
+                            {item}
+                        </Text>
+                    </Link>
+                </Menu.Item>
+            ))}
             <Menu.Divider />
-
             <Menu.Item>
                 <Link to={'#'} onClick={logout}>
-                    <Text color="text.blue" fontSize={2}>
+                    <Text
+                        color={
+                            blueMenuItems.includes('log out')
+                                ? 'text.blue'
+                                : 'text.black'
+                        }
+                        fontSize={2}
+                    >
                         log out
                     </Text>
                 </Link>

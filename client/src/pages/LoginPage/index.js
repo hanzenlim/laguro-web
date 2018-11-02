@@ -72,18 +72,19 @@ class LoginPage extends Component {
     };
 
     render() {
-        const location = queryString.parse(_get(this.props, 'location.search'));
+        const search = queryString.parse(_get(this.props, 'location.search'));
 
         return (
             <Query query={getActiveUserQuery}>
                 {({ loading, data, client }) => {
+                    const { location } = this.props;
                     if (loading) {
                         return <div>loading...</div>;
                     }
 
                     // Check if user is logged in or not.
                     if (_get(data, 'activeUser.id')) {
-                        return <Redirect to={location.redirectTo} />;
+                        return <Redirect to={search.redirectTo} />;
                     }
 
                     return (
@@ -97,7 +98,7 @@ class LoginPage extends Component {
                             onLogin={values => this.handleLogin(client, values)}
                             visibleModal={this.state.currentModal}
                             sendPassResetLink={this.handleSendResetPasswordLink}
-                            message="You need to login first before you can view this page"
+                            message={_get(location, 'state.message')}
                             isSubmitting={this.state.isSubmitting}
                         />
                     );

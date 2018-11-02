@@ -1,4 +1,5 @@
-export const numMaxContainerWidth = 1280;
+const containerPaddings = 50;
+export const numMaxContainerWidth = 1280 + containerPaddings;
 
 export default {
     colors: {
@@ -88,7 +89,7 @@ export default {
         '1px 1px 7px 0 rgba(0, 0, 0, 0.15)',
         '0 1px 4px 0 rgba(0, 0, 0, 0.3)',
     ],
-    breakpoints: ['320px', '768px', '992px', '1200px'],
+    breakpoints: ['768px', '992px', '1200px'],
     space: n => `${n}px`,
     maxContainerWidth: `${numMaxContainerWidth}px`,
     fontFamily: "'Silka', sans-serif",

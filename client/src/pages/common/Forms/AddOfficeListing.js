@@ -121,26 +121,26 @@ class AddOfficeListing extends Component {
         const { listings } = this.state;
 
         return (
-            <Box maxWidth="667px">
+            <Box>
                 <Text
                     fontWeight="bold"
-                    fontSize={5}
-                    lineHeight="1"
+                    fontSize={[2, '', 5]}
+                    lineHeight={['1.88', '', '1']}
                     letterSpacing="-0.6px"
                     color="text.gray"
-                    mt={140}
-                    mb={18}
+                    mt={[0, '', 140]}
+                    mb={[0, '', 18]}
                 >
                     {isOnboarding && 'Step 3'}
                 </Text>
 
                 <Text
                     fontWeight="bold"
-                    fontSize={5}
+                    fontSize={[2, '', 5]}
                     lineHeight="1"
                     letterSpacing="-0.6px"
                     color="text.trueBlack"
-                    mb={54}
+                    mb={[21, '', 54]}
                 >
                     {isOnboarding
                         ? "It's time to create your first listing!"
@@ -149,19 +149,18 @@ class AddOfficeListing extends Component {
                 <div>{listings}</div>
 
                 <Button type="ghost" mt={16} ml={30}>
-                    <Flex width="100px" onClick={this.handleAddListing}>
+                    <Flex
+                        height="22px"
+                        onClick={this.handleAddListing}
+                        alignItems="center"
+                    >
                         <Icon
-                            lineHeight="21px"
                             mr={16}
                             type="plus"
                             fontSize="14px"
                             color="icon.black"
                         />
-                        <Text
-                            fontSize={3}
-                            lineHeight={1}
-                            letterSpacing="-0.5px"
-                        >
+                        <Text fontSize={[1, '', 3]} letterSpacing="-0.5px">
                             Add another listing
                         </Text>
                     </Flex>

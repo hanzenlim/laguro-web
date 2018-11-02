@@ -19,9 +19,7 @@ import LocationFilter from '../LocationFilter';
 import { EDIT_OFFICE_MODE } from '../../../util/strings';
 
 const { GridItem } = Grid;
-
 const { FormItem } = InnerForm;
-const imageBoxHeight = '94px';
 const maxImageNum = 5;
 
 class AddOfficeInfo extends Component {
@@ -121,8 +119,8 @@ class AddOfficeInfo extends Component {
                 <Box
                     key={index}
                     position="relative"
-                    width={imageBoxHeight}
-                    height={imageBoxHeight}
+                    width="100%"
+                    height={['calc(50vw - 31px)', '', '100%']}
                 >
                     <Image
                         src={url}
@@ -135,14 +133,15 @@ class AddOfficeInfo extends Component {
                     <Button
                         type="ghost"
                         position="absolute"
-                        top="-9px"
-                        right="-9px"
+                        width={[50, '', 'auto']}
+                        top={[0, '', '-9px']}
+                        right={[0, '', '-9px']}
                         data-url={url}
                         onClick={this.removeImage}
                     >
                         <Box bg="background.white" borderRadius="9px">
                             <Icon
-                                fontSize={3}
+                                fontSize={[5, '', 3]}
                                 color="icon.lightGray"
                                 type="close-circle"
                             />
@@ -194,18 +193,18 @@ class AddOfficeInfo extends Component {
         return (
             <InnerForm form={form} {...this.props}>
                 <Grid
-                    gtc="294px 36px 294px"
+                    gridTemplateColumns={['100%', '', '294px 36px 294px']}
                     gtr="auto auto auto auto auto auto auto auto"
                 >
                     <GridItem gc="all">
                         <Text
                             fontWeight="bold"
-                            fontSize={5}
-                            lineHeight="1"
+                            fontSize={[2, '', 5]}
+                            lineHeight={['1.88', '', '1']}
                             letterSpacing="-0.6px"
                             color="text.gray"
-                            mt={140}
-                            mb={18}
+                            mt={['', '', 140]}
+                            mb={[0, '', 18]}
                         >
                             Step 1
                         </Text>
@@ -214,8 +213,8 @@ class AddOfficeInfo extends Component {
                         <GridItem gc="all">
                             <Text
                                 fontWeight="bold"
-                                fontSize={5}
-                                lineHeight="1"
+                                fontSize={[2, '', 5]}
+                                lineHeight={[1.38, '', 1]}
                                 letterSpacing="-0.6px"
                                 color="text.trueBlack"
                                 mr={8}
@@ -227,11 +226,11 @@ class AddOfficeInfo extends Component {
                     <GridItem gc="all">
                         <Text
                             fontWeight="bold"
-                            fontSize={5}
+                            fontSize={[2, '', 5]}
                             lineHeight="1"
                             letterSpacing="-0.6px"
                             color="text.trueBlack"
-                            mb={54}
+                            mb={[21, '', 54]}
                         >
                             {header}
                         </Text>
@@ -240,11 +239,11 @@ class AddOfficeInfo extends Component {
                     <GridItem gc="all">
                         <Text
                             fontWeight="bold"
-                            fontSize={4}
+                            fontSize={[0, '', 4]}
                             lineHeight="1"
                             letterSpacing="0px"
                             color="text.blue"
-                            mb={20}
+                            mb={[10, '', 20]}
                         >
                             OFFICE DETAILS
                         </Text>
@@ -286,7 +285,7 @@ class AddOfficeInfo extends Component {
                             input={
                                 <LocationFilter
                                     withDentists={false}
-                                    width={624}
+                                    width="100%"
                                     locationType="address"
                                     onLocationChange={this.handleLocationChange}
                                     onSearch={this.handleSearch}
@@ -322,7 +321,12 @@ class AddOfficeInfo extends Component {
                                 <Grid
                                     gcg="10px"
                                     grg="10px"
-                                    gtc="repeat(6, 94px)"
+                                    gridTemplateRows={['auto', '', '94px']}
+                                    gridTemplateColumns={[
+                                        '1fr 1fr',
+                                        '',
+                                        'repeat(6, 94px)',
+                                    ]}
                                     gc="all"
                                     mt={10}
                                 >
@@ -357,13 +361,17 @@ class AddOfficeInfo extends Component {
                                         render={({ onPick }) =>
                                             this.canUploadPhotos() && (
                                                 <Button
+                                                    height={[
+                                                        'calc(50vw - 31px)',
+                                                        '',
+                                                        '100%',
+                                                    ]}
                                                     type="ghost"
                                                     onClick={onPick}
-                                                    height="auto"
                                                 >
                                                     <Box
-                                                        width={imageBoxHeight}
-                                                        height={imageBoxHeight}
+                                                        width="100%"
+                                                        height="100%"
                                                         bg="rgba(96, 96, 96, 0.1)"
                                                     >
                                                         <Flex

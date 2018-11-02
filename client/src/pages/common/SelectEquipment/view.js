@@ -10,11 +10,11 @@ const SelectEquipmentView = props => {
     return (
         <Box>
             <Text
-                mb={26}
-                lineHeight="30px"
+                mb={[22, '', 26]}
+                lineHeight={[1, '', '30px']}
                 fontWeight="bold"
                 color="text.black"
-                fontSize={3}
+                fontSize={[1, '', 2]}
             >
                 Equipment needed
             </Text>
@@ -49,12 +49,16 @@ const SelectEquipmentView = props => {
                         >
                             <Text
                                 color="inherit"
-                                fontSize={1}
+                                fontSize={['10px', '', 1]}
                                 fontWeight="bold"
                             >
                                 {item.name}
                             </Text>
-                            <Text color="inherit" fontSize={1}>
+                            <Text
+                                color="inherit"
+                                fontSize={['10px', '', 1]}
+                                mt={4}
+                            >
                                 {renderPrice(parseInt(item.price, 10))}
                             </Text>
                         </Flex>

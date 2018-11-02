@@ -10,30 +10,28 @@ const StyledSteps = styled(AntdSteps)`
     && {
         ${space};
     }
-
     &&& .ant-steps-item {
         margin-right: 10px;
-        height: 120px;
+        @media (min-width: ${props => props.theme.breakpoints[1]}) {
+            height: 120px;
+        }
     }
-
     &&& .ant-steps-item-tail {
-        height: 120px;
+        @media (min-width: ${props => props.theme.breakpoints[1]}) {
+            height: 120px;
+        }
     }
-
     && .ant-steps-item-finish .ant-steps-icon {
         color: ${props => props.theme.colors.text.white};
     }
-
     && .ant-steps-item-finish .ant-steps-item-tail:after {
         background-color: ${props => props.theme.colors.background.blue};
     }
-
     .ant-steps-item-finish .ant-steps-item-icon,
     .ant-steps-item-process .ant-steps-item-icon {
         background: ${props => props.theme.colors.icon.blue};
         border: 0px;
     }
-
     .ant-steps-item-wait .ant-steps-item-icon {
         background: ${props => props.theme.colors.background.white};
     }

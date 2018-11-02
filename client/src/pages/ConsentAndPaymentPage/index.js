@@ -19,6 +19,7 @@ class ConsentAndPaymentPage extends PureComponent {
             hasConsented: false,
             isPaymentSuccessful: false,
             isSubmitting: false,
+            hasClickedNext: false,
         };
     }
 
@@ -45,6 +46,10 @@ class ConsentAndPaymentPage extends PureComponent {
         }
 
         this.setState({ isSubmitting: false });
+    };
+
+    handleNext = () => {
+        this.setState({ hasClickedNext: true });
     };
 
     handleClickCheckbox = () => {
@@ -76,6 +81,13 @@ class ConsentAndPaymentPage extends PureComponent {
                 }}
             >
                 {({ loading, error, data }) => {
+                    const {
+                        hasConsented,
+                        hasClickedNext,
+                        isPaymentSuccessful,
+                        isSubmitting,
+                    } = this.state;
+
                     if (loading) return <Loading />;
                     if (error) return <RedirectErrorPage />;
 
@@ -93,12 +105,14 @@ class ConsentAndPaymentPage extends PureComponent {
 
                     return (
                         <ConsentAndPaymentPageView
-                            isPaymentSuccessful={this.state.isPaymentSuccessful}
+                            isPaymentSuccessful={isPaymentSuccessful}
                             patientProcedures={patientProcedures}
                             onClickCheckbox={this.handleClickCheckbox}
-                            hasConsented={this.state.hasConsented}
+                            onClickNext={this.handleNext}
+                            hasConsented={hasConsented}
+                            hasClickedNext={hasClickedNext}
                             onPaymentSuccess={handlePaymentSuccess}
-                            isSubmitting={this.state.isSubmitting}
+                            isSubmitting={isSubmitting}
                             updateSubmittingState={this.updateSubmittingState}
                         />
                     );

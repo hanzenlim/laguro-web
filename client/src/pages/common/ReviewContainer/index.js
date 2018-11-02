@@ -3,9 +3,9 @@ import { withRouter } from 'react-router-dom';
 import { shape, string } from 'prop-types';
 import { Query } from 'react-apollo';
 
-import ReviewList from './view';
-import { Loading } from '../../../components';
-import { NewReviewModal } from '../../common/Modals';
+import ReviewContainerView from './view';
+import { Loading, Modal } from '../../../components';
+import NewReview from '../../common/NewReview';
 import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
 import { GET_DENTIST_REVIEWS, GET_OFFICE_REVIEWS } from './queries';
 import { DENTIST } from '../../../util/strings';
@@ -19,7 +19,7 @@ class ReviewContainer extends PureComponent {
         this.setState(({ isModalOpen }) => ({ isModalOpen: !isModalOpen }));
 
     render() {
-        const { id, type } = this.props;
+        const { id, type, match } = this.props;
 
         const isDentist = type === DENTIST;
         const reviewsQuery = isDentist
@@ -54,19 +54,30 @@ class ReviewContainer extends PureComponent {
 
                     return (
                         <Fragment>
-                            <ReviewList
+                            <ReviewContainerView
                                 numReviews={numReviews}
                                 averageRating={averageRating}
                                 reviews={reviews}
                                 toggleModalState={this.toggleModalState}
                                 viewOnly={this.props.viewOnly}
+                                info={mappedData}
+                                match={match}
                             />
                             {!this.props.viewOnly && (
-                                <NewReviewModal
-                                    visible={this.state.isModalOpen}
-                                    toggleModalState={this.toggleModalState}
-                                    info={mappedData}
-                                />
+                                <Fragment>
+                                    <Modal
+                                        visible={this.state.isModalOpen}
+                                        onCancel={this.toggleModalState}
+                                        destroyOnClose
+                                    >
+                                        <NewReview
+                                            info={mappedData}
+                                            toggleModalState={
+                                                this.toggleModalState
+                                            }
+                                        />
+                                    </Modal>
+                                </Fragment>
                             )}
                         </Fragment>
                     );

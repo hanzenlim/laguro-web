@@ -17,13 +17,14 @@ import {
 
 const StyledCard = styled(AntdCard)`
     &.ant-card-bordered {
-        ${space}
+
         border-radius: 4px;
         box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
     }
 
     & .ant-card-body {
-        padding: 28px 28px;
+        padding: 28px;
+        ${space}
         ${width}
         ${color}
         ${height}

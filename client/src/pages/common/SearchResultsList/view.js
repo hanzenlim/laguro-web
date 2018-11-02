@@ -1,33 +1,49 @@
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
 import queryString from 'query-string';
 
 import LinkCard from '../LinkCard';
 import SearchPagination from '../SearchPagination';
 import history from '../../../history';
-import { Flex, Text, Box } from '../../../components';
+import { Flex, Text, Box, Grid, Responsive, Button } from '../../../components';
 import NoSearchResults from '../NoSearchResults';
 import { DENTISTS, OFFICES } from '../../../util/strings';
 
-const StyledSearchResultsContainer = styled(Flex)`
-    width: 100%;
-    flex-wrap: wrap;
-    flex: 1;
-    align-content: start;
-`;
+const { Desktop, TabletMobile } = Responsive;
+
+const ITEMS_COUNT = 8;
 
 class SearchResultsList extends PureComponent {
     constructor(props) {
         super(props);
 
+        this.urlParams = queryString.parse(history.location.search);
         this.state = {
-            urlParams: queryString.parse(history.location.search),
+            urlParams: this.urlParams,
+            limit: ITEMS_COUNT,
         };
+    }
+
+    componentDidMount() {
         history.listen(location => {
-            const urlParams = queryString.parse(location.search);
-            this.setState({ urlParams });
+            this.urlParams = queryString.parse(location.search);
+            this.setState({ urlParams: this.urlParams });
         });
     }
+
+    showMore = () => {
+        const limit = this.state.limit + ITEMS_COUNT;
+
+        this.setState({ limit });
+
+        const search = {
+            ...this.urlParams,
+            limit,
+        };
+
+        history.push({
+            search: queryString.stringify(search),
+        });
+    };
 
     render() {
         const { data, total, title } = this.props;
@@ -35,10 +51,10 @@ class SearchResultsList extends PureComponent {
         const type = title === 'Office Results' ? OFFICES : DENTISTS;
 
         return (
-            <Flex width="55%" flexDirection="column">
+            <Flex flexDirection="column">
                 {data.length > 0 ? (
                     <Text
-                        fontSize={5}
+                        fontSize={[1, '', 5]}
                         color="text.black"
                         mb={10}
                         lineHeight="40px"
@@ -53,23 +69,36 @@ class SearchResultsList extends PureComponent {
                         type={type}
                     />
                 )}
-                <StyledSearchResultsContainer>
+                <Grid
+                    gridColumnGap="17px"
+                    gridRowGap="20px"
+                    gridTemplateColumns={['1fr 1fr', '', '1fr 1fr 1fr']}
+                >
                     {data.length
                         ? data.map(item => (
-                              <Box
-                                  key={item.url}
-                                  width="186px"
-                                  mr="24px"
-                                  mb="22px"
-                              >
+                              <Box key={item.url} width="100%">
                                   <LinkCard {...item} />
                               </Box>
                           ))
                         : null}
-                </StyledSearchResultsContainer>
-                <Flex justifyContent="flex-end">
-                    {total ? <SearchPagination total={total} /> : null}
-                </Flex>
+                </Grid>
+
+                {total > ITEMS_COUNT &&
+                !(this.state.urlParams.limit >= total) ? (
+                    <TabletMobile>
+                        <Button mt={20} mb={45} onClick={this.showMore}>
+                            Show more
+                        </Button>
+                    </TabletMobile>
+                ) : null}
+
+                <Desktop>
+                    <Flex justifyContent="flex-end" mb="100px">
+                        {total && total > 1 ? (
+                            <SearchPagination total={total} />
+                        ) : null}
+                    </Flex>
+                </Desktop>
             </Flex>
         );
     }

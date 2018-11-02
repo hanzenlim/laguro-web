@@ -11,7 +11,7 @@ const LocalLoginForm = props => {
             <FormItem
                 name="email"
                 label="email"
-                mb={14}
+                mb={[6, 14]}
                 rules={[
                     {
                         required: true,
@@ -27,7 +27,7 @@ const LocalLoginForm = props => {
             <FormItem
                 name="password"
                 label="password"
-                mb={14}
+                mb={[25, 14]}
                 rules={[
                     {
                         required: true,
@@ -36,7 +36,12 @@ const LocalLoginForm = props => {
                 ]}
                 input={<Input type="password" />}
             />
-            <SubmitButton px={30} buttonText="log in" loading={isSubmitting} />
+            <SubmitButton
+                width={['100%', 'auto']}
+                px={30}
+                buttonText="log in"
+                loading={isSubmitting}
+            />
         </Form>
     );
 };

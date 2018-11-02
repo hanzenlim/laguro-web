@@ -7,9 +7,15 @@ const ConsentCheckboxView = props => {
     const { dentistName, onClickCheckbox, hasConsented } = props;
 
     return (
-        <Box ml={36} my={16}>
+        <Box ml={[12, '', 36]} my={[24, '', 16]}>
             <Checkbox onChange={onClickCheckbox} checked={hasConsented}>
-                <Text is="span" color="text.black" fontSize={2} pl={10}>
+                <Text
+                    is="span"
+                    color="text.black"
+                    fontSize={[1, '', 2]}
+                    pl={10}
+                    letterSpacing={['-0.3px', '', '0px']}
+                >
                     I agree upon the above procedures to be performed by{' '}
                     <Text is="span" fontWeight="bold">
                         {dentistName}

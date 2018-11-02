@@ -3,47 +3,56 @@ import styled from 'styled-components';
 
 import { Box, Container, SlickCarousel, Flex, Text } from '../../../components';
 import CarouselLinkCard from '../../common/CarouselLinkCard';
-import { numMaxContainerWidth } from '../../../components/theme';
 
 const carouselSpacing = 15;
-const slidesToShow = 5;
-
-const slideWidth =
-    (Math.min(window.innerWidth * 0.8, numMaxContainerWidth) -
-        carouselSpacing * slidesToShow) /
-        slidesToShow +
-    carouselSpacing;
 
 const StyledCarousel = styled(SlickCarousel)`
-    && {
-        height: 275px;
+    && .slick-track {
+        margin-left: 0;
     }
 `;
 
 const FeaturedListView = props => (
-    <Flex mt={80} mb={75} flexDirection="column">
-        <Container>
+    <Flex mt={[28, 28, 80]} mb={[28, 28, 75]} flexDirection="column">
+        <Container pr={[0, 0, 25]}>
             {props.featuredDentists.length > 0 && (
                 <Box>
-                    <Text color="text.black50" fontSize={4} mb={36}>
+                    <Text
+                        color="text.black50"
+                        fontSize={[1, 1, 4]}
+                        mb={[10, 10, 36]}
+                        fontWeight={['bold', '', 'regular']}
+                    >
                         DENTISTS NEAR ME
                     </Text>
                     <StyledCarousel
-                        className="slider variable-width"
                         infinite={true}
                         centerPadding={0}
-                        variableWidth={true}
-                        height="200px"
+                        slidesToShow={5}
+                        adaptiveHeight
+                        responsive={[
+                            {
+                                breakpoint: 991,
+                                settings: {
+                                    slidesToShow: 3,
+                                    arrows: false,
+                                    draggable: true,
+                                    centerPadding: 50,
+                                },
+                            },
+                            {
+                                breakpoint: 767,
+                                settings: {
+                                    slidesToShow: 2,
+                                    arrows: false,
+                                    draggable: true,
+                                    centerPadding: 20,
+                                },
+                            },
+                        ]}
                     >
                         {props.featuredDentists.map((item, index) => (
-                            <Box
-                                style={{
-                                    width: slideWidth + 3, // 3 is for aligning the pictures to the content width
-                                }}
-                                px={carouselSpacing / 2}
-                                mb={90}
-                                key={index}
-                            >
+                            <Box key={index} pr={carouselSpacing}>
                                 <CarouselLinkCard
                                     height="100%"
                                     size="big"

@@ -19,6 +19,10 @@ const StyledItem = styled(Item)`
         font-weight: bold;
     }
 
+    &.ant-dropdown-menu-item-selected {
+        font-weight: ${props => props.theme.fontWeights.medium};
+    }
+
     &&&.ant-menu-item {
         transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1),
             border-color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1),

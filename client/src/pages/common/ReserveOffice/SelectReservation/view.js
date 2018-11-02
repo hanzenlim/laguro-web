@@ -69,10 +69,10 @@ const SelectReservationView = ({
     return (
         <Box mt={30}>
             <Text mb={8} lineHeight="40px" color="text.black">
-                <Text is="span" fontSize={5} fontWeight="bold">
+                <Text is="span" fontSize={[24, '', 5]} fontWeight="bold">
                     {getFormattedPriceRange(priceRange)}{' '}
                 </Text>
-                <Text is="span" fontSize={2} fontWeight="500">
+                <Text is="span" fontSize={[24, '', 2]} fontWeight="500">
                     per hour
                 </Text>
             </Text>
@@ -83,9 +83,13 @@ const SelectReservationView = ({
                     selectedHoursHandler
                 )}
             </Box>
-            <Flex mb={20}>
+            <Flex mb={20} justifyContent="space-between">
                 <Flex flexDirection="column" mr={14}>
-                    <Text fontSize={2} fontWeight="bold" color="text.black">
+                    <Text
+                        fontSize={[1, '', 2]}
+                        fontWeight="bold"
+                        color="text.black"
+                    >
                         Chairs needed
                     </Text>
                     <Text fontSize={1} color="text.black">
@@ -99,17 +103,17 @@ const SelectReservationView = ({
                 officeEquipment={officeEquipment}
                 onSelectEquipment={onSelectEquipment}
             />
-            <box mt={30}>
+            <Box mt={30}>
                 <SummaryCost
                     summaryData={summaryDetailsData}
                     totalPrice={totalPrice}
                 />
-            </box>
+            </Box>
             <Button
                 mt={36}
                 width="100%"
-                fontSize={3}
-                height={60}
+                fontSize={[1, '', 3]}
+                height={['50px', '', '60px']}
                 onClick={makeReservationHandler}
             >
                 book a chair

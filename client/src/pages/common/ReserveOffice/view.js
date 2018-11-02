@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Box, Text } from '../../../components';
+import { Box, Text, Responsive } from '../../../components';
 import SelectReservation from './SelectReservation';
 import FindAppointment from './FindAppointment';
 import Payment from '../Payment';
@@ -11,6 +11,8 @@ import {
     PAYMENT_VIEW,
     CONFIRMATION_VIEW,
 } from '../../../util/strings';
+
+const { Desktop, TabletMobile } = Responsive;
 
 const ReserveOfficeView = ({
     findAvailabilityHandler,
@@ -33,23 +35,24 @@ const ReserveOfficeView = ({
 }) => (
     <Box>
         <Box
-            boxShadow="1px 1px 7px 0 rgba(0, 0, 0, 0.15)"
-            border="1px solid"
-            borderColor="#dbdbdb"
-            pt={16}
-            pr={32}
-            pl={32}
+            boxShadow={['none', '', '1px 1px 7px 0 rgba(0, 0, 0, 0.15)']}
+            border={['none', '', '1px solid']}
+            borderColor={['', '', 'divider.gray']}
+            pt={[0, '', 16]}
+            pr={[0, '', 32]}
+            pl={[0, '', 32]}
             pb={32}
         >
             {currentDisplay !== CONFIRMATION_VIEW && (
                 <Text
-                    mb={15}
+                    mb={[10, '', 15]}
                     lineHeight="30px"
                     fontWeight="bold"
                     color="text.black"
-                    fontSize={3}
+                    fontSize={[1, '', 3]}
                 >
-                    Book a chair
+                    <Desktop>Book a chair</Desktop>
+                    <TabletMobile>Make an appointment</TabletMobile>
                 </Text>
             )}
             {currentDisplay === SELECT_APPOINTMENT_VIEW && (

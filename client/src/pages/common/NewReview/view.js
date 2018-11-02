@@ -1,11 +1,9 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { bool, func, string, shape, number } from 'prop-types';
 import { Alert } from 'antd';
-import defaultUserImage from '../../../../components/Image/defaultUserImage.svg';
-import officePlaceholder from '../../../../components/Image/office-placeholder.png';
-
+import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
+import officePlaceholder from '../../../components/Image/office-placeholder.png';
 import {
-    Modal,
     Text,
     TextArea,
     Box,
@@ -13,8 +11,11 @@ import {
     Rating,
     Image,
     Flex,
-} from '../../../../components';
-import { DENTIST } from '../../../../util/strings';
+    Responsive,
+} from '../../../components';
+import { DENTIST } from '../../../util/strings';
+
+const { TabletMobile, Desktop } = Responsive;
 
 const { FormItem, SubmitButton } = Form;
 
@@ -28,8 +29,8 @@ const DentistInfo = props => {
                 mx="auto"
                 mb={10}
                 borderRadius="50%"
-                height={73}
-                width={73}
+                height={[102, '', 73]}
+                width={[102, '', 73]}
                 objectFit="cover"
             />
             <Text
@@ -48,39 +49,58 @@ const DentistInfo = props => {
 
 const OfficeInfo = props => {
     const { imageUrl, name } = props;
-    return (
-        <Flex mt={24}>
-            <Box width="33.33%">
-                <Image
-                    src={imageUrl || officePlaceholder}
-                    height="100%"
-                    width="100%"
-                    objectFit="cover"
-                    alt="office-image"
-                    borderRadius="4px"
-                />
-            </Box>
-            <Box width="66.66%" pl={16}>
+    const contents = [
+        <Flex justifyContent="center" width={['100%', '', '33.33%']} m="auto">
+            <Image
+                src={imageUrl || officePlaceholder}
+                height={['102px', '', '100%']}
+                width={['127px', '', '100%']}
+                mb={[10, '', 0]}
+                objectFit="cover"
+                alt="office-image"
+                borderRadius="4px"
+            />
+        </Flex>,
+        <Flex
+            justifyContent={['center', '', 'flex-start']}
+            width={['100%', '', '66.66%']}
+            pl={[0, '', 16]}
+            m="auto"
+        >
+            <Box>
                 <Text
                     fontSize={0}
                     fontWeight="bold"
                     color="text.gray"
                     css="text-transform: uppercase;"
+                    textAlign={['center', '', 'inherit']}
                 >
-                    Dental Hospital
+                    Dental Office
                 </Text>
-                <Text fontSize={3} lineHeight={1.89}>
+                <Text
+                    fontSize={[4, '', 3]}
+                    lineHeight={1.89}
+                    textAlign={['center', '', 'inherit']}
+                >
                     {name}
                 </Text>
             </Box>
-        </Flex>
+        </Flex>,
+    ];
+    return (
+        <Fragment>
+            <Desktop>
+                <Flex mt={[0, '', 24]}>{contents}</Flex>
+            </Desktop>
+            <TabletMobile>
+                <Box mt={[0, '', 24]}>{contents}</Box>
+            </TabletMobile>
+        </Fragment>
     );
 };
 
-const NewReviewModal = props => {
+const NewReview = props => {
     const {
-        visible,
-        onCancel,
         setRating,
         info,
         onSuccess,
@@ -92,9 +112,15 @@ const NewReviewModal = props => {
     const isDentist = info.type === DENTIST;
 
     return (
-        <Modal visible={visible} onCancel={onCancel} destroyOnClose>
-            <Text textAlign="center" fontSize={4} lineHeight="1.7">
-                leave a review
+        <Fragment>
+            <Text
+                textAlign="center"
+                fontSize={[1, '', 4]}
+                fontWeight={['bold', '', 'regular']}
+                lineHeight={['30px', '', '1.7']}
+                mb={[8, '', 0]}
+            >
+                Leave a review
             </Text>
             {isDentist && (
                 <DentistInfo
@@ -108,20 +134,24 @@ const NewReviewModal = props => {
             )}
             <Box textAlign="center">
                 <Rating
-                    my={20}
+                    mt={[0, '', 20]}
+                    mb={[10, '', 20]}
                     size="28px"
                     onChange={setRating}
                     allowHalf={false}
                     value={rating}
                 />
             </Box>
-            <Text fontSize={3}>how was your experience with {info.name}?</Text>
+            <Text fontSize={[2, '', 3]} textAlign={['center', '', 'left']}>
+                how was your experience with {info.name}?
+            </Text>
             <Box mt={10}>
                 <Form layout="vertical" onSuccess={onSuccess}>
                     <FormItem name="text" input={<TextArea />} />
                     <SubmitButton
                         px={14}
-                        width="188px"
+                        mb={[10, '', 0]}
+                        width={['100%', '', '188px']}
                         textAlign="right"
                         buttonText="Submit"
                         disabled={rating === 0 || mutationLoading}
@@ -130,17 +160,17 @@ const NewReviewModal = props => {
                 </Form>
                 {error && <Alert message={error} type="error" />}
             </Box>
-        </Modal>
+        </Fragment>
     );
 };
 
-NewReviewModal.defaultProps = {
+NewReview.defaultProps = {
     onSuccess: () => {},
     onCancel: () => {},
     setRating: () => {},
 };
 
-NewReviewModal.propTypes = {
+NewReview.propTypes = {
     info: shape({
         type: string.isRequired,
         name: string.isRequired,
@@ -156,4 +186,4 @@ NewReviewModal.propTypes = {
     mutationLoading: bool,
 };
 
-export default NewReviewModal;
+export default NewReview;

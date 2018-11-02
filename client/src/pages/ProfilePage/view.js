@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
 import queryString from 'query-string';
+import { Dropdown } from 'antd';
 import history from '../../history';
-
-import { Box, Container, Text } from '../../components/';
+import { Box, Container, Icon, Text, Responsive } from '../../components/';
+import { ContainerPaddingInPixels } from '../../components/Container';
 import UpdateProfileForm from '../../pages/common/Forms/UpdateProfileForm';
 import Menu from '../common/Menu';
 import DentistDetails from '../common/DentistDetails';
@@ -33,10 +34,16 @@ import {
     MY_PATIENTS,
     PROCEDURES_CONSENT,
 } from '../../util/strings';
+import theme from '../../components/theme';
+import { HEADER_HEIGHT } from '../common/Header/view';
+
+const { TabletMobile, Desktop } = Responsive;
 
 const contentWidth = Math.min(window.innerWidth * 0.8, 1050);
 const menuColumnWidth = contentWidth * 0.28;
 const contentColumnWidth = contentWidth * 0.6;
+const DROPDOWN_TRIGGER_HEIGHT = 50;
+const DROPDOWN_MENU_STARTING_POINT = DROPDOWN_TRIGGER_HEIGHT + HEADER_HEIGHT;
 
 const Grid = styled(Box)`
     display: grid;
@@ -76,20 +83,43 @@ const MenuTitle = styled(Menu.SubMenu)`
 `;
 
 const StyledPreviewMenuItem = styled(Menu.Item)`
-    ${`.ant-menu`} & {
-        position: relative;
+    @media (min-width: 992px) {
+        ${`.ant-menu`} & {
+            position: relative;
+        }
+        && {
+            position: relative;
+            left: -15px;
+
+            div {
+                font-size: 20px;
+            }
+
+            i {
+                display: none;
+            }
+        }
     }
+`;
 
-    && {
-        position: relative;
-        left: -15px;
-
-        div {
-            font-size: 20px;
+const StyledDropContainer = styled.div`
+    @media (max-width: 991px) {
+        .ant-dropdown {
+            height: calc(100vh - ${DROPDOWN_MENU_STARTING_POINT}px);
+            overflow-y: auto;
+            background-color: ${theme.colors.background.lightGray};
+            top: ${DROPDOWN_MENU_STARTING_POINT}px !important;
+            left: 0 !important;
+            right: 0 !important;
         }
 
-        i {
-            display: none;
+        & .ant-dropdown-menu {
+            padding: 0;
+        }
+
+        && .ant-dropdown-menu-item {
+            padding: 0 ${ContainerPaddingInPixels}px;
+            border-top: solid 1px #e5e5e5;
         }
     }
 `;
@@ -102,6 +132,20 @@ class ProfileView extends Component {
 
         this.state = {
             panel: params.selectedTab || MY_PROFILE,
+        };
+
+        this.keyTextMap = {
+            [MY_PROFILE]: 'My Account',
+            [DENTIST_PROFILE]: 'My Profile',
+            [MY_PATIENTS]: 'My Patients',
+            [MY_DOCUMENTS]: 'My Documents',
+            [MY_APPOINTMENTS]: 'My Appointments',
+            [MY_LISTINGS]: 'My Listings',
+            [MY_BOOKINGS]: 'My Bookings',
+            [PAYMENTS]: 'Payment History',
+            [BALANCE]: 'Laguro Balance',
+            [PUBLIC_PROFILE]: 'Preview Public Profile',
+            [PROCEDURES_CONSENT]: 'Procedure Consent',
         };
     }
 
@@ -174,145 +218,189 @@ class ProfileView extends Component {
         return '';
     };
 
+    renderMenu = () => {
+        const { isDentist, isHost } = this.props;
+        const { panel } = this.state;
+        return (
+            <Menu
+                selectedKeys={[panel]}
+                defaultSelectedKeys={[panel]}
+                onClick={this.handleClick}
+            >
+                <Desktop>
+                    <MenuTitle title="My Page" />
+                </Desktop>
+
+                <StyledMenuItem key={MY_PROFILE}>
+                    <Text
+                        fontSize={[1, '', 4]}
+                        color="inherit"
+                        lineHeight={['48px', '', '40px']}
+                    >
+                        {this.keyTextMap[MY_PROFILE]}
+                    </Text>
+                </StyledMenuItem>
+                {(isDentist || isHost) && (
+                    <StyledMenuItem key={DENTIST_PROFILE}>
+                        <Text
+                            fontSize={[1, '', 4]}
+                            color="inherit"
+                            lineHeight={['48px', '', '40px']}
+                        >
+                            {this.keyTextMap[DENTIST_PROFILE]}
+                        </Text>
+                    </StyledMenuItem>
+                )}
+                {isDentist && (
+                    <StyledMenuItem key={MY_PATIENTS}>
+                        <Text
+                            fontSize={[1, '', 4]}
+                            color="inherit"
+                            lineHeight={['48px', '', '40px']}
+                        >
+                            {this.keyTextMap[MY_PATIENTS]}
+                        </Text>
+                    </StyledMenuItem>
+                )}
+                <StyledMenuItem key={MY_DOCUMENTS}>
+                    <Text
+                        fontSize={[1, '', 4]}
+                        color="inherit"
+                        lineHeight={['48px', '', '40px']}
+                    >
+                        {this.keyTextMap[MY_DOCUMENTS]}
+                    </Text>
+                </StyledMenuItem>
+
+                <StyledMenuItem key={MY_APPOINTMENTS}>
+                    <Text
+                        fontSize={[1, '', 4]}
+                        color="inherit"
+                        lineHeight={['48px', '', '40px']}
+                    >
+                        {this.keyTextMap[MY_APPOINTMENTS]}
+                    </Text>
+                </StyledMenuItem>
+
+                {isHost && (
+                    <StyledMenuItem key={MY_LISTINGS}>
+                        <Text
+                            fontSize={[1, '', 4]}
+                            color="inherit"
+                            lineHeight={['48px', '', '40px']}
+                        >
+                            {this.keyTextMap[MY_LISTINGS]}
+                        </Text>
+                    </StyledMenuItem>
+                )}
+                {isDentist && (
+                    <StyledMenuItem key={MY_BOOKINGS}>
+                        <Text
+                            fontSize={[1, '', 4]}
+                            color="inherit"
+                            lineHeight={['48px', '', '40px']}
+                        >
+                            {this.keyTextMap[MY_BOOKINGS]}
+                        </Text>
+                    </StyledMenuItem>
+                )}
+                <Desktop>
+                    <Box mt={40} />
+                </Desktop>
+                <StyledMenuItem key={PAYMENTS}>
+                    <Text
+                        fontSize={[1, '', 4]}
+                        color="inherit"
+                        lineHeight={['48px', '', '40px']}
+                    >
+                        {this.keyTextMap[PAYMENTS]}
+                    </Text>
+                </StyledMenuItem>
+
+                {(isHost || isDentist) && (
+                    <StyledMenuItem key={BALANCE}>
+                        <Text
+                            fontSize={[1, '', 4]}
+                            color="inherit"
+                            lineHeight={['48px', '', '40px']}
+                        >
+                            {this.keyTextMap[BALANCE]}
+                        </Text>
+                    </StyledMenuItem>
+                )}
+                <Desktop>
+                    <Box mt={40} />
+                </Desktop>
+                {isDentist &&
+                    !isHost && (
+                        <StyledPreviewMenuItem key={PUBLIC_PROFILE}>
+                            <Text
+                                fontSize={[1, '', 4]}
+                                color="inherit"
+                                lineHeight={['48px', '', '40px']}
+                            >
+                                {this.keyTextMap[PUBLIC_PROFILE]}
+                            </Text>
+                        </StyledPreviewMenuItem>
+                    )}
+                <Desktop>
+                    <Box mt={40} />
+                </Desktop>
+                <StyledMenuItem key={PROCEDURES_CONSENT}>
+                    <Text
+                        fontSize={[1, '', 4]}
+                        color="inherit"
+                        lineHeight={['48px', '', '40px']}
+                    >
+                        {this.keyTextMap[PROCEDURES_CONSENT]}
+                    </Text>
+                </StyledMenuItem>
+            </Menu>
+        );
+    };
+
     render() {
         const { panel } = this.state;
-        const { isDentist, isHost } = this.props;
 
         return (
-            <Container maxWidth="1050px">
-                <Grid mt={70} pb={50}>
-                    <Box>
-                        <Menu
-                            selectedKeys={[panel]}
-                            defaultSelectedKeys={[panel]}
-                            onClick={this.handleClick}
-                        >
-                            <MenuTitle title="My Page" />
-
-                            <StyledMenuItem key={MY_PROFILE}>
+            <Fragment>
+                <TabletMobile>
+                    <Dropdown
+                        overlay={this.renderMenu()}
+                        placement={'bottomRight'}
+                        trigger={['click']}
+                        getPopupContainer={() =>
+                            document.getElementById('profileDropdownContainer')
+                        }
+                    >
+                        <Container>
+                            <a className="ant-dropdown-link">
                                 <Text
-                                    fontSize={4}
-                                    color="inherit"
-                                    lineHeight="40px"
+                                    is="span"
+                                    fontSize={1}
+                                    mr={6}
+                                    fontWeight="medium"
+                                    lineHeight="50px"
+                                    color="text.blue"
                                 >
-                                    My Account
+                                    {this.keyTextMap[panel]}
                                 </Text>
-                            </StyledMenuItem>
-                            {(isDentist || isHost) && (
-                                <StyledMenuItem key={DENTIST_PROFILE}>
-                                    <Text
-                                        fontSize={4}
-                                        color="inherit"
-                                        lineHeight="40px"
-                                    >
-                                        My Profile
-                                    </Text>
-                                </StyledMenuItem>
-                            )}
-                            {isDentist && (
-                                <StyledMenuItem key={MY_PATIENTS}>
-                                    <Text
-                                        fontSize={4}
-                                        color="inherit"
-                                        lineHeight="40px"
-                                    >
-                                        My Patients
-                                    </Text>
-                                </StyledMenuItem>
-                            )}
-                            <StyledMenuItem key={MY_DOCUMENTS}>
-                                <Text
-                                    fontSize={4}
-                                    color="inherit"
-                                    lineHeight="40px"
-                                >
-                                    My Documents
-                                </Text>
-                            </StyledMenuItem>
-
-                            <StyledMenuItem key={MY_APPOINTMENTS}>
-                                <Text
-                                    fontSize={4}
-                                    color="inherit"
-                                    lineHeight="40px"
-                                >
-                                    My Appointments
-                                </Text>
-                            </StyledMenuItem>
-
-                            {isHost && (
-                                <StyledMenuItem key={MY_LISTINGS}>
-                                    <Text
-                                        fontSize={4}
-                                        color="inherit"
-                                        lineHeight="40px"
-                                    >
-                                        My Listings
-                                    </Text>
-                                </StyledMenuItem>
-                            )}
-                            {isDentist && (
-                                <StyledMenuItem key={MY_BOOKINGS}>
-                                    <Text
-                                        fontSize={4}
-                                        color="inherit"
-                                        lineHeight="40px"
-                                    >
-                                        My Bookings
-                                    </Text>
-                                </StyledMenuItem>
-                            )}
-                            <Box mt={40} />
-                            <StyledMenuItem key={PAYMENTS}>
-                                <Text
-                                    fontSize={4}
-                                    color="inherit"
-                                    lineHeight="40px"
-                                >
-                                    Payment History
-                                </Text>
-                            </StyledMenuItem>
-
-                            {(isHost || isDentist) && (
-                                <StyledMenuItem key={BALANCE}>
-                                    <Text
-                                        fontSize={4}
-                                        color="inherit"
-                                        lineHeight="40px"
-                                    >
-                                        Laguro Balance
-                                    </Text>
-                                </StyledMenuItem>
-                            )}
-                            <Box mt={40} />
-                            {isDentist &&
-                                !isHost && (
-                                    <StyledPreviewMenuItem key={PUBLIC_PROFILE}>
-                                        <Text
-                                            fontSize={4}
-                                            color="inherit"
-                                            lineHeight="40px"
-                                        >
-                                            Preview Public Profile
-                                        </Text>
-                                    </StyledPreviewMenuItem>
-                                )}
-
-                            <Box mt={40} />
-                            <StyledMenuItem key={PROCEDURES_CONSENT}>
-                                <Text
-                                    fontSize={4}
-                                    color="inherit"
-                                    lineHeight="40px"
-                                >
-                                    Procedure Consent
-                                </Text>
-                            </StyledMenuItem>
-                        </Menu>
-                    </Box>
+                                <Icon color="text.blue" type="down" />
+                            </a>
+                        </Container>
+                    </Dropdown>
+                    <StyledDropContainer id="profileDropdownContainer" />
                     {this.renderPanel(panel)}
-                </Grid>
-            </Container>
+                </TabletMobile>
+                <Desktop>
+                    <Container maxWidth="1050px">
+                        <Grid mt={70} pb={50}>
+                            {this.renderMenu()}
+                            {this.renderPanel(panel)}
+                        </Grid>
+                    </Container>
+                </Desktop>
+            </Fragment>
         );
     }
 }

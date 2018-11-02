@@ -1,16 +1,22 @@
 import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import { DatePicker as AntdDatePicker } from 'antd';
-import { Flex, Text, Box, Icon } from '../../components';
+import { Flex, Text, Box, Icon, Grid } from '../../components';
+import Responsive, { withScreenSizes } from '../../components/Responsive';
+
+const { Desktop, TabletMobile } = Responsive;
 
 const StyledContainer = styled.div`
     position: relative;
     width: ${props => (props.width ? props.width : '455px')};
-    height: 50px;
     border-radius: 2px;
     background-color: ${props => props.theme.colors.background.white};
     border: 1px solid ${props => props.theme.colors.divider.gray};
+    height: 100px;
     cursor: pointer;
+    @media (min-width: ${props => props.theme.breakpoints[1]}) {
+        height: 50px;
+    }
 
     && {
         a {
@@ -51,17 +57,58 @@ class RangePicker extends PureComponent {
 
         this.state = {
             dateString: '',
-            open: false,
+            startValue: null,
+            endValue: null,
+            startOpen: false,
+            endOpen: false,
         };
     }
 
-    toggleDatePicker = e => {
+    disabledStartDate = startValue => {
+        const { endValue } = this.state;
+        if (!startValue || !endValue) {
+            return false;
+        }
+        return startValue.valueOf() > endValue.valueOf();
+    };
+
+    disabledEndDate = endValue => {
+        const { startValue } = this.state;
+        if (!endValue || !startValue) {
+            return false;
+        }
+        return endValue.valueOf() <= startValue.valueOf();
+    };
+
+    onStartChange = value => {
+        this.setState({ startValue: value });
+    };
+
+    onEndChange = value => {
+        this.setState({ endValue: value });
+
+        if (this.props.onChange) {
+            this.props.onChange([this.state.startValue, value]);
+        }
+    };
+
+    handleStartOpenChange = open => {
+        if (!open) {
+            this.setState({ startOpen: false, endOpen: true });
+        }
+    };
+
+    handleEndOpenChange = open => {
+        this.setState({ endOpen: open });
+    };
+
+    toggleStartDatePicker = e => {
         e.stopPropagation();
-        this.setState({ open: true });
+        this.setState({ startOpen: true });
     };
 
     onSelectDate = (date, dateString) => {
-        this.setState({ dateString, open: false });
+        this.setState({ dateString, startOpen: false });
 
         if (this.props.onChange) {
             this.props.onChange(date);
@@ -71,11 +118,25 @@ class RangePicker extends PureComponent {
     getCalendarContainer = () => this.refs.datePickerContainer;
 
     render() {
-        const { value, dateSize, ...rest } = this.props;
+        const { value, dateSize, desktopOnly, ...rest } = this.props;
+        const { startValue, endValue, startOpen, endOpen } = this.state;
+
+        const startValueString = desktopOnly
+            ? (value && value[0].format('ddd M/DD')) ||
+              this.state.dateString[0] ||
+              'Start date'
+            : (startValue && startValue.format('ddd M/DD')) || 'Start date';
+
+        const endValueString = desktopOnly
+            ? (value && value[1].format('ddd M/DD')) ||
+              this.state.dateString[1] ||
+              'End date'
+            : (endValue && endValue.format('ddd M/DD')) || 'End date';
 
         return (
             <StyledContainer {...rest}>
-                <div ref="datePickerContainer">
+                <div ref="datePickerContainer" />
+                <Desktop>
                     <Box
                         position="absolute"
                         width="100%"
@@ -87,62 +148,99 @@ class RangePicker extends PureComponent {
                             {...rest}
                             format={'ddd M/D'}
                             getCalendarContainer={this.getCalendarContainer}
-                            open={this.state.open}
+                            open={startOpen}
                             onChange={this.onSelectDate}
                         />
                     </Box>
-                    <Flex
-                        width="100%"
-                        px={30}
-                        py={12}
+                </Desktop>
+                <TabletMobile>
+                    <Box
                         position="absolute"
+                        width="100%"
+                        height="100%"
+                        opacity="0"
+                    >
+                        <AntdDatePicker
+                            getCalendarContainer={this.getCalendarContainer}
+                            disabledDate={this.disabledStartDate}
+                            format="ddd M/DD"
+                            value={startValue}
+                            onChange={this.onStartChange}
+                            open={startOpen}
+                            onOpenChange={this.handleStartOpenChange}
+                        />
+                        <AntdDatePicker
+                            getCalendarContainer={this.getCalendarContainer}
+                            disabledDate={this.disabledEndDate}
+                            format="ddd M/DD"
+                            value={endValue}
+                            onChange={this.onEndChange}
+                            open={endOpen}
+                            onOpenChange={this.handleEndOpenChange}
+                        />
+                    </Box>
+                </TabletMobile>
+                <Box position="absolute" width="100%" height={[100, '', 50]}>
+                    <Grid
+                        width="100%"
+                        height={[100, '', 50]}
+                        gridTemplateRows={['auto auto', '', 'auto']}
+                        gridTemplateColumns={[
+                            '100%',
+                            '',
+                            `1fr ${rightArrowWidth}px 1fr`,
+                        ]}
                         alignItems="center"
-                        onClick={this.toggleDatePicker}
+                        onClick={this.toggleStartDatePicker}
                     >
                         <Flex
                             justifyContent="space-between"
-                            width={`calc((100% - ${rightArrowWidth}px) / 2)`}
+                            width="100%"
+                            height="50px"
+                            px={30}
+                            py={12}
+                            borderBottom={['1px solid', '', 'none']}
+                            borderColor="divider.gray"
                         >
                             <Text
-                                fontSize={dateSize || 3}
+                                fontSize={[0, '', dateSize || 3]}
                                 fontWeight="regular"
                                 color="text.black50"
                                 lineHeight="26px"
                                 letterSpacing="-0.6px"
                             >
-                                {(value && value[0].format('ddd M/DD')) ||
-                                    this.state.dateString[0] ||
-                                    'Start date'}
+                                {startValueString}
                             </Text>
                             <Icon
                                 type="calendar"
                                 color="text.black50"
                                 fontSize="26px"
-                                mr={30}
                             />
                         </Flex>
 
                         {/* width is 1.25 * rightArrowWidth */}
-                        <Icon
-                            type="rightForwardArrow"
-                            height={`${rightArrowHeight}px`}
-                        />
+                        <Desktop>
+                            <Icon
+                                type="rightForwardArrow"
+                                height={`${rightArrowHeight}px`}
+                            />
+                        </Desktop>
 
                         <Flex
                             justifyContent="space-between"
-                            width={`calc((100% - ${rightArrowWidth}px) / 2)`}
+                            width="100%"
+                            height="50px"
+                            px={30}
+                            py={12}
                         >
                             <Text
-                                fontSize={dateSize || 3}
+                                fontSize={[0, '', dateSize || 3]}
                                 fontWeight="regular"
                                 color="text.black50"
-                                ml={30}
                                 lineHeight="26px"
                                 letterSpacing="-0.6px"
                             >
-                                {(value && value[1].format('ddd M/DD')) ||
-                                    this.state.dateString[1] ||
-                                    'End date'}
+                                {endValueString}
                             </Text>
                             <Icon
                                 type="calendar"
@@ -150,11 +248,11 @@ class RangePicker extends PureComponent {
                                 fontSize="26px"
                             />
                         </Flex>
-                    </Flex>
-                </div>
+                    </Grid>
+                </Box>
             </StyledContainer>
         );
     }
 }
 
-export default RangePicker;
+export default withScreenSizes(RangePicker);

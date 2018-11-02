@@ -3,16 +3,16 @@ import { withRouter } from 'react-router-dom';
 import { graphql, compose, withApollo } from 'react-apollo';
 import get from 'lodash/get';
 
-import NewReviewModalView from './view';
+import NewReviewView from './view';
 
 import { GET_REVIEWER_ID, CREATE_REVIEW } from './queries';
 import {
     GET_DENTIST_REVIEWS,
     GET_OFFICE_REVIEWS,
-} from '../../ReviewContainer/queries';
-import { DENTIST } from '../../../../util/strings';
+} from '../ReviewContainer/queries';
+import { DENTIST } from '../../../util/strings';
 
-class NewReviewContainer extends PureComponent {
+class NewReview extends PureComponent {
     state = {
         rating: 0,
         error: '',
@@ -76,7 +76,7 @@ class NewReviewContainer extends PureComponent {
             return null;
         }
         return (
-            <NewReviewModalView
+            <NewReviewView
                 {...this.props}
                 rating={this.state.rating}
                 setRating={this.setRating}
@@ -94,4 +94,4 @@ export default compose(
     withApollo,
     graphql(GET_REVIEWER_ID),
     graphql(CREATE_REVIEW)
-)(NewReviewContainer);
+)(NewReview);

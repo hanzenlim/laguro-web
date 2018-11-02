@@ -24,7 +24,7 @@ const CarouselLinkCard = props => {
 
     return (
         <Link type="ghost" to={url}>
-            <Box minWidth="186px" width="100%" height="100%">
+            <Box maxWidth={[130, 160, 230]} width="100%" height="100%">
                 <Box borderRadius="4px" height="100%" position="relative">
                     <Flex
                         height="100%"
@@ -49,14 +49,18 @@ const CarouselLinkCard = props => {
                     {specialty &&
                         name && (
                             <Box
-                                pl={18}
+                                pl={[0, 0, 18]}
                                 pt={10}
                                 width="100%"
                                 minHeight="70px"
                                 borderRadius="4px"
-                                position="absolute"
+                                position={['static', '', 'absolute']}
                                 bottom="0"
-                                bg="rgba(0, 0, 0, 0.7)"
+                                bg={[
+                                    'background.transparent',
+                                    '',
+                                    'rgba(0, 0, 0, 0.7)',
+                                ]}
                             >
                                 <Text
                                     fontSize={0}
@@ -69,8 +73,8 @@ const CarouselLinkCard = props => {
                                     <Truncate lines={1}>{specialty}</Truncate>
                                 </Text>
                                 <Text
-                                    fontSize={3}
-                                    color="text.white"
+                                    fontSize={[1, 1, 3]}
+                                    color={['text.black', '', 'text.white']}
                                     lineHeight="1"
                                     letterSpacing="-0.5px"
                                     mb={4}
@@ -87,7 +91,7 @@ const CarouselLinkCard = props => {
                                         ml={6}
                                         fontSize={0}
                                         fontWeight="medium"
-                                        color="text.white"
+                                        color={['text.black', '', 'text.white']}
                                         lineHeight="1"
                                         letterSpacing="-0.6px"
                                     >

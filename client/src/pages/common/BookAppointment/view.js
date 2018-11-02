@@ -52,13 +52,13 @@ const BookAppointmentView = props => {
                             lineHeight="30px"
                             fontWeight="bold"
                             color="text.black"
-                            fontSize={4}
+                            fontSize={[1, '', 4]}
                         >
                             Payment Summary
                         </Text>
                         <Text
                             mb={40}
-                            fontSize={1}
+                            fontSize={[0, '', 1]}
                             letterSpacing="0.4px"
                             color="text.black"
                         >
@@ -66,10 +66,10 @@ const BookAppointmentView = props => {
                             refunded after your appointment.
                         </Text>
                         <Flex mb={10} justifyContent="space-between">
-                            <Text fontSize={2} color="text.black">
+                            <Text fontSize={[0, '', 2]} color="text.black">
                                 Service fee
                             </Text>
-                            <Text fontSize={2} color="text.black">
+                            <Text fontSize={[0, '', 2]} color="text.black">
                                 $20.00
                             </Text>
                         </Flex>
@@ -79,10 +79,18 @@ const BookAppointmentView = props => {
                             mb={10}
                         />
                         <Flex justifyContent="space-between">
-                            <Text fontSize={3} color="text.blue">
+                            <Text
+                                fontSize={[0, '', 3]}
+                                fontWeight={['bold', '', 'regular']}
+                                color="text.blue"
+                            >
                                 Total
                             </Text>
-                            <Text fontSize={3} color="text.blue">
+                            <Text
+                                fontSize={[0, '', 3]}
+                                fontWeight={['bold', '', 'regular']}
+                                color="text.blue"
+                            >
                                 $20.00
                             </Text>
                         </Flex>

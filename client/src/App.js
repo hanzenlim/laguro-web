@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Query } from 'react-apollo';
 import { gql } from 'apollo-boost';
-import { message } from 'antd';
 import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import Loadable from 'react-loadable';
@@ -73,6 +72,15 @@ const LoginPage = Loadable({
     loading: () => null,
 });
 
+const registerPage = Loadable({
+    loader: () => import('./pages/RegisterPage'),
+    loading: () => null,
+});
+const forgotPasswordPage = Loadable({
+    loader: () => import('./pages/ForgotPasswordPage'),
+    loading: () => null,
+});
+
 const AboutPage = Loadable({
     loader: () => import('./pages/AboutPage'),
     loading: () => null,
@@ -90,6 +98,11 @@ const TermsPage = Loadable({
 
 const PrivacyPage = Loadable({
     loader: () => import('./pages/PrivacyPage'),
+    loading: () => null,
+});
+
+const NewReviewPage = Loadable({
+    loader: () => import('./pages/NewReviewPage'),
     loading: () => null,
 });
 
@@ -118,7 +131,11 @@ const PrivateRoute = ({
                     to={{
                         pathname: '/login',
                         search: `?redirectTo=${props.location.pathname}`,
-                        state: { from: props.location },
+                        state: {
+                            from: props.location,
+                            message:
+                                'You need to login first before you can view this page',
+                        },
                     }}
                 />
             )
@@ -128,12 +145,6 @@ const PrivateRoute = ({
 
 class App extends Component {
     render() {
-        if (window.screen.width < 500) {
-            message.info(
-                "Currently, Laguro is not optimized for mobile browsers, even though you may still access all of Laguro's functionalities. Please use a desktop or laptop computer.",
-                7
-            );
-        }
         return (
             <ThemeProvider theme={theme}>
                 <Router history={history}>
@@ -147,6 +158,14 @@ class App extends Component {
                                             <Route
                                                 path="/login"
                                                 component={LoginPage}
+                                            />
+                                            <Route
+                                                path="/register"
+                                                component={registerPage}
+                                            />
+                                            <Route
+                                                path="/forgot-password"
+                                                component={forgotPasswordPage}
                                             />
                                             <PrivateRoute
                                                 path="/host-onboarding/:step"
@@ -180,6 +199,10 @@ class App extends Component {
                                             <Route
                                                 path="/office/:id"
                                                 component={OfficeDetailsPage}
+                                            />
+                                            <Route
+                                                path="/review/:id"
+                                                component={NewReviewPage}
                                             />
                                             <Route
                                                 path="/reset-password"

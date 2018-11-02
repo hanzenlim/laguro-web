@@ -2,8 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { Flex, Button, DatePicker, Box, Icon, Text } from '../../../components';
+import {
+    Flex,
+    Button,
+    DatePicker,
+    Box,
+    Icon,
+    Text,
+    Responsive,
+} from '../../../components';
 import LocationFilter from '../LocationFilter';
+
+const { Desktop } = Responsive;
 
 const StyledButton = styled(Button)`
     && {
@@ -25,15 +35,21 @@ const SearchBox = props => {
         onKeyPress,
     } = props;
 
+    const isLarge = size === 'large';
     return (
         <Flex
-            width={size === 'large' ? '100%' : '53%'}
+            width={['100%', '', isLarge ? '100%' : '53%']}
             justifyContent="center"
             onKeyPress={onKeyPress}
+            flexDirection={['column', '', 'row']}
         >
-            <Box width={size === 'large' ? '56%' : '62%'} mr={10}>
+            <Box
+                width={['100%', '', isLarge ? '56%' : '62%']}
+                mr={[0, '', 10]}
+                mb={[7, '', 0]}
+            >
                 <LocationFilter
-                    height={60}
+                    height={isLarge ? [50, 50, 60] : 60}
                     initialValue={initialLocationFilterValue}
                     placeholder={locationPlaceholder}
                     onTextChange={onTextChange}
@@ -42,35 +58,51 @@ const SearchBox = props => {
                     withDentists={true}
                 />
             </Box>
-            <Box width={size === 'large' ? '27%' : '26%'} mr={10}>
+            <Box
+                width={['100%', '', isLarge ? '27%' : '26%']}
+                mr={[0, '', 10]}
+                mb={[7, '', 0]}
+            >
                 <DatePicker
                     initialValue={initialDateFilterValue}
                     onDateChange={onDateFilterChange}
                     width="100%"
-                    format={size === 'large' ? 'ddd MM/DD' : 'MM/DD'}
+                    height={isLarge ? [50, 50, 60] : 60}
+                    format={isLarge ? 'ddd MM/DD' : 'MM/DD'}
                 />
             </Box>
             <StyledButton
                 height="60px"
-                width={size === 'large' ? '210px' : '60px'}
+                width={['100%', '', isLarge ? '210px' : '60px']}
                 type="default"
                 bg="background.blue"
                 onClick={onSubmit}
-                pl={size === 'large' ? 40 : 10}
+                pl={[0, '', isLarge ? 40 : 10]}
             >
                 <Flex
                     alignItems="center"
-                    justifyContent={size === 'large' ? 'flex-start' : 'center'}
+                    justifyContent={[
+                        'center',
+                        '',
+                        isLarge ? 'flex-start' : 'center',
+                    ]}
                 >
-                    <Icon
-                        fontSize={3}
-                        style={{ fontWeight: 'bold' }}
-                        color="white"
-                        type="search"
-                        mr={size === 'large' ? 15 : 0}
-                    />
-                    {size === 'large' && (
-                        <Text fontSize={3} fontWeight="bold" color="white">
+                    <Desktop>
+                        <Icon
+                            fontSize={3}
+                            style={{ fontWeight: 'bold' }}
+                            color="white"
+                            type="search"
+                            mr={isLarge ? 15 : 0}
+                        />
+                    </Desktop>
+
+                    {isLarge && (
+                        <Text
+                            fontSize={[1, '', 3]}
+                            fontWeight="bold"
+                            color="white"
+                        >
                             Search
                         </Text>
                     )}
