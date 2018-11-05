@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Container, Button, Box, Text } from '../../components';
+import { Container, Button, Box, Text, Responsive } from '../../components';
 import ProcedureSummary from '../common/ProcedureSummary';
 import PaymentConfirmation from '../common/PaymentConfirmation';
 import Payment from '../common/Payment';
 import ConsentCheckbox from './ConsentCheckbox';
 import { withScreenSizes } from '../../components/Responsive';
+
+const { TabletMobile, Desktop } = Responsive;
 
 const ConsentAndPaymentPageView = props => {
     const {
@@ -38,20 +40,30 @@ const ConsentAndPaymentPageView = props => {
         );
     }
 
-    return (
-        <Container>
-            <Box maxWidth={662} width="100%" my={[30, '', 140]} mx="auto">
-                <Box mb={[16, '', 30]}>
-                    <Text
-                        fontSize={[28, '', 30]}
-                        lineHeight={1}
-                        fontWeight="bold"
-                        letterSpacing={['-0.7px', '', '-0.6px']}
-                        color="text.gray"
-                        mb={[0, '', 20]}
-                    >
-                        Consent and Payment
-                    </Text>
+    const content = (
+        <Box maxWidth={662} width="100%" my={[30, '', 140]} mx="auto">
+            <Box mb={[16, '', 30]}>
+                <Text
+                    fontSize={[28, '', 30]}
+                    lineHeight={1}
+                    fontWeight="bold"
+                    letterSpacing={['-0.7px', '', '-0.6px']}
+                    color="text.gray"
+                    mb={[0, '', 20]}
+                >
+                    Consent and Payment
+                </Text>
+                <Text
+                    is="span"
+                    fontSize={[28, '', 30]}
+                    lineHeight={1}
+                    fontWeight="bold"
+                    letterSpacing="-0.6px"
+                    color="text.black"
+                >
+                    Review and pay for your procedure{' '}
+                </Text>
+                {tabletMobileOnly && (
                     <Text
                         is="span"
                         fontSize={[28, '', 30]}
@@ -60,65 +72,59 @@ const ConsentAndPaymentPageView = props => {
                         letterSpacing="-0.6px"
                         color="text.black"
                     >
-                        Review and pay for your procedure{' '}
+                        {!hasClickedNext ? '(1/2)' : '(2/2)'}
                     </Text>
-                    {tabletMobileOnly && (
-                        <Text
-                            is="span"
-                            fontSize={[28, '', 30]}
-                            lineHeight={1}
-                            fontWeight="bold"
-                            letterSpacing="-0.6px"
-                            color="text.black"
-                        >
-                            {!hasClickedNext ? '(1/2)' : '(2/2)'}
-                        </Text>
-                    )}
-                </Box>
+                )}
+            </Box>
 
-                {(!tabletMobileOnly ||
-                    (!hasClickedNext && tabletMobileOnly)) && (
-                    <Box mb={[28, '', 0]}>
-                        <ProcedureSummary
-                            patientProcedures={patientProcedures}
-                        />
-                        <ConsentCheckbox
-                            dentistId={patientProcedures[0].dentistId}
-                            onClickCheckbox={onClickCheckbox}
-                            hasConsented={hasConsented}
-                        />
-                    </Box>
+            {(!tabletMobileOnly || (!hasClickedNext && tabletMobileOnly)) && (
+                <Box mb={[28, '', 0]}>
+                    <ProcedureSummary patientProcedures={patientProcedures} />
+                    <ConsentCheckbox
+                        dentistId={patientProcedures[0].dentistId}
+                        onClickCheckbox={onClickCheckbox}
+                        hasConsented={hasConsented}
+                    />
+                </Box>
+            )}
+
+            {tabletMobileOnly &&
+                !hasClickedNext && (
+                    <Button
+                        width="100%"
+                        disabled={!hasConsented}
+                        onClick={onClickNext}
+                    >
+                        Next
+                    </Button>
                 )}
 
-                {tabletMobileOnly &&
-                    !hasClickedNext && (
-                        <Button
-                            width="100%"
-                            disabled={!hasConsented}
-                            onClick={onClickNext}
-                        >
-                            Next
-                        </Button>
-                    )}
+            {(tabletMobileOnly && hasClickedNext) ||
+            (!tabletMobileOnly && hasConsented) ? (
+                <Box
+                    px={[0, '', 38]}
+                    py={[0, '', 26]}
+                    boxShadow={['none', '', 0]}
+                >
+                    <Payment
+                        isSubmitting={isSubmitting}
+                        onSuccess={onPaymentSuccess}
+                        btnText="Submit"
+                        updateSubmittingState={updateSubmittingState}
+                        isButtonOutside={true}
+                    />
+                </Box>
+            ) : null}
+        </Box>
+    );
 
-                {(tabletMobileOnly && hasClickedNext) ||
-                (!tabletMobileOnly && hasConsented) ? (
-                    <Box
-                        px={[0, '', 38]}
-                        py={[0, '', 26]}
-                        boxShadow={['none', '', 0]}
-                    >
-                        <Payment
-                            isSubmitting={isSubmitting}
-                            onSuccess={onPaymentSuccess}
-                            btnText="Submit"
-                            updateSubmittingState={updateSubmittingState}
-                            isButtonOutside={true}
-                        />
-                    </Box>
-                ) : null}
-            </Box>
-        </Container>
+    return (
+        <Fragment>
+            <TabletMobile>
+                <Container>{content}</Container>
+            </TabletMobile>
+            <Desktop>{content}</Desktop>
+        </Fragment>
     );
 };
 
