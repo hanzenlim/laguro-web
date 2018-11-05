@@ -35,6 +35,7 @@ import WhiteDentistLogo from './WhiteDentistLogo';
 import DentistLogo from './DentistLogo';
 import MacaroniPattern from './MacaroniPattern';
 import Tooltip from './Tooltip';
+import Close from './Close';
 
 const Icon = props => {
     const { type, isButton, ...rest } = props;
@@ -85,6 +86,9 @@ const Icon = props => {
             break;
         case 'macaroniPattern':
             ReturnIcon = MacaroniPattern;
+            break;
+        case 'close':
+            ReturnIcon = Close;
             break;
         default:
             ReturnIcon = AntdIcon;

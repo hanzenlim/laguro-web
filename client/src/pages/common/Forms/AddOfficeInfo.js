@@ -14,10 +14,12 @@ import {
     Image,
     Input,
     Text,
+    Responsive,
 } from '../../../components';
 import LocationFilter from '../LocationFilter';
 import { EDIT_OFFICE_MODE } from '../../../util/strings';
 
+const { Desktop, TabletMobile } = Responsive;
 const { GridItem } = Grid;
 const { FormItem } = InnerForm;
 const maxImageNum = 5;
@@ -139,13 +141,22 @@ class AddOfficeInfo extends Component {
                         data-url={url}
                         onClick={this.removeImage}
                     >
-                        <Box bg="background.white" borderRadius="9px">
+                        <TabletMobile>
                             <Icon
-                                fontSize={[5, '', 3]}
+                                fontSize={5}
                                 color="icon.lightGray"
-                                type="close-circle"
+                                type="close"
                             />
-                        </Box>
+                        </TabletMobile>
+                        <Desktop>
+                            <Box bg="background.white" borderRadius="9px">
+                                <Icon
+                                    fontSize={3}
+                                    color="icon.lightGray"
+                                    type="close-circle"
+                                />
+                            </Box>
+                        </Desktop>
                     </Button>
                 </Box>
             ))
