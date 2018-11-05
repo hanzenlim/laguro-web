@@ -50,7 +50,9 @@ const Text = system(
 
 const StyledText = styled(Text)`
     ${props => props.fontStyle && `font-style: ${props.fontStyle}`};
-    ${props => props.overflow && `font-style: ${props.overflow}`};
+    ${props => props.textOverflow && `text-overflow: ${props.textOverflow}`};
+    ${props => props.overflow && `overflow: ${props.overflow}`};
+    ${props => props.whiteSpace && `white-space: ${props.whiteSpace}`};
     ${props => props.textTransform && `text-transform: ${props.textTransform}`};
     ${props => props.cursor && `cursor: ${props.cursor}`};
 

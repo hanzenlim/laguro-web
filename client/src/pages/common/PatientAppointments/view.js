@@ -1,8 +1,7 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import isEmpty from 'lodash/isEmpty';
-
 import {
     Box,
     Text,
@@ -11,10 +10,12 @@ import {
     Button,
     Card,
     Link,
+    Responsive,
 } from '../../../components';
-
 import { CANCELLED } from '../../../util/strings';
 import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
+
+const { TabletMobile, Desktop } = Responsive;
 
 export const NoAppointmentsCard = ({ text }) => (
     <Card style={{ boxShadow: '1px 1px 7px 0 rgba(0, 0, 0, 0.15)' }}>
@@ -36,62 +37,128 @@ class PatientAppointments extends PureComponent {
                 const isCancelled = status === CANCELLED;
 
                 return (
-                    <Flex
-                        key={id}
-                        justifyContent="space-between"
-                        alignItems="center"
-                        p={30}
-                        mb={12}
-                        border="1px solid"
-                        borderColor="divider.gray"
-                        borderRadius={2}
-                        opacity={isCancelled ? 0.5 : 1}
-                    >
+                    <Fragment>
                         <Flex
-                            alignItems="center"
+                            key={id}
                             justifyContent="space-between"
+                            alignItems="center"
+                            p={[20, '', 30]}
+                            mb={[0, '', 12]}
+                            border="1px solid"
+                            borderColor="divider.gray"
+                            borderRadius={2}
+                            opacity={isCancelled ? 0.5 : 1}
                         >
-                            <Box textAlign="center" fontSize={4} mr={35}>
-                                <Text fontWeight="bold">
-                                    {moment(localStartTime).format(
-                                        'ddd, M/D/YY'
-                                    )}
-                                </Text>
-                                <Text fontWeight="light">
-                                    {moment(localStartTime).format('h:mm A')}
-                                </Text>
-                            </Box>
-                            <Image
-                                src={imageUrl || defaultUserImage}
-                                alt={dentistName}
-                                width={48}
-                                height={48}
-                                borderRadius="50%"
-                                mr={35}
-                            />
-                            <Box>
-                                <Link to={`/dentist/${dentist.id}`}>
-                                    <Text fontWeight="medium" fontSize={4}>
-                                        {dentistName}
+                            <TabletMobile>
+                                <Image
+                                    src={imageUrl || defaultUserImage}
+                                    alt={dentistName}
+                                    width={30}
+                                    height={30}
+                                    borderRadius="50%"
+                                />
+                                <Box fontSize={1} minWidth="108px">
+                                    <Text
+                                        fontWeight="bold"
+                                        letterSpacing="-0.3px"
+                                    >
+                                        {moment(localStartTime).format(
+                                            'MMM D, h:mmA'
+                                        )}
                                     </Text>
-                                </Link>
-                                <Link to={`/office/${officeId}`}>
-                                    <Text fontWeight="light" fontSize={4}>
-                                        {officeName}
+                                    <Link to={`/office/${officeId}`}>
+                                        <Text fontWeight="light">
+                                            {officeName}
+                                        </Text>
+                                    </Link>
+                                </Box>
+                                <Box maxWidth="100px">
+                                    <Link to={`/dentist/${dentist.id}`}>
+                                        <Text
+                                            textOverflow="ellipsis"
+                                            whiteSpace="nowrap"
+                                            overflow="hidden"
+                                            fontWeight="medium"
+                                            fontSize={1}
+                                            letterSpacing="-0.3px"
+                                        >
+                                            {dentistName}
+                                        </Text>
+                                    </Link>
+                                </Box>
+                                <Button
+                                    type="ghost"
+                                    border="none"
+                                    onClick={this.props.toggleModalState(id)}
+                                >
+                                    <Text color="text.blue" fontSize={0}>
+                                        cancel
                                     </Text>
-                                </Link>
-                            </Box>
+                                </Button>
+                            </TabletMobile>
+                            <Desktop>
+                                <Flex
+                                    alignItems="center"
+                                    justifyContent="space-between"
+                                    minWidth="474px"
+                                >
+                                    <Box
+                                        textAlign="center"
+                                        fontSize={4}
+                                        minWidth="140px"
+                                    >
+                                        <Text fontWeight="bold">
+                                            {moment(localStartTime).format(
+                                                'ddd, M/D/YY'
+                                            )}
+                                        </Text>
+                                        <Text fontWeight="light">
+                                            {moment(localStartTime).format(
+                                                'h:mm A'
+                                            )}
+                                        </Text>
+                                    </Box>
+                                    <Image
+                                        src={imageUrl || defaultUserImage}
+                                        alt={dentistName}
+                                        width={48}
+                                        height={48}
+                                        borderRadius="50%"
+                                    />
+                                    <Box maxWidth="220px">
+                                        <Link to={`/dentist/${dentist.id}`}>
+                                            <Text
+                                                textOverflow="ellipsis"
+                                                whiteSpace="nowrap"
+                                                overflow="hidden"
+                                                fontWeight="medium"
+                                                fontSize={4}
+                                            >
+                                                {dentistName}
+                                            </Text>
+                                        </Link>
+                                        <Link to={`/office/${officeId}`}>
+                                            <Text
+                                                fontWeight="light"
+                                                fontSize={4}
+                                            >
+                                                {officeName}
+                                            </Text>
+                                        </Link>
+                                    </Box>
+                                </Flex>
+                                <Button
+                                    type="ghost"
+                                    border="none"
+                                    onClick={this.props.toggleModalState(id)}
+                                >
+                                    <Text color="text.blue" fontSize={2}>
+                                        cancel
+                                    </Text>
+                                </Button>
+                            </Desktop>
                         </Flex>
-                        <Button
-                            type="ghost"
-                            border="none"
-                            onClick={this.props.toggleModalState(id)}
-                        >
-                            <Text color="text.blue" fontSize={2}>
-                                cancel
-                            </Text>
-                        </Button>
-                    </Flex>
+                    </Fragment>
                 );
             }
         );
