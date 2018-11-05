@@ -58,9 +58,6 @@ const DocumentUploadSelector = styled.div`
     border: 1px solid #d3d3d3;
     background: #fbfbfb;
 
-    width: 140px;
-    height: 110px;
-
     margin-right: 14px;
 
     font-size: 16px;
@@ -92,6 +89,9 @@ const DocumentPreview = styled.div`
 
     overflow: hidden;
     justify-content: center;
+
+    width: 140px;
+    height: 110px;
 `;
 
 const DocumentImagePreview = styled.img`
