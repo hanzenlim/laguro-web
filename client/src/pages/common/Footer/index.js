@@ -48,8 +48,11 @@ const Footer = () => {
                     <Text color="text.black" fontSize={[0, '', 1]}>
                         Laguro is here to provide support and answers for any
                         questions you may have. Send us your inquiries through
-                        our chat box or to support@laguro.com, and we will be in
-                        touch with lightning speed!
+                        our chat box or to{' '}
+                        <a href="mailto:support@laguro.com">
+                            support@laguro.com
+                        </a>
+                        , and we will be in touch with lightning speed!
                     </Text>
                 </Flex>
 
