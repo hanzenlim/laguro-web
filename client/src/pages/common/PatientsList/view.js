@@ -2,16 +2,28 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Box, Text, Input, Icon } from '../../../components';
+import { ContainerPaddingInPixels } from '../../../components/Container';
 import PatientCard from './PatientCard';
 
 const PatientsList = props => {
     const { dentistId, patients, onFilterPatients } = props;
     return (
         <Box>
-            <Text mb={22} color="text.blue" fontSize={4} fontWeight="bold">
+            <Text
+                mb={22}
+                color="text.blue"
+                fontSize={4}
+                fontWeight="bold"
+                display={['none', '', 'block']}
+            >
                 My Patients
             </Text>
-            <Box mb={20} position="relative">
+            <Box
+                px={[ContainerPaddingInPixels, '', 0]}
+                mt={[8, '', 0]}
+                mb={20}
+                position="relative"
+            >
                 <Input
                     height={50}
                     borderRadius={30}
@@ -25,7 +37,7 @@ const PatientsList = props => {
                     fontSize={3}
                     position="absolute"
                     top={17}
-                    right={25}
+                    right={[50, '', 25]}
                 />
             </Box>
             <Box>

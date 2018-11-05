@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { space, borderBottom, borderColor } from 'styled-system';
 
 import { Link, Text } from '../../../components';
+import { withScreenSizes } from '../../../components/Responsive';
 import theme from '../../../components/theme';
 
 const StyledMenu = styled(Menu)`
@@ -31,35 +32,51 @@ const StyledMenu = styled(Menu)`
 `;
 
 const ProfileMenu = props => {
-    const { logout, isDentist, isHost, ...rest } = props;
+    const { logout, isDentist, isHost, desktopOnly, ...rest } = props;
 
-    const hostMenuItems = [
-        'home',
-        'my page',
-        'my listings',
-        'bookings/appointments',
-        'payments',
-        'laguro balance',
-        'add a new office',
-        'search for chairs',
-    ];
+    const hostLink = isHost ? 'add a new office' : 'become a host';
 
-    const dentistMenuItems = [
-        'home',
-        'my page',
-        'bookings/appointments',
-        'payments',
-        'laguro balance',
-        'add a new office',
-        'search for chairs',
-    ];
+    const hostMenuItems = desktopOnly
+        ? [
+              'my page',
+              'my listings',
+              'bookings/appointments',
+              'payments',
+              'laguro balance',
+              'search for chairs',
+          ]
+        : [
+              'home',
+              'my page',
+              'my listings',
+              'bookings/appointments',
+              'payments',
+              'laguro balance',
+              'search for chairs',
+              hostLink,
+          ];
 
-    const patientMenuItems = [
-        'home',
-        'my page',
-        'my appointments',
-        'add a new office',
-    ];
+    const dentistMenuItems = desktopOnly
+        ? [
+              'my page',
+              'bookings/appointments',
+              'payments',
+              'laguro balance',
+              'search for chairs',
+          ]
+        : [
+              'home',
+              'my page',
+              'bookings/appointments',
+              'payments',
+              'laguro balance',
+              'search for chairs',
+              hostLink,
+          ];
+
+    const patientMenuItems = desktopOnly
+        ? ['my page', 'my appointments']
+        : ['home', 'my page', 'my appointments', hostLink];
 
     const boldedMenuItems = ['search for chairs'];
 
@@ -79,6 +96,7 @@ const ProfileMenu = props => {
         'log out': '#',
         'my appointments': '/profile?selectedTab=my_appointments',
         'add a new office': '/host-onboarding/add-office',
+        'become a host': '/host-onboarding/add-office',
     };
 
     let menuItems;
@@ -137,4 +155,4 @@ const ProfileMenu = props => {
     );
 };
 
-export default ProfileMenu;
+export default withScreenSizes(ProfileMenu);

@@ -230,7 +230,7 @@ class Header extends Component {
                 boxShadow={
                     onLandingPage ? 'none' : '0 2px 4px 0 rgba(0, 0, 0, 0.1);'
                 }
-                border={onLandingPage ? 'none' : '1px solid'}
+                borderBottom={onLandingPage ? 'none' : '1px solid'}
                 borderColor="divider.gray"
                 flex="0 0 auto"
                 alignItems="center"

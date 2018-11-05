@@ -12,6 +12,8 @@ import {
     Icon,
     Modal,
 } from '../../../../components';
+import { ContainerPaddingInPixels } from '../../../../components/Container';
+import { withScreenSizes } from '../../../../components/Responsive';
 import { filestackKey } from '../../../../config/keys';
 
 const imageBoxHeight = '94px';
@@ -88,9 +90,17 @@ class PatientCard extends PureComponent {
         } = this.props;
 
         return (
-            <Box p={15} mb={12} border="1px solid" borderColor="divider.gray">
-                <Flex alignItems="center">
-                    <Box width={88} height={88} mr={16}>
+            <Box
+                px={[ContainerPaddingInPixels, '', 15]}
+                py={15}
+                mb={[-1, '', 12]}
+                border="1px solid"
+                borderLeft={['none', '', '1px solid']}
+                borderRight={['none', '', '1px solid']}
+                borderColor="divider.gray"
+            >
+                <Flex alignItems={['flex-start', '', 'center']}>
+                    <Box width={[60, '', 88]} height={[60, '', 88]} mr={16}>
                         <Image
                             src={imageUrl}
                             alt={name}
@@ -100,14 +110,15 @@ class PatientCard extends PureComponent {
                         />
                     </Box>
                     <Box flex="1">
-                        <Text fontSize={4} fontWeight="medium">
+                        <Text fontSize={[2, '', 4]} fontWeight="medium">
                             {name}
                         </Text>
                         <Flex
                             justifyContent="space-between"
-                            alignItems="center"
+                            alignItems={['flex-start', '', 'center']}
+                            flexDirection={['column', '', 'row']}
                         >
-                            <Text fontSize={3} fontWeight="light">
+                            <Text fontSize={[1, '', 3]} fontWeight="light">
                                 {hasNextAppointment
                                     ? 'Next visit:'
                                     : 'Last visit:'}{' '}
@@ -115,8 +126,9 @@ class PatientCard extends PureComponent {
                             </Text>
                             <Button
                                 type="ghost"
-                                ml={16}
+                                ml={[0, '', 16]}
                                 onClick={toggleDocumentList}
+                                height={['40px', '', '50px']}
                             >
                                 <Text fontSize={1} color="text.blue">
                                     {patientImages.length
@@ -130,7 +142,7 @@ class PatientCard extends PureComponent {
                     </Box>
                 </Flex>
                 {isDocumentListOpen && (
-                    <Box mt={15} pl={104}>
+                    <Box mt={15} pl={[76, '', 104]}>
                         <Text fontSize={1} mb={13}>
                             Patient Documents
                         </Text>
@@ -229,4 +241,4 @@ PatientCard.propTypes = {
     hasNextAppointment: PropTypes.bool,
 };
 
-export default PatientCard;
+export default withScreenSizes(PatientCard);
