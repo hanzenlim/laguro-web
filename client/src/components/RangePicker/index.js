@@ -213,7 +213,7 @@ class RangePicker extends PureComponent {
                             </Text>
                             <Icon
                                 type="calendar"
-                                color="text.black50"
+                                color="icon.blue"
                                 fontSize="26px"
                             />
                         </Flex>
@@ -232,6 +232,7 @@ class RangePicker extends PureComponent {
                             height="50px"
                             px={30}
                             py={12}
+                            color="text.blue"
                         >
                             <Text
                                 fontSize={[0, '', dateSize || 3]}
@@ -244,7 +245,7 @@ class RangePicker extends PureComponent {
                             </Text>
                             <Icon
                                 type="calendar"
-                                color="text.black50"
+                                color="text.blue"
                                 fontSize="26px"
                             />
                         </Flex>

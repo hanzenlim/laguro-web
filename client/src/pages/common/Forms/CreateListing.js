@@ -15,6 +15,7 @@ import {
     TimePicker,
     Counter,
 } from '../../../components';
+import ListingCard from '../ListingCard';
 import { withScreenSizes } from '../../../components/Responsive';
 import { renderPrice } from '../../../util/paymentUtil';
 
@@ -124,6 +125,8 @@ class CreateListing extends Component {
         const availability = values[`availability${index}`];
         const startDate = availability && availability[0];
         const endDate = availability && availability[1];
+        const startTime = values[`startTime${index}`];
+        const endTime = values[`endTime${index}`];
 
         return (
             <InnerForm form={form} {...rest}>
@@ -134,109 +137,15 @@ class CreateListing extends Component {
                     type="ghost"
                     mb={10}
                 >
-                    {/* TODO: Make props here explicit */}
-                    <Card {...rest} px={[20, '', 28]}>
-                        <Flex justifyContent="space-between">
-                            <Flex
-                                justifyContent="space-between"
-                                alignItems="center"
-                            >
-                                <Text
-                                    fontSize={[1, '', 3]}
-                                    lineHeight={1}
-                                    mr={[10, '', 50]}
-                                    letterSpacing="-0.6px"
-                                    color="text.black"
-                                >
-                                    {(startDate &&
-                                        moment(startDate).format('ddd M/DD')) ||
-                                        'Start date'}
-                                </Text>
-                                <Icon
-                                    type="rightForwardArrow"
-                                    fontSize={[1, '', 3]}
-                                    mr={[10, '', 50]}
-                                />
-                                <Text
-                                    fontSize={[1, '', 3]}
-                                    lineHeight={1}
-                                    letterSpacing="-0.6px"
-                                    color="text.black"
-                                >
-                                    {(endDate &&
-                                        moment(endDate).format('ddd M/DD')) ||
-                                        'End date'}
-                                </Text>
-                            </Flex>
-                            <Flex>
-                                <Flex flexDirection="column" mr={10}>
-                                    <Text
-                                        fontWeight="medium"
-                                        fontSize={[1, '', 2]}
-                                        lineHeight="18px"
-                                        letterSpacing="-0.4px"
-                                        color="text.blue"
-                                        textAlign="right"
-                                    >
-                                        {values[`numChairs${index}`] || '0'}
-                                    </Text>
-                                    <Text
-                                        fontWeight="medium"
-                                        fontSize={[1, '', 2]}
-                                        lineHeight="18px"
-                                        letterSpacing="-0.4px"
-                                        color="text.blue"
-                                        textAlign="right"
-                                    >
-                                        {values[`hourlyChairPrice${index}`] ||
-                                            '$0'}
-                                    </Text>
-                                    <Text
-                                        fontWeight="medium"
-                                        fontSize={[1, '', 2]}
-                                        lineHeight="18px"
-                                        letterSpacing="-0.4px"
-                                        color="text.blue"
-                                        textAlign="right"
-                                    >
-                                        {values[`cleaningFee${index}`] || '$0'}
-                                    </Text>
-                                </Flex>
-                                <Flex flexDirection="column">
-                                    <Text
-                                        fontWeight="light"
-                                        fontSize={[1, '', 2]}
-                                        lineHeight="18px"
-                                        letterSpacing="-0.4px"
-                                        color="text.black"
-                                        textAlign="left"
-                                    >
-                                        available chairs
-                                    </Text>
-                                    <Text
-                                        fontWeight="light"
-                                        fontSize={[1, '', 2]}
-                                        lineHeight="18px"
-                                        letterSpacing="-0.4px"
-                                        color="text.black"
-                                        textAlign="left"
-                                    >
-                                        per chair
-                                    </Text>
-                                    <Text
-                                        fontWeight="light"
-                                        fontSize={[1, '', 2]}
-                                        lineHeight="18px"
-                                        letterSpacing="-0.4px"
-                                        color="text.black"
-                                        textAlign="left"
-                                    >
-                                        cleaning fee
-                                    </Text>
-                                </Flex>
-                            </Flex>
-                        </Flex>
-                    </Card>
+                    <ListingCard
+                        startDate={startDate}
+                        endDate={endDate}
+                        startTime={startTime}
+                        endTime={endTime}
+                        availableChairs={values[`numChairs${index}`]}
+                        pricePerChair={values[`hourlyChairPrice${index}`]}
+                        cleaningFee={values[`cleaningFee${index}`]}
+                    />
                 </StyledButton>
                 <StyledCard mb={10} p={[20, '', 28]} visible={active} {...rest}>
                     <Box position="relative">

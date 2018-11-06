@@ -52,115 +52,118 @@ const ListingConfirmation = props => {
                     chairHourlyPrice,
                     cleaningFee,
                 }) => (
-                    <Card key={id} p={[20, '', 28]} mb={10}>
-                        <Text
-                            fontSize={[1, '', 4]}
-                            fontWeight="bold"
-                            color="text.blue"
-                            pb={10}
-                        >
-                            AVAILABILITY
-                        </Text>
-                        <Text
-                            fontSize={2}
-                            fontWeight="500"
-                            color="text.black"
-                            pb={18}
-                            lineHeight={1}
-                        >
-                            {availability}
-                        </Text>
-                        {equipment.length > 0 && (
+                    <Box key={id} mb={20}>
+                        <Card p={[20, '', 28]} mb={10}>
                             <Text
                                 fontSize={[1, '', 4]}
                                 fontWeight="bold"
                                 color="text.blue"
                                 pb={10}
-                                mt={10}
-                                borderBottom="1px solid"
-                                borderColor="divider.dustyGray"
-                                mb={20}
                             >
-                                EQUIPMENT
+                                AVAILABILITY
                             </Text>
-                        )}
-                        {equipment.map(e => (
                             <Text
                                 fontSize={2}
                                 fontWeight="500"
                                 color="text.black"
-                                pb={16}
+                                pb={18}
                                 lineHeight={1}
                             >
-                                {e.name}
+                                {availability}
                             </Text>
-                        ))}
-                        <Text
-                            fontSize={[1, '', 4]}
-                            fontWeight="bold"
-                            mt={10}
-                            color="text.blue"
-                            pb={10}
-                        >
-                            CLEANING FEE
-                        </Text>
-                        <Text
-                            fontSize={2}
-                            fontWeight="500"
-                            color="text.black"
-                            pb={18}
-                            lineHeight={1}
-                        >
-                            {cleaningFee}
-                        </Text>
-                        <Flex
-                            justifyContent="space-between"
-                            flexDirection={['column', '', 'row']}
-                        >
-                            <Box width={['100%', '', '256px']}>
+                            {equipment.length > 0 && (
                                 <Text
                                     fontSize={[1, '', 4]}
                                     fontWeight="bold"
                                     color="text.blue"
                                     pb={10}
                                     mt={10}
+                                    pb={14}
+                                    borderBottom="1px solid"
+                                    borderColor="divider.dustyGray"
+                                    mb={20}
                                 >
-                                    NUMBER OF CHAIRS
+                                    EQUIPMENT
                                 </Text>
+                            )}
+                            {equipment.map(e => (
                                 <Text
                                     fontSize={2}
                                     fontWeight="500"
                                     color="text.black"
+                                    pb={16}
                                     lineHeight={1}
-                                    pb={18}
                                 >
-                                    {`${numChairsAvailable} chair${
-                                        numChairsAvailable > 1 ? 's' : ''
-                                    }`}
+                                    {e.name}
                                 </Text>
-                            </Box>
-                            <Box width={['100%', '', '262px']}>
-                                <Text
-                                    fontSize={[1, '', 4]}
-                                    fontWeight="bold"
-                                    color="text.blue"
-                                    pb={10}
-                                    mt={10}
-                                >
-                                    HOURLY CHAIR PRICE
-                                </Text>
-                                <Text
-                                    fontSize={2}
-                                    fontWeight="500"
-                                    color="text.black"
-                                    lineHeight={1}
-                                    pb={18}
-                                >
-                                    {`${chairHourlyPrice} per hour`}
-                                </Text>
-                            </Box>
-                        </Flex>
-                    </Card>
+                            ))}
+                            <Text
+                                fontSize={[1, '', 4]}
+                                fontWeight="bold"
+                                mt={10}
+                                color="text.blue"
+                                pb={10}
+                            >
+                                CLEANING FEE
+                            </Text>
+                            <Text
+                                fontSize={2}
+                                fontWeight="500"
+                                color="text.black"
+                                pb={18}
+                                lineHeight={1}
+                            >
+                                {cleaningFee}
+                            </Text>
+                            <Flex
+                                justifyContent="space-between"
+                                flexDirection={['column', '', 'row']}
+                            >
+                                <Box width={['100%', '', '256px']}>
+                                    <Text
+                                        fontSize={[1, '', 4]}
+                                        fontWeight="bold"
+                                        color="text.blue"
+                                        pb={10}
+                                        mt={10}
+                                    >
+                                        NUMBER OF CHAIRS
+                                    </Text>
+                                    <Text
+                                        fontSize={2}
+                                        fontWeight="500"
+                                        color="text.black"
+                                        lineHeight={1}
+                                        pb={18}
+                                    >
+                                        {`${numChairsAvailable} chair${
+                                            numChairsAvailable > 1 ? 's' : ''
+                                        }`}
+                                    </Text>
+                                </Box>
+                                <Box width={['100%', '', '262px']}>
+                                    <Text
+                                        fontSize={[1, '', 4]}
+                                        fontWeight="bold"
+                                        color="text.blue"
+                                        pb={10}
+                                        mt={10}
+                                    >
+                                        HOURLY CHAIR PRICE
+                                    </Text>
+                                    <Text
+                                        fontSize={2}
+                                        fontWeight="500"
+                                        color="text.black"
+                                        lineHeight={1}
+                                        pb={18}
+                                    >
+                                        {`${chairHourlyPrice} per hour`}
+                                    </Text>
+                                </Box>
+                            </Flex>
+                        </Card>
+                    </Box>
                 )
             )}
         </Box>
