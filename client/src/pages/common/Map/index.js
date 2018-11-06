@@ -72,21 +72,23 @@ class Map extends PureComponent {
         if (this.props.data.length > 1) {
             const fitBounds = this.getFitBounds(this.props.data);
 
-            const { longitude, latitude, zoom } = new WebMercatorViewport(
-                this.state.viewport
-            ).fitBounds(fitBounds, {
-                padding: 30,
-                offset: [0, 0],
-            });
+            if (!isEqual(fitBounds[0], fitBounds[1])) {
+                const { longitude, latitude, zoom } = new WebMercatorViewport(
+                    this.state.viewport
+                ).fitBounds(fitBounds, {
+                    padding: 30,
+                    offset: [0, 0],
+                });
 
-            await this.setState({
-                viewport: {
-                    ...this.state.viewport,
-                    longitude,
-                    latitude,
-                    zoom,
-                },
-            });
+                await this.setState({
+                    viewport: {
+                        ...this.state.viewport,
+                        longitude,
+                        latitude,
+                        zoom,
+                    },
+                });
+            }
         }
 
         this.resize();
