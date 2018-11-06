@@ -76,7 +76,6 @@ const ListingConfirmation = props => {
                                     fontSize={[1, '', 4]}
                                     fontWeight="bold"
                                     color="text.blue"
-                                    pb={10}
                                     mt={10}
                                     pb={14}
                                     borderBottom="1px solid"
