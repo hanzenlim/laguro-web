@@ -196,9 +196,13 @@ const getListingUIData = (
             ) {
                 let startDate;
 
-                // If current time is before the listing start date then we start
-                // the hour slot according to the listing start hour.
-                if (moment().isBefore(moment(listingStartDate), 'hour')) {
+                const listingStartDateHour = moment(listingStartDate).format(
+                    'HH'
+                );
+
+                // If current hour is before the listing start hour then we start
+                // the first hour slot on the listing start hour.
+                if (moment().format('HH') < listingStartDateHour) {
                     startDate = moment(listingStartDate);
                 }
                 // If current time is after the listing start hour then we start at the
