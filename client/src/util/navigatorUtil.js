@@ -1,10 +1,10 @@
 import get from 'lodash/get';
 
-export const DEFAULT_LOCATION = { lon: -122.1561, lat: 37.7249 };
+export const DEFAULT_LOCATION = { lon: -122.463, lat: 37.7648 };
 
 // eslint-disable-next-line
 export const getMyPosition = async () => {
-    let fPosition = DEFAULT_LOCATION; // SanLeandro is the default location
+    let fPosition = DEFAULT_LOCATION; // San Francisco is the default location
     if (get(window, 'navigator.geolocation')) {
         try {
             const position = await new Promise((res, rej) => {

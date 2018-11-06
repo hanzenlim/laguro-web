@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import queryString from 'query-string';
 import moment from 'moment';
 import _get from 'lodash/get';
-import _isEmpty from 'lodash/isEmpty';
 import SearchBoxView from './view';
 import history from '../../../history';
 
@@ -55,19 +54,17 @@ class SearchBox extends PureComponent {
     };
 
     handleSubmit = () => {
-        const { date, location, text } = this.state;
-
-        // location search requires date, text search doesn't
-        const locationSearch = !_isEmpty(location);
-        const textSearch = !_isEmpty(text);
-
-        // if current data doesn't support either search, stop search
-        if (!locationSearch && !textSearch) {
-            return;
-        }
-
+        const { date, location: locationFromState, text } = this.state;
         const urlParams = {};
-        if (location) {
+        const location = locationFromState || {
+            name: 'San Francisco, California, United States',
+            lat: 37.7648,
+            long: -122.463,
+        };
+
+        if (text) {
+            urlParams.text = text;
+        } else {
             urlParams.location = location.name;
             urlParams.lat = location.lat;
             urlParams.long = location.long;
@@ -83,10 +80,6 @@ class SearchBox extends PureComponent {
 
             urlParams.startTime = startTime.format();
             urlParams.endTime = endTime.format();
-        }
-
-        if (text) {
-            urlParams.text = text;
         }
 
         const currentPath = _get(history, 'location.pathname') || DENTIST_PATH;
