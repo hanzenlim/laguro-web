@@ -51,6 +51,8 @@ const StyledForm = styled(AntdForm)`
     .ant-form-item-label {
         padding-bottom: 8px;
         line-height: 18px;
+        text-align: left;
+        white-space: normal;
 
         @media (min-width: ${props => props.theme.breakpoints[1]}) {
             padding-bottom: 10px;
@@ -240,6 +242,8 @@ const FormItem = ({
     const { getFieldDecorator, getFieldError, isFieldValidating } = form;
 
     const error = !isFieldValidating(name) && getFieldError(name);
+
+    const tooltipSize = [18, '', 22];
     return (
         <StyledFormInput
             colon={false}
@@ -248,10 +252,10 @@ const FormItem = ({
                     <Box display="inline-flex">
                         <Box is="span">{label}</Box>
                         {tooltip && (
-                            <Box ml="12px">
+                            <Box ml="12px" height={tooltipSize}>
                                 <Tooltip
                                     inForm
-                                    size={[18, '', 22]}
+                                    size={tooltipSize}
                                     text={tooltip}
                                 />
                             </Box>

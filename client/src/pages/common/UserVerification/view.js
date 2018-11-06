@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { compose, withApollo } from 'react-apollo';
 import { gql } from 'apollo-boost';
 import { Alert } from 'antd';
@@ -12,7 +12,7 @@ import _isString from 'lodash/isString';
 import PatientVerificationForm from '../../common/Forms/UserVerification/PatientVerificationForm';
 import ProviderVerificationForm from '../../common/Forms/UserVerification/ProviderVerificationForm';
 import HostVerificationForm from '../../common/Forms/UserVerification/HostVerificationForm';
-import { Form } from '../../../components';
+import { Form, Container, Responsive } from '../../../components';
 
 import { documentKinds } from '../../../staticData/documentTypeList';
 import { HOST, DENTIST, PATIENT } from '../../../util/strings';
@@ -30,6 +30,7 @@ import {
 } from './queries';
 
 const { SubmitButton } = Form;
+const { TabletMobile, Desktop } = Responsive;
 
 export const StyledAlert = styled(Alert)`
     && {
@@ -371,7 +372,7 @@ class UserVerification extends Component {
             return null;
         };
 
-        return (
+        const content = (
             <Form onSuccess={this.handleSubmit} debounce="false">
                 {hasUpdated && (
                     <StyledAlert
@@ -397,11 +398,22 @@ class UserVerification extends Component {
                 <SubmitButton
                     dynamicDisable={false}
                     width="100%"
+                    fontSize={[1, '', 3]}
+                    mb={[22, '', 0]}
                     textAlign="center"
                     buttonText="Submit Verification"
                     loading={this.state.isSubmitting}
                 />
             </Form>
+        );
+
+        return (
+            <Fragment>
+                <TabletMobile>
+                    <Container>{content}</Container>
+                </TabletMobile>
+                <Desktop>{content}</Desktop>
+            </Fragment>
         );
     }
 }

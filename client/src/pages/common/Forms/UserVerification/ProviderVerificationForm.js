@@ -7,6 +7,11 @@ import {
     VerificationFormContainer,
 } from './components';
 import { Form, Input, InnerForm, Text } from '../../../../components';
+import {
+    WARRANTY_TOOLTIP,
+    STATE_DENTAL_LICENSE_TOOLTIP,
+    DENTIST_PHOTO_ID_TOOLTIP,
+} from '../../../../util/strings';
 
 const { FormItem } = Form;
 
@@ -14,13 +19,16 @@ const ProviderVerificationForm = props => {
     const { form } = props;
     return (
         <VerificationFormContainer>
+            <Text fontWeight="bold" fontSize={[3, '', 5]} mb={10}>
+                Verification
+            </Text>
             <PreText>
                 Before you can book a reservation, we need you to upload some
                 documents for verification.
             </PreText>
             <InnerForm form={form}>
                 <FormItem
-                    mb={40}
+                    mb={[20, '', 40]}
                     name="ssnOrEinOrTin"
                     label="SSN or EIN/TIN Number"
                     input={<Input height={50} />}
@@ -50,26 +58,24 @@ const ProviderVerificationForm = props => {
                         'documents.stateDentalLicense'
                     )}
                     label="Upload a front of your State Dental License"
-                    tooltip="We accept valid state license credentials, [varied from state to state.]"
+                    tooltip={STATE_DENTAL_LICENSE_TOOLTIP}
                 />
                 <FrontBackDocumentsSelector
                     {...props}
                     name="documents.dentistPhotoId"
                     initialValue={get(props.data, 'documents.dentistPhotoId')}
                     label="Upload a front and back photo of your Government-Issued ID"
-                    tooltip="We accept valid driver’s license."
+                    tooltip={DENTIST_PHOTO_ID_TOOLTIP}
                 />
                 <SingleDocumentSelector
                     {...props}
                     name="documents.warranty"
                     initialValue={get(props.data, 'documents.warranty')}
                     label="Upload a document of your Malpractice Insurance"
-                    tooltip="Commonly known as medical professional liability insurance.
-                    This insurance covers bodily injury, property damage, and personal injury such as
-                    mental anguish."
+                    tooltip={WARRANTY_TOOLTIP}
                 />
                 <FormItem
-                    mt={40}
+                    mt={[0, '', 40]}
                     name="deaRegistrationNumber"
                     label={
                         <span>

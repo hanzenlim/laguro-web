@@ -5,7 +5,7 @@ import { Form, Select } from 'antd';
 import styled from 'styled-components';
 import moment from 'moment';
 
-import { Input, Radio, MaskedInput } from '../../../../components';
+import { Input, Radio, MaskedInput, Text } from '../../../../components';
 import {
     PreText,
     FrontBackDocumentsSelector,
@@ -57,7 +57,13 @@ export const StyledForm = styled(Form)`
     }
 
     .ant-form-item-label label {
-        font-size: 18px;
+        font-size: 12px;
+    }
+
+    @media (min-width: ${props => props.theme.breakpoints[1]}) {
+        .ant-form-item-label label {
+            font-size: 18px;
+        }
     }
 `;
 
@@ -117,6 +123,9 @@ class PatientVerificationForm extends React.Component {
 
         return (
             <VerificationFormContainer>
+                <Text fontWeight="bold" fontSize={[3, '', 5]} mb={10}>
+                    Verification
+                </Text>
                 <PreText>
                     Before you can book an appointment, we need you to upload
                     some documents for verification.
@@ -139,15 +148,15 @@ class PatientVerificationForm extends React.Component {
                                 onChange={this.handleUseInsuranceChange}
                             >
                                 <Radio
-                                    fontSize="18px"
+                                    fontSize={[0, '', 3]}
                                     style={radioStyle}
                                     value={false}
                                 >
-                                    I <b>do not have insurance</b> or{' '}
-                                    <b>do not wish to use insurance</b>
+                                    I <b>do not have </b>
+                                    or <b>do not wish to use insurance</b>
                                 </Radio>
                                 <Radio
-                                    fontSize="18px"
+                                    fontSize={[0, '', 3]}
                                     style={radioStyle}
                                     value={true}
                                 >

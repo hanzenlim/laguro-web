@@ -40,7 +40,15 @@ export const StyledForm = styled(Form)`
 export const VerificationFormContainer = styled.div`
     .ant-form {
         .ant-form-item-label {
-            margin-bottom: 16px;
+            margin-bottom: 0;
+        }
+    }
+
+    @media (min-width: ${props => props.theme.breakpoints[1]}) {
+        .ant-form {
+            .ant-form-item-label {
+                margin-bottom: 16px;
+            }
         }
     }
 `;

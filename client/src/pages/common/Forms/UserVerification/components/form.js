@@ -2,17 +2,18 @@ import React from 'react';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 import styled from 'styled-components';
-
-import { Form } from '../../../../../components';
+import { Form, Text } from '../../../../../components';
 import DocumentUploaderInput from './DocumentUploaderInput';
 
 const { FormItem } = Form;
 
-export const PreText = styled.div`
-    font-size: 20px;
-    color: #303549;
-    margin-bottom: 40px;
-`;
+const PreText = styled(Text)``;
+PreText.defaultProps = {
+    fontSize: [0, 4],
+    mb: [24, '', 40],
+};
+
+export { PreText };
 
 export const SingleDocumentSelector = props => {
     const validator = (_rule, value, callback) => {

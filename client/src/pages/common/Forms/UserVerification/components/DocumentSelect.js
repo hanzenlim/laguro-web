@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Icon } from 'antd';
 import ReactFilestack from 'filestack-react';
 import { secureFilestackKey } from '../../../../../config/keys';
+import { Text } from '../../../../../components';
 
 const DeleteIconWrapper = styled.div`
     position: absolute;
@@ -46,13 +47,7 @@ const UploadIconSvg = () => (
     </svg>
 );
 
-const StyledIcon = styled(Icon)`
-    flex-basis: 40px;
-    display: flex;
-    align-items: center;
-`;
-
-const UploadIcon = props => <StyledIcon component={UploadIconSvg} {...props} />;
+const UploadIcon = props => <Icon component={UploadIconSvg} {...props} />;
 
 const DocumentUploadSelector = styled.div`
     border: 1px solid #d3d3d3;
@@ -76,11 +71,15 @@ const DocumentUploadSelector = styled.div`
     }
 `;
 
-DocumentUploadSelector.Label = styled.span`
-    font-size: 16px;
-    line-height: 16px;
-    margin-top: 6px;
-`;
+const label = styled(Text)``;
+
+label.defaultProps = {
+    fontSize: [0, '', 2],
+    lineHeight: ['normal', '', '16px'],
+    mt: [8, '', 6],
+};
+
+DocumentUploadSelector.Label = label;
 
 const DocumentPreview = styled.div`
     display: flex;

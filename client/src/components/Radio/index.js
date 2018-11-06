@@ -28,6 +28,7 @@ const StyledRadio = styled(AntdRadio)`
         height: 32px;
         margin: 5px 0;
         ${fontSize};
+        white-space: normal;
     }
 `;
 
