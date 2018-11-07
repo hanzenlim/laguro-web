@@ -17,10 +17,11 @@ class PaymentCardForm extends Component {
 
         this.state = {
             selectedCard: '',
-            stripeError: null,
+            errorMessage: null,
         };
     }
 
+    // eslint-disable-next-line
     handleCreateStripeToken = async values => {
         if (this.props.checkIfVerified) {
             const isVerified = await this.props.checkIfVerified();
@@ -35,14 +36,11 @@ class PaymentCardForm extends Component {
         }
         // Within the context of `Elements`, this call to createToken knows which Element to
         // tokenize, since there's only one in this group.
-        const { token, error } = await this.props.stripe.createToken({
-            name: values.name,
-            address_line1: values.address,
-        });
+        const { token, error } = await this.props.stripe.createToken({});
 
         if (error) {
             this.props.updateSubmittingState(false);
-            return this.setState({ stripeError: error });
+            return this.setState({ errorMessage: error.message });
         }
 
         const id = get(token, 'id');
@@ -50,16 +48,21 @@ class PaymentCardForm extends Component {
             return null;
         }
 
-        const result = await this.props.mutate({
-            variables: {
-                input: { userId: this.props.userId, paymentToken: id },
-            },
-        });
-
-        const newCardId = get(result, 'data.addPaymentOption.id');
-        if (newCardId) {
-            this.props.handleSubmit(newCardId);
-        } else {
+        try {
+            const result = await this.props.mutate({
+                variables: {
+                    input: { userId: this.props.userId, paymentToken: id },
+                },
+            });
+            const newCardId = get(result, 'data.addPaymentOption.id');
+            if (newCardId) {
+                this.props.handleSubmit(newCardId);
+            }
+        } catch (err) {
+            this.setState({
+                errorMessage: get(err, 'graphQLErrors[0].message'),
+            });
+        } finally {
             await this.props.updateSubmittingState(false);
         }
 
@@ -142,7 +145,7 @@ class PaymentCardForm extends Component {
                             onChangeCardSelect={this.onChangeCardSelect}
                             onBackButton={this.props.onBackButton}
                             hasBackButton={this.props.hasBackButton}
-                            stripeError={this.state.stripeError}
+                            errorMessage={this.state.errorMessage}
                             isSubmitting={isSubmitting}
                         />
                     );

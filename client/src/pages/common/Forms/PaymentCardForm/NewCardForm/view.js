@@ -1,6 +1,6 @@
 import React from 'react';
 import { CardElement } from 'react-stripe-elements';
-import { Form, Input, Button } from '../../../../../components';
+import { Form, Button } from '../../../../../components';
 import { withScreenSizes } from '../../../../../components/Responsive';
 
 const { SubmitButton, FormItem } = Form;
@@ -37,32 +37,7 @@ const NewCardFormView = ({
             mb={1}
             input={<CardElement className="ant-input" style={style} />}
         />
-        <FormItem
-            name="name"
-            label="name"
-            mb={1}
-            rules={[
-                {
-                    required: true,
-                    message: 'Please input your name!',
-                },
-            ]}
-            validateTrigger="onBlur"
-            input={<Input type="string" />}
-        />
 
-        <FormItem
-            name="address"
-            label="address"
-            mb={35}
-            rules={[
-                {
-                    required: true,
-                    message: 'Please input your address!',
-                },
-            ]}
-            input={<Input type="string" />}
-        />
         {hasBackButton &&
             onBackButton && (
                 // Temporary solution before we can figure out

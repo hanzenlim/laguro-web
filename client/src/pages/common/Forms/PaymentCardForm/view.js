@@ -31,7 +31,7 @@ const CardView = ({
     onChangeCardSelect,
     onBackButton,
     hasBackButton,
-    stripeError,
+    errorMessage,
     isSubmitting,
     tabletMobileOnly,
 }) => {
@@ -56,9 +56,7 @@ const CardView = ({
                         onChangeCardSelect
                     )}
 
-                {stripeError && (
-                    <Alert type="error" message={stripeError.message} />
-                )}
+                {errorMessage && <Alert type="error" message={errorMessage} />}
 
                 {selectedCard === NEW_CARD_PAYMENT_METHOD && (
                     <NewCardFormView
