@@ -124,8 +124,8 @@ class AddOfficeEquipments extends Component {
 
         const newEquipment = {
             ...equipment,
-            [key1]: EQUIPMENT_LIST[0],
-            [key2]: PRICE_MAP[EQUIPMENT_LIST[0]],
+            [key1]: undefined,
+            [key2]: undefined,
         };
 
         this.setState({
@@ -177,9 +177,21 @@ class AddOfficeEquipments extends Component {
         }
     }
 
-    renderEquipment = equipment => {
+    renderEquipment = (equipment, form) => {
         const eqNameKeys = Object.keys(equipment).filter(eq =>
             eq.startsWith(EQUIPMENT_PRICE)
+        );
+
+        const selectNameKeys = Object.keys(equipment).filter(eq =>
+            eq.startsWith(EQUIPMENT_NAME)
+        );
+
+        const selectedEquipment = selectNameKeys.map(key =>
+            form.getFieldValue(key)
+        );
+
+        const equipmentList = EQUIPMENT_LIST.filter(
+            el => !selectedEquipment.includes(el)
         );
 
         return eqNameKeys.map(key => (
@@ -206,8 +218,9 @@ class AddOfficeEquipments extends Component {
                             <Select
                                 height={50}
                                 onSelect={this.handleEquipmentChange}
+                                placeholder="Select an equipment"
                             >
-                                {EQUIPMENT_LIST.map((eq2, index2) => (
+                                {equipmentList.map((eq2, index2) => (
                                     <Option
                                         key={index2}
                                         data-price-key={key}
@@ -355,7 +368,7 @@ class AddOfficeEquipments extends Component {
                         </GridItem>
 
                         <Flex flexDirection="column">
-                            {this.renderEquipment(equipment)}
+                            {this.renderEquipment(equipment, form)}
 
                             <Button type="ghost" onClick={this.addEquipment}>
                                 <Flex>
