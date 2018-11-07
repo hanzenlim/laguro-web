@@ -19,12 +19,18 @@ const StyledRadioGroup = styled(RadioGroup)`
     && .ant-radio-inner:after {
         background: ${props => props.theme.colors.background.blue};
     }
+
+    && span.ant-radio + * {
+        width: 100%;
+    }
 `;
 
 const StyledRadio = styled(AntdRadio)`
     &&.ant-radio-wrapper {
+        display: flex;
+        align-items: center;
         line-height: 30px;
-        width: 94%;
+        width: 100%;
         height: 32px;
         margin: 5px 0;
         ${fontSize};
