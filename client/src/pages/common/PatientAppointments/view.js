@@ -18,13 +18,38 @@ import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
 const { TabletMobile, Desktop } = Responsive;
 
 export const NoAppointmentsCard = ({ text }) => (
-    <Card style={{ boxShadow: '1px 1px 7px 0 rgba(0, 0, 0, 0.15)' }}>
-        <Flex alignItems="center" justifyContent="center">
-            <Text fontSize={3} fontWeight="bold" color="text.black50">
-                {text}
-            </Text>
-        </Flex>
-    </Card>
+    <Fragment>
+        <TabletMobile>
+            <Box
+                width="100%"
+                height="100vh"
+                bg="background.whiteSmoke"
+                alignItems="center"
+                justifyContent="center"
+                borderTop="1px solid"
+                borderColor="divider.gray"
+                pt={16}
+            >
+                <Text
+                    fontSize={1}
+                    textAlign="center"
+                    fontWeight="medium"
+                    color="text.gray"
+                >
+                    {text}
+                </Text>
+            </Box>
+        </TabletMobile>
+        <Desktop>
+            <Card style={{ boxShadow: '1px 1px 7px 0 rgba(0, 0, 0, 0.15)' }}>
+                <Flex alignItems="center" justifyContent="center">
+                    <Text fontSize={3} fontWeight="bold" color="text.black50">
+                        {text}
+                    </Text>
+                </Flex>
+            </Card>
+        </Desktop>
+    </Fragment>
 );
 
 class PatientAppointments extends PureComponent {

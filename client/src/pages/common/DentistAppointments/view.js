@@ -1,14 +1,53 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import styled from 'styled-components';
 import isEmpty from 'lodash/isEmpty';
-
-import { Box, Text, Flex, Image, Button, Link } from '../../../components';
+import { Collapse } from 'antd';
+import {
+    Box,
+    Text,
+    Flex,
+    Image,
+    Button,
+    Link,
+    Responsive,
+} from '../../../components';
+import { withScreenSizes } from '../../../components/Responsive';
 import { NoAppointmentsCard } from '../PatientAppointments/view';
-
 import { CANCELLED } from '../../../util/strings';
 import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
+
+const { Panel } = Collapse;
+
+const StyledCollapse = styled(Collapse)`
+    &&.ant-collapse {
+        background-color: ${props => props.theme.colors.background.white};
+
+        .ant-collapse-item .ant-collapse-header {
+            padding: 20px 24px;
+            .arrow {
+                line-height: 12px;
+                transform: unset;
+                -webkit-transform: unset;
+                right: 14px;
+                top: 21px;
+                left: unset;
+                width: 12px;
+            }
+        }
+
+        .ant-collapse-content-active {
+            background-color: #fbfbfb;
+        }
+
+        .ant-collapse-content-box {
+            padding: 14px 28px;
+        }
+    }
+`;
+
+const { TabletMobile, Desktop } = Responsive;
 
 const StyledList = styled.ul`
     ${props => props.columns && `columns: ${props.columns}`};
@@ -23,8 +62,9 @@ const StyledList = styled.ul`
 `;
 
 class DentistAppointments extends PureComponent {
-    renderReservations = reservations =>
-        reservations.map(
+    renderReservations = reservations => {
+        const { tabletMobileOnly } = this.props;
+        const resContents = reservations.map(
             ({
                 id,
                 office,
@@ -34,7 +74,62 @@ class DentistAppointments extends PureComponent {
                 appointments,
             }) => {
                 const isAppointmentsEmpty = isEmpty(appointments);
-                return (
+                return tabletMobileOnly ? (
+                    <Panel
+                        header={
+                            <Box>
+                                <Text fontWeight="bold" fontSize={2} mb={6}>
+                                    {office.name}
+                                </Text>
+                                <Box ml={30}>
+                                    <StyledList>
+                                        {this.renderAvailableTimes(
+                                            localAvailableTimes
+                                        )}
+                                    </StyledList>
+                                </Box>
+                            </Box>
+                        }
+                        key={id}
+                    >
+                        <Text fontWeight="bold" fontSize={1} mb={8}>
+                            Equipments ordered
+                        </Text>
+                        <Box ml={30} mb={20}>
+                            <StyledList columns={2}>
+                                <li>
+                                    <Text
+                                        fontSize={1}
+                                        lineHeight="20px"
+                                        display="inline"
+                                    >
+                                        {`${numChairsSelected} chair${
+                                            numChairsSelected > 1 ? 's' : ''
+                                        }`}
+                                    </Text>
+                                </li>
+                                {this.renderEquipment(equipmentSelected)}
+                            </StyledList>
+                        </Box>
+                        <Text fontWeight="bold" fontSize={1} mb={16}>
+                            Appointments
+                        </Text>
+                        <Box mt>
+                            {!isEmpty(appointments) ? (
+                                this.renderAppointments(appointments)
+                            ) : (
+                                <Text
+                                    mb={14}
+                                    fontSize={1}
+                                    textAlign="center"
+                                    color="text.gray"
+                                >
+                                    NO APPOINTMENTS
+                                </Text>
+                            )}
+                        </Box>
+                    </Panel>
+                ) : (
                     <Box mb={50} key={id}>
                         <Flex justifyContent="flex-end" mb={12}>
                             <Button
@@ -70,6 +165,9 @@ class DentistAppointments extends PureComponent {
                                     {office.name}
                                 </Text>
                             </Link>
+                            <Text fontWeight="bold" fontSize={3} mt={12} mb={8}>
+                                Bookings
+                            </Text>
                             <StyledList>
                                 {this.renderAvailableTimes(localAvailableTimes)}
                             </StyledList>
@@ -78,7 +176,11 @@ class DentistAppointments extends PureComponent {
                             </Text>
                             <StyledList columns={3}>
                                 <li>
-                                    <Text display="inline">
+                                    <Text
+                                        fontSize={0}
+                                        lineHeight="20px"
+                                        display="inline"
+                                    >
                                         {`${numChairsSelected} chair${
                                             numChairsSelected > 1 ? 's' : ''
                                         }`}
@@ -104,6 +206,18 @@ class DentistAppointments extends PureComponent {
             }
         );
 
+        return (
+            <Fragment>
+                <TabletMobile>
+                    <StyledCollapse defaultActiveKey={[reservations[0]]}>
+                        {resContents}
+                    </StyledCollapse>
+                </TabletMobile>
+                <Desktop>{resContents}</Desktop>
+            </Fragment>
+        );
+    };
+
     renderAvailableTimes = localAvailableTimes =>
         localAvailableTimes.map((availableTime, index) => {
             const date = moment(availableTime.startTime).format('ddd M/D/YYYY');
@@ -112,9 +226,18 @@ class DentistAppointments extends PureComponent {
 
             return (
                 <li key={index}>
-                    <Box fontSize={2} display="inline">
-                        <Text display="inline">{date}, </Text>
-                        <Text display="inline" fontWeight="light">
+                    <Box fontSize={[0, '', 2]} display="inline">
+                        <Text
+                            display="inline"
+                            lineHeight={['20px', '', 'inherit']}
+                        >
+                            {date},{' '}
+                        </Text>
+                        <Text
+                            display="inline"
+                            lineHeight={['20px', '', 'inherit']}
+                            fontWeight={['regular', '', 'light']}
+                        >
                             {start} - {end}
                         </Text>
                     </Box>
@@ -125,7 +248,9 @@ class DentistAppointments extends PureComponent {
     renderEquipment = equipment =>
         equipment.map((item, index) => (
             <li key={index}>
-                <Text display="inline">{item}</Text>
+                <Text fontSize={0} lineHeight="20px" display="inline">
+                    {item}
+                </Text>
             </li>
         ));
 
@@ -134,43 +259,99 @@ class DentistAppointments extends PureComponent {
             const name = `${patient.firstName} ${patient.lastName}`;
             const isCancelled = status === CANCELLED;
             return (
-                <Flex
-                    key={id}
-                    justifyContent="space-between"
-                    alignItems="center"
-                    py={20}
-                    px={30}
-                    mb={10}
-                    bg="background.white"
-                    border="1px solid"
-                    borderColor="divider.gray"
-                    borderRadius={2}
-                    opacity={isCancelled ? 0.5 : 1}
-                >
-                    <Flex
-                        justifyContent="space-between"
-                        alignItems="center"
-                        fontSize={4}
-                        position="relative"
-                    >
-                        <Box textAlign="center" mr={44}>
-                            <Text fontWeight="bold">
-                                {moment(startTime).format('ddd, M/D, YYYY')}
-                            </Text>
-                            <Text fontWeight="light">
-                                {moment(startTime).format('h:mm A')}
-                            </Text>
-                        </Box>
-                        <Text>{name}</Text>
-                    </Flex>
-                    <Image
-                        src={patient.imageUrl || defaultUserImage}
-                        alt={name}
-                        width={38}
-                        height={38}
-                        borderRadius="50%"
-                    />
-                </Flex>
+                <Fragment>
+                    <TabletMobile>
+                        <Flex
+                            key={id}
+                            justifyContent="space-between"
+                            alignItems="center"
+                            py={20}
+                            px={25}
+                            bg="background.white"
+                            border="1px solid"
+                            borderColor="divider.gray"
+                            borderRadius={2}
+                            opacity={isCancelled ? 0.5 : 1}
+                        >
+                            <Box fontSize={1} minWidth="100px">
+                                <Box minWidth="138px">
+                                    <Text fontWeight="bold">
+                                        {moment(startTime).format(
+                                            'MM/D, h:mm A'
+                                        )}
+                                    </Text>
+                                </Box>
+                                <Box maxWidth="170px">
+                                    <Text
+                                        textOverflow="ellipsis"
+                                        whiteSpace="nowrap"
+                                        overflow="hidden"
+                                    >
+                                        {name}
+                                    </Text>
+                                </Box>
+                            </Box>
+                            <Image
+                                src={patient.imageUrl || defaultUserImage}
+                                alt={name}
+                                width={38}
+                                height={38}
+                                borderRadius="50%"
+                            />
+                        </Flex>
+                    </TabletMobile>
+
+                    <Desktop>
+                        <Flex
+                            key={id}
+                            justifyContent="space-between"
+                            alignItems="center"
+                            py={20}
+                            px={30}
+                            mb={10}
+                            bg="background.white"
+                            border="1px solid"
+                            borderColor="divider.gray"
+                            borderRadius={2}
+                            opacity={isCancelled ? 0.5 : 1}
+                        >
+                            <Flex
+                                justifyContent="space-between"
+                                alignItems="center"
+                                fontSize={4}
+                                position="relative"
+                                minWidth="352px"
+                            >
+                                <Box textAlign="center" minWidth="138px">
+                                    <Text fontWeight="bold">
+                                        {moment(startTime).format(
+                                            'ddd, M/D, YYYY'
+                                        )}
+                                    </Text>
+                                    <Text fontWeight="light">
+                                        {moment(startTime).format('h:mm A')}
+                                    </Text>
+                                </Box>
+                                <Box maxWidth="170px">
+                                    <Text
+                                        textOverflow="ellipsis"
+                                        whiteSpace="nowrap"
+                                        overflow="hidden"
+                                    >
+                                        {name}
+                                    </Text>
+                                </Box>
+                            </Flex>
+                            <Image
+                                src={patient.imageUrl || defaultUserImage}
+                                alt={name}
+                                width={38}
+                                height={38}
+                                borderRadius="50%"
+                            />
+                        </Flex>
+                    </Desktop>
+                </Fragment>
             );
         });
 
@@ -183,7 +364,7 @@ class DentistAppointments extends PureComponent {
                     {!isEmpty(reservations) ? (
                         this.renderReservations(reservations)
                     ) : (
-                        <NoAppointmentsCard text="You have no bookings or appointments yet!" />
+                        <NoAppointmentsCard text="You have no bookings yet!" />
                     )}
                 </Box>
             </Box>
@@ -226,4 +407,4 @@ DentistAppointments.propTypes = {
     toggleModalState: PropTypes.func.isRequired,
 };
 
-export default DentistAppointments;
+export default withScreenSizes(DentistAppointments);
