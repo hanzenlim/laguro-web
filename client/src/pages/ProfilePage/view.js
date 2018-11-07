@@ -366,7 +366,20 @@ class ProfileView extends Component {
 
         return (
             <Fragment>
-                <TabletMobile>{this.renderPanel(panel)}</TabletMobile>
+                <TabletMobile>
+                    <Container>
+                        <Text
+                            fontSize={1}
+                            color="text.blue"
+                            fontWeight="bold"
+                            lineHeight={2.86}
+                            my={8}
+                        >
+                            {this.keyTextMap[this.state.panel]}
+                        </Text>
+                    </Container>
+                    <Box pb={50}>{this.renderPanel(panel)}</Box>
+                </TabletMobile>
                 <Desktop>
                     <Container maxWidth="1050px">
                         <Grid mt={70} pb={50}>

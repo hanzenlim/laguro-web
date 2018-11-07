@@ -48,7 +48,7 @@ export const CardLoading = () => (
 export const NoPaymentsCard = ({ text }) => (
     <Card style={{ boxShadow: '1px 1px 7px 0 rgba(0, 0, 0, 0.15)' }}>
         <Flex alignItems="center" justifyContent="center">
-            <Text fontSize={3} fontWeight="bold" color="text.black50">
+            <Text fontSize={[0, '', 3]} fontWeight="bold" color="text.black50">
                 {text}
             </Text>
         </Flex>
