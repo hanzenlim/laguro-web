@@ -78,7 +78,17 @@ export const onLogout = clientCache => {
     window.localStorage && window.localStorage.clear();
     clientCache.writeData({ data: { activeUser: null } });
     cookies.erase('user');
-    history.push('/');
+    request('/api/logout', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Origin': '*',
+        },
+        body: '{}',
+    }).then(() => {
+        history.push('/');
+    });
 };
 
 export const openLoginModal = clientCache => {

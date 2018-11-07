@@ -87,6 +87,10 @@ query getUserByEmail($email: String!) {
         password
         email
         intercomHash
+        pin {
+            value
+            expiry
+        }
         isDentist
         isHost
     }
