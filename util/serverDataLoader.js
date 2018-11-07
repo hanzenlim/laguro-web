@@ -1,18 +1,17 @@
-const createApolloFetch = require('apollo-fetch').createApolloFetch;
+import fetch from 'node-fetch';
+
+import { execute, makePromise } from 'apollo-link';
+import { createHttpLink } from 'apollo-link-http';
+import { parse } from 'graphql';
 
 const uri = process.env.GRAPHQL_URL;
 
-const apolloFetch = createApolloFetch({ uri });
-
-apolloFetch.use(({ request, options }, next) => {
-    options.credentials = 'same-origin';
-
-    if (!options.headers) {
-        options.headers = {};
-    }
-
-    options.headers['x-api-key'] = process.env.GRAPHQL_SECRET_KEY;
-    next();
+const link = createHttpLink({
+    uri,
+    fetch,
+    headers: {
+        'x-api-key': process.env.GRAPHQL_SECRET_KEY,
+    },
 });
 
 module.exports.getUserQuery = `
@@ -239,20 +238,15 @@ module.exports.useResetPasswordRequestVariable = (id, token, password) => ({
     },
 });
 
-module.exports.makeQuery = async (query, variables) => {
-    const result = await apolloFetch({
-        query,
-        variables,
-    });
+const makeGraphQLRequest = async (query, variables, context = {}) =>
+    makePromise(
+        execute(link, {
+            query: parse(query),
+            variables,
+            context,
+        })
+    );
 
-    return result;
-};
+module.exports.makeQuery = makeGraphQLRequest;
 
-module.exports.makeMutation = async (query, variables) => {
-    const result = await apolloFetch({
-        query,
-        variables,
-    });
-
-    return result;
-};
+module.exports.makeMutation = makeGraphQLRequest;
