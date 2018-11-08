@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 // External Packages
 const passport = require('passport');
 const serverDataLoader = require('../util/serverDataLoader');
+const { generateToken } = require('../util/token');
 
 const {
     makeQuery,
@@ -51,7 +52,11 @@ const authRoutes = app => {
                 if (loginError) {
                     return next(err);
                 }
-                return res.json({ status: 200, user });
+                return res.json({
+                    status: 200,
+                    user,
+                    authToken: generateToken(user),
+                });
             });
         })(req, res, next)
     );
