@@ -137,26 +137,24 @@ class DentistDetailsView extends PureComponent {
                     </Box>
                 </Flex>
 
+                <TabletMobile>
+                    <Button
+                        mt={30}
+                        mb={34}
+                        width="100%"
+                        onClick={toggleBookAppointment}
+                    >
+                        <Text color="text.white" fontWeight="bold" fontSize={1}>
+                            {isContentVisible
+                                ? 'Find appointment'
+                                : 'Back to Profile'}
+                        </Text>
+                    </Button>
+                </TabletMobile>
+
                 {isContentVisible &&
                     this.screenWidthRef.current && (
                         <Fragment>
-                            <TabletMobile>
-                                <Button
-                                    mt={30}
-                                    mb={34}
-                                    width="100%"
-                                    onClick={toggleBookAppointment}
-                                >
-                                    <Text
-                                        color="text.white"
-                                        fontWeight="bold"
-                                        fontSize={1}
-                                    >
-                                        Find appointment
-                                    </Text>
-                                </Button>
-                            </TabletMobile>
-
                             <Text
                                 fontSize={[1, '', 4]}
                                 fontWeight={['medium', '', 'bold']}

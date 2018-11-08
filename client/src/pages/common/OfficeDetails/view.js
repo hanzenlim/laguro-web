@@ -110,26 +110,24 @@ class OfficeDetailsView extends PureComponent {
                     </Flex>
                 </Flex>
 
+                <TabletMobile>
+                    <Button
+                        mt={16}
+                        mb={24}
+                        width="100%"
+                        onClick={toggleReserveOffice}
+                    >
+                        <Text color="text.white" fontWeight="bold" fontSize={1}>
+                            {isContentVisible
+                                ? 'Book this listing'
+                                : 'Back to Office Details'}
+                        </Text>
+                    </Button>
+                </TabletMobile>
+
                 {isContentVisible &&
                     this.screenWidthRef.current && (
                         <Fragment>
-                            <TabletMobile>
-                                <Button
-                                    mt={16}
-                                    mb={24}
-                                    width="100%"
-                                    onClick={toggleReserveOffice}
-                                >
-                                    <Text
-                                        color="text.white"
-                                        fontWeight="bold"
-                                        fontSize={1}
-                                    >
-                                        Book this listing
-                                    </Text>
-                                </Button>
-                            </TabletMobile>
-
                             {data.description && (
                                 // Added fixed width to fix bug in rendering truncated text
                                 <Box
