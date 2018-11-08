@@ -13,7 +13,6 @@ import {
     top,
     bottom,
     right,
-    opacity,
     position,
     transform,
     propTypes,
@@ -36,6 +35,7 @@ import DentistLogo from './DentistLogo';
 import MacaroniPattern from './MacaroniPattern';
 import Tooltip from './Tooltip';
 import Close from './Close';
+import LeftSearch from './LeftSearch';
 
 const Icon = props => {
     const { type, isButton, ...rest } = props;
@@ -90,6 +90,9 @@ const Icon = props => {
         case 'close':
             ReturnIcon = Close;
             break;
+        case 'leftSearch':
+            ReturnIcon = LeftSearch;
+            break;
         default:
             ReturnIcon = AntdIcon;
     }
@@ -108,7 +111,6 @@ const Icon = props => {
             ${top};
             ${bottom};
             ${right};
-            ${opacity};
             ${fontWeight};
         }
     `;

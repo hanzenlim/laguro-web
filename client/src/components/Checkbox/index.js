@@ -41,4 +41,6 @@ class Checkbox extends PureComponent {
     }
 }
 
+Checkbox.Group = AntdCheckbox.Group;
+
 export default Checkbox;

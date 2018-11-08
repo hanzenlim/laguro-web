@@ -1,20 +1,50 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-
 import {
     Form,
+    Responsive,
     Box,
-    Text,
     Alert,
     TextArea,
     Select,
-    Flex,
-    Icon,
-    Button,
+    Checkbox,
+    Container,
 } from '../../../../components';
-import ProcedureFilter from './ProcedureFilter';
 
+const CheckboxGroup = Checkbox.Group;
+
+const StyledCheckboxGroup = styled(CheckboxGroup)`
+    && {
+        display: grid;
+        grid-row-gap: 6px;
+        .ant-checkbox-inner {
+            border-color: ${props => props.theme.colors.divider.blue};
+        }
+
+        @media (min-width: ${props => props.theme.breakpoints[1]}) {
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-row-gap: 8px;
+        }
+    }
+`;
+
+const PROCEDURE_GROUP_LIST = [
+    'Adjunctive General',
+    'Diagnostic',
+    'Preventative',
+    'Restorative',
+    'Oral Surgery',
+    'Maxillofacial Prosthetics',
+    'Prosthetics',
+    'Orthodontics',
+    'Periodontics',
+    'Prosthodontics',
+    'Endodontics',
+    'Implantology',
+];
+
+const { TabletMobile, Desktop } = Responsive;
 const { FormItem, SubmitButton } = Form;
 const { Option } = Select;
 
@@ -42,20 +72,6 @@ const StyledForm = styled.div`
     }
 `;
 
-const StyledButton = styled(Button)`
-    && {
-        border-width: 0;
-        border-radius: 2px;
-    }
-`;
-
-const TAG_COLORS = [
-    'background.blue',
-    'background.yellow',
-    'background.orange',
-    'background.darkBlue',
-];
-
 const SPECIALTIES = [
     'General Dentist',
     'Endodontics',
@@ -69,63 +85,24 @@ const SPECIALTIES = [
 
 const SpecialtyOptions = SPECIALTIES.map(s => <Option value={s}>{s}</Option>);
 
-const ProcedureTag = ({ procedure, closeFunction, index }) => (
-    <Button type="ghost" mr={20}>
-        <Box
-            px={24}
-            py={10}
-            bg={TAG_COLORS[index % 4]}
-            borderRadius="25px"
-            mr="6px"
-            mb="6px"
-        >
-            <Text
-                textTransform="lowercase"
-                color="text.white"
-                lineHeight="22px"
-                fontSize={1}
-                letterSpacing="-0.4px"
-            >
-                {procedure.group}
-            </Text>
-            <Button
-                type="ghost"
-                position="absolute"
-                top="-3px"
-                right="-3px"
-                height="20px"
-                width="20px"
-                style={{ background: 'transparent' }}
-                code={procedure.group}
-                onClick={event => closeFunction(event, procedure.group)}
-            >
-                <Box bg="background.white" borderRadius="10px">
-                    <Icon
-                        fontSize={3}
-                        color="icon.lightGray"
-                        type="close-circle"
-                    />
-                </Box>
-            </Button>
-        </Box>
-    </Button>
-);
-
 const UpdateDentistProfileForm = props => {
     const {
         data,
         error,
         isUpdated,
         onSuccess,
-        addProcedureTag,
-        removeProcedureTag,
         procedures,
         isSubmitting,
     } = props;
 
-    return (
+    const options = PROCEDURE_GROUP_LIST.map(p => ({
+        label: p,
+        value: p,
+    }));
+
+    const content = (
         <StyledForm>
-            <Box>
+            <Box mt={[18, '', 0]}>
                 {(error || isUpdated) && (
                     <Box mb={20}>
                         <Alert
@@ -139,12 +116,12 @@ const UpdateDentistProfileForm = props => {
                     </Box>
                 )}
 
-                <Form layout="vertical" onSuccess={onSuccess} debounce="false">
+                <Form onSuccess={onSuccess} debounce="false">
                     <FormItem
                         name="specialty"
                         label="Title"
                         initialValue={data.specialty || 'General Dentist'}
-                        mb={32}
+                        mb={[18, '', 32]}
                         height={50}
                         input={<Select>{SpecialtyOptions}</Select>}
                         rules={[
@@ -154,13 +131,14 @@ const UpdateDentistProfileForm = props => {
                             },
                         ]}
                     />
+
                     <FormItem
                         name="bio"
                         label="About you"
                         initialValue={data.bio}
-                        mb={32}
+                        mb={[18, '', 32]}
                         height={200}
-                        input={<TextArea />}
+                        input={<TextArea p={11} />}
                         rules={[
                             {
                                 required: true,
@@ -168,45 +146,20 @@ const UpdateDentistProfileForm = props => {
                             },
                         ]}
                     />
-                    <Flex alignItems="center" mb={20}>
-                        <ProcedureFilter
-                            height={50}
-                            handleSuggestionSelect={addProcedureTag}
-                        />
-                        <StyledButton
-                            height="50px"
-                            width={'60px'}
-                            type="default"
-                            bg="background.blue"
-                            pl={20}
-                            ml={10}
-                        >
-                            <Flex alignItems="center" justifyContent={'center'}>
-                                <Icon
-                                    fontSize={3}
-                                    style={{ fontWeight: 'bold' }}
-                                    color="white"
-                                    type="search"
-                                    mr={15}
-                                />
-                            </Flex>
-                        </StyledButton>
-                    </Flex>
-
-                    <Flex alignItems="left" mb={20} flexWrap="wrap">
-                        {Object.keys(procedures).map((key, index) => (
-                            <ProcedureTag
-                                procedure={procedures[key]}
-                                closeFunction={removeProcedureTag}
-                                index={index}
-                                key={procedures[key]}
-                            />
-                        ))}
-                    </Flex>
+                    <FormItem
+                        name="procedures"
+                        label="Which of the following describe your procedures?"
+                        type="array"
+                        initialValue={Object.keys(procedures)}
+                        mb={[18, '', 32]}
+                        input={<StyledCheckboxGroup options={options} />}
+                    />
 
                     <SubmitButton
                         px={14}
+                        mb={[18, '', 0]}
                         buttonText="Save changes"
+                        fontSize={[1, '', 3]}
                         textAlign="left"
                         width="100%"
                         height={60}
@@ -215,6 +168,15 @@ const UpdateDentistProfileForm = props => {
                 </Form>
             </Box>
         </StyledForm>
+    );
+
+    return (
+        <Fragment>
+            <TabletMobile>
+                <Container>{content}</Container>
+            </TabletMobile>
+            <Desktop>{content}</Desktop>
+        </Fragment>
     );
 };
 

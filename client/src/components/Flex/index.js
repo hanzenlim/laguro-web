@@ -1,4 +1,6 @@
 import system from 'system-components';
+import styled from 'styled-components';
+import { zIndex } from '../utils';
 
 const Flex = system(
     {
@@ -48,6 +50,9 @@ const Flex = system(
     'opacity'
 );
 
-Flex.displayName = 'Flex';
+const StyledFlex = styled(Flex)`
+    ${zIndex};
+`;
+StyledFlex.displayName = 'Flex';
 
-export default Flex;
+export default StyledFlex;

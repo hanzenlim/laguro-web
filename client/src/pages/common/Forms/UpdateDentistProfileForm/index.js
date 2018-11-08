@@ -21,31 +21,6 @@ class UpdateDentistProfileContainer extends PureComponent {
         isSubmitting: false,
     };
 
-    addProcedureTag = (value, option) => {
-        const { data } = option.props;
-
-        const procedure = {
-            code: data.code,
-            name: data.name,
-            group: data.group,
-            duration: data.duration,
-        };
-
-        if (!(procedure.group in this.state.procedures)) {
-            const procedures = Object.assign({}, this.state.procedures);
-            procedures[procedure.group] = procedure;
-            this.setState({ procedures });
-        }
-    };
-
-    removeProcedureTag = (e, group) => {
-        if (group in this.state.procedures) {
-            const procedures = Object.assign({}, this.state.procedures);
-            delete procedures[group];
-            this.setState({ procedures });
-        }
-    };
-
     onCompleted = ({ getUser, updateDentist, createDentist }) => {
         const data = getUser.dentist || updateDentist || createDentist;
 
@@ -103,9 +78,12 @@ class UpdateDentistProfileContainer extends PureComponent {
                                 const inputBase = {
                                     specialty: values.specialty,
                                     bio: values.bio,
-                                    procedures: Object.keys(
-                                        this.state.procedures
-                                    ).map(k => this.state.procedures[k]),
+                                    procedures: values.procedures.map(p => ({
+                                        code: 'code',
+                                        duration: 0,
+                                        group: p,
+                                        name: 'name',
+                                    })),
                                 };
 
                                 if (dentist) {
@@ -146,8 +124,6 @@ class UpdateDentistProfileContainer extends PureComponent {
                             return (
                                 <UpdateDentistProfileFormView
                                     data={mappedData}
-                                    addProcedureTag={this.addProcedureTag}
-                                    removeProcedureTag={this.removeProcedureTag}
                                     error={
                                         this.state.updateDentistError &&
                                         'Something went wrong. Please try again later.'
