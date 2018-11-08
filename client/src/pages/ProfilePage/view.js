@@ -1,10 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
 import queryString from 'query-string';
-import { Dropdown } from 'antd';
 import history from '../../history';
-import { Box, Container, Icon, Text, Responsive } from '../../components/';
-import { ContainerPaddingInPixels } from '../../components/Container';
+import { Box, Container, Text, Responsive } from '../../components/';
 import UpdateProfileForm from '../../pages/common/Forms/UpdateProfileForm';
 import Menu from '../common/Menu';
 import DentistDetails from '../common/DentistDetails';
@@ -33,17 +31,24 @@ import {
     MY_BOOKINGS,
     MY_PATIENTS,
     PROCEDURES_CONSENT,
+    MY_ACCOUNT_MENU,
+    MY_DOCUMENTS_MENU,
+    MY_PROFILE_MENU,
+    MY_APPOINTMENTS_MENU,
+    PAYMENT_HISTORY_MENU,
+    LAGURO_BALANCE_MENU,
+    PREVIEW_PUBLIC_PROFILE_MENU,
+    MY_LISTINGS_MENU,
+    MY_BOOKINGS_MENU,
+    MY_PATIENTS_MENU,
+    PROCEDURE_CONSENT_MENU,
 } from '../../util/strings';
-import theme from '../../components/theme';
-import { HEADER_HEIGHT } from '../common/Header/view';
 
 const { TabletMobile, Desktop } = Responsive;
 
 const contentWidth = Math.min(window.innerWidth * 0.8, 1050);
 const menuColumnWidth = contentWidth * 0.28;
 const contentColumnWidth = contentWidth * 0.6;
-const DROPDOWN_TRIGGER_HEIGHT = 50;
-const DROPDOWN_MENU_STARTING_POINT = DROPDOWN_TRIGGER_HEIGHT + HEADER_HEIGHT;
 
 const Grid = styled(Box)`
     display: grid;
@@ -102,28 +107,6 @@ const StyledPreviewMenuItem = styled(Menu.Item)`
     }
 `;
 
-const StyledDropContainer = styled.div`
-    @media (max-width: 991px) {
-        .ant-dropdown {
-            height: calc(100vh - ${DROPDOWN_MENU_STARTING_POINT}px);
-            overflow-y: auto;
-            background-color: ${theme.colors.background.lightGray};
-            top: ${DROPDOWN_MENU_STARTING_POINT}px !important;
-            left: 0 !important;
-            right: 0 !important;
-        }
-
-        & .ant-dropdown-menu {
-            padding: 0;
-        }
-
-        && .ant-dropdown-menu-item {
-            padding: 0 ${ContainerPaddingInPixels}px;
-            border-top: solid 1px #e5e5e5;
-        }
-    }
-`;
-
 class ProfileView extends Component {
     constructor(props) {
         super(props);
@@ -135,17 +118,17 @@ class ProfileView extends Component {
         };
 
         this.keyTextMap = {
-            [MY_PROFILE]: 'My Account',
-            [DENTIST_PROFILE]: 'My Profile',
-            [MY_PATIENTS]: 'My Patients',
-            [MY_DOCUMENTS]: 'My Documents',
-            [MY_APPOINTMENTS]: 'My Appointments',
-            [MY_LISTINGS]: 'My Listings',
-            [MY_BOOKINGS]: 'My Bookings',
-            [PAYMENTS]: 'Payment History',
-            [BALANCE]: 'Laguro Balance',
-            [PUBLIC_PROFILE]: 'Preview Public Profile',
-            [PROCEDURES_CONSENT]: 'Procedure Consent',
+            [MY_PROFILE]: MY_ACCOUNT_MENU,
+            [DENTIST_PROFILE]: MY_PROFILE_MENU,
+            [MY_PATIENTS]: MY_PATIENTS_MENU,
+            [MY_DOCUMENTS]: MY_DOCUMENTS_MENU,
+            [MY_APPOINTMENTS]: MY_APPOINTMENTS_MENU,
+            [MY_LISTINGS]: MY_LISTINGS_MENU,
+            [MY_BOOKINGS]: MY_BOOKINGS_MENU,
+            [PAYMENTS]: PAYMENT_HISTORY_MENU,
+            [BALANCE]: LAGURO_BALANCE_MENU,
+            [PUBLIC_PROFILE]: PREVIEW_PUBLIC_PROFILE_MENU,
+            [PROCEDURES_CONSENT]: PROCEDURE_CONSENT_MENU,
         };
     }
 
@@ -364,34 +347,7 @@ class ProfileView extends Component {
 
         return (
             <Fragment>
-                <TabletMobile>
-                    <Dropdown
-                        overlay={this.renderMenu()}
-                        placement={'bottomRight'}
-                        trigger={['click']}
-                        getPopupContainer={() =>
-                            document.getElementById('profileDropdownContainer')
-                        }
-                    >
-                        <Container>
-                            <a className="ant-dropdown-link">
-                                <Text
-                                    is="span"
-                                    fontSize={1}
-                                    mr={6}
-                                    fontWeight="medium"
-                                    lineHeight="50px"
-                                    color="text.blue"
-                                >
-                                    {this.keyTextMap[panel]}
-                                </Text>
-                                <Icon color="text.blue" type="down" />
-                            </a>
-                        </Container>
-                    </Dropdown>
-                    <StyledDropContainer id="profileDropdownContainer" />
-                    {this.renderPanel(panel)}
-                </TabletMobile>
+                <TabletMobile>{this.renderPanel(panel)}</TabletMobile>
                 <Desktop>
                     <Container maxWidth="1050px">
                         <Grid mt={70} pb={50}>

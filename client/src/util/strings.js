@@ -71,6 +71,25 @@ export const MY_BOOKINGS = 'my_bookings';
 export const MY_PATIENTS = 'my_patients';
 export const PROCEDURES_CONSENT = 'my_treatments';
 
+// menu items
+export const HOME_MENU = 'Home';
+export const LOG_OUT_MENU = 'Log Out';
+export const MY_PAGE_MENU = 'My Page';
+export const MY_ACCOUNT_MENU = 'My Account';
+export const MY_DOCUMENTS_MENU = 'My Documents';
+export const MY_PROFILE_MENU = 'My Profile';
+export const MY_APPOINTMENTS_MENU = 'My Appointments';
+export const PAYMENT_HISTORY_MENU = 'Payment History';
+export const LAGURO_BALANCE_MENU = 'Laguro Balance';
+export const PREVIEW_PUBLIC_PROFILE_MENU = 'Preview Public Profile';
+export const MY_LISTINGS_MENU = 'My Listings';
+export const MY_BOOKINGS_MENU = 'My Bookings';
+export const MY_PATIENTS_MENU = 'My Patients';
+export const PROCEDURE_CONSENT_MENU = 'Procedure Consent';
+export const SEARCH_FOR_CHAIRS_MENU = 'Search for Chairs';
+export const ADD_A_NEW_OFFICE_MENU = 'Add a New Office';
+export const BECOME_A_HOST_MENU = 'Become a Host';
+
 // Payment method
 export const NEW_CARD_PAYMENT_METHOD = 'NEW_CARD_PAYMENT_METHOD';
 

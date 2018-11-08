@@ -6,6 +6,25 @@ import { space, borderBottom, borderColor } from 'styled-system';
 import { Link, Text } from '../../../components';
 import { withScreenSizes } from '../../../components/Responsive';
 import theme from '../../../components/theme';
+import {
+    HOME_MENU,
+    MY_PAGE_MENU,
+    MY_ACCOUNT_MENU,
+    MY_DOCUMENTS_MENU,
+    MY_PROFILE_MENU,
+    MY_APPOINTMENTS_MENU,
+    PAYMENT_HISTORY_MENU,
+    LAGURO_BALANCE_MENU,
+    PREVIEW_PUBLIC_PROFILE_MENU,
+    MY_LISTINGS_MENU,
+    MY_BOOKINGS_MENU,
+    MY_PATIENTS_MENU,
+    PROCEDURE_CONSENT_MENU,
+    LOG_OUT_MENU,
+    SEARCH_FOR_CHAIRS_MENU,
+    ADD_A_NEW_OFFICE_MENU,
+    BECOME_A_HOST_MENU,
+} from '../../../util/strings';
 
 const StyledMenu = styled(Menu)`
     && {
@@ -34,69 +53,81 @@ const StyledMenu = styled(Menu)`
 const ProfileMenu = props => {
     const { logout, isDentist, isHost, desktopOnly, ...rest } = props;
 
-    const hostLink = isHost ? 'add a new office' : 'become a host';
+    const hostLink = isHost ? ADD_A_NEW_OFFICE_MENU : BECOME_A_HOST_MENU;
 
     const hostMenuItems = desktopOnly
         ? [
-              'my page',
-              'my listings',
-              'bookings/appointments',
-              'payments',
-              'laguro balance',
-              'search for chairs',
+              MY_PAGE_MENU,
+              MY_LISTINGS_MENU,
+              LAGURO_BALANCE_MENU,
+              SEARCH_FOR_CHAIRS_MENU,
           ]
         : [
-              'home',
-              'my page',
-              'my listings',
-              'bookings/appointments',
-              'payments',
-              'laguro balance',
-              'search for chairs',
+              HOME_MENU,
+              MY_ACCOUNT_MENU,
+              MY_PROFILE_MENU,
+              MY_DOCUMENTS_MENU,
+              MY_APPOINTMENTS_MENU,
+              MY_BOOKINGS_MENU,
+              MY_LISTINGS_MENU,
+              LAGURO_BALANCE_MENU,
+              SEARCH_FOR_CHAIRS_MENU,
               hostLink,
           ];
 
     const dentistMenuItems = desktopOnly
         ? [
-              'my page',
-              'bookings/appointments',
-              'payments',
-              'laguro balance',
-              'search for chairs',
+              MY_PAGE_MENU,
+              MY_BOOKINGS_MENU,
+              PAYMENT_HISTORY_MENU,
+              LAGURO_BALANCE_MENU,
+              SEARCH_FOR_CHAIRS_MENU,
           ]
         : [
-              'home',
-              'my page',
-              'bookings/appointments',
-              'payments',
-              'laguro balance',
-              'search for chairs',
+              HOME_MENU,
+              MY_ACCOUNT_MENU,
+              MY_PROFILE_MENU,
+              MY_DOCUMENTS_MENU,
+              MY_PATIENTS_MENU,
+              MY_APPOINTMENTS_MENU,
+              MY_BOOKINGS_MENU,
+              PAYMENT_HISTORY_MENU,
+              LAGURO_BALANCE_MENU,
+              PREVIEW_PUBLIC_PROFILE_MENU,
+              SEARCH_FOR_CHAIRS_MENU,
               hostLink,
           ];
 
     const patientMenuItems = desktopOnly
-        ? ['my page', 'my appointments']
-        : ['home', 'my page', 'my appointments', hostLink];
-
-    const boldedMenuItems = ['search for chairs'];
-
-    const blueMenuItems = ['search for chairs'];
-    if (!isHost && !isDentist) {
-        blueMenuItems.push('log out');
-    }
+        ? [MY_PAGE_MENU, MY_APPOINTMENTS_MENU]
+        : [
+              HOME_MENU,
+              MY_ACCOUNT_MENU,
+              MY_DOCUMENTS_MENU,
+              MY_APPOINTMENTS_MENU,
+              PAYMENT_HISTORY_MENU,
+              PROCEDURE_CONSENT_MENU,
+              hostLink,
+          ];
 
     const itemLinkMap = {
-        home: '/',
-        'my page': '/profile?selectedTab=my_profile',
-        'my listings': '/profile?selectedTab=my_listings',
-        'bookings/appointments': '/profile?selectedTab=my_bookings',
-        payments: '/profile?selectedTab=payments',
-        'laguro balance': '/profile?selectedTab=balance',
-        'search for chairs': '/office/search',
-        'log out': '#',
-        'my appointments': '/profile?selectedTab=my_appointments',
-        'add a new office': '/host-onboarding/add-office',
-        'become a host': '/host-onboarding/add-office',
+        [HOME_MENU]: '/',
+        [MY_PAGE_MENU]: '/profile?selectedTab=my_profile',
+        [MY_LISTINGS_MENU]: '/profile?selectedTab=my_listings',
+        [MY_BOOKINGS_MENU]: '/profile?selectedTab=my_bookings',
+        [PAYMENT_HISTORY_MENU]: '/profile?selectedTab=payments',
+        [LAGURO_BALANCE_MENU]: '/profile?selectedTab=balance',
+        [SEARCH_FOR_CHAIRS_MENU]: '/office/search',
+        [LOG_OUT_MENU]: '#',
+        [MY_APPOINTMENTS_MENU]: '/profile?selectedTab=my_appointments',
+        [ADD_A_NEW_OFFICE_MENU]: '/host-onboarding/add-office',
+        [BECOME_A_HOST_MENU]: '/host-onboarding/add-office',
+        [MY_ACCOUNT_MENU]: '/profile?selectedTab=my_profile',
+        [MY_DOCUMENTS_MENU]: '/profile?selectedTab=my_documents',
+        [MY_PROFILE_MENU]: '/profile?selectedTab=dentist_profile',
+        [PREVIEW_PUBLIC_PROFILE_MENU]: '/profile?selectedTab=public_profile',
+        [MY_PATIENTS_MENU]: '/profile?selectedTab=my_patients',
+        [PROCEDURE_CONSENT_MENU]: '/profile?selectedTab=my_treatments',
     };
 
     let menuItems;
@@ -118,19 +149,7 @@ const ProfileMenu = props => {
             {menuItems.map(item => (
                 <Menu.Item>
                     <Link to={itemLinkMap[item]}>
-                        <Text
-                            color={
-                                blueMenuItems.includes(item)
-                                    ? 'text.blue'
-                                    : 'text.black'
-                            }
-                            fontSize={2}
-                            fontWeight={
-                                boldedMenuItems.includes(item)
-                                    ? 'bold'
-                                    : 'regular'
-                            }
-                        >
+                        <Text color="text.black" fontSize={2}>
                             {item}
                         </Text>
                     </Link>
@@ -138,16 +157,9 @@ const ProfileMenu = props => {
             ))}
             <Menu.Divider />
             <Menu.Item>
-                <Link to={'#'} onClick={logout}>
-                    <Text
-                        color={
-                            blueMenuItems.includes('log out')
-                                ? 'text.blue'
-                                : 'text.black'
-                        }
-                        fontSize={2}
-                    >
-                        log out
+                <Link to={itemLinkMap[LOG_OUT_MENU]} onClick={logout}>
+                    <Text color={'text.blue'} fontSize={2}>
+                        {LOG_OUT_MENU}
                     </Text>
                 </Link>
             </Menu.Item>
