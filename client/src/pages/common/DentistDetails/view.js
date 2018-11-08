@@ -165,33 +165,37 @@ class DentistDetailsView extends PureComponent {
                                 available procedures
                             </Text>
 
-                            <Flex flexWrap="wrap" mb="34px">
-                                {data.procedures.map((procedure, index) => (
-                                    <Button
-                                        type="ghost"
-                                        height={['auto', '', '50px']}
-                                    >
-                                        <Box
-                                            px={[12, '', 24]}
-                                            py={[0, '', 10]}
-                                            bg={TAG_COLORS[index % 4]}
-                                            borderRadius="25px"
-                                            mr="6px"
-                                            mb="6px"
+                            {data.procedures.length ? (
+                                <Flex flexWrap="wrap" mb="34px">
+                                    {data.procedures.map((procedure, index) => (
+                                        <Button
+                                            type="ghost"
+                                            height={['auto', '', '50px']}
                                         >
-                                            <Text
-                                                textTransform="lowercase"
-                                                color="text.white"
-                                                lineHeight="22px"
-                                                fontSize={[0, '', 1]}
-                                                letterSpacing="-0.4px"
+                                            <Box
+                                                px={[12, '', 24]}
+                                                py={[0, '', 10]}
+                                                bg={TAG_COLORS[index % 4]}
+                                                borderRadius="25px"
+                                                mr="6px"
+                                                mb="6px"
                                             >
-                                                {procedure}
-                                            </Text>
-                                        </Box>
-                                    </Button>
-                                ))}
-                            </Flex>
+                                                <Text
+                                                    textTransform="lowercase"
+                                                    color="text.white"
+                                                    lineHeight="22px"
+                                                    fontSize={[0, '', 1]}
+                                                    letterSpacing="-0.4px"
+                                                >
+                                                    {procedure}
+                                                </Text>
+                                            </Box>
+                                        </Button>
+                                    ))}
+                                </Flex>
+                            ) : (
+                                <Text mb={34}>No procedures selected.</Text>
+                            )}
 
                             {data.bio && (
                                 // Added fixed width to fix bug in rendering truncated text
