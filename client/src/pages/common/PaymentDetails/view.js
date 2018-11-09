@@ -51,10 +51,10 @@ const PaymentDetailsView = ({
 
     return (
         <Flex mt={5} flexDirection="column" alignItems="center">
-            <Text mb={25} fontSize={3} fontWeight="bold">
-                {cardType === PAYMENT ? 'payment details' : 'balance details'}
+            <Text mb={25} fontSize={[1, '', 3]} fontWeight="bold">
+                {cardType === PAYMENT ? 'Payment Details' : 'Balance Details'}
             </Text>
-            <Text fontSize={6} fontWeight="bold" textAlign="center">
+            <Text fontSize={[1, '', 6]} fontWeight="bold" textAlign="center">
                 {office.name}
             </Text>
             <Flex justifyContent="center" mb={40}>
@@ -62,10 +62,12 @@ const PaymentDetailsView = ({
                     fontSize={4}
                     type="environment-o"
                     color="icon.lightGray"
-                    style={{ fontWeight: 'bold' }}
-                    mr={6}
+                    fontWeight="bold"
+                    mr={[4, '', 6]}
                 />
-                <Text color="text.darkBlue">{office.location.name}</Text>
+                <Text fontSize={[0, '', 1]} color="text.darkGray">
+                    {office.location.name}
+                </Text>
             </Flex>
 
             <Section
@@ -78,7 +80,7 @@ const PaymentDetailsView = ({
             >
                 {_get(reservation, 'availableTimes.length') ? (
                     reservation.availableTimes.map(availableTime => (
-                        <Text fontSize={3} color="text.black">
+                        <Text fontSize={[0, '', 3]} color="text.black">
                             {formatListingTime(
                                 availableTime.startTime,
                                 availableTime.endTime
@@ -86,7 +88,7 @@ const PaymentDetailsView = ({
                         </Text>
                     ))
                 ) : (
-                    <Text fontSize={3} color="text.black">
+                    <Text fontSize={[0, '', 3]} color="text.black">
                         {formatListingTime(startTime, endTime)}
                     </Text>
                 )}
@@ -188,14 +190,18 @@ const CreditCard = ({ brand, last4 }) => {
         <Flex
             justifyContent="center"
             alignItems="center"
-            height={50}
-            width={130}
+            height={[30, '', 50]}
+            width={[80, '', 130]}
             border="1px solid"
             borderRadius="2px"
             borderColor="divider.darkGray"
         >
-            <Image src={creditCardImg()} height={20} width={30} />
-            <Text fontSize={2} fontWeight="bold" color="text.black">
+            <Image
+                src={creditCardImg()}
+                height={[16, '', 20]}
+                width={[22, '', 30]}
+            />
+            <Text fontSize={[0, '', 2]} fontWeight="bold" color="text.black">
                 {` •••• ${last4}`}
             </Text>
         </Flex>
@@ -203,18 +209,22 @@ const CreditCard = ({ brand, last4 }) => {
 };
 
 const Section = ({ title, children }) => (
-    <Flex flexDirection="column" mb={40}>
+    <Flex
+        width={['100%', '', 'unset']}
+        flexDirection="column"
+        mb={[16, '', 40]}
+    >
         <Box
-            pb={18}
-            mb={18}
+            pb={[8, '', 18]}
+            mb={[8, '', 18]}
             borderBottom="1px solid"
             borderColor="divider.darkGray"
-            width={360}
+            width={['100%', '', 360]}
         >
             <Text
                 color="text.gray"
                 fontWeight="bold"
-                fontSize={4}
+                fontSize={[0, '', 4]}
                 style={{ textTransform: 'uppercase' }}
             >
                 {title}
@@ -228,16 +238,20 @@ const LineItem = ({ quantity, name, price }) => (
     <Flex justifyContent="space-between">
         <Flex pr={10}>
             {quantity && (
-                <Text fontSize={3} fontWeight="bold" color="text.black">
+                <Text
+                    fontSize={[0, '', 3]}
+                    fontWeight="bold"
+                    color="text.black"
+                >
                     {quantity}
                     &nbsp;
                 </Text>
             )}
-            <Text fontSize={3} color="text.black">
+            <Text fontSize={[0, '', 3]} color="text.black">
                 {name}
             </Text>
         </Flex>
-        <Text fontSize={3} fontWeight="bold" color="text.black">
+        <Text fontSize={[0, '', 3]} fontWeight="bold" color="text.black">
             {renderPrice(price)}
         </Text>
     </Flex>
@@ -245,11 +259,8 @@ const LineItem = ({ quantity, name, price }) => (
 
 const TotalPaid = ({ amount }) => (
     <Box>
-        <Text fontSize={3} color="text.black" lineHeight="1.1">
-            total
-        </Text>
         <Text
-            fontSize={5}
+            fontSize={[2, '', 5]}
             color="text.black"
             fontWeight="bold"
             lineHeight="1.1"

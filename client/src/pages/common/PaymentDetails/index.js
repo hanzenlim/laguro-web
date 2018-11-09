@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import PaymentDetailsView from './view';
 import { Text, Flex, Modal, Button } from '../../../components';
+import { withScreenSizes } from '../../../components/Responsive';
 import { PAYMENT } from '../../../util/strings';
 
 const PaymentDetails = ({
@@ -13,11 +14,11 @@ const PaymentDetails = ({
     reservation,
     startTime,
     endTime,
+    desktopOnly,
     fullPage = false,
     ...rest
 }) => {
     const { office } = reservation;
-
     const withCC = cardType === PAYMENT;
 
     if (fullPage) {
@@ -35,7 +36,23 @@ const PaymentDetails = ({
     }
 
     return (
-        <Modal {...rest} width={720}>
+        <Modal
+            {...rest}
+            footer={null}
+            width={desktopOnly ? 620 : '100%'}
+            style={
+                desktopOnly
+                    ? null
+                    : {
+                          top: '0',
+                          left: '0',
+                          right: '0',
+                          bottom: '0',
+                          margin: '0',
+                          height: '100%',
+                      }
+            }
+        >
             <PaymentDetailsView
                 payment={payment}
                 cardType={cardType}
@@ -48,11 +65,15 @@ const PaymentDetails = ({
             <Flex justifyContent="flex-end">
                 <Button
                     className="print-btn"
-                    height="60px"
-                    px={30}
+                    height={[30, '', 60]}
+                    px={[12, '', 30]}
                     onClick={() => window.print()}
                 >
-                    <Text fontWeight="bold" color="text.white" fontSize={3}>
+                    <Text
+                        fontWeight="bold"
+                        color="text.white"
+                        fontSize={[1, '', 3]}
+                    >
                         print
                     </Text>
                 </Button>
@@ -79,4 +100,4 @@ PaymentDetails.defaultProps = {
     endTime: moment(),
 };
 
-export default PaymentDetails;
+export default withScreenSizes(PaymentDetails);

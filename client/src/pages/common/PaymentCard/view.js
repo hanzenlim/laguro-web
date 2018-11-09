@@ -12,31 +12,35 @@ import { AVAILABLE, PENDING, PAYMENT_CARD } from '../../../util/strings';
 
 const StyledCard = styled(Card)`
     && {
-        margin-bottom: 40px;
+        margin-bottom: 7px;
         box-shadow: 1px 1px 7px 0 rgba(0, 0, 0, 0.15);
         border-color: ${props => props.theme.colors.divider.gray};
-    }
 
-    && .ant-card-head-title {
-        padding-bottom: 20px;
-    }
+        .ant-card-head-title {
+            padding-bottom: 20px;
+        }
 
-    && .ant-card-body {
-        padding-top: 20px;
-        padding-bottom: 40px;
-    }
+        .ant-card-body {
+            padding-top: 20px;
+            padding-bottom: 40px;
+        }
 
-    && .ant-card-head {
-        border-bottom: none;
-    }
+        .ant-card-head {
+            border-bottom: none;
+        }
 
-    && .ant-card-head:after {
-        content: '';
-        display: block;
-        margin: 0 auto;
+        .ant-card-head:after {
+            content: '';
+            display: block;
+            margin: 0 auto;
 
-        border-bottom: 1px solid ${props => props.theme.colors.divider.gray};
-    }
+            border-bottom: 1px solid ${props =>
+                props.theme.colors.divider.gray};
+        }
+
+        @media and (min-width: ${props => props.theme.breakpoints[1]}) {
+            margin-bottom: 40px;
+        }
 `;
 
 const PaymentCard = ({

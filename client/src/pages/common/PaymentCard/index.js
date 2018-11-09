@@ -45,7 +45,7 @@ const PaymentCardContainer = ({
 
             if (!invoice || !invoice.items)
                 return (
-                    <Box mb={40}>
+                    <Box mb={[7, '', 40]}>
                         <NoPaymentsCard
                             text={`Something went wrong and this payment is unable to be displayed. Please contact us.`}
                         />
