@@ -23,3 +23,8 @@ export const zIndex = style({
     cssProperty: 'z-index',
     key: 'zIndex',
 });
+
+export const flexWrap = style({
+    prop: 'flexWrap',
+    cssProperty: 'flex-wrap',
+});

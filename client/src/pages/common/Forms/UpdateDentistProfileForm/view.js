@@ -1,15 +1,13 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import {
     Form,
-    Responsive,
     Box,
     Alert,
     TextArea,
     Select,
     Checkbox,
-    Container,
 } from '../../../../components';
 
 const CheckboxGroup = Checkbox.Group;
@@ -44,7 +42,6 @@ const PROCEDURE_GROUP_LIST = [
     'Implantology',
 ];
 
-const { TabletMobile, Desktop } = Responsive;
 const { FormItem, SubmitButton } = Form;
 const { Option } = Select;
 
@@ -100,7 +97,7 @@ const UpdateDentistProfileForm = props => {
         value: p,
     }));
 
-    const content = (
+    return (
         <StyledForm>
             <Box mt={[18, '', 0]}>
                 {(error || isUpdated) && (
@@ -168,15 +165,6 @@ const UpdateDentistProfileForm = props => {
                 </Form>
             </Box>
         </StyledForm>
-    );
-
-    return (
-        <Fragment>
-            <TabletMobile>
-                <Container>{content}</Container>
-            </TabletMobile>
-            <Desktop>{content}</Desktop>
-        </Fragment>
     );
 };
 

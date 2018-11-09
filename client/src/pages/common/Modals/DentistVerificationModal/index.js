@@ -2,14 +2,23 @@ import React, { Component, Fragment } from 'react';
 import { compose, graphql, withApollo } from 'react-apollo';
 import styled from 'styled-components';
 import get from 'lodash/get';
-import { Icon, Alert } from 'antd';
-import { Modal } from '../../../../components';
+import { Alert } from 'antd';
+import {
+    Modal,
+    Flex,
+    Button,
+    Icon,
+    Box,
+    Responsive,
+    Text,
+} from '../../../../components';
 import UpdateDentistProfileForm from '../../../common/Forms/UpdateDentistProfileForm';
 import { getActiveUserQuery, getUserQuery } from './queries';
 import UserVerification from '../../UserVerification';
 import { DENTIST } from '../../../../util/strings';
 import { withScreenSizes } from '../../../../components/Responsive';
 
+const { Desktop, TabletMobile } = Responsive;
 const DENTIST_PROFILE_STEP = 'dentist_profile_step';
 const DENTIST_VERIFICATION_STEP = 'dentist_verification_step';
 
@@ -36,50 +45,15 @@ const StyledModal = styled(Modal)`
     }
 `;
 
-const TabContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    border-top: 2px solid #f2f2f2;
-
-    @media (min-width: ${props => props.theme.breakpoints[1]}) {
-        flex-direction: row;
-    }
-`;
-
-const Tab = styled.div`
-    text-align: center;
-    flex: 1;
-    text-align: center;
-    padding: 14px 0;
-    font-size: 16px;
-    cursor: pointer;
-
-    align-items: center;
-    display: flex;
-    justify-content: center;
-
-    background: ${props => (props.active ? '#ffffff' : '#f2f2f2')};
-    color: ${props => (props.active ? '#ffffff' : '#727272')};
-
-    > span {
-        color: #727272;
-        color: ${props => (props.active ? '#393939' : '#727272')};
-    }
-
-    .anticon {
-        font-size: 24px;
-        font-weight: normal;
-        margin-right: 12px;
-    }
-`;
-
 const ContentWrap = styled.div`
     padding: 20px;
 `;
 
 const DentistProfileStepContent = ({ onComplete, completed }) => (
     <ContentWrap>
-        <h2>Step 1: Let&#39;s create your dentist profile</h2>
+        <Text fontSize={[2, '', 4]} mb={[18, '', 20]} fontWeight="medium">
+            Step 1: Let&#39;s create your dentist profile
+        </Text>
 
         {completed ? (
             <Fragment>
@@ -90,7 +64,9 @@ const DentistProfileStepContent = ({ onComplete, completed }) => (
             </Fragment>
         ) : (
             <Fragment>
-                <p>You need to be a dentist to continue.</p>
+                <Text fontSize={[0, '', 2]} mb={[10, '', 12]}>
+                    You need to be a dentist to continue.
+                </Text>
             </Fragment>
         )}
         <UpdateDentistProfileForm onComplete={onComplete} />
@@ -234,7 +210,7 @@ class DentistVerificationModal extends Component {
     };
 
     render() {
-        const { visible, desktopOnly } = this.props;
+        const { visible, desktopOnly, tabletMobileOnly } = this.props;
         const { currentStep, completedSteps } = this.state;
 
         return (
@@ -257,42 +233,153 @@ class DentistVerificationModal extends Component {
                 }
                 {...this.props}
             >
-                <TabContainer>
-                    <Tab
-                        onClick={this.handleChangeStep(DENTIST_PROFILE_STEP)}
-                        status={
-                            DENTIST_PROFILE_STEP in completedSteps
-                                ? 'finished'
-                                : null
-                        }
-                        active={currentStep === DENTIST_PROFILE_STEP}
-                    >
-                        {DENTIST_PROFILE_STEP in completedSteps ? (
-                            <Icon
-                                type="check-circle"
-                                theme="twoTone"
-                                twoToneColor="#3481F8"
-                            />
-                        ) : (
-                            <Icon type="user" />
-                        )}
-                        <span>1. Dentist Profile</span>
-                    </Tab>
-                    <Tab
-                        onClick={this.handleChangeStep(
-                            DENTIST_VERIFICATION_STEP
-                        )}
-                        status={
-                            currentStep === DENTIST_VERIFICATION_STEP
-                                ? 'active'
-                                : null
-                        }
-                        active={currentStep === DENTIST_VERIFICATION_STEP}
-                    >
-                        <Icon type="solution" style={{ color: '#727272' }} />
-                        <span>2. Dentist Verification</span>
-                    </Tab>
-                </TabContainer>
+                <Flex
+                    flexDirection="row"
+                    flexWrap="wrap"
+                    borderTop="2px solid #f2f2f2"
+                >
+                    <Button width="50%" type="ghost">
+                        <Flex
+                            textAlign="center"
+                            py={14}
+                            px={0}
+                            fontSize={16}
+                            height={[52, '', 50]}
+                            alignItems="center"
+                            justifyContent="center"
+                            bg={
+                                currentStep === DENTIST_PROFILE_STEP ||
+                                tabletMobileOnly
+                                    ? '#ffffff'
+                                    : '#f2f2f2'
+                            }
+                            color={
+                                currentStep === DENTIST_PROFILE_STEP ||
+                                tabletMobileOnly
+                                    ? 'text.black'
+                                    : '#727272'
+                            }
+                            onClick={this.handleChangeStep(
+                                DENTIST_PROFILE_STEP
+                            )}
+                            status={
+                                DENTIST_PROFILE_STEP in completedSteps
+                                    ? 'finished'
+                                    : null
+                            }
+                        >
+                            {DENTIST_PROFILE_STEP in completedSteps ? (
+                                <Desktop>
+                                    <Icon
+                                        fontSize={24}
+                                        fontWeight="normal"
+                                        color={
+                                            currentStep === DENTIST_PROFILE_STEP
+                                                ? '#393939'
+                                                : '#727272'
+                                        }
+                                        mr={12}
+                                        type="check-circle"
+                                        theme="twoTone"
+                                        twoToneColor="#3481F8"
+                                    />
+                                </Desktop>
+                            ) : (
+                                <Desktop>
+                                    <Icon
+                                        fontSize={24}
+                                        color={
+                                            currentStep === DENTIST_PROFILE_STEP
+                                                ? '#393939'
+                                                : '#727272'
+                                        }
+                                        mr={12}
+                                        fontWeight="normal"
+                                        type="user"
+                                    />
+                                </Desktop>
+                            )}
+                            <Text
+                                is="span"
+                                fontWeight={['medium', '', 'regular']}
+                                fontSize={[1, '', 2]}
+                            >
+                                1. Dentist Profile
+                            </Text>
+                        </Flex>
+                    </Button>
+                    <Button width="50%" type="ghost">
+                        <Flex
+                            textAlign="center"
+                            py={14}
+                            px={0}
+                            height={[52, '', 50]}
+                            fontSize={16}
+                            alignItems="center"
+                            justifyContent="center"
+                            bg={
+                                currentStep === DENTIST_VERIFICATION_STEP ||
+                                tabletMobileOnly
+                                    ? '#ffffff'
+                                    : '#f2f2f2'
+                            }
+                            color={
+                                currentStep === DENTIST_VERIFICATION_STEP ||
+                                tabletMobileOnly
+                                    ? 'text.black'
+                                    : '#727272'
+                            }
+                            onClick={this.handleChangeStep(
+                                DENTIST_VERIFICATION_STEP
+                            )}
+                            status={
+                                currentStep === DENTIST_VERIFICATION_STEP
+                                    ? 'active'
+                                    : null
+                            }
+                        >
+                            <Desktop>
+                                <Icon
+                                    fontSize={24}
+                                    fontWeight="normal"
+                                    mr={12}
+                                    type="solution"
+                                    style={{ color: '#727272' }}
+                                />
+                            </Desktop>
+                            <Text
+                                is="span"
+                                fontWeight={['medium', '', 'regular']}
+                                fontSize={[1, '', 2]}
+                            >
+                                2. Dentist Verification
+                            </Text>
+                        </Flex>
+                    </Button>
+                    <TabletMobile>
+                        <Box
+                            borderBottom={`solid 3px 
+                            ${
+                                currentStep === DENTIST_PROFILE_STEP
+                                    ? '#3481f8'
+                                    : '#dbdbdb'
+                            }
+                        `}
+                            width="50%"
+                        />
+                        <Box
+                            borderBottom={`solid 3px 
+                            ${
+                                currentStep === DENTIST_VERIFICATION_STEP
+                                    ? '#3481f8'
+                                    : '#dbdbdb'
+                            }
+                        `}
+                            width="50%"
+                        />
+                    </TabletMobile>
+                </Flex>
+
                 {this.renderStepContent()}
             </StyledModal>
         );

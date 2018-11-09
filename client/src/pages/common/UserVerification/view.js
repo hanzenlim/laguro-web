@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { compose, withApollo } from 'react-apollo';
 import { gql } from 'apollo-boost';
 import { Alert } from 'antd';
@@ -12,7 +12,7 @@ import _isString from 'lodash/isString';
 import PatientVerificationForm from '../../common/Forms/UserVerification/PatientVerificationForm';
 import ProviderVerificationForm from '../../common/Forms/UserVerification/ProviderVerificationForm';
 import HostVerificationForm from '../../common/Forms/UserVerification/HostVerificationForm';
-import { Form, Container, Responsive } from '../../../components';
+import { Form } from '../../../components';
 
 import { documentKinds } from '../../../staticData/documentTypeList';
 import { HOST, DENTIST, PATIENT } from '../../../util/strings';
@@ -30,7 +30,6 @@ import {
 } from './queries';
 
 const { SubmitButton } = Form;
-const { TabletMobile, Desktop } = Responsive;
 
 export const StyledAlert = styled(Alert)`
     && {
@@ -372,7 +371,7 @@ class UserVerification extends Component {
             return null;
         };
 
-        const content = (
+        return (
             <Form onSuccess={this.handleSubmit} debounce="false">
                 {hasUpdated && (
                     <StyledAlert
@@ -405,15 +404,6 @@ class UserVerification extends Component {
                     loading={this.state.isSubmitting}
                 />
             </Form>
-        );
-
-        return (
-            <Fragment>
-                <TabletMobile>
-                    <Container>{content}</Container>
-                </TabletMobile>
-                <Desktop>{content}</Desktop>
-            </Fragment>
         );
     }
 }

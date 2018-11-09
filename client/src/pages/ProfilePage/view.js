@@ -163,7 +163,19 @@ class ProfileView extends Component {
             case MY_PROFILE:
                 return <UpdateProfileForm />;
             case MY_DOCUMENTS:
-                return <UserVerification persona={persona} />;
+                return (
+                    <Fragment>
+                        <TabletMobile>
+                            <Container>
+                                <UserVerification persona={persona} />
+                            </Container>
+                        </TabletMobile>
+                        <Desktop>
+                            <UserVerification persona={persona} />
+                        </Desktop>
+                    </Fragment>
+                );
+
             case MY_APPOINTMENTS:
                 return <PatientAppointments />;
             case MY_LISTINGS:
@@ -179,7 +191,14 @@ class ProfileView extends Component {
             case DENTIST_PROFILE:
                 return (
                     <Box>
-                        <UpdateDentistProfileForm />
+                        <TabletMobile>
+                            <Container>
+                                <UpdateDentistProfileForm />
+                            </Container>
+                        </TabletMobile>
+                        <Desktop>
+                            <UpdateDentistProfileForm />
+                        </Desktop>
                     </Box>
                 );
             case PUBLIC_PROFILE:

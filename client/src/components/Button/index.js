@@ -75,6 +75,7 @@ const StyledButton = styled(AntdButton)`
         color: ${props => props.theme.colors.text.blue};
         background-color: transparent;
         outline: none;
+        border: none;
         border-color: transparent;
         box-shadow: none;
         ${borders};
