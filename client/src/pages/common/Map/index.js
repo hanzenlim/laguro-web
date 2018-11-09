@@ -193,6 +193,7 @@ class Map extends PureComponent {
                         longitude={this.state.popupInfo.longitude}
                         latitude={this.state.popupInfo.latitude}
                         image={this.state.popupInfo.image}
+                        url={this.state.popupInfo.url}
                     />
                 )}
                 {data.map(
