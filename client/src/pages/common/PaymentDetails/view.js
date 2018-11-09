@@ -115,7 +115,7 @@ const PaymentDetailsView = ({
             {(type === RESERVATION_PAYMENT_TYPE || EQUIPMENT_PAYMENT_TYPE) &&
                 getInvoiceItems(EQUIPMENT_PAYMENT_TYPE).length > 0 && (
                     <Section title="Equipment">
-                        <Box width={360}>
+                        <Box width={['unset', '', 360]}>
                             <LineItemGroup
                                 withQuantity
                                 itemType={EQUIPMENT_PAYMENT_TYPE}
