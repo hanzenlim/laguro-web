@@ -1,8 +1,15 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Query } from 'react-apollo';
-
 import { GET_PAYMENT_HISTORY_QUERY } from './queries';
-import { Skeleton, Card, Text, Flex, Box } from '../../../components';
+import {
+    Skeleton,
+    Card,
+    Text,
+    Container,
+    Flex,
+    Box,
+    Responsive,
+} from '../../../components';
 import PaymentCard from '../PaymentCard';
 import ProcedurePaymentCard from '../PaymentCard/ProcedurePaymentCard';
 import {
@@ -16,19 +23,21 @@ import {
 } from '../../../util/strings';
 import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
 
+const { Desktop, TabletMobile } = Responsive;
+
 export const CardLoading = () => (
     <Flex flexDirection="column">
-        <Box mb={40}>
+        <Box mb={[7, '', 40]}>
             <Card>
                 <Skeleton active />
             </Card>
         </Box>
-        <Box mb={40}>
+        <Box mb={[7, '', 40]}>
             <Card>
                 <Skeleton active />
             </Card>
         </Box>
-        <Box mb={40}>
+        <Box mb={[7, '', 40]}>
             <Card>
                 <Skeleton active />
             </Card>
@@ -60,47 +69,59 @@ const PaymentHistoryContainer = ({ userId }) => (
         {paymentHistoryQueryRes => {
             const { loading, error } = paymentHistoryQueryRes;
             const paymentData = paymentHistoryQueryRes.data;
+            let content;
 
-            if (loading) return <CardLoading />;
+            if (loading) {
+                content = <CardLoading />;
+            } else if (error) {
+                content = <RedirectErrorPage />;
+            } else {
+                content = (
+                    <Flex flexDirection="column">
+                        {paymentData.queryPayments.map((payment, index) => {
+                            if (
+                                payment.type === APPOINTMENT_PAYMENT_TYPE ||
+                                payment.type === RESERVATION_PAYMENT_TYPE
+                            ) {
+                                return (
+                                    <PaymentCard
+                                        key={index}
+                                        payment={payment}
+                                        cardType={PAYMENT}
+                                        paymentStatus={PAYMENT_MADE}
+                                    />
+                                );
+                            } else if (
+                                payment.type === PROCEDURE_PAYMENT_TYPE
+                            ) {
+                                return (
+                                    <ProcedurePaymentCard
+                                        key={index}
+                                        payment={payment}
+                                        persona={PATIENT}
+                                        cardType={PAYMENT}
+                                        paymentStatus={PAYMENT_MADE}
+                                    />
+                                );
+                            }
 
-            if (error) {
-                return <RedirectErrorPage />;
+                            // In theory this should never happen.
+                            return null;
+                        })}
+                        {paymentData.queryPayments.length === 0 && (
+                            <NoPaymentsCard text="You have no payments yet!" />
+                        )}
+                    </Flex>
+                );
             }
 
             return (
-                <Flex flexDirection="column">
-                    {paymentData.queryPayments.map((payment, index) => {
-                        if (
-                            payment.type === APPOINTMENT_PAYMENT_TYPE ||
-                            payment.type === RESERVATION_PAYMENT_TYPE
-                        ) {
-                            return (
-                                <PaymentCard
-                                    key={index}
-                                    payment={payment}
-                                    cardType={PAYMENT}
-                                    paymentStatus={PAYMENT_MADE}
-                                />
-                            );
-                        } else if (payment.type === PROCEDURE_PAYMENT_TYPE) {
-                            return (
-                                <ProcedurePaymentCard
-                                    key={index}
-                                    payment={payment}
-                                    persona={PATIENT}
-                                    cardType={PAYMENT}
-                                    paymentStatus={PAYMENT_MADE}
-                                />
-                            );
-                        }
-
-                        // In theory this should never happen.
-                        return null;
-                    })}
-                    {paymentData.queryPayments.length === 0 && (
-                        <NoPaymentsCard text="You have no payments yet!" />
-                    )}
-                </Flex>
+                <Fragment>
+                    <TabletMobile>
+                        <Container>{content}</Container>
+                    </TabletMobile>
+                    <Desktop>{content}</Desktop>
+                </Fragment>
             );
         }}
     </Query>

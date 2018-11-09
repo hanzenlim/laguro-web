@@ -102,7 +102,7 @@ export const PAYMENT_REFUNDED = 'refunded';
 export const PAYMENT_WITHDRAWN = 'withdrawn';
 export const PAYMENT_AVAILABLE = 'available';
 export const PAYMENT_PENDING = 'pending';
-export const PAYMENT_MADE = 'payment made';
+export const PAYMENT_MADE = 'Payment Made';
 export const PAYMENT_RECEIVED = 'PAYMENT RECEIVED';
 export const RESERVATION_CANCELLED_BY_DENTIST =
     'Reservation cancelled by dentist';

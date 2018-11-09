@@ -1,7 +1,7 @@
 import { style } from 'styled-system';
 
 // eslint-disable-next-line
-export function truncate(width) {
+export function truncate(width = 'auto') {
     return `
       display: block;
       white-space: nowrap;

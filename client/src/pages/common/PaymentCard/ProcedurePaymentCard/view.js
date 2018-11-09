@@ -14,32 +14,41 @@ import {
 
 const StyledCard = styled(Card)`
     && {
-        width: 720px;
-        margin-bottom: 40px;
+        width: 100%;
+        margin-bottom: 7px;
         box-shadow: 1px 1px 7px 0 rgba(0, 0, 0, 0.15);
         border-color: ${props => props.theme.colors.divider.gray};
-    }
 
-    && .ant-card-head-title {
-        padding-bottom: 20px;
-    }
+        .ant-card-head-title {
+            padding-bottom: 20px;
+        }
 
-    && .ant-card-body {
-        padding-top: 20px;
-        padding-bottom: 40px;
-    }
+        .ant-card-body {
+            padding-top: 20px;
+            padding-bottom: 40px;
+        }
 
-    && .ant-card-head {
-        border-bottom: none;
-    }
+        .ant-card-head {
+            border-bottom: none;
+        }
 
-    && .ant-card-head:after {
-        content: '';
-        display: block;
-        margin: 0 auto;
+        .ant-card-head:after {
+            content: '';
+            display: block;
+            margin: 0 auto;
+            width: 100%;
 
-        width: 680px;
-        border-bottom: 1px solid ${props => props.theme.colors.divider.gray};
+            border-bottom: 1px solid ${props => props.theme.colors.divider.gray};
+        }
+
+        @media (min-width: ${props => props.theme.breakpoints[1]}) {
+            width: 720px;
+            margin-bottom: 40px;
+
+            .ant-card-head:after {
+                width: 680px;
+            }
+        }
     }
 `;
 
@@ -47,17 +56,17 @@ const renderInvoiceItem = (procedures, persona) =>
     procedures.map(procedure => (
         <Box>
             <Flex justifyContent="space-between">
-                <Box fontSize={2} fontWeight="bold">
+                <Box fontSize={[0, '', 2]} fontWeight="bold">
                     {procedure.name}
                 </Box>
-                <Box fontSize={2} fontWeight="bold">
+                <Box fontSize={[0, '', 2]} fontWeight="bold">
                     {persona === PATIENT
                         ? renderPrice(procedure.totalPrice)
                         : renderPrice(procedure.payoutAmount)}
                 </Box>
             </Flex>
             <Box
-                my={15}
+                my={[7, '', 15]}
                 borderBottom="1px solid"
                 borderColor="divider.darkGray"
             />
@@ -96,10 +105,10 @@ const PaymentCardView = ({
             title={
                 <Flex alignItems="center">
                     <Box>
-                        <Text fontSize={3}>{paymentStatus}</Text>
+                        <Text fontSize={[1, '', 3]}>{paymentStatus}</Text>
                         <Flex alignItems="flex-end">
                             <Text
-                                fontSize={5}
+                                fontSize={[4, '', 5]}
                                 fontWeight="bold"
                                 lineHeight="1.1"
                                 color={totalColor()}
@@ -108,7 +117,8 @@ const PaymentCardView = ({
                             </Text>
                             {refundAmount && (
                                 <Text
-                                    ml={10}
+                                    ml={[8, '', 10]}
+                                    fontSize={[4, '', 5]}
                                     color="text.yellow"
                                 >{`(${renderPrice(
                                     refundAmount
@@ -119,18 +129,23 @@ const PaymentCardView = ({
                 </Flex>
             }
         >
-            <Text fontSize={5} fontWeight="bold" lineHeight="1.1">
+            <Text
+                truncate
+                fontSize={[2, '', 5]}
+                fontWeight="bold"
+                lineHeight="1.1"
+            >
                 {persona === PATIENT
                     ? `Dr. ${payment.payee.firstName} ${payment.payee.lastName}`
                     : `${payment.payer.firstName} ${payment.payer.lastName}`}
             </Text>
-            <Box ml={30} mt={30}>
-                <Text fontSize={3} mb={10}>
+            <Box ml={[0, '', 30]} mt={[14, '', 30]}>
+                <Text fontSize={[0, '', 3]} mb={5}>
                     Procedure Summary
                 </Text>
                 {renderInvoiceItem(payment.invoice.items, persona)}
                 <Flex
-                    fontSize={2}
+                    fontSize={[0, '', 2]}
                     fontWeight="bold"
                     justifyContent="space-between"
                 >

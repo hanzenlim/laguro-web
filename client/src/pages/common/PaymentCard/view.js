@@ -72,10 +72,10 @@ const PaymentCard = ({
             title={
                 <Flex alignItems="center">
                     <Box>
-                        <Text fontSize={3}>{paymentStatus}</Text>
+                        <Text fontSize={[1, '', 3]}>{paymentStatus}</Text>
                         <Flex alignItems="flex-end">
                             <Text
-                                fontSize={5}
+                                fontSize={[4, '', 5]}
                                 fontWeight="bold"
                                 lineHeight="1.1"
                                 color={totalColor()}
@@ -85,6 +85,7 @@ const PaymentCard = ({
                             {refundAmount && (
                                 <Text
                                     ml={10}
+                                    fontSize={[4, '', 5]}
                                     color="text.yellow"
                                 >{`(${renderPrice(
                                     refundAmount
@@ -126,12 +127,16 @@ const PaymentCard = ({
             {_get(reservation, 'availableTimes.length') ? (
                 reservation.availableTimes.map(availableTime => (
                     <Fragment>
-                        <Text fontSize={5} fontWeight="bold" lineHeight="1.1">
+                        <Text
+                            fontSize={[2, '', 5]}
+                            fontWeight="bold"
+                            lineHeight="1.1"
+                        >
                             {moment(availableTime.startTime).format(
                                 'ddd, MMM D, YYYY'
                             )}
                         </Text>
-                        <Text fontSize={5} lineHeight="1.1">
+                        <Text fontSize={[2, '', 5]} lineHeight="1.1">
                             {`${office.name} (${moment(
                                 availableTime.startTime
                             ).format('hA')} - ${moment(
@@ -142,10 +147,14 @@ const PaymentCard = ({
                 ))
             ) : (
                 <Fragment>
-                    <Text fontSize={5} fontWeight="bold" lineHeight="1.1">
+                    <Text
+                        fontSize={[2, '', 5]}
+                        fontWeight="bold"
+                        lineHeight="1.1"
+                    >
                         {moment(startTime).format('ddd, MMM D, YYYY')}
                     </Text>
-                    <Text fontSize={5} lineHeight="1.1">
+                    <Text fontSize={[2, '', 5]} lineHeight="1.1">
                         {`${office.name} (${moment(startTime).format(
                             'hA'
                         )} - ${moment(endTime).format('hA')})`}
@@ -154,14 +163,16 @@ const PaymentCard = ({
             )}
 
             <Flex mt={5}>
-                <Icon
-                    fontSize={4}
-                    type="environment-o"
-                    color="icon.lightGray"
-                    style={{ fontWeight: 'bold' }}
-                    mr={6}
-                />
-                <Text color="text.darkBlue">{office.location.name}</Text>
+                <Text color="text.darkBlue">
+                    <Icon
+                        fontSize={[0, '', 4]}
+                        type="environment-o"
+                        color="icon.lightGray"
+                        style={{ fontWeight: 'bold' }}
+                        mr={6}
+                    />
+                    {office.location.name}
+                </Text>
             </Flex>
         </StyledCard>
     );
