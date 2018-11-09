@@ -8,45 +8,45 @@ const CancelListingModal = props => {
 
     return (
         <Modal visible={visible} onCancel={onCancel} destroyOnClose width={550}>
-            <Box py={27} px={75} textAlign="center">
+            <Box py={26} px={[0, '', 76]} textAlign="center">
                 <Text
-                    fontSize={4}
+                    fontSize={[3, '', 4]}
                     fontWeight="light"
                     textAlign="center"
                     mb={18}
                 >
                     delete listing
                 </Text>
-                <Text fontSize={3} mb={20}>
+                <Text fontSize={[1, '', 3]} mb={20}>
                     Are you sure you want to delete this listing?
                 </Text>
                 <Flex justifyContent="flex-end" alignItems="center">
                     <Button
                         type="ghost"
-                        height="60px"
+                        height={['40px', '', '60px']}
                         width={188}
                         onClick={onCancel}
                         mr={20}
                     >
                         <Text
                             fontWeight="bold"
-                            fontSize={3}
+                            fontSize={[1, '', 3]}
                             color="text.blue"
                             border="2px solid"
                             borderColor="divider.blue"
                             borderRadius="4px"
-                            lineHeight="54px"
+                            lineHeight={['34px', '', '54px']}
                         >
                             Cancel
                         </Text>
                     </Button>
                     <Button
                         loading={loading}
-                        height="60px"
+                        height={['40px', '', '60px']}
                         width={188}
                         onClick={onSubmit}
                         fontWeight="bold"
-                        fontSize={3}
+                        fontSize={[1, '', 3]}
                     >
                         Yes
                     </Button>
