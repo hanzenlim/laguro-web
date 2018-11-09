@@ -21,8 +21,8 @@ const HostVerificationForm = props => (
             Verification
         </Text>
         <PreText>
-            Before you can book a reservation, we need you to upload some
-            documents for verification.
+            Before your listings can be booked by dentists, we need you to
+            upload some documents for verification.
         </PreText>
         <InnerForm {...props}>
             <FormItem
