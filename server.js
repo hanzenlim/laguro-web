@@ -7,6 +7,7 @@ const passport = require('passport');
 const path = require('path');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
+const cors = require('cors');
 
 const { makeQuery } = require('./util/serverDataLoader');
 const { generateToken } = require('./util/token');
@@ -29,8 +30,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
+app.options('/api/graphql', cors());
 
-app.post('/api/graphql', async (req, res) => {
+app.post('/api/graphql', cors(), async (req, res) => {
     const context = {};
 
     if (req.user) {
