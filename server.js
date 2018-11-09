@@ -7,9 +7,9 @@ const passport = require('passport');
 const path = require('path');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
-const jwt = require('jsonwebtoken');
 
 const { makeQuery } = require('./util/serverDataLoader');
+const { generateToken } = require('./util/token');
 
 // Services
 require('./services/passport');
@@ -36,7 +36,7 @@ app.post('/api/graphql', async (req, res) => {
     if (req.user) {
         const { id, email, dentistId } = req.user;
         const user = { id, email, dentistId };
-        const token = jwt.sign({ user }, process.env.SHARED_SERVER_SECRET);
+        const token = generateToken(user);
 
         context.headers = {
             authorization: `bearer ${token}`,
