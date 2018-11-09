@@ -118,7 +118,15 @@ class DentistVerificationModal extends Component {
                 variables: { id: this.props.data.activeUser.id },
             });
 
-            if (get(data, 'getUser.dentist')) {
+            const hasSpecialtyAndBio =
+                get(data, 'getUser.dentist.specialty') &&
+                get(data, 'getUser.dentist.bio');
+
+            const hasEmptyInitialValue =
+                get(data, 'getUser.dentist.specialty') === ' ' ||
+                get(data, 'getUser.dentist.bio') === ' ';
+
+            if (hasSpecialtyAndBio && !hasEmptyInitialValue) {
                 return this.setState({
                     currentStep: DENTIST_VERIFICATION_STEP,
                     completedSteps: {
@@ -358,7 +366,7 @@ class DentistVerificationModal extends Component {
                     </Button>
                     <TabletMobile>
                         <Box
-                            borderBottom={`solid 3px 
+                            borderBottom={`solid 3px
                             ${
                                 currentStep === DENTIST_PROFILE_STEP
                                     ? '#3481f8'
@@ -368,7 +376,7 @@ class DentistVerificationModal extends Component {
                             width="50%"
                         />
                         <Box
-                            borderBottom={`solid 3px 
+                            borderBottom={`solid 3px
                             ${
                                 currentStep === DENTIST_VERIFICATION_STEP
                                     ? '#3481f8'

@@ -22,6 +22,8 @@ export const getUserQuery = gql`
             id
             dentist {
                 id
+                specialty
+                bio
             }
         }
     }

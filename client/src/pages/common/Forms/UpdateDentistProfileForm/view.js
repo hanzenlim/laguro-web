@@ -124,6 +124,7 @@ const UpdateDentistProfileForm = props => {
                         rules={[
                             {
                                 required: true,
+                                whitespace: true,
                                 message: 'Please select your title...',
                             },
                         ]}
@@ -139,6 +140,7 @@ const UpdateDentistProfileForm = props => {
                         rules={[
                             {
                                 required: true,
+                                whitespace: true,
                                 message: 'Please write something about you...',
                             },
                         ]}
