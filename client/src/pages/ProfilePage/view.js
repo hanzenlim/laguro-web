@@ -203,14 +203,14 @@ class ProfileView extends Component {
                 );
             case PUBLIC_PROFILE:
                 return (
-                    <Box>
+                    <Container px={[25, '', 0]}>
                         <DentistDetails dentist={dentist} viewOnly={true} />
                         <ReviewContainer
                             type={DENTIST}
                             id={dentistId}
                             viewOnly={true}
                         />
-                    </Box>
+                    </Container>
                 );
             case PROCEDURES_CONSENT:
                 return <ConsentAndPayment />;
