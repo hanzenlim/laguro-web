@@ -138,7 +138,6 @@ const StripePayoutButtons = ({ userId, accountToken, totalAvailable }) => (
                             </Mutation>
                         ) : (
                             <Button
-                                type="ghost"
                                 px={[10, '', 30]}
                                 width="100%"
                                 disabled
