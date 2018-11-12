@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import system from 'system-components';
-import { truncate } from '../../components/utils';
 
 const Text = system(
     {
@@ -60,7 +59,6 @@ const StyledText = styled(Text)`
     :hover {
         ${props => props.hoverColor && `color: ${props.hoverColor}`};
     }
-    ${props => props.truncate && truncate(props.truncate)};
 `;
 
 StyledText.displayName = 'Text';

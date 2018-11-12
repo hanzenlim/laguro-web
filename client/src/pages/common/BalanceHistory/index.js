@@ -7,6 +7,8 @@ import moment from 'moment';
 import BalanceHistoryView from './view';
 import { CardLoading } from '../PaymentHistory';
 import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
+import { withScreenSizes } from '../../../components/Responsive';
+import { Container } from '../../../components';
 
 import { GET_BALANCE_QUERY } from './queries';
 import {
@@ -110,7 +112,7 @@ class BalanceHistoryContainer extends PureComponent {
     };
 
     render() {
-        const { userId, persona } = this.props;
+        const { userId, persona, desktopOnly } = this.props;
         const { accountToken } = this.state;
         return (
             <Query
@@ -123,7 +125,12 @@ class BalanceHistoryContainer extends PureComponent {
                 }}
             >
                 {({ loading, error, data: paymentData }) => {
-                    if (loading) return <CardLoading />;
+                    if (loading)
+                        return (
+                            <Container px={[25, '', 0]}>
+                                <CardLoading />
+                            </Container>
+                        );
 
                     if (error) {
                         return <RedirectErrorPage />;
@@ -154,7 +161,9 @@ class BalanceHistoryContainer extends PureComponent {
 
                     return (
                         <BalanceHistoryView
-                            filteredPayments={filteredPayments}
+                            payments={
+                                desktopOnly ? filteredPayments : allPayments
+                            }
                             totalAvailable={totalAvailable}
                             totalPending={totalPending}
                             cardType={cardType}
@@ -172,4 +181,4 @@ class BalanceHistoryContainer extends PureComponent {
     }
 }
 
-export default BalanceHistoryContainer;
+export default withScreenSizes(BalanceHistoryContainer);

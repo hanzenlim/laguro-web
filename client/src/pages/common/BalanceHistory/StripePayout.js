@@ -8,7 +8,7 @@ import { stripeExpressClientKey } from '../../../config/keys';
 import { renderPrice } from '../../../util/paymentUtil';
 import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
 
-import { Flex, Box, Button, Loading, Text } from '../../../components';
+import { Grid, Box, Button, Loading, Text } from '../../../components';
 
 const StripePayoutButtons = ({ userId, accountToken, totalAvailable }) => (
     <Query query={GET_PAYOUT_LINK} variables={{ id: userId }}>
@@ -23,7 +23,7 @@ const StripePayoutButtons = ({ userId, accountToken, totalAvailable }) => (
             const { getUser } = dataPayoutLink;
             const { payoutLoginLink } = getUser;
             return (
-                <Flex alignItems="center" mb={20}>
+                <Grid gridTemplateColumns="1fr 1fr" mb={20} gridColumnGap="6px">
                     <Mutation mutation={ADD_PAYOUT_LINK}>
                         {(
                             addPayoutAccount,
@@ -48,40 +48,44 @@ const StripePayoutButtons = ({ userId, accountToken, totalAvailable }) => (
                             }
 
                             return (
-                                <Box mb={1} mr={40}>
-                                    {payoutLoginLink ? (
-                                        <a
-                                            href={payoutLoginLink}
-                                            target="_blank"
-                                        >
-                                            <Button
-                                                my={1}
-                                                fullWidth
-                                                color="primary"
-                                                px={30}
+                                <Box mb={1} mr={[6, '', 40]} width="100%">
+                                    <Box width="100%">
+                                        {payoutLoginLink ? (
+                                            <a
+                                                href={payoutLoginLink}
+                                                target="_blank"
                                             >
-                                                View Stripe account
-                                            </Button>
-                                        </a>
-                                    ) : (
-                                        <a
-                                            href={`https://connect.stripe.com/express/oauth/authorize?client_id=${stripeExpressClientKey}`}
-                                        >
-                                            <Button
-                                                my={1}
-                                                fullWidth
-                                                color="primary"
-                                                px={30}
+                                                <Button
+                                                    my={1}
+                                                    width="100%"
+                                                    color="primary"
+                                                    px={[10, '', 30]}
+                                                    fontSize={[0, '', 3]}
+                                                >
+                                                    View Stripe account
+                                                </Button>
+                                            </a>
+                                        ) : (
+                                            <a
+                                                href={`https://connect.stripe.com/express/oauth/authorize?client_id=${stripeExpressClientKey}`}
                                             >
-                                                Connect to your bank
-                                            </Button>
-                                        </a>
-                                    )}
+                                                <Button
+                                                    my={1}
+                                                    width="100%"
+                                                    color="primary"
+                                                    px={[10, '', 30]}
+                                                    fontSize={[0, '', 3]}
+                                                >
+                                                    Connect to your bank
+                                                </Button>
+                                            </a>
+                                        )}
+                                    </Box>
                                 </Box>
                             );
                         }}
                     </Mutation>
-                    <Box>
+                    <Box width="100%">
                         {totalAvailable > 0 && payoutLoginLink ? (
                             <Mutation mutation={PAYOUT_USER}>
                                 {(
@@ -133,12 +137,17 @@ const StripePayoutButtons = ({ userId, accountToken, totalAvailable }) => (
                                 }}
                             </Mutation>
                         ) : (
-                            <Button type="ghost" px={30} disabled>
+                            <Button
+                                px={[10, '', 30]}
+                                width="100%"
+                                disabled
+                                fontSize={[0, '', 3]}
+                            >
                                 Payout unavailable
                             </Button>
                         )}
                     </Box>
-                </Flex>
+                </Grid>
             );
         }}
     </Query>

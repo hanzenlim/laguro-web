@@ -4,12 +4,13 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 
 import { renderPrice } from '../../../../util/paymentUtil';
-import { Card, Text, Flex, Box } from '../../../../components';
+import { Card, Text, Flex, Box, Truncate } from '../../../../components';
 import {
     AVAILABLE,
     PENDING,
     PAYMENT_CARD,
     PATIENT,
+    PAYMENT_MADE,
 } from '../../../../util/strings';
 
 const StyledCard = styled(Card)`
@@ -19,35 +20,16 @@ const StyledCard = styled(Card)`
         box-shadow: 1px 1px 7px 0 rgba(0, 0, 0, 0.15);
         border-color: ${props => props.theme.colors.divider.gray};
 
-        .ant-card-head-title {
-            padding-bottom: 20px;
-        }
-
         .ant-card-body {
-            padding-top: 20px;
-            padding-bottom: 40px;
-        }
+            padding: 14px 20px;
 
-        .ant-card-head {
-            border-bottom: none;
-        }
-
-        .ant-card-head:after {
-            content: '';
-            display: block;
-            margin: 0 auto;
-            width: 100%;
-
-            border-bottom: 1px solid ${props => props.theme.colors.divider.gray};
+            @media (min-width: ${props => props.theme.breakpoints[1]}) {
+                padding: 20px 40px;
+            }
         }
 
         @media (min-width: ${props => props.theme.breakpoints[1]}) {
-            width: 720px;
             margin-bottom: 40px;
-
-            .ant-card-head:after {
-                width: 680px;
-            }
         }
     }
 `;
@@ -56,37 +38,28 @@ const renderInvoiceItem = (procedures, persona) =>
     procedures.map(procedure => (
         <Box>
             <Flex justifyContent="space-between">
-                <Box fontSize={[0, '', 2]} fontWeight="bold">
-                    {procedure.name}
-                </Box>
-                <Box fontSize={[0, '', 2]} fontWeight="bold">
+                <Text fontSize={[0, '', 2]}>{procedure.name}</Text>
+                <Text fontSize={[0, '', 2]}>
                     {persona === PATIENT
                         ? renderPrice(procedure.totalPrice)
                         : renderPrice(procedure.payoutAmount)}
-                </Box>
+                </Text>
             </Flex>
             <Box
-                my={[7, '', 15]}
+                my={[6, '', 15]}
                 borderBottom="1px solid"
                 borderColor="divider.darkGray"
             />
         </Box>
     ));
 
-const PaymentCardView = ({
-    closeModal,
-    cardType,
+const ProcedurePaymentCardView = ({
     payment,
     paymentStatus,
     totalAmount,
-    reservation,
-    startTime,
-    endTime,
-    office,
     persona,
-    ...rest
 }) => {
-    const totalColor = () => {
+    const getPaymentStatusColor = () => {
         switch (paymentStatus) {
             case AVAILABLE:
                 return 'text.blue';
@@ -97,67 +70,83 @@ const PaymentCardView = ({
         }
     };
     const { refundAmount } = payment;
+    const isOnPaymentHistory = paymentStatus === PAYMENT_MADE;
 
     return (
-        <StyledCard
-            {...rest}
-            key={payment.id}
-            title={
-                <Flex alignItems="center">
-                    <Box>
-                        <Text fontSize={[1, '', 3]}>{paymentStatus}</Text>
+        <StyledCard key={payment.id}>
+            <Flex alignItems="center">
+                <Box>
+                    <Text
+                        fontSize={[isOnPaymentHistory ? 1 : 0, '', 3]}
+                        color={getPaymentStatusColor()}
+                        textTransform={isOnPaymentHistory ? '' : 'uppercase'}
+                        mb={isOnPaymentHistory ? 0 : 14}
+                        fontWeight={isOnPaymentHistory ? 'normal' : 'bold'}
+                    >
+                        {paymentStatus}
+                    </Text>
+                    <Flex flexDirection="column">
+                        {!isOnPaymentHistory ? (
+                            <Text fontSize={1} lineHeight="1.1">
+                                {payment.type}
+                            </Text>
+                        ) : null}
                         <Flex alignItems="flex-end">
                             <Text
                                 fontSize={[4, '', 5]}
                                 fontWeight="bold"
                                 lineHeight="1.1"
-                                color={totalColor()}
                             >
                                 {renderPrice(totalAmount)}
                             </Text>
                             {refundAmount && (
                                 <Text
-                                    ml={[8, '', 10]}
-                                    fontSize={[4, '', 5]}
+                                    ml={10}
                                     color="text.yellow"
                                 >{`(${renderPrice(
                                     refundAmount
                                 )} Refunded)`}</Text>
                             )}
                         </Flex>
-                    </Box>
-                </Flex>
-            }
-        >
+                    </Flex>
+                </Box>
+            </Flex>
+            <Box
+                my={[10, '', 16]}
+                borderBottom="1px solid"
+                borderColor="divider.darkGray"
+            />
             <Text
-                truncate
                 fontSize={[2, '', 5]}
                 fontWeight="bold"
                 lineHeight="1.1"
+                mb={isOnPaymentHistory ? 14 : 4}
             >
-                {persona === PATIENT
-                    ? `Dr. ${payment.payee.firstName} ${payment.payee.lastName}`
-                    : `${payment.payer.firstName} ${payment.payer.lastName}`}
+                <Truncate lines={1}>
+                    {persona === PATIENT
+                        ? `Dr. ${payment.payee.firstName} ${
+                              payment.payee.lastName
+                          }`
+                        : `${payment.payer.firstName} ${
+                              payment.payer.lastName
+                          }`}
+                </Truncate>
             </Text>
-            <Box ml={[0, '', 30]} mt={[14, '', 30]}>
-                <Text fontSize={[0, '', 3]} mb={5}>
+            <Box>
+                <Text fontSize={[0, '', 3]} mb={[6, '', 10]}>
                     Procedure Summary
                 </Text>
                 {renderInvoiceItem(payment.invoice.items, persona)}
-                <Flex
-                    fontSize={[0, '', 2]}
-                    fontWeight="bold"
-                    justifyContent="space-between"
-                >
-                    <Box>Total</Box>
-                    <Box>{renderPrice(totalAmount)}</Box>
+                <Flex fontSize={[0, '', 2]} justifyContent="space-between">
+                    <Text fontWeight="500">Total</Text>
+                    <Text fontWeight="500">{renderPrice(totalAmount)}</Text>
                 </Flex>
             </Box>
         </StyledCard>
     );
 };
 
-PaymentCardView.propTypes = {
+ProcedurePaymentCardView.propTypes = {
     closeModal: PropTypes.func,
     cardType: PropTypes.string,
     payment: PropTypes.object,
@@ -170,7 +159,7 @@ PaymentCardView.propTypes = {
     office: PropTypes.object,
 };
 
-PaymentCardView.defaultProps = {
+ProcedurePaymentCardView.defaultProps = {
     closeModal: () => {},
     cardType: PAYMENT_CARD,
     payment: { id: '123', refundAmount: 123 },
@@ -182,4 +171,4 @@ PaymentCardView.defaultProps = {
     office: { name: 'Missing Office', location: { name: 'Missing Office' } },
 };
 
-export default PaymentCardView;
+export default ProcedurePaymentCardView;

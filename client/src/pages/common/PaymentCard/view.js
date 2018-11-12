@@ -7,40 +7,40 @@ import PropTypes from 'prop-types';
 import PaymentDetails from '../PaymentDetails';
 
 import { renderPrice } from '../../../util/paymentUtil';
-import { Card, Text, Flex, Box, Icon, Button } from '../../../components';
-import { AVAILABLE, PENDING, PAYMENT_CARD } from '../../../util/strings';
+import {
+    Card,
+    Text,
+    Flex,
+    Box,
+    Icon,
+    Button,
+    Truncate,
+} from '../../../components';
+import {
+    AVAILABLE,
+    PENDING,
+    PAYMENT_CARD,
+    PAYMENT_MADE,
+} from '../../../util/strings';
 
 const StyledCard = styled(Card)`
     && {
+        width: 100%;
         margin-bottom: 7px;
         box-shadow: 1px 1px 7px 0 rgba(0, 0, 0, 0.15);
         border-color: ${props => props.theme.colors.divider.gray};
-
-        .ant-card-head-title {
-            padding-bottom: 20px;
-        }
-
         .ant-card-body {
-            padding-top: 20px;
-            padding-bottom: 40px;
+            padding: 14px 20px;
+
+            @media (min-width: ${props => props.theme.breakpoints[1]}) {
+                padding: 20px 40px;
+            }
         }
 
-        .ant-card-head {
-            border-bottom: none;
-        }
-
-        .ant-card-head:after {
-            content: '';
-            display: block;
-            margin: 0 auto;
-
-            border-bottom: 1px solid ${props =>
-                props.theme.colors.divider.gray};
-        }
-
-        @media and (min-width: ${props => props.theme.breakpoints[1]}) {
+        @media (min-width: ${props => props.theme.breakpoints[1]}) {
             margin-bottom: 40px;
         }
+    }
 `;
 
 const PaymentCard = ({
@@ -55,9 +55,8 @@ const PaymentCard = ({
     startTime,
     endTime,
     office,
-    ...rest
 }) => {
-    const totalColor = () => {
+    const getPaymentStatusColor = () => {
         switch (paymentStatus) {
             case AVAILABLE:
                 return 'text.blue';
@@ -68,55 +67,69 @@ const PaymentCard = ({
         }
     };
     const { refundAmount } = payment;
+    const isOnPaymentHistory = paymentStatus === PAYMENT_MADE;
 
     return (
-        <StyledCard
-            {...rest}
-            key={payment.id}
-            title={
-                <Flex alignItems="center">
-                    <Box>
-                        <Text fontSize={[1, '', 3]}>{paymentStatus}</Text>
+        <StyledCard key={payment.id}>
+            <Flex alignItems="center">
+                <Box>
+                    <Text
+                        fontSize={[isOnPaymentHistory ? 1 : 0, '', 3]}
+                        color={getPaymentStatusColor()}
+                        textTransform={isOnPaymentHistory ? '' : 'uppercase'}
+                        mb={isOnPaymentHistory ? 0 : 14}
+                        fontWeight={isOnPaymentHistory ? 'normal' : 'bold'}
+                    >
+                        {paymentStatus}
+                    </Text>
+                    <Flex flexDirection="column">
+                        {!isOnPaymentHistory ? (
+                            <Text fontSize={1} lineHeight="1.1">
+                                {payment.type}
+                            </Text>
+                        ) : null}
                         <Flex alignItems="flex-end">
                             <Text
                                 fontSize={[4, '', 5]}
                                 fontWeight="bold"
                                 lineHeight="1.1"
-                                color={totalColor()}
                             >
                                 {renderPrice(totalAmount)}
                             </Text>
                             {refundAmount && (
                                 <Text
                                     ml={10}
-                                    fontSize={[4, '', 5]}
                                     color="text.yellow"
                                 >{`(${renderPrice(
                                     refundAmount
                                 )} Refunded)`}</Text>
                             )}
                         </Flex>
-                    </Box>
-                </Flex>
-            }
-            extra={
-                <Flex
-                    flexDirection="column"
-                    alignItems="center"
-                    mt={6}
-                    onClick={() => opentDetailModal(payment.id)}
-                >
-                    <Button type="ghost">
+                    </Flex>
+                </Box>
+                <Flex alignItems="top">
+                    <Button
+                        onClick={() => opentDetailModal(payment.id)}
+                        type="ghost"
+                        height={[50, '', 70]}
+                        width={[50, '', 70]}
+                        top="0"
+                        right="0"
+                        position="absolute"
+                    >
                         <Icon
-                            fontSize={3}
-                            style={{ fontWeight: 'bold', color: '#000000' }}
-                            type="eye-o"
+                            fontSize={[0, '', 3]}
+                            color="icon.blue"
+                            type="right"
                         />
-                        <Text mt="5px">view details</Text>
                     </Button>
                 </Flex>
-            }
-        >
+            </Flex>
+            <Box
+                my={[10, '', 16]}
+                borderBottom="1px solid"
+                borderColor="divider.darkGray"
+            />
             <PaymentDetails
                 payment={payment}
                 visible={visibleModal === `payment_detail_${payment.id}`}
@@ -134,18 +147,15 @@ const PaymentCard = ({
                         <Text
                             fontSize={[2, '', 5]}
                             fontWeight="bold"
-                            lineHeight="1.1"
+                            lineHeight="1.38"
                         >
-                            {moment(availableTime.startTime).format(
+                            {`${moment(availableTime.startTime).format(
                                 'ddd, MMM D, YYYY'
-                            )}
-                        </Text>
-                        <Text fontSize={[2, '', 5]} lineHeight="1.1">
-                            {`${office.name} (${moment(
-                                availableTime.startTime
-                            ).format('hA')} - ${moment(
-                                availableTime.endTime
-                            ).format('hA')})`}
+                            )} (${moment(availableTime.startTime).format(
+                                'hA'
+                            )} - ${moment(availableTime.endTime).format(
+                                'hA'
+                            )})`}
                         </Text>
                     </Fragment>
                 ))
@@ -154,28 +164,35 @@ const PaymentCard = ({
                     <Text
                         fontSize={[2, '', 5]}
                         fontWeight="bold"
-                        lineHeight="1.1"
+                        lineHeight="1.38"
                     >
-                        {moment(startTime).format('ddd, MMM D, YYYY')}
-                    </Text>
-                    <Text fontSize={[2, '', 5]} lineHeight="1.1">
-                        {`${office.name} (${moment(startTime).format(
-                            'hA'
-                        )} - ${moment(endTime).format('hA')})`}
+                        {`${moment(startTime).format(
+                            'ddd, MMM D, YYYY'
+                        )} (${moment(startTime).format('hA')} - ${moment(
+                            endTime
+                        ).format('hA')})`}
                     </Text>
                 </Fragment>
             )}
 
-            <Flex mt={5}>
-                <Text color="text.darkBlue">
-                    <Icon
-                        fontSize={[0, '', 4]}
-                        type="environment-o"
-                        color="icon.lightGray"
-                        style={{ fontWeight: 'bold' }}
-                        mr={6}
-                    />
-                    {office.location.name}
+            <Text fontSize={[2, '', 5]} lineHeight={[1.38, '', 1.1]}>
+                {office.name}
+            </Text>
+
+            <Flex mt={5} alignItems="center">
+                <Icon
+                    fontSize={[0, '', 4]}
+                    type="environment-o"
+                    color={isOnPaymentHistory ? 'icon.blue' : 'icon.lightGray'}
+                    style={{ fontWeight: 'bold' }}
+                    mr={6}
+                />
+                <Text
+                    color={isOnPaymentHistory ? 'text.blue' : 'text.gray'}
+                    lineHeight={[1, '', 1.83]}
+                    fontSize={[0, '', 3]}
+                >
+                    <Truncate lines={1}>{office.location.name}</Truncate>
                 </Text>
             </Flex>
         </StyledCard>

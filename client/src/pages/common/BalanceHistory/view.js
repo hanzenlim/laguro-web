@@ -8,7 +8,16 @@ import ProcedurePaymentCard from '../PaymentCard/ProcedurePaymentCard';
 import StripePayoutButtons from './StripePayout';
 import { renderPrice } from '../../../util/paymentUtil';
 
-import { Text, Flex, Select, RangePicker, Box } from '../../../components';
+import {
+    Text,
+    Flex,
+    Select,
+    RangePicker,
+    Box,
+    Responsive,
+    Container,
+    Card,
+} from '../../../components';
 import {
     PAYMENT_PENDING,
     PAYMENT_AVAILABLE,
@@ -21,23 +30,16 @@ import {
 
 const { Option } = Select;
 
-const StyledFlex = styled(Flex)`
-    && {
-        box-shadow: ${props => props.theme.shadows[0]};
-        border: 1px solid;
-        border-radius: 2px;
-        border-color: ${props => props.theme.colors.divider.gray};
-    }
-`;
-
 const StyledSelect = styled(Select)`
     && .ant-select-selection-selected-value {
         padding: 5px 0;
     }
 `;
 
+const { Desktop } = Responsive;
+
 const BalanceHistoryView = ({
-    filteredPayments,
+    payments,
     totalAvailable,
     totalPending,
     userId,
@@ -48,103 +50,106 @@ const BalanceHistoryView = ({
     persona,
     ...rest
 }) => (
-    <Flex flexDirection="column">
-        <StyledFlex
-            height={100}
-            mb={20}
-            justifyContent="space-around"
-            alignItems="center"
-        >
-            <Box>
-                <Text fontSize={3}>available</Text>
-                <Text
-                    fontSize={5}
-                    fontWeight="bold"
-                    lineHeight="1.1"
-                    color="text.blue"
-                >
-                    {renderPrice(totalAvailable)}
-                </Text>
+    <Container px={[25, '', 0]}>
+        <Flex flexDirection="column">
+            <Box mb={[16, '', 20]}>
+                <Card>
+                    <Flex justifyContent="space-between" alignItems="center">
+                        <Box>
+                            <Text fontSize={[0, '', 3]}>available</Text>
+                            <Text
+                                fontSize={[1, '', 5]}
+                                fontWeight="bold"
+                                lineHeight="1.1"
+                                color="text.blue"
+                            >
+                                {renderPrice(totalAvailable)}
+                            </Text>
+                        </Box>
+                        <Box>
+                            <Text fontSize={[0, '', 3]}>pending</Text>
+                            <Text
+                                fontSize={[1, '', 5]}
+                                fontWeight="bold"
+                                lineHeight="1.1"
+                                color="text.yellow"
+                            >
+                                {renderPrice(totalPending)}
+                            </Text>
+                        </Box>
+                        <Box>
+                            <Text fontSize={[0, '', 3]}>total</Text>
+                            <Text
+                                fontSize={[1, '', 5]}
+                                fontWeight="bold"
+                                lineHeight="1.1"
+                                color="text.black"
+                            >
+                                {renderPrice(totalPending + totalAvailable)}
+                            </Text>
+                        </Box>
+                    </Flex>
+                </Card>
             </Box>
-            <Box>
-                <Text fontSize={3}>pending</Text>
-                <Text
-                    fontSize={5}
-                    fontWeight="bold"
-                    lineHeight="1.1"
-                    color="text.yellow"
-                >
-                    {renderPrice(totalPending)}
-                </Text>
-            </Box>
-            <Box>
-                <Text fontSize={3}>total</Text>
-                <Text
-                    fontSize={5}
-                    fontWeight="bold"
-                    lineHeight="1.1"
-                    color="text.black"
-                >
-                    {renderPrice(totalPending + totalAvailable)}
-                </Text>
-            </Box>
-        </StyledFlex>
-        <StripePayoutButtons
-            userId={userId}
-            accountToken={accountToken}
-            totalAvailable={totalAvailable}
-        />
-        <Flex mb={20} justifyContent="space-between">
-            <StyledSelect
-                defaultValue={PAYMENT_AVAILABLE}
-                width={180}
-                onChange={handleSelectChange}
-            >
-                <Option value={PAYMENT_AVAILABLE}>Available</Option>
-                <Option value={PAYMENT_PENDING}>Pending</Option>
-                <Option value={PAYMENT_REFUNDED}>Refunded</Option>
-                <Option value={PAYMENT_WITHDRAWN}>Withdrawn</Option>
-            </StyledSelect>
-            <RangePicker onChange={handleDateSelectChange} />
-        </Flex>
-
-        {filteredPayments.map((payment, index) => {
-            if (
-                payment.type === APPOINTMENT_PAYMENT_TYPE ||
-                payment.type === RESERVATION_PAYMENT_TYPE
-            ) {
-                return (
-                    <PaymentCard
-                        key={index}
-                        payment={payment}
-                        paymentStatus={payment.paymentStatus}
-                        {...rest}
-                    />
-                );
-            } else if (payment.type === PROCEDURE_PAYMENT_TYPE) {
-                return (
-                    <ProcedurePaymentCard
-                        key={index}
-                        persona={persona}
-                        payment={payment}
-                        paymentStatus={payment.paymentStatus}
-                        {...rest}
-                    />
-                );
-            }
-
-            return null;
-        })}
-        {filteredPayments.length === 0 && (
-            <NoPaymentsCard
-                text={`You have no ${visiblePayments} payments yet!`}
+            <StripePayoutButtons
+                userId={userId}
+                accountToken={accountToken}
+                totalAvailable={totalAvailable}
             />
-        )}
-    </Flex>
+            <Desktop>
+                <Flex mb={20} justifyContent="space-between">
+                    <StyledSelect
+                        defaultValue={PAYMENT_AVAILABLE}
+                        width={180}
+                        onChange={handleSelectChange}
+                    >
+                        <Option value={PAYMENT_AVAILABLE}>Available</Option>
+                        <Option value={PAYMENT_PENDING}>Pending</Option>
+                        <Option value={PAYMENT_REFUNDED}>Refunded</Option>
+                        <Option value={PAYMENT_WITHDRAWN}>Withdrawn</Option>
+                    </StyledSelect>
+                    <RangePicker onChange={handleDateSelectChange} />
+                </Flex>
+            </Desktop>
+
+            {payments.map((payment, index) => {
+                if (
+                    payment.type === APPOINTMENT_PAYMENT_TYPE ||
+                    payment.type === RESERVATION_PAYMENT_TYPE
+                ) {
+                    return (
+                        <PaymentCard
+                            key={index}
+                            payment={payment}
+                            paymentStatus={payment.paymentStatus}
+                            {...rest}
+                        />
+                    );
+                } else if (payment.type === PROCEDURE_PAYMENT_TYPE) {
+                    return (
+                        <ProcedurePaymentCard
+                            key={index}
+                            persona={persona}
+                            payment={payment}
+                            paymentStatus={payment.paymentStatus}
+                            {...rest}
+                        />
+                    );
+                }
+
+                return null;
+            })}
+            {payments.length === 0 && (
+                <NoPaymentsCard
+                    text={`You have no ${visiblePayments} payments yet!`}
+                />
+            )}
+        </Flex>
+    </Container>
 );
 
 BalanceHistoryView.propTypes = {
-    filteredPayments: PropTypes.array,
+    payments: PropTypes.array,
     totalAvailable: PropTypes.number,
     totalPending: PropTypes.number,
     userId: PropTypes.string,
@@ -156,7 +161,7 @@ BalanceHistoryView.propTypes = {
 };
 
 BalanceHistoryView.defaultProps = {
-    filteredPayments: [],
+    payments: [],
     totalAvailable: 100,
     totalPending: 100,
     userId: '1233',
