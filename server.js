@@ -54,13 +54,23 @@ authRoutes(app);
 hellosignRoutes(app);
 
 if (process.env.NODE_ENV === 'production') {
-    app.get('/robots.txt', (req, res) => {
-        res.sendFile(path.resolve('build', 'robots.txt'));
-    });
+    if (process.env.APP_ENV === 'stage') {
+        app.get('/robots.txt', (req, res) => {
+            res.send('User-agent: *\nDisallow: /');
+        });
+    } else {
+        app.get('/robots.txt', (req, res) => {
+            res.sendFile(path.resolve('build', 'robots.txt'));
+        });
+    }
 
     app.get('*', (req, res) => {
         res.header('Cache-Control', 'no-cache, no-store, must-revalidate');
         res.header('Pragma', 'no-cache');
+
+        if (process.env.APP_ENV === 'stage') {
+            res.header('X-Robots-Tag', 'noindex');
+        }
 
         res.sendFile(path.resolve('build', 'index.html'));
     });
