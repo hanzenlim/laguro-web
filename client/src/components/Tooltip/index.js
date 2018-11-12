@@ -1,9 +1,16 @@
 import React from 'react';
 import { Tooltip } from 'antd';
 import Icon from '../Icon';
+import Text from '../Text';
 
 const TooltipComponent = ({ inForm, inCheckbox, size, text }) => {
+    const tooltipText = (
+        <Text color="text.white" fontSize={[0, '', 1]}>
+            {text}
+        </Text>
+    );
     let returnIcon;
+
     if (inForm) {
         returnIcon = (
             <Icon
@@ -37,7 +44,11 @@ const TooltipComponent = ({ inForm, inCheckbox, size, text }) => {
             />
         );
     }
-    return <Tooltip title={text}>{returnIcon}</Tooltip>;
+    return (
+        <Tooltip title={tooltipText} placement="left">
+            {returnIcon}
+        </Tooltip>
+    );
 };
 
 export default TooltipComponent;
