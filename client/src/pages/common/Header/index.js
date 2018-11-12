@@ -23,12 +23,12 @@ class HeaderContainer extends PureComponent {
 
         this.state = {
             isSubmitting: false,
-            pathname: window.location.pathname,
+            pathname: window.location.pathname + window.location.search,
         };
 
         history.listen(location => {
             this.setState({
-                pathname: location.pathname,
+                pathname: location.pathname + location.search,
             });
         });
     }

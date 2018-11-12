@@ -136,7 +136,11 @@ class ProfileButton extends Component {
                     {matches => (
                         <NavBarLink
                             onClick={this.openLoginForLogIn(matches)}
-                            to={matches ? `/login?redirectTo=${pathname}` : '#'}
+                            to={
+                                matches
+                                    ? `/login?redirectTo=${pathname}`
+                                    : pathname
+                            }
                         >
                             <Text
                                 color={
