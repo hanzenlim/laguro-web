@@ -119,8 +119,8 @@ class OfficeDetailsView extends PureComponent {
                     >
                         <Text color="text.white" fontWeight="bold" fontSize={1}>
                             {isContentVisible
-                                ? 'Book this listing'
-                                : 'Back to Office Details'}
+                                ? 'Book a chair'
+                                : 'Back to office details'}
                         </Text>
                     </Button>
                 </TabletMobile>
@@ -229,7 +229,7 @@ class OfficeDetailsView extends PureComponent {
                                             fontWeight="bold"
                                             fontSize={1}
                                         >
-                                            Book this listing
+                                            Book a chair
                                         </Text>
                                     </Button>
                                 </TabletMobile>
