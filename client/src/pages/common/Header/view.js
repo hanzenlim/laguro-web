@@ -3,10 +3,18 @@ import Intercom from 'react-intercom';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { Dropdown } from 'antd';
-import isEmpty from 'lodash/isEmpty';
 import SearchBox from '../SearchBox';
-import logo from '../../../components/Image/logo.png';
-import whiteLogo from '../../../components/Image/whiteLogo.png';
+import { logo, logo2x, logo3x } from '../../../components/Image/logo';
+import {
+    whiteLogo,
+    whiteLogo2x,
+    whiteLogo3x,
+} from '../../../components/Image/whiteLogo';
+import {
+    dentistLogo,
+    dentistLogo2x,
+    dentistLogo3x,
+} from '../../../components/Image/dentistLogo';
 import {
     Flex,
     Link,
@@ -201,13 +209,19 @@ class Header extends Component {
 
         let placeholder;
         let logoType;
+        let logoSet;
 
         const onLandingPage = pathname === '/';
         const onOnboardingPage = pathname.includes('host-onboarding');
         if (pathname.startsWith('/office')) {
-            logoType = onLandingPage ? 'whiteDentistLogo' : 'dentistLogo';
+            logoType = dentistLogo;
+            logoSet = [dentistLogo2x, dentistLogo3x];
             placeholder = 'Search offices';
         } else {
+            logoType = onLandingPage ? whiteLogo : logo;
+            logoSet = onLandingPage
+                ? [whiteLogo2x, whiteLogo3x]
+                : [logo2x, logo3x];
             placeholder = 'Search dentists';
         }
 
@@ -272,19 +286,15 @@ class Header extends Component {
                     alignItems="center"
                 >
                     <Link to={'/'}>
-                        {!isEmpty(logoType) ? (
-                            <Icon
-                                fontSize={desktopOnly ? 40 : 18}
-                                type={logoType}
-                                alt="logo"
-                            />
-                        ) : (
-                            <Image
-                                height={desktopOnly ? 40 : 18}
-                                src={onLandingPage ? whiteLogo : logo}
-                                alt="logo"
-                            />
-                        )}
+                        <Image
+                            height={desktopOnly ? 40 : 18}
+                            src={logoType}
+                            srcSet={`
+                                ${logoSet[0]} 2x,
+                                ${logoSet[1]} 3x
+                            `}
+                            alt="logo"
+                        />
                     </Link>
 
                     <Desktop>

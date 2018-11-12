@@ -8,7 +8,7 @@ import { formatListingTime } from '../../../util/timeUtil';
 import { renderPrice } from '../../../util/paymentUtil';
 import visa from '../../../components/Image/visa.svg';
 import mastercard from '../../../components/Image/mastercard.svg';
-import whiteLogo from '../../../components/Image/whiteLogo.png';
+import whiteLogo from '../../../components/Image/whiteLogo';
 import americanExpress from '../../../components/Image/americanExpress.svg';
 import discover from '../../../components/Image/discover.svg';
 import {

@@ -30,8 +30,6 @@ import RightForwardArrow from './RightForwardArrow';
 import UpArrow from './UpArrow';
 import DownArrow from './DownArrow';
 import Calendar from './Calendar';
-import WhiteDentistLogo from './WhiteDentistLogo';
-import DentistLogo from './DentistLogo';
 import MacaroniPattern from './MacaroniPattern';
 import Tooltip from './Tooltip';
 import Close from './Close';
@@ -44,12 +42,6 @@ const Icon = props => {
     switch (type) {
         case 'tooltip':
             ReturnIcon = Tooltip;
-            break;
-        case 'whiteDentistLogo':
-            ReturnIcon = WhiteDentistLogo;
-            break;
-        case 'dentistLogo':
-            ReturnIcon = DentistLogo;
             break;
         case 'calendar':
             ReturnIcon = Calendar;
