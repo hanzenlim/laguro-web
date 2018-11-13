@@ -224,7 +224,7 @@ class OfficeSearchPage extends PureComponent {
         if (this.state.loading)
             return (
                 <Box pt={[48, '', 160]}>
-                    <Loading/>
+                    <Loading />
                 </Box>
             );
 

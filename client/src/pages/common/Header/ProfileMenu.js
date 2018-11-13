@@ -141,7 +141,7 @@ const ProfileMenu = props => {
 
     return (
         <StyledMenu
-            p={['18px 16px', '', '8px 16px']}
+            p={['18px 25px', '', '8px 16px']}
             borderBottom={['1px solid', '', 'none']}
             borderColor="divider.gray"
             {...rest}
@@ -149,7 +149,7 @@ const ProfileMenu = props => {
             {menuItems.map(item => (
                 <Menu.Item>
                     <Link to={itemLinkMap[item]}>
-                        <Text color="text.black" fontSize={2}>
+                        <Text color="text.black" fontSize={1}>
                             {item}
                         </Text>
                     </Link>
@@ -158,7 +158,7 @@ const ProfileMenu = props => {
             <Menu.Divider />
             <Menu.Item>
                 <Link to={itemLinkMap[LOG_OUT_MENU]} onClick={logout}>
-                    <Text color={'text.blue'} fontSize={2}>
+                    <Text color={'text.blue'} fontSize={1}>
                         {LOG_OUT_MENU}
                     </Text>
                 </Link>

@@ -274,7 +274,7 @@ class Header extends Component {
                             type={logoType}
                             isButton={true}
                             width="auto"
-                            height={[18, '', 40]}
+                            height={[22, '', 40]}
                         />
                     </Link>
 
