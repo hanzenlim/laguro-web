@@ -8,6 +8,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
 const cors = require('cors');
+const prerender = require('prerender-node');
 
 const { makeQuery } = require('./util/serverDataLoader');
 const { generateToken } = require('./util/token');
@@ -31,6 +32,10 @@ app.use(passport.session());
 app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.options('/api/graphql', cors());
+
+if (process.env.NODE_ENV === 'production') {
+    app.use(prerender.set('prerenderToken', process.env.PRERENDER_TOKEN));
+}
 
 app.post('/api/graphql', cors(), async (req, res) => {
     const context = {};
