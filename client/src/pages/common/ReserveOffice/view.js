@@ -32,6 +32,7 @@ const ReserveOfficeView = ({
     onPayBtnText,
     isSubmitting,
     updateSubmittingState,
+    selectReservationKey,
 }) => (
     <Box>
         <Box
@@ -55,23 +56,22 @@ const ReserveOfficeView = ({
                     <TabletMobile>Make an appointment</TabletMobile>
                 </Text>
             )}
-            {currentDisplay === SELECT_APPOINTMENT_VIEW && (
-                <Fragment>
-                    <FindAppointment
-                        findAvailabilityHandler={findAvailabilityHandler}
-                    />
-                    <SelectReservation
-                        officeId={officeId}
-                        triggerQuery={triggerFindReservations}
-                        selectedDates={selectedDates}
-                        onChangeCurrentDisplay={onChangeCurrentDisplay}
-                        onMakeReservation={onMakeReservation}
-                        updateEquipmentDetailsData={updateEquipmentDetailsData}
-                        updateSummaryDetailsData={updateSummaryDetailsData}
-                        updateSummarySectionData={updateSummarySectionData}
-                    />
-                </Fragment>
-            )}
+            <Box display={currentDisplay !== SELECT_APPOINTMENT_VIEW && 'none'}>
+                <FindAppointment
+                    findAvailabilityHandler={findAvailabilityHandler}
+                />
+                <SelectReservation
+                    key={selectReservationKey}
+                    officeId={officeId}
+                    triggerQuery={triggerFindReservations}
+                    selectedDates={selectedDates}
+                    onChangeCurrentDisplay={onChangeCurrentDisplay}
+                    onMakeReservation={onMakeReservation}
+                    updateEquipmentDetailsData={updateEquipmentDetailsData}
+                    updateSummaryDetailsData={updateSummaryDetailsData}
+                    updateSummarySectionData={updateSummarySectionData}
+                />
+            </Box>
             {currentDisplay === PAYMENT_VIEW && (
                 <Fragment>
                     <Box mt={30}>

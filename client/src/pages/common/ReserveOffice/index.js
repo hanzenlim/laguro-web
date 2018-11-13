@@ -39,6 +39,7 @@ class ReserveOffice extends Component {
             showVerificationModal: false,
             onPayBtnText: 'Pay',
             isSubmitting: false,
+            selectReservationKey: 0,
         };
 
         this.reservationObject = '';
@@ -57,6 +58,7 @@ class ReserveOffice extends Component {
         this.setState({
             triggerFindReservations: true,
             selectedDates,
+            selectReservationKey: this.state.selectReservationKey + 1,
         });
 
         return null;
@@ -338,6 +340,9 @@ class ReserveOffice extends Component {
                 {startLoading && (
                     <Box>
                         <ReserveOfficeView
+                            selectReservationKey={
+                                this.state.selectReservationKey
+                            }
                             findAvailabilityHandler={
                                 this.findAvailabilityHandler
                             }
