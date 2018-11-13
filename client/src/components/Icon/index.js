@@ -34,12 +34,24 @@ import MacaroniPattern from './MacaroniPattern';
 import Tooltip from './Tooltip';
 import Close from './Close';
 import LeftSearch from './LeftSearch';
+import DefaultLogo from './DefaultLogo';
+import WhiteLogo from './WhiteLogo';
+import DentistLogo from './DentistLogo';
 
 const Icon = props => {
     const { type, isButton, ...rest } = props;
 
     let ReturnIcon;
     switch (type) {
+        case 'defaultLogo':
+            ReturnIcon = DefaultLogo;
+            break;
+        case 'whiteLogo':
+            ReturnIcon = WhiteLogo;
+            break;
+        case 'dentistLogo':
+            ReturnIcon = DentistLogo;
+            break;
         case 'tooltip':
             ReturnIcon = Tooltip;
             break;

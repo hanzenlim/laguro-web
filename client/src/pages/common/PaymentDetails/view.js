@@ -8,9 +8,9 @@ import { formatListingTime } from '../../../util/timeUtil';
 import { renderPrice } from '../../../util/paymentUtil';
 import visa from '../../../components/Image/visa.svg';
 import mastercard from '../../../components/Image/mastercard.svg';
-import whiteLogo from '../../../components/Image/whiteLogo';
 import americanExpress from '../../../components/Image/americanExpress.svg';
 import discover from '../../../components/Image/discover.svg';
+import whiteLogo from '../../../components/Image/whiteLogo.svg';
 import {
     PAYMENT,
     RESERVATION_PAYMENT_TYPE,

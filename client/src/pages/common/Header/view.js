@@ -4,17 +4,6 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { Dropdown } from 'antd';
 import SearchBox from '../SearchBox';
-import { logo, logo2x, logo3x } from '../../../components/Image/logo';
-import {
-    whiteLogo,
-    whiteLogo2x,
-    whiteLogo3x,
-} from '../../../components/Image/whiteLogo';
-import {
-    dentistLogo,
-    dentistLogo2x,
-    dentistLogo3x,
-} from '../../../components/Image/dentistLogo';
 import {
     Flex,
     Link,
@@ -209,19 +198,14 @@ class Header extends Component {
 
         let placeholder;
         let logoType;
-        let logoSet;
 
         const onLandingPage = pathname === '/';
         const onOnboardingPage = pathname.includes('host-onboarding');
         if (pathname.startsWith('/office')) {
-            logoType = dentistLogo;
-            logoSet = [dentistLogo2x, dentistLogo3x];
+            logoType = 'dentistLogo';
             placeholder = 'Search offices';
         } else {
-            logoType = onLandingPage ? whiteLogo : logo;
-            logoSet = onLandingPage
-                ? [whiteLogo2x, whiteLogo3x]
-                : [logo2x, logo3x];
+            logoType = onLandingPage ? 'whiteLogo' : 'defaultLogo';
             placeholder = 'Search dentists';
         }
 
@@ -285,15 +269,12 @@ class Header extends Component {
                     justifyContent="space-between"
                     alignItems="center"
                 >
-                    <Link to={'/'}>
-                        <Image
-                            height={desktopOnly ? 40 : 18}
-                            src={logoType}
-                            srcSet={`
-                                ${logoSet[0]} 2x,
-                                ${logoSet[1]} 3x
-                            `}
-                            alt="logo"
+                    <Link to={'/'} display="flex">
+                        <Icon
+                            type={logoType}
+                            isButton={true}
+                            width="auto"
+                            height={[18, '', 40]}
                         />
                     </Link>
 
