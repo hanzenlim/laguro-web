@@ -223,7 +223,11 @@ const getListingUIData = (
                     listingId,
                     numChairsSelected
                 );
-                formattedData[key] = shortenedHourSlot;
+
+                // Create a day key if there are timeslots
+                // Prevent creating a key if shortenedHourSlot.length === 0
+                if (shortenedHourSlot.length)
+                    formattedData[key] = shortenedHourSlot;
             } else {
                 formattedData[key] = hourSlot;
             }
