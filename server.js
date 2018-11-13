@@ -34,6 +34,7 @@ app.options('/api/graphql', cors());
 
 app.post('/api/graphql', cors(), async (req, res) => {
     const context = {};
+    context.headers = req.headers;
 
     if (req.user) {
         const { id, email, dentistId } = req.user;
