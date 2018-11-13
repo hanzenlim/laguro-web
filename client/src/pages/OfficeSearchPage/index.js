@@ -6,7 +6,7 @@ import OfficeSearchPageView from './view';
 import history from '../../history';
 import esClient from '../../util/esClient';
 import { OFFICES } from '../../util/strings';
-import { Loading } from '../../components';
+import { Loading, Box } from '../../components';
 import { getMyPosition, DEFAULT_LOCATION } from '../../util/navigatorUtil';
 import { numMaxContainerWidth } from '../../components/theme';
 
@@ -221,7 +221,12 @@ class OfficeSearchPage extends PureComponent {
     };
 
     render() {
-        if (this.state.loading) return <Loading />;
+        if (this.state.loading)
+            return (
+                <Box pt={[48, '', 160]}>
+                    <Loading/>
+                </Box>
+            );
 
         return (
             <OfficeSearchPageView

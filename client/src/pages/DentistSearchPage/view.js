@@ -50,7 +50,7 @@ const DentistSearchPageView = props => {
     });
 
     return (
-        <Container pt={[100, '', 160]}>
+        <Container pt={[48, '', 160]}>
             <Grid
                 gridColumnGap={['', '', '33px']}
                 gridTemplateColumns={[
@@ -59,7 +59,7 @@ const DentistSearchPageView = props => {
                     `${total > 0 ? '1fr 1fr' : ''}`,
                 ]}
             >
-                <Box>
+                <Box mt={[24, '', 0]}>
                     <Desktop>
                         {matches =>
                             matches ? null : (

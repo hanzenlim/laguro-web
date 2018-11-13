@@ -11,8 +11,20 @@ import {
     Link,
 } from '../../../components';
 
+import { withScreenSizes } from '../../../components/Responsive';
+
 const LinkCard = props => {
-    const { rating, image, address, title, subtitle, size, type, url } = props;
+    const {
+        rating,
+        image,
+        address,
+        title,
+        subtitle,
+        size,
+        type,
+        url,
+        tabletMobileOnly,
+    } = props;
 
     return (
         <Link type="ghost" to={url}>
@@ -37,20 +49,16 @@ const LinkCard = props => {
                     </Box>
                     {address && (
                         <Flex
-                            pb={4}
-                            pl={10}
-                            pr={3}
-                            pt={6}
+                            p={8}
                             width="100%"
                             minHeight="56px"
-                            borderRadius="4px"
                             position="absolute"
                             bottom="0"
                             bg="rgba(242, 242, 242, 0.7)"
                             alignItems="center"
                         >
                             <Text
-                                fontSize={size === 'big' ? 3 : 1}
+                                fontSize={size === 'big' ? 3 : [0, '', 1]}
                                 color="text.black"
                                 lineHeight="1.29"
                                 letterSpacing="-0.5px"
@@ -61,30 +69,36 @@ const LinkCard = props => {
                     )}
                 </Box>
 
-                <Box mt={5}>
+                <Flex mt={[8, '', 5]} flexDirection="column">
                     <Text
                         color="text.black"
                         lineHeight="1.22"
-                        fontSize={size === 'big' ? 3 : 2}
+                        fontSize={size === 'big' ? 3 : [1, '', 2]}
                         letterSpacing="-0.8px"
+                        order={[2, '', 1]}
                     >
                         <Truncate lines={1}>{title || ''}</Truncate>
                     </Text>
 
                     <Text
-                        fontStyle="italic"
+                        fontStyle={tabletMobileOnly ? 'normal' : 'italic'}
+                        textTransform={
+                            tabletMobileOnly ? 'uppercase' : 'capitalize'
+                        }
                         lineHeight="1.1"
-                        fontSize={4}
-                        color="text.black"
-                        fontWeight="bold"
+                        fontSize={['10px', '', 4]}
+                        color={['text.gray', '', 'text.black']}
+                        fontWeight={['normal', '', 'bold']}
+                        order={[1, '', 2]}
+                        mb={[4, '', 0]}
                     >
                         <Truncate lines={1}>{subtitle}</Truncate>
                     </Text>
 
-                    <Box mt={3}>
-                        <Rating disabled value={rating} />
+                    <Box mt={3} order={3}>
+                        <Rating disabled fontSize={[0, '', 4]} value={rating} />
                     </Box>
-                </Box>
+                </Flex>
             </Box>
         </Link>
     );
@@ -94,4 +108,4 @@ LinkCard.defaultProps = {
     url: '#',
 };
 
-export default LinkCard;
+export default withScreenSizes(LinkCard);

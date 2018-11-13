@@ -10,7 +10,7 @@ const OfficeSearchPageView = props => {
     const { data, total, urlParams, defaultPosition, mapDimensions } = props;
 
     return (
-        <Container pt={[100, '', 160]}>
+        <Container pt={[48, '', 160]}>
             <Grid
                 gridColumnGap={['', '', '33px']}
                 gridTemplateColumns={[
@@ -18,9 +18,8 @@ const OfficeSearchPageView = props => {
                     '',
                     `${total > 0 ? '1fr 1fr' : ''}`,
                 ]}
-                mt={40}
             >
-                <Box>
+                <Box mt={[24, '', 0]}>
                     <TabletMobile>
                         <Box mb={20}>
                             <SearchBox

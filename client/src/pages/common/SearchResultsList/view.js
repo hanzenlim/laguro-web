@@ -51,10 +51,11 @@ class SearchResultsList extends PureComponent {
         const type = title === 'Office Results' ? OFFICES : DENTISTS;
 
         return (
-            <Flex flexDirection="column">
+            <Flex flexDirection="column" pb={[100, '', 0]}>
                 {data.length > 0 ? (
                     <Text
                         fontSize={[1, '', 5]}
+                        fontWeight="medium"
                         color="text.black"
                         mb={10}
                         lineHeight="40px"
