@@ -16,6 +16,7 @@ provider:
     HELLOSIGN_API_KEY: ${env:HELLOSIGN_API_KEY}
     PRERENDER_TOKEN: ${env:PRERENDER_TOKEN}
     APP_ENV: ${env:APP_ENV}
+    SHARED_JWT_SECRET: ${env:SHARED_JWT_SECRET}
 
 iamRoleStatements:
     -  Effect: "Allow"

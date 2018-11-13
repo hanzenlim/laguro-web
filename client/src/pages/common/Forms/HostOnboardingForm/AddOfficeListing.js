@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 import CreateListing from './CreateListing';
-import { Box, Button, Flex, Text, Icon } from '../../../components';
+import { Box, Button, Flex, Text, Icon } from '../../../../components';
 
 class AddOfficeListing extends Component {
     constructor(props) {

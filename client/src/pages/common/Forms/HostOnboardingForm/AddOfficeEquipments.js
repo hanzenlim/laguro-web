@@ -14,8 +14,8 @@ import {
     Select,
     Text,
     Tooltip,
-} from '../../../components';
-import { renderPrice } from '../../../util/paymentUtil';
+} from '../../../../components';
+import { renderPrice } from '../../../../util/paymentUtil';
 
 const { FormItem } = Form;
 const { Option } = Select;

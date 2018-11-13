@@ -264,16 +264,19 @@ class ProfileView extends Component {
                         </Text>
                     </StyledMenuItem>
                 )}
-                <StyledMenuItem key={MY_DOCUMENTS}>
-                    <Text
-                        fontSize={[1, '', 4]}
-                        color="inherit"
-                        lineHeight={['48px', '', '40px']}
-                    >
-                        {this.keyTextMap[MY_DOCUMENTS]}
-                    </Text>
-                </StyledMenuItem>
-
+                {/* We only show the my documents for dentist but a host will have isHost */}
+                {/* and isDentist set to true so we check if the user is not a host  */}
+                {!isHost && (
+                    <StyledMenuItem key={MY_DOCUMENTS}>
+                        <Text
+                            fontSize={[1, '', 4]}
+                            color="inherit"
+                            lineHeight={['48px', '', '40px']}
+                        >
+                            {this.keyTextMap[MY_DOCUMENTS]}
+                        </Text>
+                    </StyledMenuItem>
+                )}
                 <StyledMenuItem key={MY_APPOINTMENTS}>
                     <Text
                         fontSize={[1, '', 4]}

@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import ReactFilestack from 'filestack-react';
 import isEmpty from 'lodash/isEmpty';
 import get from 'lodash/get';
-import { filestackKey } from '../../../config/keys';
-import { officeImageRatio } from '../../../util/uiUtil';
+import { filestackKey } from '../../../../config/keys';
+import { officeImageRatio } from '../../../../util/uiUtil';
 import {
     Box,
     Button,
@@ -15,9 +15,9 @@ import {
     Input,
     Text,
     Responsive,
-} from '../../../components';
-import LocationFilter from '../LocationFilter';
-import { EDIT_OFFICE_MODE } from '../../../util/strings';
+} from '../../../../components';
+import LocationFilter from '../../LocationFilter';
+import { EDIT_OFFICE_MODE } from '../../../../util/strings';
 
 const { Desktop, TabletMobile } = Responsive;
 const { GridItem } = Grid;

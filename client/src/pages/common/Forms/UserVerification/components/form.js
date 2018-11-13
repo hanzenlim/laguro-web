@@ -35,11 +35,15 @@ export const SingleDocumentSelector = props => {
         <FormItem
             {...props}
             input={<DocumentUploaderInput {...props} />}
-            rules={[
-                {
-                    validator,
-                },
-            ]}
+            rules={
+                props.optional
+                    ? []
+                    : [
+                          {
+                              validator,
+                          },
+                      ]
+            }
             initialValue={initialValue}
             validateTrigger={null}
         />

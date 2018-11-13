@@ -238,14 +238,17 @@ module.exports.useResetPasswordRequestVariable = (id, token, password) => ({
     },
 });
 
-const makeGraphQLRequest = async (query, variables, context = {}) =>
-    makePromise(
+const makeGraphQLRequest = async (query, variables, context = {}) => {
+    const result = makePromise(
         execute(link, {
             query: parse(query),
             variables,
             context,
         })
     );
+
+    return result;
+};
 
 module.exports.makeQuery = makeGraphQLRequest;
 

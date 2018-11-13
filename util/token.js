@@ -7,7 +7,7 @@ export const generateToken = (user, expiresIn = DEFAULT_EXPIRY) => {
         {
             user,
         },
-        process.env.SHARED_SERVER_SECRET,
+        process.env.SHARED_JWT_SECRET,
         { expiresIn }
     );
 

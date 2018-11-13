@@ -2,8 +2,7 @@ import React, { Component, Fragment } from 'react';
 import cookies from 'browser-cookies';
 import styled from 'styled-components';
 import { Alert, message } from 'antd';
-
-import { Query, Mutation } from 'react-apollo';
+import { Query, Mutation, compose, withApollo } from 'react-apollo';
 import queryString from 'query-string';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
@@ -16,6 +15,13 @@ import {
     CREATE_LISTING,
     UPDATE_OFFICE,
 } from './queries';
+
+import {
+    getActiveUser,
+    saveUploadedImagesMutation,
+    createPatientDocumentMutation,
+} from '../common/Forms/HostOnboardingForm/queries';
+
 import history from '../../history';
 import {
     Container,
@@ -26,9 +32,10 @@ import {
     Progress,
     Responsive,
 } from '../../components';
-import AddOfficeInfo from '../common/Forms/AddOfficeInfo';
-import AddOfficeEquipments from '../common/Forms/AddOfficeEquipments';
-import AddOfficeListing from '../common/Forms/AddOfficeListing';
+import AddOfficeInfo from '../common/Forms/HostOnboardingForm/AddOfficeInfo';
+import AddOfficeEquipments from '../common/Forms/HostOnboardingForm/AddOfficeEquipments';
+import AddDocument from '../common/Forms/HostOnboardingForm/AddDocument';
+import AddOfficeListing from '../common/Forms/HostOnboardingForm/AddOfficeListing';
 import ListingConfirmation from '../common/ListingConfirmation';
 import {
     ACTIVE_USER,
@@ -38,6 +45,7 @@ import {
 } from '../../util/strings';
 
 import { withScreenSizes } from '../../components/Responsive';
+import OfficeVerificationUtil from './util';
 
 const { TabletMobile } = Responsive;
 
@@ -64,6 +72,7 @@ const StyledAlert = styled(Alert)`
 // to be used to distinguish between each step and to decide when to show previous buttona and what kind of submit buttons
 const OFFICE_STEP = 'add-office';
 const EQUIPMENT_STEP = 'add-equipment';
+const DOCUMENT_STEP = 'add-document';
 const LISTING_STEP = 'add-listing';
 const CONFIRMATION_STEP = 'listing-confirmation';
 
@@ -71,6 +80,7 @@ const CONFIRMATION_STEP = 'listing-confirmation';
 const HOST_ONBOARDING = '/host-onboarding/';
 const OFFICE_STEP_URL = `${HOST_ONBOARDING}${OFFICE_STEP}/`;
 const EQUIPMENT_STEP_URL = `${HOST_ONBOARDING}${EQUIPMENT_STEP}/`;
+const DOCUMENT_STEP_URL = `${HOST_ONBOARDING}${DOCUMENT_STEP}/`;
 const LISTING_STEP_URL = `${HOST_ONBOARDING}${LISTING_STEP}/`;
 const CONFIRMATION_STEP_URL = `${HOST_ONBOARDING}${CONFIRMATION_STEP}/`;
 
@@ -91,6 +101,7 @@ const { BackButton, SubmitButton } = Form;
 const stepURLs = {
     [OFFICE_STEP]: OFFICE_STEP_URL,
     [EQUIPMENT_STEP]: EQUIPMENT_STEP_URL,
+    [DOCUMENT_STEP]: DOCUMENT_STEP_URL,
     [LISTING_STEP]: LISTING_STEP_URL,
     [CONFIRMATION_STEP]: CONFIRMATION_STEP_URL,
 };
@@ -167,21 +178,35 @@ class HostOnboarding extends Component {
         let resumeWarning = false;
         let numImage = 0;
 
+        this.signedURLs = {};
+
+        this.officeVerificationUtil = new OfficeVerificationUtil(
+            this.props.client,
+            this.props.createPatientDocument,
+            this.props.saveUploadedImages
+        );
+
         switch (mode) {
             case EDIT_OFFICE_MODE: {
-                // repeat EQUIPMENT_STEP because there is no confirmation page for edit office, this is used for displaying previous buttons
+                // repeat DOCUMENT_STEP because there is no confirmation page for edit office, this is used for displaying previous buttons
                 // TODO: come up with a better way for displaying previous buttons
-                this.stepList = [OFFICE_STEP, EQUIPMENT_STEP, EQUIPMENT_STEP];
+                this.stepList = [
+                    OFFICE_STEP,
+                    EQUIPMENT_STEP,
+                    DOCUMENT_STEP,
+                    DOCUMENT_STEP,
+                ];
                 // will take the user back to HOST_PROFILE_URL after clicking 'Save Changes'
 
                 this.urlList = [
                     OFFICE_STEP_URL,
                     EQUIPMENT_STEP_URL,
+                    DOCUMENT_STEP_URL,
                     HOST_PROFILE_URL,
                 ];
 
                 this.headerList = ['', ''];
-                this.buttonTexts = ['Next', 'Save Changes'];
+                this.buttonTexts = ['Next', 'Next', 'Save Changes'];
 
                 this.mode = EDIT_OFFICE_MODE;
                 this.officeId = officeId;
@@ -216,6 +241,7 @@ class HostOnboarding extends Component {
                 this.stepList = [
                     OFFICE_STEP,
                     EQUIPMENT_STEP,
+                    DOCUMENT_STEP,
                     LISTING_STEP,
                     CONFIRMATION_STEP,
                 ];
@@ -223,11 +249,13 @@ class HostOnboarding extends Component {
                 this.urlList = [
                     OFFICE_STEP_URL,
                     EQUIPMENT_STEP_URL,
+                    DOCUMENT_STEP_URL,
                     LISTING_STEP_URL,
                     CONFIRMATION_STEP_URL,
                     HOST_PROFILE_URL,
                 ];
                 this.buttonTexts = [
+                    'Next',
                     'Next',
                     'Next',
                     'Publish',
@@ -236,6 +264,7 @@ class HostOnboarding extends Component {
                 this.headerList = [
                     "let's start with some basic info about your office",
                     'Tell us more about your office',
+                    'Upload information about your Business license and Liability insurance',
                 ];
 
                 this.mode = HOST_ONBOARDING_CREATE_MODE;
@@ -264,7 +293,44 @@ class HostOnboarding extends Component {
             defaultValues: {},
             resumeWarning,
             submitting: false,
+            officeDocumentsDefaultValues: {},
         };
+    }
+
+    async componentDidMount() {
+        if (this.mode === EDIT_OFFICE_MODE) {
+            const { user } = this.props;
+            // Need to get the current user document to populate the default values
+            // on the office verification step.
+            const result = await this.officeVerificationUtil.fetchUserDocuments(
+                user.id
+            );
+
+            const officeDocuments = {
+                generalInsurance: [],
+                businessLicense: [],
+            };
+
+            if (get(result, 'documents.businessLicense')) {
+                result.documents.businessLicense.forEach(document => {
+                    if (document.officeId === this.officeId) {
+                        officeDocuments.businessLicense.push(document);
+                    }
+                });
+            }
+
+            if (get(result, 'documents.generalInsurance')) {
+                result.documents.generalInsurance.forEach(document => {
+                    if (document.officeId === this.officeId) {
+                        officeDocuments.generalInsurance.push(document);
+                    }
+                });
+            }
+
+            this.setState({
+                officeDocumentsDefaultValues: officeDocuments,
+            });
+        }
     }
 
     // this is for url transition, to trigger a render upon URL change
@@ -388,7 +454,8 @@ class HostOnboarding extends Component {
 
         switch (this.mode) {
             case EDIT_OFFICE_MODE:
-                if (step === EQUIPMENT_STEP) {
+                // This is the last step when in edit office mode.
+                if (step === DOCUMENT_STEP) {
                     const { officeName, imageUrls } = wizardState;
                     const { officeDescription } = values;
                     const equipment = parseEquipmentFormData(values);
@@ -405,6 +472,19 @@ class HostOnboarding extends Component {
                             },
                         },
                     });
+
+                    // The office documents is stored on the form values and not
+                    // the local storage since this is the last step.
+                    const officeDocuments = get(values, 'documents');
+
+                    if (officeDocuments) {
+                        // save the office verification images
+                        await this.officeVerificationUtil.saveOfficeDocuments(
+                            officeDocuments,
+                            this.officeId,
+                            this.props.user.id
+                        );
+                    }
 
                     this.destroyWizardState();
                 } else {
@@ -438,6 +518,13 @@ class HostOnboarding extends Component {
                     });
                 }
 
+                if (step === DOCUMENT_STEP) {
+                    this.saveWizardState({
+                        ...wizardState,
+                        officeDocuments: values.documents,
+                    });
+                }
+
                 if (step === LISTING_STEP) {
                     const listings = parseListingFormData(values);
                     if (!listings || listings.includes(null)) {
@@ -460,6 +547,7 @@ class HostOnboarding extends Component {
                         officeName,
                         equipment,
                         officeId,
+                        officeDocuments,
                     } = wizardState;
 
                     let result = null;
@@ -514,6 +602,12 @@ class HostOnboarding extends Component {
                             ...wizardState,
                             officeId: result.data.createUserOffice.id,
                         });
+
+                        await this.officeVerificationUtil.saveOfficeDocuments(
+                            officeDocuments,
+                            result.data.createUserOffice.id,
+                            this.props.user.id
+                        );
 
                         await this.createListings(
                             result.data.createUserOffice.id,
@@ -680,6 +774,7 @@ class HostOnboarding extends Component {
         const initialFormValues = {
             // office data for edit-office mode
             ...this.turnOfficeDataIntoParams(defaultValues),
+            officeDocuments: this.state.officeDocumentsDefaultValues,
             ...wizardState,
         };
 
@@ -689,7 +784,7 @@ class HostOnboarding extends Component {
         let numSteps;
         switch (this.mode) {
             case EDIT_OFFICE_MODE:
-                numSteps = 2;
+                numSteps = 3;
                 break;
             case ADD_LISTING_MODE:
                 numSteps = 2;
@@ -891,6 +986,18 @@ class HostOnboarding extends Component {
                                                                         />
                                                                     )}
                                                                     {step ===
+                                                                        DOCUMENT_STEP && (
+                                                                        <AddDocument
+                                                                            header={
+                                                                                this
+                                                                                    .headerList[2]
+                                                                            }
+                                                                            {...initialFormValues}
+                                                                            {...this
+                                                                                .props}
+                                                                        />
+                                                                    )}
+                                                                    {step ===
                                                                         LISTING_STEP && (
                                                                         <AddOfficeListing
                                                                             isOnboarding={
@@ -1065,4 +1172,10 @@ class HostOnboarding extends Component {
     }
 }
 
-export default withScreenSizes(HostOnboarding);
+export default compose(
+    withApollo,
+    getActiveUser,
+    createPatientDocumentMutation,
+    saveUploadedImagesMutation,
+    withScreenSizes
+)(HostOnboarding);

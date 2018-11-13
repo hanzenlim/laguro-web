@@ -51,8 +51,20 @@ app.post('/api/graphql', cors(), async (req, res) => {
         };
     }
 
-    const result = await makeQuery(req.body.query, req.body.variables, context);
-    res.send(JSON.stringify(result));
+    try {
+        const result = await makeQuery(
+            req.body.query,
+            req.body.variables,
+            context
+        );
+        res.send(JSON.stringify(result));
+    } catch (e) {
+        console.log('########');
+        console.log(JSON.stringify(e));
+
+        // res.send('fawefwef');
+        res.send(JSON.stringify(e));
+    }
 });
 
 // Route Files
