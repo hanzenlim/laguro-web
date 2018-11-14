@@ -37,6 +37,9 @@ import LeftSearch from './LeftSearch';
 import DefaultLogo from './DefaultLogo';
 import WhiteLogo from './WhiteLogo';
 import DentistLogo from './DentistLogo';
+import CloseCircle from './CloseCircle';
+import CloseCircleHover from './CloseCircleHover';
+import Revert from './Revert';
 
 const Icon = props => {
     const { type, isButton, ...rest } = props;
@@ -96,6 +99,15 @@ const Icon = props => {
             break;
         case 'leftSearch':
             ReturnIcon = LeftSearch;
+            break;
+        case 'closeCircle':
+            ReturnIcon = CloseCircle;
+            break;
+        case 'closeCircleHover':
+            ReturnIcon = CloseCircleHover;
+            break;
+        case 'revert':
+            ReturnIcon = Revert;
             break;
         default:
             ReturnIcon = AntdIcon;
