@@ -21,6 +21,8 @@ const ConsentAndPaymentPageView = props => {
         tabletMobileOnly,
         onClickNext,
         hasClickedNext,
+        rejectedIds,
+        rejectProcedure,
     } = props;
 
     if (!patientProcedures.length)
@@ -79,7 +81,11 @@ const ConsentAndPaymentPageView = props => {
 
             {(!tabletMobileOnly || (!hasClickedNext && tabletMobileOnly)) && (
                 <Box mb={[28, '', 0]}>
-                    <ProcedureSummary patientProcedures={patientProcedures} />
+                    <ProcedureSummary
+                        patientProcedures={patientProcedures}
+                        rejectedIds={rejectedIds}
+                        rejectProcedure={rejectProcedure}
+                    />
                     <ConsentCheckbox
                         dentistId={patientProcedures[0].dentistId}
                         onClickCheckbox={onClickCheckbox}
@@ -138,6 +144,8 @@ ConsentAndPaymentPageView.propTypes = {
     patientProcedures: PropTypes.array.isRequired,
     isPaymentSuccessful: PropTypes.bool.isRequired,
     isSubmitting: PropTypes.bool.isRequired,
+    rejectedIds: PropTypes.array.isRequired,
+    rejectProcedure: PropTypes.func.isRequired,
 };
 
 export default withScreenSizes(ConsentAndPaymentPageView);

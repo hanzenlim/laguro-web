@@ -20,6 +20,7 @@ class ConsentAndPaymentPage extends PureComponent {
             isPaymentSuccessful: false,
             isSubmitting: false,
             hasClickedNext: false,
+            rejectedIds: [],
         };
     }
 
@@ -58,6 +59,14 @@ class ConsentAndPaymentPage extends PureComponent {
 
     updateSubmittingState = isSubmitting => {
         this.setState({ isSubmitting });
+    };
+
+    rejectProcedure = id => () => {
+        this.setState(({ rejectedIds }) => ({
+            rejectedIds: rejectedIds.includes(id)
+                ? rejectedIds.filter(rejectedId => rejectedId !== id)
+                : [...rejectedIds, id],
+        }));
     };
 
     render() {
@@ -114,6 +123,8 @@ class ConsentAndPaymentPage extends PureComponent {
                             onPaymentSuccess={handlePaymentSuccess}
                             isSubmitting={isSubmitting}
                             updateSubmittingState={this.updateSubmittingState}
+                            rejectedIds={this.state.rejectedIds}
+                            rejectProcedure={this.rejectProcedure}
                         />
                     );
                 }}

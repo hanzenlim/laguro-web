@@ -1,10 +1,38 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styled from 'styled-components';
+
 import { renderPrice } from '../../../util/paymentUtil';
-import { Box, Flex, Text } from '../../../components';
+import { Box, Flex, Text, Icon, Button } from '../../../components';
+
+const RejectButton = styled(Button)`
+    &&&& {
+        > * {
+            &:first-child {
+                display: block;
+            }
+
+            &:last-child {
+                display: none;
+            }
+        }
+
+        &:hover {
+            > * {
+                &:first-child {
+                    display: none;
+                }
+
+                &:last-child {
+                    display: block;
+                }
+            }
+        }
+    }
+`;
 
 const ProcedureSummaryView = props => {
-    const { procedures, serviceFee, totalPrice } = props;
+    const { procedures, serviceFee, totalPrice, rejectProcedure } = props;
 
     return (
         <Box maxWidth={662} width="100%">
@@ -20,48 +48,88 @@ const ProcedureSummaryView = props => {
                     Procedure Summary
                 </Text>
 
-                {procedures.map(procedure => (
-                    <Flex
-                        borderBottom="1px solid"
-                        pb={[8, '', 10]}
-                        mb={[10, '', 12]}
-                        borderColor="divider.black"
-                        alignItems="flex-end"
-                        justifyContent="space-between"
-                    >
-                        <Box>
-                            <Text
-                                fontSize={[1, '', 2]}
-                                lineHeight="20px"
-                                fontWeight="500"
-                                letterSpacing={['-0.4px', '', '-0.6px']}
-                                color="text.black"
+                {procedures.map(procedure => {
+                    const { id, name, date, price, rejected } = procedure;
+                    return (
+                        <Flex
+                            key={id}
+                            alignItems="center"
+                            mb={[10, '', 12]}
+                            borderBottom="1px solid"
+                            borderColor="divider.black"
+                        >
+                            <Box px={16}>
+                                {rejected ? (
+                                    <Button
+                                        type="ghost"
+                                        onClick={rejectProcedure(id)}
+                                    >
+                                        <Icon
+                                            type="revert"
+                                            width={20}
+                                            height={20}
+                                        />
+                                    </Button>
+                                ) : (
+                                    <RejectButton
+                                        type="ghost"
+                                        onClick={rejectProcedure(id)}
+                                    >
+                                        <Icon
+                                            type="closeCircle"
+                                            width={20}
+                                            height={20}
+                                        />
+                                        <Icon
+                                            type="closeCircleHover"
+                                            width={20}
+                                            height={20}
+                                        />
+                                    </RejectButton>
+                                )}
+                            </Box>
+                            <Flex
+                                pb={[8, '', 10]}
+                                alignItems="flex-end"
+                                justifyContent="space-between"
+                                width="100%"
+                                opacity={rejected ? 0.2 : 1}
                             >
-                                {procedure.name}
-                            </Text>
+                                <Box>
+                                    <Text
+                                        fontSize={[1, '', 2]}
+                                        lineHeight="20px"
+                                        fontWeight="500"
+                                        letterSpacing={['-0.4px', '', '-0.6px']}
+                                        color="text.black"
+                                    >
+                                        {name}
+                                    </Text>
 
-                            <Text
-                                fontSize={[1, '', 2]}
-                                lineHeight="20px"
-                                fontWeight="300"
-                                letterSpacing={['-0.4px', '', '-0.6px']}
-                                color="text.black"
-                            >
-                                {procedure.date}
-                            </Text>
-                        </Box>
-                        <Box>
-                            <Text
-                                fontSize={[1, '', 2]}
-                                lineHeight={1}
-                                letterSpacing={['-0.4px', '', '-0.6px']}
-                                color="text.black"
-                            >
-                                {renderPrice(procedure.price)}
-                            </Text>
-                        </Box>
-                    </Flex>
-                ))}
+                                    <Text
+                                        fontSize={[1, '', 2]}
+                                        lineHeight="20px"
+                                        fontWeight="300"
+                                        letterSpacing={['-0.4px', '', '-0.6px']}
+                                        color="text.black"
+                                    >
+                                        {date}
+                                    </Text>
+                                </Box>
+                                <Box>
+                                    <Text
+                                        fontSize={[1, '', 2]}
+                                        lineHeight={1}
+                                        letterSpacing={['-0.4px', '', '-0.6px']}
+                                        color="text.black"
+                                    >
+                                        {renderPrice(price)}
+                                    </Text>
+                                </Box>
+                            </Flex>
+                        </Flex>
+                    );
+                })}
 
                 {serviceFee > 0 ? (
                     <Flex
@@ -135,6 +203,7 @@ ProcedureSummaryView.propTypes = {
     ),
     serviceFee: PropTypes.string,
     totalPrice: PropTypes.string,
+    rejectProcedure: PropTypes.func.isRequired,
 };
 
 ProcedureSummaryView.defaultProps = {

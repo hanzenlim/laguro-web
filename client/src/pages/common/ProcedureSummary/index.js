@@ -8,9 +8,10 @@ const SERVICE_FEE = 0;
 class ProcedureSummary extends PureComponent {
     getTotalPrice = (patientProcedures, serviceFee) => {
         let totalPrice = 0;
+        const { rejectedIds } = this.props;
 
         patientProcedures.forEach(item => {
-            totalPrice += item.totalCost;
+            if (!rejectedIds.includes(item.id)) totalPrice += item.totalCost;
         });
 
         totalPrice += serviceFee;
@@ -20,15 +21,17 @@ class ProcedureSummary extends PureComponent {
 
     getProcedures = patientProcedures =>
         patientProcedures.map(item => ({
+            id: item.id,
             name: item.name,
             date: moment(item.dateCreated).format('LT MMMM D, YYYY'),
             price: `$${item.totalCost}`,
+            rejected: this.props.rejectedIds.includes(item.id),
         }));
 
     formatServiceFee = serviceFee => `$${serviceFee}`;
 
     render() {
-        const { patientProcedures } = this.props;
+        const { patientProcedures, rejectProcedure } = this.props;
 
         const procedures = this.getProcedures(patientProcedures);
         const totalPrice = this.getTotalPrice(patientProcedures, SERVICE_FEE);
@@ -39,6 +42,7 @@ class ProcedureSummary extends PureComponent {
                 procedures={procedures}
                 serviceFee={serviceFee}
                 totalPrice={totalPrice}
+                rejectProcedure={rejectProcedure}
             />
         );
     }
