@@ -39,7 +39,6 @@ if (process.env.NODE_ENV === 'production') {
 
 app.post('/api/graphql', cors(), async (req, res) => {
     const context = {};
-    context.headers = req.headers;
 
     if (req.user) {
         const { id, email, dentistId } = req.user;
@@ -59,10 +58,6 @@ app.post('/api/graphql', cors(), async (req, res) => {
         );
         res.send(JSON.stringify(result));
     } catch (e) {
-        console.log('########');
-        console.log(JSON.stringify(e));
-
-        // res.send('fawefwef');
         res.send(JSON.stringify(e));
     }
 });
