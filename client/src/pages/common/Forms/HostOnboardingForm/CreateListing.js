@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
-import { Tag } from 'antd';
 import _isEqual from 'lodash/isEqual';
 import {
     Box,
@@ -12,6 +11,7 @@ import {
     Icon,
     InnerForm,
     Input,
+    Tag,
     RangePicker,
     Text,
     TimePicker,
@@ -39,34 +39,6 @@ const ABBREVIATED_DAYS = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
 const WEEKDAYS = DAYS.slice(0, 5);
 const WEEKEND = DAYS.slice(5);
 const DEFAULT_DAYS = ABBREVIATED_DAYS.slice(0, 5);
-
-const StyledCheckableTag = styled(CheckableTag)`
-    && {
-        &.ant-tag-checkable {
-            width: 60px;
-            height: 30px;
-            line-height: 30px;
-            border-radius: 22.5px;
-            background-color: ${props =>
-                props.theme.colors.background.whiteSmoke};
-            text-align: center;
-            color: ${props => props.theme.colors.text.black};
-            margin-right: 8px;
-            border: none;
-            font-weight: ${props => props.theme.fontWeights.medium};
-            font-family: ${props => props.theme.fontFamily};
-        }
-
-        &.ant-tag-checkable-checked {
-            background-color: ${props => props.theme.colors.background.blue};
-            color: ${props => props.theme.colors.text.white};
-        }
-
-        &.ant-tag-checkable:not(.ant-tag-checkable-checked):hover {
-            color: ${props => props.theme.colors.text.blue};
-        }
-    }
-`;
 
 const StyledForm = styled(InnerForm)`
     .ant-form-item {
@@ -241,7 +213,6 @@ class CreateListing extends Component {
                             )}
 
                             <StyledForm form={form}>
-                                {/* <StyledCheckableTag>Mon</StyledCheckableTag> */}
                                 <FormItem
                                     name="labelOnly"
                                     mb={0}
@@ -257,10 +228,14 @@ class CreateListing extends Component {
                                             )}
                                             valuePropName="checked"
                                             input={
-                                                <StyledCheckableTag>
+                                                <CheckableTag
+                                                    width={60}
+                                                    height={30}
+                                                    mr={8}
+                                                >
                                                     {d.charAt(0).toUpperCase() +
                                                         d.slice(1)}
-                                                </StyledCheckableTag>
+                                                </CheckableTag>
                                             }
                                         />
                                     ))}
