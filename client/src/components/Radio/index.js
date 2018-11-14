@@ -45,5 +45,6 @@ const Radio = props => {
 };
 
 Radio.Group = StyledRadioGroup;
+Radio.Button = AntdRadio.Button;
 
 export default Radio;
