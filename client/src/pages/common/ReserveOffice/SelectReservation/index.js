@@ -31,6 +31,16 @@ import {
 } from '../../../../util/strings';
 import { renderPrice } from '../../../../util/paymentUtil';
 
+const DAYS = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday',
+];
+
 const hourList = [
     '12am',
     '1am',
@@ -148,11 +158,14 @@ const getListingUIData = (
     chairHourlyPrice,
     cleaningFee,
     listingId,
-    numChairsSelected
+    numChairsSelected,
+    recurringDays // [0, 1, 2, 3] for recurring every monday, tuesday, wednesday, and thursday
 ) => {
     const formattedData = {};
     // Check if user selected start date is now or in the future.
     const today = moment().startOf('day');
+    const recurringDaysInWords = recurringDays.map(d => DAYS[d]);
+
     let dayIterator;
     if (userSelectedStartDate.isSameOrAfter(today)) {
         dayIterator = moment(userSelectedStartDate);
@@ -184,7 +197,8 @@ const getListingUIData = (
                 beginningListingEndDate,
                 null,
                 '[]'
-            )
+            ) &&
+            recurringDaysInWords.includes(dayIterator.format('dddd'))
         ) {
             const key = dayIterator.format('Y-MM-DD');
             // Check if the dayIterator is the same day as today.
@@ -291,6 +305,7 @@ const getHourSlotsFromListings = (listings, userSelectedDates) => {
     for (let i = 0; i < listings.length; i++) {
         const listingStartDate = listings[i].localStartTime;
         const listingEndDate = listings[i].localEndTime;
+        const recurringDays = listings[i].availability.days;
 
         const { chairHourlyPrice, cleaningFee } = listings[i];
 
@@ -302,7 +317,8 @@ const getHourSlotsFromListings = (listings, userSelectedDates) => {
             chairHourlyPrice,
             cleaningFee,
             listings[i].id,
-            listings[i].numChairsAvailable
+            listings[i].numChairsAvailable,
+            recurringDays
         );
         accumulatedData = mergeListingUIData(accumulatedData, data);
     }
