@@ -1064,7 +1064,7 @@ class HostOnboarding extends Component {
                                                                             justifyContent="space-between"
                                                                             alignItems="center"
                                                                             flexDirection={[
-                                                                                'column',
+                                                                                'column-reverse',
                                                                                 '',
                                                                                 'row',
                                                                             ]}
