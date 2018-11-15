@@ -1,6 +1,6 @@
 import { get } from 'lodash';
 
-import { DENTISTS } from '../../../util/strings';
+import { DENTISTS, OFFICES } from '../../../util/strings';
 import esClient from '../../../util/esClient';
 import MajorCities from '../../../staticData/majorCities';
 
@@ -47,6 +47,13 @@ const getOtherLocationResults = async (state = null, index) => {
                         },
                     },
                 ],
+            },
+        };
+
+    if (index === OFFICES)
+        searchFilter = {
+            bool: {
+                must: [{ term: { isVerified: { value: true } } }],
             },
         };
 

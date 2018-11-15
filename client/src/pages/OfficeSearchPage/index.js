@@ -154,7 +154,11 @@ class OfficeSearchPage extends PureComponent {
             limit,
         } = params;
         const from = this.getOffset(page, PAGE_SIZE);
-        const must = [];
+        const must = [
+            {
+                term: { isVerified: { value: true } },
+            },
+        ];
         const { defaultPosition } = this.state;
 
         let distanceFilter = null;
