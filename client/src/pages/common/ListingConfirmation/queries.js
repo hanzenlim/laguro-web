@@ -19,6 +19,7 @@ export const getOfficeQuery = gql`
                     endDay
                     startTime
                     endTime
+                    days
                 }
                 localStartTime
                 localEndTime

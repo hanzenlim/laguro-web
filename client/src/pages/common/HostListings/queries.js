@@ -32,6 +32,9 @@ export const getDentistQuery = gql`
                 equipment {
                     name
                 }
+                location {
+                    name
+                }
                 listings(
                     options: {
                         sortKey: "${END_TIME}",
@@ -53,7 +56,10 @@ export const getDentistQuery = gql`
                         endDay
                         startTime
                         endTime
+                        days
                     }
+                    localStartTime
+                    localEndTime
                     reservations(
                         options: {
                             sortKey: "${END_TIME}",

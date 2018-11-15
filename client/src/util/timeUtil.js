@@ -1,4 +1,8 @@
+import React, { Fragment } from 'react';
 import moment from 'moment';
+import _isEqual from 'lodash/isEqual';
+
+import { Text } from '../components';
 
 /* eslint-disable import/prefer-default-export */
 export const DEFAULT_APPOINTMENT_WINDOW_SIZE = 15;
@@ -125,3 +129,111 @@ const LOCAL_TIME_LENGTH = 19;
 // 2018-11-04T00:00:00-07:00 becomes 2018-11-04T00:00:00
 export const stripTimezone = timezone =>
     timezone.substring(0, LOCAL_TIME_LENGTH);
+
+export const MONDAY = 'MONDAY';
+export const TUESDAY = 'TUESDAY';
+export const WEDNESDAY = 'WEDNESDAY';
+export const THURSDAY = 'THURSDAY';
+export const FRIDAY = 'FRIDAY';
+export const SATURDAY = 'SATURDAY';
+export const SUNDAY = 'SUNDAY';
+
+export const UPPERCASE_DAYS = [
+    MONDAY,
+    TUESDAY,
+    WEDNESDAY,
+    THURSDAY,
+    FRIDAY,
+    SATURDAY,
+    SUNDAY,
+];
+
+export const DAYS = [
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday',
+];
+
+export const ABBREVIATED_DAYS = [
+    'mon',
+    'tue',
+    'wed',
+    'thu',
+    'fri',
+    'sat',
+    'sun',
+];
+export const WEEKDAYS = DAYS.slice(0, 5);
+export const WEEKEND = DAYS.slice(5);
+
+// given a list of day(['Monday', 'Tuesday'], return phrase to describe it
+export const describeFrequency = frequency => {
+    if (_isEqual(frequency, WEEKDAYS)) {
+        return 'every weekday';
+    } else if (_isEqual(frequency, WEEKEND)) {
+        return 'every weekend';
+    } else if (_isEqual(frequency, DAYS)) {
+        return 'everyday';
+    }
+    return `every ${frequency.join(', ')}`;
+};
+
+export const ListingTime = ({
+    startDate,
+    endDate,
+    startTime,
+    endTime,
+    frequency,
+}) => (
+    <Fragment>
+        <Text fontSize={[1, '', 3]} letterSpacing="-0.6px" color="text.black">
+            {`${(startDate && moment(startDate).format('dddd, MMM DD, YYYY')) ||
+                'Start date'}
+                                —
+                                ${(endDate &&
+                                    moment(endDate).format(
+                                        'dddd, MMM DD, YYYY'
+                                    )) ||
+                                    'End date'}`}
+        </Text>
+        <Text
+            fontSize={[0, '', 1]}
+            color="#9b9b9b"
+            letterSpacing="-0.5px"
+            whiteSpace="normal"
+        >
+            <Text is="span" color="inherit">
+                Repeat{' '}
+            </Text>
+            <Text is="span" fontWeight="medium" color="inherit">
+                {frequency}{' '}
+            </Text>
+            <Text is="span" color="inherit">
+                from{' '}
+            </Text>
+            <Text
+                is="span"
+                color="inherit"
+                fontWeight="medium"
+                whiteSpace="inherit"
+            >
+                {(startTime && moment(startTime).format('LT')) || 'start time'}{' '}
+            </Text>
+            <Text is="span" color="inherit" whiteSpace="inherit">
+                to{' '}
+            </Text>
+            <Text
+                is="span"
+                color="inherit"
+                fontWeight="medium"
+                whiteSpace="inherit"
+            >
+                {(endTime && moment(endTime).format('LT')) || 'end time'}
+            </Text>
+        </Text>
+    </Fragment>
+);

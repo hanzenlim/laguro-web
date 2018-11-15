@@ -10,6 +10,7 @@ import {
     Responsive,
     Container,
 } from '../../../components';
+import { ListingTime } from '../../../util/timeUtil';
 
 const { Desktop, TabletMobile } = Responsive;
 
@@ -36,61 +37,14 @@ const ListingCard = props => {
                         color="text.blue"
                         mb={9}
                     >{`LISTING ${index + 1}`}</Text>
-                    <Text
-                        fontSize={[1, '', 3]}
-                        letterSpacing="-0.6px"
-                        color="text.black"
-                    >
-                        {`${(startDate &&
-                            moment(startDate).format('dddd, MMM DD, YYYY')) ||
-                            'Start date'}
-                                —
-                                ${(endDate &&
-                                    moment(endDate).format(
-                                        'dddd, MMM DD, YYYY'
-                                    )) ||
-                                    'End date'}`}
-                    </Text>
-                    <Text
-                        fontSize={[0, '', 1]}
-                        color="#9b9b9b"
-                        letterSpacing="-0.5px"
-                        whiteSpace="normal"
-                    >
-                        <Text is="span" color="inherit">
-                            Repeat{' '}
-                        </Text>
-                        <Text is="span" fontWeight="medium" color="inherit">
-                            {`${
-                                frequency[0] !== 'everyday' ? 'every ' : ''
-                            }${frequency.join(', ')}`}{' '}
-                        </Text>
-                        <Text is="span" color="inherit">
-                            from{' '}
-                        </Text>
-                        <Text
-                            is="span"
-                            color="inherit"
-                            fontWeight="medium"
-                            whiteSpace="inherit"
-                        >
-                            {(startTime && moment(startTime).format('LT')) ||
-                                'start time'}{' '}
-                        </Text>
-                        <Text is="span" color="inherit" whiteSpace="inherit">
-                            to{' '}
-                        </Text>
-                        <Text
-                            is="span"
-                            color="inherit"
-                            fontWeight="medium"
-                            whiteSpace="inherit"
-                        >
-                            {(endTime && moment(endTime).format('LT')) ||
-                                'end time'}
-                        </Text>
-                    </Text>
-
+                    <ListingTime
+                        startDate={startDate}
+                        endDate={endDate}
+                        startTime={startTime}
+                        endTime={endTime}
+                        frequency={frequency}
+                        index={index}
+                    />
                     <Box
                         borderBottom="solid 1px rgba(0, 0, 0, 0.08)"
                         height={16}

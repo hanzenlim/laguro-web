@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import { Query } from 'react-apollo';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
-import moment from 'moment';
 import ListingConfirmationView from './view';
 import { Loading } from '../../../components';
 import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
@@ -13,30 +12,22 @@ const mapListings = (listings, equipment) =>
     listings.map(
         ({
             id,
-            availability: { startDay, endDay },
+            availability,
             numChairsAvailable,
             cleaningFee,
             chairHourlyPrice,
             localStartTime,
             localEndTime,
-        }) => {
-            const startDate = localStartTime;
-            const endDate = localEndTime;
-            const formattedStartTime = moment(startDate).format('hA');
-            const formattedEndTime = moment(endDate).format('hA');
-            const formattedStartDay = moment(startDay).format('MMM. D, YYYY');
-            const formattedEndDay = moment(endDay).format('MMM. D, YYYY');
-
-            const formattedAvailability = `${formattedStartDay} - ${formattedEndDay}, ${formattedStartTime} - ${formattedEndTime}`;
-            return {
-                id,
-                availability: formattedAvailability,
-                cleaningFee: renderPrice(cleaningFee),
-                equipments: equipment.map(item => item.name),
-                numChairsAvailable,
-                chairHourlyPrice: renderPrice(chairHourlyPrice),
-            };
-        }
+        }) => ({
+            id,
+            availability,
+            cleaningFee: renderPrice(cleaningFee),
+            equipments: equipment.map(item => item.name),
+            numChairsAvailable,
+            chairHourlyPrice: renderPrice(chairHourlyPrice),
+            localStartTime,
+            localEndTime,
+        })
     );
 
 class ListingConfirmationContainer extends PureComponent {

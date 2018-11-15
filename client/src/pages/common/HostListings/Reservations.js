@@ -54,6 +54,14 @@ const Reservations = ({ reservations }) =>
                 borderRadius={2}
                 mb={[8, '', 10]}
             >
+                <Text
+                    fontWeight="medium"
+                    fontSize={[1, '', 2]}
+                    color="text.blue"
+                    mb={9}
+                >
+                    BOOKINGS
+                </Text>
                 <Flex
                     alignItems="flex-start"
                     justifyContent="space-between"

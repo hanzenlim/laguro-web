@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
-import _isEqual from 'lodash/isEqual';
 import {
     Box,
     Button,
@@ -20,24 +19,16 @@ import {
 import ListingCard from '../../ListingCard';
 import { withScreenSizes } from '../../../../components/Responsive';
 import { renderPrice } from '../../../../util/paymentUtil';
+import {
+    ABBREVIATED_DAYS,
+    DAYS,
+    describeFrequency,
+} from '../../../../util/timeUtil';
 
 const { FormItem } = InnerForm;
 const format = 'h:mm a';
 const { CheckableTag } = Tag;
 
-const DAYS = [
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-    'Sunday',
-];
-
-const ABBREVIATED_DAYS = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
-const WEEKDAYS = DAYS.slice(0, 5);
-const WEEKEND = DAYS.slice(5);
 const DEFAULT_DAYS = ABBREVIATED_DAYS.slice(0, 5);
 
 const StyledForm = styled(InnerForm)`
@@ -146,19 +137,13 @@ class CreateListing extends Component {
         const startTime = values[`startTime${index}`];
         const endTime = values[`endTime${index}`];
 
-        // if monday, tuesday, friday => [true, true, false, false, true, false, false]
+        // if monday, tuesday, friday => form will return [true, true, false, false, true, false, false] for repeatingDayBooleans
         const repeatingDayBooleans = ABBREVIATED_DAYS.map(
             d => values[`${d}${index}`]
         );
-        let frequency = DAYS.filter((d, i) => repeatingDayBooleans[i]);
 
-        if (_isEqual(frequency, WEEKDAYS)) {
-            frequency = ['weekday'];
-        } else if (_isEqual(frequency, WEEKEND)) {
-            frequency = ['weekend'];
-        } else if (_isEqual(frequency, DAYS)) {
-            frequency = ['everyday'];
-        }
+        // now frequency is ['Monday', 'Tuesday']
+        const frequency = DAYS.filter((d, i) => repeatingDayBooleans[i]);
 
         return (
             <InnerForm form={form} {...rest}>
@@ -172,7 +157,7 @@ class CreateListing extends Component {
                 >
                     <ListingCard
                         index={index}
-                        frequency={frequency}
+                        frequency={describeFrequency(frequency)}
                         startDate={startDate}
                         endDate={endDate}
                         startTime={startTime}

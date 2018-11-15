@@ -46,6 +46,7 @@ import {
 
 import { withScreenSizes } from '../../components/Responsive';
 import OfficeVerificationUtil from './util';
+import { UPPERCASE_DAYS } from '../../util/timeUtil';
 
 const { TabletMobile } = Responsive;
 const ABBREVIATED_DAYS = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
@@ -682,7 +683,7 @@ class HostOnboarding extends Component {
                             .split('-')[0],
                         startDay: startDay.format().split('T')[0],
                         endDay: endDay.format().split('T')[0],
-                        days: [0, 1, 2, 3, 4, 5, 6, 7].filter(
+                        days: UPPERCASE_DAYS.filter(
                             (num, i) => recurringDays[i]
                         ),
                     },
