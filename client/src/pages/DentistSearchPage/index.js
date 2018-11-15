@@ -1,4 +1,5 @@
-import React, { PureComponent } from 'react';
+import React, { Fragment, PureComponent } from 'react';
+import { Helmet } from 'react-helmet';
 import _throttle from 'lodash/throttle';
 import queryString from 'query-string';
 import get from 'lodash/get';
@@ -236,13 +237,29 @@ class DetailsSearchPage extends PureComponent {
             );
 
         return (
-            <DentistSearchPageView
-                data={this.state.data}
-                total={this.state.total}
-                defaultPosition={this.state.defaultPosition}
-                urlParams={this.state.urlParams}
-                mapDimensions={this.state.mapDimensions}
-            />
+            <Fragment>
+                <Helmet>
+                    <title>
+                        {this.state.urlParams.location
+                            ? `${
+                                  this.state.urlParams.location
+                              } | Dentists | Laguro`
+                            : 'Laguro'}
+                    </title>
+                    <link
+                        rel="canonical"
+                        href="https://www.laguro.com/dentist/search"
+                    />
+                </Helmet>
+
+                <DentistSearchPageView
+                    data={this.state.data}
+                    total={this.state.total}
+                    defaultPosition={this.state.defaultPosition}
+                    urlParams={this.state.urlParams}
+                    mapDimensions={this.state.mapDimensions}
+                />
+            </Fragment>
         );
     }
 }

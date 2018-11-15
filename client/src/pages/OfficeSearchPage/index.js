@@ -1,4 +1,5 @@
-import React, { PureComponent } from 'react';
+import React, { Fragment, PureComponent } from 'react';
+import { Helmet } from 'react-helmet';
 import _throttle from 'lodash/throttle';
 import queryString from 'query-string';
 import get from 'lodash/get';
@@ -229,13 +230,28 @@ class OfficeSearchPage extends PureComponent {
             );
 
         return (
-            <OfficeSearchPageView
-                defaultPosition={this.state.defaultPosition}
-                data={this.state.data}
-                total={this.state.total}
-                urlParams={this.state.urlParams}
-                mapDimensions={this.state.mapDimensions}
-            />
+            <Fragment>
+                <Helmet>
+                    <title>
+                        {this.state.urlParams.location
+                            ? `${
+                                  this.state.urlParams.location
+                              } | Offices | Laguro`
+                            : 'Laguro'}
+                    </title>
+                    <link
+                        rel="canonical"
+                        href="https://www.laguro.com/office/search"
+                    />
+                </Helmet>
+                <OfficeSearchPageView
+                    defaultPosition={this.state.defaultPosition}
+                    data={this.state.data}
+                    total={this.state.total}
+                    urlParams={this.state.urlParams}
+                    mapDimensions={this.state.mapDimensions}
+                />
+            </Fragment>
         );
     }
 }

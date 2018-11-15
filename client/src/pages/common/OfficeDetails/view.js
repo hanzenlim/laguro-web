@@ -79,6 +79,7 @@ class OfficeDetailsView extends PureComponent {
                     flexDirection="column"
                 >
                     <Text
+                        is="h1"
                         color="text.black"
                         fontSize={[4, '', 5]}
                         lineHeight="34px"

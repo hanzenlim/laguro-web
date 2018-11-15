@@ -1,6 +1,7 @@
-import React, { PureComponent } from 'react';
+import React, { Fragment, PureComponent } from 'react';
+import { Helmet } from 'react-helmet';
 import { Query } from 'react-apollo';
-
+import _get from 'lodash/get';
 import DentistDetailsPageView from './view';
 import { getDentistQuery } from './queries';
 import { Loading, Box } from '../../components';
@@ -31,7 +32,24 @@ class DentistDetailsPageContainer extends PureComponent {
                         return <RedirectErrorPage />;
                     }
 
-                    return <DentistDetailsPageView dentist={dentist} id={id} />;
+                    const firstName = _get(dentist, 'user.firstName');
+                    const lastName = _get(dentist, 'user.lastName');
+                    const dentistName = `Dr. ${firstName} ${lastName}`;
+
+                    return (
+                        <Fragment>
+                            <Helmet>
+                                <title>{`${dentistName} | Laguro`}</title>
+                                <link
+                                    rel="canonical"
+                                    href={`https://www.laguro.com${
+                                        window.location.pathname
+                                    }`}
+                                />
+                            </Helmet>
+                            <DentistDetailsPageView dentist={dentist} id={id} />
+                        </Fragment>
+                    );
                 }}
             </Query>
         );

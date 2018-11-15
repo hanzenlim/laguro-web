@@ -111,6 +111,7 @@ class DentistDetailsView extends PureComponent {
                             {data.specialization}
                         </Text>
                         <Text
+                            is="h1"
                             color="text.black"
                             fontSize={[4, '', 5]}
                             lineHeight={[1, '', '40px']}

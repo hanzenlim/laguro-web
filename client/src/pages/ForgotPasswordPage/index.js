@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, { Fragment, Component } from 'react';
+import { Helmet } from 'react-helmet';
 import queryString from 'query-string';
 import { Query } from 'react-apollo';
 import { Redirect } from 'react-router-dom';
@@ -87,20 +88,37 @@ class ForgotPasswordPage extends Component {
                     }
 
                     return (
-                        <ForgotPasswordPageView
-                            openRegistrationModal={this.onOpenRegistrationModal}
-                            openForgotPassModal={this.onOpenForgotPassModal}
-                            closeModal={this.closeModal}
-                            openLoginModal={this.openLoginModal}
-                            closable
-                            signup={values => this.handleSignup(client, values)}
-                            onLogin={values => this.handleLogin(client, values)}
-                            visibleModal={this.state.currentModal}
-                            sendPassResetLink={this.handleSendResetPasswordLink}
-                            message="You need to login first before you can view this page"
-                            isSubmitting={this.state.isSubmitting}
-                            location={this.props.location}
-                        />
+                        <Fragment>
+                            <Helmet>
+                                <title>Forgot Password | Laguro</title>
+                                <link
+                                    rel="canonical"
+                                    href="https://www.laguro.com/forgot-password"
+                                />
+                            </Helmet>
+                            <ForgotPasswordPageView
+                                openRegistrationModal={
+                                    this.onOpenRegistrationModal
+                                }
+                                openForgotPassModal={this.onOpenForgotPassModal}
+                                closeModal={this.closeModal}
+                                openLoginModal={this.openLoginModal}
+                                closable
+                                signup={values =>
+                                    this.handleSignup(client, values)
+                                }
+                                onLogin={values =>
+                                    this.handleLogin(client, values)
+                                }
+                                visibleModal={this.state.currentModal}
+                                sendPassResetLink={
+                                    this.handleSendResetPasswordLink
+                                }
+                                message="You need to login first before you can view this page"
+                                isSubmitting={this.state.isSubmitting}
+                                location={this.props.location}
+                            />
+                        </Fragment>
                     );
                 }}
             </Query>

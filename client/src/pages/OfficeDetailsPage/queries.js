@@ -6,6 +6,8 @@ export const getOfficeImageQuery = gql`
         getOffice(id: $id) {
             id
             imageUrls
+            name
+            description
         }
     }
 `;

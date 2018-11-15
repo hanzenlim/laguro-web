@@ -8,7 +8,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
 const cors = require('cors');
-const prerender = require('prerender-node');
+const prerenderNode = require('prerender-node');
 
 const { makeQuery } = require('./util/serverDataLoader');
 const { generateToken } = require('./util/token');
@@ -34,7 +34,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.options('/api/graphql', cors());
 
 if (process.env.NODE_ENV === 'production') {
-    app.use(prerender.set('prerenderToken', process.env.PRERENDER_TOKEN));
+    const prerender = prerenderNode.set(
+        'prerenderToken',
+        process.env.PRERENDER_TOKEN
+    );
+    prerender.crawlerUserAgents.push('googlebot');
+    prerender.crawlerUserAgents.push('bingbot');
+    prerender.crawlerUserAgents.push('yandex');
+    app.use(prerender);
 }
 
 app.post('/api/graphql', cors(), async (req, res) => {

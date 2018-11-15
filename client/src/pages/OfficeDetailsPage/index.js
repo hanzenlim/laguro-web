@@ -1,4 +1,5 @@
-import React, { PureComponent } from 'react';
+import React, { Fragment, PureComponent } from 'react';
+import { Helmet } from 'react-helmet';
 import get from 'lodash/get';
 import { Query } from 'react-apollo';
 import { getOfficeImageQuery } from './queries';
@@ -37,17 +38,31 @@ class OfficeDetailsPageContainer extends PureComponent {
                         return <Error404Page />;
                     }
 
+                    const officeName = get(data, 'getOffice.name');
+
                     return (
-                        <OfficeDetailsPageView
-                            officeDetailsDoneLoadingHandler={
-                                this.officeDetailsDoneLoadingHandler
-                            }
-                            officeDetailsDoneLoading={
-                                this.state.officeDetailsDoneLoading
-                            }
-                            imageUrls={get(data, 'getOffice.imageUrls')}
-                            id={id}
-                        />
+                        <Fragment>
+                            <Helmet>
+                                <title>{`${officeName} | Laguro`}</title>
+                                <link
+                                    rel="canonical"
+                                    href={`https://www.laguro.com${
+                                        window.location.pathname
+                                    }`}
+                                />
+                            </Helmet>
+
+                            <OfficeDetailsPageView
+                                officeDetailsDoneLoadingHandler={
+                                    this.officeDetailsDoneLoadingHandler
+                                }
+                                officeDetailsDoneLoading={
+                                    this.state.officeDetailsDoneLoading
+                                }
+                                imageUrls={get(data, 'getOffice.imageUrls')}
+                                id={id}
+                            />
+                        </Fragment>
                     );
                 }}
             </Query>
