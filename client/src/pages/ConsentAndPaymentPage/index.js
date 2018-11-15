@@ -32,7 +32,13 @@ class ConsentAndPaymentPage extends PureComponent {
 
     handlePaymentSuccess = async (paymentOptionId, patientProcedures) => {
         await this.setState({ isSubmitting: true });
-        const procedureIds = patientProcedures.map(item => item.id);
+        const procedureIds = patientProcedures
+            .map(item => item.id)
+            .filter(item => !this.state.rejectedIds.includes(item));
+
+        // Pass rejectedIds to mutation
+        // const { rejectedIds } = this.state;
+
         const result = await this.props.mutate({
             variables: {
                 input: {
