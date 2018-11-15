@@ -77,10 +77,7 @@ const ListingConfirmation = props => {
                                     fontWeight="bold"
                                     color="text.blue"
                                     mt={10}
-                                    pb={14}
-                                    borderBottom="1px solid"
-                                    borderColor="divider.dustyGray"
-                                    mb={20}
+                                    pb={10}
                                 >
                                     EQUIPMENT
                                 </Text>
