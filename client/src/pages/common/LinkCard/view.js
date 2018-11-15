@@ -12,6 +12,7 @@ import {
 } from '../../../components';
 
 import { withScreenSizes } from '../../../components/Responsive';
+import { setImageSizeToUrl } from '../../../util/imageUtil';
 
 const LinkCard = props => {
     const {
@@ -37,7 +38,10 @@ const LinkCard = props => {
                         <Image
                             position="absolute"
                             borderRadius="4px"
-                            src={image || defaultDentistProfileImg}
+                            src={setImageSizeToUrl(
+                                image || defaultDentistProfileImg,
+                                250
+                            )}
                             height={props.height}
                             alt={title}
                             style={{

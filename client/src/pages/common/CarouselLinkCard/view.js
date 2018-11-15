@@ -9,6 +9,8 @@ import {
     Truncate,
     Link,
 } from '../../../components';
+import { withScreenSizes } from '../../../components/Responsive';
+import { setImageSizeToUrl } from '../../../util/imageUtil';
 import defaultDentistProfileImg from '../../../components/Image/default_dentist_profile_img_square.svg';
 
 const CarouselLinkCard = props => {
@@ -20,6 +22,7 @@ const CarouselLinkCard = props => {
         type,
         numReviews,
         url,
+        tabletMobileOnly,
     } = props;
 
     return (
@@ -39,7 +42,10 @@ const CarouselLinkCard = props => {
                             <Image
                                 position="absolute"
                                 borderRadius="4px"
-                                src={imageUrl || defaultDentistProfileImg}
+                                src={setImageSizeToUrl(
+                                    imageUrl || defaultDentistProfileImg,
+                                    tabletMobileOnly ? 160 : 230
+                                )}
                                 width="100%"
                                 height={props.height}
                                 alt={name}
@@ -106,4 +112,4 @@ const CarouselLinkCard = props => {
     );
 };
 
-export default CarouselLinkCard;
+export default withScreenSizes(CarouselLinkCard);

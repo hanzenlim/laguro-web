@@ -13,6 +13,7 @@ import {
     Responsive,
 } from '../../../components';
 import { CANCELLED } from '../../../util/strings';
+import { setImageSizeToUrl } from '../../../util/imageUtil';
 import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
 
 const { TabletMobile, Desktop } = Responsive;
@@ -76,7 +77,10 @@ class PatientAppointments extends PureComponent {
                         >
                             <TabletMobile>
                                 <Image
-                                    src={imageUrl || defaultUserImage}
+                                    src={setImageSizeToUrl(
+                                        imageUrl || defaultUserImage,
+                                        30
+                                    )}
                                     alt={dentistName}
                                     width={30}
                                     height={30}
@@ -144,7 +148,10 @@ class PatientAppointments extends PureComponent {
                                         </Text>
                                     </Box>
                                     <Image
-                                        src={imageUrl || defaultUserImage}
+                                        src={setImageSizeToUrl(
+                                            imageUrl || defaultUserImage,
+                                            48
+                                        )}
                                         alt={dentistName}
                                         width={48}
                                         height={48}

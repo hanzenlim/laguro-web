@@ -18,6 +18,7 @@ import {
 } from '../../../../components';
 import LocationFilter from '../../LocationFilter';
 import { EDIT_OFFICE_MODE } from '../../../../util/strings';
+import { setImageSizeToUrl } from '../../../../util/imageUtil';
 
 const { Desktop, TabletMobile } = Responsive;
 const { GridItem } = Grid;
@@ -125,7 +126,7 @@ class AddOfficeInfo extends Component {
                     height={['calc(50vw - 31px)', '', '100%']}
                 >
                     <Image
-                        src={url}
+                        src={setImageSizeToUrl(url, 180)}
                         key={`img${index}`}
                         alt="office"
                         width="100%"

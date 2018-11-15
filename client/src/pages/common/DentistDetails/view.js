@@ -14,6 +14,7 @@ import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
 import Map from '../Map';
 import { numMaxContainerWidth } from '../../../components/theme';
 import { withScreenSizes } from '../../../components/Responsive';
+import { setImageSizeToUrl } from '../../../util/imageUtil';
 
 const TAG_COLORS = [
     'background.blue',
@@ -89,7 +90,10 @@ class DentistDetailsView extends PureComponent {
                     <Image
                         width={[102, '', 130]}
                         height={[102, '', 130]}
-                        src={data.image || defaultUserImage}
+                        src={setImageSizeToUrl(
+                            data.image || defaultUserImage,
+                            tabletMobileOnly ? 102 : 130
+                        )}
                         alt={data.name}
                         borderRadius="50%"
                         mr={['auto', '', 20]}

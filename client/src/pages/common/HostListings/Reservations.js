@@ -5,6 +5,7 @@ import { Box, Text, Flex, Image, Responsive } from '../../../components';
 
 import { StyledList } from './view';
 import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
+import { setImageSizeToUrl } from '../../../util/imageUtil';
 
 const { Desktop, TabletMobile } = Responsive;
 
@@ -83,7 +84,10 @@ const Reservations = ({ reservations }) =>
                         {name}
                     </Text>
                     <Image
-                        src={imageUrl || defaultUserImage}
+                        src={setImageSizeToUrl(
+                            imageUrl || defaultUserImage,
+                            40
+                        )}
                         alt={name}
                         width={40}
                         height={40}

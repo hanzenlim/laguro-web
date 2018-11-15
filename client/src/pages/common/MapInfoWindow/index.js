@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import officePlaceholder from '../../../components/Image/office-placeholder.png';
 import { Flex, Box, Text, Image, Truncate, Link } from '../../../components';
+import { setImageSizeToUrl } from '../../../util/imageUtil';
 
 const StyledPopup = styled(Popup)`
     z-index: ${props => props.theme.zIndex.overlay};
@@ -37,7 +38,7 @@ const MapInfoWindow = props => {
             <Link to={url}>
                 <Flex alignItems="center">
                     <Image
-                        src={image || officePlaceholder}
+                        src={setImageSizeToUrl(image || officePlaceholder, 60)}
                         alt="dentist/office image"
                         borderRadius="50%"
                         height={60}

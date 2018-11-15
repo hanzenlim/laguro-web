@@ -16,6 +16,7 @@ import {
 import { withScreenSizes } from '../../../components/Responsive';
 import { NoAppointmentsCard } from '../PatientAppointments/view';
 import { CANCELLED } from '../../../util/strings';
+import { setImageSizeToUrl } from '../../../util/imageUtil';
 import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
 
 const { Panel } = Collapse;
@@ -292,7 +293,10 @@ class DentistAppointments extends PureComponent {
                                 </Box>
                             </Box>
                             <Image
-                                src={patient.imageUrl || defaultUserImage}
+                                src={setImageSizeToUrl(
+                                    patient.imageUrl || defaultUserImage,
+                                    38
+                                )}
                                 alt={name}
                                 width={38}
                                 height={38}
@@ -343,7 +347,10 @@ class DentistAppointments extends PureComponent {
                                 </Box>
                             </Flex>
                             <Image
-                                src={patient.imageUrl || defaultUserImage}
+                                src={setImageSizeToUrl(
+                                    patient.imageUrl || defaultUserImage,
+                                    38
+                                )}
                                 alt={name}
                                 width={38}
                                 height={38}

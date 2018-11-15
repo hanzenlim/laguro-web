@@ -73,7 +73,11 @@ class SearchResultsList extends PureComponent {
                 <Grid
                     gridColumnGap="17px"
                     gridRowGap="20px"
-                    gridTemplateColumns={['1fr 1fr', '', '1fr 1fr 1fr']}
+                    gridTemplateColumns={[
+                        '1fr 1fr',
+                        '1fr 1fr 1fr',
+                        '1fr 1fr 1fr',
+                    ]}
                 >
                     {data.length
                         ? data.map(item => (

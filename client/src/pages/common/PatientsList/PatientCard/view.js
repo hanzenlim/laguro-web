@@ -15,8 +15,9 @@ import {
 import { ContainerPaddingInPixels } from '../../../../components/Container';
 import { withScreenSizes } from '../../../../components/Responsive';
 import { filestackKey } from '../../../../config/keys';
+import { setImageSizeToUrl } from '../../../../util/imageUtil';
 
-const imageBoxHeight = '94px';
+const imageBoxHeight = 94;
 const maxImageNum = 4;
 
 const StyledModal = styled(Modal)`
@@ -44,7 +45,7 @@ class PatientCard extends PureComponent {
                     onClick={onImageClick}
                 >
                     <Image
-                        src={url}
+                        src={setImageSizeToUrl(url, imageBoxHeight)}
                         key={`img${index}`}
                         alt="office"
                         width="100%"
@@ -102,7 +103,7 @@ class PatientCard extends PureComponent {
                 <Flex alignItems={['flex-start', '', 'center']}>
                     <Box width={[60, '', 88]} height={[60, '', 88]} mr={16}>
                         <Image
-                            src={imageUrl}
+                            src={setImageSizeToUrl(imageUrl, 88)}
                             alt={name}
                             width="100%"
                             borderRadius="50%"

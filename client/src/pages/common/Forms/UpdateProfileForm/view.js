@@ -17,9 +17,11 @@ import {
     MaskedInput,
 } from '../../../../components';
 import { ContainerPaddingInPixels } from '../../../../components/Container';
+import { withScreenSizes } from '../../../../components/Responsive';
 import { filestackKey } from '../../../../config/keys';
 import { profileImageRatio } from '../../../../util/uiUtil';
 import { USER_PHOTOS_CONTAINER } from '../../../../util/strings';
+import { setImageSizeToUrl } from '../../../../util/imageUtil';
 import defaultUserImage from '../../../../components/Image/defaultUserImage.svg';
 
 const { FormItem, SubmitButton } = Form;
@@ -60,6 +62,7 @@ const UpdateProfileForm = props => {
         onSMSNotificationChange,
         smsNotificationStatus,
         onFormRef,
+        tabletMobileOnly,
     } = props;
 
     return (
@@ -93,11 +96,12 @@ const UpdateProfileForm = props => {
                             borderRadius="50%"
                             width={[118, '', 200]}
                             height={[118, '', 200]}
-                            src={
+                            src={setImageSizeToUrl(
                                 newProfileImage ||
-                                data.imageUrl ||
-                                defaultUserImage
-                            }
+                                    data.imageUrl ||
+                                    defaultUserImage,
+                                tabletMobileOnly ? 118 : 200
+                            )}
                         />
                         <ReactFilestack
                             apikey={filestackKey}
@@ -330,4 +334,4 @@ UpdateProfileForm.propTypes = {
     setNewProfileImage: PropTypes.func.isRequired,
 };
 
-export default UpdateProfileForm;
+export default withScreenSizes(UpdateProfileForm);

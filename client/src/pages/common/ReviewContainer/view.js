@@ -8,6 +8,7 @@ import history from '../../../history';
 import { Box, Flex, Image, Text, Rating, Truncate } from '../../../components';
 import { withScreenSizes } from '../../../components/Responsive';
 import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
+import { setImageSizeToUrl } from '../../../util/imageUtil';
 
 const ReviewContainer = props => {
     const {
@@ -94,7 +95,10 @@ const ReviewContainer = props => {
                         width={[80, '', 82]}
                         height={[80, '', 82]}
                         borderRadius="50%"
-                        src={review.reviewer.imageUrl || defaultUserImage}
+                        src={setImageSizeToUrl(
+                            review.reviewer.imageUrl || defaultUserImage,
+                            tabletMobileOnly ? 80 : 82
+                        )}
                         alt="reviewer-photo"
                     />
                     <Box px={10}>

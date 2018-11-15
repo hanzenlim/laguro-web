@@ -14,6 +14,7 @@ import {
     Responsive,
 } from '../../../components';
 import { DENTIST } from '../../../util/strings';
+import { setImageSizeToUrl } from '../../../util/imageUtil';
 
 const { TabletMobile, Desktop } = Responsive;
 
@@ -24,7 +25,7 @@ const DentistInfo = props => {
     return (
         <Box textAlign="center" mt={10}>
             <Image
-                src={imageUrl || defaultUserImage}
+                src={setImageSizeToUrl(imageUrl || defaultUserImage, 102)}
                 alt="dentist-image"
                 mx="auto"
                 mb={10}
@@ -52,7 +53,7 @@ const OfficeInfo = props => {
     const contents = [
         <Flex justifyContent="center" width={['100%', '', '33.33%']} m="auto">
             <Image
-                src={imageUrl || officePlaceholder}
+                src={setImageSizeToUrl(imageUrl || officePlaceholder, 102)}
                 height={['102px', '', '100%']}
                 width={['127px', '', '100%']}
                 mb={[10, '', 0]}

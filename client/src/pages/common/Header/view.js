@@ -20,6 +20,7 @@ import ForgotPassModal from '../Modals/ForgotPassModal';
 import { intercomKey } from '../../../config/keys';
 import theme from '../../../components/theme';
 import { withScreenSizes } from '../../../components/Responsive';
+import { setImageSizeToUrl } from '../../../util/imageUtil';
 
 import ProfileMenu from './ProfileMenu';
 
@@ -110,7 +111,12 @@ class ProfileButton extends Component {
                     <ProfileImage alignItems="center">
                         <Image
                             src={
-                                auth.imageUrl ? auth.imageUrl : defaultUserImage
+                                auth.imageUrl
+                                    ? setImageSizeToUrl(
+                                          auth.imageUrl,
+                                          desktopOnly ? 50 : 30
+                                      )
+                                    : defaultUserImage
                             }
                             width={[30, '', 50]}
                             height={[30, '', 50]}

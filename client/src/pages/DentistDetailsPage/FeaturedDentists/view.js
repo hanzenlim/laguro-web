@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Box, Flex, Text, Link } from '../../../components';
 import DentistCard from '../DentistCard';
+import { setImageSizeToUrl } from '../../../util/imageUtil';
 
 const FeaturedDentistsView = props => {
     const { featuredDentists } = props;
@@ -14,14 +15,14 @@ const FeaturedDentistsView = props => {
 
             <Flex justifyContent="space-between" mt={30}>
                 {featuredDentists.map(item => (
-                    <Box width="23%">
+                    <Box width="20%">
                         <Link type="ghost" to={`/dentist/${item.id}`}>
                             <DentistCard
                                 name={item.name}
                                 specialty={item.specialty}
                                 numReviews={item.numReviews}
                                 rating={item.averageRating}
-                                image={item.imageUrl}
+                                image={setImageSizeToUrl(item.imageUrl, 260)}
                             />
                         </Link>
                     </Box>
