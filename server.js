@@ -47,6 +47,13 @@ if (process.env.NODE_ENV === 'production') {
 app.post('/api/graphql', cors(), async (req, res) => {
     const context = {};
 
+    // append incoming JWT tokens to the header and pass thru to backend for external access to graphql api
+    if (req.headers && req.headers.authorization) {
+        context.headers = {
+            authorization: req.headers.authorization,
+        };
+    }
+
     if (req.user) {
         const { id, email, dentistId } = req.user;
         const user = { id, email, dentistId };
