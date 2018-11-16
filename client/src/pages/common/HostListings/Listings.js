@@ -45,7 +45,8 @@ const Listings = ({ listings, toggleCancelModalState, desktopOnly }) => {
             localStartTime,
             localEndTime,
         } = listing;
-        const { startTime, endTime, startDay, endDay, days } = availability;
+
+        const { startDay, endDay, days } = availability;
         const frequency = describeFrequency(
             days.map(d => d.charAt(0) + d.slice(1).toLowerCase())
         );
@@ -122,8 +123,8 @@ const Listings = ({ listings, toggleCancelModalState, desktopOnly }) => {
                         <ListingTime
                             startDate={startDay}
                             endDate={endDay}
-                            startTime={startTime}
-                            endTime={endTime}
+                            startTime={localStartTime}
+                            endTime={localEndTime}
                             frequency={frequency}
                         />
                         <Text

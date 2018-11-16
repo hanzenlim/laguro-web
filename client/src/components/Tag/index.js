@@ -12,10 +12,6 @@ const StyledCheckableTag = styled(CheckableTag)`
             ${width}
             ${height}
             ${space}
-            line-height: ${props => props.height}px;
-            border-radius: 22.5px;
-            background-color: ${props =>
-                props.theme.colors.background.whiteSmoke};
             text-align: center;
             color: ${props => props.theme.colors.text.black};
             border: none;
@@ -23,7 +19,7 @@ const StyledCheckableTag = styled(CheckableTag)`
             font-family: ${props => props.theme.fontFamily};
         }
 
-        &.ant-tag-checkable-checked {
+        &&&.ant-tag-checkable-checked {
             background-color: ${props => props.theme.colors.background.blue};
             color: ${props => props.theme.colors.text.white};
         }

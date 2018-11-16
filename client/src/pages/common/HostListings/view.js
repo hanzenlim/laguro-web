@@ -62,7 +62,10 @@ class HostListings extends PureComponent {
                             </Link>
                         </Flex>
                     </Flex>
-                    <Box mb={[20, '', 34]}>
+                    <Box
+                        mb={[20, '', 34]}
+                        px={[ContainerPaddingInPixels, '', 0]}
+                    >
                         <Icon
                             fontSize={[0, '', 1]}
                             type="environment-o"
@@ -94,18 +97,22 @@ class HostListings extends PureComponent {
                             ))}
                         </StyledList>
                     </Box>
-                    <Link
-                        to={`/host-onboarding/add-listing/?mode=add-listing&officeId=${id}`}
-                        type="ghost"
-                    >
-                        <Text
-                            textAlign="right"
-                            color="text.blue"
-                            fontSize={[0, '', 1]}
+
+                    <Box px={[ContainerPaddingInPixels, '', 0]}>
+                        <Link
+                            to={`/host-onboarding/add-listing/?mode=add-listing&officeId=${id}`}
+                            type="ghost"
                         >
-                            Add a New Listing
-                        </Text>
-                    </Link>
+                            <Text
+                                textAlign="right"
+                                color="text.blue"
+                                fontSize={[0, '', 1]}
+                            >
+                                Add a New Listing
+                            </Text>
+                        </Link>
+                    </Box>
+
                     {listings.length ? (
                         <Listings
                             listings={listings}

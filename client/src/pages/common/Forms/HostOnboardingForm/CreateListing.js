@@ -129,6 +129,19 @@ class CreateListing extends Component {
 
     render() {
         const { active, form, onDelete, desktopOnly, ...rest } = this.props;
+
+        const StyledCheckableTag = styled(CheckableTag)`
+            &&.ant-tag-checkable {
+                line-height: ${desktopOnly ? '30px' : '41px'}
+                border-radius: ${desktopOnly ? '22.5px' : '0'};
+                border: ${desktopOnly ? 'none' : 'solid 0.1px #dbdbdb'};
+                background-color: ${props =>
+                    desktopOnly
+                        ? props.theme.colors.background.whiteSmoke
+                        : props.theme.colors.background.white};
+            }
+        `;
+
         const values = form.getFieldsValue();
         const index = this.props['data-index'];
         const availability = values[`availability${index}`];
@@ -213,14 +226,14 @@ class CreateListing extends Component {
                                             )}
                                             valuePropName="checked"
                                             input={
-                                                <CheckableTag
-                                                    width={60}
-                                                    height={30}
-                                                    mr={8}
+                                                <StyledCheckableTag
+                                                    width={[41, '', 60]}
+                                                    height={[41, '', 30]}
+                                                    mr={[0, '', 8]}
                                                 >
                                                     {d.charAt(0).toUpperCase() +
                                                         d.slice(1)}
-                                                </CheckableTag>
+                                                </StyledCheckableTag>
                                             }
                                         />
                                     ))}
