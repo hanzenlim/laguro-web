@@ -4,12 +4,13 @@ import _get from 'lodash/get';
 import {
     getUserQuery,
     getProceduresQuery,
-    updatePatientProcedures,
+    updatePatientProcedures as updatePatientProceduresMutation,
+    updatePatientProceduresStatus as updatePatientProceduresStatusMutation,
 } from './queries';
 import ConsentAndPaymentPageView from './view';
 import { Loading } from '../../components';
 import { RedirectErrorPage } from '../../pages/GeneralErrorPage';
-import { PATIENT_ID, STATUS, PENDING } from '../../util/strings';
+import { PATIENT_ID, STATUS, PENDING, REJECTED } from '../../util/strings';
 
 class ConsentAndPaymentPage extends PureComponent {
     constructor(props) {
@@ -36,20 +37,28 @@ class ConsentAndPaymentPage extends PureComponent {
             .map(item => item.id)
             .filter(item => !this.state.rejectedIds.includes(item));
 
-        // Pass rejectedIds to mutation
-        // const { rejectedIds } = this.state;
-
-        const result = await this.props.mutate({
-            variables: {
-                input: {
-                    procedureIds,
-                    paymentOptionId,
+        try {
+            await this.props.updatePatientProcedures({
+                variables: {
+                    input: {
+                        procedureIds,
+                        paymentOptionId,
+                    },
                 },
-            },
-        });
+            });
 
-        if (result) {
+            await this.props.updatePatientProceduresStatus({
+                variables: {
+                    input: {
+                        procedureIds: this.state.rejectedIds,
+                        status: REJECTED,
+                    },
+                },
+            });
+
             this.setState({ isPaymentSuccessful: true });
+        } catch (error) {
+            throw error;
         }
 
         this.setState({ isSubmitting: false });
@@ -142,5 +151,10 @@ class ConsentAndPaymentPage extends PureComponent {
 export default compose(
     withApollo,
     graphql(getUserQuery),
-    graphql(updatePatientProcedures)
+    graphql(updatePatientProceduresMutation, {
+        name: 'updatePatientProcedures',
+    }),
+    graphql(updatePatientProceduresStatusMutation, {
+        name: 'updatePatientProceduresStatus',
+    })
 )(ConsentAndPaymentPage);
