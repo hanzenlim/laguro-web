@@ -206,13 +206,18 @@ export const ListingTime = ({
             letterSpacing="-0.5px"
             whiteSpace="normal"
         >
-            <Text is="span" color="inherit">
+            <Text is="span" color="inherit" whiteSpace="inherit">
                 Repeat{' '}
             </Text>
-            <Text is="span" fontWeight="medium" color="inherit">
+            <Text
+                is="span"
+                fontWeight="medium"
+                color="inherit"
+                whiteSpace="inherit"
+            >
                 {frequency}{' '}
             </Text>
-            <Text is="span" color="inherit">
+            <Text is="span" color="inherit" whiteSpace="inherit">
                 from{' '}
             </Text>
             <Text
