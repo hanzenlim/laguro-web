@@ -67,6 +67,7 @@ const PaymentDetails = ({
                     className="print-btn"
                     height={[30, '', 60]}
                     px={[12, '', 30]}
+                    mb={76}
                     onClick={() => window.print()}
                 >
                     <Text
