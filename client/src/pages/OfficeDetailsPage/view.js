@@ -16,6 +16,7 @@ import OfficeDetails from '../common/OfficeDetails';
 import Payment from '../common/Payment';
 import ReserveOffice from '../common/ReserveOffice';
 import { OFFICE } from '../../util/strings';
+import { setImageSizeToUrl } from '../../util/imageUtil';
 import ReviewContainer from '../common/ReviewContainer';
 import FeaturedOffices from './FeaturedOffices';
 
@@ -31,7 +32,7 @@ const StyledCarousel = styled(SlickCarousel)`
 
         @media (min-width: ${theme.breakpoints[1]}) {
             margin-bottom: 20px;
-            height: 20vw;
+            height: 370px;
         }
     }
 
@@ -103,13 +104,12 @@ class OfficeDetailsPageView extends PureComponent {
             imageUrls,
             officeDetailsDoneLoadingHandler,
             officeDetailsDoneLoading,
+            desktopOnly,
         } = this.props;
 
         const { isReserveOfficeVisible, carouselClass } = this.state;
 
-        const isContentVisible = this.props.desktopOnly
-            ? true
-            : !isReserveOfficeVisible;
+        const isContentVisible = desktopOnly ? true : !isReserveOfficeVisible;
 
         return (
             <Flex flexDirection="column" height="100%">
@@ -137,7 +137,10 @@ class OfficeDetailsPageView extends PureComponent {
                                 onClick={this.toggleCarouselHeight}
                             >
                                 <Image
-                                    src={imageUrl}
+                                    src={setImageSizeToUrl(
+                                        imageUrl,
+                                        desktopOnly ? 370 : 208
+                                    )}
                                     width="100%"
                                     height="100%"
                                 />
