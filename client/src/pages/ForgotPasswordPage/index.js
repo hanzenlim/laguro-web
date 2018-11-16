@@ -91,6 +91,10 @@ class ForgotPasswordPage extends Component {
                         <Fragment>
                             <Helmet>
                                 <title>Forgot Password | Laguro</title>
+                                <meta
+                                    name="description"
+                                    content="Enter the email address associated with your account and we will send you a password reset link."
+                                />
                                 <link
                                     rel="canonical"
                                     href="https://www.laguro.com/forgot-password"

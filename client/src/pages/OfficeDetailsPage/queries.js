@@ -8,6 +8,9 @@ export const getOfficeImageQuery = gql`
             imageUrls
             name
             description
+            location {
+                name
+            }
         }
     }
 `;

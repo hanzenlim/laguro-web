@@ -39,11 +39,20 @@ class OfficeDetailsPageContainer extends PureComponent {
                     }
 
                     const officeName = get(data, 'getOffice.name');
+                    const officeDescription = get(
+                        data,
+                        'getOffice.description'
+                    );
+                    const officeLocation = get(data, 'getOffice.location.name');
 
                     return (
                         <Fragment>
                             <Helmet>
                                 <title>{`${officeName} | Laguro`}</title>
+                                <meta
+                                    name="description"
+                                    content={`${officeName} in ${officeLocation}. ${officeDescription}`}
+                                />
                                 <link
                                     rel="canonical"
                                     href={`https://www.laguro.com${

@@ -85,6 +85,10 @@ class RegisterPage extends Component {
                         <Fragment>
                             <Helmet>
                                 <title>Register to Laguro</title>
+                                <meta
+                                    name="description"
+                                    content="Welcome to Laguro! Register with us today and get started on creating your profile."
+                                />
                                 <link
                                     rel="canonical"
                                     href="https://www.laguro.com/register"
