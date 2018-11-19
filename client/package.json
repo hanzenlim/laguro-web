@@ -13,6 +13,7 @@
   "dependencies": {
     "@material-ui/core": "^1.1.0",
     "@material-ui/icons": "^1.1.0",
+    "@storybook/addon-viewport": "^3.4.11",
     "antd": "^3.9.3",
     "apollo-boost": "^0.1.13",
     "axios": "^0.17.1",
