@@ -6,6 +6,7 @@ import { Box, Text, Flex, Button, Responsive } from '../../../components';
 import { withScreenSizes } from '../../../components/Responsive';
 import Reservations from './Reservations';
 import { describeFrequency, ListingTime } from '../../../util/timeUtil';
+import ListingInfo from '../ListingInfo';
 
 const { TabletMobile, Desktop } = Responsive;
 const { Panel } = Collapse;
@@ -44,6 +45,9 @@ const Listings = ({ listings, toggleCancelModalState, desktopOnly }) => {
             reservations,
             localStartTime,
             localEndTime,
+            availableChairs,
+            pricePerChair,
+            cleaningFee,
         } = listing;
 
         const { startDay, endDay, days } = availability;
@@ -94,13 +98,32 @@ const Listings = ({ listings, toggleCancelModalState, desktopOnly }) => {
                     >
                         LISTING DETAILS
                     </Text>
-                    <ListingTime
-                        startDate={startDay}
-                        endDate={endDay}
-                        startTime={localStartTime}
-                        endTime={localEndTime}
-                        frequency={frequency}
-                    />
+
+                    <Box mb={21}>
+                        <ListingTime
+                            startDate={startDay}
+                            endDate={endDay}
+                            startTime={localStartTime}
+                            endTime={localEndTime}
+                            frequency={frequency}
+                        />
+                    </Box>
+
+                    <Box mb={21} border="1px solid #dbdbdb" p={14}>
+                        <ListingInfo
+                            availableChairs={availableChairs}
+                            pricePerChair={pricePerChair}
+                            cleaningFee={cleaningFee}
+                        />
+                    </Box>
+                    <Text
+                        fontWeight="medium"
+                        fontSize={[1, '', 2]}
+                        color="text.blue"
+                        mb={9}
+                    >
+                        BOOKINGS
+                    </Text>
                     <Box mt={18}>
                         {reservations.length ? (
                             <Reservations reservations={reservations} />
@@ -119,7 +142,7 @@ const Listings = ({ listings, toggleCancelModalState, desktopOnly }) => {
         ) : (
             <Panel
                 header={
-                    <Box fontSize={2}>
+                    <Flex fontSize={2}>
                         <ListingTime
                             startDate={startDay}
                             endDate={endDay}
@@ -131,11 +154,12 @@ const Listings = ({ listings, toggleCancelModalState, desktopOnly }) => {
                             fontWeight="medium"
                             display="inline"
                             color="text.blue"
+                            ml={6}
                         >
                             {reservations.length > 0 &&
                                 `(${reservations.length})`}
                         </Text>
-                    </Box>
+                    </Flex>
                 }
                 key={id}
             >

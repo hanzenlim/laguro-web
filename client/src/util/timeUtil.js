@@ -1,8 +1,8 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import moment from 'moment';
 import _isEqual from 'lodash/isEqual';
 
-import { Text } from '../components';
+import { Box, Text } from '../components';
 
 /* eslint-disable import/prefer-default-export */
 export const DEFAULT_APPOINTMENT_WINDOW_SIZE = 15;
@@ -189,7 +189,7 @@ export const ListingTime = ({
     endTime,
     frequency,
 }) => (
-    <Fragment>
+    <Box>
         <Text fontSize={[1, '', 3]} letterSpacing="-0.6px" color="text.black">
             {`${(startDate && moment(startDate).format('dddd, MMM DD, YYYY')) ||
                 'Start date'}
@@ -240,5 +240,5 @@ export const ListingTime = ({
                 {(endTime && moment(endTime).format('LT')) || 'end time'}
             </Text>
         </Text>
-    </Fragment>
+    </Box>
 );

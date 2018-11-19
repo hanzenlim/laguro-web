@@ -2,11 +2,20 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { Box, Tabs, Text, Flex, Link, Icon } from '../../../components';
+import {
+    Box,
+    Tabs,
+    Text,
+    Flex,
+    Link,
+    Icon,
+    Responsive,
+} from '../../../components';
 import Listings from './Listings';
 import { ContainerPaddingInPixels } from '../../../components/Container';
 
 const { TabPane } = Tabs;
+const { TabletMobile } = Responsive;
 
 export const StyledList = styled.ul`
     columns: 2;
@@ -78,13 +87,18 @@ class HostListings extends PureComponent {
                     <Box
                         px={[ContainerPaddingInPixels, '', 28]}
                         py={[0, '', 16]}
-                        mb={[12, '', 33]}
+                        mb={29}
                         bg="background.white"
                         border={['none', '', '1px solid']}
                         borderColor={['', '', 'divider.gray']}
                         borderRadius={2}
                     >
-                        <Text fontSize={[1, '', 3]} fontWeight="medium" mb={14}>
+                        <Text
+                            fontSize={[1, '', 3]}
+                            fontWeight="medium"
+                            mb={14}
+                            color={['text.black', '', 'text.blue']}
+                        >
                             Equipments offered in this office
                         </Text>
                         <StyledList>
@@ -98,20 +112,32 @@ class HostListings extends PureComponent {
                         </StyledList>
                     </Box>
 
-                    <Box px={[ContainerPaddingInPixels, '', 0]}>
-                        <Link
-                            to={`/host-onboarding/add-listing/?mode=add-listing&officeId=${id}`}
-                            type="ghost"
-                        >
-                            <Text
-                                textAlign="right"
-                                color="text.blue"
-                                fontSize={[0, '', 1]}
+                    <Flex
+                        px={[ContainerPaddingInPixels, '', 0]}
+                        justifyContent="space-between"
+                        flexDirection="row-reverse"
+                        alignItems="center"
+                    >
+                        <Box>
+                            <Link
+                                to={`/host-onboarding/add-listing/?mode=add-listing&officeId=${id}`}
+                                type="ghost"
                             >
-                                Add a New Listing
+                                <Text
+                                    textAlign="right"
+                                    color="text.blue"
+                                    fontSize={[0, '', 1]}
+                                >
+                                    Add a New Listing
+                                </Text>
+                            </Link>
+                        </Box>
+                        <TabletMobile>
+                            <Text fontWeight="medium" fontSize={4}>
+                                Listings
                             </Text>
-                        </Link>
-                    </Box>
+                        </TabletMobile>
+                    </Flex>
 
                     {listings.length ? (
                         <Listings

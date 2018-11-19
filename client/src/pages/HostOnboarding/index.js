@@ -661,6 +661,21 @@ class HostOnboarding extends Component {
                         'Your daily end time has to be after your daily start time'
                     );
                     return null;
+                } else if (
+                    !(
+                        this.values[`mon${index}`] ||
+                        this.values[`tue${index}`] ||
+                        this.values[`wed${index}`] ||
+                        this.values[`thu${index}`] ||
+                        this.values[`fri${index}`] ||
+                        this.values[`sat${index}`] ||
+                        this.values[`sun${index}`]
+                    )
+                ) {
+                    message.error(
+                        'You must select at least one day to repeat your listings on'
+                    );
+                    return null;
                 }
 
                 return {

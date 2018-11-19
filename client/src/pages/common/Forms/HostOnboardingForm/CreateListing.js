@@ -180,7 +180,7 @@ class CreateListing extends Component {
                         cleaningFee={values[`cleaningFee${index}`]}
                     />
                 </StyledButton>
-                {/* open listing */}
+                {/* current, open listing */}
                 <Box mb={10}>
                     <StyledCard
                         mb={10}
@@ -210,6 +210,15 @@ class CreateListing extends Component {
                                 </Button>
                             )}
 
+                            <Text
+                                fontWeight="bold"
+                                fontSize={[2, '', 4]}
+                                color="text.blue"
+                                mb={9}
+                            >
+                                SELECT AVAILABILITY
+                            </Text>
+
                             <StyledForm form={form}>
                                 <FormItem
                                     name="labelOnly"
@@ -238,23 +247,7 @@ class CreateListing extends Component {
                                         />
                                     ))}
                                 </Flex>
-                                <FormItem
-                                    name={`availability${index}`}
-                                    label="Availability"
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: 'Please select your dates',
-                                        },
-                                    ]}
-                                    input={
-                                        <StyledRangePicker
-                                            onDateChange={() => {}}
-                                            disabledDate={disabledDate}
-                                            width={608}
-                                        />
-                                    }
-                                />
+
                                 <Grid
                                     width="100%"
                                     gridTemplateRows={['auto auto', '', 'auto']}
@@ -263,7 +256,6 @@ class CreateListing extends Component {
                                         '',
                                         `1fr ${rightArrowWidth}px 1fr`,
                                     ]}
-                                    // position="absolute"
                                     alignItems="center"
                                     onClick={this.toggleDatePicker}
                                 >
@@ -281,7 +273,7 @@ class CreateListing extends Component {
                                     >
                                         <FormItem
                                             form={form}
-                                            mb="0"
+                                            mb={[0, '', 26]}
                                             width="100%"
                                             name={`startTime${index}`}
                                             rules={[
@@ -311,7 +303,10 @@ class CreateListing extends Component {
 
                                     {/* width is 1.25 * rightArrowWidth */}
                                     {/* Using <Desktop /> breaks the UI. Probably becuase of how form works */}
-                                    <Box display={['none', '', 'inline-block']}>
+                                    <Box
+                                        display={['none', '', 'inline-block']}
+                                        mb={20}
+                                    >
                                         <Icon
                                             type="rightForwardArrow"
                                             fontSize={`${rightArrowHeight}px`}
@@ -320,7 +315,7 @@ class CreateListing extends Component {
 
                                     <FormItem
                                         form={form}
-                                        mb="0"
+                                        mb={[20, '', 26]}
                                         width="100%"
                                         name={`endTime${index}`}
                                         rules={[
@@ -348,6 +343,32 @@ class CreateListing extends Component {
                                     />
                                 </Grid>
 
+                                <FormItem
+                                    name={`availability${index}`}
+                                    label="Listing Duration"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Please select your dates',
+                                        },
+                                    ]}
+                                    input={
+                                        <StyledRangePicker
+                                            onDateChange={() => {}}
+                                            disabledDate={disabledDate}
+                                            width={608}
+                                        />
+                                    }
+                                />
+
+                                <Text
+                                    fontWeight="bold"
+                                    fontSize={[2, '', 4]}
+                                    color="text.blue"
+                                    mb={9}
+                                >
+                                    DENTAL CHAIR
+                                </Text>
                                 <Flex
                                     mt={22}
                                     flexDirection={['row', '', 'column']}
