@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 // External Packages
 const passport = require('passport');
 const serverDataLoader = require('../util/serverDataLoader');
-const { generateToken } = require('../util/token');
+const { generateToken, COOKIE_EXPIRATION } = require('../util/token');
 
 const {
     makeQuery,
@@ -45,7 +45,7 @@ const authRoutes = app => {
             }
 
             res.cookie('user', JSON.stringify(user), {
-                maxAge: 86400000,
+                maxAge: COOKIE_EXPIRATION,
             });
 
             req.login(user, loginError => {
@@ -81,7 +81,14 @@ const authRoutes = app => {
     );
 
     app.post('/api/logout', (req, res) => {
+        // Will remove the express session
+        req.session = null;
+
+        // Will remove the req.user by passport.
         req.logout();
+
+        res.clearCookie('user');
+
         return res.json({ status: 200 });
     });
 

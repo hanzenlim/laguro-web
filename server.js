@@ -11,7 +11,7 @@ const cors = require('cors');
 const prerenderNode = require('prerender-node');
 
 const { makeQuery } = require('./util/serverDataLoader');
-const { generateToken } = require('./util/token');
+const { generateToken, COOKIE_EXPIRATION } = require('./util/token');
 
 // Services
 require('./services/passport');
@@ -23,7 +23,7 @@ app.use(bodyParser.json());
 // Auth config
 app.use(
     cookieSession({
-        maxAge: 10800000, // 1 day
+        maxAge: COOKIE_EXPIRATION,
         keys: [process.env.COOKIE_KEY],
     })
 );
@@ -60,7 +60,7 @@ app.post('/api/graphql', cors(), async (req, res) => {
         const token = generateToken(user);
 
         context.headers = {
-            authorization: `bearer ${token}`,
+            Authorization: `bearer ${token}`,
         };
     }
 

@@ -1,5 +1,4 @@
 import { message } from 'antd';
-import cookies from 'browser-cookies';
 import history from '../history';
 import request from './fetchUtil';
 import { ACTIVE_USER } from './strings';
@@ -77,7 +76,6 @@ export const onLogout = clientCache => {
     // eslint-disable-next-line
     window.localStorage && window.localStorage.clear();
     clientCache.writeData({ data: { activeUser: null } });
-    cookies.erase('user');
     request('/api/logout', {
         method: 'POST',
         credentials: 'same-origin',
