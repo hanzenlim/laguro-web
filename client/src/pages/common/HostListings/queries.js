@@ -60,9 +60,6 @@ export const getDentistQuery = gql`
                     }
                     localStartTime
                     localEndTime
-                    availableChairs
-                    pricePerChair
-                    cleaningFee
                     reservations(
                         options: {
                             sortKey: "${END_TIME}",

@@ -5,8 +5,7 @@ import { Collapse } from 'antd';
 import { Box, Text, Flex, Button, Responsive } from '../../../components';
 import { withScreenSizes } from '../../../components/Responsive';
 import Reservations from './Reservations';
-import { describeFrequency, ListingTime } from '../../../util/timeUtil';
-import ListingInfo from '../ListingInfo';
+import { ListingTime } from '../../../util/timeUtil';
 
 const { TabletMobile, Desktop } = Responsive;
 const { Panel } = Collapse;
@@ -45,15 +44,10 @@ const Listings = ({ listings, toggleCancelModalState, desktopOnly }) => {
             reservations,
             localStartTime,
             localEndTime,
-            availableChairs,
-            pricePerChair,
-            cleaningFee,
         } = listing;
 
         const { startDay, endDay, days } = availability;
-        const frequency = describeFrequency(
-            days.map(d => d.charAt(0) + d.slice(1).toLowerCase())
-        );
+        const frequency = days.map(d => d.charAt(0) + d.slice(1).toLowerCase());
 
         const isResevationsEmpty = reservations.length === 0;
 
@@ -109,13 +103,6 @@ const Listings = ({ listings, toggleCancelModalState, desktopOnly }) => {
                         />
                     </Box>
 
-                    <Box mb={21} border="1px solid #dbdbdb" p={14}>
-                        <ListingInfo
-                            availableChairs={availableChairs}
-                            pricePerChair={pricePerChair}
-                            cleaningFee={cleaningFee}
-                        />
-                    </Box>
                     <Text
                         fontWeight="medium"
                         fontSize={[1, '', 2]}

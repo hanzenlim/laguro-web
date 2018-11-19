@@ -158,6 +158,25 @@ export const DAYS = [
     'Sunday',
 ];
 
+export const WEEK_DAYS_INDEX = {
+    Monday: 0,
+    Tuesday: 1,
+    Wednesday: 2,
+    Thursday: 3,
+    Friday: 4,
+    Saturday: 5,
+    Sunday: 6,
+};
+export const WEEK_DAYS_INDEX_REVERSE = {
+    0: 'Monday',
+    1: 'Tuesday',
+    2: 'Wednesday',
+    3: 'Thursday',
+    4: 'Friday',
+    5: 'Saturday',
+    6: 'Sunday',
+};
+
 export const ABBREVIATED_DAYS = [
     'mon',
     'tue',
@@ -172,14 +191,20 @@ export const WEEKEND = DAYS.slice(5);
 
 // given a list of day(['Monday', 'Tuesday'], return phrase to describe it
 export const describeFrequency = frequency => {
-    if (_isEqual(frequency, WEEKDAYS)) {
+    frequency.sort();
+    if (_isEqual(frequency, WEEKDAYS.slice().sort())) {
         return 'every weekday';
-    } else if (_isEqual(frequency, WEEKEND)) {
+    } else if (_isEqual(frequency, WEEKEND.slice().sort())) {
         return 'every weekend';
-    } else if (_isEqual(frequency, DAYS)) {
+    } else if (_isEqual(frequency, DAYS.slice().sort())) {
         return 'everyday';
     }
-    return `every ${frequency.join(', ')}`;
+
+    return `every ${frequency
+        .map(d => WEEK_DAYS_INDEX[d])
+        .sort()
+        .map(d => WEEK_DAYS_INDEX_REVERSE[d])
+        .join(', ')}`;
 };
 
 export const ListingTime = ({
@@ -215,7 +240,7 @@ export const ListingTime = ({
                 color="inherit"
                 whiteSpace="inherit"
             >
-                {frequency}{' '}
+                {describeFrequency(frequency)}{' '}
             </Text>
             <Text is="span" color="inherit" whiteSpace="inherit">
                 from{' '}

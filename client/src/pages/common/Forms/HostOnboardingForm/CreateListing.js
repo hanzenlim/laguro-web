@@ -19,11 +19,7 @@ import {
 import ListingCard from '../../ListingCard';
 import { withScreenSizes } from '../../../../components/Responsive';
 import { renderPrice } from '../../../../util/paymentUtil';
-import {
-    ABBREVIATED_DAYS,
-    DAYS,
-    describeFrequency,
-} from '../../../../util/timeUtil';
+import { ABBREVIATED_DAYS, DAYS } from '../../../../util/timeUtil';
 
 const { FormItem } = InnerForm;
 const format = 'h:mm a';
@@ -170,7 +166,7 @@ class CreateListing extends Component {
                 >
                     <ListingCard
                         index={index}
-                        frequency={describeFrequency(frequency)}
+                        frequency={frequency}
                         startDate={startDate}
                         endDate={endDate}
                         startTime={startTime}
@@ -247,6 +243,14 @@ class CreateListing extends Component {
                                         />
                                     ))}
                                 </Flex>
+
+                                <FormItem
+                                    form={form}
+                                    name="labelOnly"
+                                    label="Start & End Time"
+                                    mb={0}
+                                    input={<div />}
+                                />
 
                                 <Grid
                                     width="100%"

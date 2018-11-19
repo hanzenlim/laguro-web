@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Box, Flex, Text, Card } from '../../../components';
-import { describeFrequency, ListingTime } from '../../../util/timeUtil';
+import { ListingTime } from '../../../util/timeUtil';
 
 const ListingConfirmation = props => {
     const { name, address, listings } = props;
@@ -59,9 +59,10 @@ const ListingConfirmation = props => {
                     index
                 ) => {
                     const { startDay, endDay, days } = availability;
-                    const frequency = describeFrequency(
-                        days.map(d => d.charAt(0) + d.slice(1).toLowerCase())
+                    const frequency = days.map(
+                        d => d.charAt(0) + d.slice(1).toLowerCase()
                     );
+
                     return (
                         <Box key={id} mb={20}>
                             <Card p={[20, '', 28]} mb={10}>

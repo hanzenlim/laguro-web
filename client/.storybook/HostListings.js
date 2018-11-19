@@ -21,7 +21,13 @@ storiesOf('HostListings', module).add('default', () => (
                             startTime: '2018-11-16T05:00:00Z',
                             cleaningFee: 125,
                             availability: {
-                                days: ['FRIDAY'],
+                                days: [
+                                    'FRIDAY',
+                                    'WEDNESDAY',
+                                    'MONDAY',
+                                    'TUESDAY',
+                                    'THURSDAY',
+                                ],
                                 startTime: '00:00:00',
                                 endTime: '01:00:00',
                                 type: 'RECURRING_WEEK_DAYS',
