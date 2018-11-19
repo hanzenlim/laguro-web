@@ -243,6 +243,10 @@ class OfficeSearchPage extends PureComponent {
                               } | Offices | Laguro`
                             : 'Laguro'}
                     </title>
+                    <meta
+                        name="description"
+                        content="Search for your next dental office in your current location."
+                    />
                     <link
                         rel="canonical"
                         href="https://www.laguro.com/office/search"

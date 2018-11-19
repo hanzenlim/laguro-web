@@ -35,11 +35,17 @@ class DentistDetailsPageContainer extends PureComponent {
                     const firstName = _get(dentist, 'user.firstName');
                     const lastName = _get(dentist, 'user.lastName');
                     const dentistName = `Dr. ${firstName} ${lastName}`;
+                    const specialty = _get(dentist, 'specialty');
+                    const bio = _get(dentist, 'bio');
 
                     return (
                         <Fragment>
                             <Helmet>
                                 <title>{`${dentistName} | Laguro`}</title>
+                                <meta
+                                    name="description"
+                                    content={`${dentistName}. ${specialty}. ${bio}`}
+                                />
                                 <link
                                     rel="canonical"
                                     href={`https://www.laguro.com${

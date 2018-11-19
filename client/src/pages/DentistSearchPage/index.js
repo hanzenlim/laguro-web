@@ -246,6 +246,10 @@ class DetailsSearchPage extends PureComponent {
                               } | Dentists | Laguro`
                             : 'Laguro'}
                     </title>
+                    <meta
+                        name="description"
+                        content="Search for your next dentist with Laguro and start your treatments today."
+                    />
                     <link
                         rel="canonical"
                         href="https://www.laguro.com/dentist/search"
