@@ -5,7 +5,7 @@ import { Box, Flex, Text, Card } from '../../../components';
 import { describeFrequency, ListingTime } from '../../../util/timeUtil';
 
 const ListingConfirmation = props => {
-    const { name, address, listings, equipment } = props;
+    const { name, address, listings } = props;
 
     return (
         <Box width="100%" mt={[0, '', 140]} mb={60}>
@@ -87,31 +87,6 @@ const ListingConfirmation = props => {
                                     frequency={frequency}
                                     index={index}
                                 />
-                                {equipment.length > 0 && (
-                                    <Text
-                                        fontSize={[1, '', 4]}
-                                        fontWeight="bold"
-                                        color="text.blue"
-                                        mt={10}
-                                        pb={14}
-                                        borderBottom="1px solid"
-                                        borderColor="divider.dustyGray"
-                                        mb={20}
-                                    >
-                                        EQUIPMENT
-                                    </Text>
-                                )}
-                                {equipment.map(e => (
-                                    <Text
-                                        fontSize={2}
-                                        fontWeight="500"
-                                        color="text.black"
-                                        pb={16}
-                                        lineHeight={1}
-                                    >
-                                        {e.name}
-                                    </Text>
-                                ))}
                                 <Text
                                     fontSize={[1, '', 4]}
                                     fontWeight="bold"
@@ -189,7 +164,6 @@ const ListingConfirmation = props => {
 };
 const listingShape = PropTypes.shape({
     availability: PropTypes.string,
-    equipments: PropTypes.arrayOf(PropTypes.string),
     numChairsAvailable: PropTypes.number,
     chairHourlyPrice: PropTypes.string,
 });
