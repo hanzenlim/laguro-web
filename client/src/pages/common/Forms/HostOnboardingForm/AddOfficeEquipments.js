@@ -291,7 +291,7 @@ class AddOfficeEquipments extends Component {
                     onSuccess={this.onSubmit}
                     officeDescription={officeDescription}
                 >
-                    <Grid gridTemplateColumns={'100%'} justifyItems="center">
+                    <Grid gridTemplateColumns={'100%'}>
                         <GridItem gc="all">
                             <Text
                                 fontWeight="bold"
