@@ -138,7 +138,7 @@ class OfficeDetailsPageView extends PureComponent {
                             >
                                 <Image
                                     src={setImageSizeToUrl(
-                                        imageUrl,
+                                        imageUrl || '',
                                         desktopOnly ? 370 : 208
                                     )}
                                     width="100%"
