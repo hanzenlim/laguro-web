@@ -294,6 +294,7 @@ class HostOnboarding extends Component {
             resumeWarning,
             submitting: false,
             officeDocumentsDefaultValues: {},
+            hasFetchedOffice: false,
         };
     }
 
@@ -725,8 +726,13 @@ class HostOnboarding extends Component {
     };
 
     // save office data to state to trigger render
-    handleGetOffice = data => {
-        this.setState({ defaultValues: data.getOffice });
+    handleGetOffice = async data => {
+        if (!this.state.hasFetchedOffice) {
+            await this.setState({
+                defaultValues: data.getOffice,
+                hasFetchedOffice: true,
+            });
+        }
     };
 
     // after receiving existing office data, turn it into urlParams
