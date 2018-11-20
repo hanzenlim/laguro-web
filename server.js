@@ -60,7 +60,7 @@ app.post('/api/graphql', cors(), async (req, res) => {
         const token = generateToken(user);
 
         context.headers = {
-            Authorization: `bearer ${token}`,
+            Authorization: `Bearer ${token}`,
         };
     }
 
