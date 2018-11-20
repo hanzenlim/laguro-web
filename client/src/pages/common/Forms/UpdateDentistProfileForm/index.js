@@ -37,9 +37,12 @@ class UpdateDentistProfileContainer extends PureComponent {
                 };
             });
 
-            this.setState({
-                procedures: _procedures,
-            });
+            if (!this.state.procedures) {
+                this.setState({
+                    procedures: _procedures,
+                });
+            }
+
         }
     };
 
