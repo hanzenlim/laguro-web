@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import hero from '../../components/Image/hero.jpg';
 import {
     Box,
     Button,
@@ -10,6 +9,7 @@ import {
     Text,
     Card,
     Link,
+    Picture,
 } from '../../components';
 import FeaturedList from './FeaturedList';
 import SearchBox from '../common/SearchBox/index';
@@ -53,22 +53,6 @@ const StyledCard = styled(Card)`
     }
 `;
 
-const Background = styled(Box)`
-    width: 100%;
-    height: 100%;
-    background: url(${hero}) no-repeat center scroll;
-    background-size: cover;
-    z-index: 1;
-    position: absolute;
-    top: 0;
-    left: 0;
-
-    @media (min-width: 992px) {
-        background: url(${hero}) no-repeat center;
-        background-size: cover;
-    }
-`;
-
 const Filter = styled(Box)`
     width: 100%;
     height: 100%;
@@ -92,6 +76,15 @@ const HeroContent = styled(Container)`
     }
 `;
 
+const HeroImage = styled.div`
+    > picture > img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        position: absolute;
+    }
+`;
+
 const HomePageView = () => (
     <Flex flexDirection="column" height="100%" justifyContent="space-between">
         <Box
@@ -101,7 +94,17 @@ const HomePageView = () => (
             mb={[200, 200, 0]}
         >
             <Filter />
-            <Background />
+            <HeroImage>
+                <Picture
+                    handle="pc5h4Wo4RYOUluFmGfMG"
+                    alt="laguro"
+                    sizes={{
+                        fallback: '100vw',
+                    }}
+                    formats={['webp', 'pjpg']}
+                />
+            </HeroImage>
+
             <HeroContent
                 color="text.white"
                 pt={[120, 175, 280]}
