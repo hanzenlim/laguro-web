@@ -33,18 +33,12 @@ class PatientCardContainer extends PureComponent {
                         data,
                         'updatePatientImages.patientImages'
                     );
+                    this.setState({ patientImages });
 
                     const dentistData = proxy.readQuery({
                         query: getPatientsQuery,
                         variables: { id: this.props.dentistId },
                     });
-
-                    dentistData.getDentist.patients.map(
-                        patient =>
-                            patient.id === this.props.patientId
-                                ? { ...patient, patientImages }
-                                : patient
-                    );
 
                     return proxy.writeQuery({
                         query: getPatientsQuery,
@@ -69,7 +63,11 @@ class PatientCardContainer extends PureComponent {
             allUrls = upload.map(file => file.url);
         }
 
-        const newPatientImages = [...patientImages, ...allUrls];
+        const newPatientImages = [
+            ...patientImages.map(p => p.imageUrl),
+            ...allUrls,
+        ];
+
         const variables = {
             input: {
                 dentistId,
@@ -79,7 +77,6 @@ class PatientCardContainer extends PureComponent {
         };
 
         this.updatePatientImages(variables);
-        this.setState({ patientImages: newPatientImages });
     };
 
     removeImage = e => {
@@ -87,7 +84,10 @@ class PatientCardContainer extends PureComponent {
         const { patientImages } = this.state;
         const { dentistId, patientId } = this.props;
 
-        const newPatientImages = patientImages.filter(item => item !== url);
+        const newPatientImages = patientImages
+            .filter(item => item.signedImageUrl !== url)
+            .map(item => item.imageUrl);
+
         const variables = {
             input: {
                 dentistId,
@@ -97,7 +97,6 @@ class PatientCardContainer extends PureComponent {
         };
 
         this.updatePatientImages(variables);
-        this.setState({ patientImages: newPatientImages });
     };
 
     handleImageClick = e => {
@@ -110,7 +109,13 @@ class PatientCardContainer extends PureComponent {
     };
 
     render() {
-        const { name, imageUrl, visitDate, hasNextAppointment } = this.props;
+        const {
+            name,
+            imageUrl,
+            visitDate,
+            hasNextAppointment,
+            uploadPolicySignature,
+        } = this.props;
         const {
             patientImages,
             isDocumentListOpen,
@@ -136,7 +141,10 @@ class PatientCardContainer extends PureComponent {
                             toggleDocumentList={this.toggleDocumentList}
                             loadPhotos={this.loadPhotos}
                             removeImage={this.removeImage}
-                            patientImages={patientImages}
+                            signedPatientImages={patientImages.map(
+                                p => p.signedImageUrl
+                            )}
+                            uploadPolicySignature={uploadPolicySignature}
                             isDocumentListOpen={isDocumentListOpen}
                             name={name}
                             imageUrl={imageUrl}

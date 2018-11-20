@@ -6,6 +6,7 @@ export const updatePatientImagesMutation = gql`
             id
             patientImages {
                 imageUrl
+                signedImageUrl
             }
         }
     }

@@ -14,8 +14,8 @@ import {
 } from '../../../../components';
 import { ContainerPaddingInPixels } from '../../../../components/Container';
 import { withScreenSizes } from '../../../../components/Responsive';
-import { filestackKey } from '../../../../config/keys';
-import { setImageSizeToUrl } from '../../../../util/imageUtil';
+import { secureFilestackKey } from '../../../../config/keys';
+import { resizeSecureImage } from '../../../../util/imageUtil';
 
 const imageBoxHeight = 94;
 const maxImageNum = 4;
@@ -28,8 +28,8 @@ const StyledModal = styled(Modal)`
 
 class PatientCard extends PureComponent {
     renderUploadedImages = () => {
-        const { patientImages, removeImage, onImageClick } = this.props;
-        return patientImages.map((url, index) => (
+        const { signedPatientImages, removeImage, onImageClick } = this.props;
+        return signedPatientImages.map((url, index) => (
             <Box
                 key={index}
                 position="relative"
@@ -45,7 +45,7 @@ class PatientCard extends PureComponent {
                     onClick={onImageClick}
                 >
                     <Image
-                        src={setImageSizeToUrl(url, imageBoxHeight)}
+                        src={resizeSecureImage(url, imageBoxHeight)}
                         key={`img${index}`}
                         alt="office"
                         width="100%"
@@ -82,14 +82,14 @@ class PatientCard extends PureComponent {
             isDocumentListOpen,
             toggleDocumentList,
             loadPhotos,
-            patientImages,
+            signedPatientImages,
             documentUrl,
             clickedImgUrl,
             modalVisible,
             onCancel,
             hasNextAppointment,
+            uploadPolicySignature,
         } = this.props;
-
         return (
             <Box
                 px={[ContainerPaddingInPixels, '', 15]}
@@ -103,7 +103,7 @@ class PatientCard extends PureComponent {
                 <Flex alignItems={['flex-start', '', 'center']}>
                     <Box width={[60, '', 88]} height={[60, '', 88]} mr={16}>
                         <Image
-                            src={setImageSizeToUrl(imageUrl, 88)}
+                            src={resizeSecureImage(imageUrl, 88)}
                             alt={name}
                             width="100%"
                             borderRadius="50%"
@@ -132,9 +132,9 @@ class PatientCard extends PureComponent {
                                 height={['40px', '', '50px']}
                             >
                                 <Text fontSize={1} color="text.blue">
-                                    {patientImages.length
+                                    {signedPatientImages.length
                                         ? `View ${
-                                              patientImages.length
+                                              signedPatientImages.length
                                           } Documents`
                                         : 'Add Documents'}
                                 </Text>
@@ -150,7 +150,11 @@ class PatientCard extends PureComponent {
                         <Flex alignItems="center" flexWrap="wrap">
                             {this.renderUploadedImages()}
                             <ReactFilestack
-                                apikey={filestackKey}
+                                apikey={secureFilestackKey}
+                                security={{
+                                    policy: uploadPolicySignature.policy,
+                                    signature: uploadPolicySignature.signature,
+                                }}
                                 options={{
                                     accept: ['image/*'],
                                     imageMin: [300, 300],
@@ -233,7 +237,7 @@ PatientCard.propTypes = {
     toggleDocumentList: PropTypes.func,
     loadPhotos: PropTypes.func,
     removeImage: PropTypes.func,
-    patientImages: PropTypes.arrayOf(PropTypes.string.isRequired),
+    signedPatientImages: PropTypes.arrayOf(PropTypes.string.isRequired),
     isDocumentListOpen: PropTypes.bool,
     name: PropTypes.string.isRequired,
     imageUrl: PropTypes.string,

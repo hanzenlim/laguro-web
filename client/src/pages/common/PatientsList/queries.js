@@ -28,8 +28,18 @@ export const getPatientsQuery = gql`
                 }
                 patientImages {
                     imageUrl
+                    signedImageUrl
                 }
             }
+        }
+    }
+`;
+
+export const getFileStackPolicySignatureQuery = gql`
+    query($type: String!, $handle: String) {
+        getFileStackPolicySignature(type: $type, handle: $handle) {
+            signature
+            policy
         }
     }
 `;
