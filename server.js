@@ -48,9 +48,9 @@ app.post('/api/graphql', cors(), async (req, res) => {
     const context = {};
 
     // append incoming JWT tokens to the header and pass thru to backend for external access to graphql api
-    if (req.headers && req.headers.authorization) {
+    if (req.headers && req.headers.Authorization) {
         context.headers = {
-            authorization: req.headers.authorization,
+            Authorization: req.headers.Authorization,
         };
     }
 
