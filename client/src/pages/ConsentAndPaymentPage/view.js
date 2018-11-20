@@ -1,6 +1,13 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Container, Button, Box, Text, Responsive } from '../../components';
+import {
+    CheckMarkAnimation,
+    Container,
+    Button,
+    Box,
+    Text,
+    Responsive,
+} from '../../components';
 import ProcedureSummary from '../common/ProcedureSummary';
 import PaymentConfirmation from '../common/PaymentConfirmation';
 import Payment from '../common/Payment';
@@ -19,11 +26,19 @@ const ConsentAndPaymentPageView = props => {
         isSubmitting,
         updateSubmittingState,
         tabletMobileOnly,
+        desktopOnly,
         onClickNext,
         hasClickedNext,
         rejectedIds,
         rejectProcedure,
+        confirmRejectAllProcedures,
+        isRejectSuccessful,
     } = props;
+
+    const hasNotClickedNextOnTabletMobile = !hasClickedNext && tabletMobileOnly;
+    const hasClickedNextOnTabletMobile = hasClickedNext && tabletMobileOnly;
+    const hasConsentedOnDesktop = hasConsented && desktopOnly;
+    const hasRejectedAll = patientProcedures.length === rejectedIds.length;
 
     if (!patientProcedures.length)
         return (
@@ -38,6 +53,25 @@ const ConsentAndPaymentPageView = props => {
         return (
             <Box mt={50}>
                 <PaymentConfirmation h1="Payment Successful" h2="" h3="" />
+            </Box>
+        );
+    }
+
+    if (isRejectSuccessful) {
+        return (
+            <Box mt={50}>
+                <Text textAlign="center">
+                    <CheckMarkAnimation />
+                    <Box width={['100%', '', '400px']} mx="auto">
+                        <Text
+                            fontSize={[2, '', 4]}
+                            py={10}
+                            textTransform="uppercase"
+                        >
+                            All Procedures have been rejected.
+                        </Text>
+                    </Box>
+                </Text>
             </Box>
         );
     }
@@ -63,23 +97,11 @@ const ConsentAndPaymentPageView = props => {
                     letterSpacing="-0.6px"
                     color="text.black"
                 >
-                    Review and pay for your procedure{' '}
+                    Review and pay for your procedure
                 </Text>
-                {tabletMobileOnly && (
-                    <Text
-                        is="span"
-                        fontSize={[28, '', 30]}
-                        lineHeight={1}
-                        fontWeight="bold"
-                        letterSpacing="-0.6px"
-                        color="text.black"
-                    >
-                        {!hasClickedNext ? '(1/2)' : '(2/2)'}
-                    </Text>
-                )}
             </Box>
 
-            {(!tabletMobileOnly || (!hasClickedNext && tabletMobileOnly)) && (
+            {(desktopOnly || hasNotClickedNextOnTabletMobile) && (
                 <Box mb={[28, '', 0]}>
                     <ProcedureSummary
                         patientProcedures={patientProcedures}
@@ -94,19 +116,23 @@ const ConsentAndPaymentPageView = props => {
                 </Box>
             )}
 
-            {tabletMobileOnly &&
-                !hasClickedNext && (
-                    <Button
-                        width="100%"
-                        disabled={!hasConsented}
-                        onClick={onClickNext}
-                    >
-                        Next
-                    </Button>
-                )}
+            {hasNotClickedNextOnTabletMobile && (
+                <Button
+                    width="100%"
+                    disabled={!hasConsented}
+                    loading={isSubmitting}
+                    onClick={
+                        !hasRejectedAll
+                            ? onClickNext
+                            : confirmRejectAllProcedures
+                    }
+                >
+                    {!hasRejectedAll ? 'Next' : 'Confirm'}
+                </Button>
+            )}
 
-            {(tabletMobileOnly && hasClickedNext) ||
-            (!tabletMobileOnly && hasConsented) ? (
+            {(hasClickedNextOnTabletMobile || hasConsentedOnDesktop) &&
+            !hasRejectedAll ? (
                 <Box
                     px={[0, '', 38]}
                     py={[0, '', 26]}
@@ -115,11 +141,48 @@ const ConsentAndPaymentPageView = props => {
                     <Payment
                         isSubmitting={isSubmitting}
                         onSuccess={onPaymentSuccess}
-                        btnText="Submit"
+                        btnText="Pay"
                         updateSubmittingState={updateSubmittingState}
                         isButtonOutside={true}
+                        disabled={!hasConsentedOnDesktop}
                     />
                 </Box>
+            ) : null}
+
+            {hasRejectedAll && hasConsentedOnDesktop ? (
+                <Fragment>
+                    <Box
+                        px={[0, '', 38]}
+                        py={[0, '', 26]}
+                        boxShadow={['none', '', 0]}
+                    >
+                        <Box pt={16}>
+                            <Text mb={16} fontSize={2}>
+                                By clicking the button below, you agree on
+                                rejecting the following procedures:
+                            </Text>
+                            <ul>
+                                {patientProcedures.map(pc => (
+                                    <li key={pc.id}>
+                                        <Text fontSize={2} fontWeight="medium">
+                                            {pc.name}
+                                        </Text>
+                                    </li>
+                                ))}
+                            </ul>
+                        </Box>
+                    </Box>
+                    <Text textAlign="right" mt={20}>
+                        <Button
+                            height="60px"
+                            width={200}
+                            onClick={confirmRejectAllProcedures}
+                            loading={isSubmitting}
+                        >
+                            Confirm
+                        </Button>
+                    </Text>
+                </Fragment>
             ) : null}
         </Box>
     );
@@ -146,6 +209,8 @@ ConsentAndPaymentPageView.propTypes = {
     isSubmitting: PropTypes.bool.isRequired,
     rejectedIds: PropTypes.array.isRequired,
     rejectProcedure: PropTypes.func.isRequired,
+    confirmRejectAllProcedures: PropTypes.func.isRequired,
+    isRejectSuccessful: PropTypes.bool.isRequired,
 };
 
 export default withScreenSizes(ConsentAndPaymentPageView);

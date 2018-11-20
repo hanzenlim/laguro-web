@@ -19,6 +19,7 @@ class ConsentAndPaymentPage extends PureComponent {
         this.state = {
             hasConsented: false,
             isPaymentSuccessful: false,
+            isRejectSuccessful: false,
             isSubmitting: false,
             hasClickedNext: false,
             rejectedIds: [],
@@ -47,14 +48,15 @@ class ConsentAndPaymentPage extends PureComponent {
                 },
             });
 
-            await this.props.updatePatientProceduresStatus({
-                variables: {
-                    input: {
-                        procedureIds: this.state.rejectedIds,
-                        status: REJECTED,
+            if (this.state.rejectedIds.length)
+                await this.props.updatePatientProceduresStatus({
+                    variables: {
+                        input: {
+                            procedureIds: this.state.rejectedIds,
+                            status: REJECTED,
+                        },
                     },
-                },
-            });
+                });
 
             this.setState({ isPaymentSuccessful: true });
         } catch (error) {
@@ -82,6 +84,26 @@ class ConsentAndPaymentPage extends PureComponent {
                 ? rejectedIds.filter(rejectedId => rejectedId !== id)
                 : [...rejectedIds, id],
         }));
+    };
+
+    confirmRejectAllProcedures = async () => {
+        await this.setState({ isSubmitting: true });
+        try {
+            await this.props.updatePatientProceduresStatus({
+                variables: {
+                    input: {
+                        procedureIds: this.state.rejectedIds,
+                        status: REJECTED,
+                    },
+                },
+            });
+
+            this.setState({ isRejectSuccessful: true });
+        } catch (error) {
+            throw error;
+        }
+
+        this.setState({ isSubmitting: false });
     };
 
     render() {
@@ -140,6 +162,10 @@ class ConsentAndPaymentPage extends PureComponent {
                             updateSubmittingState={this.updateSubmittingState}
                             rejectedIds={this.state.rejectedIds}
                             rejectProcedure={this.rejectProcedure}
+                            confirmRejectAllProcedures={
+                                this.confirmRejectAllProcedures
+                            }
+                            isRejectSuccessful={this.state.isRejectSuccessful}
                         />
                     );
                 }}
