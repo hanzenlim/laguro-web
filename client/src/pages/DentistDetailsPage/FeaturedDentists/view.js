@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Box, Flex, Text, Link } from '../../../components';
 import DentistCard from '../DentistCard';
 import { setImageSizeToUrl } from '../../../util/imageUtil';
+import defaultDentistProfileImg from '../../../components/Image/default_dentist_profile_img_square.svg';
 
 const FeaturedDentistsView = props => {
     const { featuredDentists } = props;
@@ -22,7 +23,10 @@ const FeaturedDentistsView = props => {
                                 specialty={item.specialty}
                                 numReviews={item.numReviews}
                                 rating={item.averageRating}
-                                image={setImageSizeToUrl(item.imageUrl, 260)}
+                                image={setImageSizeToUrl(
+                                    item.imageUrl || defaultDentistProfileImg,
+                                    260
+                                )}
                             />
                         </Link>
                     </Box>
