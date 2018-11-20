@@ -3,12 +3,10 @@ import { makePictureTree } from 'filestack-adaptive';
 
 class Picture extends Component {
     renderSources(sources) {
-        return sources.map(sourceObj => {
-            return <source {...sourceObj} />;
-        });
+        return sources.map(sourceObj => <source {...sourceObj} />);
     }
     renderImage(imageObj) {
-        return <img {...imageObj} />;
+        return <img alt="image" {...imageObj} />;
     }
     render() {
         const tree = makePictureTree(this.props.handle, this.props);
