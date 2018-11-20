@@ -6,7 +6,8 @@ class Picture extends Component {
         return sources.map(sourceObj => <source {...sourceObj} />);
     }
     renderImage(imageObj) {
-        return <img alt="image" {...imageObj} />;
+        const { alt, ...rest } = imageObj;
+        return <img alt={alt} {...rest} />;
     }
     render() {
         const tree = makePictureTree(this.props.handle, this.props);
