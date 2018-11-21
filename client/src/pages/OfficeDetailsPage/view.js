@@ -6,7 +6,7 @@ import {
     Flex,
     Box,
     SlickCarousel,
-    Image,
+    FilestackImage,
     Sticky,
     Responsive,
 } from '../../components';
@@ -16,9 +16,9 @@ import OfficeDetails from '../common/OfficeDetails';
 import Payment from '../common/Payment';
 import ReserveOffice from '../common/ReserveOffice';
 import { OFFICE } from '../../util/strings';
-import { setImageSizeToUrl } from '../../util/imageUtil';
 import ReviewContainer from '../common/ReviewContainer';
 import FeaturedOffices from './FeaturedOffices';
+import { getIdFromFilestackUrl } from '../../util/imageUtil';
 
 const { Desktop } = Responsive;
 
@@ -136,13 +136,14 @@ class OfficeDetailsPageView extends PureComponent {
                                 alignItems="center"
                                 onClick={this.toggleCarouselHeight}
                             >
-                                <Image
-                                    src={setImageSizeToUrl(
-                                        imageUrl || '',
-                                        desktopOnly ? 370 : 208
-                                    )}
-                                    width="100%"
-                                    height="100%"
+                                <FilestackImage
+                                    handle={getIdFromFilestackUrl(imageUrl)}
+                                    // TODO: Use a more description alt name
+                                    alt="laguro"
+                                    sizes={{
+                                        fallback: '100vw',
+                                    }}
+                                    formats={['webp', 'pjpg']}
                                 />
                             </Flex>
                         ))}

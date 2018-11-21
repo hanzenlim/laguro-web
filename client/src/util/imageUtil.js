@@ -8,3 +8,6 @@ export const setImageSizeToUrl = (imageUrl, height, width) => {
         ? `${cdnUrl}resize=height:${height}/${urlParams}`
         : `${cdnUrl}resize=width:${width}/${urlParams}`;
 };
+
+export const getIdFromFilestackUrl = imageUrl =>
+    imageUrl.split('/').slice(-1)[0];

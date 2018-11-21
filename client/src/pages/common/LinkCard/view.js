@@ -9,10 +9,11 @@ import {
     Text,
     Truncate,
     Link,
+    FilestackImage,
 } from '../../../components';
 
 import { withScreenSizes } from '../../../components/Responsive';
-import { setImageSizeToUrl } from '../../../util/imageUtil';
+import { getIdFromFilestackUrl } from '../../../util/imageUtil';
 
 const LinkCard = props => {
     const {
@@ -35,21 +36,33 @@ const LinkCard = props => {
                         pb={type === 'rectangle' ? '75%' : '100%'}
                         position="relative"
                     >
-                        <Image
-                            position="absolute"
-                            borderRadius="4px"
-                            src={setImageSizeToUrl(
-                                image || defaultDentistProfileImg,
-                                250
-                            )}
-                            height={props.height}
-                            alt={title}
-                            style={{
-                                height: '100%',
-                                width: '100%',
-                                objectFit: 'cover',
-                            }}
-                        />
+                        {image ? (
+                            <Box position="absolute" width="100%" height="100%">
+                                <FilestackImage
+                                    handle={getIdFromFilestackUrl(image)}
+                                    alt={title}
+                                    sizes={{
+                                        '(min-width: 992px)': '196px',
+                                        '(min-width: 768px)': '228px',
+                                        fallback: '350px',
+                                    }}
+                                    formats={['webp', 'pjpg']}
+                                />
+                            </Box>
+                        ) : (
+                            <Image
+                                position="absolute"
+                                borderRadius="4px"
+                                src={defaultDentistProfileImg}
+                                height={props.height}
+                                alt={title}
+                                style={{
+                                    height: '100%',
+                                    width: '100%',
+                                    objectFit: 'cover',
+                                }}
+                            />
+                        )}
                     </Box>
                     {address && (
                         <Flex
