@@ -58,6 +58,8 @@ export const AVAILABLE = 'available';
 export const CHARGED = 'CHARGED';
 export const REFUNDED = 'REFUNDED';
 
+export const REJECTED = 'rejected';
+
 // Profile page
 export const MY_DOCUMENTS = 'my_documents';
 export const MY_PROFILE = 'my_profile';

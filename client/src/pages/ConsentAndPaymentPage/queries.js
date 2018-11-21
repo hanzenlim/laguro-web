@@ -29,3 +29,14 @@ export const updatePatientProcedures = gql`
         }
     }
 `;
+
+export const updatePatientProceduresStatus = gql`
+    mutation UpdatePatientProceduresStatus(
+        $input: UpdatePatientProceduresStatusInput!
+    ) {
+        updatePatientProceduresStatus(input: $input) {
+            id
+            status
+        }
+    }
+`;
