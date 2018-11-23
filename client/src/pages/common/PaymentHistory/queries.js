@@ -28,6 +28,10 @@ export const GET_PAYMENT_HISTORY_QUERY = gql`
                     }
                     name
                 }
+                availableTimes {
+                    startTime
+                    endTime
+                }
             }
             appointment {
                 id
