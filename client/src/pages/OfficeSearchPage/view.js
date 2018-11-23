@@ -1,8 +1,13 @@
 import React from 'react';
+import Loadable from 'react-loadable';
 import { Container, Box, Grid, Responsive } from '../../components';
 import SearchBox from '../common/SearchBox';
 import SearchResultsList from '../common/SearchResultsList';
-import Map from '../common/Map';
+
+const Map = Loadable({
+    loader: () => import('../common/Map' /* webpackChunkName: "map" */),
+    loading: () => null,
+});
 
 const { Desktop, TabletMobile } = Responsive;
 
