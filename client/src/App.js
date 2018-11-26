@@ -6,102 +6,129 @@ import { ThemeProvider } from 'styled-components';
 import Loadable from 'react-loadable';
 
 import history from './history';
-import HomePage from './pages/HomePage';
 import Layout from './components/Layout';
 import Content from './components/Content';
-import Header from './pages/common/Header';
 import Footer from './pages/common/Footer';
 import ErrorBoundary from './components/ErrorBoundary';
 
 import theme from './components/theme';
 import './App.css';
 
+const Header = Loadable({
+    loader: () =>
+        import('./pages/common/Header' /* webpackChunkName: "header" */),
+    loading: () => null,
+});
+
+const HomePage = Loadable({
+    loader: () => import('./pages/HomePage' /* webpackChunkName: "homePage" */),
+    loading: () => null,
+});
+
 const ProfilePage = Loadable({
-    loader: () => import('./pages/ProfilePage'),
+    loader: () =>
+        import('./pages/ProfilePage' /* webpackChunkName: "profilePage" */),
     loading: () => null,
 });
 
 const DentistSearchPage = Loadable({
-    loader: () => import('./pages/DentistSearchPage'),
+    loader: () =>
+        import('./pages/DentistSearchPage' /* webpackChunkName: "dentistSearchPage" */),
     loading: () => null,
 });
 
 const OfficeSearchPage = Loadable({
-    loader: () => import('./pages/OfficeSearchPage'),
+    loader: () =>
+        import('./pages/OfficeSearchPage' /* webpackChunkName: "officeSearchPage" */),
     loading: () => null,
 });
 
 const DentistDetailsPage = Loadable({
-    loader: () => import('./pages/DentistDetailsPage'),
+    loader: () =>
+        import('./pages/DentistDetailsPage' /* webpackChunkName: "dentistDetailsPage" */),
     loading: () => null,
 });
 
 const OfficeDetailsPage = Loadable({
-    loader: () => import('./pages/OfficeDetailsPage'),
+    loader: () =>
+        import('./pages/OfficeDetailsPage' /* webpackChunkName: "officeDetailsPage" */),
     loading: () => null,
 });
 
 const ResetPassPage = Loadable({
-    loader: () => import('./pages/ResetPassPage'),
+    loader: () =>
+        import('./pages/ResetPassPage' /* webpackChunkName: "resetPassPage" */),
     loading: () => null,
 });
 
 const HostOnboarding = Loadable({
-    loader: () => import('./pages/HostOnboarding'),
+    loader: () =>
+        import('./pages/HostOnboarding' /* webpackChunkName: "hostOnboarding" */),
     loading: () => null,
 });
 
 const ConsentAndPaymentPage = Loadable({
-    loader: () => import('./pages/ConsentAndPaymentPage'),
+    loader: () =>
+        import('./pages/ConsentAndPaymentPage' /* webpackChunkName: "consentAndPaymentPage" */),
     loading: () => null,
 });
 
 const Error404Page = Loadable({
-    loader: () => import('./pages/Error404Page'),
+    loader: () =>
+        import('./pages/Error404Page' /* webpackChunkName: "error404Page" */),
     loading: () => null,
 });
 
 const GeneralErrorPage = Loadable({
-    loader: () => import('./pages/GeneralErrorPage'),
+    loader: () =>
+        import('./pages/GeneralErrorPage' /* webpackChunkName: "generalErrorPage" */),
     loading: () => null,
 });
 
 const LoginPage = Loadable({
-    loader: () => import('./pages/LoginPage'),
+    loader: () =>
+        import('./pages/LoginPage' /* webpackChunkName: "loginPage" */),
     loading: () => null,
 });
 
 const registerPage = Loadable({
-    loader: () => import('./pages/RegisterPage'),
+    loader: () =>
+        import('./pages/RegisterPage' /* webpackChunkName: "registerPage" */),
     loading: () => null,
 });
 const forgotPasswordPage = Loadable({
-    loader: () => import('./pages/ForgotPasswordPage'),
+    loader: () =>
+        import('./pages/ForgotPasswordPage' /* webpackChunkName: "forgotPasswordPage" */),
     loading: () => null,
 });
 
 const AboutPage = Loadable({
-    loader: () => import('./pages/AboutPage'),
+    loader: () =>
+        import('./pages/AboutPage' /* webpackChunkName: "aboutPage" */),
     loading: () => null,
 });
 
 const CountdownPage = Loadable({
-    loader: () => import('./pages/CountdownPage'),
+    loader: () =>
+        import('./pages/CountdownPage' /* webpackChunkName: "countdownPage" */),
     loading: () => null,
 });
 
 const TermsPage = Loadable({
-    loader: () => import('./pages/TermsPage'),
+    loader: () =>
+        import('./pages/TermsPage' /* webpackChunkName: "termsPage" */),
     loading: () => null,
 });
 
 const PrivacyPage = Loadable({
-    loader: () => import('./pages/PrivacyPage'),
+    loader: () =>
+        import('./pages/PrivacyPage' /* webpackChunkName: "privacyPage" */),
     loading: () => null,
 });
 
 const NewReviewPage = Loadable({
-    loader: () => import('./pages/NewReviewPage'),
+    loader: () =>
+        import('./pages/NewReviewPage' /* webpackChunkName: "newReviewPage" */),
     loading: () => null,
 });
 

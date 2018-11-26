@@ -1,4 +1,5 @@
 import React, { Fragment, PureComponent } from 'react';
+import Loadable from 'react-loadable';
 import _get from 'lodash/get';
 import {
     Flex,
@@ -11,10 +12,14 @@ import {
     Responsive,
 } from '../../../components';
 import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
-import Map from '../Map';
 import { numMaxContainerWidth } from '../../../components/theme';
 import { withScreenSizes } from '../../../components/Responsive';
 import { setImageSizeToUrl } from '../../../util/imageUtil';
+
+const Map = Loadable({
+    loader: () => import('../Map' /* webpackChunkName: "map" */),
+    loading: () => null,
+});
 
 const TAG_COLORS = [
     'background.blue',

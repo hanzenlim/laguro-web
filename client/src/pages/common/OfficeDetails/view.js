@@ -1,4 +1,5 @@
 import React, { Fragment, PureComponent } from 'react';
+import Loadable from 'react-loadable';
 import get from 'lodash/get';
 import {
     Flex,
@@ -10,9 +11,13 @@ import {
     Responsive,
 } from '../../../components';
 import { cleanAddress } from '../../../util/styleUtil';
-import Map from '../../common/Map';
 import { numMaxContainerWidth } from '../../../components/theme';
 import { withScreenSizes } from '../../../components/Responsive';
+
+const Map = Loadable({
+    loader: () => import('../../common/Map' /* webpackChunkName: "map" */),
+    loading: () => null,
+});
 
 const { TabletMobile, Desktop } = Responsive;
 
