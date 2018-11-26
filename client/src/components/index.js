@@ -37,7 +37,7 @@ import Grid from './Grid';
 import Tooltip from './Tooltip';
 import Responsive from './Responsive';
 import Progress from './Progress';
-import Picture from './Picture';
+import FilestackImage from './FilestackImage';
 
 export {
     Box,
@@ -80,5 +80,5 @@ export {
     Grid,
     Responsive,
     Progress,
-    Picture,
+    FilestackImage,
 };

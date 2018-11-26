@@ -9,7 +9,7 @@ import {
     Text,
     Card,
     Link,
-    Picture,
+    FilestackImage,
 } from '../../components';
 import FeaturedList from './FeaturedList';
 import SearchBox from '../common/SearchBox/index';
@@ -76,15 +76,6 @@ const HeroContent = styled(Container)`
     }
 `;
 
-const HeroImage = styled.div`
-    > picture > img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        position: absolute;
-    }
-`;
-
 const HomePageView = () => (
     <Flex flexDirection="column" height="100%" justifyContent="space-between">
         <Box
@@ -94,8 +85,8 @@ const HomePageView = () => (
             mb={[200, 200, 0]}
         >
             <Filter />
-            <HeroImage>
-                <Picture
+            <Box position="absolute" width="100%" height="100%">
+                <FilestackImage
                     handle="pc5h4Wo4RYOUluFmGfMG"
                     alt="laguro"
                     sizes={{
@@ -103,7 +94,7 @@ const HomePageView = () => (
                     }}
                     formats={['webp', 'pjpg']}
                 />
-            </HeroImage>
+            </Box>
 
             <HeroContent
                 color="text.white"

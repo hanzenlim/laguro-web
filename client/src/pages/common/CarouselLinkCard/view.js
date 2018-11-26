@@ -8,9 +8,10 @@ import {
     Text,
     Truncate,
     Link,
+    FilestackImage,
 } from '../../../components';
 import { withScreenSizes } from '../../../components/Responsive';
-import { setImageSizeToUrl } from '../../../util/imageUtil';
+import { getIdFromFilestackUrl } from '../../../util/imageUtil';
 import defaultDentistProfileImg from '../../../components/Image/default_dentist_profile_img_square.svg';
 
 const CarouselLinkCard = props => {
@@ -22,7 +23,6 @@ const CarouselLinkCard = props => {
         type,
         numReviews,
         url,
-        tabletMobileOnly,
     } = props;
 
     return (
@@ -39,17 +39,33 @@ const CarouselLinkCard = props => {
                             width="100%"
                             pb={type === 'rectangle' ? '75%' : '100%'}
                         >
-                            <Image
-                                position="absolute"
-                                borderRadius="4px"
-                                src={setImageSizeToUrl(
-                                    imageUrl || defaultDentistProfileImg,
-                                    tabletMobileOnly ? 160 : 230
-                                )}
-                                width="100%"
-                                height={props.height}
-                                alt={name}
-                            />
+                            {imageUrl ? (
+                                <Box
+                                    position="absolute"
+                                    width="100%"
+                                    height="100%"
+                                >
+                                    <FilestackImage
+                                        handle={getIdFromFilestackUrl(imageUrl)}
+                                        alt={name}
+                                        sizes={{
+                                            '(min-width: 992px)': '230px',
+                                            '(min-width: 768px)': '160px',
+                                            fallback: '130px',
+                                        }}
+                                        formats={['webp', 'pjpg']}
+                                    />
+                                </Box>
+                            ) : (
+                                <Image
+                                    position="absolute"
+                                    borderRadius="4px"
+                                    src={defaultDentistProfileImg}
+                                    width="100%"
+                                    height={props.height}
+                                    alt={name}
+                                />
+                            )}
                         </Box>
                     </Flex>
                     {specialty &&
