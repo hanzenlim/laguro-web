@@ -62,6 +62,7 @@ const Footer = () => {
                     justifyContent={['center', '', 'flex-end']}
                 >
                     <Link
+                        isExternal
                         mr={25}
                         to={'https://www.facebook.com/LaguroDental/'}
                         target="_blank"
@@ -73,6 +74,7 @@ const Footer = () => {
                         />
                     </Link>
                     <Link
+                        isExternal
                         mr={25}
                         to={'https://twitter.com/LaguroDental'}
                         target="_blank"
@@ -84,6 +86,7 @@ const Footer = () => {
                         />
                     </Link>
                     <Link
+                        isExternal
                         mr={25}
                         to={'https://www.instagram.com/lagurodental/'}
                         target="_blank"
@@ -95,6 +98,7 @@ const Footer = () => {
                         />
                     </Link>
                     <Link
+                        isExternal
                         to={'https://www.linkedin.com/company/lagurodental/'}
                         target="_blank"
                     >

@@ -17,13 +17,33 @@ const StyledLink = styled(ReactLink)`
     }
 `;
 
+const StyledExternalLink = styled.a`
+    text-decoration: none;
+    color: ${props => props.theme.colors.text.black};
+    ${space};
+    ${width};
+    ${display};
+
+    &&:hover {
+        text-decoration: ${props =>
+            props.type === 'ghost' ? 'none' : 'underline'};
+    }
+`;
+
 const Link = props => {
-    const { ...rest } = props;
+    const { isExternal, ...rest } = props;
+
+    if (isExternal) {
+        const { to, ...externalProps } = rest;
+
+        return <StyledExternalLink href={to} {...externalProps} />;
+    }
 
     return <StyledLink {...rest} />;
 };
 
 Link.propTypes = {
+    isExternal: PropTypes.bool,
     type: PropTypes.oneOf(['ghost']),
     ...propTypes.space,
     ...propTypes.width,
