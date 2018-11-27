@@ -11,6 +11,7 @@ import Content from './components/Content';
 import Footer from './pages/common/Footer';
 import ErrorBoundary from './components/ErrorBoundary';
 
+import './Silka.css';
 import theme from './components/theme';
 import './App.css';
 
