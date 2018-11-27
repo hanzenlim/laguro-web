@@ -147,7 +147,7 @@ const AboutPage = props => {
                                     >
                                         At Laguro, we believe that there is a
                                         better way to provide service and care
-                                        in dentistry. A mre transparent, less
+                                        in dentistry. A more transparent, less
                                         complicated way where patients are
                                         acknowledged and practitioners are
                                         recognized. It all starts with going
