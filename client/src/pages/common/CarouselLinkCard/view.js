@@ -39,7 +39,7 @@ const CarouselLinkCard = props => {
                             width="100%"
                             pb={type === 'rectangle' ? '75%' : '100%'}
                         >
-                            {imageUrl ? (
+                            {imageUrl.includes('filestack') ? (
                                 <Box
                                     position="absolute"
                                     width="100%"
