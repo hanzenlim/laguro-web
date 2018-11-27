@@ -6,7 +6,12 @@ import { ContainerPaddingInPixels } from '../../../components/Container';
 import PatientCard from './PatientCard';
 
 const PatientsList = props => {
-    const { dentistId, patients, onFilterPatients } = props;
+    const {
+        dentistId,
+        patients,
+        onFilterPatients,
+        uploadPolicySignature,
+    } = props;
     return (
         <Box>
             <Text
@@ -59,6 +64,7 @@ const PatientsList = props => {
                             visitDate={visitDate}
                             patientImages={patientImages}
                             hasNextAppointment={hasNextAppointment}
+                            uploadPolicySignature={uploadPolicySignature}
                         />
                     )
                 )}
@@ -72,13 +78,24 @@ const patientShape = PropTypes.shape({
     name: PropTypes.string.isRequired,
     visitDate: PropTypes.string.isRequired,
     imageUrl: PropTypes.string,
-    patientImages: PropTypes.arrayOf(PropTypes.string.isRequired),
+    patientImages: PropTypes.arrayOf(
+        PropTypes.shape({
+            imageUrl: PropTypes.string.isRequired,
+            signedImageUrl: PropTypes.string.isRequired,
+        })
+    ),
+}).isRequired;
+
+const uploadPolicySignatureShape = PropTypes.shape({
+    policy: PropTypes.string.isRequired,
+    signature: PropTypes.string.isRequired,
 }).isRequired;
 
 PatientsList.propTypes = {
     dentistId: PropTypes.string.isRequired,
     onFilterPatients: PropTypes.func.isRequired,
     patients: PropTypes.arrayOf(patientShape),
+    uploadPolicySignature: uploadPolicySignatureShape,
 };
 
 export default PatientsList;
