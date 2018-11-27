@@ -325,6 +325,7 @@ const getHourSlotsFromReservation = (listings, userSelectedDates) => {
     for (let i = 0; i < listings.length; i++) {
         for (let y = 0; y < listings[i].reservations.length; y++) {
             const reservation = listings[i].reservations[y];
+            const recurringDays = listings[i].availability.days;
 
             if (
                 reservation.localAvailableTimes &&
@@ -343,7 +344,8 @@ const getHourSlotsFromReservation = (listings, userSelectedDates) => {
                         listings[i].chairHourlyPrice,
                         listings[i].cleaningFee,
                         listings[i].id,
-                        reservation.numChairsSelected
+                        reservation.numChairsSelected,
+                        recurringDays
                     );
                     accumulatedData = mergeReservationUIData(
                         accumulatedData,

@@ -7,7 +7,6 @@ import {
     Card,
     Grid,
     Flex,
-    Icon,
     InnerForm,
     Input,
     Tag,
@@ -26,6 +25,10 @@ const format = 'h:mm a';
 const { CheckableTag } = Tag;
 
 const DEFAULT_DAYS = ABBREVIATED_DAYS.slice(0, 5);
+
+const StyledFormItem = styled(FormItem)`
+    height: 20px;
+`;
 
 const StyledForm = styled(InnerForm)`
     .ant-form-item {
@@ -47,9 +50,6 @@ const StyledButton = styled(Button)`
         ${props => !props.visible && `display: none;`};
     }
 `;
-
-const rightArrowHeight = 16;
-const rightArrowWidth = 1.25 * rightArrowHeight;
 
 // This function is used by antd datepicker to determin which days are disabled.
 const disabledDate = currentDate => {
@@ -247,37 +247,42 @@ class CreateListing extends Component {
                                 <FormItem
                                     form={form}
                                     name="labelOnly"
-                                    label="Start & End Time"
                                     mb={0}
                                     input={<div />}
                                 />
 
                                 <Grid
                                     width="100%"
-                                    gridTemplateRows={['auto auto', '', 'auto']}
+                                    gridTemplateRows={[
+                                        'auto auto auto auto',
+                                        '',
+                                        'auto',
+                                    ]}
                                     gridTemplateColumns={[
                                         '100%',
                                         '',
-                                        `1fr ${rightArrowWidth}px 1fr`,
+                                        `64px 1fr 64px 1fr`,
                                     ]}
                                     alignItems="center"
                                     onClick={this.toggleDatePicker}
                                 >
                                     <Box
-                                        width="100%"
-                                        height={[100, '', 50]}
-                                        position="absolute"
-                                        border="1px solid"
-                                        borderColor="divider.gray"
-                                    />
-                                    <Box
-                                        width="100%"
-                                        borderBottom={['1px solid', '', 'none']}
-                                        borderColor="divider.gray"
+                                        display="inline-block"
+                                        mb={[0, '', 20]}
                                     >
+                                        <StyledFormItem
+                                            name="labelOnly"
+                                            label="From"
+                                            mt={[0, '', 14]}
+                                            mb={12}
+                                            height={20}
+                                            input={<div />}
+                                        />
+                                    </Box>
+                                    <Box width="100%">
                                         <FormItem
                                             form={form}
-                                            mb={[0, '', 26]}
+                                            mb={[13, '', 26]}
                                             width="100%"
                                             name={`startTime${index}`}
                                             rules={[
@@ -290,15 +295,14 @@ class CreateListing extends Component {
                                                 <TimePicker
                                                     px={30}
                                                     py={12}
-                                                    height={50}
-                                                    borderless
+                                                    height={52}
                                                     defaultOpenValue={moment(
                                                         '12:00',
                                                         format
                                                     )}
                                                     use12Hours
                                                     minuteStep={60}
-                                                    placeholder="Daily start time"
+                                                    placeholder="8:00 AM"
                                                     format={format}
                                                 />
                                             }
@@ -308,12 +312,17 @@ class CreateListing extends Component {
                                     {/* width is 1.25 * rightArrowWidth */}
                                     {/* Using <Desktop /> breaks the UI. Probably becuase of how form works */}
                                     <Box
-                                        display={['none', '', 'inline-block']}
-                                        mb={20}
+                                        display="inline-block"
+                                        mb={[0, '', 20]}
                                     >
-                                        <Icon
-                                            type="rightForwardArrow"
-                                            fontSize={`${rightArrowHeight}px`}
+                                        <StyledFormItem
+                                            name="labelOnly"
+                                            label={desktopOnly ? 'to' : 'To'}
+                                            ml={[0, '', 24]}
+                                            mt={[0, '', 14]}
+                                            mb={12}
+                                            height={['auto', '', 20]}
+                                            input={<div />}
                                         />
                                     </Box>
 
@@ -332,15 +341,14 @@ class CreateListing extends Component {
                                             <TimePicker
                                                 px={30}
                                                 py={12}
-                                                height={50}
-                                                borderless
+                                                height={52}
                                                 defaultOpenValue={moment(
                                                     '12:00',
                                                     format
                                                 )}
                                                 use12Hours
                                                 minuteStep={60}
-                                                placeholder="Daily end time"
+                                                placeholder="10:00 AM"
                                                 format={format}
                                             />
                                         }

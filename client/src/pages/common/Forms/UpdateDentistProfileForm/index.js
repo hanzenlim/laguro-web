@@ -42,7 +42,6 @@ class UpdateDentistProfileContainer extends PureComponent {
                     procedures: _procedures,
                 });
             }
-
         }
     };
 
