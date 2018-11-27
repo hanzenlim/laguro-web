@@ -31,16 +31,6 @@ import {
 } from '../../../../util/strings';
 import { renderPrice } from '../../../../util/paymentUtil';
 
-const DAYS = [
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
-    'Sunday',
-];
-
 const hourList = [
     '12am',
     '1am',
@@ -159,12 +149,11 @@ const getListingUIData = (
     cleaningFee,
     listingId,
     numChairsSelected,
-    recurringDays // [0, 1, 2, 3] for recurring every monday, tuesday, wednesday, and thursday
+    recurringDays // ["MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY"] for recurring days
 ) => {
     const formattedData = {};
     // Check if user selected start date is now or in the future.
     const today = moment().startOf('day');
-    const recurringDaysInWords = recurringDays.map(d => DAYS[d]);
 
     let dayIterator;
     if (userSelectedStartDate.isSameOrAfter(today)) {
@@ -198,7 +187,7 @@ const getListingUIData = (
                 null,
                 '[]'
             ) &&
-            recurringDaysInWords.includes(dayIterator.format('dddd'))
+            recurringDays.includes(dayIterator.format('dddd').toUpperCase())
         ) {
             const key = dayIterator.format('Y-MM-DD');
             // Check if the dayIterator is the same day as today.
