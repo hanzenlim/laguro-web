@@ -1,11 +1,11 @@
 import React, { Fragment } from 'react';
-import moment from 'moment';
 import styled from 'styled-components';
 import { Collapse } from 'antd';
 
 import { Box, Text, Flex, Button, Responsive } from '../../../components';
 import { withScreenSizes } from '../../../components/Responsive';
 import Reservations from './Reservations';
+import { ListingTime } from '../../../util/timeUtil';
 
 const { TabletMobile, Desktop } = Responsive;
 const { Panel } = Collapse;
@@ -38,35 +38,21 @@ const StyledCollapse = styled(Collapse)`
 
 const Listings = ({ listings, toggleCancelModalState, desktopOnly }) => {
     const content = listings.map(listing => {
-        const { id, availability, reservations } = listing;
+        const {
+            id,
+            availability,
+            reservations,
+            localStartTime,
+            localEndTime,
+        } = listing;
 
-        const startDate = `${availability.startDay}T${availability.startTime}`;
-        const endDate = `${availability.endDay}T${availability.endTime}`;
+        const { startDay, endDay, days } = availability;
+        const frequency = days.map(d => d.charAt(0) + d.slice(1).toLowerCase());
+
         const isResevationsEmpty = reservations.length === 0;
 
         return desktopOnly ? (
-            <Box key={id} mt={28}>
-                <Flex justifyContent="flex-end">
-                    <Button
-                        type="ghost"
-                        onClick={
-                            isResevationsEmpty
-                                ? toggleCancelModalState(id)
-                                : null
-                        }
-                        height="40px"
-                        mb={10}
-                    >
-                        <Text
-                            fontSize={1}
-                            color={
-                                isResevationsEmpty ? 'text.blue' : 'text.gray'
-                            }
-                        >
-                            delete listing
-                        </Text>
-                    </Button>
-                </Flex>
+            <Box key={id} mb={28}>
                 <Box
                     px={28}
                     py={16}
@@ -76,16 +62,55 @@ const Listings = ({ listings, toggleCancelModalState, desktopOnly }) => {
                     borderColor="divider.gray"
                     borderRadius={2}
                 >
-                    <Box fontSize={5} mb={30}>
-                        <Text fontWeight="medium" display="inline">
-                            {moment(startDate).format('ddd, M/D')} -{' '}
-                            {moment(endDate).format('ddd, M/D')}
-                        </Text>{' '}
-                        <Text display="inline">
-                            {moment(startDate).format('h:mm a')} -{' '}
-                            {moment(endDate).format('h:mm a')}
-                        </Text>
+                    <Flex justifyContent="flex-end">
+                        <Button
+                            type="ghost"
+                            onClick={
+                                isResevationsEmpty
+                                    ? toggleCancelModalState(id)
+                                    : null
+                            }
+                            height="auto"
+                        >
+                            <Text
+                                fontSize={1}
+                                color={
+                                    isResevationsEmpty
+                                        ? 'text.blue'
+                                        : 'text.gray'
+                                }
+                            >
+                                Delete Listing
+                            </Text>
+                        </Button>
+                    </Flex>
+                    <Text
+                        fontWeight="medium"
+                        fontSize={[1, '', 2]}
+                        color="text.blue"
+                        mb={9}
+                    >
+                        LISTING DETAILS
+                    </Text>
+
+                    <Box mb={21}>
+                        <ListingTime
+                            startDate={startDay}
+                            endDate={endDay}
+                            startTime={localStartTime}
+                            endTime={localEndTime}
+                            frequency={frequency}
+                        />
                     </Box>
+
+                    <Text
+                        fontWeight="medium"
+                        fontSize={[1, '', 2]}
+                        color="text.blue"
+                        mb={9}
+                    >
+                        BOOKINGS
+                    </Text>
                     <Box mt={18}>
                         {reservations.length ? (
                             <Reservations reservations={reservations} />
@@ -104,24 +129,24 @@ const Listings = ({ listings, toggleCancelModalState, desktopOnly }) => {
         ) : (
             <Panel
                 header={
-                    <Box fontSize={2}>
-                        <Text fontWeight="medium" display="inline">
-                            {moment(startDate).format('MMM D')} -{' '}
-                            {moment(endDate).format('MMM D')}
-                        </Text>{' '}
-                        <Text display="inline">
-                            {moment(startDate).format('h:mm A')} -{' '}
-                            {moment(endDate).format('h:mm A')}
-                        </Text>{' '}
+                    <Flex fontSize={2}>
+                        <ListingTime
+                            startDate={startDay}
+                            endDate={endDay}
+                            startTime={localStartTime}
+                            endTime={localEndTime}
+                            frequency={frequency}
+                        />
                         <Text
                             fontWeight="medium"
                             display="inline"
                             color="text.blue"
+                            ml={6}
                         >
                             {reservations.length > 0 &&
                                 `(${reservations.length})`}
                         </Text>
-                    </Box>
+                    </Flex>
                 }
                 key={id}
             >
@@ -142,7 +167,7 @@ const Listings = ({ listings, toggleCancelModalState, desktopOnly }) => {
                                 isResevationsEmpty ? 'text.blue' : 'text.gray'
                             }
                         >
-                            delete listing
+                            Delete Listing
                         </Text>
                     </Button>
                 </Flex>

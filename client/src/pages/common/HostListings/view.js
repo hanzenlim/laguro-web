@@ -2,11 +2,20 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import { Box, Tabs, Text, Flex, Link } from '../../../components';
+import {
+    Box,
+    Tabs,
+    Text,
+    Flex,
+    Link,
+    Icon,
+    Responsive,
+} from '../../../components';
 import Listings from './Listings';
 import { ContainerPaddingInPixels } from '../../../components/Container';
 
 const { TabPane } = Tabs;
+const { TabletMobile } = Responsive;
 
 export const StyledList = styled.ul`
     columns: 2;
@@ -26,54 +35,70 @@ export const StyledList = styled.ul`
 class HostListings extends PureComponent {
     renderTabPane = offices =>
         offices.map(office => {
-            const { id, name, listings, equipment } = office;
+            const { id, name, listings, equipment, location } = office;
+            const { name: address } = location;
             return (
                 <TabPane tab={name} key={id}>
                     <Flex
-                        justifyContent="flex-end"
                         mt={12}
                         px={[ContainerPaddingInPixels, '', 0]}
+                        alignItems="center"
                     >
-                        <Link to={`/office/${id}`} type="ghost">
-                            <Text
-                                color="text.blue"
-                                fontSize={[0, '', 1]}
-                                mr={[14, '', 24]}
+                        <Text fontSize={[2, '', 5]} mr={[6, '', 14]}>
+                            {name}
+                        </Text>
+                        <Flex>
+                            <Link to={`/office/${id}`} type="ghost">
+                                <Text
+                                    color="text.blue"
+                                    fontSize={[0, '', 1]}
+                                    mr={[14, '', 24]}
+                                >
+                                    View Office
+                                </Text>
+                            </Link>
+                            <Link
+                                to={`/host-onboarding/add-office/?mode=edit-office&officeId=${id}`}
+                                type="ghost"
                             >
-                                view office
-                            </Text>
-                        </Link>
-                        <Link
-                            to={`/host-onboarding/add-office/?mode=edit-office&officeId=${id}`}
-                            type="ghost"
-                        >
-                            <Text
-                                color="text.blue"
-                                fontSize={[0, '', 1]}
-                                mr={[14, '', 24]}
-                            >
-                                edit
-                            </Text>
-                        </Link>
-                        <Link
-                            to={`/host-onboarding/add-listing/?mode=add-listing&officeId=${id}`}
-                            type="ghost"
-                        >
-                            <Text color="text.blue" fontSize={[0, '', 1]}>
-                                add a new listing
-                            </Text>
-                        </Link>
+                                <Text
+                                    color="text.blue"
+                                    fontSize={[0, '', 1]}
+                                    mr={[14, '', 24]}
+                                >
+                                    Edit
+                                </Text>
+                            </Link>
+                        </Flex>
                     </Flex>
+                    <Box
+                        mb={[20, '', 34]}
+                        px={[ContainerPaddingInPixels, '', 0]}
+                    >
+                        <Icon
+                            fontSize={[0, '', 1]}
+                            type="environment-o"
+                            mr={5}
+                        />
+                        <Text is="span" fontSize={[0, '', 1]}>
+                            {address}
+                        </Text>
+                    </Box>
                     <Box
                         px={[ContainerPaddingInPixels, '', 28]}
                         py={[0, '', 16]}
-                        mt={[20, '', 14]}
+                        mb={29}
                         bg="background.white"
                         border={['none', '', '1px solid']}
                         borderColor={['', '', 'divider.gray']}
                         borderRadius={2}
                     >
-                        <Text fontSize={[1, '', 3]} fontWeight="medium" mb={14}>
+                        <Text
+                            fontSize={[1, '', 3]}
+                            fontWeight="medium"
+                            mb={14}
+                            color={['text.black', '', 'text.blue']}
+                        >
                             Equipments offered in this office
                         </Text>
                         <StyledList>
@@ -86,16 +111,34 @@ class HostListings extends PureComponent {
                             ))}
                         </StyledList>
                     </Box>
-                    <Text
-                        mt={28}
-                        mb={10}
-                        px={ContainerPaddingInPixels}
-                        display={['block', '', 'none']}
-                        fontSize={4}
-                        fontWeight="medium"
+
+                    <Flex
+                        px={[ContainerPaddingInPixels, '', 0]}
+                        justifyContent="space-between"
+                        flexDirection="row-reverse"
+                        alignItems="center"
                     >
-                        Listings
-                    </Text>
+                        <Box>
+                            <Link
+                                to={`/host-onboarding/add-listing/?mode=add-listing&officeId=${id}`}
+                                type="ghost"
+                            >
+                                <Text
+                                    textAlign="right"
+                                    color="text.blue"
+                                    fontSize={[0, '', 1]}
+                                >
+                                    Add a New Listing
+                                </Text>
+                            </Link>
+                        </Box>
+                        <TabletMobile>
+                            <Text fontWeight="medium" fontSize={4}>
+                                Listings
+                            </Text>
+                        </TabletMobile>
+                    </Flex>
+
                     {listings.length ? (
                         <Listings
                             listings={listings}

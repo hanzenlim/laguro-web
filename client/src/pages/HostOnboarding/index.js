@@ -46,8 +46,10 @@ import {
 
 import { withScreenSizes } from '../../components/Responsive';
 import OfficeVerificationUtil from './util';
+import { UPPERCASE_DAYS } from '../../util/timeUtil';
 
 const { TabletMobile } = Responsive;
+const ABBREVIATED_DAYS = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
 
 const StyledAlert = styled(Alert)`
     && {
@@ -637,30 +639,41 @@ class HostOnboarding extends Component {
         const listings = Object.keys(this.values)
             .filter(key => key.startsWith(AVAILABILITY))
             .map(key => {
-                const startTime = this.values[
-                    `startTime${key.slice(AVAILABILITY.length)}`
-                ];
-                const endTime = this.values[
-                    `endTime${key.slice(AVAILABILITY.length)}`
-                ];
+                const index = key.slice(AVAILABILITY.length);
+                const startTime = this.values[`startTime${index}`];
+                const endTime = this.values[`endTime${index}`];
                 const cleaningFee = renderCents(
-                    this.values[`cleaningFee${key.slice(AVAILABILITY.length)}`]
+                    this.values[`cleaningFee${index}`]
                 );
                 const chairHourlyPrice = renderCents(
-                    this.values[
-                        `hourlyChairPrice${key.slice(AVAILABILITY.length)}`
-                    ]
+                    this.values[`hourlyChairPrice${index}`]
                 );
-                const numChairsAvailable = this.values[
-                    `numChairs${key.slice(AVAILABILITY.length)}`
-                ];
+                const numChairsAvailable = this.values[`numChairs${index}`];
                 // this.values[key] is availability array
                 const startDay = this.values[key][0];
                 const endDay = this.values[key][1];
+                const recurringDays = ABBREVIATED_DAYS.map(
+                    d => this.values[`${d}${index}`]
+                );
 
                 if (startTime >= endTime) {
                     message.error(
                         'Your daily end time has to be after your daily start time'
+                    );
+                    return null;
+                } else if (
+                    !(
+                        this.values[`mon${index}`] ||
+                        this.values[`tue${index}`] ||
+                        this.values[`wed${index}`] ||
+                        this.values[`thu${index}`] ||
+                        this.values[`fri${index}`] ||
+                        this.values[`sat${index}`] ||
+                        this.values[`sun${index}`]
+                    )
+                ) {
+                    message.error(
+                        'You must select at least one day to repeat your listings on'
                     );
                     return null;
                 }
@@ -685,6 +698,9 @@ class HostOnboarding extends Component {
                             .split('-')[0],
                         startDay: startDay.format().split('T')[0],
                         endDay: endDay.format().split('T')[0],
+                        days: UPPERCASE_DAYS.filter(
+                            (num, i) => recurringDays[i]
+                        ),
                     },
                 };
             });

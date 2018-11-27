@@ -34,6 +34,7 @@ export const getListingQuery = gql`
                 endDay
                 startTime
                 endTime
+                days
             }
             dateCreated
             reservations(options: {

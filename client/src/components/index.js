@@ -38,6 +38,7 @@ import Tooltip from './Tooltip';
 import Responsive from './Responsive';
 import Progress from './Progress';
 import FilestackImage from './FilestackImage';
+import Tag from './Tag';
 
 export {
     Box,
@@ -81,4 +82,5 @@ export {
     Responsive,
     Progress,
     FilestackImage,
+    Tag,
 };

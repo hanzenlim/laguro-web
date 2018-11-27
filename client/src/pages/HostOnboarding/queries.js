@@ -28,6 +28,7 @@ export const CREATE_LISTING = gql`
         }
     }
 `;
+
 export const GET_USER = gql`
     {
         activeUser @client {
