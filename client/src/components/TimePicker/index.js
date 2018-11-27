@@ -9,7 +9,8 @@ const StyledTimePicker = styled(AntdTimePicker)`
         padding: 0;
     }
     & .ant-time-picker-input {
-        ${height} width: 100%;
+        ${height};
+        width: 100%;
         padding: 0 28px;
         font-family: ${props => props.theme.fontFamily};
         font-weight: ${props => props.theme.fontWeights.regular};
