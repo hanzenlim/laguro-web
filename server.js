@@ -91,6 +91,10 @@ if (process.env.NODE_ENV === 'production') {
         });
     }
 
+    app.get('/sitemap.xml', (req, res) => {
+        res.sendFile(path.resolve('build', 'sitemap.xml'));
+    });
+
     app.get('*', (req, res) => {
         res.header('Cache-Control', 'no-cache, no-store, must-revalidate');
         res.header('Pragma', 'no-cache');
