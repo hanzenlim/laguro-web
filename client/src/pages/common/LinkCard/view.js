@@ -36,7 +36,7 @@ const LinkCard = props => {
                         pb={type === 'rectangle' ? '75%' : '100%'}
                         position="relative"
                     >
-                        {image ? (
+                        {image && image.includes('filestack') ? (
                             <Box position="absolute" width="100%" height="100%">
                                 <FilestackImage
                                     handle={getIdFromFilestackUrl(image)}
