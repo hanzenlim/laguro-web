@@ -39,8 +39,8 @@ export const getDentistQuery = gql`
                     }
                 ) {
                     id
-                    startTime
-                    endTime
+                    localStartTime
+                    localEndTime
                     status
                 }
             }
