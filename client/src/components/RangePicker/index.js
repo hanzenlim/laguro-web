@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import moment from 'moment';
 import styled from 'styled-components';
 import { DatePicker as AntdDatePicker } from 'antd';
 import { Flex, Text, Box, Icon, Grid } from '../../components';
@@ -122,13 +123,19 @@ class RangePicker extends PureComponent {
         const { startValue, endValue, startOpen, endOpen } = this.state;
 
         const startValueString = desktopOnly
-            ? (value && value[0].format('ddd M/DD')) ||
+            ? (value &&
+                  value[0] &&
+                  moment.isMoment(value[0]) &&
+                  value[0].format('ddd M/DD')) ||
               this.state.dateString[0] ||
               'Start date'
             : (startValue && startValue.format('ddd M/DD')) || 'Start date';
 
         const endValueString = desktopOnly
-            ? (value && value[1].format('ddd M/DD')) ||
+            ? (value &&
+                  value[1] &&
+                  moment.isMoment(value[1]) &&
+                  value[1].format('ddd M/DD')) ||
               this.state.dateString[1] ||
               'End date'
             : (endValue && endValue.format('ddd M/DD')) || 'End date';
@@ -144,7 +151,13 @@ class RangePicker extends PureComponent {
                         opacity="0"
                     >
                         <AntdDatePicker.RangePicker
-                            value={value}
+                            value={
+                                value &&
+                                moment.isMoment(value[0]) &&
+                                moment.isMoment(value[1])
+                                    ? value
+                                    : []
+                            }
                             {...rest}
                             format={'ddd M/D'}
                             getCalendarContainer={this.getCalendarContainer}
