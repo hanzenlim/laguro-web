@@ -186,14 +186,14 @@ class Map extends PureComponent {
             >
                 {this.state.popupInfo && (
                     <MapInfoWindow
-                        title={this.state.popupInfo.title}
-                        subtitle={this.state.popupInfo.subtitle}
+                        title={this.state.popupInfo.title || ''}
+                        subtitle={this.state.popupInfo.subtitle || ''}
                         body={cleanAddress(this.state.popupInfo.address)}
                         onClose={this.hidePopup}
                         longitude={this.state.popupInfo.longitude}
                         latitude={this.state.popupInfo.latitude}
-                        image={this.state.popupInfo.image}
-                        url={this.state.popupInfo.url}
+                        image={this.state.popupInfo.image || ''}
+                        url={this.state.popupInfo.url || ''}
                     />
                 )}
                 {data.map(

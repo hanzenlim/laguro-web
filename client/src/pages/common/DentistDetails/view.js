@@ -307,6 +307,7 @@ class DentistDetailsView extends PureComponent {
                                                 data={data.locations.map(
                                                     location => ({
                                                         address: location.name,
+                                                        url: location.url,
                                                         latitude: _get(
                                                             location,
                                                             'geoPoint.lat'

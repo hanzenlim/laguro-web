@@ -19,8 +19,15 @@ class DentistDetails extends PureComponent {
         const procedures = dentist.procedures.map(p => p.group);
         const locations =
             _get(dentist, 'reservations.length') > 0
-                ? _uniqBy(dentist.reservations.map(r => r.location), 'name')
+                ? _uniqBy(
+                      dentist.reservations.map(r => ({
+                          ...r.location,
+                          url: `/office/${r.office.id}`,
+                      })),
+                      'name'
+                  )
                 : [];
+
         const mappedData = {
             name: `Dr. ${user.firstName} ${user.lastName}`,
             specialization: dentist.specialty,

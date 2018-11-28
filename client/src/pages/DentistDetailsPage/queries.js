@@ -26,6 +26,9 @@ export const getDentistQuery = gql`
             averageRating
             reservations {
                 id
+                office {
+                    id
+                }
                 location {
                     name
                     geoPoint {
