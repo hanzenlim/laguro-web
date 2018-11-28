@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import queryString from 'query-string';
 
-import { Flex, Text, Box, Grid, Responsive } from '../../../components';
+import { Flex, Text, Box, Grid, Responsive, Link } from '../../../components';
 import getOtherLocationResults from './queries';
 import history from '../../../history';
 import MajorCities from '../../../staticData/majorCities';
@@ -137,15 +137,11 @@ const SuggestedSearchCard = ({ location, docCount, type }) => {
                 {`${docCount} ${type}`}
             </Text>
 
-            <Text
-                color="text.blue"
-                fontSize={3}
-                fontWeight="medium"
-                cursor="pointer"
-                onClick={() => history.push({ search: `?${search}` })}
-            >
-                Search in this area ➞
-            </Text>
+            <Link to={`${history.location.pathname}?${search}`}>
+                <Text color="text.blue" fontSize={3} fontWeight="medium">
+                    Search in this area ➞
+                </Text>
+            </Link>
         </Box>
     );
 };
