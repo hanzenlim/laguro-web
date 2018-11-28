@@ -174,8 +174,8 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
 
             reservation.appointments.forEach(appointment => {
                 const timeSlotsPerHour = this.getTimeSlots(
-                    appointment.startTime,
-                    appointment.endTime
+                    appointment.localStartTime,
+                    appointment.localEndTime
                 );
 
                 timeSlotsPerHour.forEach(timeSlot => {
