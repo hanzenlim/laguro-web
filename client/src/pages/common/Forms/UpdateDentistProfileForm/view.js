@@ -149,7 +149,7 @@ const UpdateDentistProfileForm = props => {
                         name="procedures"
                         label="Which of the following describe your procedures?"
                         type="array"
-                        initialValue={Object.keys(procedures)}
+                        initialValue={procedures.map(p => p.group)}
                         mb={[18, '', 32]}
                         input={<StyledCheckboxGroup options={options} />}
                     />

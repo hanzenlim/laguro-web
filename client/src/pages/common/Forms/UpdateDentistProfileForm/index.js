@@ -21,30 +21,6 @@ class UpdateDentistProfileContainer extends PureComponent {
         isSubmitting: false,
     };
 
-    onCompleted = ({ getUser, updateDentist, createDentist }) => {
-        const data = getUser.dentist || updateDentist || createDentist;
-
-        if (data) {
-            const { procedures } = data;
-
-            const _procedures = {};
-            procedures.forEach(p => {
-                _procedures[p.group] = {
-                    code: p.code,
-                    name: p.name,
-                    group: p.group,
-                    duration: p.duration,
-                };
-            });
-
-            if (!this.state.procedures) {
-                this.setState({
-                    procedures: _procedures,
-                });
-            }
-        }
-    };
-
     render() {
         const { updateDentist, createDentist } = this.props;
 
@@ -55,7 +31,6 @@ class UpdateDentistProfileContainer extends PureComponent {
                         query={getUserDentistQuery}
                         fetchPolicy="cache-and-network"
                         variables={{ id: data.activeUser.id }}
-                        onCompleted={this.onCompleted}
                     >
                         {({ loading, error, data: dentistData }) => {
                             if (error) return <RedirectErrorPage />;
@@ -65,9 +40,10 @@ class UpdateDentistProfileContainer extends PureComponent {
                                 getUser: { dentist },
                             } = dentistData;
 
-                            const { procedures, isUpdated } = this.state;
+                            const { isUpdated } = this.state;
 
-                            const { id, specialty, bio } = dentist || {};
+                            const { id, specialty, bio, procedures } =
+                                dentist || {};
                             const mappedData = {
                                 id,
                                 specialty,
