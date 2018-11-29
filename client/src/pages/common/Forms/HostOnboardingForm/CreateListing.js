@@ -75,14 +75,6 @@ const minPriceValidator = (rule, value, callback) => {
     callback();
 };
 
-const priceValidator = (rule, value, callback) => {
-    if (value === '$0.00') {
-        callback('Price cannot be $0.00');
-    }
-
-    callback();
-};
-
 const chairsValidator = (rule, value, callback) => {
     if (value <= 0) {
         callback('Numbers of chairs cannot be less than 1');
@@ -472,9 +464,8 @@ class CreateListing extends Component {
                                         rules={[
                                             {
                                                 required: true,
-                                                validator: priceValidator,
                                                 message:
-                                                    'Please enter a value greater than $0.00',
+                                                    'Please enter a value.',
                                             },
                                         ]}
                                         input={

@@ -459,9 +459,12 @@ class HostOnboarding extends Component {
             case EDIT_OFFICE_MODE:
                 // This is the last step when in edit office mode.
                 if (step === DOCUMENT_STEP) {
-                    const { officeName, imageUrls } = wizardState;
-                    const { officeDescription } = values;
-                    const equipment = parseEquipmentFormData(values);
+                    const {
+                        officeName,
+                        imageUrls,
+                        officeDescription,
+                        equipment,
+                    } = wizardState;
 
                     // makes the api call to submit changes to office
                     await updateOffice({
@@ -490,6 +493,17 @@ class HostOnboarding extends Component {
                     }
 
                     this.destroyWizardState();
+                } else if (step === EQUIPMENT_STEP) {
+                    const { officeDescription } = values;
+                    const equipment = parseEquipmentFormData(values);
+
+                    this.saveWizardState({
+                        ...wizardState,
+                        equipment,
+                        officeDescription,
+                    });
+
+                    this.advanceStep();
                 } else {
                     this.advanceStep();
                 }
