@@ -56,7 +56,7 @@ const ProfileImage = styled(Flex)`
 const StyledDropContainer = styled.div`
     @media (max-width: 991px) {
         .ant-dropdown {
-            height: calc(100vh - ${HEADER_HEIGHT}px);
+            height: 250vh;
             overflow-y: auto;
             background-color: ${theme.colors.background.lightGray};
             top: ${HEADER_HEIGHT}px !important;
