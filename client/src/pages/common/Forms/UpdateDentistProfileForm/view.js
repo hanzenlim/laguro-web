@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import _isEmpty from 'lodash/isEmpty';
 import styled from 'styled-components';
 import {
     Form,
@@ -149,7 +150,10 @@ const UpdateDentistProfileForm = props => {
                         name="procedures"
                         label="Which of the following describe your procedures?"
                         type="array"
-                        initialValue={procedures.map(p => p.group)}
+                        initialValue={
+                            !_isEmpty(procedures) &&
+                            procedures.map(p => p.group)
+                        }
                         mb={[18, '', 32]}
                         input={<StyledCheckboxGroup options={options} />}
                     />
