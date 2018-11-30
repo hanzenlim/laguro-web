@@ -32,6 +32,7 @@ app.use(passport.session());
 app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 app.options('/api/graphql', cors());
+app.options('/api/ehr-login', cors());
 
 if (process.env.NODE_ENV === 'production') {
     const prerender = prerenderNode.set(

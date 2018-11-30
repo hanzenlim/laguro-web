@@ -1,5 +1,7 @@
 import bcrypt from 'bcryptjs';
 
+const cors = require('cors');
+
 // External Packages
 const passport = require('passport');
 const serverDataLoader = require('../util/serverDataLoader');
@@ -38,7 +40,7 @@ const authRoutes = app => {
         })(req, res, next)
     );
 
-    app.post('/api/ehr-login', (req, res, next) =>
+    app.post('/api/ehr-login', cors(), (req, res, next) =>
         passport.authenticate('ehr-login', (err, user, info) => {
             if (err || !user) {
                 return res.json({ status: 403, message: info.message });
