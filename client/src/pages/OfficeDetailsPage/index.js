@@ -5,7 +5,7 @@ import { Query } from 'react-apollo';
 import { getOfficeImageQuery } from './queries';
 import OfficeDetailsPageView from './view';
 import { Loading } from '../../components';
-import { RedirectErrorPage } from '../../pages/GeneralErrorPage';
+import GeneralErrorPage from '../../pages/GeneralErrorPage';
 import Error404Page from '../Error404Page';
 
 class OfficeDetailsPageContainer extends PureComponent {
@@ -30,7 +30,7 @@ class OfficeDetailsPageContainer extends PureComponent {
                     }
 
                     if (error) {
-                        return <RedirectErrorPage />;
+                        return <GeneralErrorPage />;
                     }
 
                     // TODO: add SSR 404

@@ -5,7 +5,8 @@ import _get from 'lodash/get';
 import DentistDetailsPageView from './view';
 import { getDentistQuery } from './queries';
 import { Loading, Box } from '../../components';
-import { RedirectErrorPage } from '../GeneralErrorPage';
+import GeneralErrorPage from '../GeneralErrorPage';
+import Error404Page from '../Error404Page';
 
 class DentistDetailsPageContainer extends PureComponent {
     render() {
@@ -23,13 +24,17 @@ class DentistDetailsPageContainer extends PureComponent {
                     }
 
                     if (error) {
-                        return <RedirectErrorPage />;
+                        return <GeneralErrorPage />;
                     }
 
                     const dentist = data.getDentist;
 
+                    if (!dentist) {
+                        return <Error404Page />;
+                    }
+
                     if (!dentist.isVerified) {
-                        return <RedirectErrorPage />;
+                        return <GeneralErrorPage />;
                     }
 
                     const firstName = _get(dentist, 'user.firstName');

@@ -16,6 +16,7 @@ import PatientAppointments from '../common/PatientAppointments';
 import UserVerification from '../common/UserVerification';
 import PatientsList from '../common/PatientsList';
 import ConsentAndPayment from '../../pages/ConsentAndPaymentPage';
+import Error404Page from '../../pages/Error404Page';
 import {
     DENTIST,
     PATIENT,
@@ -366,6 +367,8 @@ class ProfileView extends Component {
 
     render() {
         const { panel } = this.state;
+
+        if (!this.keyTextMap[this.state.panel]) return <Error404Page />;
 
         return (
             <Fragment>

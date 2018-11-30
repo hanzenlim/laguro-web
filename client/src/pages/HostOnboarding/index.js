@@ -37,6 +37,7 @@ import AddOfficeEquipments from '../common/Forms/HostOnboardingForm/AddOfficeEqu
 import AddDocument from '../common/Forms/HostOnboardingForm/AddDocument';
 import AddOfficeListing from '../common/Forms/HostOnboardingForm/AddOfficeListing';
 import ListingConfirmation from '../common/ListingConfirmation';
+import Error404Page from '../Error404Page';
 import {
     ACTIVE_USER,
     EDIT_OFFICE_MODE,
@@ -77,6 +78,14 @@ const EQUIPMENT_STEP = 'add-equipment';
 const DOCUMENT_STEP = 'add-document';
 const LISTING_STEP = 'add-listing';
 const CONFIRMATION_STEP = 'listing-confirmation';
+
+const STEPS_LIST = [
+    OFFICE_STEP,
+    EQUIPMENT_STEP,
+    DOCUMENT_STEP,
+    LISTING_STEP,
+    CONFIRMATION_STEP,
+];
 
 // to be used for next and previous buttons
 const HOST_ONBOARDING = '/host-onboarding/';
@@ -802,6 +811,10 @@ class HostOnboarding extends Component {
         } = this.state;
         const urlParams = queryString.parse(historyLocationSearch);
         const { step } = this.props.match.params;
+
+        if (!STEPS_LIST.includes(step)) {
+            return <Error404Page />;
+        }
         const { mode } = this;
         const isConfirmationStep = step !== CONFIRMATION_STEP;
 
