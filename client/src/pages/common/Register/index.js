@@ -17,6 +17,7 @@ const { FormItem, SubmitButton } = Form;
 
 class Register extends PureComponent {
     handleSuccess = values => {
+        const formValues = { ...values, email: values.email.toLowerCase() };
         const { signup } = this.props;
         const { password, confirmPassword } = values;
 
@@ -25,7 +26,7 @@ class Register extends PureComponent {
                 'Your password and confirmation password do not match.'
             );
         } else {
-            signup(values);
+            signup(formValues);
         }
     };
 
