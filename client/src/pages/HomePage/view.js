@@ -252,8 +252,7 @@ const HomePageView = () => (
                             fontSize={[0, 0, 4]}
                             mb={[20, 20, 50]}
                         >
-                            Meet Laguro and
-                            {''}
+                            Meet Laguro and{' '}
                             <Text is="br" display={['none', '', 'inline']} />
                             learn more about what we do!
                         </Text>
