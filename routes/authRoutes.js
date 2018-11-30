@@ -40,27 +40,30 @@ const authRoutes = app => {
         })(req, res, next)
     );
 
-    app.post('/api/ehr-login', cors(), (req, res, next) =>
-        passport.authenticate('ehr-login', (err, user, info) => {
-            if (err || !user) {
-                return res.json({ status: 403, message: info.message });
-            }
-
-            res.cookie('user', JSON.stringify(user), {
-                maxAge: COOKIE_EXPIRATION,
-            });
-
-            req.login(user, loginError => {
-                if (loginError) {
-                    return next(err);
+    app.post(
+        '/api/ehr-login',
+        cors({ origin: true, optionsSuccessStatus: 200 }),
+        (req, res, next) =>
+            passport.authenticate('ehr-login', (err, user, info) => {
+                if (err || !user) {
+                    return res.json({ status: 403, message: info.message });
                 }
-                return res.json({
-                    status: 200,
-                    user,
-                    authToken: generateToken(user),
+
+                res.cookie('user', JSON.stringify(user), {
+                    maxAge: COOKIE_EXPIRATION,
                 });
-            });
-        })(req, res, next)
+
+                req.login(user, loginError => {
+                    if (loginError) {
+                        return next(err);
+                    }
+                    return res.json({
+                        status: 200,
+                        user,
+                        authToken: generateToken(user),
+                    });
+                });
+            })(req, res, next)
     );
 
     app.post('/api/login', (req, res, next) =>
