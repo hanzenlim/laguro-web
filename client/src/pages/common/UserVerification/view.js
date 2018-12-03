@@ -27,6 +27,7 @@ import {
     createPatientDocumentMutation,
     saveUserMutation,
     updateDentistMutation,
+    requestDentistVerificationMutation,
 } from './queries';
 
 const { SubmitButton } = Form;
@@ -298,8 +299,7 @@ class UserVerification extends Component {
             } = formData;
 
             const variables = {
-                id: dentist.id,
-                sentVerificationDocuments: true,
+                dentistId: dentist.id,
             };
 
             if (deaRegistrationNumber && deaRegistrationNumber.length) {
@@ -314,7 +314,7 @@ class UserVerification extends Component {
                 variables.ssnOrEinOrTin = ssnOrEinOrTin;
             }
 
-            await this.props.updateDentist(variables);
+            await this.props.requestDentistVerification(variables);
         }
 
         if (persona === HOST) {
@@ -414,5 +414,6 @@ export default compose(
     createPatientDocumentMutation,
     saveUploadedImagesMutation,
     saveUserMutation,
-    updateDentistMutation
+    updateDentistMutation,
+    requestDentistVerificationMutation
 )(UserVerification);
