@@ -93,6 +93,27 @@ class DentistAppointments extends PureComponent {
                         }
                         key={id}
                     >
+                        <Flex justifyContent="flex-end">
+                            <Button
+                                type="ghost"
+                                onClick={
+                                    isAppointmentsEmpty
+                                        ? this.props.toggleModalState(id)
+                                        : null
+                                }
+                            >
+                                <Text
+                                    color={
+                                        isAppointmentsEmpty
+                                            ? 'text.blue'
+                                            : 'text.gray'
+                                    }
+                                    fontSize={1}
+                                >
+                                    Cancel this booking
+                                </Text>
+                            </Button>
+                        </Flex>
                         <Text fontWeight="bold" fontSize={1} mb={8}>
                             Equipments ordered
                         </Text>

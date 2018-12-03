@@ -10,17 +10,17 @@ const CancelReservationModal = props => {
         <Modal visible={visible} onCancel={onCancel} destroyOnClose width={760}>
             <Box p={40}>
                 <Text
-                    fontSize={5}
+                    fontSize={[3, '', 4]}
                     borderBottom="2px solid"
                     borderColor="divider.gray"
                     mb={35}
                 >
                     Cancel Booking
                 </Text>
-                <Text fontSize={4} fontWeight="medium" mb={20}>
+                <Text fontSize={[1, '', 3]} fontWeight="medium" mb={20}>
                     Are you sure you want to cancel this booking?
                 </Text>
-                <Text fontSize={2} color="text.darkGray">
+                <Text ffontSize={[0, '', 2]} color="text.darkGray">
                     * For a full refund of accommodation fees, cancellation must
                     be made a full 24 hours prior to booking's local check in
                     time.
@@ -35,7 +35,7 @@ const CancelReservationModal = props => {
                     >
                         <Text
                             fontWeight="bold"
-                            fontSize={3}
+                            fontSize={[1, '', 3]}
                             color="text.blue"
                             border="2px solid"
                             borderColor="divider.blue"
@@ -51,7 +51,7 @@ const CancelReservationModal = props => {
                         width={250}
                         onClick={onSubmit}
                         fontWeight="bold"
-                        fontSize={3}
+                        fontSize={[1, '', 3]}
                     >
                         Okay
                     </Button>
