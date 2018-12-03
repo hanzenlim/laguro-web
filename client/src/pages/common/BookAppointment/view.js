@@ -70,7 +70,7 @@ const BookAppointmentView = props => {
                                 Service fee
                             </Text>
                             <Text fontSize={[0, '', 2]} color="text.black">
-                                $20.00
+                                $0.00
                             </Text>
                         </Flex>
                         <Box
@@ -91,7 +91,7 @@ const BookAppointmentView = props => {
                                 fontWeight={['bold', '', 'regular']}
                                 color="text.blue"
                             >
-                                $20.00
+                                $0.00
                             </Text>
                         </Flex>
                     </Box>
