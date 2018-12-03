@@ -14,9 +14,14 @@ const getFeaturedOffices = async () => {
         body: {
             query: {
                 bool: {
-                    must: {
-                        match_all: {},
-                    },
+                    must: [
+                        {
+                            term: { isVerified: { value: true } },
+                        },
+                        {
+                            match_all: {},
+                        },
+                    ],
                     filter: {
                         geo_distance: {
                             distance: MAX_DISTANCE,
