@@ -187,6 +187,40 @@ class PatientVerificationForm extends React.Component {
                                 }
                             )(<Input mb={32} height={50} />)}
                         </FormItem>
+                        <FormItem label="First name">
+                            {getFieldDecorator(
+                                'insurancePreference.insurance.firstName',
+                                {
+                                    initialValue: get(
+                                        props.data,
+                                        'insurancePreference.insurance.firstName'
+                                    ),
+                                    rules: [
+                                        {
+                                            required: useInsurance,
+                                            message: 'First name is required',
+                                        },
+                                    ],
+                                }
+                            )(<Input height={50} />)}
+                        </FormItem>
+                        <FormItem label="Last name">
+                            {getFieldDecorator(
+                                'insurancePreference.insurance.lastName',
+                                {
+                                    initialValue: get(
+                                        props.data,
+                                        'insurancePreference.insurance.lastName'
+                                    ),
+                                    rules: [
+                                        {
+                                            required: useInsurance,
+                                            message: 'Last name is required',
+                                        },
+                                    ],
+                                }
+                            )(<Input height={50} />)}
+                        </FormItem>
                         <FormItem label="Birthdate">
                             {getFieldDecorator(
                                 'insurancePreference.insurance.birthdate',
