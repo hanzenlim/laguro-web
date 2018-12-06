@@ -7,11 +7,11 @@ export const getDentistQuery = gql`
     query($id: String!) {
         getDentist(id: $id) {
             id
+            firstAppointmentDuration
             reservations(
                 options: {
                     sortKey: "${END_TIME}",
                     rangeStart: "${moment()
-                        .startOf('hour')
                         .startOf('days')
                         .format()}",
                     filters: [
