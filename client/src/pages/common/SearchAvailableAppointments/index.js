@@ -45,14 +45,12 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
     };
 
     getAppointmentProps = (selectedTime, dateFilter) => {
-        const { firstAppointmentDuration } = this.props;
-
         const startTime = moment(
             `${dateFilter} ${selectedTime.key}`,
             'YYYY-MM-DD HH:mm a'
         ).format();
         const endTime = moment(startTime)
-            .add(firstAppointmentDuration, 'minutes')
+            .add(1, 'hour')
             .format();
 
         const appointmentProps = {
@@ -119,25 +117,32 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
         });
 
     /**
-     * Returns an array of time strings by `props.appointment` minute blocks
+     * Returns an array of time strings by 1 hour blocks
      * @param {string} start Start time
      * @param {string} end End time
      * @returns {array}
      */
     getTimeSlots = (start, end) => {
-        const { firstAppointmentDuration } = this.props;
         const startTime = moment(start);
         const endTime = moment(end);
 
+        const duration = moment.duration(endTime.diff(startTime));
+        const hours = duration.asHours();
         const timeSlots = [];
 
-        let apptTime = moment(startTime).startOf('minute');
-        while (apptTime.isBefore(endTime)) {
-            timeSlots.push(apptTime.format());
+        timeSlots.push(
+            moment(startTime)
+                .startOf('hour')
+                .format()
+        );
 
-            apptTime = apptTime
-                .startOf('minute')
-                .add(firstAppointmentDuration, 'minutes');
+        for (let i = 1; i < hours; i++) {
+            timeSlots.push(
+                moment(startTime)
+                    .startOf('hour')
+                    .add(i, 'hour')
+                    .format()
+            );
         }
 
         return timeSlots;
@@ -154,12 +159,12 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
 
         reservations.forEach(reservation => {
             reservation.localAvailableTimes.forEach(availableTime => {
-                const timeSlots = this.getTimeSlots(
+                const timeSlotsPerHour = this.getTimeSlots(
                     availableTime.startTime,
                     availableTime.endTime
                 );
 
-                timeSlots.forEach(timeSlot => {
+                timeSlotsPerHour.forEach(timeSlot => {
                     reservedTimeSlots.push({
                         key: timeSlot,
                         value: reservation.id,
@@ -168,12 +173,12 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
             });
 
             reservation.appointments.forEach(appointment => {
-                const timeSlots = this.getTimeSlots(
+                const timeSlotsPerHour = this.getTimeSlots(
                     appointment.localStartTime,
                     appointment.localEndTime
                 );
 
-                timeSlots.forEach(timeSlot => {
+                timeSlotsPerHour.forEach(timeSlot => {
                     timeSlotsWithAppointments.push({
                         key: timeSlot,
                         value: reservation.id,
@@ -313,7 +318,7 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
 }
 
 SearchAvailableAppointmentsContainer.propTypes = {
-    data: PropTypes.array,
+    data: PropTypes.object,
     onSelect: PropTypes.func,
     onFilter: PropTypes.func,
 };

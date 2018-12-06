@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Radio as AntdRadio } from 'antd';
-import { fontSize, width, height } from 'styled-system';
+import { fontSize } from 'styled-system';
 
-const StyledRadioGroup = styled(AntdRadio.Group)`
+const RadioGroup = AntdRadio.Group;
+const StyledRadioGroup = styled(RadioGroup)`
     &&.ant-radio-group {
         width: 100%;
     }
@@ -21,26 +22,6 @@ const StyledRadioGroup = styled(AntdRadio.Group)`
 
     && span.ant-radio + * {
         width: 100%;
-    
-`;
-
-const StyledRadioButton = styled(AntdRadio.Button)`
-    &&&&& {
-        ${width};
-        ${height};
-        ${fontSize};
-        font-family: ${props => props.theme.fontFamily};
-        background: #ffffff;
-        text-align: center;
-        vertical-align: center;
-
-        &.ant-radio-button-wrapper-checked {
-            color: ${props => props.theme.colors.text.blue};
-        }
-
-        span {
-            line-height: ${props => props.height}px;
-        }
     }
 `;
 
@@ -63,12 +44,7 @@ const Radio = props => {
     return <StyledRadio {...rest}>{children}</StyledRadio>;
 };
 
-const RadioGroup = props => {
-    const { children, ...rest } = props;
-    return <StyledRadioGroup {...rest}>{children}</StyledRadioGroup>;
-};
-
-Radio.Group = RadioGroup;
-Radio.Button = StyledRadioButton;
+Radio.Group = StyledRadioGroup;
+Radio.Button = AntdRadio.Button;
 
 export default Radio;

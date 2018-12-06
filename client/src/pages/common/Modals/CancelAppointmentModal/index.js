@@ -23,6 +23,7 @@ const refetchQueries = id => [
                 options: {
                     sortKey: `${END_TIME}`,
                     rangeStart: `${moment()
+                        .startOf('hour')
                         .startOf('days')
                         .format()}`,
                     filters: [

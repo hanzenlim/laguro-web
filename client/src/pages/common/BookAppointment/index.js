@@ -166,10 +166,6 @@ class BookAppointment extends PureComponent {
                     return (
                         <BookAppointmentView
                             data={get(data, 'getDentist.reservations')}
-                            firstAppointmentDuration={get(
-                                data,
-                                'getDentist.firstAppointmentDuration'
-                            )}
                             isPaymentVisible={isPaymentVisible}
                             bookedAppointment={bookedAppointment}
                             showVerificationModal={showVerificationModal}
