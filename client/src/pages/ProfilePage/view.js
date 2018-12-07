@@ -15,7 +15,7 @@ import DentistAppointments from '../common/DentistAppointments';
 import PatientAppointments from '../common/PatientAppointments';
 import UserVerification from '../common/UserVerification';
 import PatientsList from '../common/PatientsList';
-import ConsentAndPayment from '../../pages/ConsentAndPaymentPage';
+import ProcedurePaymentRequestPage from '../../pages/ProcedurePaymentRequestPage';
 import Error404Page from '../../pages/Error404Page';
 import {
     DENTIST,
@@ -31,7 +31,7 @@ import {
     DENTIST_PROFILE,
     MY_BOOKINGS,
     MY_PATIENTS,
-    PROCEDURES_CONSENT,
+    PAYMENT_REQUEST,
     MY_ACCOUNT_MENU,
     MY_DOCUMENTS_MENU,
     MY_PROFILE_MENU,
@@ -42,7 +42,7 @@ import {
     MY_LISTINGS_MENU,
     MY_BOOKINGS_MENU,
     MY_PATIENTS_MENU,
-    PROCEDURE_CONSENT_MENU,
+    PAYMENT_REQUEST_MENU,
 } from '../../util/strings';
 
 const { TabletMobile, Desktop } = Responsive;
@@ -129,7 +129,7 @@ class ProfileView extends Component {
             [PAYMENTS]: PAYMENT_HISTORY_MENU,
             [BALANCE]: LAGURO_BALANCE_MENU,
             [PUBLIC_PROFILE]: PREVIEW_PUBLIC_PROFILE_MENU,
-            [PROCEDURES_CONSENT]: PROCEDURE_CONSENT_MENU,
+            [PAYMENT_REQUEST]: PAYMENT_REQUEST_MENU,
         };
     }
 
@@ -213,8 +213,8 @@ class ProfileView extends Component {
                         />
                     </Container>
                 );
-            case PROCEDURES_CONSENT:
-                return <ConsentAndPayment />;
+            case PAYMENT_REQUEST:
+                return <ProcedurePaymentRequestPage />;
             default:
         }
 
@@ -352,13 +352,13 @@ class ProfileView extends Component {
                 <Desktop>
                     <Box mt={40} />
                 </Desktop>
-                <StyledMenuItem key={PROCEDURES_CONSENT}>
+                <StyledMenuItem key={PAYMENT_REQUEST}>
                     <Text
                         fontSize={[1, '', 4]}
                         color="inherit"
                         lineHeight={['48px', '', '40px']}
                     >
-                        {this.keyTextMap[PROCEDURES_CONSENT]}
+                        {this.keyTextMap[PAYMENT_REQUEST]}
                     </Text>
                 </StyledMenuItem>
             </Menu>

@@ -74,6 +74,12 @@ const ConsentAndPaymentPage = Loadable({
     loading: () => null,
 });
 
+const ProcedurePaymentRequestPage = Loadable({
+    loader: () =>
+        import('./pages/ProcedurePaymentRequestPage' /* webpackChunkName: "procedurePaymentRequestPage" */),
+    loading: () => null,
+});
+
 const Error404Page = Loadable({
     loader: () =>
         import('./pages/Error404Page' /* webpackChunkName: "error404Page" */),
@@ -203,6 +209,13 @@ class App extends Component {
                                                 path="/consent-and-payment"
                                                 component={
                                                     ConsentAndPaymentPage
+                                                }
+                                                isUserLoggedin={data.activeUser}
+                                            />
+                                            <PrivateRoute
+                                                path="/procedure-payment"
+                                                component={
+                                                    ProcedurePaymentRequestPage
                                                 }
                                                 isUserLoggedin={data.activeUser}
                                             />

@@ -13,6 +13,7 @@ export default {
             blue: '#3481F8',
             darkBlue: '#286ABA',
             yellow: '#FFCE70',
+            red: '#ff2d55',
         },
         background: {
             white: '#ffffff',

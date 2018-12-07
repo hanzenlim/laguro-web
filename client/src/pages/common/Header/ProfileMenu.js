@@ -19,7 +19,7 @@ import {
     MY_LISTINGS_MENU,
     MY_BOOKINGS_MENU,
     MY_PATIENTS_MENU,
-    PROCEDURE_CONSENT_MENU,
+    PAYMENT_REQUEST_MENU,
     LOG_OUT_MENU,
     SEARCH_FOR_CHAIRS_MENU,
     ADD_A_NEW_OFFICE_MENU,
@@ -106,7 +106,7 @@ const ProfileMenu = props => {
               MY_DOCUMENTS_MENU,
               MY_APPOINTMENTS_MENU,
               PAYMENT_HISTORY_MENU,
-              PROCEDURE_CONSENT_MENU,
+              PAYMENT_REQUEST_MENU,
               hostLink,
           ];
 
@@ -127,7 +127,7 @@ const ProfileMenu = props => {
         [MY_PROFILE_MENU]: '/profile?selectedTab=dentist_profile',
         [PREVIEW_PUBLIC_PROFILE_MENU]: '/profile?selectedTab=public_profile',
         [MY_PATIENTS_MENU]: '/profile?selectedTab=my_patients',
-        [PROCEDURE_CONSENT_MENU]: '/profile?selectedTab=my_treatments',
+        [PAYMENT_REQUEST_MENU]: '/profile?selectedTab=payment_request',
     };
 
     let menuItems;

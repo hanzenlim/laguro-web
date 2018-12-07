@@ -32,7 +32,7 @@ const RejectButton = styled(Button)`
 `;
 
 const ProcedureSummaryView = props => {
-    const { procedures, serviceFee, totalPrice, rejectProcedure } = props;
+    const { procedures, totalPrice, rejectProcedure, installmentPlan } = props;
 
     return (
         <Box maxWidth={662} width="100%">
@@ -131,38 +131,37 @@ const ProcedureSummaryView = props => {
                     );
                 })}
 
-                {serviceFee > 0 ? (
-                    <Flex
-                        borderBottom="1px solid"
-                        pb={[8, '', 10]}
-                        mb={[10, '', 12]}
-                        borderColor="divider.black"
-                        alignItems="flex-end"
-                        justifyContent="space-between"
-                    >
-                        <Box>
-                            <Text
-                                fontSize={[1, '', 2]}
-                                lineHeight="20px"
-                                fontWeight="500"
-                                letterSpacing={['-0.4px', '', '-0.6px']}
-                                color="text.black"
-                            >
-                                Service fee
-                            </Text>
-                        </Box>
-                        <Box>
-                            <Text
-                                fontSize={[1, '', 2]}
-                                lineHeight={1}
-                                letterSpacing={['-0.4px', '', '-0.6px']}
-                                color="text.black"
-                            >
-                                {renderPrice(serviceFee)}
-                            </Text>
-                        </Box>
-                    </Flex>
-                ) : null}
+                <Flex alignItems="flex-end" justifyContent="space-between">
+                    <Box>
+                        <Text
+                            fontSize={[1, '', 2]}
+                            lineHeight="20px"
+                            fontWeight="bold"
+                            textTransform="capitalize"
+                            letterSpacing={['-0.4px', '', '-0.6px']}
+                            color="text.black"
+                        >
+                            {installmentPlan.interval} Plan
+                        </Text>
+                        <Text>
+                            ($
+                            {installmentPlan.recurringPaymentAmount} x{' '}
+                            {installmentPlan.numChargePeriods}{' '}
+                            {installmentPlan.interval})
+                        </Text>
+                    </Box>
+                    <Box>
+                        <Text
+                            fontSize={[1, '', 2]}
+                            lineHeight={1}
+                            fontWeight="bold"
+                            letterSpacing={['-0.4px', '', '-0.6px']}
+                            color="text.black"
+                        >
+                            {renderPrice(installmentPlan.outstandingAmount)}
+                        </Text>
+                    </Box>
+                </Flex>
 
                 <Flex alignItems="flex-end" justifyContent="space-between">
                     <Box>

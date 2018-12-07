@@ -63,6 +63,7 @@ export const REJECTED = 'rejected';
 // Profile page
 export const MY_DOCUMENTS = 'my_documents';
 export const MY_PROFILE = 'my_profile';
+export const PAYMENT_REQUEST = 'payment_request';
 export const MY_APPOINTMENTS = 'my_appointments';
 export const PAYMENTS = 'payments';
 export const BALANCE = 'balance';
@@ -71,7 +72,6 @@ export const DENTIST_PROFILE = 'dentist_profile';
 export const MY_LISTINGS = 'my_listings';
 export const MY_BOOKINGS = 'my_bookings';
 export const MY_PATIENTS = 'my_patients';
-export const PROCEDURES_CONSENT = 'my_treatments';
 
 // menu items
 export const HOME_MENU = 'Home';
@@ -87,7 +87,7 @@ export const PREVIEW_PUBLIC_PROFILE_MENU = 'Preview Public Profile';
 export const MY_LISTINGS_MENU = 'My Listings';
 export const MY_BOOKINGS_MENU = 'My Bookings';
 export const MY_PATIENTS_MENU = 'My Patients';
-export const PROCEDURE_CONSENT_MENU = 'Procedure Consent';
+export const PAYMENT_REQUEST_MENU = 'Payment Request';
 export const SEARCH_FOR_CHAIRS_MENU = 'Search for Chairs';
 export const ADD_A_NEW_OFFICE_MENU = 'Add a New Office';
 export const BECOME_A_HOST_MENU = 'Become a Host';

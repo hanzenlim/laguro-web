@@ -3,18 +3,14 @@ import moment from 'moment';
 import ProcedureSummaryView from './view';
 import { renderPrice } from './../../../util/paymentUtil';
 
-const SERVICE_FEE = 0;
-
 class ProcedureSummary extends PureComponent {
-    getTotalPrice = (patientProcedures, serviceFee) => {
+    getTotalPrice = patientProcedures => {
         let totalPrice = 0;
         const { rejectedIds } = this.props;
 
         patientProcedures.forEach(item => {
             if (!rejectedIds.includes(item.id)) totalPrice += item.totalCost;
         });
-
-        totalPrice += serviceFee;
 
         return `${renderPrice(totalPrice)}`;
     };
@@ -28,19 +24,23 @@ class ProcedureSummary extends PureComponent {
             rejected: this.props.rejectedIds.includes(item.id),
         }));
 
-    formatServiceFee = serviceFee => `$${serviceFee}`;
-
     render() {
         const { patientProcedures, rejectProcedure } = this.props;
 
+        const installmentPlan = {
+            interval: 'monthly',
+            numChargePeriods: 10,
+            recurringPaymentAmount: 10000,
+            outstandingAmount: 100000,
+        };
+
         const procedures = this.getProcedures(patientProcedures);
-        const totalPrice = this.getTotalPrice(patientProcedures, SERVICE_FEE);
-        const serviceFee = this.formatServiceFee(SERVICE_FEE);
+        const totalPrice = this.getTotalPrice(patientProcedures);
 
         return (
             <ProcedureSummaryView
                 procedures={procedures}
-                serviceFee={serviceFee}
+                installmentPlan={installmentPlan}
                 totalPrice={totalPrice}
                 rejectProcedure={rejectProcedure}
             />
