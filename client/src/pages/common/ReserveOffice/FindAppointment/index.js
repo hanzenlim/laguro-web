@@ -29,9 +29,7 @@ class FindAppointment extends PureComponent {
 
     // This function is used by antd datepicker to determin which days are disabled.
     disabledDate = currentDate => {
-        const today = moment()
-            .startOf('day')
-            .startOf('hour');
+        const today = moment().startOf('day');
         return currentDate.isBefore(today);
     };
 

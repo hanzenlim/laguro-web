@@ -42,13 +42,19 @@ class UpdateDentistProfileContainer extends PureComponent {
 
                             const { isUpdated } = this.state;
 
-                            const { id, specialty, bio, procedures } =
-                                dentist || {};
+                            const {
+                                id,
+                                specialty,
+                                bio,
+                                procedures,
+                                firstAppointmentDuration,
+                            } = dentist || {};
                             const mappedData = {
                                 id,
                                 specialty,
                                 bio,
                                 procedures,
+                                firstAppointmentDuration,
                             };
 
                             const onSuccess = async values => {
@@ -62,6 +68,11 @@ class UpdateDentistProfileContainer extends PureComponent {
                                         group: p,
                                         name: 'name',
                                     })),
+                                    firstAppointmentDuration:
+                                        values.firstAppointmentDuration ===
+                                        '30min'
+                                            ? 30
+                                            : 60,
                                 };
 
                                 if (dentist) {

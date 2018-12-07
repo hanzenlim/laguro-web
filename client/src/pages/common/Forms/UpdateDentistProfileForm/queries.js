@@ -40,6 +40,7 @@ export const getUserDentistQuery = gql`
                     code
                     duration
                 }
+                firstAppointmentDuration
             }
         }
     }
@@ -60,6 +61,7 @@ export const createDentistMutation = gql`
                 code
                 duration
             }
+            firstAppointmentDuration
         }
     }
 `;
@@ -79,6 +81,7 @@ export const updateDentistMutation = gql`
             user {
                 id
             }
+            firstAppointmentDuration
         }
     }
 `;

@@ -8,10 +8,14 @@ import {
     Alert,
     TextArea,
     Select,
+    Text,
+    Radio,
     Checkbox,
 } from '../../../../components';
 
 const CheckboxGroup = Checkbox.Group;
+const RadioGroup = Radio.Group;
+const RadioButton = Radio.Button;
 
 const StyledCheckboxGroup = styled(CheckboxGroup)`
     && {
@@ -45,6 +49,14 @@ const PROCEDURE_GROUP_LIST = [
 
 const { FormItem, SubmitButton } = Form;
 const { Option } = Select;
+
+const StyledFormItem = styled(FormItem)`
+    && {
+        label:after {
+            margin: 0;
+        }
+    }
+`;
 
 const StyledForm = styled.div`
     && .ant-btn-ghost {
@@ -82,6 +94,7 @@ const SPECIALTIES = [
 ];
 
 const SpecialtyOptions = SPECIALTIES.map(s => <Option value={s}>{s}</Option>);
+const DEFAULT_FIRST_APPOINTMENT_DURATION = '30min';
 
 const UpdateDentistProfileForm = props => {
     const {
@@ -97,6 +110,13 @@ const UpdateDentistProfileForm = props => {
         label: p,
         value: p,
     }));
+
+    let firstAppointmentDuration = DEFAULT_FIRST_APPOINTMENT_DURATION;
+    if (data.firstAppointmentDuration === 30) {
+        firstAppointmentDuration = '30min';
+    } else if (data.firstAppointmentDuration === 60) {
+        firstAppointmentDuration = '1hr';
+    }
 
     return (
         <StyledForm>
@@ -145,6 +165,42 @@ const UpdateDentistProfileForm = props => {
                                 message: 'Please write something about you...',
                             },
                         ]}
+                    />
+
+                    <StyledFormItem
+                        name="firstAppointmentDuration"
+                        label={
+                            <span>
+                                <Text>Default Appointment Time Selection</Text>
+                                <Text fontSize={[0, '', 1]} color="text.gray">
+                                    This selection is for your patients to
+                                    choose their desired time increments when
+                                    they book their appointment
+                                </Text>
+                            </span>
+                        }
+                        initialValue={firstAppointmentDuration || '30min'}
+                        mb={[18, '', 32]}
+                        input={
+                            <RadioGroup buttonStyle="solid">
+                                <RadioButton
+                                    fontSize={[0, '', 3]}
+                                    width={135}
+                                    height={50}
+                                    value="30min"
+                                >
+                                    30 mins
+                                </RadioButton>
+                                <RadioButton
+                                    fontSize={[0, '', 3]}
+                                    width={135}
+                                    height={50}
+                                    value="1hr"
+                                >
+                                    1 hour
+                                </RadioButton>
+                            </RadioGroup>
+                        }
                     />
                     <FormItem
                         name="procedures"

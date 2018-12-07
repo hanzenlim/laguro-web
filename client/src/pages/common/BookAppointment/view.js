@@ -12,6 +12,7 @@ const BookAppointmentView = props => {
         data,
         bookedAppointment,
         isPaymentVisible,
+        firstAppointmentDuration,
         onPay,
         onSelect,
         onFilter,
@@ -41,6 +42,7 @@ const BookAppointmentView = props => {
             />
             <SearchAvailableAppointments
                 data={data}
+                firstAppointmentDuration={firstAppointmentDuration}
                 onSelect={onSelect}
                 onFilter={onFilter}
             />
