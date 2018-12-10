@@ -40,6 +40,7 @@ import DentistLogo from './DentistLogo';
 import CloseCircle from './CloseCircle';
 import CloseCircleHover from './CloseCircleHover';
 import Revert from './Revert';
+import Exclamation from './Exclamation';
 
 const Icon = props => {
     const { type, isButton, ...rest } = props;
@@ -108,6 +109,9 @@ const Icon = props => {
             break;
         case 'revert':
             ReturnIcon = Revert;
+            break;
+        case 'exclamation':
+            ReturnIcon = Exclamation;
             break;
         default:
             ReturnIcon = AntdIcon;

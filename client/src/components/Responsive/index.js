@@ -32,6 +32,8 @@ Responsive.TabletDesktop = props => (
     <ReactResponsive {...props} minWidth={sizes.minTablet} />
 );
 
+Responsive.sizes = sizes;
+
 const withScreenSizes = withSizes(({ width }) => ({
     mobileOnly: width < sizes.minTablet, // 767px and below
     tabletOnly: width > sizes.maxMobile && width < sizes.minDesktop, // 768px - 991px
@@ -40,6 +42,8 @@ const withScreenSizes = withSizes(({ width }) => ({
     tabletDesktopOnly: width > sizes.maxMobile, // 768px and above
     screenWidth: width,
 }));
+
+Responsive.withScreenSizes = withScreenSizes;
 
 export { sizes, withScreenSizes };
 
