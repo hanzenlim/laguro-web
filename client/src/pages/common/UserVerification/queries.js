@@ -54,6 +54,31 @@ export const queryPatientDocumentQuery = gql`
     }
 `;
 
+export const requestDentistVerificationMutation = graphql(
+    gql`
+        mutation RequestDentistVerification(
+            $input: RequestDentistVerificationInput!
+        ) {
+            requestDentistVerification(input: $input) {
+                id
+                deaRegistrationNumber
+                npiNumber
+                ssnOrEinOrTin
+            }
+        }
+    `,
+    {
+        props: ({ mutate }) => ({
+            requestDentistVerification: input =>
+                mutate({
+                    variables: {
+                        input,
+                    },
+                }),
+        }),
+    }
+);
+
 export const updateDentistMutation = graphql(
     gql`
         mutation UpdateDentist($input: UpdateDentistInput!) {
