@@ -20,7 +20,7 @@ const props = {
     error: '',
     isUpdated: false,
     onSuccess: () => {},
-    procedures: { hello: '', magic: '' },
+    procedures: [],
     isSubmitting: false,
 };
 

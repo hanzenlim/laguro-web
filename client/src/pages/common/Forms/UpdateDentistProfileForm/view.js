@@ -207,10 +207,18 @@ const UpdateDentistProfileForm = props => {
                         label="Which of the following describe your procedures?"
                         type="array"
                         initialValue={
-                            !_isEmpty(procedures) &&
-                            procedures.map(p => p.group)
+                            !_isEmpty(procedures)
+                                ? procedures.map(p => p.group)
+                                : []
                         }
                         mb={[18, '', 32]}
+                        rules={[
+                            {
+                                required: true,
+                                message:
+                                    'Please select at least one description for your procedures...',
+                            },
+                        ]}
                         input={<StyledCheckboxGroup options={options} />}
                     />
 
