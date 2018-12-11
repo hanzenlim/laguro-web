@@ -29,7 +29,7 @@ export const getPaymentRequestByPayerQuery = gql`
                 interval
             }
             originalPrice
-            totalPrice
+            nominalAmount
         }
     }
 `;

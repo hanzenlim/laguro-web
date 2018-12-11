@@ -17,7 +17,7 @@ const ProcedurePaymentRequestView = props => {
         onClickCheckbox,
         patientProcedures,
         installmentPlan,
-        totalPrice,
+        nominalAmount,
         discountPrice,
         originalPrice,
         isPaymentSuccessful,
@@ -81,7 +81,7 @@ const ProcedurePaymentRequestView = props => {
                     <ProcedureSummary
                         patientProcedures={patientProcedures}
                         installmentPlan={installmentPlan}
-                        totalPrice={totalPrice}
+                        nominalAmount={nominalAmount}
                         originalPrice={originalPrice}
                         discountPrice={discountPrice}
                     />
@@ -142,7 +142,7 @@ ProcedurePaymentRequestView.propTypes = {
     patientProcedures: PropTypes.array.isRequired,
     installmentPlan: PropTypes.object.isRequired,
     originalPrice: PropTypes.string,
-    totalPrice: PropTypes.string,
+    nominalAmount: PropTypes.string,
     discountPrice: PropTypes.string,
     isPaymentSuccessful: PropTypes.bool.isRequired,
     isSubmitting: PropTypes.bool.isRequired,

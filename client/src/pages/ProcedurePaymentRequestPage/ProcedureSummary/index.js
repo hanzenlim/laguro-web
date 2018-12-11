@@ -11,13 +11,13 @@ const ProcedureSummary = ({
     patientProcedures,
     installmentPlan,
     originalPrice,
-    totalPrice,
+    nominalAmount,
     discountPrice,
 }) => (
     <ProcedureSummaryView
         procedures={getProcedures(patientProcedures)}
         installmentPlan={installmentPlan}
-        totalPrice={totalPrice}
+        nominalAmount={nominalAmount}
         originalPrice={originalPrice}
         discountPrice={discountPrice}
     />
