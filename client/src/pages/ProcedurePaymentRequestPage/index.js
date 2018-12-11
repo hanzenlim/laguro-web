@@ -103,7 +103,7 @@ class ProcedurePaymentRequest extends PureComponent {
 
                     const discountPrice =
                         _get(paymentRequestData, 'originalPrice') -
-                        _get(paymentRequestData, 'totalPrice');
+                        _get(paymentRequestData, 'nominalAmount');
 
                     return (
                         <ProcedurePaymentRequestPageView
@@ -117,7 +117,10 @@ class ProcedurePaymentRequest extends PureComponent {
                                 paymentRequestData,
                                 'originalPrice'
                             )}
-                            totalPrice={_get(paymentRequestData, 'totalPrice')}
+                            nominalAmount={_get(
+                                paymentRequestData,
+                                'nominalAmount'
+                            )}
                             patientProcedures={_get(
                                 paymentRequestData,
                                 'invoice.items'

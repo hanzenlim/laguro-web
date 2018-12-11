@@ -13,7 +13,7 @@ const installmentPlanIntervalMapping = {
 const ProcedureSummaryView = props => {
     const {
         procedures,
-        totalPrice,
+        nominalAmount,
         discountPrice,
         installmentPlan,
         originalPrice,
@@ -167,7 +167,7 @@ const ProcedureSummaryView = props => {
                                 letterSpacing={['-0.4px', '', '-0.6px']}
                                 color="text.black"
                             >
-                                {renderPrice(totalPrice)}
+                                {renderPrice(nominalAmount)}
                             </Text>
                         </Box>
                     </Flex>
@@ -309,7 +309,7 @@ ProcedureSummaryView.propTypes = {
             price: PropTypes.string,
         })
     ),
-    totalPrice: PropTypes.string,
+    nominalAmount: PropTypes.string,
     discountPrice: PropTypes.string,
     originalPrice: PropTypes.string,
     installmentPlan: PropTypes.shape({
@@ -333,7 +333,7 @@ ProcedureSummaryView.defaultProps = {
             price: '100000',
         },
     ],
-    totalPrice: '125251',
+    nominalAmount: '125251',
     originalPrice: '225251',
     discountPrice: '25251',
     installmentPlan: {
