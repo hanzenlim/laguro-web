@@ -131,7 +131,7 @@ class AddOfficeListing extends Component {
                     mt={[0, '', 140]}
                     mb={[0, '', 18]}
                 >
-                    {isOnboarding && 'Step 3'}
+                    {isOnboarding && 'Step 4'}
                 </Text>
 
                 <Text
