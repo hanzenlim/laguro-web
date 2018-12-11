@@ -19,6 +19,7 @@ import {
     APPOINTMENT_PAYMENT_TYPE,
     RESERVATION_PAYMENT_TYPE,
     PROCEDURE_PAYMENT_TYPE,
+    PROCEDURE_SET_HISTORY_PAYMENT_TYPE,
     PATIENT,
 } from '../../../util/strings';
 import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
@@ -92,7 +93,9 @@ const PaymentHistoryContainer = ({ userId }) => (
                                     />
                                 );
                             } else if (
-                                payment.type === PROCEDURE_PAYMENT_TYPE
+                                payment.type === PROCEDURE_PAYMENT_TYPE ||
+                                payment.type ===
+                                    PROCEDURE_SET_HISTORY_PAYMENT_TYPE
                             ) {
                                 return (
                                     <ProcedurePaymentCard

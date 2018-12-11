@@ -29,7 +29,12 @@ const PaymentCardContainer = ({
         );
 
     let totalAmount = 0;
-    if (persona === PATIENT) {
+
+    if (payment.paymentInstallmentPlan) {
+        totalAmount = payment.paymentInstallmentPlan.charges.map((charge)=>{
+            return charge.amount
+        }).reduce((acc, val) => acc + val, 0);
+    } else if (persona === PATIENT) {
         totalAmount = invoice.items
             .map(item => item.totalPrice)
             .reduce((acc, val) => acc + val, 0);

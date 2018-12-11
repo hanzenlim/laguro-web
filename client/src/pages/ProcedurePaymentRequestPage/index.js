@@ -16,11 +16,11 @@ class ProcedurePaymentRequest extends PureComponent {
         super(props);
 
         this.state = {
-            hasConsented: false,
             isPaymentSuccessful: false,
             isRejectSuccessful: false,
             isSubmitting: false,
             hasClickedNext: false,
+            showDeclinePaymentModal: false,
         };
     }
 
@@ -30,21 +30,27 @@ class ProcedurePaymentRequest extends PureComponent {
         }
     }
 
-    handlePaymentSuccess = async (paymentOptionId, paymentRequestId) => {
+    updatePaymentRequestStatus = async (
+        paymentRequestId,
+        paymentOptionId,
+        status
+    ) => {
         await this.setState({ isSubmitting: true });
 
         try {
             await this.props.acceptOrRejectPaymentRequestMutation({
                 variables: {
                     input: {
-                        accept: true,
+                        accept: status,
                         paymentRequestId,
                         paymentOptionId,
                     },
                 },
             });
 
-            this.setState({ isPaymentSuccessful: true });
+            if (status === true) {
+                this.setState({ isPaymentSuccessful: true });
+            }
         } catch (error) {
             throw error;
         }
@@ -56,12 +62,14 @@ class ProcedurePaymentRequest extends PureComponent {
         this.setState({ hasClickedNext: true });
     };
 
-    handleClickCheckbox = () => {
-        this.setState({ hasConsented: !this.state.hasConsented });
-    };
-
     updateSubmittingState = isSubmitting => {
         this.setState({ isSubmitting });
+    };
+
+    toggleDeclinePaymentBtn = () => {
+        this.setState({
+            showDeclinePaymentModal: !this.state.showDeclinePaymentModal,
+        });
     };
 
     render() {
@@ -78,9 +86,8 @@ class ProcedurePaymentRequest extends PureComponent {
                     },
                 }}
             >
-                {({ loading, error, data }) => {
+                {({ loading, error, data, refetch }) => {
                     const {
-                        hasConsented,
                         hasClickedNext,
                         isPaymentSuccessful,
                         isSubmitting,
@@ -95,10 +102,22 @@ class ProcedurePaymentRequest extends PureComponent {
                     );
 
                     const handlePaymentSuccess = paymentOptionId => {
-                        this.handlePaymentSuccess(
+                        this.updatePaymentRequestStatus(
+                            _get(paymentRequestData, 'id'),
                             paymentOptionId,
-                            _get(data, 'getPaymentRequestByPayer.id')
+                            true
                         );
+                    };
+
+                    const handleDeclinePayment = async () => {
+                        await this.updatePaymentRequestStatus(
+                            _get(paymentRequestData, 'id'),
+                            null,
+                            false
+                        );
+
+                        refetch();
+                        window.scrollTo(0, 0);
                     };
 
                     const discountPrice =
@@ -125,13 +144,19 @@ class ProcedurePaymentRequest extends PureComponent {
                                 paymentRequestData,
                                 'invoice.items'
                             )}
-                            onClickCheckbox={this.handleClickCheckbox}
                             onClickNext={this.handleNext}
-                            hasConsented={hasConsented}
+                            onDeclineBtn={this.toggleDeclinePaymentBtn}
                             hasClickedNext={hasClickedNext}
                             onPaymentSuccess={handlePaymentSuccess}
                             isSubmitting={isSubmitting}
                             updateSubmittingState={this.updateSubmittingState}
+                            onSubmitDeclinePayment={handleDeclinePayment}
+                            showDeclinePaymentModal={
+                                this.state.showDeclinePaymentModal
+                            }
+                            onCancelDeclinePayment={
+                                this.toggleDeclinePaymentBtn
+                            }
                         />
                     );
                 }}

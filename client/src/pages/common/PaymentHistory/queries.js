@@ -79,6 +79,12 @@ export const GET_PAYMENT_HISTORY_QUERY = gql`
             chargeStatus
             nominalAmount
             refundAmount
+            paymentInstallmentPlan {
+                charges {
+                    amount
+                    isDownPayment
+                }
+            }
         }
     }
 `;
