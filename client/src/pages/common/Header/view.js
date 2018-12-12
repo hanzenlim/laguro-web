@@ -11,6 +11,7 @@ import {
     Icon,
     Text,
     Image,
+    Box,
     Responsive,
 } from '../../../components';
 import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
@@ -225,6 +226,8 @@ class Header extends Component {
             return 'relative';
         };
 
+        const currentUrl = window.location.href;
+
         return (
             <StyledFlex
                 is="header"
@@ -313,12 +316,39 @@ class Header extends Component {
                                         mb={[0, '', 4]}
                                     >
                                         {isHost
-                                            ? 'add a new office'
-                                            : 'become a host'}
+                                            ? 'Add a New Office'
+                                            : 'Become a Host'}
                                     </Text>
                                 </NavBarLink>
                             )}
                         </Desktop>
+                        {auth &&
+                            isDentist && (
+                                <Box ml={[0, '', 50]} mr={[-30, '', 0]}>
+                                    <a
+                                        ml="0px"
+                                        target="_blank"
+                                        href={
+                                            currentUrl.includes('laguro-stage')
+                                                ? 'http://ltm.stage-laguro.com/'
+                                                : 'http://ltm.laguro.com/'
+                                        }
+                                    >
+                                        <Text
+                                            color={
+                                                onLandingPage
+                                                    ? 'text.white'
+                                                    : 'text.black'
+                                            }
+                                            fontSize={[0, '', 1]}
+                                            fontWeight="bold"
+                                            mb={[0, '', 4]}
+                                        >
+                                            LTM
+                                        </Text>
+                                    </a>
+                                </Box>
+                            )}
                         <ProfileButton
                             pathname={pathname}
                             isDentist={isDentist}
