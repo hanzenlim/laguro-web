@@ -163,7 +163,9 @@ const PrivateRoute = ({
                     preserveQueryString
                     to={{
                         pathname: '/login',
-                        search: `?redirectTo=${props.location.pathname}`,
+                        search: `?redirectTo=${props.location.pathname}${
+                            props.location.search
+                        }`,
                         state: {
                             from: props.location,
                             message:
