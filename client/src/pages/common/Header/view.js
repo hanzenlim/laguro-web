@@ -322,32 +322,33 @@ class Header extends Component {
                                 </NavBarLink>
                             )}
                         </Desktop>
-                        {auth && isDentist && (
-                            <Box ml={[0, '', 50]} mr={[-30, '', 0]}>
-                                <a
-                                    ml="0px"
-                                    target="_blank"
-                                    href={
-                                        currentUrl.includes('laguro-stage')
-                                            ? 'http://ltm.stage-laguro.com/'
-                                            : 'http://ltm.laguro.com/'
-                                    }
-                                >
-                                    <Text
-                                        color={
-                                            onLandingPage
-                                                ? 'text.white'
-                                                : 'text.black'
+                        {auth &&
+                            isDentist && (
+                                <Box ml={[0, '', 50]} mr={[-30, '', 0]}>
+                                    <a
+                                        ml="0px"
+                                        target="_blank"
+                                        href={
+                                            currentUrl.includes('laguro-stage')
+                                                ? 'http://ltm.laguro-stage.com/'
+                                                : 'http://ltm.laguro.com/'
                                         }
-                                        fontSize={[0, '', 1]}
-                                        fontWeight="bold"
-                                        mb={[0, '', 4]}
                                     >
-                                        LTM
-                                    </Text>
-                                </a>
-                            </Box>
-                        )}
+                                        <Text
+                                            color={
+                                                onLandingPage
+                                                    ? 'text.white'
+                                                    : 'text.black'
+                                            }
+                                            fontSize={[0, '', 1]}
+                                            fontWeight="bold"
+                                            mb={[0, '', 4]}
+                                        >
+                                            LTM
+                                        </Text>
+                                    </a>
+                                </Box>
+                            )}
                         <ProfileButton
                             pathname={pathname}
                             isDentist={isDentist}
