@@ -1,3 +1,6 @@
+**Description**
+- Short description of what this PR implements or fixes
+
 **Summary of Changes**
 - Code/resources that have been added, updated or removed. Please provide rationale for changes whenever applicable
 
