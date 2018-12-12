@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react';
-import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import _get from 'lodash/get';
 import { Container, Button, Box, Text, Responsive } from '../../components';
@@ -147,7 +146,7 @@ const ProcedurePaymentRequestView = props => {
                     </Button>
                 </Box>
             )}
-            <DeclinePaymentModalView 
+            <DeclinePaymentModalView
                 visible={showDeclinePaymentModal}
                 onSubmit={onSubmitDeclinePayment}
                 onCancel={onCancelDeclinePayment}
