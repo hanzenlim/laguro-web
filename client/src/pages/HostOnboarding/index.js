@@ -890,8 +890,7 @@ class HostOnboarding extends Component {
                                                                         type="info"
                                                                         showIcon
                                                                         message={
-                                                                            <Fragment
-                                                                            >
+                                                                            <Fragment>
                                                                                 Looks
                                                                                 like
                                                                                 you

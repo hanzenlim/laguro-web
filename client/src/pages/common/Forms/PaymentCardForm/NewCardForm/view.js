@@ -38,22 +38,21 @@ const NewCardFormView = ({
             input={<CardElement className="ant-input" style={style} />}
         />
 
-        {hasBackButton &&
-            onBackButton && (
-                // Temporary solution before we can figure out
-                // how to connect an external button to a form
-                <Button
-                    ghost={true}
-                    height={['50px', '', '60px']}
-                    fontSize={[1, '', 3]}
-                    mb={10}
-                    width={'100%'}
-                    color="text.blue"
-                    onClick={onBackButton}
-                >
-                    Back
-                </Button>
-            )}
+        {hasBackButton && onBackButton && (
+            // Temporary solution before we can figure out
+            // how to connect an external button to a form
+            <Button
+                ghost={true}
+                height={['50px', '', '60px']}
+                fontSize={[1, '', 3]}
+                mb={10}
+                width={'100%'}
+                color="text.blue"
+                onClick={onBackButton}
+            >
+                Back
+            </Button>
+        )}
         <SubmitButton
             width="100%"
             height={['50px', '', '60px']}
