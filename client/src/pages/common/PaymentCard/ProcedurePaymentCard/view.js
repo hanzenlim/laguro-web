@@ -87,8 +87,12 @@ const ProcedurePaymentCardView = ({
                     </Text>
                     <Flex flexDirection="column">
                         {!isOnPaymentHistory ? (
-                            <Text fontSize={1} lineHeight="1.1">
-                                {payment.type}
+                            <Text
+                                fontSize={1}
+                                textTransform="uppercase"
+                                lineHeight="1.1"
+                            >
+                                Procedure
                             </Text>
                         ) : null}
                         <Flex alignItems="flex-end">

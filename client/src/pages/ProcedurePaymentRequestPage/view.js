@@ -1,20 +1,19 @@
 import React, { Fragment } from 'react';
+import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import _get from 'lodash/get';
 import { Container, Button, Box, Text, Responsive } from '../../components';
 import ProcedureSummary from './ProcedureSummary';
 import PaymentConfirmation from '../common/PaymentConfirmation';
 import Payment from '../common/Payment';
-import ConsentCheckbox from './ConsentCheckbox';
 import { withScreenSizes } from '../../components/Responsive';
+import DeclinePaymentModalView from './DeclinePaymentModal';
 
 const { TabletMobile, Desktop } = Responsive;
 
 const ProcedurePaymentRequestView = props => {
     const {
         onPaymentSuccess,
-        hasConsented,
-        onClickCheckbox,
         patientProcedures,
         installmentPlan,
         nominalAmount,
@@ -27,11 +26,14 @@ const ProcedurePaymentRequestView = props => {
         desktopOnly,
         onClickNext,
         hasClickedNext,
+        onDeclineBtn,
+        showDeclinePaymentModal,
+        onSubmitDeclinePayment,
+        onCancelDeclinePayment,
     } = props;
 
     const hasNotClickedNextOnTabletMobile = !hasClickedNext && tabletMobileOnly;
     const hasClickedNextOnTabletMobile = hasClickedNext && tabletMobileOnly;
-    const hasConsentedOnDesktop = hasConsented && desktopOnly;
 
     if (!_get(patientProcedures, 'length'))
         return (
@@ -52,7 +54,7 @@ const ProcedurePaymentRequestView = props => {
     }
 
     const content = (
-        <Box maxWidth={662} width="100%" my={[30, '', 140]} mx="auto">
+        <Box maxWidth={662} width="100%" my={[30, '', 50]} mx="auto">
             <Box mb={[25, '', 30]}>
                 <Text
                     fontSize={[28, '', 30]}
@@ -85,40 +87,71 @@ const ProcedurePaymentRequestView = props => {
                         originalPrice={originalPrice}
                         discountPrice={discountPrice}
                     />
-                    <ConsentCheckbox
-                        onClickCheckbox={onClickCheckbox}
-                        hasConsented={hasConsented}
-                    />
                 </Box>
             )}
 
             {hasNotClickedNextOnTabletMobile && (
-                <Button
-                    width="100%"
-                    disabled={!hasConsented}
-                    loading={isSubmitting}
-                    onClick={onClickNext}
-                >
-                    Next
-                </Button>
-            )}
-
-            {(hasClickedNextOnTabletMobile || hasConsentedOnDesktop) && (
-                <Box
-                    px={[0, '', 38]}
-                    py={[0, '', 26]}
-                    boxShadow={['none', '', 0]}
-                >
-                    <Payment
-                        isSubmitting={isSubmitting}
-                        onSuccess={onPaymentSuccess}
-                        btnText="Pay"
-                        updateSubmittingState={updateSubmittingState}
-                        isButtonOutside={true}
-                        disabled={!hasConsentedOnDesktop}
-                    />
+                <Box>
+                    <Button
+                        width="100%"
+                        loading={isSubmitting}
+                        onClick={onClickNext}
+                    >
+                        Next
+                    </Button>
+                    <Button type="ghost" width="100%" mt="20px">
+                        <Text
+                            fontWeight="bold"
+                            fontSize={3}
+                            color="text.blue"
+                            border="2px solid"
+                            borderColor="divider.blue"
+                            borderRadius="4px"
+                            lineHeight="50px"
+                        >
+                            Decline
+                        </Text>
+                    </Button>
                 </Box>
             )}
+
+            {(hasClickedNextOnTabletMobile || desktopOnly) && (
+                <Box>
+                    <Box
+                        my={[20, '', 30]}
+                        px={[0, '', 38]}
+                        py={[0, '', 26]}
+                        boxShadow={['none', '', 0]}
+                    >
+                        <Payment
+                            isSubmitting={isSubmitting}
+                            onSuccess={onPaymentSuccess}
+                            btnText="Pay"
+                            updateSubmittingState={updateSubmittingState}
+                            isButtonOutside={true}
+                        />
+                    </Box>
+                    <Button type="ghost" height="60px" width="200px">
+                        <Text
+                            fontWeight="bold"
+                            fontSize={3}
+                            color="text.blue"
+                            border="2px solid"
+                            borderColor="divider.blue"
+                            borderRadius="4px"
+                            lineHeight="58px"
+                            onClick={onDeclineBtn}
+                        >
+                            Decline
+                        </Text>
+                    </Button>
+                </Box>
+            )}
+            <DeclinePaymentModalView 
+                visible={showDeclinePaymentModal}
+                onSubmit={onSubmitDeclinePayment}
+                onCancel={onCancelDeclinePayment}
+            />
         </Box>
     );
 
@@ -134,11 +167,9 @@ const ProcedurePaymentRequestView = props => {
 
 ProcedurePaymentRequestView.propTypes = {
     onPaymentSuccess: PropTypes.func.isRequired,
-    hasConsented: PropTypes.bool.isRequired,
     hasClickedNext: PropTypes.bool.isRequired,
-    onClickCheckbox: PropTypes.func.isRequired,
     onClickNext: PropTypes.func.isRequired,
-    updateSubmittingState: PropTypes.func.isRequired,
+    onDeclineBtn: PropTypes.func.isRequired,
     patientProcedures: PropTypes.array.isRequired,
     installmentPlan: PropTypes.object.isRequired,
     originalPrice: PropTypes.string,
@@ -146,6 +177,9 @@ ProcedurePaymentRequestView.propTypes = {
     discountPrice: PropTypes.string,
     isPaymentSuccessful: PropTypes.bool.isRequired,
     isSubmitting: PropTypes.bool.isRequired,
+    onSubmitDeclinePayment: PropTypes.func.isRequired,
+    onCancelDeclinePayment: PropTypes.func.isRequired,
+    showDeclinePaymentModal: PropTypes.bool.isRequired,
 };
 
 export default withScreenSizes(ProcedurePaymentRequestView);

@@ -102,7 +102,7 @@ const CardView = ({
                                       ? 'auto'
                                       : 'absolute',
                                   width: tabletMobileOnly ? '100%' : '200px',
-                                  bottom: tabletMobileOnly ? '0' : '-134px',
+                                  bottom: tabletMobileOnly ? '0' : '-142px',
                                   right: tabletMobileOnly ? '0' : '-40px',
                               }
                             : {}

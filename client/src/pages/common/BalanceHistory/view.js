@@ -24,6 +24,7 @@ import {
     PAYMENT_REFUNDED,
     PAYMENT_WITHDRAWN,
     PROCEDURE_PAYMENT_TYPE,
+    PROCEDURE_SET_HISTORY_PAYMENT_TYPE,
     APPOINTMENT_PAYMENT_TYPE,
     RESERVATION_PAYMENT_TYPE,
 } from '../../../util/strings';
@@ -125,7 +126,10 @@ const BalanceHistoryView = ({
                             {...rest}
                         />
                     );
-                } else if (payment.type === PROCEDURE_PAYMENT_TYPE) {
+                } else if (
+                    payment.type === PROCEDURE_PAYMENT_TYPE ||
+                    payment.type === PROCEDURE_SET_HISTORY_PAYMENT_TYPE
+                ) {
                     return (
                         <ProcedurePaymentCard
                             key={index}
