@@ -139,6 +139,12 @@ const NewReviewPage = Loadable({
     loading: () => null,
 });
 
+const AppointmentConfirmationPage = Loadable({
+    loader: () =>
+        import('./pages/AppointmentConfirmationPage' /* webpackChunkName: "appointmentConfirmationPage" */),
+    loading: () => null,
+});
+
 const getIdQueryClient = gql`
     {
         activeUser @client {
@@ -224,6 +230,13 @@ class App extends Component {
                                             <PrivateRoute
                                                 path="/profile"
                                                 component={ProfilePage}
+                                                isUserLoggedin={data.activeUser}
+                                            />
+                                            <PrivateRoute
+                                                path="/appointment-confirmation"
+                                                component={
+                                                    AppointmentConfirmationPage
+                                                }
                                                 isUserLoggedin={data.activeUser}
                                             />
                                             <Route

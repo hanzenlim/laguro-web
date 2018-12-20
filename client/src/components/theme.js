@@ -9,6 +9,7 @@ export default {
             black: '#303549',
             black50: 'rgba(0, 0, 0, 0.5)',
             gray: '#c7c7c7',
+            lightGray: '#9b9b9b',
             darkGray: '#4a4a4a',
             blue: '#3481F8',
             darkBlue: '#286ABA',
@@ -25,6 +26,7 @@ export default {
             yellow: '#FFCE70',
             orange: '#FF9554',
             darkBlue: '#286ABA',
+            aquaBlue: '#f7f8fc',
             lightBlue: 'rgba(175, 211, 253, 0.23)',
         },
         button: {
