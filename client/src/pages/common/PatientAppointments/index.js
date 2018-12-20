@@ -9,7 +9,13 @@ import CancelAppoinmentModal from '../Modals/CancelAppointmentModal';
 import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
 
 import { getAppointmentsQuery, getPatientIdQueryClient } from './queries';
-import { PATIENT_ID, END_TIME, STATUS, ACTIVE } from '../../../util/strings';
+import {
+    PATIENT_ID,
+    END_TIME,
+    STATUS,
+    PENDING_PATIENT_APPROVAL,
+    ACTIVE,
+} from '../../../util/strings';
 
 const PatientAppoinmentsContainer = () => (
     <Query query={getPatientIdQueryClient}>
@@ -29,7 +35,10 @@ const PatientAppoinmentsContainer = () => (
                             filters: [
                                 {
                                     filterKey: `${STATUS}`,
-                                    filterValues: [`${ACTIVE}`],
+                                    filterValues: [
+                                        `${PENDING_PATIENT_APPROVAL}`,
+                                        `${ACTIVE}`,
+                                    ],
                                 },
                             ],
                         },

@@ -31,7 +31,6 @@ const SearchAvailableAppointments = props => {
     } = props;
 
     const hasAvailableDateList = get(props, 'availableDateList.length') > 0;
-
     return (
         <Fragment>
             {locationList.length > 0 ? (

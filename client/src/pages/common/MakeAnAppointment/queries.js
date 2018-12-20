@@ -1,11 +1,10 @@
 import { gql } from 'apollo-boost';
 import moment from 'moment';
-
 import {
     STATUS,
     ACTIVE,
-    END_TIME,
     PENDING_PATIENT_APPROVAL,
+    END_TIME,
 } from '../../../util/strings';
 
 export const getDentistIdQueryClient = gql`
@@ -17,15 +16,42 @@ export const getDentistIdQueryClient = gql`
     }
 `;
 
+export const requestAppointmentMutation = gql`
+    mutation RequestAppointment($input: RequestAppointmentInput!) {
+        requestAppointment(input: $input) {
+            id
+        }
+    }
+`;
+
 export const getDentistQuery = gql`
-    query getDentist($id: String!) {
+    query($id: String!) {
         getDentist(id: $id) {
             id
+            patients {
+                id
+                firstName
+                lastName
+                imageUrl
+                appointments(
+                    options: {
+                        filters: [{ filterKey: "dentistId", filterValues: [$id] }]
+                    }
+                ) {
+                    id
+                    localStartTime
+                }
+                patientImages {
+                    imageUrl
+                    signedImageUrl
+                }
+            }
+            firstAppointmentDuration
             reservations(
                 options: {
                     sortKey: "${END_TIME}",
                     rangeStart: "${moment()
-                        .utc()
+                        .startOf('days')
                         .format()}",
                     filters: [
                         {
@@ -37,39 +63,23 @@ export const getDentistQuery = gql`
             ) {
                 id
                 status
-                office {
-                    id
+                location {
                     name
                 }
                 localAvailableTimes {
                     startTime
                     endTime
                 }
-                numChairsSelected
-                equipmentSelected
                 appointments(
                     options: {
-                        sortKey: "${END_TIME}",
-                        rangeStart: "${moment()
-                            .startOf('days')
-                            .format()}",
                         filters: [
-                            {
-                                filterKey: "${STATUS}",
-                                filterValues: ["${ACTIVE}", "${PENDING_PATIENT_APPROVAL}"]
-                            }
+                            { filterKey: "status", filterValues: ["${PENDING_PATIENT_APPROVAL}", "${ACTIVE}"] }
                         ]
                     }
                 ) {
                     id
-                    startTime
                     localStartTime
-                    patient {
-                        id
-                        lastName
-                        firstName
-                        imageUrl
-                    }
+                    localEndTime
                     status
                 }
             }

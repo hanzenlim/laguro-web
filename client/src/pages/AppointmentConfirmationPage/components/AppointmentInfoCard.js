@@ -30,6 +30,7 @@ const AppointmentInfoCardOptions = ({ isSubmitting, onAccept, onReject }) => (
             textAlign="center"
             width="100%"
             height={40}
+            cursor="pointer"
             onClick={onReject}
         >
             I don&apos;t approve

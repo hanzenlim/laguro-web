@@ -74,6 +74,7 @@ export const PUBLIC_PROFILE = 'public_profile';
 export const DENTIST_PROFILE = 'dentist_profile';
 export const MY_LISTINGS = 'my_listings';
 export const MY_BOOKINGS = 'my_bookings';
+export const MAKE_AN_APPOINTMENT = 'make_an_appointment';
 export const MY_PATIENTS = 'my_patients';
 
 // menu items
@@ -89,6 +90,7 @@ export const LAGURO_BALANCE_MENU = 'Laguro Balance';
 export const PREVIEW_PUBLIC_PROFILE_MENU = 'Preview Public Profile';
 export const MY_LISTINGS_MENU = 'My Listings';
 export const MY_BOOKINGS_MENU = 'My Bookings';
+export const MAKE_AN_APPOINTMENT_MENU = 'Make an appointment';
 export const MY_PATIENTS_MENU = 'My Patients';
 export const PAYMENT_REQUEST_MENU = 'Payment Request';
 export const SEARCH_FOR_CHAIRS_MENU = 'Search for Chairs';

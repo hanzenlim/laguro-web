@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import { width } from 'styled-system';
 
 const StyledSelect = styled(AntdSelect)`
+    ${width};
+
     .ant-select-selection {
         border-radius: 2px;
         border-color: ${props => props.theme.colors.divider.gray};

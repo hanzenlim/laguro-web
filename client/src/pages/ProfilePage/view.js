@@ -12,6 +12,7 @@ import HostListings from '../common/HostListings';
 import PaymentHistory from '../common/PaymentHistory';
 import BalanceHistory from '../common/BalanceHistory';
 import DentistAppointments from '../common/DentistAppointments';
+import MakeAnAppointment from '../common/MakeAnAppointment';
 import PatientAppointments from '../common/PatientAppointments';
 import UserVerification from '../common/UserVerification';
 import PatientsList from '../common/PatientsList';
@@ -30,6 +31,7 @@ import {
     PUBLIC_PROFILE,
     DENTIST_PROFILE,
     MY_BOOKINGS,
+    MAKE_AN_APPOINTMENT,
     MY_PATIENTS,
     PAYMENT_REQUEST,
     MY_ACCOUNT_MENU,
@@ -41,6 +43,7 @@ import {
     PREVIEW_PUBLIC_PROFILE_MENU,
     MY_LISTINGS_MENU,
     MY_BOOKINGS_MENU,
+    MAKE_AN_APPOINTMENT_MENU,
     MY_PATIENTS_MENU,
     PAYMENT_REQUEST_MENU,
 } from '../../util/strings';
@@ -126,6 +129,7 @@ class ProfileView extends Component {
             [MY_APPOINTMENTS]: MY_APPOINTMENTS_MENU,
             [MY_LISTINGS]: MY_LISTINGS_MENU,
             [MY_BOOKINGS]: MY_BOOKINGS_MENU,
+            [MAKE_AN_APPOINTMENT]: MAKE_AN_APPOINTMENT_MENU,
             [PAYMENTS]: PAYMENT_HISTORY_MENU,
             [BALANCE]: LAGURO_BALANCE_MENU,
             [PUBLIC_PROFILE]: PREVIEW_PUBLIC_PROFILE_MENU,
@@ -183,6 +187,8 @@ class ProfileView extends Component {
                 return <HostListings />;
             case MY_BOOKINGS:
                 return <DentistAppointments />;
+            case MAKE_AN_APPOINTMENT:
+                return <MakeAnAppointment />;
             case PAYMENTS:
                 return <PaymentHistory userId={userId} />;
             case BALANCE:
@@ -307,6 +313,17 @@ class ProfileView extends Component {
                             lineHeight={['48px', '', '40px']}
                         >
                             {this.keyTextMap[MY_BOOKINGS]}
+                        </Text>
+                    </StyledMenuItem>
+                )}
+                {isDentist && (
+                    <StyledMenuItem key={MAKE_AN_APPOINTMENT}>
+                        <Text
+                            fontSize={[1, '', 4]}
+                            color="inherit"
+                            lineHeight={['48px', '', '40px']}
+                        >
+                            {this.keyTextMap[MAKE_AN_APPOINTMENT]}
                         </Text>
                     </StyledMenuItem>
                 )}

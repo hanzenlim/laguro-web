@@ -277,9 +277,10 @@ class DentistAppointments extends PureComponent {
         ));
 
     renderAppointments = appointments =>
-        appointments.map(({ id, startTime, patient, status }) => {
+        appointments.map(({ id, localStartTime, patient, status }) => {
             const name = `${patient.firstName} ${patient.lastName}`;
             const isCancelled = status === CANCELLED;
+
             return (
                 <Fragment>
                     <TabletMobile>
@@ -298,7 +299,7 @@ class DentistAppointments extends PureComponent {
                             <Box fontSize={1} minWidth="100px">
                                 <Box minWidth="138px">
                                     <Text fontWeight="bold">
-                                        {moment(startTime).format(
+                                        {moment(localStartTime).format(
                                             'MM/D, h:mm A'
                                         )}
                                     </Text>
@@ -349,12 +350,14 @@ class DentistAppointments extends PureComponent {
                             >
                                 <Box textAlign="center" minWidth="138px">
                                     <Text fontWeight="bold">
-                                        {moment(startTime).format(
+                                        {moment(localStartTime).format(
                                             'ddd, M/D, YYYY'
                                         )}
                                     </Text>
                                     <Text fontWeight="light">
-                                        {moment(startTime).format('h:mm A')}
+                                        {moment(localStartTime).format(
+                                            'h:mm A'
+                                        )}
                                     </Text>
                                 </Box>
                                 <Box maxWidth="170px">
