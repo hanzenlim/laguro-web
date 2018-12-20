@@ -62,8 +62,6 @@ class PaymentCardForm extends Component {
             this.setState({
                 errorMessage: get(err, 'graphQLErrors[0].message'),
             });
-        } finally {
-            await this.props.updateSubmittingState(false);
         }
 
         return null;
