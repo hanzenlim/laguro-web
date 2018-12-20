@@ -46,7 +46,7 @@ export const getListingQuery = gql`
                 filters: [
                     {
                         filterKey: "status",
-                        filterValue: "ACTIVE"
+                        filterValues: ["ACTIVE"]
                     }
                 ]
             }) {

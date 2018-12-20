@@ -28,7 +28,7 @@ const refetchQueries = id => [
                     filters: [
                         {
                             filterKey: `${STATUS}`,
-                            filterValue: `${ACTIVE}`,
+                            filterValues: [`${ACTIVE}`],
                         },
                     ],
                 },
