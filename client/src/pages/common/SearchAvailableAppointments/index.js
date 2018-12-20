@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
+import moment from 'moment-timezone';
+import _sortBy from 'lodash/sortBy';
 import _get from 'lodash/get';
 import { formatAddress } from '../../../util/styleUtil';
 import SearchAvailableAppointmentsView from './view';
@@ -69,19 +70,27 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
 
     /**
      * Returns appointments that are not in reservations array
-     * @param {array} appointments Array of objects with key value pairs
-     * @param {array} reservations Array of objects with key value pairs
+     * @param {array} appointments Array of objects with key value pairs for available timeslots
+     * @param {array} reservations Array of objects with key value pairs for timeslots that are already reserved
      * @returns {array} Array of objects with key value pairs
      */
     getAvailableOnly = (appointments, reservations) => {
-        const formattedReservations = reservations.map(reservation =>
-            JSON.stringify(reservation)
+        const availableTimeslotIndex = {};
+
+        appointments.forEach(a => {
+            availableTimeslotIndex[a.key] = a;
+        });
+
+        reservations.forEach(r => {
+            const availableSlot = availableTimeslotIndex[r.key];
+            availableSlot.numChairs -= r.numChairs;
+        });
+
+        const timeslots = Object.values(availableTimeslotIndex).filter(
+            timeslot => timeslot.numChairs > 0
         );
 
-        return appointments.filter(
-            appointment =>
-                !formattedReservations.includes(JSON.stringify(appointment))
-        );
+        return timeslots;
     };
 
     /**
@@ -91,7 +100,7 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
      */
     formatTime = list =>
         list.map(a => ({
-            key: moment(a.key).format('LT'),
+            key: moment.tz(a.key, a.timezone).format('LT'),
             value: a.value,
         }));
 
@@ -104,8 +113,8 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
     filterByDate = (dateFilter, list) =>
         list.filter(
             item =>
-                moment(item.key).format('YYYY MM DD') ===
-                moment(dateFilter).format('YYYY MM DD')
+                moment.tz(item.key, item.timezone).format('YYYY MM DD') ===
+                moment.tz(dateFilter, item.timezone).format('YYYY MM DD')
         );
 
     /**
@@ -113,12 +122,16 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
      * @param {array} list Array of objects with key value pairs
      * @returns {array} Array of objects with key value pairs
      */
-    filterByCurrentTime = list =>
-        list.filter(item => {
-            const currentTime = moment();
-            const formattedItem = moment(item.key);
-            return moment(formattedItem).isAfter(currentTime);
-        });
+    filterByCurrentTime = list => {
+        const currentTime = moment();
+        return _sortBy(
+            list.filter(item => {
+                const formattedItem = moment(item.key);
+                return formattedItem.isAfter(currentTime);
+            }),
+            'key'
+        );
+    };
 
     /**
      * Returns an array of time strings by `props.appointment` minute blocks
@@ -126,10 +139,10 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
      * @param {string} end End time
      * @returns {array}
      */
-    getTimeSlots = (start, end) => {
+    getTimeSlots = (start, end, timezone) => {
         const { firstAppointmentDuration } = this.props;
-        const startTime = moment(start);
-        const endTime = moment(end);
+        const startTime = moment.tz(start, timezone);
+        const endTime = moment.tz(end, timezone);
 
         const timeSlots = [];
 
@@ -146,25 +159,29 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
     };
 
     /**
-     * Returns appointments slots that are booked yet
+     * Returns slots that have available chairs
      * @param {array} reservations Array of reservations from API call
      * @returns {array} Array of objects with key value pairs
      */
-    getTimeSlotsWithoutAppointments = reservations => {
+    getAvailableTimeslots = reservations => {
         const reservedTimeSlots = [];
         const timeSlotsWithAppointments = [];
 
         reservations.forEach(reservation => {
+            const { timezone, numChairsSelected } = reservation;
             reservation.localAvailableTimes.forEach(availableTime => {
                 const timeSlots = this.getTimeSlots(
                     availableTime.startTime,
-                    availableTime.endTime
+                    availableTime.endTime,
+                    timezone
                 );
 
                 timeSlots.forEach(timeSlot => {
                     reservedTimeSlots.push({
                         key: timeSlot,
                         value: reservation.id,
+                        numChairs: numChairsSelected,
+                        timezone,
                     });
                 });
             });
@@ -172,24 +189,27 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
             reservation.appointments.forEach(appointment => {
                 const timeSlots = this.getTimeSlots(
                     appointment.localStartTime,
-                    appointment.localEndTime
+                    appointment.localEndTime,
+                    timezone
                 );
 
                 timeSlots.forEach(timeSlot => {
                     timeSlotsWithAppointments.push({
                         key: timeSlot,
                         value: reservation.id,
+                        numChairs: 1,
+                        timezone,
                     });
                 });
             });
         });
 
-        const timeSlotsWithoutAppointments = this.getAvailableOnly(
+        const availableTimeslots = this.getAvailableOnly(
             reservedTimeSlots,
             timeSlotsWithAppointments
         );
 
-        return timeSlotsWithoutAppointments;
+        return availableTimeslots;
     };
 
     /**
@@ -197,12 +217,19 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
      * @param {array} dateList Array of objects
      * @returns {array} Array of date strings
      */
-    getAvailableDateList = dateList => {
+    getAvailableDateList = (dateList, timezone) => {
         const list = [];
 
-        const today = moment().startOf('day');
+        if (!timezone) {
+            return list;
+        }
+
+        const today = moment()
+            .tz(timezone)
+            .startOf('day');
         const days = dateList.map(item =>
-            moment(item.key)
+            moment
+                .tz(item.key, item.timezone)
                 .startOf('day')
                 .format()
         );
@@ -254,7 +281,13 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
     };
 
     filterByLocation = (reservations, locationFilter) =>
-        reservations.filter(item => item.location.name === locationFilter);
+        reservations.filter(item => {
+            const address = formatAddress(
+                _get(item, 'location.name'),
+                _get(item, 'location.addressDetails')
+            );
+            return address === locationFilter;
+        });
 
     handleSelectLocation = value => {
         this.setState({
@@ -281,18 +314,20 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
         );
 
         // REMOVE BOOKED APPOINTMENTS
-        const timeSlotsWithoutAppointments = this.getTimeSlotsWithoutAppointments(
+        const availableTimeslots = this.getAvailableTimeslots(
             filteredByLocation
         );
 
+        const timezone = _get(availableTimeslots, '[0].timezone');
         // GET LIST OF DATES
         const availableDateList = this.getAvailableDateList(
-            timeSlotsWithoutAppointments
+            availableTimeslots,
+            timezone
         );
 
         const filteredByDate = this.filterByDate(
             dateFilter,
-            timeSlotsWithoutAppointments
+            availableTimeslots
         );
 
         const filteredByCurrentTime = this.filterByCurrentTime(filteredByDate);
