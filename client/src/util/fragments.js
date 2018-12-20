@@ -8,21 +8,10 @@ options: {
     filters: [
         {
             filterKey: "${STATUS}",
-            filterValue: "${ACTIVE}"
+            filterValues: ["${ACTIVE}"]
         }
     ]
 }`;
-
-export const activeOfficeFilter = `
-    options: {
-        filters: [
-            {
-                filterKey: "${STATUS}",
-                filterValue: "${ACTIVE}"
-            }
-        ]
-    }
-`;
 
 export const userFragment = `
     id
@@ -236,38 +225,6 @@ export const paymentFragment = `
     }
     chargeStatus
     dateCreated
-`;
-
-export const dentistProfilePageFragment = `
-    ${dentistFragment}
-    offices(${activeOfficeFilter}) {
-        ${officeFragment}
-        listings(${filterActive}) {
-            ${listingFragment}
-            reservations(${filterActive}) {
-                ${reservationFragment}
-                reservedBy {
-                    ${dentistFragment}
-                }
-            }
-        }
-    }
-    reservations(${filterActive}) {
-        ${reservationFragment}
-        appointments(${filterActive}) {
-            ${appointmentFragment}
-        }
-        office {
-            ${officeFragment}
-        }
-        hostId
-        reservedBy {
-            id
-        }
-    }
-    reviews {
-        ${reviewerFragment}
-    }
 `;
 
 export const patientProcedureFragment = `

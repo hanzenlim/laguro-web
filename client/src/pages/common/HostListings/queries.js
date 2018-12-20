@@ -22,7 +22,7 @@ export const getDentistQuery = gql`
                     filters: [
                         {
                             filterKey: "${STATUS}",
-                            filterValue: "${ACTIVE}"
+                            filterValues: ["${ACTIVE}"]
                         }
                     ]
                 }
@@ -45,7 +45,7 @@ export const getDentistQuery = gql`
                         filters: [
                             {
                                 filterKey: "${STATUS}",
-                                filterValue: "${ACTIVE}"
+                                filterValues: ["${ACTIVE}"]
                             }
                         ]
                     }
@@ -70,7 +70,7 @@ export const getDentistQuery = gql`
                             filters: [
                                 {
                                     filterKey: "${STATUS}",
-                                    filterValue: "${ACTIVE}"
+                                    filterValues: ["${ACTIVE}"]
                                 }
                             ]
                         }

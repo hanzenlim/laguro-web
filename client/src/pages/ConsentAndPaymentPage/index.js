@@ -120,7 +120,7 @@ class ConsentAndPaymentPage extends PureComponent {
                         options: {
                             filters: {
                                 filterKey: STATUS,
-                                filterValue: PENDING,
+                                filterValues: [PENDING],
                             },
                         },
                     },
