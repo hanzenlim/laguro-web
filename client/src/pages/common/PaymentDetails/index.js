@@ -3,9 +3,13 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 
 import PaymentDetailsView from './view';
+import ProcedurePaymentDetailsView from './ProcedurePaymentDetails/view';
 import { Text, Flex, Modal, Button } from '../../../components';
 import { withScreenSizes } from '../../../components/Responsive';
-import { PAYMENT } from '../../../util/strings';
+import {
+    PAYMENT,
+    PROCEDURE_SET_HISTORY_PAYMENT_TYPE,
+} from '../../../util/strings';
 
 const PaymentDetails = ({
     payment,
@@ -20,19 +24,21 @@ const PaymentDetails = ({
 }) => {
     const { office } = reservation;
     const withCC = cardType === PAYMENT;
+    const paymentDetailsViewProps = {
+        payment,
+        cardType,
+        office,
+        startTime,
+        endTime,
+        withCC,
+        total,
+    };
 
     if (fullPage) {
-        return (
-            <PaymentDetailsView
-                payment={payment}
-                cardType={cardType}
-                office={office}
-                startTime={startTime}
-                endTime={endTime}
-                withCC={withCC}
-                total={total}
-            />
-        );
+        if (payment.type === PROCEDURE_SET_HISTORY_PAYMENT_TYPE) {
+            return <ProcedurePaymentDetailsView {...paymentDetailsViewProps} />;
+        }
+        return <PaymentDetailsView {...paymentDetailsViewProps} />;
     }
 
     return (
@@ -53,15 +59,11 @@ const PaymentDetails = ({
                       }
             }
         >
-            <PaymentDetailsView
-                payment={payment}
-                cardType={cardType}
-                office={office}
-                startTime={startTime}
-                endTime={endTime}
-                withCC={withCC}
-                total={total}
-            />
+            {payment.type === PROCEDURE_SET_HISTORY_PAYMENT_TYPE ? (
+                <ProcedurePaymentDetailsView {...paymentDetailsViewProps} />
+            ) : (
+                <PaymentDetailsView {...paymentDetailsViewProps} />
+            )}
             <Flex justifyContent="flex-end">
                 <Button
                     className="print-btn"

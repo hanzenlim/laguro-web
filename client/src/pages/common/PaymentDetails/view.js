@@ -3,14 +3,12 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import _get from 'lodash/get';
 
-import { Text, Flex, Icon, Image, Box } from '../../../components';
+import { Text, Flex, Icon, Box } from '../../../components';
 import { formatListingTime } from '../../../util/timeUtil';
 import { renderPrice } from '../../../util/paymentUtil';
-import visa from '../../../components/Image/visa.svg';
-import mastercard from '../../../components/Image/mastercard.svg';
-import americanExpress from '../../../components/Image/americanExpress.svg';
-import discover from '../../../components/Image/discover.svg';
-import whiteLogo from '../../../components/Image/whiteLogo.svg';
+import LineItem from './components/lineItem';
+import Section from './components/section';
+import CreditCard from './components/creditCard';
 import {
     PAYMENT,
     RESERVATION_PAYMENT_TYPE,
@@ -169,93 +167,6 @@ const PaymentDetailsView = ({
         </Flex>
     );
 };
-
-const CreditCard = ({ brand, last4 }) => {
-    const creditCardImg = () => {
-        switch (brand) {
-            case 'Visa':
-                return visa;
-            case 'Mastercard':
-                return mastercard;
-            case 'American Express':
-                return americanExpress;
-            case 'Discover':
-                return discover;
-            default:
-                return whiteLogo;
-        }
-    };
-
-    return (
-        <Flex
-            justifyContent="center"
-            alignItems="center"
-            height={[30, '', 50]}
-            width={[80, '', 130]}
-            border="1px solid"
-            borderRadius="2px"
-            borderColor="divider.darkGray"
-        >
-            <Image
-                src={creditCardImg()}
-                height={[16, '', 20]}
-                width={[22, '', 30]}
-            />
-            <Text fontSize={[0, '', 2]} fontWeight="bold" color="text.black">
-                {` •••• ${last4}`}
-            </Text>
-        </Flex>
-    );
-};
-
-const Section = ({ title, children }) => (
-    <Flex
-        width={['100%', '', 'unset']}
-        flexDirection="column"
-        mb={[16, '', 40]}
-    >
-        <Box
-            pb={[8, '', 18]}
-            mb={[8, '', 18]}
-            borderBottom="1px solid"
-            borderColor="divider.darkGray"
-            width={['100%', '', 360]}
-        >
-            <Text
-                color="text.gray"
-                fontWeight="bold"
-                fontSize={[0, '', 4]}
-                style={{ textTransform: 'uppercase' }}
-            >
-                {title}
-            </Text>
-        </Box>
-        {children}
-    </Flex>
-);
-
-const LineItem = ({ quantity, name, price }) => (
-    <Flex justifyContent="space-between">
-        <Flex pr={10}>
-            {quantity && (
-                <Text
-                    fontSize={[0, '', 3]}
-                    fontWeight="bold"
-                    color="text.black"
-                >
-                    {quantity}
-                    &nbsp;
-                </Text>
-            )}
-            <Text fontSize={[0, '', 3]} color="text.black">
-                {name}
-            </Text>
-        </Flex>
-        <Text fontSize={[0, '', 3]} fontWeight="bold" color="text.black">
-            {renderPrice(price)}
-        </Text>
-    </Flex>
-);
 
 const TotalPaid = ({ amount }) => (
     <Box>

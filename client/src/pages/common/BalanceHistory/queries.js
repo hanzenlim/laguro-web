@@ -75,6 +75,12 @@ export const GET_BALANCE_QUERY = gql`
                     }
                 }
             }
+            payoutParams {
+                totalPayoutAmount
+                availablePayoutAmount
+                pendingPayoutAmount
+                paidOutAmount
+            }
             isPayoutAvailable
             chargeStatus
             nominalAmount

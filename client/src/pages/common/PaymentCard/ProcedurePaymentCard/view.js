@@ -3,8 +3,17 @@ import styled from 'styled-components';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 
+import PaymentDetails from '../../PaymentDetails';
 import { renderPrice } from '../../../../util/paymentUtil';
-import { Card, Text, Flex, Box, Truncate } from '../../../../components';
+import {
+    Card,
+    Text,
+    Flex,
+    Box,
+    Icon,
+    Button,
+    Truncate,
+} from '../../../../components';
 import {
     AVAILABLE,
     PENDING,
@@ -54,6 +63,10 @@ const renderInvoiceItem = (procedures, persona) =>
     ));
 
 const ProcedurePaymentCardView = ({
+    closeModal,
+    cardType,
+    opentDetailModal,
+    visibleModal,
     payment,
     paymentStatus,
     totalAmount,
@@ -114,6 +127,23 @@ const ProcedurePaymentCardView = ({
                         </Flex>
                     </Flex>
                 </Box>
+                <Flex alignItems="top">
+                    <Button
+                        onClick={() => opentDetailModal(payment.id)}
+                        type="ghost"
+                        height={[50, '', 70]}
+                        width={[50, '', 70]}
+                        top="0"
+                        right="0"
+                        position="absolute"
+                    >
+                        <Icon
+                            fontSize={[0, '', 3]}
+                            color="icon.blue"
+                            type="right"
+                        />
+                    </Button>
+                </Flex>
             </Flex>
             <Box
                 my={[10, '', 16]}
@@ -136,6 +166,13 @@ const ProcedurePaymentCardView = ({
                           }`}
                 </Truncate>
             </Text>
+            <PaymentDetails
+                payment={payment}
+                visible={visibleModal === `payment_detail_${payment.id}`}
+                onCancel={closeModal}
+                cardType={cardType}
+                total={totalAmount}
+            />
             <Box>
                 <Text fontSize={[0, '', 3]} mb={[6, '', 10]}>
                     Procedure Summary
