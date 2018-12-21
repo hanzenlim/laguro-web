@@ -73,7 +73,7 @@ class AppointmentFormView extends PureComponent {
 
         return (
             <Fragment>
-                {locationList.length > 0 ? (
+                {locationList.length && appointments.length > 0 ? (
                     <Fragment>
                         <Formik
                             initialValues={{
