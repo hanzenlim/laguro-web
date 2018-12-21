@@ -52,13 +52,16 @@ if (process.env.NODE_ENV === 'production') {
 app.post('/api/graphql', cors(), async (req, res) => {
     const context = {};
 
-    // append incoming JWT tokens to the header and pass thru to backend for external access to graphql api
-    if (req.headers && req.headers.Authorization) {
+    // Append incoming JWT tokens to the header and pass thru the backend
+    // for external access to graphql api.
+    // Express automatically converts headers props to lowercase.
+    if (req.headers && req.headers.authorization) {
         context.headers = {
-            Authorization: req.headers.Authorization,
+            Authorization: req.headers.authorization,
         };
     }
 
+    // req.user is initialize if the user is logged in through a middleware
     if (req.user) {
         const { id, email, dentistId } = req.user;
         const user = { id, email, dentistId };
