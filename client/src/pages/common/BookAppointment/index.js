@@ -17,6 +17,11 @@ import BookAppointmentView from './view';
 import { Loading } from '../../../components';
 import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
 
+const HANDLED_TIMESLOT_ERRORS = [
+    'Timeslot is in the past',
+    'Timeslot is no longer available',
+];
+
 class BookAppointment extends PureComponent {
     constructor(props) {
         super(props);
@@ -102,9 +107,9 @@ class BookAppointment extends PureComponent {
                     isSubmitting: false,
                 });
             } catch (error) {
-                const timeSlotErrorMsg = 'Timeslot is in the past';
-                if (error.graphQLErrors[0].message === timeSlotErrorMsg)
-                    message.error(timeSlotErrorMsg);
+                const errorMessage = error.graphQLErrors[0].message;
+                if (HANDLED_TIMESLOT_ERRORS.includes(errorMessage))
+                    message.error(errorMessage);
                 this.setState({ isSubmitting: false });
             }
         } else {

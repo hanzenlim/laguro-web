@@ -1,7 +1,12 @@
 import { gql } from 'apollo-boost';
 import moment from 'moment';
 
-import { STATUS, ACTIVE, END_TIME } from '../../../util/strings';
+import {
+    STATUS,
+    ACTIVE,
+    END_TIME,
+    PENDING_PATIENT_APPROVAL,
+} from '../../../util/strings';
 
 export const getDentistQuery = gql`
     query($id: String!) {
@@ -34,7 +39,7 @@ export const getDentistQuery = gql`
                 appointments(
                     options: {
                         filters: [
-                            { filterKey: "status", filterValues: ["${ACTIVE}"] }
+                            { filterKey: "status", filterValues: ["${ACTIVE}", "${PENDING_PATIENT_APPROVAL}"] }
                         ]
                     }
                 ) {
