@@ -31,7 +31,7 @@ const renderAppointmentSuccess = onMakeAnotherAppt => (
         </Box>
     </Fragment>
 );
-const MakeAnAppointmentView = ({ showForm, onMakeAnotherAppt, ...rest }) => (
+const NewAppointmentView = ({ showForm, onMakeAnotherAppt, ...rest }) => (
     <Fragment>
         {showForm ? (
             <AppointmentForm {...rest} />
@@ -41,4 +41,4 @@ const MakeAnAppointmentView = ({ showForm, onMakeAnotherAppt, ...rest }) => (
     </Fragment>
 );
 
-export default MakeAnAppointmentView;
+export default NewAppointmentView;

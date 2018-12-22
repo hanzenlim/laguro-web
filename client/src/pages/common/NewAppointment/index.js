@@ -12,7 +12,7 @@ import {
     requestAppointmentMutation,
 } from './queries';
 
-class MakeAnAppointment extends PureComponent {
+class NewAppointment extends PureComponent {
     state = {
         showForm: true,
     };
@@ -110,4 +110,4 @@ export default compose(
     graphql(requestAppointmentMutation, {
         name: 'requestAppointment',
     })
-)(MakeAnAppointment);
+)(NewAppointment);
