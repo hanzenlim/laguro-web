@@ -115,18 +115,21 @@ class OfficeVerificationUtil {
                 const documents = restFields[docKind] || [];
 
                 acc[docKind] = await Promise.all(
-                    documents.map(async (maybeDoc, _i) =>
-                        _isString(maybeDoc)
-                            ? {
-                                  url: await this.fetchSignedURL(maybeDoc),
-                                  side: _i === 0 ? 'front' : undefined,
-                              }
-                            : {
-                                  // graphql leaves __typename fields
-                                  ..._pick(maybeDoc, 'side'),
-                                  url: await this.fetchSignedURL(maybeDoc.url),
-                                  officeId: maybeDoc.officeId,
-                              }
+                    documents.map(
+                        async (maybeDoc, _i) =>
+                            _isString(maybeDoc)
+                                ? {
+                                      url: await this.fetchSignedURL(maybeDoc),
+                                      side: _i === 0 ? 'front' : undefined,
+                                  }
+                                : {
+                                      // graphql leaves __typename fields
+                                      ..._pick(maybeDoc, 'side'),
+                                      url: await this.fetchSignedURL(
+                                          maybeDoc.url
+                                      ),
+                                      officeId: maybeDoc.officeId,
+                                  }
                     )
                 );
 

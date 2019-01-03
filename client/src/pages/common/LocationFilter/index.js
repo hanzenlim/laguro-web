@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import fetch from 'unfetch';
-import get from 'lodash/get';
+import _get from 'lodash/get';
+import { formatAddress } from '../../../util/styleUtil';
 
 import LocationFilterView from './view';
 import esClient from '../../../util/esClient';
@@ -94,14 +95,21 @@ class LocationFilter extends PureComponent {
                             text: place.place_name,
                         })
                     );
+
                     const formattedESResults = results[1]
                         ? results[1].hits.hits.slice(0, 2).map(dentist => ({
                               name: dentist._source.name,
                               dentistId: dentist._id,
                               specialty: dentist._source.specialty,
-                              location: get(
-                                  dentist._source,
-                                  'reservations[0].address'
+                              location: formatAddress(
+                                  _get(
+                                      dentist,
+                                      '_source.reservations[0].address'
+                                  ),
+                                  _get(
+                                      dentist,
+                                      '_source.reservations[0].addressDetails'
+                                  )
                               ),
                           }))
                         : [];

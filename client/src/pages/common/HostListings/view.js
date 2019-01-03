@@ -13,6 +13,7 @@ import {
 } from '../../../components';
 import Listings from './Listings';
 import { ContainerPaddingInPixels } from '../../../components/Container';
+import { formatAddress } from '../../../util/styleUtil';
 
 const { TabPane } = Tabs;
 const { TabletMobile } = Responsive;
@@ -36,7 +37,8 @@ class HostListings extends PureComponent {
     renderTabPane = offices =>
         offices.map(office => {
             const { id, name, listings, equipment, location } = office;
-            const { name: address } = location;
+            const { name: address, addressDetails } = location;
+            const fullAddress = formatAddress(address, addressDetails);
             return (
                 <TabPane tab={name} key={id}>
                     <Flex
@@ -81,7 +83,7 @@ class HostListings extends PureComponent {
                             mr={5}
                         />
                         <Text is="span" fontSize={[0, '', 1]}>
-                            {address}
+                            {fullAddress}
                         </Text>
                     </Box>
                     <Box

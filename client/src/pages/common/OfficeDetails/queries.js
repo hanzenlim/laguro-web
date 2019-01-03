@@ -12,6 +12,7 @@ export const getOfficeQuery = gql`
                     lat
                     lon
                 }
+                addressDetails
             }
             totalRating
             numReviews

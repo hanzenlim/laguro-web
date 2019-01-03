@@ -8,6 +8,7 @@ export const getOfficeQuery = gql`
             name
             location {
                 name
+                addressDetails
             }
             equipment {
                 name

@@ -2,10 +2,11 @@ import React, { Fragment, PureComponent } from 'react';
 import { Helmet } from 'react-helmet';
 import _throttle from 'lodash/throttle';
 import queryString from 'query-string';
-import get from 'lodash/get';
+import _get from 'lodash/get';
 import DentistSearchPageView from './view';
 import history from '../../history';
 import esClient from '../../util/esClient';
+import { formatAddress } from '../../util/styleUtil';
 import { DENTISTS } from '../../util/strings';
 import { Loading, Box } from '../../components';
 import { getMyPosition, DEFAULT_LOCATION } from '../../util/navigatorUtil';
@@ -126,20 +127,24 @@ class DetailsSearchPage extends PureComponent {
         if (data.hits.hits.length > 0) {
             mappedData = data.hits.hits.map(item => {
                 const source = item._source;
+                const reservations = _get(source, 'reservations');
+
                 return {
                     title: source.name,
                     rating: source.averageRating,
                     image: source.imageUrl,
-                    reservations: get(source, 'reservations'),
-                    address: get(source, 'reservations[0].address'),
-                    longitude: get(source, 'reservations[0].geoPoint.lon'),
-                    latitude: get(source, 'reservations[0].geoPoint.lat'),
+                    reservations,
+                    address: formatAddress(
+                        _get(source, 'reservations[0].address'),
+                        _get(source, 'reservations[0].addressDetails')
+                    ),
+                    longitude: _get(source, 'reservations[0].geoPoint.lon'),
+                    latitude: _get(source, 'reservations[0].geoPoint.lat'),
                     subtitle: source.specialty,
                     url: `/dentist/${item._id}`,
                 };
             });
         }
-
         return mappedData;
     };
 

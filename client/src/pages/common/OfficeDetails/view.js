@@ -1,6 +1,6 @@
 import React, { Fragment, PureComponent } from 'react';
 import Loadable from 'react-loadable';
-import get from 'lodash/get';
+import _get from 'lodash/get';
 import {
     Flex,
     Box,
@@ -10,7 +10,7 @@ import {
     Button,
     Responsive,
 } from '../../../components';
-import { cleanAddress } from '../../../util/styleUtil';
+import { formatAddress } from '../../../util/styleUtil';
 import { numMaxContainerWidth } from '../../../components/theme';
 import { withScreenSizes } from '../../../components/Responsive';
 
@@ -97,7 +97,10 @@ class OfficeDetailsView extends PureComponent {
                         lineHeight={['1.5', '', '34px']}
                         letterSpacing="-0.8px"
                     >
-                        {data.address.name}
+                        {formatAddress(
+                            _get(data, 'address.name'),
+                            _get(data, 'address.addressDetails')
+                        )}
                     </Text>
                     <Flex mt={[0, '', 10]} alignItems="center">
                         <Rating
@@ -131,113 +134,120 @@ class OfficeDetailsView extends PureComponent {
                     </Button>
                 </TabletMobile>
 
-                {isContentVisible && this.screenWidthRef.current && (
-                    <Fragment>
-                        {data.description && (
-                            // Added fixed width to fix bug in rendering truncated text
-                            <Box
-                                pb={[0, '', 42]}
-                                width={
-                                    tabletMobileOnly
-                                        ? screenWidth - 50
-                                        : contentWidth
-                                }
-                            >
-                                <Text
-                                    fontSize={[1, '', 4]}
-                                    lineHeight="1.3"
-                                    fontWeight={['bold', '', 'regular']}
-                                    mb={[16, '', 0]}
-                                >
-                                    description
-                                </Text>
-                                <Text fontSize={[0, '', 1]} lineHeight="1.86">
-                                    <Truncate lines={3} hasToggle>
-                                        {data.description}
-                                    </Truncate>
-                                </Text>
-                            </Box>
-                        )}
-
-                        <Box
-                            pt={[20, '', 40]}
-                            borderTop={['none', '', '1px solid']}
-                            borderColor={['', '', 'divider.gray']}
-                        >
-                            <Text
-                                color="text.black"
-                                fontSize={[1, '', 4]}
-                                lineHeight="1.5"
-                                letterSpacing="1.5"
-                                fontWeight={['bold', '', 'regular']}
-                            >
-                                address information{' '}
-                                <Text
-                                    is="span"
-                                    fontWeight={['regular', '', 'bold']}
-                                    fontSize={[0, '', 4]}
-                                    display={['block', '', 'inline']}
-                                    mt={[14, '', 0]}
-                                >
-                                    <Desktop>{' - '}</Desktop>
-                                    {cleanAddress(data.address.name)}
-                                </Text>
-                            </Text>
-
-                            <Box
-                                width="100%"
-                                height={[184, '', 440]}
-                                mt={20}
-                                ml={[-25, '', 0]}
-                            >
-                                <Map
-                                    height={tabletMobileOnly ? 184 : 440}
+                {isContentVisible &&
+                    this.screenWidthRef.current && (
+                        <Fragment>
+                            {data.description && (
+                                // Added fixed width to fix bug in rendering truncated text
+                                <Box
+                                    pb={[0, '', 42]}
                                     width={
                                         tabletMobileOnly
-                                            ? screenWidth
+                                            ? screenWidth - 50
                                             : contentWidth
                                     }
-                                    zoom={13}
-                                    center={[
-                                        data.address.geoPoint.lon,
-                                        data.address.geoPoint.lat,
-                                    ]}
-                                    data={[
-                                        {
-                                            title: data.officeName,
-                                            image: data.imageUrls[0],
-                                            address: data.address.name,
-                                            latitude: get(
-                                                data,
-                                                'address.geoPoint.lat'
-                                            ),
-                                            longitude: get(
-                                                data,
-                                                'address.geoPoint.lon'
-                                            ),
-                                        },
-                                    ]}
-                                />
-                            </Box>
-                            <TabletMobile>
-                                <Button
-                                    mt={24}
-                                    mb={30}
-                                    width="100%"
-                                    onClick={toggleReserveOffice}
                                 >
                                     <Text
-                                        color="text.white"
-                                        fontWeight="bold"
-                                        fontSize={1}
+                                        fontSize={[1, '', 4]}
+                                        lineHeight="1.3"
+                                        fontWeight={['bold', '', 'regular']}
+                                        mb={[16, '', 0]}
                                     >
-                                        Book a chair
+                                        description
                                     </Text>
-                                </Button>
-                            </TabletMobile>
-                        </Box>
-                    </Fragment>
-                )}
+                                    <Text
+                                        fontSize={[0, '', 1]}
+                                        lineHeight="1.86"
+                                    >
+                                        <Truncate lines={3} hasToggle>
+                                            {data.description}
+                                        </Truncate>
+                                    </Text>
+                                </Box>
+                            )}
+
+                            <Box
+                                pt={[20, '', 40]}
+                                borderTop={['none', '', '1px solid']}
+                                borderColor={['', '', 'divider.gray']}
+                            >
+                                <Text
+                                    color="text.black"
+                                    fontSize={[1, '', 4]}
+                                    lineHeight="1.5"
+                                    letterSpacing="1.5"
+                                    fontWeight={['bold', '', 'regular']}
+                                >
+                                    address information{' '}
+                                    <Text
+                                        is="span"
+                                        fontWeight={['regular', '', 'bold']}
+                                        fontSize={[0, '', 4]}
+                                        display={['block', '', 'inline']}
+                                        mt={[14, '', 0]}
+                                    >
+                                        <Desktop>{' - '}</Desktop>
+                                        {formatAddress(
+                                            _get(data, 'address.name'),
+                                            _get(data, 'address.addressDetails')
+                                        )}
+                                    </Text>
+                                </Text>
+
+                                <Box
+                                    width="100%"
+                                    height={[184, '', 440]}
+                                    mt={20}
+                                    ml={[-25, '', 0]}
+                                >
+                                    <Map
+                                        height={tabletMobileOnly ? 184 : 440}
+                                        width={
+                                            tabletMobileOnly
+                                                ? screenWidth
+                                                : contentWidth
+                                        }
+                                        zoom={13}
+                                        center={[
+                                            data.address.geoPoint.lon,
+                                            data.address.geoPoint.lat,
+                                        ]}
+                                        data={[
+                                            {
+                                                title: data.officeName,
+                                                image: data.imageUrls[0],
+                                                address: data.address.name,
+                                                latitude: _get(
+                                                    data,
+                                                    'address.geoPoint.lat'
+                                                ),
+                                                longitude: _get(
+                                                    data,
+                                                    'address.geoPoint.lon'
+                                                ),
+                                            },
+                                        ]}
+                                    />
+                                </Box>
+                                <TabletMobile>
+                                    <Button
+                                        mt={24}
+                                        mb={30}
+                                        width="100%"
+                                        onClick={toggleReserveOffice}
+                                    >
+                                        <Text
+                                            color="text.white"
+                                            fontWeight="bold"
+                                            fontSize={1}
+                                        >
+                                            Book a chair
+                                        </Text>
+                                    </Button>
+                                </TabletMobile>
+                            </Box>
+                        </Fragment>
+                    )}
             </Fragment>
         );
     }

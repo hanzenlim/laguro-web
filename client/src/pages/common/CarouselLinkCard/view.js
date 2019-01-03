@@ -68,59 +68,60 @@ const CarouselLinkCard = props => {
                             )}
                         </Box>
                     </Flex>
-                    {specialty && name && (
-                        <Box
-                            pl={[0, 0, 18]}
-                            pt={10}
-                            width="100%"
-                            minHeight="70px"
-                            borderRadius="4px"
-                            position={['static', '', 'absolute']}
-                            bottom="0"
-                            bg={[
-                                'background.transparent',
-                                '',
-                                'rgba(0, 0, 0, 0.7)',
-                            ]}
-                        >
-                            <Text
-                                fontSize={0}
-                                fontWeight="bold"
-                                color="text.gray"
-                                lineHeight="1"
-                                letterSpacing="-0.5px"
-                                mb={4}
+                    {specialty &&
+                        name && (
+                            <Box
+                                pl={[0, 0, 18]}
+                                pt={10}
+                                width="100%"
+                                minHeight="70px"
+                                borderRadius="4px"
+                                position={['static', '', 'absolute']}
+                                bottom="0"
+                                bg={[
+                                    'background.transparent',
+                                    '',
+                                    'rgba(0, 0, 0, 0.7)',
+                                ]}
                             >
-                                <Truncate lines={1}>{specialty}</Truncate>
-                            </Text>
-                            <Text
-                                fontSize={[1, 1, 3]}
-                                color={['text.black', '', 'text.white']}
-                                lineHeight="1"
-                                letterSpacing="-0.5px"
-                                mb={4}
-                            >
-                                <Truncate lines={1}>{name}</Truncate>
-                            </Text>
-                            <Flex>
-                                <Rating
-                                    fontSize="8px"
-                                    disabled
-                                    value={averageRating}
-                                />
                                 <Text
-                                    ml={6}
                                     fontSize={0}
-                                    fontWeight="medium"
+                                    fontWeight="bold"
+                                    color="text.gray"
+                                    lineHeight="1"
+                                    letterSpacing="-0.5px"
+                                    mb={4}
+                                >
+                                    <Truncate lines={1}>{specialty}</Truncate>
+                                </Text>
+                                <Text
+                                    fontSize={[1, 1, 3]}
                                     color={['text.black', '', 'text.white']}
                                     lineHeight="1"
-                                    letterSpacing="-0.6px"
+                                    letterSpacing="-0.5px"
+                                    mb={4}
                                 >
-                                    ({numReviews})
+                                    <Truncate lines={1}>{name}</Truncate>
                                 </Text>
-                            </Flex>
-                        </Box>
-                    )}
+                                <Flex>
+                                    <Rating
+                                        fontSize="8px"
+                                        disabled
+                                        value={averageRating}
+                                    />
+                                    <Text
+                                        ml={6}
+                                        fontSize={0}
+                                        fontWeight="medium"
+                                        color={['text.black', '', 'text.white']}
+                                        lineHeight="1"
+                                        letterSpacing="-0.6px"
+                                    >
+                                        ({numReviews})
+                                    </Text>
+                                </Flex>
+                            </Box>
+                        )}
                 </Box>
             </Box>
         </Link>

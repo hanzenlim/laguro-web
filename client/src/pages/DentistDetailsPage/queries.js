@@ -31,6 +31,7 @@ export const getDentistQuery = gql`
                 }
                 location {
                     name
+                    addressDetails
                     geoPoint {
                         lat
                         lon

@@ -3,6 +3,7 @@ import Loadable from 'react-loadable';
 import { Container, Box, Grid, Responsive } from '../../components';
 import SearchBox from '../common/SearchBox';
 import SearchResultsList from '../common/SearchResultsList';
+import { formatAddress } from '../../util/styleUtil';
 
 const Map = Loadable({
     loader: () => import('../common/Map' /* webpackChunkName: "map" */),
@@ -18,12 +19,8 @@ const handleMultiLocation = reservations => {
     const uniqueAddresses = reservations.filter(
         (res, index) => allAddresses.indexOf(res.address) === index
     );
-    const address =
-        uniqueAddresses.length === 1
-            ? uniqueAddresses[0].address
-            : 'Multiple Locations!';
 
-    return { address, uniqueAddresses };
+    return uniqueAddresses;
 };
 
 const DentistSearchPageView = props => {
@@ -31,13 +28,21 @@ const DentistSearchPageView = props => {
 
     data.forEach((dentist, index) => {
         const { reservations } = dentist;
-        const { address, uniqueAddresses } = handleMultiLocation(reservations);
+        const uniqueAddresses = handleMultiLocation(reservations);
         const uniqueLocations = uniqueAddresses.map(res => ({
             address: res.address,
+            addressDetails: res.addressDetails,
             geoPoint: res.geoPoint,
         }));
 
-        data[index] = { ...dentist, address, uniqueLocations };
+        data[index] = {
+            ...dentist,
+            uniqueLocations,
+            address:
+                uniqueLocations.length > 1
+                    ? 'Multiple Locations!'
+                    : dentist.address,
+        };
     });
 
     const markers = [];
@@ -47,7 +52,10 @@ const DentistSearchPageView = props => {
         dentist.uniqueLocations.forEach(location => {
             markers.push({
                 ...dentist,
-                address: location.address,
+                address: formatAddress(
+                    location.address,
+                    location.addressDetails
+                ),
                 latitude: location.geoPoint.lat,
                 longitude: location.geoPoint.lon,
             });

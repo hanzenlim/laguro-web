@@ -7,7 +7,6 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 import isEqual from 'lodash/isEqual';
 
 import { Box, Icon } from '../../../components';
-import { cleanAddress } from '../../../util/styleUtil';
 import MapInfoWindow from '../MapInfoWindow';
 
 const StyledMarkerContainer = styled(Marker)`
@@ -188,7 +187,7 @@ class Map extends PureComponent {
                     <MapInfoWindow
                         title={this.state.popupInfo.title || ''}
                         subtitle={this.state.popupInfo.subtitle || ''}
-                        body={cleanAddress(this.state.popupInfo.address)}
+                        body={this.state.popupInfo.address}
                         onClose={this.hidePopup}
                         longitude={this.state.popupInfo.longitude}
                         latitude={this.state.popupInfo.latitude}

@@ -10,6 +10,7 @@ import { OFFICES } from '../../util/strings';
 import { Loading, Box } from '../../components';
 import { getMyPosition, DEFAULT_LOCATION } from '../../util/navigatorUtil';
 import { numMaxContainerWidth } from '../../components/theme';
+import { formatAddress } from '../../util/styleUtil';
 
 const PAGE_SIZE = 9;
 const DISTANCE = '75km';
@@ -129,7 +130,10 @@ class OfficeSearchPage extends PureComponent {
                     title: source.name,
                     rating: source.averageRating,
                     image: source.imageUrls[0],
-                    address: get(source, 'location.name'),
+                    address: formatAddress(
+                        get(source, 'location.name'),
+                        get(source, 'location.addressDetails')
+                    ),
                     longitude: get(source, 'location.geoPoint.lon'),
                     latitude: get(source, 'location.geoPoint.lat'),
                     subtitle: source.specialty,

@@ -1,3 +1,5 @@
+import _isEmpty from 'lodash/isEmpty';
+
 export function truncate(width) {
     return `
         width: ${width};
@@ -49,5 +51,15 @@ export function fade(length) {
     `;
 }
 
-export const cleanAddress = addressString =>
-    addressString.replace(/ [\d]{5}, United States/, '');
+export const formatAddress = (addressString, addressDetail) => {
+    if (_isEmpty(addressString)) {
+        return '';
+    }
+    const addressElements = addressString
+        .replace(/ [\d]{5}, United States/, '')
+        .split(',');
+
+    return `${addressElements[0]}, ${
+        addressDetail ? `${addressDetail}, ` : ''
+    }${addressElements.slice(1)}`;
+};

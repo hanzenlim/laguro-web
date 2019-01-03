@@ -1,6 +1,8 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import _get from 'lodash/get';
+import { formatAddress } from '../../../util/styleUtil';
 import SearchAvailableAppointmentsView from './view';
 
 class SearchAvailableAppointmentsContainer extends PureComponent {
@@ -240,8 +242,12 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
     getLocationList = reservations => {
         const list = [];
         reservations.forEach(item => {
-            if (!list.includes(item.location.name)) {
-                list.push(item.location.name);
+            const address = formatAddress(
+                _get(item, 'location.name'),
+                _get(item, 'location.addressDetails')
+            );
+            if (!list.includes(address)) {
+                list.push(address);
             }
         });
         return list;

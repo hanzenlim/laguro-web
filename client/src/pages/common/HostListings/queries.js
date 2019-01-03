@@ -34,6 +34,7 @@ export const getDentistQuery = gql`
                 }
                 location {
                     name
+                    addressDetails
                 }
                 listings(
                     options: {
