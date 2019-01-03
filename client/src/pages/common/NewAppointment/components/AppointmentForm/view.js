@@ -73,13 +73,14 @@ class AppointmentFormView extends PureComponent {
 
         return (
             <Fragment>
-                {locationList.length && appointments.length > 0 ? (
+                {locationList.length ? (
                     <Fragment>
                         <Formik
                             initialValues={{
                                 patientName: '',
                                 dentalOfficeName: locationList[0],
-                                appointmentDate: availableDateList[0].key,
+                                appointmentDate:
+                                    _get(availableDateList, '[0].key') || '',
                                 selectedTime: '',
                                 additionalNote: '',
                             }}
