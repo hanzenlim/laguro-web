@@ -1,25 +1,30 @@
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add("login", (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add("drag", { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add("dismiss", { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This is will overwrite an existing command --
-// Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+import ApolloClient, { InMemoryCache } from 'apollo-boost';
+
+import { registerForm } from '../utils';
+
+const cache = new InMemoryCache();
+const client = new ApolloClient({
+    uri: 'http://localhost:3000/api/graphql',
+    cache,
+});
+
+Cypress.Commands.add('registerNewUser', () => {
+    const user = registerForm();
+    const authUrl = 'http://localhost:3000/api/signup';
+
+    return cy
+        .log('resigter a test new user', user)
+        .request('POST', authUrl, user)
+        .then(({ body }) => {
+            client.writeData({
+                data: {
+                    activeUser: {
+                        ...body.user,
+                        __typename: 'ActiveUser',
+                    },
+                    visibleModal: null,
+                },
+            });
+            return Object.assign({}, body.user);
+        });
+});

@@ -22,10 +22,12 @@
     },
     "plugins": [
         "react",
-        "jest"
+        "jest",
+        "eslint-plugin-cypress"
     ],
     "env": {
         "jest/globals": true,
-        "browser": true
+        "browser": true,
+        "cypress/globals": true
     }
 }
