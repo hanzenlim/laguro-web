@@ -890,8 +890,7 @@ class HostOnboarding extends Component {
                                                                         type="info"
                                                                         showIcon
                                                                         message={
-                                                                            <Fragment
-                                                                            >
+                                                                            <Fragment>
                                                                                 Looks
                                                                                 like
                                                                                 you
@@ -928,6 +927,7 @@ class HostOnboarding extends Component {
                                                             pb={[100, '', 200]}
                                                         >
                                                             <Form
+                                                                id="host_submit__form"
                                                                 debounce="false"
                                                                 onSuccess={values => {
                                                                     this.onSubmit(
@@ -1159,6 +1159,7 @@ class HostOnboarding extends Component {
                                                                             )}
 
                                                                             <SubmitButton
+                                                                                id="submit__btn"
                                                                                 disabled={
                                                                                     this
                                                                                         .mode ===

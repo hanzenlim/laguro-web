@@ -39,3 +39,8 @@
 .ant-message .ant-message-info i {
     font-size: 60px;
 }
+
+#fsp-fileUpload {
+    height: 1px !important;
+    width: 1px !important;
+}

@@ -160,7 +160,11 @@ const ProfileMenu = props => {
             ))}
             <Menu.Divider />
             <Menu.Item>
-                <Link to={itemLinkMap[LOG_OUT_MENU]} onClick={logout}>
+                <Link
+                    id="app__logout"
+                    to={itemLinkMap[LOG_OUT_MENU]}
+                    onClick={logout}
+                >
                     <Text color={'text.blue'} fontSize={1}>
                         {LOG_OUT_MENU}
                     </Text>
