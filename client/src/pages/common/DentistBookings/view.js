@@ -46,6 +46,7 @@ class DentistBookingsView extends Component {
                 </Box>
                 <Box width="100%">
                     <DentistCalendar
+                        refetch={this.props.refetch}
                         date={this.props.date}
                         appointments={this.props.appointments}
                         reservations={this.props.reservations}

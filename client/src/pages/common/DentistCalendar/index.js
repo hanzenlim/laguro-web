@@ -129,6 +129,7 @@ class DentistCalendar extends Component {
                 apptId={this.state.apptId}
                 onNextWeek={this.props.onNextWeek}
                 onPrevWeek={this.props.onPrevWeek}
+                refetch={this.props.refetch}
             />
         );
     }

@@ -52,6 +52,11 @@ class NewAppointment extends PureComponent {
 
         // Refetch the queries so it will pull new data.
         refetch();
+
+        // Calls the refetch function to refetch the data for big calendar.
+        if (this.props.refetch) {
+            this.props.refetch();
+        }
     };
 
     render() {
