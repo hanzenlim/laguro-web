@@ -161,7 +161,7 @@ const ProfileMenu = props => {
             <Menu.Divider />
             <Menu.Item>
                 <Link
-                    id="app__logout"
+                    data-cy="logout-link"
                     to={itemLinkMap[LOG_OUT_MENU]}
                     onClick={logout}
                 >

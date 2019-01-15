@@ -24,7 +24,7 @@ describe('onboard new host', () => {
                 .click()
                 .get('input[id="addressDetail"]')
                 .type(LOCATION_DETAIL)
-                .get('button[id="addImageBtn"]')
+                .get('[data-cy=add-image-button]')
                 .click()
                 .uploadFile(
                     'input[id="fsp-fileUpload"]',
@@ -43,13 +43,13 @@ describe('onboard new host', () => {
                 .get('span[class="fsp-button fsp-button--primary"]')
                 .first()
                 .click()
-                .get('form[id="host_submit__form"]')
+                .get('[data-cy=host-submit]')
                 .submit({ force: true })
                 .get('textarea[id="officeDescription"]')
                 .type(SUMARY_TEXT, { force: true })
-                .get('form[id="host_submit__form"]')
+                .get('[data-cy=host-submit]')
                 .submit({ force: true })
-                .get('form[id="host_submit__form"]')
+                .get('[data-cy=host-submit]')
                 .submit({ force: true })
                 .addNewListing(
                     '7:00 a',
@@ -62,7 +62,7 @@ describe('onboard new host', () => {
                 .click()
                 .get('input[id="officeName"]')
                 .type(NEW_OFFICE_NAME)
-                .get('button[id="addImageBtn"]')
+                .get('[data-cy=add-image-button]')
                 .click()
                 .uploadFile(
                     'input[id="fsp-fileUpload"]',
@@ -81,18 +81,18 @@ describe('onboard new host', () => {
                 .get('span[class="fsp-button fsp-button--primary"]')
                 .first()
                 .click()
-                .get('form[id="host_submit__form"]')
+                .get('[data-cy=host-submit]')
                 .submit({ force: true })
                 .get('textarea[id="officeDescription"]')
                 .type(NEW_SUMMARY_TEXT, { force: true })
-                .get('form[id="host_submit__form"]')
+                .get('[data-cy=host-submit]')
                 .submit({ force: true })
-                .get('form[id="host_submit__form"]')
+                .get('[data-cy=host-submit]')
                 .submit({ force: true })
-                .get('form[id="host_submit__form"]')
+                .get('[data-cy=host-submit]')
                 .submit({ force: true })
                 .wait(8000)
-                .get('a[id="add_new__listing"]')
+                .get('[data-cy=new-listing-link]')
                 .click({ force: true })
                 .addNewListing(
                     '9:00 p',
@@ -101,9 +101,6 @@ describe('onboard new host', () => {
                     'January 25, 2019'
                 )
                 .logout();
-
-            // .get('form[id="host_submit__form"]')
-            // .submit({ force: true });
         });
     });
 });

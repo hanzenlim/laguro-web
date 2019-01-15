@@ -72,16 +72,16 @@ Cypress.Commands.add('addNewListing', (start, end, dateStart, dateEnd) => {
         .type('1000', { force: true })
         .get('input[id="cleaningFee0"]')
         .type('1000', { force: true })
-        .get('form[id="host_submit__form"]')
+        .get('[data-cy=host-submit]')
         .submit({ force: true })
-        .get('form[id="host_submit__form"]')
+        .get('[data-cy=host-submit]')
         .submit({ force: true });
 });
 
 Cypress.Commands.add('logout', () => {
     return cy
-        .get('img[id="profile__btn"]')
+        .get('[data-cy=profile-button]')
         .trigger('mouseover')
-        .get('a[id="app__logout"]')
+        .get('[data-cy=logout-link]')
         .click({ force: true });
 });
