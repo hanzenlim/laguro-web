@@ -150,9 +150,7 @@ export default compose(
                             dentistId: createDentist.id,
                         };
 
-                        cookies.set('user', JSON.stringify(data.activeUser), {
-                            maxAge: 86400000,
-                        });
+                        cookies.set('user', JSON.stringify(data.activeUser));
 
                         proxy.writeQuery({
                             query: getActiveUserQuery,

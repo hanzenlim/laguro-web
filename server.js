@@ -24,7 +24,6 @@ app.use(bodyParser.json());
 // Auth config
 app.use(
     cookieSession({
-        maxAge: COOKIE_EXPIRATION,
         keys: [process.env.COOKIE_KEY],
     })
 );

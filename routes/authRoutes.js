@@ -27,10 +27,7 @@ const authRoutes = app => {
                 return res.json({ status: 403, message: info.message });
             }
 
-            res.cookie('user', JSON.stringify({ ...user, imageUrl: null }), {
-                maxAge: 86400000,
-            });
-
+            res.cookie('user', JSON.stringify({ ...user, imageUrl: null }));
             req.login(user, loginError => {
                 if (loginError) {
                     return next(err);
@@ -49,9 +46,7 @@ const authRoutes = app => {
                     return res.json({ status: 403, message: info.message });
                 }
 
-                res.cookie('user', JSON.stringify(user), {
-                    maxAge: COOKIE_EXPIRATION,
-                });
+                res.cookie('user', JSON.stringify(user));
 
                 req.login(user, loginError => {
                     if (loginError) {
@@ -72,9 +67,7 @@ const authRoutes = app => {
                 return res.json({ status: 403, message: info.message });
             }
 
-            res.cookie('user', JSON.stringify(user), {
-                maxAge: 86400000,
-            });
+            res.cookie('user', JSON.stringify(user));
 
             req.login(user, loginError => {
                 if (loginError) {
@@ -231,9 +224,7 @@ const authRoutes = app => {
         (req, res) => {
             console.log('new googl user signup::', req.user);
 
-            res.cookie('user', JSON.stringify(req.user), {
-                maxAge: 86400000,
-            });
+            res.cookie('user', JSON.stringify(req.user));
             res.redirect(req.session.returnTo);
         }
     );
