@@ -52,7 +52,7 @@ class DentistBookings extends Component {
                         fetchPolicy="network-only"
                         variables={{ id: clientData.activeUser.dentistId }}
                     >
-                        {({ loading, error, data }) => {
+                        {({ loading, error, data, refetch }) => {
                             if (error) return <RedirectErrorPage />;
                             if (loading)
                                 return (
@@ -73,6 +73,7 @@ class DentistBookings extends Component {
 
                             return (
                                 <DentistBookingsView
+                                    refetch={refetch}
                                     date={this.state.date}
                                     onDateChange={this.onDateChange}
                                     onNextWeek={this.onNextWeek}
