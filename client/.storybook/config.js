@@ -5,13 +5,14 @@ import theme from '../src/components/theme';
 import 'slick-carousel/slick/slick-theme.css';
 import 'slick-carousel/slick/slick.css';
 import 'antd/dist/antd.css';
+import '../src/Silka.css';
 
 injectGlobal([], {
     '*': {
         boxSizing: 'border-box',
     },
     body: {
-        fontFamily: 'Ubuntu',
+        fontFamily: "'Silka', sans-serif",
     },
     // TODO: Add focus visible from https://nelo.is/writing/styling-better-focus-states/
     '*:focus': {

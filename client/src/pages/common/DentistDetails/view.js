@@ -163,190 +163,180 @@ class DentistDetailsView extends PureComponent {
                     </Button>
                 </TabletMobile>
 
-                {isContentVisible &&
-                    this.screenWidthRef.current && (
-                        <Fragment>
-                            <Text
-                                fontSize={[1, '', 4]}
-                                fontWeight={['medium', '', 'bold']}
-                                mb={[12, '', 26]}
-                            >
-                                available procedures
-                            </Text>
+                {isContentVisible && this.screenWidthRef.current && (
+                    <Fragment>
+                        <Text
+                            fontSize={[1, '', 4]}
+                            fontWeight={['medium', '', 'bold']}
+                            mb={[12, '', 26]}
+                        >
+                            available procedures
+                        </Text>
 
-                            {data.procedures.length ? (
-                                <Flex flexWrap="wrap" mb="34px">
-                                    {data.procedures.map((procedure, index) => (
-                                        <Button
-                                            type="ghost"
-                                            height={['auto', '', '50px']}
-                                        >
-                                            <Box
-                                                px={[12, '', 24]}
-                                                py={[0, '', 10]}
-                                                bg={TAG_COLORS[index % 4]}
-                                                borderRadius="25px"
-                                                mr="6px"
-                                                mb="6px"
-                                            >
-                                                <Text
-                                                    textTransform="lowercase"
-                                                    color="text.white"
-                                                    lineHeight="22px"
-                                                    fontSize={[0, '', 1]}
-                                                    letterSpacing="-0.4px"
-                                                >
-                                                    {procedure}
-                                                </Text>
-                                            </Box>
-                                        </Button>
-                                    ))}
-                                </Flex>
-                            ) : (
-                                <Text mb={34}>No procedures selected.</Text>
-                            )}
-
-                            {data.bio && (
-                                // Added fixed width to fix bug in rendering truncated text
-                                <Box
-                                    pb={[0, '', 42]}
-                                    width={
-                                        tabletMobileOnly
-                                            ? screenWidth - 50
-                                            : contentWidth
-                                    }
-                                >
-                                    <TabletMobile>
-                                        <Text
-                                            fontSize={1}
-                                            fontWeight="medium"
-                                            mb={12}
-                                        >
-                                            About the Dentist
-                                        </Text>
-                                    </TabletMobile>
-                                    <Text fontSize={1} lineHeight="1.86">
-                                        <Truncate
-                                            lines={3}
-                                            toggle={
-                                                <Text
-                                                    is="span"
-                                                    color="text.blue"
-                                                    fontWeight="bold"
-                                                >
-                                                    … show more.
-                                                </Text>
-                                            }
-                                        >
-                                            {data.bio}
-                                        </Truncate>
-                                    </Text>
-                                </Box>
-                            )}
-
-                            {data.locations &&
-                                data.locations.length > 0 && (
-                                    <Box
-                                        pt={40}
-                                        borderTop={['none', '', '1px solid']}
-                                        borderColor="divider.gray"
+                        {data.procedures.length ? (
+                            <Flex flexWrap="wrap" mb="34px">
+                                {data.procedures.map((procedure, index) => (
+                                    <Button
+                                        type="ghost"
+                                        height={['auto', '', '50px']}
                                     >
-                                        <Text
-                                            color="text.black"
-                                            fontSize={[1, '', 4]}
-                                            lineHeight="1.5"
-                                            letterSpacing="1.5"
-                                            fontWeight={['bold', '', 'regular']}
-                                        >
-                                            address information{' '}
-                                            {data.locations.map(location => (
-                                                <Box>
-                                                    <Text
-                                                        is="span"
-                                                        fontWeight={[
-                                                            'regular',
-                                                            '',
-                                                            'bold',
-                                                        ]}
-                                                        fontSize={[0, '', 4]}
-                                                        display={[
-                                                            'block',
-                                                            '',
-                                                            'inline',
-                                                        ]}
-                                                        mt={[14, '', 0]}
-                                                    >
-                                                        <Desktop>
-                                                            {' - '}
-                                                        </Desktop>
-                                                        {formatAddress(
-                                                            location.name,
-                                                            location.addressDetails
-                                                        )}
-                                                    </Text>
-                                                </Box>
-                                            ))}
-                                        </Text>
-
                                         <Box
-                                            width="100%"
-                                            height={[184, '', 440]}
-                                            mt={20}
-                                            ml={[-25, '', 0]}
+                                            px={[12, '', 24]}
+                                            py={[0, '', 10]}
+                                            bg={TAG_COLORS[index % 4]}
+                                            borderRadius="25px"
+                                            mr="6px"
+                                            mb="6px"
                                         >
-                                            <Map
-                                                height={
-                                                    tabletMobileOnly ? 184 : 440
-                                                }
-                                                width={
-                                                    tabletMobileOnly
-                                                        ? screenWidth
-                                                        : contentWidth
-                                                }
-                                                zoom={
-                                                    data.locations.length === 1
-                                                        ? 13
-                                                        : 3
-                                                }
-                                                data={data.locations.map(
-                                                    location => ({
-                                                        address: formatAddress(
-                                                            location.name,
-                                                            location.addressDetails
-                                                        ),
-                                                        url: location.url,
-                                                        latitude: _get(
-                                                            location,
-                                                            'geoPoint.lat'
-                                                        ),
-                                                        longitude: _get(
-                                                            location,
-                                                            'geoPoint.lon'
-                                                        ),
-                                                    })
-                                                )}
-                                            />
+                                            <Text
+                                                textTransform="lowercase"
+                                                color="text.white"
+                                                lineHeight="22px"
+                                                fontSize={[0, '', 1]}
+                                                letterSpacing="-0.4px"
+                                            >
+                                                {procedure}
+                                            </Text>
                                         </Box>
-                                    </Box>
-                                )}
-                            <TabletMobile>
-                                <Button
-                                    mt={24}
-                                    mb={30}
-                                    width="100%"
-                                    onClick={toggleBookAppointment}
-                                >
+                                    </Button>
+                                ))}
+                            </Flex>
+                        ) : (
+                            <Text mb={34}>No procedures selected.</Text>
+                        )}
+
+                        {data.bio && (
+                            // Added fixed width to fix bug in rendering truncated text
+                            <Box
+                                pb={[0, '', 42]}
+                                width={
+                                    tabletMobileOnly
+                                        ? screenWidth - 50
+                                        : contentWidth
+                                }
+                            >
+                                <TabletMobile>
                                     <Text
-                                        color="text.white"
-                                        fontWeight="bold"
                                         fontSize={1}
+                                        fontWeight="medium"
+                                        mb={12}
                                     >
-                                        Find appointment
+                                        About the Dentist
                                     </Text>
-                                </Button>
-                            </TabletMobile>
-                        </Fragment>
-                    )}
+                                </TabletMobile>
+                                <Text fontSize={1} lineHeight="1.86">
+                                    <Truncate
+                                        lines={3}
+                                        toggle={
+                                            <Text
+                                                is="span"
+                                                color="text.blue"
+                                                fontWeight="bold"
+                                            >
+                                                … show more.
+                                            </Text>
+                                        }
+                                    >
+                                        {data.bio}
+                                    </Truncate>
+                                </Text>
+                            </Box>
+                        )}
+
+                        {data.locations && data.locations.length > 0 && (
+                            <Box
+                                pt={40}
+                                borderTop={['none', '', '1px solid']}
+                                borderColor="divider.gray"
+                            >
+                                <Text
+                                    color="text.black"
+                                    fontSize={[1, '', 4]}
+                                    lineHeight="1.5"
+                                    letterSpacing="1.5"
+                                    fontWeight={['bold', '', 'regular']}
+                                >
+                                    address information{' '}
+                                    {data.locations.map(location => (
+                                        <Box>
+                                            <Text
+                                                is="span"
+                                                fontWeight={[
+                                                    'regular',
+                                                    '',
+                                                    'bold',
+                                                ]}
+                                                fontSize={[0, '', 4]}
+                                                display={[
+                                                    'block',
+                                                    '',
+                                                    'inline',
+                                                ]}
+                                                mt={[14, '', 0]}
+                                            >
+                                                <Desktop>{' - '}</Desktop>
+                                                {formatAddress(
+                                                    location.name,
+                                                    location.addressDetails
+                                                )}
+                                            </Text>
+                                        </Box>
+                                    ))}
+                                </Text>
+
+                                <Box
+                                    width="100%"
+                                    height={[184, '', 440]}
+                                    mt={20}
+                                    ml={[-25, '', 0]}
+                                >
+                                    <Map
+                                        height={tabletMobileOnly ? 184 : 440}
+                                        width={
+                                            tabletMobileOnly
+                                                ? screenWidth
+                                                : contentWidth
+                                        }
+                                        zoom={
+                                            data.locations.length === 1 ? 13 : 3
+                                        }
+                                        data={data.locations.map(location => ({
+                                            address: formatAddress(
+                                                location.name,
+                                                location.addressDetails
+                                            ),
+                                            url: location.url,
+                                            latitude: _get(
+                                                location,
+                                                'geoPoint.lat'
+                                            ),
+                                            longitude: _get(
+                                                location,
+                                                'geoPoint.lon'
+                                            ),
+                                        }))}
+                                    />
+                                </Box>
+                            </Box>
+                        )}
+                        <TabletMobile>
+                            <Button
+                                mt={24}
+                                mb={30}
+                                width="100%"
+                                onClick={toggleBookAppointment}
+                            >
+                                <Text
+                                    color="text.white"
+                                    fontWeight="bold"
+                                    fontSize={1}
+                                >
+                                    Find appointment
+                                </Text>
+                            </Button>
+                        </TabletMobile>
+                    </Fragment>
+                )}
             </Box>
         );
     }

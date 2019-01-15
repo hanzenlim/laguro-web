@@ -205,11 +205,10 @@ const SubmitButton = ({
 }) => {
     const { getFieldsError } = form;
     const hasErrors = fieldsError =>
-        Object.keys(fieldsError).some(
-            field =>
-                isObject(fieldsError[field])
-                    ? hasErrors(fieldsError[field])
-                    : fieldsError[field] !== undefined
+        Object.keys(fieldsError).some(field =>
+            isObject(fieldsError[field])
+                ? hasErrors(fieldsError[field])
+                : fieldsError[field] !== undefined
         );
 
     return (

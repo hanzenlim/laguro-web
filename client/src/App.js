@@ -139,6 +139,12 @@ const NewReviewPage = Loadable({
     loading: () => null,
 });
 
+const DentistProfilePage = Loadable({
+    loader: () =>
+        import('./pages/DentistProfilePage' /* webpackChunkName: "dentistProfilePage" */),
+    loading: () => null,
+});
+
 const AppointmentConfirmationPage = Loadable({
     loader: () =>
         import('./pages/AppointmentConfirmationPage' /* webpackChunkName: "appointmentConfirmationPage" */),
@@ -266,6 +272,10 @@ class App extends Component {
                                             <Route
                                                 path="/about"
                                                 component={AboutPage}
+                                            />
+                                            <Route
+                                                path="/dentist-profile"
+                                                component={DentistProfilePage}
                                             />
                                             <Route
                                                 path="/error"
