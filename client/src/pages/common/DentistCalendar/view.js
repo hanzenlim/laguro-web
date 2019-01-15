@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Modal } from '@laguro/basic-components';
+import { Modal, Box } from '@laguro/basic-components';
 import styled from 'styled-components';
 import {
     BigCalendar,
@@ -14,6 +14,15 @@ const StyledModal = styled(Modal)`
         }
     }
 `;
+
+const StyledBigCalendarContainer = styled(Box)`
+    && {
+        .rbc-time-view {
+            background: ${props => props.theme.colors.background.white};
+        }
+    }
+`;
+
 class DentistCalendar extends Component {
     render() {
         return (
@@ -44,15 +53,17 @@ class DentistCalendar extends Component {
                         />
                     )}
                 </StyledModal>
-                <BigCalendar
-                    date={this.props.date}
-                    onEventClick={this.props.onAppointmentClick}
-                    onBackgroundEventClick={this.props.onReservationClick}
-                    events={this.props.appointmentEvents}
-                    backgroundEvents={this.props.reservationEvents}
-                    onNext={this.props.onNextWeek}
-                    onPrev={this.props.onPrevWeek}
-                />
+                <StyledBigCalendarContainer>
+                    <BigCalendar
+                        date={this.props.date}
+                        onEventClick={this.props.onAppointmentClick}
+                        onBackgroundEventClick={this.props.onReservationClick}
+                        events={this.props.appointmentEvents}
+                        backgroundEvents={this.props.reservationEvents}
+                        onNext={this.props.onNextWeek}
+                        onPrev={this.props.onPrevWeek}
+                    />
+                </StyledBigCalendarContainer>
             </Fragment>
         );
     }
