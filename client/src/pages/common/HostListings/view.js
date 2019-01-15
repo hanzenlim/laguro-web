@@ -62,7 +62,7 @@ class HostListings extends PureComponent {
                             <Link
                                 to={`/host-onboarding/add-office/?mode=edit-office&officeId=${id}`}
                                 type="ghost"
-                                id="host_office__edit"
+                                data-cy="host-office-edit-link"
                             >
                                 <Text
                                     color="text.blue"

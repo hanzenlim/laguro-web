@@ -58,7 +58,7 @@ describe('onboard new host', () => {
                     'February 15, 2019'
                 )
                 .wait(8000)
-                .get('a[id="host_office__edit"]')
+                .get('[data-cy=host-office-edit-link]')
                 .click()
                 .get('input[id="officeName"]')
                 .type(NEW_OFFICE_NAME)

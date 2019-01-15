@@ -1159,7 +1159,6 @@ class HostOnboarding extends Component {
                                                                             )}
 
                                                                             <SubmitButton
-                                                                                id="submit__btn"
                                                                                 disabled={
                                                                                     this
                                                                                         .mode ===
