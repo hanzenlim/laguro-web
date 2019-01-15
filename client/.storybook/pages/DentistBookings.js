@@ -1,6 +1,6 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import DentistBookings from '../../src/pages/DentistBookings/view';
+import DentistBookings from '../../src/pages/common/DentistBookings/view';
 import moment from 'moment';
 import _range from 'lodash/range';
 import faker from 'faker';
