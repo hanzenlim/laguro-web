@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react';
 import { compose, Query, withApollo, graphql } from 'react-apollo';
+import { NewAppointment as NewAppointmentView } from '@laguro/the-bright-side-components';
 import _get from 'lodash/get';
 
 import { Loading } from '../../../components';
 import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
-import MakeAnAppointmentView from './view';
 
 import {
     getDentistIdQueryClient,
@@ -83,7 +83,7 @@ class NewAppointment extends PureComponent {
                             });
 
                             return (
-                                <MakeAnAppointmentView
+                                <NewAppointmentView
                                     data={_get(data, 'getDentist.reservations')}
                                     firstAppointmentDuration={_get(
                                         data,
@@ -95,6 +95,7 @@ class NewAppointment extends PureComponent {
                                     onMakeAnotherAppt={() => {
                                         this.onMakeAnotherAppt(refetch);
                                     }}
+                                    onClose={this.props.onClose}
                                 />
                             );
                         }}

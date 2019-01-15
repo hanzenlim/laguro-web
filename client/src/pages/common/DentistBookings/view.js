@@ -5,6 +5,7 @@ import {
     UpcomingAppointments,
 } from '@laguro/the-bright-side-components';
 import moment from 'moment';
+
 import { Box, Grid, Flex } from '../../../components/';
 import DentistCalendar from '../DentistCalendar';
 import { ACTIVE } from '../../../util/strings';

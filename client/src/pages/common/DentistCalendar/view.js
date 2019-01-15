@@ -6,6 +6,7 @@ import {
     ReservationPopUp,
     AppointmentPopUp,
 } from '@laguro/the-bright-side-components';
+import NewAppointment from '../NewAppointment';
 
 const StyledModal = styled(Modal)`
     && {
@@ -23,7 +24,35 @@ const StyledBigCalendarContainer = styled(Box)`
     }
 `;
 
+const StyledButton = styled.button`
+    width: 160px;
+    height: 31px;
+    border-radius: 15.5px;
+    border: solid 1px #ececec;
+    background-color: white;
+    font-size: ${props => props.theme.fontSizes[0]};
+    color: #303449;
+`;
+
+const StyledNewAppointmentModal = styled(Box)`
+    position: absolute;
+    top: 107px;
+    right: 0;
+    background: #f8f8f8;
+    z-index: ${props => props.theme.zIndex.modal};
+`;
+
 class DentistCalendar extends Component {
+    state = {
+        showNewAppointment: false,
+    };
+
+    toggleShowNewAppointment = () => {
+        this.setState({
+            showNewAppointment: !this.state.showNewAppointment,
+        });
+    };
+
     render() {
         return (
             <Fragment>
@@ -62,6 +91,24 @@ class DentistCalendar extends Component {
                         backgroundEvents={this.props.reservationEvents}
                         onNext={this.props.onNextWeek}
                         onPrev={this.props.onPrevWeek}
+                        renderHeader={() => (
+                            <div>
+                                <StyledButton
+                                    onClick={this.toggleShowNewAppointment}
+                                >
+                                    New Appointment
+                                </StyledButton>
+                                {this.state.showNewAppointment && (
+                                    <StyledNewAppointmentModal>
+                                        <NewAppointment
+                                            onClose={
+                                                this.toggleShowNewAppointment
+                                            }
+                                        />
+                                    </StyledNewAppointmentModal>
+                                )}
+                            </div>
+                        )}
                     />
                 </StyledBigCalendarContainer>
             </Fragment>
