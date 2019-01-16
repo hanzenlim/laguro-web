@@ -27,7 +27,6 @@
     "author": "currymich",
     "license": "ISC",
     "dependencies": {
-        "apollo-boost": "^0.1.23",
         "apollo-fetch": "^0.7.0",
         "apollo-link": "^1.2.3",
         "apollo-link-error": "^1.1.0",
@@ -60,6 +59,7 @@
         "slick-carousel": "^1.8.1"
     },
     "devDependencies": {
+        "apollo-boost": "^0.1.23",
         "babel-cli": "^6.26.0",
         "babel-core": "^6.26.3",
         "babel-eslint": "^8.2.3",
