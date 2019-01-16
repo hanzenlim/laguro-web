@@ -54,9 +54,9 @@ class Carousel extends Component {
         const settings = {
             dots: false,
             speed: 500,
-            slidesToScroll: 1,
+            swipe: true,
+            swipeToSlide: true,
             draggable: false,
-            centerMode: true,
         };
 
         return (
