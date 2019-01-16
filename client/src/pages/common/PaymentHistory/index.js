@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, PureComponent } from 'react';
 import { Query } from 'react-apollo';
 import { GET_PAYMENT_HISTORY_QUERY } from './queries';
 import {
@@ -9,6 +9,7 @@ import {
     Flex,
     Box,
     Responsive,
+    Pagination,
 } from '../../../components';
 import PaymentCard from '../PaymentCard';
 import ProcedurePaymentCard from '../PaymentCard/ProcedurePaymentCard';
@@ -56,78 +57,112 @@ export const NoPaymentsCard = ({ text }) => (
     </Card>
 );
 
-const PaymentHistoryContainer = ({ userId }) => (
-    <Query
-        query={GET_PAYMENT_HISTORY_QUERY}
-        fetchPolicy="cache-and-network"
-        variables={{
-            input: {
-                partitionKey: PAYER_ID,
-                partitionValue: userId,
-            },
-        }}
-    >
-        {paymentHistoryQueryRes => {
-            const { loading, error } = paymentHistoryQueryRes;
-            const paymentData = paymentHistoryQueryRes.data;
-            let content;
+class PaymentHistoryContainer extends PureComponent {
+    defaultPageSize = 10;
+    state = {
+        currentPage: 1,
+    };
 
-            if (loading) {
-                content = <CardLoading />;
-            } else if (error) {
-                content = <RedirectErrorPage />;
-            } else {
-                content = (
-                    <Flex flexDirection="column">
-                        {paymentData.queryPayments.map((payment, index) => {
-                            if (
-                                payment.type === APPOINTMENT_PAYMENT_TYPE ||
-                                payment.type === RESERVATION_PAYMENT_TYPE
-                            ) {
-                                return (
-                                    <PaymentCard
-                                        key={index}
-                                        payment={payment}
-                                        cardType={PAYMENT}
-                                        paymentStatus={PAYMENT_MADE}
-                                    />
-                                );
-                            } else if (
-                                payment.type === PROCEDURE_PAYMENT_TYPE ||
-                                payment.type ===
-                                    PROCEDURE_SET_HISTORY_PAYMENT_TYPE
-                            ) {
-                                return (
-                                    <ProcedurePaymentCard
-                                        key={index}
-                                        payment={payment}
-                                        persona={PATIENT}
-                                        cardType={PAYMENT}
-                                        paymentStatus={PAYMENT_MADE}
-                                    />
-                                );
-                            }
+    renderPaymentHistory = paymentData => {
+        const start = (this.state.currentPage - 1) * this.defaultPageSize;
+        const end = this.state.currentPage * this.defaultPageSize;
 
-                            // In theory this should never happen.
-                            return null;
-                        })}
-                        {paymentData.queryPayments.length === 0 && (
-                            <NoPaymentsCard text="You have no payments yet!" />
-                        )}
-                    </Flex>
-                );
-            }
+        return paymentData.slice(start, end);
+    };
 
-            return (
-                <Fragment>
-                    <TabletMobile>
-                        <Container>{content}</Container>
-                    </TabletMobile>
-                    <Desktop>{content}</Desktop>
-                </Fragment>
-            );
-        }}
-    </Query>
-);
+    onPageChange = page => {
+        this.setState({
+            currentPage: page,
+        });
+    };
+
+    render() {
+        return (
+            <Query
+                query={GET_PAYMENT_HISTORY_QUERY}
+                fetchPolicy="cache-and-network"
+                variables={{
+                    input: {
+                        partitionKey: PAYER_ID,
+                        partitionValue: this.props.userId,
+                    },
+                }}
+            >
+                {paymentHistoryQueryRes => {
+                    const { loading, error } = paymentHistoryQueryRes;
+                    const paymentData = paymentHistoryQueryRes.data;
+
+                    let content;
+
+                    if (loading) {
+                        content = <CardLoading />;
+                    } else if (error) {
+                        content = <RedirectErrorPage />;
+                    } else {
+                        content = (
+                            <Flex flexDirection="column">
+                                {this.renderPaymentHistory(
+                                    paymentData.queryPayments
+                                ).map((payment, index) => {
+                                    if (
+                                        payment.type ===
+                                            APPOINTMENT_PAYMENT_TYPE ||
+                                        payment.type ===
+                                            RESERVATION_PAYMENT_TYPE
+                                    ) {
+                                        return (
+                                            <PaymentCard
+                                                key={index}
+                                                payment={payment}
+                                                cardType={PAYMENT}
+                                                paymentStatus={PAYMENT_MADE}
+                                            />
+                                        );
+                                    } else if (
+                                        payment.type ===
+                                            PROCEDURE_PAYMENT_TYPE ||
+                                        payment.type ===
+                                            PROCEDURE_SET_HISTORY_PAYMENT_TYPE
+                                    ) {
+                                        return (
+                                            <ProcedurePaymentCard
+                                                key={index}
+                                                payment={payment}
+                                                persona={PATIENT}
+                                                cardType={PAYMENT}
+                                                paymentStatus={PAYMENT_MADE}
+                                            />
+                                        );
+                                    }
+
+                                    // In theory this should never happen.
+                                    return null;
+                                })}
+                                {paymentData.queryPayments.length === 0 && (
+                                    <NoPaymentsCard text="You have no payments yet!" />
+                                )}
+                                <Pagination
+                                    current={this.state.currentPage}
+                                    defaultPageSize={this.defaultPageSize}
+                                    total={paymentData.queryPayments.length}
+                                    onChange={this.onPageChange}
+                                />
+                            </Flex>
+                        );
+                    }
+
+                    return (
+                        <Fragment>
+                            <TabletMobile>
+                                <Container>{content}</Container>
+                            </TabletMobile>
+                            <Desktop>{content}</Desktop>
+                        </Fragment>
+                    );
+                }}
+            </Query>
+        );
+    }
+}
 
 export default PaymentHistoryContainer;
