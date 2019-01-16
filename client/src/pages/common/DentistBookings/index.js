@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Query } from 'react-apollo';
 import _get from 'lodash/get';
+import _mapKeys from 'lodash/mapKeys';
 import { Box, Loading } from '@laguro/basic-components';
 import { getDentistIdQueryClient, getDentistQuery } from './queries';
 import { RedirectErrorPage } from '../../GeneralErrorPage';
@@ -61,9 +62,19 @@ class DentistBookings extends Component {
                                     </Box>
                                 );
 
-                            const appointments = _get(
+                            let appointments = _get(
                                 data,
                                 'getDentist.appointments'
+                            );
+
+                            appointments = appointments.map(appt =>
+                                _mapKeys(appt, (value, key) => {
+                                    if (key === 'localStartTime')
+                                        return 'startTime';
+                                    if (key === 'localEndTime')
+                                        return 'endTime';
+                                    return key;
+                                })
                             );
 
                             const reservations = _get(

@@ -18,8 +18,8 @@ export const getDentistQuery = gql`
             id
             appointments {
                 id
-                startTime
-                endTime
+                localStartTime
+                localEndTime
                 patient {
                     id
                     lastName
