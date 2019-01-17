@@ -27,7 +27,7 @@ import {
     BECOME_A_HOST_MENU,
 } from '../../../util/strings';
 
-const StyledMenu = styled(Menu)`
+export const StyledMenu = styled(Menu)`
     && {
         border-radius: 0;
     }

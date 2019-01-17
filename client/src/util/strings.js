@@ -96,6 +96,7 @@ export const PAYMENT_REQUEST_MENU = 'Payment Request';
 export const SEARCH_FOR_CHAIRS_MENU = 'Search for Chairs';
 export const ADD_A_NEW_OFFICE_MENU = 'Add a New Office';
 export const BECOME_A_HOST_MENU = 'Become a Host';
+export const MY_CALENDAR_MENU = 'My Calendar';
 
 // Payment method
 export const NEW_CARD_PAYMENT_METHOD = 'NEW_CARD_PAYMENT_METHOD';

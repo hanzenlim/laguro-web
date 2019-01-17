@@ -161,14 +161,14 @@ const getIdQueryClient = gql`
 `;
 
 const PrivateRoute = ({
-    isUserLoggedin,
+    isUserLoggedIn,
     component: ComponentToBeRendered,
     ...rest
 }) => (
     <Route
         {...rest}
         render={props =>
-            isUserLoggedin ? (
+            isUserLoggedIn ? (
                 <ComponentToBeRendered {...props} />
             ) : (
                 <Redirect
@@ -217,33 +217,38 @@ class App extends Component {
                                             <PrivateRoute
                                                 path="/host-onboarding/:step"
                                                 component={HostOnboarding}
-                                                isUserLoggedin={data.activeUser}
+                                                isUserLoggedIn={data.activeUser}
                                             />
                                             <PrivateRoute
                                                 path="/consent-and-payment"
                                                 component={
                                                     ConsentAndPaymentPage
                                                 }
-                                                isUserLoggedin={data.activeUser}
+                                                isUserLoggedIn={data.activeUser}
                                             />
                                             <PrivateRoute
                                                 path="/procedure-payment"
                                                 component={
                                                     ProcedurePaymentRequestPage
                                                 }
-                                                isUserLoggedin={data.activeUser}
+                                                isUserLoggedIn={data.activeUser}
                                             />
                                             <PrivateRoute
                                                 path="/profile"
                                                 component={ProfilePage}
-                                                isUserLoggedin={data.activeUser}
+                                                isUserLoggedIn={data.activeUser}
                                             />
                                             <PrivateRoute
                                                 path="/appointment-confirmation"
                                                 component={
                                                     AppointmentConfirmationPage
                                                 }
-                                                isUserLoggedin={data.activeUser}
+                                                isUserLoggedIn={data.activeUser}
+                                            />
+                                            <PrivateRoute
+                                                path="/dentist-profile"
+                                                component={DentistProfilePage}
+                                                isUserLoggedIn={data.activeUser}
                                             />
                                             <Route
                                                 path="/dentist/search"
@@ -273,10 +278,7 @@ class App extends Component {
                                                 path="/about"
                                                 component={AboutPage}
                                             />
-                                            <Route
-                                                path="/dentist-profile"
-                                                component={DentistProfilePage}
-                                            />
+
                                             <Route
                                                 path="/error"
                                                 component={GeneralErrorPage}
