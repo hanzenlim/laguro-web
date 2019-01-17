@@ -12,6 +12,16 @@ export const getDentistIdQueryClient = gql`
     }
 `;
 
+export const updateAppointmentMutation = gql`
+    mutation updateAppointmentTime($input: UpdateAppointmentTimeInput!) {
+        updateAppointmentTime(input: $input) {
+            id
+            localStartTime
+            localEndTime
+        }
+    }
+`;
+
 export const getDentistQuery = gql`
     query getDentist($id: String!) {
         getDentist(id: $id) {

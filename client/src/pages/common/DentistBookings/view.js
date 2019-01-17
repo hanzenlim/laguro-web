@@ -53,6 +53,7 @@ class DentistBookingsView extends Component {
                         offices={this.props.officeIds}
                         onNextWeek={this.props.onNextWeek}
                         onPrevWeek={this.props.onPrevWeek}
+                        onMoveEvent={this.props.onMoveEvent}
                     />
                 </Box>
             </Flex>

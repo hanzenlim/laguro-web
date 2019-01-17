@@ -85,6 +85,7 @@ class DentistCalendar extends Component {
                 <StyledBigCalendarContainer>
                     <BigCalendar
                         date={this.props.date}
+                        onMoveEvent={this.props.onMoveEvent}
                         onEventClick={this.props.onAppointmentClick}
                         onBackgroundEventClick={this.props.onReservationClick}
                         events={this.props.appointmentEvents}

@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
-import { Query } from 'react-apollo';
+import { Query, Mutation } from 'react-apollo';
 import _get from 'lodash/get';
 import { Box, Loading } from '@laguro/basic-components';
-import { getDentistIdQueryClient, getDentistQuery } from './queries';
+import {
+    getDentistIdQueryClient,
+    getDentistQuery,
+    updateAppointmentMutation,
+} from './queries';
 import { RedirectErrorPage } from '../../GeneralErrorPage';
 import DentistBookingsView from './view';
 
@@ -72,22 +76,49 @@ class DentistBookings extends Component {
                             );
 
                             return (
-                                <DentistBookingsView
-                                    refetch={refetch}
-                                    date={this.state.date}
-                                    onDateChange={this.onDateChange}
-                                    onNextWeek={this.onNextWeek}
-                                    onPrevWeek={this.onPrevWeek}
-                                    onOfficeChange={this.onOfficeChange}
-                                    reservations={reservations}
-                                    appointments={appointments}
-                                    officeIds={
-                                        currentOfficeIds ||
-                                        this.getUniqueOfficeIdsFromReservations(
-                                            reservations
-                                        )
-                                    }
-                                />
+                                <Mutation mutation={updateAppointmentMutation}>
+                                    {updateAppointmentTime => {
+                                        const handleMoveEvent = async (
+                                            event,
+                                            start,
+                                            end
+                                        ) => {
+                                            await updateAppointmentTime({
+                                                variables: {
+                                                    input: {
+                                                        appointmentId: event.id,
+                                                        localStartTime: start,
+                                                        localEndTime: end,
+                                                    },
+                                                },
+                                            });
+
+                                            await refetch();
+                                        };
+
+                                        return (
+                                            <DentistBookingsView
+                                                refetch={refetch}
+                                                date={this.state.date}
+                                                onDateChange={this.onDateChange}
+                                                onNextWeek={this.onNextWeek}
+                                                onPrevWeek={this.onPrevWeek}
+                                                onOfficeChange={
+                                                    this.onOfficeChange
+                                                }
+                                                reservations={reservations}
+                                                appointments={appointments}
+                                                officeIds={
+                                                    currentOfficeIds ||
+                                                    this.getUniqueOfficeIdsFromReservations(
+                                                        reservations
+                                                    )
+                                                }
+                                                onMoveEvent={handleMoveEvent}
+                                            />
+                                        );
+                                    }}
+                                </Mutation>
                             );
                         }}
                     </Query>
