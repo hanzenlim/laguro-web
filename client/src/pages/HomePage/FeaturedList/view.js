@@ -34,19 +34,19 @@ const FeaturedListView = props => (
                             {
                                 breakpoint: 991,
                                 settings: {
-                                    slidesToShow: 3,
+                                    slidesToShow: 3.5,
                                     arrows: false,
                                     draggable: true,
-                                    centerPadding: 50,
+                                    infinite: false,
                                 },
                             },
                             {
                                 breakpoint: 767,
                                 settings: {
-                                    slidesToShow: 2,
+                                    slidesToShow: 2.5,
                                     arrows: false,
                                     draggable: true,
-                                    centerPadding: 20,
+                                    infinite: false,
                                 },
                             },
                         ]}

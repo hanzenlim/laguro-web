@@ -133,11 +133,9 @@ class UpdateProfileContainer extends PureComponent {
                                                     'user',
                                                     JSON.stringify(
                                                         _updateUserData.updateUser
-                                                    ),
-                                                    {
-                                                        maxAge: 86400000,
-                                                    }
+                                                    )
                                                 );
+
                                                 client.writeData({
                                                     data: {
                                                         activeUser: {

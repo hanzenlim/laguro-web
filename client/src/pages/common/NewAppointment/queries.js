@@ -65,7 +65,10 @@ export const getDentistQuery = gql`
                 status
                 location {
                     name
+                    addressDetails
                 }
+                timezone
+                numChairsSelected
                 localAvailableTimes {
                     startTime
                     endTime

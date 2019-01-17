@@ -25,6 +25,8 @@ const format = 'h:mm a';
 const { CheckableTag } = Tag;
 
 const DEFAULT_DAYS = ABBREVIATED_DAYS.slice(0, 5);
+const DEFAULT_START_TIME = moment('08:00', format);
+const DEFAULT_END_TIME = moment('17:00', format);
 
 const StyledFormItem = styled(FormItem)`
     height: 20px;
@@ -283,18 +285,14 @@ class CreateListing extends Component {
                                                         .validateStartAndEndTime,
                                                 },
                                             ]}
+                                            initialValue={DEFAULT_START_TIME}
                                             input={
                                                 <TimePicker
                                                     px={30}
                                                     py={12}
                                                     height={52}
-                                                    defaultOpenValue={moment(
-                                                        '12:00',
-                                                        format
-                                                    )}
                                                     use12Hours
                                                     minuteStep={60}
-                                                    placeholder="8:00 AM"
                                                     format={format}
                                                 />
                                             }
@@ -329,18 +327,14 @@ class CreateListing extends Component {
                                                     .validateStartAndEndTime,
                                             },
                                         ]}
+                                        initialValue={DEFAULT_END_TIME}
                                         input={
                                             <TimePicker
                                                 px={30}
                                                 py={12}
                                                 height={52}
-                                                defaultOpenValue={moment(
-                                                    '12:00',
-                                                    format
-                                                )}
                                                 use12Hours
                                                 minuteStep={60}
-                                                placeholder="10:00 AM"
                                                 format={format}
                                             />
                                         }

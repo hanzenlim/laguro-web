@@ -125,6 +125,7 @@ class OfficeDetailsPageView extends PureComponent {
                                 settings: {
                                     arrows: false,
                                     draggable: true,
+                                    dots: true,
                                 },
                             },
                         ]}

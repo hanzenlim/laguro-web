@@ -85,12 +85,11 @@ const StyledForm = styled.div`
 const SPECIALTIES = [
     'General Dentist',
     'Endodontics',
-    'Oral',
+    'Oral Surgery',
     'Orthodontics',
     'Pedodontics',
     'Periodontics',
     'Prosthodontics',
-    'Surgery',
 ];
 
 const SpecialtyOptions = SPECIALTIES.map(s => <Option value={s}>{s}</Option>);

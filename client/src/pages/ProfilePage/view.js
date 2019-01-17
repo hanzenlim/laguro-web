@@ -354,18 +354,17 @@ class ProfileView extends Component {
                 <Desktop>
                     <Box mt={40} />
                 </Desktop>
-                {isDentist &&
-                    !isHost && (
-                        <StyledPreviewMenuItem key={PUBLIC_PROFILE}>
-                            <Text
-                                fontSize={[1, '', 4]}
-                                color="inherit"
-                                lineHeight={['48px', '', '40px']}
-                            >
-                                {this.keyTextMap[PUBLIC_PROFILE]}
-                            </Text>
-                        </StyledPreviewMenuItem>
-                    )}
+                {isDentist && !isHost && (
+                    <StyledPreviewMenuItem key={PUBLIC_PROFILE}>
+                        <Text
+                            fontSize={[1, '', 4]}
+                            color="inherit"
+                            lineHeight={['48px', '', '40px']}
+                        >
+                            {this.keyTextMap[PUBLIC_PROFILE]}
+                        </Text>
+                    </StyledPreviewMenuItem>
+                )}
                 <Desktop>
                     <Box mt={40} />
                 </Desktop>

@@ -610,9 +610,7 @@ class HostOnboarding extends Component {
                                 result,
                                 'data.createUserOffice.host.user'
                             );
-                            cookies.set('user', JSON.stringify(user), {
-                                maxAge: 86400000,
-                            });
+                            cookies.set('user', JSON.stringify(user));
 
                             client.writeData({
                                 data: {
