@@ -36,9 +36,12 @@ const StyledButton = styled.button`
 
 const StyledNewAppointmentModal = styled(Box)`
     position: absolute;
-    top: 107px;
-    right: 0;
+    top: 108px;
+    right: 2px;
+    min-width: 373px;
+    min-height: 80px;
     background: #f8f8f8;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     z-index: ${props => props.theme.zIndex.modal};
 `;
 
