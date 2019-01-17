@@ -24,6 +24,7 @@ import { withScreenSizes } from '../../../components/Responsive';
 import { setImageSizeToUrl } from '../../../util/imageUtil';
 
 import ProfileMenu from './ProfileMenu';
+import DentistsAndHostsMenu from './DentistsAndHostsMenu';
 
 const { Desktop, Mobile } = Responsive;
 
@@ -51,6 +52,10 @@ const NavBarLink = styled(Link)`
 `;
 
 const ProfileImage = styled(Flex)`
+    cursor: pointer;
+`;
+
+const StyledText = styled(Text)`
     cursor: pointer;
 `;
 
@@ -160,6 +165,51 @@ class ProfileButton extends Component {
                     )}
                 </Mobile>
             </Fragment>
+        );
+    }
+}
+
+class DentistsAndHostsButton extends Component {
+    render() {
+        const {
+            auth,
+            onLandingPage,
+            isDentist,
+            isHost,
+            desktopOnly,
+        } = this.props;
+        return (
+            auth && (
+                <Fragment>
+                    <Dropdown
+                        overlay={
+                            <DentistsAndHostsMenu
+                                isDentist={isDentist}
+                                isHost={isHost}
+                            />
+                        }
+                        placement={'bottomRight'}
+                        trigger={desktopOnly ? ['hover'] : ['click']}
+                        getPopupContainer={() =>
+                            document.getElementById('dropdownContainer2')
+                        }
+                    >
+                        {auth && isDentist && (
+                            <StyledText
+                                color={
+                                    onLandingPage ? 'text.white' : 'text.black'
+                                }
+                                fontSize={1}
+                                fontWeight="bold"
+                                mb={[0, '', 4]}
+                            >
+                                Dentists and Hosts
+                            </StyledText>
+                        )}
+                    </Dropdown>
+                    <StyledDropContainer id="dropdownContainer2" />
+                </Fragment>
+            )
         );
     }
 }
@@ -295,7 +345,18 @@ class Header extends Component {
 
                     <Flex alignItems="center">
                         <Desktop>
-                            {!onOnboardingPage && (
+                            {auth && isDentist && (
+                                <DentistsAndHostsButton
+                                    isDentist={isDentist}
+                                    isHost={isHost}
+                                    auth={auth}
+                                    onLandingPage={onLandingPage}
+                                    desktopOnly={desktopOnly}
+                                />
+                            )}
+                        </Desktop>
+                        <Desktop>
+                            {!onOnboardingPage && !isDentist && (
                                 <NavBarLink
                                     ml="0px"
                                     to={
@@ -315,9 +376,7 @@ class Header extends Component {
                                         fontWeight="bold"
                                         mb={[0, '', 4]}
                                     >
-                                        {isHost
-                                            ? 'Add a New Office'
-                                            : 'Become a Host'}
+                                        Become a Host
                                     </Text>
                                 </NavBarLink>
                             )}
@@ -348,6 +407,7 @@ class Header extends Component {
                                 </a>
                             </Box>
                         )}
+
                         <ProfileButton
                             pathname={pathname}
                             isDentist={isDentist}

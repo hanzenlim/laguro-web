@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Tabs, Box, Container } from '@laguro/basic-components';
 import DentistBookings from '../common/DentistBookings/';
-import { MY_BOOKINGS_MENU } from '../../util/strings';
+import { MY_CALENDAR_MENU } from '../../util/strings';
 
 const { TabPane } = Tabs;
 
@@ -37,14 +37,14 @@ class DentistProfilePageView extends Component {
         super(props);
 
         this.state = {
-            panel: MY_BOOKINGS_MENU,
+            panel: MY_CALENDAR_MENU,
         };
     }
 
     renderTabPane = () => {
         const panelList = [];
         panelList.push(
-            <TabPane tab={MY_BOOKINGS_MENU} key={MY_BOOKINGS_MENU}>
+            <TabPane tab={MY_CALENDAR_MENU} key={MY_CALENDAR_MENU}>
                 <DentistBookings />
             </TabPane>
         );
