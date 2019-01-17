@@ -4,11 +4,10 @@ describe('Registration page', () => {
     const MIDDLE_NAME = 'William';
     const LAST_NAME = 'Choi';
     const PASSWORD = '123456';
-    const MY_PROFILE_URL =
-        'http://localhost:3000/profile?selectedTab=my_profile';
+    const MY_PROFILE_URL = '/profile?selectedTab=my_profile';
 
     it('creates a new user', () => {
-        cy.visit('localhost:3000');
+        cy.visit('/');
         cy.contains('log in').click();
         cy.contains('register now').click();
         cy.get('input[id="firstName"]').type(FIRST_NAME);

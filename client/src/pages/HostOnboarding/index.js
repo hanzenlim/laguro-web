@@ -925,6 +925,7 @@ class HostOnboarding extends Component {
                                                             pb={[100, '', 200]}
                                                         >
                                                             <Form
+                                                                data-cy="host-submit"
                                                                 debounce="false"
                                                                 onSuccess={values => {
                                                                     this.onSubmit(

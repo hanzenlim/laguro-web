@@ -21,7 +21,8 @@
         "deploy-stage": "env-cmd /home/runner/security.env.stage sls deploy -v --stage stage --region us-east-1",
         "build-prod-assets": "PUBLIC_URL=https://d3smeczt2xieia.cloudfront.net/$(date '+%m-%d-%Y:')$(git log --pretty=format:'%h' -n 1) env-cmd /home/runner/security.env.prod npm run build --prefix client",
         "deploy-prod-assets": "s3-deploy './client/build/**' --cwd './client/build/' --region us-west-1 --bucket laguro-prod-assets --gzip js,css,jpg,png,svg,map --cache 2503982 --filePrefix $(date '+%m-%d-%Y:')$(git log --pretty=format:'%h' -n 1)",
-        "deploy-prod": "env-cmd /home/runner/security.env.prod sls deploy -v --stage prod"
+        "deploy-prod": "env-cmd /home/runner/security.env.prod sls deploy -v --stage prod",
+        "cy:open": "cypress open"
     },
     "author": "currymich",
     "license": "ISC",
@@ -58,6 +59,7 @@
         "slick-carousel": "^1.8.1"
     },
     "devDependencies": {
+        "apollo-boost": "^0.1.23",
         "babel-cli": "^6.26.0",
         "babel-core": "^6.26.3",
         "babel-eslint": "^8.2.3",
@@ -83,6 +85,7 @@
         "eslint-plugin-jsx-a11y": "^6.0.3",
         "eslint-plugin-prettier": "^2.6.2",
         "eslint-plugin-react": "^7.7.0",
+        "faker": "^4.1.0",
         "husky": "^0.14.3",
         "nodemon": "^1.17.4",
         "prettier": "^1.14.2",

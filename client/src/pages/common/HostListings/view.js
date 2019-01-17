@@ -62,6 +62,7 @@ class HostListings extends PureComponent {
                             <Link
                                 to={`/host-onboarding/add-office/?mode=edit-office&officeId=${id}`}
                                 type="ghost"
+                                data-cy="host-office-edit-link"
                             >
                                 <Text
                                     color="text.blue"
@@ -124,6 +125,7 @@ class HostListings extends PureComponent {
                             <Link
                                 to={`/host-onboarding/add-listing/?mode=add-listing&officeId=${id}`}
                                 type="ghost"
+                                data-cy="new-listing-link"
                             >
                                 <Text
                                     textAlign="right"

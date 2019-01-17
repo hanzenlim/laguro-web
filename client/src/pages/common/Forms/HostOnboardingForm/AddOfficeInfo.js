@@ -380,6 +380,7 @@ class AddOfficeInfo extends Component {
                                                     ]}
                                                     type="ghost"
                                                     onClick={onPick}
+                                                    data-cy="add-image-button"
                                                 >
                                                     <Box
                                                         width="100%"

@@ -128,6 +128,7 @@ class ProfileButton extends Component {
                             height={[30, '', 50]}
                             borderRadius={50}
                             ml={60}
+                            data-cy="profile-button"
                         />
                         <Icon
                             ml={4}
