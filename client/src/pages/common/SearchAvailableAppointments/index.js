@@ -36,8 +36,10 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
         }
     };
 
-    handleSelect = selectedTime => {
-        const parsedDate = moment(this.state.filters.date).format('YYYY-MM-DD');
+    handleSelect = (selectedTime, timezone) => {
+        const parsedDate = moment(this.state.filters.date)
+            .tz(timezone)
+            .format('YYYY-MM-DD');
         const data = this.getAppointmentProps(selectedTime, parsedDate);
 
         this.setState({ selectedTime });
@@ -250,10 +252,10 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
      * @param {array} list Array of date strings
      * @returns {array} Array of objects with key value pairs
      */
-    formatDate = list => {
+    formatDate = (list, timezone) => {
         const formattedList = list.map(day => ({
             key: day,
-            value: moment(day),
+            value: moment(day).tz(timezone),
         }));
 
         return formattedList.sort((a, b) =>
@@ -336,7 +338,10 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
         const timeBlocks = this.formatTime(filteredByCurrentTime);
 
         // GET READABLE DATE LIST
-        const formattedAvailableDateList = this.formatDate(availableDateList);
+        const formattedAvailableDateList = this.formatDate(
+            availableDateList,
+            timezone
+        );
 
         return (
             <SearchAvailableAppointmentsView
@@ -346,7 +351,7 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
                 selected={this.state.selectedTime}
                 hasFiltered={this.state.hasFiltered}
                 onFilter={this.handleFilter}
-                onSelect={this.handleSelect}
+                onSelect={value => this.handleSelect(value, timezone)}
                 onSelectLocation={this.handleSelectLocation}
             />
         );

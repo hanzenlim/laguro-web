@@ -13,11 +13,7 @@ import {
 } from './queries';
 
 class NewAppointment extends PureComponent {
-    state = {
-        showForm: true,
-    };
-
-    onSubmit = async values => {
+    onSubmit = async (values, refetchFormData) => {
         const { reservationId } = values;
         const { patientId } = values;
         const localStartTime = values.startTime;
@@ -37,21 +33,16 @@ class NewAppointment extends PureComponent {
         });
 
         if (result) {
-            this.setState({
-                showForm: false,
-            });
+            // Closes the form
+            if (this.props.onClose) {
+                this.props.onClose();
+            }
 
             window.scrollTo(0, 0);
         }
-    };
 
-    onMakeAnotherAppt = refetch => {
-        this.setState({
-            showForm: true,
-        });
-
-        // Refetch the queries so it will pull new data.
-        refetch();
+        // Refetch the form data
+        refetchFormData();
 
         // Calls the refetch function to refetch the data for big calendar.
         if (this.props.refetch) {
@@ -95,10 +86,8 @@ class NewAppointment extends PureComponent {
                                         'getDentist.firstAppointmentDuration'
                                     )}
                                     patientsName={patientsNameMap}
-                                    onSubmit={this.onSubmit}
-                                    showForm={this.state.showForm}
-                                    onMakeAnotherAppt={() => {
-                                        this.onMakeAnotherAppt(refetch);
+                                    onSubmit={values => {
+                                        this.onSubmit(values, refetch);
                                     }}
                                     onClose={this.props.onClose}
                                 />
