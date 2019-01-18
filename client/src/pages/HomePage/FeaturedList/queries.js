@@ -19,7 +19,7 @@ const getFeaturedDentists = async () => {
                     must: [
                         {
                             term: {
-                                sentVerificationDocuments: { value: true },
+                                isVerified: { value: true },
                             },
                         },
                         { exists: { field: 'imageUrl' } },
