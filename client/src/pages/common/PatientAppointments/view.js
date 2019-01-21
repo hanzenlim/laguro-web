@@ -56,7 +56,14 @@ export const NoAppointmentsCard = ({ text }) => (
 class PatientAppointments extends PureComponent {
     renderAppointments = appointments =>
         appointments.map(
-            ({ id, localStartTime, dentist, reservation, status }) => {
+            ({
+                id,
+                localStartTime,
+                startTime,
+                dentist,
+                reservation,
+                status,
+            }) => {
                 const { lastName, firstName, imageUrl } = dentist.user;
                 const dentistName = `Dr. ${firstName} ${lastName}`;
                 const { name: officeName, id: officeId } = reservation.office;
@@ -179,15 +186,19 @@ class PatientAppointments extends PureComponent {
                                         </Link>
                                     </Box>
                                 </Flex>
-                                <Button
-                                    type="ghost"
-                                    border="none"
-                                    onClick={this.props.toggleModalState(id)}
-                                >
-                                    <Text color="text.blue" fontSize={2}>
-                                        cancel
-                                    </Text>
-                                </Button>
+                                {moment().isBefore(moment(startTime)) && (
+                                    <Button
+                                        type="ghost"
+                                        border="none"
+                                        onClick={this.props.toggleModalState(
+                                            id
+                                        )}
+                                    >
+                                        <Text color="text.blue" fontSize={2}>
+                                            cancel
+                                        </Text>
+                                    </Button>
+                                )}
                             </Desktop>
                         </Flex>
                     </Fragment>
