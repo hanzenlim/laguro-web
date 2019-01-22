@@ -154,7 +154,11 @@ class OfficeDetailsView extends PureComponent {
                                 >
                                     description
                                 </Text>
-                                <Text fontSize={[0, '', 1]} lineHeight="1.86">
+                                <Text
+                                    style={{ 'white-space': 'pre-line' }}
+                                    fontSize={[0, '', 1]}
+                                    lineHeight="1.86"
+                                >
                                     <Truncate lines={3} hasToggle>
                                         {data.description}
                                     </Truncate>
