@@ -43,6 +43,7 @@ export const getDentistQuery = gql`
                         name
                     }
                 }
+                notes
             }
             reservations(
                 options: {
