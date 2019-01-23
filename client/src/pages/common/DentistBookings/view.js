@@ -23,6 +23,7 @@ class DentistBookingsView extends Component {
                             reservations={getActiveReservations(
                                 this.props.reservations
                             )}
+                            date={this.props.date}
                             onChange={this.props.onDateChange}
                         />
                         <UpcomingAppointments
