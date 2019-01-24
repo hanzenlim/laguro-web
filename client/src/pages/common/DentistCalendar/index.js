@@ -4,7 +4,7 @@ import _flatten from 'lodash/flatten';
 import _isEmpty from 'lodash/isEmpty';
 import hexToRgba from 'hex-to-rgba';
 import DentistCalendarView from './view';
-import { CANCELLED, ACTIVE } from '../../../util/strings';
+import { CANCELLED, ACTIVE, REJECTED_BY_PATIENT } from '../../../util/strings';
 
 const OFFICE_COLORS = [
     '#71DC4D',
@@ -67,8 +67,11 @@ class DentistCalendar extends Component {
         );
 
         const appointmentEvents = this.props.appointments
-            .filter(appt =>
-                this.props.offices.includes(appt.reservation.office.id)
+            .filter(
+                appt =>
+                    this.props.offices.includes(appt.reservation.office.id) &&
+                    appt.status !== CANCELLED &&
+                    appt.status !== REJECTED_BY_PATIENT
             )
             .map(appt => ({
                 id: appt.id,
@@ -80,7 +83,6 @@ class DentistCalendar extends Component {
                         ? officeIdToColorMap[appt.reservation.office.id]
                         : '#b7b7b7',
                 image: appt.patient.imageUrl,
-                isCancelled: appt.status === CANCELLED,
             }));
 
         const reservationEvents = _flatten(
