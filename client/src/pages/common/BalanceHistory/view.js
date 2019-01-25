@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
@@ -17,6 +17,7 @@ import {
     Responsive,
     Container,
     Card,
+    Pagination,
 } from '../../../components';
 import {
     PAYMENT_PENDING,
@@ -39,81 +40,25 @@ const StyledSelect = styled(Select)`
 
 const { Desktop } = Responsive;
 
-const BalanceHistoryView = ({
-    payments,
-    totalAvailable,
-    totalPending,
-    userId,
-    accountToken,
-    handleSelectChange,
-    handleDateSelectChange,
-    visiblePayments,
-    persona,
-    ...rest
-}) => (
-    <Container px={[25, '', 0]}>
-        <Flex flexDirection="column">
-            <Box mb={[16, '', 20]}>
-                <Card>
-                    <Flex justifyContent="space-between" alignItems="center">
-                        <Box>
-                            <Text fontSize={[0, '', 3]}>available</Text>
-                            <Text
-                                fontSize={[1, '', 5]}
-                                fontWeight="bold"
-                                lineHeight="1.1"
-                                color="text.blue"
-                            >
-                                {renderPrice(totalAvailable)}
-                            </Text>
-                        </Box>
-                        <Box>
-                            <Text fontSize={[0, '', 3]}>pending</Text>
-                            <Text
-                                fontSize={[1, '', 5]}
-                                fontWeight="bold"
-                                lineHeight="1.1"
-                                color="text.yellow"
-                            >
-                                {renderPrice(totalPending)}
-                            </Text>
-                        </Box>
-                        <Box>
-                            <Text fontSize={[0, '', 3]}>total</Text>
-                            <Text
-                                fontSize={[1, '', 5]}
-                                fontWeight="bold"
-                                lineHeight="1.1"
-                                color="text.black"
-                            >
-                                {renderPrice(totalPending + totalAvailable)}
-                            </Text>
-                        </Box>
-                    </Flex>
-                </Card>
-            </Box>
-            <StripePayoutButtons
-                userId={userId}
-                accountToken={accountToken}
-                totalAvailable={totalAvailable}
-            />
-            <Desktop>
-                <Flex mb={20} justifyContent="space-between">
-                    <StyledSelect
-                        defaultValue={PAYMENT_AVAILABLE}
-                        width={180}
-                        onChange={handleSelectChange}
-                    >
-                        <Option value={PAYMENT_AVAILABLE}>Available</Option>
-                        <Option value={PAYMENT_PENDING}>Pending</Option>
-                        <Option value={PAYMENT_REFUNDED}>Refunded</Option>
-                        <Option value={PAYMENT_WITHDRAWN}>Withdrawn</Option>
-                    </StyledSelect>
-                    <RangePicker onChange={handleDateSelectChange} />
-                </Flex>
-            </Desktop>
+class BalanceHistoryView extends PureComponent {
+    defaultPageSize = 10;
 
-            {payments.map((payment, index) => {
+    state = {
+        currentPage: 1,
+    };
+
+    onPageChange = page => {
+        this.setState({
+            currentPage: page,
+        });
+    };
+
+    renderPaymentCard = (payments, persona, props) => {
+        if (payments.length) {
+            const start = (this.state.currentPage - 1) * this.defaultPageSize;
+            const end = this.state.currentPage * this.defaultPageSize;
+
+            return payments.slice(start, end).map((payment, index) => {
                 if (
                     payment.type === APPOINTMENT_PAYMENT_TYPE ||
                     payment.type === RESERVATION_PAYMENT_TYPE
@@ -123,7 +68,7 @@ const BalanceHistoryView = ({
                             key={index}
                             payment={payment}
                             paymentStatus={payment.paymentStatus}
-                            {...rest}
+                            {...props}
                         />
                     );
                 } else if (
@@ -136,21 +81,123 @@ const BalanceHistoryView = ({
                             persona={persona}
                             payment={payment}
                             paymentStatus={payment.paymentStatus}
-                            {...rest}
+                            {...props}
                         />
                     );
                 }
 
                 return null;
-            })}
-            {payments.length === 0 && (
-                <NoPaymentsCard
-                    text={`You have no ${visiblePayments} payments yet!`}
-                />
-            )}
-        </Flex>
-    </Container>
-);
+            });
+        }
+
+        return null;
+    };
+
+    render() {
+        const {
+            payments,
+            totalAvailable,
+            totalPending,
+            userId,
+            accountToken,
+            handleSelectChange,
+            handleDateSelectChange,
+            visiblePayments,
+            persona,
+            ...rest
+        } = this.props;
+
+        return (
+            <Container px={[25, '', 0]}>
+                <Flex flexDirection="column">
+                    <Box mb={[16, '', 20]}>
+                        <Card>
+                            <Flex
+                                justifyContent="space-between"
+                                alignItems="center"
+                            >
+                                <Box>
+                                    <Text fontSize={[0, '', 3]}>available</Text>
+                                    <Text
+                                        fontSize={[1, '', 5]}
+                                        fontWeight="bold"
+                                        lineHeight="1.1"
+                                        color="text.blue"
+                                    >
+                                        {renderPrice(totalAvailable)}
+                                    </Text>
+                                </Box>
+                                <Box>
+                                    <Text fontSize={[0, '', 3]}>pending</Text>
+                                    <Text
+                                        fontSize={[1, '', 5]}
+                                        fontWeight="bold"
+                                        lineHeight="1.1"
+                                        color="text.yellow"
+                                    >
+                                        {renderPrice(totalPending)}
+                                    </Text>
+                                </Box>
+                                <Box>
+                                    <Text fontSize={[0, '', 3]}>total</Text>
+                                    <Text
+                                        fontSize={[1, '', 5]}
+                                        fontWeight="bold"
+                                        lineHeight="1.1"
+                                        color="text.black"
+                                    >
+                                        {renderPrice(
+                                            totalPending + totalAvailable
+                                        )}
+                                    </Text>
+                                </Box>
+                            </Flex>
+                        </Card>
+                    </Box>
+                    <StripePayoutButtons
+                        userId={userId}
+                        accountToken={accountToken}
+                        totalAvailable={totalAvailable}
+                    />
+                    <Desktop>
+                        <Flex mb={20} justifyContent="space-between">
+                            <StyledSelect
+                                defaultValue={PAYMENT_AVAILABLE}
+                                width={180}
+                                onChange={handleSelectChange}
+                            >
+                                <Option value={PAYMENT_AVAILABLE}>
+                                    Available
+                                </Option>
+                                <Option value={PAYMENT_PENDING}>Pending</Option>
+                                <Option value={PAYMENT_REFUNDED}>
+                                    Refunded
+                                </Option>
+                                <Option value={PAYMENT_WITHDRAWN}>
+                                    Withdrawn
+                                </Option>
+                            </StyledSelect>
+                            <RangePicker onChange={handleDateSelectChange} />
+                        </Flex>
+                    </Desktop>
+
+                    {this.renderPaymentCard(payments, persona, rest)}
+                    {payments.length === 0 && (
+                        <NoPaymentsCard
+                            text={`You have no ${visiblePayments} payments yet!`}
+                        />
+                    )}
+                    <Pagination
+                        current={this.state.currentPage}
+                        defaultPageSize={this.defaultPageSize}
+                        total={payments.length}
+                        onChange={this.onPageChange}
+                    />
+                </Flex>
+            </Container>
+        );
+    }
+}
 
 BalanceHistoryView.propTypes = {
     payments: PropTypes.array,

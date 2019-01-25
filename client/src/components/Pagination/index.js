@@ -57,11 +57,12 @@ const StyledPagination = styled(AntdPagination)`
 `;
 
 const Pagination = props => {
-    const { onChange, total, defaultCurrent, current } = props;
+    const { onChange, total, defaultCurrent, current, defaultPageSize } = props;
 
     return (
         <StyledPagination
             current={current}
+            defaultPageSize={defaultPageSize}
             defaultCurrent={defaultCurrent}
             total={total}
             onChange={onChange}
