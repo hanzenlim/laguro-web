@@ -46,6 +46,10 @@ class DentistBookings extends Component {
         this.setState({ date });
     };
 
+    handleUpdateCancellation = () => {
+        this.setState({ isUpdateConfirmModalVisible: false });
+    };
+
     render() {
         const { currentOfficeIds } = this.state;
 
@@ -94,21 +98,69 @@ class DentistBookings extends Component {
                                             start,
                                             end
                                         ) => {
-                                            await updateAppointmentTime({
-                                                variables: {
-                                                    input: {
-                                                        appointmentId: event.id,
-                                                        localStartTime: start,
-                                                        localEndTime: end,
-                                                    },
-                                                },
+                                            this.apptToBeUpdated = {
+                                                event,
+                                                start,
+                                                end,
+                                            };
+                                            this.setState({
+                                                isUpdateConfirmModalVisible: true,
+                                            });
+                                        };
+
+                                        const handleUpdateConfirmation = async () => {
+                                            this.setState({
+                                                isUpdateConfirmModalSubmitting: true,
                                             });
 
-                                            await refetch();
+                                            try {
+                                                await updateAppointmentTime({
+                                                    variables: {
+                                                        input: {
+                                                            appointmentId: this
+                                                                .apptToBeUpdated
+                                                                .event.id,
+                                                            localStartTime: this
+                                                                .apptToBeUpdated
+                                                                .start,
+                                                            localEndTime: this
+                                                                .apptToBeUpdated
+                                                                .end,
+                                                        },
+                                                    },
+                                                });
+
+                                                await refetch();
+                                            } catch (err) {
+                                                throw err;
+                                            } finally {
+                                                this.setState({
+                                                    isUpdateConfirmModalSubmitting: false,
+                                                });
+                                            }
+
+                                            this.setState({
+                                                isUpdateConfirmModalVisible: false,
+                                            });
                                         };
 
                                         return (
                                             <DentistBookingsView
+                                                isUpdateConfirmModalSubmitting={
+                                                    this.state
+                                                        .isUpdateConfirmModalSubmitting
+                                                }
+                                                isUpdateConfirmModalVisible={
+                                                    this.state
+                                                        .isUpdateConfirmModalVisible
+                                                }
+                                                handleUpdateConfirmation={
+                                                    handleUpdateConfirmation
+                                                }
+                                                handleUpdateCancellation={
+                                                    this
+                                                        .handleUpdateCancellation
+                                                }
                                                 refetch={refetch}
                                                 date={this.state.date}
                                                 onDateChange={this.onDateChange}

@@ -9,14 +9,27 @@ import moment from 'moment';
 import { Box, Grid, Flex } from '../../../components/';
 import DentistCalendar from '../DentistCalendar';
 import { ACTIVE } from '../../../util/strings';
+import AppointmentUpdateConfirmModal from './AppointmentUpdateConfirmModal';
 
 const getActiveReservations = reservations =>
     reservations.filter(res => res.status === ACTIVE);
 
 class DentistBookingsView extends Component {
     render() {
+        const {
+            isUpdateConfirmModalSubmitting,
+            isUpdateConfirmModalVisible,
+            handleUpdateCancellation,
+            handleUpdateConfirmation,
+        } = this.props;
         return (
             <Flex p={2}>
+                <AppointmentUpdateConfirmModal
+                    visible={isUpdateConfirmModalVisible}
+                    loading={isUpdateConfirmModalSubmitting}
+                    onConfirm={handleUpdateConfirmation}
+                    onCancel={handleUpdateCancellation}
+                />
                 <Box mt={45}>
                     <Grid gridRowGap={16} mr={18}>
                         <MiniCalendar
