@@ -1,12 +1,19 @@
 import React, { Component, Fragment } from 'react';
 import { Modal, Box } from '@laguro/basic-components';
+import _get from 'lodash/get';
 import styled from 'styled-components';
 import {
     BigCalendar,
     ReservationPopUp,
     AppointmentPopUp,
 } from '@laguro/the-bright-side-components';
+import CancelAppoinmentModal from '../Modals/CancelAppointmentModal';
 import NewAppointment from '../NewAppointment';
+import {
+    CANCELLED,
+    CANCELLED_BY_PATIENT,
+    CANCELLED_BY_DENTIST,
+} from '../../../util/strings';
 
 const StyledModal = styled(Modal)`
     && {
@@ -48,6 +55,7 @@ const StyledNewAppointmentModal = styled(Box)`
 class DentistCalendar extends Component {
     state = {
         showNewAppointment: false,
+        appointmentIdToCancel: null,
     };
 
     toggleShowNewAppointment = () => {
@@ -56,7 +64,25 @@ class DentistCalendar extends Component {
         });
     };
 
+    togglCancelAppointment = () => {
+        this.setState({ appointmentIdToCancel: null });
+        this.props.closeApptModal();
+        this.props.refetch();
+    };
+
+    onCancelAppointment = () => {
+        this.setState({
+            appointmentIdToCancel: this.props.appointment.id,
+        });
+    };
+
     render() {
+        const appointmentStatus = _get(this.props, 'appointment.status');
+        const hasCancelButton =
+            appointmentStatus !== CANCELLED &&
+            appointmentStatus !== CANCELLED_BY_PATIENT &&
+            appointmentStatus !== CANCELLED_BY_DENTIST;
+
         return (
             <Fragment>
                 <StyledModal
@@ -81,10 +107,18 @@ class DentistCalendar extends Component {
                 >
                     {this.props.apptId && (
                         <AppointmentPopUp
+                            onCancel={this.onCancelAppointment}
+                            hasCancelButton={hasCancelButton}
                             appointment={this.props.appointment}
                         />
                     )}
                 </StyledModal>
+                <CancelAppoinmentModal
+                    id={this.state.appointmentIdToCancel}
+                    cancellationType={CANCELLED_BY_DENTIST}
+                    visible={this.state.appointmentIdToCancel !== null}
+                    toggleModalState={this.togglCancelAppointment}
+                />
                 <StyledBigCalendarContainer>
                     <BigCalendar
                         date={this.props.date}

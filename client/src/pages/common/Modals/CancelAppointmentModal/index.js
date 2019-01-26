@@ -58,7 +58,8 @@ class CancelAppointmentContainer extends PureComponent {
                                     variables: {
                                         input: {
                                             id: this.props.id,
-                                            cancellationType: CANCELLED_BY_PATIENT,
+                                            cancellationType: this.props
+                                                .cancellationType,
                                         },
                                     },
                                 });
@@ -67,6 +68,9 @@ class CancelAppointmentContainer extends PureComponent {
 
                             return (
                                 <CancelAppointmentModal
+                                    cancellationType={
+                                        this.props.cancellationType
+                                    }
                                     visible={this.props.visible}
                                     onCancel={this.onCancel}
                                     onSubmit={onSubmit}
@@ -80,5 +84,9 @@ class CancelAppointmentContainer extends PureComponent {
         );
     }
 }
+
+CancelAppointmentContainer.defaultProps = {
+    cancellationType: CANCELLED_BY_PATIENT,
+};
 
 export default CancelAppointmentContainer;

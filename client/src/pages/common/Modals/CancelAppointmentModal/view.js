@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Modal, Text, Button, Box, Flex } from '../../../../components';
+import { CANCELLED_BY_PATIENT } from '../../../../util/strings';
 
 const CancelAppointmentModal = props => {
     const { visible, onCancel, onSubmit, loading } = props;
@@ -19,10 +20,6 @@ const CancelAppointmentModal = props => {
                 </Text>
                 <Text fontSize={3} mb={20}>
                     Would you like to cancel this appoinment?
-                </Text>
-                <Text fontSize={3} mb={20}>
-                    You will still get half of your appointment fee refunded
-                    since it has been less than 48 hours.
                 </Text>
                 <Flex justifyContent="flex-end" alignItems="center">
                     <Button
