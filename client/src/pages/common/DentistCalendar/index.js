@@ -4,7 +4,12 @@ import _flatten from 'lodash/flatten';
 import _isEmpty from 'lodash/isEmpty';
 import hexToRgba from 'hex-to-rgba';
 import DentistCalendarView from './view';
-import { CANCELLED, ACTIVE, REJECTED_BY_PATIENT } from '../../../util/strings';
+import {
+    CANCELLED,
+    ACTIVE,
+    REJECTED_BY_PATIENT,
+    PENDING_PATIENT_APPROVAL,
+} from '../../../util/strings';
 
 const OFFICE_COLORS = [
     '#71DC4D',
@@ -83,6 +88,7 @@ class DentistCalendar extends Component {
                         ? officeIdToColorMap[appt.reservation.office.id]
                         : '#b7b7b7',
                 image: appt.patient.imageUrl,
+                isPending: appt.status === PENDING_PATIENT_APPROVAL,
             }));
 
         const reservationEvents = _flatten(

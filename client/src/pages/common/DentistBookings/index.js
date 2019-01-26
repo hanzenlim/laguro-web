@@ -10,6 +10,11 @@ import {
 } from './queries';
 import { RedirectErrorPage } from '../../GeneralErrorPage';
 import DentistBookingsView from './view';
+import {
+    CANCELLED,
+    REJECTED_BY_PATIENT,
+    PENDING_PATIENT_APPROVAL,
+} from '../../../util/strings';
 
 class DentistBookings extends Component {
     constructor(props) {
@@ -75,15 +80,19 @@ class DentistBookings extends Component {
                                 'getDentist.appointments'
                             );
 
-                            appointments = appointments.map(appt =>
-                                _mapKeys(appt, (value, key) => {
+                            appointments = appointments.map(appt => ({
+                                ..._mapKeys(appt, (value, key) => {
                                     if (key === 'localStartTime')
                                         return 'startTime';
                                     if (key === 'localEndTime')
                                         return 'endTime';
                                     return key;
-                                })
-                            );
+                                }),
+                                isPending:
+                                    appt.status === PENDING_PATIENT_APPROVAL,
+                                isCancelled: appt.status === CANCELLED,
+                                isRejected: appt.status === REJECTED_BY_PATIENT,
+                            }));
 
                             const reservations = _get(
                                 data,
