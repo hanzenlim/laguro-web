@@ -156,6 +156,11 @@ const UpdateDentistProfileForm = props => {
                         initialValue={data.bio}
                         mb={[18, '', 32]}
                         height={200}
+                        tooltip={`Laguro believes in establishing great connections and developing fundamental relationships. Use this space to introduce yourself to your prospective patients and other dentists.
+
+Tell them about your professional background: Where did you obtain your credentials? When/where did you start your practice?
+
+Tell them about you: Where are you currently practicing? What kind of procedures do you offer? What do you like to do on your spare time?`}
                         input={<TextArea p={11} />}
                         rules={[
                             {
