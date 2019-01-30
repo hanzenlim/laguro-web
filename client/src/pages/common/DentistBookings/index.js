@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Query, Mutation } from 'react-apollo';
+import moment from 'moment';
 import _get from 'lodash/get';
 import _mapKeys from 'lodash/mapKeys';
+import { message } from 'antd';
 import { Box, Loading } from '@laguro/basic-components';
 import {
     getDentistIdQueryClient,
@@ -11,6 +13,7 @@ import {
 import { RedirectErrorPage } from '../../GeneralErrorPage';
 import DentistBookingsView from './view';
 import {
+    ACTIVE,
     CANCELLED,
     REJECTED_BY_PATIENT,
     PENDING_PATIENT_APPROVAL,
@@ -53,6 +56,30 @@ class DentistBookings extends Component {
 
     handleUpdateCancellation = () => {
         this.setState({ isUpdateConfirmModalVisible: false });
+    };
+
+    // used to see if new startTime and endTime of appt is in a booking
+    isAppointmentTimeInBooking = (startTime, endTime) => {
+        const activeReservations = this.reservations.filter(
+            res => res.status === ACTIVE
+        );
+        for (let i = 0; i < activeReservations.length; i += 1) {
+            const res = activeReservations[i];
+
+            for (let j = 0; j < res.localAvailableTimes.length; j += 1) {
+                // localAvailableTime
+                const lat = res.localAvailableTimes[j];
+                // if any localAvailbleTime includes (startTime, endTime) return true
+                if (
+                    moment(lat.startTime).isSameOrBefore(moment(startTime)) &&
+                    moment(lat.endTime).isSameOrAfter(moment(endTime))
+                ) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     };
 
     render() {
@@ -99,6 +126,8 @@ class DentistBookings extends Component {
                                 'getDentist.reservations'
                             );
 
+                            this.reservations = reservations;
+
                             return (
                                 <Mutation mutation={updateAppointmentMutation}>
                                     {updateAppointmentTime => {
@@ -107,11 +136,58 @@ class DentistBookings extends Component {
                                             start,
                                             end
                                         ) => {
+                                            // save info for handleUpdateConfirmation
                                             this.apptToBeUpdated = {
                                                 event,
                                                 start,
                                                 end,
                                             };
+
+                                            // if user is trying to drop the appointment at the same time, don't do anything
+                                            //// startTime here is localStartTime
+                                            if (
+                                                moment(event.start).isSame(
+                                                    moment(start)
+                                                ) &&
+                                                moment(event.end).isSame(
+                                                    moment(end)
+                                                )
+                                            ) {
+                                                return;
+                                            }
+                                            // if user is trying to drag a past appointment
+                                            else if (
+                                                moment(event.start).isBefore(
+                                                    moment()
+                                                )
+                                            ) {
+                                                message.error(
+                                                    "You can't move a past appointment!"
+                                                );
+                                                return;
+                                            }
+                                            // if user is trying to drag an appointment to a startTime that is in the past
+                                            else if (
+                                                moment(start).isBefore(moment())
+                                            ) {
+                                                message.error(
+                                                    "You can't move an appointment to a past time!"
+                                                );
+                                                return;
+                                            }
+                                            // if user is trying to drag an appointment to outside of a booking
+                                            else if (
+                                                !this.isAppointmentTimeInBooking(
+                                                    start,
+                                                    end
+                                                )
+                                            ) {
+                                                message.error(
+                                                    'Appointments have to be in a booking!'
+                                                );
+                                                return;
+                                            }
+
                                             this.setState({
                                                 isUpdateConfirmModalVisible: true,
                                             });
@@ -155,6 +231,9 @@ class DentistBookings extends Component {
 
                                         return (
                                             <DentistBookingsView
+                                                errorMessage={
+                                                    this.state.errorMessage
+                                                }
                                                 isUpdateConfirmModalSubmitting={
                                                     this.state
                                                         .isUpdateConfirmModalSubmitting
