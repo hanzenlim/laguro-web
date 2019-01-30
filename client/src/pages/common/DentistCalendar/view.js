@@ -129,6 +129,7 @@ class DentistCalendar extends Component {
                         backgroundEvents={this.props.reservationEvents}
                         onNext={this.props.onNextWeek}
                         onPrev={this.props.onPrevWeek}
+                        selectable={false}
                         renderHeader={() => (
                             <div>
                                 <StyledButton

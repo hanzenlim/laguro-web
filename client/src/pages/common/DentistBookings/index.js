@@ -19,6 +19,8 @@ import {
     PENDING_PATIENT_APPROVAL,
 } from '../../../util/strings';
 
+const isDraggingDisabled = true;
+
 class DentistBookings extends Component {
     constructor(props) {
         super(props);
@@ -143,9 +145,15 @@ class DentistBookings extends Component {
                                                 end,
                                             };
 
+                                            // TODO: enable dragging after working on notifications
+                                            if (isDraggingDisabled) {
+                                                message.error(
+                                                    'Sorry, Laguro developers are currently working on this feature!'
+                                                );
+                                                return;
+                                            }
                                             // if user is trying to drop the appointment at the same time, don't do anything
-                                            //// startTime here is localStartTime
-                                            if (
+                                            else if (
                                                 moment(event.start).isSame(
                                                     moment(start)
                                                 ) &&
