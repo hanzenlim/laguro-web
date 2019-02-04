@@ -38,6 +38,7 @@
     "prop-types": "^15.6.1",
     "query-string": "^5.1.1",
     "react": "^16.3.0",
+    "react-adopt": "^0.6.0",
     "react-apollo": "^2.3.3",
     "react-big-calendar-test": "^0.20.7",
     "react-datepicker": "^1.2.2",

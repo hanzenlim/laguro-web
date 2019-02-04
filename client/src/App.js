@@ -153,7 +153,31 @@ const AppointmentConfirmationPage = Loadable({
 
 const DentistOnboarding = Loadable({
     loader: () =>
-        import('./pages/DentistOnboarding' /* webpackChunkName: "dentist-onboarding" */),
+        import('./pages/DentistOnboarding' /* webpackChunkName: "dentistOnboarding" */),
+    loading: () => null,
+});
+
+const KioskRegistrationPage = Loadable({
+    loader: () =>
+        import('./pages/KioskRegistrationPage' /* webpackChunkName: "kioskRegistrationPage" */),
+    loading: () => null,
+});
+
+const KioskBookAnAppointmentPage = Loadable({
+    loader: () =>
+        import('./pages/KioskBookAnAppointmentPage' /* webpackChunkName: "kioskBookAnAppointmentPage" */),
+    loading: () => null,
+});
+
+const KioskMedicalHistoryFormPage = Loadable({
+    loader: () =>
+        import('./pages/KioskMedicalHistoryFormPage' /* webpackChunkName: "kioskMedicalHistoryFormPage" */),
+    loading: () => null,
+});
+
+const KioskInsurancePage = Loadable({
+    loader: () =>
+        import('./pages/KioskInsurancePage' /* webpackChunkName: "kioskInsurancePage" */),
     loading: () => null,
 });
 
@@ -202,7 +226,10 @@ class App extends Component {
             <ThemeProvider theme={theme}>
                 <Router history={history}>
                     <Layout>
-                        <Header />
+                        {/* TODO: Refactor */}
+                        {!history.location.pathname.includes('kiosk') && (
+                            <Header />
+                        )}
                         <Content>
                             <ErrorBoundary>
                                 <Query query={getIdQueryClient}>
@@ -314,13 +341,42 @@ class App extends Component {
                                                 component={DentistOnboarding}
                                                 isUserLoggedIn={data.activeUser}
                                             />
+                                            <Route
+                                                path="/kiosk/registration"
+                                                exact
+                                                component={
+                                                    KioskRegistrationPage
+                                                }
+                                            />
+                                            <Route
+                                                path="/kiosk/book-an-appointment"
+                                                exact
+                                                component={
+                                                    KioskBookAnAppointmentPage
+                                                }
+                                            />
+                                            <Route
+                                                path="/kiosk/medical-history-form"
+                                                exact
+                                                component={
+                                                    KioskMedicalHistoryFormPage
+                                                }
+                                            />
+                                            <Route
+                                                path="/kiosk/insurance"
+                                                exact
+                                                component={KioskInsurancePage}
+                                            />
                                             <Route component={Error404Page} />
                                         </Switch>
                                     )}
                                 </Query>
                             </ErrorBoundary>
                         </Content>
-                        <Footer />
+                        {/* TODO: Refactor */}
+                        {!history.location.pathname.includes('kiosk') && (
+                            <Footer />
+                        )}
                     </Layout>
                 </Router>
             </ThemeProvider>
