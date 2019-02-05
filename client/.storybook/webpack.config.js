@@ -31,6 +31,11 @@ module.exports = {
         ],
     },
     resolve: {
-        modules: [path.resolve('./node_modules')],
+        modules: [
+            path.resolve('./node_modules'),
+            path.resolve(
+                './node_modules/@laguro/the-bright-side-components/node_modules'
+            ),
+        ],
     },
 };

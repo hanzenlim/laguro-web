@@ -151,6 +151,12 @@ const AppointmentConfirmationPage = Loadable({
     loading: () => null,
 });
 
+const DentistOnboarding = Loadable({
+    loader: () =>
+        import('./pages/DentistOnboarding' /* webpackChunkName: "dentist-onboarding" */),
+    loading: () => null,
+});
+
 const getIdQueryClient = gql`
     {
         activeUser @client {
@@ -302,6 +308,11 @@ class App extends Component {
                                                 path="/privacy"
                                                 exact
                                                 component={PrivacyPage}
+                                            />
+                                            <PrivateRoute
+                                                path="/dentist-onboarding"
+                                                component={DentistOnboarding}
+                                                isUserLoggedIn={data.activeUser}
                                             />
                                             <Route component={Error404Page} />
                                         </Switch>
