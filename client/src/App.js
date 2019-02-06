@@ -181,6 +181,18 @@ const KioskInsurancePage = Loadable({
     loading: () => null,
 });
 
+const KioskConfirmationPage = Loadable({
+    loader: () =>
+        import('./pages/KioskConfirmationPage' /* webpackChunkName: "kioskConfirmationPage" */),
+    loading: () => null,
+});
+
+const KioskCheckInPage = Loadable({
+    loader: () =>
+        import('./pages/KioskCheckInPage' /* webpackChunkName: "kioskCheckInPage" */),
+    loading: () => null,
+});
+
 const getIdQueryClient = gql`
     {
         activeUser @client {
@@ -366,6 +378,18 @@ class App extends Component {
                                                 path="/kiosk/insurance"
                                                 exact
                                                 component={KioskInsurancePage}
+                                            />
+                                            <Route
+                                                path="/kiosk/check-in"
+                                                exact
+                                                component={KioskCheckInPage}
+                                            />
+                                            <Route
+                                                path="/kiosk/confirmation"
+                                                exact
+                                                component={
+                                                    KioskConfirmationPage
+                                                }
                                             />
                                             <Route component={Error404Page} />
                                         </Switch>

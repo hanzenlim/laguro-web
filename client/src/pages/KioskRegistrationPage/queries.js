@@ -12,7 +12,17 @@ export const LOGIN = gql`
             user {
                 id
                 firstName
+                middleName
+                lastName
                 hasSubmittedHealthHistoryForm
+                appointments {
+                    id
+                    startTime
+                    status
+                }
+            }
+            authToken {
+                body
             }
         }
     }
@@ -21,5 +31,14 @@ export const LOGIN = gql`
 export const SET_ACTIVE_USER = gql`
     mutation setActiveUser($input: Object) {
         setActiveUser(input: $input) @client
+    }
+`;
+
+export const UPDATE_USER = gql`
+    mutation updateUser($input: UpdateUserInput!) {
+        updateUser(input: $input) {
+            id
+            firstName
+        }
     }
 `;

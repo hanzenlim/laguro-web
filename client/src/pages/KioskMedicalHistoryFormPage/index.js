@@ -22,7 +22,7 @@ const Composed = adopt({
     },
 });
 
-const KioskMedicalHistoryFormPage = () => {
+const KioskMedicalHistoryFormPage = props => {
     return (
         <Composed>
             {({ updatePatientHealthData }) => {
@@ -30,7 +30,7 @@ const KioskMedicalHistoryFormPage = () => {
                     <Fragment>
                         {/* TODO: Move progress to a parent component */}
                         <Progress
-                            step={1}
+                            step={3}
                             steps={progressSteps}
                             percent={22.5}
                         />
@@ -63,6 +63,8 @@ const KioskMedicalHistoryFormPage = () => {
                                         },
                                     },
                                 });
+
+                                props.history.push(`/kiosk/insurance`);
                             }}
                         />
                     </Fragment>

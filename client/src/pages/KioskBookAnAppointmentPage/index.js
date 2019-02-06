@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react';
-import _random from 'lodash/random';
 import {
     Wizard,
     ReasonOfVisit,
@@ -19,6 +18,12 @@ import { Query, Mutation } from 'react-apollo';
 import { Flex } from '@laguro/basic-components';
 import * as Yup from 'yup';
 import moment from 'moment';
+
+import _random from 'lodash/random';
+import _range from 'lodash/range';
+import _sampleSize from 'lodash/sampleSize';
+import _sample from 'lodash/sample';
+import faker from 'faker';
 
 const Composed = adopt({
     getOffice: ({ render }) => {
@@ -77,30 +82,40 @@ const steps = [
     },
 ];
 
-const events = [];
+const dentists = [];
+const specialties = [
+    'Adjun',
+    'Endodo',
+    'Braces',
+    'Implants',
+    'Invisalign',
+    'Extraction',
+    'Adjun',
+    'Endodo',
+    'Braces',
+    'Implants',
+    'Invisalign',
+    'Extraction',
+];
 
-for (let i = 0; i < 36; i += 1) {
-    events.push({
-        id: i.toString(),
-        startTime: moment()
-            .add((i + _random(1)) % 6, 'days')
-            .format(),
-        name: 'Dr. William Choi',
+const dentistSpecialties = specialties.map(sp => `${sp} specialist`);
+
+const languages = ['Korean', 'Japanese', 'Spanish', 'Portuguese'];
+
+for (let i = 0; i < 10; i += 1) {
+    dentists.push({
+        id: `dentistId${i.toString()}`,
+        availableTimes: _range(24).map(j =>
+            moment()
+                .add((i + _random(1)) % 6, 'days')
+                .add(j, 'hours')
+                .format()
+        ),
+        name: `Dr. ${faker.name.firstName()} ${faker.name.lastName()}`,
         rating: 4.5,
-        specialties: [
-            'Adjun',
-            'Endodo',
-            'Adjun',
-            'Endodo',
-            'Adjun',
-            'Endodo',
-            'Adjun',
-            'Endodo',
-            'Adjun',
-            'Endodo',
-            'Adjun',
-            'Endodo',
-        ],
+        specialties: _sampleSize(specialties, 10),
+        specialty: _sample(dentistSpecialties),
+        languages: _sampleSize(languages, 3),
         imageUrl: 'http://bit.ly/laguro-joe',
     });
 }
@@ -133,7 +148,7 @@ const Step2 = props => (
             //     list.push(r)
             // );
             // console.log('NEW LIST', list);
-            return <AppointmentSelection {...props} events={events} />;
+            return <AppointmentSelection {...props} dentists={dentists} />;
         }}
     </Composed>
 );
@@ -144,21 +159,21 @@ const Step3 = props => (
                 <Terms
                     {...props}
                     onSubmit={async () => {
-                        const result = await createPatientAppointmentOnboarding(
-                            {
-                                variables: {
-                                    input: {
-                                        patientId:
-                                            getActiveUser.data.activeUser.id,
-                                        reservationId:
-                                            props.values[2].appointmentSelected,
-                                        localStartTime: 'String',
-                                        localEndTime: 'String',
-                                        reasonOfVisit: 'String',
-                                    },
-                                },
-                            }
-                        );
+                        // const result = await createPatientAppointmentOnboarding(
+                        //     {
+                        //         variables: {
+                        //             input: {
+                        //                 patientId:
+                        //                     getActiveUser.data.activeUser.id,
+                        //                 reservationId:
+                        //                     props.values[2].appointmentSelected,
+                        //                 localStartTime: 'String',
+                        //                 localEndTime: 'String',
+                        //                 reasonOfVisit: 'String',
+                        //             },
+                        //         },
+                        //     }
+                        // );
                         // Move to next step
                         props.formikProps.submitForm();
                     }}
@@ -173,13 +188,14 @@ const Step4 = props => (
         rating={4}
         time="5:15PM"
         doctorName="Dr. William Choi"
+        onNext={() => {
+            props.history.push(`/kiosk/medical-history-form`);
+        }}
     />
 );
 
 const render = props => {
     let step = null;
-
-    console.log(1111, props);
 
     switch (props.actions.currentStep) {
         case '0':
@@ -215,7 +231,7 @@ const progressSteps = [
     '4 INSURANCE',
 ];
 
-const KioskBookAnAppointmentPage = () => {
+const KioskBookAnAppointmentPage = componentProps => {
     return (
         <Fragment>
             {/* TODO: Move progress to a parent component */}
@@ -223,7 +239,7 @@ const KioskBookAnAppointmentPage = () => {
             <Wizard
                 onSubmit={value => console.log(value)}
                 Form="form"
-                render={props => render(props)}
+                render={props => render({ ...props, ...componentProps })}
                 steps={steps}
             />
         </Fragment>

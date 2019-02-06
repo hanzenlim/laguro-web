@@ -20,7 +20,6 @@ const progressSteps = [
     '2 BOOK AN APPOINTMENT',
     '3 MEDICAL HISTORY FORM',
     '4 INSURANCE',
-    '5 PAYMENT',
 ];
 
 const steps = [
@@ -169,7 +168,7 @@ const KioskInsurancePage = componentProps => {
                                     <Progress
                                         step={4}
                                         steps={progressSteps}
-                                        percent={80}
+                                        percent={22.5}
                                     />
                                     <Wizard
                                         onSubmit={values =>

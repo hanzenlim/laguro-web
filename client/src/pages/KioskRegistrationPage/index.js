@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import _get from 'lodash/get';
 import * as Yup from 'yup';
 import { adopt } from 'react-adopt';
 import {
@@ -8,9 +9,15 @@ import {
     PurposeOfVisit,
     Verification,
     GetPatientName,
+    BookingConfirmation,
 } from '@laguro/the-bright-side-components';
 import { Flex } from '@laguro/basic-components';
-import { SEND_KIOSK_LOGIN_CODE, LOGIN, SET_ACTIVE_USER } from './queries';
+import {
+    SEND_KIOSK_LOGIN_CODE,
+    LOGIN,
+    SET_ACTIVE_USER,
+    UPDATE_USER,
+} from './queries';
 import cookies from 'browser-cookies';
 import { Query, Mutation } from 'react-apollo';
 
@@ -69,6 +76,11 @@ const steps = [
     },
 ];
 
+const validateEmail = email => {
+    var re = /\S+@\S+\.\S+/;
+    return re.test(email);
+};
+
 const Step0 = props => <PersonaSelection {...props} />;
 const Step1 = props => <PurposeOfVisit {...props} />;
 const Step2 = props => (
@@ -78,49 +90,113 @@ const Step2 = props => (
                 <Verification
                     {...props}
                     onRequestPinCode={username => {
+                        const isEmail = validateEmail(username);
+
+                        const input = {};
+                        if (isEmail) {
+                            input.email = username;
+                        } else {
+                            input.phoneNumber = username;
+                        }
+
                         sendKioskLoginCode({
                             variables: {
-                                input: {
-                                    email: username,
-                                },
+                                input,
                             },
                         });
                     }}
-                    onSubmitPinCode={async (username, passcode) => {
+                    onPinComplete={async (username, passcode) => {
+                        const isEmail = validateEmail(username);
+
+                        const input = {
+                            passcode,
+                        };
+
+                        if (isEmail) {
+                            input.email = username;
+                        } else {
+                            input.phoneNumber = username;
+                        }
+
                         const result = await login({
                             variables: {
-                                input: {
-                                    email: username,
-                                    passcode,
-                                },
+                                input,
                             },
                         });
 
-                        cookies.set(
-                            'user',
-                            JSON.stringify(result.data.login.user)
-                        );
+                        const user = {
+                            ..._get(result, 'data.login.user'),
+                            token: _get(result, 'data.login.authToken.body'),
+                        };
 
-                        if (result.data.login.user.firstName) {
-                            props.history.push(`/kiosk/book-an-appointment`);
-                        }
+                        cookies.set('user', JSON.stringify(user));
 
                         const result1 = await setActiveUser({
                             variables: {
                                 input: {
                                     activeUser: {
-                                        ...result.data.login.user,
+                                        ..._get(result, 'data.login.user'),
                                     },
                                 },
                             },
                         });
+                    }}
+                    // TODO: Refactor
+                    onSubmitPinCode={() => {
+                        const user = JSON.parse(cookies.get('user'));
+                        const willCheckIn =
+                            props.values[1].purposeOfVisit === 'checkIn';
+                        const hasAppointment = true;
+                        if (willCheckIn && hasAppointment) {
+                            // TODO: Pass reservation id in URL
+                            props.history.push(`/kiosk/check-in`);
+                        } else if (user.firstName) {
+                            props.history.push(`/kiosk/book-an-appointment`);
+                        }
                     }}
                 />
             );
         }}
     </Composed>
 );
-const Step3 = props => <GetPatientName {...props} />;
+
+const ComposedStep3 = adopt({
+    updateUser: ({ render }) => {
+        return <Mutation mutation={UPDATE_USER}>{render}</Mutation>;
+    },
+});
+
+const Step3 = props => {
+    return (
+        <ComposedStep3>
+            {({ updateUser }) => {
+                return (
+                    <GetPatientName
+                        {...props}
+                        onNext={async values => {
+                            let user = cookies.get('user');
+                            if (user) {
+                                user = JSON.parse(user);
+                            }
+
+                            const result1 = await updateUser({
+                                variables: {
+                                    input: {
+                                        id: user.id,
+                                        firstName: values.firstName,
+                                        middleName: values.middleName,
+                                        lastName: values.lastName,
+                                    },
+                                },
+                            });
+                            props.history.push(`/kiosk/book-an-appointment`);
+                        }}
+                    />
+                );
+            }}
+        </ComposedStep3>
+    );
+};
 
 const render = props => {
     let step = null;
