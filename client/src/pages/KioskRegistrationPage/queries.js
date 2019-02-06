@@ -12,6 +12,7 @@ export const LOGIN = gql`
             user {
                 id
                 firstName
+                hasSubmittedHealthHistoryForm
             }
         }
     }
