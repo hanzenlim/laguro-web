@@ -59,7 +59,13 @@ const steps = [
     },
 ];
 
-const Step0 = props => <Insurance {...props} />;
+const Step0 = props => (
+    <Insurance
+        {...props}
+        onSkip={() => props.history.push(`/kiosk/confirmation`)}
+    />
+);
+
 const Step1 = props => <Address {...props} />;
 const Step2 = props => <Birthday {...props} />;
 const Step3 = props => <Gender {...props} />;
