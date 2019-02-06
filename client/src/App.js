@@ -153,7 +153,7 @@ const AppointmentConfirmationPage = Loadable({
 
 const DentistOnboarding = Loadable({
     loader: () =>
-        import('./pages/DentistOnboarding' /* webpackChunkName: "dentistOnboarding" */),
+        import('./pages/Onboarding/Dentist/Verification' /* webpackChunkName: "dentistOnboarding" */),
     loading: () => null,
 });
 
@@ -337,7 +337,7 @@ class App extends Component {
                                                 component={PrivacyPage}
                                             />
                                             <PrivateRoute
-                                                path="/dentist-onboarding"
+                                                path="/dentist-onboarding/verification"
                                                 component={DentistOnboarding}
                                                 isUserLoggedIn={data.activeUser}
                                             />
