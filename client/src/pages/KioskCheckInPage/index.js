@@ -6,6 +6,8 @@ import { Query } from 'react-apollo';
 import { adopt } from 'react-adopt';
 import _get from 'lodash/get';
 import moment from 'moment';
+import { withApollo } from 'react-apollo';
+import cookies from 'browser-cookies';
 
 const KioskCheckInPage = props => {
     const appointmentId = _get(props, 'match.params.id');
@@ -45,6 +47,15 @@ const KioskCheckInPage = props => {
                             rating={totalRating || 0}
                             time={moment(localStartTime).format('h:mm A')}
                             doctorName={`Dr. ${firstName} ${lastName}`}
+                            onNext={() => {
+                                props.client.writeData({
+                                    data: { activeUser: null },
+                                });
+
+                                cookies.set('user', '');
+
+                                props.history.push('/kiosk/registration');
+                            }}
                         />
                     </Flex>
                 );
@@ -53,4 +64,4 @@ const KioskCheckInPage = props => {
     );
 };
 
-export default KioskCheckInPage;
+export default withApollo(KioskCheckInPage);
