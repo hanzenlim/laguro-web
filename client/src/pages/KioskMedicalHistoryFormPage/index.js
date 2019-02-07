@@ -6,6 +6,7 @@ import {
 import { adopt } from 'react-adopt';
 import { UPDATE_PATIENT_HEALTH_DATA } from './queries';
 import { Mutation } from 'react-apollo';
+import cookies from 'browser-cookies';
 
 const progressSteps = [
     '1 REGISTRATION',
@@ -52,11 +53,12 @@ const KioskMedicalHistoryFormPage = props => {
                                     });
                                 });
 
+                                const user = JSON.parse(cookies.get('user'));
+
                                 await updatePatientHealthData({
                                     variables: {
                                         input: {
-                                            patientId:
-                                                '5151d7c0-2988-11e9-b5b9-d578a7e23723',
+                                            patientId: user.id,
                                             patientHealthData: {
                                                 items: newArray,
                                             },
