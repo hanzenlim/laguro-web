@@ -406,7 +406,7 @@ class App extends Component {
                                                 component={KioskInsurancePage}
                                             />
                                             <Route
-                                                path="/kiosk/check-in"
+                                                path="/kiosk/check-in/:id"
                                                 exact
                                                 component={KioskCheckInPage}
                                             />
