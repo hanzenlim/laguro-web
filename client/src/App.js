@@ -181,6 +181,12 @@ const KioskSelectProcedurePage = Loadable({
     loading: () => null,
 });
 
+const KioskBookingConfirmationPage = Loadable({
+    loader: () =>
+        import('./pages/KioskBookingConfirmationPage' /* webpackChunkName: "kioskBookingConfirmationPage" */),
+    loading: () => null,
+});
+
 const KioskMedicalHistoryFormPage = Loadable({
     loader: () =>
         import('./pages/KioskMedicalHistoryFormPage' /* webpackChunkName: "kioskMedicalHistoryFormPage" */),
@@ -394,6 +400,13 @@ class App extends Component {
                                                 }
                                             />
                                             <Route
+                                                path="/kiosk/booking-confirmation/:id"
+                                                exact
+                                                component={
+                                                    KioskBookingConfirmationPage
+                                                }
+                                            />
+                                            <Route
                                                 path="/kiosk/medical-history-form"
                                                 exact
                                                 component={
@@ -410,6 +423,7 @@ class App extends Component {
                                                 exact
                                                 component={KioskCheckInPage}
                                             />
+
                                             <Route
                                                 path="/kiosk/confirmation"
                                                 exact
