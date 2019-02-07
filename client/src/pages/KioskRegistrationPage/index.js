@@ -9,7 +9,6 @@ import {
     PurposeOfVisit,
     Verification,
     GetPatientName,
-    BookingConfirmation,
 } from '@laguro/the-bright-side-components';
 import { Flex } from '@laguro/basic-components';
 import {
@@ -19,7 +18,7 @@ import {
     UPDATE_USER,
 } from './queries';
 import cookies from 'browser-cookies';
-import { Query, Mutation } from 'react-apollo';
+import { Mutation } from 'react-apollo';
 
 const Composed = adopt({
     sendKioskLoginCode: ({ render }) => {
@@ -131,7 +130,7 @@ const Step2 = props => (
 
                         cookies.set('user', JSON.stringify(user));
 
-                        const result1 = await setActiveUser({
+                        await setActiveUser({
                             variables: {
                                 input: {
                                     activeUser: {
@@ -179,7 +178,7 @@ const Step3 = props => {
                                 user = JSON.parse(user);
                             }
 
-                            const result1 = await updateUser({
+                            await updateUser({
                                 variables: {
                                     input: {
                                         id: user.id,

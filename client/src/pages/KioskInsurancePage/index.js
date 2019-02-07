@@ -9,10 +9,9 @@ import {
     Gender,
     Birthday,
 } from '@laguro/the-bright-side-components';
-import { Flex } from '@laguro/basic-components';
+import { Flex, Loading } from '@laguro/basic-components';
 import { getIdQueryClient, updateInsuranceInfoMutation } from './queries';
 import { Query, Mutation } from 'react-apollo';
-import { Loading } from '../../components/';
 import { RedirectErrorPage } from '../GeneralErrorPage';
 
 const progressSteps = [

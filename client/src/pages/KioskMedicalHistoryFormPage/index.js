@@ -52,7 +52,7 @@ const KioskMedicalHistoryFormPage = props => {
                                     });
                                 });
 
-                                const result = await updatePatientHealthData({
+                                await updatePatientHealthData({
                                     variables: {
                                         input: {
                                             patientId:

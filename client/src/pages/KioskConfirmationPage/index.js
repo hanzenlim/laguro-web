@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { OnboardSuccess } from '@laguro/the-bright-side-components';
 import { Flex } from '@laguro/basic-components';
 import { withApollo } from 'react-apollo';

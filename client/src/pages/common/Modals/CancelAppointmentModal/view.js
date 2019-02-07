@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { Modal, Text, Button, Box, Flex } from '../../../../components';
-import { CANCELLED_BY_PATIENT } from '../../../../util/strings';
 
 const CancelAppointmentModal = props => {
     const { visible, onCancel, onSubmit, loading } = props;
