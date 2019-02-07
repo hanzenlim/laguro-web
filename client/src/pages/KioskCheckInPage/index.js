@@ -37,6 +37,11 @@ const KioskCheckInPage = props => {
                 const lastName = _get(data, 'dentist.user.lastName');
                 const imageUrl = _get(data, 'dentist.user.imageUrl');
 
+                const hasSubmittedHealthHistoryForm = _get(
+                    data,
+                    'patient.hasSubmittedHealthHistoryForm'
+                );
+
                 return (
                     <Flex justifyContent="center" mt="100px">
                         <CheckInConfirmation
@@ -48,14 +53,23 @@ const KioskCheckInPage = props => {
                             time={moment(localStartTime).format('h:mm A')}
                             doctorName={`Dr. ${firstName} ${lastName}`}
                             onNext={() => {
-                                props.client.writeData({
-                                    data: { activeUser: null },
-                                });
+                                if (hasSubmittedHealthHistoryForm) {
+                                    props.client.writeData({
+                                        data: { activeUser: null },
+                                    });
 
-                                cookies.set('user', '');
+                                    cookies.set('user', '');
 
-                                props.history.push('/kiosk/registration');
+                                    props.history.push('/kiosk/registration');
+                                } else {
+                                    props.history.push(
+                                        '/kiosk/medical-history-form'
+                                    );
+                                }
                             }}
+                            hasSubmittedHealthHistoryForm={
+                                hasSubmittedHealthHistoryForm
+                            }
                         />
                     </Flex>
                 );

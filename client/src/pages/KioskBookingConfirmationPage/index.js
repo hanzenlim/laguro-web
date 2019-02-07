@@ -55,7 +55,6 @@ const KioskBookingConfirmationPage = props => {
                     data,
                     'patient.insurancePreference'
                 );
-                console.log(hasGoneThroughInsurancePage, 111);
 
                 return (
                     <Fragment>

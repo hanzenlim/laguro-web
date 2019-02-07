@@ -17,6 +17,10 @@ export const GET_APPOINTMENT = gql`
             localStartTime
             localEndTime
             status
+            patient {
+                id
+                hasSubmittedHealthHistoryForm
+            }
         }
     }
 `;
