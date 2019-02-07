@@ -12,7 +12,7 @@
         "precommit": "npm run prettier:fix && npm run test",
         "serverLocal": "nodemon serverLocal.js --exec babel-node --presets es2015,stage-2",
         "client": "npm run start --prefix client",
-        "dev": "NODE_OPTIONS=--max-old-space-size=2048 concurrently \"env-cmd ./config/security.env.local npm run serverLocal\" \"env-cmd ./config/security.env.local npm run client\" ",
+        "dev": "concurrently \"env-cmd ./config/security.env.local npm run serverLocal\" \"env-cmd ./config/security.env.local npm run client\" ",
         "test": "npm run test --prefix client",
         "webpack-analyzer": "npm run webpack-analyzer --prefix client",
         "domain": "env-cmd /home/runner/security.env.stage sls create_domain",

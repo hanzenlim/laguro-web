@@ -26,6 +26,12 @@ const steps = [
     {
         id: '0',
         initialValues: {},
+        validationSchema: Yup.object().shape({
+            insuranceProvider: Yup.string().required('Insurance is required'),
+            patientInsuranceNum: Yup.string().required(
+                'Insurance number is required'
+            ),
+        }),
     },
     {
         id: '1',
@@ -54,7 +60,6 @@ const steps = [
             patientGender: Yup.string().required('Gender is required'),
         }),
         initialValues: {},
-        onAction: {},
     },
 ];
 
@@ -132,10 +137,11 @@ const KioskInsurancePage = componentProps => {
                                     patientBirthYear,
                                     patientCity,
                                     patientGender,
-                                    patientInsurance,
                                     patientInsuranceNum,
                                     patientState,
                                     patientZIP,
+                                    insuranceProvider,
+                                    insuranceProviderId,
                                 } = combinedObject;
                                 const formattedValues = {
                                     userId: userId,
@@ -144,12 +150,14 @@ const KioskInsurancePage = componentProps => {
                                         addressDetails: patientAddress2,
                                         city: patientCity,
                                         zipCode: patientZIP,
+                                        state: patientState,
                                     },
                                     dob: `${patientBirthMonth}/${patientBirthDate}/${patientBirthYear}`,
                                     gender: patientGender,
                                     insuranceInfo: {
                                         useInsurance: true,
-                                        insuranceProvider: patientInsurance,
+                                        insuranceProvider,
+                                        insuranceProviderId,
                                         policyHolderId: patientInsuranceNum,
                                         planOrGroupNumber:
                                             'putPlanOrGroupNumberHere',
