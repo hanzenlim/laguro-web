@@ -31,3 +31,11 @@ export const UPDATE_DENTIST = gql`
         }
     }
 `;
+
+export const UPDATE_USER_IMAGE_URL = gql`
+    mutation updateUser($input: UpdateUserInput!) {
+        updateUser(input: $input) {
+            id
+        }
+    }
+`;
