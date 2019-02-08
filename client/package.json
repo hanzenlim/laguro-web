@@ -74,7 +74,7 @@
     "yup": "^0.26.10"
   },
   "scripts": {
-    "start": "react-app-rewired start",
+    "start": "react-app-rewired start --max-old-space-size=16000",
     "build": "react-app-rewired build",
     "test": "jest",
     "test:watch": "jest --watch",

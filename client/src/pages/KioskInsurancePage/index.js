@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
 import * as Yup from 'yup';
-import { adopt } from 'react-adopt';
 import _get from 'lodash/get';
 import {
     Wizard,
@@ -12,8 +11,9 @@ import {
 } from '@laguro/the-bright-side-components';
 import { Flex } from '@laguro/basic-components';
 import { getIdQueryClient, updateInsuranceInfoMutation } from './queries';
-import cookies from 'browser-cookies';
 import { Query, Mutation } from 'react-apollo';
+import { Loading } from '../../components';
+import GeneralErrorPage from '../GeneralErrorPage';
 
 const progressSteps = [
     '1 REGISTRATION',

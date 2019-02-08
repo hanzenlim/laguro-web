@@ -165,7 +165,19 @@ const KioskRegistrationPage = Loadable({
 
 const KioskBookAnAppointmentPage = Loadable({
     loader: () =>
-        import('./pages/KioskBookAnAppointmentPage' /* webpackChunkName: "kioskBookAnAppointmentPage" */),
+        import('./pages/KioskBookAnAppointmentPage/BookAppointment' /* webpackChunkName: "kioskBookAnAppointmentPage" */),
+    loading: () => null,
+});
+
+const KioskReasonOfVisitPage = Loadable({
+    loader: () =>
+        import('./pages/KioskBookAnAppointmentPage/ReasonOfVisit' /* webpackChunkName: "kioskBookAnAppointmentPage" */),
+    loading: () => null,
+});
+
+const KioskSelectProcedurePage = Loadable({
+    loader: () =>
+        import('./pages/KioskBookAnAppointmentPage/SelectProcedure' /* webpackChunkName: "kioskBookAnAppointmentPage" */),
     loading: () => null,
 });
 
@@ -361,10 +373,24 @@ class App extends Component {
                                                 }
                                             />
                                             <Route
-                                                path="/kiosk/book-an-appointment"
+                                                path="/kiosk/book-appointment"
                                                 exact
                                                 component={
                                                     KioskBookAnAppointmentPage
+                                                }
+                                            />
+                                            <Route
+                                                path="/kiosk/reason-of-visit"
+                                                exact
+                                                component={
+                                                    KioskReasonOfVisitPage
+                                                }
+                                            />
+                                            <Route
+                                                path="/kiosk/select-procedure"
+                                                exact
+                                                component={
+                                                    KioskSelectProcedurePage
                                                 }
                                             />
                                             <Route
