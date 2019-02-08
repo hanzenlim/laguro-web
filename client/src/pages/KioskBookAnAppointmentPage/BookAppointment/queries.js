@@ -21,8 +21,11 @@ export const GET_OFFICE = gql`
             }
             activeDentists(
                 options: {
-                    rangeStart: "${moment().format()}", 
+                    rangeStart: "${moment()
+                        .utc()
+                        .format()}", 
                     rangeEnd: "${moment()
+                        .utc()
                         .add(4, 'days')
                         .format()}"
                 }
@@ -41,8 +44,11 @@ export const GET_OFFICE = gql`
                 averageRating
                 availableAppointmentSlots( 
                     options: {
-                        rangeStart: "${moment().format()}", 
+                        rangeStart: "${moment()
+                            .utc()
+                            .format()}", 
                         rangeEnd: "${moment()
+                            .utc()
                             .add(4, 'days')
                             .format()}",
                         officeId: "0def98c0-2b43-11e9-89f4-cdb87d822282"
