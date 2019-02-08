@@ -5,7 +5,6 @@ import { adopt } from 'react-adopt';
 import {
     Wizard,
     Progress,
-    PersonaSelection,
     PurposeOfVisit,
     Verification,
     GetPatientName,
@@ -19,6 +18,7 @@ import {
 } from './queries';
 import cookies from 'browser-cookies';
 import { Mutation } from 'react-apollo';
+import { message } from 'antd';
 
 const Composed = adopt({
     sendKioskLoginCode: ({ render }) => {
@@ -80,7 +80,7 @@ const Step1 = props => (
             return (
                 <Verification
                     {...props}
-                    onRequestPinCode={username => {
+                    onRequestPinCode={async username => {
                         const isEmail = validateEmail(username);
 
                         const input = {};
@@ -90,11 +90,22 @@ const Step1 = props => (
                             input.phoneNumber = username;
                         }
 
-                        sendKioskLoginCode({
-                            variables: {
-                                input,
-                            },
-                        });
+                        const sendKioskLoginCodeResult = await sendKioskLoginCode(
+                            {
+                                variables: {
+                                    input,
+                                },
+                            }
+                        );
+
+                        const isCodeSent = _get(
+                            sendKioskLoginCodeResult,
+                            'data.sendKioskLoginCode'
+                        );
+
+                        if (isCodeSent) {
+                            props.formikProps.setFieldValue('isCodeSent', true);
+                        }
                     }}
                     onPinComplete={async (username, passcode) => {
                         const isEmail = validateEmail(username);
@@ -109,31 +120,50 @@ const Step1 = props => (
                             input.phoneNumber = username;
                         }
 
-                        const loginResult = await login({
-                            variables: {
-                                input,
-                            },
-                        });
+                        try {
+                            const loginResult = await login({
+                                variables: {
+                                    input,
+                                },
+                            });
 
-                        const user = {
-                            ..._get(loginResult, 'data.login.user'),
-                            token: _get(
+                            const isPinValid = _get(
                                 loginResult,
-                                'data.login.authToken.body'
-                            ),
-                        };
+                                'data.login.user.id'
+                            );
 
-                        cookies.set('user', JSON.stringify(user));
+                            if (isPinValid) {
+                                props.formikProps.setFieldValue(
+                                    'isPinValid',
+                                    true
+                                );
+                            }
 
-                        await setActiveUser({
-                            variables: {
-                                input: {
-                                    activeUser: {
-                                        ..._get(loginResult, 'data.login.user'),
+                            const user = {
+                                ..._get(loginResult, 'data.login.user'),
+                                token: _get(
+                                    loginResult,
+                                    'data.login.authToken.body'
+                                ),
+                            };
+
+                            cookies.set('user', JSON.stringify(user));
+
+                            await setActiveUser({
+                                variables: {
+                                    input: {
+                                        activeUser: {
+                                            ..._get(
+                                                loginResult,
+                                                'data.login.user'
+                                            ),
+                                        },
                                     },
                                 },
-                            },
-                        });
+                            });
+                        } catch (error) {
+                            message.error(error.graphQLErrors[0].message);
+                        }
                     }}
                     // TODO: Refactor
                     onSubmitPinCode={() => {
