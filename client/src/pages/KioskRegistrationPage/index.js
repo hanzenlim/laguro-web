@@ -189,7 +189,7 @@ const Step1 = props => (
                                 )}`
                             );
                         } else if (user.firstName) {
-                            props.history.push(`/kiosk/book-an-appointment`);
+                            props.history.push(`/kiosk/reason-of-visit`);
                         }
                     }}
                 />
@@ -227,7 +227,7 @@ const Step2 = props => {
                                     },
                                 },
                             });
-                            props.history.push(`/kiosk/book-an-appointment`);
+                            props.history.push(`/kiosk/reason-of-visit`);
                         }}
                     />
                 );
