@@ -20,11 +20,8 @@ export const GET_APPOINTMENT = gql`
             patient {
                 id
                 hasSubmittedHealthHistoryForm
-                insurancePreference {
+                insuranceInfo {
                     useInsurance
-                    insurance {
-                        insuranceMemberId
-                    }
                 }
             }
         }

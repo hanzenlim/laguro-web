@@ -74,7 +74,7 @@ const KioskMedicalHistoryFormPage = props => {
 
                                 const hasGoneThroughInsurancePage = _get(
                                     data,
-                                    'patient.insurancePreference'
+                                    'patient.insuranceInfo'
                                 );
 
                                 if (hasGoneThroughInsurancePage) {

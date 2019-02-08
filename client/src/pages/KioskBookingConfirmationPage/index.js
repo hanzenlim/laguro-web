@@ -53,7 +53,7 @@ const KioskBookingConfirmationPage = props => {
                 );
                 const hasGoneThroughInsurancePage = _get(
                     data,
-                    'patient.insurancePreference'
+                    'patient.insuranceInfo'
                 );
 
                 return (
