@@ -5,6 +5,12 @@ export const UPDATE_PATIENT_HEALTH_DATA = gql`
         updatePatientHealthData(input: $input) {
             id
             hasSubmittedHealthHistoryForm
+            insurancePreference {
+                useInsurance
+                insurance {
+                    insuranceMemberId
+                }
+            }
         }
     }
 `;

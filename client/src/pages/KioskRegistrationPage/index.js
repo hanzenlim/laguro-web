@@ -42,19 +42,12 @@ const progressSteps = [
 const steps = [
     {
         id: '0',
-        initialValues: {},
-        validationSchema: Yup.object().shape({
-            persona: Yup.string().required('You must select your persona'),
-        }),
-    },
-    {
-        id: '1',
         validationSchema: {},
         component: null,
         initialValues: {},
     },
     {
-        id: '2',
+        id: '1',
         validationSchema: {},
         component: null,
         initialValues: {
@@ -64,7 +57,7 @@ const steps = [
         },
     },
     {
-        id: '3',
+        id: '2',
         validationSchema: {},
         component: null,
         initialValues: {
@@ -80,9 +73,8 @@ const validateEmail = email => {
     return re.test(email);
 };
 
-const Step0 = props => <PersonaSelection {...props} />;
-const Step1 = props => <PurposeOfVisit {...props} />;
-const Step2 = props => (
+const Step0 = props => <PurposeOfVisit {...props} />;
+const Step1 = props => (
     <Composed>
         {({ sendKioskLoginCode, login, setActiveUser }) => {
             return (
@@ -117,15 +109,18 @@ const Step2 = props => (
                             input.phoneNumber = username;
                         }
 
-                        const result = await login({
+                        const loginResult = await login({
                             variables: {
                                 input,
                             },
                         });
 
                         const user = {
-                            ..._get(result, 'data.login.user'),
-                            token: _get(result, 'data.login.authToken.body'),
+                            ..._get(loginResult, 'data.login.user'),
+                            token: _get(
+                                loginResult,
+                                'data.login.authToken.body'
+                            ),
                         };
 
                         cookies.set('user', JSON.stringify(user));
@@ -134,7 +129,7 @@ const Step2 = props => (
                             variables: {
                                 input: {
                                     activeUser: {
-                                        ..._get(result, 'data.login.user'),
+                                        ..._get(loginResult, 'data.login.user'),
                                     },
                                 },
                             },
@@ -143,12 +138,27 @@ const Step2 = props => (
                     // TODO: Refactor
                     onSubmitPinCode={() => {
                         const user = JSON.parse(cookies.get('user'));
-                        const willCheckIn =
-                            props.values[1].purposeOfVisit === 'checkIn';
-                        const hasAppointment = true;
-                        if (willCheckIn && hasAppointment) {
-                            // TODO: Pass reservation id in URL
-                            props.history.push(`/kiosk/check-in`);
+
+                        let upcomingAppointments = [];
+                        if (_get(user, 'appointments')) {
+                            upcomingAppointments = _get(user, 'appointments');
+                        }
+
+                        const purposeOfVisit = _get(
+                            props,
+                            'values[0].purposeOfVisit'
+                        );
+
+                        if (
+                            purposeOfVisit === 'checkIn' &&
+                            upcomingAppointments.length
+                        ) {
+                            props.history.push(
+                                `/kiosk/check-in/${_get(
+                                    upcomingAppointments,
+                                    '[0].id'
+                                )}`
+                            );
                         } else if (user.firstName) {
                             props.history.push(`/kiosk/book-an-appointment`);
                         }
@@ -159,15 +169,15 @@ const Step2 = props => (
     </Composed>
 );
 
-const ComposedStep3 = adopt({
+const ComposedStep2 = adopt({
     updateUser: ({ render }) => {
         return <Mutation mutation={UPDATE_USER}>{render}</Mutation>;
     },
 });
 
-const Step3 = props => {
+const Step2 = props => {
     return (
-        <ComposedStep3>
+        <ComposedStep2>
             {({ updateUser }) => {
                 return (
                     <GetPatientName
@@ -193,7 +203,7 @@ const Step3 = props => {
                     />
                 );
             }}
-        </ComposedStep3>
+        </ComposedStep2>
     );
 };
 
@@ -209,9 +219,6 @@ const render = props => {
             break;
         case '2':
             step = Step2(props);
-            break;
-        case '3':
-            step = Step3(props);
             break;
         default:
             step = Step1(props);

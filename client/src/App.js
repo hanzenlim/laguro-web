@@ -211,6 +211,12 @@ const KioskCheckInPage = Loadable({
     loading: () => null,
 });
 
+const KioskMedicalHistoryFormConfirmationPage = Loadable({
+    loader: () =>
+        import('./pages/KioskMedicalHistoryFormPage/Confirmation' /* webpackChunkName: "kioskMedicalHistoryFormConfirmationPage" */),
+    loading: () => null,
+});
+
 const getIdQueryClient = gql`
     {
         activeUser @client {
@@ -411,6 +417,13 @@ class App extends Component {
                                                 exact
                                                 component={
                                                     KioskMedicalHistoryFormPage
+                                                }
+                                            />
+                                            <Route
+                                                path="/kiosk/medical-history-form-confirmation"
+                                                exact
+                                                component={
+                                                    KioskMedicalHistoryFormConfirmationPage
                                                 }
                                             />
                                             <Route

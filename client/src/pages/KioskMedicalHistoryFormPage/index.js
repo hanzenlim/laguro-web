@@ -7,6 +7,7 @@ import { adopt } from 'react-adopt';
 import { UPDATE_PATIENT_HEALTH_DATA } from './queries';
 import { Mutation } from 'react-apollo';
 import cookies from 'browser-cookies';
+import _get from 'lodash/get';
 
 const progressSteps = [
     '1 REGISTRATION',
@@ -55,7 +56,7 @@ const KioskMedicalHistoryFormPage = props => {
 
                                 const user = JSON.parse(cookies.get('user'));
 
-                                await updatePatientHealthData({
+                                const result = await updatePatientHealthData({
                                     variables: {
                                         input: {
                                             patientId: user.id,
@@ -66,7 +67,23 @@ const KioskMedicalHistoryFormPage = props => {
                                     },
                                 });
 
-                                props.history.push(`/kiosk/insurance`);
+                                const data = _get(
+                                    result,
+                                    'data.updatePatientHealthData'
+                                );
+
+                                const hasGoneThroughInsurancePage = _get(
+                                    data,
+                                    'patient.insurancePreference'
+                                );
+
+                                if (hasGoneThroughInsurancePage) {
+                                    props.history.push(
+                                        `/kiosk/medical-history-form-confirmation`
+                                    );
+                                } else {
+                                    props.history.push(`/kiosk/insurance`);
+                                }
                             }}
                         />
                     </Fragment>
