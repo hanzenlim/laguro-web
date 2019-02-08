@@ -199,6 +199,10 @@ const KioskInsurancePage = componentProps => {
                                         input: formattedValues,
                                     },
                                 });
+
+                                componentProps.history.push(
+                                    '/kiosk/confirmation'
+                                );
                             };
                             return (
                                 <Fragment>
