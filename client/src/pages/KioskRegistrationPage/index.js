@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
 import _get from 'lodash/get';
-import * as Yup from 'yup';
 import { adopt } from 'react-adopt';
 import {
     Wizard,

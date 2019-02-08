@@ -159,9 +159,6 @@ const render = props => {
 };
 
 class RenderDentistOnboarding extends Component {
-    constructor(props) {
-        super(props);
-    }
     render() {
         return (
             <Wizard

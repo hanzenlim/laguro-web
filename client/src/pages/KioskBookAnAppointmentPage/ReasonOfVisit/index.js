@@ -4,14 +4,7 @@ import {
     ReasonOfVisit,
     Progress,
 } from '@laguro/the-bright-side-components';
-import _flatten from 'lodash/flatten';
-import _get from 'lodash/get';
 import { Flex } from '@laguro/basic-components';
-import _random from 'lodash/random';
-import _range from 'lodash/range';
-import _sampleSize from 'lodash/sampleSize';
-import _sample from 'lodash/sample';
-import _isEmpty from 'lodash/isEmpty';
 
 class KioskBookAnAppointmentPage extends Component {
     render() {
@@ -24,22 +17,6 @@ class KioskBookAnAppointmentPage extends Component {
                     reasonOfVisit: '',
                 },
             },
-        ];
-
-        const dentists = [];
-        const specialties = [
-            'Adjun',
-            'Endodo',
-            'Braces',
-            'Implants',
-            'Invisalign',
-            'Extraction',
-            'Adjun',
-            'Endodo',
-            'Braces',
-            'Implants',
-            'Invisalign',
-            'Extraction',
         ];
 
         const Step0 = props => <ReasonOfVisit {...props} />;

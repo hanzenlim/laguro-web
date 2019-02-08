@@ -26,7 +26,6 @@ import faker from 'faker';
 import { Loading } from '../../../components';
 import { RedirectErrorPage } from '../../GeneralErrorPage';
 import isEmpty from 'lodash/isEmpty';
-import { message } from 'antd';
 
 class KioskBookAnAppointmentPage extends Component {
     render() {
