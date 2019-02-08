@@ -13,6 +13,7 @@ import { Flex, Loading } from '@laguro/basic-components';
 import { getIdQueryClient, updateInsuranceInfoMutation } from './queries';
 import { Query, Mutation } from 'react-apollo';
 import { RedirectErrorPage } from '../GeneralErrorPage';
+import { adopt } from 'react-adopt';
 
 const progressSteps = [
     '1 REGISTRATION',
