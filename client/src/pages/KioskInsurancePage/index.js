@@ -12,8 +12,8 @@ import {
 import { Flex } from '@laguro/basic-components';
 import { getIdQueryClient, updateInsuranceInfoMutation } from './queries';
 import { Query, Mutation } from 'react-apollo';
-import { Loading } from '../../components';
-import GeneralErrorPage from '../GeneralErrorPage';
+import { Loading } from '../../components/';
+import { RedirectErrorPage } from '../GeneralErrorPage';
 
 const progressSteps = [
     '1 REGISTRATION',
@@ -63,11 +63,41 @@ const steps = [
     },
 ];
 
+const Composed = adopt({
+    getIdQueryClient: ({ render }) => {
+        return <Query query={getIdQueryClient}>{render}</Query>;
+    },
+    updateInsuranceInfoMutation: ({ render }) => {
+        return (
+            <Mutation mutation={updateInsuranceInfoMutation}>{render}</Mutation>
+        );
+    },
+});
+
 const Step0 = props => (
-    <Insurance
-        {...props}
-        onSkip={() => props.history.push(`/kiosk/confirmation`)}
-    />
+    <Composed>
+        {({ getIdQueryClient, updateInsuranceInfoMutation }) => (
+            <Insurance
+                {...props}
+                onSkip={() => {
+                    updateInsuranceInfoMutation({
+                        variables: {
+                            input: {
+                                userId: _get(
+                                    getIdQueryClient,
+                                    'data.activeUser.id'
+                                ),
+                                insuranceInfo: {
+                                    useInsurance: false,
+                                },
+                            },
+                        },
+                    });
+                    props.history.push(`/kiosk/confirmation`);
+                }}
+            />
+        )}
+    </Composed>
 );
 
 const Step1 = props => <Address {...props} />;
@@ -114,7 +144,7 @@ const KioskInsurancePage = componentProps => {
                 }
 
                 if (errorUserQueryClient) {
-                    return <GeneralErrorPage />;
+                    return <RedirectErrorPage />;
                 }
                 const userId = _get(dataIdQueryClient, 'activeUser.id');
 
