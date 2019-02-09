@@ -6,18 +6,12 @@ export const CREATE_DENTIST = gql`
             id
             languages
             acceptedInsurances
-            location {
-                name
-            }
             bio
             procedures {
                 code
                 duration
                 group
                 name
-            }
-            reviews {
-                rating
             }
         }
     }

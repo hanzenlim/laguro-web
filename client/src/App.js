@@ -190,12 +190,12 @@ const KioskConfirmationPage = Loadable({
 const KioskCheckInPage = Loadable({
     loader: () =>
         import('./pages/KioskCheckInPage' /* webpackChunkName: "kioskCheckInPage" */),
-    loading: () => null
+    loading: () => null,
 });
 
 const KioskDentistProfilePage = Loadable({
     loader: () =>
-        import('./pages/KioskDentistProfilePage' /* webpackChunkName: "kioskInsurancePage" */),
+        import('./pages/KioskDentistProfilePage' /* webpackChunkName: "kioskDentistProfilePage" */),
     loading: () => null,
 });
 
