@@ -20,6 +20,9 @@ export const GET_APPOINTMENT = gql`
             patient {
                 id
                 hasSubmittedHealthHistoryForm
+                insuranceInfo {
+                    useInsurance
+                }
             }
         }
     }

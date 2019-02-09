@@ -1,13 +1,13 @@
 import React from 'react';
-import { OnboardSuccess } from '@laguro/the-bright-side-components';
+import { HealthHistoryFormConfirmation } from '@laguro/the-bright-side-components';
 import { Flex } from '@laguro/basic-components';
 import { withApollo } from 'react-apollo';
 import cookies from 'browser-cookies';
 
-const KioskCheckInPage = props => {
+const KioskMedicalHistoryFormConfirmationPage = props => {
     return (
         <Flex justifyContent="center" mt="100px">
-            <OnboardSuccess
+            <HealthHistoryFormConfirmation
                 onNext={async () => {
                     props.client.writeData({
                         data: { activeUser: null },
@@ -22,4 +22,4 @@ const KioskCheckInPage = props => {
     );
 };
 
-export default withApollo(KioskCheckInPage);
+export default withApollo(KioskMedicalHistoryFormConfirmationPage);

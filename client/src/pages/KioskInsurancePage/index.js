@@ -1,6 +1,5 @@
 import React, { Fragment } from 'react';
 import * as Yup from 'yup';
-import { adopt } from 'react-adopt';
 import _get from 'lodash/get';
 import {
     Wizard,
@@ -10,10 +9,11 @@ import {
     Gender,
     Birthday,
 } from '@laguro/the-bright-side-components';
-import { Flex } from '@laguro/basic-components';
+import { Flex, Loading } from '@laguro/basic-components';
 import { getIdQueryClient, updateInsuranceInfoMutation } from './queries';
-import cookies from 'browser-cookies';
 import { Query, Mutation } from 'react-apollo';
+import { RedirectErrorPage } from '../GeneralErrorPage';
+import { adopt } from 'react-adopt';
 
 const progressSteps = [
     '1 REGISTRATION',
@@ -63,11 +63,41 @@ const steps = [
     },
 ];
 
+const Composed = adopt({
+    getIdQueryClient: ({ render }) => {
+        return <Query query={getIdQueryClient}>{render}</Query>;
+    },
+    updateInsuranceInfoMutation: ({ render }) => {
+        return (
+            <Mutation mutation={updateInsuranceInfoMutation}>{render}</Mutation>
+        );
+    },
+});
+
 const Step0 = props => (
-    <Insurance
-        {...props}
-        onSkip={() => props.history.push(`/kiosk/confirmation`)}
-    />
+    <Composed>
+        {({ getIdQueryClient, updateInsuranceInfoMutation }) => (
+            <Insurance
+                {...props}
+                onSkip={() => {
+                    updateInsuranceInfoMutation({
+                        variables: {
+                            input: {
+                                userId: _get(
+                                    getIdQueryClient,
+                                    'data.activeUser.id'
+                                ),
+                                insuranceInfo: {
+                                    useInsurance: false,
+                                },
+                            },
+                        },
+                    });
+                    props.history.push(`/kiosk/confirmation`);
+                }}
+            />
+        )}
+    </Composed>
 );
 
 const Step1 = props => <Address {...props} />;
@@ -114,7 +144,7 @@ const KioskInsurancePage = componentProps => {
                 }
 
                 if (errorUserQueryClient) {
-                    return <GeneralErrorPage />;
+                    return <RedirectErrorPage />;
                 }
                 const userId = _get(dataIdQueryClient, 'activeUser.id');
 
@@ -169,6 +199,10 @@ const KioskInsurancePage = componentProps => {
                                         input: formattedValues,
                                     },
                                 });
+
+                                componentProps.history.push(
+                                    '/kiosk/confirmation'
+                                );
                             };
                             return (
                                 <Fragment>

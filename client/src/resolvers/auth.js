@@ -1,5 +1,4 @@
 import cookies from 'browser-cookies';
-import { gql } from 'apollo-boost';
 import { ACTIVE_USER } from '../util/strings';
 
 let user = cookies.get('user');

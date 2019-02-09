@@ -165,7 +165,25 @@ const KioskRegistrationPage = Loadable({
 
 const KioskBookAnAppointmentPage = Loadable({
     loader: () =>
-        import('./pages/KioskBookAnAppointmentPage' /* webpackChunkName: "kioskBookAnAppointmentPage" */),
+        import('./pages/KioskBookAnAppointmentPage/BookAppointment' /* webpackChunkName: "kioskBookAnAppointmentPage" */),
+    loading: () => null,
+});
+
+const KioskReasonOfVisitPage = Loadable({
+    loader: () =>
+        import('./pages/KioskBookAnAppointmentPage/ReasonOfVisit' /* webpackChunkName: "kioskBookAnAppointmentPage" */),
+    loading: () => null,
+});
+
+const KioskSelectProcedurePage = Loadable({
+    loader: () =>
+        import('./pages/KioskBookAnAppointmentPage/SelectProcedure' /* webpackChunkName: "kioskBookAnAppointmentPage" */),
+    loading: () => null,
+});
+
+const KioskBookingConfirmationPage = Loadable({
+    loader: () =>
+        import('./pages/KioskBookingConfirmationPage' /* webpackChunkName: "kioskBookingConfirmationPage" */),
     loading: () => null,
 });
 
@@ -193,9 +211,16 @@ const KioskCheckInPage = Loadable({
     loading: () => null,
 });
 
+
 const KioskDentistProfilePage = Loadable({
     loader: () =>
         import('./pages/KioskDentistProfilePage' /* webpackChunkName: "kioskDentistProfilePage" */),
+    loading: () => null,
+  });
+
+const KioskMedicalHistoryFormConfirmationPage = Loadable({
+    loader: () =>
+        import('./pages/KioskMedicalHistoryFormPage/Confirmation' /* webpackChunkName: "kioskMedicalHistoryFormConfirmationPage" */),
     loading: () => null,
 });
 
@@ -367,10 +392,31 @@ class App extends Component {
                                                 }
                                             />
                                             <Route
-                                                path="/kiosk/book-an-appointment"
+                                                path="/kiosk/book-appointment"
                                                 exact
                                                 component={
                                                     KioskBookAnAppointmentPage
+                                                }
+                                            />
+                                            <Route
+                                                path="/kiosk/reason-of-visit"
+                                                exact
+                                                component={
+                                                    KioskReasonOfVisitPage
+                                                }
+                                            />
+                                            <Route
+                                                path="/kiosk/select-procedure"
+                                                exact
+                                                component={
+                                                    KioskSelectProcedurePage
+                                                }
+                                            />
+                                            <Route
+                                                path="/kiosk/booking-confirmation/:id"
+                                                exact
+                                                component={
+                                                    KioskBookingConfirmationPage
                                                 }
                                             />
                                             <Route
@@ -381,15 +427,23 @@ class App extends Component {
                                                 }
                                             />
                                             <Route
+                                                path="/kiosk/medical-history-form-confirmation"
+                                                exact
+                                                component={
+                                                    KioskMedicalHistoryFormConfirmationPage
+                                                }
+                                            />
+                                            <Route
                                                 path="/kiosk/insurance"
                                                 exact
                                                 component={KioskInsurancePage}
                                             />
                                             <Route
-                                                path="/kiosk/check-in"
+                                                path="/kiosk/check-in/:id"
                                                 exact
                                                 component={KioskCheckInPage}
                                             />
+
                                             <Route
                                                 path="/kiosk/confirmation"
                                                 exact

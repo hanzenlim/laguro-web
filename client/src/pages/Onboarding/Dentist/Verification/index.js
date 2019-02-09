@@ -6,7 +6,6 @@ import { gql } from 'apollo-boost';
 import { Query, compose, withApollo } from 'react-apollo';
 import * as Yup from 'yup';
 import DocumentUploaderInput from '../../../../../src/pages/common/Forms/UserVerification/components/DocumentUploaderInput';
-import { Loading } from '../../../../components';
 import { RedirectErrorPage } from '../../../../pages/GeneralErrorPage';
 
 class DocumentUploaderInputContainer extends PureComponent {
@@ -160,9 +159,6 @@ const render = props => {
 };
 
 class RenderDentistOnboarding extends Component {
-    constructor(props) {
-        super(props);
-    }
     render() {
         return (
             <Wizard
