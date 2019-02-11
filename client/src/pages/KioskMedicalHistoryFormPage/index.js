@@ -25,6 +25,10 @@ const Composed = adopt({
 });
 
 const KioskMedicalHistoryFormPage = props => {
+    const handleSkip = () => {
+        props.history.push(`/kiosk/insurance`);
+    };
+
     return (
         <Composed>
             {({ updatePatientHealthData }) => {
@@ -85,6 +89,7 @@ const KioskMedicalHistoryFormPage = props => {
                                     props.history.push(`/kiosk/insurance`);
                                 }
                             }}
+                            onSkip={handleSkip}
                         />
                     </Fragment>
                 );
