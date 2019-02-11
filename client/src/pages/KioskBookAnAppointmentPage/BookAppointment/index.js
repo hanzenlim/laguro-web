@@ -153,6 +153,9 @@ class KioskBookAnAppointmentPage extends Component {
                                 }`,
                                 rating: dent.averageRating,
                                 imageUrl: dent.user.imageUrl,
+                                appointmentDuration:
+                                    dent.firstAppointmentDuration,
+                                procedures: dent.procedures.map(p => p.name),
                             }))
                         )
                     );
