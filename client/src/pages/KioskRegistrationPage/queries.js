@@ -17,6 +17,9 @@ export const LOGIN = gql`
                 middleName
                 lastName
                 hasSubmittedHealthHistoryForm
+                insuranceInfo {
+                    useInsurance
+                }
                 appointments(
                     options: {
                         sortKey: "${END_TIME}",

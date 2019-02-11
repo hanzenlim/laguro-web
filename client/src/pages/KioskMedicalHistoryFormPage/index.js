@@ -4,8 +4,8 @@ import {
     Progress,
 } from '@laguro/the-bright-side-components';
 import { adopt } from 'react-adopt';
-import { UPDATE_PATIENT_HEALTH_DATA } from './queries';
-import { Mutation } from 'react-apollo';
+import { UPDATE_PATIENT_HEALTH_DATA, ACTIVE_USER } from './queries';
+import { Query, Mutation } from 'react-apollo';
 import cookies from 'browser-cookies';
 import _get from 'lodash/get';
 
@@ -17,6 +17,9 @@ const progressSteps = [
 ];
 
 const Composed = adopt({
+    activeUser: ({ render }) => {
+        return <Query query={ACTIVE_USER}>{render}</Query>;
+    },
     updatePatientHealthData: ({ render }) => {
         return (
             <Mutation mutation={UPDATE_PATIENT_HEALTH_DATA}>{render}</Mutation>
@@ -31,7 +34,8 @@ const KioskMedicalHistoryFormPage = props => {
 
     return (
         <Composed>
-            {({ updatePatientHealthData }) => {
+            {({ updatePatientHealthData, activeUser }) => {
+                console.log(activeUser);
                 return (
                     <Fragment>
                         {/* TODO: Move progress to a parent component */}
@@ -41,6 +45,10 @@ const KioskMedicalHistoryFormPage = props => {
                             percent={22.5}
                         />
                         <HealthHistoryForm
+                            canSkip={_get(
+                                activeUser,
+                                'data.activeUser.inusranceInfo'
+                            )}
                             onFinishForm={async values => {
                                 const valuesKeys = Object.keys(values);
 
