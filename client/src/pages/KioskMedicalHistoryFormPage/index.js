@@ -8,6 +8,7 @@ import { UPDATE_PATIENT_HEALTH_DATA, ACTIVE_USER } from './queries';
 import { Query, Mutation } from 'react-apollo';
 import cookies from 'browser-cookies';
 import _get from 'lodash/get';
+import _isEmpty from 'lodash/isEmpty';
 
 const progressSteps = [
     '1 REGISTRATION',
@@ -35,7 +36,6 @@ const KioskMedicalHistoryFormPage = props => {
     return (
         <Composed>
             {({ updatePatientHealthData, activeUser }) => {
-                console.log(activeUser);
                 return (
                     <Fragment>
                         {/* TODO: Move progress to a parent component */}
@@ -45,9 +45,11 @@ const KioskMedicalHistoryFormPage = props => {
                             percent={22.5}
                         />
                         <HealthHistoryForm
-                            canSkip={_get(
-                                activeUser,
-                                'data.activeUser.inusranceInfo'
+                            canSkip={_isEmpty(
+                                _get(
+                                    activeUser,
+                                    'data.activeUser.inusranceInfo'
+                                )
                             )}
                             onFinishForm={async values => {
                                 const valuesKeys = Object.keys(values);

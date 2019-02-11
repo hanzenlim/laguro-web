@@ -8,6 +8,7 @@ import {
     Address,
     Gender,
     Birthday,
+    PreviousButton,
 } from '@laguro/the-bright-side-components';
 import { Flex, Loading } from '@laguro/basic-components';
 import { getIdQueryClient, updateInsuranceInfoMutation } from './queries';
@@ -217,12 +218,22 @@ const KioskInsurancePage = componentProps => {
                                             handleSubmit(values)
                                         }
                                         Form="form"
-                                        render={props =>
-                                            render({
-                                                ...props,
-                                                ...componentProps,
-                                            })
-                                        }
+                                        render={props => (
+                                            <React.Fragment>
+                                                {props.actions.canGoBack && (
+                                                    <PreviousButton
+                                                        goToPreviousStep={
+                                                            props.actions
+                                                                .goToPreviousStep
+                                                        }
+                                                    />
+                                                )}
+                                                {render({
+                                                    ...props,
+                                                    ...componentProps,
+                                                })}
+                                            </React.Fragment>
+                                        )}
                                         steps={steps}
                                     />
                                 </Fragment>

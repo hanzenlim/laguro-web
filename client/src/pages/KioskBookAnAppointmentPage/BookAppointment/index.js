@@ -4,6 +4,7 @@ import {
     AppointmentSelection,
     Terms,
     Progress,
+    PreviousButton,
 } from '@laguro/the-bright-side-components';
 import { adopt } from 'react-adopt';
 import _flatten from 'lodash/flatten';
@@ -257,9 +258,18 @@ class KioskBookAnAppointmentPage extends Component {
                                 }
                             }}
                             Form="form"
-                            render={props =>
-                                render({ ...props, ...componentProps })
-                            }
+                            render={props => (
+                                <React.Fragment>
+                                    {props.actions.canGoBack && (
+                                        <PreviousButton
+                                            goToPreviousStep={
+                                                props.actions.goToPreviousStep
+                                            }
+                                        />
+                                    )}
+                                    {render({ ...props, ...componentProps })}
+                                </React.Fragment>
+                            )}
                             steps={steps}
                         />
                     </Fragment>

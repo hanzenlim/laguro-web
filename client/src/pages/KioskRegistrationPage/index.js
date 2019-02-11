@@ -8,6 +8,7 @@ import {
     PurposeOfVisit,
     Verification,
     GetPatientName,
+    PreviousButton,
 } from '@laguro/the-bright-side-components';
 import { Flex } from '@laguro/basic-components';
 import {
@@ -277,7 +278,18 @@ const KioskOnboardingPage = componentProps => {
             <Wizard
                 onSubmit={value => console.log(value)}
                 Form="form"
-                render={props => render({ ...props, ...componentProps })}
+                render={props => (
+                    <React.Fragment>
+                        {props.actions.canGoBack && (
+                            <PreviousButton
+                                goToPreviousStep={
+                                    props.actions.goToPreviousStep
+                                }
+                            />
+                        )}
+                        {render({ ...props, ...componentProps })}
+                    </React.Fragment>
+                )}
                 steps={steps}
             />
         </Fragment>
