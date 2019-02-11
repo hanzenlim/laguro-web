@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import * as Yup from 'yup';
 import _get from 'lodash/get';
 import { adopt } from 'react-adopt';
 import {
@@ -47,9 +48,12 @@ const steps = [
     },
     {
         id: '1',
-        validationSchema: {},
+        validationSchema: Yup.object().shape({
+            isPinValid: Yup.boolean().oneOf([true], 'Pin must be valid'),
+        }),
         component: null,
         initialValues: {
+            isPinValid: false,
             emailOrPhoneNumber: '',
             isCodeSent: false,
             code: '',
@@ -167,6 +171,10 @@ const Step1 = props => (
                     }}
                     // TODO: Refactor
                     onSubmitPinCode={() => {
+                        if (!props.formikProps.values.isPinValid) {
+                            return;
+                        }
+
                         const user = JSON.parse(cookies.get('user'));
 
                         let upcomingAppointments = [];
