@@ -31,6 +31,7 @@ import isEmpty from 'lodash/isEmpty';
 class KioskBookAnAppointmentPage extends Component {
     render() {
         const componentProps = this.props;
+        const { officeId } = queryString.parse(this.props.location.search)
         const ApptSelectionComposed = adopt({
             getOneOfficeWithActiveDentistsWithAppointmentSlots: ({
                 render,
@@ -38,7 +39,7 @@ class KioskBookAnAppointmentPage extends Component {
                 return (
                     <Query
                         variables={{
-                            id: '0def98c0-2b43-11e9-89f4-cdb87d822282',
+                            id: officeId,
                         }}
                         query={GET_OFFICE}
                     >

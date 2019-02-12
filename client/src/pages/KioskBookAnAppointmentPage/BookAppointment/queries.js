@@ -51,7 +51,7 @@ export const GET_OFFICE = gql`
                             .utc()
                             .add(4, 'days')
                             .format()}",
-                        officeId: "0def98c0-2b43-11e9-89f4-cdb87d822282"
+                        officeId: $id
                     }
                 ) {
                     startTime

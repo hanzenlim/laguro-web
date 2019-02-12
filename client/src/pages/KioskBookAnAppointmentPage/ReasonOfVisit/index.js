@@ -52,9 +52,11 @@ class KioskBookAnAppointmentPage extends Component {
                 <Progress step={2} steps={progressSteps} percent={22.5} />
                 <Wizard
                     onSubmit={values =>
+                        // This officeId is the officeId of bell dental office in prod
+                        // https://www.laguro.com/office/e91ba710-2b37-11e9-998e-9da6024c6b32
                         values[0].reasonOfVisit === 'Exam/Check up/Cleaning'
                             ? this.props.history.push(
-                                  `/kiosk/book-appointment?reasonOfVisit=Exam/Check up/Cleaning`
+                                  `/kiosk/book-appointment?reasonOfVisit=Exam/Check up/Cleaning&officeId=e91ba710-2b37-11e9-998e-9da6024c6b32`
                               )
                             : this.props.history.push('/kiosk/select-procedure')
                     }
