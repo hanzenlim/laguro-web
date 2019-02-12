@@ -1,9 +1,6 @@
-import React, { Component, PureComponent } from 'react';
-import { Wizard, Numbers, Pictures } from '@laguro/the-bright-side-components';
+import React, { PureComponent } from 'react';
 import _get from 'lodash/get';
-import { gql } from 'apollo-boost';
-import { Query, compose, withApollo } from 'react-apollo';
-import * as Yup from 'yup';
+import { Query } from 'react-apollo';
 import DocumentUploaderInput from '../../../../../../src/pages/common/Forms/UserVerification/components/DocumentUploaderInput';
 import { RedirectErrorPage } from '../../../../../pages/GeneralErrorPage';
 import { getFileStackPolicySignatureQuery } from './queries';

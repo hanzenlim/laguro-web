@@ -1,15 +1,13 @@
-import React, { Component, PureComponent } from 'react';
+import React, { Component } from 'react';
 import {
     Wizard,
     Numbers,
     Pictures,
     PreviousButton,
 } from '@laguro/the-bright-side-components';
-import styled from 'styled-components';
-import { Flex, Box } from '@laguro/basic-components';
+import { Flex } from '@laguro/basic-components';
 import _get from 'lodash/get';
 import _pick from 'lodash/pick';
-import _isString from 'lodash/isString';
 import _isEmpty from 'lodash/isEmpty';
 import { Query, Mutation, compose, withApollo } from 'react-apollo';
 import * as Yup from 'yup';
@@ -23,13 +21,7 @@ import {
     saveUploadedImagesMutation,
 } from './queries';
 import { documentKinds } from '../../../../staticData/documentTypeList';
-
-const StyledPreviousButtonContainer = styled(Box)`
-    && .onboarding-previous-button {
-        position: absolute;
-        top: 140px;
-    }
-`;
+import { StyledPreviousButtonContainer } from '../../common';
 
 // these names will be used for backend calls as well
 const DENTIST_PHOTO_ID_FORM_ITEM_NAME = 'dentistPhotoId';

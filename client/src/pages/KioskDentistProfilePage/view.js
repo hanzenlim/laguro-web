@@ -10,12 +10,7 @@ const defaultProps = {
     onCreate: () => {},
 };
 
-const progressSteps = [
-    '1 REGISTRATION',
-    '2 DENTIST PROFILE',
-    '3 VERIFICATION',
-    '4 PAYMENT METHOD',
-];
+const progressSteps = ['1 DENTIST PROFILE', '2 Verification'];
 
 const KioskDentistProfileView = ({ onCreate }) => (
     <Fragment>
