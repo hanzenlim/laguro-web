@@ -211,6 +211,13 @@ const KioskCheckInPage = Loadable({
     loading: () => null,
 });
 
+
+const KioskDentistProfilePage = Loadable({
+    loader: () =>
+        import('./pages/KioskDentistProfilePage' /* webpackChunkName: "kioskDentistProfilePage" */),
+    loading: () => null,
+  });
+
 const KioskMedicalHistoryFormConfirmationPage = Loadable({
     loader: () =>
         import('./pages/KioskMedicalHistoryFormPage/Confirmation' /* webpackChunkName: "kioskMedicalHistoryFormConfirmationPage" */),
@@ -443,6 +450,13 @@ class App extends Component {
                                                 component={
                                                     KioskConfirmationPage
                                                 }
+                                            />
+                                            <PrivateRoute
+                                                path="/kiosk/dentist-profile"
+                                                component={
+                                                    KioskDentistProfilePage
+                                                }
+                                                isUserLoggedIn={data.activeUser}
                                             />
                                             <Route component={Error404Page} />
                                         </Switch>
