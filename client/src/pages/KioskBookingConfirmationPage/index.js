@@ -3,7 +3,7 @@ import {
     BookingConfirmation,
     Progress,
 } from '@laguro/the-bright-side-components';
-import { Flex } from '@laguro/basic-components';
+import { Flex, Loading } from '@laguro/basic-components';
 import { GET_APPOINTMENT } from './queries';
 import { Query } from 'react-apollo';
 import { adopt } from 'react-adopt';
@@ -38,6 +38,10 @@ const KioskBookingConfirmationPage = props => {
     return (
         <Composed>
             {({ getAppointment }) => {
+                if (_get(getAppointment, 'loading')) {
+                    return <Loading />;
+                }
+
                 const data = _get(getAppointment, 'data.getAppointment');
 
                 const localStartTime = _get(data, 'localStartTime');
@@ -67,7 +71,7 @@ const KioskBookingConfirmationPage = props => {
                             <BookingConfirmation
                                 imageUrl={imageUrl}
                                 date={moment(localStartTime).format(
-                                    'ddd, M/D, YYYY'
+                                    'MMM D, YYYY'
                                 )}
                                 rating={totalRating || 0}
                                 time={moment(localStartTime).format('h:mm A')}
