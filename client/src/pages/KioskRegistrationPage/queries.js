@@ -3,7 +3,7 @@ import { STATUS, ACTIVE, END_TIME } from '../../util/strings';
 import moment from 'moment';
 
 export const SEND_KIOSK_LOGIN_CODE = gql`
-    mutation sendKioskLoginCode($input: SendKioskLoginCodeInput!) {
+    mutation sendKioskLoginCode($input: SendLoginCodeInput!) {
         sendKioskLoginCode(input: $input)
     }
 `;
