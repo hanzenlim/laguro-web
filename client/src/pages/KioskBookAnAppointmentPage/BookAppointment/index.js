@@ -175,10 +175,19 @@ class KioskBookAnAppointmentPage extends Component {
                     this.dentistTimes = dentistTimes;
 
                     return (
-                        <AppointmentSelection
-                            {...props}
-                            dentistTimes={dentistTimes}
-                        />
+                        <Flex height="100%">
+                            <PreviousButton
+                                goToPreviousStep={() => {
+                                    this.props.history.push(
+                                        '/kiosk/reason-of-visit'
+                                    );
+                                }}
+                            />
+                            <AppointmentSelection
+                                {...props}
+                                dentistTimes={dentistTimes}
+                            />
+                        </Flex>
                     );
                 }}
             </ApptSelectionComposed>
