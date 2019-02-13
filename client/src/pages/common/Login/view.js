@@ -147,6 +147,11 @@ const Step0 = props => (
                                 'data.login.user'
                             );
 
+                            const patientDocumentFromLoginMutation = _get(
+                                userFromLoginMutation,
+                                'patientDocument'
+                            );
+
                             if (isEmpty(userFromLoginMutation.firstName)) {
                                 props.push(
                                     `/onboarding/name-and-persona${
@@ -161,6 +166,33 @@ const Step0 = props => (
                             ) {
                                 props.push(
                                     `/onboarding/dentist/profile${
+                                        history.location.search
+                                    }`
+                                );
+                                props.closeModal();
+                                return null;
+                            } else if (
+                                isEmpty(
+                                    _get(
+                                        patientDocumentFromLoginMutation,
+                                        'dentistPhotoId'
+                                    )
+                                ) ||
+                                isEmpty(
+                                    _get(
+                                        patientDocumentFromLoginMutation,
+                                        'warranty'
+                                    )
+                                ) ||
+                                isEmpty(
+                                    _get(
+                                        patientDocumentFromLoginMutation,
+                                        'stateDentalLicense'
+                                    )
+                                )
+                            ) {
+                                props.push(
+                                    `/onboarding/dentist/verification${
                                         history.location.search
                                     }`
                                 );

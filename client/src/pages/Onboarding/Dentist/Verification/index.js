@@ -50,11 +50,15 @@ const steps = [
     {
         id: '0',
         validationSchema: Yup.object().shape({
-            [SSN_FORM_ITEM_NAME]: Yup.string().matches(/^\d{9}$/),
-            [DEA_FORM_ITEM_NAME]: Yup.string().matches(
-                /^[A-Z][A-Z9][0-9]{7}(-\w+)?/
-            ),
-            [NPI_NUM_FORM_ITEM_NAME]: Yup.string().matches(/^[0-9]{10}(-\w+)?/),
+            [SSN_FORM_ITEM_NAME]: Yup.string()
+                .required('You must provide SSN')
+                .concat(Yup.string().matches(/^\d{9}$/)),
+            [DEA_FORM_ITEM_NAME]: Yup.string()
+                .required('You must provide DEA')
+                .concat(Yup.string().matches(/^[A-Z][A-Z9][0-9]{7}(-\w+)?/)),
+            [NPI_NUM_FORM_ITEM_NAME]: Yup.string()
+                .required('You must provide NPI')
+                .concat(Yup.string().matches(/^[0-9]{10}(-\w+)?/)),
         }),
     },
     {
