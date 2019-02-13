@@ -4,7 +4,6 @@ import {
     Numbers,
     Pictures,
     PreviousButton,
-    Progress,
 } from '@laguro/the-bright-side-components';
 import { Flex, Box } from '@laguro/basic-components';
 import _get from 'lodash/get';
@@ -33,8 +32,6 @@ const NPI_NUM_FORM_ITEM_NAME = 'npiNum';
 const DENTIST_PHOTO_ID_FORM_ITEM_NAME = 'dentistPhotoId';
 const WARRANTY_FORM_ITEM_NAME = 'warranty'; // malpractice insurance
 const STATE_DENTAL_LICENSE_FORM_ITEM_NAME = 'stateDentalLicense';
-
-const progressSteps = ['1 DENTIST PROFILE', '2 Verification'];
 
 const Composed = adopt({
     activeUserResponse: ({ render }) => {
@@ -154,18 +151,13 @@ class RenderDentistOnboarding extends Component {
         return (
             <Composed>
                 {({ activeUserResponse, requestDentistVerification }) => (
-                    <Box mt={48}>
-                        <Progress
-                            step={2}
-                            steps={progressSteps}
-                            percent={100}
-                        />
+                    <Box mt={140}>
                         <Wizard
                             render={props => (
                                 <React.Fragment>
                                     {props.actions.canGoBack && (
                                         <StyledPreviousButtonContainer
-                                            top={100}
+                                            top={172}
                                         >
                                             <PreviousButton
                                                 goToPreviousStep={
@@ -260,7 +252,7 @@ class RenderDentistOnboarding extends Component {
                                     this.props.location.search
                                 );
 
-                                this.props.history.push(redirectTo);
+                                this.props.history.push(redirectTo || '/');
                             }}
                             steps={steps}
                         />

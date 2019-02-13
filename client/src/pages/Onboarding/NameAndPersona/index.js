@@ -133,11 +133,11 @@ const KioskNameAndPersonaPage = componentProps => {
                     const { redirectTo } = queryString.parse(
                         componentProps.location.search
                     );
-                    let nextUrl = redirectTo;
+
+                    let nextUrl = redirectTo || '/';
 
                     switch (objectOfValues.persona) {
                         case 'patient':
-                            nextUrl = redirectTo;
                             break;
                         case 'dentist':
                             nextUrl = `/onboarding/dentist/profile/${
@@ -148,7 +148,7 @@ const KioskNameAndPersonaPage = componentProps => {
                             nextUrl = '/host-onboarding/add-office/';
                             break;
                         default:
-                            nextUrl = redirectTo;
+                            nextUrl = redirectTo || '/';
                     }
 
                     componentProps.history.push(nextUrl);
