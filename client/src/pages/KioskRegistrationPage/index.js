@@ -43,9 +43,15 @@ const progressSteps = [
 const steps = [
     {
         id: '0',
-        validationSchema: {},
+        validationSchema: {
+            purposeOfVisit: Yup.string().required(
+                'You must select your purpose of visit.'
+            ),
+        },
         component: null,
-        initialValues: {},
+        initialValues: {
+            purposeOfVisit: 'walkIn',
+        },
     },
     {
         id: '1',
