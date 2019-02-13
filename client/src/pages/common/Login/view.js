@@ -92,7 +92,7 @@ const Step0 = props => (
                         if (isEmail) {
                             input.email = username;
                         } else {
-                            input.phoneNumber = username;
+                            input.phoneNumber = `+1${username}`;;
                         }
 
                         try {
