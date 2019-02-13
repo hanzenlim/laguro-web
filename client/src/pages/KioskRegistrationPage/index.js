@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import * as Yup from 'yup';
 import _get from 'lodash/get';
+import _isEmpty from 'lodash/isEmpty';
 import { adopt } from 'react-adopt';
 import {
     Wizard,
@@ -43,11 +44,11 @@ const progressSteps = [
 const steps = [
     {
         id: '0',
-        validationSchema: {
+        validationSchema: Yup.object().shape({
             purposeOfVisit: Yup.string().required(
                 'You must select your purpose of visit.'
             ),
-        },
+        }),
         component: null,
         initialValues: {
             purposeOfVisit: 'walkIn',
@@ -68,7 +69,11 @@ const steps = [
     },
     {
         id: '2',
-        validationSchema: {},
+        validationSchema: Yup.object().shape({
+            firstName: Yup.string().required(),
+            middleName: Yup.string().required(),
+            lastName: Yup.string().required(),
+        }),
         component: null,
         initialValues: {
             firstName: '',
@@ -229,6 +234,10 @@ const Step2 = props => {
                     <GetPatientName
                         {...props}
                         onNext={async values => {
+                            if (!_isEmpty(props.formikProps.errors)) {
+                                return;
+                            }
+
                             let user = cookies.get('user');
                             if (user) {
                                 user = JSON.parse(user);
@@ -244,6 +253,7 @@ const Step2 = props => {
                                     },
                                 },
                             });
+
                             props.history.push(`/kiosk/reason-of-visit`);
                         }}
                     />
