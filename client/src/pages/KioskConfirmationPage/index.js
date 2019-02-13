@@ -4,14 +4,18 @@ import { Flex, Loading } from '@laguro/basic-components';
 import { withApollo } from 'react-apollo';
 import { onKioskLogout } from '../../util/authUtils';
 import { Query } from 'react-apollo';
-import { ACTIVE_USER } from './queries';
+import { GET_USER } from './queries';
 import _get from 'lodash/get';
 import { adopt } from 'react-adopt';
 import GeneralErrorPage from '../../pages/GeneralErrorPage';
 
 const Composed = adopt({
-    activeUser: ({ render }) => {
-        return <Query query={ACTIVE_USER}>{render}</Query>;
+    getUser: ({ render, patientId }) => {
+        return (
+            <Query query={GET_USER} variables={{ id: patientId }}>
+                {render}
+            </Query>
+        );
     },
 });
 
@@ -25,18 +29,19 @@ const getValues = data => {
 };
 
 const KioskConfirmationPage = props => {
+    const patientId = _get(props, 'match.params.id');
+
     return (
-        <Composed>
-            {({ activeUser }) => {
-                if (_get(activeUser, 'loading')) {
+        <Composed patientId={patientId}>
+            {({ getUser }) => {
+                if (_get(getUser, 'loading')) {
                     return <Loading />;
                 }
-
-                if (!_get(activeUser, 'data.activeUser')) {
+                if (!_get(getUser, 'data.getUser.id')) {
                     return <GeneralErrorPage />;
                 }
 
-                const values = getValues(_get(activeUser, 'data.activeUser'));
+                const values = getValues(_get(getUser, 'data.getUser'));
 
                 return (
                     <Flex justifyContent="center" mt="100px">

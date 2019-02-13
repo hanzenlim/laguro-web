@@ -211,12 +211,11 @@ const KioskCheckInPage = Loadable({
     loading: () => null,
 });
 
-
 const KioskDentistProfilePage = Loadable({
     loader: () =>
         import('./pages/KioskDentistProfilePage' /* webpackChunkName: "kioskDentistProfilePage" */),
     loading: () => null,
-  });
+});
 
 const KioskMedicalHistoryFormConfirmationPage = Loadable({
     loader: () =>
@@ -445,7 +444,7 @@ class App extends Component {
                                             />
 
                                             <Route
-                                                path="/kiosk/confirmation"
+                                                path="/kiosk/confirmation/:id"
                                                 exact
                                                 component={
                                                     KioskConfirmationPage

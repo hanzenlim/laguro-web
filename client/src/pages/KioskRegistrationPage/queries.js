@@ -57,6 +57,7 @@ export const UPDATE_USER = gql`
         updateUser(input: $input) {
             id
             firstName
+            lastName
         }
     }
 `;

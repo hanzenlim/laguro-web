@@ -81,20 +81,19 @@ const Step0 = props => (
             <Insurance
                 {...props}
                 onSkip={() => {
+                    const userId = _get(getIdQueryClient, 'data.activeUser.id');
+
                     updateInsuranceInfoMutation({
                         variables: {
                             input: {
-                                userId: _get(
-                                    getIdQueryClient,
-                                    'data.activeUser.id'
-                                ),
+                                userId,
                                 insuranceInfo: {
                                     useInsurance: false,
                                 },
                             },
                         },
                     });
-                    props.history.push(`/kiosk/confirmation`);
+                    props.history.push(`/kiosk/confirmation/${userId}`);
                 }}
             />
         )}
