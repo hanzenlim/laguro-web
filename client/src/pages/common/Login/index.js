@@ -1,182 +1,82 @@
 import React from 'react';
 import { Alert } from 'antd';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import _get from 'lodash/get';
-import {
-    Button,
-    Box,
-    Container,
-    Flex,
-    Text,
-    Link,
-    Responsive,
-} from '../../../components';
-import { withScreenSizes } from '../../../components/Responsive';
-import LocalLoginForm from '../Forms/LocalLoginForm';
 
-const { Mobile, TabletDesktop } = Responsive;
+import { Box, Flex, Responsive, Image, Text } from '../../../components';
+import { withScreenSizes } from '../../../components/Responsive';
+import loginModalImage from '../../../images/loginmodal.png';
+import StandaloneLoginView from './view';
+
+const { TabletDesktop } = Responsive;
 
 const Login = ({
-    login,
-    openRegistrationModal,
-    openForgotPassModal,
     message,
     location,
-    isSubmitting,
+    openForgotPassModal,
+    closeModal,
+    openRegistrationModal,
+    history,
 }) => {
-    const loginWithGoogle = (
-        <Button
-            bg="button.googleBlue"
-            height="50px"
-            borderRadius="7px"
-            type="default"
-            block
-            icon="google"
-            fontSize={1}
-            onClick={() => {
-                window.location.href = '/auth/google';
-            }}
-        >
-            Login with Google
-        </Button>
-    );
-
-    const search = _get(location, 'search');
-
     return (
-        <Box>
+        <Box height="100%">
             <TabletDesktop>
-                <Flex
-                    flexDirection="column"
-                    justifyContent="space-around"
-                    alignItems="center"
-                    px={15}
-                >
+                <Flex flexDirection="row" height="100%">
                     {message && <Alert message={message} type="info" />}
-                    <Text fontWeight="bold" fontSize={5}>
-                        log in
-                    </Text>
-                    <Flex width={1} my={30} justifyContent="space-around">
-                        <Flex
-                            width={210}
-                            flexDirection="column"
-                            justifyContent="center"
-                        >
-                            {loginWithGoogle}
-                        </Flex>
-                        <Flex
-                            border={'1px solid'}
-                            borderColor="divider.gray"
-                            width={0}
-                            flexDirection="column"
-                            justifyContent="center"
-                            mx={60}
-                        >
-                            <Flex
-                                border={'1px solid'}
-                                borderColor="divider.gray"
-                                borderRadius={25}
-                                height={50}
-                                width={50}
-                                ml={-25}
-                                bg="background.white"
-                                alignItems="center"
-                                justifyContent="center"
-                            >
-                                <Text fontWeight="bold">or</Text>
-                            </Flex>
-                        </Flex>
-                        <Box width={210}>
-                            <LocalLoginForm
-                                onSuccess={login}
-                                isSubmitting={isSubmitting}
+                    <Box flex={1} borderRadius={4}>
+                        <Image
+                            src={loginModalImage}
+                            alt="Laguro login"
+                            width={443}
+                            height={664}
+                            borderRadius={4}
+                        />
+                    </Box>
+                    <Flex flex={1} p={20} mt={34} flexDirection="column">
+                        <Box width="100%" flex={9}>
+                            <StandaloneLoginView
+                                closeModal={closeModal}
+                                push={history.push}
                             />
                         </Box>
-                    </Flex>
-                    <Flex>
-                        <Link
-                            to={{ hash: '#', search: _get(location, 'search') }}
-                            onClick={openRegistrationModal}
-                            width={140}
+                        <Flex
+                            textAlign="center"
+                            justifyContent="center"
+                            mb={20}
+                            flex={1}
                         >
-                            <Text
-                                color="text.blue"
-                                textAlign="right"
-                                fontWeight="bold"
+                            <Link
+                                to={{
+                                    hash: '#',
+                                    search: _get(location, 'search'),
+                                }}
+                                onClick={openRegistrationModal}
+                                width={140}
                             >
-                                register now
-                            </Text>
-                        </Link>
-                        <Text color="text.black">&nbsp;|&nbsp;</Text>
-                        <Link
-                            to={{ hash: '#', search: _get(location, 'search') }}
-                            onClick={openForgotPassModal}
-                            width={140}
-                        >
-                            <Text color="text.black" fontWeight="bold">
-                                forgot password?
-                            </Text>
-                        </Link>
-                    </Flex>
-                </Flex>
-            </TabletDesktop>
-            <Mobile>
-                <Container>
-                    <Flex
-                        flexDirection="column"
-                        justifyContent="space-around"
-                        alignItems="center"
-                        position="relative"
-                        px={15}
-                        pt={68}
-                        pb={42}
-                    >
-                        {message && (
-                            <Box
-                                width={['100%', '', 'auto']}
-                                position={['absolute', '', 'auto']}
-                                top={6}
-                                left={0}
-                            >
-                                <Alert message={message} type="info" />
-                            </Box>
-                        )}
-                        <Text pb={70} fontWeight="bold" fontSize={4}>
-                            log in
-                        </Text>
-                        <Box width={232} mb={34}>
-                            <LocalLoginForm
-                                onSuccess={login}
-                                isSubmitting={isSubmitting}
-                            />
-                        </Box>
-                        <Flex justifyContent="center">
-                            <Link to={`/register${search}`}>
-                                <Text color="text.blue" fontSize={1}>
-                                    REGISTER NOW
+                                <Text
+                                    color="text.blue"
+                                    textAlign="right"
+                                    fontWeight="bold"
+                                >
+                                    register now
                                 </Text>
                             </Link>
-                        </Flex>
-                        <Flex justifyContent="center" mb={36}>
+                            <Text color="text.black">&nbsp;|&nbsp;</Text>
                             <Link
-                                to={`/forgot-password${search}`}
+                                to={{
+                                    hash: '#',
+                                    search: _get(location, 'search'),
+                                }}
                                 onClick={openForgotPassModal}
                             >
-                                <Text color="text.black" fontSize={0}>
+                                <Text color="text.black" fontWeight="bold">
                                     forgot password?
                                 </Text>
                             </Link>
                         </Flex>
-                        <Flex
-                            width={232}
-                            flexDirection="column"
-                            justifyContent="center"
-                        >
-                            {loginWithGoogle}
-                        </Flex>
                     </Flex>
-                </Container>
-            </Mobile>
+                </Flex>
+            </TabletDesktop>
         </Box>
     );
 };

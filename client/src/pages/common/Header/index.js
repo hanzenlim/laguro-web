@@ -71,7 +71,7 @@ class HeaderContainer extends PureComponent {
             <Query query={getUserQuery}>
                 {({ loading, error, data, client }) => {
                     if (loading) {
-                        return <HeaderView />;
+                        return <div />;
                     }
 
                     if (error) {

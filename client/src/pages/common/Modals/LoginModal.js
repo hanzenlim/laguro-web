@@ -19,7 +19,8 @@ const LoginModal = ({
         onCancel={closeModal}
         destroyOnClose={true}
         visible={visible}
-        width={570}
+        width={886}
+        bodyStyle={{ height: 664, padding: 0 }}
         closable={closable}
     >
         <Login
@@ -29,6 +30,7 @@ const LoginModal = ({
             message={message}
             location={location}
             isSubmitting={isSubmitting}
+            closeModal={closeModal}
         />
     </Modal>
 );
