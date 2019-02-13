@@ -10,7 +10,7 @@ import { adopt } from 'react-adopt';
 import _get from 'lodash/get';
 import moment from 'moment';
 import { withApollo } from 'react-apollo';
-import cookies from 'browser-cookies';
+import { onKioskLogout } from '../../util/authUtils';
 
 const progressSteps = [
     '1 REGISTRATION',
@@ -81,15 +81,7 @@ const KioskBookingConfirmationPage = props => {
                                         hasSubmittedHealthHistoryForm &&
                                         hasGoneThroughInsurancePage
                                     ) {
-                                        props.client.writeData({
-                                            data: { activeUser: null },
-                                        });
-                                        
-                                        cookies.erase('user');
-
-                                        props.history.push(
-                                            '/kiosk/registration'
-                                        );
+                                        onKioskLogout(props.client);
                                     } else {
                                         props.history.push(
                                             '/kiosk/medical-history-form'

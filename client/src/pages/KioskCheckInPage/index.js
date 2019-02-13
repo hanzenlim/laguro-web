@@ -7,7 +7,7 @@ import { adopt } from 'react-adopt';
 import _get from 'lodash/get';
 import moment from 'moment';
 import { withApollo } from 'react-apollo';
-import cookies from 'browser-cookies';
+import { onKioskLogout } from '../../util/authUtils';
 
 const KioskCheckInPage = props => {
     const appointmentId = _get(props, 'match.params.id');
@@ -56,13 +56,7 @@ const KioskCheckInPage = props => {
                             doctorName={`Dr. ${firstName} ${lastName}`}
                             onNext={() => {
                                 if (hasSubmittedHealthHistoryForm) {
-                                    props.client.writeData({
-                                        data: { activeUser: null },
-                                    });
-
-                                    cookies.erase('user');
-
-                                    props.history.push('/kiosk/registration');
+                                    onKioskLogout(props.client);
                                 } else {
                                     props.history.push(
                                         '/kiosk/medical-history-form'

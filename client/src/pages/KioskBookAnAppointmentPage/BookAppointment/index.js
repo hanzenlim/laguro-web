@@ -5,6 +5,7 @@ import {
     Terms,
     Progress,
     PreviousButton,
+    Onboarding,
 } from '@laguro/the-bright-side-components';
 import { adopt } from 'react-adopt';
 import _flatten from 'lodash/flatten';
@@ -15,8 +16,8 @@ import {
     CREATE_PATIENT_APPOINTMENT_ONBOARDING,
     GET_ACTIVE_USER,
 } from './queries';
-import { Query, Mutation } from 'react-apollo';
-import { Flex, Text } from '@laguro/basic-components';
+import { Query, Mutation, withApollo } from 'react-apollo';
+import { Flex, Text, Loading } from '@laguro/basic-components';
 import * as Yup from 'yup';
 import moment from 'moment';
 import _random from 'lodash/random';
@@ -24,14 +25,14 @@ import _range from 'lodash/range';
 import _sampleSize from 'lodash/sampleSize';
 import _sample from 'lodash/sample';
 import faker from 'faker';
-import { Loading } from '../../../components';
 import { RedirectErrorPage } from '../../GeneralErrorPage';
 import isEmpty from 'lodash/isEmpty';
+import { onKioskLogout } from '../../../util/authUtils';
 
 class KioskBookAnAppointmentPage extends Component {
     render() {
         const componentProps = this.props;
-        const { officeId } = queryString.parse(this.props.location.search)
+        const { officeId } = queryString.parse(this.props.location.search);
         const ApptSelectionComposed = adopt({
             getOneOfficeWithActiveDentistsWithAppointmentSlots: ({
                 render,
@@ -138,7 +139,16 @@ class KioskBookAnAppointmentPage extends Component {
 
                     if (isEmpty(activeDentistsWithAppointmentSlots)) {
                         return (
-                            <Text> There are no appointments available </Text>
+                            <Flex flexDirection="column" alignItems="center">
+                                <Text mb="6px">
+                                    There are no appointments available
+                                </Text>
+                                <Onboarding.NextButton
+                                    onClick={() => onKioskLogout(props.client)}
+                                >
+                                    Log out
+                                </Onboarding.NextButton>
+                            </Flex>
                         );
                     }
 
@@ -280,4 +290,4 @@ class KioskBookAnAppointmentPage extends Component {
     }
 }
 
-export default KioskBookAnAppointmentPage;
+export default withApollo(KioskBookAnAppointmentPage);

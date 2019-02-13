@@ -2,6 +2,7 @@ import { message } from 'antd';
 import history from '../history';
 import request from './fetchUtil';
 import { ACTIVE_USER } from './strings';
+import cookies from 'browser-cookies';
 
 export const onLogin = (clientCache, values) =>
     request('/api/login', {
@@ -87,6 +88,12 @@ export const onLogout = clientCache => {
     }).then(() => {
         history.push('/');
     });
+};
+
+export const onKioskLogout = async clientCache => {
+    clientCache.writeData({ data: { activeUser: null } });
+    cookies.erase('user');
+    history.push('/kiosk/registration');
 };
 
 export const openLoginModal = clientCache => {
