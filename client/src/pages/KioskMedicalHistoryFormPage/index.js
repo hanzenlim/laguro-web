@@ -81,7 +81,6 @@ const KioskMedicalHistoryFormPage = props => {
                                     },
                                 });
 
-                                // TODO: Confirm with sam why return value of insuranceInfo is always null
                                 const data = _get(
                                     result,
                                     'data.updatePatientHealthData'
@@ -89,7 +88,7 @@ const KioskMedicalHistoryFormPage = props => {
 
                                 const hasGoneThroughInsurancePage = _get(
                                     data,
-                                    'patient.insuranceInfo'
+                                    'insuranceInfo'
                                 );
 
                                 if (hasGoneThroughInsurancePage) {
