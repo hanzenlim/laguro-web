@@ -3,6 +3,10 @@ import { Query, Mutation } from 'react-apollo';
 import get from 'lodash/get';
 import cookies from 'browser-cookies';
 
+import {
+    serializePhoneNumber,
+    deserializedPhoneNumber,
+} from '../../../../util/phoneNumberUtil';
 import UpdateProfileFormView from './view';
 import { Loading } from '../../../../components';
 import { RedirectErrorPage } from '../../../../pages/GeneralErrorPage';
@@ -86,7 +90,9 @@ class UpdateProfileContainer extends PureComponent {
                                             firstName,
                                             middleName,
                                             lastName,
-                                            phoneNumber,
+                                            phoneNumber: deserializedPhoneNumber(
+                                                phoneNumber
+                                            ),
                                             smsNotification:
                                                 notificationSettings.general
                                                     .sms,
@@ -108,7 +114,9 @@ class UpdateProfileContainer extends PureComponent {
                                                 firstName: values.firstName,
                                                 middleName: values.middleName,
                                                 lastName: values.lastName,
-                                                phoneNumber: values.phoneNumber,
+                                                phoneNumber: serializePhoneNumber(
+                                                    values.phoneNumber
+                                                ),
                                                 notificationSettings: {
                                                     general: {
                                                         sms:
