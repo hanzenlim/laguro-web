@@ -4,14 +4,16 @@ import {
     Numbers,
     Pictures,
     PreviousButton,
+    Progress,
 } from '@laguro/the-bright-side-components';
-import { Flex } from '@laguro/basic-components';
+import { Flex, Box } from '@laguro/basic-components';
 import _get from 'lodash/get';
 import _pick from 'lodash/pick';
 import _isEmpty from 'lodash/isEmpty';
 import { Query, Mutation, compose, withApollo } from 'react-apollo';
 import * as Yup from 'yup';
 import { adopt } from 'react-adopt';
+import queryString from 'query-string';
 import DocumentUploaderInputContainer from './DocumentUploaderInputContainer';
 import {
     requestDentistVerificationMutation,
@@ -23,10 +25,16 @@ import {
 import { documentKinds } from '../../../../staticData/documentTypeList';
 import { StyledPreviousButtonContainer } from '../../common';
 
+const SSN_FORM_ITEM_NAME = 'ssn';
+const DEA_FORM_ITEM_NAME = 'dea'; // malpractice insurance
+const NPI_NUM_FORM_ITEM_NAME = 'npiNum';
+
 // these names will be used for backend calls as well
 const DENTIST_PHOTO_ID_FORM_ITEM_NAME = 'dentistPhotoId';
 const WARRANTY_FORM_ITEM_NAME = 'warranty'; // malpractice insurance
 const STATE_DENTAL_LICENSE_FORM_ITEM_NAME = 'stateDentalLicense';
+
+const progressSteps = ['1 DENTIST PROFILE', '2 Verification'];
 
 const Composed = adopt({
     activeUserResponse: ({ render }) => {
@@ -44,7 +52,13 @@ const Composed = adopt({
 const steps = [
     {
         id: '0',
-        validationSchema: Yup.object().shape({}),
+        validationSchema: Yup.object().shape({
+            [SSN_FORM_ITEM_NAME]: Yup.string().matches(/^\d{9}$/),
+            [DEA_FORM_ITEM_NAME]: Yup.string().matches(
+                /^[A-Z][A-Z9][0-9]{7}(-\w+)?/
+            ),
+            [NPI_NUM_FORM_ITEM_NAME]: Yup.string().matches(/^[0-9]{10}(-\w+)?/),
+        }),
     },
     {
         id: '1',
@@ -140,105 +154,117 @@ class RenderDentistOnboarding extends Component {
         return (
             <Composed>
                 {({ activeUserResponse, requestDentistVerification }) => (
-                    <Wizard
-                        render={props => (
-                            <React.Fragment>
-                                {props.actions.canGoBack && (
-                                    <StyledPreviousButtonContainer>
-                                        <PreviousButton
-                                            goToPreviousStep={
-                                                props.actions.goToPreviousStep
-                                            }
-                                        />
-                                    </StyledPreviousButtonContainer>
-                                )}
-                                {render({
-                                    ...props,
-                                    client: this.props.client,
-                                })}
-                            </React.Fragment>
-                        )}
-                        onSubmit={async objectOfObjectOfStepValues => {
-                            const objectOfValues = Object.values(
-                                objectOfObjectOfStepValues
-                            ).reduce((objectOfValues, currentObject) => ({
-                                ...objectOfValues,
-                                ...currentObject,
-                            }));
+                    <Box mt={48}>
+                        <Progress
+                            step={2}
+                            steps={progressSteps}
+                            percent={100}
+                        />
+                        <Wizard
+                            render={props => (
+                                <React.Fragment>
+                                    {props.actions.canGoBack && (
+                                        <StyledPreviousButtonContainer
+                                            top={100}
+                                        >
+                                            <PreviousButton
+                                                goToPreviousStep={
+                                                    props.actions
+                                                        .goToPreviousStep
+                                                }
+                                            />
+                                        </StyledPreviousButtonContainer>
+                                    )}
+                                    {render({
+                                        ...props,
+                                        client: this.props.client,
+                                    })}
+                                </React.Fragment>
+                            )}
+                            onSubmit={async objectOfObjectOfStepValues => {
+                                const objectOfValues = Object.values(
+                                    objectOfObjectOfStepValues
+                                ).reduce((objectOfValues, currentObject) => ({
+                                    ...objectOfValues,
+                                    ...currentObject,
+                                }));
 
-                            const { ssn, dea, npiNum } = objectOfValues;
-                            if (
-                                !_isEmpty(ssn) ||
-                                !_isEmpty(dea) ||
-                                !_isEmpty(npiNum)
-                            ) {
-                                await requestDentistVerification({
-                                    variables: {
-                                        input: {
-                                            dentistId:
-                                                activeUserResponse.data
-                                                    .activeUser.dentistId,
-                                            deaRegistrationNumber: dea,
-                                            npiNumber: npiNum,
-                                            ssnOrEinOrTin: ssn,
+                                const { ssn, dea, npiNum } = objectOfValues;
+                                if (
+                                    !_isEmpty(ssn) ||
+                                    !_isEmpty(dea) ||
+                                    !_isEmpty(npiNum)
+                                ) {
+                                    await requestDentistVerification({
+                                        variables: {
+                                            input: {
+                                                dentistId:
+                                                    activeUserResponse.data
+                                                        .activeUser.dentistId,
+                                                deaRegistrationNumber: dea,
+                                                npiNumber: npiNum,
+                                                ssnOrEinOrTin: ssn,
+                                            },
                                         },
-                                    },
-                                });
-                            }
-
-                            const documents = _pick(objectOfValues, [
-                                DENTIST_PHOTO_ID_FORM_ITEM_NAME,
-                                STATE_DENTAL_LICENSE_FORM_ITEM_NAME,
-                                WARRANTY_FORM_ITEM_NAME,
-                            ]);
-
-                            // eslint-disable-next-line
-                            debugger;
-                            if (!_isEmpty(documents)) {
-                                let existingPatientDocument = await this.fetchUserDocuments(
-                                    activeUserResponse.data.activeUser.id
-                                );
-                                if (!existingPatientDocument) {
-                                    existingPatientDocument = await this.props.createPatientDocument(
-                                        {
-                                            patientId:
-                                                activeUserResponse.data
-                                                    .activeUser.id,
-                                        }
-                                    );
-                                    existingPatientDocument =
-                                        existingPatientDocument.data
-                                            .createPatientDocument;
+                                    });
                                 }
 
-                                const uploadResults = Object.keys(
-                                    documents
-                                ).map(async documentKind => {
-                                    const kindDocuments =
-                                        documents[documentKind];
+                                const documents = _pick(objectOfValues, [
+                                    DENTIST_PHOTO_ID_FORM_ITEM_NAME,
+                                    STATE_DENTAL_LICENSE_FORM_ITEM_NAME,
+                                    WARRANTY_FORM_ITEM_NAME,
+                                ]);
 
-                                    // now only requiring front side of dentist photo id
-                                    if (
-                                        documentKind ===
-                                        DENTIST_PHOTO_ID_FORM_ITEM_NAME
-                                    ) {
-                                        kindDocuments[0].side = 'front';
+                                if (!_isEmpty(documents)) {
+                                    let existingPatientDocument = await this.fetchUserDocuments(
+                                        activeUserResponse.data.activeUser.id
+                                    );
+                                    if (!existingPatientDocument) {
+                                        existingPatientDocument = await this.props.createPatientDocument(
+                                            {
+                                                patientId:
+                                                    activeUserResponse.data
+                                                        .activeUser.id,
+                                            }
+                                        );
+                                        existingPatientDocument =
+                                            existingPatientDocument.data
+                                                .createPatientDocument;
                                     }
 
-                                    await this.props.saveUploadedImages({
-                                        id: existingPatientDocument.id,
-                                        documentList: kindDocuments,
-                                        documentType: documentKind,
+                                    const uploadResults = Object.keys(
+                                        documents
+                                    ).map(async documentKind => {
+                                        const kindDocuments =
+                                            documents[documentKind];
+
+                                        // now only requiring front side of dentist photo id
+                                        if (
+                                            documentKind ===
+                                            DENTIST_PHOTO_ID_FORM_ITEM_NAME
+                                        ) {
+                                            kindDocuments[0].side = 'front';
+                                        }
+
+                                        await this.props.saveUploadedImages({
+                                            id: existingPatientDocument.id,
+                                            documentList: kindDocuments,
+                                            documentType: documentKind,
+                                        });
                                     });
-                                });
 
-                                await Promise.all(uploadResults);
-                            }
+                                    await Promise.all(uploadResults);
+                                }
 
-                            // redirect to previous url here
-                        }}
-                        steps={steps}
-                    />
+                                const { redirectTo } = queryString.parse(
+                                    this.props.location.search
+                                );
+
+                                this.props.history.push(redirectTo);
+                            }}
+                            steps={steps}
+                        />
+                    </Box>
                 )}
             </Composed>
         );

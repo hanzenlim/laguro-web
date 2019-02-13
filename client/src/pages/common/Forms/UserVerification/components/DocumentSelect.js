@@ -114,7 +114,10 @@ class SelectDocument extends React.Component {
         } = this.props;
 
         return (
-            <DocumentUploadSelector onClick={onClick}>
+            <DocumentUploadSelector
+                className="documentSelect-documentUploadSelector"
+                onClick={onClick}
+            >
                 {url ? (
                     <DocumentPreview className="documentSelect-documentPreview">
                         <DeleteIcon onClick={onDeleteDocument} />

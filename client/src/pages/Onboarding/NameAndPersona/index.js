@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import { adopt } from 'react-adopt';
 import _isEmpty from 'lodash/isEmpty';
 import {
@@ -8,7 +8,7 @@ import {
     PersonaSelection,
 } from '@laguro/the-bright-side-components';
 import * as Yup from 'yup';
-import { Flex } from '@laguro/basic-components';
+import { Flex, Box } from '@laguro/basic-components';
 import { UPDATE_USER } from './queries';
 import cookies from 'browser-cookies';
 import { Mutation } from 'react-apollo';
@@ -105,7 +105,7 @@ const render = props => {
 
 const KioskNameAndPersonaPage = componentProps => {
     return (
-        <Fragment>
+        <Box pt={48}>
             <Wizard
                 Form="form"
                 render={props => (
@@ -145,9 +145,7 @@ const KioskNameAndPersonaPage = componentProps => {
                             }`;
                             break;
                         case 'host':
-                            nextUrl = `/host-onboarding/add-office/${
-                                componentProps.location.search
-                            }`;
+                            nextUrl = '/host-onboarding/add-office/';
                             break;
                         default:
                             nextUrl = redirectTo;
@@ -157,7 +155,7 @@ const KioskNameAndPersonaPage = componentProps => {
                 }}
                 steps={steps}
             />
-        </Fragment>
+        </Box>
     );
 };
 

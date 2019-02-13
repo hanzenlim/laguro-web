@@ -385,7 +385,7 @@ class App extends Component {
                                                 component={PrivacyPage}
                                             />
                                             <PrivateRoute
-                                                path="/onboarding/denitst/verification"
+                                                path="/onboarding/dentist/verification"
                                                 component={
                                                     DentistOnboardingVerification
                                                 }

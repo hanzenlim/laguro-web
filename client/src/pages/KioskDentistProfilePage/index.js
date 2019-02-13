@@ -82,6 +82,12 @@ class KioskDentistProfilePage extends Component {
                         } catch (error) {
                             console.log(error.message);
                         }
+
+                        this.props.history.push(
+                            `/onboarding/dentist/verification${
+                                this.props.location.search
+                            }`
+                        );
                     };
 
                     return <KioskDentistProfileView onCreate={onCreate} />;
