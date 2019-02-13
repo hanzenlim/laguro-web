@@ -60,7 +60,7 @@ const KioskCheckInPage = props => {
                                         data: { activeUser: null },
                                     });
 
-                                    cookies.set('user', '');
+                                    cookies.erase('user');
 
                                     props.history.push('/kiosk/registration');
                                 } else {

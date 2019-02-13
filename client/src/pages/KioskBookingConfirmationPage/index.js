@@ -84,8 +84,8 @@ const KioskBookingConfirmationPage = props => {
                                         props.client.writeData({
                                             data: { activeUser: null },
                                         });
-
-                                        cookies.set('user', '');
+                                        
+                                        cookies.erase('user');
 
                                         props.history.push(
                                             '/kiosk/registration'
