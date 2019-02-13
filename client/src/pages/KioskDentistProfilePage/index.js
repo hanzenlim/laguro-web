@@ -31,7 +31,6 @@ class KioskDentistProfilePage extends Component {
                                 languages,
                                 procedureList,
                                 profilePicture,
-                                time,
                             } = get(values, ['1'], {});
                             const { about } = get(values, ['2'], {});
                             const { dentistInsurance } = get(values, ['3'], {});
