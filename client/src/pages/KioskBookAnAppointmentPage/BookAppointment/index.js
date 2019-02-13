@@ -28,6 +28,7 @@ import faker from 'faker';
 import { RedirectErrorPage } from '../../GeneralErrorPage';
 import isEmpty from 'lodash/isEmpty';
 import { onKioskLogout } from '../../../util/authUtils';
+import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
 
 class KioskBookAnAppointmentPage extends Component {
     render() {
@@ -164,7 +165,8 @@ class KioskBookAnAppointmentPage extends Component {
                                     dent.user.lastName
                                 }`,
                                 rating: dent.averageRating,
-                                imageUrl: dent.user.imageUrl,
+                                imageUrl:
+                                    dent.user.imageUrl || defaultUserImage,
                                 appointmentDuration:
                                     dent.firstAppointmentDuration,
                                 procedures: dent.procedures.map(p => p.name),
@@ -183,6 +185,7 @@ class KioskBookAnAppointmentPage extends Component {
                                     );
                                 }}
                             />
+
                             <AppointmentSelection
                                 {...props}
                                 dentistTimes={dentistTimes}
