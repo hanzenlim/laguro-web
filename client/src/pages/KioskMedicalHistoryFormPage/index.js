@@ -48,7 +48,7 @@ const KioskMedicalHistoryFormPage = props => {
                             canSkip={_isEmpty(
                                 _get(
                                     activeUser,
-                                    'data.activeUser.inusranceInfo'
+                                    'data.activeUser.insuranceInfo'
                                 )
                             )}
                             onFinishForm={async values => {
@@ -81,6 +81,7 @@ const KioskMedicalHistoryFormPage = props => {
                                     },
                                 });
 
+                                // TODO: Confirm with sam why return value of insuranceInfo is always null
                                 const data = _get(
                                     result,
                                     'data.updatePatientHealthData'
