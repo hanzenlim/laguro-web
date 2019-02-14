@@ -154,6 +154,8 @@ const Step1 = props => (
                                     'isPinValid',
                                     true
                                 );
+                            } else {
+                                return;
                             }
 
                             const user = {
@@ -178,42 +180,39 @@ const Step1 = props => (
                                     },
                                 },
                             });
+
+                            let upcomingAppointments = [];
+                            if (_get(user, 'appointments')) {
+                                upcomingAppointments = _get(
+                                    user,
+                                    'appointments'
+                                );
+                            }
+
+                            const purposeOfVisit = _get(
+                                props,
+                                'values[0].purposeOfVisit'
+                            );
+
+                            if (
+                                purposeOfVisit === 'checkIn' &&
+                                upcomingAppointments.length
+                            ) {
+                                props.history.push(
+                                    `/kiosk/check-in/${_get(
+                                        upcomingAppointments,
+                                        '[0].id'
+                                    )}`
+                                );
+                            } else if (user.firstName) {
+                                props.history.push(`/kiosk/reason-of-visit`);
+                            }
                         } catch (error) {
                             message.error(error.graphQLErrors[0].message);
                         }
                     }}
-                    // TODO: Refactor
-                    onSubmitPinCode={() => {
-                        if (!props.formikProps.values.isPinValid) {
-                            return;
-                        }
-
-                        const user = JSON.parse(cookies.get('user'));
-
-                        let upcomingAppointments = [];
-                        if (_get(user, 'appointments')) {
-                            upcomingAppointments = _get(user, 'appointments');
-                        }
-
-                        const purposeOfVisit = _get(
-                            props,
-                            'values[0].purposeOfVisit'
-                        );
-
-                        if (
-                            purposeOfVisit === 'checkIn' &&
-                            upcomingAppointments.length
-                        ) {
-                            props.history.push(
-                                `/kiosk/check-in/${_get(
-                                    upcomingAppointments,
-                                    '[0].id'
-                                )}`
-                            );
-                        } else if (user.firstName) {
-                            props.history.push(`/kiosk/reason-of-visit`);
-                        }
-                    }}
+                    // TODO: Deprecate this in tbs
+                    onSubmitPinCode={() => {}}
                 />
             );
         }}
