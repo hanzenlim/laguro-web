@@ -11,6 +11,7 @@ import {
     PreviousButton,
 } from '@laguro/the-bright-side-components';
 import { Flex, Loading } from '@laguro/basic-components';
+import _isEmpty from 'lodash/isEmpty';
 import { getIdQueryClient, updateInsuranceInfoMutation } from './queries';
 import { Query, Mutation } from 'react-apollo';
 import { RedirectErrorPage } from '../GeneralErrorPage';
@@ -172,6 +173,7 @@ const KioskInsurancePage = componentProps => {
                                     patientZIP,
                                     insuranceProvider,
                                     insuranceProviderId,
+                                    planOrGroupNumber,
                                 } = combinedObject;
                                 const formattedValues = {
                                     userId: userId,
@@ -189,8 +191,9 @@ const KioskInsurancePage = componentProps => {
                                         insuranceProvider,
                                         insuranceProviderId,
                                         policyHolderId: patientInsuranceNum,
-                                        planOrGroupNumber:
-                                            'putPlanOrGroupNumberHere',
+                                        ...(!_isEmpty(planOrGroupNumber) && {
+                                            planOrGroupNumber: planOrGroupNumber,
+                                        }),
                                     },
                                 };
 
