@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
 import * as Yup from 'yup';
 import _get from 'lodash/get';
-import _isEmpty from 'lodash/isEmpty';
 import { adopt } from 'react-adopt';
 import {
     Wizard,
@@ -233,7 +232,7 @@ const Step2 = props => {
                     <GetPatientName
                         {...props}
                         onNext={async values => {
-                            if (!_isEmpty(props.formikProps.errors)) {
+                            if (Object.values(values).includes('')) {
                                 return;
                             }
 
