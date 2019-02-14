@@ -201,7 +201,7 @@ const KioskInsurancePage = componentProps => {
                                 });
 
                                 componentProps.history.push(
-                                    '/kiosk/confirmation'
+                                    `/kiosk/confirmation/${userId}`
                                 );
                             };
                             return (
