@@ -11,10 +11,10 @@ class KioskBookAnAppointmentPage extends Component {
         const steps = [
             {
                 id: '0',
-                // validationSchema: {},
+                validationSchema: {},
                 component: null,
                 initialValues: {
-                    reasonOfVisit: '',
+                    reasonOfVisit: 'Exam/Check up/Cleaning',
                 },
             },
         ];
