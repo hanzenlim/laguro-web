@@ -26,7 +26,7 @@ export const GET_OFFICE = gql`
                         .format()}", 
                     rangeEnd: "${moment()
                         .utc()
-                        .add(4, 'days')
+                        .add(14, 'days')
                         .format()}"
                 }
             ) {
@@ -49,7 +49,7 @@ export const GET_OFFICE = gql`
                             .format()}", 
                         rangeEnd: "${moment()
                             .utc()
-                            .add(4, 'days')
+                            .add(14, 'days')
                             .format()}",
                         officeId: $id
                     }
