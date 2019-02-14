@@ -46,6 +46,7 @@ export const getActiveUserQuery = gql`
             dentistId
             isDentist
             isHost
+            token
         }
     }
 `;
