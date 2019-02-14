@@ -64,7 +64,41 @@ const steps = [
     {
         id: '1',
         initialValues: {},
-        validationSchema: Yup.object().shape({}),
+        validationSchema: Yup.object().shape({
+            [DENTIST_PHOTO_ID_FORM_ITEM_NAME]: Yup.array()
+                .of(
+                    Yup.object()
+                        .shape({
+                            url: Yup.string().required(
+                                'You must provide a photo id'
+                            ),
+                        })
+                        .required()
+                )
+                .required(),
+            [WARRANTY_FORM_ITEM_NAME]: Yup.array()
+                .of(
+                    Yup.object()
+                        .shape({
+                            url: Yup.string().required(
+                                'You must provide a proof of malpractice insurance'
+                            ),
+                        })
+                        .required()
+                )
+                .required(),
+            [STATE_DENTAL_LICENSE_FORM_ITEM_NAME]: Yup.array()
+                .of(
+                    Yup.object()
+                        .shape({
+                            url: Yup.string().required(
+                                'You must provide a proof of dental license'
+                            ),
+                        })
+                        .required()
+                )
+                .required(),
+        }),
     },
 ];
 
