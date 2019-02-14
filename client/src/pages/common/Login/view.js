@@ -130,10 +130,7 @@ const Step0 = props => (
                                 variables: {
                                     input: {
                                         activeUser: {
-                                            ..._get(
-                                                loginResult,
-                                                'data.login.user'
-                                            ),
+                                            ...user,
                                         },
                                     },
                                 },
