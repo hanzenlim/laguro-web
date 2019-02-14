@@ -45,6 +45,17 @@ export const LOGIN = gql`
                     startTime
                     status
                 }
+                patientDocument {
+                    dentistPhotoId {
+                        url
+                    }
+                    warranty {
+                        url
+                    }
+                    stateDentalLicense {
+                        url
+                    }
+                }
             }
             authToken {
                 body

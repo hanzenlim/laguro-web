@@ -9,6 +9,8 @@ import { Mutation } from 'react-apollo';
 import { message } from 'antd';
 import isEmpty from 'lodash/isEmpty';
 
+import history from '../../../history';
+
 import {
     SEND_KIOSK_LOGIN_CODE,
     LOGIN,
@@ -92,7 +94,7 @@ const Step0 = props => (
                         if (isEmail) {
                             input.email = username;
                         } else {
-                            input.phoneNumber = `+1${username}`;;
+                            input.phoneNumber = `+1${username}`;
                         }
 
                         try {
@@ -101,12 +103,6 @@ const Step0 = props => (
                                     input,
                                 },
                             });
-
-                            if (isEmpty(loginResult)) {
-                                props.push('/onboarding/name-and-persona');
-
-                                return null;
-                            }
 
                             const isPinValid = _get(
                                 loginResult,
@@ -142,6 +138,67 @@ const Step0 = props => (
                                     },
                                 },
                             });
+
+                            // eslint-disable-next-line
+                            debugger;
+
+                            const userFromLoginMutation = _get(
+                                loginResult,
+                                'data.login.user'
+                            );
+
+                            const patientDocumentFromLoginMutation = _get(
+                                userFromLoginMutation,
+                                'patientDocument'
+                            );
+
+                            if (isEmpty(userFromLoginMutation.firstName)) {
+                                props.push(
+                                    `/onboarding/name-and-persona${
+                                        history.location.search
+                                    }`
+                                );
+
+                                props.closeModal();
+                                return null;
+                            } else if (
+                                isEmpty(userFromLoginMutation.dentistId)
+                            ) {
+                                props.push(
+                                    `/onboarding/dentist/profile${
+                                        history.location.search
+                                    }`
+                                );
+                                props.closeModal();
+                                return null;
+                            } else if (
+                                isEmpty(
+                                    _get(
+                                        patientDocumentFromLoginMutation,
+                                        'dentistPhotoId'
+                                    )
+                                ) ||
+                                isEmpty(
+                                    _get(
+                                        patientDocumentFromLoginMutation,
+                                        'warranty'
+                                    )
+                                ) ||
+                                isEmpty(
+                                    _get(
+                                        patientDocumentFromLoginMutation,
+                                        'stateDentalLicense'
+                                    )
+                                )
+                            ) {
+                                props.push(
+                                    `/onboarding/dentist/verification${
+                                        history.location.search
+                                    }`
+                                );
+                                props.closeModal();
+                                return null;
+                            }
 
                             return props.closeModal();
                         } catch (error) {

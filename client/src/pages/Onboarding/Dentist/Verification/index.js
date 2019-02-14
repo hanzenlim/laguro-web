@@ -1,125 +1,70 @@
-import React, { Component, PureComponent } from 'react';
-import { Wizard, Numbers, Pictures } from '@laguro/the-bright-side-components';
-import { Flex } from '@laguro/basic-components';
+import React, { Component } from 'react';
+import {
+    Wizard,
+    Numbers,
+    Pictures,
+    PreviousButton,
+} from '@laguro/the-bright-side-components';
+import { Flex, Box } from '@laguro/basic-components';
 import _get from 'lodash/get';
-import { gql } from 'apollo-boost';
-import { Query, compose, withApollo } from 'react-apollo';
+import _pick from 'lodash/pick';
+import _isEmpty from 'lodash/isEmpty';
+import { Query, Mutation, compose, withApollo } from 'react-apollo';
 import * as Yup from 'yup';
-import DocumentUploaderInput from '../../../../../src/pages/common/Forms/UserVerification/components/DocumentUploaderInput';
-import { RedirectErrorPage } from '../../../../pages/GeneralErrorPage';
+import { adopt } from 'react-adopt';
+import queryString from 'query-string';
+import DocumentUploaderInputContainer from './DocumentUploaderInputContainer';
+import {
+    requestDentistVerificationMutation,
+    getIdQueryClient,
+    queryPatientDocumentQuery,
+    createPatientDocumentMutation,
+    saveUploadedImagesMutation,
+} from './queries';
+import { documentKinds } from '../../../../staticData/documentTypeList';
+import { StyledPreviousButtonContainer } from '../../common';
 
-class DocumentUploaderInputContainer extends PureComponent {
-    constructor(props) {
-        super(props);
-        this.signedURLs = {};
-    }
+const SSN_FORM_ITEM_NAME = 'ssn';
+const DEA_FORM_ITEM_NAME = 'dea'; // malpractice insurance
+const NPI_NUM_FORM_ITEM_NAME = 'npiNum';
 
-    fetchSignedURL = async url => {
-        const { signedURLs } = this;
-        if (signedURLs[url]) {
-            return signedURLs[url];
-        }
+// these names will be used for backend calls as well
+const DENTIST_PHOTO_ID_FORM_ITEM_NAME = 'dentistPhotoId';
+const WARRANTY_FORM_ITEM_NAME = 'warranty'; // malpractice insurance
+const STATE_DENTAL_LICENSE_FORM_ITEM_NAME = 'stateDentalLicense';
 
-        this.signedURLs[url] = await this.generateImageSignature(url);
-
-        return this.signedURLs[url];
-    };
-
-    async generateImageSignature(url) {
-        // Extracting the file handle from the urlArr. The urlArr has this format https://cdn.filestackcontent.com/yF9AgWbSTHyWbMGZDiow
-        const viewPolicySignature = await this.getViewPolicySignature(
-            url.split('/')[3]
-        );
-
-        const {
-            policy,
-            signature,
-        } = viewPolicySignature.getFileStackPolicySignature;
-
-        return `${url}?policy=${policy}&signature=${signature}`;
-    }
-
-    async getViewPolicySignature(handle) {
-        const { client } = this.props;
-        const viewPolicySignature = await client.query({
-            query: gql(getFileStackPolicySignatureQuery2),
-            variables: {
-                type: 'view',
-                handle,
-            },
-        });
-
-        return _get(viewPolicySignature, 'data');
-    }
-
-    render() {
+const Composed = adopt({
+    activeUserResponse: ({ render }) => {
+        return <Query query={getIdQueryClient}>{render}</Query>;
+    },
+    requestDentistVerification: ({ render }) => {
         return (
-            <Query
-                query={getFileStackPolicySignatureQuery}
-                variables={{
-                    type: 'upload',
-                }}
-            >
-                {({ loading, error, data: filestackData }) => {
-                    if (error) return <RedirectErrorPage />;
-                    if (!loading) {
-                        const uploadPolicySignature =
-                            filestackData.getFileStackPolicySignature;
-                        return (
-                            <DocumentUploaderInput
-                                fetchSignedURL={this.fetchSignedURL}
-                                uploadPolicySignature={uploadPolicySignature}
-                                {...this.props}
-                            />
-                        );
-                    }
-
-                    return null;
-                }}
-            </Query>
+            <Mutation mutation={requestDentistVerificationMutation}>
+                {render}
+            </Mutation>
         );
-    }
-}
-
-const getFileStackPolicySignatureQuery = gql`
-    query($type: String!, $handle: String) {
-        getFileStackPolicySignature(type: $type, handle: $handle) {
-            signature
-            policy
-        }
-    }
-`;
-
-const getFileStackPolicySignatureQuery2 = `
-    query($type: String!, $handle: String) {
-        getFileStackPolicySignature(type: $type, handle: $handle) {
-            signature
-            policy
-        }
-    }
-`;
+    },
+});
 
 const steps = [
     {
         id: '0',
         validationSchema: Yup.object().shape({
-            // ssn: Yup.string().required('SSN is required'),
-            // dea: Yup.string().required('DEA reg num is required'),
-            // npiNum: Yup.string().required('NPI num is required'),
+            [SSN_FORM_ITEM_NAME]: Yup.string()
+                .required('You must provide SSN')
+                .concat(Yup.string().matches(/^\d{9}$/)),
+            [DEA_FORM_ITEM_NAME]: Yup.string()
+                .required('You must provide DEA')
+                .concat(Yup.string().matches(/^[A-Z][A-Z9][0-9]{7}(-\w+)?/)),
+            [NPI_NUM_FORM_ITEM_NAME]: Yup.string()
+                .required('You must provide NPI')
+                .concat(Yup.string().matches(/^[0-9]{10}(-\w+)?/)),
         }),
     },
     {
         id: '1',
         initialValues: {},
-        validationSchema: Yup.object().shape({
-            // driversLicense: Yup.string().required('SSN is required'),
-            // malpractice: Yup.string().required('DEA reg num is required'),
-            // dentalLicense: Yup.string().required('NPI num is required'),
-        }),
-    },
-    {
-        id: '2',
-        initialValues: {},
+        validationSchema: Yup.object().shape({}),
     },
 ];
 
@@ -132,7 +77,6 @@ const Step1 = props => (
         )}
     />
 );
-const Step2 = props => <div />;
 
 const render = props => {
     let step = null;
@@ -143,9 +87,6 @@ const render = props => {
             break;
         case '1':
             step = Step1(props);
-            break;
-        case '2':
-            step = Step2(props);
             break;
         default:
             step = Step1(props);
@@ -159,16 +100,175 @@ const render = props => {
 };
 
 class RenderDentistOnboarding extends Component {
+    // Fetch all documents
+    // Request signatures for those relevant
+    async fetchUserDocuments(userId) {
+        const { client } = this.props;
+
+        const {
+            data: { queryPatientDocument },
+        } = await client.query({
+            query: queryPatientDocumentQuery,
+            variables: {
+                input: {
+                    partitionKey: 'patientId',
+                    partitionValue: userId,
+                },
+            },
+            fetchPolicy: 'network-only',
+        });
+
+        if (_get(queryPatientDocument, '[0]')) {
+            const {
+                id,
+                patientInsurance,
+                ...restFields
+            } = queryPatientDocument[0];
+            // normalize documents format
+            const normalizedDocData = await Object.keys(
+                _pick(restFields, documentKinds)
+            ).reduce(async (_acc, docKind) => {
+                const acc = await _acc;
+                const documents = restFields[docKind] || [];
+
+                acc[docKind] = await Promise.all(
+                    documents.map(async (maybeDoc, _i) => ({
+                        // droppoing this.fetchSignedUrl
+                        url: await maybeDoc,
+                        side: _i === 0 ? 'front' : undefined,
+                    }))
+                );
+
+                return acc;
+            }, Promise.resolve({}));
+
+            return {
+                id,
+                documents: normalizedDocData,
+            };
+        }
+
+        return null;
+    }
+
     render() {
         return (
-            <Wizard
-                render={props =>
-                    render({ ...props, client: this.props.client })
-                }
-                steps={steps}
-            />
+            <Composed>
+                {({ activeUserResponse, requestDentistVerification }) => (
+                    <Box mt={140}>
+                        <Wizard
+                            render={props => (
+                                <React.Fragment>
+                                    {props.actions.canGoBack && (
+                                        <StyledPreviousButtonContainer
+                                            top={172}
+                                        >
+                                            <PreviousButton
+                                                goToPreviousStep={
+                                                    props.actions
+                                                        .goToPreviousStep
+                                                }
+                                            />
+                                        </StyledPreviousButtonContainer>
+                                    )}
+                                    {render({
+                                        ...props,
+                                        client: this.props.client,
+                                    })}
+                                </React.Fragment>
+                            )}
+                            onSubmit={async objectOfObjectOfStepValues => {
+                                const objectOfValues = Object.values(
+                                    objectOfObjectOfStepValues
+                                ).reduce((objectOfValues, currentObject) => ({
+                                    ...objectOfValues,
+                                    ...currentObject,
+                                }));
+
+                                const { ssn, dea, npiNum } = objectOfValues;
+                                if (
+                                    !_isEmpty(ssn) ||
+                                    !_isEmpty(dea) ||
+                                    !_isEmpty(npiNum)
+                                ) {
+                                    await requestDentistVerification({
+                                        variables: {
+                                            input: {
+                                                dentistId:
+                                                    activeUserResponse.data
+                                                        .activeUser.dentistId,
+                                                deaRegistrationNumber: dea,
+                                                npiNumber: npiNum,
+                                                ssnOrEinOrTin: ssn,
+                                            },
+                                        },
+                                    });
+                                }
+
+                                const documents = _pick(objectOfValues, [
+                                    DENTIST_PHOTO_ID_FORM_ITEM_NAME,
+                                    STATE_DENTAL_LICENSE_FORM_ITEM_NAME,
+                                    WARRANTY_FORM_ITEM_NAME,
+                                ]);
+
+                                if (!_isEmpty(documents)) {
+                                    let existingPatientDocument = await this.fetchUserDocuments(
+                                        activeUserResponse.data.activeUser.id
+                                    );
+                                    if (!existingPatientDocument) {
+                                        existingPatientDocument = await this.props.createPatientDocument(
+                                            {
+                                                patientId:
+                                                    activeUserResponse.data
+                                                        .activeUser.id,
+                                            }
+                                        );
+                                        existingPatientDocument =
+                                            existingPatientDocument.data
+                                                .createPatientDocument;
+                                    }
+
+                                    const uploadResults = Object.keys(
+                                        documents
+                                    ).map(async documentKind => {
+                                        const kindDocuments =
+                                            documents[documentKind];
+
+                                        // now only requiring front side of dentist photo id
+                                        if (
+                                            documentKind ===
+                                            DENTIST_PHOTO_ID_FORM_ITEM_NAME
+                                        ) {
+                                            kindDocuments[0].side = 'front';
+                                        }
+
+                                        await this.props.saveUploadedImages({
+                                            id: existingPatientDocument.id,
+                                            documentList: kindDocuments,
+                                            documentType: documentKind,
+                                        });
+                                    });
+
+                                    await Promise.all(uploadResults);
+                                }
+
+                                const { redirectTo } = queryString.parse(
+                                    this.props.location.search
+                                );
+
+                                this.props.history.push(redirectTo || '/');
+                            }}
+                            steps={steps}
+                        />
+                    </Box>
+                )}
+            </Composed>
         );
     }
 }
 
-export default compose(withApollo)(RenderDentistOnboarding);
+export default compose(
+    withApollo,
+    createPatientDocumentMutation,
+    saveUploadedImagesMutation
+)(RenderDentistOnboarding);

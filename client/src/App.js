@@ -151,12 +151,6 @@ const AppointmentConfirmationPage = Loadable({
     loading: () => null,
 });
 
-const DentistOnboarding = Loadable({
-    loader: () =>
-        import('./pages/Onboarding/Dentist/Verification' /* webpackChunkName: "dentistOnboarding" */),
-    loading: () => null,
-});
-
 const KioskRegistrationPage = Loadable({
     loader: () =>
         import('./pages/KioskRegistrationPage' /* webpackChunkName: "kioskRegistrationPage" */),
@@ -220,6 +214,18 @@ const KioskDentistProfilePage = Loadable({
 const KioskMedicalHistoryFormConfirmationPage = Loadable({
     loader: () =>
         import('./pages/KioskMedicalHistoryFormPage/Confirmation' /* webpackChunkName: "kioskMedicalHistoryFormConfirmationPage" */),
+    loading: () => null,
+});
+
+const NameAndPersonaPage = Loadable({
+    loader: () =>
+        import('./pages/Onboarding/NameAndPersona' /* webpackChunkName: "NameAndPersona" */),
+    loading: () => null,
+});
+
+const DentistOnboardingVerification = Loadable({
+    loader: () =>
+        import('./pages/Onboarding/Dentist/Verification' /* webpackChunkName: "dentistOnboarding" */),
     loading: () => null,
 });
 
@@ -379,8 +385,15 @@ class App extends Component {
                                                 component={PrivacyPage}
                                             />
                                             <PrivateRoute
-                                                path="/dentist-onboarding/verification"
-                                                component={DentistOnboarding}
+                                                path="/onboarding/dentist/verification"
+                                                component={
+                                                    DentistOnboardingVerification
+                                                }
+                                                isUserLoggedIn={data.activeUser}
+                                            />
+                                            <PrivateRoute
+                                                path="/onboarding/name-and-persona"
+                                                component={NameAndPersonaPage}
                                                 isUserLoggedIn={data.activeUser}
                                             />
                                             <Route
@@ -451,7 +464,7 @@ class App extends Component {
                                                 }
                                             />
                                             <PrivateRoute
-                                                path="/kiosk/dentist-profile"
+                                                path="/onboarding/dentist/profile"
                                                 component={
                                                     KioskDentistProfilePage
                                                 }

@@ -6,11 +6,37 @@ import compact from 'lodash/compact';
 import { adopt } from 'react-adopt';
 
 import KioskDentistProfileView from './view';
-import { CREATE_DENTIST, UPDATE_USER_IMAGE_URL } from './queries';
+import {
+    CREATE_DENTIST,
+    UPDATE_USER_IMAGE_URL,
+    getActiveUserQuery,
+} from './queries';
 
 const Composed = adopt({
     createDentist: ({ render }) => (
-        <Mutation mutation={CREATE_DENTIST}>{render}</Mutation>
+        <Mutation
+            update={(proxy, { data: { createDentist } }) => {
+                const data = proxy.readQuery({
+                    query: getActiveUserQuery,
+                });
+
+                data.activeUser = {
+                    ...data.activeUser,
+                    ...createDentist.user,
+                    dentistId: createDentist.id,
+                };
+
+                cookies.set('user', JSON.stringify(data.activeUser));
+
+                proxy.writeQuery({
+                    query: getActiveUserQuery,
+                    data,
+                });
+            }}
+            mutation={CREATE_DENTIST}
+        >
+            {render}
+        </Mutation>
     ),
     updateUser: ({ render }) => (
         <Mutation mutation={UPDATE_USER_IMAGE_URL}>{render}</Mutation>
@@ -82,6 +108,12 @@ class KioskDentistProfilePage extends Component {
                         } catch (error) {
                             console.log(error.message);
                         }
+
+                        this.props.history.push(
+                            `/onboarding/dentist/verification${
+                                this.props.location.search
+                            }`
+                        );
                     };
 
                     return <KioskDentistProfileView onCreate={onCreate} />;
