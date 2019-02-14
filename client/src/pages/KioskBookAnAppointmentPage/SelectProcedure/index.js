@@ -3,6 +3,7 @@ import {
     Wizard,
     SelectProcedure,
     Progress,
+    PreviousButton,
 } from '@laguro/the-bright-side-components';
 import { Flex } from '@laguro/basic-components';
 
@@ -84,7 +85,23 @@ class KioskBookAnAppointmentPage extends Component {
                         )
                     }
                     Form="form"
-                    render={props => render({ ...props, ...componentProps })}
+                    render={props => {
+                        return (
+                            <React.Fragment>
+                                <PreviousButton
+                                    goToPreviousStep={() => {
+                                        this.props.history.push(
+                                            '/kiosk/reason-of-visit'
+                                        );
+                                    }}
+                                />
+                                {render({
+                                    ...props,
+                                    ...componentProps,
+                                })}
+                            </React.Fragment>
+                        );
+                    }}
                     steps={steps}
                 />
             </Fragment>

@@ -5,16 +5,21 @@ import {
     Progress,
 } from '@laguro/the-bright-side-components';
 import { Flex } from '@laguro/basic-components';
+import * as Yup from 'yup';
 
 class KioskBookAnAppointmentPage extends Component {
     render() {
         const steps = [
             {
                 id: '0',
-                // validationSchema: {},
+                validationSchema: Yup.object().shape({
+                    reasonOfVisit: Yup.string().required(
+                        'You must select a reason of visit'
+                    ),
+                }),
                 component: null,
                 initialValues: {
-                    reasonOfVisit: '',
+                    reasonOfVisit: 'Exam/Check up/Cleaning',
                 },
             },
         ];
