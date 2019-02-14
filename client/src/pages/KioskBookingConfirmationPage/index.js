@@ -67,7 +67,7 @@ const KioskBookingConfirmationPage = props => {
                             steps={progressSteps}
                             percent={22.5}
                         />
-                        <Flex justifyContent="center" mt="100px">
+                        <Flex justifyContent="center" mt="50px">
                             <BookingConfirmation
                                 imageUrl={imageUrl}
                                 date={moment(localStartTime).format(
