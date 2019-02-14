@@ -143,8 +143,8 @@ const Step0 = props => (
 
                             if (isEmpty(userFromLoginMutation.firstName)) {
                                 props.push(
-                                    `/onboarding/name-and-persona${
-                                        history.location.search
+                                    `/onboarding/name-and-persona/?redirectTo=${
+                                        history.location.pathname
                                     }`
                                 );
 
