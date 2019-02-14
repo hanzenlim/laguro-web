@@ -138,6 +138,9 @@ const KioskNameAndPersonaPage = componentProps => {
 
                     switch (objectOfValues.persona) {
                         case 'patient':
+                            nextUrl = `/kiosk/medical-history-form/${
+                                componentProps.location.search
+                            }`;
                             break;
                         case 'dentist':
                             nextUrl = `/onboarding/dentist/profile/${
@@ -145,6 +148,7 @@ const KioskNameAndPersonaPage = componentProps => {
                             }`;
                             break;
                         case 'host':
+                            // hostOnboarding does not redirect
                             nextUrl = '/host-onboarding/add-office/';
                             break;
                         default:
