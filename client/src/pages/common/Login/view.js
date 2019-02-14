@@ -136,17 +136,9 @@ const Step0 = props => (
                                 },
                             });
 
-                            // eslint-disable-next-line
-                            debugger;
-
                             const userFromLoginMutation = _get(
                                 loginResult,
                                 'data.login.user'
-                            );
-
-                            const patientDocumentFromLoginMutation = _get(
-                                userFromLoginMutation,
-                                'patientDocument'
                             );
 
                             if (isEmpty(userFromLoginMutation.firstName)) {
@@ -156,43 +148,6 @@ const Step0 = props => (
                                     }`
                                 );
 
-                                props.closeModal();
-                                return null;
-                            } else if (
-                                isEmpty(userFromLoginMutation.dentistId)
-                            ) {
-                                props.push(
-                                    `/onboarding/dentist/profile${
-                                        history.location.search
-                                    }`
-                                );
-                                props.closeModal();
-                                return null;
-                            } else if (
-                                isEmpty(
-                                    _get(
-                                        patientDocumentFromLoginMutation,
-                                        'dentistPhotoId'
-                                    )
-                                ) ||
-                                isEmpty(
-                                    _get(
-                                        patientDocumentFromLoginMutation,
-                                        'warranty'
-                                    )
-                                ) ||
-                                isEmpty(
-                                    _get(
-                                        patientDocumentFromLoginMutation,
-                                        'stateDentalLicense'
-                                    )
-                                )
-                            ) {
-                                props.push(
-                                    `/onboarding/dentist/verification${
-                                        history.location.search
-                                    }`
-                                );
                                 props.closeModal();
                                 return null;
                             }
