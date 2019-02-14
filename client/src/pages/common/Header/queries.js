@@ -6,6 +6,12 @@ export const getUserQuery = gql`
             id
             firstName
             lastName
+            imageUrl
+            email
+            intercomHash
+            dentistId
+            isDentist
+            isHost
         }
         visibleModal @client
     }

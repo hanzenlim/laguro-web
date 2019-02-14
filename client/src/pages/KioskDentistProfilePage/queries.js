@@ -13,6 +13,10 @@ export const CREATE_DENTIST = gql`
                 group
                 name
             }
+            user {
+                isDentist
+                isHost
+            }
         }
     }
 `;
