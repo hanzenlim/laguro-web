@@ -19,8 +19,8 @@ const LoginModal = ({
         onCancel={closeModal}
         destroyOnClose={true}
         visible={visible}
-        width={886}
-        bodyStyle={{ height: 664, padding: 0 }}
+        width={600}
+        bodyStyle={{ height: 510, padding: 0 }}
         closable={closable}
     >
         <Login
