@@ -22,12 +22,25 @@ const StyledFlex = styled(Flex)`
 `;
 
 class Login extends Component {
+    constructor(props) {
+        super(props);
+
+        this.pinInputRef = null;
+    }
     state = { showLoginTitle: true };
 
     toggleLoginTitle = () => {
         this.setState(state => ({
             showLoginTitle: !state.showLoginTitle,
         }));
+    };
+
+    setReference = node => {
+        this.pinInputRef = node;
+    };
+
+    clear = () => {
+        this.pinInputRef.clear();
     };
 
     render() {
@@ -61,6 +74,8 @@ class Login extends Component {
                                 authAction={
                                     showLoginTitle ? 'sign in' : 'sign up'
                                 }
+                                setReference={this.setReference}
+                                clear={this.clear}
                             />
                         </StyledFlex>
                         <Flex
@@ -109,6 +124,8 @@ class Login extends Component {
                                 authAction={
                                     showLoginTitle ? 'sign in' : 'sign up'
                                 }
+                                setReference={this.setReference}
+                                clear={this.clear}
                             />
                         </StyledFlex>
                         <Flex

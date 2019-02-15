@@ -154,6 +154,7 @@ const Step0 = props => (
 
                             return props.closeModal();
                         } catch (error) {
+                            props.clear();
                             message.error(error.graphQLErrors[0].message);
                         }
                     }}
