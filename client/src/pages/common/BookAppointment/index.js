@@ -131,25 +131,24 @@ class BookAppointment extends PureComponent {
             query: checkPatientVerified,
             variables: { id: activeUser.id },
         });
-        this.redirectPatient(getUser);
-
-        return true;
+        return !this.redirectPatient(getUser);
     };
 
     redirectPatient = user => {
         if (_isEmpty(_get(user, 'firstName'))) {
             this.setState({ isSubmitting: false });
             redirectWithRedirectTo(ONBOARDING_NAME_AND_PERSONA_PAGE);
-            return null;
+            return true;
         } else if (!_get(user, 'hasSubmittedHealthHistoryForm')) {
             this.setState({ isSubmitting: false });
             redirectWithRedirectTo(PATIENT_ONBOARDING_MEDICAL_HISTORY_FORM);
-            return null;
+            return true;
         } else if (_isEmpty(_get(user, 'insuranceInfo'))) {
             this.setState({ isSubmitting: false });
             redirectWithRedirectTo(PATIENT_ONBOARDING_INSURANCE_FORM);
-            return null;
+            return true;
         }
+        return false;
     };
 
     updateSubmittingState = isSubmitting => {

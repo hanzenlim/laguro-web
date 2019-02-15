@@ -16,6 +16,7 @@ import { getIdQueryClient, updateInsuranceInfoMutation } from './queries';
 import { Query, Mutation } from 'react-apollo';
 import { RedirectErrorPage } from '../GeneralErrorPage';
 import { adopt } from 'react-adopt';
+import { attemptToRedirectBack } from '../../history';
 
 const progressSteps = [
     '1 REGISTRATION',
@@ -94,7 +95,10 @@ const Step0 = props => (
                             },
                         },
                     });
-                    props.history.push(`/kiosk/confirmation/${userId}`);
+
+                    if (!attemptToRedirectBack()) {
+                        props.history.push(`/kiosk/confirmation/${userId}`);
+                    }
                 }}
             />
         )}
@@ -203,9 +207,11 @@ const KioskInsurancePage = componentProps => {
                                     },
                                 });
 
-                                componentProps.history.push(
-                                    `/kiosk/confirmation/${userId}`
-                                );
+                                if (!attemptToRedirectBack()) {
+                                    componentProps.history.push(
+                                        `/kiosk/confirmation/${userId}`
+                                    );
+                                }
                             };
                             return (
                                 <Fragment>

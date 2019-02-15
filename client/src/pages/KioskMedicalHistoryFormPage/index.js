@@ -9,6 +9,8 @@ import { Query, Mutation } from 'react-apollo';
 import cookies from 'browser-cookies';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
+import { redirectWithSearchParams } from '../../history';
+import { PATIENT_ONBOARDING_INSURANCE_FORM } from '../../util/urls';
 
 const progressSteps = [
     '1 REGISTRATION',
@@ -30,7 +32,7 @@ const Composed = adopt({
 
 const KioskMedicalHistoryFormPage = props => {
     const handleSkip = () => {
-        props.history.push(`/kiosk/insurance`);
+        redirectWithSearchParams(PATIENT_ONBOARDING_INSURANCE_FORM);
     };
 
     return (
@@ -96,7 +98,9 @@ const KioskMedicalHistoryFormPage = props => {
                                         `/kiosk/medical-history-form-confirmation`
                                     );
                                 } else {
-                                    props.history.push(`/kiosk/insurance`);
+                                    redirectWithSearchParams(
+                                        PATIENT_ONBOARDING_INSURANCE_FORM
+                                    );
                                 }
                             }}
                             onSkip={handleSkip}

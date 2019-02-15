@@ -1,6 +1,7 @@
 import createHistory from 'history/createBrowserHistory';
 import ReactGA from 'react-ga';
 import queryString from 'query-string';
+import _isEmpty from 'lodash/isEmpty';
 import { gaTrackingId } from './config/keys';
 
 ReactGA.initialize(gaTrackingId, {
@@ -19,9 +20,8 @@ history.listen(location => {
     ReactGA.pageview(location.pathname);
 });
 
-export const redirectWithSearchParamsAndRedirectTo = url => {
+export const redirectWithSearchParams = url => {
     const urlParams = queryString.parse(history.location.search);
-    urlParams['redirectTo'] = history.location.pathname;
     history.push(`${url}?${queryString.stringify(urlParams)}`);
     window.scrollTo(0, 0);
 };
@@ -29,7 +29,19 @@ export const redirectWithSearchParamsAndRedirectTo = url => {
 export const redirectWithRedirectTo = url => {
     const urlParams = {};
     urlParams['redirectTo'] = history.location.pathname;
-    history.push(`${url}?${queryString.stringify(urlParams)}`);
+    if (history.location.pathname !== url) {
+        history.push(`${url}?${queryString.stringify(urlParams)}`);
+    }
+    window.scrollTo(0, 0);
+};
+
+export const attemptToRedirectBack = () => {
+    const urlParams = queryString.parse(history.location.search);
+    const { redirectTo } = urlParams;
+    if (!_isEmpty(redirectTo)) {
+        history.push(redirectTo);
+        return true;
+    }
     window.scrollTo(0, 0);
 };
 
