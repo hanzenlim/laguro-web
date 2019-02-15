@@ -4,9 +4,8 @@ import { withRouter, Link } from 'react-router-dom';
 import _get from 'lodash/get';
 import styled from 'styled-components';
 
-import { Box, Flex, Responsive, Image, Text } from '../../../components';
+import { Flex, Responsive, Text } from '../../../components';
 import { withScreenSizes } from '../../../components/Responsive';
-import loginModalImage from '../../../images/loginmodal.png';
 import StandaloneLoginView from './view';
 
 const { TabletDesktop, Mobile } = Responsive;

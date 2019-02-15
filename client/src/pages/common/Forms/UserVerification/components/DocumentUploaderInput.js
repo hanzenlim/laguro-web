@@ -11,11 +11,7 @@ class DocumentUploaderInput extends React.Component {
         const _updatedDocument = Object.assign({}, value[index]);
         delete _updatedDocument.url;
 
-        this.props.onChange(
-            Object.assign([], value, {
-                [index]: _updatedDocument,
-            })
-        );
+        this.props.onChange(undefined);
     };
 
     handleUploadSuccess = index => async filestackData => {

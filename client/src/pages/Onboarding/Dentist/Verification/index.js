@@ -51,13 +51,13 @@ const steps = [
         id: '0',
         validationSchema: Yup.object().shape({
             [SSN_FORM_ITEM_NAME]: Yup.string()
-                .required('You must provide SSN')
+                .required('You must provide a correct SSN')
                 .concat(Yup.string().matches(/^\d{9}$/)),
             [DEA_FORM_ITEM_NAME]: Yup.string()
-                .required('You must provide DEA')
+                .required('You must provide a correct DEA registration number')
                 .concat(Yup.string().matches(/^[A-Z][A-Z9][0-9]{7}(-\w+)?/)),
             [NPI_NUM_FORM_ITEM_NAME]: Yup.string()
-                .required('You must provide NPI')
+                .required('You must provide a correct NPI number')
                 .concat(Yup.string().matches(/^[0-9]{10}(-\w+)?/)),
         }),
     },
@@ -65,39 +65,15 @@ const steps = [
         id: '1',
         initialValues: {},
         validationSchema: Yup.object().shape({
-            [DENTIST_PHOTO_ID_FORM_ITEM_NAME]: Yup.array()
-                .of(
-                    Yup.object()
-                        .shape({
-                            url: Yup.string().required(
-                                'You must provide a photo id'
-                            ),
-                        })
-                        .required()
-                )
-                .required(),
-            [WARRANTY_FORM_ITEM_NAME]: Yup.array()
-                .of(
-                    Yup.object()
-                        .shape({
-                            url: Yup.string().required(
-                                'You must provide a proof of malpractice insurance'
-                            ),
-                        })
-                        .required()
-                )
-                .required(),
-            [STATE_DENTAL_LICENSE_FORM_ITEM_NAME]: Yup.array()
-                .of(
-                    Yup.object()
-                        .shape({
-                            url: Yup.string().required(
-                                'You must provide a proof of dental license'
-                            ),
-                        })
-                        .required()
-                )
-                .required(),
+            [DENTIST_PHOTO_ID_FORM_ITEM_NAME]: Yup.array().required(
+                "You must provide a photo of your driver's license"
+            ),
+            [WARRANTY_FORM_ITEM_NAME]: Yup.array().required(
+                'You must provide a proof of your malpractice insurance'
+            ),
+            [STATE_DENTAL_LICENSE_FORM_ITEM_NAME]: Yup.array().required(
+                'You must provide a photo of dental license'
+            ),
         }),
     },
 ];
