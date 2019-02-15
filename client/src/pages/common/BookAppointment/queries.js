@@ -78,6 +78,11 @@ export const checkPatientVerified = gql`
             id
             isVerified
             sentVerificationDocuments
+            firstName
+            hasSubmittedHealthHistoryForm
+            insuranceInfo {
+                useInsurance
+            }
         }
     }
 `;

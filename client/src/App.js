@@ -18,6 +18,8 @@ import {
     DENTIST_ONBOARDING_PROFILE_URL,
     DENTIST_ONBOARDING_VERIFICATION_URL,
     ONBOARDING_NAME_AND_PERSONA_PAGE,
+    PATIENT_ONBOARDING_MEDICAL_HISTORY_FORM,
+    PATIENT_ONBOARDING_INSURANCE_FORM,
 } from './util/urls';
 
 const Header = Loadable({
@@ -441,7 +443,9 @@ class App extends Component {
                                                 }
                                             />
                                             <Route
-                                                path="/kiosk/medical-history-form"
+                                                path={
+                                                    PATIENT_ONBOARDING_MEDICAL_HISTORY_FORM
+                                                }
                                                 exact
                                                 component={
                                                     KioskMedicalHistoryFormPage
@@ -455,7 +459,9 @@ class App extends Component {
                                                 }
                                             />
                                             <Route
-                                                path="/kiosk/insurance"
+                                                path={
+                                                    PATIENT_ONBOARDING_INSURANCE_FORM
+                                                }
                                                 exact
                                                 component={KioskInsurancePage}
                                             />
