@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import * as Yup from 'yup';
 import _get from 'lodash/get';
+import _isEmpty from 'lodash/isEmpty';
 import { adopt } from 'react-adopt';
 import {
     Wizard,
@@ -70,7 +71,7 @@ const steps = [
         id: '2',
         validationSchema: Yup.object().shape({
             firstName: Yup.string().required(),
-            middleName: Yup.string().required(),
+            middleName: Yup.string(),
             lastName: Yup.string().required(),
         }),
         component: null,
@@ -232,7 +233,10 @@ const Step2 = props => {
                     <GetPatientName
                         {...props}
                         onNext={async values => {
-                            if (Object.values(values).includes('')) {
+                            if (
+                                _isEmpty(values.firstName) ||
+                                _isEmpty(values.lastName)
+                            ) {
                                 return;
                             }
 
@@ -245,9 +249,15 @@ const Step2 = props => {
                                 variables: {
                                     input: {
                                         id: user.id,
-                                        firstName: values.firstName,
-                                        middleName: values.middleName,
-                                        lastName: values.lastName,
+                                        ...(!_isEmpty(values.firstName) && {
+                                            firstName: values.firstName,
+                                        }),
+                                        ...(!_isEmpty(values.middleName) && {
+                                            middleName: values.middleName,
+                                        }),
+                                        ...(!_isEmpty(values.lastName) && {
+                                            lastName: values.lastName,
+                                        }),
                                     },
                                 },
                             });
