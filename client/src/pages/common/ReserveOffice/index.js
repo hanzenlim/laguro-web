@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment-timezone';
 import _reduce from 'lodash/reduce';
 import _get from 'lodash/get';
+import _isEmpty from 'lodash/isEmpty';
 import _debounce from 'lodash/debounce';
 import { Box } from '../../../components';
 import ReserveOfficeView from './view';
@@ -21,6 +22,12 @@ import {
 } from '../../../util/strings';
 import DentistVerificationModal from '../Modals/DentistVerificationModal';
 import { stripTimezone } from '../../../util/timeUtil';
+import { redirectWithRedirectTo } from '../../../history';
+import {
+    DENTIST_ONBOARDING_PROFILE_URL,
+    DENTIST_ONBOARDING_VERIFICATION_URL,
+    ONBOARDING_NAME_AND_PERSONA_PAGE,
+} from '../../../util/urls';
 
 class ReserveOffice extends Component {
     constructor(props) {
@@ -261,17 +268,40 @@ class ReserveOffice extends Component {
             left: 0,
             behavior: 'smooth',
         });
-        // If user is verified go to payment page.
-        if (
-            _get(result, 'data.getUser.dentist.isVerified') ||
-            _get(result, 'data.getUser.dentist.sentVerificationDocuments')
+        const user = _get(result, 'data.getUser');
+        const dentist = _get(user, 'dentist');
+
+        if (_isEmpty(_get(user, 'firstName'))) {
+            redirectWithRedirectTo(ONBOARDING_NAME_AND_PERSONA_PAGE);
+            return;
+        } else if (_isEmpty(dentist)) {
+            redirectWithRedirectTo(DENTIST_ONBOARDING_PROFILE_URL);
+            return;
+        }
+        // for old users
+        // TODO: remove later
+        else if (
+            _isEmpty(_get(dentist, 'acceptedInsurances')) ||
+            _isEmpty(_get(dentist, 'languages'))
         ) {
+            console.log('languages');
+            redirectWithRedirectTo(DENTIST_ONBOARDING_PROFILE_URL);
+            return;
+        }
+        // dentist.isVerified will be true if verified
+        else if (
+            !_get(dentist, 'isVerified') ||
+            !_get(dentist, 'sentVerificationDocuments')
+        ) {
+            redirectWithRedirectTo(DENTIST_ONBOARDING_VERIFICATION_URL);
+            return;
+        }
+        // If user is verified go to payment page.
+        else {
             return this.setState({
                 currentDisplay: PAYMENT_VIEW,
             });
         }
-
-        return this.setState({ showVerificationModal: true });
     };
 
     updateSummaryDetailsData = data => {

@@ -14,6 +14,11 @@ import ErrorBoundary from './components/ErrorBoundary';
 import './Silka.css';
 import theme from './components/theme';
 import './App.css';
+import {
+    DENTIST_ONBOARDING_PROFILE_URL,
+    DENTIST_ONBOARDING_VERIFICATION_URL,
+    ONBOARDING_NAME_AND_PERSONA_PAGE,
+} from './util/urls';
 
 const Header = Loadable({
     loader: () =>
@@ -385,14 +390,18 @@ class App extends Component {
                                                 component={PrivacyPage}
                                             />
                                             <PrivateRoute
-                                                path="/onboarding/dentist/verification"
+                                                path={
+                                                    DENTIST_ONBOARDING_VERIFICATION_URL
+                                                }
                                                 component={
                                                     DentistOnboardingVerification
                                                 }
                                                 isUserLoggedIn={data.activeUser}
                                             />
                                             <PrivateRoute
-                                                path="/onboarding/name-and-persona"
+                                                path={
+                                                    ONBOARDING_NAME_AND_PERSONA_PAGE
+                                                }
                                                 component={NameAndPersonaPage}
                                                 isUserLoggedIn={data.activeUser}
                                             />
@@ -464,7 +473,9 @@ class App extends Component {
                                                 }
                                             />
                                             <PrivateRoute
-                                                path="/onboarding/dentist/profile"
+                                                path={
+                                                    DENTIST_ONBOARDING_PROFILE_URL
+                                                }
                                                 component={
                                                     KioskDentistProfilePage
                                                 }

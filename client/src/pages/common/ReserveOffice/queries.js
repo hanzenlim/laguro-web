@@ -18,7 +18,10 @@ export const checkUserDentistVerifiedQuery = gql`
                 id
                 isVerified
                 sentVerificationDocuments
+                acceptedInsurances
+                languages
             }
+            firstName
         }
     }
 `;
