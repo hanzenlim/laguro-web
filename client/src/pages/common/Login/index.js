@@ -9,7 +9,7 @@ import { withScreenSizes } from '../../../components/Responsive';
 import loginModalImage from '../../../images/loginmodal.png';
 import StandaloneLoginView from './view';
 
-const { TabletDesktop } = Responsive;
+const { TabletDesktop, Mobile } = Responsive;
 
 const StyledFlex = styled(Flex)`
     && {
@@ -22,6 +22,11 @@ const StyledFlex = styled(Flex)`
 `;
 
 class Login extends Component {
+    constructor(props) {
+        super(props);
+
+        this.pinInputRef = null;
+    }
     state = { showLoginTitle: true };
 
     toggleLoginTitle = () => {
@@ -30,67 +35,121 @@ class Login extends Component {
         }));
     };
 
+    setReference = node => {
+        this.pinInputRef = node;
+    };
+
+    clear = () => {
+        this.pinInputRef.clear();
+    };
+
     render() {
         const { message, location, closeModal, history } = this.props;
         const { showLoginTitle } = this.state;
 
         return (
-            <Box height="100%">
+            <Flex justifyContent="center" height="100%">
                 <TabletDesktop>
-                    <Flex flexDirection="row" height="100%">
-                        {message && <Alert message={message} type="info" />}
-                        <Box flex={1} borderRadius={4}>
-                            <Image
-                                src={loginModalImage}
-                                alt="Laguro login"
-                                width={443}
-                                height={664}
-                                borderRadius={4}
+                    {message && <Alert message={message} type="info" />}
+                    <Flex
+                        p={20}
+                        flexDirection="column"
+                        height="100%"
+                        width={440}
+                    >
+                        <StyledFlex
+                            flex={9}
+                            alignItems="center"
+                            justifyContent="center"
+                            px={10}
+                        >
+                            <StandaloneLoginView
+                                closeModal={closeModal}
+                                push={history.push}
+                                title={
+                                    showLoginTitle
+                                        ? 'Please sign in'
+                                        : 'Sign up here'
+                                }
+                                authAction={
+                                    showLoginTitle ? 'sign in' : 'sign up'
+                                }
+                                setReference={this.setReference}
+                                clear={this.clear}
                             />
-                        </Box>
-                        <Flex flex={1} p={20} flexDirection="column">
-                            <StyledFlex
-                                flex={9}
-                                alignItems="center"
-                                justifyContent="center"
-                                px={10}
+                        </StyledFlex>
+                        <Flex
+                            textAlign="center"
+                            justifyContent="center"
+                            mb={20}
+                            flex={1}
+                        >
+                            <Link
+                                to={{
+                                    hash: '#',
+                                    search: _get(location, 'search'),
+                                }}
+                                onClick={this.toggleLoginTitle}
+                                width={140}
                             >
-                                <StandaloneLoginView
-                                    closeModal={closeModal}
-                                    push={history.push}
-                                    title={
-                                        showLoginTitle
-                                            ? 'Please sign in'
-                                            : 'Sign up here'
-                                    }
-                                    authAction={
-                                        showLoginTitle ? 'sign in' : 'sign up'
-                                    }
-                                />
-                            </StyledFlex>
-                            <Flex
-                                textAlign="center"
-                                justifyContent="center"
-                                mb={20}
-                                flex={1}
-                            >
-                                <Link
-                                    to={{
-                                        hash: '#',
-                                        search: _get(location, 'search'),
-                                    }}
-                                    onClick={this.toggleLoginTitle}
-                                    width={140}
-                                >
-                                    <Text color="text.blue" textAlign="right">
-                                        Register now
-                                    </Text>
-                                </Link>
-                            </Flex>
+                                <Text color="text.blue" textAlign="right">
+                                    Register now
+                                </Text>
+                            </Link>
                         </Flex>
                     </Flex>
                 </TabletDesktop>
-            </Box>
+                <Mobile>
+                    {message && <Alert message={message} type="info" />}
+                    <Flex
+                        p={20}
+                        flexDirection="column"
+                        height="100%"
+                        width={440}
+                    >
+                        <StyledFlex
+                            flex={9}
+                            alignItems="center"
+                            justifyContent="center"
+                            px={10}
+                        >
+                            <StandaloneLoginView
+                                closeModal={closeModal}
+                                push={history.push}
+                                title={
+                                    showLoginTitle
+                                        ? 'Please sign in'
+                                        : 'Sign up here'
+                                }
+                                authAction={
+                                    showLoginTitle ? 'sign in' : 'sign up'
+                                }
+                                setReference={this.setReference}
+                                clear={this.clear}
+                            />
+                        </StyledFlex>
+                        <Flex
+                            textAlign="center"
+                            justifyContent="center"
+                            mb={20}
+                            flex={1}
+                        >
+                            <Link
+                                to={{
+                                    hash: '#',
+                                    search: _get(location, 'search'),
+                                }}
+                                onClick={this.toggleLoginTitle}
+                                width={140}
+                            >
+                                <Text color="text.blue" textAlign="right">
+                                    Register now
+                                </Text>
+                            </Link>
+                        </Flex>
+                    </Flex>
+                </Mobile>
+            </Flex>
         );
     }
 }
