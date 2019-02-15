@@ -32,7 +32,7 @@ const FeaturedListView = props => (
                         adaptiveHeight
                         responsive={[
                             {
-                                breakpoint: 991,
+                                breakpoint: 1026,
                                 settings: {
                                     slidesToShow: 3.5,
                                     arrows: false,
