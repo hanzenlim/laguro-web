@@ -61,35 +61,49 @@ const Step0 = props => {
                                 user = JSON.parse(user);
                             }
 
-                            await updateUser({
-                                variables: {
-                                    input: {
-                                        id: user.id,
-                                        ...(!_isEmpty(values.firstName) && {
-                                            firstName: values.firstName,
-                                        }),
-                                        ...(!_isEmpty(values.middleName) && {
-                                            middleName: values.middleName,
-                                        }),
-                                        ...(!_isEmpty(values.lastName) && {
-                                            lastName: values.lastName,
-                                        }),
+                            if (
+                                !_isEmpty(values.firstName) &&
+                                !_isEmpty(values.lastName)
+                            ) {
+                                await updateUser({
+                                    variables: {
+                                        input: {
+                                            id: user.id,
+                                            ...(!_isEmpty(values.firstName) && {
+                                                firstName: values.firstName,
+                                            }),
+                                            ...(!_isEmpty(
+                                                values.middleName
+                                            ) && {
+                                                middleName: values.middleName,
+                                            }),
+                                            ...(!_isEmpty(values.lastName) && {
+                                                lastName: values.lastName,
+                                            }),
+                                        },
                                     },
-                                },
-                            });
+                                });
+                            } else {
+                                return true;
+                            }
 
                             // skip persona selection for patients from booking appointments
                             if (getRedirectUrl().includes('/dentist/')) {
                                 redirectWithSearchParams(
                                     PATIENT_ONBOARDING_MEDICAL_HISTORY_FORM
                                 );
+
+                                return false;
                             }
                             // skip persona selection for patients from booking reservations
                             else if (getRedirectUrl().includes('/office/')) {
                                 redirectWithSearchParams(
                                     DENTIST_ONBOARDING_PROFILE_URL
                                 );
+                                return false;
                             }
+
+                            return true;
                         }}
                     />
                 );

@@ -17,7 +17,7 @@ import {
 import BookAppointmentView from './view';
 import { Loading } from '../../../components';
 import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
-import { redirectWithRedirectTo } from '../../../history';
+import { redirect } from '../../../history';
 import {
     PATIENT_ONBOARDING_MEDICAL_HISTORY_FORM,
     PATIENT_ONBOARDING_INSURANCE_FORM,
@@ -139,15 +139,30 @@ class BookAppointment extends PureComponent {
     redirectPatient = user => {
         if (_isEmpty(_get(user, 'firstName'))) {
             this.setState({ isSubmitting: false });
-            redirectWithRedirectTo(ONBOARDING_NAME_AND_PERSONA_PAGE);
+            redirect({
+                url: ONBOARDING_NAME_AND_PERSONA_PAGE,
+                includeNewRedirectTo: true,
+                newSearchParamKey: 'referer',
+                newSearchParamValue: 'BookAppointment',
+            });
             return true;
         } else if (!_get(user, 'hasSubmittedHealthHistoryForm')) {
             this.setState({ isSubmitting: false });
-            redirectWithRedirectTo(PATIENT_ONBOARDING_MEDICAL_HISTORY_FORM);
+            redirect({
+                url: PATIENT_ONBOARDING_MEDICAL_HISTORY_FORM,
+                includeNewRedirectTo: true,
+                newSearchParamKey: 'referer',
+                newSearchParamValue: 'BookAppointment',
+            });
             return true;
         } else if (_isEmpty(_get(user, 'insuranceInfo'))) {
             this.setState({ isSubmitting: false });
-            redirectWithRedirectTo(PATIENT_ONBOARDING_INSURANCE_FORM);
+            redirect({
+                url: PATIENT_ONBOARDING_INSURANCE_FORM,
+                includeNewRedirectTo: true,
+                newSearchParamKey: 'referer',
+                newSearchParamValue: 'BookAppointment',
+            });
             return true;
         }
         return false;

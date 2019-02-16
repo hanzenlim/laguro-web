@@ -36,6 +36,30 @@ export const redirectWithRedirectTo = url => {
     window.scrollTo(0, 0);
 };
 
+export const redirect = ({
+    url = '/',
+    includeNewRedirectTo = false,
+    includeOldSearchParams = true,
+    newSearchParamKey,
+    newSearchParamValue,
+}) => {
+    let urlParams = {};
+
+    if (includeOldSearchParams) {
+        urlParams = queryString.parse(history.location.search);
+    }
+    if (includeNewRedirectTo) {
+        urlParams['redirectTo'] = history.location.pathname;
+    }
+    if (!_isEmpty(newSearchParamKey)) {
+        urlParams[newSearchParamKey] = newSearchParamValue;
+    }
+    if (history.location.pathname !== url) {
+        history.push(`${url}?${queryString.stringify(urlParams)}`);
+    }
+    window.scrollTo(0, 0);
+};
+
 export const attemptToRedirectBack = () => {
     const urlParams = queryString.parse(history.location.search);
     const { redirectTo } = urlParams;
@@ -51,6 +75,13 @@ export const getRedirectUrl = () => {
     const { redirectTo } = urlParams;
 
     return redirectTo;
+};
+
+export const getSearchParamValueByKey = key => {
+    const urlParams = queryString.parse(history.location.search);
+    const value = urlParams[key];
+
+    return value;
 };
 
 export default history;

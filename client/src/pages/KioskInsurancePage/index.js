@@ -16,14 +16,17 @@ import { getIdQueryClient, updateInsuranceInfoMutation } from './queries';
 import { Query, Mutation } from 'react-apollo';
 import { RedirectErrorPage } from '../GeneralErrorPage';
 import { adopt } from 'react-adopt';
-import { attemptToRedirectBack } from '../../history';
+import { attemptToRedirectBack, getSearchParamValueByKey } from '../../history';
+import { getProgressBarProps } from '../../components/utils';
 
 const progressSteps = [
-    '1 REGISTRATION',
-    '2 BOOK AN APPOINTMENT',
-    '3 MEDICAL HISTORY FORM',
-    '4 INSURANCE',
+    'REGISTRATION',
+    'BOOK AN APPOINTMENT',
+    'MEDICAL HISTORY FORM',
+    'INSURANCE',
 ];
+
+const currentStep = progressSteps[3];
 
 const steps = [
     {
@@ -213,14 +216,33 @@ const KioskInsurancePage = componentProps => {
                                     );
                                 }
                             };
+
+                            let startStep;
+                            if (
+                                getSearchParamValueByKey('referer') ===
+                                'BookAppointment'
+                            ) {
+                                startStep =
+                                    progressSteps.indexOf(currentStep) + 1;
+                            } else if (
+                                getSearchParamValueByKey('referer') ===
+                                'KioskMedicalHistoryFormPage'
+                            ) {
+                                startStep = 3;
+                            }
+
                             return (
                                 <Box position="relative">
                                     {/* TODO: Move progress to a parent component */}
-                                    <Progress
-                                        step={4}
-                                        steps={progressSteps}
-                                        percent={22.5}
-                                    />
+                                    {startStep !== progressSteps.length && (
+                                        <Progress
+                                            {...getProgressBarProps({
+                                                startStep,
+                                                currentStep,
+                                                progressSteps,
+                                            })}
+                                        />
+                                    )}
                                     <Wizard
                                         onSubmit={values =>
                                             handleSubmit(values)

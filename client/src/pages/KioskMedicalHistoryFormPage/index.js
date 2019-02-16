@@ -9,15 +9,23 @@ import { Query, Mutation } from 'react-apollo';
 import cookies from 'browser-cookies';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
-import { redirectWithSearchParams } from '../../history';
+import {
+    redirectWithSearchParams,
+    getSearchParamValueByKey,
+    attemptToRedirectBack,
+    redirect,
+} from '../../history';
 import { PATIENT_ONBOARDING_INSURANCE_FORM } from '../../util/urls';
+import { getProgressBarProps } from '../../components/utils';
 
 const progressSteps = [
-    '1 REGISTRATION',
-    '2 BOOK AN APPOINTMENT',
-    '3 MEDICAL HISTORY FORM',
-    '4 INSURANCE',
+    'REGISTRATION',
+    'BOOK AN APPOINTMENT',
+    'MEDICAL HISTORY FORM',
+    'INSURANCE',
 ];
+
+const currentStep = progressSteps[2];
 
 const Composed = adopt({
     activeUser: ({ render }) => {
@@ -35,6 +43,11 @@ const KioskMedicalHistoryFormPage = props => {
         redirectWithSearchParams(PATIENT_ONBOARDING_INSURANCE_FORM);
     };
 
+    const startStep =
+        getSearchParamValueByKey('referer') === 'BookAppointment'
+            ? progressSteps.indexOf(currentStep) + 1
+            : 1;
+
     return (
         <Composed>
             {({ updatePatientHealthData, activeUser }) => {
@@ -42,9 +55,11 @@ const KioskMedicalHistoryFormPage = props => {
                     <Fragment>
                         {/* TODO: Move progress to a parent component */}
                         <Progress
-                            step={3}
-                            steps={progressSteps}
-                            percent={22.5}
+                            {...getProgressBarProps({
+                                startStep,
+                                currentStep,
+                                progressSteps,
+                            })}
                         />
                         <HealthHistoryForm
                             canSkip={_isEmpty(
@@ -94,13 +109,18 @@ const KioskMedicalHistoryFormPage = props => {
                                 );
 
                                 if (hasGoneThroughInsurancePage) {
-                                    props.history.push(
-                                        `/kiosk/medical-history-form-confirmation`
-                                    );
+                                    if (!attemptToRedirectBack()) {
+                                        props.history.push(
+                                            `/kiosk/medical-history-form-confirmation`
+                                        );
+                                    }
                                 } else {
-                                    redirectWithSearchParams(
-                                        PATIENT_ONBOARDING_INSURANCE_FORM
-                                    );
+                                    redirect({
+                                        url: PATIENT_ONBOARDING_INSURANCE_FORM,
+                                        newSearchParamKey: 'referer',
+                                        newSearchParamValue:
+                                            'KioskMedicalHistoryFormPage',
+                                    });
                                 }
                             }}
                             onSkip={handleSkip}
