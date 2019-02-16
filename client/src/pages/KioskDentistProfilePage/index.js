@@ -11,6 +11,8 @@ import {
     UPDATE_USER_IMAGE_URL,
     getActiveUserQuery,
 } from './queries';
+import { DENTIST_ONBOARDING_VERIFICATION_URL } from '../../util/urls';
+import { redirect } from '../../history';
 
 const Composed = adopt({
     createDentist: ({ render }) => (
@@ -109,11 +111,11 @@ class KioskDentistProfilePage extends Component {
                             console.log(error.message);
                         }
 
-                        this.props.history.push(
-                            `/onboarding/dentist/verification${
-                                this.props.location.search
-                            }`
-                        );
+                        redirect({
+                            url: DENTIST_ONBOARDING_VERIFICATION_URL,
+                            newSearchParamKey: 'referer',
+                            newSearchParamValue: 'KioskDentistProfilePage',
+                        });
                     };
 
                     return <KioskDentistProfileView onCreate={onCreate} />;

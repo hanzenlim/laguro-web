@@ -22,7 +22,7 @@ import {
 } from '../../../util/strings';
 import DentistVerificationModal from '../Modals/DentistVerificationModal';
 import { stripTimezone } from '../../../util/timeUtil';
-import { redirectWithRedirectTo } from '../../../history';
+import { redirect } from '../../../history';
 import {
     DENTIST_ONBOARDING_PROFILE_URL,
     DENTIST_ONBOARDING_VERIFICATION_URL,
@@ -272,10 +272,20 @@ class ReserveOffice extends Component {
         const dentist = _get(user, 'dentist');
 
         if (_isEmpty(_get(user, 'firstName'))) {
-            redirectWithRedirectTo(ONBOARDING_NAME_AND_PERSONA_PAGE);
+            redirect({
+                url: ONBOARDING_NAME_AND_PERSONA_PAGE,
+                includeNewRedirectTo: true,
+                newSearchParamKey: 'referer',
+                newSearchParamValue: 'ReserveOffice',
+            });
             return;
         } else if (_isEmpty(dentist)) {
-            redirectWithRedirectTo(DENTIST_ONBOARDING_PROFILE_URL);
+            redirect({
+                url: DENTIST_ONBOARDING_PROFILE_URL,
+                includeNewRedirectTo: true,
+                newSearchParamKey: 'referer',
+                newSearchParamValue: 'ReserveOffice',
+            });
             return;
         }
         // for old users
@@ -284,8 +294,12 @@ class ReserveOffice extends Component {
             _isEmpty(_get(dentist, 'acceptedInsurances')) ||
             _isEmpty(_get(dentist, 'languages'))
         ) {
-            console.log('languages');
-            redirectWithRedirectTo(DENTIST_ONBOARDING_PROFILE_URL);
+            redirect({
+                url: DENTIST_ONBOARDING_PROFILE_URL,
+                includeNewRedirectTo: true,
+                newSearchParamKey: 'referer',
+                newSearchParamValue: 'ReserveOffice',
+            });
             return;
         }
         // dentist.isVerified will be true if verified
@@ -293,7 +307,12 @@ class ReserveOffice extends Component {
             !_get(dentist, 'isVerified') ||
             !_get(dentist, 'sentVerificationDocuments')
         ) {
-            redirectWithRedirectTo(DENTIST_ONBOARDING_VERIFICATION_URL);
+            redirect({
+                url: DENTIST_ONBOARDING_VERIFICATION_URL,
+                includeNewRedirectTo: true,
+                newSearchParamKey: 'referer',
+                newSearchParamValue: 'ReserveOffice',
+            });
             return;
         }
         // If user is verified go to payment page.
