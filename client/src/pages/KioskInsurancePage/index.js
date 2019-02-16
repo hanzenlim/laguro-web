@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import * as Yup from 'yup';
 import _get from 'lodash/get';
 import {
@@ -10,7 +10,7 @@ import {
     Birthday,
     PreviousButton,
 } from '@laguro/the-bright-side-components';
-import { Flex, Loading } from '@laguro/basic-components';
+import { Box, Flex, Loading } from '@laguro/basic-components';
 import _isEmpty from 'lodash/isEmpty';
 import { getIdQueryClient, updateInsuranceInfoMutation } from './queries';
 import { Query, Mutation } from 'react-apollo';
@@ -214,7 +214,7 @@ const KioskInsurancePage = componentProps => {
                                 }
                             };
                             return (
-                                <Fragment>
+                                <Box position="relative">
                                     {/* TODO: Move progress to a parent component */}
                                     <Progress
                                         step={4}
@@ -244,7 +244,7 @@ const KioskInsurancePage = componentProps => {
                                         )}
                                         steps={steps}
                                     />
-                                </Fragment>
+                                </Box>
                             );
                         }}
                     </Mutation>
