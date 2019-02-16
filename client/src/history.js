@@ -26,6 +26,7 @@ export const redirectWithSearchParams = url => {
     window.scrollTo(0, 0);
 };
 
+// new redirectTo
 export const redirectWithRedirectTo = url => {
     const urlParams = {};
     urlParams['redirectTo'] = history.location.pathname;
@@ -43,6 +44,13 @@ export const attemptToRedirectBack = () => {
         return true;
     }
     window.scrollTo(0, 0);
+};
+
+export const getRedirectUrl = () => {
+    const urlParams = queryString.parse(history.location.search);
+    const { redirectTo } = urlParams;
+
+    return redirectTo;
 };
 
 export default history;

@@ -14,6 +14,11 @@ import cookies from 'browser-cookies';
 import { Mutation } from 'react-apollo';
 import queryString from 'query-string';
 import { StyledPreviousButtonContainer } from '../common';
+import { getRedirectUrl, redirectWithSearchParams } from '../../../history';
+import {
+    PATIENT_ONBOARDING_MEDICAL_HISTORY_FORM,
+    DENTIST_ONBOARDING_PROFILE_URL,
+} from '../../../util/urls';
 
 const steps = [
     {
@@ -72,6 +77,19 @@ const Step0 = props => {
                                     },
                                 },
                             });
+
+                            // skip persona selection for patients from booking appointments
+                            if (getRedirectUrl().includes('/dentist/')) {
+                                redirectWithSearchParams(
+                                    PATIENT_ONBOARDING_MEDICAL_HISTORY_FORM
+                                );
+                            }
+                            // skip persona selection for patients from booking reservations
+                            else if (getRedirectUrl().includes('/office/')) {
+                                redirectWithSearchParams(
+                                    DENTIST_ONBOARDING_PROFILE_URL
+                                );
+                            }
                         }}
                     />
                 );
