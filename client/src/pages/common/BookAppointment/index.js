@@ -84,6 +84,7 @@ class BookAppointment extends PureComponent {
         } = await client.query({
             query: checkPatientVerified,
             variables: { id: activeUser.id },
+            fetchPolicy: 'network-only',
         });
 
         this.redirectPatient(getUser);
@@ -130,6 +131,7 @@ class BookAppointment extends PureComponent {
         } = await client.query({
             query: checkPatientVerified,
             variables: { id: activeUser.id },
+            fetchPolicy: 'network-only',
         });
         return !this.redirectPatient(getUser);
     };
