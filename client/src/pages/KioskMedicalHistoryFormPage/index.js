@@ -1,8 +1,9 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import {
     HealthHistoryForm,
     Progress,
 } from '@laguro/the-bright-side-components';
+import { Box } from '@laguro/basic-components';
 import { adopt } from 'react-adopt';
 import { UPDATE_PATIENT_HEALTH_DATA, ACTIVE_USER } from './queries';
 import { Query, Mutation } from 'react-apollo';
@@ -52,7 +53,7 @@ const KioskMedicalHistoryFormPage = props => {
         <Composed>
             {({ updatePatientHealthData, activeUser }) => {
                 return (
-                    <Fragment>
+                    <Box position="relative">
                         {/* TODO: Move progress to a parent component */}
                         <Progress
                             {...getProgressBarProps({
@@ -125,7 +126,7 @@ const KioskMedicalHistoryFormPage = props => {
                             }}
                             onSkip={handleSkip}
                         />
-                    </Fragment>
+                    </Box>
                 );
             }}
         </Composed>
