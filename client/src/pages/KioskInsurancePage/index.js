@@ -16,7 +16,11 @@ import { getIdQueryClient, updateInsuranceInfoMutation } from './queries';
 import { Query, Mutation } from 'react-apollo';
 import { RedirectErrorPage } from '../GeneralErrorPage';
 import { adopt } from 'react-adopt';
-import { attemptToRedirectBack, getSearchParamValueByKey } from '../../history';
+import {
+    attemptToRedirectBack,
+    getRedirectUrl,
+    getSearchParamValueByKey,
+} from '../../history';
 import { getProgressBarProps } from '../../components/utils';
 
 const progressSteps = [
@@ -226,7 +230,8 @@ const KioskInsurancePage = componentProps => {
                                     progressSteps.indexOf(currentStep) + 1;
                             } else if (
                                 getSearchParamValueByKey('referer') ===
-                                'KioskMedicalHistoryFormPage'
+                                    'KioskMedicalHistoryFormPage' &&
+                                !_isEmpty(getRedirectUrl())
                             ) {
                                 startStep = 3;
                             }

@@ -14,7 +14,11 @@ import cookies from 'browser-cookies';
 import { Mutation } from 'react-apollo';
 import queryString from 'query-string';
 import { StyledPreviousButtonContainer } from '../common';
-import { getRedirectUrl, redirectWithSearchParams } from '../../../history';
+import {
+    getRedirectUrl,
+    redirectWithSearchParams,
+    redirect,
+} from '../../../history';
 import {
     PATIENT_ONBOARDING_MEDICAL_HISTORY_FORM,
     DENTIST_ONBOARDING_PROFILE_URL,
@@ -89,9 +93,11 @@ const Step0 = props => {
 
                             // skip persona selection for patients from booking appointments
                             if (getRedirectUrl().includes('/dentist/')) {
-                                redirectWithSearchParams(
-                                    PATIENT_ONBOARDING_MEDICAL_HISTORY_FORM
-                                );
+                                redirect({
+                                    url: PATIENT_ONBOARDING_MEDICAL_HISTORY_FORM,
+                                    newSearchParamKey: 'referer',
+                                    newSearchParamValue: 'GetPatientName',
+                                });
 
                                 return false;
                             }
@@ -166,28 +172,32 @@ const KioskNameAndPersonaPage = componentProps => {
                         componentProps.location.search
                     );
 
-                    let nextUrl = redirectTo || '/';
-
                     switch (objectOfValues.persona) {
                         case 'patient':
-                            nextUrl = `/kiosk/medical-history-form/${
-                                componentProps.location.search
-                            }`;
+                            redirect({
+                                url: PATIENT_ONBOARDING_MEDICAL_HISTORY_FORM,
+                                newSearchParamKey: 'referer',
+                                newSearchParamValue: 'PersonaSelection',
+                            });
                             break;
                         case 'dentist':
-                            nextUrl = `/onboarding/dentist/profile/${
-                                componentProps.location.search
-                            }`;
+                            redirect({
+                                url: DENTIST_ONBOARDING_PROFILE_URL,
+                                newSearchParamKey: 'referer',
+                                newSearchParamValue: 'PersonaSelection',
+                            });
                             break;
                         case 'host':
                             // hostOnboarding does not redirect
-                            nextUrl = '/host-onboarding/add-office/';
+                            redirect({
+                                url: '/host-onboarding/add-office/',
+                            });
                             break;
                         default:
-                            nextUrl = redirectTo || '/';
+                            break;
                     }
 
-                    componentProps.history.push(nextUrl);
+                    // componentProps.history.push(nextUrl);
                 }}
                 steps={steps}
             />

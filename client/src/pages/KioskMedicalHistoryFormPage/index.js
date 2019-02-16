@@ -44,10 +44,16 @@ const KioskMedicalHistoryFormPage = props => {
         redirectWithSearchParams(PATIENT_ONBOARDING_INSURANCE_FORM);
     };
 
-    const startStep =
-        getSearchParamValueByKey('referer') === 'BookAppointment'
-            ? progressSteps.indexOf(currentStep) + 1
-            : 1;
+    let startStep;
+    if (
+        getSearchParamValueByKey('referer') === 'BookAppointment' ||
+        getSearchParamValueByKey('referer') === 'PersonaSelection' ||
+        getSearchParamValueByKey('referer') === 'GetPatientName'
+    ) {
+        startStep = progressSteps.indexOf(currentStep) + 1;
+    } else {
+        startStep = 1;
+    }
 
     return (
         <Composed>
