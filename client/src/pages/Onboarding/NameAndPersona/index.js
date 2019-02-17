@@ -14,6 +14,15 @@ import cookies from 'browser-cookies';
 import { Mutation } from 'react-apollo';
 import queryString from 'query-string';
 import { StyledPreviousButtonContainer } from '../common';
+import {
+    getRedirectUrl,
+    redirectWithSearchParams,
+    redirect,
+} from '../../../history';
+import {
+    PATIENT_ONBOARDING_MEDICAL_HISTORY_FORM,
+    DENTIST_ONBOARDING_PROFILE_URL,
+} from '../../../util/urls';
 
 const steps = [
     {
@@ -56,22 +65,51 @@ const Step0 = props => {
                                 user = JSON.parse(user);
                             }
 
-                            await updateUser({
-                                variables: {
-                                    input: {
-                                        id: user.id,
-                                        ...(!_isEmpty(values.firstName) && {
-                                            firstName: values.firstName,
-                                        }),
-                                        ...(!_isEmpty(values.middleName) && {
-                                            middleName: values.middleName,
-                                        }),
-                                        ...(!_isEmpty(values.lastName) && {
-                                            lastName: values.lastName,
-                                        }),
+                            if (
+                                !_isEmpty(values.firstName) &&
+                                !_isEmpty(values.lastName)
+                            ) {
+                                await updateUser({
+                                    variables: {
+                                        input: {
+                                            id: user.id,
+                                            ...(!_isEmpty(values.firstName) && {
+                                                firstName: values.firstName,
+                                            }),
+                                            ...(!_isEmpty(
+                                                values.middleName
+                                            ) && {
+                                                middleName: values.middleName,
+                                            }),
+                                            ...(!_isEmpty(values.lastName) && {
+                                                lastName: values.lastName,
+                                            }),
+                                        },
                                     },
-                                },
-                            });
+                                });
+                            } else {
+                                return true;
+                            }
+
+                            // skip persona selection for patients from booking appointments
+                            if (getRedirectUrl().includes('/dentist/')) {
+                                redirect({
+                                    url: PATIENT_ONBOARDING_MEDICAL_HISTORY_FORM,
+                                    newSearchParamKey: 'referer',
+                                    newSearchParamValue: 'GetPatientName',
+                                });
+
+                                return false;
+                            }
+                            // skip persona selection for patients from booking reservations
+                            else if (getRedirectUrl().includes('/office/')) {
+                                redirectWithSearchParams(
+                                    DENTIST_ONBOARDING_PROFILE_URL
+                                );
+                                return false;
+                            }
+
+                            return true;
                         }}
                     />
                 );
@@ -134,28 +172,32 @@ const KioskNameAndPersonaPage = componentProps => {
                         componentProps.location.search
                     );
 
-                    let nextUrl = redirectTo || '/';
-
                     switch (objectOfValues.persona) {
                         case 'patient':
-                            nextUrl = `/kiosk/medical-history-form/${
-                                componentProps.location.search
-                            }`;
+                            redirect({
+                                url: PATIENT_ONBOARDING_MEDICAL_HISTORY_FORM,
+                                newSearchParamKey: 'referer',
+                                newSearchParamValue: 'PersonaSelection',
+                            });
                             break;
                         case 'dentist':
-                            nextUrl = `/onboarding/dentist/profile/${
-                                componentProps.location.search
-                            }`;
+                            redirect({
+                                url: DENTIST_ONBOARDING_PROFILE_URL,
+                                newSearchParamKey: 'referer',
+                                newSearchParamValue: 'PersonaSelection',
+                            });
                             break;
                         case 'host':
                             // hostOnboarding does not redirect
-                            nextUrl = '/host-onboarding/add-office/';
+                            redirect({
+                                url: '/host-onboarding/add-office/',
+                            });
                             break;
                         default:
-                            nextUrl = redirectTo || '/';
+                            break;
                     }
 
-                    componentProps.history.push(nextUrl);
+                    // componentProps.history.push(nextUrl);
                 }}
                 steps={steps}
             />

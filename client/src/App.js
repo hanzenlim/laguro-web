@@ -14,6 +14,13 @@ import ErrorBoundary from './components/ErrorBoundary';
 import './Silka.css';
 import theme from './components/theme';
 import './App.css';
+import {
+    DENTIST_ONBOARDING_PROFILE_URL,
+    DENTIST_ONBOARDING_VERIFICATION_URL,
+    ONBOARDING_NAME_AND_PERSONA_PAGE,
+    PATIENT_ONBOARDING_MEDICAL_HISTORY_FORM,
+    PATIENT_ONBOARDING_INSURANCE_FORM,
+} from './util/urls';
 
 const Header = Loadable({
     loader: () =>
@@ -385,14 +392,18 @@ class App extends Component {
                                                 component={PrivacyPage}
                                             />
                                             <PrivateRoute
-                                                path="/onboarding/dentist/verification"
+                                                path={
+                                                    DENTIST_ONBOARDING_VERIFICATION_URL
+                                                }
                                                 component={
                                                     DentistOnboardingVerification
                                                 }
                                                 isUserLoggedIn={data.activeUser}
                                             />
                                             <PrivateRoute
-                                                path="/onboarding/name-and-persona"
+                                                path={
+                                                    ONBOARDING_NAME_AND_PERSONA_PAGE
+                                                }
                                                 component={NameAndPersonaPage}
                                                 isUserLoggedIn={data.activeUser}
                                             />
@@ -432,7 +443,9 @@ class App extends Component {
                                                 }
                                             />
                                             <Route
-                                                path="/kiosk/medical-history-form"
+                                                path={
+                                                    PATIENT_ONBOARDING_MEDICAL_HISTORY_FORM
+                                                }
                                                 exact
                                                 component={
                                                     KioskMedicalHistoryFormPage
@@ -446,7 +459,9 @@ class App extends Component {
                                                 }
                                             />
                                             <Route
-                                                path="/kiosk/insurance"
+                                                path={
+                                                    PATIENT_ONBOARDING_INSURANCE_FORM
+                                                }
                                                 exact
                                                 component={KioskInsurancePage}
                                             />
@@ -464,7 +479,9 @@ class App extends Component {
                                                 }
                                             />
                                             <PrivateRoute
-                                                path="/onboarding/dentist/profile"
+                                                path={
+                                                    DENTIST_ONBOARDING_PROFILE_URL
+                                                }
                                                 component={
                                                     KioskDentistProfilePage
                                                 }

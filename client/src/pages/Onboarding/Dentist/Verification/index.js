@@ -4,6 +4,7 @@ import {
     Numbers,
     Pictures,
     PreviousButton,
+    Progress,
 } from '@laguro/the-bright-side-components';
 import { Flex, Box } from '@laguro/basic-components';
 import _get from 'lodash/get';
@@ -23,6 +24,8 @@ import {
 } from './queries';
 import { documentKinds } from '../../../../staticData/documentTypeList';
 import { StyledPreviousButtonContainer } from '../../common';
+import { getSearchParamValueByKey } from '../../../../history';
+import { getProgressBarProps } from '../../../../components/utils';
 
 const SSN_FORM_ITEM_NAME = 'ssn';
 const DEA_FORM_ITEM_NAME = 'dea'; // malpractice insurance
@@ -32,6 +35,9 @@ const NPI_NUM_FORM_ITEM_NAME = 'npiNum';
 const DENTIST_PHOTO_ID_FORM_ITEM_NAME = 'dentistPhotoId';
 const WARRANTY_FORM_ITEM_NAME = 'warranty'; // malpractice insurance
 const STATE_DENTAL_LICENSE_FORM_ITEM_NAME = 'stateDentalLicense';
+
+const progressSteps = ['Dentist Profile', 'Verification'];
+const currentStep = progressSteps[1];
 
 const Composed = adopt({
     activeUserResponse: ({ render }) => {
@@ -162,10 +168,28 @@ class RenderDentistOnboarding extends Component {
     }
 
     render() {
+        let startStep;
+        if (getSearchParamValueByKey('referer') === 'ReserveOffice') {
+            startStep = progressSteps.indexOf(currentStep) + 1;
+        } else if (
+            getSearchParamValueByKey('referer') === 'KioskDentistProfilePage'
+        ) {
+            startStep = 1;
+        }
+
         return (
             <Composed>
                 {({ activeUserResponse, requestDentistVerification }) => (
-                    <Box mt={140}>
+                    <Box>
+                        {startStep !== progressSteps.length && (
+                            <Progress
+                                {...getProgressBarProps({
+                                    startStep,
+                                    currentStep,
+                                    progressSteps,
+                                })}
+                            />
+                        )}
                         <Wizard
                             render={props => (
                                 <React.Fragment>

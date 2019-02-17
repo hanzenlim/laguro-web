@@ -1,21 +1,32 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import {
     HealthHistoryForm,
     Progress,
 } from '@laguro/the-bright-side-components';
+import { Box } from '@laguro/basic-components';
 import { adopt } from 'react-adopt';
 import { UPDATE_PATIENT_HEALTH_DATA, ACTIVE_USER } from './queries';
 import { Query, Mutation } from 'react-apollo';
 import cookies from 'browser-cookies';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
+import {
+    redirectWithSearchParams,
+    getSearchParamValueByKey,
+    attemptToRedirectBack,
+    redirect,
+} from '../../history';
+import { PATIENT_ONBOARDING_INSURANCE_FORM } from '../../util/urls';
+import { getProgressBarProps } from '../../components/utils';
 
 const progressSteps = [
-    '1 REGISTRATION',
-    '2 BOOK AN APPOINTMENT',
-    '3 MEDICAL HISTORY FORM',
-    '4 INSURANCE',
+    'REGISTRATION',
+    'BOOK AN APPOINTMENT',
+    'MEDICAL HISTORY FORM',
+    'INSURANCE',
 ];
+
+const currentStep = progressSteps[2];
 
 const Composed = adopt({
     activeUser: ({ render }) => {
@@ -30,19 +41,32 @@ const Composed = adopt({
 
 const KioskMedicalHistoryFormPage = props => {
     const handleSkip = () => {
-        props.history.push(`/kiosk/insurance`);
+        redirectWithSearchParams(PATIENT_ONBOARDING_INSURANCE_FORM);
     };
+
+    let startStep;
+    if (
+        getSearchParamValueByKey('referer') === 'BookAppointment' ||
+        getSearchParamValueByKey('referer') === 'PersonaSelection' ||
+        getSearchParamValueByKey('referer') === 'GetPatientName'
+    ) {
+        startStep = progressSteps.indexOf(currentStep) + 1;
+    } else {
+        startStep = 1;
+    }
 
     return (
         <Composed>
             {({ updatePatientHealthData, activeUser }) => {
                 return (
-                    <Fragment>
+                    <Box position="relative">
                         {/* TODO: Move progress to a parent component */}
                         <Progress
-                            step={3}
-                            steps={progressSteps}
-                            percent={22.5}
+                            {...getProgressBarProps({
+                                startStep,
+                                currentStep,
+                                progressSteps,
+                            })}
                         />
                         <HealthHistoryForm
                             canSkip={_isEmpty(
@@ -92,16 +116,23 @@ const KioskMedicalHistoryFormPage = props => {
                                 );
 
                                 if (hasGoneThroughInsurancePage) {
-                                    props.history.push(
-                                        `/kiosk/medical-history-form-confirmation`
-                                    );
+                                    if (!attemptToRedirectBack()) {
+                                        props.history.push(
+                                            `/kiosk/medical-history-form-confirmation`
+                                        );
+                                    }
                                 } else {
-                                    props.history.push(`/kiosk/insurance`);
+                                    redirect({
+                                        url: PATIENT_ONBOARDING_INSURANCE_FORM,
+                                        newSearchParamKey: 'referer',
+                                        newSearchParamValue:
+                                            'KioskMedicalHistoryFormPage',
+                                    });
                                 }
                             }}
                             onSkip={handleSkip}
                         />
-                    </Fragment>
+                    </Box>
                 );
             }}
         </Composed>

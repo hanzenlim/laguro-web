@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
-import get from 'lodash/get';
+import _get from 'lodash/get';
+import _isEmpty from 'lodash/isEmpty';
 import moment from 'moment';
 import { compose, Query, graphql, withApollo } from 'react-apollo';
 import { message } from 'antd';
@@ -16,6 +17,12 @@ import {
 import BookAppointmentView from './view';
 import { Loading } from '../../../components';
 import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
+import { redirect } from '../../../history';
+import {
+    PATIENT_ONBOARDING_MEDICAL_HISTORY_FORM,
+    PATIENT_ONBOARDING_INSURANCE_FORM,
+    ONBOARDING_NAME_AND_PERSONA_PAGE,
+} from '../../../util/urls';
 
 const HANDLED_TIMESLOT_ERRORS = [
     'Timeslot is in the past',
@@ -77,43 +84,39 @@ class BookAppointment extends PureComponent {
         } = await client.query({
             query: checkPatientVerified,
             variables: { id: activeUser.id },
+            fetchPolicy: 'network-only',
         });
 
-        if (
-            getUser &&
-            (getUser.isVerified || getUser.sentVerificationDocuments)
-        ) {
-            try {
-                this.setState({ isSubmitting: true });
+        this.redirectPatient(getUser);
 
-                await this.props.mutate({
-                    variables: {
-                        input: {
-                            reservationId: this.state.reservationId,
-                            patientId: this.props.data.activeUser.id,
-                            procedure: this.state.procedure,
-                            localStartTime: this.state.startTime,
-                            localEndTime: this.state.endTime,
-                            paymentOptionId,
-                        },
-                    },
-                });
+        try {
+            this.setState({ isSubmitting: true });
 
-                this.setState({
-                    bookedAppointment: {
-                        location: this.state.location,
-                        time: moment(this.state.startTime).format('LLLL'),
+            await this.props.mutate({
+                variables: {
+                    input: {
+                        reservationId: this.state.reservationId,
+                        patientId: this.props.data.activeUser.id,
+                        procedure: this.state.procedure,
+                        localStartTime: this.state.startTime,
+                        localEndTime: this.state.endTime,
+                        paymentOptionId,
                     },
-                    isSubmitting: false,
-                });
-            } catch (error) {
-                const errorMessage = error.graphQLErrors[0].message;
-                if (HANDLED_TIMESLOT_ERRORS.includes(errorMessage))
-                    message.error(errorMessage);
-                this.setState({ isSubmitting: false });
-            }
-        } else {
-            this.setState({ showVerificationModal: true, isSubmitting: false });
+                },
+            });
+
+            this.setState({
+                bookedAppointment: {
+                    location: this.state.location,
+                    time: moment(this.state.startTime).format('LLLL'),
+                },
+                isSubmitting: false,
+            });
+        } catch (error) {
+            const errorMessage = error.graphQLErrors[0].message;
+            if (HANDLED_TIMESLOT_ERRORS.includes(errorMessage))
+                message.error(errorMessage);
+            this.setState({ isSubmitting: false });
         }
     };
 
@@ -128,16 +131,40 @@ class BookAppointment extends PureComponent {
         } = await client.query({
             query: checkPatientVerified,
             variables: { id: activeUser.id },
+            fetchPolicy: 'network-only',
         });
+        return !this.redirectPatient(getUser);
+    };
 
-        if (
-            (getUser && getUser.sentVerificationDocuments) ||
-            getUser.isVerified
-        ) {
+    redirectPatient = user => {
+        if (_isEmpty(_get(user, 'firstName'))) {
+            this.setState({ isSubmitting: false });
+            redirect({
+                url: ONBOARDING_NAME_AND_PERSONA_PAGE,
+                includeNewRedirectTo: true,
+                newSearchParamKey: 'referer',
+                newSearchParamValue: 'BookAppointment',
+            });
+            return true;
+        } else if (!_get(user, 'hasSubmittedHealthHistoryForm')) {
+            this.setState({ isSubmitting: false });
+            redirect({
+                url: PATIENT_ONBOARDING_MEDICAL_HISTORY_FORM,
+                includeNewRedirectTo: true,
+                newSearchParamKey: 'referer',
+                newSearchParamValue: 'BookAppointment',
+            });
+            return true;
+        } else if (_isEmpty(_get(user, 'insuranceInfo'))) {
+            this.setState({ isSubmitting: false });
+            redirect({
+                url: PATIENT_ONBOARDING_INSURANCE_FORM,
+                includeNewRedirectTo: true,
+                newSearchParamKey: 'referer',
+                newSearchParamValue: 'BookAppointment',
+            });
             return true;
         }
-
-        this.setState({ showVerificationModal: true, isSubmitting: false });
         return false;
     };
 
@@ -170,8 +197,8 @@ class BookAppointment extends PureComponent {
 
                     return (
                         <BookAppointmentView
-                            data={get(data, 'getDentist.reservations')}
-                            firstAppointmentDuration={get(
+                            data={_get(data, 'getDentist.reservations')}
+                            firstAppointmentDuration={_get(
                                 data,
                                 'getDentist.firstAppointmentDuration'
                             )}

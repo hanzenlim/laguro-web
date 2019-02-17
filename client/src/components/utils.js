@@ -28,3 +28,27 @@ export const flexWrap = style({
     prop: 'flexWrap',
     cssProperty: 'flex-wrap',
 });
+
+const getProgressStepsFromStep = (index, progressSteps) =>
+    progressSteps.slice(index - 1);
+
+const getProgressStepsWithNumbers = progressSteps =>
+    progressSteps.map((step, index2) => `${index2 + 1} ${step}`);
+
+export const getProgressBarProps = ({
+    startStep = 1,
+    currentStep,
+    progressSteps,
+}) => {
+    return {
+        step:
+            getProgressStepsFromStep(startStep, progressSteps).indexOf(
+                currentStep
+            ) + 1,
+        steps: getProgressStepsWithNumbers(
+            getProgressStepsFromStep(startStep, progressSteps)
+        ),
+        percent:
+            100 / getProgressStepsFromStep(startStep, progressSteps).length,
+    };
+};

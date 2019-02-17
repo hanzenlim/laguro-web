@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import * as Yup from 'yup';
 import _get from 'lodash/get';
 import {
@@ -10,19 +10,27 @@ import {
     Birthday,
     PreviousButton,
 } from '@laguro/the-bright-side-components';
-import { Flex, Loading } from '@laguro/basic-components';
+import { Box, Flex, Loading } from '@laguro/basic-components';
 import _isEmpty from 'lodash/isEmpty';
 import { getIdQueryClient, updateInsuranceInfoMutation } from './queries';
 import { Query, Mutation } from 'react-apollo';
 import { RedirectErrorPage } from '../GeneralErrorPage';
 import { adopt } from 'react-adopt';
+import {
+    attemptToRedirectBack,
+    getRedirectUrl,
+    getSearchParamValueByKey,
+} from '../../history';
+import { getProgressBarProps } from '../../components/utils';
 
 const progressSteps = [
-    '1 REGISTRATION',
-    '2 BOOK AN APPOINTMENT',
-    '3 MEDICAL HISTORY FORM',
-    '4 INSURANCE',
+    'REGISTRATION',
+    'BOOK AN APPOINTMENT',
+    'MEDICAL HISTORY FORM',
+    'INSURANCE',
 ];
+
+const currentStep = progressSteps[3];
 
 const steps = [
     {
@@ -94,7 +102,10 @@ const Step0 = props => (
                             },
                         },
                     });
-                    props.history.push(`/kiosk/confirmation/${userId}`);
+
+                    if (!attemptToRedirectBack()) {
+                        props.history.push(`/kiosk/confirmation/${userId}`);
+                    }
                 }}
             />
         )}
@@ -203,18 +214,40 @@ const KioskInsurancePage = componentProps => {
                                     },
                                 });
 
-                                componentProps.history.push(
-                                    `/kiosk/confirmation/${userId}`
-                                );
+                                if (!attemptToRedirectBack()) {
+                                    componentProps.history.push(
+                                        `/kiosk/confirmation/${userId}`
+                                    );
+                                }
                             };
+
+                            let startStep;
+                            if (
+                                getSearchParamValueByKey('referer') ===
+                                'BookAppointment'
+                            ) {
+                                startStep =
+                                    progressSteps.indexOf(currentStep) + 1;
+                            } else if (
+                                getSearchParamValueByKey('referer') ===
+                                    'KioskMedicalHistoryFormPage' &&
+                                !_isEmpty(getRedirectUrl())
+                            ) {
+                                startStep = 3;
+                            }
+
                             return (
-                                <Fragment>
+                                <Box position="relative">
                                     {/* TODO: Move progress to a parent component */}
-                                    <Progress
-                                        step={4}
-                                        steps={progressSteps}
-                                        percent={22.5}
-                                    />
+                                    {startStep !== progressSteps.length && (
+                                        <Progress
+                                            {...getProgressBarProps({
+                                                startStep,
+                                                currentStep,
+                                                progressSteps,
+                                            })}
+                                        />
+                                    )}
                                     <Wizard
                                         onSubmit={values =>
                                             handleSubmit(values)
@@ -238,7 +271,7 @@ const KioskInsurancePage = componentProps => {
                                         )}
                                         steps={steps}
                                     />
-                                </Fragment>
+                                </Box>
                             );
                         }}
                     </Mutation>

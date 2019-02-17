@@ -142,7 +142,8 @@ class KioskBookAnAppointmentPage extends Component {
                         return (
                             <Flex flexDirection="column" alignItems="center">
                                 <Text mb="6px">
-                                    There are no appointments available
+                                    There are no appointments available at this
+                                    office this week
                                 </Text>
                                 <Onboarding.NextButton
                                     onClick={() => onKioskLogout(props.client)}
