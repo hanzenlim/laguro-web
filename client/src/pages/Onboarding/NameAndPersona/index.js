@@ -168,10 +168,6 @@ const KioskNameAndPersonaPage = componentProps => {
                         ...currentObject,
                     }));
 
-                    const { redirectTo } = queryString.parse(
-                        componentProps.location.search
-                    );
-
                     switch (objectOfValues.persona) {
                         case 'patient':
                             redirect({
