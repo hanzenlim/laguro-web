@@ -12,7 +12,6 @@ import { Flex, Box } from '@laguro/basic-components';
 import { UPDATE_USER } from './queries';
 import cookies from 'browser-cookies';
 import { Mutation } from 'react-apollo';
-import queryString from 'query-string';
 import { StyledPreviousButtonContainer } from '../common';
 import {
     getRedirectUrl,
