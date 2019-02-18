@@ -132,7 +132,6 @@ const KioskInsurancePage = componentProps => {
                     return <RedirectErrorPage />;
                 }
 
-                console.log(dataIdQueryClient, 222);
                 const userId = _get(dataIdQueryClient, 'getUser.id');
                 const user = _get(dataIdQueryClient, 'getUser');
 
