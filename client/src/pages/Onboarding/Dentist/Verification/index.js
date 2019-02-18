@@ -57,14 +57,29 @@ const steps = [
         id: '0',
         validationSchema: Yup.object().shape({
             [SSN_FORM_ITEM_NAME]: Yup.string()
-                .required('You must provide a correct SSN')
-                .concat(Yup.string().matches(/^\d{9}$/)),
+                .required(`Please provide your SSN or EIN/TIN`)
+                .concat(
+                    Yup.string().matches(
+                        /^\d{9}$/,
+                        `Your SSN or EIN/TIN should be a 9-digit number`
+                    )
+                ),
             [DEA_FORM_ITEM_NAME]: Yup.string()
-                .required('You must provide a correct DEA registration number')
-                .concat(Yup.string().matches(/^[A-Z][A-Z9][0-9]{7}(-\w+)?/)),
+                .required('Please provide your DEA registration number')
+                .concat(
+                    Yup.string().matches(
+                        /^[A-Z][A-Z9][0-9]{7}(-\w+)?/,
+                        'Please double-check your DEA registration number'
+                    )
+                ),
             [NPI_NUM_FORM_ITEM_NAME]: Yup.string()
-                .required('You must provide a correct NPI number')
-                .concat(Yup.string().matches(/^[0-9]{10}(-\w+)?/)),
+                .required('Please provide your NPI number')
+                .concat(
+                    Yup.string().matches(
+                        /^[0-9]{10}(-\w+)?/,
+                        'Please double-check your NPI number'
+                    )
+                ),
         }),
     },
     {

@@ -191,8 +191,6 @@ const KioskNameAndPersonaPage = componentProps => {
                         default:
                             break;
                     }
-
-                    // componentProps.history.push(nextUrl);
                 }}
                 steps={steps}
             />
