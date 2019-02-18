@@ -194,13 +194,13 @@ const KioskInsurancePage = componentProps => {
                     {
                         id: '2',
                         initialValues: {
-                            patientBirthMonth: _get(user, 'dob', '').split(
+                            patientBirthMonth: user && user.dob && user.dob.split(
                                 '/'
                             )[0],
-                            patientBirthDate: _get(user, 'dob', '').split(
+                            patientBirthDate: user && user.dob && user.dob.split(
                                 '/'
                             )[1],
-                            patientBirthYear: _get(user, 'dob', '').split(
+                            patientBirthYear: user && user.dob && user.dob.split(
                                 '/'
                             )[2],
                         },
