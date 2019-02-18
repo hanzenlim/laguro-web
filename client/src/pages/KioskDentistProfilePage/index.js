@@ -61,7 +61,15 @@ class KioskDentistProfilePage extends Component {
                                 profilePicture,
                             } = get(values, ['1'], {});
                             const { about } = get(values, ['2'], {});
-                            const { dentistInsurance } = get(values, ['3'], {});
+                            const dentistInsurance = get(values, ['3'], {});
+
+                            const insuranceArrayOfKeys = Object.keys(
+                                dentistInsurance
+                            );
+
+                            const acceptedInsurances = insuranceArrayOfKeys.filter(
+                                key => dentistInsurance[key]
+                            );
 
                             const procedureArrayOfKeys = Object.keys(
                                 procedureList
@@ -85,7 +93,7 @@ class KioskDentistProfilePage extends Component {
                             const createQuery = {
                                 specialty: key,
                                 languages,
-                                acceptedInsurances: dentistInsurance,
+                                acceptedInsurances,
                                 bio: about,
                                 procedures: compact(procedures),
                                 userId: user.id,
