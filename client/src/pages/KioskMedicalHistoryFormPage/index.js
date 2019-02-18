@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-    HealthHistoryForm,
-    Progress,
-} from '@laguro/the-bright-side-components';
+import { Progress } from '@laguro/the-bright-side-components';
 import { Box } from '@laguro/basic-components';
 import { adopt } from 'react-adopt';
 import { UPDATE_PATIENT_HEALTH_DATA, ACTIVE_USER } from './queries';
@@ -18,6 +15,7 @@ import {
 } from '../../history';
 import { PATIENT_ONBOARDING_INSURANCE_FORM } from '../../util/urls';
 import { getProgressBarProps } from '../../components/utils';
+import HealthHistoryForm from './view';
 
 const progressSteps = [
     'REGISTRATION',
