@@ -3,15 +3,7 @@ import {
     Wizard,
     Onboarding,
 } from '@laguro/the-bright-side-components';
-import {
-    Box,
-    Button,
-    Flex,
-    Input,
-    Select,
-    Text,
-    TextArea,
-} from '@laguro/basic-components';
+import { Box } from '@laguro/basic-components';
 import * as React from 'react';
 import * as Yup from 'yup';
 
@@ -48,13 +40,13 @@ const getInitialValues = questions => {
 const steps = [
     {
         id: 'LastDentalExam',
-        validationSchema: {},
+        validationSchema: Yup.object().shape({}),
         component: null,
         initialValues: getInitialValues(LastDentalExam.questions),
     },
     {
         id: 'LastDentalExamProcedure',
-        validationSchema: {},
+        validationSchema: Yup.object().shape({}),
         component: null,
         initialValues: getInitialValues(LastDentalExamProcedure.questions),
     },
@@ -93,91 +85,91 @@ const steps = [
     },
     {
         id: 'GeneralMedicalInfo1',
-        validationSchema: {},
+        validationSchema: Yup.object().shape({}),
         component: null,
         initialValues: getInitialValues(GeneralMedicalInfo1.questions),
     },
     {
         id: 'GeneralMedicalInfo2',
-        validationSchema: {},
+        validationSchema: Yup.object().shape({}),
         component: null,
         initialValues: getInitialValues(GeneralMedicalInfo2.questions),
     },
     {
         id: 'WomenOnly',
-        validationSchema: {},
+        validationSchema: Yup.object().shape({}),
         component: null,
         initialValues: getInitialValues(WomenOnly.questions),
     },
     {
         id: 'GeneralDentalInfo1',
-        validationSchema: {},
+        validationSchema: Yup.object().shape({}),
         component: null,
         initialValues: getInitialValues(GeneralDentalInfo1.questions),
     },
     {
         id: 'GeneralDentalInfo2',
-        validationSchema: {},
+        validationSchema: Yup.object().shape({}),
         component: null,
         initialValues: getInitialValues(GeneralDentalInfo2.questions),
     },
     {
         id: 'DrugAllergies',
-        validationSchema: {},
+        validationSchema: Yup.object().shape({}),
         component: null,
         initialValues: getInitialValues(DrugAllergies.questions),
     },
     {
         id: 'UrgentHeartConditions',
-        validationSchema: {},
+        validationSchema: Yup.object().shape({}),
         component: null,
         initialValues: getInitialValues(UrgentHeartConditions.questions),
     },
     {
         id: 'OtherHeartConditions',
-        validationSchema: {},
+        validationSchema: Yup.object().shape({}),
         component: null,
         initialValues: getInitialValues(OtherHeartConditions.questions),
     },
     {
         id: 'BloodDisorders',
-        validationSchema: {},
+        validationSchema: Yup.object().shape({}),
         component: null,
         initialValues: getInitialValues(BloodDisorders.questions),
     },
     {
         id: 'NutritionalDiseases',
-        validationSchema: {},
+        validationSchema: Yup.object().shape({}),
         component: null,
         initialValues: getInitialValues(NutritionalDiseases.questions),
     },
     {
         id: 'ImmuneAndCancer',
-        validationSchema: {},
+        validationSchema: Yup.object().shape({}),
         component: null,
         initialValues: getInitialValues(ImmuneAndCancer.questions),
     },
     {
         id: 'RespiratoryDisorders',
-        validationSchema: {},
+        validationSchema: Yup.object().shape({}),
         component: null,
         initialValues: getInitialValues(RespiratoryDisorders.questions),
     },
     {
         id: 'TerminalIllness',
-        validationSchema: {},
+        validationSchema: Yup.object().shape({}),
         component: null,
         initialValues: getInitialValues(TerminalIllness.questions),
     },
     {
         id: 'BrainDisorders',
-        validationSchema: {},
+        validationSchema: Yup.object().shape({}),
         component: null,
         initialValues: getInitialValues(BrainDisorders.questions),
     },
     {
         id: 'DrugsAndAlcohol1',
-        validationSchema: {},
+        validationSchema: Yup.object().shape({}),
         component: null,
         initialValues: getInitialValues(DrugsAndAlcohol1.questions),
     },
