@@ -34,6 +34,7 @@ export const UPDATE_USER_IMAGE_URL = gql`
     mutation updateUser($input: UpdateUserInput!) {
         updateUser(input: $input) {
             id
+            imageUrl
         }
     }
 `;
@@ -51,6 +52,22 @@ export const getActiveUserQuery = gql`
             isDentist
             isHost
             token
+        }
+    }
+`;
+
+export const getDentistQuery = gql`
+    query($id: String!) {
+        getDentist(id: $id) {
+            id
+            firstAppointmentDuration
+            specialty
+            languages
+            procedures {
+                group
+            }
+            bio
+            acceptedInsurances
         }
     }
 `;

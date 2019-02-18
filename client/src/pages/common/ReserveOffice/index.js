@@ -288,20 +288,6 @@ class ReserveOffice extends Component {
             });
             return;
         }
-        // for old users
-        // TODO: remove later
-        else if (
-            _isEmpty(_get(dentist, 'acceptedInsurances')) ||
-            _isEmpty(_get(dentist, 'languages'))
-        ) {
-            redirect({
-                url: DENTIST_ONBOARDING_PROFILE_URL,
-                includeNewRedirectTo: true,
-                newSearchParamKey: 'referer',
-                newSearchParamValue: 'ReserveOffice',
-            });
-            return;
-        }
         // dentist.isVerified will be true if verified
         else if (
             !_get(dentist, 'isVerified') ||

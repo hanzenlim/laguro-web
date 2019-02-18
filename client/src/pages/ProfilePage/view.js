@@ -6,7 +6,6 @@ import { Box, Container, Text, Responsive } from '../../components/';
 import UpdateProfileForm from '../../pages/common/Forms/UpdateProfileForm';
 import Menu from '../common/Menu';
 import DentistDetails from '../common/DentistDetails';
-import UpdateDentistProfileForm from '../../pages/common/Forms/UpdateDentistProfileForm';
 import ReviewContainer from '../common/ReviewContainer';
 import HostListings from '../common/HostListings';
 import PaymentHistory from '../common/PaymentHistory';
@@ -47,6 +46,8 @@ import {
     MY_PATIENTS_MENU,
     PAYMENT_REQUEST_MENU,
 } from '../../util/strings';
+import { DENTIST_ONBOARDING_PROFILE_URL } from '../../util/urls';
+import { redirect } from '../../history';
 
 const { TabletMobile, Desktop } = Responsive;
 
@@ -196,18 +197,12 @@ class ProfileView extends Component {
             case MY_PATIENTS:
                 return <PatientsList />;
             case DENTIST_PROFILE:
-                return (
-                    <Box>
-                        <TabletMobile>
-                            <Container>
-                                <UpdateDentistProfileForm />
-                            </Container>
-                        </TabletMobile>
-                        <Desktop>
-                            <UpdateDentistProfileForm />
-                        </Desktop>
-                    </Box>
-                );
+                return redirect({
+                    url: DENTIST_ONBOARDING_PROFILE_URL,
+                    includeNewRedirectTo: true,
+                    newSearchParamKey: 'referer',
+                    newSearchParamValue: 'ProfilePage',
+                });
             case PUBLIC_PROFILE:
                 return (
                     <Container px={[25, '', 0]}>

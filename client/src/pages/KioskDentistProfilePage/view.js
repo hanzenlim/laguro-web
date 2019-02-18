@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Box } from '@laguro/basic-components';
 import { DentistProfile, Progress } from '@laguro/the-bright-side-components';
 import { getProgressBarProps } from '../../components/utils';
+import { getSearchParamValueByKey } from '../../history';
 
 const propTypes = {
     onCreate: PropTypes.func,
@@ -16,15 +17,17 @@ const progressSteps = ['Dentist Profile', 'Verification'];
 
 const currentStep = progressSteps[0];
 
-const KioskDentistProfileView = ({ onCreate }) => (
+const KioskDentistProfileView = ({ onCreate, steps }) => (
     <Box>
-        <Progress
-            {...getProgressBarProps({
-                currentStep,
-                progressSteps,
-            })}
-        />
-        <DentistProfile onSubmit={onCreate} />
+        {getSearchParamValueByKey('referer') !== 'ProfilePage' && (
+            <Progress
+                {...getProgressBarProps({
+                    currentStep,
+                    progressSteps,
+                })}
+            />
+        )}
+        <DentistProfile onSubmit={onCreate} steps={steps} />
     </Box>
 );
 
