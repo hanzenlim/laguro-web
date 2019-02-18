@@ -17,7 +17,6 @@ import UserVerification from '../common/UserVerification';
 import PatientsList from '../common/PatientsList';
 import ProcedurePaymentRequestPage from '../../pages/ProcedurePaymentRequestPage';
 import Error404Page from '../../pages/Error404Page';
-import { redirect } from '../../history';
 import { PATIENT_ONBOARDING_INSURANCE_FORM } from '../../util/urls';
 import {
     DENTIST,
