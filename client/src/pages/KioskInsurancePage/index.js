@@ -12,7 +12,11 @@ import {
 } from '@laguro/the-bright-side-components';
 import { Box, Flex, Loading } from '@laguro/basic-components';
 import _isEmpty from 'lodash/isEmpty';
-import { getIdQueryClient, updateInsuranceInfoMutation } from './queries';
+import {
+    getIdQueryClient,
+    updateInsuranceInfoMutation,
+    getUser,
+} from './queries';
 import { Query, Mutation } from 'react-apollo';
 import { RedirectErrorPage } from '../GeneralErrorPage';
 import { adopt } from 'react-adopt';
@@ -22,6 +26,7 @@ import {
     getSearchParamValueByKey,
 } from '../../history';
 import { getProgressBarProps } from '../../components/utils';
+import cookies from 'browser-cookies';
 
 const progressSteps = [
     'REGISTRATION',
@@ -31,47 +36,6 @@ const progressSteps = [
 ];
 
 const currentStep = progressSteps[3];
-
-const steps = [
-    {
-        id: '0',
-        initialValues: {},
-        validationSchema: Yup.object().shape({
-            insuranceProvider: Yup.string().required('Insurance is required'),
-            patientInsuranceNum: Yup.string().required(
-                'Insurance number is required'
-            ),
-        }),
-    },
-    {
-        id: '1',
-        validationSchema: Yup.object().shape({
-            patientAddress1: Yup.string().required(
-                'Street address is required'
-            ),
-            patientCity: Yup.string().required('City is required'),
-            patientState: Yup.string().required('State is required'),
-            patientZIP: Yup.string().required('Postal code is required'),
-        }),
-        initialValues: {},
-    },
-    {
-        id: '2',
-        validationSchema: Yup.object().shape({
-            patientBirthMonth: Yup.string().required('Month is required'),
-            patientBirthDate: Yup.string().required('Date is required'),
-            patientBirthYear: Yup.string().required('Year is required'),
-        }),
-        initialValues: {},
-    },
-    {
-        id: '3',
-        validationSchema: Yup.object().shape({
-            patientGender: Yup.string().required('Gender is required'),
-        }),
-        initialValues: {},
-    },
-];
 
 const Composed = adopt({
     getIdQueryClient: ({ render }) => {
@@ -137,15 +101,24 @@ const render = props => {
     }
 
     return (
-        <Flex justifyContent="center" mt="100px">
+        <Flex justifyContent="center" pt="100px">
             {step}
         </Flex>
     );
 };
 
 const KioskInsurancePage = componentProps => {
+    let user = cookies.get('user');
+    if (user) {
+        user = JSON.parse(user);
+    }
+
     return (
-        <Query query={getIdQueryClient}>
+        <Query
+            query={getUser}
+            variables={{ id: user.id }}
+            fetchPolicy="network-only"
+        >
             {({
                 loading: loadingUserQueryClient,
                 error: errorUserQueryClient,
@@ -158,7 +131,104 @@ const KioskInsurancePage = componentProps => {
                 if (errorUserQueryClient) {
                     return <RedirectErrorPage />;
                 }
-                const userId = _get(dataIdQueryClient, 'activeUser.id');
+
+                console.log(dataIdQueryClient, 222);
+                const userId = _get(dataIdQueryClient, 'getUser.id');
+                const user = _get(dataIdQueryClient, 'getUser');
+
+                const steps = [
+                    {
+                        id: '0',
+                        initialValues: {
+                            patientInsuranceNum: _get(
+                                user,
+                                'insuranceInfo.policyHolderId'
+                            ),
+                            insuranceProvider: _get(
+                                user,
+                                'insuranceInfo.insuranceProvider'
+                            ),
+                            planOrGroupNumber: _get(
+                                user,
+                                'insuranceInfo.planOrGroupNumber'
+                            ),
+                        },
+                        validationSchema: Yup.object().shape({
+                            insuranceProvider: Yup.string().required(
+                                'Insurance is required'
+                            ),
+                            patientInsuranceNum: Yup.string().required(
+                                'Insurance number is required'
+                            ),
+                        }),
+                    },
+                    {
+                        id: '1',
+                        initialValues: {
+                            patientAddress1: _get(
+                                user,
+                                'address.streetAddress'
+                            ),
+                            patientAddress2: _get(
+                                user,
+                                'address.addressDetails'
+                            ),
+                            patientCity: _get(user, 'address.city'),
+                            patientState: _get(user, 'address.state'),
+                            patientZIP: _get(user, 'address.zipCode'),
+                        },
+                        validationSchema: Yup.object().shape({
+                            patientAddress1: Yup.string().required(
+                                'Street address is required'
+                            ),
+                            patientCity: Yup.string().required(
+                                'City is required'
+                            ),
+                            patientState: Yup.string().required(
+                                'State is required'
+                            ),
+                            patientZIP: Yup.string().required(
+                                'Postal code is required'
+                            ),
+                        }),
+                    },
+                    {
+                        id: '2',
+                        initialValues: {
+                            patientBirthMonth: _get(user, 'dob', '').split(
+                                '/'
+                            )[0],
+                            patientBirthDate: _get(user, 'dob', '').split(
+                                '/'
+                            )[1],
+                            patientBirthYear: _get(user, 'dob', '').split(
+                                '/'
+                            )[2],
+                        },
+                        validationSchema: Yup.object().shape({
+                            patientBirthMonth: Yup.string().required(
+                                'Month is required'
+                            ),
+                            patientBirthDate: Yup.string().required(
+                                'Date is required'
+                            ),
+                            patientBirthYear: Yup.string().required(
+                                'Year is required'
+                            ),
+                        }),
+                    },
+                    {
+                        id: '3',
+                        initialValues: {
+                            patientGender: _get(user, 'gender'),
+                        },
+                        validationSchema: Yup.object().shape({
+                            patientGender: Yup.string().required(
+                                'Gender is required'
+                            ),
+                        }),
+                    },
+                ];
 
                 return (
                     <Mutation mutation={updateInsuranceInfoMutation}>
@@ -224,7 +294,9 @@ const KioskInsurancePage = componentProps => {
                             let startStep;
                             if (
                                 getSearchParamValueByKey('referer') ===
-                                'BookAppointment'
+                                    'BookAppointment' ||
+                                getSearchParamValueByKey('referer') ===
+                                    'ProfilePage'
                             ) {
                                 startStep =
                                     progressSteps.indexOf(currentStep) + 1;

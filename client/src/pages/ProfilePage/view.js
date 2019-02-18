@@ -18,10 +18,13 @@ import UserVerification from '../common/UserVerification';
 import PatientsList from '../common/PatientsList';
 import ProcedurePaymentRequestPage from '../../pages/ProcedurePaymentRequestPage';
 import Error404Page from '../../pages/Error404Page';
+import { redirect } from '../../history';
+import { PATIENT_ONBOARDING_INSURANCE_FORM } from '../../util/urls';
 import {
     DENTIST,
     PATIENT,
     HOST,
+    MY_INSURANCE,
     MY_DOCUMENTS,
     MY_PROFILE,
     MY_APPOINTMENTS,
@@ -35,6 +38,7 @@ import {
     MY_PATIENTS,
     PAYMENT_REQUEST,
     MY_ACCOUNT_MENU,
+    MY_INSURANCE_MENU,
     MY_DOCUMENTS_MENU,
     MY_PROFILE_MENU,
     MY_APPOINTMENTS_MENU,
@@ -126,6 +130,7 @@ class ProfileView extends Component {
             [DENTIST_PROFILE]: MY_PROFILE_MENU,
             [MY_PATIENTS]: MY_PATIENTS_MENU,
             [MY_DOCUMENTS]: MY_DOCUMENTS_MENU,
+            [MY_INSURANCE]: MY_INSURANCE_MENU,
             [MY_APPOINTMENTS]: MY_APPOINTMENTS_MENU,
             [MY_LISTINGS]: MY_LISTINGS_MENU,
             [MY_BOOKINGS]: MY_BOOKINGS_MENU,
@@ -167,6 +172,13 @@ class ProfileView extends Component {
         switch (key) {
             case MY_PROFILE:
                 return <UpdateProfileForm />;
+            case MY_INSURANCE:
+                return redirect({
+                    url: PATIENT_ONBOARDING_INSURANCE_FORM,
+                    includeNewRedirectTo: true,
+                    newSearchParamKey: 'referer',
+                    newSearchParamValue: 'ProfilePage',
+                });
             case MY_DOCUMENTS:
                 return (
                     <Fragment>
@@ -180,7 +192,6 @@ class ProfileView extends Component {
                         </Desktop>
                     </Fragment>
                 );
-
             case MY_APPOINTMENTS:
                 return <PatientAppointments />;
             case MY_LISTINGS:
@@ -229,6 +240,7 @@ class ProfileView extends Component {
 
     renderMenu = () => {
         const { isDentist, isHost } = this.props;
+        console.log(333, isDentist, isHost);
         const { panel } = this.state;
         return (
             <Menu
@@ -271,9 +283,20 @@ class ProfileView extends Component {
                         </Text>
                     </StyledMenuItem>
                 )}
+                {!isHost && !isDentist && (
+                    <StyledMenuItem key={MY_INSURANCE}>
+                        <Text
+                            fontSize={[1, '', 4]}
+                            color="inherit"
+                            lineHeight={['48px', '', '40px']}
+                        >
+                            {this.keyTextMap[MY_INSURANCE]}
+                        </Text>
+                    </StyledMenuItem>
+                )}
                 {/* We only show the my documents for dentist but a host will have isHost */}
                 {/* and isDentist set to true so we check if the user is not a host  */}
-                {!isHost && (
+                {!isHost && isDentist && (
                     <StyledMenuItem key={MY_DOCUMENTS}>
                         <Text
                             fontSize={[1, '', 4]}
