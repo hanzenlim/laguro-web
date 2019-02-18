@@ -64,6 +64,7 @@ export const REFUNDED = 'REFUNDED';
 export const REJECTED = 'rejected';
 
 // Profile page
+export const MY_INSURANCE = 'my_insurance';
 export const MY_DOCUMENTS = 'my_documents';
 export const MY_PROFILE = 'my_profile';
 export const PAYMENT_REQUEST = 'payment_request';
@@ -82,6 +83,7 @@ export const HOME_MENU = 'Home';
 export const LOG_OUT_MENU = 'Log Out';
 export const MY_PAGE_MENU = 'My Page';
 export const MY_ACCOUNT_MENU = 'My Account';
+export const MY_INSURANCE_MENU = 'My Insurance';
 export const MY_DOCUMENTS_MENU = 'My Documents';
 export const MY_PROFILE_MENU = 'My Profile';
 export const MY_APPOINTMENTS_MENU = 'My Appointments';
