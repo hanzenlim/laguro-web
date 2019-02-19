@@ -72,6 +72,7 @@
     "styled-system": "^2.2.5",
     "system-components": "^3.0.0",
     "unfetch": "^3.0.0",
+    "validator": "^10.11.0",
     "viewport-mercator-project": "^6.1.0",
     "yup": "^0.26.10"
   },
