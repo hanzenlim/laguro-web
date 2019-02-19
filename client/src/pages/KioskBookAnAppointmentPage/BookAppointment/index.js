@@ -20,11 +20,6 @@ import { Query, Mutation, withApollo } from 'react-apollo';
 import { Flex, Text, Loading } from '@laguro/basic-components';
 import * as Yup from 'yup';
 import moment from 'moment';
-import _random from 'lodash/random';
-import _range from 'lodash/range';
-import _sampleSize from 'lodash/sampleSize';
-import _sample from 'lodash/sample';
-import faker from 'faker';
 import { RedirectErrorPage } from '../../GeneralErrorPage';
 import isEmpty from 'lodash/isEmpty';
 import { onKioskLogout } from '../../../util/authUtils';
@@ -80,44 +75,6 @@ class KioskBookAnAppointmentPage extends Component {
             },
         ];
 
-        const dentists = [];
-        const specialties = [
-            'Adjun',
-            'Endodo',
-            'Braces',
-            'Implants',
-            'Invisalign',
-            'Extraction',
-            'Adjun',
-            'Endodo',
-            'Braces',
-            'Implants',
-            'Invisalign',
-            'Extraction',
-        ];
-
-        const dentistSpecialties = specialties.map(sp => `${sp} specialist`);
-
-        const languages = ['Korean', 'Japanese', 'Spanish', 'Portuguese'];
-
-        for (let i = 0; i < 10; i += 1) {
-            dentists.push({
-                id: `dentistId${i.toString()}`,
-                availableTimes: _range(24).map(j =>
-                    moment()
-                        .add((i + _random(1)) % 6, 'days')
-                        .add(j, 'hours')
-                        .format()
-                ),
-                name: `Dr. ${faker.name.firstName()} ${faker.name.lastName()}`,
-                rating: 4.5,
-                specialties: _sampleSize(specialties, 10),
-                specialty: _sample(dentistSpecialties),
-                languages: _sampleSize(languages, 3),
-                imageUrl: 'http://bit.ly/laguro-joe',
-            });
-        }
-
         const Step0 = props => (
             <ApptSelectionComposed>
                 {({
@@ -171,6 +128,11 @@ class KioskBookAnAppointmentPage extends Component {
                                 appointmentDuration:
                                     dent.firstAppointmentDuration,
                                 procedures: dent.procedures.map(p => p.name),
+                                languages: dent.languages.map(
+                                    lang =>
+                                        lang.charAt(0).toUpperCase() +
+                                        lang.toLowerCase().substr(1)
+                                ),
                             }))
                         )
                     );

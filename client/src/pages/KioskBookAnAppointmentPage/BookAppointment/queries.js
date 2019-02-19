@@ -58,6 +58,7 @@ export const GET_OFFICE = gql`
                     reservationId
                 }
                 firstAppointmentDuration
+                languages
             }
         }
     }
