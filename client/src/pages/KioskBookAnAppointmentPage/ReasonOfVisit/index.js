@@ -61,7 +61,7 @@ class KioskBookAnAppointmentPage extends Component {
                         // https://www.laguro.com/office/e91ba710-2b37-11e9-998e-9da6024c6b32
                         values[0].reasonOfVisit === 'Exam/Check up/Cleaning'
                             ? this.props.history.push(
-                                  `/kiosk/book-appointment?reasonOfVisit=Exam/Check up/Cleaning&officeId=e91ba710-2b37-11e9-998e-9da6024c6b32`
+                                  `/kiosk/book-appointment?reasonOfVisit=Exam/Check up/Cleaning&officeId=ca95f760-3473-11e9-b3b9-e7c1c7456ee8`
                               )
                             : this.props.history.push('/kiosk/select-procedure')
                     }
