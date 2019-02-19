@@ -23,7 +23,7 @@ class KioskBookAnAppointmentPage extends Component {
         ];
 
         const procedureList = {
-            Fillings: false,
+            'Fillings': false,
             'Crowns, Bridges, Veneers': false,
             'Root Canals': false,
             'Gum Surgery / Grafting': false,
@@ -32,8 +32,8 @@ class KioskBookAnAppointmentPage extends Component {
             'Implant placement': false,
             'Implant crown': false,
             'Extractions / Surgery': false,
-            Dentures: false,
-            Braces: false,
+            'Dentures': false,
+            'Braces': false,
         };
         const Step0 = props => (
             <SelectProcedure
