@@ -68,7 +68,7 @@ const steps = [
                 .required('Please provide your DEA registration number')
                 .concat(
                     Yup.string().matches(
-                        /^[A-Z][A-Z9][0-9]{7}(-\w+)?/,
+                        /^[A-Za-z][A-Za-z9][0-9]{7}(-\w+)?/,
                         'Please double-check your DEA registration number'
                     )
                 ),
@@ -246,7 +246,7 @@ class RenderDentistOnboarding extends Component {
                                                 dentistId:
                                                     activeUserResponse.data
                                                         .activeUser.dentistId,
-                                                deaRegistrationNumber: dea,
+                                                deaRegistrationNumber: dea.toUpperCase(),
                                                 npiNumber: npiNum,
                                                 ssnOrEinOrTin: ssn,
                                             },
