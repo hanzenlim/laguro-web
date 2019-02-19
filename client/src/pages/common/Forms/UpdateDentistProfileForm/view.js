@@ -33,7 +33,7 @@ const StyledCheckboxGroup = styled(CheckboxGroup)`
 `;
 
 const PROCEDURE_GROUP_LIST = [
-    Fillings,
+    'Fillings',
     'Crowns, Bridges, Veneers',
     'Root Canals',
     'Gum Surgery / Grafting',
@@ -42,8 +42,8 @@ const PROCEDURE_GROUP_LIST = [
     'Implant placement',
     'Implant crown',
     'Extractions / Surgery',
-    Dentures,
-    Braces,
+    'Dentures',
+    'Braces',
 ];
 
 const { FormItem, SubmitButton } = Form;
