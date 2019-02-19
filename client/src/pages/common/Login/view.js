@@ -8,6 +8,7 @@ import cookies from 'browser-cookies';
 import { Mutation } from 'react-apollo';
 import { message } from 'antd';
 import isEmpty from 'lodash/isEmpty';
+import validator from 'validator';
 
 import history from '../../../history';
 
@@ -50,6 +51,28 @@ const validateEmail = email => {
     return re.test(email);
 };
 
+const validatePhoneOrEmail = phoneOrEmail => {
+    const isEmail = validator.isEmail(phoneOrEmail);
+    const isNumeric = validator.isNumeric(phoneOrEmail);
+    const hasCorrectDigitCount = phoneOrEmail.length === 10;
+
+    if (!phoneOrEmail) {
+        return false;
+    }
+
+    if (!isEmail) {
+        if (!isNumeric) {
+            return false;
+        }
+
+        if (!hasCorrectDigitCount) {
+            return false;
+        }
+    }
+
+    return true;
+};
+
 const Step0 = props => (
     <Composed>
         {({ sendKioskLoginCode, login, setActiveUser }) => {
@@ -57,9 +80,17 @@ const Step0 = props => (
                 <StandaloneLogin
                     {...props}
                     onRequestPinCode={async username => {
-                        const isEmail = validateEmail(username);
+                        const isEmailOrPhoneValid = validatePhoneOrEmail(
+                            username
+                        );
 
+                        if (!isEmailOrPhoneValid) {
+                            return null;
+                        }
+
+                        const isEmail = validateEmail(username);
                         const input = {};
+
                         if (isEmail) {
                             input.email = username;
                         } else {
