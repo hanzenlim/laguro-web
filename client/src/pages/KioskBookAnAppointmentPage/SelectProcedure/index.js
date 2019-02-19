@@ -23,17 +23,17 @@ class KioskBookAnAppointmentPage extends Component {
         ];
 
         const procedureList = {
-            'Adjunctive General': false,
-            Diagnostic: false,
-            Preventive: false,
-            Restorative: false,
-            'Oral Surgery': false,
-            'Maxillofacial / Prosthetics': false,
-            Orthodontics: false,
-            Periodontics: false,
-            Prosthodontics: false,
-            Endodontics: false,
-            Implantology: false,
+            Fillings: false,
+            'Crowns, Bridges, Veneers': false,
+            'Root Canals': false,
+            'Gum Surgery / Grafting': false,
+            'Deep Cleaning': false,
+            'Whitening / Cosmetic': false,
+            'Implant placement': false,
+            'Implant crown': false,
+            'Extractions / Surgery': false,
+            Dentures: false,
+            Braces: false,
         };
         const Step0 = props => (
             <SelectProcedure
