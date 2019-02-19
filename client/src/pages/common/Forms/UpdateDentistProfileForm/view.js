@@ -33,18 +33,17 @@ const StyledCheckboxGroup = styled(CheckboxGroup)`
 `;
 
 const PROCEDURE_GROUP_LIST = [
-    'Adjunctive General',
-    'Diagnostic',
-    'Preventative',
-    'Restorative',
-    'Oral Surgery',
-    'Maxillofacial Prosthetics',
-    'Prosthetics',
-    'Orthodontics',
-    'Periodontics',
-    'Prosthodontics',
-    'Endodontics',
-    'Implantology',
+    Fillings,
+    'Crowns, Bridges, Veneers',
+    'Root Canals',
+    'Gum Surgery / Grafting',
+    'Deep Cleaning',
+    'Whitening / Cosmetic',
+    'Implant placement',
+    'Implant crown',
+    'Extractions / Surgery',
+    Dentures,
+    Braces,
 ];
 
 const { FormItem, SubmitButton } = Form;
