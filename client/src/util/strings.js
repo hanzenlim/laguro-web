@@ -163,3 +163,6 @@ export const STATE_DENTAL_LICENSE_TOOLTIP =
 export const DENTIST_PHOTO_ID_TOOLTIP = 'We accept valid driver’s license.';
 export const WARRANTY_TOOLTIP =
     'Commonly known as medical professional liability insurance. This insurance covers bodily injury, property damage, and personal injury such as mental anguish.';
+
+export const hasSkippedMedicalHistoryFormCookieVariableName =
+    'hasSkippedMedicalHistoryForm';

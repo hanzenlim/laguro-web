@@ -16,6 +16,7 @@ import {
 import { PATIENT_ONBOARDING_INSURANCE_FORM } from '../../util/urls';
 import { getProgressBarProps } from '../../components/utils';
 import HealthHistoryForm from './view';
+import { hasSkippedMedicalHistoryFormCookieVariableName } from '../../util/strings';
 
 const progressSteps = [
     'REGISTRATION',
@@ -39,6 +40,9 @@ const Composed = adopt({
 
 const KioskMedicalHistoryFormPage = props => {
     const handleSkip = () => {
+        cookies.set(hasSkippedMedicalHistoryFormCookieVariableName, 'true', {
+            expires: 0,
+        });
         redirectWithSearchParams(PATIENT_ONBOARDING_INSURANCE_FORM);
     };
 

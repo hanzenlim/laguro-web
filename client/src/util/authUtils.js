@@ -1,7 +1,10 @@
 import { message } from 'antd';
 import history from '../history';
 import request from './fetchUtil';
-import { ACTIVE_USER } from './strings';
+import {
+    ACTIVE_USER,
+    hasSkippedMedicalHistoryFormCookieVariableName,
+} from './strings';
 import cookies from 'browser-cookies';
 
 export const onLogin = (clientCache, values) =>
@@ -77,6 +80,7 @@ export const onLogout = clientCache => {
     // eslint-disable-next-line
     window.localStorage && window.localStorage.clear();
     clientCache.writeData({ data: { activeUser: null } });
+    cookies.erase(hasSkippedMedicalHistoryFormCookieVariableName);
     request('/api/logout', {
         method: 'POST',
         credentials: 'same-origin',

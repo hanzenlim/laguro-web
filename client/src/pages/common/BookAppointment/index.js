@@ -23,6 +23,7 @@ import {
     PATIENT_ONBOARDING_INSURANCE_FORM,
     ONBOARDING_NAME_AND_PERSONA_PAGE,
 } from '../../../util/urls';
+import { userHasSkippedMedicalHistory } from '../../../util/cookieUtils';
 
 const HANDLED_TIMESLOT_ERRORS = [
     'Timeslot is in the past',
@@ -146,7 +147,10 @@ class BookAppointment extends PureComponent {
                 newSearchParamValue: 'BookAppointment',
             });
             return true;
-        } else if (!_get(user, 'hasSubmittedHealthHistoryForm')) {
+        } else if (
+            !_get(user, 'hasSubmittedHealthHistoryForm') &&
+            !userHasSkippedMedicalHistory()
+        ) {
             this.setState({ isSubmitting: false });
             redirect({
                 url: PATIENT_ONBOARDING_MEDICAL_HISTORY_FORM,

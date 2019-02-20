@@ -194,15 +194,12 @@ const KioskInsurancePage = componentProps => {
                     {
                         id: '2',
                         initialValues: {
-                            patientBirthMonth: user && user.dob && user.dob.split(
-                                '/'
-                            )[0],
-                            patientBirthDate: user && user.dob && user.dob.split(
-                                '/'
-                            )[1],
-                            patientBirthYear: user && user.dob && user.dob.split(
-                                '/'
-                            )[2],
+                            patientBirthMonth:
+                                user && user.dob && user.dob.split('/')[0],
+                            patientBirthDate:
+                                user && user.dob && user.dob.split('/')[1],
+                            patientBirthYear:
+                                user && user.dob && user.dob.split('/')[2],
                         },
                         validationSchema: Yup.object().shape({
                             patientBirthMonth: Yup.string().required(
