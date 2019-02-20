@@ -147,6 +147,10 @@ const KioskInsurancePage = componentProps => {
                                 user,
                                 'insuranceInfo.insuranceProvider'
                             ),
+                            insuranceProviderId: _get(
+                                user,
+                                'insuranceInfo.insuranceProviderId'
+                            ),
                             planOrGroupNumber: _get(
                                 user,
                                 'insuranceInfo.planOrGroupNumber'
