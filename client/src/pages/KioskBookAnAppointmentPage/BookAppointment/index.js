@@ -127,7 +127,7 @@ class KioskBookAnAppointmentPage extends Component {
                                     dent.user.imageUrl || defaultUserImage,
                                 appointmentDuration:
                                     dent.firstAppointmentDuration,
-                                procedures: dent.procedures.map(p => p.name),
+                                procedures: dent.procedures.map(p => p.group),
                                 languages: dent.languages.map(
                                     lang =>
                                         lang.charAt(0).toUpperCase() +

@@ -39,7 +39,7 @@ export const GET_OFFICE = gql`
                     imageUrl
                 }
                 procedures {
-                    name
+                    group
                 }
                 averageRating
                 availableAppointmentSlots( 
