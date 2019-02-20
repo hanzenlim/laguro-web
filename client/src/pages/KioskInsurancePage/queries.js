@@ -24,6 +24,7 @@ export const getUser = gql`
                 useInsurance
                 policyHolderId
                 insuranceProvider
+                insuranceProviderId
                 planOrGroupNumber
             }
             address {
