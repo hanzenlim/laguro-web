@@ -13,12 +13,30 @@ import { RedirectErrorPage } from '../../../../pages/GeneralErrorPage';
 import { getIdQueryClient, getUserQuery, updateUserMutation } from './queries';
 import { ACTIVE_USER } from '../../../../util/strings';
 
+const HANDLED_ERRORS = {
+    'Phone number has already been registered':
+        'Phone number has already been registered',
+};
+
 class UpdateProfileContainer extends PureComponent {
     state = {
         isUpdated: false,
         newProfileImage: null,
 
         smsNotificationStatus: null,
+    };
+
+    getErrorMessage = updateUserError => {
+        if (!updateUserError) {
+            return null;
+        }
+
+        const errorMessage = get(updateUserError, 'graphQLErrors[0].message');
+
+        return (
+            HANDLED_ERRORS[errorMessage] ||
+            'Something went wrong. Please try again later.'
+        );
     };
 
     setNewProfileImage = result => {
@@ -168,10 +186,9 @@ class UpdateProfileContainer extends PureComponent {
                                             <UpdateProfileFormView
                                                 data={mappedData}
                                                 loading={updateUserLoading}
-                                                error={
-                                                    updateUserError &&
-                                                    'Something went wrong. Please try again later.'
-                                                }
+                                                error={this.getErrorMessage(
+                                                    updateUserError
+                                                )}
                                                 onSuccess={onSuccess}
                                                 setNewProfileImage={
                                                     this.setNewProfileImage
