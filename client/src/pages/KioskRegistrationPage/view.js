@@ -170,6 +170,7 @@ const Step1 = props => (
                         }
 
                         try {
+                            props.formikProps.setSubmitting(true);
                             const loginResult = await login({
                                 variables: {
                                     input,
@@ -244,6 +245,7 @@ const Step1 = props => (
                                 props.formikProps.submitForm();
                             }
                         } catch (error) {
+                            props.formikProps.setSubmitting(false);
                             props.clear();
                             message.error(error.graphQLErrors[0].message);
                         }
