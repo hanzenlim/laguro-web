@@ -22,6 +22,17 @@ export const checkUserDentistVerifiedQuery = gql`
                 languages
             }
             firstName
+            patientDocument {
+                dentistPhotoId {
+                    url
+                }
+                warranty {
+                    url
+                }
+                stateDentalLicense {
+                    url
+                }
+            }
         }
     }
 `;

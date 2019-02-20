@@ -269,6 +269,7 @@ class ReserveOffice extends Component {
             behavior: 'smooth',
         });
         const user = _get(result, 'data.getUser');
+        const patientDocument = _get(user, 'patientDocument');
         const dentist = _get(user, 'dentist');
 
         if (_isEmpty(_get(user, 'firstName'))) {
@@ -290,8 +291,10 @@ class ReserveOffice extends Component {
         }
         // dentist.isVerified will be true if verified
         else if (
-            !_get(dentist, 'isVerified') ||
-            !_get(dentist, 'sentVerificationDocuments')
+            !_get(dentist, 'sentVerificationDocuments') &&
+            !_isEmpty(_get(patientDocument, 'dentistPhotoId.url')) &&
+            !_isEmpty(_get(patientDocument, 'warranty.url')) &&
+            !_isEmpty(_get(patientDocument, 'stateDentalLicense.url'))
         ) {
             redirect({
                 url: DENTIST_ONBOARDING_VERIFICATION_URL,
