@@ -22,6 +22,7 @@ import {
     PATIENT_ONBOARDING_MEDICAL_HISTORY_FORM,
     DENTIST_ONBOARDING_PROFILE_URL,
 } from '../../../util/urls';
+import { execute } from '../../../util/gqlUtils';
 
 const steps = [
     {
@@ -63,27 +64,35 @@ const Step0 = props => (
                     }
 
                     if (
-                        !_isEmpty(values.firstName) &&
-                        !_isEmpty(values.lastName)
+                        _isEmpty(values.firstName) ||
+                        _isEmpty(values.lastName)
                     ) {
-                        await updateUser({
-                            variables: {
-                                input: {
-                                    id: user.id,
-                                    ...(!_isEmpty(values.firstName) && {
-                                        firstName: values.firstName,
-                                    }),
-                                    ...(!_isEmpty(values.middleName) && {
-                                        middleName: values.middleName,
-                                    }),
-                                    ...(!_isEmpty(values.lastName) && {
-                                        lastName: values.lastName,
-                                    }),
-                                },
-                            },
-                        });
-                    } else {
+                        // telling the-bright-side-components to show validation warning
                         return true;
+                    }
+
+                    if (
+                        !(await execute({
+                            action: async () => {
+                                await updateUser({
+                                    variables: {
+                                        input: {
+                                            id: user.id,
+                                            firstName: values.firstName,
+                                            ...(!_isEmpty(
+                                                values.middleName
+                                            ) && {
+                                                middleName: values.middleName,
+                                            }),
+                                            lastName: values.lastName,
+                                        },
+                                    },
+                                });
+                            },
+                        }))
+                    ) {
+                        // telling the-bright-side-components not to move to next step
+                        return false;
                     }
 
                     // skip persona selection for patients from booking appointments
@@ -93,7 +102,7 @@ const Step0 = props => (
                             newSearchParamKey: 'referer',
                             newSearchParamValue: 'GetPatientName',
                         });
-
+                        // telling the-bright-side-components not to move to next step
                         return false;
                     }
                     // skip persona selection for patients from booking reservations
@@ -101,9 +110,11 @@ const Step0 = props => (
                         redirectWithSearchParams(
                             DENTIST_ONBOARDING_PROFILE_URL
                         );
+                        // telling the-bright-side-components not to move to next step
                         return false;
                     }
 
+                    // telling the-bright-side-components to move to next step
                     return true;
                 }}
             />
