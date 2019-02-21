@@ -10,13 +10,11 @@ import { adopt } from 'react-adopt';
 import GeneralErrorPage from '../../pages/GeneralErrorPage';
 
 const Composed = adopt({
-    getUser: ({ render, patientId }) => {
-        return (
-            <Query query={GET_USER} variables={{ id: patientId }}>
-                {render}
-            </Query>
-        );
-    },
+    getUser: ({ render, patientId }) => (
+        <Query query={GET_USER} variables={{ id: patientId }}>
+            {render}
+        </Query>
+    ),
 });
 
 const getValues = data => {

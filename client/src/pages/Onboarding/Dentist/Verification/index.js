@@ -40,16 +40,14 @@ const progressSteps = ['Dentist Profile', 'Verification'];
 const currentStep = progressSteps[1];
 
 const Composed = adopt({
-    activeUserResponse: ({ render }) => {
-        return <Query query={getIdQueryClient}>{render}</Query>;
-    },
-    requestDentistVerification: ({ render }) => {
-        return (
-            <Mutation mutation={requestDentistVerificationMutation}>
-                {render}
-            </Mutation>
-        );
-    },
+    activeUserResponse: ({ render }) => (
+        <Query query={getIdQueryClient}>{render}</Query>
+    ),
+    requestDentistVerification: ({ render }) => (
+        <Mutation mutation={requestDentistVerificationMutation}>
+            {render}
+        </Mutation>
+    ),
 });
 
 const steps = [

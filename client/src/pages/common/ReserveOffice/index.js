@@ -279,7 +279,6 @@ class ReserveOffice extends Component {
                 newSearchParamKey: 'referer',
                 newSearchParamValue: 'ReserveOffice',
             });
-            return;
         } else if (_isEmpty(dentist)) {
             redirect({
                 url: DENTIST_ONBOARDING_PROFILE_URL,
@@ -287,7 +286,6 @@ class ReserveOffice extends Component {
                 newSearchParamKey: 'referer',
                 newSearchParamValue: 'ReserveOffice',
             });
-            return;
         }
         // dentist.isVerified will be true if verified
         else if (
@@ -302,7 +300,6 @@ class ReserveOffice extends Component {
                 newSearchParamKey: 'referer',
                 newSearchParamValue: 'ReserveOffice',
             });
-            return;
         }
         // If user is verified go to payment page.
         else {

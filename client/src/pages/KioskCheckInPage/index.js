@@ -13,16 +13,11 @@ const KioskCheckInPage = props => {
     const appointmentId = _get(props, 'match.params.id');
 
     const Composed = adopt({
-        getAppointment: ({ render }) => {
-            return (
-                <Query
-                    query={GET_APPOINTMENT}
-                    variables={{ id: appointmentId }}
-                >
-                    {render}
-                </Query>
-            );
-        },
+        getAppointment: ({ render }) => (
+            <Query query={GET_APPOINTMENT} variables={{ id: appointmentId }}>
+                {render}
+            </Query>
+        ),
     });
 
     return (

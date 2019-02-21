@@ -32,31 +32,27 @@ class KioskBookAnAppointmentPage extends Component {
         const ApptSelectionComposed = adopt({
             getOneOfficeWithActiveDentistsWithAppointmentSlots: ({
                 render,
-            }) => {
-                return (
-                    <Query
-                        variables={{
-                            id: officeId,
-                        }}
-                        query={GET_OFFICE}
-                    >
-                        {render}
-                    </Query>
-                );
-            },
+            }) => (
+                <Query
+                    variables={{
+                        id: officeId,
+                    }}
+                    query={GET_OFFICE}
+                >
+                    {render}
+                </Query>
+            ),
         });
 
         const Composed = adopt({
-            getActiveUser: ({ render }) => {
-                return <Query query={GET_ACTIVE_USER}>{render}</Query>;
-            },
-            createPatientAppointmentOnboarding: ({ render }) => {
-                return (
-                    <Mutation mutation={CREATE_PATIENT_APPOINTMENT_ONBOARDING}>
-                        {render}
-                    </Mutation>
-                );
-            },
+            getActiveUser: ({ render }) => (
+                <Query query={GET_ACTIVE_USER}>{render}</Query>
+            ),
+            createPatientAppointmentOnboarding: ({ render }) => (
+                <Mutation mutation={CREATE_PATIENT_APPOINTMENT_ONBOARDING}>
+                    {render}
+                </Mutation>
+            ),
         });
 
         const steps = [

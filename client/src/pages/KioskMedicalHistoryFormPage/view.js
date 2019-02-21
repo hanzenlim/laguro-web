@@ -267,24 +267,22 @@ const render = props => {
     );
 };
 
-const HealthHistoryFormView = componentProps => {
-    return (
-        <Wizard
-            onSubmit={componentProps.onFinishForm}
-            Form="form"
-            render={props => (
-                <React.Fragment>
-                    {props.actions.canGoBack && (
-                        <Onboarding.PreviousButton
-                            goToPreviousStep={props.actions.goToPreviousStep}
-                        />
-                    )}
-                    {render({ ...props, ...componentProps })}
-                </React.Fragment>
-            )}
-            steps={steps}
-        />
-    );
-};
+const HealthHistoryFormView = componentProps => (
+    <Wizard
+        onSubmit={componentProps.onFinishForm}
+        Form="form"
+        render={props => (
+            <React.Fragment>
+                {props.actions.canGoBack && (
+                    <Onboarding.PreviousButton
+                        goToPreviousStep={props.actions.goToPreviousStep}
+                    />
+                )}
+                {render({ ...props, ...componentProps })}
+            </React.Fragment>
+        )}
+        steps={steps}
+    />
+);
 
 export default HealthHistoryFormView;

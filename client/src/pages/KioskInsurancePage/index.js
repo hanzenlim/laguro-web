@@ -38,14 +38,12 @@ const progressSteps = [
 const currentStep = progressSteps[3];
 
 const Composed = adopt({
-    getIdQueryClient: ({ render }) => {
-        return <Query query={getIdQueryClient}>{render}</Query>;
-    },
-    updateInsuranceInfoMutation: ({ render }) => {
-        return (
-            <Mutation mutation={updateInsuranceInfoMutation}>{render}</Mutation>
-        );
-    },
+    getIdQueryClient: ({ render }) => (
+        <Query query={getIdQueryClient}>{render}</Query>
+    ),
+    updateInsuranceInfoMutation: ({ render }) => (
+        <Mutation mutation={updateInsuranceInfoMutation}>{render}</Mutation>
+    ),
 });
 
 const Step0 = props => (
@@ -260,7 +258,7 @@ const KioskInsurancePage = componentProps => {
                                     planOrGroupNumber,
                                 } = combinedObject;
                                 const formattedValues = {
-                                    userId: userId,
+                                    userId,
                                     address: {
                                         streetAddress: patientAddress1,
                                         addressDetails: patientAddress2,
@@ -276,7 +274,7 @@ const KioskInsurancePage = componentProps => {
                                         insuranceProviderId,
                                         policyHolderId: patientInsuranceNum,
                                         ...(!_isEmpty(planOrGroupNumber) && {
-                                            planOrGroupNumber: planOrGroupNumber,
+                                            planOrGroupNumber,
                                         }),
                                     },
                                 };

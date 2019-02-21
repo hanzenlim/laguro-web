@@ -25,15 +25,13 @@ import { withRouter } from 'react-router-dom';
 import validator from 'validator';
 
 const Composed = adopt({
-    sendKioskLoginCode: ({ render }) => {
-        return <Mutation mutation={SEND_KIOSK_LOGIN_CODE}>{render}</Mutation>;
-    },
-    login: ({ render }) => {
-        return <Mutation mutation={LOGIN}>{render}</Mutation>;
-    },
-    setActiveUser: ({ render }) => {
-        return <Mutation mutation={SET_ACTIVE_USER}>{render}</Mutation>;
-    },
+    sendKioskLoginCode: ({ render }) => (
+        <Mutation mutation={SEND_KIOSK_LOGIN_CODE}>{render}</Mutation>
+    ),
+    login: ({ render }) => <Mutation mutation={LOGIN}>{render}</Mutation>,
+    setActiveUser: ({ render }) => (
+        <Mutation mutation={SET_ACTIVE_USER}>{render}</Mutation>
+    ),
 });
 
 const progressSteps = [
@@ -86,7 +84,7 @@ const steps = [
 ];
 
 const validateEmail = email => {
-    var re = /\S+@\S+\.\S+/;
+    const re = /\S+@\S+\.\S+/;
     return re.test(email);
 };
 
@@ -115,200 +113,181 @@ const validatePhoneOrEmail = phoneOrEmail => {
 const Step0 = props => <PurposeOfVisit {...props} />;
 const Step1 = props => (
     <Composed>
-        {({ sendKioskLoginCode, login, setActiveUser }) => {
-            return (
-                <Verification
-                    {...props}
-                    onRequestPinCode={async username => {
-                        const isEmailOrPhoneValid = validatePhoneOrEmail(
-                            username
+        {({ sendKioskLoginCode, login, setActiveUser }) => (
+            <Verification
+                {...props}
+                onRequestPinCode={async username => {
+                    const isEmailOrPhoneValid = validatePhoneOrEmail(username);
+
+                    if (!isEmailOrPhoneValid) {
+                        return null;
+                    }
+
+                    const isEmail = validateEmail(username);
+                    const input = {};
+
+                    if (isEmail) {
+                        input.email = username;
+                    } else {
+                        const phoneNumber = `+1${username}`;
+                        input.phoneNumber = phoneNumber;
+                    }
+
+                    const sendKioskLoginCodeResult = await sendKioskLoginCode({
+                        variables: {
+                            input,
+                        },
+                    });
+
+                    const isCodeSent = _get(
+                        sendKioskLoginCodeResult,
+                        'data.sendKioskLoginCode'
+                    );
+
+                    if (isCodeSent) {
+                        props.formikProps.setFieldValue('isCodeSent', true);
+                    }
+                }}
+                onPinComplete={async (username, passcode) => {
+                    const isEmail = validateEmail(username);
+
+                    const input = {
+                        passcode,
+                    };
+
+                    if (isEmail) {
+                        input.email = username;
+                    } else {
+                        const phoneNumber = `+1${username}`;
+                        input.phoneNumber = phoneNumber;
+                    }
+
+                    try {
+                        props.formikProps.setSubmitting(true);
+                        const loginResult = await login({
+                            variables: {
+                                input,
+                            },
+                        });
+
+                        const isPinValid = _get(
+                            loginResult,
+                            'data.login.user.id'
                         );
 
-                        if (!isEmailOrPhoneValid) {
-                            return null;
-                        }
+                        console.log({ loginResult, isPinValid });
 
-                        const isEmail = validateEmail(username);
-                        const input = {};
-
-                        if (isEmail) {
-                            input.email = username;
+                        if (isPinValid) {
+                            props.formikProps.setFieldValue('isPinValid', true);
                         } else {
-                            const phoneNumber = `+1${username}`;
-                            input.phoneNumber = phoneNumber;
+                            return;
                         }
 
-                        const sendKioskLoginCodeResult = await sendKioskLoginCode(
-                            {
-                                variables: {
-                                    input,
-                                },
-                            }
-                        );
-
-                        const isCodeSent = _get(
-                            sendKioskLoginCodeResult,
-                            'data.sendKioskLoginCode'
-                        );
-
-                        if (isCodeSent) {
-                            props.formikProps.setFieldValue('isCodeSent', true);
-                        }
-                    }}
-                    onPinComplete={async (username, passcode) => {
-                        const isEmail = validateEmail(username);
-
-                        const input = {
-                            passcode,
+                        const user = {
+                            ..._get(loginResult, 'data.login.user'),
+                            token: _get(
+                                loginResult,
+                                'data.login.authToken.body'
+                            ),
                         };
 
-                        if (isEmail) {
-                            input.email = username;
-                        } else {
-                            const phoneNumber = `+1${username}`;
-                            input.phoneNumber = phoneNumber;
-                        }
+                        cookies.set('user', JSON.stringify(user));
 
-                        try {
-                            props.formikProps.setSubmitting(true);
-                            const loginResult = await login({
-                                variables: {
-                                    input,
-                                },
-                            });
-
-                            const isPinValid = _get(
-                                loginResult,
-                                'data.login.user.id'
-                            );
-
-                            console.log({ loginResult, isPinValid });
-
-                            if (isPinValid) {
-                                props.formikProps.setFieldValue(
-                                    'isPinValid',
-                                    true
-                                );
-                            } else {
-                                return;
-                            }
-
-                            const user = {
-                                ..._get(loginResult, 'data.login.user'),
-                                token: _get(
-                                    loginResult,
-                                    'data.login.authToken.body'
-                                ),
-                            };
-
-                            cookies.set('user', JSON.stringify(user));
-
-                            await setActiveUser({
-                                variables: {
-                                    input: {
-                                        activeUser: {
-                                            ..._get(
-                                                loginResult,
-                                                'data.login.user'
-                                            ),
-                                        },
+                        await setActiveUser({
+                            variables: {
+                                input: {
+                                    activeUser: {
+                                        ..._get(loginResult, 'data.login.user'),
                                     },
                                 },
-                            });
+                            },
+                        });
 
-                            let upcomingAppointments = [];
-                            if (_get(user, 'appointments')) {
-                                upcomingAppointments = _get(
-                                    user,
-                                    'appointments'
-                                );
-                            }
-
-                            const purposeOfVisit = _get(
-                                props,
-                                'values[0].purposeOfVisit'
-                            );
-
-                            if (
-                                purposeOfVisit === 'checkIn' &&
-                                upcomingAppointments.length
-                            ) {
-                                props.history.push(
-                                    `/kiosk/check-in/${_get(
-                                        upcomingAppointments,
-                                        '[0].id'
-                                    )}`
-                                );
-                            } else if (user.firstName) {
-                                props.history.push(`/kiosk/reason-of-visit`);
-                            } else {
-                                props.formikProps.submitForm();
-                            }
-                        } catch (error) {
-                            props.formikProps.setSubmitting(false);
-                            props.clear();
-                            message.error(error.graphQLErrors[0].message);
+                        let upcomingAppointments = [];
+                        if (_get(user, 'appointments')) {
+                            upcomingAppointments = _get(user, 'appointments');
                         }
-                    }}
-                    // TODO: Deprecate this in tbs
-                    onSubmitPinCode={() => {}}
-                />
-            );
-        }}
+
+                        const purposeOfVisit = _get(
+                            props,
+                            'values[0].purposeOfVisit'
+                        );
+
+                        if (
+                            purposeOfVisit === 'checkIn' &&
+                            upcomingAppointments.length
+                        ) {
+                            props.history.push(
+                                `/kiosk/check-in/${_get(
+                                    upcomingAppointments,
+                                    '[0].id'
+                                )}`
+                            );
+                        } else if (user.firstName) {
+                            props.history.push(`/kiosk/reason-of-visit`);
+                        } else {
+                            props.formikProps.submitForm();
+                        }
+                    } catch (error) {
+                        props.formikProps.setSubmitting(false);
+                        props.clear();
+                        message.error(error.graphQLErrors[0].message);
+                    }
+                }}
+                // TODO: Deprecate this in tbs
+                onSubmitPinCode={() => {}}
+            />
+        )}
     </Composed>
 );
 
 const ComposedStep2 = adopt({
-    updateUser: ({ render }) => {
-        return <Mutation mutation={UPDATE_USER}>{render}</Mutation>;
-    },
+    updateUser: ({ render }) => (
+        <Mutation mutation={UPDATE_USER}>{render}</Mutation>
+    ),
 });
 
-const Step2 = props => {
-    return (
-        <ComposedStep2>
-            {({ updateUser }) => {
-                return (
-                    <GetPatientName
-                        {...props}
-                        onNext={async values => {
-                            if (
-                                _isEmpty(values.firstName) ||
-                                _isEmpty(values.lastName)
-                            ) {
-                                return;
-                            }
+const Step2 = props => (
+    <ComposedStep2>
+        {({ updateUser }) => (
+            <GetPatientName
+                {...props}
+                onNext={async values => {
+                    if (
+                        _isEmpty(values.firstName) ||
+                        _isEmpty(values.lastName)
+                    ) {
+                        return;
+                    }
 
-                            let user = cookies.get('user');
-                            if (user) {
-                                user = JSON.parse(user);
-                            }
+                    let user = cookies.get('user');
+                    if (user) {
+                        user = JSON.parse(user);
+                    }
 
-                            await updateUser({
-                                variables: {
-                                    input: {
-                                        id: user.id,
-                                        ...(!_isEmpty(values.firstName) && {
-                                            firstName: values.firstName,
-                                        }),
-                                        ...(!_isEmpty(values.middleName) && {
-                                            middleName: values.middleName,
-                                        }),
-                                        ...(!_isEmpty(values.lastName) && {
-                                            lastName: values.lastName,
-                                        }),
-                                    },
-                                },
-                            });
+                    await updateUser({
+                        variables: {
+                            input: {
+                                id: user.id,
+                                ...(!_isEmpty(values.firstName) && {
+                                    firstName: values.firstName,
+                                }),
+                                ...(!_isEmpty(values.middleName) && {
+                                    middleName: values.middleName,
+                                }),
+                                ...(!_isEmpty(values.lastName) && {
+                                    lastName: values.lastName,
+                                }),
+                            },
+                        },
+                    });
 
-                            props.history.push(`/kiosk/reason-of-visit`);
-                        }}
-                    />
-                );
-            }}
-        </ComposedStep2>
-    );
-};
+                    props.history.push(`/kiosk/reason-of-visit`);
+                }}
+            />
+        )}
+    </ComposedStep2>
+);
 
 const render = props => {
     let step = null;
@@ -334,30 +313,26 @@ const render = props => {
     );
 };
 
-const KioskOnboardingPage = componentProps => {
-    return (
-        <Fragment>
-            {/* TODO: Move progress to a parent component */}
-            <Progress step={1} steps={progressSteps} percent={22.5} />
-            <Wizard
-                onSubmit={value => console.log(value)}
-                Form="form"
-                render={props => (
-                    <React.Fragment>
-                        {props.actions.canGoBack && (
-                            <PreviousButton
-                                goToPreviousStep={
-                                    props.actions.goToPreviousStep
-                                }
-                            />
-                        )}
-                        {render({ ...props, ...componentProps })}
-                    </React.Fragment>
-                )}
-                steps={steps}
-            />
-        </Fragment>
-    );
-};
+const KioskOnboardingPage = componentProps => (
+    <Fragment>
+        {/* TODO: Move progress to a parent component */}
+        <Progress step={1} steps={progressSteps} percent={22.5} />
+        <Wizard
+            onSubmit={value => console.log(value)}
+            Form="form"
+            render={props => (
+                <React.Fragment>
+                    {props.actions.canGoBack && (
+                        <PreviousButton
+                            goToPreviousStep={props.actions.goToPreviousStep}
+                        />
+                    )}
+                    {render({ ...props, ...componentProps })}
+                </React.Fragment>
+            )}
+            steps={steps}
+        />
+    </Fragment>
+);
 
 export default withRouter(KioskOnboardingPage);
