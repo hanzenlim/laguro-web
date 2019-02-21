@@ -23,7 +23,6 @@ import {
     PATIENT,
     HOST,
     MY_INSURANCE,
-    MY_DOCUMENTS,
     MY_PROFILE,
     MY_APPOINTMENTS,
     MY_LISTINGS,
@@ -37,7 +36,6 @@ import {
     PAYMENT_REQUEST,
     MY_ACCOUNT_MENU,
     MY_INSURANCE_MENU,
-    MY_DOCUMENTS_MENU,
     MY_PROFILE_MENU,
     MY_APPOINTMENTS_MENU,
     PAYMENT_HISTORY_MENU,
@@ -129,7 +127,6 @@ class ProfileView extends Component {
             [MY_PROFILE]: MY_ACCOUNT_MENU,
             [DENTIST_PROFILE]: MY_PROFILE_MENU,
             [MY_PATIENTS]: MY_PATIENTS_MENU,
-            [MY_DOCUMENTS]: MY_DOCUMENTS_MENU,
             [MY_INSURANCE]: MY_INSURANCE_MENU,
             [MY_APPOINTMENTS]: MY_APPOINTMENTS_MENU,
             [MY_LISTINGS]: MY_LISTINGS_MENU,
@@ -179,19 +176,6 @@ class ProfileView extends Component {
                     newSearchParamKey: 'referer',
                     newSearchParamValue: 'ProfilePage',
                 });
-            case MY_DOCUMENTS:
-                return (
-                    <Fragment>
-                        <TabletMobile>
-                            <Container>
-                                <UserVerification persona={persona} />
-                            </Container>
-                        </TabletMobile>
-                        <Desktop>
-                            <UserVerification persona={persona} />
-                        </Desktop>
-                    </Fragment>
-                );
             case MY_APPOINTMENTS:
                 return <PatientAppointments />;
             case MY_LISTINGS:
@@ -234,7 +218,6 @@ class ProfileView extends Component {
 
     renderMenu = () => {
         const { isDentist, isHost } = this.props;
-        console.log(333, isDentist, isHost);
         const { panel } = this.state;
         return (
             <Menu
@@ -285,19 +268,6 @@ class ProfileView extends Component {
                             lineHeight={['48px', '', '40px']}
                         >
                             {this.keyTextMap[MY_INSURANCE]}
-                        </Text>
-                    </StyledMenuItem>
-                )}
-                {/* We only show the my documents for dentist but a host will have isHost */}
-                {/* and isDentist set to true so we check if the user is not a host  */}
-                {!isHost && isDentist && (
-                    <StyledMenuItem key={MY_DOCUMENTS}>
-                        <Text
-                            fontSize={[1, '', 4]}
-                            color="inherit"
-                            lineHeight={['48px', '', '40px']}
-                        >
-                            {this.keyTextMap[MY_DOCUMENTS]}
                         </Text>
                     </StyledMenuItem>
                 )}
