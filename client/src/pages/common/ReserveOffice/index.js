@@ -286,13 +286,11 @@ class ReserveOffice extends Component {
                 newSearchParamKey: 'referer',
                 newSearchParamValue: 'ReserveOffice',
             });
-        }
-        // dentist.isVerified will be true if verified
-        else if (
-            !_get(dentist, 'sentVerificationDocuments') &&
-            !_isEmpty(_get(patientDocument, 'dentistPhotoId.url')) &&
-            !_isEmpty(_get(patientDocument, 'warranty.url')) &&
-            !_isEmpty(_get(patientDocument, 'stateDentalLicense.url'))
+        } else if (
+            !_get(dentist, 'sentVerificationDocuments') ||
+            _isEmpty(_get(patientDocument, 'dentistPhotoId[0].url')) ||
+            _isEmpty(_get(patientDocument, 'warranty[0].url')) ||
+            _isEmpty(_get(patientDocument, 'stateDentalLicense[0].url'))
         ) {
             redirect({
                 url: DENTIST_ONBOARDING_VERIFICATION_URL,
