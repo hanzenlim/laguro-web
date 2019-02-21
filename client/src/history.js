@@ -42,6 +42,7 @@ export const redirect = ({
     includeOldSearchParams = true,
     newSearchParamKey,
     newSearchParamValue,
+    newSearchParams = {},
 }) => {
     let urlParams = {};
 
@@ -54,6 +55,7 @@ export const redirect = ({
     if (!_isEmpty(newSearchParamKey)) {
         urlParams[newSearchParamKey] = newSearchParamValue;
     }
+    urlParams = { ...urlParams, ...newSearchParams };
     if (history.location.pathname !== url) {
         history.push(`${url}?${queryString.stringify(urlParams)}`);
     }
@@ -62,9 +64,10 @@ export const redirect = ({
 
 export const attemptToRedirectBack = () => {
     const urlParams = queryString.parse(history.location.search);
-    const { redirectTo } = urlParams;
+    // dropping referer when redirecting back to referer
+    const { redirectTo, referer, ...restOfUrlParams } = urlParams;
     if (!_isEmpty(redirectTo)) {
-        history.push(redirectTo);
+        history.push(`${redirectTo}?${queryString.stringify(restOfUrlParams)}`);
         return true;
     }
     window.scrollTo(0, 0);

@@ -152,6 +152,10 @@ class ProfileView extends Component {
             ...params,
             selectedTab: key,
         });
+        // when going to "my profile" and 'my insurance' only redirect with onclick handlers and don't redirect here
+        if (key === DENTIST_PROFILE || key === MY_INSURANCE) {
+            return null;
+        }
         history.push(`/profile?${newParams}`);
         this.setState({ panel: key });
     };
@@ -169,13 +173,6 @@ class ProfileView extends Component {
         switch (key) {
             case MY_PROFILE:
                 return <UpdateProfileForm />;
-            case MY_INSURANCE:
-                return redirect({
-                    url: PATIENT_ONBOARDING_INSURANCE_FORM,
-                    includeNewRedirectTo: true,
-                    newSearchParamKey: 'referer',
-                    newSearchParamValue: 'ProfilePage',
-                });
             case MY_APPOINTMENTS:
                 return <PatientAppointments />;
             case MY_LISTINGS:
@@ -190,13 +187,6 @@ class ProfileView extends Component {
                 return <BalanceHistory userId={userId} persona={persona} />;
             case MY_PATIENTS:
                 return <PatientsList />;
-            case DENTIST_PROFILE:
-                return redirect({
-                    url: DENTIST_ONBOARDING_PROFILE_URL,
-                    includeNewRedirectTo: true,
-                    newSearchParamKey: 'referer',
-                    newSearchParamValue: 'ProfilePage',
-                });
             case PUBLIC_PROFILE:
                 return (
                     <Container px={[25, '', 0]}>
@@ -239,7 +229,20 @@ class ProfileView extends Component {
                     </Text>
                 </StyledMenuItem>
                 {(isDentist || isHost) && (
-                    <StyledMenuItem key={DENTIST_PROFILE}>
+                    <StyledMenuItem
+                        key={DENTIST_PROFILE}
+                        onClick={() => {
+                            // referer: profile necessary for redirect back to profile page after profile form finishes
+                            redirect({
+                                url: DENTIST_ONBOARDING_PROFILE_URL,
+                                includeNewRedirectTo: true,
+                                newSearchParams: {
+                                    referer: 'ProfilePage',
+                                    selectedTab: 'my_profile',
+                                },
+                            });
+                        }}
+                    >
                         <Text
                             fontSize={[1, '', 4]}
                             color="inherit"
@@ -261,7 +264,19 @@ class ProfileView extends Component {
                     </StyledMenuItem>
                 )}
                 {!isHost && !isDentist && (
-                    <StyledMenuItem key={MY_INSURANCE}>
+                    <StyledMenuItem
+                        key={MY_INSURANCE}
+                        onClick={() => {
+                            redirect({
+                                url: PATIENT_ONBOARDING_INSURANCE_FORM,
+                                includeNewRedirectTo: true,
+                                newSearchParams: {
+                                    referer: 'ProfilePage',
+                                    selectedTab: 'my_profile',
+                                },
+                            });
+                        }}
+                    >
                         <Text
                             fontSize={[1, '', 4]}
                             color="inherit"
