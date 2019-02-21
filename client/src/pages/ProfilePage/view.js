@@ -1,7 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
 import queryString from 'query-string';
-import history from '../../history';
 import { Box, Container, Text, Responsive } from '../../components/';
 import UpdateProfileForm from '../../pages/common/Forms/UpdateProfileForm';
 import Menu from '../common/Menu';
@@ -13,11 +12,9 @@ import BalanceHistory from '../common/BalanceHistory';
 import DentistAppointments from '../common/DentistAppointments';
 import NewAppointment from '../common/NewAppointment';
 import PatientAppointments from '../common/PatientAppointments';
-import UserVerification from '../common/UserVerification';
 import PatientsList from '../common/PatientsList';
 import ProcedurePaymentRequestPage from '../../pages/ProcedurePaymentRequestPage';
 import Error404Page from '../../pages/Error404Page';
-import { PATIENT_ONBOARDING_INSURANCE_FORM } from '../../util/urls';
 import {
     DENTIST,
     PATIENT,
@@ -47,8 +44,11 @@ import {
     MY_PATIENTS_MENU,
     PAYMENT_REQUEST_MENU,
 } from '../../util/strings';
-import { DENTIST_ONBOARDING_PROFILE_URL } from '../../util/urls';
-import { redirect } from '../../history';
+import {
+    DENTIST_ONBOARDING_PROFILE_URL,
+    PATIENT_ONBOARDING_INSURANCE_FORM,
+} from '../../util/urls';
+import history, { redirect } from '../../history';
 
 const { TabletMobile, Desktop } = Responsive;
 

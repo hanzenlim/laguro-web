@@ -28,14 +28,10 @@ const progressSteps = [
 const currentStep = progressSteps[2];
 
 const Composed = adopt({
-    activeUser: ({ render }) => {
-        return <Query query={ACTIVE_USER}>{render}</Query>;
-    },
-    updatePatientHealthData: ({ render }) => {
-        return (
-            <Mutation mutation={UPDATE_PATIENT_HEALTH_DATA}>{render}</Mutation>
-        );
-    },
+    activeUser: ({ render }) => <Query query={ACTIVE_USER}>{render}</Query>,
+    updatePatientHealthData: ({ render }) => (
+        <Mutation mutation={UPDATE_PATIENT_HEALTH_DATA}>{render}</Mutation>
+    ),
 });
 
 const KioskMedicalHistoryFormPage = props => {
@@ -59,84 +55,77 @@ const KioskMedicalHistoryFormPage = props => {
 
     return (
         <Composed>
-            {({ updatePatientHealthData, activeUser }) => {
-                return (
-                    <Box position="relative">
-                        {/* TODO: Move progress to a parent component */}
-                        <Progress
-                            {...getProgressBarProps({
-                                startStep,
-                                currentStep,
-                                progressSteps,
-                            })}
-                        />
-                        <HealthHistoryForm
-                            canSkip={_isEmpty(
-                                _get(
-                                    activeUser,
-                                    'data.activeUser.insuranceInfo'
-                                )
-                            )}
-                            onFinishForm={async values => {
-                                const valuesKeys = Object.keys(values);
+            {({ updatePatientHealthData, activeUser }) => (
+                <Box position="relative">
+                    {/* TODO: Move progress to a parent component */}
+                    <Progress
+                        {...getProgressBarProps({
+                            startStep,
+                            currentStep,
+                            progressSteps,
+                        })}
+                    />
+                    <HealthHistoryForm
+                        canSkip={_isEmpty(
+                            _get(activeUser, 'data.activeUser.insuranceInfo')
+                        )}
+                        onFinishForm={async values => {
+                            const valuesKeys = Object.keys(values);
 
-                                const newArray = [];
-                                valuesKeys.forEach(valueKey => {
-                                    const innerKeys = Object.keys(
-                                        values[valueKey]
-                                    );
+                            const newArray = [];
+                            valuesKeys.forEach(valueKey => {
+                                const innerKeys = Object.keys(values[valueKey]);
 
-                                    innerKeys.forEach(innerKey => {
-                                        newArray.push({
-                                            key: innerKey,
-                                            value: values[valueKey][innerKey],
-                                        });
+                                innerKeys.forEach(innerKey => {
+                                    newArray.push({
+                                        key: innerKey,
+                                        value: values[valueKey][innerKey],
                                     });
                                 });
+                            });
 
-                                const user = JSON.parse(cookies.get('user'));
+                            const user = JSON.parse(cookies.get('user'));
 
-                                const result = await updatePatientHealthData({
-                                    variables: {
-                                        input: {
-                                            patientId: user.id,
-                                            patientHealthData: {
-                                                items: newArray,
-                                            },
+                            const result = await updatePatientHealthData({
+                                variables: {
+                                    input: {
+                                        patientId: user.id,
+                                        patientHealthData: {
+                                            items: newArray,
                                         },
                                     },
-                                });
+                                },
+                            });
 
-                                const data = _get(
-                                    result,
-                                    'data.updatePatientHealthData'
-                                );
+                            const data = _get(
+                                result,
+                                'data.updatePatientHealthData'
+                            );
 
-                                const hasGoneThroughInsurancePage = _get(
-                                    data,
-                                    'insuranceInfo'
-                                );
+                            const hasGoneThroughInsurancePage = _get(
+                                data,
+                                'insuranceInfo'
+                            );
 
-                                if (hasGoneThroughInsurancePage) {
-                                    if (!attemptToRedirectBack()) {
-                                        props.history.push(
-                                            `/kiosk/medical-history-form-confirmation`
-                                        );
-                                    }
-                                } else {
-                                    redirect({
-                                        url: PATIENT_ONBOARDING_INSURANCE_FORM,
-                                        newSearchParamKey: 'referer',
-                                        newSearchParamValue:
-                                            'KioskMedicalHistoryFormPage',
-                                    });
+                            if (hasGoneThroughInsurancePage) {
+                                if (!attemptToRedirectBack()) {
+                                    props.history.push(
+                                        `/kiosk/medical-history-form-confirmation`
+                                    );
                                 }
-                            }}
-                            onSkip={handleSkip}
-                        />
-                    </Box>
-                );
-            }}
+                            } else {
+                                redirect({
+                                    url: PATIENT_ONBOARDING_INSURANCE_FORM,
+                                    newSearchParamKey: 'referer',
+                                    newSearchParamValue:
+                                        'KioskMedicalHistoryFormPage',
+                                });
+                            }
+                        }}
+                        onSkip={handleSkip}
+                    />
+                </Box>
+            )}
         </Composed>
     );
 };

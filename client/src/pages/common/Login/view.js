@@ -19,15 +19,13 @@ import {
 } from '../../KioskRegistrationPage/queries';
 
 const Composed = adopt({
-    sendKioskLoginCode: ({ render }) => {
-        return <Mutation mutation={SEND_KIOSK_LOGIN_CODE}>{render}</Mutation>;
-    },
-    login: ({ render }) => {
-        return <Mutation mutation={LOGIN}>{render}</Mutation>;
-    },
-    setActiveUser: ({ render }) => {
-        return <Mutation mutation={SET_ACTIVE_USER}>{render}</Mutation>;
-    },
+    sendKioskLoginCode: ({ render }) => (
+        <Mutation mutation={SEND_KIOSK_LOGIN_CODE}>{render}</Mutation>
+    ),
+    login: ({ render }) => <Mutation mutation={LOGIN}>{render}</Mutation>,
+    setActiveUser: ({ render }) => (
+        <Mutation mutation={SET_ACTIVE_USER}>{render}</Mutation>
+    ),
 });
 
 const steps = [
@@ -47,7 +45,7 @@ const steps = [
 ];
 
 const validateEmail = email => {
-    var re = /\S+@\S+\.\S+/;
+    const re = /\S+@\S+\.\S+/;
     return re.test(email);
 };
 
@@ -75,125 +73,116 @@ const validatePhoneOrEmail = phoneOrEmail => {
 
 const Step0 = props => (
     <Composed>
-        {({ sendKioskLoginCode, login, setActiveUser }) => {
-            return (
-                <StandaloneLogin
-                    {...props}
-                    onRequestPinCode={async username => {
-                        const isEmailOrPhoneValid = validatePhoneOrEmail(
-                            username
+        {({ sendKioskLoginCode, login, setActiveUser }) => (
+            <StandaloneLogin
+                {...props}
+                onRequestPinCode={async username => {
+                    const isEmailOrPhoneValid = validatePhoneOrEmail(username);
+
+                    if (!isEmailOrPhoneValid) {
+                        return null;
+                    }
+
+                    const isEmail = validateEmail(username);
+                    const input = {};
+
+                    if (isEmail) {
+                        input.email = username;
+                    } else {
+                        const phoneNumber = `+1${username}`;
+                        input.phoneNumber = phoneNumber;
+                    }
+
+                    const sendKioskLoginCodeResult = await sendKioskLoginCode({
+                        variables: {
+                            input,
+                        },
+                    });
+
+                    const isCodeSent = _get(
+                        sendKioskLoginCodeResult,
+                        'data.sendKioskLoginCode'
+                    );
+
+                    if (isCodeSent) {
+                        props.formikProps.setFieldValue('isCodeSent', true);
+                    }
+                }}
+                onPinComplete={async (username, passcode) => {
+                    const isEmail = validateEmail(username);
+
+                    const input = {
+                        passcode,
+                    };
+
+                    if (isEmail) {
+                        input.email = username;
+                    } else {
+                        input.phoneNumber = `+1${username}`;
+                    }
+
+                    try {
+                        props.formikProps.setSubmitting(true);
+                        const loginResult = await login({
+                            variables: {
+                                input,
+                            },
+                        });
+
+                        const isPinValid = _get(
+                            loginResult,
+                            'data.login.user.id'
                         );
 
-                        if (!isEmailOrPhoneValid) {
+                        if (isPinValid) {
+                            props.formikProps.setFieldValue('isPinValid', true);
+                        }
+
+                        const user = {
+                            ..._get(loginResult, 'data.login.user'),
+                            token: _get(
+                                loginResult,
+                                'data.login.authToken.body'
+                            ),
+                        };
+
+                        cookies.set('user', JSON.stringify(user));
+
+                        await setActiveUser({
+                            variables: {
+                                input: {
+                                    activeUser: {
+                                        ...user,
+                                    },
+                                },
+                            },
+                        });
+
+                        const userFromLoginMutation = _get(
+                            loginResult,
+                            'data.login.user'
+                        );
+
+                        if (isEmpty(userFromLoginMutation.firstName)) {
+                            props.push(
+                                `/onboarding/name-and-persona/?redirectTo=${
+                                    history.location.pathname
+                                }`
+                            );
+
+                            props.closeModal();
                             return null;
                         }
 
-                        const isEmail = validateEmail(username);
-                        const input = {};
-
-                        if (isEmail) {
-                            input.email = username;
-                        } else {
-                            const phoneNumber = `+1${username}`;
-                            input.phoneNumber = phoneNumber;
-                        }
-
-                        const sendKioskLoginCodeResult = await sendKioskLoginCode(
-                            {
-                                variables: {
-                                    input,
-                                },
-                            }
-                        );
-
-                        const isCodeSent = _get(
-                            sendKioskLoginCodeResult,
-                            'data.sendKioskLoginCode'
-                        );
-
-                        if (isCodeSent) {
-                            props.formikProps.setFieldValue('isCodeSent', true);
-                        }
-                    }}
-                    onPinComplete={async (username, passcode) => {
-                        const isEmail = validateEmail(username);
-
-                        const input = {
-                            passcode,
-                        };
-
-                        if (isEmail) {
-                            input.email = username;
-                        } else {
-                            input.phoneNumber = `+1${username}`;
-                        }
-
-                        try {
-                            props.formikProps.setSubmitting(true);
-                            const loginResult = await login({
-                                variables: {
-                                    input,
-                                },
-                            });
-
-                            const isPinValid = _get(
-                                loginResult,
-                                'data.login.user.id'
-                            );
-
-                            if (isPinValid) {
-                                props.formikProps.setFieldValue(
-                                    'isPinValid',
-                                    true
-                                );
-                            }
-
-                            const user = {
-                                ..._get(loginResult, 'data.login.user'),
-                                token: _get(
-                                    loginResult,
-                                    'data.login.authToken.body'
-                                ),
-                            };
-
-                            cookies.set('user', JSON.stringify(user));
-
-                            await setActiveUser({
-                                variables: {
-                                    input: {
-                                        activeUser: {
-                                            ...user,
-                                        },
-                                    },
-                                },
-                            });
-
-                            const userFromLoginMutation = _get(
-                                loginResult,
-                                'data.login.user'
-                            );
-
-                            if (isEmpty(userFromLoginMutation.firstName)) {
-                                props.push(
-                                    `/onboarding/name-and-persona/?redirectTo=${
-                                        history.location.pathname
-                                    }`
-                                );
-
-                                props.closeModal();
-                                return null;
-                            }
-
-                            return props.closeModal();
-                        } catch (error) {
-                            props.clear();
-                            props.formikProps.setSubmitting(false);
-                            message.error(error.graphQLErrors[0].message);
-                        }
-                    }}
-                />
-            );
-        }}
+                        return props.closeModal();
+                    } catch (error) {
+                        props.clear();
+                        props.formikProps.setSubmitting(false);
+                        message.error(error.graphQLErrors[0].message);
+                    }
+                }}
+            />
+        )}
     </Composed>
 );
 
@@ -211,17 +200,15 @@ const render = props => {
     return <Flex justifyContent="center">{step}</Flex>;
 };
 
-const KioskOnboardingPage = componentProps => {
-    return (
-        <Fragment>
-            <Wizard
-                onSubmit={value => console.log(value)}
-                Form="form"
-                render={props => render({ ...props, ...componentProps })}
-                steps={steps}
-            />
-        </Fragment>
-    );
-};
+const KioskOnboardingPage = componentProps => (
+    <Fragment>
+        <Wizard
+            onSubmit={value => console.log(value)}
+            Form="form"
+            render={props => render({ ...props, ...componentProps })}
+            steps={steps}
+        />
+    </Fragment>
+);
 
 export default KioskOnboardingPage;

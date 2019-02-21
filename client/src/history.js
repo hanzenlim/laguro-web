@@ -29,7 +29,7 @@ export const redirectWithSearchParams = url => {
 // new redirectTo
 export const redirectWithRedirectTo = url => {
     const urlParams = {};
-    urlParams['redirectTo'] = history.location.pathname;
+    urlParams.redirectTo = history.location.pathname;
     if (history.location.pathname !== url) {
         history.push(`${url}?${queryString.stringify(urlParams)}`);
     }
@@ -49,7 +49,7 @@ export const redirect = ({
         urlParams = queryString.parse(history.location.search);
     }
     if (includeNewRedirectTo) {
-        urlParams['redirectTo'] = history.location.pathname;
+        urlParams.redirectTo = history.location.pathname;
     }
     if (!_isEmpty(newSearchParamKey)) {
         urlParams[newSearchParamKey] = newSearchParamValue;

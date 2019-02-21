@@ -46,76 +46,70 @@ const steps = [
     },
 ];
 const ComposedStep0 = adopt({
-    updateUser: ({ render }) => {
-        return <Mutation mutation={UPDATE_USER}>{render}</Mutation>;
-    },
+    updateUser: ({ render }) => (
+        <Mutation mutation={UPDATE_USER}>{render}</Mutation>
+    ),
 });
 
-const Step0 = props => {
-    return (
-        <ComposedStep0>
-            {({ updateUser }) => {
-                return (
-                    <GetPatientName
-                        {...props}
-                        onNext={async values => {
-                            let user = cookies.get('user');
-                            if (user) {
-                                user = JSON.parse(user);
-                            }
+const Step0 = props => (
+    <ComposedStep0>
+        {({ updateUser }) => (
+            <GetPatientName
+                {...props}
+                onNext={async values => {
+                    let user = cookies.get('user');
+                    if (user) {
+                        user = JSON.parse(user);
+                    }
 
-                            if (
-                                !_isEmpty(values.firstName) &&
-                                !_isEmpty(values.lastName)
-                            ) {
-                                await updateUser({
-                                    variables: {
-                                        input: {
-                                            id: user.id,
-                                            ...(!_isEmpty(values.firstName) && {
-                                                firstName: values.firstName,
-                                            }),
-                                            ...(!_isEmpty(
-                                                values.middleName
-                                            ) && {
-                                                middleName: values.middleName,
-                                            }),
-                                            ...(!_isEmpty(values.lastName) && {
-                                                lastName: values.lastName,
-                                            }),
-                                        },
-                                    },
-                                });
-                            } else {
-                                return true;
-                            }
+                    if (
+                        !_isEmpty(values.firstName) &&
+                        !_isEmpty(values.lastName)
+                    ) {
+                        await updateUser({
+                            variables: {
+                                input: {
+                                    id: user.id,
+                                    ...(!_isEmpty(values.firstName) && {
+                                        firstName: values.firstName,
+                                    }),
+                                    ...(!_isEmpty(values.middleName) && {
+                                        middleName: values.middleName,
+                                    }),
+                                    ...(!_isEmpty(values.lastName) && {
+                                        lastName: values.lastName,
+                                    }),
+                                },
+                            },
+                        });
+                    } else {
+                        return true;
+                    }
 
-                            // skip persona selection for patients from booking appointments
-                            if (getRedirectUrl().includes('/dentist/')) {
-                                redirect({
-                                    url: PATIENT_ONBOARDING_MEDICAL_HISTORY_FORM,
-                                    newSearchParamKey: 'referer',
-                                    newSearchParamValue: 'GetPatientName',
-                                });
+                    // skip persona selection for patients from booking appointments
+                    if (getRedirectUrl().includes('/dentist/')) {
+                        redirect({
+                            url: PATIENT_ONBOARDING_MEDICAL_HISTORY_FORM,
+                            newSearchParamKey: 'referer',
+                            newSearchParamValue: 'GetPatientName',
+                        });
 
-                                return false;
-                            }
-                            // skip persona selection for patients from booking reservations
-                            else if (getRedirectUrl().includes('/office/')) {
-                                redirectWithSearchParams(
-                                    DENTIST_ONBOARDING_PROFILE_URL
-                                );
-                                return false;
-                            }
+                        return false;
+                    }
+                    // skip persona selection for patients from booking reservations
+                    else if (getRedirectUrl().includes('/office/')) {
+                        redirectWithSearchParams(
+                            DENTIST_ONBOARDING_PROFILE_URL
+                        );
+                        return false;
+                    }
 
-                            return true;
-                        }}
-                    />
-                );
-            }}
-        </ComposedStep0>
-    );
-};
+                    return true;
+                }}
+            />
+        )}
+    </ComposedStep0>
+);
 
 const Step1 = props => <PersonaSelection {...props} />;
 
@@ -140,62 +134,60 @@ const render = props => {
     );
 };
 
-const KioskNameAndPersonaPage = componentProps => {
-    return (
-        <Box pt={48}>
-            <Wizard
-                Form="form"
-                render={props => (
-                    <React.Fragment>
-                        {props.actions.canGoBack && (
-                            <StyledPreviousButtonContainer>
-                                <PreviousButton
-                                    goToPreviousStep={
-                                        props.actions.goToPreviousStep
-                                    }
-                                />
-                            </StyledPreviousButtonContainer>
-                        )}
-                        {render({ ...props, ...componentProps })}
-                    </React.Fragment>
-                )}
-                onSubmit={objectOfObjectOfStepValues => {
-                    const objectOfValues = Object.values(
-                        objectOfObjectOfStepValues
-                    ).reduce((objectOfValues, currentObject) => ({
-                        ...objectOfValues,
-                        ...currentObject,
-                    }));
+const KioskNameAndPersonaPage = componentProps => (
+    <Box pt={48}>
+        <Wizard
+            Form="form"
+            render={props => (
+                <React.Fragment>
+                    {props.actions.canGoBack && (
+                        <StyledPreviousButtonContainer>
+                            <PreviousButton
+                                goToPreviousStep={
+                                    props.actions.goToPreviousStep
+                                }
+                            />
+                        </StyledPreviousButtonContainer>
+                    )}
+                    {render({ ...props, ...componentProps })}
+                </React.Fragment>
+            )}
+            onSubmit={objectOfObjectOfStepValues => {
+                const objectOfValues = Object.values(
+                    objectOfObjectOfStepValues
+                ).reduce((objectOfValues, currentObject) => ({
+                    ...objectOfValues,
+                    ...currentObject,
+                }));
 
-                    switch (objectOfValues.persona) {
-                        case 'patient':
-                            redirect({
-                                url: PATIENT_ONBOARDING_MEDICAL_HISTORY_FORM,
-                                newSearchParamKey: 'referer',
-                                newSearchParamValue: 'PersonaSelection',
-                            });
-                            break;
-                        case 'dentist':
-                            redirect({
-                                url: DENTIST_ONBOARDING_PROFILE_URL,
-                                newSearchParamKey: 'referer',
-                                newSearchParamValue: 'PersonaSelection',
-                            });
-                            break;
-                        case 'host':
-                            // hostOnboarding does not redirect
-                            redirect({
-                                url: '/host-onboarding/add-office/',
-                            });
-                            break;
-                        default:
-                            break;
-                    }
-                }}
-                steps={steps}
-            />
-        </Box>
-    );
-};
+                switch (objectOfValues.persona) {
+                    case 'patient':
+                        redirect({
+                            url: PATIENT_ONBOARDING_MEDICAL_HISTORY_FORM,
+                            newSearchParamKey: 'referer',
+                            newSearchParamValue: 'PersonaSelection',
+                        });
+                        break;
+                    case 'dentist':
+                        redirect({
+                            url: DENTIST_ONBOARDING_PROFILE_URL,
+                            newSearchParamKey: 'referer',
+                            newSearchParamValue: 'PersonaSelection',
+                        });
+                        break;
+                    case 'host':
+                        // hostOnboarding does not redirect
+                        redirect({
+                            url: '/host-onboarding/add-office/',
+                        });
+                        break;
+                    default:
+                        break;
+                }
+            }}
+            steps={steps}
+        />
+    </Box>
+);
 
 export default KioskNameAndPersonaPage;

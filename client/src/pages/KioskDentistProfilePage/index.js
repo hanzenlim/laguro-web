@@ -146,13 +146,13 @@ class KioskDentistProfilePage extends Component {
                     const user =
                         _get(activeUserResponse, 'data.activeUser') || {};
 
-                    let defaultProceduresList = Object.assign(
+                    const defaultProceduresList = Object.assign(
                         {},
                         procedureList
                     );
 
                     if (!_isEmpty(procedures)) {
-                        for (let procedure of procedures) {
+                        for (const procedure of procedures) {
                             defaultProceduresList[procedure.group] = true;
                         }
                     }
