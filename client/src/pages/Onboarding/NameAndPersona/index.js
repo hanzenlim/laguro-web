@@ -27,19 +27,6 @@ const steps = [
     {
         id: '0',
         validationSchema: Yup.object().shape({
-            firstName: Yup.string().required('First name is required'),
-            lastName: Yup.string().required('Last name is required'),
-        }),
-        component: null,
-        initialValues: {
-            firstName: '',
-            middleName: '',
-            lastName: '',
-        },
-    },
-    {
-        id: '1',
-        validationSchema: Yup.object().shape({
             persona: Yup.string().required('Persona is required'),
         }),
         component: null,
@@ -54,6 +41,7 @@ const ComposedStep0 = adopt({
 const Step0 = props => (
     <ComposedStep0>
         {({ updateUser }) => (
+            // TODO: FIX COPY
             <GetPatientName
                 {...props}
                 onNext={async values => {
@@ -118,10 +106,10 @@ const render = props => {
 
     switch (props.actions.currentStep) {
         case '0':
-            step = Step0(props);
+            step = Step1(props);
             break;
         case '1':
-            step = Step1(props);
+            step = Step0(props);
             break;
         default:
             step = Step0(props);
@@ -159,6 +147,8 @@ const KioskNameAndPersonaPage = componentProps => (
                     ...objectOfValues,
                     ...currentObject,
                 }));
+
+                console.log('objectOfValues.persona', objectOfValues.persona);
 
                 switch (objectOfValues.persona) {
                     case 'patient':
