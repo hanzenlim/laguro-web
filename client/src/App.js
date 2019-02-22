@@ -265,8 +265,6 @@ const PrivateRoute = ({
                         }`,
                         state: {
                             from: props.location,
-                            message:
-                                'You need to login first before you can view this page',
                         },
                     }}
                 />
