@@ -66,11 +66,11 @@ const steps = [
         id: '1',
         validationSchema: Yup.object().shape({
             firstName: Yup.string().when('mode', {
-                is: 'addName',
+                is: 'getName',
                 then: Yup.string().required(),
             }),
             lastName: Yup.string().when('mode', {
-                is: 'addName',
+                is: 'getName',
                 then: Yup.string().required(),
             }),
         }),
@@ -443,14 +443,12 @@ export const RegisterOrLoginStep = props => {
                     return (
                         <GetPatientName
                             {...props}
-                            onNext={async values => {
+                            onNext={() => {
                                 if (
-                                    _isEmpty(values.firstName) ||
-                                    _isEmpty(values.lastName)
-                                ) {
+                                    Object.keys(props.formikProps.errors)
+                                        .length !== 0
+                                )
                                     return;
-                                }
-
                                 props.formikProps.setFieldValue(
                                     'mode',
                                     'signUp'
@@ -477,6 +475,8 @@ const render = props => {
         default:
             step = PurposeOfVisitStep(props);
     }
+
+    console.log(888, props);
 
     return (
         <Flex justifyContent="center" mt="100px">

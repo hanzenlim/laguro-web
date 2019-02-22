@@ -10,11 +10,11 @@ const steps = [
         id: '0',
         validationSchema: Yup.object().shape({
             firstName: Yup.string().when('mode', {
-                is: 'addName',
+                is: 'getName',
                 then: Yup.string().required(),
             }),
             lastName: Yup.string().when('mode', {
-                is: 'addName',
+                is: 'getName',
                 then: Yup.string().required(),
             }),
         }),
