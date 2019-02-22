@@ -403,7 +403,7 @@ export const RegisterOrLoginStep = props => {
                                     );
                                 }
                             }}
-                            onSubmitPinCode={() => {
+                            onSubmitPinCode={pin => {
                                 if (props.formikProps.values.mode === 'signIn')
                                     return;
                                 if (props.formikProps.values.code.length !== 6)
@@ -411,7 +411,7 @@ export const RegisterOrLoginStep = props => {
 
                                 try {
                                     validatePin({
-                                        input: getValidatePinInput(),
+                                        input: getValidatePinInput(pin),
                                     });
                                 } catch (error) {
                                     message.error(
