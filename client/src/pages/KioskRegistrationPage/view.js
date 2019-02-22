@@ -275,31 +275,39 @@ export const RegisterOrLoginStep = props => {
                             message.error(error.graphQLErrors[0].message);
                         }
                     } else if (props.formikProps.values.mode === 'signUp') {
-                        const registerUserResult = await registerUser({
-                            variables: {
-                                input,
-                            },
-                        });
+                        try {
+                            const registerUserResult = await registerUser({
+                                variables: {
+                                    input,
+                                },
+                            });
 
-                        const { isPinValid, token, user } = getRegisterResult(
-                            registerUserResult
-                        );
+                            const {
+                                isPinValid,
+                                token,
+                                user,
+                            } = getRegisterResult(registerUserResult);
 
-                        if (!isPinValid) return;
+                            if (!isPinValid) return;
 
-                        props.formikProps.setFieldValue('isPinValid', true);
+                            props.formikProps.setFieldValue('isPinValid', true);
 
-                        setUser({ user, token });
+                            setUser({ user, token });
 
-                        if (props.closeModal) {
-                            props.closeModal();
+                            if (props.closeModal) {
+                                props.closeModal();
+                            }
+
+                            redirectUser({
+                                user,
+                            });
+
+                            props.formikProps.setSubmitting(false);
+                        } catch (error) {
+                            props.clear();
+                            props.formikProps.setSubmitting(false);
+                            message.error(error.graphQLErrors[0].message);
                         }
-
-                        redirectUser({
-                            user,
-                        });
-
-                        props.formikProps.setSubmitting(false);
                     }
                 };
 
