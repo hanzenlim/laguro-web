@@ -6,6 +6,8 @@ import {
 import { Box } from '@laguro/basic-components';
 import * as React from 'react';
 import * as Yup from 'yup';
+import _isEmpty from 'lodash/isEmpty';
+import { getRedirectUrl } from '../../history';
 
 const {
     BloodDisorders,
@@ -256,7 +258,8 @@ const render = props => {
     return (
         <Box width="330px" mx="auto" pt="100px">
             {/* TODO: Move to render function of wizard */}
-            {props.canSkip && (
+            {/* for kiosk registration, redirect url will be empty. for web onboarding, redirect will not be empty */}
+            {props.canSkip && !_isEmpty(getRedirectUrl()) && (
                 <Onboarding.SkipButton
                     onSkip={props.onSkip}
                     text="Skip to insurance"
