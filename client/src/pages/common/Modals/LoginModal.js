@@ -20,7 +20,7 @@ const LoginModal = ({
         destroyOnClose={true}
         visible={visible}
         width={600}
-        bodyStyle={{ height: 510, padding: 0 }}
+        bodyStyle={{ height: 600, padding: 0 }}
         closable={closable}
     >
         <Login

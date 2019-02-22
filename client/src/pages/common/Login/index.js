@@ -1,10 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import { message as warningMessage } from 'antd';
-import { withRouter, Link } from 'react-router-dom';
-import _get from 'lodash/get';
+import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { Flex, Responsive, Text } from '../../../components';
+import { Flex, Responsive } from '../../../components';
 import { withScreenSizes } from '../../../components/Responsive';
 import StandaloneLoginView from './view';
 
@@ -50,7 +49,7 @@ class Login extends Component {
     };
 
     render() {
-        const { location, closeModal, history } = this.props;
+        const { closeModal, history } = this.props;
         const { showLoginTitle } = this.state;
 
         return (
@@ -84,25 +83,6 @@ class Login extends Component {
                                     clear={this.clear}
                                 />
                             </StyledFlex>
-                            <Flex
-                                textAlign="center"
-                                justifyContent="center"
-                                mb={20}
-                                flex={1}
-                            >
-                                <Link
-                                    to={{
-                                        hash: '#',
-                                        search: _get(location, 'search'),
-                                    }}
-                                    onClick={this.toggleLoginTitle}
-                                    width={140}
-                                >
-                                    <Text color="text.blue" textAlign="right">
-                                        Register now
-                                    </Text>
-                                </Link>
-                            </Flex>
                         </Flex>
                     </TabletDesktop>
                     <Mobile>
@@ -133,25 +113,6 @@ class Login extends Component {
                                     clear={this.clear}
                                 />
                             </StyledFlex>
-                            <Flex
-                                textAlign="center"
-                                justifyContent="center"
-                                mb={20}
-                                flex={1}
-                            >
-                                <Link
-                                    to={{
-                                        hash: '#',
-                                        search: _get(location, 'search'),
-                                    }}
-                                    onClick={this.toggleLoginTitle}
-                                    width={140}
-                                >
-                                    <Text color="text.blue" textAlign="right">
-                                        Register now
-                                    </Text>
-                                </Link>
-                            </Flex>
                         </Flex>
                     </Mobile>
                 </Flex>

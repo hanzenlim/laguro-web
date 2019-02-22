@@ -1,190 +1,34 @@
 import React, { Fragment } from 'react';
 import * as Yup from 'yup';
-import _get from 'lodash/get';
-import { adopt } from 'react-adopt';
-import { Wizard, StandaloneLogin } from '@laguro/the-bright-side-components';
+import { Wizard } from '@laguro/the-bright-side-components';
 import { Flex } from '@laguro/basic-components';
-import cookies from 'browser-cookies';
-import { Mutation } from 'react-apollo';
-import { message } from 'antd';
-import isEmpty from 'lodash/isEmpty';
-import validator from 'validator';
 
-import history from '../../../history';
-
-import {
-    SEND_KIOSK_LOGIN_CODE,
-    LOGIN,
-    SET_ACTIVE_USER,
-} from '../../KioskRegistrationPage/queries';
-
-const Composed = adopt({
-    sendKioskLoginCode: ({ render }) => (
-        <Mutation mutation={SEND_KIOSK_LOGIN_CODE}>{render}</Mutation>
-    ),
-    login: ({ render }) => <Mutation mutation={LOGIN}>{render}</Mutation>,
-    setActiveUser: ({ render }) => (
-        <Mutation mutation={SET_ACTIVE_USER}>{render}</Mutation>
-    ),
-});
+import { RegisterOrLoginStep } from '../../KioskRegistrationPage/view';
 
 const steps = [
     {
         id: '0',
         validationSchema: Yup.object().shape({
             isPinValid: Yup.boolean().oneOf([true], 'Pin must be valid'),
+            // firstName: Yup.string().required(),
+            // middleName: Yup.string(),
+            // lastName: Yup.string().required(),
         }),
         component: null,
         initialValues: {
+            mode: 'signIn',
             isPinValid: false,
             emailOrPhoneNumber: '',
             isCodeSent: false,
             code: '',
+            firstName: '',
+            middleName: '',
+            lastName: '',
         },
     },
 ];
 
-const validateEmail = email => {
-    const re = /\S+@\S+\.\S+/;
-    return re.test(email);
-};
-
-const validatePhoneOrEmail = phoneOrEmail => {
-    const isEmail = validator.isEmail(phoneOrEmail);
-    const isNumeric = validator.isNumeric(phoneOrEmail);
-    const hasCorrectDigitCount = phoneOrEmail.length === 10;
-
-    if (!phoneOrEmail) {
-        return false;
-    }
-
-    if (!isEmail) {
-        if (!isNumeric) {
-            return false;
-        }
-
-        if (!hasCorrectDigitCount) {
-            return false;
-        }
-    }
-
-    return true;
-};
-
-const Step0 = props => (
-    <Composed>
-        {({ sendKioskLoginCode, login, setActiveUser }) => (
-            <StandaloneLogin
-                {...props}
-                onRequestPinCode={async username => {
-                    const isEmailOrPhoneValid = validatePhoneOrEmail(username);
-
-                    if (!isEmailOrPhoneValid) {
-                        return null;
-                    }
-
-                    const isEmail = validateEmail(username);
-                    const input = {};
-
-                    if (isEmail) {
-                        input.email = username;
-                    } else {
-                        const phoneNumber = `+1${username}`;
-                        input.phoneNumber = phoneNumber;
-                    }
-
-                    const sendKioskLoginCodeResult = await sendKioskLoginCode({
-                        variables: {
-                            input,
-                        },
-                    });
-
-                    const isCodeSent = _get(
-                        sendKioskLoginCodeResult,
-                        'data.sendKioskLoginCode'
-                    );
-
-                    if (isCodeSent) {
-                        props.formikProps.setFieldValue('isCodeSent', true);
-                    }
-                }}
-                onPinComplete={async (username, passcode) => {
-                    const isEmail = validateEmail(username);
-
-                    const input = {
-                        passcode,
-                    };
-
-                    if (isEmail) {
-                        input.email = username;
-                    } else {
-                        input.phoneNumber = `+1${username}`;
-                    }
-
-                    try {
-                        props.formikProps.setSubmitting(true);
-                        const loginResult = await login({
-                            variables: {
-                                input,
-                            },
-                        });
-
-                        const isPinValid = _get(
-                            loginResult,
-                            'data.login.user.id'
-                        );
-
-                        if (isPinValid) {
-                            props.formikProps.setFieldValue('isPinValid', true);
-                        }
-
-                        const user = {
-                            ..._get(loginResult, 'data.login.user'),
-                            token: _get(
-                                loginResult,
-                                'data.login.authToken.body'
-                            ),
-                        };
-
-                        cookies.set('user', JSON.stringify(user));
-
-                        await setActiveUser({
-                            variables: {
-                                input: {
-                                    activeUser: {
-                                        ...user,
-                                    },
-                                },
-                            },
-                        });
-
-                        const userFromLoginMutation = _get(
-                            loginResult,
-                            'data.login.user'
-                        );
-
-                        if (isEmpty(userFromLoginMutation.firstName)) {
-                            props.push(
-                                `/onboarding/name-and-persona/?redirectTo=${
-                                    history.location.pathname
-                                }`
-                            );
-
-                            props.closeModal();
-                            return null;
-                        }
-
-                        return props.closeModal();
-                    } catch (error) {
-                        props.clear();
-                        props.formikProps.setSubmitting(false);
-                        message.error(error.graphQLErrors[0].message);
-                    }
-                }}
-            />
-        )}
-    </Composed>
-);
+const Step0 = props => <RegisterOrLoginStep context="web" {...props} />;
 
 const render = props => {
     let step = null;
