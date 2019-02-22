@@ -262,11 +262,13 @@ export const RegisterOrLoginStep = props => {
 
                             setUser({ user, token });
 
-                            if (props.context !== 'web') {
-                                redirectUser({
-                                    user,
-                                });
+                            if (props.closeModal) {
+                                props.closeModal();
                             }
+
+                            redirectUser({
+                                user,
+                            });
                         } catch (error) {
                             props.clear();
                             props.formikProps.setSubmitting(false);
@@ -289,11 +291,13 @@ export const RegisterOrLoginStep = props => {
 
                         setUser({ user, token });
 
-                        if (props.context !== 'web') {
-                            redirectUser({
-                                user,
-                            });
+                        if (props.closeModal) {
+                            props.closeModal();
                         }
+
+                        redirectUser({
+                            user,
+                        });
 
                         props.formikProps.setSubmitting(false);
                     }
@@ -397,10 +401,12 @@ export const RegisterOrLoginStep = props => {
                                     });
                                 } catch (error) {
                                     props.formikProps.setSubmitting(false);
-                                    message.error(
-                                        // error.graphQLErrors[0].message
-                                        'This phone number is already registered. Please sign in'
-                                    );
+                                    message.error(() => (
+                                        <div>
+                                            This phone number is already
+                                            registered. <a>Please sign in</a>
+                                        </div>
+                                    ));
                                 }
                             }}
                             onSubmitPinCode={pin => {
