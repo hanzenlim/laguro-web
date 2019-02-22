@@ -174,11 +174,15 @@ export const RegisterOrLoginStep = props => {
 
                 const redirectUser = ({ user }) => {
                     if (props.context === 'web') {
-                        history.push(
-                            `/onboarding/name-and-persona/?redirectTo=${
-                                history.location.pathname
-                            }`
-                        );
+                        if (props.formikProps.values.mode === 'signUp') {
+                            history.push(
+                                `/onboarding/name-and-persona/?redirectTo=${
+                                    history.location.pathname
+                                }`
+                            );
+                        } else {
+                            // Redirect based on user data
+                        }
                     } else {
                         let upcomingAppointments = [];
                         if (_get(user, 'appointments')) {
