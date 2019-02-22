@@ -9,10 +9,14 @@ const steps = [
     {
         id: '0',
         validationSchema: Yup.object().shape({
-            isPinValid: Yup.boolean().oneOf([true], 'Pin must be valid'),
-            // firstName: Yup.string().required(),
-            // middleName: Yup.string(),
-            // lastName: Yup.string().required(),
+            firstName: Yup.string().when('mode', {
+                is: 'addName',
+                then: Yup.string().required(),
+            }),
+            lastName: Yup.string().when('mode', {
+                is: 'addName',
+                then: Yup.string().required(),
+            }),
         }),
         component: null,
         initialValues: {
