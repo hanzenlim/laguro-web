@@ -27,6 +27,7 @@ import {
 } from '../../history';
 import { getProgressBarProps } from '../../components/utils';
 import cookies from 'browser-cookies';
+import { execute } from '../../util/gqlUtils';
 
 const progressSteps = [
     'REGISTRATION',
@@ -51,23 +52,30 @@ const Step0 = props => (
         {({ getIdQueryClient, updateInsuranceInfoMutation }) => (
             <Insurance
                 {...props}
-                onSkip={() => {
+                onSkip={async () => {
                     const userId = _get(getIdQueryClient, 'data.activeUser.id');
 
-                    updateInsuranceInfoMutation({
-                        variables: {
-                            input: {
-                                userId,
-                                insuranceInfo: {
-                                    useInsurance: false,
+                    await execute({
+                        action: async () => {
+                            await updateInsuranceInfoMutation({
+                                variables: {
+                                    input: {
+                                        userId,
+                                        insuranceInfo: {
+                                            useInsurance: false,
+                                        },
+                                    },
                                 },
-                            },
+                            });
+                        },
+                        afterAction: () => {
+                            if (!attemptToRedirectBack()) {
+                                props.history.push(
+                                    `/kiosk/confirmation/${userId}`
+                                );
+                            }
                         },
                     });
-
-                    if (!attemptToRedirectBack()) {
-                        props.history.push(`/kiosk/confirmation/${userId}`);
-                    }
                 }}
             />
         )}
@@ -114,7 +122,7 @@ const KioskInsurancePage = componentProps => {
     return (
         <Query
             query={getUser}
-            variables={{ id: user.id }}
+            variables={{ id: _get(user, 'id') }}
             fetchPolicy="network-only"
         >
             {({
@@ -234,7 +242,7 @@ const KioskInsurancePage = componentProps => {
                 return (
                     <Mutation mutation={updateInsuranceInfoMutation}>
                         {updateInsuranceInfo => {
-                            const handleSubmit = values => {
+                            const handleSubmit = async values => {
                                 const combinedObject = Object.values(
                                     values
                                 ).reduce((combinedObject, currentObject) => ({
@@ -279,17 +287,22 @@ const KioskInsurancePage = componentProps => {
                                     },
                                 };
 
-                                updateInsuranceInfo({
-                                    variables: {
-                                        input: formattedValues,
+                                await execute({
+                                    action: async () => {
+                                        await updateInsuranceInfo({
+                                            variables: {
+                                                input: formattedValues,
+                                            },
+                                        });
+                                    },
+                                    afterAction: () => {
+                                        if (!attemptToRedirectBack()) {
+                                            componentProps.history.push(
+                                                `/kiosk/confirmation/${userId}`
+                                            );
+                                        }
                                     },
                                 });
-
-                                if (!attemptToRedirectBack()) {
-                                    componentProps.history.push(
-                                        `/kiosk/confirmation/${userId}`
-                                    );
-                                }
                             };
 
                             let startStep;
@@ -322,8 +335,8 @@ const KioskInsurancePage = componentProps => {
                                         />
                                     )}
                                     <Wizard
-                                        onSubmit={values =>
-                                            handleSubmit(values)
+                                        onSubmit={async values =>
+                                            await handleSubmit(values)
                                         }
                                         Form="form"
                                         render={props => (

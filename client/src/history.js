@@ -77,14 +77,14 @@ export const getRedirectUrl = () => {
     const urlParams = queryString.parse(history.location.search);
     const { redirectTo } = urlParams;
 
-    return redirectTo;
+    return redirectTo || '';
 };
 
 export const getSearchParamValueByKey = key => {
     const urlParams = queryString.parse(history.location.search);
     const value = urlParams[key];
 
-    return value;
+    return value || '';
 };
 
 export default history;

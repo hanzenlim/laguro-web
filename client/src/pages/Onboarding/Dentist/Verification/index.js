@@ -9,7 +9,6 @@ import {
 import { Flex, Box } from '@laguro/basic-components';
 import _get from 'lodash/get';
 import _pick from 'lodash/pick';
-import _isEmpty from 'lodash/isEmpty';
 import { Query, Mutation, compose, withApollo } from 'react-apollo';
 import * as Yup from 'yup';
 import { adopt } from 'react-adopt';
@@ -26,6 +25,7 @@ import { documentKinds } from '../../../../staticData/documentTypeList';
 import { StyledPreviousButtonContainer } from '../../common';
 import { getSearchParamValueByKey } from '../../../../history';
 import { getProgressBarProps } from '../../../../components/utils';
+import { execute } from '../../../../util/gqlUtils';
 
 const SSN_FORM_ITEM_NAME = 'ssn';
 const DEA_FORM_ITEM_NAME = 'dea'; // malpractice insurance
@@ -233,77 +233,87 @@ class RenderDentistOnboarding extends Component {
                                 }));
 
                                 const { ssn, dea, npiNum } = objectOfValues;
-                                if (
-                                    !_isEmpty(ssn) ||
-                                    !_isEmpty(dea) ||
-                                    !_isEmpty(npiNum)
-                                ) {
-                                    await requestDentistVerification({
-                                        variables: {
-                                            input: {
-                                                dentistId:
-                                                    activeUserResponse.data
-                                                        .activeUser.dentistId,
-                                                deaRegistrationNumber: dea.toUpperCase(),
-                                                npiNumber: npiNum,
-                                                ssnOrEinOrTin: ssn,
+
+                                await execute({
+                                    action: async () => {
+                                        await requestDentistVerification({
+                                            variables: {
+                                                input: {
+                                                    dentistId:
+                                                        activeUserResponse.data
+                                                            .activeUser
+                                                            .dentistId,
+                                                    deaRegistrationNumber: dea.toUpperCase(),
+                                                    npiNumber: npiNum,
+                                                    ssnOrEinOrTin: ssn,
+                                                },
                                             },
-                                        },
-                                    });
-                                }
+                                        });
 
-                                const documents = _pick(objectOfValues, [
-                                    DENTIST_PHOTO_ID_FORM_ITEM_NAME,
-                                    STATE_DENTAL_LICENSE_FORM_ITEM_NAME,
-                                    WARRANTY_FORM_ITEM_NAME,
-                                ]);
-
-                                if (!_isEmpty(documents)) {
-                                    let existingPatientDocument = await this.fetchUserDocuments(
-                                        activeUserResponse.data.activeUser.id
-                                    );
-                                    if (!existingPatientDocument) {
-                                        existingPatientDocument = await this.props.createPatientDocument(
-                                            {
-                                                patientId:
-                                                    activeUserResponse.data
-                                                        .activeUser.id,
-                                            }
+                                        const documents = _pick(
+                                            objectOfValues,
+                                            [
+                                                DENTIST_PHOTO_ID_FORM_ITEM_NAME,
+                                                STATE_DENTAL_LICENSE_FORM_ITEM_NAME,
+                                                WARRANTY_FORM_ITEM_NAME,
+                                            ]
                                         );
-                                        existingPatientDocument =
-                                            existingPatientDocument.data
-                                                .createPatientDocument;
-                                    }
 
-                                    const uploadResults = Object.keys(
-                                        documents
-                                    ).map(async documentKind => {
-                                        const kindDocuments =
-                                            documents[documentKind];
-
-                                        // now only requiring front side of dentist photo id
-                                        if (
-                                            documentKind ===
-                                            DENTIST_PHOTO_ID_FORM_ITEM_NAME
-                                        ) {
-                                            kindDocuments[0].side = 'front';
+                                        let existingPatientDocument = await this.fetchUserDocuments(
+                                            activeUserResponse.data.activeUser
+                                                .id
+                                        );
+                                        if (!existingPatientDocument) {
+                                            existingPatientDocument = await this.props.createPatientDocument(
+                                                {
+                                                    patientId:
+                                                        activeUserResponse.data
+                                                            .activeUser.id,
+                                                }
+                                            );
+                                            existingPatientDocument =
+                                                existingPatientDocument.data
+                                                    .createPatientDocument;
                                         }
 
-                                        await this.props.saveUploadedImages({
-                                            id: existingPatientDocument.id,
-                                            documentList: kindDocuments,
-                                            documentType: documentKind,
+                                        const uploadResults = Object.keys(
+                                            documents
+                                        ).map(async documentKind => {
+                                            const kindDocuments =
+                                                documents[documentKind];
+
+                                            // now only requiring front side of dentist photo id
+                                            if (
+                                                documentKind ===
+                                                DENTIST_PHOTO_ID_FORM_ITEM_NAME
+                                            ) {
+                                                kindDocuments[0].side = 'front';
+                                            }
+
+                                            await this.props.saveUploadedImages(
+                                                {
+                                                    id:
+                                                        existingPatientDocument.id,
+                                                    documentList: kindDocuments,
+                                                    documentType: documentKind,
+                                                }
+                                            );
                                         });
-                                    });
 
-                                    await Promise.all(uploadResults);
-                                }
+                                        await Promise.all(uploadResults);
+                                    },
+                                    afterAction: () => {
+                                        const {
+                                            redirectTo,
+                                        } = queryString.parse(
+                                            this.props.location.search
+                                        );
 
-                                const { redirectTo } = queryString.parse(
-                                    this.props.location.search
-                                );
-
-                                this.props.history.push(redirectTo || '/');
+                                        this.props.history.push(
+                                            redirectTo || '/'
+                                        );
+                                    },
+                                });
                             }}
                             steps={steps}
                         />

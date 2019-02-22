@@ -17,6 +17,7 @@ import { PATIENT_ONBOARDING_INSURANCE_FORM } from '../../util/urls';
 import { getProgressBarProps } from '../../components/utils';
 import HealthHistoryForm from './view';
 import { hasSkippedMedicalHistoryFormCookieVariableName } from '../../util/strings';
+import { execute } from '../../util/gqlUtils';
 
 const progressSteps = [
     'REGISTRATION',
@@ -86,41 +87,47 @@ const KioskMedicalHistoryFormPage = props => {
 
                             const user = JSON.parse(cookies.get('user'));
 
-                            const result = await updatePatientHealthData({
-                                variables: {
-                                    input: {
-                                        patientId: user.id,
-                                        patientHealthData: {
-                                            items: newArray,
-                                        },
-                                    },
+                            await execute({
+                                action: async () => {
+                                    const result = await updatePatientHealthData(
+                                        {
+                                            variables: {
+                                                input: {
+                                                    patientId: user.id,
+                                                    patientHealthData: {
+                                                        items: newArray,
+                                                    },
+                                                },
+                                            },
+                                        }
+                                    );
+
+                                    const data = _get(
+                                        result,
+                                        'data.updatePatientHealthData'
+                                    );
+
+                                    const hasGoneThroughInsurancePage = _get(
+                                        data,
+                                        'insuranceInfo'
+                                    );
+
+                                    if (hasGoneThroughInsurancePage) {
+                                        if (!attemptToRedirectBack()) {
+                                            props.history.push(
+                                                `/kiosk/medical-history-form-confirmation`
+                                            );
+                                        }
+                                    } else {
+                                        redirect({
+                                            url: PATIENT_ONBOARDING_INSURANCE_FORM,
+                                            newSearchParamKey: 'referer',
+                                            newSearchParamValue:
+                                                'KioskMedicalHistoryFormPage',
+                                        });
+                                    }
                                 },
                             });
-
-                            const data = _get(
-                                result,
-                                'data.updatePatientHealthData'
-                            );
-
-                            const hasGoneThroughInsurancePage = _get(
-                                data,
-                                'insuranceInfo'
-                            );
-
-                            if (hasGoneThroughInsurancePage) {
-                                if (!attemptToRedirectBack()) {
-                                    props.history.push(
-                                        `/kiosk/medical-history-form-confirmation`
-                                    );
-                                }
-                            } else {
-                                redirect({
-                                    url: PATIENT_ONBOARDING_INSURANCE_FORM,
-                                    newSearchParamKey: 'referer',
-                                    newSearchParamValue:
-                                        'KioskMedicalHistoryFormPage',
-                                });
-                            }
                         }}
                         onSkip={handleSkip}
                     />

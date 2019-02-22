@@ -21,6 +21,7 @@ import {
 } from '../../history';
 import Loading from '../../components/Loading/index';
 import * as Yup from 'yup';
+import { execute } from '../../util/gqlUtils';
 
 const procedureList = {
     Fillings: false,
@@ -247,62 +248,62 @@ class KioskDentistProfilePage extends Component {
                             imageUrl: profilePicture,
                         };
 
-                        try {
-                            await updateUser({
-                                variables: {
-                                    input: updateImageQuery,
-                                },
-                            });
-                        } catch (error) {
-                            console.log(error.message);
-                        }
-
-                        try {
-                            await createDentist({
-                                variables: {
-                                    input: {
-                                        ...createQuery,
-                                        userId: cookieUser.id,
+                        await execute({
+                            action: async () => {
+                                await updateUser({
+                                    variables: {
+                                        input: updateImageQuery,
                                     },
-                                },
-                            });
-                        } catch (error) {
-                            console.log(error.message);
-                        }
-
-                        try {
-                            await updateDentist({
-                                variables: {
-                                    input: {
-                                        ...createQuery,
-                                        id: user.dentistId,
-                                    },
-                                },
-                            });
-                        } catch (error) {
-                            console.log(error.message);
-                        }
-
-                        if (
-                            getSearchParamValueByKey('referer').includes(
-                                'ProfilePage'
-                            )
-                        ) {
-                            if (!attemptToRedirectBack()) {
-                                redirect({
-                                    url: DENTIST_ONBOARDING_VERIFICATION_URL,
-                                    newSearchParamKey: 'referer',
-                                    newSearchParamValue:
-                                        'KioskDentistProfilePage',
                                 });
-                            }
-                        } else {
-                            redirect({
-                                url: DENTIST_ONBOARDING_VERIFICATION_URL,
-                                newSearchParamKey: 'referer',
-                                newSearchParamValue: 'KioskDentistProfilePage',
-                            });
-                        }
+                            },
+                        });
+
+                        await execute({
+                            action: async () => {
+                                if (_isEmpty(_get(user, 'dentistId'))) {
+                                    await createDentist({
+                                        variables: {
+                                            input: {
+                                                ...createQuery,
+                                                userId: cookieUser.id,
+                                            },
+                                        },
+                                    });
+                                } else {
+                                    await updateDentist({
+                                        variables: {
+                                            input: {
+                                                ...createQuery,
+                                                id: user.dentistId,
+                                            },
+                                        },
+                                    });
+                                }
+                            },
+                            afterAction: () => {
+                                if (
+                                    getSearchParamValueByKey(
+                                        'referer'
+                                    ).includes('ProfilePage')
+                                ) {
+                                    if (!attemptToRedirectBack()) {
+                                        redirect({
+                                            url: DENTIST_ONBOARDING_VERIFICATION_URL,
+                                            newSearchParamKey: 'referer',
+                                            newSearchParamValue:
+                                                'KioskDentistProfilePage',
+                                        });
+                                    }
+                                } else {
+                                    redirect({
+                                        url: DENTIST_ONBOARDING_VERIFICATION_URL,
+                                        newSearchParamKey: 'referer',
+                                        newSearchParamValue:
+                                            'KioskDentistProfilePage',
+                                    });
+                                }
+                            },
+                        });
                     };
 
                     if (isDentistLoading) {
