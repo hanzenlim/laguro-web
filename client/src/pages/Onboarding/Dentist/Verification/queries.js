@@ -42,16 +42,6 @@ export const requestDentistVerificationMutation = gql`
     }
 `;
 
-// eslint-disable-next-line
-export const getIdQueryClient = gql`
-    query activeUser {
-        activeUser @client {
-            id
-            dentistId
-        }
-    }
-`;
-
 export const queryPatientDocumentQuery = gql`
     query ($input: QueryParams!) {
         queryPatientDocument(input: $input){

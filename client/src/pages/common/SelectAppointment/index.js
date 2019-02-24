@@ -2,9 +2,9 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
-import { compose, graphql, withApollo } from 'react-apollo';
-import { getUserQuery } from './queries';
+import { compose, withApollo } from 'react-apollo';
 import SelectAppointmentView from './view';
+import { getUser } from '../../../util/authUtils';
 
 class SelectAppointmentContainer extends PureComponent {
     constructor(props) {
@@ -16,7 +16,9 @@ class SelectAppointmentContainer extends PureComponent {
     }
 
     handleSelect = event => {
-        if (get(this, 'props.data.activeUser') === null) {
+        const user = getUser();
+        // Show login modal if not logged in.
+        if (!user) {
             const { client } = this.props;
             if (client) {
                 client.writeData({
@@ -58,7 +60,4 @@ SelectAppointmentContainer.propTypes = {
     selected: PropTypes.string,
 };
 
-export default compose(
-    withApollo,
-    graphql(getUserQuery)
-)(SelectAppointmentContainer);
+export default compose(withApollo)(SelectAppointmentContainer);

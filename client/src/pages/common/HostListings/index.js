@@ -7,27 +7,27 @@ import CancelListingModal from '../Modals/CancelListingModal';
 import { Loading } from '../../../components';
 import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
 
-import { getDentistIdQueryClient, getDentistQuery } from './queries';
+import { getDentistQuery } from './queries';
+import { getUser } from '../../../util/authUtils';
 
-const HostListingsContainer = () => (
-    <Query query={getDentistIdQueryClient}>
-        {({ data: clientData }) => (
-            <Query
-                query={getDentistQuery}
-                variables={{ id: clientData.activeUser.dentistId }}
-                fetchPolicy="cache-and-network"
-            >
-                {({ loading, error, data }) => {
-                    if (error) return <RedirectErrorPage />;
-                    if (loading) return <Loading />;
+const HostListingsContainer = () => {
+    const user = getUser();
+    return (
+        <Query
+            query={getDentistQuery}
+            variables={{ id: get(user, 'dentistId') }}
+            fetchPolicy="cache-and-network"
+        >
+            {({ loading, error, data }) => {
+                if (error) return <RedirectErrorPage />;
+                if (loading) return <Loading />;
 
-                    const { offices } = get(data, 'getDentist');
-                    return <HostListingsView offices={offices} />;
-                }}
-            </Query>
-        )}
-    </Query>
-);
+                const { offices } = get(data, 'getDentist');
+                return <HostListingsView offices={offices} />;
+            }}
+        </Query>
+    );
+};
 
 class HostListingsView extends PureComponent {
     state = {

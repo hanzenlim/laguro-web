@@ -10,7 +10,6 @@ import _debounce from 'lodash/debounce';
 import { Box } from '../../../components';
 import ReserveOfficeView from './view';
 import {
-    getUserQuery,
     createReservationMutation,
     checkUserDentistVerifiedQuery,
 } from './queries';
@@ -20,7 +19,7 @@ import {
     BOOKING_FEE_PERCENTAGE,
     PAYMENT_VIEW,
 } from '../../../util/strings';
-import DentistVerificationModal from '../Modals/DentistVerificationModal';
+import { getUser } from '../../../util/authUtils';
 import { stripTimezone } from '../../../util/timeUtil';
 import { redirect } from '../../../history';
 import {
@@ -43,7 +42,6 @@ class ReserveOffice extends Component {
             summaryList: [],
             paymentConfirmationH2Text: '',
             paymentConfirmationH3Text: '',
-            showVerificationModal: false,
             onPayBtnText: 'Pay',
             isSubmitting: false,
             selectReservationKey: 0,
@@ -53,7 +51,9 @@ class ReserveOffice extends Component {
     }
 
     findAvailabilityHandler = selectedDates => {
-        if (_get(this, 'props.data.activeUser') === null) {
+        const user = getUser();
+
+        if (!user) {
             if (_get(this, 'props.client.writeData')) {
                 this.props.client.writeData({
                     data: { visibleModal: 'login' },
@@ -125,6 +125,8 @@ class ReserveOffice extends Component {
             const errors = [];
             let earliestReservationStartTime = '';
             let earliestReservationEndTime = '';
+
+            const user = getUser();
             await Promise.all(
                 Object.keys(reservations).map(async listingId => {
                     let totalPrice = 0;
@@ -132,10 +134,7 @@ class ReserveOffice extends Component {
                     const equipmentSelected = this.reservationObject.selectedEquipment.map(
                         value => value.name
                     );
-                    const reservedBy = _get(
-                        this,
-                        'props.data.activeUser.dentistId'
-                    );
+                    const reservedBy = _get(user, 'dentistId');
 
                     // calculate all the time slots.
                     const availableTimes = reservations[listingId].map(
@@ -248,17 +247,15 @@ class ReserveOffice extends Component {
     };
 
     onMakeReservation = async data => {
+        const userCookie = getUser();
         this.reservationObject = data;
 
-        const {
-            client,
-            data: { activeUser },
-        } = this.props;
+        const { client } = this.props;
 
         const result = await client.query({
             query: checkUserDentistVerifiedQuery,
             variables: {
-                id: activeUser.id,
+                id: _get(userCookie, 'id'),
             },
             fetchPolicy: 'network-only',
         });
@@ -305,6 +302,8 @@ class ReserveOffice extends Component {
                 currentDisplay: PAYMENT_VIEW,
             });
         }
+
+        return null;
     };
 
     updateSummaryDetailsData = data => {
@@ -334,23 +333,12 @@ class ReserveOffice extends Component {
         });
     };
 
-    handleDentistVerificationModalClose = () => {
-        this.setState({
-            showVerificationModal: false,
-        });
-    };
-
     handleDentistVerificationComplete = ({ verified }) => {
         if (verified) {
             return this.setState({
                 currentDisplay: PAYMENT_VIEW,
-                showVerificationModal: false,
             });
         }
-
-        this.setState({
-            showVerificationModal: false,
-        });
 
         return null;
     };
@@ -361,15 +349,9 @@ class ReserveOffice extends Component {
 
     render() {
         const { officeId, startLoading } = this.props;
-        const { showVerificationModal } = this.state;
 
         return (
             <Fragment>
-                <DentistVerificationModal
-                    onCancel={this.handleDentistVerificationModalClose}
-                    onComplete={this.handleDentistVerificationComplete}
-                    visible={showVerificationModal}
-                />
                 {startLoading && (
                     <Box>
                         <ReserveOfficeView
@@ -429,6 +411,5 @@ ReserveOffice.propTypes = {
 
 export default compose(
     withApollo,
-    graphql(createReservationMutation),
-    graphql(getUserQuery)
+    graphql(createReservationMutation)
 )(ReserveOffice);

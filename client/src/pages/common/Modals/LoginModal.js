@@ -7,8 +7,6 @@ import Login from '../Login';
 const LoginModal = ({
     login,
     visible,
-    openRegistrationModal,
-    openForgotPassModal,
     closeModal,
     message,
     location,
@@ -25,8 +23,6 @@ const LoginModal = ({
     >
         <Login
             login={login}
-            openRegistrationModal={openRegistrationModal}
-            openForgotPassModal={openForgotPassModal}
             message={message}
             location={location}
             isSubmitting={isSubmitting}
@@ -38,7 +34,6 @@ const LoginModal = ({
 LoginModal.defaultProps = {
     login: () => {},
     closeModal: () => {},
-    openRegistrationModal: () => {},
     visible: false,
     message: '',
     closable: true,
@@ -48,7 +43,6 @@ LoginModal.defaultProps = {
 LoginModal.propTypes = {
     login: PropTypes.func,
     closeModal: PropTypes.func,
-    openRegistrationModal: PropTypes.func,
     visible: PropTypes.bool,
     message: PropTypes.string,
     closable: PropTypes.bool,

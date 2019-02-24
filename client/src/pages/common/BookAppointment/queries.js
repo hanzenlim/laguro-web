@@ -64,14 +64,6 @@ export const createAppointmentMutation = gql`
     }
 `;
 
-export const getUserQuery = gql`
-    {
-        activeUser @client {
-            id
-        }
-    }
-`;
-
 export const checkPatientVerified = gql`
     query($id: String!) {
         getUser(id: $id) {

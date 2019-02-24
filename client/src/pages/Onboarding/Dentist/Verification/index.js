@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import cookies from 'browser-cookies';
 import {
     Wizard,
     Numbers,
@@ -9,14 +10,13 @@ import {
 import { Flex, Box } from '@laguro/basic-components';
 import _get from 'lodash/get';
 import _pick from 'lodash/pick';
-import { Query, Mutation, compose, withApollo } from 'react-apollo';
+import { Mutation, compose, withApollo } from 'react-apollo';
 import * as Yup from 'yup';
 import { adopt } from 'react-adopt';
 import queryString from 'query-string';
 import DocumentUploaderInputContainer from './DocumentUploaderInputContainer';
 import {
     requestDentistVerificationMutation,
-    getIdQueryClient,
     queryPatientDocumentQuery,
     createPatientDocumentMutation,
     saveUploadedImagesMutation,
@@ -40,9 +40,6 @@ const progressSteps = ['Dentist Profile', 'Verification'];
 const currentStep = progressSteps[1];
 
 const Composed = adopt({
-    activeUserResponse: ({ render }) => (
-        <Query query={getIdQueryClient}>{render}</Query>
-    ),
     requestDentistVerification: ({ render }) => (
         <Mutation mutation={requestDentistVerificationMutation}>
             {render}
@@ -192,7 +189,7 @@ class RenderDentistOnboarding extends Component {
 
         return (
             <Composed>
-                {({ activeUserResponse, requestDentistVerification }) => (
+                {({ requestDentistVerification }) => (
                     <Box>
                         {startStep !== progressSteps.length && (
                             <Progress
@@ -234,15 +231,17 @@ class RenderDentistOnboarding extends Component {
 
                                 const { ssn, dea, npiNum } = objectOfValues;
 
+                                let user = cookies.get('user');
+                                if (user) {
+                                    user = JSON.parse(user);
+                                }
+
                                 await execute({
                                     action: async () => {
                                         await requestDentistVerification({
                                             variables: {
                                                 input: {
-                                                    dentistId:
-                                                        activeUserResponse.data
-                                                            .activeUser
-                                                            .dentistId,
+                                                    dentistId: user.dentistId,
                                                     deaRegistrationNumber: dea.toUpperCase(),
                                                     npiNumber: npiNum,
                                                     ssnOrEinOrTin: ssn,
@@ -260,15 +259,12 @@ class RenderDentistOnboarding extends Component {
                                         );
 
                                         let existingPatientDocument = await this.fetchUserDocuments(
-                                            activeUserResponse.data.activeUser
-                                                .id
+                                            user.id
                                         );
                                         if (!existingPatientDocument) {
                                             existingPatientDocument = await this.props.createPatientDocument(
                                                 {
-                                                    patientId:
-                                                        activeUserResponse.data
-                                                            .activeUser.id,
+                                                    patientId: user.id,
                                                 }
                                             );
                                             existingPatientDocument =

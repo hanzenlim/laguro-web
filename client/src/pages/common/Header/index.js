@@ -4,16 +4,15 @@ import { Query } from 'react-apollo';
 
 import HeaderView from './view';
 import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
-import { getUserQuery } from './queries';
+import { getVisibleModal } from './queries';
 import {
     onLogin,
     onSignup,
     sendPassResetLink,
     onLogout,
     openLoginModal,
-    openRegistrationModal,
-    openForgotPassModal,
     closeModal,
+    getUser,
 } from '../../../util/authUtils';
 import history from '../../../history';
 
@@ -68,8 +67,9 @@ class HeaderContainer extends PureComponent {
 
     render() {
         return (
-            <Query query={getUserQuery}>
+            <Query query={getVisibleModal}>
                 {({ loading, error, data, client }) => {
+                    const user = getUser();
                     if (loading) {
                         return <div />;
                     }
@@ -80,22 +80,16 @@ class HeaderContainer extends PureComponent {
 
                     return (
                         <HeaderView
-                            auth={data.activeUser}
+                            auth={user}
                             isSubmitting={this.state.isSubmitting}
-                            isDentist={_get(data, 'activeUser.isDentist')}
-                            isHost={_get(data, 'activeUser.isHost')}
+                            isDentist={_get(user, 'isDentist')}
+                            isHost={_get(user, 'isHost')}
                             visibleModal={data.visibleModal}
                             login={values => this.handleLogin(client, values)}
                             logout={() => onLogout(client)}
                             signup={values => this.handleSignup(client, values)}
                             sendPassResetLink={this.handleSendResetPasswordLink}
                             openLoginModal={() => openLoginModal(client)}
-                            openRegistrationModal={() =>
-                                openRegistrationModal(client)
-                            }
-                            openForgotPassModal={() =>
-                                openForgotPassModal(client)
-                            }
                             closeModal={() => closeModal(client)}
                             pathname={this.state.pathname}
                         />

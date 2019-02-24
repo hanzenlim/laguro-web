@@ -29,16 +29,6 @@ export const CREATE_LISTING = gql`
     }
 `;
 
-export const GET_USER = gql`
-    {
-        activeUser @client {
-            id
-            firstName
-            lastName
-        }
-    }
-`;
-
 export const UPDATE_OFFICE = gql`
     mutation UpdateOffice($input: UpdateOfficeInput!) {
         updateOffice(input: $input) {

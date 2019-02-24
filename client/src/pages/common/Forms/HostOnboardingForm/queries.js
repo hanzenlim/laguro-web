@@ -37,22 +37,6 @@ const patientDocumentFragment = `
     }
 `;
 
-export const getActiveUserQuery = gql`
-    {
-        activeUser @client {
-            id
-            firstName
-            lastName
-            imageUrl
-            email
-            intercomHash
-            dentistId
-            isDentist
-            isHost
-        }
-    }
-`;
-
 export const queryPatientDocumentQuery = gql`
     query ($input: QueryParams!) {
         queryPatientDocument(input: $input){
@@ -60,12 +44,6 @@ export const queryPatientDocumentQuery = gql`
         }
     }
 `;
-
-export const getActiveUser = graphql(getActiveUserQuery, {
-    props: ({ data: { activeUser } }) => ({
-        user: activeUser,
-    }),
-});
 
 export const saveUploadedImagesMutation = graphql(
     gql`

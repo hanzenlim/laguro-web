@@ -1,14 +1,6 @@
 import { gql } from 'apollo-boost';
 
-// eslint-disable-next-line
-export const getIdQueryClient = gql`
-    {
-        activeUser @client {
-            id
-        }
-    }
-`;
-export const updateInsuranceInfoMutation = gql`
+export const UPDATE_INSURANCE_INFO_MUTATION = gql`
     mutation updateInsuranceInfo($input: UpdateInsuranceInfoInput!) {
         updateInsuranceInfo(input: $input) {
             id
@@ -16,7 +8,7 @@ export const updateInsuranceInfoMutation = gql`
     }
 `;
 
-export const getUser = gql`
+export const GET_USER = gql`
     query($id: String!) {
         getUser(id: $id) {
             id

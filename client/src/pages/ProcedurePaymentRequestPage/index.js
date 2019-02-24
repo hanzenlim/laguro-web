@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react';
 import { compose, Query, graphql, withApollo } from 'react-apollo';
 import _get from 'lodash/get';
 import {
-    getUserQuery,
     getPaymentRequestByPayerQuery,
     acceptOrRejectPaymentRequestMutation,
 } from './queries';
@@ -10,6 +9,7 @@ import ProcedurePaymentRequestPageView from './view';
 import { Loading } from '../../components';
 import { RedirectErrorPage } from '../../pages/GeneralErrorPage';
 import { PENDING } from '../../util/strings';
+import { getUser } from '../../util/authUtils';
 
 class ProcedurePaymentRequest extends PureComponent {
     constructor(props) {
@@ -25,7 +25,8 @@ class ProcedurePaymentRequest extends PureComponent {
     }
 
     componentDidMount() {
-        if (!_get(this, 'props.data.activeUser.id')) {
+        const user = getUser();
+        if (!_get(user, 'id')) {
             this.props.client.writeData({ data: { visibleModal: 'login' } });
         }
     }
@@ -73,7 +74,8 @@ class ProcedurePaymentRequest extends PureComponent {
     };
 
     render() {
-        if (!_get(this, 'props.data.activeUser.id')) return null;
+        const user = getUser();
+        if (!_get(user, 'id')) return null;
 
         return (
             <Query
@@ -81,7 +83,7 @@ class ProcedurePaymentRequest extends PureComponent {
                 fetchPolicy="network-only"
                 variables={{
                     input: {
-                        payerId: this.props.data.activeUser.id,
+                        payerId: _get(user, 'id'),
                         status: PENDING,
                     },
                 }}
@@ -167,7 +169,6 @@ class ProcedurePaymentRequest extends PureComponent {
 
 export default compose(
     withApollo,
-    graphql(getUserQuery),
     graphql(acceptOrRejectPaymentRequestMutation, {
         name: 'acceptOrRejectPaymentRequestMutation',
     })

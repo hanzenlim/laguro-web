@@ -8,7 +8,7 @@ import { Loading } from '../../../components';
 import CancelAppoinmentModal from '../Modals/CancelAppointmentModal';
 import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
 
-import { getAppointmentsQuery, getPatientIdQueryClient } from './queries';
+import { getAppointmentsQuery } from './queries';
 import {
     PATIENT_ID,
     END_TIME,
@@ -16,48 +16,46 @@ import {
     PENDING_PATIENT_APPROVAL,
     ACTIVE,
 } from '../../../util/strings';
+import { getUser } from '../../../util/authUtils';
 
-const PatientAppoinmentsContainer = () => (
-    <Query query={getPatientIdQueryClient}>
-        {({ data: clientData }) => (
-            <Query
-                query={getAppointmentsQuery}
-                fetchPolicy="cache-and-network"
-                variables={{
-                    input: {
-                        partitionKey: PATIENT_ID,
-                        partitionValue: clientData.activeUser.id,
-                        options: {
-                            sortKey: `${END_TIME}`,
-                            rangeStart: `${moment()
-                                .startOf('days')
-                                .format()}`,
-                            filters: [
-                                {
-                                    filterKey: `${STATUS}`,
-                                    filterValues: [
-                                        `${PENDING_PATIENT_APPROVAL}`,
-                                        `${ACTIVE}`,
-                                    ],
-                                },
-                            ],
-                        },
+const PatientAppoinmentsContainer = () => {
+    const user = getUser();
+    return (
+        <Query
+            query={getAppointmentsQuery}
+            fetchPolicy="cache-and-network"
+            variables={{
+                input: {
+                    partitionKey: PATIENT_ID,
+                    partitionValue: get(user, 'id'),
+                    options: {
+                        sortKey: `${END_TIME}`,
+                        rangeStart: `${moment()
+                            .startOf('days')
+                            .format()}`,
+                        filters: [
+                            {
+                                filterKey: `${STATUS}`,
+                                filterValues: [
+                                    `${PENDING_PATIENT_APPROVAL}`,
+                                    `${ACTIVE}`,
+                                ],
+                            },
+                        ],
                     },
-                }}
-            >
-                {({ loading, error, data }) => {
-                    if (error) return <RedirectErrorPage />;
-                    if (loading) return <Loading />;
+                },
+            }}
+        >
+            {({ loading, error, data }) => {
+                if (error) return <RedirectErrorPage />;
+                if (loading) return <Loading />;
 
-                    const appointments = get(data, 'queryAppointments');
-                    return (
-                        <PatientAppoinmentsView appointments={appointments} />
-                    );
-                }}
-            </Query>
-        )}
-    </Query>
-);
+                const appointments = get(data, 'queryAppointments');
+                return <PatientAppoinmentsView appointments={appointments} />;
+            }}
+        </Query>
+    );
+};
 
 class PatientAppoinmentsView extends PureComponent {
     state = {

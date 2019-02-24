@@ -1,13 +1,20 @@
 import { message } from 'antd';
-import history from '../history';
-import request from './fetchUtil';
-import {
-    ACTIVE_USER,
-    hasSkippedMedicalHistoryFormCookieVariableName,
-} from './strings';
 import cookies from 'browser-cookies';
 
-export const onLogin = (clientCache, values) =>
+import history from '../history';
+import request from './fetchUtil';
+import { hasSkippedMedicalHistoryFormCookieVariableName } from './strings';
+
+export const getUser = () => {
+    let user = cookies.get('user');
+    if (user) {
+        user = JSON.parse(user);
+        return user;
+    }
+
+    return null;
+};
+export const onLogin = values =>
     request('/api/login', {
         method: 'POST',
         credentials: 'same-origin',
@@ -17,22 +24,12 @@ export const onLogin = (clientCache, values) =>
         },
         body: JSON.stringify({ ...values }),
     }).then(res => {
-        if (res.status === 200) {
-            clientCache.writeData({
-                data: {
-                    activeUser: {
-                        ...res.user,
-                        __typename: ACTIVE_USER,
-                    },
-                    visibleModal: null,
-                },
-            });
-        } else {
+        if (res.status !== 200) {
             message.error(res.message);
         }
     });
 
-export const onSignup = (clientCache, values) =>
+export const onSignup = values =>
     request('/api/signup', {
         method: 'POST',
         credentials: 'same-origin',
@@ -42,17 +39,7 @@ export const onSignup = (clientCache, values) =>
         },
         body: JSON.stringify({ ...values }),
     }).then(res => {
-        if (res.status === 200) {
-            clientCache.writeData({
-                data: {
-                    activeUser: {
-                        ...res.user,
-                        __typename: ACTIVE_USER,
-                    },
-                    visibleModal: null,
-                },
-            });
-        } else {
+        if (res.status !== 200) {
             message.error(res.message);
         }
     });
@@ -74,12 +61,11 @@ export const sendPassResetLink = (values, onSuccess) =>
         }
     });
 
-export const onLogout = clientCache => {
+export const onLogout = () => {
     // eslint-disable-next-line
     window && window.Intercom('shutdown');
     // eslint-disable-next-line
     window.localStorage && window.localStorage.clear();
-    clientCache.writeData({ data: { activeUser: null } });
     cookies.erase(hasSkippedMedicalHistoryFormCookieVariableName);
     request('/api/logout', {
         method: 'POST',
@@ -90,12 +76,11 @@ export const onLogout = clientCache => {
         },
         body: '{}',
     }).then(() => {
-        history.push('/');
+        window.location.href = '/';
     });
 };
 
-export const onKioskLogout = async clientCache => {
-    clientCache.writeData({ data: { activeUser: null } });
+export const onKioskLogout = async () => {
     cookies.erase('user');
     history.push('/kiosk/registration');
 };
@@ -104,13 +89,6 @@ export const openLoginModal = clientCache => {
     clientCache.writeData({ data: { visibleModal: 'login' } });
 };
 
-export const openRegistrationModal = clientCache => {
-    clientCache.writeData({ data: { visibleModal: 'register' } });
-};
-
-export const openForgotPassModal = clientCache => {
-    clientCache.writeData({ data: { visibleModal: 'forgotPass' } });
-};
 export const closeModal = clientCache => {
     clientCache.writeData({ data: { visibleModal: null } });
 };

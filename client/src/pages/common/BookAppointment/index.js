@@ -9,7 +9,6 @@ import { stripTimezone } from '../../../util/timeUtil';
 
 import {
     getDentistQuery,
-    getUserQuery,
     createAppointmentMutation,
     checkPatientVerified,
 } from './queries';
@@ -24,6 +23,7 @@ import {
     ONBOARDING_NAME_AND_PERSONA_PAGE,
 } from '../../../util/urls';
 import { userHasSkippedMedicalHistory } from '../../../util/cookieUtils';
+import { getUser } from '../../../util/authUtils';
 
 const HANDLED_TIMESLOT_ERRORS = [
     'Timeslot is in the past',
@@ -43,8 +43,6 @@ class BookAppointment extends PureComponent {
             endTime: null,
             isPaymentVisible: false,
             bookedAppointment: null,
-
-            showVerificationModal: false,
             paymentError: null,
             isSubmitting: false,
         };
@@ -55,9 +53,10 @@ class BookAppointment extends PureComponent {
     };
 
     handleSelect = async data => {
+        const user = getUser();
         this.setState({
             reservationId: data.reservationId,
-            patientId: this.props.data.activeUser.id,
+            patientId: _get(user, 'id'),
             location: data.location,
             procedure: data.procedure,
             startTime: stripTimezone(data.startTime),
@@ -68,27 +67,19 @@ class BookAppointment extends PureComponent {
         return false;
     };
 
-    handleCloseVerificationModal = () => {
-        this.setState({
-            showVerificationModal: false,
-        });
-    };
-
     handlePay = async paymentOptionId => {
-        const {
-            client,
-            data: { activeUser },
-        } = this.props;
+        const user = getUser();
+        const { client } = this.props;
 
         const {
-            data: { getUser },
+            data: { getUser: getUserData },
         } = await client.query({
             query: checkPatientVerified,
-            variables: { id: activeUser.id },
+            variables: { id: _get(user, 'id') },
             fetchPolicy: 'network-only',
         });
 
-        this.redirectPatient(getUser);
+        this.redirectPatient(getUserData);
 
         try {
             this.setState({ isSubmitting: true });
@@ -97,7 +88,7 @@ class BookAppointment extends PureComponent {
                 variables: {
                     input: {
                         reservationId: this.state.reservationId,
-                        patientId: this.props.data.activeUser.id,
+                        patientId: _get(user, 'id'),
                         procedure: this.state.procedure,
                         localStartTime: this.state.startTime,
                         localEndTime: this.state.endTime,
@@ -122,19 +113,17 @@ class BookAppointment extends PureComponent {
     };
 
     checkIfVerified = async () => {
-        const {
-            client,
-            data: { activeUser },
-        } = this.props;
+        const user = getUser();
+        const { client } = this.props;
 
         const {
-            data: { getUser },
+            data: { getUser: getUserData },
         } = await client.query({
             query: checkPatientVerified,
-            variables: { id: activeUser.id },
+            variables: { id: _get(user, 'id') },
             fetchPolicy: 'network-only',
         });
-        return !this.redirectPatient(getUser);
+        return !this.redirectPatient(getUserData);
     };
 
     redirectPatient = user => {
@@ -176,17 +165,10 @@ class BookAppointment extends PureComponent {
         this.setState({ isSubmitting });
     };
 
-    handleVerificationResult = () => {
-        this.setState({ showVerificationModal: false });
-    };
-
     render() {
         const { id } = this.props;
-        const {
-            isPaymentVisible,
-            bookedAppointment,
-            showVerificationModal,
-        } = this.state;
+
+        const { isPaymentVisible, bookedAppointment } = this.state;
 
         return (
             <Query query={getDentistQuery} variables={{ id }}>
@@ -208,7 +190,6 @@ class BookAppointment extends PureComponent {
                             )}
                             isPaymentVisible={isPaymentVisible}
                             bookedAppointment={bookedAppointment}
-                            showVerificationModal={showVerificationModal}
                             onFilter={this.handleFilter}
                             onPay={this.handlePay}
                             onSelect={this.handleSelect}
@@ -226,6 +207,5 @@ class BookAppointment extends PureComponent {
 
 export default compose(
     withApollo,
-    graphql(getUserQuery),
     graphql(createAppointmentMutation)
 )(BookAppointment);

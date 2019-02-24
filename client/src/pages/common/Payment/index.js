@@ -1,13 +1,10 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Query } from 'react-apollo';
 import get from 'lodash/get';
 
-import { Loading } from '../../../components';
+import { getUser } from '../../../util/authUtils';
 import { stripePublicKey } from '../../../config/keys';
-import { getUserQuery } from '../../common/Header/queries';
 import PaymentView from './view';
-import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
 
 class Payment extends PureComponent {
     constructor(props) {
@@ -54,33 +51,21 @@ class Payment extends PureComponent {
             checkIfVerified,
         } = this.props;
 
+        const user = getUser();
+
         return (
-            <Query query={getUserQuery}>
-                {({ loading, error, data }) => {
-                    if (loading) {
-                        return <Loading />;
-                    }
-
-                    if (error) {
-                        return <RedirectErrorPage />;
-                    }
-
-                    return (
-                        <PaymentView
-                            stripe={this.state.stripe}
-                            btnText={btnText}
-                            isButtonOutside={isButtonOutside}
-                            userId={get(data, 'activeUser.id')}
-                            handleSubmit={this.submitPayment}
-                            onBackButton={this.onBackButton}
-                            hasBackButton={hasBackButton}
-                            isSubmitting={isSubmitting}
-                            updateSubmittingState={updateSubmittingState}
-                            checkIfVerified={checkIfVerified}
-                        />
-                    );
-                }}
-            </Query>
+            <PaymentView
+                stripe={this.state.stripe}
+                btnText={btnText}
+                isButtonOutside={isButtonOutside}
+                userId={get(user, 'id')}
+                handleSubmit={this.submitPayment}
+                onBackButton={this.onBackButton}
+                hasBackButton={hasBackButton}
+                isSubmitting={isSubmitting}
+                updateSubmittingState={updateSubmittingState}
+                checkIfVerified={checkIfVerified}
+            />
         );
     }
 }

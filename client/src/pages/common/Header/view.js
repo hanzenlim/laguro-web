@@ -16,7 +16,6 @@ import {
 } from '../../../components';
 import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
 import LoginModal from '../Modals/LoginModal';
-import RegistrationModal from '../Modals/RegistrationModal';
 import ForgotPassModal from '../Modals/ForgotPassModal';
 import { intercomKey } from '../../../config/keys';
 import theme from '../../../components/theme';
@@ -239,11 +238,8 @@ class Header extends Component {
         const {
             pathname,
             openLoginModal,
-            openRegistrationModal,
-            openForgotPassModal,
             closeModal,
             visibleModal,
-            signup,
             login,
             logout,
             sendPassResetLink,
@@ -303,17 +299,8 @@ class Header extends Component {
                 <IntercomContainer auth={auth} />
                 <LoginModal
                     login={login}
-                    openRegistrationModal={openRegistrationModal}
-                    openForgotPassModal={openForgotPassModal}
                     closeModal={closeModal}
                     visible={visibleModal === 'login'}
-                    isSubmitting={isSubmitting}
-                />
-                <RegistrationModal
-                    signup={signup}
-                    openLoginModal={openLoginModal}
-                    closeModal={closeModal}
-                    visible={visibleModal === 'register'}
                     isSubmitting={isSubmitting}
                 />
                 <ForgotPassModal
@@ -415,7 +402,6 @@ class Header extends Component {
                             isHost={isHost}
                             auth={auth}
                             openLoginModal={openLoginModal}
-                            openRegistrationModal={openRegistrationModal}
                             logout={logout}
                             onLandingPage={onLandingPage}
                             desktopOnly={desktopOnly}

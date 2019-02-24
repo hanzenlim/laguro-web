@@ -18,7 +18,6 @@ import {
     PREVIEW_PUBLIC_PROFILE_MENU,
     MY_LISTINGS_MENU,
     MY_BOOKINGS_MENU,
-    MY_PATIENTS_MENU,
     PAYMENT_REQUEST_MENU,
     LOG_OUT_MENU,
     SEARCH_FOR_CHAIRS_MENU,
@@ -86,7 +85,6 @@ const ProfileMenu = props => {
               HOME_MENU,
               MY_ACCOUNT_MENU,
               MY_PROFILE_MENU,
-              MY_PATIENTS_MENU,
               MY_APPOINTMENTS_MENU,
               NEW_APPOINTMENT_MENU,
               MY_BOOKINGS_MENU,
@@ -124,7 +122,6 @@ const ProfileMenu = props => {
         [MY_ACCOUNT_MENU]: '/profile?selectedTab=my_profile',
         [MY_PROFILE_MENU]: '/profile?selectedTab=dentist_profile',
         [PREVIEW_PUBLIC_PROFILE_MENU]: '/profile?selectedTab=public_profile',
-        [MY_PATIENTS_MENU]: '/profile?selectedTab=my_patients',
         [PAYMENT_REQUEST_MENU]: '/profile?selectedTab=payment_request',
     };
 

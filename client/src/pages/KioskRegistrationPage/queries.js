@@ -1,6 +1,6 @@
 import { gql } from 'apollo-boost';
-import { STATUS, ACTIVE, END_TIME } from '../../util/strings';
 import moment from 'moment';
+import { STATUS, ACTIVE, END_TIME } from '../../util/strings';
 
 export const SEND_KIOSK_LOGIN_CODE = gql`
     mutation sendKioskLoginCode($input: SendLoginCodeInput!) {
@@ -123,11 +123,5 @@ export const REGISTER_USER = gql`
                 body
             }
         }
-    }
-`;
-
-export const SET_ACTIVE_USER = gql`
-    mutation setActiveUser($input: Object) {
-        setActiveUser(input: $input) @client
     }
 `;

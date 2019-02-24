@@ -9,10 +9,11 @@ import {
 } from '@laguro/the-bright-side-components';
 import * as Yup from 'yup';
 import { Flex, Box } from '@laguro/basic-components';
-import { UPDATE_USER } from './queries';
 import cookies from 'browser-cookies';
 import { Mutation } from 'react-apollo';
+
 import { StyledPreviousButtonContainer } from '../common';
+import { UPDATE_USER } from './queries';
 import {
     getRedirectUrl,
     redirectWithSearchParams,

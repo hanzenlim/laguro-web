@@ -5,11 +5,7 @@ import _get from 'lodash/get';
 import _mapKeys from 'lodash/mapKeys';
 import { message } from 'antd';
 import { Box, Loading } from '@laguro/basic-components';
-import {
-    getDentistIdQueryClient,
-    getDentistQuery,
-    updateAppointmentMutation,
-} from './queries';
+import { getDentistQuery, updateAppointmentMutation } from './queries';
 import { RedirectErrorPage } from '../../GeneralErrorPage';
 import DentistBookingsView from './view';
 import {
@@ -18,6 +14,7 @@ import {
     REJECTED_BY_PATIENT,
     PENDING_PATIENT_APPROVAL,
 } from '../../../util/strings';
+import { getUser } from '../../../util/authUtils';
 
 const isDraggingDisabled = true;
 
@@ -86,202 +83,177 @@ class DentistBookings extends Component {
 
     render() {
         const { currentOfficeIds } = this.state;
+        const user = getUser();
 
         return (
-            <Query query={getDentistIdQueryClient}>
-                {({ data: clientData }) => (
-                    <Query
-                        query={getDentistQuery}
-                        fetchPolicy="network-only"
-                        variables={{ id: clientData.activeUser.dentistId }}
-                    >
-                        {({ loading, error, data, refetch }) => {
-                            if (error) return <RedirectErrorPage />;
-                            if (loading)
-                                return (
-                                    <Box height="100vh">
-                                        <Loading />
-                                    </Box>
-                                );
+            <Query
+                query={getDentistQuery}
+                fetchPolicy="network-only"
+                variables={{ id: _get(user, 'dentistId') }}
+            >
+                {({ loading, error, data, refetch }) => {
+                    if (error) return <RedirectErrorPage />;
+                    if (loading)
+                        return (
+                            <Box height="100vh">
+                                <Loading />
+                            </Box>
+                        );
 
-                            let appointments = _get(
-                                data,
-                                'getDentist.appointments'
-                            );
+                    let appointments = _get(data, 'getDentist.appointments');
 
-                            appointments = appointments.map(appt => ({
-                                ..._mapKeys(appt, (value, key) => {
-                                    if (key === 'localStartTime')
-                                        return 'startTime';
-                                    if (key === 'localEndTime')
-                                        return 'endTime';
-                                    return key;
-                                }),
-                                isPending:
-                                    appt.status === PENDING_PATIENT_APPROVAL,
-                                isCancelled: appt.status === CANCELLED,
-                                isRejected: appt.status === REJECTED_BY_PATIENT,
-                            }));
+                    appointments = appointments.map(appt => ({
+                        ..._mapKeys(appt, (value, key) => {
+                            if (key === 'localStartTime') return 'startTime';
+                            if (key === 'localEndTime') return 'endTime';
+                            return key;
+                        }),
+                        isPending: appt.status === PENDING_PATIENT_APPROVAL,
+                        isCancelled: appt.status === CANCELLED,
+                        isRejected: appt.status === REJECTED_BY_PATIENT,
+                    }));
 
-                            const reservations = _get(
-                                data,
-                                'getDentist.reservations'
-                            );
+                    const reservations = _get(data, 'getDentist.reservations');
 
-                            this.reservations = reservations;
+                    this.reservations = reservations;
 
-                            return (
-                                <Mutation mutation={updateAppointmentMutation}>
-                                    {updateAppointmentTime => {
-                                        const handleMoveEvent = async (
-                                            event,
+                    return (
+                        <Mutation mutation={updateAppointmentMutation}>
+                            {updateAppointmentTime => {
+                                const handleMoveEvent = async (
+                                    event,
+                                    start,
+                                    end
+                                ) => {
+                                    // save info for handleUpdateConfirmation
+                                    this.apptToBeUpdated = {
+                                        event,
+                                        start,
+                                        end,
+                                    };
+
+                                    // TODO: enable dragging after working on notifications
+                                    if (isDraggingDisabled) {
+                                        message.error(
+                                            'Sorry, Laguro developers are currently working on this feature!'
+                                        );
+                                        return;
+                                    }
+                                    // if user is trying to drop the appointment at the same time, don't do anything
+                                    else if (
+                                        moment(event.start).isSame(
+                                            moment(start)
+                                        ) &&
+                                        moment(event.end).isSame(moment(end))
+                                    ) {
+                                        return;
+                                    }
+                                    // if user is trying to drag a past appointment
+                                    else if (
+                                        moment(event.start).isBefore(moment())
+                                    ) {
+                                        message.error(
+                                            "You can't move a past appointment!"
+                                        );
+                                        return;
+                                    }
+                                    // if user is trying to drag an appointment to a startTime that is in the past
+                                    else if (moment(start).isBefore(moment())) {
+                                        message.error(
+                                            "You can't move an appointment to a past time!"
+                                        );
+                                        return;
+                                    }
+                                    // if user is trying to drag an appointment to outside of a booking
+                                    else if (
+                                        !this.isAppointmentTimeInBooking(
                                             start,
                                             end
-                                        ) => {
-                                            // save info for handleUpdateConfirmation
-                                            this.apptToBeUpdated = {
-                                                event,
-                                                start,
-                                                end,
-                                            };
-
-                                            // TODO: enable dragging after working on notifications
-                                            if (isDraggingDisabled) {
-                                                message.error(
-                                                    'Sorry, Laguro developers are currently working on this feature!'
-                                                );
-                                                return;
-                                            }
-                                            // if user is trying to drop the appointment at the same time, don't do anything
-                                            else if (
-                                                moment(event.start).isSame(
-                                                    moment(start)
-                                                ) &&
-                                                moment(event.end).isSame(
-                                                    moment(end)
-                                                )
-                                            ) {
-                                                return;
-                                            }
-                                            // if user is trying to drag a past appointment
-                                            else if (
-                                                moment(event.start).isBefore(
-                                                    moment()
-                                                )
-                                            ) {
-                                                message.error(
-                                                    "You can't move a past appointment!"
-                                                );
-                                                return;
-                                            }
-                                            // if user is trying to drag an appointment to a startTime that is in the past
-                                            else if (
-                                                moment(start).isBefore(moment())
-                                            ) {
-                                                message.error(
-                                                    "You can't move an appointment to a past time!"
-                                                );
-                                                return;
-                                            }
-                                            // if user is trying to drag an appointment to outside of a booking
-                                            else if (
-                                                !this.isAppointmentTimeInBooking(
-                                                    start,
-                                                    end
-                                                )
-                                            ) {
-                                                message.error(
-                                                    'Appointments have to be in a booking!'
-                                                );
-                                                return;
-                                            }
-
-                                            this.setState({
-                                                isUpdateConfirmModalVisible: true,
-                                            });
-                                        };
-
-                                        const handleUpdateConfirmation = async () => {
-                                            this.setState({
-                                                isUpdateConfirmModalSubmitting: true,
-                                            });
-
-                                            try {
-                                                await updateAppointmentTime({
-                                                    variables: {
-                                                        input: {
-                                                            appointmentId: this
-                                                                .apptToBeUpdated
-                                                                .event.id,
-                                                            localStartTime: this
-                                                                .apptToBeUpdated
-                                                                .start,
-                                                            localEndTime: this
-                                                                .apptToBeUpdated
-                                                                .end,
-                                                        },
-                                                    },
-                                                });
-
-                                                await refetch();
-                                            } catch (err) {
-                                                throw err;
-                                            } finally {
-                                                this.setState({
-                                                    isUpdateConfirmModalSubmitting: false,
-                                                });
-                                            }
-
-                                            this.setState({
-                                                isUpdateConfirmModalVisible: false,
-                                            });
-                                        };
-
-                                        return (
-                                            <DentistBookingsView
-                                                errorMessage={
-                                                    this.state.errorMessage
-                                                }
-                                                isUpdateConfirmModalSubmitting={
-                                                    this.state
-                                                        .isUpdateConfirmModalSubmitting
-                                                }
-                                                isUpdateConfirmModalVisible={
-                                                    this.state
-                                                        .isUpdateConfirmModalVisible
-                                                }
-                                                handleUpdateConfirmation={
-                                                    handleUpdateConfirmation
-                                                }
-                                                handleUpdateCancellation={
-                                                    this
-                                                        .handleUpdateCancellation
-                                                }
-                                                refetch={refetch}
-                                                date={this.state.date}
-                                                onDateChange={this.onDateChange}
-                                                onNextWeek={this.onNextWeek}
-                                                onPrevWeek={this.onPrevWeek}
-                                                onOfficeChange={
-                                                    this.onOfficeChange
-                                                }
-                                                reservations={reservations}
-                                                appointments={appointments}
-                                                officeIds={
-                                                    currentOfficeIds ||
-                                                    this.getUniqueOfficeIdsFromReservations(
-                                                        reservations
-                                                    )
-                                                }
-                                                onMoveEvent={handleMoveEvent}
-                                            />
+                                        )
+                                    ) {
+                                        message.error(
+                                            'Appointments have to be in a booking!'
                                         );
-                                    }}
-                                </Mutation>
-                            );
-                        }}
-                    </Query>
-                )}
+                                        return;
+                                    }
+
+                                    this.setState({
+                                        isUpdateConfirmModalVisible: true,
+                                    });
+                                };
+
+                                const handleUpdateConfirmation = async () => {
+                                    this.setState({
+                                        isUpdateConfirmModalSubmitting: true,
+                                    });
+
+                                    try {
+                                        await updateAppointmentTime({
+                                            variables: {
+                                                input: {
+                                                    appointmentId: this
+                                                        .apptToBeUpdated.event
+                                                        .id,
+                                                    localStartTime: this
+                                                        .apptToBeUpdated.start,
+                                                    localEndTime: this
+                                                        .apptToBeUpdated.end,
+                                                },
+                                            },
+                                        });
+
+                                        await refetch();
+                                    } catch (err) {
+                                        throw err;
+                                    } finally {
+                                        this.setState({
+                                            isUpdateConfirmModalSubmitting: false,
+                                        });
+                                    }
+
+                                    this.setState({
+                                        isUpdateConfirmModalVisible: false,
+                                    });
+                                };
+
+                                return (
+                                    <DentistBookingsView
+                                        errorMessage={this.state.errorMessage}
+                                        isUpdateConfirmModalSubmitting={
+                                            this.state
+                                                .isUpdateConfirmModalSubmitting
+                                        }
+                                        isUpdateConfirmModalVisible={
+                                            this.state
+                                                .isUpdateConfirmModalVisible
+                                        }
+                                        handleUpdateConfirmation={
+                                            handleUpdateConfirmation
+                                        }
+                                        handleUpdateCancellation={
+                                            this.handleUpdateCancellation
+                                        }
+                                        refetch={refetch}
+                                        date={this.state.date}
+                                        onDateChange={this.onDateChange}
+                                        onNextWeek={this.onNextWeek}
+                                        onPrevWeek={this.onPrevWeek}
+                                        onOfficeChange={this.onOfficeChange}
+                                        reservations={reservations}
+                                        appointments={appointments}
+                                        officeIds={
+                                            currentOfficeIds ||
+                                            this.getUniqueOfficeIdsFromReservations(
+                                                reservations
+                                            )
+                                        }
+                                        onMoveEvent={handleMoveEvent}
+                                    />
+                                );
+                            }}
+                        </Mutation>
+                    );
+                }}
             </Query>
         );
     }

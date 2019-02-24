@@ -35,7 +35,9 @@ const {
 const getInitialValues = questions => {
     const initialValues = {};
 
-    questions.forEach(q => (initialValues[q.name] = q.value));
+    questions.forEach(q => {
+        initialValues[q.name] = q.value;
+    });
     return initialValues;
 };
 

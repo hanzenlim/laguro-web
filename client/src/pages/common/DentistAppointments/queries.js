@@ -8,15 +8,6 @@ import {
     PENDING_PATIENT_APPROVAL,
 } from '../../../util/strings';
 
-export const getDentistIdQueryClient = gql`
-    query activeUser {
-        activeUser @client {
-            id
-            dentistId
-        }
-    }
-`;
-
 export const getDentistQuery = gql`
     query getDentist($id: String!) {
         getDentist(id: $id) {

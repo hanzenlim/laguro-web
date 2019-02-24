@@ -1,15 +1,5 @@
 import { gql } from 'apollo-boost';
 
-export const getIdQueryClient = gql`
-    query activeUser {
-        activeUser @client {
-            id
-            isDentist
-            isHost
-        }
-    }
-`;
-
 export const getUserQuery = gql`
     query getUser($id: String!) {
         getUser(id: $id) {

@@ -2,18 +2,16 @@ import React from 'react';
 import ApolloClient, { InMemoryCache } from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 import cookies from 'browser-cookies';
-import { merge } from 'lodash';
 import { hot } from 'react-hot-loader';
 import _get from 'lodash/get';
 
 import App from './App';
 
-import AuthResolver from './resolvers/auth';
 import UIResolver from './resolvers/ui';
 
 const cache = new InMemoryCache();
 
-const { defaults, resolvers } = merge(AuthResolver, UIResolver);
+const { defaults, resolvers } = UIResolver;
 
 const client = new ApolloClient({
     clientState: {

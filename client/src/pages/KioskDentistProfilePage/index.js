@@ -9,7 +9,6 @@ import KioskDentistProfileView from './view';
 import {
     CREATE_DENTIST,
     UPDATE_USER_IMAGE_URL,
-    getActiveUserQuery,
     getDentistQuery,
     UPDATE_DENTIST,
 } from './queries';
@@ -19,6 +18,7 @@ import {
     getSearchParamValueByKey,
     attemptToRedirectBack,
 } from '../../history';
+import { getUser } from '../../util/authUtils';
 import Loading from '../../components/Loading/index';
 import * as Yup from 'yup';
 import { execute } from '../../util/gqlUtils';
@@ -51,39 +51,33 @@ const CIGNA_FORM_ITEM_NAME = 'CIGNA';
 const METLIFE_FORM_ITEM_NAME = 'METLIFE';
 
 const Composed = adopt({
-    activeUserResponse: ({ render }) => (
-        <Query query={getActiveUserQuery}>{render}</Query>
-    ),
-    dentistResponse: ({ activeUserResponse, render }) => (
-        <Query
-            query={getDentistQuery}
-            variables={{
-                id: _get(activeUserResponse, 'data.activeUser.dentistId'),
-            }}
-            fetchPolicy="network-only"
-        >
-            {render}
-        </Query>
-    ),
+    dentistResponse: ({ render }) => {
+        const user = getUser();
+        return (
+            <Query
+                query={getDentistQuery}
+                variables={{
+                    id: _get(user, 'dentistId'),
+                }}
+                fetchPolicy="network-only"
+            >
+                {render}
+            </Query>
+        );
+    },
     createDentist: ({ render }) => (
         <Mutation
             update={(proxy, { data: { createDentist } }) => {
-                const data = proxy.readQuery({
-                    query: getActiveUserQuery,
-                });
+                let user = getUser();
+                if (user) {
+                    user = {
+                        ...user,
+                        ...createDentist.user,
+                        dentistId: createDentist.id,
+                    };
 
-                data.activeUser = {
-                    ...data.activeUser,
-                    ...createDentist.user,
-                    dentistId: createDentist.id,
-                };
-
-                cookies.set('user', JSON.stringify(data.activeUser));
-
-                proxy.writeQuery({
-                    query: getActiveUserQuery,
-                    data,
-                });
+                    cookies.set('user', JSON.stringify(user));
+                }
             }}
             mutation={CREATE_DENTIST}
         >
@@ -94,21 +88,15 @@ const Composed = adopt({
         <Mutation
             mutation={UPDATE_USER_IMAGE_URL}
             update={(proxy, { data: { updateUser } }) => {
-                const data = proxy.readQuery({
-                    query: getActiveUserQuery,
-                });
+                let user = getUser();
+                if (user) {
+                    user = {
+                        ...user,
+                        imageUrl: updateUser.imageUrl,
+                    };
 
-                data.activeUser = {
-                    ...data.activeUser,
-                    imageUrl: updateUser.imageUrl,
-                };
-
-                cookies.set('user', JSON.stringify(data.activeUser));
-
-                proxy.writeQuery({
-                    query: getActiveUserQuery,
-                    data,
-                });
+                    cookies.set('user', JSON.stringify(user));
+                }
             }}
         >
             {render}
@@ -121,12 +109,9 @@ const Composed = adopt({
 
 class KioskDentistProfilePage extends Component {
     render() {
-        const cookieUser = JSON.parse(cookies.get('user'));
-
         return (
             <Composed>
                 {({
-                    activeUserResponse,
                     dentistResponse: {
                         loading: isDentistLoading,
                         data: dentistData,
@@ -144,8 +129,7 @@ class KioskDentistProfilePage extends Component {
                         bio,
                         acceptedInsurances,
                     } = dentist;
-                    const user =
-                        _get(activeUserResponse, 'data.activeUser') || {};
+                    const user = getUser();
 
                     const defaultProceduresList = Object.assign(
                         {},
@@ -244,19 +228,21 @@ class KioskDentistProfilePage extends Component {
                         };
 
                         const updateImageQuery = {
-                            id: cookieUser.id,
+                            id: _get(user, 'id'),
                             imageUrl: profilePicture,
                         };
 
-                        await execute({
-                            action: async () => {
-                                await updateUser({
-                                    variables: {
-                                        input: updateImageQuery,
-                                    },
-                                });
-                            },
-                        });
+                        if (updateImageQuery && updateImageQuery.imageUrl) {
+                            await execute({
+                                action: async () => {
+                                    await updateUser({
+                                        variables: {
+                                            input: updateImageQuery,
+                                        },
+                                    });
+                                },
+                            });
+                        }
 
                         await execute({
                             action: async () => {
@@ -265,7 +251,7 @@ class KioskDentistProfilePage extends Component {
                                         variables: {
                                             input: {
                                                 ...createQuery,
-                                                userId: cookieUser.id,
+                                                userId: _get(user, 'id'),
                                             },
                                         },
                                     });

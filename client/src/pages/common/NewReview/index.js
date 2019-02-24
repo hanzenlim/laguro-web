@@ -5,12 +5,13 @@ import get from 'lodash/get';
 
 import NewReviewView from './view';
 
-import { GET_REVIEWER_ID, CREATE_REVIEW } from './queries';
+import { CREATE_REVIEW } from './queries';
 import {
     GET_DENTIST_REVIEWS,
     GET_OFFICE_REVIEWS,
 } from '../ReviewContainer/queries';
 import { DENTIST } from '../../../util/strings';
+import { getUser } from '../../../util/authUtils';
 
 class NewReview extends PureComponent {
     state = {
@@ -30,9 +31,10 @@ class NewReview extends PureComponent {
     };
 
     onSuccess = async ({ text }) => {
-        const { mutate, data, match, info } = this.props;
+        const user = getUser;
+        const { mutate, match, info } = this.props;
         const { rating } = this.state;
-        const reviewerId = get(data, 'activeUser.id');
+        const reviewerId = get(user, 'id');
         const revieweeId = match.params.id;
         const { type } = info;
 
@@ -68,9 +70,10 @@ class NewReview extends PureComponent {
     };
 
     render() {
-        const { data, visible, client, toggleModalState } = this.props;
-        if (!data.activeUser && !visible) return null;
-        if (!data.activeUser && visible) {
+        const user = getUser();
+        const { visible, client, toggleModalState } = this.props;
+        if (!user && !visible) return null;
+        if (!user && visible) {
             client.writeData({ data: { visibleModal: 'login' } });
             toggleModalState();
             return null;
@@ -92,6 +95,5 @@ class NewReview extends PureComponent {
 export default compose(
     withRouter,
     withApollo,
-    graphql(GET_REVIEWER_ID),
     graphql(CREATE_REVIEW)
 )(NewReview);

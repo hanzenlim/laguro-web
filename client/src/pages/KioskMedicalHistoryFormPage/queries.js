@@ -11,14 +11,3 @@ export const UPDATE_PATIENT_HEALTH_DATA = gql`
         }
     }
 `;
-
-export const ACTIVE_USER = gql`
-    {
-        activeUser @client {
-            id
-            insuranceInfo {
-                useInsurance
-            }
-        }
-    }
-`;

@@ -6,27 +6,24 @@ import DentistAppointments from './view';
 import CancelReservationModal from '../Modals/CancelReservationModal';
 import { Loading } from '../../../components';
 import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
-import { getDentistIdQueryClient, getDentistQuery } from './queries';
+import { getDentistQuery } from './queries';
+import { getUser } from '../../../util/authUtils';
+
+const user = getUser();
 
 const DentistAppointmentsContainer = () => (
-    <Query query={getDentistIdQueryClient}>
-        {({ data: clientData }) => (
-            <Query
-                query={getDentistQuery}
-                fetchPolicy="cache-and-network"
-                variables={{ id: clientData.activeUser.dentistId }}
-            >
-                {({ loading, error, data }) => {
-                    if (error) return <RedirectErrorPage />;
-                    if (loading) return <Loading />;
+    <Query
+        query={getDentistQuery}
+        fetchPolicy="cache-and-network"
+        variables={{ id: get(user, 'dentistId') }}
+    >
+        {({ loading, error, data }) => {
+            if (error) return <RedirectErrorPage />;
+            if (loading) return <Loading />;
 
-                    const { reservations } = get(data, 'getDentist');
-                    return (
-                        <DentistAppointmentsView reservations={reservations} />
-                    );
-                }}
-            </Query>
-        )}
+            const { reservations } = get(data, 'getDentist');
+            return <DentistAppointmentsView reservations={reservations} />;
+        }}
     </Query>
 );
 

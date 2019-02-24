@@ -9,15 +9,14 @@ import isEmpty from 'lodash/isEmpty';
 
 import { renderCents } from '../../util/paymentUtil';
 import {
-    GET_USER,
     GET_OFFICE,
     CREATE_OFFICE,
     CREATE_LISTING,
     UPDATE_OFFICE,
 } from './queries';
+import { getUser } from '../../util/authUtils';
 
 import {
-    getActiveUser,
     saveUploadedImagesMutation,
     createPatientDocumentMutation,
 } from '../common/Forms/HostOnboardingForm/queries';
@@ -39,7 +38,6 @@ import AddOfficeListing from '../common/Forms/HostOnboardingForm/AddOfficeListin
 import ListingConfirmation from '../common/ListingConfirmation';
 import Error404Page from '../Error404Page';
 import {
-    ACTIVE_USER,
     EDIT_OFFICE_MODE,
     ADD_LISTING_MODE,
     HOST_ONBOARDING_CREATE_MODE,
@@ -311,11 +309,11 @@ class HostOnboarding extends Component {
 
     async componentDidMount() {
         if (this.mode === EDIT_OFFICE_MODE) {
-            const { user } = this.props;
+            const user = getUser();
             // Need to get the current user document to populate the default values
             // on the office verification step.
             const result = await this.officeVerificationUtil.fetchUserDocuments(
-                user.id
+                get(user, 'id')
             );
 
             const officeDocuments = {
@@ -434,8 +432,7 @@ class HostOnboarding extends Component {
         createOffice,
         updateOffice,
         batchCreateListings,
-        id,
-        client
+        id
     ) => {
         await this.setState({ submitting: true });
         // save listing step values to create listings after creating office, in createListings
@@ -492,12 +489,13 @@ class HostOnboarding extends Component {
                     // the local storage since this is the last step.
                     const officeDocuments = get(values, 'documents');
 
+                    const userCookie = getUser();
                     if (officeDocuments) {
                         // save the office verification images
                         await this.officeVerificationUtil.saveOfficeDocuments(
                             officeDocuments,
                             this.officeId,
-                            this.props.user.id
+                            get(userCookie, 'id')
                         );
                     }
 
@@ -610,16 +608,15 @@ class HostOnboarding extends Component {
                                 result,
                                 'data.createUserOffice.host.user'
                             );
-                            cookies.set('user', JSON.stringify(user));
 
-                            client.writeData({
-                                data: {
-                                    activeUser: {
-                                        ...user,
-                                        __typename: ACTIVE_USER,
-                                    },
-                                },
-                            });
+                            const userCookie = getUser();
+                            cookies.set(
+                                'user',
+                                JSON.stringify({
+                                    ...userCookie,
+                                    ...user,
+                                })
+                            );
                         }
 
                         await this.saveWizardState({
@@ -627,10 +624,12 @@ class HostOnboarding extends Component {
                             officeId: result.data.createUserOffice.id,
                         });
 
+                        const user = getUser();
+
                         await this.officeVerificationUtil.saveOfficeDocuments(
                             officeDocuments,
                             result.data.createUserOffice.id,
-                            this.props.user.id
+                            get(user, 'id')
                         );
 
                         await this.createListings(
@@ -843,36 +842,127 @@ class HostOnboarding extends Component {
         }
 
         const progressBarPercent = ((stepCount + 1) / numSteps) * 100;
+        const user = getUser();
 
         return (
-            <Query query={GET_USER}>
-                {({ data: userData }) => (
-                    <Query
-                        query={GET_OFFICE}
-                        variables={{ id: officeId }}
-                        onCompleted={this.handleGetOffice}
-                        fetchPolicy="network-only"
+            <Query
+                query={GET_OFFICE}
+                variables={{ id: officeId }}
+                onCompleted={this.handleGetOffice}
+                fetchPolicy="network-only"
+            >
+                {() => (
+                    <Mutation
+                        mutation={UPDATE_OFFICE}
+                        onCompleted={this.handleOnCompleted}
                     >
-                        {() => (
-                            <Mutation
-                                mutation={UPDATE_OFFICE}
-                                onCompleted={this.handleOnCompleted}
-                            >
-                                {updateOffice => (
-                                    <Mutation mutation={CREATE_LISTING}>
-                                        {batchCreateListings => (
-                                            <Mutation mutation={CREATE_OFFICE}>
-                                                {(createOffice, { client }) => (
-                                                    <Fragment>
-                                                        <TabletMobile>
-                                                            <Progress
-                                                                strokeLinecap="square"
-                                                                strokeWidth="3px"
-                                                                percent={
-                                                                    progressBarPercent
+                        {updateOffice => (
+                            <Mutation mutation={CREATE_LISTING}>
+                                {batchCreateListings => (
+                                    <Mutation mutation={CREATE_OFFICE}>
+                                        {createOffice => (
+                                            <Fragment>
+                                                <TabletMobile>
+                                                    <Progress
+                                                        strokeLinecap="square"
+                                                        strokeWidth="3px"
+                                                        percent={
+                                                            progressBarPercent
+                                                        }
+                                                    />
+                                                </TabletMobile>
+                                                <Container
+                                                    position="relative"
+                                                    maxWidth={['', '', 624]}
+                                                    px={[25, '', 0]}
+                                                >
+                                                    {isConfirmationStep &&
+                                                        resumeWarning && (
+                                                            <StyledAlert
+                                                                type="info"
+                                                                showIcon
+                                                                message={
+                                                                    <Fragment>
+                                                                        Looks
+                                                                        like you
+                                                                        were
+                                                                        middle
+                                                                        of
+                                                                        creating
+                                                                        an
+                                                                        office!
+                                                                        We&#39;ve
+                                                                        saved
+                                                                        your
+                                                                        changes
+                                                                        or{' '}
+                                                                        <RestartText
+                                                                            onClick={
+                                                                                this
+                                                                                    .handleRestart
+                                                                            }
+                                                                        >
+                                                                            you
+                                                                            can
+                                                                            start
+                                                                            over
+                                                                        </RestartText>
+                                                                        .
+                                                                    </Fragment>
                                                                 }
                                                             />
-                                                        </TabletMobile>
+                                                        )}
+                                                </Container>
+                                                <StyledContainer
+                                                    pb={[100, '', 200]}
+                                                >
+                                                    <Form
+                                                        data-cy="host-submit"
+                                                        debounce="false"
+                                                        onSuccess={values => {
+                                                            this.onSubmit(
+                                                                values,
+                                                                createOffice,
+                                                                updateOffice,
+                                                                batchCreateListings,
+                                                                get(user, 'id')
+                                                            );
+                                                        }}
+                                                    >
+                                                        {this.props
+                                                            .desktopOnly && (
+                                                            <Box
+                                                                position="absolute"
+                                                                top={200}
+                                                            >
+                                                                <Steps
+                                                                    mt={[
+                                                                        0,
+                                                                        '',
+                                                                        210,
+                                                                    ]}
+                                                                    mb={[
+                                                                        0,
+                                                                        '',
+                                                                        46,
+                                                                    ]}
+                                                                    current={
+                                                                        stepCount
+                                                                    }
+                                                                    size={
+                                                                        numSteps
+                                                                    }
+                                                                    direction={
+                                                                        this
+                                                                            .props
+                                                                            .desktopOnly
+                                                                            ? 'vertical'
+                                                                            : 'horizontal'
+                                                                    }
+                                                                />
+                                                            </Box>
+                                                        )}
+
                                                         <Container
                                                             position="relative"
                                                             maxWidth={[
@@ -880,339 +970,227 @@ class HostOnboarding extends Component {
                                                                 '',
                                                                 624,
                                                             ]}
-                                                            px={[25, '', 0]}
+                                                            px={0}
                                                         >
-                                                            {isConfirmationStep &&
-                                                                resumeWarning && (
-                                                                    <StyledAlert
-                                                                        type="info"
-                                                                        showIcon
-                                                                        message={
-                                                                            <Fragment>
-                                                                                Looks
-                                                                                like
-                                                                                you
-                                                                                were
-                                                                                middle
-                                                                                of
-                                                                                creating
-                                                                                an
-                                                                                office!
-                                                                                We&#39;ve
-                                                                                saved
-                                                                                your
-                                                                                changes
-                                                                                or{' '}
-                                                                                <RestartText
-                                                                                    onClick={
-                                                                                        this
-                                                                                            .handleRestart
-                                                                                    }
-                                                                                >
-                                                                                    you
-                                                                                    can
-                                                                                    start
-                                                                                    over
-                                                                                </RestartText>
+                                                            {step ===
+                                                                OFFICE_STEP && (
+                                                                <AddOfficeInfo
+                                                                    ref={value => {
+                                                                        this.addOfficeInfo = value;
+                                                                    }}
+                                                                    locationDisabled={
+                                                                        mode ===
+                                                                        EDIT_OFFICE_MODE
+                                                                    }
+                                                                    handleSelect={
+                                                                        this
+                                                                            .enableSubmit
+                                                                    }
+                                                                    firstName={get(
+                                                                        user,
+                                                                        'firstName'
+                                                                    )}
+                                                                    lastName={get(
+                                                                        user,
+                                                                        'lastName'
+                                                                    )}
+                                                                    onImageChange={
+                                                                        this
+                                                                            .handleImageChange
+                                                                    }
+                                                                    header={
+                                                                        this
+                                                                            .headerList[0]
+                                                                    }
+                                                                    mode={mode}
+                                                                    {...initialFormValues}
+                                                                />
+                                                            )}
+                                                            {step ===
+                                                                EQUIPMENT_STEP && (
+                                                                <AddOfficeEquipments
+                                                                    header={
+                                                                        this
+                                                                            .headerList[1]
+                                                                    }
+                                                                    {...initialFormValues}
+                                                                />
+                                                            )}
+                                                            {step ===
+                                                                DOCUMENT_STEP && (
+                                                                <AddDocument
+                                                                    header={
+                                                                        this
+                                                                            .headerList[2]
+                                                                    }
+                                                                    {...initialFormValues}
+                                                                    {...this
+                                                                        .props}
+                                                                />
+                                                            )}
+                                                            {step ===
+                                                                LISTING_STEP && (
+                                                                <AddOfficeListing
+                                                                    isOnboarding={
+                                                                        this
+                                                                            .mode !==
+                                                                        ADD_LISTING_MODE
+                                                                    }
+                                                                    {...initialFormValues}
+                                                                />
+                                                            )}
 
-                                                                                .
-                                                                            </Fragment>
+                                                            {step ===
+                                                                CONFIRMATION_STEP &&
+                                                                wizardState.officeId &&
+                                                                wizardState
+                                                                    .listingIds
+                                                                    .length && (
+                                                                    <ListingConfirmation
+                                                                        officeId={
+                                                                            wizardState.officeId
+                                                                        }
+                                                                        listingIds={
+                                                                            wizardState.listingIds
                                                                         }
                                                                     />
                                                                 )}
                                                         </Container>
-                                                        <StyledContainer
-                                                            pb={[100, '', 200]}
+                                                        {/* previous button is shown when the user is not on the first page or the last page. using indexOf for edit office */}
+                                                        <Box
+                                                            position={[
+                                                                'relative',
+                                                                '',
+                                                                'fixed',
+                                                            ]}
+                                                            bg="white"
+                                                            left="0"
+                                                            right="0"
+                                                            bottom="0"
+                                                            height={[
+                                                                '',
+                                                                '',
+                                                                100,
+                                                            ]}
+                                                            border={[
+                                                                'none',
+                                                                '',
+                                                                '1px solid',
+                                                            ]}
+                                                            borderColor={[
+                                                                'none',
+                                                                '',
+                                                                'divider.gray',
+                                                            ]}
+                                                            zIndex="modal"
                                                         >
-                                                            <Form
-                                                                data-cy="host-submit"
-                                                                debounce="false"
-                                                                onSuccess={values => {
-                                                                    this.onSubmit(
-                                                                        values,
-                                                                        createOffice,
-                                                                        updateOffice,
-                                                                        batchCreateListings,
-                                                                        get(
-                                                                            userData,
-                                                                            'activeUser.id'
-                                                                        ),
-                                                                        client
-                                                                    );
-                                                                }}
+                                                            <Container
+                                                                px={[0, '', 25]}
                                                             >
-                                                                {this.props
-                                                                    .desktopOnly && (
-                                                                    <Box
-                                                                        position="absolute"
-                                                                        top={
-                                                                            200
-                                                                        }
-                                                                    >
-                                                                        <Steps
+                                                                <Flex
+                                                                    justifyContent="space-between"
+                                                                    alignItems="center"
+                                                                    flexDirection={[
+                                                                        'column-reverse',
+                                                                        '',
+                                                                        'row',
+                                                                    ]}
+                                                                >
+                                                                    {stepCount !==
+                                                                        0 &&
+                                                                    this.stepList.indexOf(
+                                                                        step
+                                                                    ) !==
+                                                                        this
+                                                                            .stepList
+                                                                            .length -
+                                                                            1 ? (
+                                                                        <BackButton
+                                                                            disabled={
+                                                                                false
+                                                                            }
+                                                                            onBack={
+                                                                                this
+                                                                                    .handleBack
+                                                                            }
+                                                                            type="primary"
+                                                                            ghost
+                                                                            width={[
+                                                                                'calc(100vw - 50px)',
+                                                                                '',
+                                                                                188,
+                                                                            ]}
+                                                                            height={[
+                                                                                50,
+                                                                                '',
+                                                                                60,
+                                                                            ]}
                                                                             mt={[
-                                                                                0,
+                                                                                10,
                                                                                 '',
-                                                                                210,
+                                                                                20,
                                                                             ]}
-                                                                            mb={[
-                                                                                0,
-                                                                                '',
-                                                                                46,
-                                                                            ]}
-                                                                            current={
-                                                                                stepCount
-                                                                            }
-                                                                            size={
-                                                                                numSteps
-                                                                            }
-                                                                            direction={
-                                                                                this
-                                                                                    .props
-                                                                                    .desktopOnly
-                                                                                    ? 'vertical'
-                                                                                    : 'horizontal'
-                                                                            }
+                                                                            buttonText="Previous"
                                                                         />
-                                                                    </Box>
-                                                                )}
-
-                                                                <Container
-                                                                    position="relative"
-                                                                    maxWidth={[
-                                                                        '',
-                                                                        '',
-                                                                        624,
-                                                                    ]}
-                                                                    px={0}
-                                                                >
-                                                                    {step ===
-                                                                        OFFICE_STEP && (
-                                                                        <AddOfficeInfo
-                                                                            ref={value => {
-                                                                                this.addOfficeInfo = value;
-                                                                            }}
-                                                                            locationDisabled={
-                                                                                mode ===
-                                                                                EDIT_OFFICE_MODE
-                                                                            }
-                                                                            handleSelect={
-                                                                                this
-                                                                                    .enableSubmit
-                                                                            }
-                                                                            firstName={get(
-                                                                                userData,
-                                                                                'activeUser.firstName'
-                                                                            )}
-                                                                            lastName={get(
-                                                                                userData,
-                                                                                'activeUser.lastName'
-                                                                            )}
-                                                                            onImageChange={
-                                                                                this
-                                                                                    .handleImageChange
-                                                                            }
-                                                                            header={
-                                                                                this
-                                                                                    .headerList[0]
-                                                                            }
-                                                                            mode={
-                                                                                mode
-                                                                            }
-                                                                            {...initialFormValues}
-                                                                        />
-                                                                    )}
-                                                                    {step ===
-                                                                        EQUIPMENT_STEP && (
-                                                                        <AddOfficeEquipments
-                                                                            header={
-                                                                                this
-                                                                                    .headerList[1]
-                                                                            }
-                                                                            {...initialFormValues}
-                                                                        />
-                                                                    )}
-                                                                    {step ===
-                                                                        DOCUMENT_STEP && (
-                                                                        <AddDocument
-                                                                            header={
-                                                                                this
-                                                                                    .headerList[2]
-                                                                            }
-                                                                            {...initialFormValues}
-                                                                            {...this
-                                                                                .props}
-                                                                        />
-                                                                    )}
-                                                                    {step ===
-                                                                        LISTING_STEP && (
-                                                                        <AddOfficeListing
-                                                                            isOnboarding={
-                                                                                this
-                                                                                    .mode !==
-                                                                                ADD_LISTING_MODE
-                                                                            }
-                                                                            {...initialFormValues}
-                                                                        />
+                                                                    ) : (
+                                                                        <div />
                                                                     )}
 
-                                                                    {step ===
-                                                                        CONFIRMATION_STEP &&
-                                                                        wizardState.officeId &&
-                                                                        wizardState
-                                                                            .listingIds
-                                                                            .length && (
-                                                                            <ListingConfirmation
-                                                                                officeId={
-                                                                                    wizardState.officeId
-                                                                                }
-                                                                                listingIds={
-                                                                                    wizardState.listingIds
-                                                                                }
-                                                                            />
-                                                                        )}
-                                                                </Container>
-                                                                {/* previous button is shown when the user is not on the first page or the last page. using indexOf for edit office */}
-                                                                <Box
-                                                                    position={[
-                                                                        'relative',
-                                                                        '',
-                                                                        'fixed',
-                                                                    ]}
-                                                                    bg="white"
-                                                                    left="0"
-                                                                    right="0"
-                                                                    bottom="0"
-                                                                    height={[
-                                                                        '',
-                                                                        '',
-                                                                        100,
-                                                                    ]}
-                                                                    border={[
-                                                                        'none',
-                                                                        '',
-                                                                        '1px solid',
-                                                                    ]}
-                                                                    borderColor={[
-                                                                        'none',
-                                                                        '',
-                                                                        'divider.gray',
-                                                                    ]}
-                                                                    zIndex="modal"
-                                                                >
-                                                                    <Container
-                                                                        px={[
+                                                                    <SubmitButton
+                                                                        disabled={
+                                                                            this
+                                                                                .mode ===
+                                                                            LISTING_STEP
+                                                                                ? false
+                                                                                : this
+                                                                                      .state
+                                                                                      .numImage ===
+                                                                                  0
+                                                                        }
+                                                                        loading={
+                                                                            this
+                                                                                .state
+                                                                                .submitting
+                                                                        }
+                                                                        width={[
+                                                                            'calc(100vw - 50px)',
+                                                                            '',
+                                                                            188,
+                                                                        ]}
+                                                                        height={[
+                                                                            50,
+                                                                            '',
+                                                                            60,
+                                                                        ]}
+                                                                        mt={[
+                                                                            10,
+                                                                            '',
+                                                                            20,
+                                                                        ]}
+                                                                        mr={[
                                                                             0,
                                                                             '',
-                                                                            25,
+                                                                            30,
                                                                         ]}
-                                                                    >
-                                                                        <Flex
-                                                                            justifyContent="space-between"
-                                                                            alignItems="center"
-                                                                            flexDirection={[
-                                                                                'column-reverse',
-                                                                                '',
-                                                                                'row',
-                                                                            ]}
-                                                                        >
-                                                                            {stepCount !==
-                                                                                0 &&
-                                                                            this.stepList.indexOf(
-                                                                                step
-                                                                            ) !==
-                                                                                this
-                                                                                    .stepList
-                                                                                    .length -
-                                                                                    1 ? (
-                                                                                <BackButton
-                                                                                    disabled={
-                                                                                        false
-                                                                                    }
-                                                                                    onBack={
-                                                                                        this
-                                                                                            .handleBack
-                                                                                    }
-                                                                                    type="primary"
-                                                                                    ghost
-                                                                                    width={[
-                                                                                        'calc(100vw - 50px)',
-                                                                                        '',
-                                                                                        188,
-                                                                                    ]}
-                                                                                    height={[
-                                                                                        50,
-                                                                                        '',
-                                                                                        60,
-                                                                                    ]}
-                                                                                    mt={[
-                                                                                        10,
-                                                                                        '',
-                                                                                        20,
-                                                                                    ]}
-                                                                                    buttonText="Previous"
-                                                                                />
-                                                                            ) : (
-                                                                                <div />
-                                                                            )}
-
-                                                                            <SubmitButton
-                                                                                disabled={
-                                                                                    this
-                                                                                        .mode ===
-                                                                                    LISTING_STEP
-                                                                                        ? false
-                                                                                        : this
-                                                                                              .state
-                                                                                              .numImage ===
-                                                                                          0
-                                                                                }
-                                                                                loading={
-                                                                                    this
-                                                                                        .state
-                                                                                        .submitting
-                                                                                }
-                                                                                width={[
-                                                                                    'calc(100vw - 50px)',
-                                                                                    '',
-                                                                                    188,
-                                                                                ]}
-                                                                                height={[
-                                                                                    50,
-                                                                                    '',
-                                                                                    60,
-                                                                                ]}
-                                                                                mt={[
-                                                                                    10,
-                                                                                    '',
-                                                                                    20,
-                                                                                ]}
-                                                                                mr={[
-                                                                                    0,
-                                                                                    '',
-                                                                                    30,
-                                                                                ]}
-                                                                                buttonText={
-                                                                                    this
-                                                                                        .buttonTexts[
-                                                                                        stepCount
-                                                                                    ]
-                                                                                }
-                                                                            />
-                                                                        </Flex>
-                                                                    </Container>
-                                                                </Box>
-                                                            </Form>
-                                                        </StyledContainer>
-                                                    </Fragment>
-                                                )}
-                                            </Mutation>
+                                                                        buttonText={
+                                                                            this
+                                                                                .buttonTexts[
+                                                                                stepCount
+                                                                            ]
+                                                                        }
+                                                                    />
+                                                                </Flex>
+                                                            </Container>
+                                                        </Box>
+                                                    </Form>
+                                                </StyledContainer>
+                                            </Fragment>
                                         )}
                                     </Mutation>
                                 )}
                             </Mutation>
                         )}
-                    </Query>
+                    </Mutation>
                 )}
             </Query>
         );
@@ -1221,7 +1199,6 @@ class HostOnboarding extends Component {
 
 export default compose(
     withApollo,
-    getActiveUser,
     createPatientDocumentMutation,
     saveUploadedImagesMutation,
     withScreenSizes
