@@ -51,7 +51,7 @@ const render = props => {
 const KioskOnboardingPage = componentProps => (
     <Fragment>
         <Wizard
-            onSubmit={value => console.log(value)}
+            onSubmit={() => {}}
             Form="form"
             render={props => render({ ...props, ...componentProps })}
             steps={steps}

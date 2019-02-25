@@ -1,13 +1,5 @@
 import { gql } from 'apollo-boost';
 
-export const getUserQuery = gql`
-    {
-        activeUser @client {
-            id
-        }
-    }
-`;
-
 export const getPaymentRequestByPayerQuery = gql`
     query GetPaymentRequestByPayer($input: GetPaymentRequestByPayer!) {
         getPaymentRequestByPayer(input: $input) {

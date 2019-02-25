@@ -1,9 +1,10 @@
 import React, { PureComponent } from 'react';
-import { Mutation, Query } from 'react-apollo';
+import _get from 'lodash/get';
+import { Mutation } from 'react-apollo';
 import moment from 'moment';
 
 import CancelAppointmentModal from './view';
-import { cancelAppointmentMutation, getPatientIdQueryClient } from './queries';
+import { cancelAppointmentMutation } from './queries';
 import { getAppointmentsQuery } from '../../PatientAppointments/queries';
 import {
     PATIENT_ID,
@@ -12,6 +13,7 @@ import {
     ACTIVE,
     CANCELLED_BY_PATIENT,
 } from '../../../../util/strings';
+import { getUser } from '../../../../util/authUtils';
 
 const refetchQueries = id => [
     {
@@ -43,44 +45,37 @@ class CancelAppointmentContainer extends PureComponent {
     };
 
     render() {
+        const user = getUser();
         return (
-            <Query query={getPatientIdQueryClient}>
-                {({ data: clientData }) => (
-                    <Mutation
-                        mutation={cancelAppointmentMutation}
-                        refetchQueries={refetchQueries(
-                            clientData.activeUser.id
-                        )}
-                    >
-                        {(cancelAppointment, { loading }) => {
-                            const onSubmit = async () => {
-                                await cancelAppointment({
-                                    variables: {
-                                        input: {
-                                            id: this.props.id,
-                                            cancellationType: this.props
-                                                .cancellationType,
-                                        },
-                                    },
-                                });
-                                this.props.toggleModalState();
-                            };
+            <Mutation
+                mutation={cancelAppointmentMutation}
+                refetchQueries={refetchQueries(_get(user, 'id'))}
+            >
+                {(cancelAppointment, { loading }) => {
+                    const onSubmit = async () => {
+                        await cancelAppointment({
+                            variables: {
+                                input: {
+                                    id: this.props.id,
+                                    cancellationType: this.props
+                                        .cancellationType,
+                                },
+                            },
+                        });
+                        this.props.toggleModalState();
+                    };
 
-                            return (
-                                <CancelAppointmentModal
-                                    cancellationType={
-                                        this.props.cancellationType
-                                    }
-                                    visible={this.props.visible}
-                                    onCancel={this.onCancel}
-                                    onSubmit={onSubmit}
-                                    loading={loading}
-                                />
-                            );
-                        }}
-                    </Mutation>
-                )}
-            </Query>
+                    return (
+                        <CancelAppointmentModal
+                            cancellationType={this.props.cancellationType}
+                            visible={this.props.visible}
+                            onCancel={this.onCancel}
+                            onSubmit={onSubmit}
+                            loading={loading}
+                        />
+                    );
+                }}
+            </Mutation>
         );
     }
 }

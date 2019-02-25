@@ -1,10 +1,12 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Query, Mutation } from 'react-apollo';
+import { Mutation } from 'react-apollo';
+import _get from 'lodash/get';
 
 import DeleteCardPaymentModalView from './view';
-import { removePaymentOptionMutation, getUserIdQueryClient } from './queries';
+import { removePaymentOptionMutation } from './queries';
 import { getPaymentOptionQuery } from '../../Forms/PaymentCardForm/queries';
+import { getUser } from '../../../../util/authUtils';
 
 const refetchQueries = userId => [
     {
@@ -27,45 +29,39 @@ class DeleteCardPaymentModal extends PureComponent {
     };
 
     render() {
+        const user = getUser();
         return (
-            <Query query={getUserIdQueryClient}>
-                {({ data: clientData }) => (
-                    <Mutation
-                        mutation={removePaymentOptionMutation}
-                        refetchQueries={refetchQueries(
-                            clientData.activeUser.id
-                        )}
-                    >
-                        {(removePaymentOption, { loading }) => {
-                            const onSubmit = async () => {
-                                await removePaymentOption({
-                                    variables: {
-                                        input: {
-                                            paymentToken: this.props
-                                                .paymentToken,
-                                        },
-                                    },
-                                });
+            <Mutation
+                mutation={removePaymentOptionMutation}
+                refetchQueries={refetchQueries(_get(user, 'id'))}
+            >
+                {(removePaymentOption, { loading }) => {
+                    const onSubmit = async () => {
+                        await removePaymentOption({
+                            variables: {
+                                input: {
+                                    paymentToken: this.props.paymentToken,
+                                },
+                            },
+                        });
 
-                                this.setState({
-                                    isVisible: !this.state.isVisible,
-                                });
+                        this.setState({
+                            isVisible: !this.state.isVisible,
+                        });
 
-                                this.props.toggleModalState();
-                            };
+                        this.props.toggleModalState();
+                    };
 
-                            return (
-                                <DeleteCardPaymentModalView
-                                    visible={this.state.isVisible}
-                                    onCancel={this.onCancel}
-                                    onSubmit={onSubmit}
-                                    loading={loading}
-                                />
-                            );
-                        }}
-                    </Mutation>
-                )}
-            </Query>
+                    return (
+                        <DeleteCardPaymentModalView
+                            visible={this.state.isVisible}
+                            onCancel={this.onCancel}
+                            onSubmit={onSubmit}
+                            loading={loading}
+                        />
+                    );
+                }}
+            </Mutation>
         );
     }
 }

@@ -7,15 +7,6 @@ import {
     END_TIME,
 } from '../../../util/strings';
 
-export const getDentistIdQueryClient = gql`
-    query activeUser {
-        activeUser @client {
-            id
-            dentistId
-        }
-    }
-`;
-
 export const requestAppointmentMutation = gql`
     mutation RequestAppointment($input: RequestAppointmentInput!) {
         requestAppointment(input: $input) {

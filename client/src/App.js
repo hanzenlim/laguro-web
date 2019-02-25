@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Query } from 'react-apollo';
-import { gql } from 'apollo-boost';
+import cookies from 'browser-cookies';
 import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import Loadable from 'react-loadable';
@@ -75,12 +74,6 @@ const HostOnboarding = Loadable({
     loading: () => null,
 });
 
-const ConsentAndPaymentPage = Loadable({
-    loader: () =>
-        import('./pages/ConsentAndPaymentPage' /* webpackChunkName: "consentAndPaymentPage" */),
-    loading: () => null,
-});
-
 const ProcedurePaymentRequestPage = Loadable({
     loader: () =>
         import('./pages/ProcedurePaymentRequestPage' /* webpackChunkName: "procedurePaymentRequestPage" */),
@@ -102,17 +95,6 @@ const GeneralErrorPage = Loadable({
 const LoginPage = Loadable({
     loader: () =>
         import('./pages/LoginPage' /* webpackChunkName: "loginPage" */),
-    loading: () => null,
-});
-
-const registerPage = Loadable({
-    loader: () =>
-        import('./pages/RegisterPage' /* webpackChunkName: "registerPage" */),
-    loading: () => null,
-});
-const forgotPasswordPage = Loadable({
-    loader: () =>
-        import('./pages/ForgotPasswordPage' /* webpackChunkName: "forgotPasswordPage" */),
     loading: () => null,
 });
 
@@ -236,42 +218,42 @@ const DentistOnboardingVerification = Loadable({
     loading: () => null,
 });
 
-const getIdQueryClient = gql`
-    {
-        activeUser @client {
-            id
+const PrivateRoute = ({ component: ComponentToBeRendered, ...rest }) => {
+    let user = cookies.get('user');
+    let isUserLoggedIn = false;
+    if (user) {
+        user = JSON.parse(user);
+        if (user && user.id) {
+            isUserLoggedIn = true;
         }
-        visibleModal @client
     }
-`;
 
-const PrivateRoute = ({
-    isUserLoggedIn,
-    component: ComponentToBeRendered,
-    ...rest
-}) => (
-    <Route
-        {...rest}
-        render={props =>
-            isUserLoggedIn ? (
-                <ComponentToBeRendered {...props} />
-            ) : (
-                <Redirect
-                    preserveQueryString
-                    to={{
-                        pathname: '/login',
-                        search: `?redirectTo=${props.location.pathname}${
-                            props.location.search
-                        }`,
-                        state: {
-                            from: props.location,
-                        },
-                    }}
-                />
-            )
-        }
-    />
-);
+    return (
+        <Route
+            {...rest}
+            render={props =>
+                isUserLoggedIn ? (
+                    <ComponentToBeRendered {...props} />
+                ) : (
+                    <Redirect
+                        preserveQueryString
+                        to={{
+                            pathname: '/login',
+                            search: `?redirectTo=${props.location.pathname}${
+                                props.location.search
+                            }`,
+                            state: {
+                                from: props.location,
+                                message:
+                                    'You need to login first before you can view this page',
+                            },
+                        }}
+                    />
+                )
+            }
+        />
+    );
+};
 
 class App extends Component {
     render() {
@@ -285,210 +267,157 @@ class App extends Component {
                         )}
                         <Content>
                             <ErrorBoundary>
-                                <Query query={getIdQueryClient}>
-                                    {({ data }) => (
-                                        <Switch>
-                                            <Route
-                                                path="/login"
-                                                component={LoginPage}
-                                            />
-                                            <Route
-                                                path="/register"
-                                                component={registerPage}
-                                            />
-                                            <Route
-                                                path="/forgot-password"
-                                                component={forgotPasswordPage}
-                                            />
-                                            <PrivateRoute
-                                                path="/host-onboarding/:step"
-                                                component={HostOnboarding}
-                                                isUserLoggedIn={data.activeUser}
-                                            />
-                                            <PrivateRoute
-                                                path="/consent-and-payment"
-                                                component={
-                                                    ConsentAndPaymentPage
-                                                }
-                                                isUserLoggedIn={data.activeUser}
-                                            />
-                                            <PrivateRoute
-                                                path="/procedure-payment"
-                                                component={
-                                                    ProcedurePaymentRequestPage
-                                                }
-                                                isUserLoggedIn={data.activeUser}
-                                            />
-                                            <PrivateRoute
-                                                path="/profile"
-                                                component={ProfilePage}
-                                                isUserLoggedIn={data.activeUser}
-                                            />
-                                            <PrivateRoute
-                                                path="/appointment-confirmation"
-                                                component={
-                                                    AppointmentConfirmationPage
-                                                }
-                                                isUserLoggedIn={data.activeUser}
-                                            />
-                                            <PrivateRoute
-                                                path="/dentist-profile"
-                                                component={DentistProfilePage}
-                                                isUserLoggedIn={data.activeUser}
-                                            />
-                                            <Route
-                                                path="/dentist/search"
-                                                component={DentistSearchPage}
-                                            />
-                                            <Route
-                                                path="/dentist/:id"
-                                                component={DentistDetailsPage}
-                                            />
-                                            <Route
-                                                path="/office/search"
-                                                component={OfficeSearchPage}
-                                            />
-                                            <Route
-                                                path="/office/:id"
-                                                component={OfficeDetailsPage}
-                                            />
-                                            <Route
-                                                path="/review/:id"
-                                                component={NewReviewPage}
-                                            />
-                                            <Route
-                                                path="/reset-password"
-                                                component={ResetPassPage}
-                                            />
-                                            <Route
-                                                path="/about"
-                                                component={AboutPage}
-                                            />
+                                <Switch>
+                                    <Route
+                                        path="/login"
+                                        component={LoginPage}
+                                    />
+                                    <PrivateRoute
+                                        path="/host-onboarding/:step"
+                                        component={HostOnboarding}
+                                    />
+                                    <PrivateRoute
+                                        path="/procedure-payment"
+                                        component={ProcedurePaymentRequestPage}
+                                    />
+                                    <PrivateRoute
+                                        path="/profile"
+                                        component={ProfilePage}
+                                    />
+                                    <PrivateRoute
+                                        path="/appointment-confirmation"
+                                        component={AppointmentConfirmationPage}
+                                    />
+                                    <PrivateRoute
+                                        path="/dentist-profile"
+                                        component={DentistProfilePage}
+                                    />
+                                    <Route
+                                        path="/dentist/search"
+                                        component={DentistSearchPage}
+                                    />
+                                    <Route
+                                        path="/dentist/:id"
+                                        component={DentistDetailsPage}
+                                    />
+                                    <Route
+                                        path="/office/search"
+                                        component={OfficeSearchPage}
+                                    />
+                                    <Route
+                                        path="/office/:id"
+                                        component={OfficeDetailsPage}
+                                    />
+                                    <Route
+                                        path="/review/:id"
+                                        component={NewReviewPage}
+                                    />
+                                    <Route
+                                        path="/reset-password"
+                                        component={ResetPassPage}
+                                    />
+                                    <Route
+                                        path="/about"
+                                        component={AboutPage}
+                                    />
 
-                                            <Route
-                                                path="/error"
-                                                component={GeneralErrorPage}
-                                            />
-                                            <Route
-                                                path="/"
-                                                exact
-                                                component={HomePage}
-                                            />
-                                            <Route
-                                                path="/countdown"
-                                                exact
-                                                component={CountdownPage}
-                                            />
-                                            <Route
-                                                path="/terms"
-                                                exact
-                                                component={TermsPage}
-                                            />
-                                            <Route
-                                                path="/privacy"
-                                                exact
-                                                component={PrivacyPage}
-                                            />
-                                            <PrivateRoute
-                                                path={
-                                                    DENTIST_ONBOARDING_VERIFICATION_URL
-                                                }
-                                                component={
-                                                    DentistOnboardingVerification
-                                                }
-                                                isUserLoggedIn={data.activeUser}
-                                            />
-                                            <PrivateRoute
-                                                path={
-                                                    ONBOARDING_NAME_AND_PERSONA_PAGE
-                                                }
-                                                component={NameAndPersonaPage}
-                                                isUserLoggedIn={data.activeUser}
-                                            />
-                                            <Route
-                                                path="/kiosk/registration"
-                                                exact
-                                                component={
-                                                    KioskRegistrationPage
-                                                }
-                                            />
-                                            <Route
-                                                path="/kiosk/book-appointment"
-                                                exact
-                                                component={
-                                                    KioskBookAnAppointmentPage
-                                                }
-                                            />
-                                            <Route
-                                                path="/kiosk/reason-of-visit"
-                                                exact
-                                                component={
-                                                    KioskReasonOfVisitPage
-                                                }
-                                            />
-                                            <Route
-                                                path="/kiosk/select-procedure"
-                                                exact
-                                                component={
-                                                    KioskSelectProcedurePage
-                                                }
-                                            />
-                                            <Route
-                                                path="/kiosk/booking-confirmation/:id"
-                                                exact
-                                                component={
-                                                    KioskBookingConfirmationPage
-                                                }
-                                            />
-                                            <Route
-                                                path={
-                                                    PATIENT_ONBOARDING_MEDICAL_HISTORY_FORM
-                                                }
-                                                exact
-                                                component={
-                                                    KioskMedicalHistoryFormPage
-                                                }
-                                            />
-                                            <Route
-                                                path="/kiosk/medical-history-form-confirmation"
-                                                exact
-                                                component={
-                                                    KioskMedicalHistoryFormConfirmationPage
-                                                }
-                                            />
-                                            <Route
-                                                path={
-                                                    PATIENT_ONBOARDING_INSURANCE_FORM
-                                                }
-                                                exact
-                                                component={KioskInsurancePage}
-                                            />
-                                            <Route
-                                                path="/kiosk/check-in/:id"
-                                                exact
-                                                component={KioskCheckInPage}
-                                            />
+                                    <Route
+                                        path="/error"
+                                        component={GeneralErrorPage}
+                                    />
+                                    <Route
+                                        path="/"
+                                        exact
+                                        component={HomePage}
+                                    />
+                                    <Route
+                                        path="/countdown"
+                                        exact
+                                        component={CountdownPage}
+                                    />
+                                    <Route
+                                        path="/terms"
+                                        exact
+                                        component={TermsPage}
+                                    />
+                                    <Route
+                                        path="/privacy"
+                                        exact
+                                        component={PrivacyPage}
+                                    />
+                                    <PrivateRoute
+                                        path={
+                                            DENTIST_ONBOARDING_VERIFICATION_URL
+                                        }
+                                        component={
+                                            DentistOnboardingVerification
+                                        }
+                                    />
+                                    <PrivateRoute
+                                        path={ONBOARDING_NAME_AND_PERSONA_PAGE}
+                                        component={NameAndPersonaPage}
+                                    />
+                                    <Route
+                                        path="/kiosk/registration"
+                                        exact
+                                        component={KioskRegistrationPage}
+                                    />
+                                    <Route
+                                        path="/kiosk/book-appointment"
+                                        exact
+                                        component={KioskBookAnAppointmentPage}
+                                    />
+                                    <Route
+                                        path="/kiosk/reason-of-visit"
+                                        exact
+                                        component={KioskReasonOfVisitPage}
+                                    />
+                                    <Route
+                                        path="/kiosk/select-procedure"
+                                        exact
+                                        component={KioskSelectProcedurePage}
+                                    />
+                                    <Route
+                                        path="/kiosk/booking-confirmation/:id"
+                                        exact
+                                        component={KioskBookingConfirmationPage}
+                                    />
+                                    <Route
+                                        path={
+                                            PATIENT_ONBOARDING_MEDICAL_HISTORY_FORM
+                                        }
+                                        exact
+                                        component={KioskMedicalHistoryFormPage}
+                                    />
+                                    <Route
+                                        path="/kiosk/medical-history-form-confirmation"
+                                        exact
+                                        component={
+                                            KioskMedicalHistoryFormConfirmationPage
+                                        }
+                                    />
+                                    <Route
+                                        path={PATIENT_ONBOARDING_INSURANCE_FORM}
+                                        exact
+                                        component={KioskInsurancePage}
+                                    />
+                                    <Route
+                                        path="/kiosk/check-in/:id"
+                                        exact
+                                        component={KioskCheckInPage}
+                                    />
 
-                                            <Route
-                                                path="/kiosk/confirmation/:id"
-                                                exact
-                                                component={
-                                                    KioskConfirmationPage
-                                                }
-                                            />
-                                            <PrivateRoute
-                                                path={
-                                                    DENTIST_ONBOARDING_PROFILE_URL
-                                                }
-                                                component={
-                                                    KioskDentistProfilePage
-                                                }
-                                                isUserLoggedIn={data.activeUser}
-                                            />
-                                            <Route component={Error404Page} />
-                                        </Switch>
-                                    )}
-                                </Query>
+                                    <Route
+                                        path="/kiosk/confirmation/:id"
+                                        exact
+                                        component={KioskConfirmationPage}
+                                    />
+                                    <PrivateRoute
+                                        path={DENTIST_ONBOARDING_PROFILE_URL}
+                                        component={KioskDentistProfilePage}
+                                    />
+                                    <Route component={Error404Page} />
+                                </Switch>
                             </ErrorBoundary>
                         </Content>
                         {/* TODO: Refactor */}

@@ -1,71 +1,49 @@
 import React from 'react';
 import { Query } from 'react-apollo';
-import { get } from 'lodash';
+import get from 'lodash/get';
 
 import ProfileView from './view';
 import { Loading } from '../../components';
 import GeneralErrorPage from '../../pages/GeneralErrorPage';
-import { getUserQuery, getIdQueryClient } from './queries';
+import { getUserQuery } from './queries';
+import { getUser } from '../../util/authUtils';
 
-const ProfileContainer = () => (
-    <Query query={getIdQueryClient}>
-        {({
-            loading: loadingUserQueryClient,
-            error: errorUserQueryClient,
-            data: dataIdQueryClient,
-        }) => {
-            if (loadingUserQueryClient) {
-                return <Loading />;
-            }
+const ProfileContainer = () => {
+    const user = getUser();
+    const id = get(user, 'id');
 
-            if (errorUserQueryClient) {
-                return <GeneralErrorPage />;
-            }
-            const id = get(dataIdQueryClient, 'activeUser.id');
+    return (
+        <Query query={getUserQuery} variables={{ id }}>
+            {({
+                loading: loadingUserQuery,
+                error: errorUserQuery,
+                data: dataUserQuery,
+            }) => {
+                if (loadingUserQuery) {
+                    return <Loading />;
+                }
 
-            return (
-                <Query query={getUserQuery} variables={{ id }}>
-                    {({
-                        loading: loadingUserQuery,
-                        error: errorUserQuery,
-                        data: dataUserQuery,
-                    }) => {
-                        if (loadingUserQuery) {
-                            return <Loading />;
-                        }
+                if (errorUserQuery) {
+                    return <GeneralErrorPage />;
+                }
 
-                        if (errorUserQuery) {
-                            return <GeneralErrorPage />;
-                        }
+                const dentistId = get(dataUserQuery, 'getUser.dentistId');
+                const dentist = get(dataUserQuery, 'getUser.dentist');
+                const offices = get(dataUserQuery, 'getUser.dentist.offices');
 
-                        const dentistId = get(
-                            dataUserQuery,
-                            'getUser.dentistId'
-                        );
-                        const dentist = get(dataUserQuery, 'getUser.dentist');
-                        const offices = get(
-                            dataUserQuery,
-                            'getUser.dentist.offices'
-                        );
-
-                        return (
-                            <ProfileView
-                                dentistId={dentistId}
-                                isDentist={get(
-                                    dataUserQuery,
-                                    'getUser.isDentist'
-                                )}
-                                dentist={dentist}
-                                isHost={get(dataUserQuery, 'getUser.isHost')}
-                                offices={offices}
-                                userId={id}
-                            />
-                        );
-                    }}
-                </Query>
-            );
-        }}
-    </Query>
-);
+                return (
+                    <ProfileView
+                        dentistId={dentistId}
+                        isDentist={get(dataUserQuery, 'getUser.isDentist')}
+                        dentist={dentist}
+                        isHost={get(dataUserQuery, 'getUser.isHost')}
+                        offices={offices}
+                        userId={id}
+                    />
+                );
+            }}
+        </Query>
+    );
+};
 
 export default ProfileContainer;

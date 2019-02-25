@@ -6,11 +6,8 @@ import _get from 'lodash/get';
 import { Loading } from '../../../components';
 import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
 
-import {
-    getDentistIdQueryClient,
-    getDentistQuery,
-    requestAppointmentMutation,
-} from './queries';
+import { getDentistQuery, requestAppointmentMutation } from './queries';
+import { getUser } from '../../../util/authUtils';
 
 class NewAppointment extends PureComponent {
     onSubmit = async (values, refetchFormData) => {
@@ -51,50 +48,45 @@ class NewAppointment extends PureComponent {
     };
 
     render() {
+        const user = getUser();
         return (
-            <Query query={getDentistIdQueryClient}>
-                {({ loading: loadingOne, data: clientData }) => (
-                    <Query
-                        query={getDentistQuery}
-                        variables={{
-                            id: clientData.activeUser.dentistId,
-                        }}
-                    >
-                        {({ loading: loadingTwo, error, data, refetch }) => {
-                            if (error) return <RedirectErrorPage />;
-                            if (loadingOne || loadingTwo) return <Loading />;
+            <Query
+                query={getDentistQuery}
+                variables={{
+                    id: _get(user, 'dentistId'),
+                }}
+            >
+                {({ loading, error, data, refetch }) => {
+                    if (error) return <RedirectErrorPage />;
+                    if (loading) return <Loading />;
 
-                            const { patients } = _get(data, 'getDentist');
+                    const { patients } = _get(data, 'getDentist');
 
-                            const patientsNameMap = patients.map(value => {
-                                const key = value.id;
-                                const fullName = `${value.firstName} ${
-                                    value.lastName
-                                }`;
+                    const patientsNameMap = patients.map(value => {
+                        const key = value.id;
+                        const fullName = `${value.firstName} ${value.lastName}`;
 
-                                return {
-                                    key,
-                                    fullName,
-                                };
-                            });
+                        return {
+                            key,
+                            fullName,
+                        };
+                    });
 
-                            return (
-                                <NewAppointmentView
-                                    data={_get(data, 'getDentist.reservations')}
-                                    firstAppointmentDuration={_get(
-                                        data,
-                                        'getDentist.firstAppointmentDuration'
-                                    )}
-                                    patientsName={patientsNameMap}
-                                    onSubmit={values => {
-                                        this.onSubmit(values, refetch);
-                                    }}
-                                    onClose={this.props.onClose}
-                                />
-                            );
-                        }}
-                    </Query>
-                )}
+                    return (
+                        <NewAppointmentView
+                            data={_get(data, 'getDentist.reservations')}
+                            firstAppointmentDuration={_get(
+                                data,
+                                'getDentist.firstAppointmentDuration'
+                            )}
+                            patientsName={patientsNameMap}
+                            onSubmit={values => {
+                                this.onSubmit(values, refetch);
+                            }}
+                            onClose={this.props.onClose}
+                        />
+                    );
+                }}
             </Query>
         );
     }

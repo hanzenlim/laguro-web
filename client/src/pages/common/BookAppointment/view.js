@@ -4,8 +4,6 @@ import PaymentConfirmation from '../PaymentConfirmation';
 import Payment from '../Payment';
 
 import { Text, Flex, Box } from '../../../components';
-import UserVerificationModal from '../Modals/UserVerificationModal';
-import { PATIENT } from '../../../util/strings';
 
 const BookAppointmentView = props => {
     const {
@@ -16,8 +14,6 @@ const BookAppointmentView = props => {
         onPay,
         onSelect,
         onFilter,
-        showVerificationModal,
-        onVerificationResult,
         isSubmitting,
         updateSubmittingState,
         checkIfVerified,
@@ -34,12 +30,6 @@ const BookAppointmentView = props => {
 
     return (
         <Fragment>
-            <UserVerificationModal
-                persona={PATIENT}
-                visible={showVerificationModal}
-                closeModal={onVerificationResult}
-                onVerificationComplete={onVerificationResult}
-            />
             <SearchAvailableAppointments
                 data={data}
                 firstAppointmentDuration={firstAppointmentDuration}

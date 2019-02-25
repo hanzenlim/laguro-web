@@ -73,11 +73,3 @@ export const CREATE_PATIENT_APPOINTMENT_ONBOARDING = gql`
         }
     }
 `;
-
-export const GET_ACTIVE_USER = gql`
-    {
-        activeUser @client {
-            id
-        }
-    }
-`;

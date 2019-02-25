@@ -12,7 +12,6 @@ import BalanceHistory from '../common/BalanceHistory';
 import DentistAppointments from '../common/DentistAppointments';
 import NewAppointment from '../common/NewAppointment';
 import PatientAppointments from '../common/PatientAppointments';
-import PatientsList from '../common/PatientsList';
 import ProcedurePaymentRequestPage from '../../pages/ProcedurePaymentRequestPage';
 import Error404Page from '../../pages/Error404Page';
 import {
@@ -29,7 +28,6 @@ import {
     DENTIST_PROFILE,
     MY_BOOKINGS,
     NEW_APPOINTMENT,
-    MY_PATIENTS,
     PAYMENT_REQUEST,
     MY_ACCOUNT_MENU,
     MY_INSURANCE_MENU,
@@ -41,7 +39,6 @@ import {
     MY_LISTINGS_MENU,
     MY_BOOKINGS_MENU,
     NEW_APPOINTMENT_MENU,
-    MY_PATIENTS_MENU,
     PAYMENT_REQUEST_MENU,
 } from '../../util/strings';
 import {
@@ -126,7 +123,6 @@ class ProfileView extends Component {
         this.keyTextMap = {
             [MY_PROFILE]: MY_ACCOUNT_MENU,
             [DENTIST_PROFILE]: MY_PROFILE_MENU,
-            [MY_PATIENTS]: MY_PATIENTS_MENU,
             [MY_INSURANCE]: MY_INSURANCE_MENU,
             [MY_APPOINTMENTS]: MY_APPOINTMENTS_MENU,
             [MY_LISTINGS]: MY_LISTINGS_MENU,
@@ -185,8 +181,6 @@ class ProfileView extends Component {
                 return <PaymentHistory userId={userId} />;
             case BALANCE:
                 return <BalanceHistory userId={userId} persona={persona} />;
-            case MY_PATIENTS:
-                return <PatientsList />;
             case PUBLIC_PROFILE:
                 return (
                     <Container px={[25, '', 0]}>
@@ -249,17 +243,6 @@ class ProfileView extends Component {
                             lineHeight={['48px', '', '40px']}
                         >
                             {this.keyTextMap[DENTIST_PROFILE]}
-                        </Text>
-                    </StyledMenuItem>
-                )}
-                {isDentist && (
-                    <StyledMenuItem key={MY_PATIENTS}>
-                        <Text
-                            fontSize={[1, '', 4]}
-                            color="inherit"
-                            lineHeight={['48px', '', '40px']}
-                        >
-                            {this.keyTextMap[MY_PATIENTS]}
                         </Text>
                     </StyledMenuItem>
                 )}

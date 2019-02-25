@@ -1,9 +1,11 @@
 import React, { PureComponent } from 'react';
-import { Query, Mutation } from 'react-apollo';
+import { Mutation } from 'react-apollo';
+import _get from 'lodash/get';
 
 import CancelListingModal from './view';
-import { cancelListingMutation, getDentistIdQueryClient } from './queries';
+import { cancelListingMutation } from './queries';
 import { getDentistQuery } from '../../HostListings/queries';
+import { getUser } from '../../../../util/authUtils';
 
 const refetchQueries = id => [
     {
@@ -18,39 +20,34 @@ class CancelListingContainer extends PureComponent {
     };
 
     render() {
+        const user = getUser();
         return (
-            <Query query={getDentistIdQueryClient}>
-                {({ data: clientData }) => (
-                    <Mutation
-                        mutation={cancelListingMutation}
-                        refetchQueries={refetchQueries(
-                            clientData.activeUser.dentistId
-                        )}
-                    >
-                        {(cancelListing, { loading }) => {
-                            const onSubmit = async () => {
-                                await cancelListing({
-                                    variables: {
-                                        input: {
-                                            id: this.props.listingId,
-                                        },
-                                    },
-                                });
-                                this.props.toggleModalState();
-                            };
+            <Mutation
+                mutation={cancelListingMutation}
+                refetchQueries={refetchQueries(_get(user, 'id'))}
+            >
+                {(cancelListing, { loading }) => {
+                    const onSubmit = async () => {
+                        await cancelListing({
+                            variables: {
+                                input: {
+                                    id: this.props.listingId,
+                                },
+                            },
+                        });
+                        this.props.toggleModalState();
+                    };
 
-                            return (
-                                <CancelListingModal
-                                    visible={this.props.visible}
-                                    onCancel={this.onCancel}
-                                    onSubmit={onSubmit}
-                                    loading={loading}
-                                />
-                            );
-                        }}
-                    </Mutation>
-                )}
-            </Query>
+                    return (
+                        <CancelListingModal
+                            visible={this.props.visible}
+                            onCancel={this.onCancel}
+                            onSubmit={onSubmit}
+                            loading={loading}
+                        />
+                    );
+                }}
+            </Mutation>
         );
     }
 }

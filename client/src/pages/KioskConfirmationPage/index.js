@@ -1,13 +1,13 @@
 import React from 'react';
 import { OnboardSuccess } from '@laguro/the-bright-side-components';
 import { Flex, Loading } from '@laguro/basic-components';
-import { withApollo } from 'react-apollo';
-import { onKioskLogout } from '../../util/authUtils';
-import { Query } from 'react-apollo';
-import { GET_USER } from './queries';
-import _get from 'lodash/get';
+import { withApollo, Query } from 'react-apollo';
 import { adopt } from 'react-adopt';
+import _get from 'lodash/get';
+
+import { GET_USER } from './queries';
 import GeneralErrorPage from '../../pages/GeneralErrorPage';
+import { onKioskLogout } from '../../util/authUtils';
 
 const Composed = adopt({
     getUser: ({ render, patientId }) => (

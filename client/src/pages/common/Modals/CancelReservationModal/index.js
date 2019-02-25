@@ -1,11 +1,13 @@
 import React, { PureComponent } from 'react';
-import { Query, Mutation } from 'react-apollo';
+import _get from 'lodash/get';
+import { Mutation } from 'react-apollo';
 
 import CancelReservationModal from './view';
-import { cancelReservationMutation, getDentistIdQueryClient } from './queries';
+import { cancelReservationMutation } from './queries';
 import { getDentistQuery } from '../../DentistAppointments/queries';
 
 import { CANCELLED_BY_DENTIST } from '../../../../util/strings';
+import { getUser } from '../../../../util/authUtils';
 
 const refetchQueries = id => [
     {
@@ -20,40 +22,35 @@ class CancelReservationContainer extends PureComponent {
     };
 
     render() {
+        const user = getUser();
         return (
-            <Query query={getDentistIdQueryClient}>
-                {({ data: clientData }) => (
-                    <Mutation
-                        mutation={cancelReservationMutation}
-                        refetchQueries={refetchQueries(
-                            clientData.activeUser.dentistId
-                        )}
-                    >
-                        {(cancelReservation, { loading }) => {
-                            const onSubmit = async () => {
-                                await cancelReservation({
-                                    variables: {
-                                        input: {
-                                            id: this.props.reservationId,
-                                            cancellationType: CANCELLED_BY_DENTIST,
-                                        },
-                                    },
-                                });
-                                this.props.toggleModalState();
-                            };
+            <Mutation
+                mutation={cancelReservationMutation}
+                refetchQueries={refetchQueries(_get(user, 'dentistId'))}
+            >
+                {(cancelReservation, { loading }) => {
+                    const onSubmit = async () => {
+                        await cancelReservation({
+                            variables: {
+                                input: {
+                                    id: this.props.reservationId,
+                                    cancellationType: CANCELLED_BY_DENTIST,
+                                },
+                            },
+                        });
+                        this.props.toggleModalState();
+                    };
 
-                            return (
-                                <CancelReservationModal
-                                    visible={this.props.visible}
-                                    onCancel={this.onCancel}
-                                    onSubmit={onSubmit}
-                                    loading={loading}
-                                />
-                            );
-                        }}
-                    </Mutation>
-                )}
-            </Query>
+                    return (
+                        <CancelReservationModal
+                            visible={this.props.visible}
+                            onCancel={this.onCancel}
+                            onSubmit={onSubmit}
+                            loading={loading}
+                        />
+                    );
+                }}
+            </Mutation>
         );
     }
 }

@@ -8,21 +8,18 @@ import {
     Onboarding,
 } from '@laguro/the-bright-side-components';
 import { adopt } from 'react-adopt';
+import isEmpty from 'lodash/isEmpty';
+import moment from 'moment';
+import * as Yup from 'yup';
+import { Flex, Text, Loading } from '@laguro/basic-components';
+import { Query, Mutation, withApollo } from 'react-apollo';
 import _flatten from 'lodash/flatten';
 import _get from 'lodash/get';
 import queryString from 'query-string';
-import {
-    GET_OFFICE,
-    CREATE_PATIENT_APPOINTMENT_ONBOARDING,
-    GET_ACTIVE_USER,
-} from './queries';
-import { Query, Mutation, withApollo } from 'react-apollo';
-import { Flex, Text, Loading } from '@laguro/basic-components';
-import * as Yup from 'yup';
-import moment from 'moment';
+
+import { GET_OFFICE, CREATE_PATIENT_APPOINTMENT_ONBOARDING } from './queries';
 import { RedirectErrorPage } from '../../GeneralErrorPage';
-import isEmpty from 'lodash/isEmpty';
-import { onKioskLogout } from '../../../util/authUtils';
+import { onKioskLogout, getUser } from '../../../util/authUtils';
 import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
 
 class KioskBookAnAppointmentPage extends Component {
@@ -45,9 +42,6 @@ class KioskBookAnAppointmentPage extends Component {
         });
 
         const Composed = adopt({
-            getActiveUser: ({ render }) => (
-                <Query query={GET_ACTIVE_USER}>{render}</Query>
-            ),
             createPatientAppointmentOnboarding: ({ render }) => (
                 <Mutation mutation={CREATE_PATIENT_APPOINTMENT_ONBOARDING}>
                     {render}
@@ -189,7 +183,7 @@ class KioskBookAnAppointmentPage extends Component {
 
         return (
             <Composed>
-                {({ createPatientAppointmentOnboarding, getActiveUser }) => (
+                {({ createPatientAppointmentOnboarding }) => (
                     <Fragment>
                         <Progress
                             step={2}
@@ -203,13 +197,12 @@ class KioskBookAnAppointmentPage extends Component {
                                         dt.id === values[0].appointmentSelected
                                 );
                                 try {
+                                    const user = getUser();
                                     const result = await createPatientAppointmentOnboarding(
                                         {
                                             variables: {
                                                 input: {
-                                                    patientId:
-                                                        getActiveUser.data
-                                                            .activeUser.id,
+                                                    patientId: _get(user, 'id'),
                                                     reservationId:
                                                         dentistTime.reservationId,
                                                     localStartTime: moment(

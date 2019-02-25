@@ -16,7 +16,6 @@ module.exports = function override(config, env) {
         __dirname,
         './src/icons.js'
     );
-    config.devtool = 'eval';
 
     config.resolve.alias = alias;
     return config;

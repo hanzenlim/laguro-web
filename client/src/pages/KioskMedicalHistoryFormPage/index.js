@@ -2,8 +2,7 @@ import React from 'react';
 import { Progress } from '@laguro/the-bright-side-components';
 import { Box } from '@laguro/basic-components';
 import { adopt } from 'react-adopt';
-import { UPDATE_PATIENT_HEALTH_DATA, ACTIVE_USER } from './queries';
-import { Query, Mutation } from 'react-apollo';
+import { Mutation } from 'react-apollo';
 import cookies from 'browser-cookies';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
@@ -16,8 +15,10 @@ import {
 import { PATIENT_ONBOARDING_INSURANCE_FORM } from '../../util/urls';
 import { getProgressBarProps } from '../../components/utils';
 import HealthHistoryForm from './view';
+import { UPDATE_PATIENT_HEALTH_DATA } from './queries';
 import { hasSkippedMedicalHistoryFormCookieVariableName } from '../../util/strings';
 import { execute } from '../../util/gqlUtils';
+import { getUser } from '../../util/authUtils';
 
 const progressSteps = [
     'REGISTRATION',
@@ -29,7 +30,6 @@ const progressSteps = [
 const currentStep = progressSteps[2];
 
 const Composed = adopt({
-    activeUser: ({ render }) => <Query query={ACTIVE_USER}>{render}</Query>,
     updatePatientHealthData: ({ render }) => (
         <Mutation mutation={UPDATE_PATIENT_HEALTH_DATA}>{render}</Mutation>
     ),
@@ -54,9 +54,11 @@ const KioskMedicalHistoryFormPage = props => {
         startStep = 1;
     }
 
+    const user = getUser();
+
     return (
         <Composed>
-            {({ updatePatientHealthData, activeUser }) => (
+            {({ updatePatientHealthData }) => (
                 <Box position="relative">
                     {/* TODO: Move progress to a parent component */}
                     <Progress
@@ -67,9 +69,7 @@ const KioskMedicalHistoryFormPage = props => {
                         })}
                     />
                     <HealthHistoryForm
-                        canSkip={_isEmpty(
-                            _get(activeUser, 'data.activeUser.insuranceInfo')
-                        )}
+                        canSkip={_isEmpty(_get(user, 'insuranceInfo'))}
                         onFinishForm={async values => {
                             const valuesKeys = Object.keys(values);
 
@@ -85,15 +85,13 @@ const KioskMedicalHistoryFormPage = props => {
                                 });
                             });
 
-                            const user = JSON.parse(cookies.get('user'));
-
                             await execute({
                                 action: async () => {
                                     const result = await updatePatientHealthData(
                                         {
                                             variables: {
                                                 input: {
-                                                    patientId: user.id,
+                                                    patientId: _get(user, 'id'),
                                                     patientHealthData: {
                                                         items: newArray,
                                                     },

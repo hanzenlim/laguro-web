@@ -3,15 +3,6 @@ import moment from 'moment';
 
 import { END_TIME } from '../../../util/strings';
 
-export const getDentistIdQueryClient = gql`
-    query activeUser {
-        activeUser @client {
-            id
-            dentistId
-        }
-    }
-`;
-
 export const updateAppointmentMutation = gql`
     mutation updateAppointmentTime($input: UpdateAppointmentTimeInput!) {
         updateAppointmentTime(input: $input) {

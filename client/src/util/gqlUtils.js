@@ -14,13 +14,16 @@ export const execute = async ({
         afterAction();
         return true;
     } catch (error) {
-        console.log('1232', error);
         onError();
         const gqlError =
             _get(error, 'networkError.result.result.errors[0].message') ||
             _get(error, 'graphQLErrors[0].message') ||
             _get(error, 'message');
-        !_isEmpty(gqlError) && message.error(gqlError);
+
+        if (!_isEmpty(gqlError)) {
+            message.error(gqlError);
+        }
+
         return false;
     }
 };

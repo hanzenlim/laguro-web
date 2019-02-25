@@ -39,23 +39,6 @@ export const UPDATE_USER_IMAGE_URL = gql`
     }
 `;
 
-export const getActiveUserQuery = gql`
-    {
-        activeUser @client {
-            id
-            firstName
-            lastName
-            imageUrl
-            email
-            intercomHash
-            dentistId
-            isDentist
-            isHost
-            token
-        }
-    }
-`;
-
 export const getDentistQuery = gql`
     query($id: String!) {
         getDentist(id: $id) {

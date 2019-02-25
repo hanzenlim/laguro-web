@@ -1,13 +1,13 @@
 import React from 'react';
 import { CheckInConfirmation } from '@laguro/the-bright-side-components';
 import { Flex, Loading } from '@laguro/basic-components';
-import { GET_APPOINTMENT } from './queries';
-import { Query } from 'react-apollo';
+import { Query, withApollo } from 'react-apollo';
 import { adopt } from 'react-adopt';
 import _get from 'lodash/get';
 import moment from 'moment';
-import { withApollo } from 'react-apollo';
+
 import { onKioskLogout } from '../../util/authUtils';
+import { GET_APPOINTMENT } from './queries';
 
 const KioskCheckInPage = props => {
     const appointmentId = _get(props, 'match.params.id');

@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import _get from 'lodash/get';
 import { Query, graphql, compose } from 'react-apollo';
 import cookies from 'browser-cookies';
 
@@ -6,12 +7,11 @@ import UpdateDentistProfileFormView from './view';
 import { Loading } from '../../../../components';
 import { RedirectErrorPage } from '../../../GeneralErrorPage';
 import {
-    getIdQueryClient,
     getUserDentistQuery,
     updateDentistMutation,
     createDentistMutation,
-    getActiveUserQuery,
 } from './queries';
+import { getUser } from '../../../../util/authUtils';
 
 class UpdateDentistProfileContainer extends PureComponent {
     state = {
@@ -23,109 +23,105 @@ class UpdateDentistProfileContainer extends PureComponent {
 
     render() {
         const { updateDentist, createDentist } = this.props;
+        const user = getUser();
 
         return (
-            <Query query={getIdQueryClient}>
-                {({ data }) => (
-                    <Query
-                        query={getUserDentistQuery}
-                        fetchPolicy="cache-and-network"
-                        variables={{ id: data.activeUser.id }}
-                    >
-                        {({ loading, error, data: dentistData }) => {
-                            if (error) return <RedirectErrorPage />;
-                            if (loading) return <Loading />;
+            <Query
+                query={getUserDentistQuery}
+                fetchPolicy="cache-and-network"
+                variables={{ id: _get(user, 'id') }}
+            >
+                {({ loading, error, data: dentistData }) => {
+                    if (error) return <RedirectErrorPage />;
+                    if (loading) return <Loading />;
 
+                    const {
+                        getUser: { dentist },
+                    } = dentistData;
+
+                    const { isUpdated } = this.state;
+
+                    const {
+                        id,
+                        specialty,
+                        bio,
+                        procedures,
+                        firstAppointmentDuration,
+                    } = dentist || {};
+                    const mappedData = {
+                        id,
+                        specialty,
+                        bio,
+                        procedures,
+                        firstAppointmentDuration,
+                    };
+
+                    const onSuccess = async values => {
+                        await this.setState({ isSubmitting: true });
+                        const inputBase = {
+                            specialty: values.specialty,
+                            bio: values.bio,
+                            procedures: values.procedures.map(p => ({
+                                code: 'code',
+                                duration: 0,
+                                group: p,
+                                name: 'name',
+                            })),
+                            firstAppointmentDuration:
+                                values.firstAppointmentDuration === '30min'
+                                    ? 30
+                                    : 60,
+                        };
+
+                        if (dentist) {
                             const {
-                                getUser: { dentist },
-                            } = dentistData;
+                                error: updateDentistError,
+                            } = await updateDentist({
+                                id: dentist.id,
+                                ...inputBase,
+                            });
 
-                            const { isUpdated } = this.state;
-
+                            this.setState({
+                                updateDentistError,
+                            });
+                        } else {
                             const {
-                                id,
-                                specialty,
-                                bio,
-                                procedures,
-                                firstAppointmentDuration,
-                            } = dentist || {};
-                            const mappedData = {
-                                id,
-                                specialty,
-                                bio,
-                                procedures,
-                                firstAppointmentDuration,
-                            };
+                                error: updateDentistError,
+                            } = await createDentist({
+                                userId: _get(user, 'id'),
+                                ...inputBase,
+                            });
 
-                            const onSuccess = async values => {
-                                await this.setState({ isSubmitting: true });
-                                const inputBase = {
-                                    specialty: values.specialty,
-                                    bio: values.bio,
-                                    procedures: values.procedures.map(p => ({
-                                        code: 'code',
-                                        duration: 0,
-                                        group: p,
-                                        name: 'name',
-                                    })),
-                                    firstAppointmentDuration:
-                                        values.firstAppointmentDuration ===
-                                        '30min'
-                                            ? 30
-                                            : 60,
-                                };
+                            this.setState({
+                                updateDentistError,
+                            });
+                        }
 
-                                if (dentist) {
-                                    const {
-                                        error: updateDentistError,
-                                    } = await updateDentist({
-                                        id: dentist.id,
-                                        ...inputBase,
-                                    });
+                        window.scrollTo(0, 0);
+                        this.setState({
+                            isUpdated: true,
+                            isSubmitting: false,
+                        });
 
-                                    this.setState({
-                                        updateDentistError,
-                                    });
-                                } else {
-                                    const {
-                                        error: updateDentistError,
-                                    } = await createDentist({
-                                        userId: data.activeUser.id,
-                                        ...inputBase,
-                                    });
+                        if (this.props.onComplete) {
+                            this.props.onComplete();
+                        }
+                    };
 
-                                    this.setState({
-                                        updateDentistError,
-                                    });
-                                }
-
-                                window.scrollTo(0, 0);
-                                this.setState({
-                                    isUpdated: true,
-                                    isSubmitting: false,
-                                });
-
-                                if (this.props.onComplete) {
-                                    this.props.onComplete();
-                                }
-                            };
-
-                            return (
-                                <UpdateDentistProfileFormView
-                                    data={mappedData}
-                                    error={
-                                        this.state.updateDentistError &&
-                                        'Something went wrong. Please try again later.'
-                                    }
-                                    onSuccess={onSuccess}
-                                    procedures={procedures}
-                                    isUpdated={isUpdated}
-                                    isSubmitting={this.state.isSubmitting}
-                                />
-                            );
-                        }}
-                    </Query>
-                )}
+                    return (
+                        <UpdateDentistProfileFormView
+                            data={mappedData}
+                            error={
+                                this.state.updateDentistError &&
+                                'Something went wrong. Please try again later.'
+                            }
+                            onSuccess={onSuccess}
+                            procedures={procedures}
+                            isUpdated={isUpdated}
+                            isSubmitting={this.state.isSubmitting}
+                        />
+                    );
+                }}
             </Query>
         );
     }
@@ -140,22 +136,16 @@ export default compose(
                         input,
                     },
                     update: (proxy, { data: { createDentist } }) => {
-                        const data = proxy.readQuery({
-                            query: getActiveUserQuery,
-                        });
+                        const user = getUser();
 
-                        data.activeUser = {
-                            ...data.activeUser,
-                            ...createDentist.user,
-                            dentistId: createDentist.id,
-                        };
-
-                        cookies.set('user', JSON.stringify(data.activeUser));
-
-                        proxy.writeQuery({
-                            query: getActiveUserQuery,
-                            data,
-                        });
+                        cookies.set(
+                            'user',
+                            JSON.stringify({
+                                ...user,
+                                ...createDentist.user,
+                                dentistId: createDentist.id,
+                            })
+                        );
                     },
                 }),
         }),

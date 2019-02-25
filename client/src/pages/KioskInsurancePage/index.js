@@ -10,24 +10,22 @@ import {
     Birthday,
     PreviousButton,
 } from '@laguro/the-bright-side-components';
+import { Query, Mutation } from 'react-apollo';
+import { adopt } from 'react-adopt';
+import cookies from 'browser-cookies';
 import { Box, Flex, Loading } from '@laguro/basic-components';
 import _isEmpty from 'lodash/isEmpty';
-import {
-    getIdQueryClient,
-    updateInsuranceInfoMutation,
-    getUser,
-} from './queries';
-import { Query, Mutation } from 'react-apollo';
+
+import { UPDATE_INSURANCE_INFO_MUTATION, GET_USER } from './queries';
 import { RedirectErrorPage } from '../GeneralErrorPage';
-import { adopt } from 'react-adopt';
 import {
     attemptToRedirectBack,
     getRedirectUrl,
     getSearchParamValueByKey,
 } from '../../history';
 import { getProgressBarProps } from '../../components/utils';
-import cookies from 'browser-cookies';
 import { execute } from '../../util/gqlUtils';
+import { getUser } from '../../util/authUtils';
 
 const progressSteps = [
     'REGISTRATION',
@@ -39,21 +37,19 @@ const progressSteps = [
 const currentStep = progressSteps[3];
 
 const Composed = adopt({
-    getIdQueryClient: ({ render }) => (
-        <Query query={getIdQueryClient}>{render}</Query>
-    ),
     updateInsuranceInfoMutation: ({ render }) => (
-        <Mutation mutation={updateInsuranceInfoMutation}>{render}</Mutation>
+        <Mutation mutation={UPDATE_INSURANCE_INFO_MUTATION}>{render}</Mutation>
     ),
 });
 
 const Step0 = props => (
     <Composed>
-        {({ getIdQueryClient, updateInsuranceInfoMutation }) => (
+        {({ updateInsuranceInfoMutation }) => (
             <Insurance
                 {...props}
                 onSkip={async () => {
-                    const userId = _get(getIdQueryClient, 'data.activeUser.id');
+                    const user = getUser();
+                    const userId = _get(user, 'id');
 
                     await execute({
                         action: async () => {
@@ -121,7 +117,7 @@ const KioskInsurancePage = componentProps => {
 
     return (
         <Query
-            query={getUser}
+            query={GET_USER}
             variables={{ id: _get(user, 'id') }}
             fetchPolicy="network-only"
         >
@@ -240,7 +236,7 @@ const KioskInsurancePage = componentProps => {
                 ];
 
                 return (
-                    <Mutation mutation={updateInsuranceInfoMutation}>
+                    <Mutation mutation={UPDATE_INSURANCE_INFO_MUTATION}>
                         {updateInsuranceInfo => {
                             const handleSubmit = async values => {
                                 const combinedObject = Object.values(
