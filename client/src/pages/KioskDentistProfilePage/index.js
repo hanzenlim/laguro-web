@@ -160,7 +160,7 @@ class KioskDentistProfilePage extends Component {
                     const steps = [
                         {
                             id: '1',
-                            validationSchema: {},
+                            validationSchema: Yup.object().shape({}),
                             component: null,
                             initialValues: {
                                 profilePicture: user.imageUrl,
