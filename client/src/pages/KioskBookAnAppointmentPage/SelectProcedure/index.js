@@ -77,7 +77,7 @@ class KioskBookAnAppointmentPage extends Component {
                         // This officeId is the officeId of bell dental office in prod
                         // https://www.laguro.com/office/e91ba710-2b37-11e9-998e-9da6024c6b32
                         this.props.history.push(
-                            `/kiosk/book-appointment?officeId=ca95f760-3473-11e9-b3b9-e7c1c7456ee8&reasonOfVisit=${Object.keys(
+                            `/kiosk/book-appointment?officeId=e91ba710-2b37-11e9-998e-9da6024c6b32&reasonOfVisit=${Object.keys(
                                 values[0]
                             )
                                 .filter(k => values[0][k])
