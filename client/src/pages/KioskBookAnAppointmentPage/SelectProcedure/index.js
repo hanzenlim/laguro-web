@@ -6,6 +6,7 @@ import {
     PreviousButton,
 } from '@laguro/the-bright-side-components';
 import { Flex } from '@laguro/basic-components';
+import * as Yup from 'yup';
 
 class KioskBookAnAppointmentPage extends Component {
     render() {
@@ -14,7 +15,7 @@ class KioskBookAnAppointmentPage extends Component {
         const steps = [
             {
                 id: '0',
-                // validationSchema: {},
+                validationSchema: Yup.object().shape({}),
                 component: null,
                 initialValues: {
                     reasonOfVisit: '',
