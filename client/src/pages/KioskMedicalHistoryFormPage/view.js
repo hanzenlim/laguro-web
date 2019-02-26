@@ -78,7 +78,7 @@ const steps = [
                 'Required'
             ),
             'Are you in good health?': Yup.string().required('Required'),
-            'Have you been hospiltalized in the past 5 years?': Yup.string().required(
+            'Have you been hospitalized in the past 5 years?': Yup.string().required(
                 'Required'
             ),
             'When was your last physical exam? (Month)': Yup.string(),
