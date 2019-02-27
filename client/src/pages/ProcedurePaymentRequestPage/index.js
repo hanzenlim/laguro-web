@@ -122,9 +122,31 @@ class ProcedurePaymentRequest extends PureComponent {
                         window.scrollTo(0, 0);
                     };
 
+                    const originalPrice = _get(
+                        paymentRequestData,
+                        'originalPrice'
+                    );
+                    const afterInsuranceAndDiscountBeforeInstallmentPlan = _get(
+                        paymentRequestData,
+                        'nominalAmount'
+                    );
+
+                    const discountRate = _get(
+                        paymentRequestData,
+                        'discount.rate'
+                    );
+
                     const discountPrice =
-                        _get(paymentRequestData, 'originalPrice') -
-                        _get(paymentRequestData, 'nominalAmount');
+                        _get(paymentRequestData, 'discount.amount') ||
+                        (afterInsuranceAndDiscountBeforeInstallmentPlan /
+                            (1 - discountRate)) *
+                            discountRate ||
+                        0;
+
+                    const insuranceCoverage =
+                        originalPrice -
+                        afterInsuranceAndDiscountBeforeInstallmentPlan -
+                        discountPrice;
 
                     return (
                         <ProcedurePaymentRequestPageView
@@ -134,10 +156,8 @@ class ProcedurePaymentRequest extends PureComponent {
                                 'installmentPlan'
                             )}
                             discountPrice={discountPrice}
-                            originalPrice={_get(
-                                paymentRequestData,
-                                'originalPrice'
-                            )}
+                            insuranceCoverage={insuranceCoverage}
+                            originalPrice={originalPrice}
                             nominalAmount={_get(
                                 paymentRequestData,
                                 'nominalAmount'

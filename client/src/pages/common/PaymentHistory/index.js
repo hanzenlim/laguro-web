@@ -12,7 +12,7 @@ import {
     Pagination,
 } from '../../../components';
 import PaymentCard from '../PaymentCard';
-import ProcedurePaymentCard from '../PaymentCard/ProcedurePaymentCard';
+import PatientProcedurePaymentCard from '../../PatientPaymentHistoryPage/PatientProcedurePaymentCard';
 import {
     PAYER_ID,
     PAYMENT,
@@ -125,7 +125,7 @@ class PaymentHistoryContainer extends PureComponent {
                                             PROCEDURE_SET_HISTORY_PAYMENT_TYPE
                                     ) {
                                         return (
-                                            <ProcedurePaymentCard
+                                            <PatientProcedurePaymentCard
                                                 key={index}
                                                 payment={payment}
                                                 persona={PATIENT}

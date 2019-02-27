@@ -4,7 +4,7 @@ import ProcedureSummaryView from './view';
 const getProcedures = patientProcedures =>
     patientProcedures.map(item => ({
         name: item.name,
-        price: `$${item.originalPrice}`,
+        price: item.originalPrice,
     }));
 
 const ProcedureSummary = ({
@@ -13,6 +13,7 @@ const ProcedureSummary = ({
     originalPrice,
     nominalAmount,
     discountPrice,
+    insuranceCoverage,
 }) => (
     <ProcedureSummaryView
         procedures={getProcedures(patientProcedures)}
@@ -20,6 +21,7 @@ const ProcedureSummary = ({
         nominalAmount={nominalAmount}
         originalPrice={originalPrice}
         discountPrice={discountPrice}
+        insuranceCoverage={insuranceCoverage}
     />
 );
 

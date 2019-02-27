@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-
+import _get from 'lodash/get';
 import PaymentDetails from '../../PaymentDetails';
 import { renderPrice } from '../../../../util/paymentUtil';
 import {
@@ -44,23 +44,29 @@ const StyledCard = styled(Card)`
 `;
 
 const renderInvoiceItem = (procedures, persona) =>
-    procedures.map(procedure => (
-        <Box>
-            <Flex justifyContent="space-between">
-                <Text fontSize={[0, '', 2]}>{procedure.name}</Text>
-                <Text fontSize={[0, '', 2]}>
-                    {persona === PATIENT
-                        ? renderPrice(procedure.totalPrice)
-                        : renderPrice(procedure.payoutAmount)}
-                </Text>
-            </Flex>
-            <Box
-                my={[6, '', 15]}
-                borderBottom="1px solid"
-                borderColor="divider.darkGray"
-            />
-        </Box>
-    ));
+    procedures.map(procedure => {
+        const procedures = _get(procedure, 'name');
+
+        return (
+            <Box>
+                <Flex justifyContent="space-between">
+                    <Text fontSize={[0, '', 2]}>
+                        {procedures.replace(/\n/gm, ', ')}
+                    </Text>
+                    <Text fontSize={[0, '', 2]}>
+                        {persona === PATIENT
+                            ? renderPrice(procedure.totalPrice)
+                            : renderPrice(procedure.payoutAmount)}
+                    </Text>
+                </Flex>
+                <Box
+                    my={[6, '', 15]}
+                    borderBottom="1px solid"
+                    borderColor="divider.darkGray"
+                />
+            </Box>
+        );
+    });
 
 const ProcedurePaymentCardView = ({
     closeModal,

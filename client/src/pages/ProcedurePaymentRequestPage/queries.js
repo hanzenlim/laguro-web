@@ -22,6 +22,10 @@ export const getPaymentRequestByPayerQuery = gql`
             }
             originalPrice
             nominalAmount
+            discount {
+                rate
+                amount
+            }
         }
     }
 `;

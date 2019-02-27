@@ -15,6 +15,7 @@ export default {
             darkBlue: '#286ABA',
             yellow: '#FFCE70',
             red: '#ff2d55',
+            green: '#417505',
         },
         background: {
             white: '#ffffff',

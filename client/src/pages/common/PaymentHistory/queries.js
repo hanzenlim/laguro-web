@@ -6,6 +6,10 @@ export const GET_PAYMENT_HISTORY_QUERY = gql`
         queryPayments(input: $input) {
             id
             dateCreated
+            discount {
+                rate
+                amount
+            }
             invoice {
                 items {
                     name
@@ -13,7 +17,17 @@ export const GET_PAYMENT_HISTORY_QUERY = gql`
                     quantity
                     type
                     totalPrice
+                    originalPrice
+                    procedureSet {
+                        name
+                        price
+                    }
                 }
+            }
+            installmentPlan {
+                downPaymentAmount
+                interval
+                numChargePeriods
             }
             type
             status
