@@ -10,6 +10,9 @@ export const checkUserDentistVerifiedQuery = gql`
                 sentVerificationDocuments
                 acceptedInsurances
                 languages
+                ssnOrEinOrTin
+                npiNumber
+                deaRegistrationNumber
             }
             firstName
             patientDocument {

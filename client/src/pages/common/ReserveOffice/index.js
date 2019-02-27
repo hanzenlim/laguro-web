@@ -284,7 +284,9 @@ class ReserveOffice extends Component {
                 newSearchParamValue: 'ReserveOffice',
             });
         } else if (
-            !_get(dentist, 'sentVerificationDocuments') ||
+            _isEmpty(_get(dentist, 'ssnOrEinOrTin')) ||
+            _isEmpty(_get(dentist, 'deaRegistrationNumber')) ||
+            _isEmpty(_get(dentist, 'npiNumber')) ||
             _isEmpty(_get(patientDocument, 'dentistPhotoId[0].url')) ||
             _isEmpty(_get(patientDocument, 'warranty[0].url')) ||
             _isEmpty(_get(patientDocument, 'stateDentalLicense[0].url'))
