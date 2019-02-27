@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Flex, Image, Text } from '../../../../components';
+import { Flex, Image, Text } from '@laguro/basic-components';
 import visa from '../../../../components/Image/visa.svg';
 import mastercard from '../../../../components/Image/mastercard.svg';
 import americanExpress from '../../../../components/Image/americanExpress.svg';
@@ -28,6 +28,7 @@ const CreditCard = ({ brand, last4 }) => {
             justifyContent="center"
             alignItems="center"
             height={[30, '', 50]}
+            width={[80, '', 130]}
             border="1px solid"
             borderRadius="2px"
             borderColor="divider.darkGray"
