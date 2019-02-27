@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { compose, Query, graphql, withApollo } from 'react-apollo';
 import _get from 'lodash/get';
+import queryString from 'query-string';
 import {
     getPaymentRequestByPayerQuery,
     acceptOrRejectPaymentRequestMutation,
@@ -14,7 +15,10 @@ import { getUser } from '../../util/authUtils';
 class ProcedurePaymentRequest extends PureComponent {
     constructor(props) {
         super(props);
+        const params = queryString.parse(window.location.search);
+        const { patientId } = params;
 
+        this.patientId = patientId;
         this.state = {
             isPaymentSuccessful: false,
             isRejectSuccessful: false,
@@ -83,7 +87,7 @@ class ProcedurePaymentRequest extends PureComponent {
                 fetchPolicy="network-only"
                 variables={{
                     input: {
-                        payerId: _get(user, 'id'),
+                        payerId: this.patientId || _get(user, 'id'),
                         status: PENDING,
                     },
                 }}
