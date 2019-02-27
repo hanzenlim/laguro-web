@@ -95,7 +95,7 @@ const PatientProcedurePaymentCardView = ({
         payment,
         'insuranceCoverage'
     );
-    const installmentPlan = _get(payment, 'installmentPlan');
+    const installmentPlan = _get(payment, 'paymentInstallmentPlan');
     const discount = getPatientPaymentBreakdown(payment, 'discount');
 
     const procedures = renderInvoiceItem(
