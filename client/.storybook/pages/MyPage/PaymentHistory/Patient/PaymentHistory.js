@@ -10,7 +10,7 @@ import {
 } from '@laguro/basic-components/lib/components/utils/stringUtils';
 import PatientProcedurePaymentDetailsView from '../../../../../src/pages/PatientPaymentHistoryPage/PatientProcedurePaymentDetails/view';
 import { Card } from 'antd';
-import { getPaymentBreakdown } from '../../../../../src/util/paymentUtil';
+import { getPatientPaymentBreakdown } from '../../../../../src/pages/PatientPaymentHistoryPage/utils';
 
 const paymentBody = {
     payee: {
@@ -320,7 +320,10 @@ storiesOf('MyPage.PaymentHistory.Patient', module).add(
                     payment={payment1}
                     cardType={PAYMENT_CARD}
                     withCC={true}
-                    total={getPaymentBreakdown(payment1, 'recentPaymentMade')}
+                    total={getPatientPaymentBreakdown(
+                        payment1,
+                        'recentPaymentMade'
+                    )}
                 />
             </Card>
         </Flex>
@@ -352,7 +355,10 @@ storiesOf('MyPage.PaymentHistory.Patient', module).add(
                     payment={payment2}
                     cardType={PAYMENT_CARD}
                     withCC={true}
-                    total={getPaymentBreakdown(payment2, 'recentPaymentMade')}
+                    total={getPatientPaymentBreakdown(
+                        payment2,
+                        'recentPaymentMade'
+                    )}
                 />
             </Card>
         </Flex>
@@ -385,7 +391,7 @@ storiesOf('MyPage.PaymentHistory.Patient', module).add(
                         payment={payment3}
                         cardType={PAYMENT_CARD}
                         withCC={true}
-                        total={getPaymentBreakdown(
+                        total={getPatientPaymentBreakdown(
                             payment3,
                             'recentPaymentMade'
                         )}
@@ -420,7 +426,10 @@ storiesOf('MyPage.PaymentHistory.Patient', module).add('discount', () => (
                     payment={payment4}
                     cardType={PAYMENT_CARD}
                     withCC={true}
-                    total={getPaymentBreakdown(payment4, 'recentPaymentMade')}
+                    total={getPatientPaymentBreakdown(
+                        payment4,
+                        'recentPaymentMade'
+                    )}
                 />
             </Card>
         </Box>
@@ -452,7 +461,10 @@ storiesOf('MyPage.PaymentHistory.Patient', module).add(
                     payment={payment5}
                     cardType={PAYMENT_CARD}
                     withCC={true}
-                    total={getPaymentBreakdown(payment5, 'recentPaymentMade')}
+                    total={getPatientPaymentBreakdown(
+                        payment5,
+                        'recentPaymentMade'
+                    )}
                 />
             </Card>
         </Flex>

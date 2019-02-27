@@ -6,7 +6,7 @@ import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 
 import PatientPaymentDetails from '../PatientPaymentDetails/index';
-import { renderPrice, getPaymentBreakdown } from '../../../util/paymentUtil';
+import { renderPrice } from '../../../util/paymentUtil';
 import {
     Card,
     Text,
@@ -22,7 +22,10 @@ import {
     PAYMENT_CARD,
     PAYMENT_MADE,
 } from '../../../util/strings';
-import { getOutstandingPaymentText } from '../utils';
+import {
+    getOutstandingPaymentText,
+    getPatientPaymentBreakdown,
+} from '../utils';
 
 const StyledCard = styled(Card)`
     && {
@@ -88,20 +91,23 @@ const PatientProcedurePaymentCardView = ({
 
     const installmentPlanInfoWidth = 380;
     const invoiceItem = _get(payment, 'invoice.items[0]');
-    const insuranceCoverage = getPaymentBreakdown(payment, 'insuranceCoverage');
+    const insuranceCoverage = getPatientPaymentBreakdown(
+        payment,
+        'insuranceCoverage'
+    );
     const installmentPlan = _get(payment, 'installmentPlan');
-    const discount = getPaymentBreakdown(payment, 'discount');
+    const discount = getPatientPaymentBreakdown(payment, 'discount');
 
     const procedures = renderInvoiceItem(
         _get(invoiceItem, 'procedureSet'),
         persona
     );
 
-    const installmentPlanNumChargePeriods = getPaymentBreakdown(
+    const installmentPlanNumChargePeriods = getPatientPaymentBreakdown(
         payment,
         'installmentPlanNumChargePeriods'
     );
-    const installmentPlanInterval = getPaymentBreakdown(
+    const installmentPlanInterval = getPatientPaymentBreakdown(
         payment,
         'installmentPlanInterval'
     );
@@ -136,7 +142,7 @@ const PatientProcedurePaymentCardView = ({
                                 lineHeight="1.1"
                             >
                                 {renderPrice(
-                                    getPaymentBreakdown(
+                                    getPatientPaymentBreakdown(
                                         payment,
                                         'recentPaymentMade'
                                     )
@@ -224,7 +230,9 @@ const PatientProcedurePaymentCardView = ({
                     <Flex fontSize={[0, '', 2]} justifyContent="space-between">
                         <Text fontWeight="medium">Procedure total</Text>
                         <Text fontWeight="medium">
-                            {renderPrice(getPaymentBreakdown(payment, 'total'))}
+                            {renderPrice(
+                                getPatientPaymentBreakdown(payment, 'total')
+                            )}
                         </Text>
                     </Flex>
                 )}
@@ -259,7 +267,7 @@ const PatientProcedurePaymentCardView = ({
                         }
                     >
                         {renderPrice(
-                            getPaymentBreakdown(
+                            getPatientPaymentBreakdown(
                                 payment,
                                 'afterInsuranceAndDiscountBeforeInstallmentPlan'
                             )
@@ -289,11 +297,11 @@ const PatientProcedurePaymentCardView = ({
                                     </Text>
                                     <Text fontWeight="500">
                                         {renderPrice(
-                                            getPaymentBreakdown(
+                                            getPatientPaymentBreakdown(
                                                 payment,
                                                 'afterInsuranceAndDiscountBeforeInstallmentPlan'
                                             ) -
-                                                getPaymentBreakdown(
+                                                getPatientPaymentBreakdown(
                                                     payment,
                                                     'downPayment'
                                                 )
@@ -310,7 +318,7 @@ const PatientProcedurePaymentCardView = ({
                                     </Text>
                                     <Text fontWeight="bold">
                                         {renderPrice(
-                                            getPaymentBreakdown(
+                                            getPatientPaymentBreakdown(
                                                 payment,
                                                 'downPayment'
                                             )

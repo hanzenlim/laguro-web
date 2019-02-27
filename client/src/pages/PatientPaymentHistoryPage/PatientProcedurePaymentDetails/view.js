@@ -12,8 +12,10 @@ import {
     PROCEDURE_PAYMENT_TYPE,
     PROCEDURE_SET_HISTORY_PAYMENT_TYPE,
 } from '../../../util/strings';
-import { getPaymentBreakdown } from '../../../util/paymentUtil';
-import { getOutstandingPaymentText } from '../utils';
+import {
+    getOutstandingPaymentText,
+    getPatientPaymentBreakdown,
+} from '../utils';
 
 const StyledGrid = styled(Grid)`
     width: 100%;
@@ -26,27 +28,32 @@ const PaymentDetailsView = ({ cardType, withCC, payment, total }) => {
         invoice.items.filter(item => item.type === itemType)[0].procedureSet;
 
     const LineItemGroup = ({ itemType, name }) =>
-        getInvoiceItemProcedureSet(itemType).map(procedure => (
-            <LineItem
-                name={name || procedure.name}
-                price={renderPrice(procedure.price)}
-            />
-        ));
+        getInvoiceItemProcedureSet(itemType).map(procedure => {
+            return (
+                <LineItem
+                    name={name || procedure.name}
+                    price={procedure.price}
+                />
+            );
+        });
 
     const stripePaymentSource = _get(stripePayment, 'source');
     const brand = _get(stripePaymentSource, 'brand');
     const last4 = _get(stripePaymentSource, 'last4');
 
-    const insuranceCoverage = getPaymentBreakdown(payment, 'insuranceCoverage');
-    const discount = getPaymentBreakdown(payment, 'discount');
-    const downPayment = getPaymentBreakdown(payment, 'downPayment');
+    const insuranceCoverage = getPatientPaymentBreakdown(
+        payment,
+        'insuranceCoverage'
+    );
+    const discount = getPatientPaymentBreakdown(payment, 'discount');
+    const downPayment = getPatientPaymentBreakdown(payment, 'downPayment');
 
-    const installmentPlanNumChargePeriods = getPaymentBreakdown(
+    const installmentPlanNumChargePeriods = getPatientPaymentBreakdown(
         payment,
         'installmentPlanNumChargePeriods'
     );
 
-    const installmentPlanInterval = getPaymentBreakdown(
+    const installmentPlanInterval = getPatientPaymentBreakdown(
         payment,
         'installmentPlanInterval'
     );
@@ -94,7 +101,7 @@ const PaymentDetailsView = ({ cardType, withCC, payment, total }) => {
                         )}
                         price={
                             -1 *
-                            (getPaymentBreakdown(
+                            (getPatientPaymentBreakdown(
                                 payment,
                                 'afterInsuranceAndDiscountBeforeInstallmentPlan'
                             ) -

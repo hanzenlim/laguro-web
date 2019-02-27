@@ -29,6 +29,7 @@ const ProcedurePaymentRequestView = props => {
         showDeclinePaymentModal,
         onSubmitDeclinePayment,
         onCancelDeclinePayment,
+        insuranceCoverage,
     } = props;
 
     const hasNotClickedNextOnTabletMobile = !hasClickedNext && tabletMobileOnly;
@@ -85,6 +86,7 @@ const ProcedurePaymentRequestView = props => {
                         nominalAmount={nominalAmount}
                         originalPrice={originalPrice}
                         discountPrice={discountPrice}
+                        insuranceCoverage={insuranceCoverage}
                     />
                 </Box>
             )}

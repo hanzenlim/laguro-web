@@ -17,6 +17,7 @@ const ProcedureSummaryView = props => {
         discountPrice,
         installmentPlan,
         originalPrice,
+        insuranceCoverage,
     } = props;
 
     return (
@@ -89,7 +90,7 @@ const ProcedureSummaryView = props => {
                         );
                     })}
 
-                    {discountPrice > 0 && (
+                    {(discountPrice > 0 || insuranceCoverage > 0) && (
                         <Flex
                             alignItems="flex-end"
                             justifyContent="space-between"
@@ -117,6 +118,36 @@ const ProcedureSummaryView = props => {
                         </Flex>
                     )}
 
+                    {insuranceCoverage > 0 && (
+                        <Flex
+                            alignItems="flex-end"
+                            justifyContent="space-between"
+                            mt={1}
+                        >
+                            <Box>
+                                <Text
+                                    fontSize={[1, '', 2]}
+                                    lineHeight="20px"
+                                    textTransform="capitalize"
+                                    letterSpacing={['-0.4px', '', '-0.6px']}
+                                    color="text.black"
+                                >
+                                    Insurance Coverage
+                                </Text>
+                            </Box>
+                            <Box>
+                                <Text
+                                    fontSize={[1, '', 2]}
+                                    lineHeight={1}
+                                    letterSpacing={['-0.4px', '', '-0.6px']}
+                                    color="text.green"
+                                >
+                                    -{renderPrice(insuranceCoverage)}
+                                </Text>
+                            </Box>
+                        </Flex>
+                    )}
+
                     {discountPrice > 0 && (
                         <Flex
                             alignItems="flex-end"
@@ -139,7 +170,7 @@ const ProcedureSummaryView = props => {
                                     fontSize={[1, '', 2]}
                                     lineHeight={1}
                                     letterSpacing={['-0.4px', '', '-0.6px']}
-                                    color="text.red"
+                                    color="text.green"
                                 >
                                     -{renderPrice(discountPrice)}
                                 </Text>
@@ -150,6 +181,7 @@ const ProcedureSummaryView = props => {
                     <Flex alignItems="flex-end" justifyContent="space-between">
                         <Box>
                             <Text
+                                mt={30}
                                 fontSize={[1, '', 2]}
                                 lineHeight="20px"
                                 fontWeight="bold"
