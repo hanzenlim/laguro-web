@@ -5,7 +5,7 @@ import { withApollo } from 'react-apollo';
 import { onKioskLogout } from '../../../util/authUtils';
 
 const KioskMedicalHistoryFormConfirmationPage = props => (
-    <Flex justifyContent="center" mt="100px">
+    <Flex justifyContent="center" mt="100px" width="100%">
         <HealthHistoryFormConfirmation
             onNext={() => onKioskLogout(props.client)}
         />
