@@ -22,7 +22,6 @@ import {
     saveUploadedImagesMutation,
 } from './queries';
 import { documentKinds } from '../../../../staticData/documentTypeList';
-import { StyledPreviousButtonContainer } from '../../common';
 import { getSearchParamValueByKey } from '../../../../history';
 import { getProgressBarProps } from '../../../../components/utils';
 import { execute } from '../../../../util/gqlUtils';
@@ -202,24 +201,23 @@ class RenderDentistOnboarding extends Component {
                         )}
                         <Wizard
                             render={props => (
-                                <React.Fragment>
+                                <Flex
+                                    width="100%"
+                                    flexDirection="column"
+                                    position="relative"
+                                >
                                     {props.actions.canGoBack && (
-                                        <StyledPreviousButtonContainer
-                                            top={172}
-                                        >
-                                            <PreviousButton
-                                                goToPreviousStep={
-                                                    props.actions
-                                                        .goToPreviousStep
-                                                }
-                                            />
-                                        </StyledPreviousButtonContainer>
+                                        <PreviousButton
+                                            goToPreviousStep={
+                                                props.actions.goToPreviousStep
+                                            }
+                                        />
                                     )}
                                     {render({
                                         ...props,
                                         client: this.props.client,
                                     })}
-                                </React.Fragment>
+                                </Flex>
                             )}
                             onSubmit={async objectOfObjectOfStepValues => {
                                 const objectOfValues = Object.values(
