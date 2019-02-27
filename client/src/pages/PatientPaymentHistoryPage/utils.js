@@ -1,7 +1,7 @@
 import _get from 'lodash/get';
 
-export const getOutstandingPaymentText = (quantity, frequency) =>
-    `${quantity} ${frequency}ly outstanding payment${quantity != 1 ? 's' : ''}`;
+// eslint-disable-next-line
+export const getOutstandingPaymentText = (quantity, frequency) => `${quantity} ${frequency}ly outstanding payment${quantity != 1 ? 's' : ''}`;
 
 export const getPatientPaymentBreakdown = (payment, item) => {
     const invoiceItem = _get(payment, 'invoice.items[0]');
