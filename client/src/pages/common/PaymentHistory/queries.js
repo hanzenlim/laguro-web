@@ -24,7 +24,7 @@ export const GET_PAYMENT_HISTORY_QUERY = gql`
                     }
                 }
             }
-            installmentPlan {
+            paymentInstallmentPlan {
                 downPaymentAmount
                 interval
                 numChargePeriods
