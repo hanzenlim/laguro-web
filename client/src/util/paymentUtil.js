@@ -3,7 +3,7 @@ export const APPOINTMENT_SCHEDULING_FEE = 2000;
 
 export const removeSpecialChars = price => {
     if (!price) return 0;
-    return String(Math.round(price)).replace(/[$.\D]/g, '');
+    return String(price).replace(/[$.\D]/g, '');
 };
 
 export const renderPrice = price => {
