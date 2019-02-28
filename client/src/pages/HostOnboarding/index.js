@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-import cookies from 'browser-cookies';
 import styled from 'styled-components';
 import { Alert, message } from 'antd';
 import { Query, Mutation, compose, withApollo } from 'react-apollo';
@@ -14,7 +13,7 @@ import {
     CREATE_LISTING,
     UPDATE_OFFICE,
 } from './queries';
-import { getUser } from '../../util/authUtils';
+import { getUser, setUser } from '../../util/authUtils';
 
 import {
     saveUploadedImagesMutation,
@@ -609,14 +608,9 @@ class HostOnboarding extends Component {
                                 'data.createUserOffice.host.user'
                             );
 
-                            const userCookie = getUser();
-                            cookies.set(
-                                'user',
-                                JSON.stringify({
-                                    ...userCookie,
-                                    ...user,
-                                })
-                            );
+                            setUser({
+                                ...user,
+                            });
                         }
 
                         await this.saveWizardState({

@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import _get from 'lodash/get';
 import { Query, graphql, compose } from 'react-apollo';
-import cookies from 'browser-cookies';
 
 import UpdateDentistProfileFormView from './view';
 import { Loading } from '../../../../components';
@@ -11,7 +10,7 @@ import {
     updateDentistMutation,
     createDentistMutation,
 } from './queries';
-import { getUser } from '../../../../util/authUtils';
+import { getUser, setUser } from '../../../../util/authUtils';
 
 class UpdateDentistProfileContainer extends PureComponent {
     state = {
@@ -136,16 +135,10 @@ export default compose(
                         input,
                     },
                     update: (proxy, { data: { createDentist } }) => {
-                        const user = getUser();
-
-                        cookies.set(
-                            'user',
-                            JSON.stringify({
-                                ...user,
-                                ...createDentist.user,
-                                dentistId: createDentist.id,
-                            })
-                        );
+                        setUser({
+                            ...createDentist.user,
+                            dentistId: createDentist.id,
+                        });
                     },
                 }),
         }),

@@ -11,7 +11,6 @@ import {
     GetPatientName,
     PreviousButton,
 } from '@laguro/the-bright-side-components';
-import cookies from 'browser-cookies';
 import { Mutation } from 'react-apollo';
 import { message } from 'antd';
 import { withRouter } from 'react-router-dom';
@@ -26,7 +25,7 @@ import {
 } from './queries';
 
 import history from '../../history';
-import { getUser } from '../../util/authUtils';
+import { setUser } from '../../util/authUtils';
 
 const Composed = adopt({
     sendKioskLoginCode: ({ render }) => (
@@ -149,18 +148,6 @@ export const RegisterOrLoginStep = props => (
             login,
             sendRegistrationCode,
         }) => {
-            const setUser = async ({ user, token }) => {
-                const userCookie = getUser();
-                cookies.set(
-                    'user',
-                    JSON.stringify({
-                        ...userCookie,
-                        ...user,
-                        token,
-                    })
-                );
-            };
-
             const redirectUser = ({ user }) => {
                 if (props.context === 'web') {
                     if (props.formikProps.values.mode === 'signUp') {
@@ -251,7 +238,10 @@ export const RegisterOrLoginStep = props => (
 
                         props.formikProps.setFieldValue('isPinValid', true);
 
-                        setUser({ user, token });
+                        setUser({
+                            ...user,
+                            token,
+                        });
 
                         if (props.closeModal) {
                             props.closeModal();

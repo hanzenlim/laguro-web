@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Mutation, Query } from 'react-apollo';
-import cookies from 'browser-cookies';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 import compact from 'lodash/compact';
@@ -18,7 +17,7 @@ import {
     getSearchParamValueByKey,
     attemptToRedirectBack,
 } from '../../history';
-import { getUser } from '../../util/authUtils';
+import { getUser, setUser } from '../../util/authUtils';
 import Loading from '../../components/Loading/index';
 import * as Yup from 'yup';
 import { execute } from '../../util/gqlUtils';
@@ -68,16 +67,10 @@ const Composed = adopt({
     createDentist: ({ render }) => (
         <Mutation
             update={(proxy, { data: { createDentist } }) => {
-                let user = getUser();
-                if (user) {
-                    user = {
-                        ...user,
-                        ...createDentist.user,
-                        dentistId: createDentist.id,
-                    };
-
-                    cookies.set('user', JSON.stringify(user));
-                }
+                setUser({
+                    ...createDentist.user,
+                    dentistId: createDentist.id,
+                });
             }}
             mutation={CREATE_DENTIST}
         >
@@ -88,15 +81,9 @@ const Composed = adopt({
         <Mutation
             mutation={UPDATE_USER_IMAGE_URL}
             update={(proxy, { data: { updateUser } }) => {
-                let user = getUser();
-                if (user) {
-                    user = {
-                        ...user,
-                        imageUrl: updateUser.imageUrl,
-                    };
-
-                    cookies.set('user', JSON.stringify(user));
-                }
+                setUser({
+                    imageUrl: updateUser.imageUrl,
+                });
             }}
         >
             {render}

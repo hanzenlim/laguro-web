@@ -5,6 +5,8 @@ import history from '../history';
 import request from './fetchUtil';
 import { hasSkippedMedicalHistoryFormCookieVariableName } from './strings';
 
+const domain = process.env.REACT_APP_DOMAIN_NAME_FOR_COOKIE;
+
 export const getUser = () => {
     let user = cookies.get('user');
     if (user) {
@@ -14,6 +16,22 @@ export const getUser = () => {
 
     return null;
 };
+
+export const setUser = newUser => {
+    const user = cookies.get('user');
+
+    cookies.set(
+        'user',
+        JSON.stringify({
+            ...user,
+            ...newUser,
+        }),
+        {
+            domain,
+        }
+    );
+};
+
 export const onLogin = values =>
     request('/api/login', {
         method: 'POST',

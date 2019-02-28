@@ -14,7 +14,8 @@ const KioskCheckInPage = props => {
 
     const Composed = adopt({
         getAppointment: ({ render }) => (
-            <Query query={GET_APPOINTMENT} variables={{ id: appointmentId }}>
+            <Query query={GET_APPOINTMENT} variables={{ id: appointmentId }}
+            >
                 {render}
             </Query>
         ),
