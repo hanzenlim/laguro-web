@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Box, Responsive } from '../../components';
 import LoginModal from '../common/Modals/LoginModal';
-import ForgotPassModal from '../common/Modals/ForgotPassModal';
 import Login from '../common/Login';
 
 const { Mobile, TabletDesktop } = Responsive;
@@ -36,13 +35,6 @@ const LoginPageView = ({
                 isSubmitting={isSubmitting}
             />
         </TabletDesktop>
-        <ForgotPassModal
-            sendPassResetLink={sendPassResetLink}
-            openLoginModal={openLoginModal}
-            closeModal={closeModal}
-            visible={visibleModal === 'forgotPass'}
-            isSubmitting={isSubmitting}
-        />
     </Box>
 );
 
