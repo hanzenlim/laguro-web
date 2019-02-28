@@ -91,7 +91,7 @@ class Login extends Component {
                             p={20}
                             flexDirection="column"
                             height="100%"
-                            maxWidth={440}
+                            maxWidth={490}
                             width="100%"
                         >
                             <StyledFlex
