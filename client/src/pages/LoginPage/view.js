@@ -20,6 +20,7 @@ const LoginPageView = ({
     <Box>
         <Mobile>
             <Login
+                closeModal={closeModal}
                 login={onLogin}
                 message={message}
                 isSubmitting={isSubmitting}
