@@ -141,10 +141,9 @@ const KioskInsurancePage = componentProps => {
                     {
                         id: '0',
                         initialValues: {
-                            patientInsuranceNum: _get(
-                                user,
-                                'insuranceInfo.policyHolderId'
-                            ),
+                            patientInsuranceNum:
+                                _get(user, 'insuranceInfo.policyHolderId') ||
+                                '',
                             insuranceProvider: _get(
                                 user,
                                 'insuranceInfo.insuranceProvider'
