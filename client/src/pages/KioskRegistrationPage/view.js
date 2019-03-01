@@ -450,7 +450,13 @@ const render = props => {
     }
 
     return (
-        <Flex justifyContent="center" mt="100px">
+        <Flex
+            justifyContent="center"
+            mt="100px"
+            mx="auto"
+            width={['100%', '100%', '490px']}
+            px="20px"
+        >
             {step}
         </Flex>
     );
