@@ -12,7 +12,6 @@ import {
 } from '@laguro/the-bright-side-components';
 import { Query, Mutation } from 'react-apollo';
 import { adopt } from 'react-adopt';
-import cookies from 'browser-cookies';
 import { Box, Flex, Loading } from '@laguro/basic-components';
 import _isEmpty from 'lodash/isEmpty';
 
@@ -110,10 +109,7 @@ const render = props => {
 };
 
 const KioskInsurancePage = componentProps => {
-    let user = cookies.get('user');
-    if (user) {
-        user = JSON.parse(user);
-    }
+    const user = getUser();
 
     return (
         <Query

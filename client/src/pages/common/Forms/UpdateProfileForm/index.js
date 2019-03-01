@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import { Query, Mutation } from 'react-apollo';
 import get from 'lodash/get';
-import cookies from 'browser-cookies';
 
 import {
     serializePhoneNumber,
@@ -11,7 +10,7 @@ import UpdateProfileFormView from './view';
 import { Loading } from '../../../../components';
 import { RedirectErrorPage } from '../../../../pages/GeneralErrorPage';
 import { getUserQuery, updateUserMutation } from './queries';
-import { getUser } from '../../../../util/authUtils';
+import { getUser, setUser } from '../../../../util/authUtils';
 
 const HANDLED_ERRORS = {
     'Phone number has already been registered':
@@ -147,14 +146,9 @@ class UpdateProfileContainer extends PureComponent {
                                     // on request authentication details and not set activeUser based on
                                     // events (login, update, ...)
                                     if (_updateUserData) {
-                                        const userCookie = getUser();
-                                        cookies.set(
-                                            'user',
-                                            JSON.stringify({
-                                                ...userCookie,
-                                                ..._updateUserData.updateUser,
-                                            })
-                                        );
+                                        setUser({
+                                            ..._updateUserData.updateUser,
+                                        });
                                     }
 
                                     window.scrollTo(0, 0);
