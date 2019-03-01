@@ -1,7 +1,8 @@
 import _get from 'lodash/get';
 
 // eslint-disable-next-line
-export const getOutstandingPaymentText = (quantity, frequency) => `${quantity} ${frequency}ly outstanding payment${quantity != 1 ? 's' : ''}`;
+export const getOutstandingPaymentText = (quantity, frequency) =>
+    `${quantity} ${frequency}ly outstanding payment${quantity != 1 ? 's' : ''}`;
 
 export const getPatientPaymentBreakdown = (payment, item) => {
     const invoiceItem = _get(payment, 'invoice.items[0]');
@@ -16,11 +17,13 @@ export const getPatientPaymentBreakdown = (payment, item) => {
 
     const discountRate = _get(payment, 'discount.rate');
 
-    const discount =
+    const discount = Math.round(
         _get(payment, 'discount.amount') ||
-        (afterInsuranceAndDiscountBeforeInstallmentPlan / (1 - discountRate)) *
-            discountRate ||
-        0;
+            (afterInsuranceAndDiscountBeforeInstallmentPlan /
+                (1 - discountRate)) *
+                discountRate ||
+            0
+    );
     const insuranceCoverage =
         originalPrice -
         afterInsuranceAndDiscountBeforeInstallmentPlan -
