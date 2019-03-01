@@ -263,7 +263,9 @@ export const RegisterOrLoginStep = props => (
                     } catch (error) {
                         props.clear();
                         props.formikProps.setSubmitting(false);
-                        message.error(error.graphQLErrors[0].message);
+                        if (error && !_isEmpty(error.graphQLErrors)) {
+                            message.error(error.graphQLErrors[0].message);
+                        }
                     }
                 } else if (props.formikProps.values.mode === 'signUp') {
                     try {

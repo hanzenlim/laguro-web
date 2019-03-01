@@ -2,6 +2,7 @@ import React, { PureComponent, Fragment } from 'react';
 import { withRouter } from 'react-router-dom';
 import { shape, string } from 'prop-types';
 import { Query } from 'react-apollo';
+import _isEmpty from 'lodash/isEmpty';
 
 import ReviewContainerView from './view';
 import { Loading, Modal } from '../../../components';
@@ -9,6 +10,8 @@ import NewReview from '../../common/NewReview';
 import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
 import { GET_DENTIST_REVIEWS, GET_OFFICE_REVIEWS } from './queries';
 import { DENTIST } from '../../../util/strings';
+import { getUser } from '../../../util/authUtils';
+import Login from '../../LoginPage';
 
 class ReviewContainer extends PureComponent {
     state = {
@@ -19,6 +22,7 @@ class ReviewContainer extends PureComponent {
         this.setState(({ isModalOpen }) => ({ isModalOpen: !isModalOpen }));
 
     render() {
+        const isAuthenticated = !_isEmpty(getUser());
         const { id, type, match } = this.props;
 
         const isDentist = type === DENTIST;
@@ -65,18 +69,22 @@ class ReviewContainer extends PureComponent {
                             />
                             {!this.props.viewOnly && (
                                 <Fragment>
-                                    <Modal
-                                        visible={this.state.isModalOpen}
-                                        onCancel={this.toggleModalState}
-                                        destroyOnClose
-                                    >
-                                        <NewReview
-                                            info={mappedData}
-                                            toggleModalState={
-                                                this.toggleModalState
-                                            }
-                                        />
-                                    </Modal>
+                                    {!isAuthenticated ? (
+                                        this.state.isModalOpen && <Login />
+                                    ) : (
+                                        <Modal
+                                            visible={this.state.isModalOpen}
+                                            onCancel={this.toggleModalState}
+                                            destroyOnClose
+                                        >
+                                            <NewReview
+                                                info={mappedData}
+                                                toggleModalState={
+                                                    this.toggleModalState
+                                                }
+                                            />
+                                        </Modal>
+                                    )}
                                 </Fragment>
                             )}
                         </Fragment>
