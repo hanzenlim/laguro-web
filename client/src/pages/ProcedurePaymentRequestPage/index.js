@@ -140,12 +140,13 @@ class ProcedurePaymentRequest extends PureComponent {
                         'discount.rate'
                     );
 
-                    const discountPrice =
+                    const discountPrice = Math.round(
                         _get(paymentRequestData, 'discount.amount') ||
-                        (afterInsuranceAndDiscountBeforeInstallmentPlan /
-                            (1 - discountRate)) *
-                            discountRate ||
-                        0;
+                            (afterInsuranceAndDiscountBeforeInstallmentPlan /
+                                (1 - discountRate)) *
+                                discountRate ||
+                            0
+                    );
 
                     const insuranceCoverage =
                         originalPrice -
