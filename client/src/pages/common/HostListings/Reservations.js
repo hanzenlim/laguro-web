@@ -17,7 +17,7 @@ const AvailableTimes = ({ availableTimes }) =>
         >
             <Desktop>
                 <Text fontSize={4} fontWeight="medium">
-                    {moment(startTime).format('ddd, MMM/D/YY')}
+                    {moment(startTime).format('ddd, M/D/YY')}
                 </Text>
                 <Text fontSize={2}>
                     {moment(startTime).format('h:mmA')} -{' '}
