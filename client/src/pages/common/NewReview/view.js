@@ -144,7 +144,7 @@ const NewReview = props => {
                 />
             </Box>
             <Text fontSize={[2, '', 3]} textAlign={['center', '', 'left']}>
-                how was your experience with {info.name}?
+                How was your experience with {info.name}?
             </Text>
             <Box mt={10}>
                 <Form layout="vertical" onSuccess={onSuccess}>
