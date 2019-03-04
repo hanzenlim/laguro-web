@@ -123,7 +123,7 @@ class BalanceHistoryContainer extends PureComponent {
                     }
 
                     const cardType = BALANCE_CARD;
-                    const allPayments = paymentData.getUserAccountReceivable.map(
+                    const allPayments = paymentData.getBalanceHistory.map(
                         payment => {
                             const statusName = paymentStatus(cardType, payment);
                             return {
