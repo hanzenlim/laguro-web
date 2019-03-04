@@ -85,13 +85,10 @@ class LoginPage extends Component {
                     <link rel="canonical" href="https://www.laguro.com/login" />
                 </Helmet>
                 <LoginPageView
-                    closeModal={this.closeModal}
-                    openLoginModal={this.openLoginModal}
-                    closable
-                    signup={values => this.handleSignup(values)}
                     onLogin={values => this.handleLogin(values)}
+                    closeModal={this.closeModal}
+                    closable
                     visibleModal={this.state.currentModal}
-                    sendPassResetLink={this.handleSendResetPasswordLink}
                     message={_get(location, 'state.message')}
                     isSubmitting={this.state.isSubmitting}
                 />

@@ -28,14 +28,9 @@ const PaymentDetailsView = ({ cardType, withCC, payment, total }) => {
         invoice.items.filter(item => item.type === itemType)[0].procedureSet;
 
     const LineItemGroup = ({ itemType, name }) =>
-        getInvoiceItemProcedureSet(itemType).map(procedure => {
-            return (
-                <LineItem
-                    name={name || procedure.name}
-                    price={procedure.price}
-                />
-            );
-        });
+        getInvoiceItemProcedureSet(itemType).map(procedure => (
+            <LineItem name={name || procedure.name} price={procedure.price} />
+        ));
 
     const stripePaymentSource = _get(stripePayment, 'source');
     const brand = _get(stripePaymentSource, 'brand');

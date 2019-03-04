@@ -10,9 +10,7 @@ const LoginPageView = ({
     onLogin,
     closeModal,
     closable,
-    openLoginModal,
     visibleModal,
-    sendPassResetLink,
     message,
     isSubmitting,
 }) => (

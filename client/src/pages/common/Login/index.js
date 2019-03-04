@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { message as warningMessage } from 'antd';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
+import _isEmpty from 'lodash/isEmpty';
 
 import { Flex, Responsive } from '../../../components';
 import { withScreenSizes } from '../../../components/Responsive';
@@ -45,7 +46,9 @@ class Login extends Component {
     };
 
     clear = () => {
-        this.pinInputRef.clear();
+        if (!_isEmpty(this.pinInputRef)) {
+            this.pinInputRef.clear();
+        }
     };
 
     render() {
