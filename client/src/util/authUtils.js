@@ -100,6 +100,12 @@ export const onLogout = () => {
     // eslint-disable-next-line
     window.localStorage && window.localStorage.clear();
     cookies.erase(hasSkippedMedicalHistoryFormCookieVariableName);
+    cookies.erase('user', {
+        domain,
+    });
+    cookies.erase(LAGURO_AUTH_TOKEN, {
+        domain,
+    });
     request('/api/logout', {
         method: 'POST',
         credentials: 'same-origin',
