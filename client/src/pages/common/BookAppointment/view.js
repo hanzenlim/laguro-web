@@ -1,9 +1,8 @@
 import React, { Fragment } from 'react';
+
 import SearchAvailableAppointments from '../SearchAvailableAppointments';
 import PaymentConfirmation from '../PaymentConfirmation';
-import Payment from '../Payment';
-
-import { Text, Flex, Box, Button } from '../../../components';
+import { Box, Button } from '../../../components';
 
 const BookAppointmentView = props => {
     const {
@@ -11,12 +10,9 @@ const BookAppointmentView = props => {
         bookedAppointment,
         isPaymentVisible,
         firstAppointmentDuration,
-        onPay,
         onSelect,
         onFilter,
         isSubmitting,
-        updateSubmittingState,
-        checkIfVerified,
     } = props;
 
     if (bookedAppointment)
