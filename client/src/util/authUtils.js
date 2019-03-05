@@ -18,7 +18,15 @@ export const getUser = () => {
 };
 
 export const setUser = newUser => {
-    const user = cookies.get('user');
+    let user = cookies.get('user');
+
+    try {
+        if (user) {
+            user = JSON.parse(user);
+        }
+    } catch (e) {
+        user = {};
+    }
 
     cookies.set(
         'user',
