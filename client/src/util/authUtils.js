@@ -3,7 +3,10 @@ import cookies from 'browser-cookies';
 
 import history from '../history';
 import request from './fetchUtil';
-import { hasSkippedMedicalHistoryFormCookieVariableName } from './strings';
+import {
+    hasSkippedMedicalHistoryFormCookieVariableName,
+    LAGURO_AUTH_TOKEN,
+} from './strings';
 
 const domain = process.env.REACT_APP_DOMAIN_NAME_FOR_COOKIE;
 
@@ -38,6 +41,10 @@ export const setUser = newUser => {
             domain,
         }
     );
+};
+
+export const setAuthToken = token => {
+    cookies.set(LAGURO_AUTH_TOKEN, token, { domain });
 };
 
 export const onLogin = values =>
