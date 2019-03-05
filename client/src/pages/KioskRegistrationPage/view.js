@@ -273,7 +273,7 @@ export const RegisterOrLoginStep = props => (
 
                         props.formikProps.setFieldValue('isPinValid', true);
 
-                        setUser({ user, token });
+                        setUser({ ...user, token });
 
                         if (props.closeModal) {
                             props.closeModal();
