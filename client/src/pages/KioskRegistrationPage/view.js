@@ -25,7 +25,7 @@ import {
 } from './queries';
 
 import history from '../../history';
-import { setUser } from '../../util/authUtils';
+import { setUser, setAuthToken } from '../../util/authUtils';
 
 const Composed = adopt({
     sendKioskLoginCode: ({ render }) => (
@@ -238,10 +238,8 @@ export const RegisterOrLoginStep = props => (
 
                         props.formikProps.setFieldValue('isPinValid', true);
 
-                        setUser({
-                            ...user,
-                            token,
-                        });
+                        setUser({ ...user, token });
+                        setAuthToken(token);
 
                         if (props.closeModal) {
                             props.closeModal();
@@ -274,6 +272,7 @@ export const RegisterOrLoginStep = props => (
                         props.formikProps.setFieldValue('isPinValid', true);
 
                         setUser({ ...user, token });
+                        setAuthToken(token);
 
                         if (props.closeModal) {
                             props.closeModal();

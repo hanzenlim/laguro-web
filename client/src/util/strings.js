@@ -162,3 +162,5 @@ export const WARRANTY_TOOLTIP =
 
 export const hasSkippedMedicalHistoryFormCookieVariableName =
     'hasSkippedMedicalHistoryForm';
+
+export const LAGURO_AUTH_TOKEN = 'laguroAuthToken';
