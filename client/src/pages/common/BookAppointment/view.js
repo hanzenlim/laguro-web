@@ -3,7 +3,7 @@ import SearchAvailableAppointments from '../SearchAvailableAppointments';
 import PaymentConfirmation from '../PaymentConfirmation';
 import Payment from '../Payment';
 
-import { Text, Flex, Box } from '../../../components';
+import { Text, Flex, Box, Button } from '../../../components';
 
 const BookAppointmentView = props => {
     const {
@@ -38,7 +38,19 @@ const BookAppointmentView = props => {
             />
             {isPaymentVisible ? (
                 <Fragment>
-                    <Box mt={40} mb={38}>
+                    <Box mt={40}>
+                        <Button
+                            width={'100%'}
+                            height={['50px', '', '60px']}
+                            fontSize={[1, '', 3]}
+                            px={14}
+                            isSubmitting={isSubmitting}
+                            onClick={props.onBookAppointment}
+                        >
+                            Make An Appointment
+                        </Button>
+                    </Box>
+                    {/* <Box mt={40} mb={38}>
                         <Text
                             mb={16}
                             lineHeight="30px"
@@ -87,12 +99,13 @@ const BookAppointmentView = props => {
                             </Text>
                         </Flex>
                     </Box>
-                    <Payment
+                    */}
+                    {/* <Payment
                         onPay={onPay}
                         isSubmitting={isSubmitting}
                         updateSubmittingState={updateSubmittingState}
                         checkIfVerified={checkIfVerified}
-                    />
+                    /> */}
                 </Fragment>
             ) : null}
         </Fragment>

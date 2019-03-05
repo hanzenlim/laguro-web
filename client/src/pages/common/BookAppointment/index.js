@@ -112,6 +112,51 @@ class BookAppointment extends PureComponent {
         }
     };
 
+    handleBookAppointment = async () => {
+        const user = getUser();
+        const { client } = this.props;
+
+        const {
+            data: { getUser: getUserData },
+        } = await client.query({
+            query: checkPatientVerified,
+            variables: { id: _get(user, 'id') },
+            fetchPolicy: 'network-only',
+        });
+
+        this.redirectPatient(getUserData);
+
+        try {
+            this.setState({ isSubmitting: true });
+
+            await this.props.mutate({
+                variables: {
+                    input: {
+                        reservationId: this.state.reservationId,
+                        patientId: _get(user, 'id'),
+                        procedure: this.state.procedure,
+                        localStartTime: this.state.startTime,
+                        localEndTime: this.state.endTime,
+                        // paymentOptionId,
+                    },
+                },
+            });
+
+            this.setState({
+                bookedAppointment: {
+                    location: this.state.location,
+                    time: moment(this.state.startTime).format('LLLL'),
+                },
+                isSubmitting: false,
+            });
+        } catch (error) {
+            const errorMessage = error.graphQLErrors[0].message;
+            if (HANDLED_TIMESLOT_ERRORS.includes(errorMessage))
+                message.error(errorMessage);
+            this.setState({ isSubmitting: false });
+        }
+    };
+
     checkIfVerified = async () => {
         const user = getUser();
         const { client } = this.props;
@@ -192,6 +237,7 @@ class BookAppointment extends PureComponent {
                             bookedAppointment={bookedAppointment}
                             onFilter={this.handleFilter}
                             onPay={this.handlePay}
+                            onBookAppointment={this.handleBookAppointment}
                             onSelect={this.handleSelect}
                             onVerificationResult={this.handleVerificationResult}
                             isSubmitting={this.state.isSubmitting}
