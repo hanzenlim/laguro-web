@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { Icon } from 'antd';
 import ReactFilestack from 'filestack-react';
-import { secureFilestackKey } from '../../../../../config/keys';
-import { Text } from '../../../../../components';
+import { secureFilestackKey } from '../../../../config/keys';
+import { Text } from '../../../../components';
 
 const DeleteIconWrapper = styled.div`
     position: absolute;

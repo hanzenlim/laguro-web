@@ -53,12 +53,6 @@ export const VerificationFormContainer = styled.div`
     }
 `;
 
-export { default as PatientVerificationForm } from '../PatientVerificationForm';
-export {
-    default as ProviderVerificationForm,
-} from '../ProviderVerificationForm';
-export { default as HostVerificationForm } from '../HostVerificationForm';
-
 export {
     PreText,
     FrontBackDocumentsSelector,

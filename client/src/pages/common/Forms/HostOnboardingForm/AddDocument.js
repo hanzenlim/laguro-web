@@ -3,7 +3,7 @@ import _get from 'lodash/get';
 import { gql } from 'apollo-boost';
 import { Box, Text } from '../../../../components';
 import { getFileStackPolicySignatureQuery } from './queries';
-import HostVerificationForm from '../../../common/Forms/UserVerification/HostVerificationForm';
+import HostVerificationForm from './HostVerificationForm';
 
 class AddDocument extends Component {
     constructor(props) {
