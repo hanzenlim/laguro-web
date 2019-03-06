@@ -43,6 +43,12 @@ export const setUser = newUser => {
     );
 };
 
+export const eraseCookieSession = () => {
+    cookies.erase(hasSkippedMedicalHistoryFormCookieVariableName);
+    cookies.erase('user', { domain });
+    cookies.erase(LAGURO_AUTH_TOKEN, { domain });
+};
+
 export const setAuthToken = token => {
     cookies.set(LAGURO_AUTH_TOKEN, token, { domain });
 };
@@ -99,28 +105,13 @@ export const onLogout = () => {
     window && window.Intercom('shutdown');
     // eslint-disable-next-line
     window.localStorage && window.localStorage.clear();
-    cookies.erase(hasSkippedMedicalHistoryFormCookieVariableName);
-    cookies.erase('user', {
-        domain,
-    });
-    cookies.erase(LAGURO_AUTH_TOKEN, {
-        domain,
-    });
-    request('/api/logout', {
-        method: 'POST',
-        credentials: 'same-origin',
-        headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Origin': '*',
-        },
-        body: '{}',
-    }).then(() => {
-        window.location.href = '/';
-    });
+
+    eraseCookieSession();
+    history.push('/');
 };
 
 export const onKioskLogout = async () => {
-    cookies.erase('user');
+    eraseCookieSession();
     history.push('/kiosk/registration');
 };
 
