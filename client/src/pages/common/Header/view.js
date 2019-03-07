@@ -1,217 +1,36 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import Intercom from 'react-intercom';
-import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { Dropdown } from 'antd';
+import styled from 'styled-components';
 import SearchBox from '../SearchBox';
+import { Icon } from '../../../components/';
 import {
     Flex,
     Link,
     Container,
-    Icon,
-    Text,
-    Image,
     Box,
     Responsive,
-} from '../../../components';
-import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
+} from '@laguro/basic-components';
 import LoginModal from '../Modals/LoginModal';
 import { intercomKey } from '../../../config/keys';
-import theme from '../../../components/theme';
 import { withScreenSizes } from '../../../components/Responsive';
-import { setImageSizeToUrl } from '../../../util/imageUtil';
+import { DentistLink, HostLink } from './Links';
+import { LinkButton } from './common';
+import { HEADER_HEIGHT } from './constants';
+import {
+    getPageType,
+    HOME_PAGE_TYPE,
+    ALL_USER_PAGE_TYPE,
+    PATIENT_PAGE_TYPE,
+    DENTIST_AND_HOST_PAGE_TYPE,
+} from '../../../util/urls';
+import ProfileButton from './ProfileButton';
 
-import ProfileMenu from './ProfileMenu';
-import DentistsAndHostsMenu from './DentistsAndHostsMenu';
-
-const { Desktop, Mobile } = Responsive;
-
-export const HEADER_HEIGHT = 48;
-
-const NavBarLink = styled(Link)`
-    &&:hover,
-    &&:focus {
-        text-decoration: none;
-    }
-
-    @media (min-width: ${theme.breakpoints[1]}) {
-        padding: 17px 10px 10px 10px;
-        border-bottom: 7px solid;
-        border-color: ${theme.colors.divider.transparent};
-        margin-left: ${props => props.ml || '60px'};
-        transition: all 0.2s ease-in-out;
-
-        &&:hover,
-        &&:focus {
-            border-color: ${theme.colors.divider.blue};
-            text-decoration: none;
-        }
-    }
-`;
-
-const ProfileImage = styled(Flex)`
-    cursor: pointer;
-`;
-
-const StyledText = styled(Text)`
-    cursor: pointer;
-`;
-
-const StyledDropContainer = styled.div`
-    @media (max-width: 991px) {
-        .ant-dropdown {
-            height: 250vh;
-            overflow-y: auto;
-            background-color: ${theme.colors.background.lightGray};
-            top: ${HEADER_HEIGHT}px !important;
-            left: 0 !important;
-            right: 0 !important;
-        }
-
-        .ant-dropdown-menu {
-            padding: 0;
-        }
-    }
-`;
+const { Desktop } = Responsive;
 
 const StyledFlex = styled(Flex)`
     box-shadow: ${props => props.boxShadow};
 `;
-
-class ProfileButton extends Component {
-    openLoginForLogIn = isMobile => () => {
-        const { toggleLoginModal } = this.props;
-        if (!isMobile) {
-            toggleLoginModal();
-        }
-    };
-
-    render() {
-        const {
-            auth,
-            pathname,
-            onLogout,
-            onLandingPage,
-            isDentist,
-            isHost,
-            desktopOnly,
-        } = this.props;
-        return auth ? (
-            <Fragment>
-                <Dropdown
-                    overlay={
-                        <ProfileMenu
-                            isDentist={isDentist}
-                            isHost={isHost}
-                            logout={onLogout}
-                        />
-                    }
-                    placement={'bottomRight'}
-                    trigger={desktopOnly ? ['hover'] : ['click']}
-                    getPopupContainer={() =>
-                        document.getElementById('dropdownContainer')
-                    }
-                >
-                    <ProfileImage alignItems="center">
-                        <Image
-                            src={
-                                auth.imageUrl
-                                    ? setImageSizeToUrl(
-                                          auth.imageUrl,
-                                          desktopOnly ? 50 : 30
-                                      )
-                                    : defaultUserImage
-                            }
-                            width={[30, '', 50]}
-                            height={[30, '', 50]}
-                            borderRadius={50}
-                            ml={60}
-                            data-cy="profile-button"
-                        />
-                        <Icon
-                            ml={4}
-                            transform="scale(0.8)"
-                            fill={onLandingPage ? '#FFF' : '#3481F8'}
-                            type="downArrow"
-                        />
-                    </ProfileImage>
-                </Dropdown>
-                <StyledDropContainer id="dropdownContainer" />
-            </Fragment>
-        ) : (
-            <Fragment>
-                <Mobile>
-                    {matches => (
-                        <NavBarLink
-                            onClick={this.openLoginForLogIn(matches)}
-                            to={
-                                matches
-                                    ? `/login?redirectTo=${pathname}`
-                                    : pathname
-                            }
-                        >
-                            <Text
-                                color={
-                                    onLandingPage ? 'text.white' : 'text.black'
-                                }
-                                fontSize={[0, '', 1]}
-                                fontWeight="bold"
-                                mb={[0, '', 4]}
-                            >
-                                log in
-                            </Text>
-                        </NavBarLink>
-                    )}
-                </Mobile>
-            </Fragment>
-        );
-    }
-}
-
-class DentistsAndHostsButton extends Component {
-    render() {
-        const {
-            auth,
-            onLandingPage,
-            isDentist,
-            isHost,
-            desktopOnly,
-        } = this.props;
-        return (
-            auth && (
-                <Fragment>
-                    <Dropdown
-                        overlay={
-                            <DentistsAndHostsMenu
-                                isDentist={isDentist}
-                                isHost={isHost}
-                            />
-                        }
-                        placement={'bottomRight'}
-                        trigger={desktopOnly ? ['hover'] : ['click']}
-                        getPopupContainer={() =>
-                            document.getElementById('dropdownContainer2')
-                        }
-                    >
-                        {auth && isDentist && (
-                            <StyledText
-                                color={
-                                    onLandingPage ? 'text.white' : 'text.black'
-                                }
-                                fontSize={1}
-                                fontWeight="bold"
-                                mb={[0, '', 4]}
-                            >
-                                Dentists and Hosts
-                            </StyledText>
-                        )}
-                    </Dropdown>
-                    <StyledDropContainer id="dropdownContainer2" />
-                </Fragment>
-            )
-        );
-    }
-}
 
 const IntercomContainer = ({ auth }) => {
     const user = auth
@@ -223,6 +42,64 @@ const IntercomContainer = ({ auth }) => {
           }
         : {};
     return <Intercom appID={intercomKey} {...user} />;
+};
+
+const HeaderLink = props => <Box {...props} ml={[10, '', 25]} />;
+
+const getHeaderBackgroundColor = () => {
+    const pageType = getPageType();
+    const backgroundWhite = 'background.white';
+    const backgroundBlue = 'background.blue';
+    switch (pageType) {
+        case HOME_PAGE_TYPE:
+            return 'transparent';
+        case ALL_USER_PAGE_TYPE:
+            return backgroundWhite;
+        case PATIENT_PAGE_TYPE:
+            return backgroundWhite;
+        case DENTIST_AND_HOST_PAGE_TYPE:
+            return backgroundBlue;
+        default:
+            return backgroundWhite;
+    }
+};
+
+const getLogoType = () => {
+    const pageType = getPageType();
+    const whiteLogo = 'whiteLogo';
+    const blueLogo = 'defaultLogo';
+
+    switch (pageType) {
+        case HOME_PAGE_TYPE:
+            return whiteLogo;
+        case ALL_USER_PAGE_TYPE:
+            return blueLogo;
+        case PATIENT_PAGE_TYPE:
+            return blueLogo;
+        case DENTIST_AND_HOST_PAGE_TYPE:
+            return whiteLogo;
+        default:
+            return blueLogo;
+    }
+};
+
+const getLinkTextColor = () => {
+    const pageType = getPageType();
+    const textWhite = 'text.white';
+    const textBlack = 'text.black';
+
+    switch (pageType) {
+        case HOME_PAGE_TYPE:
+            return textWhite;
+        case ALL_USER_PAGE_TYPE:
+            return textBlack;
+        case PATIENT_PAGE_TYPE:
+            return textBlack;
+        case DENTIST_AND_HOST_PAGE_TYPE:
+            return textWhite;
+        default:
+            return textBlack;
+    }
 };
 
 class Header extends Component {
@@ -239,15 +116,11 @@ class Header extends Component {
         } = this.props;
 
         let placeholder;
-        let logoType;
 
         const onLandingPage = pathname === '/';
-        const onOnboardingPage = pathname.includes('host-onboarding');
         if (pathname.startsWith('/office')) {
-            logoType = 'dentistLogo';
             placeholder = 'Search offices';
         } else {
-            logoType = onLandingPage ? 'whiteLogo' : 'defaultLogo';
             placeholder = 'Search dentists';
         }
 
@@ -261,18 +134,12 @@ class Header extends Component {
             return 'relative';
         };
 
-        const currentUrl = window.location.href;
-
         return (
             <StyledFlex
                 is="header"
                 width="100%"
                 height={[HEADER_HEIGHT, '', 120]}
-                bg={
-                    onLandingPage
-                        ? 'background.transparent'
-                        : 'background.white'
-                }
+                bg={getHeaderBackgroundColor()}
                 boxShadow={
                     onLandingPage ? 'none' : '0 2px 4px 0 rgba(0, 0, 0, 0.1);'
                 }
@@ -297,7 +164,7 @@ class Header extends Component {
                 >
                     <Link to={'/'} display="flex">
                         <Icon
-                            type={logoType}
+                            type={getLogoType()}
                             isButton={true}
                             width="auto"
                             height={[22, '', 40]}
@@ -311,67 +178,44 @@ class Header extends Component {
                     </Desktop>
 
                     <Flex alignItems="center">
-                        <Desktop>
-                            {auth && isDentist && (
-                                <DentistsAndHostsButton
-                                    isDentist={isDentist}
-                                    isHost={isHost}
+                        <HeaderLink>
+                            {auth && isHost && (
+                                <HostLink
                                     auth={auth}
+                                    desktopOnly={desktopOnly}
                                     onLandingPage={onLandingPage}
+                                    textColor={getLinkTextColor()}
                                 />
                             )}
-                        </Desktop>
-                        <Desktop>
-                            {!onOnboardingPage && !isDentist && (
-                                <NavBarLink
-                                    ml="0px"
-                                    to={
-                                        auth
-                                            ? '/host-onboarding/add-office'
-                                            : '/'
-                                    }
-                                    onClick={auth ? () => {} : toggleLoginModal}
-                                >
-                                    <Text
-                                        color={
-                                            onLandingPage
-                                                ? 'text.white'
-                                                : 'text.black'
-                                        }
-                                        fontSize={1}
-                                        fontWeight="bold"
-                                        mb={[0, '', 4]}
-                                    >
-                                        Become a Host
-                                    </Text>
-                                </NavBarLink>
+                        </HeaderLink>
+                        <HeaderLink>
+                            {auth && isDentist && (
+                                <DentistLink
+                                    auth={auth}
+                                    desktopOnly={desktopOnly}
+                                    onLandingPage={onLandingPage}
+                                    textColor={getLinkTextColor()}
+                                />
                             )}
-                        </Desktop>
-                        {auth && isDentist && (
-                            <Box ml={[0, '', 50]} mr={[-30, '', 0]}>
+                        </HeaderLink>
+                        {/* Blog link doesn't show if user is both dentist and host on mobile */}
+                        {!(!desktopOnly && isDentist && isHost) && (
+                            <HeaderLink>
                                 <a
                                     ml="0px"
                                     target="_blank"
-                                    href={
-                                        currentUrl.includes('laguro-stage')
-                                            ? 'http://ltm.laguro-stage.com/'
-                                            : 'http://ltm.laguro.com/'
-                                    }
+                                    href={'http://blog.laguro.com/'}
                                 >
-                                    <Text
-                                        color={
-                                            onLandingPage
-                                                ? 'text.white'
-                                                : 'text.black'
-                                        }
-                                        fontSize={[0, '', 1]}
+                                    <LinkButton
+                                        textColor={getLinkTextColor()}
+                                        fontSize={1}
                                         fontWeight="bold"
-                                        mb={[0, '', 4]}
+                                        type="ghost"
                                     >
-                                        LTM
-                                    </Text>
+                                        Blog
+                                    </LinkButton>
                                 </a>
-                            </Box>
+                            </HeaderLink>
                         )}
 
                         <ProfileButton

@@ -77,24 +77,53 @@ export const MY_BOOKINGS = 'my_bookings';
 export const NEW_APPOINTMENT = 'new_appointment';
 
 // menu items
+// string values are texts shown on UI
 export const HOME_MENU = 'Home';
-export const LOG_OUT_MENU = 'Log Out';
-export const MY_PAGE_MENU = 'My Page';
-export const MY_ACCOUNT_MENU = 'My Account';
-export const MY_INSURANCE_MENU = 'My Insurance';
-export const MY_PROFILE_MENU = 'My Profile';
-export const MY_APPOINTMENTS_MENU = 'My Appointments';
-export const PAYMENT_HISTORY_MENU = 'Payment History';
-export const LAGURO_BALANCE_MENU = 'Laguro Balance';
-export const PREVIEW_PUBLIC_PROFILE_MENU = 'Preview Public Profile';
-export const MY_LISTINGS_MENU = 'My Listings';
-export const MY_BOOKINGS_MENU = 'My Bookings';
-export const NEW_APPOINTMENT_MENU = 'New Appointment';
-export const PAYMENT_REQUEST_MENU = 'Payment Request';
-export const SEARCH_FOR_CHAIRS_MENU = 'Search for Chairs';
-export const ADD_A_NEW_OFFICE_MENU = 'Add a New Office';
-export const BECOME_A_HOST_MENU = 'Become a Host';
-export const MY_CALENDAR_MENU = 'My Calendar';
+export const LOG_OUT_MENU = 'Log out';
+export const MY_PAGE_MENU = 'My page';
+export const MY_ACCOUNT_MENU = 'My account';
+export const MY_INSURANCE_MENU = 'My insurance';
+export const MY_PROFILE_MENU = 'My profile';
+export const MY_APPOINTMENTS_MENU = 'My appointments';
+export const PAYMENT_HISTORY_MENU = 'Payment history';
+export const LAGURO_BALANCE_MENU = 'Laguro balance';
+export const PREVIEW_PUBLIC_PROFILE_MENU = 'Preview public profile';
+export const MY_LISTINGS_MENU = 'My listings';
+export const MY_BOOKINGS_MENU = 'My bookings';
+export const NEW_APPOINTMENT_MENU = 'New appointment';
+export const PAYMENT_REQUEST_MENU = 'Payment request';
+export const SEARCH_FOR_CHAIRS_MENU = 'Search for chairs';
+export const ADD_A_NEW_OFFICE_MENU = 'Add a new office';
+export const BECOME_A_HOST_MENU = 'Become a host';
+export const MY_CALENDAR_MENU = 'My calendar';
+
+// profile menu
+export const ACCOUNT_SETTINGS_MENU_TEXT = 'Account settings';
+export const APPOINTMENTS_MENU_TEXT = 'Appointments';
+export const MEDICAL_HISTORY_MENU_TEXT = 'Medical history';
+export const INSURANCE_MENU_TEXT = 'Insurance';
+export const PENDING_REQUESTS_MENU_TEXT = 'Pending requests';
+export const RECEIPTS_MENU_TEXT = 'Receipts';
+export const PAYMENT_METHODS_MENU_TEXT = 'Payment methods';
+export const BECOME_A_DENTIST_MENU_TEXT = 'Become a dentist';
+export const BECOME_A_HOST_MENU_TEXT = 'Become a host';
+export const LOG_OUT_MENU_TEXT = 'Log out';
+
+// dentist menu
+export const LAGURO_TREATMENT_MODULE_MENU_TEXT = 'Laguro Treatment Module';
+export const PROFILE_SETTINGS_MENU_TEXT = 'Profile settings';
+export const DENTIST_VERIFICATION_MENU_TEXT = 'Dentist verification';
+export const NEW_APPOINTMENT_MENU_TEXT = 'New Appointment';
+export const MY_PATIENTS_MENU_TEXT = 'My patients';
+export const BOOKINGS_MENU_TEXT = 'Bookings';
+export const LAGURO_BALANCE_MENU_TEXT = 'Laguro Balance';
+export const SEARCH_FOR_CHAIRS_MENU_TEXT = 'Search for chairs';
+export const VIEW_PROFILE_MENU_TEXT = 'View profile';
+
+// host menu
+export const MY_OFFICES_MENU_TEXT = 'My offices';
+// LAGURO_BALANCE_MENU_TEXT from dentist menu uses for host
+export const ADD_A_NEW_OFFICE_MENU_TEXT = 'Add a new office';
 
 // Payment method
 export const NEW_CARD_PAYMENT_METHOD = 'NEW_CARD_PAYMENT_METHOD';

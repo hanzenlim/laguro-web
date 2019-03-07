@@ -19,6 +19,30 @@ import {
     ONBOARDING_NAME_AND_PERSONA_PAGE,
     PATIENT_ONBOARDING_MEDICAL_HISTORY_FORM,
     PATIENT_ONBOARDING_INSURANCE_FORM,
+    LOGIN_PAGE_URL,
+    HOST_ONBOARDING_PAGE_URL_PREFIX,
+    PROCEDURE_PAYMENT_REQUEST_PAGE_URL,
+    PROFILE_PAGE_URL,
+    APPOINTMENT_CONFIRMATION_PAGE_URL,
+    DENTIST_PROFILE_PAGE_URL,
+    DENTIST_DETAILS_PAGE_URL_PREFIX,
+    OFFICE_DETAILS_PAGE_URL_PREFIX,
+    RESET_PASSWORD_PAGE_URL,
+    ABOUT_PAGE_URL,
+    GENERAL_ERROR_PAGE_URL,
+    COUNTDOWN_PAGE_URL,
+    TERMS_PAGE_URL,
+    PRIVACY_PAGE_URL,
+    KIOSK_REGISTRATION_PAGE_URL,
+    KIOSK_BOOK_APPT_URL,
+    KIOSK_REASON_OF_VISIT_PAGE_URL,
+    KIOSK_SELECT_PROCEDURE_PAGE_URL,
+    KIOSK_BOOKING_CONFIRMATION_URL_PREFIX,
+    KIOSK_MEDICAL_HISTORY_FORM_CONFIRMATION_PAGE_URL,
+    KIOSK_CHECKIN_PAGE_URL_PREFIX,
+    OFFICE_SEARCH_PAGE_URL,
+    NEW_REVIEW_PAGE_URL_PREFIX,
+    KIOSK_CONFIRMATION_PAGE_URL,
 } from './util/urls';
 
 const Header = Loadable({
@@ -269,60 +293,62 @@ class App extends Component {
                             <ErrorBoundary>
                                 <Switch>
                                     <Route
-                                        path="/login"
+                                        path={LOGIN_PAGE_URL}
                                         component={LoginPage}
                                     />
                                     <PrivateRoute
-                                        path="/host-onboarding/:step"
+                                        path={`${HOST_ONBOARDING_PAGE_URL_PREFIX}/:step`}
                                         component={HostOnboarding}
                                     />
                                     <PrivateRoute
-                                        path="/procedure-payment"
+                                        path={
+                                            PROCEDURE_PAYMENT_REQUEST_PAGE_URL
+                                        }
                                         component={ProcedurePaymentRequestPage}
                                     />
                                     <PrivateRoute
-                                        path="/profile"
+                                        path={PROFILE_PAGE_URL}
                                         component={ProfilePage}
                                     />
                                     <PrivateRoute
-                                        path="/appointment-confirmation"
+                                        path={APPOINTMENT_CONFIRMATION_PAGE_URL}
                                         component={AppointmentConfirmationPage}
                                     />
                                     <PrivateRoute
-                                        path="/dentist-profile"
+                                        path={DENTIST_PROFILE_PAGE_URL}
                                         component={DentistProfilePage}
                                     />
                                     <Route
-                                        path="/dentist/search"
+                                        path={DENTIST_PROFILE_PAGE_URL}
                                         component={DentistSearchPage}
                                     />
                                     <Route
-                                        path="/dentist/:id"
+                                        path={`${DENTIST_DETAILS_PAGE_URL_PREFIX}/:id`}
                                         component={DentistDetailsPage}
                                     />
                                     <Route
-                                        path="/office/search"
+                                        path={OFFICE_SEARCH_PAGE_URL}
                                         component={OfficeSearchPage}
                                     />
                                     <Route
-                                        path="/office/:id"
+                                        path={`${OFFICE_DETAILS_PAGE_URL_PREFIX}/:id`}
                                         component={OfficeDetailsPage}
                                     />
                                     <PrivateRoute
-                                        path="/review/:id"
+                                        path={`${NEW_REVIEW_PAGE_URL_PREFIX}/:id`}
                                         component={NewReviewPage}
                                     />
                                     <Route
-                                        path="/reset-password"
+                                        path={RESET_PASSWORD_PAGE_URL}
                                         component={ResetPassPage}
                                     />
                                     <Route
-                                        path="/about"
+                                        path={ABOUT_PAGE_URL}
                                         component={AboutPage}
                                     />
 
                                     <Route
-                                        path="/error"
+                                        path={GENERAL_ERROR_PAGE_URL}
                                         component={GeneralErrorPage}
                                     />
                                     <Route
@@ -331,17 +357,17 @@ class App extends Component {
                                         component={HomePage}
                                     />
                                     <Route
-                                        path="/countdown"
+                                        path={COUNTDOWN_PAGE_URL}
                                         exact
                                         component={CountdownPage}
                                     />
                                     <Route
-                                        path="/terms"
+                                        path={TERMS_PAGE_URL}
                                         exact
                                         component={TermsPage}
                                     />
                                     <Route
-                                        path="/privacy"
+                                        path={PRIVACY_PAGE_URL}
                                         exact
                                         component={PrivacyPage}
                                     />
@@ -358,27 +384,29 @@ class App extends Component {
                                         component={NameAndPersonaPage}
                                     />
                                     <Route
-                                        path="/kiosk/registration"
+                                        path={KIOSK_REGISTRATION_PAGE_URL}
                                         exact
                                         component={KioskRegistrationPage}
                                     />
                                     <Route
-                                        path="/kiosk/book-appointment"
+                                        path={KIOSK_BOOK_APPT_URL}
                                         exact
                                         component={KioskBookAnAppointmentPage}
                                     />
                                     <Route
-                                        path="/kiosk/reason-of-visit"
+                                        path={KIOSK_REASON_OF_VISIT_PAGE_URL}
                                         exact
                                         component={KioskReasonOfVisitPage}
                                     />
                                     <Route
-                                        path="/kiosk/select-procedure"
+                                        path={KIOSK_SELECT_PROCEDURE_PAGE_URL}
                                         exact
                                         component={KioskSelectProcedurePage}
                                     />
                                     <Route
-                                        path="/kiosk/booking-confirmation/:id"
+                                        path={
+                                            KIOSK_BOOKING_CONFIRMATION_URL_PREFIX
+                                        }
                                         exact
                                         component={KioskBookingConfirmationPage}
                                     />
@@ -390,7 +418,9 @@ class App extends Component {
                                         component={KioskMedicalHistoryFormPage}
                                     />
                                     <Route
-                                        path="/kiosk/medical-history-form-confirmation"
+                                        path={
+                                            KIOSK_MEDICAL_HISTORY_FORM_CONFIRMATION_PAGE_URL
+                                        }
                                         exact
                                         component={
                                             KioskMedicalHistoryFormConfirmationPage
@@ -402,13 +432,13 @@ class App extends Component {
                                         component={KioskInsurancePage}
                                     />
                                     <Route
-                                        path="/kiosk/check-in/:id"
+                                        path={KIOSK_CHECKIN_PAGE_URL_PREFIX}
                                         exact
                                         component={KioskCheckInPage}
                                     />
 
                                     <Route
-                                        path="/kiosk/confirmation/:id"
+                                        path={KIOSK_CONFIRMATION_PAGE_URL}
                                         exact
                                         component={KioskConfirmationPage}
                                     />

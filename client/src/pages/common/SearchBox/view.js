@@ -78,6 +78,7 @@ const SearchBox = props => {
                 bg="background.blue"
                 onClick={onSubmit}
                 pl={[0, '', isLarge ? 40 : 10]}
+                border={!isLarge && 'solid 1px #ffffff'}
             >
                 <Flex
                     alignItems="center"
