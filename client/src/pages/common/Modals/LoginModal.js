@@ -4,30 +4,15 @@ import PropTypes from 'prop-types';
 import { Modal } from '../../../components';
 import Login from '../Login';
 
-const LoginModal = ({
-    login,
-    visible,
-    closeModal,
-    message,
-    location,
-    closable,
-    isSubmitting,
-}) => (
+const LoginModal = ({ isLoginModalOpen, toggleLoginModal, message }) => (
     <Modal
-        onCancel={closeModal}
+        onCancel={toggleLoginModal}
         destroyOnClose={true}
-        visible={visible}
+        visible={isLoginModalOpen}
         width={600}
         bodyStyle={{ height: 600, padding: 0 }}
-        closable={closable}
     >
-        <Login
-            login={login}
-            message={message}
-            location={location}
-            isSubmitting={isSubmitting}
-            closeModal={closeModal}
-        />
+        <Login closeModal={toggleLoginModal} message={message} />
     </Modal>
 );
 

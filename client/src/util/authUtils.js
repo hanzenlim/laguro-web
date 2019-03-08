@@ -117,11 +117,3 @@ export const onKioskLogout = async () => {
     eraseCookieSession();
     history.push('/kiosk/registration');
 };
-
-export const openLoginModal = clientCache => {
-    clientCache.writeData({ data: { visibleModal: 'login' } });
-};
-
-export const closeModal = clientCache => {
-    clientCache.writeData({ data: { visibleModal: null } });
-};

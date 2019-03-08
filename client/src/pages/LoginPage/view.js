@@ -6,31 +6,16 @@ import Login from '../common/Login';
 
 const { Mobile, TabletDesktop } = Responsive;
 
-const LoginPageView = ({
-    onLogin,
-    closeModal,
-    closable,
-    visibleModal,
-    message,
-    isSubmitting,
-}) => (
+const LoginPageView = ({ isLoginModalOpen, toggleLoginModal, message }) => (
     <Box>
         <Mobile>
-            <Login
-                closeModal={closeModal}
-                login={onLogin}
-                message={message}
-                isSubmitting={isSubmitting}
-            />
+            <Login closeModal={toggleLoginModal} message={message} />
         </Mobile>
         <TabletDesktop>
             <LoginModal
-                login={onLogin}
-                closeModal={closeModal}
-                closable={closable}
-                visible={visibleModal === 'login'}
+                isLoginModalOpen={isLoginModalOpen}
+                toggleLoginModal={toggleLoginModal}
                 message={message}
-                isSubmitting={isSubmitting}
             />
         </TabletDesktop>
     </Box>
