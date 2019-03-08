@@ -35,7 +35,9 @@ const SearchBox = props => {
         onKeyPress,
     } = props;
 
+    // isLarge is used for home page
     const isLarge = size === 'large';
+    const heightInHeader = 50;
     return (
         <Flex
             width={['100%', '', isLarge ? '100%' : '53%']}
@@ -49,7 +51,7 @@ const SearchBox = props => {
                 mb={[7, '', 0]}
             >
                 <LocationFilter
-                    height={isLarge ? [50, 50, 60] : 60}
+                    height={isLarge ? [50, 50, 60] : heightInHeader}
                     initialValue={initialLocationFilterValue}
                     placeholder={locationPlaceholder}
                     onTextChange={onTextChange}
@@ -67,13 +69,13 @@ const SearchBox = props => {
                     initialValue={initialDateFilterValue}
                     onDateChange={onDateFilterChange}
                     width="100%"
-                    height={isLarge ? [50, 50, 60] : 60}
+                    height={isLarge ? [50, 50, 60] : heightInHeader}
                     format={isLarge ? 'ddd MM/DD' : 'MM/DD'}
                 />
             </Box>
             <StyledButton
-                height="60px"
-                width={['100%', '', isLarge ? '210px' : '60px']}
+                width={['100%', '', isLarge ? '210px' : heightInHeader]}
+                height={isLarge ? [50, 50, 60] : heightInHeader}
                 type="default"
                 bg="background.blue"
                 onClick={onSubmit}

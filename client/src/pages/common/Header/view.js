@@ -119,7 +119,7 @@ class Header extends Component {
             <StyledFlex
                 is="header"
                 width="100%"
-                height={[HEADER_HEIGHT, '', 120]}
+                height={[HEADER_HEIGHT, '', 83]}
                 bg={getHeaderBackgroundColor()}
                 boxShadow={
                     onLandingPage ? 'none' : '0 2px 4px 0 rgba(0, 0, 0, 0.1);'
@@ -143,20 +143,28 @@ class Header extends Component {
                     justifyContent="space-between"
                     alignItems="center"
                 >
-                    <Link to={'/'} display="flex">
-                        <Icon
-                            type={getLogoType()}
-                            isButton={true}
-                            width="auto"
-                            height={[22, '', 40]}
-                        />
-                    </Link>
+                    <Flex width="100%">
+                        <Link mr={32} to={'/'} display="flex">
+                            {/* mb is because the icon has extra space at the bottom */}
+                            <Flex alignItems="center" height="100%" mb={6}>
+                                <Icon
+                                    type={getLogoType()}
+                                    isButton={true}
+                                    width="auto"
+                                    height={[22, '', 37]}
+                                />
+                            </Flex>
+                        </Link>
 
-                    <Desktop>
-                        {!onLandingPage && (
-                            <SearchBox placeholder={placeholder} size="small" />
-                        )}
-                    </Desktop>
+                        <Desktop>
+                            {!onLandingPage && (
+                                <SearchBox
+                                    placeholder={placeholder}
+                                    size="small"
+                                />
+                            )}
+                        </Desktop>
+                    </Flex>
 
                     <Flex alignItems="center">
                         <HeaderLink>
