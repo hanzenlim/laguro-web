@@ -46,6 +46,9 @@ export const setUser = newUser => {
 export const eraseCookieSession = () => {
     cookies.erase(hasSkippedMedicalHistoryFormCookieVariableName);
     cookies.erase('user', { domain });
+
+    // Temporary putting this to remove old user cookie.
+    cookies.erase('user');
     cookies.erase(LAGURO_AUTH_TOKEN, { domain });
 };
 
