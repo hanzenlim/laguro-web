@@ -11,7 +11,7 @@ import {
 } from '@laguro/basic-components';
 import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
 import { setImageSizeToUrl } from '../../../util/imageUtil';
-import { StyledDropContainer } from './common';
+import { StyledDropContainer, getLinkTextColor } from './common';
 import { profileMenuSections } from './constants';
 import Menus from './Menus';
 import styled from 'styled-components';
@@ -123,9 +123,7 @@ class ProfileButton extends Component {
                             }
                         >
                             <Text
-                                color={
-                                    onLandingPage ? 'text.white' : 'text.black'
-                                }
+                                color={getLinkTextColor()}
                                 fontSize={[0, '', 1]}
                                 fontWeight="bold"
                                 mb={[0, '', 4]}

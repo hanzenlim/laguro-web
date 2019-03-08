@@ -43,6 +43,7 @@ import {
     OFFICE_SEARCH_PAGE_URL,
     NEW_REVIEW_PAGE_URL_PREFIX,
     KIOSK_CONFIRMATION_PAGE_URL,
+    DENTIST_SEARCH_PAGE_URL,
 } from './util/urls';
 
 const Header = Loadable({
@@ -319,7 +320,7 @@ class App extends Component {
                                         component={DentistProfilePage}
                                     />
                                     <Route
-                                        path={DENTIST_PROFILE_PAGE_URL}
+                                        path={DENTIST_SEARCH_PAGE_URL}
                                         component={DentistSearchPage}
                                     />
                                     <Route

@@ -63,6 +63,7 @@ const paymentMenuTexts = [
     PAYMENT_METHODS_MENU_TEXT,
 ];
 
+// Menus.js also includes Log out button at the end of menu
 export const profileMenuSections = [
     { dividerText: '', menuTexts: unclassfiedProfileMenuTexts },
     { dividerText: 'PATIENT', menuTexts: patientMenuTexts },
@@ -70,6 +71,8 @@ export const profileMenuSections = [
 ];
 
 // dentist menu
+
+// unclassified means there is no section header for given menu texts
 const unclassfiedDentistMenuTexts = [LAGURO_TREATMENT_MODULE_MENU_TEXT];
 const unclassfiedDentistMenuTexts2 = [
     PROFILE_SETTINGS_MENU_TEXT,
@@ -88,9 +91,14 @@ const unclassfiedDentistMenuTexts3 = [
     VIEW_PROFILE_MENU_TEXT,
 ];
 
+// divider will appear at the top of each menu section
 export const dentistMenuSections = [
     { dividerText: '', menuTexts: unclassfiedDentistMenuTexts },
-    { dividerText: '', menuTexts: unclassfiedDentistMenuTexts2 },
+    {
+        dividerText: '',
+        menuTexts: unclassfiedDentistMenuTexts2,
+        isLong: true,
+    },
     { dividerText: 'Appointments', menuTexts: apptsMenuTexts },
     { dividerText: '', menuTexts: unclassfiedDentistMenuTexts3 },
 ];
@@ -104,5 +112,5 @@ const unclassfiedHostMenuTexts2 = [ADD_A_NEW_OFFICE_MENU_TEXT];
 
 export const hostMenuSections = [
     { dividerText: '', menuTexts: unclassfiedHostMenuTexts },
-    { dividerText: '', menuTexts: unclassfiedHostMenuTexts2 },
+    { dividerText: '', menuTexts: unclassfiedHostMenuTexts2, isLong: true },
 ];

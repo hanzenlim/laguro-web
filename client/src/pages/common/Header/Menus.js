@@ -21,12 +21,13 @@ import {
 import { withScreenSizes } from '../../../components/Responsive';
 
 export const StyledMenu = styled(Menu)`
-    && {
+    &&& {
         border-radius: 0;
+        box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.2);
+        ${space};
         @media (min-width: ${theme.breakpoints[1]}) {
             ${width}
         }
-        ${space};
     }
 
     .ant-dropdown-menu-item {
@@ -59,13 +60,16 @@ export const StyledMenuItem = styled(Menu.Item)`
                 ${space};
             }
         }
+        // to remove blue background
+        background-color: unset;
     }
 `;
 
 export const StyledMenuDivider = styled(Menu.Divider)`
     &&& {
-        margin-top: 1px;
-        margin-bottom: 0.1px;
+        margin-top: 2px;
+        margin-bottom: 0;
+        border-bottom: 1px solid;
         border-color: #dbdbdb;
     }
 `;
@@ -153,7 +157,7 @@ const Menus = props => {
         });
     }
 
-    const renderDivider = text => {
+    const renderDivider = ({ text, isLong }) => {
         const mobileTextComponentHeight = _isEmpty(text) ? 10 : 30;
         const textComponent = (
             <Text
@@ -172,15 +176,27 @@ const Menus = props => {
         );
 
         return desktopOnly ? (
-            <Box px={menuPx} mt={[0, '', dividerMarginTop]}>
+            <Box px={isLong ? 0 : menuPx} mt={[0, '', dividerMarginTop]}>
                 {!_isEmpty(text) ? (
                     <Grid gridColumnGap="7px" gridTemplateColumns="1fr 1fr 1fr">
-                        <Box borderBottom="solid 1px #dbdbdb" height={7} />
+                        <Box
+                            borderColor="divider.gray"
+                            borderBottom="solid 1px"
+                            height={7}
+                        />
                         {textComponent}
-                        <Box borderBottom="solid 1px #dbdbdb" height={7} />
+                        <Box
+                            borderColor="divider.gray"
+                            borderBottom="solid 1px"
+                            height={7}
+                        />
                     </Grid>
                 ) : (
-                    <Box borderBottom="solid 1px #dbdbdb" height={7} />
+                    <Box
+                        borderColor="divider.gray"
+                        borderBottom="solid 1px"
+                        height={7}
+                    />
                 )}
             </Box>
         ) : (
@@ -198,7 +214,11 @@ const Menus = props => {
             {...mobileBorderProps}
         >
             {modifiedMenuSections.map((menuSection, index) => [
-                index !== 0 && renderDivider(menuSection.dividerText),
+                index !== 0 &&
+                    renderDivider({
+                        text: menuSection.dividerText,
+                        isLong: menuSection.isLong,
+                    }),
                 menuSection.menuTexts.map(menuText => [
                     <StyledMenuItem p={menuItemPadding}>
                         <Link to={menuTextToLinkTo[menuText]}>
@@ -212,7 +232,6 @@ const Menus = props => {
             {hasLogOut && [
                 desktopOnly ? (
                     <Box
-                        mx={menuPx}
                         mt={[0, '', dividerMarginTop]}
                         borderBottom="solid 1px #e6e6e6"
                         height={7}
@@ -220,7 +239,6 @@ const Menus = props => {
                 ) : (
                     renderDivider('')
                 ),
-
                 <StyledMenuItem p={menuItemPadding}>
                     <Link
                         data-cy="logout-link"

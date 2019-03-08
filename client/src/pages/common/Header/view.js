@@ -15,7 +15,7 @@ import LoginModal from '../Modals/LoginModal';
 import { intercomKey } from '../../../config/keys';
 import { withScreenSizes } from '../../../components/Responsive';
 import { DentistLink, HostLink } from './Links';
-import { LinkButton } from './common';
+import { LinkButton, getLinkTextColor } from './common';
 import { HEADER_HEIGHT } from './constants';
 import {
     getPageType,
@@ -80,25 +80,6 @@ const getLogoType = () => {
             return whiteLogo;
         default:
             return blueLogo;
-    }
-};
-
-const getLinkTextColor = () => {
-    const pageType = getPageType();
-    const textWhite = 'text.white';
-    const textBlack = 'text.black';
-
-    switch (pageType) {
-        case HOME_PAGE_TYPE:
-            return textWhite;
-        case ALL_USER_PAGE_TYPE:
-            return textBlack;
-        case PATIENT_PAGE_TYPE:
-            return textBlack;
-        case DENTIST_AND_HOST_PAGE_TYPE:
-            return textWhite;
-        default:
-            return textBlack;
     }
 };
 
