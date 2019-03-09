@@ -1,6 +1,9 @@
 import React, { Fragment, PureComponent } from 'react';
+import { compose, withApollo } from 'react-apollo';
 import { Helmet } from 'react-helmet';
 import _throttle from 'lodash/throttle';
+import _startCase from 'lodash/startCase';
+import _toLower from 'lodash/toLower';
 import queryString from 'query-string';
 import _get from 'lodash/get';
 import DentistSearchPageView from './view';
@@ -11,8 +14,10 @@ import { DENTISTS } from '../../util/strings';
 import { Loading, Box } from '../../components';
 import { getMyPosition, DEFAULT_LOCATION } from '../../util/navigatorUtil';
 import { numMaxContainerWidth } from '../../components/theme';
+import { batchGetUsers } from './queries';
+import moment from 'moment';
 
-const PAGE_SIZE = 9;
+const PAGE_SIZE = 15;
 const DISTANCE = '75km';
 
 // ignore timezone-related characters in timestamp
@@ -28,6 +33,7 @@ class DetailsSearchPage extends PureComponent {
             data: [],
             total: 0,
             loading: true,
+            showMap: false,
             defaultPosition: DEFAULT_LOCATION,
             mapDimensions: {
                 width,
@@ -50,13 +56,17 @@ class DetailsSearchPage extends PureComponent {
         }
         const response = await this.fetchData(urlParams);
         const mappedData = this.getMappedData(response);
+        const mappedDataWithTimeSlots = await this.addTimeSlots(
+            mappedData,
+            urlParams.startTime
+        );
         const total = this.getDataCount(response);
 
         this.updateDimensions();
         window.addEventListener('resize', _throttle(this.updateDimensions));
 
         this.setState({
-            data: mappedData,
+            data: mappedDataWithTimeSlots,
             total,
             loading: false,
             urlParams,
@@ -72,21 +82,62 @@ class DetailsSearchPage extends PureComponent {
             const nextUrlParams = queryString.parse(this.props.location.search);
             const response = await this.fetchData(nextUrlParams);
             const mappedData = this.getMappedData(response);
+            const mappedDataWithTimeSlots = await this.addTimeSlots(mappedData);
             const total = this.getDataCount(response);
 
             this.setState({
-                data: mappedData,
+                data: mappedDataWithTimeSlots,
                 total,
                 urlParams: nextUrlParams,
             });
         }
     };
 
+    addTimeSlots = async (mappedData, startTime) => {
+        const rangeStart = moment(startTime)
+            .utc()
+            .format();
+        const rangeEnd = moment(startTime)
+            .utc()
+            .endOf('day')
+            .format();
+        const result = await this.props.client.query({
+            query: batchGetUsers(rangeStart, rangeEnd),
+            variables: {
+                input: {
+                    ids: mappedData.map(d => d.userId),
+                },
+            },
+        });
+
+        const timeSlots = [];
+        result.data.batchGetUsers.forEach(user => {
+            user.dentist.availableAppointmentSlots.forEach(timeSlot => {
+                timeSlots.push(timeSlot);
+            });
+        });
+
+        const mappedDataWithTimeSlots = [...mappedData];
+        mappedData.forEach((data, index) =>
+            data.reservations.forEach(reservation => {
+                timeSlots.forEach(timeSlot => {
+                    if (timeSlot.reservationId === reservation.id) {
+                        mappedDataWithTimeSlots[index].availableTimes.push(
+                            timeSlot.startTime
+                        );
+                    }
+                });
+            })
+        );
+
+        return mappedDataWithTimeSlots;
+    };
+
     getDimensions = () => {
         const windowInnerWidth = window.innerWidth;
         const windowInnerHeight = window.innerHeight;
         const margins = windowInnerWidth - numMaxContainerWidth;
-        const verticalOffset = 180;
+        const verticalOffset = 256;
         const horizontalOffset = 41.5;
 
         return {
@@ -127,24 +178,37 @@ class DetailsSearchPage extends PureComponent {
         if (data.hits.hits.length > 0) {
             mappedData = data.hits.hits.map(item => {
                 const source = item._source;
-                const reservations = _get(source, 'reservations');
 
                 return {
-                    title: source.name,
+                    id: source.id,
+                    userId: source.userId,
+                    name: source.name,
                     rating: source.averageRating,
-                    image: source.imageUrl,
-                    reservations,
+                    reviewCount: source.numReviews,
+                    imageUrl: source.imageUrl,
+                    reservations: _get(source, 'reservations'),
                     address: formatAddress(
                         _get(source, 'reservations[0].address'),
                         _get(source, 'reservations[0].addressDetails')
                     ),
+                    insurance: _get(source, 'acceptedInsurances', []).map(i =>
+                        _startCase(_toLower(i))
+                    ),
                     longitude: _get(source, 'reservations[0].geoPoint.lon'),
                     latitude: _get(source, 'reservations[0].geoPoint.lat'),
-                    subtitle: source.specialty,
+                    specialty: source.specialty,
+                    languages: _get(source, 'languages', []).map(l =>
+                        _startCase(_toLower(l))
+                    ),
+                    procedures: _get(source, 'procedures', []).map(
+                        p => p.group
+                    ),
                     url: `/dentist/${item._id}`,
+                    availableTimes: [],
                 };
             });
         }
+
         return mappedData;
     };
 
@@ -233,6 +297,10 @@ class DetailsSearchPage extends PureComponent {
         return res;
     };
 
+    toggleMap = () => {
+        this.setState({ showMap: !this.state.showMap });
+    };
+
     render() {
         if (this.state.loading)
             return (
@@ -263,7 +331,9 @@ class DetailsSearchPage extends PureComponent {
 
                 <DentistSearchPageView
                     data={this.state.data}
+                    showMap={this.state.showMap}
                     total={this.state.total}
+                    toggleMap={this.toggleMap}
                     defaultPosition={this.state.defaultPosition}
                     urlParams={this.state.urlParams}
                     mapDimensions={this.state.mapDimensions}
@@ -273,4 +343,4 @@ class DetailsSearchPage extends PureComponent {
     }
 }
 
-export default DetailsSearchPage;
+export default compose(withApollo)(DetailsSearchPage);
