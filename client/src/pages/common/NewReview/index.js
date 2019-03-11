@@ -67,8 +67,7 @@ class NewReview extends PureComponent {
                 this.props.toggleModalState();
             }
         } catch (error) {
-            console.log(error);
-            // this.setErrorMessage(error.graphQLErrors[0].message);
+            this.setErrorMessage(error.graphQLErrors[0].message);
         } finally {
             this.setState({ mutationLoading: false });
         }
