@@ -123,7 +123,7 @@ class DetailsSearchPage extends PureComponent {
                 timeSlots.forEach(timeSlot => {
                     if (timeSlot.reservationId === reservation.id) {
                         mappedDataWithTimeSlots[index].availableTimes.push(
-                            timeSlot.startTime
+                            timeSlot
                         );
                     }
                 });

@@ -5,19 +5,29 @@ import _sortBy from 'lodash/sortBy';
 import _get from 'lodash/get';
 import { formatAddress } from '../../../util/styleUtil';
 import SearchAvailableAppointmentsView from './view';
+import queryString from 'query-string';
+import history from '../../../history';
 
 class SearchAvailableAppointmentsContainer extends PureComponent {
     constructor(props) {
         super(props);
+        const urlParams = queryString.parse(history.location.search);
 
         this.state = {
-            hasFiltered: false,
+            hasFiltered: urlParams.startTime ? true : false,
             filters: {
                 time: null,
-                date: null,
+                date: urlParams.startTime || null,
                 location: null,
             },
-            selectedTime: {},
+            selectedTime: urlParams.startTime
+                ? {
+                      key: moment
+                          .tz(urlParams.startTime, props.data[0].timezone)
+                          .format('LT'),
+                      reservationId: urlParams.reservationId,
+                  }
+                : {},
         };
     }
 
@@ -303,11 +313,12 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
 
     render() {
         const reservations = this.props.data;
+        const urlParams = queryString.parse(history.location.search);
         // GET LOCATION LIST
         const locationList = this.getLocationList(reservations);
 
         const locationFilter = this.state.filters.location || locationList[0];
-        const dateFilter = this.state.filters.date;
+        const dateFilter = this.state.filters.date || urlParams.startTime;
 
         // FILTER LIST BY LOCATION
         const filteredByLocation = this.filterByLocation(
@@ -345,6 +356,7 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
 
         return (
             <SearchAvailableAppointmentsView
+                defaultDate={urlParams.startTime}
                 appointments={timeBlocks}
                 availableDateList={formattedAvailableDateList}
                 locationList={locationList}

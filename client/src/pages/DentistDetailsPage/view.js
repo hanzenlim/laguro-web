@@ -7,15 +7,24 @@ import FeaturedDentists from './FeaturedDentists';
 import ReviewContainer from '../common/ReviewContainer';
 import BookAppointment from '../common/BookAppointment';
 import DentistDetails from '../common/DentistDetails';
+import queryString from 'query-string';
+import history from '../../history';
 
 import { DENTIST } from '../../util/strings';
 
 const { Desktop } = Responsive;
 
 class DentistDetailsPageView extends PureComponent {
-    state = {
-        isBookAppointmentVisible: this.props.desktopOnly,
-    };
+    constructor(props) {
+        super(props);
+        const urlParams = queryString.parse(history.location.search);
+
+        this.state = {
+            isBookAppointmentVisible: urlParams.startTime
+                ? true
+                : this.props.desktopOnly,
+        };
+    }
 
     toggleBookAppointment = () =>
         this.setState(({ isBookAppointmentVisible }) => ({
@@ -70,7 +79,12 @@ class DentistDetailsPageView extends PureComponent {
                                     pl={[0, '', 32]}
                                     pb={32}
                                 >
-                                    <BookAppointment id={id} />
+                                    <BookAppointment
+                                        id={id}
+                                        firstAppointmentDuration={
+                                            dentist.firstAppointmentDuration
+                                        }
+                                    />
                                 </Box>
                             </Sticky>
                         )}

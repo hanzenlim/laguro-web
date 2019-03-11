@@ -48,6 +48,7 @@ class FilterAppointmentsFormView extends PureComponent {
             availableDateList,
             locationList,
             hasTimeFilter,
+            defaultDate,
         } = this.props;
 
         return (
@@ -89,7 +90,8 @@ class FilterAppointmentsFormView extends PureComponent {
                             },
                         ]}
                         initialValue={
-                            availableDateList[0] && availableDateList[0].key
+                            moment(defaultDate).format('ddd, MM/DD/YYYY') ||
+                            (availableDateList[0] && availableDateList[0].key)
                         }
                         input={renderOptions(availableDateList)}
                     />

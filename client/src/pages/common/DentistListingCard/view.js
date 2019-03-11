@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import _isEmpty from 'lodash/isEmpty';
@@ -35,61 +35,69 @@ const StyledCard = styled(Card)`
     }
 `;
 
-const DentistListingCard = props => {
-    const { dentist, variant } = props;
-    const availableTimes =
-        dentist.availableTimes && dentist.availableTimes.slice(0, 3);
+class DentistListingCard extends PureComponent {
+    handleSelectAppointment = e => {
+        e.stopPropagation();
 
-    return (
-        <Button
-            type="ghost"
-            height="auto"
-            width="100%"
-            onClick={props.onRedirect}
-        >
-            <StyledCard>
-                <Box>
-                    <Flex mb={10}>
-                        <Box
-                            display={['none', 'block']}
-                            width={variant === 'small' ? '90px' : '136px'}
-                            mr={32}
-                        >
-                            <Image
-                                src={dentist.imageUrl || defaultUserImage}
-                                width="100%"
-                                height="auto"
-                                borderRadius="50%"
-                            />
-                        </Box>
-                        <Box width="100%">
-                            <Flex>
-                                <Box
-                                    display={['block', 'none']}
-                                    width={'46px'}
-                                    mr={17}
-                                >
-                                    <Image
-                                        src={
-                                            dentist.imageUrl || defaultUserImage
-                                        }
-                                        width="100%"
-                                        height="auto"
-                                        borderRadius="50%"
-                                    />
-                                </Box>
-                                <Flex
-                                    flexDirection="column"
-                                    alignItems="flex-start"
-                                >
-                                    <Text
-                                        fontSize={['11px', '14px']}
-                                        color="#c7c7c7"
-                                        fontWeight="bold"
-                                        textTransform="uppercase"
+        const { start, reservation } = e.currentTarget.dataset;
+
+        const appointment = {
+            startTime: start,
+            address: this.props.dentist.address,
+            reservationId: reservation,
+            url: this.props.dentist.url,
+        };
+
+        if (this.props.onSelectAppointment) {
+            this.props.onSelectAppointment(appointment);
+        }
+    };
+
+    render() {
+        const { dentist, variant, onRedirect } = this.props;
+
+        const availableTimes =
+            dentist.availableTimes && dentist.availableTimes.slice(0, 3);
+
+        return (
+            <Button
+                type="ghost"
+                height="auto"
+                width="100%"
+                onClick={onRedirect}
+            >
+                <StyledCard>
+                    <Box>
+                        <Flex mb={10}>
+                            <Box
+                                display={['none', 'block']}
+                                width={variant === 'small' ? '90px' : '136px'}
+                                mr={32}
+                            >
+                                <Image
+                                    src={dentist.imageUrl || defaultUserImage}
+                                    width="100%"
+                                    height="auto"
+                                    borderRadius="50%"
+                                />
+                            </Box>
+                            <Box width="100%">
+                                <Flex>
+                                    <Box
+                                        display={['block', 'none']}
+                                        width={'46px'}
+                                        mr={17}
                                     >
-                                        {dentist.specialty}
-                                    </Text>
+                                        <Image
+                                            src={
+                                                dentist.imageUrl ||
+                                                defaultUserImage
+                                            }
+                                            width="100%"
+                                            height="auto"
+                                            borderRadius="50%"
+                                        />
+                                    </Box>
                                     <Flex
                                         mb={4}
                                         alignItems={
@@ -113,22 +121,48 @@ const DentistListingCard = props => {
                                             color="#303449"
                                             textAlign="left"
                                         >
-                                            {dentist.name}
+                                            {dentist.specialty}
                                         </Text>
                                         <Flex
-                                            alignItems="flex-end"
-                                            lineHeight="15px"
+                                            mb={4}
+                                            alignItems={[
+                                                'flex-start',
+                                                'center',
+                                            ]}
+                                            flexDirection={['column', 'row']}
                                         >
-                                            <Rating
-                                                disabled={true}
-                                                fontSize={['12px', '15px']}
-                                                value={dentist.rating}
-                                            />
-                                            <Text ml={6} fontSize="12px">
-                                                {dentist.ratingCount &&
-                                                    `(${dentist.ratingCount.toString()})`}
+                                            <Text
+                                                fontWeight="bold"
+                                                fontSize={['14px', '20px']}
+                                                mr={14}
+                                                color="#303449"
+                                            >
+                                                {dentist.name}
                                             </Text>
+                                            <Flex
+                                                alignItems="flex-end"
+                                                lineHeight="15px"
+                                            >
+                                                <Rating
+                                                    disabled={true}
+                                                    fontSize={['12px', '15px']}
+                                                    value={dentist.rating}
+                                                />
+                                                <Text ml={6} fontSize="12px">
+                                                    {dentist.ratingCount &&
+                                                        `(${dentist.ratingCount.toString()})`}
+                                                </Text>
+                                            </Flex>
                                         </Flex>
+                                        <Text
+                                            mb={8}
+                                            fontSize="12px"
+                                            color="#9b9b9b"
+                                            fontWeight="normal"
+                                            textTransform="uppercase"
+                                        >
+                                            {dentist.address}
+                                        </Text>
                                     </Flex>
                                     <Text
                                         style={{ 'white-space': 'pre-line' }}
@@ -142,144 +176,165 @@ const DentistListingCard = props => {
                                         {dentist.address}
                                     </Text>
                                 </Flex>
-                            </Flex>
 
-                            {!_isEmpty(dentist.insurance) && (
-                                <Flex alignItems="center">
-                                    <Icon type="insurance" />
-                                    <Text fontSize={['12px', '14px']} ml="8px">
-                                        Accepts{' '}
-                                        {dentist.insurance.length > 1
-                                            ? dentist.insurance.map(
-                                                  (sp, index) =>
-                                                      index !==
-                                                      dentist.insurance.length -
-                                                          1
-                                                          ? `${sp}, `
-                                                          : `and ${sp}`
-                                              )
-                                            : dentist.insurance[0]}
-                                    </Text>
-                                </Flex>
-                            )}
-                            {!_isEmpty(dentist.languages) && (
-                                <Flex alignItems="center">
-                                    <Icon type="languages" />
-                                    <Text fontSize={['12px', '14px']} ml="8px">
-                                        Speaks{' '}
-                                        {dentist.languages.length > 1
-                                            ? dentist.languages.map(
-                                                  (sp, index) =>
-                                                      index !==
-                                                      dentist.languages.length -
-                                                          1
-                                                          ? `${sp}, `
-                                                          : `and ${sp}`
-                                              )
-                                            : dentist.languages[0]}
-                                    </Text>
-                                </Flex>
-                            )}
-
-                            {!_isEmpty(dentist.procedures) &&
-                                dentist.procedures.length && (
-                                    <Flex flexWrap="wrap" mb={6} mt={10}>
-                                        {dentist.procedures.map(
-                                            (procedure, index) => (
-                                                <Box
-                                                    bg={TAG_COLORS[index % 4]}
-                                                    px={16}
-                                                    borderRadius="19.5px"
-                                                    mr="6px"
-                                                    mb="6px"
-                                                >
-                                                    <Text
-                                                        color="text.white"
-                                                        lineHeight="20px"
-                                                        fontSize={[
-                                                            '10px',
-                                                            '12px',
-                                                        ]}
-                                                    >
-                                                        {procedure}
-                                                    </Text>
-                                                </Box>
-                                            )
-                                        )}
+                                {!_isEmpty(dentist.insurance) && (
+                                    <Flex alignItems="center">
+                                        <Icon type="insurance" />
+                                        <Text
+                                            fontSize={['12px', '14px']}
+                                            ml="8px"
+                                        >
+                                            Accepts{' '}
+                                            {dentist.insurance.length > 1
+                                                ? dentist.insurance.map(
+                                                      (sp, index) =>
+                                                          index !==
+                                                          dentist.insurance
+                                                              .length -
+                                                              1
+                                                              ? `${sp}, `
+                                                              : `and ${sp}`
+                                                  )
+                                                : dentist.insurance[0]}
+                                        </Text>
+                                    </Flex>
+                                )}
+                                {!_isEmpty(dentist.languages) && (
+                                    <Flex alignItems="center">
+                                        <Icon type="languages" />
+                                        <Text
+                                            fontSize={['12px', '14px']}
+                                            ml="8px"
+                                        >
+                                            Speaks{' '}
+                                            {dentist.languages.length > 1
+                                                ? dentist.languages.map(
+                                                      (sp, index) =>
+                                                          index !==
+                                                          dentist.languages
+                                                              .length -
+                                                              1
+                                                              ? `${sp}, `
+                                                              : `and ${sp}`
+                                                  )
+                                                : dentist.languages[0]}
+                                        </Text>
                                     </Flex>
                                 )}
 
-                            {dentist.availableTimes &&
-                            dentist.availableTimes.length !== 0 ? (
-                                <Fragment>
+                                {!_isEmpty(dentist.procedures) &&
+                                    dentist.procedures.length && (
+                                        <Flex flexWrap="wrap" mb={6} mt={10}>
+                                            {dentist.procedures.map(
+                                                (procedure, index) => (
+                                                    <Box
+                                                        bg={
+                                                            TAG_COLORS[
+                                                                index % 4
+                                                            ]
+                                                        }
+                                                        px={16}
+                                                        borderRadius="19.5px"
+                                                        mr="6px"
+                                                        mb="6px"
+                                                    >
+                                                        <Text
+                                                            color="text.white"
+                                                            lineHeight="20px"
+                                                            fontSize={[
+                                                                '10px',
+                                                                '12px',
+                                                            ]}
+                                                        >
+                                                            {procedure}
+                                                        </Text>
+                                                    </Box>
+                                                )
+                                            )}
+                                        </Flex>
+                                    )}
+
+                                {dentist.availableTimes &&
+                                dentist.availableTimes.length !== 0 ? (
+                                    <Fragment>
+                                        <Text
+                                            mb={[5, 8]}
+                                            fontWeight="500"
+                                            fontSize={['12px', '18px']}
+                                            textAlign="left"
+                                        >
+                                            Available times
+                                        </Text>
+                                        <Grid
+                                            gridTemplateColumns="repeat(4, 1fr)"
+                                            gridColumnGap="4px"
+                                            gridRowGap="4px"
+                                        >
+                                            {availableTimes.map(
+                                                (availableTime, index) => (
+                                                    <Button
+                                                        data-start={
+                                                            availableTime.startTime
+                                                        }
+                                                        data-reservation={
+                                                            availableTime.reservationId
+                                                        }
+                                                        type="primary"
+                                                        height={40}
+                                                        width="100%"
+                                                        ghost={true}
+                                                        onClick={
+                                                            this
+                                                                .handleSelectAppointment
+                                                        }
+                                                        fontSize={[
+                                                            '12px',
+                                                            '18px',
+                                                        ]}
+                                                    >
+                                                        {moment(
+                                                            availableTime.startTime
+                                                        ).format('h:mm A')}
+                                                    </Button>
+                                                )
+                                            )}
+
+                                            {dentist.availableTimes &&
+                                                dentist.availableTimes.length >
+                                                    3 && (
+                                                    <Button
+                                                        type="primary"
+                                                        width="100%"
+                                                        height={40}
+                                                        onClick={onRedirect}
+                                                        fontSize={[
+                                                            '12px',
+                                                            '18px',
+                                                        ]}
+                                                    >
+                                                        More
+                                                    </Button>
+                                                )}
+                                        </Grid>
+                                    </Fragment>
+                                ) : (
                                     <Text
-                                        mb={[5, 8]}
-                                        fontWeight="500"
+                                        style={{ 'white-space': 'pre-line' }}
                                         fontSize={['12px', '18px']}
+                                        fontWeight="500"
                                         textAlign="left"
                                     >
-                                        Available times
+                                        There are no available times
                                     </Text>
-                                    <Grid
-                                        gridTemplateColumns="repeat(4, 1fr)"
-                                        gridColumnGap="4px"
-                                        gridRowGap="4px"
-                                    >
-                                        {availableTimes.map(
-                                            (availableTime, index) => (
-                                                <Button
-                                                    data-start={availableTime}
-                                                    data-address={
-                                                        dentist.address
-                                                    }
-                                                    type="primary"
-                                                    height={40}
-                                                    width="100%"
-                                                    ghost={true}
-                                                    onClick={
-                                                        props.onSelectAppointment
-                                                    }
-                                                    fontSize={['12px', '18px']}
-                                                >
-                                                    {moment(
-                                                        availableTime
-                                                    ).format('h:mm A')}
-                                                </Button>
-                                            )
-                                        )}
-
-                                        {dentist.availableTimes &&
-                                            dentist.availableTimes.length >
-                                                3 && (
-                                                <Button
-                                                    type="primary"
-                                                    width="100%"
-                                                    height={40}
-                                                    onClick={props.onRedirect}
-                                                    fontSize={['12px', '18px']}
-                                                >
-                                                    More
-                                                </Button>
-                                            )}
-                                    </Grid>
-                                </Fragment>
-                            ) : (
-                                <Text
-                                    style={{ 'white-space': 'pre-line' }}
-                                    fontSize={['12px', '18px']}
-                                    fontWeight="500"
-                                    textAlign="left"
-                                >
-                                    There are no available times
-                                </Text>
-                            )}
-                        </Box>
-                    </Flex>
-                </Box>
-            </StyledCard>
-        </Button>
-    );
-};
+                                )}
+                            </Box>
+                        </Flex>
+                    </Box>
+                </StyledCard>
+            </Button>
+        );
+    }
+}
 
 DentistListingCard.propTypes = {
     variant: PropTypes.oneOf(['small', 'large']),

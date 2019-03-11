@@ -24,6 +24,8 @@ import {
 } from '../../../util/urls';
 import { userHasSkippedMedicalHistory } from '../../../util/cookieUtils';
 import { getUser } from '../../../util/authUtils';
+import queryString from 'query-string';
+import history from '../../../history';
 
 const HANDLED_TIMESLOT_ERRORS = [
     'Timeslot is in the past',
@@ -34,14 +36,22 @@ class BookAppointment extends PureComponent {
     constructor(props) {
         super(props);
 
+        const urlParams = queryString.parse(history.location.search);
+
         this.state = {
-            reservationId: null,
+            reservationId: urlParams.reservationId || null,
             patientId: null,
             location: null,
             procedure: null,
-            startTime: null,
-            endTime: null,
-            isPaymentVisible: false,
+            startTime: urlParams.startTime || null,
+            endTime: urlParams.startTime
+                ? stripTimezone(
+                      moment(urlParams.startTime)
+                          .add(props.firstAppointmentDuration, 'minutes')
+                          .format()
+                  )
+                : null,
+            isPaymentVisible: urlParams.startTime ? true : false,
             bookedAppointment: null,
             paymentError: null,
             isSubmitting: false,

@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import queryString from 'query-string';
 
 import DentistListingCard from '../DentistListingCard';
@@ -6,6 +7,7 @@ import history from '../../../history';
 import { Flex, Text, Box, Grid, Button } from '../../../components';
 import NoSearchResults from '../NoSearchResults';
 import { DENTISTS, OFFICES } from '../../../util/strings';
+import { stripTimezone } from '../../../util/timeUtil';
 
 const ITEMS_COUNT = 14;
 
@@ -46,10 +48,12 @@ class SearchResultsList extends PureComponent {
         history.push(url);
     };
 
-    handleSelectAppointment = (e, url) => {
-        e.stopPropagation();
-        const { start, address } = e.currentTarget.dataset;
-        history.push(`${url}?startTime=${start}&address=${address}`);
+    handleSelectAppointment = appointment => {
+        const { startTime, address, reservationId, url } = appointment;
+
+        history.push(
+            `${url}?startTime=${startTime}&address=${address}&reservationId=${reservationId}`
+        );
     };
 
     render() {
@@ -91,12 +95,8 @@ class SearchResultsList extends PureComponent {
                                       onRedirect={() =>
                                           this.handleRedirect(item.url)
                                       }
-                                      onSelectAppointment={e =>
-                                          this.handleSelectAppointment(
-                                              e,
-                                              item.url,
-                                              item.startTime
-                                          )
+                                      onSelectAppointment={
+                                          this.handleSelectAppointment
                                       }
                                   />
                               </Box>
@@ -114,5 +114,12 @@ class SearchResultsList extends PureComponent {
         );
     }
 }
+
+SearchResultsList.propTypes = {
+    data: PropTypes.array,
+    // Toggle size of image in search results list
+    showMap: PropTypes.boolean,
+    total: PropTypes.number,
+};
 
 export default SearchResultsList;
