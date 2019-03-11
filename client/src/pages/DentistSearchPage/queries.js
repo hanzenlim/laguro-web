@@ -6,8 +6,7 @@ import {
     reservationFragment,
 } from '../../util/fragments';
 
-export const batchGetUsers = (rangeStart, rangeEnd) => {
-    return gql`
+export const batchGetUsers = (rangeStart, rangeEnd) => gql`
         query BatchGetUsers($input: BatchGetInput!) {
             batchGetUsers(input: $input) {
                 id
@@ -26,7 +25,6 @@ export const batchGetUsers = (rangeStart, rangeEnd) => {
             }
         }
     `;
-};
 
 export const getActiveDentistsQuery = gql`
     query {
