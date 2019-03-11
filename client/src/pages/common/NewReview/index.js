@@ -45,7 +45,6 @@ class NewReview extends PureComponent {
             rating,
             text,
         };
-        debugger;
         try {
             this.setState({ mutationLoading: true });
             await mutate({
@@ -67,8 +66,6 @@ class NewReview extends PureComponent {
                 this.props.toggleModalState();
             }
         } catch (error) {
-            debugger;
-            console.log(JSON.stringify(error));
             this.setErrorMessage(error.graphQLErrors[0].message);
         } finally {
             this.setState({ mutationLoading: false });

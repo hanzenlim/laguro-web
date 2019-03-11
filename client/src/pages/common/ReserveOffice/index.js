@@ -1,19 +1,20 @@
 import React, { Component, Fragment } from 'react';
 import { message } from 'antd';
 import { compose, graphql, withApollo } from 'react-apollo';
-import emitter from '../../../util/emitter';
 import PropTypes from 'prop-types';
 import moment from 'moment-timezone';
 import _reduce from 'lodash/reduce';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 import _debounce from 'lodash/debounce';
+
 import { Box } from '../../../components';
 import ReserveOfficeView from './view';
 import {
     createReservationMutation,
     checkUserDentistVerifiedQuery,
 } from './queries';
+import emitter from '../../../util/emitter';
 import {
     SELECT_APPOINTMENT_VIEW,
     CONFIRMATION_VIEW,
@@ -56,6 +57,8 @@ class ReserveOffice extends Component {
 
         if (!user) {
             emitter.emit('loginModal');
+
+            return;
         }
 
         this.setState({

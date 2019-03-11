@@ -10,7 +10,6 @@ class NewReviewPage extends Component {
     }
 
     render() {
-        debugger;
         return (
             <Container>
                 <NewReview info={this.mappedData} />

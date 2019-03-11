@@ -44,9 +44,8 @@ const StyledCard = styled(Card)`
 `;
 
 const PaymentCard = ({
-    closeModal,
-    opentDetailModal,
-    visibleModal,
+    isModalOpen,
+    toggleModal,
     cardType,
     payment,
     paymentStatus,
@@ -109,7 +108,7 @@ const PaymentCard = ({
                 </Box>
                 <Flex alignItems="top">
                     <Button
-                        onClick={() => opentDetailModal(payment.id)}
+                        onClick={toggleModal}
                         type="ghost"
                         height={[50, '', 70]}
                         width={[50, '', 70]}
@@ -132,8 +131,8 @@ const PaymentCard = ({
             />
             <PaymentDetails
                 payment={payment}
-                visible={visibleModal === `payment_detail_${payment.id}`}
-                onCancel={closeModal}
+                visible={isModalOpen}
+                onCancel={toggleModal}
                 cardType={cardType}
                 total={totalAmount}
                 reservation={reservation}

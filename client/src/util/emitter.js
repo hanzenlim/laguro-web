@@ -1,7 +1,7 @@
-import Emitter from 'tiny-emitter';
+import mitt from 'mitt';
 
 if (!window.emitter) {
-    window.emitter = new Emitter();
+    window.emitter = mitt();
 }
 
 export default window.emitter;

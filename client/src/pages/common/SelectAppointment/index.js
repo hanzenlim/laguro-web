@@ -22,6 +22,8 @@ class SelectAppointmentContainer extends PureComponent {
         // Show login modal if not logged in.
         if (!user) {
             emitter.emit('loginModal');
+
+            return;
         }
 
         const { key } = event.currentTarget.dataset;

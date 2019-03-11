@@ -1,11 +1,9 @@
 import React, { PureComponent } from 'react';
-import { Query } from 'react-apollo';
 import PropTypes from 'prop-types';
+import { Box } from '@laguro/basic-components';
 
 import PaymentCardView from './view';
-import { GET_VISIBLE_MODAL } from './queries';
 import { NoPaymentsCard } from '../../common/PaymentHistory';
-import { Box } from '@laguro/basic-components';
 import {
     APPOINTMENT_PAYMENT_TYPE,
     PAYMENT_CARD,
@@ -13,6 +11,16 @@ import {
 } from '../../../util/strings';
 
 class PaymentCardContainer extends PureComponent {
+    state = {
+        isModalOpen: false,
+    };
+
+    toggleModal = () => {
+        this.setState({
+            isModalOpen: !this.state.isModalOpen,
+        });
+    };
+
     render() {
         const {
             payment,
@@ -49,35 +57,16 @@ class PaymentCardContainer extends PureComponent {
         }
 
         return (
-            <Query query={GET_VISIBLE_MODAL}>
-                {({ data, client }) => {
-                    const opentDetailModal = id => {
-                        client.writeData({
-                            data: {
-                                visibleModal: `payment_detail_${id}`,
-                            },
-                        });
-                    };
-
-                    const closeModal = () => {
-                        client.writeData({ data: { visibleModal: null } });
-                    };
-
-                    return (
-                        <PaymentCardView
-                            payment={payment}
-                            persona={persona}
-                            totalAmount={totalAmount}
-                            paymentStatus={paymentStatus}
-                            cardType={cardType}
-                            opentDetailModal={opentDetailModal}
-                            closeModal={closeModal}
-                            visibleModal={data.visibleModal}
-                            {...rest}
-                        />
-                    );
-                }}
-            </Query>
+            <PaymentCardView
+                payment={payment}
+                persona={persona}
+                totalAmount={totalAmount}
+                paymentStatus={paymentStatus}
+                cardType={cardType}
+                toggleModal={this.toggleModal}
+                isModalOpen={this.state.isModalOpen}
+                {...rest}
+            />
         );
     }
 }

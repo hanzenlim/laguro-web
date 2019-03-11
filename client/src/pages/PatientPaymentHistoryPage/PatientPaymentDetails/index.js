@@ -1,10 +1,10 @@
 import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
+import { Text, Flex, Modal, Button } from '@laguro/basic-components';
 
 import PatientPaymentDetailsView from './view';
 import PatientProcedurePaymentDetailsView from '../PatientProcedurePaymentDetails/view';
-import { Text, Flex, Modal, Button } from '@laguro/basic-components';
 import { withScreenSizes } from '../../../components/Responsive/index';
 import {
     PAYMENT,

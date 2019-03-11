@@ -51,20 +51,6 @@ class Login extends Component {
         }
     };
 
-    closeModal = () => {
-        if (this.props.closeModal) {
-            this.props.closeModal();
-        }
-
-        const { history } = this.props;
-
-        history.push({
-            path: '/',
-            search: '?this=search',
-            state: { render: true },
-        });
-    };
-
     render() {
         const { closeModal, history } = this.props;
         const { showLoginTitle } = this.state;

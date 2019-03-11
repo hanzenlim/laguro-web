@@ -12,6 +12,7 @@ import { DENTIST } from '../../../util/strings';
 import { getUser } from '../../../util/authUtils';
 import emitter from '../../../util/emitter';
 
+
 class ReviewContainer extends PureComponent {
     state = {
         isModalOpen: false,
@@ -20,9 +21,10 @@ class ReviewContainer extends PureComponent {
     toggleModalState = () => {
         const user = getUser();
 
-        debugger;
         if (!user) {
             emitter.emit('loginModal');
+            
+            return;
         } else {
             this.setState(({ isModalOpen }) => ({ isModalOpen: !isModalOpen }));
         }

@@ -1,4 +1,5 @@
 import React, { Fragment, PureComponent } from 'react';
+import _get from 'lodash/get';
 import { Query } from 'react-apollo';
 import { GET_PAYMENT_HISTORY_QUERY } from './queries';
 import {
@@ -93,6 +94,9 @@ class PaymentHistoryContainer extends PureComponent {
                     const paymentData = paymentHistoryQueryRes.data;
 
                     let content;
+                    const showPagination =
+                        _get(paymentData, 'queryPayments.length') >
+                        this.defaultPageSize;
 
                     if (loading) {
                         content = <CardLoading />;
@@ -141,12 +145,14 @@ class PaymentHistoryContainer extends PureComponent {
                                 {paymentData.queryPayments.length === 0 && (
                                     <NoPaymentsCard text="You have no payments yet!" />
                                 )}
-                                <Pagination
-                                    current={this.state.currentPage}
-                                    defaultPageSize={this.defaultPageSize}
-                                    total={paymentData.queryPayments.length}
-                                    onChange={this.onPageChange}
-                                />
+                                {showPagination && (
+                                    <Pagination
+                                        current={this.state.currentPage}
+                                        defaultPageSize={this.defaultPageSize}
+                                        total={paymentData.queryPayments.length}
+                                        onChange={this.onPageChange}
+                                    />
+                                )}
                             </Flex>
                         );
                     }

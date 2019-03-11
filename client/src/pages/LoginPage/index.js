@@ -6,17 +6,12 @@ import _get from 'lodash/get';
 
 import LoginPageView from './view';
 import { getUser } from '../../util/authUtils';
+import history from '../../history';
 
 class LoginPage extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            isLoginModalOpen: true,
-        };
-
-        this.toggleLoginModal = this.toggleLoginModal.bind(this);
-    }
+    state = {
+        isLoginModalOpen: true,
+    };
 
     toggleLoginModal = () => {
         if (this.props.toggleModal) {
