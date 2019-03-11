@@ -16,6 +16,8 @@
         "test": "npm run test --prefix client",
         "webpack-analyzer": "npm run webpack-analyzer --prefix client",
         "domain": "env-cmd /home/runner/security.env.stage sls create_domain",
+        "build-stage-assets-v2": "PUBLIC_URL=https://s3.amazonaws.com/laguro-stage-assets-v2/$(git log --pretty=format:'%h' -n 1) env-cmd /home/runner/security.env.stage npm run build --prefix client",
+        "deploy-stage-assets-v2": "s3-deploy './client/build/**' --cwd './client/build/' --region us-east-1 --bucket laguro-stage-assets-v2 --gzip js,css,jpg,png,svg,map --cache 2503982 --filePrefix $(git log --pretty=format:'%h' -n 1)",
         "build-stage-assets": "PUBLIC_URL=https://s3.amazonaws.com/laguro-stage-assets/$(date '+%m-%d-%Y:')$(git log --pretty=format:'%h' -n 1) env-cmd /home/runner/security.env.stage npm run build --prefix client",
         "deploy-stage-assets": "s3-deploy './client/build/**' --cwd './client/build/' --region us-east-1 --bucket laguro-stage-assets --gzip js,css,jpg,png,svg,map --cache 2503982 --filePrefix $(date '+%m-%d-%Y:')$(git log --pretty=format:'%h' -n 1)",
         "deploy-stage": "env-cmd /home/runner/security.env.stage sls deploy -v --stage stage --region us-east-1",
