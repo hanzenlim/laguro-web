@@ -2,7 +2,9 @@ import React, { PureComponent } from 'react';
 import _get from 'lodash/get';
 
 import HeaderView from './view';
+import { withScreenSizes } from '../../../components/Responsive';
 import { onLogout, getUser } from '../../../util/authUtils';
+import emitter from '../../../util/emitter';
 import history from '../../../history';
 
 class HeaderContainer extends PureComponent {
@@ -16,10 +18,21 @@ class HeaderContainer extends PureComponent {
         };
 
         history.listen(location => {
-            debugger;
             this.setState({
                 pathname: location.pathname + location.search,
             });
+        });
+
+        emitter.on('loginModal', () => {
+            const { mobileOnly } = this.props;
+            if (mobileOnly) {
+                history.push(`/login?redirectTo=${this.state.pathname}`);
+                window.scrollTo(0, 0);
+            } else {
+                this.setState({
+                    isLoginModalOpen: true,
+                });
+            }
         });
 
         this.toggleLoginModal = this.toggleLoginModal.bind(this);
@@ -57,4 +70,4 @@ class HeaderContainer extends PureComponent {
     }
 }
 
-export default HeaderContainer;
+export default withScreenSizes(HeaderContainer);

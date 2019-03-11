@@ -31,7 +31,7 @@ class NewReview extends PureComponent {
     };
 
     onSuccess = async ({ text }) => {
-        const user = getUser;
+        const user = getUser();
         const { mutate, match, info } = this.props;
         const { rating } = this.state;
         const reviewerId = get(user, 'id');
@@ -45,6 +45,7 @@ class NewReview extends PureComponent {
             rating,
             text,
         };
+        debugger;
         try {
             this.setState({ mutationLoading: true });
             await mutate({
@@ -61,8 +62,13 @@ class NewReview extends PureComponent {
             });
             this.setErrorMessage('');
             this.setRating(0);
-            this.props.toggleModalState();
+
+            if (this.props.toggleModalState) {
+                this.props.toggleModalState();
+            }
         } catch (error) {
+            debugger;
+            console.log(JSON.stringify(error));
             this.setErrorMessage(error.graphQLErrors[0].message);
         } finally {
             this.setState({ mutationLoading: false });
@@ -71,10 +77,9 @@ class NewReview extends PureComponent {
 
     render() {
         const user = getUser();
-        const { visible, client, toggleModalState } = this.props;
+        const { visible, toggleModalState } = this.props;
         if (!user && !visible) return null;
         if (!user && visible) {
-            client.writeData({ data: { visibleModal: 'login' } });
             toggleModalState();
             return null;
         }

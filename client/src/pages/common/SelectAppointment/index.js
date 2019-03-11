@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 import { compose, withApollo } from 'react-apollo';
+
 import SelectAppointmentView from './view';
 import { getUser } from '../../../util/authUtils';
-import Login from '../../LoginPage';
+import emitter from '../../../util/emitter';
 
 class SelectAppointmentContainer extends PureComponent {
     constructor(props) {
@@ -13,20 +14,14 @@ class SelectAppointmentContainer extends PureComponent {
 
         this.state = {
             selected: {},
-            openLoginModal: false,
         };
-
-        this.toggleLoginModal = this.toggleLoginModal.bind(this);
     }
 
     handleSelect = event => {
         const user = getUser();
-        debugger;
         // Show login modal if not logged in.
         if (!user) {
-            this.setState({
-                openLoginModal: true,
-            });
+            emitter.emit('loginModal');
         }
 
         const { key } = event.currentTarget.dataset;
@@ -59,9 +54,6 @@ class SelectAppointmentContainer extends PureComponent {
                         isEmpty(selected) ? this.state.selected : selected
                     }
                 />
-                {this.state.openLoginModal && (
-                    <Login toggleModal={this.toggleLoginModal} />
-                )}
             </Fragment>
         );
     }

@@ -32,7 +32,6 @@ class LoginPage extends Component {
         const { location } = this.props;
         const user = getUser();
 
-        debugger;
         // Check if user is logged in or not.
         if (_get(user, 'id')) {
             return <Redirect to={search.redirectTo} />;

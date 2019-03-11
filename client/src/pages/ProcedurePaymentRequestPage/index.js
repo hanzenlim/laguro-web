@@ -28,13 +28,6 @@ class ProcedurePaymentRequest extends PureComponent {
         };
     }
 
-    componentDidMount() {
-        const user = getUser();
-        if (!_get(user, 'id')) {
-            this.props.client.writeData({ data: { visibleModal: 'login' } });
-        }
-    }
-
     updatePaymentRequestStatus = async (
         paymentRequestId,
         paymentOptionId,

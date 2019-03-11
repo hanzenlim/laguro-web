@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { message } from 'antd';
 import { compose, graphql, withApollo } from 'react-apollo';
+import emitter from '../../../util/emitter';
 import PropTypes from 'prop-types';
 import moment from 'moment-timezone';
 import _reduce from 'lodash/reduce';
@@ -54,12 +55,7 @@ class ReserveOffice extends Component {
         const user = getUser();
 
         if (!user) {
-            if (_get(this, 'props.client.writeData')) {
-                this.props.client.writeData({
-                    data: { visibleModal: 'login' },
-                });
-                return null;
-            }
+            emitter.emit('loginModal');
         }
 
         this.setState({
