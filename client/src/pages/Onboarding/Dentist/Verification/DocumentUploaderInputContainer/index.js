@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import _get from 'lodash/get';
 import { Query } from 'react-apollo';
-import DocumentUploaderInput from '../../../../../../src/pages/common/Forms/UserVerification/components/DocumentUploaderInput';
+import DocumentUploaderInput from '../../../../common/Forms/DocumentUploader/DocumentUploaderInput';
 import { RedirectErrorPage } from '../../../../../pages/GeneralErrorPage';
 import { getFileStackPolicySignatureQuery } from './queries';
 

@@ -3,7 +3,7 @@ import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 import styled from 'styled-components';
 import { Form, Text } from '../../../../../components';
-import DocumentUploaderInput from './DocumentUploaderInput';
+import DocumentUploaderInput from '../../DocumentUploader/DocumentUploaderInput';
 
 const { FormItem } = Form;
 

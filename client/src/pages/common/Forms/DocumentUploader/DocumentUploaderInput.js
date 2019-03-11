@@ -1,6 +1,6 @@
 import React from 'react';
 import DocumentSelect from './DocumentSelect';
-import { Flex } from '../../../../../components';
+import { Flex } from '../../../../components';
 
 class DocumentUploaderInput extends React.Component {
     // strip url
@@ -34,15 +34,16 @@ class DocumentUploaderInput extends React.Component {
 
         return (
             <Flex>
-                {value.map((document, index) => (
-                    <DocumentSelect
-                        {...this.props}
-                        key={index}
-                        document={document}
-                        onDeleteDocument={this.handleDeleteDocument(index)}
-                        onDocumentUpload={this.handleUploadSuccess(index)}
-                    />
-                ))}
+                {value &&
+                    value.map((document, index) => (
+                        <DocumentSelect
+                            {...this.props}
+                            key={index}
+                            document={document}
+                            onDeleteDocument={this.handleDeleteDocument(index)}
+                            onDocumentUpload={this.handleUploadSuccess(index)}
+                        />
+                    ))}
             </Flex>
         );
     }
