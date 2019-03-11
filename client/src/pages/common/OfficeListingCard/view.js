@@ -35,7 +35,7 @@ const OfficeListingCard = ({ office, onRedirect }) => (
                 <Flex flexDirection={['column', 'row']} m={0}>
                     <Box display="block" width={['100%', 288]}>
                         <Image
-                            src={defaultOfficeImage}
+                            src={office.image || defaultOfficeImage}
                             width="100%"
                             height="100%"
                         />
