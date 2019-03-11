@@ -32,30 +32,16 @@ const OfficeListingCard = ({ office, onRedirect }) => (
     <Button type="ghost" height="auto" width="100%" onClick={onRedirect}>
         <StyledCard>
             <Box>
-                <Flex m={0}>
-                    <Box display={['none', 'block']} width={288}>
+                <Flex flexDirection={['column', 'row']} m={0}>
+                    <Box display="block" width={['100%', 288]}>
                         <Image
-                            src={office.image || defaultOfficeImage}
+                            src={defaultOfficeImage}
                             width="100%"
                             height="100%"
                         />
                     </Box>
-                    <Box width="100%" ml={10} p={[10, 12]}>
+                    <Box width="100%" ml={[0, 10]} p={[10, 12]}>
                         <Flex>
-                            <Box
-                                display={['block', 'none']}
-                                width={'48px'}
-                                height={'48px'}
-                                mr={15}
-                                mt={8}
-                            >
-                                <Image
-                                    src={office.image || defaultOfficeImage}
-                                    width={'48px'}
-                                    height={'48px'}
-                                    borderRadius="50%"
-                                />
-                            </Box>
                             <Flex
                                 flexDirection="column"
                                 alignItems="flex-start"
@@ -125,6 +111,7 @@ const OfficeListingCard = ({ office, onRedirect }) => (
                             fontSize={['10px', '14px']}
                             textAlign="left"
                             fontWeight="300"
+                            display={['none', 'block']}
                         >
                             {office.subtitle
                                 ? office.subtitle
