@@ -1,10 +1,12 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 import { compose, withApollo } from 'react-apollo';
+
 import SelectAppointmentView from './view';
 import { getUser } from '../../../util/authUtils';
+import emitter from '../../../util/emitter';
 
 class SelectAppointmentContainer extends PureComponent {
     constructor(props) {
@@ -19,14 +21,9 @@ class SelectAppointmentContainer extends PureComponent {
         const user = getUser();
         // Show login modal if not logged in.
         if (!user) {
-            const { client } = this.props;
-            if (client) {
-                client.writeData({
-                    data: { visibleModal: 'login' },
-                });
+            emitter.emit('loginModal');
 
-                return null;
-            }
+            return;
         }
 
         const { key } = event.currentTarget.dataset;
@@ -41,15 +38,25 @@ class SelectAppointmentContainer extends PureComponent {
         return null;
     };
 
+    toggleLoginModal = () => {
+        this.setState({
+            openLoginModal: !this.state.openLoginModal,
+        });
+    };
+
     render() {
         const { appointments, selected } = this.props;
 
         return (
-            <SelectAppointmentView
-                appointments={appointments}
-                onSelect={this.handleSelect}
-                selected={isEmpty(selected) ? this.state.selected : selected}
-            />
+            <Fragment>
+                <SelectAppointmentView
+                    appointments={appointments}
+                    onSelect={this.handleSelect}
+                    selected={
+                        isEmpty(selected) ? this.state.selected : selected
+                    }
+                />
+            </Fragment>
         );
     }
 }

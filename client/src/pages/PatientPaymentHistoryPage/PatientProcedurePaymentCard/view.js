@@ -48,7 +48,7 @@ const StyledCard = styled(Card)`
     }
 `;
 
-const renderInvoiceItem = (procedures, persona) =>
+const renderInvoiceItem = procedures =>
     !_isEmpty(procedures) &&
     procedures.map(procedure => (
         <Box>
@@ -67,10 +67,9 @@ const renderInvoiceItem = (procedures, persona) =>
     ));
 
 const PatientProcedurePaymentCardView = ({
-    closeModal,
     cardType,
-    opentDetailModal,
-    visibleModal,
+    isModalOpen,
+    toggleModal,
     payment,
     paymentStatus,
     totalAmount,
@@ -98,10 +97,7 @@ const PatientProcedurePaymentCardView = ({
     const installmentPlan = _get(payment, 'paymentInstallmentPlan');
     const discount = getPatientPaymentBreakdown(payment, 'discount');
 
-    const procedures = renderInvoiceItem(
-        _get(invoiceItem, 'procedureSet'),
-        persona
-    );
+    const procedures = renderInvoiceItem(_get(invoiceItem, 'procedureSet'));
 
     const installmentPlanNumChargePeriods = getPatientPaymentBreakdown(
         payment,
@@ -161,7 +157,7 @@ const PatientProcedurePaymentCardView = ({
                 </Box>
                 <Flex alignItems="top">
                     <Button
-                        onClick={() => opentDetailModal(payment.id)}
+                        onClick={toggleModal}
                         type="ghost"
                         height={[50, '', 70]}
                         width={[50, '', 70]}
@@ -195,8 +191,8 @@ const PatientProcedurePaymentCardView = ({
             {/* this is payment invoice modal */}
             <PatientPaymentDetails
                 payment={payment}
-                visible={visibleModal === `payment_detail_${payment.id}`}
-                onCancel={closeModal}
+                visible={isModalOpen}
+                onCancel={toggleModal}
                 cardType={cardType}
                 total={totalAmount}
             />

@@ -16,7 +16,6 @@ import {
 } from '../../../components';
 import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
 import LoginModal from '../Modals/LoginModal';
-import ForgotPassModal from '../Modals/ForgotPassModal';
 import { intercomKey } from '../../../config/keys';
 import theme from '../../../components/theme';
 import { withScreenSizes } from '../../../components/Responsive';
@@ -81,9 +80,9 @@ const StyledFlex = styled(Flex)`
 
 class ProfileButton extends Component {
     openLoginForLogIn = isMobile => () => {
-        const { openLoginModal } = this.props;
+        const { toggleLoginModal } = this.props;
         if (!isMobile) {
-            openLoginModal();
+            toggleLoginModal();
         }
     };
 
@@ -91,7 +90,7 @@ class ProfileButton extends Component {
         const {
             auth,
             pathname,
-            logout,
+            onLogout,
             onLandingPage,
             isDentist,
             isHost,
@@ -104,7 +103,7 @@ class ProfileButton extends Component {
                         <ProfileMenu
                             isDentist={isDentist}
                             isHost={isHost}
-                            logout={logout}
+                            logout={onLogout}
                         />
                     }
                     placement={'bottomRight'}
@@ -227,26 +226,15 @@ const IntercomContainer = ({ auth }) => {
 };
 
 class Header extends Component {
-    openLoginForBecomeAHost = isMobile => () => {
-        const { openLoginModal } = this.props;
-        if (!isMobile) {
-            openLoginModal();
-        }
-    };
-
     render() {
         const {
             pathname,
-            openLoginModal,
-            closeModal,
-            visibleModal,
-            login,
-            logout,
-            sendPassResetLink,
             auth,
             isDentist,
             isHost,
-            isSubmitting,
+            isLoginModalOpen,
+            toggleLoginModal,
+            onLogout,
             desktopOnly,
         } = this.props;
 
@@ -298,17 +286,8 @@ class Header extends Component {
             >
                 <IntercomContainer auth={auth} />
                 <LoginModal
-                    login={login}
-                    closeModal={closeModal}
-                    visible={visibleModal === 'login'}
-                    isSubmitting={isSubmitting}
-                />
-                <ForgotPassModal
-                    sendPassResetLink={sendPassResetLink}
-                    openLoginModal={openLoginModal}
-                    closeModal={closeModal}
-                    visible={visibleModal === 'forgotPass'}
-                    isSubmitting={isSubmitting}
+                    toggleLoginModal={toggleLoginModal}
+                    isLoginModalOpen={isLoginModalOpen}
                 />
                 <Container
                     display="flex"
@@ -339,7 +318,6 @@ class Header extends Component {
                                     isHost={isHost}
                                     auth={auth}
                                     onLandingPage={onLandingPage}
-                                    desktopOnly={desktopOnly}
                                 />
                             )}
                         </Desktop>
@@ -352,7 +330,7 @@ class Header extends Component {
                                             ? '/host-onboarding/add-office'
                                             : '/'
                                     }
-                                    onClick={auth ? () => {} : openLoginModal}
+                                    onClick={auth ? () => {} : toggleLoginModal}
                                 >
                                     <Text
                                         color={
@@ -399,10 +377,10 @@ class Header extends Component {
                         <ProfileButton
                             pathname={pathname}
                             isDentist={isDentist}
+                            toggleLoginModal={toggleLoginModal}
+                            onLogout={onLogout}
                             isHost={isHost}
                             auth={auth}
-                            openLoginModal={openLoginModal}
-                            logout={logout}
                             onLandingPage={onLandingPage}
                             desktopOnly={desktopOnly}
                         />
@@ -416,22 +394,22 @@ class Header extends Component {
 Header.defaultProps = {
     visibleModal: null,
     auth: null,
-    login: () => {},
-    logout: () => {},
-    openLoginModal: () => {},
-    closeModal: () => {},
+    onLogout: () => {},
+    toggleLoginModal: () => {},
     isSubmitting: false,
+    isDentist: null,
+    isHost: null,
 };
 
 Header.propTypes = {
-    visibleModal: PropTypes.string,
     auth: PropTypes.object,
-    login: PropTypes.func,
-    logout: PropTypes.func,
+    onLogout: PropTypes.func,
     openLoginModal: PropTypes.func,
-    closeModal: PropTypes.func,
     isSubmitting: PropTypes.bool,
-    desktopOnly: PropTypes.bool,
+    isDentist: PropTypes.string,
+    isHost: PropTypes.string,
+    toggleLoginModal: PropTypes.func,
+    pathname: PropTypes.string,
 };
 
 export default withScreenSizes(Header);

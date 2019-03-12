@@ -45,18 +45,18 @@ const StyledCard = styled(Card)`
 
 const renderInvoiceItem = (procedures, persona) =>
     procedures.map(procedure => {
-        const procedures = _get(procedure, 'name');
+        const procedureName = _get(procedure, 'name');
 
         return (
             <Box>
                 <Flex justifyContent="space-between">
                     <Text fontSize={[0, '', 2]}>
-                        {procedures.replace(/\n/gm, ', ')}
+                        {procedureName.replace(/\n/gm, ', ')}
                     </Text>
                     <Text fontSize={[0, '', 2]}>
                         {persona === PATIENT
-                            ? renderPrice(procedure.totalPrice)
-                            : renderPrice(procedure.payoutAmount)}
+                            ? renderPrice(procedureName.totalPrice)
+                            : renderPrice(procedureName.payoutAmount)}
                     </Text>
                 </Flex>
                 <Box
@@ -69,10 +69,9 @@ const renderInvoiceItem = (procedures, persona) =>
     });
 
 const ProcedurePaymentCardView = ({
-    closeModal,
+    isModalOpen,
+    toggleModal,
     cardType,
-    opentDetailModal,
-    visibleModal,
     payment,
     paymentStatus,
     totalAmount,
@@ -135,7 +134,7 @@ const ProcedurePaymentCardView = ({
                 </Box>
                 <Flex alignItems="top">
                     <Button
-                        onClick={() => opentDetailModal(payment.id)}
+                        onClick={toggleModal}
                         type="ghost"
                         height={[50, '', 70]}
                         width={[50, '', 70]}
@@ -174,8 +173,8 @@ const ProcedurePaymentCardView = ({
             </Text>
             <PaymentDetails
                 payment={payment}
-                visible={visibleModal === `payment_detail_${payment.id}`}
-                onCancel={closeModal}
+                visible={isModalOpen}
+                onCancel={toggleModal}
                 cardType={cardType}
                 total={totalAmount}
             />

@@ -7,12 +7,14 @@ import _reduce from 'lodash/reduce';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 import _debounce from 'lodash/debounce';
+
 import { Box } from '../../../components';
 import ReserveOfficeView from './view';
 import {
     createReservationMutation,
     checkUserDentistVerifiedQuery,
 } from './queries';
+import emitter from '../../../util/emitter';
 import {
     SELECT_APPOINTMENT_VIEW,
     CONFIRMATION_VIEW,
@@ -54,12 +56,9 @@ class ReserveOffice extends Component {
         const user = getUser();
 
         if (!user) {
-            if (_get(this, 'props.client.writeData')) {
-                this.props.client.writeData({
-                    data: { visibleModal: 'login' },
-                });
-                return null;
-            }
+            emitter.emit('loginModal');
+
+            return;
         }
 
         this.setState({

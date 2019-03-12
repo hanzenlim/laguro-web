@@ -1,19 +1,10 @@
 import React, { PureComponent } from 'react';
 import _get from 'lodash/get';
-import { Query } from 'react-apollo';
 
 import HeaderView from './view';
-import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
-import { getVisibleModal } from './queries';
-import {
-    onLogin,
-    onSignup,
-    sendPassResetLink,
-    onLogout,
-    openLoginModal,
-    closeModal,
-    getUser,
-} from '../../../util/authUtils';
+import { withScreenSizes } from '../../../components/Responsive';
+import { onLogout, getUser } from '../../../util/authUtils';
+import emitter from '../../../util/emitter';
 import history from '../../../history';
 
 class HeaderContainer extends PureComponent {
@@ -23,6 +14,7 @@ class HeaderContainer extends PureComponent {
         this.state = {
             isSubmitting: false,
             pathname: window.location.pathname + window.location.search,
+            isLoginModalOpen: false,
         };
 
         history.listen(location => {
@@ -30,74 +22,52 @@ class HeaderContainer extends PureComponent {
                 pathname: location.pathname + location.search,
             });
         });
+
+        emitter.on('loginModal', () => {
+            const { mobileOnly } = this.props;
+            if (mobileOnly) {
+                history.push(`/login?redirectTo=${this.state.pathname}`);
+                window.scrollTo(0, 0);
+            } else {
+                this.setState({
+                    isLoginModalOpen: true,
+                });
+            }
+        });
+
+        this.toggleLoginModal = this.toggleLoginModal.bind(this);
+        this.onLogout = this.onLogout.bind(this);
     }
 
-    handleLogin = async (client, values) => {
-        await this.setState({ isSubmitting: true });
-        onLogin(client, values)
-            .then(() => {
-                this.setState({ isSubmitting: false });
-            })
-            .catch(() => {
-                this.setState({ isSubmitting: false });
-            });
+    toggleLoginModal = () => {
+        this.setState({
+            isLoginModalOpen: !this.state.isLoginModalOpen,
+        });
     };
 
-    handleSignup = async (client, values) => {
-        await this.setState({ isSubmitting: true });
-        onSignup(client, values)
-            .then(() => {
-                this.setState({ isSubmitting: false });
-            })
-            .catch(() => {
-                this.setState({ isSubmitting: false });
-            });
-    };
+    onLogout = () => {
+        onLogout();
 
-    handleSendResetPasswordLink = async (values, onSuccess) => {
-        await this.setState({ isSubmitting: true });
-        sendPassResetLink(values, onSuccess)
-            .then(() => {
-                this.setState({ isSubmitting: false });
-            })
-            .catch(() => {
-                this.setState({ isSubmitting: false });
-            });
+        // We're forcing it to rerender so that it will update the header to
+        // the logout state.
+        this.forceUpdate();
     };
 
     render() {
+        const user = getUser();
         return (
-            <Query query={getVisibleModal}>
-                {({ loading, error, data, client }) => {
-                    const user = getUser();
-                    if (loading) {
-                        return <div />;
-                    }
-
-                    if (error) {
-                        return <RedirectErrorPage />;
-                    }
-
-                    return (
-                        <HeaderView
-                            auth={user}
-                            isSubmitting={this.state.isSubmitting}
-                            isDentist={_get(user, 'isDentist')}
-                            isHost={_get(user, 'isHost')}
-                            visibleModal={data.visibleModal}
-                            login={values => this.handleLogin(client, values)}
-                            logout={() => onLogout(client)}
-                            signup={values => this.handleSignup(client, values)}
-                            sendPassResetLink={this.handleSendResetPasswordLink}
-                            openLoginModal={() => openLoginModal(client)}
-                            closeModal={() => closeModal(client)}
-                            pathname={this.state.pathname}
-                        />
-                    );
-                }}
-            </Query>
+            <HeaderView
+                auth={user}
+                isSubmitting={this.state.isSubmitting}
+                isDentist={_get(user, 'isDentist')}
+                isHost={_get(user, 'isHost')}
+                onLogout={this.onLogout}
+                toggleLoginModal={this.toggleLoginModal}
+                isLoginModalOpen={this.state.isLoginModalOpen}
+                pathname={this.state.pathname}
+            />
         );
     }
 }
 
-export default HeaderContainer;
+export default withScreenSizes(HeaderContainer);

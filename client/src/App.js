@@ -308,7 +308,7 @@ class App extends Component {
                                         path="/office/:id"
                                         component={OfficeDetailsPage}
                                     />
-                                    <Route
+                                    <PrivateRoute
                                         path="/review/:id"
                                         component={NewReviewPage}
                                     />
