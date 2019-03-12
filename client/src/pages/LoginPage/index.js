@@ -6,7 +6,6 @@ import _get from 'lodash/get';
 
 import LoginPageView from './view';
 import { getUser } from '../../util/authUtils';
-import history from '../../history';
 
 class LoginPage extends Component {
     state = {
