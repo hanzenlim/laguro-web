@@ -90,7 +90,7 @@ class FilterAppointmentsFormView extends PureComponent {
                             },
                         ]}
                         initialValue={
-                            moment(defaultDate).format('ddd, MM/DD/YYYY') ||
+                            defaultDate ||
                             (availableDateList[0] && availableDateList[0].key)
                         }
                         input={renderOptions(availableDateList)}
