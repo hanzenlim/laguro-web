@@ -228,7 +228,11 @@ class BookAppointment extends PureComponent {
         const { isPaymentVisible, bookedAppointment } = this.state;
 
         return (
-            <Query query={getDentistQuery} variables={{ id }}>
+            <Query
+                query={getDentistQuery}
+                variables={{ id }}
+                fetchPolicy="network-only"
+            >
                 {({ loading, error, data }) => {
                     if (loading) {
                         return <Loading />;
