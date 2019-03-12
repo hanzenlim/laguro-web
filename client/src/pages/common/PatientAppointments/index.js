@@ -86,7 +86,7 @@ class PatientAppoinmentsView extends PureComponent {
                     id={appointmentId}
                     visible={isModalOpen}
                     toggleModalState={this.toggleModalState(appointmentId)}
-                    sideEffect={this.props.refetch}
+                    refetch={this.props.refetch}
                 />
             </Fragment>
         );
