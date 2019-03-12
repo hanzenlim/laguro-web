@@ -46,6 +46,7 @@ class CancelAppointmentContainer extends PureComponent {
 
     render() {
         const user = getUser();
+        const { sideEffect } = this.props;
         return (
             <Mutation
                 mutation={cancelAppointmentMutation}
@@ -62,6 +63,7 @@ class CancelAppointmentContainer extends PureComponent {
                                 },
                             },
                         });
+                        sideEffect && (await sideEffect());
                         this.props.toggleModalState();
                     };
 
