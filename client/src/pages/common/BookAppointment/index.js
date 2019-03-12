@@ -224,7 +224,6 @@ class BookAppointment extends PureComponent {
     };
 
     render() {
-        console.warn(6666, this.props);
         const { id } = this.props;
 
         const { isPaymentVisible, bookedAppointment } = this.state;
