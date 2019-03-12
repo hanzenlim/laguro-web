@@ -45,13 +45,7 @@ class BookAppointment extends PureComponent {
             location: null,
             procedure: null,
             startTime: urlParams.startTime || null,
-            endTime: urlParams.startTime
-                ? stripTimezone(
-                      moment(urlParams.startTime)
-                          .add(props.firstAppointmentDuration, 'minutes')
-                          .format()
-                  )
-                : null,
+            endTime: null,
             isPaymentVisible: urlParams.startTime ? true : false,
             bookedAppointment: null,
             paymentError: null,
@@ -123,7 +117,7 @@ class BookAppointment extends PureComponent {
         }
     };
 
-    handleBookAppointment = async timezone => {
+    handleBookAppointment = async (timezone, firstAppointmentDuration) => {
         const user = getUser();
         const { client } = this.props;
 
@@ -145,11 +139,15 @@ class BookAppointment extends PureComponent {
                     input: {
                         reservationId: this.state.reservationId,
                         patientId: _get(user, 'id'),
-                        // procedure: this.state.procedure,
                         localStartTime: stripTimezone(
                             moment.tz(this.state.startTime, timezone).format()
                         ),
-                        localEndTime: this.state.endTime,
+                        localEndTime: stripTimezone(
+                            moment(this.state.startTime)
+                                .add(firstAppointmentDuration, 'minutes')
+                                .format()
+                        ),
+                        // procedure: this.state.procedure,
                         // paymentOptionId,
                     },
                 },
@@ -270,7 +268,6 @@ class BookAppointment extends PureComponent {
 
 BookAppointment.propTypes = {
     client: PropTypes.object,
-    firstAppointmentDuration: PropTypes.number,
     id: PropTypes.string,
     mutate: PropTypes.func,
 };

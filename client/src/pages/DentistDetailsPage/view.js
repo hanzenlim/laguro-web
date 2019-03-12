@@ -79,12 +79,7 @@ class DentistDetailsPageView extends PureComponent {
                                     pl={[0, '', 32]}
                                     pb={32}
                                 >
-                                    <BookAppointment
-                                        id={id}
-                                        firstAppointmentDuration={
-                                            dentist.firstAppointmentDuration
-                                        }
-                                    />
+                                    <BookAppointment id={id} />
                                 </Box>
                             </Sticky>
                         )}
