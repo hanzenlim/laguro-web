@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 import moment from 'moment';
@@ -223,6 +224,7 @@ class BookAppointment extends PureComponent {
     };
 
     render() {
+        console.warn(6666, this.props);
         const { id } = this.props;
 
         const { isPaymentVisible, bookedAppointment } = this.state;
@@ -266,6 +268,13 @@ class BookAppointment extends PureComponent {
         );
     }
 }
+
+BookAppointment.propTypes = {
+    client: PropTypes.object,
+    firstAppointmentDuration: PropTypes.number,
+    id: PropTypes.string,
+    mutate: PropTypes.func,
+};
 
 export default compose(
     withApollo,
