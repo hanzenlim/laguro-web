@@ -15,6 +15,7 @@ import {
     Rating,
     Text,
 } from '@laguro/basic-components';
+import { withScreenSizes } from '../../../components/Responsive';
 
 const TAG_COLORS = [
     'background.blue',
@@ -54,10 +55,19 @@ class DentistListingCard extends PureComponent {
     };
 
     render() {
-        const { dentist, variant, onRedirect } = this.props;
+        const { dentist, variant, onRedirect, desktopOnly } = this.props;
+        const isShowMoreVisibile =
+            (desktopOnly &&
+                dentist.availableTimes &&
+                dentist.availableTimes.length > 7) ||
+            (!desktopOnly &&
+                dentist.availableTimes &&
+                dentist.availableTimes.length > 3);
 
         const availableTimes =
-            dentist.availableTimes && dentist.availableTimes.slice(0, 3);
+            dentist.availableTimes && desktopOnly
+                ? dentist.availableTimes.slice(0, 7)
+                : dentist.availableTimes.slice(0, 3);
 
         return (
             <Button
@@ -299,22 +309,17 @@ class DentistListingCard extends PureComponent {
                                                 )
                                             )}
 
-                                            {dentist.availableTimes &&
-                                                dentist.availableTimes.length >
-                                                    3 && (
-                                                    <Button
-                                                        type="primary"
-                                                        width="100%"
-                                                        height={40}
-                                                        onClick={onRedirect}
-                                                        fontSize={[
-                                                            '12px',
-                                                            '18px',
-                                                        ]}
-                                                    >
-                                                        More
-                                                    </Button>
-                                                )}
+                                            {isShowMoreVisibile && (
+                                                <Button
+                                                    type="primary"
+                                                    width="100%"
+                                                    height={40}
+                                                    onClick={onRedirect}
+                                                    fontSize={['12px', '18px']}
+                                                >
+                                                    More
+                                                </Button>
+                                            )}
                                         </Grid>
                                     </Fragment>
                                 ) : (
@@ -354,4 +359,4 @@ DentistListingCard.propTypes = {
     onSelectAppointment: PropTypes.func,
 };
 
-export default DentistListingCard;
+export default withScreenSizes(DentistListingCard);

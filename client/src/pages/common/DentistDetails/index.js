@@ -1,5 +1,4 @@
 import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import _uniqBy from 'lodash/uniqBy';
 import _get from 'lodash/get';
 import DentistDetailsView from './view';
