@@ -46,7 +46,9 @@ const BookAppointmentView = props => {
                             fontSize={[1, '', 3]}
                             px={14}
                             isSubmitting={isSubmitting}
-                            onClick={props.onBookAppointment}
+                            onClick={() =>
+                                props.onBookAppointment(data[0].timezone)
+                            }
                         >
                             Make An Appointment
                         </Button>

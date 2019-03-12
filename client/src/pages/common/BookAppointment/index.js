@@ -122,7 +122,7 @@ class BookAppointment extends PureComponent {
         }
     };
 
-    handleBookAppointment = async () => {
+    handleBookAppointment = async timezone => {
         const user = getUser();
         const { client } = this.props;
 
@@ -144,8 +144,10 @@ class BookAppointment extends PureComponent {
                     input: {
                         reservationId: this.state.reservationId,
                         patientId: _get(user, 'id'),
-                        procedure: this.state.procedure,
-                        localStartTime: this.state.startTime,
+                        // procedure: this.state.procedure,
+                        localStartTime: stripTimezone(
+                            moment.tz(this.state.startTime, timezone).format()
+                        ),
                         localEndTime: this.state.endTime,
                         // paymentOptionId,
                     },
