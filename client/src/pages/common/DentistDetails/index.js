@@ -49,8 +49,6 @@ class DentistDetails extends PureComponent {
     }
 }
 
-DentistDetails.propTypes = {
-    id: PropTypes.string.isRequired,
-};
+DentistDetails.propTypes = {};
 
 export default DentistDetails;
