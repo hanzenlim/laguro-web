@@ -7,7 +7,6 @@ import history from '../../../history';
 import { Flex, Text, Box, Grid, Button } from '../../../components';
 import NoSearchResults from '../NoSearchResults';
 import { DENTISTS, OFFICES } from '../../../util/strings';
-import { stripTimezone } from '../../../util/timeUtil';
 
 const ITEMS_COUNT = 14;
 
