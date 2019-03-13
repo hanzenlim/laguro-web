@@ -46,12 +46,17 @@ const PatientAppoinmentsContainer = () => {
                 },
             }}
         >
-            {({ loading, error, data }) => {
+            {({ loading, error, data, refetch }) => {
                 if (error) return <RedirectErrorPage />;
                 if (loading) return <Loading />;
 
                 const appointments = get(data, 'queryAppointments');
-                return <PatientAppoinmentsView appointments={appointments} />;
+                return (
+                    <PatientAppoinmentsView
+                        appointments={appointments}
+                        refetch={refetch}
+                    />
+                );
             }}
         </Query>
     );
@@ -81,6 +86,7 @@ class PatientAppoinmentsView extends PureComponent {
                     id={appointmentId}
                     visible={isModalOpen}
                     toggleModalState={this.toggleModalState(appointmentId)}
+                    refetch={this.props.refetch}
                 />
             </Fragment>
         );

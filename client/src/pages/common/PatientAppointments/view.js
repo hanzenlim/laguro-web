@@ -89,8 +89,8 @@ class PatientAppointments extends PureComponent {
                                         30
                                     )}
                                     alt={dentistName}
-                                    width={30}
-                                    height={30}
+                                    width={50}
+                                    height={50}
                                     borderRadius="50%"
                                 />
                                 <Box fontSize={1} minWidth="108px">
@@ -102,14 +102,20 @@ class PatientAppointments extends PureComponent {
                                             'MMM D, h:mmA'
                                         )}
                                     </Text>
-                                    <Link to={`/office/${officeId}`}>
+                                    <Link
+                                        target="_blank"
+                                        to={`/office/${officeId}`}
+                                        isExternal
+                                    >
                                         <Text fontWeight="light">
                                             {officeName}
                                         </Text>
                                     </Link>
-                                </Box>
-                                <Box maxWidth="100px">
-                                    <Link to={`/dentist/${dentist.id}`}>
+                                    <Link
+                                        target="_blank"
+                                        to={`/dentist/${dentist.id}`}
+                                        isExternal
+                                    >
                                         <Text
                                             textOverflow="ellipsis"
                                             whiteSpace="nowrap"
@@ -122,6 +128,7 @@ class PatientAppointments extends PureComponent {
                                         </Text>
                                     </Link>
                                 </Box>
+
                                 <Button
                                     type="ghost"
                                     border="none"
@@ -165,7 +172,11 @@ class PatientAppointments extends PureComponent {
                                         borderRadius="50%"
                                     />
                                     <Box maxWidth="220px">
-                                        <Link to={`/dentist/${dentist.id}`}>
+                                        <Link
+                                            target="_blank"
+                                            to={`/dentist/${dentist.id}`}
+                                            isExternal
+                                        >
                                             <Text
                                                 textOverflow="ellipsis"
                                                 whiteSpace="nowrap"
@@ -176,7 +187,11 @@ class PatientAppointments extends PureComponent {
                                                 {dentistName}
                                             </Text>
                                         </Link>
-                                        <Link to={`/office/${officeId}`}>
+                                        <Link
+                                            target="_blank"
+                                            to={`/office/${officeId}`}
+                                            isExternal
+                                        >
                                             <Text
                                                 fontWeight="light"
                                                 fontSize={4}

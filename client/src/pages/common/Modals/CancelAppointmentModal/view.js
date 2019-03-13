@@ -37,7 +37,7 @@ const CancelAppointmentModal = props => {
                             borderRadius="4px"
                             lineHeight="54px"
                         >
-                            Cancel
+                            No
                         </Text>
                     </Button>
                     <Button
