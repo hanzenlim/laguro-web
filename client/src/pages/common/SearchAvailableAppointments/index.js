@@ -84,8 +84,8 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
         });
 
         reservations.forEach(r => {
-            const availableSlot = availableTimeslotIndex[r.key];
-            availableSlot.numChairs -= r.numChairs;
+            // const availableSlot = availableTimeslotIndex[r.key];
+            // availableSlot.numChairs -= r.numChairs;
         });
 
         const timeslots = Object.values(availableTimeslotIndex).filter(
