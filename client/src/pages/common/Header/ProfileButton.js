@@ -60,7 +60,7 @@ class ProfileButton extends Component {
         const {
             auth,
             pathname,
-            logout,
+            onLogout,
             onLandingPage,
             isDentist,
             isHost,
@@ -77,7 +77,7 @@ class ProfileButton extends Component {
                             width={204}
                             isDentist={isDentist}
                             isHost={isHost}
-                            onLogout={logout}
+                            onLogout={onLogout}
                             menuSections={profileMenuSections}
                             hasLogOut={true}
                             hasBecomeAPersonaSection={true}
