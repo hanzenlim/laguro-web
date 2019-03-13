@@ -109,43 +109,39 @@ class DentistListingCard extends PureComponent {
                                         />
                                     </Box>
                                     <Flex
-                                        mb={4}
-                                        alignItems={
-                                            variant === 'small'
-                                                ? 'flex-start'
-                                                : ['flex-start', 'center']
-                                        }
-                                        flexDirection={
-                                            variant === 'small'
-                                                ? 'column'
-                                                : ['column', 'row']
-                                        }
+                                        flexDirection="column"
+                                        alignItems="flex-start"
                                     >
                                         <Text
-                                            style={{
-                                                'white-space': 'pre-line',
-                                            }}
+                                            fontSize={['11px', '14px']}
+                                            color="#c7c7c7"
                                             fontWeight="bold"
-                                            fontSize={['14px', '20px']}
-                                            mr={14}
-                                            color="#303449"
-                                            textAlign="left"
+                                            textTransform="uppercase"
                                         >
                                             {dentist.specialty}
                                         </Text>
                                         <Flex
                                             mb={4}
-                                            alignItems={[
-                                                'flex-start',
-                                                'center',
-                                            ]}
-                                            flexDirection={['column', 'row']}
+                                            alignItems={
+                                                variant === 'small'
+                                                    ? 'flex-start'
+                                                    : ['flex-start', 'center']
+                                            }
+                                            flexDirection={
+                                                variant === 'small'
+                                                    ? 'column'
+                                                    : ['column', 'row']
+                                            }
                                         >
                                             <Text
+                                                style={{
+                                                    'white-space': 'pre-line',
+                                                }}
                                                 fontWeight="bold"
                                                 fontSize={['14px', '20px']}
                                                 mr={14}
                                                 color="#303449"
+                                                textAlign="left"
                                             >
                                                 {dentist.name}
                                             </Text>
@@ -164,27 +160,21 @@ class DentistListingCard extends PureComponent {
                                                 </Text>
                                             </Flex>
                                         </Flex>
+
                                         <Text
+                                            style={{
+                                                'white-space': 'pre-line',
+                                            }}
                                             mb={8}
                                             fontSize="12px"
                                             color="#9b9b9b"
                                             fontWeight="normal"
                                             textTransform="uppercase"
+                                            textAlign="left"
                                         >
                                             {dentist.address}
                                         </Text>
                                     </Flex>
-                                    <Text
-                                        style={{ 'white-space': 'pre-line' }}
-                                        mb={8}
-                                        fontSize="12px"
-                                        color="#9b9b9b"
-                                        fontWeight="normal"
-                                        textTransform="uppercase"
-                                        textAlign="left"
-                                    >
-                                        {dentist.address}
-                                    </Text>
                                 </Flex>
 
                                 {!_isEmpty(dentist.insurance) && (
