@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Progress } from '@laguro/the-bright-side-components';
 import { Box } from '@laguro/basic-components';
 import { adopt } from 'react-adopt';
@@ -163,6 +164,13 @@ const KioskMedicalHistoryFormPage = props => {
             }}
         </Composed>
     );
+};
+
+KioskMedicalHistoryFormPage.propTypes = {
+    history: PropTypes.object,
+    location: PropTypes.object,
+    match: PropTypes.object,
+    staticContext: PropTypes.object,
 };
 
 export default KioskMedicalHistoryFormPage;
