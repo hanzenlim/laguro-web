@@ -24,6 +24,7 @@ import {
     ONBOARDING_NAME_AND_PERSONA_PAGE,
 } from '../../../util/urls';
 import { userHasSkippedMedicalHistory } from '../../../util/cookieUtils';
+import emitter from '../../../util/emitter';
 import { getUser } from '../../../util/authUtils';
 import queryString from 'query-string';
 import history from '../../../history';
@@ -120,6 +121,13 @@ class BookAppointment extends PureComponent {
     handleBookAppointment = async (timezone, firstAppointmentDuration) => {
         const user = getUser();
         const { client } = this.props;
+
+        // Show login modal if not logged in.
+        if (!user) {
+            emitter.emit('loginModal');
+
+            return;
+        }
 
         const {
             data: { getUser: getUserData },
