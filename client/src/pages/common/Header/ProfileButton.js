@@ -47,9 +47,9 @@ const StyledDropdown = styled(Dropdown)``;
 
 class ProfileButton extends Component {
     openLoginForLogIn = isMobile => () => {
-        const { openLoginModal } = this.props;
+        const { toggleLoginModal } = this.props;
         if (!isMobile) {
-            openLoginModal();
+            toggleLoginModal();
         }
     };
 
