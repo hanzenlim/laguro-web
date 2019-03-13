@@ -28,14 +28,25 @@ const StyledCard = styled(Card)`
     }
 `;
 
-const OfficeListingCard = ({ office, onRedirect }) => (
+const OfficeListingCard = ({ office, onRedirect, showMap }) => (
     <Button type="ghost" height="auto" width="100%" onClick={onRedirect}>
         <StyledCard>
             <Box>
-                <Flex flexDirection={['column', 'row']} m={0}>
-                    <Box display="block" width={['100%', 288]}>
+                <Flex
+                    flexDirection={showMap ? 'column' : ['column', 'row']}
+                    m={0}
+                    height={showMap ? '100%' : ['100%', 215]}
+                >
+                    <Box
+                        display="block"
+                        width={showMap ? '100%' : ['100%', 288]}
+                        height={showMap ? 215 : [215, '100%']}
+                        position="relative"
+                        overflow="hidden"
+                    >
                         <Image
                             src={office.image || defaultOfficeImage}
+                            display="block"
                             width="100%"
                             height="100%"
                         />
@@ -48,12 +59,20 @@ const OfficeListingCard = ({ office, onRedirect }) => (
                             >
                                 <Flex
                                     mb={4}
-                                    alignItems={['flex-start', 'center']}
-                                    flexDirection={['column', 'row']}
+                                    alignItems={
+                                        showMap
+                                            ? 'flex-start'
+                                            : ['flex-start', 'center']
+                                    }
+                                    flexDirection={
+                                        showMap ? 'column' : ['column', 'row']
+                                    }
                                 >
                                     <Text
                                         fontWeight="bold"
-                                        fontSize={['14px', '20px']}
+                                        fontSize={
+                                            showMap ? '14px' : ['14px', '20px']
+                                        }
                                         mr={14}
                                         color="#303449"
                                     >
@@ -63,7 +82,9 @@ const OfficeListingCard = ({ office, onRedirect }) => (
                                 <Flex alignItems="flex-end" lineHeight="15px">
                                     <Rating
                                         disabled={true}
-                                        fontSize={['12px', '15px']}
+                                        fontSize={
+                                            showMap ? '12px' : ['12px', '15px']
+                                        }
                                         value={office.rating}
                                     />
                                     <Text ml={6} fontSize="12px">
@@ -97,7 +118,11 @@ const OfficeListingCard = ({ office, onRedirect }) => (
                                             <Text
                                                 color="text.white"
                                                 lineHeight="20px"
-                                                fontSize={['10px', '12px']}
+                                                fontSize={
+                                                    showMap
+                                                        ? '10px'
+                                                        : ['10px', '12px']
+                                                }
                                             >
                                                 {equip}
                                             </Text>
@@ -108,10 +133,10 @@ const OfficeListingCard = ({ office, onRedirect }) => (
 
                         <Text
                             style={{ 'white-space': 'pre-line' }}
-                            fontSize={['10px', '14px']}
+                            fontSize={showMap ? '10px' : ['10px', '14px']}
                             textAlign="left"
                             fontWeight="300"
-                            display={['none', 'block']}
+                            display={showMap ? 'none' : ['none', 'block']}
                         >
                             {office.subtitle
                                 ? office.subtitle

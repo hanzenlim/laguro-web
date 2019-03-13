@@ -20,6 +20,69 @@ const Map = Loadable({
 
 const { Desktop } = Responsive;
 
+export const offices = [
+    {
+        id: 1,
+        title: 'Super Center',
+        image: null,
+        address: 'Super Place, 15, Waldorf, Maryland',
+
+        rating: 5,
+        numReviews: 13,
+        equipment: [
+            'Composites',
+            'Braces',
+            'X-rays',
+            'Lasers',
+            'Burs',
+            'Needles/Syringes',
+            'Needles/Syringes',
+        ],
+        subtitle:
+            'Super Center is a friendly family dental office with equipment and supplies available to facilitate implant procedures.',
+    },
+    {
+        id: 2,
+        title: 'Super Center',
+        image: null,
+        address: 'Super Place, 15, Waldorf, Maryland',
+
+        rating: 5,
+        numReviews: 13,
+        equipment: [
+            'Composites',
+            'Braces',
+            'X-rays',
+            'Lasers',
+            'Burs',
+            'Needles/Syringes',
+            'Needles/Syringes',
+        ],
+        subtitle:
+            'Super Center is a friendly family dental office with equipment and supplies available to facilitate implant procedures.',
+    },
+    {
+        id: 3,
+        title: 'Super Center',
+        image: 'https:bit.ly/laguro-tina',
+        address: 'Super Place, 15, Waldorf, Maryland',
+
+        rating: 5,
+        numReviews: 13,
+        equipment: [
+            'Composites',
+            'Braces',
+            'X-rays',
+            'Lasers',
+            'Burs',
+            'Needles/Syringes',
+            'Needles/Syringes',
+        ],
+        subtitle:
+            'Super Center is a friendly family dental office with equipment and supplies available to facilitate implant procedures.',
+    },
+];
+
 const OfficeSearchPageView = props => {
     const {
         data,
@@ -30,8 +93,6 @@ const OfficeSearchPageView = props => {
         showMap,
         toggleMap,
     } = props;
-
-    console.log({ data });
 
     return (
         <Container pt={[48, '', 160]}>
@@ -85,7 +146,7 @@ const OfficeSearchPageView = props => {
                         height={['auto', '', 'calc(100vh - 220px)']}
                     >
                         <SearchResultsList
-                            data={data}
+                            data={offices}
                             total={total}
                             showMap={showMap}
                             title="Office Results"

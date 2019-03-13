@@ -62,8 +62,6 @@ class SearchResultsList extends PureComponent {
         const isOffice = title === 'Office Results';
         const type = isOffice ? OFFICES : DENTISTS;
 
-        console.log({ data });
-
         return (
             <Flex flexDirection="column">
                 {!data.length && (
@@ -76,14 +74,19 @@ class SearchResultsList extends PureComponent {
                 <Grid
                     gridColumnGap="17px"
                     gridRowGap="20px"
-                    gridTemplateColumns={['1fr']}
+                    gridTemplateColumns={
+                        showMap && isOffice
+                            ? 'repeat(auto-fit, minmax(200px, 1fr))'
+                            : ['1fr']
+                    }
                 >
                     {data.length
                         ? data.map(item => (
-                              <Box key={item.url} width="100%">
+                              <Box key={item.url} width={'100%'}>
                                   {isOffice ? (
                                       <OfficeListingCard
                                           office={item}
+                                          showMap={showMap}
                                           onRedirect={() =>
                                               this.handleRedirect(item.url)
                                           }
