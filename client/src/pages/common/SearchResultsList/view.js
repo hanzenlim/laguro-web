@@ -82,7 +82,14 @@ class SearchResultsList extends PureComponent {
                 >
                     {data.length
                         ? data.map(item => (
-                              <Box key={item.url} width={'100%'}>
+                              <Box
+                                  key={item.url}
+                                  width={
+                                      data.length === 1 && isOffice && showMap
+                                          ? ['100%', '50%']
+                                          : '100%'
+                                  }
+                              >
                                   {isOffice ? (
                                       <OfficeListingCard
                                           office={item}
