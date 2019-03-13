@@ -92,14 +92,26 @@ const DentistListingCard = props => {
                                     </Text>
                                     <Flex
                                         mb={4}
-                                        alignItems={['flex-start', 'center']}
-                                        flexDirection={['column', 'row']}
+                                        alignItems={
+                                            variant === 'small'
+                                                ? 'flex-start'
+                                                : ['flex-start', 'center']
+                                        }
+                                        flexDirection={
+                                            variant === 'small'
+                                                ? 'column'
+                                                : ['column', 'row']
+                                        }
                                     >
                                         <Text
+                                            style={{
+                                                'white-space': 'pre-line',
+                                            }}
                                             fontWeight="bold"
                                             fontSize={['14px', '20px']}
                                             mr={14}
                                             color="#303449"
+                                            textAlign="left"
                                         >
                                             {dentist.name}
                                         </Text>
@@ -119,11 +131,13 @@ const DentistListingCard = props => {
                                         </Flex>
                                     </Flex>
                                     <Text
+                                        style={{ 'white-space': 'pre-line' }}
                                         mb={8}
                                         fontSize="12px"
                                         color="#9b9b9b"
                                         fontWeight="normal"
                                         textTransform="uppercase"
+                                        textAlign="left"
                                     >
                                         {dentist.address}
                                     </Text>
