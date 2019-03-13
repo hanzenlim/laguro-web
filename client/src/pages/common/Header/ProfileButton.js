@@ -1,20 +1,25 @@
 import React, { Component, Fragment } from 'react';
-import { Icon } from '../../../components/';
 import { Dropdown } from 'antd';
 import {
     Text,
     Image,
-    Link,
     Theme as theme,
     Flex,
     Responsive,
 } from '@laguro/basic-components';
+import styled from 'styled-components';
 import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
+import { Link, Icon } from '../../../components/index';
 import { setImageSizeToUrl } from '../../../util/imageUtil';
 import { StyledDropContainer, getLinkTextColor } from './common';
-import { profileMenuSections } from './constants';
+import {
+    profileMenuSections,
+    profileMenuTextToLinkTo,
+} from '../../../util/menuItems';
 import Menus from './Menus';
-import styled from 'styled-components';
+import history from '../../../history';
+import { PATIENT_DASHBOARD_PAGE_URL } from '../../../util/urls';
+import { ACCOUNT_SETTINGS_MENU_TEXT } from '../../../util/strings';
 
 const { Mobile } = Responsive;
 
@@ -43,8 +48,6 @@ const ProfileImage = styled(Flex)`
     cursor: pointer;
 `;
 
-const StyledDropdown = styled(Dropdown)``;
-
 class ProfileButton extends Component {
     openLoginForLogIn = isMobile => () => {
         const { toggleLoginModal } = this.props;
@@ -66,7 +69,9 @@ class ProfileButton extends Component {
 
         return auth ? (
             <Fragment>
-                <StyledDropdown
+                <Dropdown
+                    // to close dropdown when redirecting after clicking on menu item
+                    key={history.location.key}
                     overlay={
                         <Menus
                             width={204}
@@ -76,6 +81,7 @@ class ProfileButton extends Component {
                             menuSections={profileMenuSections}
                             hasLogOut={true}
                             hasBecomeAPersonaSection={true}
+                            menuTextToLinkTo={profileMenuTextToLinkTo} // e.g. {"Account settings": '/dashboard/patient?selectedTab=account_settings'}
                         />
                     }
                     placement={'bottomRight'}
@@ -84,30 +90,35 @@ class ProfileButton extends Component {
                         document.getElementById('ProfileMenuContainer')
                     }
                 >
-                    <ProfileImage alignItems="center">
-                        <Image
-                            src={
-                                auth.imageUrl
-                                    ? setImageSizeToUrl(
-                                          auth.imageUrl,
-                                          desktopOnly ? 50 : 30
-                                      )
-                                    : defaultUserImage
-                            }
-                            width={[30, '', 50]}
-                            height={[30, '', 50]}
-                            borderRadius={50}
-                            ml={[17, '', 27]}
-                            data-cy="profile-button"
-                        />
-                        <Icon
-                            ml={4}
-                            transform="scale(0.8)"
-                            fill={onLandingPage ? '#FFF' : '#3481F8'}
-                            type="downArrow"
-                        />
-                    </ProfileImage>
-                </StyledDropdown>
+                    {/* clicking on profile pic will redirect to patient dashboard */}
+                    <Link
+                        to={`${PATIENT_DASHBOARD_PAGE_URL}?selectedTab=${ACCOUNT_SETTINGS_MENU_TEXT}`}
+                    >
+                        <ProfileImage alignItems="center">
+                            <Image
+                                src={
+                                    auth.imageUrl
+                                        ? setImageSizeToUrl(
+                                              auth.imageUrl,
+                                              desktopOnly ? 50 : 30
+                                          )
+                                        : defaultUserImage
+                                }
+                                width={[30, '', 50]}
+                                height={[30, '', 50]}
+                                borderRadius={50}
+                                ml={[17, '', 27]}
+                                data-cy="profile-button"
+                            />
+                            <Icon
+                                ml={4}
+                                transform="scale(0.8)"
+                                fill={onLandingPage ? '#FFF' : '#3481F8'}
+                                type="downArrow"
+                            />
+                        </ProfileImage>
+                    </Link>
+                </Dropdown>
                 <StyledDropContainer id="ProfileMenuContainer" />
             </Fragment>
         ) : (

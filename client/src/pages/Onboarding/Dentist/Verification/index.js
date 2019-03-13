@@ -190,15 +190,16 @@ class RenderDentistOnboarding extends Component {
             <Composed>
                 {({ requestDentistVerification }) => (
                     <Box>
-                        {startStep !== progressSteps.length && (
-                            <Progress
-                                {...getProgressBarProps({
-                                    startStep,
-                                    currentStep,
-                                    progressSteps,
-                                })}
-                            />
-                        )}
+                        {!this.props.withoutProgressBar &&
+                            startStep !== progressSteps.length && (
+                                <Progress
+                                    {...getProgressBarProps({
+                                        startStep,
+                                        currentStep,
+                                        progressSteps,
+                                    })}
+                                />
+                            )}
                         <Wizard
                             render={props => (
                                 <Flex
@@ -297,15 +298,19 @@ class RenderDentistOnboarding extends Component {
                                         await Promise.all(uploadResults);
                                     },
                                     afterAction: () => {
-                                        const {
-                                            redirectTo,
-                                        } = queryString.parse(
-                                            this.props.location.search
-                                        );
-
-                                        this.props.history.push(
-                                            redirectTo || '/'
-                                        );
+                                        // this will trigger a render of a confirmation panel in dentist dashboard
+                                        if (this.props.fromDentistDashboard) {
+                                            this.props.onFinish();
+                                        } else {
+                                            const {
+                                                redirectTo,
+                                            } = queryString.parse(
+                                                this.props.location.search
+                                            );
+                                            this.props.history.push(
+                                                redirectTo || '/'
+                                            );
+                                        }
                                     },
                                 });
                             }}

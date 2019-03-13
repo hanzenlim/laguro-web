@@ -4,14 +4,8 @@ import styled from 'styled-components';
 import { space, width, borderBottom, borderColor } from 'styled-system';
 import _isEmpty from 'lodash/isEmpty';
 import _cloneDeep from 'lodash/cloneDeep';
-import {
-    Link,
-    Box,
-    Text,
-    Grid,
-    Theme as theme,
-} from '@laguro/basic-components';
-import { menuTextToLinkTo } from './constants';
+import { Link } from '../../../components/index';
+import { Box, Text, Grid, Theme as theme } from '@laguro/basic-components';
 import {
     LOG_OUT_MENU_TEXT,
     BECOME_A_DENTIST_MENU_TEXT,
@@ -219,14 +213,27 @@ const Menus = props => {
                         text: menuSection.dividerText,
                         isLong: menuSection.isLong,
                     }),
-                menuSection.menuTexts.map(menuText => [
-                    <StyledMenuItem p={menuItemPadding}>
-                        <Link to={menuTextToLinkTo[menuText]}>
-                            {renderText(menuText)}
-                        </Link>
-                    </StyledMenuItem>,
-                    !desktopOnly && <StyledMenuDivider />,
-                ]),
+                menuSection.menuTexts.map(menuText => {
+                    // ltm link should open in another tab, and it's an external link
+                    const linkProps =
+                        menuText === LAGURO_TREATMENT_MODULE_MENU_TEXT
+                            ? { isExternal: true, target: '_blank' }
+                            : {};
+
+                    return [
+                        <StyledMenuItem p={menuItemPadding}>
+                            <Link
+                                {...linkProps}
+                                // menuTextToLink:
+                                //      {"Account settings": '/dashboard/patient?selectedTab=account_settings'}
+                                to={props.menuTextToLinkTo[menuText]}
+                            >
+                                {renderText(menuText)}
+                            </Link>
+                        </StyledMenuItem>,
+                        !desktopOnly && <StyledMenuDivider />,
+                    ];
+                }),
             ])}
 
             {hasLogOut && [
@@ -242,7 +249,7 @@ const Menus = props => {
                 <StyledMenuItem p={menuItemPadding}>
                     <Link
                         data-cy="logout-link"
-                        to={menuTextToLinkTo[LOG_OUT_MENU_TEXT]}
+                        to={props.menuTextToLinkTo[LOG_OUT_MENU_TEXT]}
                         onClick={onLogout}
                     >
                         <Text color={'text.blue'} fontSize={0}>

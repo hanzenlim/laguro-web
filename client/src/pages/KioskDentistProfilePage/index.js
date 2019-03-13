@@ -254,7 +254,10 @@ class KioskDentistProfilePage extends Component {
                                 }
                             },
                             afterAction: () => {
-                                if (
+                                // this will trigger a render of a confirmation panel in dentist dashboard
+                                if (this.props.fromDentistDashboard) {
+                                    this.props.onFinish();
+                                } else if (
                                     getSearchParamValueByKey(
                                         'referer'
                                     ).includes('ProfilePage')
@@ -286,6 +289,7 @@ class KioskDentistProfilePage extends Component {
                         <KioskDentistProfileView
                             onCreate={onCreate}
                             steps={steps}
+                            withoutProgressBar={this.props.withoutProgressBar} // used in dentist dashboard
                         />
                     );
                 }}

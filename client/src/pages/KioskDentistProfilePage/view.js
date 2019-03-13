@@ -17,16 +17,17 @@ const progressSteps = ['Dentist Profile', 'Verification'];
 
 const currentStep = progressSteps[0];
 
-const KioskDentistProfileView = ({ onCreate, steps }) => (
+const KioskDentistProfileView = ({ onCreate, steps, withoutProgressBar }) => (
     <Box>
-        {getSearchParamValueByKey('referer') !== 'ProfilePage' && (
-            <Progress
-                {...getProgressBarProps({
-                    currentStep,
-                    progressSteps,
-                })}
-            />
-        )}
+        {!withoutProgressBar &&
+            getSearchParamValueByKey('referer') !== 'ProfilePage' && (
+                <Progress
+                    {...getProgressBarProps({
+                        currentStep,
+                        progressSteps,
+                    })}
+                />
+            )}
         <DentistProfile onSubmit={onCreate} steps={steps} />
     </Box>
 );
