@@ -258,7 +258,7 @@ class DentistDetailsView extends PureComponent {
                                 >
                                     address information{' '}
                                     {data.locations.map(location => (
-                                        <Box>
+                                        <Box key={location.name}>
                                             <Text
                                                 is="span"
                                                 fontWeight={[
