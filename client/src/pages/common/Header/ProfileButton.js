@@ -123,12 +123,13 @@ class ProfileButton extends Component {
                             }
                         >
                             <Text
+                                minWidth={54}
                                 color={getLinkTextColor()}
                                 fontSize={[0, '', 1]}
                                 fontWeight="bold"
                                 mb={[0, '', 4]}
                             >
-                                log in
+                                Log in
                             </Text>
                         </NavBarLink>
                     )}
