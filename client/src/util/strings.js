@@ -98,6 +98,7 @@ export const BECOME_A_HOST_MENU = 'Become a host';
 export const MY_CALENDAR_MENU = 'My calendar';
 
 // profile menu
+// used in header profile/patient link and in patient dashboard
 export const ACCOUNT_SETTINGS_MENU_TEXT = 'Account settings';
 export const APPOINTMENTS_MENU_TEXT = 'Appointments';
 export const MEDICAL_HISTORY_MENU_TEXT = 'Medical history';
@@ -110,17 +111,20 @@ export const BECOME_A_HOST_MENU_TEXT = 'Become a host';
 export const LOG_OUT_MENU_TEXT = 'Log out';
 
 // dentist menu
+// used in header dentists link and in dentist dashboard
 export const LAGURO_TREATMENT_MODULE_MENU_TEXT = 'Laguro Treatment Module';
 export const PROFILE_SETTINGS_MENU_TEXT = 'Profile settings';
 export const DENTIST_VERIFICATION_MENU_TEXT = 'Dentist verification';
-export const NEW_APPOINTMENT_MENU_TEXT = 'New Appointment';
+export const CALENDAR_MENU_TEXT = 'Calendar';
+export const CREATE_A_NEW_APPOINTMENT_MENU_TEXT = 'Create a new appointment';
 export const MY_PATIENTS_MENU_TEXT = 'My patients';
 export const BOOKINGS_MENU_TEXT = 'Bookings';
-export const LAGURO_BALANCE_MENU_TEXT = 'Laguro Balance';
+export const LAGURO_BALANCE_MENU_TEXT = 'Laguro balance';
 export const SEARCH_FOR_CHAIRS_MENU_TEXT = 'Search for chairs';
 export const VIEW_PROFILE_MENU_TEXT = 'View profile';
 
 // host menu
+// used in header hosts link and in host dashboard
 export const MY_OFFICES_MENU_TEXT = 'My offices';
 // LAGURO_BALANCE_MENU_TEXT from dentist menu uses for host
 export const ADD_A_NEW_OFFICE_MENU_TEXT = 'Add a new office';

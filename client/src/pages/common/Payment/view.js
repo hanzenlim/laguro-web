@@ -32,6 +32,7 @@ const PaymentView = props => {
                         isSubmitting={isSubmitting}
                         updateSubmittingState={updateSubmittingState}
                         checkIfVerified={checkIfVerified}
+                        isInPatientDashboard={props.isInPatientDashboard}
                     />
                 </Elements>
             </StripeProvider>

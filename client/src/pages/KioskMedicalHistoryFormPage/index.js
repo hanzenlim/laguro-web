@@ -85,16 +85,21 @@ const KioskMedicalHistoryFormPage = props => {
                 return (
                     <Box position="relative">
                         {/* TODO: Move progress to a parent component */}
-                        <Progress
-                            {...getProgressBarProps({
-                                startStep,
-                                currentStep,
-                                progressSteps,
-                            })}
-                        />
+                        {!props.withoutProgressBar && (
+                            <Progress
+                                {...getProgressBarProps({
+                                    startStep,
+                                    currentStep,
+                                    progressSteps,
+                                })}
+                            />
+                        )}
                         <HealthHistoryForm
                             answers={answers}
-                            canSkip={_isEmpty(_get(user, 'insuranceInfo'))}
+                            canSkip={
+                                _isEmpty(_get(user, 'insuranceInfo')) &&
+                                !props.cannotSkip
+                            }
                             onFinishForm={async values => {
                                 const valuesKeys = Object.keys(values);
 
@@ -140,7 +145,11 @@ const KioskMedicalHistoryFormPage = props => {
                                             'insuranceInfo'
                                         );
 
-                                        if (hasGoneThroughInsurancePage) {
+                                        if (props.fromPatientDashboard) {
+                                            props.onFinish();
+                                        } else if (
+                                            hasGoneThroughInsurancePage
+                                        ) {
                                             if (!attemptToRedirectBack()) {
                                                 props.history.push(
                                                     `/kiosk/medical-history-form-confirmation`

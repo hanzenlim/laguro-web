@@ -24,11 +24,8 @@ export const NoAppointmentsCard = ({ text }) => (
             <Box
                 width="100%"
                 height="100vh"
-                bg="background.whiteSmoke"
                 alignItems="center"
                 justifyContent="center"
-                borderTop="1px solid"
-                borderColor="divider.gray"
                 pt={16}
             >
                 <Text

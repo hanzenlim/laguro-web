@@ -5,7 +5,6 @@ import _isEmpty from 'lodash/isEmpty';
 // pages for all users
 export const ONBOARDING_NAME_AND_PERSONA_PAGE = '/onboarding/name-and-persona/';
 export const LOGIN_PAGE_URL = '/login';
-export const PROFILE_PAGE_URL = '/profile';
 export const RESET_PASSWORD_PAGE_URL = '/reset-password';
 export const ABOUT_PAGE_URL = '/about';
 export const GENERAL_ERROR_PAGE_URL = '/error';
@@ -20,7 +19,6 @@ export const NEW_REVIEW_PAGE_URL_PREFIX = '/review';
 export const URLS_FOR_ALL_USER_PAGES = [
     ONBOARDING_NAME_AND_PERSONA_PAGE,
     LOGIN_PAGE_URL,
-    PROFILE_PAGE_URL,
     RESET_PASSWORD_PAGE_URL,
     ABOUT_PAGE_URL,
     GENERAL_ERROR_PAGE_URL,
@@ -45,11 +43,15 @@ export const KIOSK_SELECT_PROCEDURE_PAGE_URL = '/kiosk/select-procedure';
 export const KIOSK_MEDICAL_HISTORY_FORM_CONFIRMATION_PAGE_URL =
     '/kiosk/medical-history-form-confirmation';
 export const DENTIST_DETAILS_PAGE_URL_PREFIX = '/dentist';
+export const PATIENT_DASHBOARD_PAGE_URL = '/dashboard/patient';
+export const DENTIST_DASHBOARD_PAGE_URL = '/dashboard/dentist';
+export const HOST_DASHBOARD_PAGE_URL = '/dashboard/host';
 
 export const KIOSK_BOOKING_CONFIRMATION_URL_PREFIX =
     '/kiosk/booking-confirmation';
 export const KIOSK_CHECKIN_PAGE_URL_PREFIX = '/kiosk/check-in';
 
+// used to make header background white
 export const URLS_FOR_PATIENT_PAGES = [
     PATIENT_ONBOARDING_MEDICAL_HISTORY_FORM,
     PATIENT_ONBOARDING_INSURANCE_FORM,
@@ -64,6 +66,7 @@ export const URLS_FOR_PATIENT_PAGES = [
     DENTIST_DETAILS_PAGE_URL_PREFIX,
     KIOSK_BOOKING_CONFIRMATION_URL_PREFIX,
     KIOSK_CHECKIN_PAGE_URL_PREFIX,
+    PATIENT_DASHBOARD_PAGE_URL,
 ];
 
 // pages for hosts and dentists
@@ -76,6 +79,7 @@ export const OFFICE_SEARCH_PAGE_URL = '/office/search';
 export const HOST_ONBOARDING_PAGE_URL_PREFIX = '/host-onboarding';
 export const OFFICE_DETAILS_PAGE_URL_PREFIX = '/office';
 
+// used to make header background blue
 export const URLS_FOR_HOST_AND_DENTIST_PAGES = [
     DENTIST_ONBOARDING_PROFILE_URL,
     DENTIST_ONBOARDING_VERIFICATION_URL,
@@ -83,6 +87,8 @@ export const URLS_FOR_HOST_AND_DENTIST_PAGES = [
     OFFICE_SEARCH_PAGE_URL,
     HOST_ONBOARDING_PAGE_URL_PREFIX,
     OFFICE_DETAILS_PAGE_URL_PREFIX,
+    HOST_DASHBOARD_PAGE_URL,
+    DENTIST_DASHBOARD_PAGE_URL,
 ];
 
 export const HOME_PAGE_TYPE = 'homepage';

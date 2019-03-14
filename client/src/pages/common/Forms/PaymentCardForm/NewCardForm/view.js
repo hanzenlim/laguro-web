@@ -29,6 +29,7 @@ const NewCardFormView = ({
     hasBackButton,
     isSubmitting,
     tabletMobileOnly,
+    isCreatingStripeToken,
 }) => (
     <Form layout="vertical" onSuccess={handleSubmit} debounce={false}>
         <FormItem
@@ -54,12 +55,13 @@ const NewCardFormView = ({
             </Button>
         )}
         <SubmitButton
+            className="new-card-form-submit-button"
             width="100%"
             height={['50px', '', '60px']}
             fontSize={[1, '', 3]}
             px={24}
             buttonText={btnText}
-            loading={isSubmitting}
+            loading={isSubmitting || isCreatingStripeToken}
             style={
                 // Temporary solution before we can figure out
                 // how to connect an external button to a form

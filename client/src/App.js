@@ -22,7 +22,6 @@ import {
     LOGIN_PAGE_URL,
     HOST_ONBOARDING_PAGE_URL_PREFIX,
     PROCEDURE_PAYMENT_REQUEST_PAGE_URL,
-    PROFILE_PAGE_URL,
     APPOINTMENT_CONFIRMATION_PAGE_URL,
     DENTIST_PROFILE_PAGE_URL,
     DENTIST_DETAILS_PAGE_URL_PREFIX,
@@ -44,6 +43,9 @@ import {
     NEW_REVIEW_PAGE_URL_PREFIX,
     KIOSK_CONFIRMATION_PAGE_URL,
     DENTIST_SEARCH_PAGE_URL,
+    PATIENT_DASHBOARD_PAGE_URL,
+    DENTIST_DASHBOARD_PAGE_URL,
+    HOST_DASHBOARD_PAGE_URL,
 } from './util/urls';
 
 const Header = Loadable({
@@ -54,12 +56,6 @@ const Header = Loadable({
 
 const HomePage = Loadable({
     loader: () => import('./pages/HomePage' /* webpackChunkName: "homePage" */),
-    loading: () => null,
-});
-
-const ProfilePage = Loadable({
-    loader: () =>
-        import('./pages/ProfilePage' /* webpackChunkName: "profilePage" */),
     loading: () => null,
 });
 
@@ -243,6 +239,24 @@ const DentistOnboardingVerification = Loadable({
     loading: () => null,
 });
 
+const PatientDashboardPage = Loadable({
+    loader: () =>
+        import('./pages/PatientDashboardPage' /* webpackChunkName: "PatientDashboardPage" */),
+    loading: () => null,
+});
+
+const DentistDashboardPage = Loadable({
+    loader: () =>
+        import('./pages/DentistDashboardPage' /* webpackChunkName: "DentistDashboardPage" */),
+    loading: () => null,
+});
+
+const HostDashboardPage = Loadable({
+    loader: () =>
+        import('./pages/HostDashboardPage' /* webpackChunkName: "DentistDashboardPage" */),
+    loading: () => null,
+});
+
 const PrivateRoute = ({ component: ComponentToBeRendered, ...rest }) => {
     let user = cookies.get('user');
     let isUserLoggedIn = false;
@@ -308,8 +322,16 @@ class App extends Component {
                                         component={ProcedurePaymentRequestPage}
                                     />
                                     <PrivateRoute
-                                        path={PROFILE_PAGE_URL}
-                                        component={ProfilePage}
+                                        path={PATIENT_DASHBOARD_PAGE_URL}
+                                        component={PatientDashboardPage}
+                                    />
+                                    <PrivateRoute
+                                        path={DENTIST_DASHBOARD_PAGE_URL}
+                                        component={DentistDashboardPage}
+                                    />
+                                    <PrivateRoute
+                                        path={HOST_DASHBOARD_PAGE_URL}
+                                        component={HostDashboardPage}
                                     />
                                     <PrivateRoute
                                         path={APPOINTMENT_CONFIRMATION_PAGE_URL}

@@ -133,8 +133,16 @@ class ExistingCardFormView extends PureComponent {
                     />
                 )}
 
-                <Radio value={NEW_CARD_PAYMENT_METHOD}>
-                    <Text is="span" fontSize={2}>
+                <Radio
+                    value={NEW_CARD_PAYMENT_METHOD}
+                    onClick={onChangeCardMethod} // when clicking on add a new card, call the onChange in order to display new card form for payment methods
+                    className="existing-card-form-add-a-new-card-radio"
+                >
+                    <Text
+                        is="span"
+                        fontSize={2}
+                        className="existing-card-form-add-a-new-card-text"
+                    >
                         Add a new card
                     </Text>
                 </Radio>
