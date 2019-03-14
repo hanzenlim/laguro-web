@@ -1,7 +1,46 @@
 import React from 'react';
 import _get from 'lodash/get';
+import Newsletter from './Newsletter';
 
-import { Text, Flex, Link, Icon, Container } from '../../../components';
+import {
+    Text,
+    Box,
+    Flex,
+    Link,
+    Icon,
+    Container,
+    Grid,
+} from '../../../components';
+
+const PATIENT_LINKS_MAP = [
+    { label: 'Find a dentist', url: '/dentist/search' },
+    { label: 'Check our locations', url: '/office/search' },
+];
+
+const DENTIST_LINKS_MAP = [
+    { label: 'Become a dentist', url: '/' },
+    { label: 'Book a chair', url: '/' },
+];
+
+const HOST_LINKS_MAP = [{ label: 'Become a host', url: '/' }];
+
+const LAGURO_LINKS_MAP = [
+    { label: 'About us', url: '/about' },
+    { label: 'Blog', url: '/' },
+    { label: 'How it works', url: '/' },
+    { label: 'Our features', url: '/' },
+];
+
+const SOCIAL_LINKS_MAP = [
+    { label: 'Facebook', url: 'https://www.facebook.com/LaguroDental/' },
+    {
+        label: 'LinkedIn',
+        url: 'https://www.linkedin.com/company/lagurodental/',
+    },
+    { label: 'Instagram', url: 'https://www.instagram.com/lagurodental/' },
+    { label: 'Medium', url: 'https://medium.com/@laguro' },
+    { label: 'Twitter', url: 'https://twitter.com/LaguroDental' },
+];
 
 const Footer = () => {
     const pathname = _get(window, 'location.pathname');
@@ -13,13 +52,12 @@ const Footer = () => {
     return (
         <Flex
             is="footer"
-            width={1}
-            height={['auto', '', 345]}
+            width="100%"
             borderTop={window.location.pathname === '/' ? '' : '1px solid'}
             borderColor={'divider.gray'}
             bg={
                 window.location.pathname === '/'
-                    ? 'background.lightBlue'
+                    ? 'background.navyBlue'
                     : 'background.white'
             }
             flex="0 0 auto"
@@ -27,129 +65,189 @@ const Footer = () => {
             alignItems="center"
             justifyContent="space-between"
         >
-            <Container
-                display={['block', '', 'flex']}
-                justifyContent="space-between"
-                alignItems="center"
-            >
-                <Flex
-                    flexDirection="column"
-                    width={['auto', '', '70%']}
-                    my={[10, '', 100]}
+            <Newsletter />
+            <Container>
+                <Grid
+                    mt={['52px', '', '66px']}
+                    gridTemplateColumns={[
+                        'repeat(2, 1fr)',
+                        '',
+                        'repeat(5, 1fr)',
+                    ]}
                 >
-                    <Text
-                        color="text.black50"
-                        fontSize={[1, '', 4]}
-                        mb={[10, '', 36]}
-                        fontWeight="bold"
-                    >
-                        LET&#39;S CONNECT
-                    </Text>
-                    <Text color="text.black" fontSize={[0, '', 1]}>
-                        Laguro is here to provide support and answers for any
-                        questions you may have. Send us your inquiries through
-                        our chat box or to{' '}
-                        <a href="mailto:support@laguro.com">
-                            support@laguro.com
-                        </a>
-                        , and we will be in touch with lightning speed!
-                    </Text>
-                </Flex>
+                    <Box mb="30px">
+                        <Text
+                            fontWeight="500"
+                            color="text.white"
+                            fontSize={[0, '', 1]}
+                            mb="5px"
+                        >
+                            Patients
+                        </Text>
+                        {PATIENT_LINKS_MAP.map(link => {
+                            return (
+                                <Box key={link.label}>
+                                    <Link to={link.url}>
+                                        <Text
+                                            fontWeight="300"
+                                            color="text.white"
+                                            fontSize={[0, '', 1]}
+                                        >
+                                            {link.label}
+                                        </Text>
+                                    </Link>
+                                </Box>
+                            );
+                        })}
+                    </Box>
 
-                <Flex
-                    mt={[42, '', 30]}
-                    mb={[20, '', 0]}
-                    justifyContent={['center', '', 'flex-end']}
-                >
-                    <Link
-                        isExternal
-                        mr={25}
-                        to={'https://www.facebook.com/LaguroDental/'}
-                        target="_blank"
-                    >
-                        <Icon
-                            color="icon.black"
-                            fontSize="25px"
-                            type="facebook"
-                        />
-                    </Link>
-                    <Link
-                        isExternal
-                        mr={25}
-                        to={'https://twitter.com/LaguroDental'}
-                        target="_blank"
-                    >
-                        <Icon
-                            color="icon.black"
-                            fontSize="25px"
-                            type="twitter"
-                        />
-                    </Link>
-                    <Link
-                        isExternal
-                        mr={25}
-                        to={'https://www.instagram.com/lagurodental/'}
-                        target="_blank"
-                    >
-                        <Icon
-                            color="icon.black"
-                            fontSize="25px"
-                            type="instagram"
-                        />
-                    </Link>
-                    <Link
-                        isExternal
-                        to={'https://www.linkedin.com/company/lagurodental/'}
-                        target="_blank"
-                    >
-                        <Icon
-                            color="icon.black"
-                            fontSize="25px"
-                            type="linkedin"
-                        />
-                    </Link>
-                </Flex>
+                    <Box mb="30px">
+                        <Text
+                            fontWeight="500"
+                            color="text.white"
+                            fontSize={[0, '', 1]}
+                            mb="5px"
+                        >
+                            Dentists
+                        </Text>
+                        {DENTIST_LINKS_MAP.map(link => {
+                            return (
+                                <Box key={link.label}>
+                                    <Link to={link.url}>
+                                        <Text
+                                            fontWeight="300"
+                                            color="text.white"
+                                            fontSize={[0, '', 1]}
+                                        >
+                                            {link.label}
+                                        </Text>
+                                    </Link>
+                                </Box>
+                            );
+                        })}
+                    </Box>
+
+                    <Box mb="30px">
+                        <Text
+                            fontWeight="500"
+                            color="text.white"
+                            fontSize={[0, '', 1]}
+                            mb="5px"
+                        >
+                            Hosts
+                        </Text>
+                        {HOST_LINKS_MAP.map(link => {
+                            return (
+                                <Box key={link.label}>
+                                    <Link to={link.url}>
+                                        <Text
+                                            fontWeight="300"
+                                            color="text.white"
+                                            fontSize={[0, '', 1]}
+                                        >
+                                            {link.label}
+                                        </Text>
+                                    </Link>
+                                </Box>
+                            );
+                        })}
+                    </Box>
+
+                    <Box mb="30px">
+                        <Text
+                            fontWeight="500"
+                            color="text.white"
+                            fontSize={[0, '', 1]}
+                            mb="5px"
+                        >
+                            Laguro
+                        </Text>
+                        {LAGURO_LINKS_MAP.map(link => {
+                            return (
+                                <Box key={link.label}>
+                                    <Link to={link.url}>
+                                        <Text
+                                            fontWeight="300"
+                                            color="text.white"
+                                            fontSize={[0, '', 1]}
+                                        >
+                                            {link.label}
+                                        </Text>
+                                    </Link>
+                                </Box>
+                            );
+                        })}
+                    </Box>
+
+                    <Box mb="30px">
+                        <Text
+                            fontWeight="500"
+                            color="text.white"
+                            fontSize={[0, '', 1]}
+                            mb="5px"
+                        >
+                            Follow us
+                        </Text>
+                        <Flex>
+                            {SOCIAL_LINKS_MAP.map(link => {
+                                return (
+                                    <Box key={link.label} mr="6px">
+                                        <Link
+                                            to={link.url}
+                                            isExternal
+                                            target="_blank"
+                                        >
+                                            <Icon
+                                                color="icon.white"
+                                                fontSize="25px"
+                                                type={link.label.toLowerCase()}
+                                            />
+                                        </Link>
+                                    </Box>
+                                );
+                            })}
+                        </Flex>
+                    </Box>
+                </Grid>
             </Container>
 
-            <Container
-                display="flex"
-                height={['auto', '', 64]}
-                borderTop="1px solid"
-                borderColor="divider.gray"
-                justifyContent="space-between"
-                alignItems="center"
-                flexDirection={['column', '', 'row']}
-                py={[20, '', 0]}
-            >
-                <Flex alignItems="center">
-                    <Icon
-                        width={20}
-                        height={20}
-                        mr={8}
-                        type="locationPin"
-                        alt="logo"
-                    />
-                    <Text fontSize={[0, '', 1]}>© 2018&nbsp;</Text>
-                    <Text fontSize={[0, '', 1]} fontWeight="bold">
-                        laguro.
+            <Box mt={['30px', '', '40px']} px={[25, 0, 0]} width="100%">
+                <Container
+                    display="flex"
+                    height={[75, '', 80]}
+                    borderTop="0.5px solid"
+                    borderColor="divider.gray"
+                    justifyContent={['center', '', 'space-between']}
+                    alignItems="center"
+                    flexDirection={['column', '', 'row']}
+                    px={20}
+                >
+                    <Text fontWeight="300" fontSize={0} color="white">
+                        © Laguro, Inc
                     </Text>
-                    <Text fontSize={[0, '', 1]}>
-                        &nbsp; all rights reserved.
-                    </Text>
-                </Flex>
-                <Flex mt={[20, '', 0]}>
-                    <Link ml={[0, '', 50]} to={'/terms'}>
-                        <Text fontSize={[0, '', 1]} mb={2} color="black">
-                            terms
-                        </Text>
-                    </Link>
-                    <Link ml={50} to={'/privacy'}>
-                        <Text fontSize={[0, '', 1]} mb={2} color="black">
-                            privacy
-                        </Text>
-                    </Link>
-                </Flex>
-            </Container>
+                    <Flex>
+                        <Link ml={[0, '', 50]} to={'/terms'}>
+                            <Text
+                                fontWeight="300"
+                                fontSize={[0, '', 1]}
+                                mb={2}
+                                color="white"
+                            >
+                                Terms
+                            </Text>
+                        </Link>
+                        <Link ml={50} to={'/privacy'}>
+                            <Text
+                                fontWeight="300"
+                                fontSize={[0, '', 1]}
+                                color="white"
+                            >
+                                Privacy
+                            </Text>
+                        </Link>
+                    </Flex>
+                </Container>
+            </Box>
         </Flex>
     );
 };
