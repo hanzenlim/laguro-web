@@ -354,9 +354,9 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
             timezone
         );
 
-        const defaultDate = moment
-            .tz(urlParams.startTime, timezone)
-            .format('ddd, MM/DD/YYYY');
+        const defaultDate = urlParams.startTime
+            ? moment.tz(urlParams.startTime, timezone).format('ddd, MM/DD/YYYY')
+            : null;
 
         return (
             <SearchAvailableAppointmentsView
