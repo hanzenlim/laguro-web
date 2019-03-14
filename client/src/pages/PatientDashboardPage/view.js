@@ -34,6 +34,7 @@ import {
     StyledDashboardMenu,
     StyledDashboardMenuItem,
 } from '../Dashboard/common';
+import PaymentMethods from '../PaymentMethods';
 
 const { TabletMobile, Desktop } = Responsive;
 
@@ -131,6 +132,7 @@ class PatientDashboardPageView extends Component {
                 panelContent = <PaymentHistory userId={userId} />;
                 break;
             case PAYMENT_METHODS_MENU_TEXT:
+                panelContent = <PaymentMethods />;
                 break;
             default:
         }

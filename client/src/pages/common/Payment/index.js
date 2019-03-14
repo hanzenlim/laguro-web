@@ -65,6 +65,7 @@ class Payment extends PureComponent {
                 isSubmitting={isSubmitting}
                 updateSubmittingState={updateSubmittingState}
                 checkIfVerified={checkIfVerified}
+                isInPatientDashboard={this.props.isInPatientDashboard}
             />
         );
     }

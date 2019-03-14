@@ -7,7 +7,7 @@ import {
     INSURANCE_MENU_TEXT,
     PENDING_REQUESTS_MENU_TEXT,
     RECEIPTS_MENU_TEXT,
-    // PAYMENT_METHODS_MENU_TEXT,
+    PAYMENT_METHODS_MENU_TEXT,
     // dentist menu
     LAGURO_TREATMENT_MODULE_MENU_TEXT,
     PROFILE_SETTINGS_MENU_TEXT,
@@ -49,7 +49,7 @@ const patientMenuTexts = [
 const paymentMenuTexts = [
     PENDING_REQUESTS_MENU_TEXT,
     RECEIPTS_MENU_TEXT,
-    // PAYMENT_METHODS_MENU_TEXT,
+    PAYMENT_METHODS_MENU_TEXT,
 ];
 
 export const profileMenuTexts = [

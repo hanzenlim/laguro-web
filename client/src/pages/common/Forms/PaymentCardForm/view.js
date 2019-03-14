@@ -1,5 +1,6 @@
 import React from 'react';
 import _get from 'lodash/get';
+import _isEmpty from 'lodash/isEmpty';
 import { Alert } from 'antd';
 import ExistingCardFormView from './ExistingCardForm';
 import NewCardFormView from './NewCardForm';
@@ -34,10 +35,11 @@ const CardView = ({
     errorMessage,
     isSubmitting,
     tabletMobileOnly,
+    isInPatientDashboard,
+    isCreatingStripeToken,
 }) => {
     const pathname = _get(window, 'location.pathname');
     const isConsentAndPayment = pathname.startsWith('/consent-and-payment');
-
     return (
         <Box width="100%" position="relative">
             <Text
@@ -45,11 +47,18 @@ const CardView = ({
                 color="text.black"
                 fontWeight="bold"
                 mb={[16, '', 18]}
+                className="payment-card-form-title"
             >
                 Card Info
             </Text>
             <Box mb={isConsentAndPayment ? [104, '', 28] : [24, '', 28]}>
-                {_get(paymentOptionsCards, 'length') > 0 &&
+                {isInPatientDashboard && _isEmpty(paymentOptionsCards) && (
+                    <Text mb={20} width={700}>
+                        You do not have any existing payment options.
+                    </Text>
+                )}
+                {(_get(paymentOptionsCards, 'length') > 0 ||
+                    isInPatientDashboard) &&
                     renderExistingCards(
                         paymentOptionsCards,
                         selectedCard,
@@ -66,6 +75,8 @@ const CardView = ({
                         onBackButton={onBackButton}
                         hasBackButton={hasBackButton}
                         isSubmitting={isSubmitting}
+                        // for payment methods in patient dashboard
+                        isCreatingStripeToken={isCreatingStripeToken}
                     />
                 )}
             </Box>
@@ -85,7 +96,8 @@ const CardView = ({
                         Back
                     </Button>
                 )}
-            {selectedCard !== NEW_CARD_PAYMENT_METHOD && (
+            {/* for payment methods in patient dashboard, don't display this submit button because new card form has its own submit button  */}
+            {!isInPatientDashboard && selectedCard !== NEW_CARD_PAYMENT_METHOD && (
                 <Button
                     width={'100%'}
                     height={['50px', '', '60px']}

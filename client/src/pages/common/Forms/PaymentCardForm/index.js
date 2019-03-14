@@ -18,15 +18,24 @@ class PaymentCardForm extends Component {
         this.state = {
             selectedCard: '',
             errorMessage: null,
+            // used to wait on creating new stripe token for payment methods in patient dashboard
+            isCreatingStripeToken: false,
         };
     }
 
     // eslint-disable-next-line
     handleCreateStripeToken = async values => {
+        this.setState({
+            isCreatingStripeToken: true,
+        });
+
         if (this.props.checkIfVerified) {
             const isVerified = await this.props.checkIfVerified();
 
             if (!isVerified) {
+                this.setState({
+                    isCreatingStripeToken: false,
+                });
                 return null;
             }
         }
@@ -40,11 +49,17 @@ class PaymentCardForm extends Component {
 
         if (error) {
             this.props.updateSubmittingState(false);
-            return this.setState({ errorMessage: error.message });
+            return this.setState({
+                errorMessage: error.message,
+                isCreatingStripeToken: false,
+            });
         }
 
         const id = get(token, 'id');
         if (!token) {
+            this.setState({
+                isCreatingStripeToken: false,
+            });
             return null;
         }
 
@@ -58,11 +73,21 @@ class PaymentCardForm extends Component {
             if (newCardId) {
                 this.props.handleSubmit(newCardId);
             }
+            // this is to hide new card form after creating a new stripe token for payment methods in patient dashboard
+            if (this.props.isInPatientDashboard) {
+                this.setState({
+                    selectedCard: null,
+                });
+            }
         } catch (err) {
             this.setState({
                 errorMessage: get(err, 'graphQLErrors[0].message'),
             });
         }
+
+        this.setState({
+            isCreatingStripeToken: false,
+        });
 
         return null;
     };
@@ -95,9 +120,9 @@ class PaymentCardForm extends Component {
                 query={getPaymentOptionQuery}
                 variables={{ id: userId }}
                 skip={isSkipped}
-                fetchPolicy="cache-and-network"
+                fetchPolicy="network-only"
             >
-                {({ loading, error, data }) => {
+                {({ loading, error, data, refetch }) => {
                     // Loading evaluates to true even if the skip is set to true so
                     // we have to check if it's not skipped here.
                     if (loading && !isSkipped) {
@@ -126,7 +151,10 @@ class PaymentCardForm extends Component {
                         );
 
                         selectedCard = defaultCard[0].id;
-                    } else if (selectedCard === '') {
+                    } else if (
+                        selectedCard === '' &&
+                        !this.props.isInPatientDashboard
+                    ) {
                         selectedCard = NEW_CARD_PAYMENT_METHOD;
                     }
 
@@ -139,12 +167,25 @@ class PaymentCardForm extends Component {
                             handleSubmitExistingCard={() =>
                                 this.handleSubmitExistingCard(selectedCard)
                             }
-                            handleSubmitNewCard={this.handleCreateStripeToken}
+                            handleSubmitNewCard={async () => {
+                                await this.handleCreateStripeToken();
+                                // in order to show new existing cards after new card has been created
+                                if (this.props.isInPatientDashboard) {
+                                    refetch();
+                                }
+                            }}
                             onChangeCardSelect={this.onChangeCardSelect}
                             onBackButton={this.props.onBackButton}
                             hasBackButton={this.props.hasBackButton}
                             errorMessage={this.state.errorMessage}
                             isSubmitting={isSubmitting}
+                            isInPatientDashboard={
+                                this.props.isInPatientDashboard
+                            }
+                            // used to wait on creating new stripe token for payment methods in patient dashboard
+                            isCreatingStripeToken={
+                                this.state.isCreatingStripeToken
+                            }
                         />
                     );
                 }}
