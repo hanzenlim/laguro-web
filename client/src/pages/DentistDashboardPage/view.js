@@ -42,15 +42,17 @@ import ReviewContainer from '../common/ReviewContainer/index';
 const { TabletMobile, Desktop } = Responsive;
 
 const menuTextToDescription = {
-    [PROFILE_SETTINGS_MENU_TEXT]: 'Manage your dentist profile',
-    [DENTIST_VERIFICATION_MENU_TEXT]: 'View and edit your verified documents',
+    [PROFILE_SETTINGS_MENU_TEXT]:
+        'Manage your dentist profile and insurance policy',
+    [DENTIST_VERIFICATION_MENU_TEXT]:
+        'Submit your verification information and documents',
+    [CALENDAR_MENU_TEXT]: 'View your upcoming appointments and make changes',
     [CREATE_A_NEW_APPOINTMENT_MENU_TEXT]:
         'Create a follow-up appointment for your patients',
     [MY_PATIENTS_MENU_TEXT]: 'View your patients and their documents',
     [BOOKINGS_MENU_TEXT]: 'View and edit your bookings',
     [LAGURO_BALANCE_MENU_TEXT]: 'View your current account balance',
-    [VIEW_PROFILE_MENU_TEXT]: 'Manage your stored payment options',
-    [CALENDAR_MENU_TEXT]: 'View your upcoming appointments and make changes',
+    [VIEW_PROFILE_MENU_TEXT]: 'View your public dentist page',
 };
 
 class DentistDashboardPageView extends Component {

@@ -4,7 +4,7 @@ import Menu from '../common/Menu';
 
 export const DashboardGrid = styled(Box)`
     display: grid;
-    grid-template-columns: 311px auto;
+    grid-template-columns: 338px auto;
     grid-column-gap: 21px;
 `;
 

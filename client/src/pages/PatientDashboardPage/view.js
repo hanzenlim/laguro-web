@@ -39,13 +39,17 @@ import PaymentMethods from '../PaymentMethods';
 const { TabletMobile, Desktop } = Responsive;
 
 const menuTextToDescription = {
-    [ACCOUNT_SETTINGS_MENU_TEXT]: 'Details about your general information',
-    [APPOINTMENTS_MENU_TEXT]: 'View your upcoming and past dentist visits',
-    [MEDICAL_HISTORY_MENU_TEXT]: 'Manage your medical history',
-    [INSURANCE_MENU_TEXT]: 'Details about your dental insurance',
-    [PENDING_REQUESTS_MENU_TEXT]: 'View payment requests from your dentist',
-    [RECEIPTS_MENU_TEXT]: 'Details about your completed treatment payments',
-    [PAYMENT_METHODS_MENU_TEXT]: 'Manage your stored payment options',
+    [ACCOUNT_SETTINGS_MENU_TEXT]:
+        'View and edit your general information and notification settings ',
+    [APPOINTMENTS_MENU_TEXT]: 'View your upcoming dentist visits',
+    [MEDICAL_HISTORY_MENU_TEXT]:
+        'View and edit your medical history information',
+    [INSURANCE_MENU_TEXT]: 'View and edit your dental insurance information',
+    [PENDING_REQUESTS_MENU_TEXT]:
+        'View procedure payment requests from your dentist',
+    [RECEIPTS_MENU_TEXT]:
+        'View details about your completed treatment payments and print invoices',
+    [PAYMENT_METHODS_MENU_TEXT]: 'Manage your payment options',
 };
 
 class PatientDashboardPageView extends Component {

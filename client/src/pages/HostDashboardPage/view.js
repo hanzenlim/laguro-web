@@ -29,7 +29,7 @@ import { HOST_ONBOARDING_PAGE_URL_PREFIX } from '../../util/urls';
 const { TabletMobile, Desktop } = Responsive;
 
 const menuTextToDescription = {
-    [MY_OFFICES_MENU_TEXT]: 'Manage your current office listings',
+    [MY_OFFICES_MENU_TEXT]: 'View and add listings to your offices',
     [LAGURO_BALANCE_MENU_TEXT]: 'View your current account balance',
     [ADD_A_NEW_OFFICE_MENU_TEXT]: 'Create a new office and listings',
 };
