@@ -103,10 +103,7 @@ export class InnerForm extends Component {
                 } catch (submissionError) {
                     if (submissionError && submissionError.message) {
                         // eslint-disable-next-line
-                        console.log(
-                            'Form sumbission error: ',
-                            submissionError.message
-                        );
+                        throw new Error(submissionError.message);
                     }
                 }
                 delay(() => {

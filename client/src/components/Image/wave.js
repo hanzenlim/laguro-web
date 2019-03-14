@@ -8,9 +8,9 @@ const Curve = () => (
         <g
             id="Artboard-2-Copy"
             stroke="none"
-            stroke-width="1"
+            strokeWidth="1"
             fill="none"
-            fill-rule="evenodd"
+            fillRule="evenodd"
         >
             <image
                 id="Artboard-2"

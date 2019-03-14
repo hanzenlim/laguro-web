@@ -160,8 +160,6 @@ const KioskNameAndPersonaPage = componentProps => (
                     ...currentObject,
                 }));
 
-                console.log('objectOfValues.persona', objectOfValues.persona);
-
                 switch (objectOfValues.persona) {
                     case 'patient':
                         redirect({

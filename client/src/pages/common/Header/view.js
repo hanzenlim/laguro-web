@@ -406,8 +406,8 @@ Header.propTypes = {
     onLogout: PropTypes.func,
     openLoginModal: PropTypes.func,
     isSubmitting: PropTypes.bool,
-    isDentist: PropTypes.string,
-    isHost: PropTypes.string,
+    isDentist: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
+    isHost: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
     toggleLoginModal: PropTypes.func,
     pathname: PropTypes.string,
 };
