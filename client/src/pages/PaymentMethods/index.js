@@ -41,7 +41,7 @@ const StyledBox = styled(Box)`
 class PaymentMethods extends Component {
     render() {
         return (
-            <StyledBox width={400}>
+            <StyledBox width={['100%', '', 400]}>
                 <Payment
                     isInPatientDashboard={true}
                     btnText="Submit new card"

@@ -53,7 +53,11 @@ const CardView = ({
             </Text>
             <Box mb={isConsentAndPayment ? [104, '', 28] : [24, '', 28]}>
                 {isInPatientDashboard && _isEmpty(paymentOptionsCards) && (
-                    <Text mb={20} width={700}>
+                    <Text
+                        mb={20}
+                        width={['100%', '', 700]}
+                        letterSpacing="-0.3px"
+                    >
                         You do not have any existing payment options.
                     </Text>
                 )}

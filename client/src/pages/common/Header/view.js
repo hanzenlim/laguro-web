@@ -214,7 +214,6 @@ class Header extends Component {
                             onLogout={onLogout}
                             isHost={isHost}
                             auth={auth}
-                            onLandingPage={onLandingPage}
                             desktopOnly={desktopOnly}
                         />
                     </Flex>

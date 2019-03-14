@@ -9,7 +9,7 @@ import {
 } from '@laguro/basic-components';
 import styled from 'styled-components';
 import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
-import { Link, Icon } from '../../../components/index';
+import { Link } from '../../../components/index';
 import { setImageSizeToUrl } from '../../../util/imageUtil';
 import { StyledDropContainer, getLinkTextColor } from './common';
 import {
@@ -61,7 +61,6 @@ class ProfileButton extends Component {
             auth,
             pathname,
             onLogout,
-            onLandingPage,
             isDentist,
             isHost,
             desktopOnly,
@@ -109,12 +108,6 @@ class ProfileButton extends Component {
                                 borderRadius={50}
                                 ml={[17, '', 27]}
                                 data-cy="profile-button"
-                            />
-                            <Icon
-                                ml={4}
-                                transform="scale(0.8)"
-                                fill={onLandingPage ? '#FFF' : '#3481F8'}
-                                type="downArrow"
                             />
                         </ProfileImage>
                     </Link>
