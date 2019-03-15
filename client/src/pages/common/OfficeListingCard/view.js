@@ -124,7 +124,7 @@ const OfficeListingCard = ({ office, onRedirect, showMap }) => (
                                                         : ['10px', '12px']
                                                 }
                                             >
-                                                {equip}
+                                                {equip.name}
                                             </Text>
                                         </Box>
                                     ))}
