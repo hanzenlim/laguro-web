@@ -45,6 +45,7 @@ class NewReview extends PureComponent {
             rating,
             text,
         };
+
         try {
             this.setState({ mutationLoading: true });
             await mutate({

@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import queryString from 'query-string';
 
 import DentistListingCard from '../DentistListingCard';
+import OfficeListingCard from '../OfficeListingCard';
 import history from '../../../history';
-import { Flex, Text, Box, Grid, Button } from '../../../components';
+import { Flex, Box, Grid, Button } from '../../../components';
 import NoSearchResults from '../NoSearchResults';
 import { DENTISTS, OFFICES } from '../../../util/strings';
 
@@ -58,22 +59,12 @@ class SearchResultsList extends PureComponent {
     render() {
         const { data, total, title, showMap } = this.props;
         const { urlParams } = this.state;
-        const type = title === 'Office Results' ? OFFICES : DENTISTS;
+        const isOffice = title === 'Office Results';
+        const type = isOffice ? OFFICES : DENTISTS;
 
         return (
             <Flex flexDirection="column">
-                {data.length > 0 ? (
-                    <Text
-                        fontSize={[1, '', 5]}
-                        fontWeight="medium"
-                        color="text.black"
-                        mb={10}
-                        lineHeight="40px"
-                        letterSpacing="-0.8px"
-                    >
-                        {title}
-                    </Text>
-                ) : (
+                {!data.length && (
                     <NoSearchResults
                         location={urlParams.location}
                         text={urlParams.text}
@@ -83,21 +74,46 @@ class SearchResultsList extends PureComponent {
                 <Grid
                     gridColumnGap="17px"
                     gridRowGap="20px"
-                    gridTemplateColumns={['1fr']}
+                    gridTemplateColumns={
+                        showMap && isOffice
+                            ? 'repeat(auto-fit, minmax(200px, 1fr))'
+                            : ['1fr']
+                    }
                 >
                     {data.length
                         ? data.map(item => (
-                              <Box key={item.url} width="100%">
-                                  <DentistListingCard
-                                      variant={showMap ? 'small' : 'large'}
-                                      dentist={item}
-                                      onRedirect={() =>
-                                          this.handleRedirect(item.url)
-                                      }
-                                      onSelectAppointment={
-                                          this.handleSelectAppointment
-                                      }
-                                  />
+                              <Box
+                                  key={item.url}
+                                  width={
+                                      data.length === 1 && isOffice && showMap
+                                          ? ['100%', '50%']
+                                          : '100%'
+                                  }
+                              >
+                                  {isOffice ? (
+                                      <OfficeListingCard
+                                          office={item}
+                                          showMap={showMap}
+                                          onRedirect={() =>
+                                              this.handleRedirect(item.url)
+                                          }
+                                      />
+                                  ) : (
+                                      <DentistListingCard
+                                          variant={showMap ? 'small' : 'large'}
+                                          dentist={item}
+                                          onRedirect={() =>
+                                              this.handleRedirect(item.url)
+                                          }
+                                          onSelectAppointment={e =>
+                                              this.handleSelectAppointment(
+                                                  e,
+                                                  item.url,
+                                                  item.startTime
+                                              )
+                                          }
+                                      />
+                                  )}
                               </Box>
                           ))
                         : null}
