@@ -97,10 +97,16 @@ class DetailsSearchPage extends PureComponent {
         const rangeStart = moment(startTime)
             .utc()
             .format();
-        const rangeEnd = moment(startTime)
-            .utc()
-            .endOf('day')
-            .format();
+        const rangeEnd = startTime
+            ? moment(startTime)
+                  .utc()
+                  .endOf('day')
+                  .format()
+            : moment
+                  .utc()
+                  .add(28, 'days')
+                  .endOf('day')
+                  .format();
         const result = await this.props.client.query({
             query: batchGetUsers(rangeStart, rangeEnd),
             variables: {
