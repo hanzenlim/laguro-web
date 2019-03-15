@@ -64,6 +64,10 @@ class DentistListingCard extends PureComponent {
                 dentist.availableTimes &&
                 dentist.availableTimes.length > 3);
 
+        const earliestAvailableDate =
+            dentist.availableTimes.length > 0 &&
+            moment(dentist.availableTimes[0].startTime).format('dddd, MMMM D');
+
         const availableTimes =
             dentist.availableTimes && desktopOnly
                 ? dentist.availableTimes.slice(0, 7)
@@ -263,7 +267,7 @@ class DentistListingCard extends PureComponent {
                                             fontSize={['12px', '18px']}
                                             textAlign="left"
                                         >
-                                            Available times
+                                            {`Available times on ${earliestAvailableDate}`}
                                         </Text>
                                         <Grid
                                             gridTemplateColumns="repeat(4, 1fr)"
