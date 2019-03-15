@@ -11,17 +11,18 @@ import {
 import history from '../../../history';
 import { Link } from '../../../components';
 import {
-    DENTIST_DASHBOARD_PAGE_URL,
-    HOST_DASHBOARD_PAGE_URL,
+    DENTIST_DASHBOARD_PAGE_URL_BASE,
+    HOST_DASHBOARD_PAGE_URL_BASE,
 } from '../../../util/urls';
 import {
     PROFILE_SETTINGS_MENU_TEXT,
     MY_OFFICES_MENU_TEXT,
 } from '../../../util/strings';
+import { isMobileDevice } from '../../../util/uiUtil';
 
 class DentistLink extends Component {
     render() {
-        const { desktopOnly, textColor } = this.props;
+        const { desktopOnly } = this.props;
         return (
             <Fragment>
                 <Dropdown
@@ -37,16 +38,22 @@ class DentistLink extends Component {
                         />
                     }
                     placement={'bottomRight'}
-                    trigger={desktopOnly ? ['hover'] : ['click']}
+                    trigger={
+                        desktopOnly && !isMobileDevice() ? ['hover'] : ['click']
+                    } // desktopOnly uses screen sizes to determine device, isMobileDevice uses window.orientation and userAgent
                     getPopupContainer={() =>
                         document.getElementById('dentistLinkPopupContainer')
                     }
                 >
                     {/* clicking on Dentists link will redirect to dentist dashboard */}
                     <Link
-                        to={`${DENTIST_DASHBOARD_PAGE_URL}?selectedTab=${PROFILE_SETTINGS_MENU_TEXT}`}
+                        to={
+                            !isMobileDevice()
+                                ? `${DENTIST_DASHBOARD_PAGE_URL_BASE}${PROFILE_SETTINGS_MENU_TEXT}`
+                                : '#'
+                        }
                     >
-                        <LinkButton textColor={textColor}>Dentists</LinkButton>
+                        <LinkButton>Dentists</LinkButton>
                     </Link>
                 </Dropdown>
                 <StyledDropContainer id="dentistLinkPopupContainer" />
@@ -57,7 +64,7 @@ class DentistLink extends Component {
 
 class HostLink extends Component {
     render() {
-        const { desktopOnly, textColor } = this.props;
+        const { desktopOnly } = this.props;
         return (
             <Fragment>
                 <Dropdown
@@ -72,16 +79,22 @@ class HostLink extends Component {
                         />
                     }
                     placement={'bottomRight'}
-                    trigger={desktopOnly ? ['hover'] : ['click']}
+                    trigger={
+                        desktopOnly && !isMobileDevice() ? ['hover'] : ['click']
+                    }
                     getPopupContainer={() =>
                         document.getElementById('hostLinkPopupContainer')
                     }
                 >
                     {/* clicking on Hosts link will redirect to host dashboard */}
                     <Link
-                        to={`${HOST_DASHBOARD_PAGE_URL}?selectedTab=${MY_OFFICES_MENU_TEXT}`}
+                        to={
+                            !isMobileDevice()
+                                ? `${HOST_DASHBOARD_PAGE_URL_BASE}${MY_OFFICES_MENU_TEXT}`
+                                : '#'
+                        }
                     >
-                        <LinkButton textColor={textColor}>Hosts</LinkButton>
+                        <LinkButton>Hosts</LinkButton>
                     </Link>
                 </Dropdown>
                 <StyledDropContainer id="hostLinkPopupContainer" />

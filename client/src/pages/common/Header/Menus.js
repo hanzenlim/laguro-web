@@ -11,6 +11,7 @@ import {
     BECOME_A_DENTIST_MENU_TEXT,
     BECOME_A_HOST_MENU_TEXT,
     LAGURO_TREATMENT_MODULE_MENU_TEXT,
+    CALENDAR_MENU_TEXT,
 } from '../../../util/strings';
 import { withScreenSizes } from '../../../components/Responsive';
 
@@ -126,6 +127,7 @@ const Menus = props => {
         hasBecomeAPersonaSection,
         width,
         desktopOnly, // from withScreenSizes
+        tabletMobileOnly,
     } = props;
 
     const menuPx = 21;
@@ -213,27 +215,36 @@ const Menus = props => {
                         text: menuSection.dividerText,
                         isLong: menuSection.isLong,
                     }),
-                menuSection.menuTexts.map(menuText => {
-                    // ltm link should open in another tab, and it's an external link
-                    const linkProps =
-                        menuText === LAGURO_TREATMENT_MODULE_MENU_TEXT
-                            ? { isExternal: true, target: '_blank' }
-                            : {};
+                menuSection.menuTexts
+                    // do not show dentist calendar on mobile
+                    .filter(
+                        menuText =>
+                            !(
+                                tabletMobileOnly &&
+                                menuText === CALENDAR_MENU_TEXT
+                            )
+                    )
+                    .map(menuText => {
+                        // ltm link should open in another tab, and it's an external link
+                        const linkProps =
+                            menuText === LAGURO_TREATMENT_MODULE_MENU_TEXT
+                                ? { isExternal: true, target: '_blank' }
+                                : {};
 
-                    return [
-                        <StyledMenuItem p={menuItemPadding}>
-                            <Link
-                                {...linkProps}
-                                // menuTextToLink:
-                                //      {"Account settings": '/dashboard/patient?selectedTab=account_settings'}
-                                to={props.menuTextToLinkTo[menuText]}
-                            >
-                                {renderText(menuText)}
-                            </Link>
-                        </StyledMenuItem>,
-                        !desktopOnly && <StyledMenuDivider />,
-                    ];
-                }),
+                        return [
+                            <StyledMenuItem p={menuItemPadding}>
+                                <Link
+                                    {...linkProps}
+                                    // menuTextToLink:
+                                    //      {"Account settings": '/dashboard/patient?selectedTab=account_settings'}
+                                    to={props.menuTextToLinkTo[menuText]}
+                                >
+                                    {renderText(menuText)}
+                                </Link>
+                            </StyledMenuItem>,
+                            !desktopOnly && <StyledMenuDivider />,
+                        ];
+                    }),
             ])}
 
             {hasLogOut && [

@@ -40,11 +40,13 @@ import {
     EDIT_OFFICE_MODE,
     ADD_LISTING_MODE,
     HOST_ONBOARDING_CREATE_MODE,
+    MY_OFFICES_MENU_TEXT,
 } from '../../util/strings';
 
 import { withScreenSizes } from '../../components/Responsive';
 import OfficeVerificationUtil from './util';
 import { UPPERCASE_DAYS } from '../../util/timeUtil';
+import { HOST_DASHBOARD_PAGE_URL_BASE } from '../../util/urls';
 
 const { TabletMobile } = Responsive;
 const ABBREVIATED_DAYS = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
@@ -92,7 +94,7 @@ const DOCUMENT_STEP_URL = `${HOST_ONBOARDING}${DOCUMENT_STEP}/`;
 const LISTING_STEP_URL = `${HOST_ONBOARDING}${LISTING_STEP}/`;
 const CONFIRMATION_STEP_URL = `${HOST_ONBOARDING}${CONFIRMATION_STEP}/`;
 
-const HOST_PROFILE_URL = '/profile?selectedTab=my_listings';
+const HOST_PROFILE_URL = `${HOST_DASHBOARD_PAGE_URL_BASE}${MY_OFFICES_MENU_TEXT}`;
 
 const EQUIPMENT = 'equipment';
 const EQUIPMENT_NAME = `${EQUIPMENT}Name`;
@@ -113,6 +115,8 @@ const stepURLs = {
     [LISTING_STEP]: LISTING_STEP_URL,
     [CONFIRMATION_STEP]: CONFIRMATION_STEP_URL,
 };
+
+const GO_TO_MY_OFFICES = 'Go to My offices';
 
 const parseEquipmentFormData = values =>
     Object.keys(values)
@@ -238,7 +242,7 @@ class HostOnboarding extends Component {
                     HOST_PROFILE_URL,
                 ];
 
-                this.buttonTexts = ['Publish', 'Go to My Listings'];
+                this.buttonTexts = ['Publish', GO_TO_MY_OFFICES];
                 this.mode = ADD_LISTING_MODE;
                 // doesn't need to select location for add listing
                 locationSelected = true;
@@ -267,7 +271,7 @@ class HostOnboarding extends Component {
                     'Next',
                     'Next',
                     'Publish',
-                    'Go to My Listings',
+                    GO_TO_MY_OFFICES,
                 ];
                 this.headerList = [
                     "let's start with some basic info about your office",

@@ -1,48 +1,22 @@
 import React, { Component, Fragment } from 'react';
 import { Dropdown } from 'antd';
-import {
-    Text,
-    Image,
-    Theme as theme,
-    Flex,
-    Responsive,
-} from '@laguro/basic-components';
+import { Image, Flex, Responsive } from '@laguro/basic-components';
 import styled from 'styled-components';
 import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
 import { Link } from '../../../components/index';
 import { setImageSizeToUrl } from '../../../util/imageUtil';
-import { StyledDropContainer, getLinkTextColor } from './common';
+import { StyledDropContainer, LinkButton, HeaderLinkContainer } from './common';
 import {
     profileMenuSections,
     profileMenuTextToLinkTo,
 } from '../../../util/menuItems';
 import Menus from './Menus';
 import history from '../../../history';
-import { PATIENT_DASHBOARD_PAGE_URL } from '../../../util/urls';
+import { PATIENT_DASHBOARD_PAGE_URL_BASE } from '../../../util/urls';
 import { ACCOUNT_SETTINGS_MENU_TEXT } from '../../../util/strings';
+import { isMobileDevice } from '../../../util/uiUtil';
 
 const { Mobile } = Responsive;
-
-const NavBarLink = styled(Link)`
-    &&:hover,
-    &&:focus {
-        text-decoration: none;
-    }
-
-    @media (min-width: ${theme.breakpoints[1]}) {
-        padding: 17px 10px 10px 10px;
-        border-bottom: 7px solid;
-        border-color: ${theme.colors.divider.transparent};
-        margin-left: ${props => props.ml || '60px'};
-        transition: all 0.2s ease-in-out;
-
-        &&:hover,
-        &&:focus {
-            border-color: ${theme.colors.divider.blue};
-            text-decoration: none;
-        }
-    }
-`;
 
 const ProfileImage = styled(Flex)`
     cursor: pointer;
@@ -84,14 +58,20 @@ class ProfileButton extends Component {
                         />
                     }
                     placement={'bottomRight'}
-                    trigger={desktopOnly ? ['hover'] : ['click']}
+                    trigger={
+                        desktopOnly && !isMobileDevice() ? ['hover'] : ['click'] // desktopOnly uses screen sizes to determine device, isMobileDevice uses window.orientation and userAgent
+                    }
                     getPopupContainer={() =>
                         document.getElementById('ProfileMenuContainer')
                     }
                 >
                     {/* clicking on profile pic will redirect to patient dashboard */}
                     <Link
-                        to={`${PATIENT_DASHBOARD_PAGE_URL}?selectedTab=${ACCOUNT_SETTINGS_MENU_TEXT}`}
+                        to={
+                            !isMobileDevice()
+                                ? `${PATIENT_DASHBOARD_PAGE_URL_BASE}${ACCOUNT_SETTINGS_MENU_TEXT}`
+                                : '#'
+                        }
                     >
                         <ProfileImage alignItems="center">
                             <Image
@@ -118,24 +98,20 @@ class ProfileButton extends Component {
             <Fragment>
                 <Mobile>
                     {matches => (
-                        <NavBarLink
-                            onClick={this.openLoginForLogIn(matches)}
-                            to={
-                                matches
-                                    ? `/login?redirectTo=${pathname}`
-                                    : pathname
-                            }
-                        >
-                            <Text
-                                minWidth={54}
-                                color={getLinkTextColor()}
-                                fontSize={[0, '', 1]}
-                                fontWeight="bold"
-                                mb={[0, '', 4]}
+                        <HeaderLinkContainer>
+                            <Link
+                                onClick={this.openLoginForLogIn(matches)}
+                                to={
+                                    matches
+                                        ? `/login?redirectTo=${pathname}`
+                                        : pathname
+                                }
                             >
-                                Log in
-                            </Text>
-                        </NavBarLink>
+                                <LinkButton textProps={{ fontWeight: 'bold' }}>
+                                    Log in
+                                </LinkButton>
+                            </Link>
+                        </HeaderLinkContainer>
                     )}
                 </Mobile>
             </Fragment>

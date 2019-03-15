@@ -2,6 +2,9 @@ import history from '../history';
 import _isEqual from 'lodash/isEqual';
 import _isEmpty from 'lodash/isEmpty';
 
+// used in dashboard pages
+const SELETED_TAB_SEARCH_PARAM_VALUE = 'selectedTab';
+
 // pages for all users
 export const ONBOARDING_NAME_AND_PERSONA_PAGE = '/onboarding/name-and-persona/';
 export const LOGIN_PAGE_URL = '/login';
@@ -50,6 +53,10 @@ export const HOST_DASHBOARD_PAGE_URL = '/dashboard/host';
 export const KIOSK_BOOKING_CONFIRMATION_URL_PREFIX =
     '/kiosk/booking-confirmation';
 export const KIOSK_CHECKIN_PAGE_URL_PREFIX = '/kiosk/check-in';
+
+export const PATIENT_DASHBOARD_PAGE_URL_BASE = `${PATIENT_DASHBOARD_PAGE_URL}?${SELETED_TAB_SEARCH_PARAM_VALUE}=`;
+export const DENTIST_DASHBOARD_PAGE_URL_BASE = `${DENTIST_DASHBOARD_PAGE_URL}?${SELETED_TAB_SEARCH_PARAM_VALUE}=`;
+export const HOST_DASHBOARD_PAGE_URL_BASE = `${HOST_DASHBOARD_PAGE_URL}?${SELETED_TAB_SEARCH_PARAM_VALUE}=`;
 
 // used to make header background white
 export const URLS_FOR_PATIENT_PAGES = [
