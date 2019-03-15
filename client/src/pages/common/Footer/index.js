@@ -1,6 +1,5 @@
 import React from 'react';
 import _get from 'lodash/get';
-import Newsletter from './Newsletter';
 
 import {
     Text,
@@ -53,19 +52,12 @@ const Footer = () => {
         <Flex
             is="footer"
             width="100%"
-            borderTop={window.location.pathname === '/' ? '' : '1px solid'}
-            borderColor={'divider.gray'}
-            bg={
-                window.location.pathname === '/'
-                    ? 'background.navyBlue'
-                    : 'background.white'
-            }
+            bg="background.navyBlue"
             flex="0 0 auto"
             flexDirection="column"
             alignItems="center"
             justifyContent="space-between"
         >
-            <Newsletter />
             <Container>
                 <Grid
                     mt={['52px', '', '66px']}

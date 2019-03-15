@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import { Helmet } from 'react-helmet';
 import HomePageView from './view';
+import Newsletter from '../common/Newsletter';
 
 const HomePage = () => (
     <Fragment>
@@ -9,6 +10,7 @@ const HomePage = () => (
             <link rel="canonical" href="https://www.laguro.com" />
         </Helmet>
         <HomePageView />
+        <Newsletter />
     </Fragment>
 );
 
