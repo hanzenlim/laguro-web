@@ -11,21 +11,34 @@ import {
     Grid,
 } from '../../../components';
 
+import {
+    DENTIST_ONBOARDING_PROFILE_URL,
+    DENTIST_SEARCH_PAGE_URL,
+    OFFICE_SEARCH_PAGE_URL,
+    HOST_ONBOARDING_PAGE_URL_PREFIX,
+    ABOUT_PAGE_URL,
+} from '../../../util/urls';
+
 const PATIENT_LINKS_MAP = [
-    { label: 'Find a dentist', url: '/dentist/search' },
-    { label: 'Check our locations', url: '/office/search' },
+    { label: 'Find a dentist', url: DENTIST_SEARCH_PAGE_URL },
+    { label: 'Check our locations', url: OFFICE_SEARCH_PAGE_URL },
 ];
 
 const DENTIST_LINKS_MAP = [
-    { label: 'Become a dentist', url: '/' },
-    { label: 'Book a chair', url: '/' },
+    { label: 'Become a dentist', url: DENTIST_ONBOARDING_PROFILE_URL },
+    { label: 'Book a chair', url: OFFICE_SEARCH_PAGE_URL },
 ];
 
-const HOST_LINKS_MAP = [{ label: 'Become a host', url: '/' }];
+const HOST_LINKS_MAP = [
+    {
+        label: 'Become a host',
+        url: `${HOST_ONBOARDING_PAGE_URL_PREFIX}/add-office`,
+    },
+];
 
 const LAGURO_LINKS_MAP = [
-    { label: 'About us', url: '/about' },
-    { label: 'Blog', url: '/' },
+    { label: 'About us', url: ABOUT_PAGE_URL },
+    { label: 'Blog', url: 'https://medium.com/@laguro', isExternal: true },
     { label: 'How it works', url: '/' },
     { label: 'Our features', url: '/' },
 ];
@@ -157,7 +170,10 @@ const Footer = () => {
                         {LAGURO_LINKS_MAP.map(link => {
                             return (
                                 <Box key={link.label}>
-                                    <Link to={link.url}>
+                                    <Link
+                                        to={link.url}
+                                        isExternal={link.isExternal}
+                                    >
                                         <Text
                                             fontWeight="300"
                                             color="text.white"
