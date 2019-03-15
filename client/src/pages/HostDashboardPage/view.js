@@ -1,12 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import {
-    Container,
-    Box,
-    Text,
-    Responsive,
-    Card,
-    Truncate,
-} from '@laguro/basic-components';
+import { Container, Box, Text, Card, Truncate } from '@laguro/basic-components';
 import queryString from 'query-string';
 import {
     MY_OFFICES_MENU_TEXT,
@@ -25,6 +18,7 @@ import {
 import HostListing from '../common/HostListings/index';
 import BalanceHistory from '../common/BalanceHistory/index';
 import { HOST_ONBOARDING_PAGE_URL_PREFIX } from '../../util/urls';
+import { Responsive } from '../../components/index';
 
 const { TabletMobile, Desktop } = Responsive;
 

@@ -1,12 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import {
-    Box,
-    Container,
-    Text,
-    Responsive,
-    Card,
-    Truncate,
-} from '@laguro/basic-components';
+import { Box, Container, Text, Card, Truncate } from '@laguro/basic-components';
 import _isEmpty from 'lodash/isEmpty';
 import queryString from 'query-string';
 import DentistAppointments from '../common/DentistAppointments';
@@ -38,6 +31,7 @@ import PatientsList from '../common/PatientsList';
 import BalanceHistory from '../common/BalanceHistory';
 import DentistDetails from '../common/DentistDetails';
 import ReviewContainer from '../common/ReviewContainer/index';
+import { Responsive } from '../../components/index';
 
 const { TabletMobile, Desktop } = Responsive;
 

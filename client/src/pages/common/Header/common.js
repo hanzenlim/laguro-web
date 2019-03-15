@@ -1,6 +1,7 @@
 import React from 'react';
 import { Theme, Button, Text, Box } from '@laguro/basic-components';
 import styled from 'styled-components';
+import _get from 'lodash/get';
 import {
     getPageType,
     HOME_PAGE_TYPE,
@@ -9,6 +10,7 @@ import {
     DENTIST_AND_HOST_PAGE_TYPE,
 } from '../../../util/urls';
 import { HEADER_HEIGHT } from './constants';
+import { breakpointsInPixels } from '../../../components/theme';
 
 const StyledLinkButton = styled(Button)`
     // four ampersands to override Button/index.js
@@ -23,7 +25,8 @@ const StyledLinkButton = styled(Button)`
         border-radius: 0;
         // on mobile, :hover is activated with a click
         :hover {
-            border-bottom: solid 1px #ffffff;
+            border-bottom: solid 1px
+                ${props => _get(props.theme.colors, getLinkTextColor())};
             div {
                 font-weight: ${props => props.theme.fontWeights.medium};
 
@@ -36,7 +39,8 @@ const StyledLinkButton = styled(Button)`
 `;
 
 export const StyledDropContainer = styled.div`
-    @media (max-width: 991px) {
+    // TODO: use min-width here
+    @media (max-width: ${breakpointsInPixels[1] - 1}px) {
         .ant-dropdown {
             height: 250vh;
             overflow-y: auto;

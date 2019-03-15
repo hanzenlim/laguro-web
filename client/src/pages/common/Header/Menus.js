@@ -5,7 +5,7 @@ import { space, width, borderBottom, borderColor } from 'styled-system';
 import _isEmpty from 'lodash/isEmpty';
 import _cloneDeep from 'lodash/cloneDeep';
 import { Link } from '../../../components/index';
-import { Box, Text, Grid, Theme as theme } from '@laguro/basic-components';
+import { Box, Text, Grid } from '@laguro/basic-components';
 import {
     LOG_OUT_MENU_TEXT,
     BECOME_A_DENTIST_MENU_TEXT,
@@ -20,7 +20,7 @@ export const StyledMenu = styled(Menu)`
         border-radius: 0;
         box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.2);
         ${space};
-        @media (min-width: ${theme.breakpoints[1]}) {
+        @media (min-width: ${props => props.theme.breakpoints[1]}) {
             ${width}
         }
     }
@@ -37,7 +37,7 @@ export const StyledMenu = styled(Menu)`
     .ant-dropdown-menu-item-divider {
         display: none;
 
-        @media (min-width: ${theme.breakpoints[1]}) {
+        @media (min-width: ${props => props.theme.breakpoints[1]}) {
             display: list-item;
         }
     }
@@ -47,7 +47,7 @@ export const StyledMenuItem = styled(Menu.Item)`
     &&&& {
         margin: 0;
 
-        @media (min-width: ${theme.breakpoints[1]}) {
+        @media (min-width: ${props => props.theme.breakpoints[1]}) {
             margin-bottom: 2px;
             margin-top: 0;
 

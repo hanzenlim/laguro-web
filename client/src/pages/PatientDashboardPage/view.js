@@ -1,12 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import {
-    Box,
-    Container,
-    Text,
-    Responsive,
-    Card,
-    Truncate,
-} from '@laguro/basic-components';
+import { Box, Container, Text, Card, Truncate } from '@laguro/basic-components';
 import _isEmpty from 'lodash/isEmpty';
 import queryString from 'query-string';
 import UpdateProfileForm from '../../pages/common/Forms/UpdateProfileForm';
@@ -35,6 +28,7 @@ import {
     StyledDashboardMenuItem,
 } from '../Dashboard/common';
 import PaymentMethods from '../PaymentMethods';
+import { Responsive } from '../../components/index';
 
 const { TabletMobile, Desktop } = Responsive;
 

@@ -2,10 +2,15 @@ import styled from 'styled-components';
 import { Box } from '@laguro/basic-components';
 import Menu from '../common/Menu';
 
+const dashboardMenuWidthInPixels = 338;
+const dashboardColumnGap = 21;
+
 export const DashboardGrid = styled(Box)`
     display: grid;
-    grid-template-columns: 338px auto;
-    grid-column-gap: 21px;
+    grid-template-columns: ${dashboardMenuWidthInPixels}px calc(
+            100% - ${dashboardMenuWidthInPixels}px - ${dashboardColumnGap}px
+        );
+    grid-column-gap: ${dashboardColumnGap}px;
 `;
 
 export const StyledDashboardMenu = styled(Menu)`

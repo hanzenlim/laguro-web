@@ -3,12 +3,10 @@ import Intercom from 'react-intercom';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import SearchBox from '../SearchBox';
-import { Icon } from '../../../components/';
-import { Link } from '../../../components/index';
-import { Flex, Container, Responsive } from '@laguro/basic-components';
+import { Icon, Responsive, Link } from '../../../components/';
+import { Flex, Container } from '@laguro/basic-components';
 import LoginModal from '../Modals/LoginModal';
 import { intercomKey } from '../../../config/keys';
-import { withScreenSizes } from '../../../components/Responsive';
 import { DentistLink, HostLink } from './Links';
 import { LinkButton, HeaderLinkContainer } from './common';
 import { HEADER_HEIGHT } from './constants';
@@ -21,7 +19,7 @@ import {
 } from '../../../util/urls';
 import ProfileButton from './ProfileButton';
 
-const { Desktop } = Responsive;
+const { Desktop, withScreenSizes } = Responsive;
 
 const StyledFlex = styled(Flex)`
     box-shadow: ${props => props.boxShadow};

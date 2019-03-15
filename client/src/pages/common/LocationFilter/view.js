@@ -39,7 +39,7 @@ const StyledAutocomplete = styled(AntdAutocomplete)`
             font-size: ${props => props.theme.fontSizes[0]};
             font-weight: 700;
             transition: none;
-            @media (min-width: 992px) {
+            @media (min-width: ${props => props.theme.breakpoints[1]}) {
                 font-size: ${props => props.theme.fontSizes[2]};
             }
         }
@@ -57,7 +57,7 @@ const StyledAutocomplete = styled(AntdAutocomplete)`
             z-index: ${props => props.theme.zIndex.inputElement};
             font-weight: 700;
             font-family: Silka;
-            @media (min-width: 992px) {
+            @media (min-width: ${props => props.theme.breakpoints[1]}) {
                 font-size: ${props => props.theme.fontSizes[2]};
             }
         }

@@ -25,7 +25,7 @@ const StyledCard = styled(Card)`
         padding: 20px;
         height: 100%;
 
-        @media (min-width: 992px) {
+        @media (min-width: ${props => props.theme.breakpoints[1]}) {
             padding: 40px 70px;
         }
     }
@@ -35,7 +35,7 @@ const StyledCard = styled(Card)`
         padding: 0;
         min-height: auto;
 
-        @media (min-width: 992px) {
+        @media (min-width: ${props => props.theme.breakpoints[1]}) {
             min-height: 48px;
         }
     }
@@ -43,7 +43,7 @@ const StyledCard = styled(Card)`
     && .ant-card-head-title {
         padding: 0 0 16px 0;
 
-        @media (min-width: 992px) {
+        @media (min-width: ${props => props.theme.breakpoints[1]}) {
             padding: 16px 0;
         }
     }
