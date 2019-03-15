@@ -1,5 +1,5 @@
 import React from 'react';
-import { Theme, Button, Text } from '@laguro/basic-components';
+import { Theme, Button, Text, Box } from '@laguro/basic-components';
 import styled from 'styled-components';
 import {
     getPageType,
@@ -11,20 +11,25 @@ import {
 import { HEADER_HEIGHT } from './constants';
 
 const StyledLinkButton = styled(Button)`
-    && {
+    // four ampersands to override Button/index.js
+    &&&& {
         display: flex;
         align-items: center;
+        height: 25px;
         span {
             padding-bottom: 2px;
             font-weight: ${props => props.theme.fontWeights.light};
         }
+        border-radius: 0;
         // on mobile, :hover is activated with a click
-        :hover span {
+        :hover {
             border-bottom: solid 1px #ffffff;
-            font-weight: ${props => props.theme.fontWeights.medium};
+            div {
+                font-weight: ${props => props.theme.fontWeights.medium};
 
-            @media (min-width: ${props => props.theme.breakpoints[1]}) {
-                font-weight: ${props => props.theme.fontWeights.bold};
+                @media (min-width: ${props => props.theme.breakpoints[1]}) {
+                    font-weight: ${props => props.theme.fontWeights.bold};
+                }
             }
         }
     }
@@ -47,10 +52,16 @@ export const StyledDropContainer = styled.div`
     }
 `;
 
-export const LinkButton = ({ textColor, children, ...rest }) => (
+export const LinkButton = ({ textColor, children, textProps, ...rest }) => (
     <StyledLinkButton fontSize={1} type="ghost" {...rest}>
-        <Text color={textColor}> {children} </Text>{' '}
+        <Text color={getLinkTextColor()} {...textProps}>
+            {children}
+        </Text>
     </StyledLinkButton>
+);
+
+export const HeaderLinkContainer = props => (
+    <Box {...props} ml={[10, '', 25]} />
 );
 
 export const getLinkTextColor = () => {

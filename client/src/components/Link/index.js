@@ -10,11 +10,6 @@ const StyledLink = styled(ReactLink)`
     ${space};
     ${width};
     ${display};
-
-    &&:hover {
-        text-decoration: ${props =>
-            props.type === 'ghost' ? 'none' : 'underline'};
-    }
 `;
 
 const StyledExternalLink = styled.a`
@@ -23,11 +18,6 @@ const StyledExternalLink = styled.a`
     ${space};
     ${width};
     ${display};
-
-    &&:hover {
-        text-decoration: ${props =>
-            props.type === 'ghost' ? 'none' : 'underline'};
-    }
 `;
 
 const Link = props => {

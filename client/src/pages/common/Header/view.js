@@ -4,18 +4,13 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import SearchBox from '../SearchBox';
 import { Icon } from '../../../components/';
-import {
-    Flex,
-    Link,
-    Container,
-    Box,
-    Responsive,
-} from '@laguro/basic-components';
+import { Link } from '../../../components/index';
+import { Flex, Container, Responsive } from '@laguro/basic-components';
 import LoginModal from '../Modals/LoginModal';
 import { intercomKey } from '../../../config/keys';
 import { withScreenSizes } from '../../../components/Responsive';
 import { DentistLink, HostLink } from './Links';
-import { LinkButton, getLinkTextColor } from './common';
+import { LinkButton, HeaderLinkContainer } from './common';
 import { HEADER_HEIGHT } from './constants';
 import {
     getPageType,
@@ -43,8 +38,6 @@ const IntercomContainer = ({ auth }) => {
         : {};
     return <Intercom appID={intercomKey} {...user} />;
 };
-
-const HeaderLink = props => <Box {...props} ml={[10, '', 25]} />;
 
 const getHeaderBackgroundColor = () => {
     const pageType = getPageType();
@@ -167,44 +160,35 @@ class Header extends Component {
                     </Flex>
 
                     <Flex alignItems="center">
-                        <HeaderLink>
+                        <HeaderLinkContainer>
                             {auth && isHost && (
                                 <HostLink
                                     auth={auth}
                                     desktopOnly={desktopOnly}
                                     onLandingPage={onLandingPage}
-                                    textColor={getLinkTextColor()}
                                 />
                             )}
-                        </HeaderLink>
-                        <HeaderLink>
+                        </HeaderLinkContainer>
+                        <HeaderLinkContainer>
                             {auth && isDentist && (
                                 <DentistLink
                                     auth={auth}
                                     desktopOnly={desktopOnly}
                                     onLandingPage={onLandingPage}
-                                    textColor={getLinkTextColor()}
                                 />
                             )}
-                        </HeaderLink>
+                        </HeaderLinkContainer>
                         {/* Blog link doesn't show if user is both dentist and host on mobile */}
                         {!(!desktopOnly && isDentist && isHost) && (
-                            <HeaderLink>
-                                <a
-                                    ml="0px"
+                            <HeaderLinkContainer>
+                                <Link
+                                    isExternal
                                     target="_blank"
-                                    href={'http://blog.laguro.com/'}
+                                    to="http://blog.laguro.com/"
                                 >
-                                    <LinkButton
-                                        textColor={getLinkTextColor()}
-                                        fontSize={1}
-                                        fontWeight="bold"
-                                        type="ghost"
-                                    >
-                                        Blog
-                                    </LinkButton>
-                                </a>
-                            </HeaderLink>
+                                    <LinkButton>Blog</LinkButton>
+                                </Link>
+                            </HeaderLinkContainer>
                         )}
 
                         <ProfileButton

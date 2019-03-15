@@ -26,13 +26,13 @@ import {
     BECOME_A_HOST_MENU_TEXT,
 } from './strings';
 import {
-    PATIENT_DASHBOARD_PAGE_URL,
-    DENTIST_DASHBOARD_PAGE_URL,
+    PATIENT_DASHBOARD_PAGE_URL_BASE,
+    DENTIST_DASHBOARD_PAGE_URL_BASE,
     DENTIST_PROFILE_PAGE_URL,
-    DENTIST_SEARCH_PAGE_URL,
-    HOST_DASHBOARD_PAGE_URL,
+    HOST_DASHBOARD_PAGE_URL_BASE,
     HOST_ONBOARDING_PAGE_URL_PREFIX,
     DENTIST_ONBOARDING_PROFILE_URL,
+    OFFICE_SEARCH_PAGE_URL,
 } from './urls';
 import { getKeyFromText } from '../pages/Dashboard/utils';
 
@@ -71,7 +71,7 @@ export const profileMenuTextToLinkTo = {
         (acc, menuText) => ({
             ...acc,
             ...{
-                [menuText]: `${PATIENT_DASHBOARD_PAGE_URL}?selectedTab=${getKeyFromText(
+                [menuText]: `${PATIENT_DASHBOARD_PAGE_URL_BASE}${getKeyFromText(
                     menuText
                 )}`,
             },
@@ -138,7 +138,7 @@ export const dentistMenuTextToLinkTo = {
         (acc, menuText) => ({
             ...acc,
             ...{
-                [menuText]: `${DENTIST_DASHBOARD_PAGE_URL}?selectedTab=${getKeyFromText(
+                [menuText]: `${DENTIST_DASHBOARD_PAGE_URL_BASE}${getKeyFromText(
                     menuText
                 )}`,
             },
@@ -150,7 +150,7 @@ export const dentistMenuTextToLinkTo = {
     [LAGURO_TREATMENT_MODULE_MENU_TEXT]: currentUrl.includes('laguro-stage')
         ? 'http://ltm.laguro-stage.com/'
         : 'http://ltm.laguro.com/',
-    [SEARCH_FOR_CHAIRS_MENU_TEXT]: DENTIST_SEARCH_PAGE_URL,
+    [SEARCH_FOR_CHAIRS_MENU_TEXT]: OFFICE_SEARCH_PAGE_URL,
 };
 
 // host menu
@@ -177,7 +177,7 @@ export const hostMenuTextToLinkTo = {
         (acc, menuText) => ({
             ...acc,
             ...{
-                [menuText]: `${HOST_DASHBOARD_PAGE_URL}?selectedTab=${getKeyFromText(
+                [menuText]: `${HOST_DASHBOARD_PAGE_URL_BASE}${getKeyFromText(
                     menuText
                 )}`,
             },
