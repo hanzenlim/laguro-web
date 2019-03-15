@@ -10,7 +10,6 @@ import {
     Button,
     Card,
     Flex,
-    Grid,
     Image,
     Rating,
     Text,
@@ -265,13 +264,9 @@ class DentistListingCard extends PureComponent {
                                         >
                                             Available times
                                         </Text>
-                                        <Grid
-                                            gridTemplateColumns="repeat(4, 1fr)"
-                                            gridColumnGap="4px"
-                                            gridRowGap="4px"
-                                        >
+                                        <Flex flexWrap="wrap">
                                             {availableTimes.map(
-                                                (availableTime, index) => (
+                                                availableTime => (
                                                     <Button
                                                         data-start={
                                                             availableTime.startTime
@@ -281,7 +276,13 @@ class DentistListingCard extends PureComponent {
                                                         }
                                                         type="primary"
                                                         height={40}
-                                                        width="100%"
+                                                        width={[
+                                                            '75px',
+                                                            '110px',
+                                                            '110px',
+                                                        ]}
+                                                        mx="2px"
+                                                        my="2px"
                                                         ghost={true}
                                                         onClick={
                                                             this
@@ -302,15 +303,21 @@ class DentistListingCard extends PureComponent {
                                             {isShowMoreVisibile && (
                                                 <Button
                                                     type="primary"
-                                                    width="100%"
+                                                    width={[
+                                                        '75px',
+                                                        '110px',
+                                                        '110px',
+                                                    ]}
                                                     height={40}
+                                                    my="2px"
+                                                    mx="2px"
                                                     onClick={onRedirect}
                                                     fontSize={['12px', '18px']}
                                                 >
                                                     More
                                                 </Button>
                                             )}
-                                        </Grid>
+                                        </Flex>
                                     </Fragment>
                                 ) : (
                                     <Text
