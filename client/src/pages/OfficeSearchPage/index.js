@@ -137,7 +137,7 @@ class OfficeSearchPage extends PureComponent {
                     ),
                     longitude: get(source, 'location.geoPoint.lon'),
                     latitude: get(source, 'location.geoPoint.lat'),
-                    subtitle: source.subtitle,
+                    subtitle: source.description,
                     url: `/office/${item._id}`,
                     equipment: source.equipment,
                     numReviews: source.numReviews,
