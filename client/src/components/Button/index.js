@@ -170,7 +170,7 @@ Button.defaultProps = {
 };
 
 Button.propTypes = {
-    height: PropTypes.oneOf(['40px', '50px', '60px', '80px', 'auto']),
+    height: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
     fontSize: PropTypes.oneOf([1, 2, 3, 4]),
 };
 
