@@ -16,11 +16,17 @@ const StyledForm = styled(Form)`
 
         .ant-input {
             height: 50px;
-            width: 432px;
+            width: 100%;
             background: white;
             color: black;
             font-size: 16px;
             padding: 15px 25px;
+        }
+
+        @media (min-width: ${props => props.theme.breakpoints[1]}) {
+            .ant-input {
+                width: 432px;
+            }
         }
     }
 `;
