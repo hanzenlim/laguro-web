@@ -13,6 +13,7 @@ import {
 import { withScreenSizes } from '../../../components/Responsive';
 import { getIdFromFilestackUrl } from '../../../util/imageUtil';
 import defaultDentistProfileImg from '../../../components/Image/default_dentist_profile_img_square.svg';
+import theme from '../../../components/theme';
 
 const CarouselLinkCard = props => {
     const {
@@ -49,8 +50,12 @@ const CarouselLinkCard = props => {
                                         handle={getIdFromFilestackUrl(imageUrl)}
                                         alt={name}
                                         sizes={{
-                                            '(min-width: 992px)': '230px',
-                                            '(min-width: 768px)': '160px',
+                                            [`(min-width: ${
+                                                theme.breakpoints[1]
+                                            })`]: '230px',
+                                            [`(min-width: ${
+                                                theme.breakpoints[0]
+                                            }px)`]: '160px',
                                             fallback: '130px',
                                         }}
                                         formats={['webp', 'pjpg']}

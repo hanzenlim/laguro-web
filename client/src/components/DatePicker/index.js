@@ -50,7 +50,7 @@ const StyledContainer = styled.div`
         font-weight: ${props => props.theme.fontWeights.bold};
         font-size: ${props => props.theme.fontSizes[0]};
 
-        @media (min-width: 992px) {
+        @media (min-width: ${props => props.theme.breakpoints[1]}) {
             font-size: ${props => props.theme.fontSizes[2]};
         }
     }

@@ -1,9 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import { Dropdown } from 'antd';
-import { Image, Flex, Responsive } from '@laguro/basic-components';
+import { Image, Flex } from '@laguro/basic-components';
 import styled from 'styled-components';
 import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
-import { Link } from '../../../components/index';
+import { Link, Responsive } from '../../../components/index';
 import { setImageSizeToUrl } from '../../../util/imageUtil';
 import { StyledDropContainer, LinkButton, HeaderLinkContainer } from './common';
 import {
