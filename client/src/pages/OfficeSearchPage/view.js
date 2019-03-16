@@ -55,22 +55,22 @@ const OfficeSearchPageView = props => {
                             </Text>
                         </Text>
                     )}
-                    {urlParams.location && (
-                        <Text fontSize={['20px', '22px']} color="text.black">
-                            {urlParams.location && 'Offices near '}
-                            <Text display="inline-block" fontWeight="bold">
-                                {urlParams.location}
-                            </Text>
-                            {urlParams.startTime && ' on '}
-                            {urlParams.startTime && (
-                                <Text display="inline-block" fontWeight="bold">
-                                    {moment(urlParams.startTime).format(
-                                        'MMM D, YYYY'
-                                    )}
-                                </Text>
-                            )}
+
+                    <Text fontSize={['20px', '22px']} color="text.black">
+                        {urlParams.location && 'Offices near '}
+                        <Text display="inline-block" fontWeight="bold">
+                            {urlParams.location}
                         </Text>
-                    )}
+                        {urlParams.startTime && ' on '}
+                        {urlParams.startTime && (
+                            <Text display="inline-block" fontWeight="bold">
+                                {moment(urlParams.startTime).format(
+                                    'MMM D, YYYY'
+                                )}
+                            </Text>
+                        )}
+                    </Text>
+
                     <Flex display={['none', '', 'flex']}>
                         <Text fontSize="16px" color="text.black" mr="13px">
                             Map View

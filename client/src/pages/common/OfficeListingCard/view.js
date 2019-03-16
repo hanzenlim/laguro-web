@@ -27,21 +27,31 @@ const StyledCard = styled(Card)`
             padding: 0;
         }
     }
+
+    && {
+        height: ${({ showMap }) => (showMap ? '378px' : 'auto')};
+
+        @media screen and (max-width: 1024px) {
+            height: 378px;
+        }
+    }
 `;
 
 const OfficeListingCard = ({ office, onRedirect, showMap }) => (
     <Button type="ghost" height="auto" width="100%" onClick={onRedirect}>
-        <StyledCard>
+        <StyledCard showMap={showMap}>
             <Box>
                 <Flex
-                    flexDirection={showMap ? 'column' : ['column', 'row']}
+                    flexDirection={
+                        showMap ? 'column' : ['column', 'column', 'row']
+                    }
                     m={0}
-                    height={showMap ? '100%' : ['100%', 215]}
+                    height={showMap ? '100%' : ['100%', '100%', 215]}
                 >
                     <Box
                         display="block"
-                        width={showMap ? '100%' : ['100%', 317]}
-                        height={showMap ? 215 : [215, '100%']}
+                        width={showMap ? '100%' : ['100%', '100%', 317]}
+                        height={showMap ? 215 : [215, 215, '100%']}
                         position="relative"
                         overflow="hidden"
                     >
@@ -63,16 +73,24 @@ const OfficeListingCard = ({ office, onRedirect, showMap }) => (
                                     alignItems={
                                         showMap
                                             ? 'flex-start'
-                                            : ['flex-start', 'center']
+                                            : [
+                                                  'flex-start',
+                                                  'flex-start',
+                                                  'center',
+                                              ]
                                     }
                                     flexDirection={
-                                        showMap ? 'column' : ['column', 'row']
+                                        showMap
+                                            ? 'column'
+                                            : ['column', 'column', 'row']
                                     }
                                 >
                                     <Text
                                         fontWeight="bold"
                                         fontSize={
-                                            showMap ? '14px' : ['14px', '20px']
+                                            showMap
+                                                ? '14px'
+                                                : ['14px', '14px', '20px']
                                         }
                                         mr={14}
                                         color="#303449"
@@ -84,7 +102,9 @@ const OfficeListingCard = ({ office, onRedirect, showMap }) => (
                                     <Rating
                                         disabled={true}
                                         fontSize={
-                                            showMap ? '12px' : ['12px', '15px']
+                                            showMap
+                                                ? '12px'
+                                                : ['12px', '12px', '15px']
                                         }
                                         value={office.rating}
                                     />
@@ -98,6 +118,7 @@ const OfficeListingCard = ({ office, onRedirect, showMap }) => (
                                     fontSize="12px"
                                     color="#9b9b9b"
                                     fontWeight="normal"
+                                    wordBreak="break-all"
                                 >
                                     {_truncate(`${office.address}`, {
                                         length: 43,
@@ -110,36 +131,86 @@ const OfficeListingCard = ({ office, onRedirect, showMap }) => (
                         {!_isEmpty(office.equipment) &&
                             office.equipment.length && (
                                 <Flex flexWrap="wrap" mb={6} mt={10}>
-                                    {office.equipment.map((equip, index) => (
-                                        <Box
-                                            bg={TAG_COLORS[index % 4]}
-                                            px={16}
-                                            borderRadius="19.5px"
-                                            mr="6px"
-                                            mb="6px"
-                                        >
-                                            <Text
-                                                color="text.white"
-                                                lineHeight="20px"
-                                                fontSize={
-                                                    showMap
-                                                        ? '10px'
-                                                        : ['10px', '12px']
-                                                }
+                                    {office.equipment.map((equip, index) => {
+                                        if (
+                                            showMap ||
+                                            window.innerWidth <= 1024
+                                        ) {
+                                            if (index === 3) {
+                                                return (
+                                                    <Box
+                                                        bg={
+                                                            TAG_COLORS[
+                                                                index % 4
+                                                            ]
+                                                        }
+                                                        px={16}
+                                                        borderRadius="19.5px"
+                                                        mr="6px"
+                                                        mb="6px"
+                                                    >
+                                                        <Text
+                                                            color="text.white"
+                                                            lineHeight="20px"
+                                                            fontSize={
+                                                                showMap
+                                                                    ? '10px'
+                                                                    : [
+                                                                          '10px',
+                                                                          '12px',
+                                                                      ]
+                                                            }
+                                                        >
+                                                            ...
+                                                        </Text>
+                                                    </Box>
+                                                );
+                                            }
+
+                                            if (index > 3) {
+                                                return null;
+                                            }
+                                        }
+
+                                        return (
+                                            <Box
+                                                bg={TAG_COLORS[index % 4]}
+                                                px={16}
+                                                borderRadius="19.5px"
+                                                mr="6px"
+                                                mb="6px"
                                             >
-                                                {equip.name}
-                                            </Text>
-                                        </Box>
-                                    ))}
+                                                <Text
+                                                    color="text.white"
+                                                    lineHeight="20px"
+                                                    fontSize={
+                                                        showMap
+                                                            ? '10px'
+                                                            : [
+                                                                  '10px',
+                                                                  '10px',
+                                                                  '12px',
+                                                              ]
+                                                    }
+                                                >
+                                                    {equip.name}
+                                                </Text>
+                                            </Box>
+                                        );
+                                    })}
                                 </Flex>
                             )}
 
                         <Text
                             style={{ 'white-space': 'pre-line' }}
-                            fontSize={showMap ? '10px' : ['10px', '14px']}
+                            fontSize={
+                                showMap ? '10px' : ['10px', '10px', '14px']
+                            }
                             textAlign="left"
                             fontWeight="300"
-                            display={showMap ? 'none' : ['none', 'block']}
+                            display={
+                                showMap ? 'none' : ['none', 'none', 'block']
+                            }
                         >
                             {office.subtitle
                                 ? office.subtitle
