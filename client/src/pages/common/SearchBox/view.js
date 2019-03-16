@@ -40,7 +40,7 @@ const SearchBox = props => {
     const heightInHeader = 50;
     return (
         <Flex
-            width={['100%', '', isLarge ? '100%' : '53%']}
+            width={['100%', '', isLarge ? '100%' : '78%']}
             justifyContent="center"
             onKeyPress={onKeyPress}
             flexDirection={['column', '', 'row']}
@@ -61,7 +61,7 @@ const SearchBox = props => {
                 />
             </Box>
             <Box
-                width={['100%', '', isLarge ? '27%' : '26%']}
+                width={['100%', '', isLarge ? '27%' : '25%']}
                 mr={[0, '', 10]}
                 mb={[7, '', 0]}
             >
@@ -70,7 +70,7 @@ const SearchBox = props => {
                     onDateChange={onDateFilterChange}
                     width="100%"
                     height={isLarge ? [50, 50, 60] : heightInHeader}
-                    format={isLarge ? 'ddd MM/DD' : 'MM/DD'}
+                    format={isLarge ? 'ddd MM/DD' : 'MMM D, YYYY'}
                 />
             </Box>
             <StyledButton
@@ -92,7 +92,7 @@ const SearchBox = props => {
                 >
                     <Desktop>
                         <Icon
-                            fontSize={3}
+                            fontSize="25px"
                             style={{ fontWeight: 'bold' }}
                             color="white"
                             type="search"

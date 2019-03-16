@@ -91,9 +91,9 @@ class Header extends Component {
 
         const onLandingPage = pathname === '/';
         if (pathname.startsWith('/office')) {
-            placeholder = 'Search offices';
+            placeholder = 'Search for offices by name and location';
         } else {
-            placeholder = 'Search dentists';
+            placeholder = 'Search by name location or specialties';
         }
 
         const onSearchPage =
