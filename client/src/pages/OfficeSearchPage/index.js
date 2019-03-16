@@ -31,6 +31,7 @@ class OfficeSearchPage extends PureComponent {
                 width,
                 height,
             },
+            urlParams: null,
         };
     }
 

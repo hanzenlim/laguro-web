@@ -47,8 +47,17 @@ const OfficeSearchPageView = props => {
             </Desktop>
             {total > 0 && (
                 <Flex justifyContent="space-between" mb="18px">
+                    {urlParams.text && !urlParams.location && (
+                        <Text fontSize={['20px', '22px']} color="text.black">
+                            Search results for{' '}
+                            <Text display="inline-block" fontWeight="bold">
+                                "{urlParams.text}"
+                            </Text>
+                        </Text>
+                    )}
+
                     <Text fontSize={['20px', '22px']} color="text.black">
-                        {urlParams.location && 'Dentists near '}
+                        {urlParams.location && 'Offices near '}
                         <Text display="inline-block" fontWeight="bold">
                             {urlParams.location}
                         </Text>
@@ -61,6 +70,7 @@ const OfficeSearchPageView = props => {
                             </Text>
                         )}
                     </Text>
+
                     <Flex display={['none', '', 'flex']}>
                         <Text fontSize="16px" color="text.black" mr="13px">
                             Map View
