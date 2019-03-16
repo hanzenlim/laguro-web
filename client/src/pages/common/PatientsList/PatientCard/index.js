@@ -111,6 +111,7 @@ class PatientCardContainer extends PureComponent {
             visitDate,
             hasNextAppointment,
             uploadPolicySignature,
+            patientId,
         } = this.props;
         const {
             patientImages,
@@ -120,6 +121,7 @@ class PatientCardContainer extends PureComponent {
         } = this.state;
         return (
             <PatientCard
+                patientId={patientId}
                 toggleDocumentList={this.toggleDocumentList}
                 loadPhotos={this.loadPhotos}
                 removeImage={this.removeImage}

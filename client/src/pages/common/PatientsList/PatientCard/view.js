@@ -5,6 +5,7 @@ import ReactFilestack from 'filestack-react';
 
 import {
     Box,
+    Link,
     Text,
     Flex,
     Image,
@@ -39,6 +40,17 @@ const StyledBox = styled(Box)`
         }
     }
 `;
+
+const currentUrl = window.location.href;
+const getLinkUrl = () => {
+    if (currentUrl.includes('localhost')) {
+        return 'localhost:3020';
+    } else if (currentUrl.includes('laguro-stage')) {
+        return 'https://ltm.laguro-stage.com';
+    }
+    return 'https://ltm.laguro.com';
+};
+const LTM_LINK_BASE_URL = getLinkUrl();
 
 class PatientCard extends PureComponent {
     renderUploadedImages = () => {
@@ -102,6 +114,7 @@ class PatientCard extends PureComponent {
             onCancel,
             hasNextAppointment,
             uploadPolicySignature,
+            patientId,
         } = this.props;
         return (
             <StyledBox
@@ -120,9 +133,16 @@ class PatientCard extends PureComponent {
                         />
                     </Box>
                     <Box flex="1">
-                        <Text fontSize={[2, '', 4]} fontWeight="medium">
-                            {name}
-                        </Text>
+                        <Link
+                            isExternal
+                            target="_blank"
+                            rel="noopener"
+                            to={`${LTM_LINK_BASE_URL}/go?to=/chart&patientId=${patientId}`}
+                        >
+                            <Text fontSize={[2, '', 4]} fontWeight="medium">
+                                {name}
+                            </Text>
+                        </Link>
                         <Flex
                             justifyContent="space-between"
                             alignItems={['flex-start', '', 'center']}

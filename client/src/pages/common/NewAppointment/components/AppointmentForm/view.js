@@ -15,18 +15,23 @@ import {
     Select,
     Button,
     TextArea,
+    Link,
 } from '../../../../../components';
 
 const NoAppointmentsMessage = () => (
-    <Text
-        textAlign="center"
-        fontSize={[1, '', 3]}
-        letterSpacing="-0.6px"
-        color="text.black"
-        mt={20}
-    >
-        Please reserve a chair first before making an appointment.
-    </Text>
+    <Flex mt={20} justifyContent="center">
+        <Text
+            fontSize={[1, '', 3]}
+            letterSpacing="-0.6px"
+            color="text.black"
+            mr={6}
+        >
+            You have no available chairs.
+        </Text>
+        <Link to="/office/search" fontSize={[1, '', 3]} letterSpacing="-0.6px">
+            Book here.
+        </Link>
+    </Flex>
 );
 
 const StyledAutoComplete = styled(AutoComplete)`
