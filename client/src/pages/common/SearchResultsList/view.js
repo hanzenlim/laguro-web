@@ -19,6 +19,7 @@ class SearchResultsList extends PureComponent {
         this.state = {
             urlParams: this.urlParams,
             limit: ITEMS_COUNT,
+            loading: false,
         };
     }
 
@@ -26,13 +27,17 @@ class SearchResultsList extends PureComponent {
         history.listen(location => {
             this.urlParams = queryString.parse(location.search);
             this.setState({ urlParams: this.urlParams });
+
+            setTimeout(() => {
+                this.setState({ loading: false });
+            }, 3000);
         });
     }
 
     showMore = () => {
         const limit = this.state.limit + ITEMS_COUNT;
 
-        this.setState({ limit });
+        this.setState({ limit, loading: true });
 
         const search = {
             ...this.urlParams,
@@ -58,7 +63,7 @@ class SearchResultsList extends PureComponent {
 
     render() {
         const { data, total, title, showMap } = this.props;
-        const { urlParams } = this.state;
+        const { urlParams, loading } = this.state;
         const isOffice = title === 'Office Results';
         const type = isOffice ? OFFICES : DENTISTS;
 
@@ -121,9 +126,22 @@ class SearchResultsList extends PureComponent {
 
                 {total > ITEMS_COUNT &&
                 !(this.state.urlParams.limit >= total) ? (
-                    <Button mt={20} mb={45} onClick={this.showMore}>
-                        Show more
-                    </Button>
+                    <Flex
+                        justifyContent="center"
+                        alignItems="center"
+                        width="100%"
+                    >
+                        <Button
+                            mt={20}
+                            mb={45}
+                            onClick={this.showMore}
+                            width={327}
+                            height={51}
+                            loading={loading}
+                        >
+                            Show more
+                        </Button>
+                    </Flex>
                 ) : null}
             </Flex>
         );

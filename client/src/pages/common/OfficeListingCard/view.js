@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import _isEmpty from 'lodash/isEmpty';
+import _truncate from 'lodash/truncate';
 import defaultOfficeImage from '../../../components/Image/office-placeholder.png';
 import {
     Box,
@@ -39,7 +40,7 @@ const OfficeListingCard = ({ office, onRedirect, showMap }) => (
                 >
                     <Box
                         display="block"
-                        width={showMap ? '100%' : ['100%', 288]}
+                        width={showMap ? '100%' : ['100%', 317]}
                         height={showMap ? 215 : [215, '100%']}
                         position="relative"
                         overflow="hidden"
@@ -97,9 +98,11 @@ const OfficeListingCard = ({ office, onRedirect, showMap }) => (
                                     fontSize="12px"
                                     color="#9b9b9b"
                                     fontWeight="normal"
-                                    textTransform="uppercase"
                                 >
-                                    {office.address}
+                                    {_truncate(`${office.address}`, {
+                                        length: 43,
+                                        separator: ' ',
+                                    })}
                                 </Text>
                             </Flex>
                         </Flex>

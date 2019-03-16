@@ -47,20 +47,30 @@ const OfficeSearchPageView = props => {
             </Desktop>
             {total > 0 && (
                 <Flex justifyContent="space-between" mb="18px">
-                    <Text fontSize={['20px', '22px']} color="text.black">
-                        {urlParams.location && 'Dentists near '}
-                        <Text display="inline-block" fontWeight="bold">
-                            {urlParams.location}
-                        </Text>
-                        {urlParams.startTime && ' on '}
-                        {urlParams.startTime && (
+                    {urlParams.text && !urlParams.location && (
+                        <Text fontSize={['20px', '22px']} color="text.black">
+                            Search results for{' '}
                             <Text display="inline-block" fontWeight="bold">
-                                {moment(urlParams.startTime).format(
-                                    'MMM D, YYYY'
-                                )}
+                                "{urlParams.text}"
                             </Text>
-                        )}
-                    </Text>
+                        </Text>
+                    )}
+                    {urlParams.location && (
+                        <Text fontSize={['20px', '22px']} color="text.black">
+                            {urlParams.location && 'Offices near '}
+                            <Text display="inline-block" fontWeight="bold">
+                                {urlParams.location}
+                            </Text>
+                            {urlParams.startTime && ' on '}
+                            {urlParams.startTime && (
+                                <Text display="inline-block" fontWeight="bold">
+                                    {moment(urlParams.startTime).format(
+                                        'MMM D, YYYY'
+                                    )}
+                                </Text>
+                            )}
+                        </Text>
+                    )}
                     <Flex display={['none', '', 'flex']}>
                         <Text fontSize="16px" color="text.black" mr="13px">
                             Map View
