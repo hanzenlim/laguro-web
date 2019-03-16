@@ -2,13 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link as ReactLink } from 'react-router-dom';
 import styled from 'styled-components';
-import { space, width, display, propTypes } from 'styled-system';
+import { space, width, height, display, propTypes } from 'styled-system';
 
 const StyledLink = styled(ReactLink)`
     text-decoration: none;
     color: ${props => props.theme.colors.text.black};
     ${space};
     ${width};
+    ${height};
     ${display};
 `;
 
@@ -17,6 +18,7 @@ const StyledExternalLink = styled.a`
     color: ${props => props.theme.colors.text.black};
     ${space};
     ${width};
+    ${height};
     ${display};
 `;
 

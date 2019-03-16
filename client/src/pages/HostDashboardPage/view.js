@@ -20,7 +20,7 @@ import BalanceHistory from '../common/BalanceHistory/index';
 import { HOST_ONBOARDING_PAGE_URL_PREFIX } from '../../util/urls';
 import { Responsive } from '../../components/index';
 
-const { TabletMobile, Desktop } = Responsive;
+const { TabletMobile, Desktop, withScreenSizes } = Responsive;
 
 const menuTextToDescription = {
     [MY_OFFICES_MENU_TEXT]: 'View and add listings to your offices',
@@ -49,21 +49,28 @@ class HostDashboardPageView extends Component {
 
     renderPanel = key => {
         let panelContent;
+        let TabletMobileContainerComponent = Container;
 
         switch (key) {
             case MY_OFFICES_MENU_TEXT:
                 panelContent = <HostListing />;
+                TabletMobileContainerComponent = Fragment;
                 break;
             case LAGURO_BALANCE_MENU_TEXT:
                 panelContent = (
                     <BalanceHistory userId={this.props.userId} persona={HOST} />
                 );
+                TabletMobileContainerComponent = Fragment;
                 break;
             default:
         }
 
+        const ContainerComponent = this.props.tabletMobileOnly
+            ? TabletMobileContainerComponent
+            : Card;
+
         return (
-            <Card>
+            <ContainerComponent>
                 <Desktop>
                     <Box
                         borderBottom="solid 0.5px"
@@ -78,7 +85,7 @@ class HostDashboardPageView extends Component {
                 </Desktop>
 
                 {panelContent}
-            </Card>
+            </ContainerComponent>
         );
     };
 
@@ -151,4 +158,4 @@ class HostDashboardPageView extends Component {
         );
     }
 }
-export default HostDashboardPageView;
+export default withScreenSizes(HostDashboardPageView);

@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Box, Container, Text, Card, Truncate } from '@laguro/basic-components';
+import { Box, Text, Card, Truncate } from '@laguro/basic-components';
 import _isEmpty from 'lodash/isEmpty';
 import queryString from 'query-string';
 import UpdateProfileForm from '../../pages/common/Forms/UpdateProfileForm';
@@ -28,9 +28,9 @@ import {
     StyledDashboardMenuItem,
 } from '../Dashboard/common';
 import PaymentMethods from '../PaymentMethods';
-import { Responsive } from '../../components/index';
+import { Responsive, Container } from '../../components/index';
 
-const { TabletMobile, Desktop } = Responsive;
+const { TabletMobile, Desktop, withScreenSizes } = Responsive;
 
 const menuTextToDescription = {
     [ACCOUNT_SETTINGS_MENU_TEXT]:
@@ -96,13 +96,16 @@ class PatientDashboardPageView extends Component {
         const { userId } = this.props;
 
         let panelContent;
+        let TabletMobileContainerComponent = Container;
 
         switch (key) {
             case ACCOUNT_SETTINGS_MENU_TEXT:
                 panelContent = <UpdateProfileForm />;
+                TabletMobileContainerComponent = Fragment;
                 break;
             case APPOINTMENTS_MENU_TEXT:
                 panelContent = <PatientAppointments />;
+                TabletMobileContainerComponent = Fragment;
                 break;
             case MEDICAL_HISTORY_MENU_TEXT:
                 panelContent = (
@@ -122,12 +125,14 @@ class PatientDashboardPageView extends Component {
                         withoutProgressBar={true}
                     />
                 );
+                TabletMobileContainerComponent = Fragment;
                 break;
             case PENDING_REQUESTS_MENU_TEXT:
                 panelContent = <ProcedurePaymentRequestPage />;
                 break;
             case RECEIPTS_MENU_TEXT:
                 panelContent = <PaymentHistory userId={userId} />;
+                TabletMobileContainerComponent = Fragment;
                 break;
             case PAYMENT_METHODS_MENU_TEXT:
                 panelContent = <PaymentMethods />;
@@ -135,8 +140,12 @@ class PatientDashboardPageView extends Component {
             default:
         }
 
+        const ContainerComponent = this.props.tabletMobileOnly
+            ? TabletMobileContainerComponent
+            : Card;
+
         return (
-            <Card>
+            <ContainerComponent>
                 <Desktop>
                     <Box
                         borderBottom="solid 0.5px"
@@ -151,7 +160,7 @@ class PatientDashboardPageView extends Component {
                 </Desktop>
 
                 {this.renderPanelContent(panelContent)}
-            </Card>
+            </ContainerComponent>
         );
     };
 
@@ -246,4 +255,4 @@ class PatientDashboardPageView extends Component {
         );
     }
 }
-export default PatientDashboardPageView;
+export default withScreenSizes(PatientDashboardPageView);
