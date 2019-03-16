@@ -31,10 +31,17 @@ import PatientsList from '../common/PatientsList';
 import BalanceHistory from '../common/BalanceHistory';
 import DentistDetails from '../common/DentistDetails';
 import ReviewContainer from '../common/ReviewContainer/index';
-import { Responsive } from '../../components/index';
+import { Responsive, Link, Button, Flex } from '../../components/index';
+import styled from 'styled-components';
 
-const { TabletMobile, Desktop } = Responsive;
+const currentUrl = window.location.href;
+const { TabletMobile, Desktop, withScreenSizes } = Responsive;
 
+const StyledButton = styled(Button)`
+    &&&& {
+        border-radius: 17px;
+    }
+`;
 const menuTextToDescription = {
     [PROFILE_SETTINGS_MENU_TEXT]:
         'Manage your dentist profile and insurance policy',
@@ -102,6 +109,7 @@ class DentistDashboardPageView extends Component {
 
     renderPanel = key => {
         let panelContent;
+        let TabletMobileContainerComponent = Container;
 
         switch (key) {
             case PROFILE_SETTINGS_MENU_TEXT:
@@ -112,6 +120,7 @@ class DentistDashboardPageView extends Component {
                         fromDentistDashboard={true}
                     />
                 );
+                TabletMobileContainerComponent = Fragment;
                 break;
             case DENTIST_VERIFICATION_MENU_TEXT:
                 panelContent = (
@@ -121,15 +130,21 @@ class DentistDashboardPageView extends Component {
                         fromDentistDashboard={true}
                     />
                 );
+                TabletMobileContainerComponent = Fragment;
                 break;
             case CREATE_A_NEW_APPOINTMENT_MENU_TEXT:
                 panelContent = <NewAppointment />;
+                TabletMobileContainerComponent = this.props.tabletOnly
+                    ? Container
+                    : Fragment;
                 break;
             case MY_PATIENTS_MENU_TEXT:
                 panelContent = <PatientsList />;
+                TabletMobileContainerComponent = Fragment;
                 break;
             case BOOKINGS_MENU_TEXT:
                 panelContent = <DentistAppointments />;
+                TabletMobileContainerComponent = Fragment;
                 break;
             case LAGURO_BALANCE_MENU_TEXT:
                 panelContent = (
@@ -138,6 +153,7 @@ class DentistDashboardPageView extends Component {
                         persona={DENTIST}
                     />
                 );
+                TabletMobileContainerComponent = Fragment;
                 break;
             case VIEW_PROFILE_MENU_TEXT:
                 panelContent = (
@@ -153,12 +169,17 @@ class DentistDashboardPageView extends Component {
                         />
                     </Container>
                 );
+                TabletMobileContainerComponent = Fragment;
                 break;
             default:
         }
 
+        const ContainerComponent = this.props.tabletMobileOnly
+            ? TabletMobileContainerComponent
+            : Card;
+
         return (
-            <Card>
+            <ContainerComponent>
                 <Desktop>
                     <Box
                         borderBottom="solid 0.5px"
@@ -172,7 +193,7 @@ class DentistDashboardPageView extends Component {
                     </Box>
                 </Desktop>
                 {this.renderPanelContent(panelContent)}
-            </Card>
+            </ContainerComponent>
         );
     };
 
@@ -254,9 +275,40 @@ class DentistDashboardPageView extends Component {
                 </TabletMobile>
                 <Desktop>
                     <Container>
-                        <Text mt={20} mb={13} fontWeight="medium" fontSize={4}>
-                            Dentist Dashboard
-                        </Text>
+                        <Flex
+                            justifyContent="space-between"
+                            alignItems="flex-end"
+                            mb={9}
+                        >
+                            <Text
+                                mt={20}
+                                mb={4}
+                                fontWeight="medium"
+                                fontSize={4}
+                            >
+                                Dentist Dashboard
+                            </Text>
+                            <Desktop>
+                                <Link
+                                    height={34}
+                                    isExternal
+                                    target="_blank"
+                                    to={
+                                        currentUrl.includes('laguro-stage')
+                                            ? 'http://ltm.laguro-stage.com/'
+                                            : 'http://ltm.laguro.com/'
+                                    }
+                                >
+                                    <StyledButton
+                                        px={30}
+                                        height="100%"
+                                        fontSize={1}
+                                    >
+                                        Laguro Treatment Module
+                                    </StyledButton>
+                                </Link>
+                            </Desktop>
+                        </Flex>
                         <DashboardGrid pb={50}>
                             {this.renderMenu(this.props.panel)}
                             {this.renderPanel(this.props.panel)}
@@ -267,4 +319,4 @@ class DentistDashboardPageView extends Component {
         );
     }
 }
-export default DentistDashboardPageView;
+export default withScreenSizes(DentistDashboardPageView);
