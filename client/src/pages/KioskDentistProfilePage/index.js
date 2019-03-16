@@ -4,6 +4,8 @@ import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 import compact from 'lodash/compact';
 import { adopt } from 'react-adopt';
+import cookies from 'browser-cookies';
+import * as Yup from 'yup';
 import KioskDentistProfileView from './view';
 import {
     CREATE_DENTIST,
@@ -19,7 +21,6 @@ import {
 } from '../../history';
 import { getUser, setUser } from '../../util/authUtils';
 import Loading from '../../components/Loading/index';
-import * as Yup from 'yup';
 import { execute } from '../../util/gqlUtils';
 import { isBioUpdated } from '../../util/dentistUtils';
 
@@ -67,12 +68,13 @@ const Composed = adopt({
     },
     createDentist: ({ render }) => (
         <Mutation
-            update={(proxy, { data: { createDentist } }) => {
+            update={(proxy, { data: { createDentistWithAuth } }) => {
+                cookies.set('laguroAuthToken', createDentistWithAuth.token);
                 setUser({
-                    ...createDentist.user,
-                    dentistId: createDentist.id,
+                    ...createDentistWithAuth.user,
+                    dentistId: createDentistWithAuth.id,
                     hasUpdatedDentistBio: isBioUpdated(
-                        _get(createDentist, 'bio')
+                        _get(createDentistWithAuth, 'bio')
                     ),
                 });
             }}

@@ -21,21 +21,24 @@ export const getUserDentistQuery = gql`
 `;
 
 export const createDentistMutation = gql`
-    mutation createDentist($input: CreateDentistInput!) {
-        createDentist(input: $input) {
-            id
-            specialty
-            bio
-            user {
+    mutation createDentistWithAuth($input: CreateDentistInput!) {
+        createDentistWithAuth(input: $input) {
+            dentist {
                 id
+                specialty
+                bio
+                user {
+                    id
+                }
+                procedures {
+                    group
+                    name
+                    code
+                    duration
+                }
+                firstAppointmentDuration
             }
-            procedures {
-                group
-                name
-                code
-                duration
-            }
-            firstAppointmentDuration
+            token
         }
     }
 `;
