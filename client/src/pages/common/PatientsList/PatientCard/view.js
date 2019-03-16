@@ -46,9 +46,9 @@ const getLinkUrl = () => {
     if (currentUrl.includes('localhost')) {
         return 'localhost:3020';
     } else if (currentUrl.includes('laguro-stage')) {
-        return 'ltm.laguro-stage.com';
+        return 'https://ltm.laguro-stage.com';
     }
-    return 'ltm.laguro.com';
+    return 'https://ltm.laguro.com';
 };
 const LTM_LINK_BASE_URL = getLinkUrl();
 
@@ -137,7 +137,7 @@ class PatientCard extends PureComponent {
                             isExternal
                             target="_blank"
                             rel="noopener"
-                            to={`${LTM_LINK_BASE_URL}:3020/go?to=/chart&patientId=${patientId}`}
+                            to={`${LTM_LINK_BASE_URL}/go?to=/chart&patientId=${patientId}`}
                         >
                             <Text fontSize={[2, '', 4]} fontWeight="medium">
                                 {name}
