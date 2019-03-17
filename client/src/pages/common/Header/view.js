@@ -90,7 +90,8 @@ class Header extends Component {
         let placeholder;
 
         const onLandingPage = pathname === '/';
-        if (pathname.startsWith('/office')) {
+        // We show the office search bar on office search page and host dashboard page.
+        if (pathname.startsWith('/office') || pathname.includes('dashboard/host')) {
             placeholder = 'Search for offices by name and location';
         } else {
             placeholder = 'Search by name location or specialties';
