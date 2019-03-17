@@ -41,6 +41,8 @@ import CloseCircle from './CloseCircle';
 import CloseCircleHover from './CloseCircleHover';
 import Revert from './Revert';
 import Exclamation from './Exclamation';
+import Languages from './Languages';
+import Insurance from './Insurance';
 
 const Icon = props => {
     const { type, isButton, ...rest } = props;
@@ -112,6 +114,12 @@ const Icon = props => {
             break;
         case 'exclamation':
             ReturnIcon = Exclamation;
+            break;
+        case 'languages':
+            ReturnIcon = Languages;
+            break;
+        case 'insurance':
+            ReturnIcon = Insurance;
             break;
         default:
             ReturnIcon = AntdIcon;

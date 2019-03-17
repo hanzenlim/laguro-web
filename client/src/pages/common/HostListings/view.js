@@ -18,6 +18,20 @@ import { formatAddress } from '../../../util/styleUtil';
 const { TabPane } = Tabs;
 const { TabletMobile } = Responsive;
 
+const StyledTabs = styled(Tabs)`
+    && .ant-tabs-nav {
+        .ant-tabs-tab {
+            // remove top padding of tab text
+            padding: 0 0 12px 0;
+
+            @media (min-width: ${props => props.theme.breakpoints[1]}) {
+                // remove top padding of tab text
+                padding: 0 32px 12px 32px;
+            }
+        }
+    }
+`;
+
 export const StyledList = styled.ul`
     columns: 2;
     padding: 0 0 0 16px;
@@ -163,7 +177,7 @@ class HostListings extends PureComponent {
         const { offices } = this.props;
         return (
             <Box width={['100%', '', 600]} maxWidth="100%" mb={[100, '', 0]}>
-                <Tabs>{this.renderTabPane(offices)}</Tabs>
+                <StyledTabs>{this.renderTabPane(offices)}</StyledTabs>
             </Box>
         );
     }

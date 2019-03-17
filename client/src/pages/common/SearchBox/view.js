@@ -35,10 +35,12 @@ const SearchBox = props => {
         onKeyPress,
     } = props;
 
+    // isLarge is used for home page
     const isLarge = size === 'large';
+    const heightInHeader = 50;
     return (
         <Flex
-            width={['100%', '', isLarge ? '100%' : '53%']}
+            width={['100%', '', isLarge ? '100%' : '78%']}
             justifyContent="center"
             onKeyPress={onKeyPress}
             flexDirection={['column', '', 'row']}
@@ -49,7 +51,7 @@ const SearchBox = props => {
                 mb={[7, '', 0]}
             >
                 <LocationFilter
-                    height={isLarge ? [50, 50, 60] : 60}
+                    height={isLarge ? [50, 50, 60] : heightInHeader}
                     initialValue={initialLocationFilterValue}
                     placeholder={locationPlaceholder}
                     onTextChange={onTextChange}
@@ -59,7 +61,7 @@ const SearchBox = props => {
                 />
             </Box>
             <Box
-                width={['100%', '', isLarge ? '27%' : '26%']}
+                width={['100%', '', isLarge ? '27%' : '25%']}
                 mr={[0, '', 10]}
                 mb={[7, '', 0]}
             >
@@ -67,17 +69,18 @@ const SearchBox = props => {
                     initialValue={initialDateFilterValue}
                     onDateChange={onDateFilterChange}
                     width="100%"
-                    height={isLarge ? [50, 50, 60] : 60}
-                    format={isLarge ? 'ddd MM/DD' : 'MM/DD'}
+                    height={isLarge ? [50, 50, 60] : heightInHeader}
+                    format={isLarge ? 'ddd MM/DD' : 'MMM D, YYYY'}
                 />
             </Box>
             <StyledButton
-                height="60px"
-                width={['100%', '', isLarge ? '210px' : '60px']}
+                width={['100%', '', isLarge ? '210px' : heightInHeader]}
+                height={isLarge ? [50, 50, 60] : heightInHeader}
                 type="default"
                 bg="background.blue"
                 onClick={onSubmit}
                 pl={[0, '', isLarge ? 40 : 10]}
+                border={!isLarge && 'solid 1px #ffffff'}
             >
                 <Flex
                     alignItems="center"
@@ -89,7 +92,7 @@ const SearchBox = props => {
                 >
                     <Desktop>
                         <Icon
-                            fontSize={3}
+                            fontSize="25px"
                             style={{ fontWeight: 'bold' }}
                             color="white"
                             type="search"

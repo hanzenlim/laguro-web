@@ -3,7 +3,7 @@ import { Query } from 'react-apollo';
 import queryString from 'query-string';
 import { isEmpty } from 'lodash';
 import moment from 'moment';
-
+import _get from 'lodash/get';
 import BalanceHistoryView from './view';
 import { CardLoading } from '../PaymentHistory';
 import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
@@ -23,6 +23,9 @@ import {
     PAYMENT_WITHDRAWN,
     APPOINTMENT_PAYMENT_TYPE,
     RESERVATION_PAYMENT_TYPE,
+    HOST,
+    DENTIST,
+    PROCEDURE_SET_HISTORY_PAYMENT_TYPE,
 } from '../../../util/strings';
 
 const paymentStatus = (cardType, payment) => {
@@ -133,24 +136,42 @@ class BalanceHistoryContainer extends PureComponent {
                         }
                     );
 
-                    const totalAvailable = allPayments.reduce(
+                    // to show only reservation payment objects for host persona, and procedure payment objects for dentist persona
+                    const paymentsFilteredByPersona = allPayments.filter(
+                        payment => {
+                            return (
+                                (persona === HOST &&
+                                    _get(payment, 'type') ===
+                                        RESERVATION_PAYMENT_TYPE) ||
+                                (persona === DENTIST &&
+                                    _get(payment, 'type') ===
+                                        PROCEDURE_SET_HISTORY_PAYMENT_TYPE)
+                            );
+                        }
+                    );
+
+                    const totalAvailable = paymentsFilteredByPersona.reduce(
                         (acc, payment) =>
                             acc + payment.payoutParams.availablePayoutAmount,
                         0
                     );
 
-                    const totalPending = allPayments.reduce(
+                    const totalPending = paymentsFilteredByPersona.reduce(
                         (acc, payment) =>
                             acc + payment.payoutParams.pendingPayoutAmount,
                         0
                     );
 
-                    const filteredPayments = this.filterPayments(allPayments);
+                    const filteredPayments = this.filterPayments(
+                        paymentsFilteredByPersona
+                    );
 
                     return (
                         <BalanceHistoryView
                             payments={
-                                desktopOnly ? filteredPayments : allPayments
+                                desktopOnly
+                                    ? filteredPayments
+                                    : paymentsFilteredByPersona
                             }
                             totalAvailable={totalAvailable}
                             totalPending={totalPending}

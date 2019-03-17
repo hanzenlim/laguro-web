@@ -1,9 +1,19 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Loadable from 'react-loadable';
-import { Container, Box, Grid, Responsive } from '../../components';
+import {
+    Flex,
+    Container,
+    Box,
+    Grid,
+    Responsive,
+    Switch,
+    Text,
+} from '../../components';
 import SearchBox from '../common/SearchBox';
 import SearchResultsList from '../common/SearchResultsList';
 import { formatAddress } from '../../util/styleUtil';
+import moment from 'moment';
 
 const Map = Loadable({
     loader: () => import('../common/Map' /* webpackChunkName: "map" */),
@@ -24,7 +34,15 @@ const handleMultiLocation = reservations => {
 };
 
 const DentistSearchPageView = props => {
-    const { data, total, urlParams, defaultPosition, mapDimensions } = props;
+    const {
+        data,
+        total,
+        urlParams,
+        defaultPosition,
+        mapDimensions,
+        showMap,
+        toggleMap,
+    } = props;
 
     data.forEach((dentist, index) => {
         const { reservations } = dentist;
@@ -64,42 +82,70 @@ const DentistSearchPageView = props => {
 
     return (
         <Container pt={[48, '', 160]}>
+            <Desktop>
+                {matches =>
+                    matches ? null : (
+                        <Box mb={20} mt={[24, '', 0]}>
+                            <SearchBox
+                                size="large"
+                                placeholder="Search for dentists by name, location, or specialty"
+                            />
+                        </Box>
+                    )
+                }
+            </Desktop>
+            {total > 0 && (
+                <Flex justifyContent="space-between" mb="18px">
+                    <Text fontSize={['20px', '22px']} color="text.black">
+                        {urlParams.location && 'Dentists near '}
+                        <Text display="inline-block" fontWeight="bold">
+                            {urlParams.location}
+                        </Text>
+                        {urlParams.startTime && ' on '}
+                        {urlParams.startTime && (
+                            <Text display="inline-block" fontWeight="bold">
+                                {moment(urlParams.startTime).format(
+                                    'MMM D, YYYY'
+                                )}
+                            </Text>
+                        )}
+                    </Text>
+                    <Flex display={['none', '', 'flex']}>
+                        <Text fontSize="16px" color="text.black" mr="13px">
+                            Map View
+                        </Text>
+                        <Switch onClick={toggleMap} />
+                    </Flex>
+                </Flex>
+            )}
             <Grid
                 gridColumnGap={['', '', '33px']}
                 gridTemplateColumns={[
                     '1fr',
                     '',
-                    `${total > 0 ? '1fr 1fr' : ''}`,
+                    `${total > 0 && showMap ? '1fr 1fr' : ''}`,
                 ]}
             >
-                <Box mt={[24, '', 0]}>
-                    <Desktop>
-                        {matches =>
-                            matches ? null : (
-                                <Box mb={20}>
-                                    <SearchBox
-                                        size="large"
-                                        placeholder="Search for dentists by name, location, or specialty"
-                                    />
-                                </Box>
-                            )
-                        }
-                    </Desktop>
-                    <SearchResultsList
-                        title="Dentist Results"
-                        data={data}
-                        total={total}
-                    />
+                <Box>
+                    <Box
+                        style={{ overflow: 'scroll' }}
+                        height={['auto', '', 'calc(100vh - 220px)']}
+                    >
+                        <SearchResultsList
+                            data={data}
+                            total={total}
+                            showMap={showMap}
+                        />
+                    </Box>
                 </Box>
 
-                {total > 0 ? (
+                {total > 0 && showMap ? (
                     <Desktop>
                         <Box
-                            position="fixed"
+                            position="absolute"
                             transform="translateX(calc(100% + 34px))"
-                            top="160px"
-                            height="calc(100vh - 160px)"
-                            mb="30px"
+                            top="220px"
+                            height="calc(100vh - 220px)"
                             bottom="0"
                         >
                             <Map
@@ -115,6 +161,16 @@ const DentistSearchPageView = props => {
             </Grid>
         </Container>
     );
+};
+
+DentistSearchPageView.propTypes = {
+    data: PropTypes.func,
+    showMap: PropTypes.boolean,
+    defaultPosition: PropTypes.boolean,
+    mapDimensions: PropTypes.boolean,
+    total: PropTypes.boolean,
+    urlParams: PropTypes.boolean,
+    toggleMap: PropTypes.func,
 };
 
 export default DentistSearchPageView;

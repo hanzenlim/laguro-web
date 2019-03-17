@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 import moment from 'moment';
@@ -23,7 +24,10 @@ import {
     ONBOARDING_NAME_AND_PERSONA_PAGE,
 } from '../../../util/urls';
 import { userHasSkippedMedicalHistory } from '../../../util/cookieUtils';
+import emitter from '../../../util/emitter';
 import { getUser } from '../../../util/authUtils';
+import queryString from 'query-string';
+import history from '../../../history';
 
 const HANDLED_TIMESLOT_ERRORS = [
     'Timeslot is in the past',
@@ -34,14 +38,16 @@ class BookAppointment extends PureComponent {
     constructor(props) {
         super(props);
 
+        const urlParams = queryString.parse(history.location.search);
+
         this.state = {
-            reservationId: null,
+            reservationId: urlParams.reservationId || null,
             patientId: null,
             location: null,
             procedure: null,
-            startTime: null,
+            startTime: urlParams.startTime || null,
             endTime: null,
-            isPaymentVisible: false,
+            isPaymentVisible: urlParams.startTime ? true : false,
             bookedAppointment: null,
             paymentError: null,
             isSubmitting: false,
@@ -112,9 +118,16 @@ class BookAppointment extends PureComponent {
         }
     };
 
-    handleBookAppointment = async () => {
+    handleBookAppointment = async (timezone, firstAppointmentDuration) => {
         const user = getUser();
         const { client } = this.props;
+
+        // Show login modal if not logged in.
+        if (!user) {
+            emitter.emit('loginModal');
+
+            return;
+        }
 
         const {
             data: { getUser: getUserData },
@@ -134,9 +147,15 @@ class BookAppointment extends PureComponent {
                     input: {
                         reservationId: this.state.reservationId,
                         patientId: _get(user, 'id'),
-                        procedure: this.state.procedure,
-                        localStartTime: this.state.startTime,
-                        localEndTime: this.state.endTime,
+                        localStartTime: stripTimezone(
+                            moment.tz(this.state.startTime, timezone).format()
+                        ),
+                        localEndTime: stripTimezone(
+                            moment(this.state.startTime)
+                                .add(firstAppointmentDuration, 'minutes')
+                                .format()
+                        ),
+                        // procedure: this.state.procedure,
                         // paymentOptionId,
                     },
                 },
@@ -216,7 +235,11 @@ class BookAppointment extends PureComponent {
         const { isPaymentVisible, bookedAppointment } = this.state;
 
         return (
-            <Query query={getDentistQuery} variables={{ id }}>
+            <Query
+                query={getDentistQuery}
+                variables={{ id }}
+                fetchPolicy="network-only"
+            >
                 {({ loading, error, data }) => {
                     if (loading) {
                         return <Loading />;
@@ -250,6 +273,12 @@ class BookAppointment extends PureComponent {
         );
     }
 }
+
+BookAppointment.propTypes = {
+    client: PropTypes.object,
+    id: PropTypes.string,
+    mutate: PropTypes.func,
+};
 
 export default compose(
     withApollo,

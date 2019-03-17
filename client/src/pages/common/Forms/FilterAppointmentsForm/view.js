@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Form, Select } from '../../../../components';
 import { withScreenSizes } from '../../../../components/Responsive';
@@ -48,6 +49,7 @@ class FilterAppointmentsFormView extends PureComponent {
             availableDateList,
             locationList,
             hasTimeFilter,
+            defaultDate,
         } = this.props;
 
         return (
@@ -89,7 +91,8 @@ class FilterAppointmentsFormView extends PureComponent {
                             },
                         ]}
                         initialValue={
-                            availableDateList[0] && availableDateList[0].key
+                            defaultDate ||
+                            (availableDateList[0] && availableDateList[0].key)
                         }
                         input={renderOptions(availableDateList)}
                     />
@@ -108,6 +111,23 @@ class FilterAppointmentsFormView extends PureComponent {
         );
     }
 }
+
+FilterAppointmentsFormView.propTypes = {
+    availableDateList: PropTypes.array,
+    // Default value for time filter
+    defaultDate: PropTypes.string,
+    handleSubmit: PropTypes.func,
+    hasTimeFilter: PropTypes.boolean,
+    locationList: PropTypes.array,
+    onSelectLocation: PropTypes.func,
+    // withScreenSizes props
+    screenWidth: PropTypes.number,
+    desktopOnly: PropTypes.boolean,
+    tabletDesktopOnly: PropTypes.boolean,
+    tabletMobileOnly: PropTypes.boolean,
+    tabletOnly: PropTypes.boolean,
+    mobileOnly: PropTypes.boolean,
+};
 
 FilterAppointmentsFormView.defaultProps = {
     hasTimeFilter: true,

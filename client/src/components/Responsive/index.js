@@ -5,8 +5,8 @@ import withSizes from 'react-sizes';
 const sizes = {
     maxMobile: 767,
     minTablet: 768,
-    maxTablet: 991,
-    minDesktop: 992,
+    maxTablet: 1024,
+    minDesktop: 1025,
 };
 
 const Responsive = props => <ReactResponsive {...props} />;
@@ -35,11 +35,11 @@ Responsive.TabletDesktop = props => (
 Responsive.sizes = sizes;
 
 const withScreenSizes = withSizes(({ width }) => ({
-    mobileOnly: width < sizes.minTablet, // 767px and below
-    tabletOnly: width > sizes.maxMobile && width < sizes.minDesktop, // 768px - 991px
-    desktopOnly: width > sizes.maxTablet, // 992px and above
-    tabletMobileOnly: width < sizes.minDesktop, // 991px and below
-    tabletDesktopOnly: width > sizes.maxMobile, // 768px and above
+    mobileOnly: width < sizes.minTablet,
+    tabletOnly: width > sizes.maxMobile && width < sizes.minDesktop,
+    desktopOnly: width > sizes.maxTablet,
+    tabletMobileOnly: width < sizes.minDesktop,
+    tabletDesktopOnly: width > sizes.maxMobile,
     screenWidth: width,
 }));
 

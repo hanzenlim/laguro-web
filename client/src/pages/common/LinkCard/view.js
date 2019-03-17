@@ -1,6 +1,5 @@
 import React from 'react';
 import defaultDentistProfileImg from '../../../components/Image/default_dentist_profile_img_square.svg';
-
 import {
     Box,
     Flex,
@@ -11,9 +10,9 @@ import {
     Link,
     FilestackImage,
 } from '../../../components';
-
 import { withScreenSizes } from '../../../components/Responsive';
 import { getIdFromFilestackUrl } from '../../../util/imageUtil';
+import theme from '../../../components/theme';
 
 const LinkCard = props => {
     const {
@@ -42,8 +41,12 @@ const LinkCard = props => {
                                     handle={getIdFromFilestackUrl(image)}
                                     alt={title}
                                     sizes={{
-                                        '(min-width: 992px)': '196px',
-                                        '(min-width: 768px)': '228px',
+                                        [`(min-width: ${
+                                            theme.breakpoints[1]
+                                        })`]: '196px',
+                                        [`(min-width: ${
+                                            theme.breakpoints[0]
+                                        })`]: '228px',
                                         fallback: '350px',
                                     }}
                                     formats={['webp', 'pjpg']}

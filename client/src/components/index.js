@@ -39,6 +39,7 @@ import Responsive from './Responsive';
 import Progress from './Progress';
 import FilestackImage from './FilestackImage';
 import Tag from './Tag';
+import Switch from './Switch';
 
 export {
     Box,
@@ -83,4 +84,5 @@ export {
     Progress,
     FilestackImage,
     Tag,
+    Switch,
 };

@@ -11,3 +11,22 @@ export const UPDATE_PATIENT_HEALTH_DATA = gql`
         }
     }
 `;
+
+export const GET_PATIENT_HEALTH_DATA_UNSTRUCTURED = gql`
+    query($patientId: String!) {
+        getPatientHealthDataUnstructured(patientId: $patientId) {
+            id
+            patientId
+            items {
+                key
+                value
+            }
+            groupedItems {
+                question
+                answer
+                group
+            }
+            dateCreated
+        }
+    }
+`;

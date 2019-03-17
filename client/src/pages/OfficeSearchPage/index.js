@@ -25,11 +25,13 @@ class OfficeSearchPage extends PureComponent {
             data: [],
             total: 0,
             loading: true,
+            showMap: false,
             defaultPosition: DEFAULT_LOCATION,
             mapDimensions: {
                 width,
                 height,
             },
+            urlParams: null,
         };
     }
 
@@ -136,8 +138,10 @@ class OfficeSearchPage extends PureComponent {
                     ),
                     longitude: get(source, 'location.geoPoint.lon'),
                     latitude: get(source, 'location.geoPoint.lat'),
-                    subtitle: source.specialty,
+                    subtitle: source.description,
                     url: `/office/${item._id}`,
+                    equipment: source.equipment,
+                    numReviews: source.numReviews,
                 };
             });
         }
@@ -229,6 +233,10 @@ class OfficeSearchPage extends PureComponent {
         return res;
     };
 
+    toggleMap = () => {
+        this.setState(state => ({ showMap: !state.showMap }));
+    };
+
     render() {
         if (this.state.loading)
             return (
@@ -262,6 +270,8 @@ class OfficeSearchPage extends PureComponent {
                     total={this.state.total}
                     urlParams={this.state.urlParams}
                     mapDimensions={this.state.mapDimensions}
+                    showMap={this.state.showMap}
+                    toggleMap={this.toggleMap}
                 />
             </Fragment>
         );

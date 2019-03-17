@@ -6,6 +6,26 @@ import {
     reservationFragment,
 } from '../../util/fragments';
 
+export const batchGetUsers = (rangeStart, rangeEnd) => gql`
+        query BatchGetUsers($input: BatchGetInput!) {
+            batchGetUsers(input: $input) {
+                id
+                dentist {
+                    id
+                    availableAppointmentSlots(
+                        options: {
+                            rangeStart: "${rangeStart}",
+                            rangeEnd: "${rangeEnd}",
+                        }
+                    ) {
+                        startTime
+                        reservationId
+                    }
+                }
+            }
+        }
+    `;
+
 export const getActiveDentistsQuery = gql`
     query {
         getActiveDentists {

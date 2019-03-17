@@ -62,6 +62,19 @@ export const redirect = ({
     window.scrollTo(0, 0);
 };
 
+// used for only adding new search params to url
+// used in dashboard pages
+export const addSearchParams = newSearchParams => {
+    const urlParams = {
+        ...queryString.parse(history.location.search),
+        ...newSearchParams,
+    };
+    history.push(
+        `${history.location.pathname}?${queryString.stringify(urlParams)}`
+    );
+    window.scrollTo(0, 0);
+};
+
 export const attemptToRedirectBack = () => {
     const urlParams = queryString.parse(history.location.search);
     // dropping referer when redirecting back to referer

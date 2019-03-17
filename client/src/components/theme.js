@@ -1,5 +1,6 @@
 const containerPaddings = 50;
 export const numMaxContainerWidth = 1280 + containerPaddings;
+export const breakpointsInPixels = [768, 1025, 1200];
 
 export default {
     colors: {
@@ -93,7 +94,7 @@ export default {
         '1px 1px 7px 0 rgba(0, 0, 0, 0.15)',
         '0 1px 4px 0 rgba(0, 0, 0, 0.3)',
     ],
-    breakpoints: ['768px', '992px', '1200px'],
+    breakpoints: breakpointsInPixels.map(bp => `${bp}px`),
     space: n => `${n}px`,
     maxContainerWidth: `${numMaxContainerWidth}px`,
     fontFamily: "'Silka', sans-serif",

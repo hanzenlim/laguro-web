@@ -28,6 +28,7 @@ const SearchAvailableAppointments = props => {
         availableDateList,
         locationList,
         onSelectLocation,
+        defaultDate,
     } = props;
 
     const hasAvailableDateList = get(props, 'availableDateList.length') > 0;
@@ -45,6 +46,7 @@ const SearchAvailableAppointments = props => {
                         Make an appointment
                     </Text>
                     <FilterAppointmentsForm
+                        defaultDate={defaultDate}
                         onSelectLocation={onSelectLocation}
                         handleSubmit={onFilter}
                         locationList={locationList}

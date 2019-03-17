@@ -64,7 +64,10 @@ const Step0 = props => (
                             });
                         },
                         afterAction: () => {
-                            if (!attemptToRedirectBack()) {
+                            // this will trigger a render of a confirmation panel in patient dashboard
+                            if (props.fromPatientDashboard) {
+                                props.onFinish();
+                            } else if (!attemptToRedirectBack()) {
                                 props.history.push(
                                     `/kiosk/confirmation/${userId}`
                                 );
@@ -287,7 +290,12 @@ const KioskInsurancePage = componentProps => {
                                         });
                                     },
                                     afterAction: () => {
-                                        if (!attemptToRedirectBack()) {
+                                        // this will trigger a render of a confirmation panel in patient dashboard
+                                        if (
+                                            componentProps.fromPatientDashboard
+                                        ) {
+                                            componentProps.onFinish();
+                                        } else if (!attemptToRedirectBack()) {
                                             componentProps.history.push(
                                                 `/kiosk/confirmation/${userId}`
                                             );
@@ -316,15 +324,16 @@ const KioskInsurancePage = componentProps => {
                             return (
                                 <Box position="relative">
                                     {/* TODO: Move progress to a parent component */}
-                                    {startStep !== progressSteps.length && (
-                                        <Progress
-                                            {...getProgressBarProps({
-                                                startStep,
-                                                currentStep,
-                                                progressSteps,
-                                            })}
-                                        />
-                                    )}
+                                    {!componentProps.withoutProgressBar &&
+                                        startStep !== progressSteps.length && (
+                                            <Progress
+                                                {...getProgressBarProps({
+                                                    startStep,
+                                                    currentStep,
+                                                    progressSteps,
+                                                })}
+                                            />
+                                        )}
                                     <Wizard
                                         onSubmit={async values =>
                                             await handleSubmit(values)

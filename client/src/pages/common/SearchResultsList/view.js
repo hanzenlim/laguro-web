@@ -1,16 +1,15 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import queryString from 'query-string';
 
-import LinkCard from '../LinkCard';
-import SearchPagination from '../SearchPagination';
+import DentistListingCard from '../DentistListingCard';
+import OfficeListingCard from '../OfficeListingCard';
 import history from '../../../history';
-import { Flex, Text, Box, Grid, Responsive, Button } from '../../../components';
+import { Flex, Box, Grid, Button } from '../../../components';
 import NoSearchResults from '../NoSearchResults';
 import { DENTISTS, OFFICES } from '../../../util/strings';
 
-const { Desktop, TabletMobile } = Responsive;
-
-const ITEMS_COUNT = 8;
+const ITEMS_COUNT = 14;
 
 class SearchResultsList extends PureComponent {
     constructor(props) {
@@ -20,6 +19,7 @@ class SearchResultsList extends PureComponent {
         this.state = {
             urlParams: this.urlParams,
             limit: ITEMS_COUNT,
+            loading: false,
         };
     }
 
@@ -27,13 +27,17 @@ class SearchResultsList extends PureComponent {
         history.listen(location => {
             this.urlParams = queryString.parse(location.search);
             this.setState({ urlParams: this.urlParams });
+
+            setTimeout(() => {
+                this.setState({ loading: false });
+            }, 3000);
         });
     }
 
     showMore = () => {
         const limit = this.state.limit + ITEMS_COUNT;
 
-        this.setState({ limit });
+        this.setState({ limit, loading: true });
 
         const search = {
             ...this.urlParams,
@@ -45,25 +49,27 @@ class SearchResultsList extends PureComponent {
         });
     };
 
+    handleRedirect = url => {
+        history.push(url);
+    };
+
+    handleSelectAppointment = appointment => {
+        const { startTime, address, reservationId, url } = appointment;
+
+        history.push(
+            `${url}?startTime=${startTime}&address=${address}&reservationId=${reservationId}`
+        );
+    };
+
     render() {
-        const { data, total, title } = this.props;
-        const { urlParams } = this.state;
-        const type = title === 'Office Results' ? OFFICES : DENTISTS;
+        const { data, total, title, showMap } = this.props;
+        const { urlParams, loading } = this.state;
+        const isOffice = title === 'Office Results';
+        const type = isOffice ? OFFICES : DENTISTS;
 
         return (
-            <Flex flexDirection="column" pb={[100, '', 0]}>
-                {data.length > 0 ? (
-                    <Text
-                        fontSize={[1, '', 5]}
-                        fontWeight="medium"
-                        color="text.black"
-                        mb={10}
-                        lineHeight="40px"
-                        letterSpacing="-0.8px"
-                    >
-                        {title}
-                    </Text>
-                ) : (
+            <Flex flexDirection="column">
+                {!data.length && (
                     <NoSearchResults
                         location={urlParams.location}
                         text={urlParams.text}
@@ -73,16 +79,52 @@ class SearchResultsList extends PureComponent {
                 <Grid
                     gridColumnGap="17px"
                     gridRowGap="20px"
-                    gridTemplateColumns={[
-                        '1fr 1fr',
-                        '1fr 1fr 1fr',
-                        '1fr 1fr 1fr',
-                    ]}
+                    gridTemplateColumns={
+                        showMap && isOffice
+                            ? 'repeat(auto-fit, minmax(200px, 1fr))'
+                            : isOffice
+                            ? [
+                                  'repeat(auto-fit, minmax(300px, 1fr))',
+                                  'repeat(auto-fit, minmax(250px, 1fr))',
+                                  '1fr',
+                              ]
+                            : ['1fr']
+                    }
                 >
                     {data.length
                         ? data.map(item => (
-                              <Box key={item.url} width="100%">
-                                  <LinkCard {...item} />
+                              <Box
+                                  key={item.url}
+                                  width={
+                                      data.length === 1 && isOffice && showMap
+                                          ? ['100%', '50%']
+                                          : '100%'
+                                  }
+                              >
+                                  {isOffice ? (
+                                      <OfficeListingCard
+                                          office={item}
+                                          showMap={showMap}
+                                          onRedirect={() =>
+                                              this.handleRedirect(item.url)
+                                          }
+                                      />
+                                  ) : (
+                                      <DentistListingCard
+                                          variant={showMap ? 'small' : 'large'}
+                                          dentist={item}
+                                          onRedirect={() =>
+                                              this.handleRedirect(item.url)
+                                          }
+                                          onSelectAppointment={e =>
+                                              this.handleSelectAppointment(
+                                                  e,
+                                                  item.url,
+                                                  item.startTime
+                                              )
+                                          }
+                                      />
+                                  )}
                               </Box>
                           ))
                         : null}
@@ -90,23 +132,33 @@ class SearchResultsList extends PureComponent {
 
                 {total > ITEMS_COUNT &&
                 !(this.state.urlParams.limit >= total) ? (
-                    <TabletMobile>
-                        <Button mt={20} mb={45} onClick={this.showMore}>
+                    <Flex
+                        justifyContent="center"
+                        alignItems="center"
+                        width="100%"
+                    >
+                        <Button
+                            mt={20}
+                            mb={45}
+                            onClick={this.showMore}
+                            width={327}
+                            height={51}
+                            loading={loading}
+                        >
                             Show more
                         </Button>
-                    </TabletMobile>
-                ) : null}
-
-                <Desktop>
-                    <Flex justifyContent="flex-end" mb="100px">
-                        {total && total > 1 ? (
-                            <SearchPagination total={total} />
-                        ) : null}
                     </Flex>
-                </Desktop>
+                ) : null}
             </Flex>
         );
     }
 }
+
+SearchResultsList.propTypes = {
+    data: PropTypes.array,
+    // Toggle size of image in search results list
+    showMap: PropTypes.boolean,
+    total: PropTypes.number,
+};
 
 export default SearchResultsList;
