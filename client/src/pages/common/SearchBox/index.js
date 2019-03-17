@@ -83,7 +83,9 @@ class SearchBox extends PureComponent {
         }
 
         const currentPath = _get(history, 'location.pathname') || DENTIST_PATH;
-        const path = currentPath.startsWith('/office')
+
+        // We show the office search bar on office search page and host dashboard page.
+        const path = currentPath.startsWith('/office') || currentPath.includes('dashboard/host')
             ? OFFICE_PATH
             : DENTIST_PATH;
 
