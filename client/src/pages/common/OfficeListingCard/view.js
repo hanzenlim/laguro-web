@@ -120,7 +120,7 @@ const OfficeListingCard = ({ office, onRedirect, showMap }) => (
                                     fontWeight="normal"
                                     wordBreak="break-all"
                                 >
-                                    {_truncate(`${office.address}`, {
+                                    {_truncate(office.address, {
                                         length: 43,
                                         separator: ' ',
                                     })}
@@ -175,11 +175,7 @@ const OfficeListingCard = ({ office, onRedirect, showMap }) => (
                                         if (index === 16) {
                                             return (
                                                 <Box
-                                                    bg={
-                                                        TAG_COLORS[
-                                                            index % 4
-                                                        ]
-                                                    }
+                                                    bg={TAG_COLORS[index % 4]}
                                                     px={16}
                                                     borderRadius="19.5px"
                                                     mr="6px"
@@ -202,7 +198,6 @@ const OfficeListingCard = ({ office, onRedirect, showMap }) => (
                                                 </Box>
                                             );
                                         }
-
 
                                         if (index > 16) {
                                             return null;
@@ -249,7 +244,14 @@ const OfficeListingCard = ({ office, onRedirect, showMap }) => (
                             }
                         >
                             {office.subtitle
-                                ? office.subtitle
+                                ? !showMap &&
+                                  office.equipment &&
+                                  office.equipment.length > 16
+                                    ? _truncate(office.subtitle, {
+                                          length: 120,
+                                          separator: ' ',
+                                      })
+                                    : office.subtitle
                                 : 'No available description'}
                         </Text>
                     </Box>
