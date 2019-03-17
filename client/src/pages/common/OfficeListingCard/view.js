@@ -172,6 +172,42 @@ const OfficeListingCard = ({ office, onRedirect, showMap }) => (
                                             }
                                         }
 
+                                        if (index === 16) {
+                                            return (
+                                                <Box
+                                                    bg={
+                                                        TAG_COLORS[
+                                                            index % 4
+                                                        ]
+                                                    }
+                                                    px={16}
+                                                    borderRadius="19.5px"
+                                                    mr="6px"
+                                                    mb="6px"
+                                                >
+                                                    <Text
+                                                        color="text.white"
+                                                        lineHeight="20px"
+                                                        fontSize={
+                                                            showMap
+                                                                ? '10px'
+                                                                : [
+                                                                      '10px',
+                                                                      '12px',
+                                                                  ]
+                                                        }
+                                                    >
+                                                        ...
+                                                    </Text>
+                                                </Box>
+                                            );
+                                        }
+
+
+                                        if (index > 16) {
+                                            return null;
+                                        }
+
                                         return (
                                             <Box
                                                 bg={TAG_COLORS[index % 4]}
