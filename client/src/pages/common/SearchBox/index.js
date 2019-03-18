@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import queryString from 'query-string';
 import moment from 'moment';
 import _get from 'lodash/get';
+import _isEmpty from 'lodash/isEmpty';
 import SearchBoxView from './view';
 import history from '../../../history';
 
@@ -69,6 +70,8 @@ class SearchBox extends PureComponent {
             urlParams.lat = location.lat;
             urlParams.long = location.long;
         }
+        // if both text and location are empty, this is a default search. in this case, we don't populate the input box, but use San Francisco as default location
+        urlParams.defaultSearch = _isEmpty(text) && _isEmpty(locationFromState);
 
         if (date) {
             const startTime = moment(date)
@@ -85,9 +88,11 @@ class SearchBox extends PureComponent {
         const currentPath = _get(history, 'location.pathname') || DENTIST_PATH;
 
         // We show the office search bar on office search page and host dashboard page.
-        const path = currentPath.startsWith('/office') || currentPath.includes('dashboard/host')
-            ? OFFICE_PATH
-            : DENTIST_PATH;
+        const path =
+            currentPath.startsWith('/office') ||
+            currentPath.includes('dashboard/host')
+                ? OFFICE_PATH
+                : DENTIST_PATH;
 
         history.push(`${path}?${queryString.stringify(urlParams)}`);
     };
@@ -102,8 +107,12 @@ class SearchBox extends PureComponent {
         return (
             <SearchBoxView
                 initialLocationFilterValue={
-                    this.state.urlParams.location || this.state.urlParams.text
-                }
+                    !_isEmpty(this.state.urlParams.defaultSearch) &&
+                    JSON.parse(this.state.urlParams.defaultSearch)
+                        ? ''
+                        : this.state.urlParams.location ||
+                          this.state.urlParams.text
+                } // if defaultSearch, don't display text in search box, if not, display text
                 initialDateFilterValue={this.state.urlParams.startTime}
                 onLocationFilterChange={this.handleLocationFilterChange}
                 onTextChange={this.handleTextChange}

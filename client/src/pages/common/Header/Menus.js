@@ -2,10 +2,10 @@ import React, { Fragment } from 'react';
 import { Menu } from 'antd';
 import styled from 'styled-components';
 import { space, width, borderBottom, borderColor } from 'styled-system';
+import { Box, Text, Grid } from '@laguro/basic-components';
 import _isEmpty from 'lodash/isEmpty';
 import _cloneDeep from 'lodash/cloneDeep';
 import { Link } from '../../../components/index';
-import { Box, Text, Grid } from '@laguro/basic-components';
 import {
     LOG_OUT_MENU_TEXT,
     BECOME_A_DENTIST_MENU_TEXT,
@@ -108,24 +108,21 @@ const renderText = text => {
                 {text}
             </Text>
         );
-    } else {
-        return (
-            <Text color="text.black" fontSize={0}>
-                {text}
-            </Text>
-        );
     }
+    return (
+        <Text color="text.black" fontSize={0}>
+            {text}
+        </Text>
+    );
 };
 
 const Menus = props => {
     const {
-        isDentist,
         isHost,
         onLogout,
         menuSections,
         hasLogOut,
         hasBecomeAPersonaSection,
-        width,
         desktopOnly, // from withScreenSizes
         tabletMobileOnly,
     } = props;
@@ -145,7 +142,7 @@ const Menus = props => {
     }
     const dividerMarginTop = 18;
 
-    let modifiedMenuSections = _cloneDeep(menuSections);
+    const modifiedMenuSections = _cloneDeep(menuSections);
     if (hasBecomeAPersonaSection && !_isEmpty(becomeAPersonaMenuTexts)) {
         modifiedMenuSections.push({
             dividerText: '',
@@ -204,7 +201,7 @@ const Menus = props => {
 
     return (
         <StyledMenu
-            width={width}
+            width={props.width}
             pt={[0, '', 1]}
             pb={[0, '', 20]}
             {...mobileBorderProps}
