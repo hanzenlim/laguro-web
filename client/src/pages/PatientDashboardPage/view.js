@@ -15,8 +15,10 @@ import {
     PENDING_REQUESTS_MENU_TEXT,
     RECEIPTS_MENU_TEXT,
     PAYMENT_METHODS_MENU_TEXT,
+    LOG_OUT_MENU_TEXT,
 } from '../../util/strings';
 import { profileMenuTexts } from '../../util/menuItems';
+import { onLogout } from '../../util/authUtils';
 import KioskMedicalHistoryFormPage from '../KioskMedicalHistoryFormPage';
 import KioskInsurancePage from '../KioskInsurancePage';
 import { getKeyFromText } from '../Dashboard/utils';
@@ -44,6 +46,7 @@ const menuTextToDescription = {
     [RECEIPTS_MENU_TEXT]:
         'View details about your completed treatment payments and print invoices',
     [PAYMENT_METHODS_MENU_TEXT]: 'Manage your payment options',
+    [LOG_OUT_MENU_TEXT]: 'Log out from platform',
 };
 
 class PatientDashboardPageView extends Component {
@@ -137,6 +140,9 @@ class PatientDashboardPageView extends Component {
             case PAYMENT_METHODS_MENU_TEXT:
                 panelContent = <PaymentMethods />;
                 break;
+            case LOG_OUT_MENU_TEXT:
+                onLogout();
+                break;
             default:
         }
 
@@ -182,46 +188,43 @@ class PatientDashboardPageView extends Component {
             return this.medicalHistoryConfirmation;
         }
         // display normal content
-        else {
-            return panelContent;
-        }
+
+        return panelContent;
     };
-    renderMenu = panel => {
-        return (
-            <Card p={0}>
-                <StyledDashboardMenu
-                    selectedKeys={panel}
-                    onClick={this.handleClick}
-                >
-                    {profileMenuTexts.map(menuText => (
-                        <StyledDashboardMenuItem key={menuText}>
-                            {/* menu item text */}
-                            <Text
-                                mb={6}
-                                fontSize={1}
-                                fontWeight="medium"
-                                color="inherit"
-                                letterSpacing="-0.4px"
-                            >
-                                {menuText}
-                            </Text>
-                            {/* menu item description */}
-                            <Text
-                                fontSize={0}
-                                fontWeight="regular"
-                                color="text.lightGray"
-                                letterSpacing="-0.4px"
-                            >
-                                <Truncate lines={2}>
-                                    {menuTextToDescription[menuText]}
-                                </Truncate>
-                            </Text>
-                        </StyledDashboardMenuItem>
-                    ))}
-                </StyledDashboardMenu>
-            </Card>
-        );
-    };
+    renderMenu = panel => (
+        <Card p={0}>
+            <StyledDashboardMenu
+                selectedKeys={panel}
+                onClick={this.handleClick}
+            >
+                {profileMenuTexts.map(menuText => (
+                    <StyledDashboardMenuItem key={menuText}>
+                        {/* menu item text */}
+                        <Text
+                            mb={6}
+                            fontSize={1}
+                            fontWeight="medium"
+                            color="inherit"
+                            letterSpacing="-0.4px"
+                        >
+                            {menuText}
+                        </Text>
+                        {/* menu item description */}
+                        <Text
+                            fontSize={0}
+                            fontWeight="regular"
+                            color="text.lightGray"
+                            letterSpacing="-0.4px"
+                        >
+                            <Truncate lines={2}>
+                                {menuTextToDescription[menuText]}
+                            </Truncate>
+                        </Text>
+                    </StyledDashboardMenuItem>
+                ))}
+            </StyledDashboardMenu>
+        </Card>
+    );
 
     render() {
         return (
