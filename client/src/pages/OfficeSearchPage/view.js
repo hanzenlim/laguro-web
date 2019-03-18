@@ -79,48 +79,50 @@ const OfficeSearchPageView = props => {
                     </Flex>
                 </Flex>
             )}
-            <Grid
-                gridColumnGap={['', '', '33px']}
-                gridTemplateColumns={[
-                    '1fr',
-                    '',
-                    `${total > 0 && showMap ? '1fr 1fr' : ''}`,
-                ]}
-            >
-                <Box>
-                    <Box
-                        style={{ overflow: 'scroll' }}
-                        height={['auto', '', 'calc(100vh - 220px)']}
-                    >
-                        <SearchResultsList
-                            data={data}
-                            total={total}
-                            showMap={showMap}
-                            title="Office Results"
-                        />
-                    </Box>
-                </Box>
-
-                {total > 0 && showMap ? (
-                    <Desktop>
+            <Box mb={211}>
+                <Grid
+                    gridColumnGap={['', '', '33px']}
+                    gridTemplateColumns={[
+                        '1fr',
+                        '',
+                        `${total > 0 && showMap ? '1fr 1fr' : ''}`,
+                    ]}
+                >
+                    <Box>
                         <Box
-                            position="absolute"
-                            transform="translateX(calc(100% + 34px))"
-                            top="220px"
-                            height="calc(100vh - 220px)"
-                            bottom="0"
+                            style={{ overflow: 'scroll' }}
+                            height={['auto', '', 'calc(100vh - 220px)']}
                         >
-                            <Map
+                            <SearchResultsList
                                 data={data}
-                                width={mapDimensions.width}
-                                height={mapDimensions.height}
-                                urlParams={urlParams}
-                                defaultPosition={defaultPosition}
+                                total={total}
+                                showMap={showMap}
+                                title="Office Results"
                             />
                         </Box>
-                    </Desktop>
-                ) : null}
-            </Grid>
+                    </Box>
+
+                    {total > 0 && showMap ? (
+                        <Desktop>
+                            <Box
+                                position="absolute"
+                                transform="translateX(calc(100% + 34px))"
+                                top="220px"
+                                height="calc(100vh - 220px)"
+                                bottom="0"
+                            >
+                                <Map
+                                    data={data}
+                                    width={mapDimensions.width}
+                                    height={mapDimensions.height}
+                                    urlParams={urlParams}
+                                    defaultPosition={defaultPosition}
+                                />
+                            </Box>
+                        </Desktop>
+                    ) : null}
+                </Grid>
+            </Box>
         </Container>
     );
 };
