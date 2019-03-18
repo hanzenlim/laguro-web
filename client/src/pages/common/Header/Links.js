@@ -38,9 +38,7 @@ class DentistLink extends Component {
                         />
                     }
                     placement={'bottomRight'}
-                    trigger={
-                        desktopOnly && !isMobileDevice() ? ['hover'] : ['click']
-                    } // desktopOnly uses screen sizes to determine device, isMobileDevice uses window.orientation and userAgent
+                    trigger={isMobileDevice() ? ['click'] : ['hover']}
                     getPopupContainer={() =>
                         document.getElementById('dentistLinkPopupContainer')
                     }

@@ -56,16 +56,8 @@ export const StyledDropContainer = styled.div`
     }
 `;
 
-export const LinkButton = ({ textColor, children, textProps, ...rest }) => (
-    <StyledLinkButton fontSize={1} type="ghost" {...rest}>
-        <Text color={getLinkTextColor()} {...textProps}>
-            {children}
-        </Text>
-    </StyledLinkButton>
-);
-
 export const HeaderLinkContainer = props => (
-    <Box {...props} ml={[10, '', 25]} />
+    <Box {...props} mr={[10, '', 25]} width="70px" />
 );
 
 export const getLinkTextColor = () => {
@@ -86,3 +78,11 @@ export const getLinkTextColor = () => {
             return textBlack;
     }
 };
+
+export const LinkButton = ({ textColor, children, textProps, ...rest }) => (
+    <StyledLinkButton fontSize={1} type="ghost" {...rest}>
+        <Text color={getLinkTextColor()} {...textProps}>
+            {children}
+        </Text>
+    </StyledLinkButton>
+);
