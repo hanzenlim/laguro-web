@@ -91,7 +91,10 @@ class Header extends Component {
 
         const onLandingPage = pathname === '/';
         // We show the office search bar on office search page and host dashboard page.
-        if (pathname.startsWith('/office') || pathname.includes('dashboard/host')) {
+        if (
+            pathname.startsWith('/office') ||
+            pathname.includes('dashboard/host')
+        ) {
             placeholder = 'Search for offices by name and location';
         } else {
             placeholder = 'Search by name location or specialties';
@@ -135,7 +138,7 @@ class Header extends Component {
                     justifyContent="space-between"
                     alignItems="center"
                 >
-                    <Flex width="100%">
+                    <Flex width="77%">
                         <Link mr={32} to={'/'} display="flex">
                             {/* mb is because the icon has extra space at the bottom */}
                             <Flex alignItems="center" height="100%" mb={6}>
