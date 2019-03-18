@@ -137,8 +137,6 @@ class BookAppointment extends PureComponent {
             fetchPolicy: 'network-only',
         });
 
-        this.redirectPatient(getUserData);
-
         try {
             this.setState({ isSubmitting: true });
 
