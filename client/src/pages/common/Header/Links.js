@@ -76,9 +76,7 @@ class HostLink extends Component {
                         />
                     }
                     placement={'bottomRight'}
-                    trigger={
-                        desktopOnly && !isMobileDevice() ? ['hover'] : ['click']
-                    }
+                    trigger={isMobileDevice() ? ['click'] : ['hover']}
                     getPopupContainer={() =>
                         document.getElementById('hostLinkPopupContainer')
                     }
