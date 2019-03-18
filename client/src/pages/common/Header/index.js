@@ -61,10 +61,12 @@ class HeaderContainer extends PureComponent {
                 isSubmitting={this.state.isSubmitting}
                 isDentist={_get(user, 'isDentist')}
                 isHost={_get(user, 'isHost')}
+                hasUpdatedDentistBio={_get(user, 'hasUpdatedDentistBio')}
                 onLogout={this.onLogout}
                 toggleLoginModal={this.toggleLoginModal}
                 isLoginModalOpen={this.state.isLoginModalOpen}
                 pathname={this.state.pathname}
+                hasUpdatedDentistBio={_get(user, 'hasUpdatedDentistBio')}
             />
         );
     }

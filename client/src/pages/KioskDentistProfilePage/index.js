@@ -21,6 +21,7 @@ import { getUser, setUser } from '../../util/authUtils';
 import Loading from '../../components/Loading/index';
 import * as Yup from 'yup';
 import { execute } from '../../util/gqlUtils';
+import { isBioUpdated } from '../../util/dentistUtils';
 
 const procedureList = {
     Fillings: false,
@@ -70,6 +71,9 @@ const Composed = adopt({
                 setUser({
                     ...createDentist.user,
                     dentistId: createDentist.id,
+                    hasUpdatedDentistBio: isBioUpdated(
+                        _get(createDentist, 'bio')
+                    ),
                 });
             }}
             mutation={CREATE_DENTIST}
@@ -90,7 +94,18 @@ const Composed = adopt({
         </Mutation>
     ),
     updateDentist: ({ render }) => (
-        <Mutation mutation={UPDATE_DENTIST}>{render}</Mutation>
+        <Mutation
+            update={(proxy, { data: { updateDentist } }) => {
+                setUser({
+                    hasUpdatedDentistBio: isBioUpdated(
+                        _get(updateDentist, 'bio')
+                    ),
+                });
+            }}
+            mutation={UPDATE_DENTIST}
+        >
+            {render}
+        </Mutation>
     ),
 });
 
@@ -148,9 +163,9 @@ class KioskDentistProfilePage extends Component {
                             component: null,
                             initialValues: { about: bio },
                             validationSchema: Yup.object().shape({
-                                about: Yup.string().required(
-                                    'You must write a bio'
-                                ),
+                                about: Yup.string()
+                                    .required('You must write a bio')
+                                    .concat(Yup.string().notOneOf([' '])),
                             }),
                         },
                         {

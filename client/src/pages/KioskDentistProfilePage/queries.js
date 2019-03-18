@@ -25,6 +25,7 @@ export const UPDATE_DENTIST = gql`
     mutation updateDentist($input: UpdateDentistInput!) {
         updateDentist(input: $input) {
             id
+            bio
             specialty
         }
     }

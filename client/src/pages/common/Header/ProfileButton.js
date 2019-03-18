@@ -55,6 +55,9 @@ class ProfileButton extends Component {
                             hasLogOut={true}
                             hasBecomeAPersonaSection={true}
                             menuTextToLinkTo={profileMenuTextToLinkTo} // e.g. {"Account settings": '/dashboard/patient?selectedTab=account_settings'}
+                            hasUpdatedDentistBio={
+                                this.props.hasUpdatedDentistBio
+                            }
                         />
                     }
                     placement={'bottomRight'}

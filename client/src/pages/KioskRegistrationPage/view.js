@@ -26,6 +26,7 @@ import {
 
 import history from '../../history';
 import { setUser, setAuthToken } from '../../util/authUtils';
+import { isBioUpdated } from '../../util/dentistUtils';
 
 const Composed = adopt({
     sendKioskLoginCode: ({ render }) => (
@@ -117,11 +118,13 @@ const getLoginResult = data => {
     const user = _get(data, 'data.login.user');
     const isPinValid = _get(data, 'data.login.user.id');
     const token = _get(data, 'data.login.authToken.body');
+    const dentist = _get(data, 'data.login.user.dentist');
 
     return {
         user,
         isPinValid,
         token,
+        dentist,
     };
 };
 
@@ -226,9 +229,12 @@ export const RegisterOrLoginStep = props => (
                             },
                         });
 
-                        const { isPinValid, token, user } = getLoginResult(
-                            loginResult
-                        );
+                        const {
+                            isPinValid,
+                            token,
+                            user,
+                            dentist,
+                        } = getLoginResult(loginResult);
 
                         if (!isPinValid) {
                             props.clear();
@@ -238,7 +244,13 @@ export const RegisterOrLoginStep = props => (
 
                         props.formikProps.setFieldValue('isPinValid', true);
 
-                        setUser({ ...user, token });
+                        const dentistBio = _get(dentist, 'bio');
+
+                        setUser({
+                            ...user,
+                            token,
+                            hasUpdatedDentistBio: isBioUpdated(dentistBio), // used to distinguish between dentists and hosts. actual dentists will have a bio, because this is a required field. hosts will have a bio of ' '(a space character).
+                        });
                         setAuthToken(token);
 
                         if (props.closeModal) {
@@ -271,7 +283,12 @@ export const RegisterOrLoginStep = props => (
 
                         props.formikProps.setFieldValue('isPinValid', true);
 
-                        setUser({ ...user, token });
+                        // used to distinguish between dentists and hosts. recently signed-up user will not be a dentist and therefore will not have a dentist bio
+                        setUser({
+                            ...user,
+                            token,
+                            hasUpdatedDentistBio: false,
+                        });
                         setAuthToken(token);
 
                         if (props.closeModal) {
