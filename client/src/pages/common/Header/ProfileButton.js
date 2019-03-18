@@ -59,7 +59,7 @@ class ProfileButton extends Component {
                     }
                     placement={'bottomRight'}
                     trigger={
-                        desktopOnly && !isMobileDevice() ? ['hover'] : ['click'] // desktopOnly uses screen sizes to determine device, isMobileDevice uses window.orientation and userAgent
+                        isMobileDevice() ? ['click'] : ['hover'] // desktopOnly uses screen sizes to determine device, isMobileDevice uses window.orientation and userAgent
                     }
                     getPopupContainer={() =>
                         document.getElementById('ProfileMenuContainer')

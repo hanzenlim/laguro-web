@@ -56,6 +56,7 @@ export const profileMenuTexts = [
     ...unclassfiedProfileMenuTexts,
     ...patientMenuTexts,
     ...paymentMenuTexts,
+    LOG_OUT_MENU_TEXT,
 ];
 
 // Menus.js also includes Log out button at the end of menu

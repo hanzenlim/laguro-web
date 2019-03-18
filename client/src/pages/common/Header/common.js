@@ -57,7 +57,7 @@ export const StyledDropContainer = styled.div`
 `;
 
 export const HeaderLinkContainer = props => (
-    <Box {...props} mr={[10, '', 25]} width="70px" />
+    <Box {...props} mr={[10, '', 25]} width={['', '', '70px']} />
 );
 
 export const getLinkTextColor = () => {
