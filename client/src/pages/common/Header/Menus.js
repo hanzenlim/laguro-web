@@ -108,18 +108,16 @@ const renderText = text => {
                 {text}
             </Text>
         );
-    } else {
-        return (
-            <Text color="text.black" fontSize={0}>
-                {text}
-            </Text>
-        );
     }
+    return (
+        <Text color="text.black" fontSize={0}>
+            {text}
+        </Text>
+    );
 };
 
 const Menus = props => {
     const {
-        isDentist,
         isHost,
         onLogout,
         menuSections,
@@ -145,7 +143,7 @@ const Menus = props => {
     }
     const dividerMarginTop = 18;
 
-    let modifiedMenuSections = _cloneDeep(menuSections);
+    const modifiedMenuSections = _cloneDeep(menuSections);
     if (hasBecomeAPersonaSection && !_isEmpty(becomeAPersonaMenuTexts)) {
         modifiedMenuSections.push({
             dividerText: '',

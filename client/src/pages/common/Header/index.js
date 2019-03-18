@@ -66,7 +66,6 @@ class HeaderContainer extends PureComponent {
                 toggleLoginModal={this.toggleLoginModal}
                 isLoginModalOpen={this.state.isLoginModalOpen}
                 pathname={this.state.pathname}
-                hasUpdatedDentistBio={_get(user, 'hasUpdatedDentistBio')}
             />
         );
     }
