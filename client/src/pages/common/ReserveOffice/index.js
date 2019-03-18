@@ -29,6 +29,7 @@ import {
     DENTIST_ONBOARDING_VERIFICATION_URL,
     ONBOARDING_NAME_AND_PERSONA_PAGE,
 } from '../../../util/urls';
+import { isBioUpdated } from '../../../util/dentistUtils';
 
 class ReserveOffice extends Component {
     constructor(props) {
@@ -267,6 +268,7 @@ class ReserveOffice extends Component {
         const user = _get(result, 'data.getUser');
         const patientDocument = _get(user, 'patientDocument');
         const dentist = _get(user, 'dentist');
+        const dentistBio = _get(dentist, 'bio');
 
         if (_isEmpty(_get(user, 'firstName'))) {
             redirect({
@@ -275,7 +277,7 @@ class ReserveOffice extends Component {
                 newSearchParamKey: 'referer',
                 newSearchParamValue: 'ReserveOffice',
             });
-        } else if (_isEmpty(dentist)) {
+        } else if (!isBioUpdated(dentistBio)) {
             redirect({
                 url: DENTIST_ONBOARDING_PROFILE_URL,
                 includeNewRedirectTo: true,

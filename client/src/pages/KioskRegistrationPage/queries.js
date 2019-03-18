@@ -33,6 +33,9 @@ export const LOGIN = gql`
                 insuranceInfo {
                     useInsurance
                 }
+                dentist {
+                    bio
+                }
                 appointments(
                     options: {
                         sortKey: "${END_TIME}",

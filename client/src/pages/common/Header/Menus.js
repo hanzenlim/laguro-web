@@ -137,7 +137,7 @@ const Menus = props => {
     };
 
     const becomeAPersonaMenuTexts = [];
-    if (!isDentist) {
+    if (!props.hasUpdatedDentistBio) {
         becomeAPersonaMenuTexts.push(BECOME_A_DENTIST_MENU_TEXT);
     }
     if (!isHost) {

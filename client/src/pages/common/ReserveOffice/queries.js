@@ -13,6 +13,7 @@ export const checkUserDentistVerifiedQuery = gql`
                 ssnOrEinOrTin
                 npiNumber
                 deaRegistrationNumber
+                bio
             }
             firstName
             patientDocument {

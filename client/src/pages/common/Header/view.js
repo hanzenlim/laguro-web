@@ -160,24 +160,25 @@ class Header extends Component {
                     </Flex>
 
                     <Flex alignItems="center">
-                        <HeaderLinkContainer>
-                            {auth && isHost && (
+                        {auth && isHost && (
+                            <HeaderLinkContainer>
                                 <HostLink
                                     auth={auth}
                                     desktopOnly={desktopOnly}
                                     onLandingPage={onLandingPage}
                                 />
-                            )}
-                        </HeaderLinkContainer>
-                        <HeaderLinkContainer>
-                            {auth && isDentist && (
+                            </HeaderLinkContainer>
+                        )}
+                        {/* hasUpdatedDentistBio will be true for those users who created a dentist profile on the website. Will be false for hosts who have not created their own dentist profile. Right now, the backend automatically creates a dentist profile for all new hosts. */}
+                        {auth && this.props.hasUpdatedDentistBio && (
+                            <HeaderLinkContainer>
                                 <DentistLink
                                     auth={auth}
                                     desktopOnly={desktopOnly}
                                     onLandingPage={onLandingPage}
                                 />
-                            )}
-                        </HeaderLinkContainer>
+                            </HeaderLinkContainer>
+                        )}
                         {/* Blog link doesn't show if user is both dentist and host on mobile */}
                         {!(!desktopOnly && isDentist && isHost) && (
                             <HeaderLinkContainer>
@@ -199,6 +200,9 @@ class Header extends Component {
                             isHost={isHost}
                             auth={auth}
                             desktopOnly={desktopOnly}
+                            hasUpdatedDentistBio={
+                                this.props.hasUpdatedDentistBio
+                            }
                         />
                     </Flex>
                 </Container>
