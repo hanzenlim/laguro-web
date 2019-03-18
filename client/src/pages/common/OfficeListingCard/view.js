@@ -37,6 +37,10 @@ const StyledCard = styled(Card)`
     }
 `;
 
+const StyledImage = styled(Image)`
+    object-fit: cover;
+`;
+
 const OfficeListingCard = ({ office, onRedirect, showMap }) => (
     <Button type="ghost" height="auto" width="100%" onClick={onRedirect}>
         <StyledCard showMap={showMap}>
@@ -55,7 +59,7 @@ const OfficeListingCard = ({ office, onRedirect, showMap }) => (
                         position="relative"
                         overflow="hidden"
                     >
-                        <Image
+                        <StyledImage
                             src={office.image || defaultOfficeImage}
                             display="block"
                             width="100%"

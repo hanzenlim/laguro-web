@@ -139,7 +139,6 @@ class SearchResultsList extends PureComponent {
                     >
                         <Button
                             mt={20}
-                            mb={45}
                             onClick={this.showMore}
                             width={327}
                             height={51}
