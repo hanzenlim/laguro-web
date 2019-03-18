@@ -51,7 +51,6 @@ const SOCIAL_LINKS_MAP = [
     },
     { label: 'Instagram', url: 'https://www.instagram.com/lagurodental/' },
     { label: 'Medium', url: 'https://medium.com/@laguro' },
-    { label: 'Twitter', url: 'https://twitter.com/LaguroDental' },
 ];
 
 const Footer = () => {
@@ -205,11 +204,17 @@ const Footer = () => {
                                             isExternal
                                             target="_blank"
                                         >
-                                            <Icon
-                                                color="icon.white"
-                                                fontSize="25px"
-                                                type={link.label.toLowerCase()}
-                                            />
+                                            <Box
+                                                background="white"
+                                                width="26px"
+                                                height="26px"
+                                                borderRadius="50%"
+                                            >
+                                                <Icon
+                                                    fontSize="25px"
+                                                    type={link.label.toLowerCase()}
+                                                />
+                                            </Box>
                                         </Link>
                                     </Box>
                                 );

@@ -43,6 +43,10 @@ import Revert from './Revert';
 import Exclamation from './Exclamation';
 import Languages from './Languages';
 import Insurance from './Insurance';
+import LinkedIn from './LinkedIn';
+import Medium from './Medium';
+import Facebook from './Facebook';
+import Instagram from './Instagram';
 
 const Icon = props => {
     const { type, isButton, ...rest } = props;
@@ -120,6 +124,18 @@ const Icon = props => {
             break;
         case 'insurance':
             ReturnIcon = Insurance;
+            break;
+        case 'medium':
+            ReturnIcon = Medium;
+            break;
+        case 'facebook':
+            ReturnIcon = Facebook;
+            break;
+        case 'instagram':
+            ReturnIcon = Instagram;
+            break;
+        case 'linkedin':
+            ReturnIcon = LinkedIn;
             break;
         default:
             ReturnIcon = AntdIcon;
