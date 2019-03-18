@@ -61,7 +61,6 @@ class DentistLink extends Component {
 
 class HostLink extends Component {
     render() {
-        const { desktopOnly } = this.props;
         return (
             <Fragment>
                 <Dropdown
