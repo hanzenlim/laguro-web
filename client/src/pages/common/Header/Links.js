@@ -22,7 +22,6 @@ import { isMobileDevice } from '../../../util/uiUtil';
 
 class DentistLink extends Component {
     render() {
-        const { desktopOnly } = this.props;
         return (
             <Fragment>
                 <Dropdown

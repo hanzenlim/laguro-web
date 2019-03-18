@@ -47,7 +47,7 @@ class BookAppointment extends PureComponent {
             procedure: null,
             startTime: urlParams.startTime || null,
             endTime: null,
-            isPaymentVisible: urlParams.startTime ? true : false,
+            isPaymentVisible: !!urlParams.startTime,
             bookedAppointment: null,
             paymentError: null,
             isSubmitting: false,
@@ -120,7 +120,6 @@ class BookAppointment extends PureComponent {
 
     handleBookAppointment = async (timezone, firstAppointmentDuration) => {
         const user = getUser();
-        const { client } = this.props;
 
         // Show login modal if not logged in.
         if (!user) {
@@ -128,14 +127,6 @@ class BookAppointment extends PureComponent {
 
             return;
         }
-
-        const {
-            data: { getUser: getUserData },
-        } = await client.query({
-            query: checkPatientVerified,
-            variables: { id: _get(user, 'id') },
-            fetchPolicy: 'network-only',
-        });
 
         try {
             this.setState({ isSubmitting: true });
