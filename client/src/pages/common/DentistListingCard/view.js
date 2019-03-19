@@ -282,8 +282,8 @@ class DentistListingCard extends PureComponent {
                                                         height={40}
                                                         width={[
                                                             '75px',
-                                                            '110px',
-                                                            '110px',
+                                                            '100px',
+                                                            '100px',
                                                         ]}
                                                         mx="2px"
                                                         my="2px"
