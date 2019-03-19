@@ -84,7 +84,7 @@ const SummaryCostView = ({ summaryData, totalPrice }) => (
     </Fragment>
 );
 
-SummaryCostView.PropTypes = {
+SummaryCostView.propTypes = {
     summaryData: PropTypes.object.isRequired,
     totalPrice: PropTypes.number.isRequired,
 };
