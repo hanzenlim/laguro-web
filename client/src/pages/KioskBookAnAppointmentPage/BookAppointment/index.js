@@ -228,9 +228,7 @@ class KioskBookAnAppointmentPage extends Component {
                                                 .id
                                         }`
                                     );
-                                } catch (error) {
-                                    console.log(error);
-                                }
+                                } catch (error) {}
                             }}
                             Form="form"
                             render={props => (

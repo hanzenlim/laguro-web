@@ -47,7 +47,8 @@ const Flex = system(
     'bottom',
     'left',
     // misc
-    'opacity'
+    'opacity',
+    'boxShadow'
 );
 
 const StyledFlex = styled(Flex)`

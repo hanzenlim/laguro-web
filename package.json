@@ -26,6 +26,17 @@
         "deploy-prod": "env-cmd /home/runner/security.env.prod sls deploy -v --stage prod",
         "cy:open": "cypress open"
     },
+    "lint-staged": {
+        "client/src/**/*.js": [
+            "prettier --write",
+            "git add"
+        ]
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
     "author": "currymich",
     "license": "ISC",
     "dependencies": {
@@ -89,7 +100,8 @@
         "eslint-plugin-prettier": "^2.6.2",
         "eslint-plugin-react": "^7.7.0",
         "faker": "^4.1.0",
-        "husky": "^0.14.3",
+        "husky": "^1.3.1",
+        "lint-staged": "^8.1.5",
         "nodemon": "^1.17.4",
         "prettier": "^1.14.2",
         "react-app-rewired": "^1.6.2",

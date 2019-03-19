@@ -54,7 +54,7 @@ const Steps = props => {
 };
 
 Steps.propTypes = {
-    size: PropTypes.string.isRequired,
+    size: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     current: PropTypes.number.isRequired,
 };
 

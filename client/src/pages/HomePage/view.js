@@ -259,7 +259,7 @@ const HomePageView = () => (
                         <Link to="/about">
                             <Button
                                 width={['100%', '100%', 260]}
-                                height={['50px', '50px', '80px']}
+                                height={['40px', '50px', '80px']}
                                 mb={[50, 50, 0]}
                             >
                                 <Text
