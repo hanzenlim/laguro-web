@@ -81,11 +81,11 @@ const DentistSearchPageView = props => {
     });
 
     return (
-        <Container pt={[48, '', 160]}>
+        <Container pt={[48, '', 160]} px={[0, 0, 25]}>
             <Desktop>
                 {matches =>
                     matches ? null : (
-                        <Box mb={20} mt={[24, '', 0]}>
+                        <Box mb={20} mt={[24, '', 0]} px={[25, '', 0]}>
                             <SearchBox
                                 size="large"
                                 placeholder="Search for dentists by name, location, or specialty"
@@ -95,7 +95,7 @@ const DentistSearchPageView = props => {
                 }
             </Desktop>
             {total > 0 && (
-                <Flex justifyContent="space-between" mb="18px">
+                <Flex justifyContent="space-between" mb="18px" px={[25, '', 0]}>
                     <Text fontSize={['20px', '22px']} color="text.black">
                         {urlParams.location && 'Dentists near '}
                         <Text display="inline-block" fontWeight="bold">

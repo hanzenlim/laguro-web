@@ -24,6 +24,20 @@ const TAG_COLORS = [
 ];
 
 const StyledCard = styled(Card)`
+    &&.ant-card-bordered {
+        border-radius: 0;
+        box-shadow: none;
+        border: 1px solid #ececec;
+    }
+
+    @media (min-width: ${props => props.theme.breakpoints[1]}) {
+        &&.ant-card-bordered {
+            border: none;
+            box-shadow: 1px 1px 12px 0 rgba(0, 0, 0, 0.06),
+                -1px -1px 12px 0 rgba(0, 0, 0, 0.06);
+        }
+    }
+
     && {
         .ant-card-body {
             padding: 14px 20px;
@@ -112,6 +126,7 @@ class DentistListingCard extends PureComponent {
                                         />
                                     </Box>
                                     <Flex
+                                        flex="1"
                                         flexDirection="column"
                                         alignItems="flex-start"
                                     >

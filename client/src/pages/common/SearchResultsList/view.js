@@ -78,7 +78,7 @@ class SearchResultsList extends PureComponent {
                 )}
                 <Grid
                     gridColumnGap="17px"
-                    gridRowGap="20px"
+                    gridRowGap={[0, '', '20px']}
                     gridTemplateColumns={
                         showMap && isOffice
                             ? 'repeat(auto-fit, minmax(200px, 1fr))'
