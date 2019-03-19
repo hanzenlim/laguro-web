@@ -55,22 +55,26 @@ class DetailsSearchPage extends PureComponent {
             this.setState({ defaultPosition: await getMyPosition() });
         }
         const response = await this.fetchData(urlParams);
+        const total = this.getDataCount(response);
+
         const mappedData = this.getMappedData(response);
+        await this.setState({
+            data: mappedData,
+            loading: false,
+            total,
+            urlParams,
+        });
+
         const mappedDataWithTimeSlots = await this.addTimeSlots(
             mappedData,
             urlParams.startTime
         );
-        const total = this.getDataCount(response);
+        this.setState({
+            data: mappedDataWithTimeSlots,
+        });
 
         this.updateDimensions();
         window.addEventListener('resize', _throttle(this.updateDimensions));
-
-        this.setState({
-            data: mappedDataWithTimeSlots,
-            total,
-            loading: false,
-            urlParams,
-        });
     };
 
     componentWillUnmount() {
@@ -81,14 +85,18 @@ class DetailsSearchPage extends PureComponent {
         if (prevProps.location.search !== this.props.location.search) {
             const nextUrlParams = queryString.parse(this.props.location.search);
             const response = await this.fetchData(nextUrlParams);
-            const mappedData = this.getMappedData(response);
-            const mappedDataWithTimeSlots = await this.addTimeSlots(mappedData);
             const total = this.getDataCount(response);
 
-            this.setState({
-                data: mappedDataWithTimeSlots,
+            const mappedData = this.getMappedData(response);
+            await this.setState({
+                data: mappedData,
                 total,
                 urlParams: nextUrlParams,
+            });
+
+            const mappedDataWithTimeSlots = await this.addTimeSlots(mappedData);
+            this.setState({
+                data: mappedDataWithTimeSlots,
             });
         }
     };
