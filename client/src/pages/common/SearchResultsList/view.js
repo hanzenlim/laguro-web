@@ -81,7 +81,10 @@ class SearchResultsList extends PureComponent {
                     gridRowGap={[0, '', '20px']}
                     gridTemplateColumns={
                         showMap && isOffice
-                            ? 'repeat(auto-fit, minmax(200px, 1fr))'
+                            ? [
+                                  'repeat(auto-fit, minmax(300px, 1fr))',
+                                  'repeat(auto-fit, minmax(200px, 1fr))',
+                              ]
                             : isOffice
                             ? [
                                   'repeat(auto-fit, minmax(300px, 1fr))',
