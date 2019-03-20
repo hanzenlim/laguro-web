@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { Mutation } from 'react-apollo';
 import { adopt } from 'react-adopt';
 import { addEmailToWaitlistMutation } from './queries';
-import { message } from 'antd';
+import _get from 'lodash/get';
 
 import SubscribeView from './view';
 
@@ -16,13 +16,15 @@ class Newsletter extends PureComponent {
                             email: values.email,
                         };
 
-                        await addEmailToWaitlistMutation({
+                        const result = await addEmailToWaitlistMutation({
                             variables: { input },
                         });
 
-                        return message.success(
-                            'Email successfully added to waitlist.'
-                        );
+                        if (_get(result, 'data.addEmailToWaitlist.id')) {
+                            return true;
+                        } else {
+                            return false;
+                        }
                     };
 
                     return <SubscribeView onSuccess={onSuccess} />;

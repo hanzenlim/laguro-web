@@ -1,39 +1,37 @@
+import { message } from 'antd';
+import { Field, Form, withFormik } from 'formik';
 import React from 'react';
-import { Text, Container, Form, Input, Flex } from '../../../components';
 import styled from 'styled-components';
-
-const { FormItem, SubmitButton } = Form;
+import * as yup from 'yup';
+import { Button, Container, Flex, Input, Text, Box } from '../../../components';
 
 const StyledForm = styled(Form)`
     && {
+        display: flex;
         margin-top: 34px;
         width: 100%;
         text-align: center;
-    }
-
-    && .ant-form-item {
-        display: inline-block;
 
         .ant-input {
             height: 50px;
-            width: 100%;
+            flex: 1;
             background: white;
             color: black;
             font-size: 16px;
             padding: 15px 25px;
-        }
-
-        @media (min-width: ${props => props.theme.breakpoints[1]}) {
-            .ant-input {
-                width: 432px;
-            }
+            margin-right: 10px;
         }
     }
 `;
 
-const StyledSubmitButton = styled(SubmitButton)`
+const StyledButton = styled(Button)`
     && {
         border: none;
+
+        :hover,
+        :focus {
+            border: none;
+        }
     }
 `;
 
@@ -59,27 +57,58 @@ const NewsletterView = props => {
                 >
                     Join our newsletter for latest updates and special offers.
                 </Text>
-                <StyledForm layout="vertical" onSuccess={props.onSuccess}>
-                    <FormItem
-                        name="email"
-                        input={
-                            <Input
-                                type="email"
-                                required
-                                placeholder="Email address"
+                <Flex width="100%" justifyContent="center">
+                    <Box width={['100%', '', '535px']}>
+                        <StyledForm>
+                            <Field
+                                name="email"
+                                render={({ field }) => {
+                                    return (
+                                        <Input
+                                            {...field}
+                                            required
+                                            type="email"
+                                            placeholder="Email  address"
+                                        />
+                                    );
+                                }}
                             />
-                        }
-                        mr={18}
-                    />
-                    <StyledSubmitButton
-                        buttonText="Join"
-                        height="50px"
-                        minWidth="94px"
-                    />
-                </StyledForm>
+                            <StyledButton
+                                htmlType="submit"
+                                height="50px"
+                                minWidth="94px"
+                                loading={props.isSubmitting}
+                            >
+                                Join
+                            </StyledButton>
+                        </StyledForm>
+                    </Box>
+                </Flex>
             </Container>
         </Flex>
     );
 };
 
-export default NewsletterView;
+export default withFormik({
+    validationSchema: yup.object().shape({
+        email: yup
+            .string()
+            .min(3, 'emailNotLongEnough')
+            .max(255)
+            .email('invalidEmail')
+            .required(),
+    }),
+    mapPropsToValues: () => ({ email: '' }),
+    handleSubmit: async (values, actions) => {
+        actions.setSubmitting(true);
+        const result = await actions.props.onSuccess(values);
+        actions.setSubmitting(false);
+        actions.setFieldValue('email', '');
+
+        if (result) {
+            message.success('Email successfully added to waitlist.');
+        } else {
+            message.error('Something went wrong.');
+        }
+    },
+})(NewsletterView);
