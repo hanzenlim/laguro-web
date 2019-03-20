@@ -316,6 +316,10 @@ export const RegisterOrLoginStep = props => (
                     <Verification
                         {...props}
                         onRequestPinCode={async username => {
+                            props.formikProps.setFieldValue(
+                                'isCodeSent',
+                                false
+                            );
                             const isEmailOrPhoneValid = validatePhoneOrEmail(
                                 username
                             );
@@ -335,6 +339,7 @@ export const RegisterOrLoginStep = props => (
                                 input.phoneNumber = phoneNumber;
                             }
 
+                            props.formikProps.setSubmitting(true);
                             if (props.formikProps.values.mode === 'signIn') {
                                 const sendKioskLoginCodeResult = await sendKioskLoginCode(
                                     {
@@ -359,6 +364,8 @@ export const RegisterOrLoginStep = props => (
                                         'We do not recognize this phone number/email address. Please sign up.'
                                     );
                                 }
+
+                                props.formikProps.setSubmitting(false);
                             } else if (
                                 props.formikProps.values.mode === 'signUp'
                             ) {
@@ -387,10 +394,13 @@ export const RegisterOrLoginStep = props => (
                                         );
                                     }
                                 } catch (error) {
+                                    props.formikProps.setSubmitting(false);
                                     message.error(
                                         error.graphQLErrors[0].message
                                     );
                                 }
+
+                                props.formikProps.setSubmitting(false);
                             }
                         }}
                         onPinComplete={async pin => {
@@ -412,16 +422,18 @@ export const RegisterOrLoginStep = props => (
                                 ));
                             }
                         }}
-                        onSubmitPinCode={pin => {
+                        onSubmitPinCode={async pin => {
                             if (props.formikProps.values.mode === 'signIn')
                                 return;
                             if (props.formikProps.values.code.length !== 6)
                                 return;
 
                             try {
-                                validatePin({
+                                await validatePin({
                                     input: getValidatePinInput(pin),
                                 });
+
+                                return true;
                             } catch (error) {
                                 message.error(error.graphQLErrors[0].message);
                             }
