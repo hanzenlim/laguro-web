@@ -51,7 +51,7 @@ SelectEquipment.defaultProps = {
     onSelectEquipment: () => {},
 };
 
-SelectEquipment.propTypes = {
+SelectEquipment.PropTypes = {
     onSelectEquipment: PropTypes.func.isRequired,
 };
 export default SelectEquipment;

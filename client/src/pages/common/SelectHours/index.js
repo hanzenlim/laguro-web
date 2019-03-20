@@ -135,7 +135,7 @@ SelectHours.defaultProps = {
     isToggleOpen: true,
 };
 
-SelectHours.propTypes = {
+SelectHours.PropTypes = {
     priceRangeLength: PropTypes.string.isRequired,
     hourList: PropTypes.array.isRequired,
     formattedDateText: PropTypes.string.isRequired,

@@ -78,7 +78,7 @@ Payment.defaultProps = {
     isSubmitting: false,
 };
 
-Payment.propTypes = {
+Payment.PropTypes = {
     onPay: PropTypes.func.isRequired,
     onBackButton: PropTypes.func.isRequired,
     btnText: PropTypes.string.isRequired,
