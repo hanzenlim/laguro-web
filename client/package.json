@@ -2,14 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
-  "proxy": {
-    "/api/*": {
-      "target": "http://localhost:5000"
-    },
-    "/auth/*": {
-      "target": "http://localhost:5000"
-    }
-  },
+  "proxy": "http://localhost:5000",
   "dependencies": {
     "@laguro/basic-components": "^1.0.17",
     "@laguro/the-bright-side-components": "^0.0.40",
