@@ -44,3 +44,31 @@
     height: 1px !important;
     width: 1px !important;
 }
+
+/* ----------- iPad Pro 12.9" ----------- */
+/* Landscape */
+/* Declare the same value for min- and max-width to avoid colliding with desktops */
+/* Source: https://medium.com/connect-the-dots/css-media-queries-for-ipad-pro-8cad10e17106*/
+@media only screen 
+  and (min-device-width: 1366px) 
+  and (max-device-width: 1366px) 
+  and (orientation: landscape) 
+  and (-webkit-min-device-pixel-ratio: 2) {
+      html {
+          zoom: 150%;
+      }
+
+}
+
+/* ----------- iPad Pro 10.5" ----------- */
+/* ----------- Landscape mode" ----------- */
+@media only screen 
+  and (min-device-width: 1112px) 
+  and (max-device-width: 1112px) 
+  and (orientation: landscape) 
+  and (-webkit-min-device-pixel-ratio: 2) {
+      html {
+          zoom: 150%;
+      }
+
+}
