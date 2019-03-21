@@ -51,7 +51,7 @@ export const DENTIST_DASHBOARD_PAGE_URL = '/dashboard/dentist';
 export const HOST_DASHBOARD_PAGE_URL = '/dashboard/host';
 
 export const KIOSK_BOOKING_CONFIRMATION_URL_PREFIX =
-    '/kiosk/booking-confirmation';
+    '/kiosk/booking-confirmation/:id';
 export const KIOSK_CHECKIN_PAGE_URL_PREFIX = '/kiosk/check-in';
 
 export const PATIENT_DASHBOARD_PAGE_URL_BASE = `${PATIENT_DASHBOARD_PAGE_URL}?${SELETED_TAB_SEARCH_PARAM_VALUE}=`;
@@ -103,13 +103,13 @@ export const ALL_USER_PAGE_TYPE = 'all_users';
 export const PATIENT_PAGE_TYPE = 'patient';
 export const DENTIST_AND_HOST_PAGE_TYPE = 'dentist_and_host';
 
-const isAtGivenUrl = (pathname, url) => {
+const isAtGivenUrl = (pathname, url) => 
     // first boolean is for when pathname is identical to url, and the second is for when the pathname includes this.props.match.props like :step, or :id at the end of the pathname. e.g. /dentist/"dentist_id". we drop these match.props and compare if pathname and url are equal
-    return (
+     (
         pathname === url ||
         _isEqual(pathname.split('/').slice(0, -1), url.split('/'))
-    );
-};
+    )
+;
 const isAtSomeGivenUrls = (pathname, urls) =>
     urls.map(url => isAtGivenUrl(pathname, url)).some(boolean => boolean);
 
