@@ -151,7 +151,54 @@ class KioskBookAnAppointmentPage extends Component {
         const historyLocationSearch = _get(this.props, 'location.search'); // same thing as history.location.search but with less bugs
         const { reasonOfVisit } = queryString.parse(historyLocationSearch);
 
-        const Step1 = props => <Terms {...props} />;
+        const Step1 = props => (
+            <Composed>
+                {({ createPatientAppointmentOnboarding }) => (
+                    <Terms
+                        {...props}
+                        onCreateAppointment={async () => {
+                            const dentistTime = this.dentistTimes.find(
+                                dt =>
+                                    dt.id ===
+                                    props.values[0].appointmentSelected
+                            );
+                            try {
+                                const user = getUser();
+                                const result = await createPatientAppointmentOnboarding(
+                                    {
+                                        variables: {
+                                            input: {
+                                                patientId: _get(user, 'id'),
+                                                reservationId:
+                                                    dentistTime.reservationId,
+                                                localStartTime: moment(
+                                                    dentistTime.startTime
+                                                ),
+                                                localEndTime: moment(
+                                                    dentistTime.startTime
+                                                ).add(
+                                                    dentistTime.firstAppointmentDuration,
+                                                    'minutes'
+                                                ),
+                                                reasonOfVisit,
+                                            },
+                                        },
+                                    }
+                                );
+                                // Move to next step
+                                this.props.history.push(
+                                    `/kiosk/booking-confirmation/${
+                                        result.data
+                                            .createPatientAppointmentOnboarding
+                                            .id
+                                    }`
+                                );
+                            } catch (error) {}
+                        }}
+                    />
+                )}
+            </Composed>
+        );
 
         const render = props => {
             let step = null;
@@ -182,72 +229,25 @@ class KioskBookAnAppointmentPage extends Component {
         ];
 
         return (
-            <Composed>
-                {({ createPatientAppointmentOnboarding }) => (
-                    <Fragment>
-                        <Progress
-                            step={2}
-                            steps={progressSteps}
-                            percent={22.5}
-                        />
-                        <Wizard
-                            onSubmit={async values => {
-                                const dentistTime = this.dentistTimes.find(
-                                    dt =>
-                                        dt.id === values[0].appointmentSelected
-                                );
-                                try {
-                                    const user = getUser();
-                                    const result = await createPatientAppointmentOnboarding(
-                                        {
-                                            variables: {
-                                                input: {
-                                                    patientId: _get(user, 'id'),
-                                                    reservationId:
-                                                        dentistTime.reservationId,
-                                                    localStartTime: moment(
-                                                        dentistTime.startTime
-                                                    ),
-                                                    localEndTime: moment(
-                                                        dentistTime.startTime
-                                                    ).add(
-                                                        dentistTime.firstAppointmentDuration,
-                                                        'minutes'
-                                                    ),
-                                                    reasonOfVisit,
-                                                },
-                                            },
-                                        }
-                                    );
-
-                                    // Move to next step
-                                    this.props.history.push(
-                                        `/kiosk/booking-confirmation/${
-                                            result.data
-                                                .createPatientAppointmentOnboarding
-                                                .id
-                                        }`
-                                    );
-                                } catch (error) {}
-                            }}
-                            Form="form"
-                            render={props => (
-                                <React.Fragment>
-                                    {props.actions.canGoBack && (
-                                        <PreviousButton
-                                            goToPreviousStep={
-                                                props.actions.goToPreviousStep
-                                            }
-                                        />
-                                    )}
-                                    {render({ ...props, ...componentProps })}
-                                </React.Fragment>
+            <Fragment>
+                <Progress step={2} steps={progressSteps} percent={22.5} />
+                <Wizard
+                    Form="form"
+                    render={props => (
+                        <React.Fragment>
+                            {props.actions.canGoBack && (
+                                <PreviousButton
+                                    goToPreviousStep={
+                                        props.actions.goToPreviousStep
+                                    }
+                                />
                             )}
-                            steps={steps}
-                        />
-                    </Fragment>
-                )}
-            </Composed>
+                            {render({ ...props, ...componentProps })}
+                        </React.Fragment>
+                    )}
+                    steps={steps}
+                />
+            </Fragment>
         );
     }
 }
