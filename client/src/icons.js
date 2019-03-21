@@ -12,6 +12,9 @@ export {
     default as TwitterOutline,
 } from '@ant-design/icons/lib/outline/TwitterOutline';
 export {
+    default as MediumOutline,
+} from '@ant-design/icons/lib/outline/MediumOutline';
+export {
     default as FormOutline,
 } from '@ant-design/icons/lib/outline/FormOutline';
 export {

@@ -30,6 +30,7 @@ export default {
             darkBlue: '#286ABA',
             aquaBlue: '#f7f8fc',
             lightBlue: 'rgba(175, 211, 253, 0.23)',
+            navyBlue: '#091426',
         },
         button: {
             blue: '#3481F8',

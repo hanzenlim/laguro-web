@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import { Helmet } from 'react-helmet';
 import AboutPageView from './view';
+import Newsletter from '../common/Newsletter';
 
 const AboutPage = () => (
     <Fragment>
@@ -12,6 +13,7 @@ const AboutPage = () => (
             />
         </Helmet>
         <AboutPageView />
+        <Newsletter />
     </Fragment>
 );
 
