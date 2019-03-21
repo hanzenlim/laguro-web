@@ -11,7 +11,6 @@ import {
     Link,
     FilestackImage,
 } from '../../components';
-import FeaturedList from './FeaturedList';
 import SearchBox from '../common/SearchBox/index';
 import aboutUs from '../../components/Image/aboutUs.svg';
 import Wave from '../../components/Image/wave';
@@ -132,10 +131,10 @@ const HomePageView = () => (
                 />
             </HeroContent>
         </Box>
-        <FeaturedList />
 
         <Container>
             <Text
+                mt="40px"
                 color="text.black50"
                 fontSize={[1, 1, 4]}
                 mb={[10, 10, 36]}
