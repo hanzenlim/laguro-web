@@ -17,7 +17,7 @@ import { numMaxContainerWidth } from '../../components/theme';
 import { batchGetUsers } from './queries';
 import moment from 'moment';
 
-const PAGE_SIZE = 15;
+const PAGE_SIZE = 14;
 const DISTANCE = '75km';
 
 // ignore timezone-related characters in timestamp
@@ -81,24 +81,22 @@ class DetailsSearchPage extends PureComponent {
         window.removeEventListener('resize', _throttle(this.updateDimensions));
     }
 
-    componentDidUpdate = async prevProps => {
-        if (prevProps.location.search !== this.props.location.search) {
-            const nextUrlParams = queryString.parse(this.props.location.search);
-            const response = await this.fetchData(nextUrlParams);
-            const total = this.getDataCount(response);
+    onShowMore = async () => {
+        const nextUrlParams = queryString.parse(this.props.location.search);
+        const response = await this.fetchData(nextUrlParams);
+        const total = this.getDataCount(response);
 
-            const mappedData = this.getMappedData(response);
-            await this.setState({
-                data: mappedData,
-                total,
-                urlParams: nextUrlParams,
-            });
+        const mappedData = this.getMappedData(response);
+        await this.setState({
+            data: mappedData,
+            total,
+            urlParams: nextUrlParams,
+        });
 
-            const mappedDataWithTimeSlots = await this.addTimeSlots(mappedData);
-            this.setState({
-                data: mappedDataWithTimeSlots,
-            });
-        }
+        const mappedDataWithTimeSlots = await this.addTimeSlots(mappedData);
+        await this.setState({ data: mappedDataWithTimeSlots });
+
+        return true;
     };
 
     addTimeSlots = async (mappedData, startTime) => {
@@ -351,6 +349,7 @@ class DetailsSearchPage extends PureComponent {
                     defaultPosition={this.state.defaultPosition}
                     urlParams={this.state.urlParams}
                     mapDimensions={this.state.mapDimensions}
+                    onShowMore={this.onShowMore}
                 />
             </Fragment>
         );
