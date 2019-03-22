@@ -12,7 +12,7 @@ import { getMyPosition, DEFAULT_LOCATION } from '../../util/navigatorUtil';
 import { numMaxContainerWidth } from '../../components/theme';
 import { formatAddress } from '../../util/styleUtil';
 
-const PAGE_SIZE = 9;
+const PAGE_SIZE = 14;
 const DISTANCE = '75km';
 
 class OfficeSearchPage extends PureComponent {
@@ -66,19 +66,17 @@ class OfficeSearchPage extends PureComponent {
         window.removeEventListener('resize', _throttle(this.updateDimensions));
     }
 
-    componentDidUpdate = async prevProps => {
-        if (prevProps.location.search !== this.props.location.search) {
-            const nextUrlParams = queryString.parse(this.props.location.search);
-            const response = await this.fetchData(nextUrlParams);
-            const mappedData = this.getMappedData(response);
-            const total = this.getDataCount(response);
+    onShowMore = async () => {
+        const nextUrlParams = queryString.parse(this.props.location.search);
+        const response = await this.fetchData(nextUrlParams);
+        const mappedData = this.getMappedData(response);
+        const total = this.getDataCount(response);
 
-            this.setState({
-                data: mappedData,
-                total,
-                urlParams: nextUrlParams,
-            });
-        }
+        this.setState({
+            data: mappedData,
+            total,
+            urlParams: nextUrlParams,
+        });
     };
 
     getDimensions = () => {
@@ -272,6 +270,7 @@ class OfficeSearchPage extends PureComponent {
                     mapDimensions={this.state.mapDimensions}
                     showMap={this.state.showMap}
                     toggleMap={this.toggleMap}
+                    onShowMore={this.onShowMore}
                 />
             </Fragment>
         );
