@@ -47,6 +47,7 @@ import LinkedIn from './LinkedIn';
 import Medium from './Medium';
 import Facebook from './Facebook';
 import Instagram from './Instagram';
+import Alert from './Alert';
 
 const Icon = props => {
     const { type, isButton, ...rest } = props;
@@ -136,6 +137,9 @@ const Icon = props => {
             break;
         case 'linkedin':
             ReturnIcon = LinkedIn;
+            break;
+        case 'alert':
+            ReturnIcon = Alert;
             break;
         default:
             ReturnIcon = AntdIcon;

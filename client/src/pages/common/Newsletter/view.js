@@ -3,7 +3,15 @@ import { Field, Form, withFormik } from 'formik';
 import React from 'react';
 import styled from 'styled-components';
 import * as yup from 'yup';
-import { Button, Container, Flex, Input, Text, Box } from '../../../components';
+import {
+    Button,
+    Container,
+    Flex,
+    Input,
+    Text,
+    Box,
+    Icon,
+} from '../../../components';
 
 const StyledForm = styled(Form)`
     && {
@@ -59,28 +67,57 @@ const NewsletterView = props => {
                 </Text>
                 <Flex width="100%" justifyContent="center">
                     <Box width={['100%', '', '535px']}>
-                        <StyledForm>
-                            <Field
-                                name="email"
-                                render={({ field }) => {
-                                    return (
-                                        <Input
-                                            {...field}
-                                            required
-                                            type="email"
-                                            placeholder="Email  address"
-                                        />
-                                    );
-                                }}
-                            />
-                            <StyledButton
-                                htmlType="submit"
-                                height="50px"
-                                minWidth="94px"
-                                loading={props.isSubmitting}
-                            >
-                                Join
-                            </StyledButton>
+                        <StyledForm noValidate>
+                            <Box width="100%">
+                                <Flex width="100%">
+                                    <Field
+                                        name="email"
+                                        render={({ field }) => {
+                                            return (
+                                                <Input
+                                                    {...field}
+                                                    type="email"
+                                                    placeholder="Email address"
+                                                />
+                                            );
+                                        }}
+                                    />
+                                    <StyledButton
+                                        htmlType="submit"
+                                        height="50px"
+                                        minWidth="94px"
+                                        loading={props.isSubmitting}
+                                    >
+                                        Join
+                                    </StyledButton>
+                                </Flex>
+                                <Flex
+                                    width="100%"
+                                    height="15px"
+                                    mt="24px"
+                                    alignItems="center"
+                                    justifyContent="center"
+                                >
+                                    {props.submitCount > 0 &&
+                                        props.touched.email &&
+                                        props.errors.email && (
+                                            <React.Fragment>
+                                                <Icon type="alert" />
+                                                <Text
+                                                    style={{
+                                                        'white-space': 'pre',
+                                                    }}
+                                                    color="white"
+                                                    fontSize="12px"
+                                                    ml="8px"
+                                                    lineHeight="1"
+                                                >
+                                                    {props.errors.email}
+                                                </Text>
+                                            </React.Fragment>
+                                        )}
+                                </Flex>
+                            </Box>
                         </StyledForm>
                     </Box>
                 </Flex>
@@ -93,20 +130,20 @@ export default withFormik({
     validationSchema: yup.object().shape({
         email: yup
             .string()
-            .min(3, 'emailNotLongEnough')
+            .min(3, 'Email must be at least 3 characters.')
             .max(255)
-            .email('invalidEmail')
-            .required(),
+            .email(`Please include an '@' and '.' in the email address.`)
+            .required('Please fill out this field.'),
     }),
     mapPropsToValues: () => ({ email: '' }),
     handleSubmit: async (values, actions) => {
         actions.setSubmitting(true);
         const result = await actions.props.onSuccess(values);
         actions.setSubmitting(false);
-        actions.setFieldValue('email', '');
+        actions.resetForm();
 
         if (result) {
-            message.success('Email successfully added to waitlist.');
+            message.success('Email successfully added to our newsletter.');
         } else {
             message.error('Something went wrong.');
         }
