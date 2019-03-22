@@ -40,7 +40,7 @@ const Composed = adopt({
     getPatientHealthDataUnstructured: ({ render, patientId }) => (
         <Query
             query={GET_PATIENT_HEALTH_DATA_UNSTRUCTURED}
-            variables={{ patientId: patientId }}
+            variables={{ patientId }}
             fetchPolicy="network-only"
         >
             {render}
@@ -53,7 +53,11 @@ const KioskMedicalHistoryFormPage = props => {
         cookies.set(hasSkippedMedicalHistoryFormCookieVariableName, 'true', {
             expires: 0,
         });
-        redirectWithSearchParams(PATIENT_ONBOARDING_INSURANCE_FORM);
+        redirect({
+            url: PATIENT_ONBOARDING_INSURANCE_FORM,
+            newSearchParamKey: 'referer',
+            newSearchParamValue: 'KioskMedicalHistoryFormPage',
+        });
     };
 
     let startStep;
