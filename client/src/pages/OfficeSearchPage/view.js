@@ -29,6 +29,7 @@ const OfficeSearchPageView = props => {
         mapDimensions,
         showMap,
         toggleMap,
+        onShowMore,
     } = props;
 
     return (
@@ -98,6 +99,7 @@ const OfficeSearchPageView = props => {
                                 total={total}
                                 showMap={showMap}
                                 title="Office Results"
+                                onShowMore={onShowMore}
                             />
                         </Box>
                     </Box>

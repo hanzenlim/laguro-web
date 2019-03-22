@@ -42,6 +42,7 @@ const DentistSearchPageView = props => {
         mapDimensions,
         showMap,
         toggleMap,
+        onShowMore,
     } = props;
 
     data.forEach((dentist, index) => {
@@ -136,6 +137,7 @@ const DentistSearchPageView = props => {
                                 data={data}
                                 total={total}
                                 showMap={showMap}
+                                onShowMore={onShowMore}
                             />
                         </Box>
                     </Box>
@@ -173,6 +175,7 @@ DentistSearchPageView.propTypes = {
     total: PropTypes.boolean,
     urlParams: PropTypes.boolean,
     toggleMap: PropTypes.func,
+    onShowMore: PropTypes.func,
 };
 
 export default DentistSearchPageView;

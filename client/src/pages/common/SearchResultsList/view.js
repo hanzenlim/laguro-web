@@ -19,7 +19,8 @@ class SearchResultsList extends PureComponent {
         this.state = {
             urlParams: this.urlParams,
             limit: ITEMS_COUNT,
-            loading: false,
+            isShowingMore: false,
+            hasShowMore: false,
         };
     }
 
@@ -27,18 +28,18 @@ class SearchResultsList extends PureComponent {
         history.listen(location => {
             this.urlParams = queryString.parse(location.search);
             this.setState({ urlParams: this.urlParams });
-
-            setTimeout(() => {
-                this.setState({ loading: false });
-            }, 3000);
         });
+
+        if (
+            this.props.total > ITEMS_COUNT &&
+            !(this.urlParams.limit >= this.props.total)
+        ) {
+            this.setState({ hasShowMore: true });
+        }
     }
 
-    showMore = () => {
+    showMore = async () => {
         const limit = this.state.limit + ITEMS_COUNT;
-
-        this.setState({ limit, loading: true });
-
         const search = {
             ...this.urlParams,
             limit,
@@ -47,6 +48,14 @@ class SearchResultsList extends PureComponent {
         history.push({
             search: queryString.stringify(search),
         });
+
+        await this.setState(() => ({ limit, isShowingMore: true }));
+        await this.props.onShowMore();
+        await this.setState(() => ({ isShowingMore: false }));
+
+        if (this.props.total <= limit) {
+            await this.setState(() => ({ hasShowMore: false }));
+        }
     };
 
     handleRedirect = url => {
@@ -62,8 +71,8 @@ class SearchResultsList extends PureComponent {
     };
 
     render() {
-        const { data, total, title, showMap } = this.props;
-        const { urlParams, loading } = this.state;
+        const { data, title, showMap } = this.props;
+        const { urlParams, isShowingMore } = this.state;
         const isOffice = title === 'Office Results';
         const type = isOffice ? OFFICES : DENTISTS;
 
@@ -133,8 +142,7 @@ class SearchResultsList extends PureComponent {
                         : null}
                 </Grid>
 
-                {total > ITEMS_COUNT &&
-                !(this.state.urlParams.limit >= total) ? (
+                {this.state.hasShowMore ? (
                     <Flex
                         justifyContent="center"
                         alignItems="center"
@@ -145,7 +153,7 @@ class SearchResultsList extends PureComponent {
                             onClick={this.showMore}
                             width={327}
                             height={51}
-                            loading={loading}
+                            loading={isShowingMore}
                         >
                             Show more
                         </Button>
@@ -161,6 +169,7 @@ SearchResultsList.propTypes = {
     // Toggle size of image in search results list
     showMap: PropTypes.boolean,
     total: PropTypes.number,
+    onShowMore: PropTypes.func,
 };
 
 export default SearchResultsList;
