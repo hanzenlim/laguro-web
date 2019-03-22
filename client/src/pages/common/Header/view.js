@@ -93,7 +93,8 @@ class Header extends Component {
         // We show the office search bar on office search page and host dashboard page.
         if (
             pathname.startsWith('/office') ||
-            pathname.includes('dashboard/host')
+            pathname.includes('dashboard/host') ||
+            pathname.includes('/add-office')
         ) {
             placeholder = 'Search for offices by name and location';
         } else {
