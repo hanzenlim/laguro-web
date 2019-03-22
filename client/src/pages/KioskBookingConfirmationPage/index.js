@@ -19,6 +19,11 @@ const progressSteps = [
     '4 INSURANCE',
 ];
 
+const progressStepsForHistoryAndInsuranceDone = [
+    '1 REGISTRATION',
+    '2 BOOK AN APPOINTMENT',
+];
+
 const KioskBookingConfirmationPage = props => {
     const appointmentId = _get(props, 'match.params.id');
 
@@ -59,8 +64,18 @@ const KioskBookingConfirmationPage = props => {
                     <Fragment>
                         <Progress
                             step={2}
-                            steps={progressSteps}
-                            percent={22.5}
+                            steps={
+                                hasGoneThroughInsurancePage &&
+                                hasSubmittedHealthHistoryForm
+                                    ? progressStepsForHistoryAndInsuranceDone
+                                    : progressSteps
+                            }
+                            percent={
+                                hasGoneThroughInsurancePage &&
+                                hasSubmittedHealthHistoryForm
+                                    ? 50
+                                    : 22.5
+                            }
                         />
                         <Flex justifyContent="center" mt="50px">
                             <BookingConfirmation
