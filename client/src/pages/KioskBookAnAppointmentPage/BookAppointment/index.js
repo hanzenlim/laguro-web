@@ -21,6 +21,7 @@ import { GET_OFFICE, CREATE_PATIENT_APPOINTMENT_ONBOARDING } from './queries';
 import { RedirectErrorPage } from '../../GeneralErrorPage';
 import { onKioskLogout, getUser } from '../../../util/authUtils';
 import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
+import { execute } from '../../../util/gqlUtils';
 
 class KioskBookAnAppointmentPage extends Component {
     render() {
@@ -151,53 +152,21 @@ class KioskBookAnAppointmentPage extends Component {
         const historyLocationSearch = _get(this.props, 'location.search'); // same thing as history.location.search but with less bugs
         const { reasonOfVisit } = queryString.parse(historyLocationSearch);
 
-        const Step1 = props => <Terms {...props} />;
-
-        const render = props => {
-            let step = null;
-
-            switch (props.actions.currentStep) {
-                case '0':
-                    step = Step0(props);
-                    break;
-                case '1':
-                    step = Step1(props);
-                    break;
-                default:
-                    step = Step1(props);
-            }
-
-            return (
-                <Flex justifyContent="center" mt="100px">
-                    {step}
-                </Flex>
-            );
-        };
-
-        const progressSteps = [
-            '1 REGISTRATION',
-            '2 BOOK AN APPOINTMENT',
-            '3 MEDICAL HISTORY FORM',
-            '4 INSURANCE',
-        ];
-
-        return (
+        const Step1 = props => (
             <Composed>
                 {({ createPatientAppointmentOnboarding }) => (
-                    <Fragment>
-                        <Progress
-                            step={2}
-                            steps={progressSteps}
-                            percent={22.5}
-                        />
-                        <Wizard
-                            onSubmit={async values => {
-                                const dentistTime = this.dentistTimes.find(
-                                    dt =>
-                                        dt.id === values[0].appointmentSelected
-                                );
-                                try {
-                                    const user = getUser();
+                    <Terms
+                        {...props}
+                        onCreateAppointment={async () => {
+                            const dentistTime = this.dentistTimes.find(
+                                dt =>
+                                    dt.id ===
+                                    props.values[0].appointmentSelected
+                            );
+
+                            const user = getUser();
+                            await execute({
+                                action: async () => {
                                     const result = await createPatientAppointmentOnboarding(
                                         {
                                             variables: {
@@ -228,26 +197,62 @@ class KioskBookAnAppointmentPage extends Component {
                                                 .id
                                         }`
                                     );
-                                } catch (error) {}
-                            }}
-                            Form="form"
-                            render={props => (
-                                <React.Fragment>
-                                    {props.actions.canGoBack && (
-                                        <PreviousButton
-                                            goToPreviousStep={
-                                                props.actions.goToPreviousStep
-                                            }
-                                        />
-                                    )}
-                                    {render({ ...props, ...componentProps })}
-                                </React.Fragment>
-                            )}
-                            steps={steps}
-                        />
-                    </Fragment>
+                                },
+                            });
+                        }}
+                    />
                 )}
             </Composed>
+        );
+
+        const render = props => {
+            let step = null;
+
+            switch (props.actions.currentStep) {
+                case '0':
+                    step = Step0(props);
+                    break;
+                case '1':
+                    step = Step1(props);
+                    break;
+                default:
+                    step = Step1(props);
+            }
+
+            return (
+                <Flex justifyContent="center" mt="100px">
+                    {step}
+                </Flex>
+            );
+        };
+
+        const progressSteps = [
+            '1 REGISTRATION',
+            '2 BOOK AN APPOINTMENT',
+            '3 MEDICAL HISTORY FORM',
+            '4 INSURANCE',
+        ];
+
+        return (
+            <Fragment>
+                <Progress step={2} steps={progressSteps} percent={22.5} />
+                <Wizard
+                    Form="form"
+                    render={props => (
+                        <React.Fragment>
+                            {props.actions.canGoBack && (
+                                <PreviousButton
+                                    goToPreviousStep={
+                                        props.actions.goToPreviousStep
+                                    }
+                                />
+                            )}
+                            {render({ ...props, ...componentProps })}
+                        </React.Fragment>
+                    )}
+                    steps={steps}
+                />
+            </Fragment>
         );
     }
 }
