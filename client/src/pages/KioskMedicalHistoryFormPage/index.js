@@ -8,7 +8,6 @@ import cookies from 'browser-cookies';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 import {
-    redirectWithSearchParams,
     getSearchParamValueByKey,
     attemptToRedirectBack,
     redirect,
