@@ -12,6 +12,25 @@ import {
 import { HEADER_HEIGHT } from './constants';
 import { breakpointsInPixels } from '../../../components/theme';
 
+export const getLinkTextColor = () => {
+    const pageType = getPageType();
+    const textWhite = 'text.white';
+    const textBlack = 'text.black';
+
+    switch (pageType) {
+        case HOME_PAGE_TYPE:
+            return textWhite;
+        case ALL_USER_PAGE_TYPE:
+            return textBlack;
+        case PATIENT_PAGE_TYPE:
+            return textBlack;
+        case DENTIST_AND_HOST_PAGE_TYPE:
+            return textWhite;
+        default:
+            return textBlack;
+    }
+};
+
 const StyledLinkButton = styled(Button)`
     // four ampersands to override Button/index.js
     &&&& {
@@ -45,7 +64,7 @@ export const StyledDropContainer = styled.div`
             height: 250vh;
             overflow-y: auto;
             background-color: ${Theme.colors.background.lightGray};
-            top: ${HEADER_HEIGHT}px !important;
+            top: ${HEADER_HEIGHT + 1}px !important;
             left: 0 !important;
             right: 0 !important;
         }
@@ -59,25 +78,6 @@ export const StyledDropContainer = styled.div`
 export const HeaderLinkContainer = props => (
     <Box {...props} mr={[10, '', 25]} />
 );
-
-export const getLinkTextColor = () => {
-    const pageType = getPageType();
-    const textWhite = 'text.white';
-    const textBlack = 'text.black';
-
-    switch (pageType) {
-        case HOME_PAGE_TYPE:
-            return textWhite;
-        case ALL_USER_PAGE_TYPE:
-            return textBlack;
-        case PATIENT_PAGE_TYPE:
-            return textBlack;
-        case DENTIST_AND_HOST_PAGE_TYPE:
-            return textWhite;
-        default:
-            return textBlack;
-    }
-};
 
 export const LinkButton = ({ textColor, children, textProps, ...rest }) => (
     <StyledLinkButton fontSize={1} type="ghost" {...rest}>

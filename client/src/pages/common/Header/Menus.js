@@ -48,15 +48,14 @@ export const StyledMenuItem = styled(Menu.Item)`
         margin: 0;
 
         @media (min-width: ${props => props.theme.breakpoints[1]}) {
-            margin-bottom: 2px;
             margin-top: 0;
 
             a {
                 ${space};
             }
+            height: unset;
+            padding: 0;
         }
-        // to remove blue background
-        background-color: unset;
     }
 `;
 
@@ -66,6 +65,9 @@ export const StyledMenuDivider = styled(Menu.Divider)`
         margin-bottom: 0;
         border-bottom: 1px solid;
         border-color: #dbdbdb;
+        @media (min-width: ${props => props.theme.breakpoints[1]}) {
+            margin-top: 0;
+        }
     }
 `;
 
@@ -140,7 +142,6 @@ const Menus = props => {
     if (!isHost) {
         becomeAPersonaMenuTexts.push(BECOME_A_HOST_MENU_TEXT);
     }
-    const dividerMarginTop = 18;
 
     const modifiedMenuSections = _cloneDeep(menuSections);
     if (hasBecomeAPersonaSection && !_isEmpty(becomeAPersonaMenuTexts)) {
@@ -169,7 +170,7 @@ const Menus = props => {
         );
 
         return desktopOnly ? (
-            <Box px={isLong ? 0 : menuPx} mt={[0, '', dividerMarginTop]}>
+            <Box px={isLong ? 0 : menuPx} mt={0}>
                 {!_isEmpty(text) ? (
                     <Grid gridColumnGap="7px" gridTemplateColumns="1fr 1fr 1fr">
                         <Box
@@ -188,7 +189,7 @@ const Menus = props => {
                     <Box
                         borderColor="divider.gray"
                         borderBottom="solid 1px"
-                        height={7}
+                        my={1.5}
                     />
                 )}
             </Box>
@@ -197,13 +198,13 @@ const Menus = props => {
         );
     };
 
-    const menuItemPadding = ['18px 25px', '', `10px ${menuPx}px`];
+    const menuItemPadding = ['18px 25px', '', `14px ${menuPx}px`];
 
     return (
         <StyledMenu
             width={props.width}
             pt={[0, '', 1]}
-            pb={[0, '', 20]}
+            pb={0}
             {...mobileBorderProps}
         >
             {modifiedMenuSections.map((menuSection, index) => [
@@ -231,6 +232,9 @@ const Menus = props => {
                         return [
                             <StyledMenuItem p={menuItemPadding}>
                                 <Link
+                                    {...desktopOnly && {
+                                        className: 'ant-dropdown-menu-item',
+                                    }}
                                     {...linkProps}
                                     // menuTextToLink:
                                     //      {"Account settings": '/dashboard/patient?selectedTab=account_settings'}
@@ -246,16 +250,15 @@ const Menus = props => {
 
             {hasLogOut && [
                 desktopOnly ? (
-                    <Box
-                        mt={[0, '', dividerMarginTop]}
-                        borderBottom="solid 1px #e6e6e6"
-                        height={7}
-                    />
+                    <Box mt={0} borderBottom="solid 1px #e6e6e6" my={1.5} />
                 ) : (
                     renderDivider('')
                 ),
                 <StyledMenuItem p={menuItemPadding}>
                     <Link
+                        {...desktopOnly && {
+                            className: 'ant-dropdown-menu-item',
+                        }}
                         data-cy="logout-link"
                         to={props.menuTextToLinkTo[LOG_OUT_MENU_TEXT]}
                         onClick={onLogout}
