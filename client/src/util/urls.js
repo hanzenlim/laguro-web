@@ -52,7 +52,7 @@ export const HOST_DASHBOARD_PAGE_URL = '/dashboard/host';
 
 export const KIOSK_BOOKING_CONFIRMATION_URL_PREFIX =
     '/kiosk/booking-confirmation/:id';
-export const KIOSK_CHECKIN_PAGE_URL_PREFIX = '/kiosk/check-in';
+export const KIOSK_CHECKIN_PAGE_URL_PREFIX = '/kiosk/check-in/:id';
 
 export const PATIENT_DASHBOARD_PAGE_URL_BASE = `${PATIENT_DASHBOARD_PAGE_URL}?${SELETED_TAB_SEARCH_PARAM_VALUE}=`;
 export const DENTIST_DASHBOARD_PAGE_URL_BASE = `${DENTIST_DASHBOARD_PAGE_URL}?${SELETED_TAB_SEARCH_PARAM_VALUE}=`;
