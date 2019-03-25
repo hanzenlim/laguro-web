@@ -45,7 +45,8 @@ const Text = system(
     'top',
     'right',
     'bottom',
-    'left'
+    'left',
+    'opacity'
 );
 
 const StyledText = styled(Text)`

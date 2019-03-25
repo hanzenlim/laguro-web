@@ -1,6 +1,10 @@
-const containerPaddings = 50;
-export const numMaxContainerWidth = 1280 + containerPaddings;
+export const containerPaddings = 50;
+export const contentWidthInPixels = 1280;
+export const numMaxContainerWidth = contentWidthInPixels + containerPaddings;
 export const breakpointsInPixels = [768, 1025, 1200];
+export const APPLE_SD_GOTHIC_NEO = 'AppleSDGothicNeo-Regular';
+export const PLACE_HOLDER_OPACITY = 0.65;
+export const MOBILE_SCREEN_WIDTH_IN_PIXELS = 375;
 
 export default {
     colors: {

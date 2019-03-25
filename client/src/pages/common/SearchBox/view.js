@@ -13,12 +13,16 @@ import {
 } from '../../../components';
 import LocationFilter from '../LocationFilter';
 
-const { Desktop } = Responsive;
+const { Desktop, withScreenSizes } = Responsive;
+
+const maxTabletMobileWidth = 590;
 
 const StyledButton = styled(Button)`
     && {
-        border-width: 0;
-        border-radius: 2px;
+        max-width: ${maxTabletMobileWidth}px;
+        @media (min-width: ${props => props.theme.breakpoints[1]}) {
+            max-width: unset;
+        }
     }
 `;
 
@@ -35,23 +39,27 @@ const SearchBox = props => {
         onKeyPress,
     } = props;
 
-    // isLarge is used for home page
+    // isLarge is true for home page, and false for header searchbox
     const isLarge = size === 'large';
     const heightInHeader = 50;
+    const heightInHompage = [48, '', 56];
+
     return (
         <Flex
             width={['100%', '', isLarge ? '100%' : '78%']}
+            maxWidth={[maxTabletMobileWidth, '', 'unset']}
             justifyContent="center"
             onKeyPress={onKeyPress}
             flexDirection={['column', '', 'row']}
         >
             <Box
-                width={['100%', '', isLarge ? '56%' : '62%']}
+                maxWidth={[maxTabletMobileWidth, '', 'unset']}
+                width={['100%', '', isLarge ? 468 : '62%']}
                 mr={[0, '', 10]}
                 mb={[7, '', 0]}
             >
                 <LocationFilter
-                    height={isLarge ? [50, 50, 60] : heightInHeader}
+                    height={isLarge ? heightInHompage : heightInHeader}
                     initialValue={initialLocationFilterValue}
                     placeholder={locationPlaceholder}
                     onTextChange={onTextChange}
@@ -61,7 +69,8 @@ const SearchBox = props => {
                 />
             </Box>
             <Box
-                width={['100%', '', isLarge ? '27%' : '25%']}
+                width={['100%', '', isLarge ? 229 : '25%']}
+                maxWidth={[maxTabletMobileWidth, '', 'unset']}
                 mr={[0, '', 10]}
                 mb={[7, '', 0]}
             >
@@ -69,39 +78,32 @@ const SearchBox = props => {
                     initialValue={initialDateFilterValue}
                     onDateChange={onDateFilterChange}
                     width="100%"
-                    height={isLarge ? [50, 50, 60] : heightInHeader}
-                    format={isLarge ? 'ddd MM/DD' : 'MMM D, YYYY'}
                     disablePastDates
+                    format={isLarge ? 'ddd MM/DD/YYYY' : 'MMM D, YYYY'}
+                    height={isLarge ? heightInHompage : heightInHeader}
                 />
             </Box>
             <StyledButton
-                width={['100%', '', isLarge ? '210px' : heightInHeader]}
-                height={isLarge ? [50, 50, 60] : heightInHeader}
-                type="default"
-                bg="background.blue"
+                width={[
+                    '100%',
+                    '',
+                    isLarge ? heightInHompage[2] : heightInHeader,
+                ]}
+                height={isLarge ? heightInHompage : heightInHeader}
                 onClick={onSubmit}
-                pl={[0, '', isLarge ? 40 : 10]}
-                border={!isLarge && 'solid 1px #ffffff'}
+                pl={[0, '', 10]}
             >
-                <Flex
-                    alignItems="center"
-                    justifyContent={[
-                        'center',
-                        '',
-                        isLarge ? 'flex-start' : 'center',
-                    ]}
-                >
+                <Flex justifyContent="center" alignItems="center">
                     <Desktop>
                         <Icon
-                            fontSize="25px"
+                            fontSize={4}
                             style={{ fontWeight: 'bold' }}
                             color="white"
                             type="search"
-                            mr={isLarge ? 15 : 0}
                         />
                     </Desktop>
 
-                    {isLarge && (
+                    {isLarge && props.tabletMobileOnly && (
                         <Text
                             fontSize={[1, '', 3]}
                             fontWeight="bold"
@@ -130,4 +132,4 @@ SearchBox.propTypes = {
     onKeyPress: PropTypes.func,
 };
 
-export default SearchBox;
+export default withScreenSizes(SearchBox);
