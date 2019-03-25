@@ -191,7 +191,7 @@ class Map extends PureComponent {
                         onClose={this.hidePopup}
                         longitude={this.state.popupInfo.longitude}
                         latitude={this.state.popupInfo.latitude}
-                        image={this.state.popupInfo.image || ''}
+                        image={this.state.popupInfo.imageUrl || ''}
                         url={this.state.popupInfo.url || ''}
                     />
                 )}

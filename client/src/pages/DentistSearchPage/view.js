@@ -75,8 +75,8 @@ const DentistSearchPageView = props => {
                     location.address,
                     location.addressDetails
                 ),
-                latitude: location.geoPoint.lat,
-                longitude: location.geoPoint.lon,
+                latitude: location.geoPoint.lat + Math.random() / 100,
+                longitude: location.geoPoint.lon + Math.random() / 100,
             });
         });
     });
