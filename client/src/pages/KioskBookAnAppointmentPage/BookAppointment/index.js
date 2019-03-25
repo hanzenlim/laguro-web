@@ -21,6 +21,7 @@ import { GET_OFFICE, CREATE_PATIENT_APPOINTMENT_ONBOARDING } from './queries';
 import { RedirectErrorPage } from '../../GeneralErrorPage';
 import { onKioskLogout, getUser } from '../../../util/authUtils';
 import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
+import { execute } from '../../../util/gqlUtils';
 
 class KioskBookAnAppointmentPage extends Component {
     render() {
@@ -162,38 +163,42 @@ class KioskBookAnAppointmentPage extends Component {
                                     dt.id ===
                                     props.values[0].appointmentSelected
                             );
-                            try {
-                                const user = getUser();
-                                const result = await createPatientAppointmentOnboarding(
-                                    {
-                                        variables: {
-                                            input: {
-                                                patientId: _get(user, 'id'),
-                                                reservationId:
-                                                    dentistTime.reservationId,
-                                                localStartTime: moment(
-                                                    dentistTime.startTime
-                                                ),
-                                                localEndTime: moment(
-                                                    dentistTime.startTime
-                                                ).add(
-                                                    dentistTime.firstAppointmentDuration,
-                                                    'minutes'
-                                                ),
-                                                reasonOfVisit,
+
+                            const user = getUser();
+                            await execute({
+                                action: async () => {
+                                    const result = await createPatientAppointmentOnboarding(
+                                        {
+                                            variables: {
+                                                input: {
+                                                    patientId: _get(user, 'id'),
+                                                    reservationId:
+                                                        dentistTime.reservationId,
+                                                    localStartTime: moment(
+                                                        dentistTime.startTime
+                                                    ),
+                                                    localEndTime: moment(
+                                                        dentistTime.startTime
+                                                    ).add(
+                                                        dentistTime.firstAppointmentDuration,
+                                                        'minutes'
+                                                    ),
+                                                    reasonOfVisit,
+                                                },
                                             },
-                                        },
-                                    }
-                                );
-                                // Move to next step
-                                this.props.history.push(
-                                    `/kiosk/booking-confirmation/${
-                                        result.data
-                                            .createPatientAppointmentOnboarding
-                                            .id
-                                    }`
-                                );
-                            } catch (error) {}
+                                        }
+                                    );
+
+                                    // Move to next step
+                                    this.props.history.push(
+                                        `/kiosk/booking-confirmation/${
+                                            result.data
+                                                .createPatientAppointmentOnboarding
+                                                .id
+                                        }`
+                                    );
+                                },
+                            });
                         }}
                     />
                 )}
