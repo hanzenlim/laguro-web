@@ -5,6 +5,15 @@ import moment from 'moment';
 import { width, height } from 'styled-system';
 
 import { Icon, Input } from '../../components';
+import { PLACE_HOLDER_OPACITY } from '../theme';
+
+const PADDING_X_IN_PIXELS = 25;
+const CALENDAR_ICON_WIDTH = 20;
+const MARGIN_BETWEEN_CALENDAR_ICON_AND_TEXT = 13;
+const DATEPICKER_TEXT_PADDING_LEFT =
+    PADDING_X_IN_PIXELS +
+    CALENDAR_ICON_WIDTH +
+    MARGIN_BETWEEN_CALENDAR_ICON_AND_TEXT;
 
 const StyledContainer = styled.div`
     && {
@@ -24,7 +33,7 @@ const StyledContainer = styled.div`
     .ant-input-affix-wrapper {
         height: 100%;
         width: 100%;
-        padding: 5px 20px 5px 5px;
+        padding: 1px;
 
         .ant-input-suffix {
             visibility: hidden;
@@ -37,21 +46,40 @@ const StyledContainer = styled.div`
         }
     }
 
-    .ant-input-prefix {
-        margin-left: 5px;
+    .ant-input-affix-wrapper .ant-input-prefix {
+        left: 0;
+        margin-left: ${PADDING_X_IN_PIXELS}px;
     }
 
     .ant-input {
         border: none;
         height: 100%;
         width: 100%;
-        margin-left: 15px;
-        color: ${props => props.theme.colors.text.black50};
-        font-weight: ${props => props.theme.fontWeights.bold};
-        font-size: ${props => props.theme.fontSizes[0]};
-
+        font-weight: ${props => props.theme.fontWeights.medium}
+        font-size: ${props => props.theme.fontSizes[1]};
+        color: ${props => props.theme.colors.text.black};
+        letter-spacing: -0.3x;    
+        ::placeholder {
+            letter-spacing: -0.32px;
+            font-weight: ${props => props.theme.fontWeights.medium}
+            opacity: ${PLACE_HOLDER_OPACITY};
+            font-size: ${props => props.theme.fontSizes[1]};
+            color: ${props => props.theme.colors.text.black};
+            letter-spacing: -0.3x;
+            @media (min-width: ${props => props.theme.breakpoints[1]}) {
+                font-weight: ${props => props.theme.fontWeights.regular}
+            }
+        }
+        padding-top: 0;
         @media (min-width: ${props => props.theme.breakpoints[1]}) {
-            font-size: ${props => props.theme.fontSizes[2]};
+            padding-top: 2px;            
+        } 
+    }
+
+    .ant-input-affix-wrapper .ant-input:not(:first-child) {
+        :not(:first-child) {
+            padding-left: ${DATEPICKER_TEXT_PADDING_LEFT}px;
+            padding-right: ${PADDING_X_IN_PIXELS}px;
         }
     }
 
@@ -134,8 +162,8 @@ class DatePicker extends PureComponent {
                     prefix={
                         <Icon
                             type="calendar"
-                            mt={3}
-                            fontSize={3}
+                            mt={1}
+                            fontSize={CALENDAR_ICON_WIDTH}
                             color="icon.blue"
                         />
                     }

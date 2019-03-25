@@ -35,7 +35,8 @@ const GridSystem = system(
     'space',
     'position',
     'alignItems',
-    'justifyItems'
+    'justifyItems',
+    'width'
 );
 
 const GridItemSystem = system(

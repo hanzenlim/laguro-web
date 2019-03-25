@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Box from '../Box';
+import { containerPaddings } from '../theme';
 
 const StyledContainer = styled(Box)`
     max-width: ${props => props.maxWidth || props.theme.maxContainerWidth};
@@ -14,7 +15,7 @@ const Container = props => {
     return <StyledContainer {...rest}>{children}</StyledContainer>;
 };
 
-export const ContainerPaddingInPixels = 25;
+export const ContainerPaddingInPixels = containerPaddings / 2;
 
 Container.defaultProps = {
     pl: `${ContainerPaddingInPixels}px`,

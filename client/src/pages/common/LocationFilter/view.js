@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 
 import { Icon, Flex, Truncate, Box } from '../../../components';
 import { LOCATION, DENTIST } from '../../../util/strings';
+import { PLACE_HOLDER_OPACITY } from '../../../components/theme';
 
 const StyledFlex = styled(Flex)`
     height: auto;
@@ -19,6 +20,8 @@ const StyledIcon = styled(Icon)`
     z-index: ${props => props.theme.zIndex.inputElement};
 `;
 
+const INPUT_PADDING_LEFT_IN_PIXELS = 28;
+
 const StyledAutocomplete = styled(AntdAutocomplete)`
     && {
         position: relative;
@@ -30,18 +33,23 @@ const StyledAutocomplete = styled(AntdAutocomplete)`
         }
         && .ant-input {
             ${height};
-            padding-left: ${props => (props.withDentists ? '20px' : '45px')};
+            padding-left: ${props =>
+                props.withDentists
+                    ? `${INPUT_PADDING_LEFT_IN_PIXELS - 3}px`
+                    : '45px'};
+            padding-right: ${props =>
+                props.withDentists
+                    ? `${INPUT_PADDING_LEFT_IN_PIXELS - 3}px`
+                    : '45px'};
             border: 1px solid;
             border-color: ${props => props.theme.colors.divider.darkGray};
             background-color: ${props => props.theme.colors.background.white};
             border-radius: 2px;
-            color: ${props => props.theme.colors.text.black50};
-            font-size: ${props => props.theme.fontSizes[0]};
-            font-weight: 700;
             transition: none;
-            @media (min-width: ${props => props.theme.breakpoints[1]}) {
-                font-size: ${props => props.theme.fontSizes[2]};
-            }
+            font-weight: ${props => props.theme.fontWeights.medium}
+            font-size: ${props => props.theme.fontSizes[1]};
+            color: ${props => props.theme.colors.text.black};
+            letter-spacing: -0.3x;
         }
         && .ant-input-disabled {
             background-color: #f5f5f5;
@@ -51,14 +59,26 @@ const StyledAutocomplete = styled(AntdAutocomplete)`
         }
         && .ant-select-selection__placeholder {
             ${height};
-            padding-left: ${props => (props.withDentists ? '10px' : '35px')};
-            color: ${props => props.theme.colors.text.gray};
-            font-size: ${props => props.theme.fontSizes[0]};
+            margin-left: 0;
+            margin-right: 0;
+            padding-left: ${props =>
+                props.withDentists
+                    ? `${INPUT_PADDING_LEFT_IN_PIXELS}px`
+                    : '35px'};
+            padding-right: ${props =>
+                props.withDentists
+                    ? `${INPUT_PADDING_LEFT_IN_PIXELS}px`
+                    : '35px'};
             z-index: ${props => props.theme.zIndex.inputElement};
-            font-weight: 700;
-            font-family: Silka;
+            letter-spacing: -0.32px;
+            font-weight: ${props => props.theme.fontWeights.medium}
+            opacity: ${PLACE_HOLDER_OPACITY};
+            font-size: ${props => props.theme.fontSizes[1]};
+            color: ${props => props.theme.colors.text.black};
+            letter-spacing: -0.3x;
             @media (min-width: ${props => props.theme.breakpoints[1]}) {
-                font-size: ${props => props.theme.fontSizes[2]};
+                font-weight: ${props => props.theme.fontWeights.regular}
+                margin-top: -11px;
             }
         }
         && .ant-select-search__field__mirror {

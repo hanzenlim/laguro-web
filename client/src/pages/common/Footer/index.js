@@ -39,8 +39,8 @@ const HOST_LINKS_MAP = [
 const LAGURO_LINKS_MAP = [
     { label: 'About us', url: ABOUT_PAGE_URL },
     { label: 'Blog', url: 'https://medium.com/@laguro', isExternal: true },
-    { label: 'How it works', url: '/' },
-    { label: 'Our features', url: '/' },
+    { label: 'How it works', url: '#how-it-works', isAnchorTag: true },
+    { label: 'Our features', url: '#our-features', isAnchorTag: true },
 ];
 
 const SOCIAL_LINKS_MAP = [
@@ -180,15 +180,27 @@ const Footer = () => {
 
                             return (
                                 <Box key={link.label}>
-                                    <Link to={link.url} {...externalProps}>
-                                        <Text
-                                            fontWeight="300"
-                                            color="text.white"
-                                            fontSize={[0, '', 1]}
-                                        >
-                                            {link.label}
-                                        </Text>
-                                    </Link>
+                                    {!link.isAnchorTag ? (
+                                        <Link to={link.url} {...externalProps}>
+                                            <Text
+                                                fontWeight="300"
+                                                color="text.white"
+                                                fontSize={[0, '', 1]}
+                                            >
+                                                {link.label}
+                                            </Text>
+                                        </Link>
+                                    ) : (
+                                        <a href={link.url}>
+                                            <Text
+                                                fontWeight="300"
+                                                color="text.white"
+                                                fontSize={[0, '', 1]}
+                                            >
+                                                {link.label}
+                                            </Text>
+                                        </a>
+                                    )}
                                 </Box>
                             );
                         })}
