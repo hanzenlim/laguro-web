@@ -109,6 +109,16 @@ class DatePicker extends PureComponent {
 
     getCalendarContainer = () => this.refs.datePickerContainer;
 
+    disabledDate = currentDate => {
+        const { disablePastDates } = this.props;
+
+        if (disablePastDates) {
+            return currentDate && currentDate < moment().startOf('day');
+        }
+
+        return false;
+    };
+
     render() {
         const { open, dateString } = this.state;
 
@@ -144,6 +154,7 @@ class DatePicker extends PureComponent {
                 />
                 <div ref="datePickerContainer" />
                 <AntdDatePicker
+                    disabledDate={this.disabledDate}
                     format={this.props.format}
                     open={open}
                     onChange={this.onSelectDate}

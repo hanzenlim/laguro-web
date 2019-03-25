@@ -71,6 +71,7 @@ const SearchBox = props => {
                     width="100%"
                     height={isLarge ? [50, 50, 60] : heightInHeader}
                     format={isLarge ? 'ddd MM/DD' : 'MMM D, YYYY'}
+                    disablePastDates
                 />
             </Box>
             <StyledButton
