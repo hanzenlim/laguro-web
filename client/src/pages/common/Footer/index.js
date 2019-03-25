@@ -44,13 +44,22 @@ const LAGURO_LINKS_MAP = [
 ];
 
 const SOCIAL_LINKS_MAP = [
-    { label: 'Facebook', url: 'https://www.facebook.com/LaguroDental/' },
+    {
+        label: 'Facebook',
+        url: 'https://www.facebook.com/LaguroDental/',
+        isExternal: true,
+    },
     {
         label: 'LinkedIn',
         url: 'https://www.linkedin.com/company/lagurodental/',
+        isExternal: true,
     },
-    { label: 'Instagram', url: 'https://www.instagram.com/lagurodental/' },
-    { label: 'Medium', url: 'https://medium.com/@laguro' },
+    {
+        label: 'Instagram',
+        url: 'https://www.instagram.com/lagurodental/',
+        isExternal: true,
+    },
+    { label: 'Medium', url: 'https://medium.com/@laguro', isExternal: true },
 ];
 
 const Footer = () => {
@@ -88,21 +97,19 @@ const Footer = () => {
                         >
                             Patients
                         </Text>
-                        {PATIENT_LINKS_MAP.map(link => {
-                            return (
-                                <Box key={link.label}>
-                                    <Link to={link.url}>
-                                        <Text
-                                            fontWeight="300"
-                                            color="text.white"
-                                            fontSize={[0, '', 1]}
-                                        >
-                                            {link.label}
-                                        </Text>
-                                    </Link>
-                                </Box>
-                            );
-                        })}
+                        {PATIENT_LINKS_MAP.map(link => (
+                            <Box key={link.label}>
+                                <Link to={link.url}>
+                                    <Text
+                                        fontWeight="300"
+                                        color="text.white"
+                                        fontSize={[0, '', 1]}
+                                    >
+                                        {link.label}
+                                    </Text>
+                                </Link>
+                            </Box>
+                        ))}
                     </Box>
 
                     <Box mb="30px">
@@ -114,21 +121,19 @@ const Footer = () => {
                         >
                             Dentists
                         </Text>
-                        {DENTIST_LINKS_MAP.map(link => {
-                            return (
-                                <Box key={link.label}>
-                                    <Link to={link.url}>
-                                        <Text
-                                            fontWeight="300"
-                                            color="text.white"
-                                            fontSize={[0, '', 1]}
-                                        >
-                                            {link.label}
-                                        </Text>
-                                    </Link>
-                                </Box>
-                            );
-                        })}
+                        {DENTIST_LINKS_MAP.map(link => (
+                            <Box key={link.label}>
+                                <Link to={link.url}>
+                                    <Text
+                                        fontWeight="300"
+                                        color="text.white"
+                                        fontSize={[0, '', 1]}
+                                    >
+                                        {link.label}
+                                    </Text>
+                                </Link>
+                            </Box>
+                        ))}
                     </Box>
 
                     <Box mb="30px">
@@ -140,21 +145,19 @@ const Footer = () => {
                         >
                             Hosts
                         </Text>
-                        {HOST_LINKS_MAP.map(link => {
-                            return (
-                                <Box key={link.label}>
-                                    <Link to={link.url}>
-                                        <Text
-                                            fontWeight="300"
-                                            color="text.white"
-                                            fontSize={[0, '', 1]}
-                                        >
-                                            {link.label}
-                                        </Text>
-                                    </Link>
-                                </Box>
-                            );
-                        })}
+                        {HOST_LINKS_MAP.map(link => (
+                            <Box key={link.label}>
+                                <Link to={link.url}>
+                                    <Text
+                                        fontWeight="300"
+                                        color="text.white"
+                                        fontSize={[0, '', 1]}
+                                    >
+                                        {link.label}
+                                    </Text>
+                                </Link>
+                            </Box>
+                        ))}
                     </Box>
 
                     <Box mb="30px">
@@ -167,12 +170,17 @@ const Footer = () => {
                             Laguro
                         </Text>
                         {LAGURO_LINKS_MAP.map(link => {
+                            let externalProps = {};
+                            if (link.isExternal) {
+                                externalProps = {
+                                    target: '_blank',
+                                    isExternal: true,
+                                };
+                            }
+
                             return (
                                 <Box key={link.label}>
-                                    <Link
-                                        to={link.url}
-                                        isExternal={link.isExternal}
-                                    >
+                                    <Link to={link.url} {...externalProps}>
                                         <Text
                                             fontWeight="300"
                                             color="text.white"
@@ -196,29 +204,27 @@ const Footer = () => {
                             Follow us
                         </Text>
                         <Flex>
-                            {SOCIAL_LINKS_MAP.map(link => {
-                                return (
-                                    <Box key={link.label} mr="6px">
-                                        <Link
-                                            to={link.url}
-                                            isExternal
-                                            target="_blank"
+                            {SOCIAL_LINKS_MAP.map(link => (
+                                <Box key={link.label} mr="6px">
+                                    <Link
+                                        to={link.url}
+                                        isExternal
+                                        target="_blank"
+                                    >
+                                        <Box
+                                            background="white"
+                                            width="26px"
+                                            height="26px"
+                                            borderRadius="50%"
                                         >
-                                            <Box
-                                                background="white"
-                                                width="26px"
-                                                height="26px"
-                                                borderRadius="50%"
-                                            >
-                                                <Icon
-                                                    fontSize="25px"
-                                                    type={link.label.toLowerCase()}
-                                                />
-                                            </Box>
-                                        </Link>
-                                    </Box>
-                                );
-                            })}
+                                            <Icon
+                                                fontSize="25px"
+                                                type={link.label.toLowerCase()}
+                                            />
+                                        </Box>
+                                    </Link>
+                                </Box>
+                            ))}
                         </Flex>
                     </Box>
                 </Grid>
