@@ -66,7 +66,15 @@ class OfficeSearchPage extends PureComponent {
         window.removeEventListener('resize', _throttle(this.updateDimensions));
     }
 
-    onShowMore = async () => {
+    componentDidUpdate = async prevProps => {
+        if (prevProps.location.search !== this.props.location.search) {
+            this.setState(() => ({ loading: true }));
+            await this.updateSearchResults();
+            this.setState(() => ({ loading: false }));
+        }
+    };
+
+    updateSearchResults = async () => {
         const nextUrlParams = queryString.parse(this.props.location.search);
         const response = await this.fetchData(nextUrlParams);
         const mappedData = this.getMappedData(response);
@@ -270,7 +278,7 @@ class OfficeSearchPage extends PureComponent {
                     mapDimensions={this.state.mapDimensions}
                     showMap={this.state.showMap}
                     toggleMap={this.toggleMap}
-                    onShowMore={this.onShowMore}
+                    onShowMore={this.updateSearchResults}
                 />
             </Fragment>
         );
