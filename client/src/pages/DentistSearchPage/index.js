@@ -198,11 +198,16 @@ class DetailsSearchPage extends PureComponent {
                     _isArray(source.reservations) &&
                     !_isEmpty(source.reservations)
                 ) {
+                    /**
+                     * Adding a small offset so that dentists' map markers
+                     * who has the same lat and long will be rendered in different area
+                     */
+
                     reservations = source.reservations.map(res => ({
                         ...res,
                         geoPoint: {
-                            lat: res.geoPoint.lat + Math.random() / 100,
-                            lon: res.geoPoint.lon + Math.random() / 100,
+                            lat: res.geoPoint.lat + Math.random() / 1000,
+                            lon: res.geoPoint.lon,
                         },
                     }));
                 }
