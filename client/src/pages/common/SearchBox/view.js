@@ -13,13 +13,15 @@ import {
 } from '../../../components';
 import LocationFilter from '../LocationFilter';
 
+export const DESKTOP_LARGE_SEARCHBOX_WIDTH = 769;
+
 const { Desktop, withScreenSizes } = Responsive;
 
-const maxTabletMobileWidth = 590;
+export const TABLET_MOBILE_SEARCHBOX_MAX_WIDTH = 590;
 
 const StyledButton = styled(Button)`
     && {
-        max-width: ${maxTabletMobileWidth}px;
+        max-width: ${TABLET_MOBILE_SEARCHBOX_MAX_WIDTH}px;
         @media (min-width: ${props => props.theme.breakpoints[1]}) {
             max-width: unset;
         }
@@ -39,27 +41,39 @@ const SearchBox = props => {
         onKeyPress,
     } = props;
 
+    // on desktop, search button's width will be 7% of the whole width
+    const DESKTOP_SEARCH_BUTTON_WIDTH_RATIO = 0.07;
     // isLarge is true for home page, and false for header searchbox
     const isLarge = size === 'large';
     const heightInHeader = 50;
-    const heightInHompage = [48, '', 56];
+    const COMPONENT_HEIGHT_IF_ISLARGE = [
+        48,
+        '',
+        DESKTOP_LARGE_SEARCHBOX_WIDTH * 0.07,
+    ];
 
     return (
         <Flex
-            width={['100%', '', isLarge ? '100%' : '78%']}
-            maxWidth={[maxTabletMobileWidth, '', 'unset']}
+            width={[
+                '100%',
+                '',
+                isLarge ? DESKTOP_LARGE_SEARCHBOX_WIDTH : '78%',
+            ]}
+            maxWidth={[TABLET_MOBILE_SEARCHBOX_MAX_WIDTH, '', 'unset']}
             justifyContent="center"
             onKeyPress={onKeyPress}
             flexDirection={['column', '', 'row']}
         >
             <Box
-                maxWidth={[maxTabletMobileWidth, '', 'unset']}
-                width={['100%', '', isLarge ? 468 : '62%']}
-                mr={[0, '', 10]}
+                maxWidth={[TABLET_MOBILE_SEARCHBOX_MAX_WIDTH, '', 'unset']}
+                width={['100%', '', '61%']}
+                mr={[0, '', '1%']}
                 mb={[7, '', 0]}
             >
                 <LocationFilter
-                    height={isLarge ? heightInHompage : heightInHeader}
+                    height={
+                        isLarge ? COMPONENT_HEIGHT_IF_ISLARGE : heightInHeader
+                    }
                     initialValue={initialLocationFilterValue}
                     placeholder={locationPlaceholder}
                     onTextChange={onTextChange}
@@ -69,9 +83,9 @@ const SearchBox = props => {
                 />
             </Box>
             <Box
-                width={['100%', '', isLarge ? 229 : '25%']}
-                maxWidth={[maxTabletMobileWidth, '', 'unset']}
-                mr={[0, '', 10]}
+                width={['100%', '', isLarge ? '30%' : '25%']}
+                maxWidth={[TABLET_MOBILE_SEARCHBOX_MAX_WIDTH, '', 'unset']}
+                mr={[0, '', '1%']}
                 mb={[7, '', 0]}
             >
                 <DatePicker
@@ -80,16 +94,20 @@ const SearchBox = props => {
                     width="100%"
                     disablePastDates
                     format={isLarge ? 'ddd MM/DD/YYYY' : 'MMM D, YYYY'}
-                    height={isLarge ? heightInHompage : heightInHeader}
+                    height={
+                        isLarge ? COMPONENT_HEIGHT_IF_ISLARGE : heightInHeader
+                    }
                 />
             </Box>
             <StyledButton
                 width={[
                     '100%',
                     '',
-                    isLarge ? heightInHompage[2] : heightInHeader,
+                    isLarge
+                        ? `${DESKTOP_SEARCH_BUTTON_WIDTH_RATIO * 100}%`
+                        : heightInHeader,
                 ]}
-                height={isLarge ? heightInHompage : heightInHeader}
+                height={isLarge ? COMPONENT_HEIGHT_IF_ISLARGE : heightInHeader}
                 onClick={onSubmit}
                 pl={[0, '', 10]}
             >

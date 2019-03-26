@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import _isEmpty from 'lodash/isEmpty';
 import moment from 'moment';
-import { Icon } from '../../../components';
 import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
 import {
+    Icon,
     Box,
     Button,
     Card,
@@ -13,7 +13,7 @@ import {
     Image,
     Rating,
     Text,
-} from '@laguro/basic-components';
+} from '../../../components/index';
 import { withScreenSizes } from '../../../components/Responsive';
 
 const TAG_COLORS = [
