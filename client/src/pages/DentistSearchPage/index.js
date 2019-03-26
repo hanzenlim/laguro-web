@@ -83,6 +83,11 @@ class DetailsSearchPage extends PureComponent {
 
     componentDidUpdate = async prevProps => {
         if (prevProps.location.search !== this.props.location.search) {
+            const newUrlParams = queryString.parse(this.props.location.search);
+
+            // Do not set loading to true if user clicked show more
+            if (newUrlParams.limit) return;
+
             this.setState(() => ({ loading: true }));
             await this.updateSearchResults();
             this.setState(() => ({ loading: false }));
