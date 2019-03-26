@@ -81,7 +81,15 @@ class DetailsSearchPage extends PureComponent {
         window.removeEventListener('resize', _throttle(this.updateDimensions));
     }
 
-    onShowMore = async () => {
+    componentDidUpdate = async prevProps => {
+        if (prevProps.location.search !== this.props.location.search) {
+            this.setState(() => ({ loading: true }));
+            await this.updateSearchResults();
+            this.setState(() => ({ loading: false }));
+        }
+    };
+
+    updateSearchResults = async () => {
         const nextUrlParams = queryString.parse(this.props.location.search);
         const response = await this.fetchData(nextUrlParams);
         const total = this.getDataCount(response);
@@ -349,7 +357,7 @@ class DetailsSearchPage extends PureComponent {
                     defaultPosition={this.state.defaultPosition}
                     urlParams={this.state.urlParams}
                     mapDimensions={this.state.mapDimensions}
-                    onShowMore={this.onShowMore}
+                    onShowMore={this.updateSearchResults}
                 />
             </Fragment>
         );
