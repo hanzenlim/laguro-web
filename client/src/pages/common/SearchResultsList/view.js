@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
-
 import DentistListingCard from '../DentistListingCard';
 import OfficeListingCard from '../OfficeListingCard';
 import history from '../../../history';
@@ -85,10 +84,12 @@ class SearchResultsList extends PureComponent {
                         type={type}
                     />
                 )}
+
                 <Grid
                     gridColumnGap="17px"
-                    gridRowGap={[0, '', '20px']}
+                    gridRowGap={[0, '', 13]}
                     gridTemplateColumns={
+                        // eslint-disable-next-line
                         showMap && isOffice
                             ? [
                                   'repeat(auto-fit, minmax(300px, 1fr))',

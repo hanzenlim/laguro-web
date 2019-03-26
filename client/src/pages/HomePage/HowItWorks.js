@@ -15,29 +15,34 @@ const { withScreenSizes } = Responsive;
 const HOW_IT_WORKS_NUM_STEPS = 5;
 const HOW_IT_WORKS_COLUMN_GAP_IN_PIXELS = 26;
 
+// title1 and title2 are on separate lines
 const HOW_IT_WORKS_TEXTS = [
     {
-        title: 'TELL US ABOUT YOURSELF',
+        title1: 'TELL US',
+        title2: 'ABOUT YOURSELF',
         description:
             'Answer the medical and insurance questions, and tell us about your dental problems when you sign up. We will take care of the rest.',
     },
     {
-        title: 'FIND YOUR MATCH',
+        title1: 'FIND',
+        title2: 'YOUR MATCH',
         description:
             'We match you with the dentists whose prices, insurance coverages, locations, and times you’ll like most. Everything to ensure you find the best!',
     },
     {
-        title: 'MEET YOUR DENTIST',
+        title1: 'MEET',
+        title2: 'YOUR DENTIST',
         description:
             'It’s time to meet your dentist to prepare and create a treatment plan that will solve your concerns.',
     },
     {
-        title: 'SMILE AGAIN',
+        title1: 'SMILE AGAIN',
         description:
             'Sit, relax, and receive the appropriate treatment you’ve always deserved. Now, you can smile again!',
     },
     {
-        title: "IT'S ALL YOURS",
+        title1: "IT'S",
+        title2: 'ALL YOURS',
         description:
             'After your first treatment, you become a Laguro patient! And now you’ll be able to access and share your dental records anytime, anywhere.',
     },
@@ -51,7 +56,8 @@ const TabletGridProps = {
 
 const getHowItWorksStepProps = num => ({
     num: num + 1,
-    title: HOW_IT_WORKS_TEXTS[num].title,
+    title1: HOW_IT_WORKS_TEXTS[num].title1,
+    title2: HOW_IT_WORKS_TEXTS[num].title2,
     description: HOW_IT_WORKS_TEXTS[num].description,
 });
 

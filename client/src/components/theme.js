@@ -25,6 +25,7 @@ export default {
         background: {
             white: '#ffffff',
             whiteSmoke: '#f1f1f1',
+            whiteDarkSmoke: '#f8f8f8',
             gray: '#c7c7c7',
             blue: '#3481F8',
             lightGray: '#efeeee',
