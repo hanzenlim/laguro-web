@@ -153,8 +153,8 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
      */
     getTimeSlots = (start, end, timezone) => {
         const { firstAppointmentDuration } = this.props;
-        const startTime = moment.tz(start, timezone);
-        const endTime = moment.tz(end, timezone);
+        const startTime = moment.tz(start, timezone).startOf('minute');
+        const endTime = moment.tz(end, timezone).startOf('minute');
 
         const timeSlots = [];
 
