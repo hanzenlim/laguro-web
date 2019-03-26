@@ -82,7 +82,7 @@ const DentistSearchPageView = props => {
     });
 
     return (
-        <Box bg="#f8f8f8">
+        <Box bg="#f8f8f8" height="100%">
             <Container pt={[48, '', 160]} px={[0, 0, 25]}>
                 <Desktop>
                     {matches =>
