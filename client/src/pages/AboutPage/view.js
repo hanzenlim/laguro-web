@@ -1,6 +1,6 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { Box, Container, Flex, Icon, Responsive, Text } from '../../components';
+import { Box, Container, Flex, Responsive, Text } from '../../components';
 import { withScreenSizes } from '../../components/Responsive';
 import aboutBannerImage from '../../images/about-page-banner.jpeg';
 import {
@@ -10,12 +10,7 @@ import {
 } from '../common/Links';
 import { DENTIST_SEARCH_PAGE_URL } from '../../util/urls';
 
-const { TabletMobile, Desktop } = Responsive;
-
-const Pattern = styled(Box)`
-    ${props =>
-        props.patternorder && `transform: rotate(${props.patternorder}deg);`};
-`;
+const { TabletMobile } = Responsive;
 
 const StyledBox = styled(Box)`
     overflow: hidden;

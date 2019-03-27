@@ -4,7 +4,7 @@ import queryString from 'query-string';
 import DentistListingCard from '../DentistListingCard';
 import OfficeListingCard from '../OfficeListingCard';
 import history from '../../../history';
-import { Flex, Box, Grid, Button } from '../../../components';
+import { Flex, Grid, Button } from '../../../components';
 import NoSearchResults from '../NoSearchResults';
 import { DENTISTS, OFFICES } from '../../../util/strings';
 
