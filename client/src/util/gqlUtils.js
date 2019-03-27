@@ -14,7 +14,7 @@ export const execute = async ({
         afterAction();
         return true;
     } catch (error) {
-        onError();
+        onError(error);
         const gqlError =
             _get(error, 'networkError.result.result.errors[0].message') ||
             _get(error, 'graphQLErrors[0].message') ||

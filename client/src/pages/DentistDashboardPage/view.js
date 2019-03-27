@@ -215,46 +215,43 @@ class DentistDashboardPageView extends Component {
             return this.dentistVerificationConfirmation;
         }
         // display normal content
-        else {
-            return panelContent;
-        }
+
+        return panelContent;
     };
-    renderMenu = panel => {
-        return (
-            <Card p={0}>
-                <StyledDashboardMenu
-                    selectedKeys={panel}
-                    onClick={this.handleClick}
-                >
-                    {dentistDashboardMenuTexts.map(menuText => (
-                        <StyledDashboardMenuItem key={menuText}>
-                            {/* menu item text */}
-                            <Text
-                                mb={6}
-                                fontSize={1}
-                                fontWeight="medium"
-                                color="inherit"
-                                letterSpacing="-0.4px"
-                            >
-                                {menuText}
-                            </Text>
-                            {/* menu item description */}
-                            <Text
-                                fontSize={0}
-                                fontWeight="regular"
-                                color="text.lightGray"
-                                letterSpacing="-0.4px"
-                            >
-                                <Truncate lines={2}>
-                                    {menuTextToDescription[menuText]}
-                                </Truncate>
-                            </Text>
-                        </StyledDashboardMenuItem>
-                    ))}
-                </StyledDashboardMenu>
-            </Card>
-        );
-    };
+    renderMenu = panel => (
+        <Card p={0}>
+            <StyledDashboardMenu
+                selectedKeys={panel}
+                onClick={this.handleClick}
+            >
+                {dentistDashboardMenuTexts.map(menuText => (
+                    <StyledDashboardMenuItem key={menuText}>
+                        {/* menu item text */}
+                        <Text
+                            mb={6}
+                            fontSize={1}
+                            fontWeight="medium"
+                            color="inherit"
+                            letterSpacing="-0.4px"
+                        >
+                            {menuText}
+                        </Text>
+                        {/* menu item description */}
+                        <Text
+                            fontSize={0}
+                            fontWeight="regular"
+                            color="text.lightGray"
+                            letterSpacing="-0.4px"
+                        >
+                            <Truncate lines={2}>
+                                {menuTextToDescription[menuText]}
+                            </Truncate>
+                        </Text>
+                    </StyledDashboardMenuItem>
+                ))}
+            </StyledDashboardMenu>
+        </Card>
+    );
 
     render() {
         return (

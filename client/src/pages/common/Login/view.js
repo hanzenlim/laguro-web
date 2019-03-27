@@ -3,7 +3,7 @@ import * as Yup from 'yup';
 import { Wizard } from '@laguro/the-bright-side-components';
 import { Flex } from '@laguro/basic-components';
 
-import { RegisterOrLoginStep } from '../../KioskRegistrationPage/view';
+import { RegisterOrLoginStep } from '../../RegisterOrLoginStep';
 
 const steps = [
     {

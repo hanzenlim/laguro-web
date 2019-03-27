@@ -1,21 +1,14 @@
-import React, { Fragment } from 'react';
-import * as Yup from 'yup';
+import React from 'react';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 import { adopt } from 'react-adopt';
 import {
-    Wizard,
-    Progress,
-    PurposeOfVisit,
     Verification,
     GetPatientName,
-    PreviousButton,
 } from '@laguro/the-bright-side-components';
 import { Mutation } from 'react-apollo';
 import { message } from 'antd';
-import { withRouter } from 'react-router-dom';
 import validator from 'validator';
-import { Flex } from '@laguro/basic-components';
 
 import {
     SEND_KIOSK_LOGIN_CODE,
@@ -40,52 +33,6 @@ const Composed = adopt({
         <Mutation mutation={REGISTER_USER}>{render}</Mutation>
     ),
 });
-
-const progressSteps = [
-    '1 REGISTRATION',
-    '2 BOOK AN APPOINTMENT',
-    '3 MEDICAL HISTORY FORM',
-    '4 INSURANCE',
-];
-
-const steps = [
-    {
-        id: '0',
-        validationSchema: Yup.object().shape({
-            purposeOfVisit: Yup.string().required(
-                'You must select your purpose of visit.'
-            ),
-        }),
-        component: null,
-        initialValues: {
-            purposeOfVisit: 'walkIn',
-        },
-    },
-    {
-        id: '1',
-        validationSchema: Yup.object().shape({
-            firstName: Yup.string().when('mode', {
-                is: 'getName',
-                then: Yup.string().required(),
-            }),
-            lastName: Yup.string().when('mode', {
-                is: 'getName',
-                then: Yup.string().required(),
-            }),
-        }),
-        component: null,
-        initialValues: {
-            mode: 'signIn',
-            isPinValid: false,
-            emailOrPhoneNumber: '',
-            isCodeSent: false,
-            code: '',
-            firstName: '',
-            middleName: '',
-            lastName: '',
-        },
-    },
-];
 
 const validateEmail = email => {
     const re = /\S+@\S+\.\S+/;
@@ -139,8 +86,6 @@ const getRegisterResult = data => {
         token,
     };
 };
-
-const PurposeOfVisitStep = props => <PurposeOfVisit {...props} />;
 
 // TODO: Move to common folder
 export const RegisterOrLoginStep = props => (
@@ -454,53 +399,3 @@ export const RegisterOrLoginStep = props => (
         }}
     </Composed>
 );
-
-const render = props => {
-    let step = null;
-
-    switch (props.actions.currentStep) {
-        case '0':
-            step = PurposeOfVisitStep(props);
-            break;
-        case '1':
-            step = RegisterOrLoginStep(props);
-            break;
-        default:
-            step = PurposeOfVisitStep(props);
-    }
-
-    return (
-        <Flex
-            justifyContent="center"
-            mt="100px"
-            mx="auto"
-            width={['100%', '100%', '490px']}
-            px="20px"
-        >
-            {step}
-        </Flex>
-    );
-};
-
-const KioskOnboardingPage = componentProps => (
-    <Fragment>
-        {/* TODO: Move progress to a parent component */}
-        <Progress step={1} steps={progressSteps} percent={22.5} />
-        <Wizard
-            Form="form"
-            render={props => (
-                <React.Fragment>
-                    {props.actions.canGoBack && (
-                        <PreviousButton
-                            goToPreviousStep={props.actions.goToPreviousStep}
-                        />
-                    )}
-                    {render({ ...props, ...componentProps })}
-                </React.Fragment>
-            )}
-            steps={steps}
-        />
-    </Fragment>
-);
-
-export default withRouter(KioskOnboardingPage);

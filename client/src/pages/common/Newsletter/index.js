@@ -22,9 +22,8 @@ class Newsletter extends PureComponent {
 
                         if (_get(result, 'data.addEmailToWaitlist.id')) {
                             return true;
-                        } else {
-                            return false;
                         }
+                        return false;
                     };
 
                     return <SubscribeView onSuccess={onSuccess} />;
