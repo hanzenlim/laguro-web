@@ -73,7 +73,7 @@ As a Laguro Patient, you will have complete access to your oral health records, 
     {
         icon: <Image src={Maximize} alt="" />,
         title: 'MAXIMIZE YOUR DENTAL BENEFITS',
-        description: `We know that understanding your coverages and handling insurance claims paperwork is a headache.
+        description: `Trying to understand your coverages and handling insurance claims paperwork can be a headache.
 
 Our platform provides an up-front and easy-to-understand calculation of coverage and out-of-pocket payments based on your insurance. If you want to see an out-of-network dentist, then we will help you and your dentist to file your claim.`,
     },

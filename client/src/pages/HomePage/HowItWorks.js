@@ -21,35 +21,35 @@ const HOW_IT_WORKS_TEXTS = [
         title1: 'TELL US',
         title2: 'ABOUT YOURSELF',
         description:
-            'Answer the medical and insurance questions, and tell us about your dental problems when you sign up. We will take care of the rest.',
+            'Complete a few medical and insurance questionnaires, and tell us about your dental problems when you sign up. We’ll take care of the rest.',
     },
     {
         title1: 'FIND',
         title2: 'YOUR MATCH',
         description:
-            'We match you with the dentists whose prices, insurance coverages, locations, and times you’ll like most. Everything to ensure you find the best!',
+            "We’ll match you with the dentists whose prices, insurance coverage, locations, and times you’ll like most. We’ll do everything to ensure you'll find the best!",
     },
     {
         title1: 'MEET',
         title2: 'YOUR DENTIST',
         description:
-            'It’s time to meet your dentist to prepare and create a treatment plan that will solve your concerns.',
+            'Meet your dentist to create a customized treatment plan that will solve your oral health concerns.',
     },
     {
         title1: 'SMILE AGAIN',
         description:
-            'Sit, relax, and receive the appropriate treatment you’ve always deserved. Now, you can smile again!',
+            'Sit back, relax, and receive the best dental treatment you’ve always deserved. Now, you can smile again!',
     },
     {
         title1: "IT'S",
         title2: 'ALL YOURS',
         description:
-            'After your first treatment, you become a Laguro patient! And now you’ll be able to access and share your dental records anytime, anywhere.',
+            'After your first visit, you’re now a Laguro Patient! You’ll be able to access and share your dental records anytime, anywhere.',
     },
 ];
 
 const TabletGridProps = {
-    width: 327,
+    width: '100%',
     gridRowGap: 106,
     gridTemplateRows: `repeat(${HOW_IT_WORKS_NUM_STEPS / 2}, 252px)`,
 };

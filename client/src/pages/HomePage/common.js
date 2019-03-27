@@ -6,7 +6,7 @@ export const SectionHeading = props => (
         <Box>
             <Text
                 fontWeight="bold"
-                fontSize={[4, 5, '']}
+                fontSize={[4, '', 5]}
                 textAlign="center"
                 letterSpacing="-0.66px"
                 lineHeight="36px"

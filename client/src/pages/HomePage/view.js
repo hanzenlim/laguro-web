@@ -17,10 +17,6 @@ import tabletHomepageBackground from '../../images/homepageSearchBackground_tabl
 import { HowItWorks } from './HowItWorks';
 import { HowWeAreDiff } from './HowWeAreDiff';
 import { SectionHeading } from './common';
-import {
-    DENTIST_ONBOARDING_PROFILE_URL,
-    HOST_ONBOARDING_PAGE_URL_PREFIX,
-} from '../../util/urls';
 import desktopHotItWorksAI from '../../images/homepageHowItWorksAI_2560x420.png';
 import tabletHotItWorksAI from '../../images/homepageHowItWorksAI_1024x371.png';
 import mobileHotItWorksAI from '../../images/homepageHowItWorksAI_767x302.png';
@@ -29,6 +25,7 @@ import questionAI from '../../images/bubbles.png';
 import howWeAreDiffBackgroundMobile from '../../images/whatMakesUsDifferent_1024x1076.png';
 import aboutUsDesktop from '../../images/aboutUs_2560x631.png';
 import aboutUsMobile from '../../images/aboutUs_1024x323.png';
+import { BecomeAHostLink, BecomeADentistLink } from '../common/Links';
 
 const { Desktop, withScreenSizes } = Responsive;
 
@@ -54,26 +51,11 @@ const StyledFlex = styled(Flex)`
 
 const questionDescriptionProps = {
     mb: 30,
-    fontSize: [3, 3, 20],
+    fontSize: [3, 2, 20],
     maxWidth: ['unset', 'unset', 515],
     textAlign: ['left', 'center', ''],
-    height: ['auto', 145, 145],
+    height: ['auto', 26, 52],
 };
-
-const renderLink = (text1, text2) => (
-    <Text
-        color="text.blue"
-        fontSize={3}
-        letterSpacing="-0.49px"
-        textAlign={['', '', 'center']}
-    >
-        {text1}{' '}
-        <Text is="span" color="inherit" fontWeight="medium">
-            {text2}{' '}
-        </Text>
-        >
-    </Text>
-);
 
 const aboutUsTextProps = {
     color: 'text.white',
@@ -239,6 +221,7 @@ const HomePageView = props => {
                                         : 'auto'
                                 }
                                 gridRowGap={props.tabletMobileOnly ? 100 : 0}
+                                gridColumnGap={props.tabletOnly ? 10 : 0}
                             >
                                 <Flex
                                     justifyContent={[
@@ -254,18 +237,9 @@ const HomePageView = props => {
                                     <SectionHeading heading="Are you a dentist?" />
                                     <Text {...questionDescriptionProps}>
                                         Come join our team and work with us at a
-                                        local dental clinic near you. You can
-                                        start being your own boss by building
-                                        your list of patients and providing
-                                        premium services your patients have
-                                        always wanted!
+                                        local dental clinic near you.
                                     </Text>
-                                    <Link to={DENTIST_ONBOARDING_PROFILE_URL}>
-                                        {renderLink(
-                                            'Become a',
-                                            'Laguro dentist'
-                                        )}
-                                    </Link>
+                                    {BecomeADentistLink}
                                 </Flex>
                                 <Flex
                                     justifyContent={[
@@ -283,11 +257,7 @@ const HomePageView = props => {
                                         List your current practice and start
                                         earning passive income with us today.
                                     </Text>
-                                    <Link
-                                        to={`${HOST_ONBOARDING_PAGE_URL_PREFIX}/add-office`}
-                                    >
-                                        {renderLink('Become a', 'Laguro host')}
-                                    </Link>
+                                    {BecomeAHostLink}
                                 </Flex>
                             </Grid>
                         </Box>
