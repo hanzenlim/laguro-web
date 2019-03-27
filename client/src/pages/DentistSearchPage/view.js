@@ -85,7 +85,7 @@ const DentistSearchPageView = props => {
     const PADDING_FOR_BOX_SHADOWS_IN_PIXELS = 15;
 
     return (
-        <Box bg="background.whiteDarkSmoke" height="100%">
+        <Box height="100%">
             <Container
                 pt={[48, '', 160]}
                 px={[
@@ -110,44 +110,57 @@ const DentistSearchPageView = props => {
                     </Desktop>
                     {total > 0 && (
                         <Flex
-                            justifyContent="space-between"
-                            mb="18px"
+                            pb={16}
+                            width="100%"
+                            left="0"
                             px={[25, '', 0]}
+                            position={['relative', '', 'fixed']}
+                            zIndex="10"
+                            pt={[0, 0, 170]}
+                            top={['auto', '', 0]}
+                            bg="background.whiteDarkSmoke"
                         >
-                            <Text
-                                fontSize={['20px', '22px']}
-                                color="text.black"
-                            >
-                                {urlParams.location && 'Dentists near '}
-                                <Text display="inline-block" fontWeight="bold">
-                                    {urlParams.location}
-                                </Text>
-                                {urlParams.startTime && ' on '}
-                                {urlParams.startTime && (
+                            <Container px={[0, 0, 25]}>
+                                <Flex justifyContent="space-between">
                                     <Text
-                                        display="inline-block"
-                                        fontWeight="bold"
+                                        fontSize={['20px', '22px']}
+                                        color="text.black"
                                     >
-                                        {moment(urlParams.startTime).format(
-                                            'MMM D, YYYY'
+                                        {urlParams.location && 'Dentists near '}
+                                        <Text
+                                            display="inline-block"
+                                            fontWeight="bold"
+                                        >
+                                            {urlParams.location}
+                                        </Text>
+                                        {urlParams.startTime && ' on '}
+                                        {urlParams.startTime && (
+                                            <Text
+                                                display="inline-block"
+                                                fontWeight="bold"
+                                            >
+                                                {moment(
+                                                    urlParams.startTime
+                                                ).format('MMM D, YYYY')}
+                                            </Text>
                                         )}
                                     </Text>
-                                )}
-                            </Text>
-                            <Flex display={['none', '', 'flex']}>
-                                <Text
-                                    fontSize="16px"
-                                    color="text.black"
-                                    mr="13px"
-                                >
-                                    Map View
-                                </Text>
-                                <Switch onClick={toggleMap} />
-                            </Flex>
+                                    <Flex display={['none', '', 'flex']}>
+                                        <Text
+                                            fontSize="16px"
+                                            color="text.black"
+                                            mr="13px"
+                                        >
+                                            Map View
+                                        </Text>
+                                        <Switch onClick={toggleMap} />
+                                    </Flex>
+                                </Flex>
+                            </Container>
                         </Flex>
                     )}
                 </Box>
-                <Box mb={211}>
+                <Box pt={[0, 0, 60]}>
                     <Grid
                         gridColumnGap={['', '', '33px']}
                         gridTemplateColumns={[
@@ -158,7 +171,6 @@ const DentistSearchPageView = props => {
                     >
                         <Box>
                             <Box
-                                style={{ overflow: 'scroll' }}
                                 height={['auto', '', 'calc(100vh - 220px)']}
                                 p={[0, '', PADDING_FOR_BOX_SHADOWS_IN_PIXELS]}
                             >
@@ -174,9 +186,10 @@ const DentistSearchPageView = props => {
                         {total > 0 && showMap ? (
                             <Desktop>
                                 <Box
-                                    position="absolute"
+                                    position="fixed"
                                     transform="translateX(calc(100% + 34px))"
-                                    top="220px"
+                                    top={`${220 +
+                                        PADDING_FOR_BOX_SHADOWS_IN_PIXELS}px`}
                                     height="calc(100vh - 220px)"
                                     bottom="0"
                                 >

@@ -12,6 +12,11 @@
   cursor: pointer;
 }
 
+html,
+body {
+    background: #f8f8f8;
+}
+
 @media print {
     .ant-modal {
         margin: 0;
@@ -49,10 +54,10 @@
 /* Landscape */
 /* Declare the same value for min- and max-width to avoid colliding with desktops */
 /* Source: https://medium.com/connect-the-dots/css-media-queries-for-ipad-pro-8cad10e17106*/
-@media only screen 
-  and (min-device-width: 1024px) 
-  and (max-device-width: 1366px) 
-  and (orientation: landscape) 
+@media only screen
+  and (min-device-width: 1024px)
+  and (max-device-width: 1366px)
+  and (orientation: landscape)
   and (-webkit-min-device-pixel-ratio: 2) {
       html {
           zoom: 150%;
@@ -62,10 +67,10 @@
 
 /* ----------- iPad Pro 10.5" ----------- */
 /* ----------- Landscape mode" ----------- */
-@media only screen 
-  and (min-device-width: 1112px) 
-  and (max-device-width: 1112px) 
-  and (orientation: landscape) 
+@media only screen
+  and (min-device-width: 1112px)
+  and (max-device-width: 1112px)
+  and (orientation: landscape)
   and (-webkit-min-device-pixel-ratio: 2) {
       html {
           zoom: 150%;

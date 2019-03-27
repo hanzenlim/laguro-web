@@ -76,7 +76,7 @@ class SearchResultsList extends PureComponent {
         const type = isOffice ? OFFICES : DENTISTS;
 
         return (
-            <Flex flexDirection="column">
+            <Flex flexDirection="column" mb="100px">
                 {!data.length && (
                     <NoSearchResults
                         location={urlParams.location}
@@ -106,7 +106,7 @@ class SearchResultsList extends PureComponent {
                 >
                     {data.length
                         ? data.map(item => (
-                              <Box
+                              <Flex
                                   key={item.url}
                                   width={
                                       data.length === 1 && isOffice && showMap
@@ -138,7 +138,7 @@ class SearchResultsList extends PureComponent {
                                           }
                                       />
                                   )}
-                              </Box>
+                              </Flex>
                           ))
                         : null}
                 </Grid>

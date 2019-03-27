@@ -33,7 +33,7 @@ const OfficeSearchPageView = props => {
     } = props;
 
     return (
-        <Box bg="#f8f8f8" height="100%">
+        <Box height="100%">
             <Container pt={[48, '', 160]}>
                 <Desktop>
                     {matches =>
@@ -48,43 +48,73 @@ const OfficeSearchPageView = props => {
                     }
                 </Desktop>
                 {total > 0 && (
-                    <Flex justifyContent="space-between" mb="18px">
-                        {urlParams.text && !urlParams.location && (
-                            <Text
-                                fontSize={['20px', '22px']}
-                                color="text.black"
-                            >
-                                Search results for{' '}
-                                <Text display="inline-block" fontWeight="bold">
-                                    "{urlParams.text}"
-                                </Text>
-                            </Text>
-                        )}
+                    <Flex
+                        pb={16}
+                        width="100%"
+                        left="0"
+                        px={[25, '', 0]}
+                        position={['relative', '', 'fixed']}
+                        zIndex="10"
+                        pt={[0, 0, 170]}
+                        top={['auto', '', 0]}
+                        bg="background.whiteDarkSmoke"
+                    >
+                        <Container px={[0, 0, 25]}>
+                            <Flex justifyContent="space-between">
+                                {urlParams.text && !urlParams.location && (
+                                    <Text
+                                        fontSize={['20px', '22px']}
+                                        color="text.black"
+                                    >
+                                        Search results for{' '}
+                                        <Text
+                                            display="inline-block"
+                                            fontWeight="bold"
+                                        >
+                                            "{urlParams.text}"
+                                        </Text>
+                                    </Text>
+                                )}
 
-                        <Text fontSize={['20px', '22px']} color="text.black">
-                            {urlParams.location && 'Offices near '}
-                            <Text display="inline-block" fontWeight="bold">
-                                {urlParams.location}
-                            </Text>
-                            {urlParams.startTime && ' on '}
-                            {urlParams.startTime && (
-                                <Text display="inline-block" fontWeight="bold">
-                                    {moment(urlParams.startTime).format(
-                                        'MMM D, YYYY'
+                                <Text
+                                    fontSize={['20px', '22px']}
+                                    color="text.black"
+                                >
+                                    {urlParams.location && 'Offices near '}
+                                    <Text
+                                        display="inline-block"
+                                        fontWeight="bold"
+                                    >
+                                        {urlParams.location}
+                                    </Text>
+                                    {urlParams.startTime && ' on '}
+                                    {urlParams.startTime && (
+                                        <Text
+                                            display="inline-block"
+                                            fontWeight="bold"
+                                        >
+                                            {moment(urlParams.startTime).format(
+                                                'MMM D, YYYY'
+                                            )}
+                                        </Text>
                                     )}
                                 </Text>
-                            )}
-                        </Text>
 
-                        <Flex display={['none', '', 'flex']}>
-                            <Text fontSize="16px" color="text.black" mr="13px">
-                                Map View
-                            </Text>
-                            <Switch onClick={toggleMap} />
-                        </Flex>
+                                <Flex display={['none', '', 'flex']}>
+                                    <Text
+                                        fontSize="16px"
+                                        color="text.black"
+                                        mr="13px"
+                                    >
+                                        Map View
+                                    </Text>
+                                    <Switch onClick={toggleMap} />
+                                </Flex>
+                            </Flex>
+                        </Container>
                     </Flex>
                 )}
-                <Box mb={211}>
+                <Box pt={[0, 0, 60]}>
                     <Grid
                         gridColumnGap={['', '', '33px']}
                         gridTemplateColumns={[
@@ -94,10 +124,7 @@ const OfficeSearchPageView = props => {
                         ]}
                     >
                         <Box>
-                            <Box
-                                style={{ overflow: 'scroll' }}
-                                height={['auto', '', 'calc(100vh - 220px)']}
-                            >
+                            <Box height={['auto', '', 'calc(100vh - 220px)']}>
                                 <SearchResultsList
                                     data={data}
                                     total={total}
@@ -111,7 +138,7 @@ const OfficeSearchPageView = props => {
                         {total > 0 && showMap ? (
                             <Desktop>
                                 <Box
-                                    position="absolute"
+                                    position="fixed"
                                     transform="translateX(calc(100% + 34px))"
                                     top="220px"
                                     height="calc(100vh - 220px)"
