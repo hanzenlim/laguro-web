@@ -23,7 +23,7 @@ export const GET_OFFICE = gql`
                 options: {
                     rangeStart: "${moment()
                         .utc()
-                        .format()}", 
+                        .format()}",
                     rangeEnd: "${moment()
                         .utc()
                         .add(14, 'days')
@@ -42,11 +42,11 @@ export const GET_OFFICE = gql`
                     group
                 }
                 averageRating
-                availableAppointmentSlots( 
+                availableAppointmentSlots(
                     options: {
                         rangeStart: "${moment()
                             .utc()
-                            .format()}", 
+                            .format()}",
                         rangeEnd: "${moment()
                             .utc()
                             .add(14, 'days')
@@ -59,6 +59,7 @@ export const GET_OFFICE = gql`
                 }
                 firstAppointmentDuration
                 languages
+                acceptedInsurances
             }
         }
     }

@@ -173,8 +173,12 @@ class DentistListingCard extends PureComponent {
                                                     value={dentist.rating}
                                                 />
                                                 <Text ml={6} fontSize="12px">
-                                                    {dentist.ratingCount &&
-                                                        `(${dentist.ratingCount.toString()})`}
+                                                    {dentist.reviewCount &&
+                                                    dentist.reviewCount !== 0
+                                                        ? `(${
+                                                              dentist.reviewCount
+                                                          })`
+                                                        : ''}
                                                 </Text>
                                             </Flex>
                                         </Flex>

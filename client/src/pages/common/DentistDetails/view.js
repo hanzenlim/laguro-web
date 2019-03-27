@@ -1,6 +1,7 @@
 import React, { Fragment, PureComponent } from 'react';
 import Loadable from 'react-loadable';
 import _get from 'lodash/get';
+import _isEmpty from 'lodash/isEmpty';
 import {
     Flex,
     Image,
@@ -10,6 +11,7 @@ import {
     Truncate,
     Button,
     Responsive,
+    Icon,
 } from '../../../components';
 import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
 import { numMaxContainerWidth } from '../../../components/theme';
@@ -70,6 +72,7 @@ class DentistDetailsView extends PureComponent {
             isBookAppointmentVisible,
             toggleBookAppointment,
         } = this.props;
+
         const { contentWidth } = this.state;
 
         const isContentVisible = tabletMobileOnly
@@ -145,6 +148,52 @@ class DentistDetailsView extends PureComponent {
                                 {data.numReviews} reviews
                             </Text>
                         </Flex>
+                        {!_isEmpty(data.acceptedInsurances) && (
+                            <Flex
+                                mt={5}
+                                alignItems="center"
+                                flexDirection={['column', '', 'row']}
+                            >
+                                <Flex alignItems="center">
+                                    <Icon type="insurance" />
+                                    <Text fontSize={['12px', '14px']} ml="8px">
+                                        Accepts{' '}
+                                        {data.acceptedInsurances.length > 1
+                                            ? data.acceptedInsurances.map(
+                                                  (sp, index) =>
+                                                      index !==
+                                                      data.acceptedInsurances
+                                                          .length -
+                                                          1
+                                                          ? `${sp}, `
+                                                          : `and ${sp}`
+                                              )
+                                            : data.acceptedInsurances[0]}
+                                    </Text>
+                                </Flex>
+                            </Flex>
+                        )}
+                        {!_isEmpty(data.languages) && (
+                            <Flex
+                                alignItems="center"
+                                flexDirection={['column', '', 'row']}
+                            >
+                                <Flex alignItems="center">
+                                    <Icon type="languages" />
+                                    <Text fontSize={['12px', '14px']} ml="8px">
+                                        Speaks{' '}
+                                        {data.languages.length > 1
+                                            ? data.languages.map((sp, index) =>
+                                                  index !==
+                                                  data.languages.length - 1
+                                                      ? `${sp}, `
+                                                      : `and ${sp}`
+                                              )
+                                            : data.languages[0]}
+                                    </Text>
+                                </Flex>
+                            </Flex>
+                        )}
                     </Box>
                 </Flex>
 

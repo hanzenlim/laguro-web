@@ -36,6 +36,8 @@ class DentistDetails extends PureComponent {
             rating: dentist.averageRating,
             numReviews: dentist.numReviews,
             locations,
+            languages: dentist.languages,
+            acceptedInsurances: dentist.acceptedInsurances,
         };
 
         return (

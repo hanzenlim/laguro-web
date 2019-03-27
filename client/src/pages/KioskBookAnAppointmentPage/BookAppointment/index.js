@@ -124,6 +124,7 @@ class KioskBookAnAppointmentPage extends Component {
                                         lang.charAt(0).toUpperCase() +
                                         lang.toLowerCase().substr(1)
                                 ),
+                                insurance: dent.acceptedInsurances,
                             }))
                         )
                     );

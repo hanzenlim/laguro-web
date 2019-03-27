@@ -7,6 +7,8 @@ export const getDentistQuery = gql`
             id
             bio
             specialty
+            languages
+            acceptedInsurances
             procedures {
                 group
             }

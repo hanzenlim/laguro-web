@@ -245,7 +245,9 @@ class OfficeListingCard extends Component {
                                             />
                                             <Text ml={6} fontSize="12px">
                                                 {office.numReviews &&
-                                                    `(${office.numReviews.toString()})`}
+                                                office.numReviews !== 0
+                                                    ? `(${office.numReviews})`
+                                                    : ''}
                                             </Text>
                                         </Flex>
                                         <Text
