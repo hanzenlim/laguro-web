@@ -57,7 +57,7 @@ const questionDescriptionProps = {
     fontSize: [3, 3, 20],
     maxWidth: ['unset', 'unset', 515],
     textAlign: ['left', 'center', ''],
-    height: ['auto', '', 145],
+    height: ['auto', 145, 145],
 };
 
 const renderLink = (text1, text2) => (
@@ -254,7 +254,7 @@ const HomePageView = props => {
                                     <SectionHeading heading="Are you a dentist?" />
                                     <Text {...questionDescriptionProps}>
                                         Come join our team and work with us at a
-                                        local Dental Clinic near you. You can
+                                        local dental clinic near you. You can
                                         start being your own boss by building
                                         your list of patients and providing
                                         premium services your patients have
@@ -280,10 +280,8 @@ const HomePageView = props => {
                                 >
                                     <SectionHeading heading="Want to become a host?" />
                                     <Text {...questionDescriptionProps}>
-                                        Do you own a dental office? List your
-                                        current practice and become a Host to
-                                        start earning passive income with us
-                                        today.
+                                        List your current practice and start
+                                        earning passive income with us today.
                                     </Text>
                                     <Link
                                         to={`${HOST_ONBOARDING_PAGE_URL_PREFIX}/add-office`}

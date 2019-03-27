@@ -49,39 +49,47 @@ const HOW_WE_ARE_DIFF_COLUMN_GAP_IN_PIXELS = 14;
 
 const WHAT_MAKES_US_DIFF_TEXTS = [
     {
-        icon: <Image src={FlexibleTime} alt="" />,
-        title: 'Flexible Scheduling',
-        description: `We understand that you may not be able to commit to your future dentist appointment during business hours, as your work meetings and every day responsibilities are important.\nWe made it easier for you to now search and review dentists, and instantly book the next available appointment. If you are unable to make it to your next dentist appointment, then we can help you reschedule with no problems! We believe that scheduling dental visits should be fast, simple, and hassle-free`,
-    },
-    {
-        icon: <Image src={ConvenienceOfLoc} alt="" />,
-        title: 'Convenient locations',
-        description:
-            'We understand how time-consuming it can be to spend hours scrolling through the internet search pages and filtering out bars, restaurants, and salons just to find a dentist.\n We help you to alleviate this problem by providing a dental platform that allows you to find a local Dental Center that is fully equipped with x-ray machines, 3D scanners, 3d printers, and laboratory. We also partnered with different qualified dental offices to provide more location availabilities for you.',
-    },
-    {
         icon: <Image src={PriceTransparency} alt="" />,
         title: 'PRICE TRANSPARENCY',
-        description:
-            'We see the gimmicks and hidden fees for special dental offers on the internet and we understand how confusing this can be for you.\n Our platform helps to eliminate these blurred lines by providing estimates for the treatment prices up-front. We calculate by using a real price comparison database managed by Laguro dentists to show how much your treatment will cost before you commit.',
+        description: `People deserve to know how much something will cost before committing, especially this day in age.
+
+Our platform brings transparency by providing price estimates for your treatment up-front so you know how much it’ll cost before you commit. We calculate this by using a real-time price comparison database managed by Laguro Dentists.`,
     },
-    {
-        icon: <Image src={Maximize} alt="" />,
-        title: 'MAXIMIZE YOUR DENTAL BENEFITS',
-        description:
-            'We understand that taking care of post-treatment finances and handling insurance can be tough.\n We are committed to providing an up-front calculation of coverage and out-of-pocket payments based on your insurance, so that you can have one less thing to worry about. If you want to see a dentist that is out-of-network, then we will help you and your dentist to file your claim.',
-    },
+
     {
         icon: <Image src={Personalized} alt="" />,
         title: 'PERSONALIZED APPOINTMENT',
-        description:
-            'We understand that every person is unique. That’s why we believe you deserve the best care especially designed for you.\n Based on your selection of the procedure, location, time, and preferred language, we will help you to create the best care options available. This is made possible with our cutting-edge algorithm technology supported by a pool of available places and dentists.',
+        description: `Every smile is unique. That’s why we believe you deserve care specially designed for you.
+
+Based on your dental problem, location, time, and preferred language, we will curate the best appointment options. Our personalized appointments technology is powered by our own cutting-edge matching engine that brings you the right dentist for your specific needs.`,
     },
     {
         icon: <Image src={Ownership} alt="" />,
         title: 'OWNERSHIP OF YOUR DENTAL RECORDS',
-        description:
-            'We believe that all information generated for your dental treatments should belong to you.\n Being a Laguro patient, you will have access to your dental records, including being able to view your appointments, detailed treatment plans, payments, x-rays, dental charting, periochartings, and more. Our platform is in compliance with HIPAA and we respect your legal rights and privacy, so we promise to never share your valuable information.',
+        description: `We believe you should be in charge of your oral health records.
+
+As a Laguro Patient, you will have complete access to your oral health records, including being able to view your appointment history, detailed treatment plans and notes, payments, x-rays, and more. Your records are securely stored in compliance with HIPAA. We respect  your privacy, so we promise to never share your information.`,
+    },
+    {
+        icon: <Image src={Maximize} alt="" />,
+        title: 'MAXIMIZE YOUR DENTAL BENEFITS',
+        description: `We know that understanding your coverages and handling insurance claims paperwork is a headache.
+
+Our platform provides an up-front and easy-to-understand calculation of coverage and out-of-pocket payments based on your insurance. If you want to see an out-of-network dentist, then we will help you and your dentist to file your claim.`,
+    },
+    {
+        icon: <Image src={ConvenienceOfLoc} alt="" />,
+        title: 'Convenient locations',
+        description: `We know it's hard and time-consuming to find the right dentist near you.
+
+Laguro helps alleviate this problem by providing a dental platform that not only allows you to find a local dental center that is fully equipped with the latest technologies, but also providing you access to different dental offices so you can have more options to choose from.`,
+    },
+    {
+        icon: <Image src={FlexibleTime} alt="" />,
+        title: 'Flexible Scheduling',
+        description: `We live busy lives so fitting in dental appointments six months from now can be tricky.
+
+Laguro makes it super easy for you to search and review dentists, and instantly book the next available appointment. Rescheduling is not a problem; we believe this process should be fast, simple, and hassle-free.`,
     },
 ];
 
@@ -176,7 +184,6 @@ const WhatMakesUsDifferentCard = props => (
                     <span key={key}>
                         {item}
                         <br />
-                        <br />
                     </span>
                 ))}
             </Text>
@@ -236,7 +243,14 @@ export const HowWeAreDiff = withScreenSizes(props => (
                             }
                             key={index}
                         >
-                            {WHAT_MAKES_US_DIFF_TEXTS[num].description}
+                            {WHAT_MAKES_US_DIFF_TEXTS[num].description
+                                .split('\n')
+                                .map((item, key) => (
+                                    <span key={key}>
+                                        {item}
+                                        <br />
+                                    </span>
+                                ))}
                         </StyledPanel>
                     ))}
                 </StyledCollapse>
