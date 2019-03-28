@@ -1,4 +1,5 @@
 import fetch from 'node-fetch';
+import get from 'lodash/get';
 
 import { execute, makePromise } from 'apollo-link';
 import { createHttpLink } from 'apollo-link-http';
@@ -238,17 +239,19 @@ module.exports.useResetPasswordRequestVariable = (id, token, password) => ({
     },
 });
 
-const makeGraphQLRequest = async (query, variables, context = {}) => {
-    const result = makePromise(
+const makeGraphQLRequest = async (query, variables, context = {}) =>
+    makePromise(
         execute(link, {
             query: parse(query),
             variables,
             context,
         })
-    );
-
-    return result;
-};
+    )
+        .then(data => data)
+        .catch(error => {
+            const tokenError = get(error, 'result.stackTrace[0]');
+            throw new Error(tokenError || error);
+        });
 
 module.exports.makeQuery = makeGraphQLRequest;
 

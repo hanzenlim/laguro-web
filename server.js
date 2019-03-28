@@ -79,7 +79,18 @@ app.post('/api/graphql', cors(), async (req, res) => {
         );
         res.send(JSON.stringify(result));
     } catch (e) {
-        res.send(JSON.stringify(e));
+        // eslint-disable-next-line
+        console.log(e.message);
+        res.send(
+            JSON.stringify({
+                data: null,
+                errors: [
+                    {
+                        message: e.message,
+                    },
+                ],
+            })
+        );
     }
 });
 
