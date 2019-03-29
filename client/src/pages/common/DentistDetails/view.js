@@ -18,6 +18,7 @@ import { numMaxContainerWidth } from '../../../components/theme';
 import { withScreenSizes } from '../../../components/Responsive';
 import { setImageSizeToUrl } from '../../../util/imageUtil';
 import { formatAddress } from '../../../util/styleUtil';
+import styled from 'styled-components';
 
 const Map = Loadable({
     loader: () => import('../Map' /* webpackChunkName: "map" */),
@@ -36,6 +37,12 @@ const { TabletMobile, Desktop } = Responsive;
 const SIDEBAR_WIDTH = 460;
 const GUTTER = 34;
 const CONTAINER_PADDINGS = 50;
+
+const DefaultCursorButton = styled(Button)`
+    && {
+        cursor: default;
+    }
+`;
 
 class DentistDetailsView extends PureComponent {
     constructor(props) {
@@ -225,7 +232,7 @@ class DentistDetailsView extends PureComponent {
                         {data.procedures.length ? (
                             <Flex flexWrap="wrap" mb="34px">
                                 {data.procedures.map((procedure, index) => (
-                                    <Button
+                                    <DefaultCursorButton
                                         type="ghost"
                                         height={['auto', '', '50px']}
                                     >
@@ -247,7 +254,7 @@ class DentistDetailsView extends PureComponent {
                                                 {procedure}
                                             </Text>
                                         </Box>
-                                    </Button>
+                                    </DefaultCursorButton>
                                 ))}
                             </Flex>
                         ) : (
