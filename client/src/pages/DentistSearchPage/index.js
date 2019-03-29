@@ -162,7 +162,7 @@ class DetailsSearchPage extends PureComponent {
         const windowInnerWidth = window.innerWidth;
         const windowInnerHeight = window.innerHeight;
         const margins = windowInnerWidth - numMaxContainerWidth;
-        const verticalOffset = 256;
+        const verticalOffset = 180;
         const horizontalOffset = 41.5;
 
         return {

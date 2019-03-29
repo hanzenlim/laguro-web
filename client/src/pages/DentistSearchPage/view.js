@@ -87,7 +87,7 @@ const DentistSearchPageView = props => {
     return (
         <Box height="100%">
             <Container
-                pt={[48, '', 160]}
+                pt={[48, '', total === 0 ? 110 : 160]}
                 px={[
                     0,
                     0,
@@ -116,12 +116,26 @@ const DentistSearchPageView = props => {
                             px={[25, '', 0]}
                             position={['relative', '', 'fixed']}
                             zIndex="10"
-                            pt={[0, 0, 170]}
+                            pt={[0, 0, 120]}
                             top={['auto', '', 0]}
                             bg="background.whiteDarkSmoke"
                         >
                             <Container px={[0, 0, 25]}>
                                 <Flex justifyContent="space-between">
+                                    {urlParams.text && !urlParams.location && (
+                                        <Text
+                                            fontSize={['20px', '22px']}
+                                            color="text.black"
+                                        >
+                                            Search results for{' '}
+                                            <Text
+                                                display="inline-block"
+                                                fontWeight="bold"
+                                            >
+                                                "{urlParams.text}"
+                                            </Text>
+                                        </Text>
+                                    )}
                                     <Text
                                         fontSize={['20px', '22px']}
                                         color="text.black"
@@ -160,7 +174,7 @@ const DentistSearchPageView = props => {
                         </Flex>
                     )}
                 </Box>
-                <Box pt={[0, 0, 60]}>
+                <Box pt={0}>
                     <Grid
                         gridColumnGap={['', '', '33px']}
                         gridTemplateColumns={[
@@ -188,10 +202,6 @@ const DentistSearchPageView = props => {
                                 <Box
                                     position="fixed"
                                     transform="translateX(calc(100% + 34px))"
-                                    top={`${220 +
-                                        PADDING_FOR_BOX_SHADOWS_IN_PIXELS}px`}
-                                    height="calc(100vh - 220px)"
-                                    bottom="0"
                                 >
                                     <Map
                                         data={markers}

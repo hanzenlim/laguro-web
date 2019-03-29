@@ -34,7 +34,7 @@ const OfficeSearchPageView = props => {
 
     return (
         <Box height="100%">
-            <Container pt={[48, '', 160]}>
+            <Container pt={[48, '', total === 0 ? 110 : 160]}>
                 <Desktop>
                     {matches =>
                         matches ? null : (
@@ -55,7 +55,7 @@ const OfficeSearchPageView = props => {
                         px={[25, '', 0]}
                         position={['relative', '', 'fixed']}
                         zIndex="10"
-                        pt={[0, 0, 170]}
+                        pt={[0, 0, 120]}
                         top={['auto', '', 0]}
                         bg="background.whiteDarkSmoke"
                     >
@@ -114,7 +114,7 @@ const OfficeSearchPageView = props => {
                         </Container>
                     </Flex>
                 )}
-                <Box pt={[0, 0, 60]}>
+                <Box pt={0}>
                     <Grid
                         gridColumnGap={['', '', '33px']}
                         gridTemplateColumns={[
@@ -140,9 +140,6 @@ const OfficeSearchPageView = props => {
                                 <Box
                                     position="fixed"
                                     transform="translateX(calc(100% + 34px))"
-                                    top="220px"
-                                    height="calc(100vh - 220px)"
-                                    bottom="0"
                                 >
                                     <Map
                                         data={data}
