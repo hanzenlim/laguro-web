@@ -4,6 +4,8 @@ import { Helmet } from 'react-helmet';
 import _throttle from 'lodash/throttle';
 import _startCase from 'lodash/startCase';
 import _toLower from 'lodash/toLower';
+import _isArray from 'lodash/isArray';
+import _isEmpty from 'lodash/isEmpty';
 import queryString from 'query-string';
 import _get from 'lodash/get';
 import DentistSearchPageView from './view';
@@ -203,6 +205,25 @@ class DetailsSearchPage extends PureComponent {
         if (data.hits.hits.length > 0) {
             mappedData = data.hits.hits.map(item => {
                 const source = item._source;
+                let reservations = [];
+
+                if (
+                    _isArray(source.reservations) &&
+                    !_isEmpty(source.reservations)
+                ) {
+                    /**
+                     * Adding a small offset so that dentists' map markers
+                     * who has the same lat and long will be rendered in different area
+                     */
+
+                    reservations = source.reservations.map(res => ({
+                        ...res,
+                        geoPoint: {
+                            lat: res.geoPoint.lat + Math.random() / 1000,
+                            lon: res.geoPoint.lon,
+                        },
+                    }));
+                }
 
                 return {
                     id: source.id,
@@ -211,7 +232,7 @@ class DetailsSearchPage extends PureComponent {
                     rating: source.averageRating,
                     reviewCount: source.numReviews,
                     imageUrl: source.imageUrl,
-                    reservations: _get(source, 'reservations'),
+                    reservations,
                     address: formatAddress(
                         _get(source, 'reservations[0].address'),
                         _get(source, 'reservations[0].addressDetails')
