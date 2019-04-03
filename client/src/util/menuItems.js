@@ -1,8 +1,11 @@
+import cookies from 'browser-cookies';
+
 import {
     LOG_OUT_MENU_TEXT,
     // profile menu
     ACCOUNT_SETTINGS_MENU_TEXT,
     APPOINTMENTS_MENU_TEXT,
+    DENTAL_RECORDS_MENU_TEXT,
     MEDICAL_HISTORY_MENU_TEXT,
     INSURANCE_MENU_TEXT,
     PENDING_REQUESTS_MENU_TEXT,
@@ -36,12 +39,33 @@ import {
 } from './urls';
 import { getKeyFromText } from '../pages/Dashboard/utils';
 
+let user = cookies.get('user');
+if (user) {
+    user = JSON.parse(user);
+}
+
+const currentUrl = window.location.href;
+const getLinkUrl = () => {
+    if (currentUrl.includes('localhost')) {
+        return 'localhost:3020';
+    } else if (currentUrl.includes('laguro-stage')) {
+        return 'https://ltm.laguro-stage.com';
+    }
+    return 'https://ltm.laguro.com';
+};
+const LTM_LINK_BASE_URL = getLinkUrl();
+
+const LTM_URL = user
+    ? `${LTM_LINK_BASE_URL}/go?to=/chart&patientId=${user.id}`
+    : `${LTM_LINK_BASE_URL}/go?to=/chart`;
+
 // profile menu
 // unclassified means there is no section header for given menu texts
 const unclassfiedProfileMenuTexts = [ACCOUNT_SETTINGS_MENU_TEXT];
 
 const patientMenuTexts = [
     APPOINTMENTS_MENU_TEXT,
+    DENTAL_RECORDS_MENU_TEXT,
     MEDICAL_HISTORY_MENU_TEXT,
     INSURANCE_MENU_TEXT,
 ];
@@ -79,6 +103,7 @@ export const profileMenuTextToLinkTo = {
         }),
         {}
     ),
+    [DENTAL_RECORDS_MENU_TEXT]: LTM_URL,
     [LOG_OUT_MENU_TEXT]: '#',
     [BECOME_A_DENTIST_MENU_TEXT]: DENTIST_ONBOARDING_PROFILE_URL,
     [BECOME_A_HOST_MENU_TEXT]: `${HOST_ONBOARDING_PAGE_URL_PREFIX}/add-office`,
@@ -130,8 +155,6 @@ export const dentistMenuSections = [
     { dividerText: 'Appointments', menuTexts: apptsMenuTexts },
     { dividerText: '', menuTexts: unclassfiedDentistMenuTexts3 },
 ];
-
-const currentUrl = window.location.href;
 
 // an object whose key is menu text and value is url which it links to. e.g. { Account Settings: '/dashboard/patient?selectedTab=account_settings' }
 export const dentistMenuTextToLinkTo = {
