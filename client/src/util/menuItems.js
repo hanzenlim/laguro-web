@@ -34,19 +34,11 @@ import {
     HOST_ONBOARDING_PAGE_URL_PREFIX,
     DENTIST_ONBOARDING_PROFILE_URL,
     OFFICE_SEARCH_PAGE_URL,
+    getLTMBaseUrl,
 } from './urls';
 import { getKeyFromText } from '../pages/Dashboard/utils';
 
-const currentUrl = window.location.href;
-const getLinkUrl = () => {
-    if (currentUrl.includes('localhost')) {
-        return 'localhost:3020';
-    } else if (currentUrl.includes('laguro-stage')) {
-        return 'https://ltm.laguro-stage.com';
-    }
-    return 'https://ltm.laguro.com';
-};
-const LTM_LINK_BASE_URL = getLinkUrl();
+const LTM_LINK_BASE_URL = getLTMBaseUrl();
 
 const LTM_URL = `${LTM_LINK_BASE_URL}/go?to=/chart`;
 
@@ -162,9 +154,7 @@ export const dentistMenuTextToLinkTo = {
     ),
     // add special urls here
     [CALENDAR_MENU_TEXT]: DENTIST_PROFILE_PAGE_URL,
-    [LAGURO_TREATMENT_MODULE_MENU_TEXT]: currentUrl.includes('laguro-stage')
-        ? 'http://ltm.laguro-stage.com/'
-        : 'http://ltm.laguro.com/',
+    [LAGURO_TREATMENT_MODULE_MENU_TEXT]: getLTMBaseUrl(),
     [SEARCH_FOR_CHAIRS_MENU_TEXT]: OFFICE_SEARCH_PAGE_URL,
 };
 

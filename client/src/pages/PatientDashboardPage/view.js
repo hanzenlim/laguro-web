@@ -19,6 +19,7 @@ import {
     LOG_OUT_MENU_TEXT,
 } from '../../util/strings';
 import { profileMenuTexts } from '../../util/menuItems';
+import { getLTMBaseUrl } from '../../util/urls';
 import { onLogout } from '../../util/authUtils';
 import KioskMedicalHistoryFormPage from '../KioskMedicalHistoryFormPage';
 import KioskInsurancePage from '../KioskInsurancePage';
@@ -52,16 +53,7 @@ const menuTextToDescription = {
     [LOG_OUT_MENU_TEXT]: 'Log out from platform',
 };
 
-const currentUrl = window.location.href;
-const getLinkUrl = () => {
-    if (currentUrl.includes('localhost')) {
-        return 'localhost:3020';
-    } else if (currentUrl.includes('laguro-stage')) {
-        return 'https://ltm.laguro-stage.com';
-    }
-    return 'https://ltm.laguro.com';
-};
-const LTM_LINK_BASE_URL = getLinkUrl();
+const LTM_LINK_BASE_URL = getLTMBaseUrl();
 
 class PatientDashboardPageView extends Component {
     constructor(props) {
