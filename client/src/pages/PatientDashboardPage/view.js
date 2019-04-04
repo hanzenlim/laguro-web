@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-import cookies from 'browser-cookies';
 import { Box, Text, Card, Truncate } from '@laguro/basic-components';
 import _isEmpty from 'lodash/isEmpty';
 import queryString from 'query-string';
@@ -53,11 +52,6 @@ const menuTextToDescription = {
     [LOG_OUT_MENU_TEXT]: 'Log out from platform',
 };
 
-let user = cookies.get('user');
-if (user) {
-    user = JSON.parse(user);
-}
-
 const currentUrl = window.location.href;
 const getLinkUrl = () => {
     if (currentUrl.includes('localhost')) {
@@ -91,9 +85,7 @@ class PatientDashboardPageView extends Component {
 
     // add new searchParams to render next panel
     handleClick = ({ key }) => {
-        const url = user
-            ? `${LTM_LINK_BASE_URL}/go?to=/chart&patientId=${user.id}`
-            : `${LTM_LINK_BASE_URL}/go?to=/chart`;
+        const url = `${LTM_LINK_BASE_URL}/go?to=/chart`;
         if (key === DENTAL_RECORDS_MENU_TEXT) {
             window.open(url, '_blank');
             return null;

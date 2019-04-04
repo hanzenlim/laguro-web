@@ -1,5 +1,3 @@
-import cookies from 'browser-cookies';
-
 import {
     LOG_OUT_MENU_TEXT,
     // profile menu
@@ -39,11 +37,6 @@ import {
 } from './urls';
 import { getKeyFromText } from '../pages/Dashboard/utils';
 
-let user = cookies.get('user');
-if (user) {
-    user = JSON.parse(user);
-}
-
 const currentUrl = window.location.href;
 const getLinkUrl = () => {
     if (currentUrl.includes('localhost')) {
@@ -55,9 +48,7 @@ const getLinkUrl = () => {
 };
 const LTM_LINK_BASE_URL = getLinkUrl();
 
-const LTM_URL = user
-    ? `${LTM_LINK_BASE_URL}/go?to=/chart&patientId=${user.id}`
-    : `${LTM_LINK_BASE_URL}/go?to=/chart`;
+const LTM_URL = `${LTM_LINK_BASE_URL}/go?to=/chart`;
 
 // profile menu
 // unclassified means there is no section header for given menu texts
