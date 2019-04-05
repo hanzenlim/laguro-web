@@ -12,11 +12,6 @@
   cursor: pointer;
 }
 
-html,
-body {
-    background: #f8f8f8;
-}
-
 @media print {
     .ant-modal {
         margin: 0;

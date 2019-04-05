@@ -9,6 +9,10 @@ export const getUserQuery = gql`
             middleName
             lastName
             phoneNumber
+            languages
+            gender
+            dob
+            email
             notificationSettings {
                 general {
                     email

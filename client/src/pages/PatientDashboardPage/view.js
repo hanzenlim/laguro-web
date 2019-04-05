@@ -3,6 +3,7 @@ import { Box, Text, Card, Truncate } from '@laguro/basic-components';
 import _isEmpty from 'lodash/isEmpty';
 import queryString from 'query-string';
 import UpdateProfileForm from '../../pages/common/Forms/UpdateProfileForm';
+import ContactInformationForm from '../../pages/common/Forms/ContactInformationForm';
 import PaymentHistory from '../common/PaymentHistory';
 import PatientAppointments from '../common/PatientAppointments';
 import ProcedurePaymentRequestPage from '../../pages/ProcedurePaymentRequestPage';
@@ -95,50 +96,106 @@ class PatientDashboardPageView extends Component {
         this.setState({ showMedicalHistoryConfirmation: true }); // this will cause a re-render to show medicalHistoryConfirmation
     };
 
+    renderPanelHeader = key => (
+        <Box
+            borderBottom="solid 0.5px"
+            borderColor="divider.gray"
+            width="auto"
+            mb={30}
+            // Hacky implementation for custom position of card heading
+            mx={-22}
+            mt={-28}
+            pt={15}
+            pl={10}
+        >
+            <Text
+                color="text.lightGray"
+                opacity="0.6"
+                mb={15}
+                fontWeight="normal"
+                fontSize={1}
+            >
+                {key}
+            </Text>
+        </Box>
+    );
+
     renderPanel = key => {
         const { userId } = this.props;
 
         let panelContent;
-        let TabletMobileContainerComponent = Container;
-
         switch (key) {
             case ACCOUNT_SETTINGS_MENU_TEXT:
-                panelContent = <UpdateProfileForm />;
-                TabletMobileContainerComponent = Fragment;
+                panelContent = (
+                    <Box>
+                        <Card>
+                            {this.renderPanelHeader('Account Settings')}
+                            <UpdateProfileForm />
+                        </Card>
+                        <Box mb="13px" />
+                        <Card>
+                            {this.renderPanelHeader('Contact Information')}
+                            <ContactInformationForm />
+                        </Card>
+                    </Box>
+                );
                 break;
             case APPOINTMENTS_MENU_TEXT:
-                panelContent = <PatientAppointments />;
-                TabletMobileContainerComponent = Fragment;
+                panelContent = (
+                    <Card>
+                        {this.renderPanelHeader(key)}
+                        <PatientAppointments />
+                    </Card>
+                );
                 break;
             case MEDICAL_HISTORY_MENU_TEXT:
                 panelContent = (
-                    <KioskMedicalHistoryFormPage
-                        onFinish={this.onMedicalHistoryFormComplete} // to render confirmation panel on finish
-                        fromPatientDashboard={true}
-                        withoutProgressBar={true}
-                        cannotSkip={true} // medical history form has a skip to insurance button. does not make sense to skip to insurance in medical history panel
-                    />
+                    <Card>
+                        {this.renderPanelHeader(key)}
+                        <KioskMedicalHistoryFormPage
+                            onFinish={this.onMedicalHistoryFormComplete} // to render confirmation panel on finish
+                            fromPatientDashboard={true}
+                            withoutProgressBar={true}
+                            cannotSkip={true} // medical history form has a skip to insurance button. does not make sense to skip to insurance in medical history panel
+                        />
+                    </Card>
                 );
                 break;
             case INSURANCE_MENU_TEXT:
                 panelContent = (
-                    <KioskInsurancePage
-                        onFinish={this.onInsuranceFormComplete} // to render confirmation panel on finish
-                        fromPatientDashboard={true}
-                        withoutProgressBar={true}
-                    />
+                    <Card>
+                        {this.renderPanelHeader(key)}
+                        <KioskInsurancePage
+                            onFinish={this.onInsuranceFormComplete} // to render confirmation panel on finish
+                            fromPatientDashboard={true}
+                            withoutProgressBar={true}
+                        />
+                    </Card>
                 );
-                TabletMobileContainerComponent = Fragment;
                 break;
             case PENDING_REQUESTS_MENU_TEXT:
-                panelContent = <ProcedurePaymentRequestPage />;
+                panelContent = (
+                    <Card>
+                        {this.renderPanelHeader(key)}
+                        <ProcedurePaymentRequestPage />
+                    </Card>
+                );
                 break;
             case RECEIPTS_MENU_TEXT:
-                panelContent = <PaymentHistory userId={userId} />;
-                TabletMobileContainerComponent = Fragment;
+                panelContent = (
+                    <Card>
+                        {this.renderPanelHeader(key)}
+                        <PaymentHistory userId={userId} />
+                    </Card>
+                );
                 break;
             case PAYMENT_METHODS_MENU_TEXT:
-                panelContent = <PaymentMethods />;
+                panelContent = (
+                    <Card>
+                        {this.renderPanelHeader(key)}
+                        <PaymentMethods />
+                    </Card>
+                );
                 break;
             case LOG_OUT_MENU_TEXT:
                 onLogout();
@@ -146,27 +203,8 @@ class PatientDashboardPageView extends Component {
             default:
         }
 
-        const ContainerComponent = this.props.tabletMobileOnly
-            ? TabletMobileContainerComponent
-            : Card;
-
         return (
-            <ContainerComponent>
-                <Desktop>
-                    <Box
-                        borderBottom="solid 0.5px"
-                        borderColor="divider.gray"
-                        width="100%"
-                        mb={30}
-                    >
-                        <Text mb={15} fontWeight="bold" fontSize={1}>
-                            {key}
-                        </Text>
-                    </Box>
-                </Desktop>
-
-                {this.renderPanelContent(panelContent)}
-            </ContainerComponent>
+            <Box pt={[10, '', 0]}>{this.renderPanelContent(panelContent)}</Box>
         );
     };
 
@@ -230,17 +268,6 @@ class PatientDashboardPageView extends Component {
         return (
             <Fragment>
                 <TabletMobile>
-                    <Container>
-                        <Text
-                            fontSize={1}
-                            color="text.blue"
-                            fontWeight="bold"
-                            lineHeight={2.86}
-                            my={8}
-                        >
-                            {this.props.panel}
-                        </Text>
-                    </Container>
                     <Box pb={50}>{this.renderPanel(this.props.panel)}</Box>
                 </TabletMobile>
                 <Desktop>

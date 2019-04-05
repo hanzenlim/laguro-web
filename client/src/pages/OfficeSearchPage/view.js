@@ -57,7 +57,6 @@ const OfficeSearchPageView = props => {
                         zIndex="10"
                         pt={[0, 0, 120]}
                         top={['auto', '', 0]}
-                        bg="background.whiteDarkSmoke"
                     >
                         <Container px={[0, 0, 25]}>
                             <Flex justifyContent="space-between">
