@@ -122,3 +122,14 @@ export const getPageType = (pathname = history.location.pathname) => {
         return DENTIST_AND_HOST_PAGE_TYPE;
     }
 };
+
+export const getLTMBaseUrl = () => {
+    const currentUrl = window.location.href;
+
+    if (currentUrl.includes('localhost')) {
+        return 'localhost:3020';
+    } else if (currentUrl.includes('laguro-stage')) {
+        return 'https://ltm.laguro-stage.com';
+    }
+    return 'https://ltm.laguro.com';
+};

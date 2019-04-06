@@ -11,6 +11,7 @@ import {
     // profile menu
     ACCOUNT_SETTINGS_MENU_TEXT,
     APPOINTMENTS_MENU_TEXT,
+    DENTAL_RECORDS_MENU_TEXT,
     MEDICAL_HISTORY_MENU_TEXT,
     INSURANCE_MENU_TEXT,
     PENDING_REQUESTS_MENU_TEXT,
@@ -19,6 +20,7 @@ import {
     LOG_OUT_MENU_TEXT,
 } from '../../util/strings';
 import { profileMenuTexts } from '../../util/menuItems';
+import { getLTMBaseUrl } from '../../util/urls';
 import { onLogout } from '../../util/authUtils';
 import KioskMedicalHistoryFormPage from '../KioskMedicalHistoryFormPage';
 import KioskInsurancePage from '../KioskInsurancePage';
@@ -39,6 +41,8 @@ const menuTextToDescription = {
     [ACCOUNT_SETTINGS_MENU_TEXT]:
         'View and edit your general information and notification settings ',
     [APPOINTMENTS_MENU_TEXT]: 'View your upcoming dentist visits',
+    [DENTAL_RECORDS_MENU_TEXT]:
+        'View your previous treatment details, dental charts, and x-rays',
     [MEDICAL_HISTORY_MENU_TEXT]:
         'View and edit your medical history information',
     [INSURANCE_MENU_TEXT]: 'View and edit your dental insurance information',
@@ -49,6 +53,8 @@ const menuTextToDescription = {
     [PAYMENT_METHODS_MENU_TEXT]: 'Manage your payment options',
     [LOG_OUT_MENU_TEXT]: 'Log out from platform',
 };
+
+const LTM_LINK_BASE_URL = getLTMBaseUrl();
 
 class PatientDashboardPageView extends Component {
     constructor(props) {
@@ -72,6 +78,12 @@ class PatientDashboardPageView extends Component {
 
     // add new searchParams to render next panel
     handleClick = ({ key }) => {
+        const url = `${LTM_LINK_BASE_URL}/go?to=/chart`;
+        if (key === DENTAL_RECORDS_MENU_TEXT) {
+            window.open(url, '_blank');
+            return null;
+        }
+
         const params = queryString.parse(window.location.search);
         const newParams = {
             ...params,

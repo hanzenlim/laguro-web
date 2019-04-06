@@ -12,6 +12,7 @@ import {
     BECOME_A_HOST_MENU_TEXT,
     LAGURO_TREATMENT_MODULE_MENU_TEXT,
     CALENDAR_MENU_TEXT,
+    DENTAL_RECORDS_MENU_TEXT,
 } from '../../../util/strings';
 import { withScreenSizes } from '../../../components/Responsive';
 
@@ -224,10 +225,16 @@ const Menus = props => {
                     )
                     .map(menuText => {
                         // ltm link should open in another tab, and it's an external link
-                        const linkProps =
-                            menuText === LAGURO_TREATMENT_MODULE_MENU_TEXT
-                                ? { isExternal: true, target: '_blank' }
-                                : {};
+                        const linkProps = [
+                            LAGURO_TREATMENT_MODULE_MENU_TEXT,
+                            DENTAL_RECORDS_MENU_TEXT,
+                        ].includes(menuText)
+                            ? {
+                                  isExternal: true,
+                                  target: '_blank',
+                                  rel: 'noopener',
+                              }
+                            : {};
 
                         return [
                             <StyledMenuItem p={menuItemPadding}>

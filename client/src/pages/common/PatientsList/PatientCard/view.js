@@ -17,6 +17,7 @@ import { ContainerPaddingInPixels } from '../../../../components/Container';
 import { withScreenSizes } from '../../../../components/Responsive';
 import { secureFilestackKey } from '../../../../config/keys';
 import { resizeSecureImage } from '../../../../util/imageUtil';
+import { getLTMBaseUrl } from '../../../../util/urls';
 
 const imageBoxHeight = 94;
 const maxImageNum = 4;
@@ -41,16 +42,7 @@ const StyledBox = styled(Box)`
     }
 `;
 
-const currentUrl = window.location.href;
-const getLinkUrl = () => {
-    if (currentUrl.includes('localhost')) {
-        return 'localhost:3020';
-    } else if (currentUrl.includes('laguro-stage')) {
-        return 'https://ltm.laguro-stage.com';
-    }
-    return 'https://ltm.laguro.com';
-};
-const LTM_LINK_BASE_URL = getLinkUrl();
+const LTM_LINK_BASE_URL = getLTMBaseUrl();
 
 class PatientCard extends PureComponent {
     renderUploadedImages = () => {

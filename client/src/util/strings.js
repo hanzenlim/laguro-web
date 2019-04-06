@@ -101,6 +101,7 @@ export const MY_CALENDAR_MENU = 'My calendar';
 // used in header profile/patient link and in patient dashboard
 export const ACCOUNT_SETTINGS_MENU_TEXT = 'Account settings';
 export const APPOINTMENTS_MENU_TEXT = 'Appointments';
+export const DENTAL_RECORDS_MENU_TEXT = 'Dental Records';
 export const MEDICAL_HISTORY_MENU_TEXT = 'Medical history';
 export const INSURANCE_MENU_TEXT = 'Insurance';
 export const PENDING_REQUESTS_MENU_TEXT = 'Pending requests';
