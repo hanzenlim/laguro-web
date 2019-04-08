@@ -7,6 +7,7 @@ import {
     hasSkippedMedicalHistoryFormCookieVariableName,
     LAGURO_AUTH_TOKEN,
 } from './strings';
+import { KIOSK_REG_PAGE_URL } from './urls';
 
 const domain = process.env.REACT_APP_DOMAIN_NAME_FOR_COOKIE;
 
@@ -105,7 +106,7 @@ export const sendPassResetLink = (values, onSuccess) =>
 
 export const onLogout = () => {
     // eslint-disable-next-line
-    window && window.Intercom('shutdown');
+    // window && window.Intercom('shutdown');
     // eslint-disable-next-line
     window.localStorage && window.localStorage.clear();
 
@@ -113,7 +114,16 @@ export const onLogout = () => {
     history.push('/');
 };
 
+export const onLogoutWithoutRedirect = () => {
+    // eslint-disable-next-line
+    // window && window.Intercom('shutdown');
+    // eslint-disable-next-line
+    window.localStorage && window.localStorage.clear();
+
+    eraseCookieSession();
+};
+
 export const onKioskLogout = async () => {
     eraseCookieSession();
-    history.push('/kiosk/registration');
+    history.push(KIOSK_REG_PAGE_URL);
 };

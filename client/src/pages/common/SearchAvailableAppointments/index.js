@@ -14,7 +14,7 @@ class SearchAvailableAppointmentsContainer extends PureComponent {
         const urlParams = queryString.parse(history.location.search);
 
         this.state = {
-            hasFiltered: urlParams.startTime ? true : false,
+            hasFiltered: !!urlParams.startTime,
             filters: {
                 time: null,
                 date: urlParams.startTime || null,

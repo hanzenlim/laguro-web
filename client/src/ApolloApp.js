@@ -12,7 +12,6 @@ const client = new ApolloClient({
     uri: process.env.REACT_APP_API_URL,
     request: async operation => {
         const token = cookies.get(LAGURO_AUTH_TOKEN);
-
         operation.setContext({
             headers: {
                 Authorization: token ? `Bearer ${token}` : '',

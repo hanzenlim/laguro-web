@@ -138,16 +138,13 @@ class BalanceHistoryContainer extends PureComponent {
 
                     // to show only reservation payment objects for host persona, and procedure payment objects for dentist persona
                     const paymentsFilteredByPersona = allPayments.filter(
-                        payment => {
-                            return (
-                                (persona === HOST &&
-                                    _get(payment, 'type') ===
-                                        RESERVATION_PAYMENT_TYPE) ||
-                                (persona === DENTIST &&
-                                    _get(payment, 'type') ===
-                                        PROCEDURE_SET_HISTORY_PAYMENT_TYPE)
-                            );
-                        }
+                        payment =>
+                            (persona === HOST &&
+                                _get(payment, 'type') ===
+                                    RESERVATION_PAYMENT_TYPE) ||
+                            (persona === DENTIST &&
+                                _get(payment, 'type') ===
+                                    PROCEDURE_SET_HISTORY_PAYMENT_TYPE)
                     );
 
                     const totalAvailable = paymentsFilteredByPersona.reduce(

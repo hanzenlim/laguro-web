@@ -40,9 +40,8 @@ const getAnswer = answer => {
         return false;
     } else if (answer === null) {
         return '';
-    } else {
-        return answer;
     }
+    return answer;
 };
 
 const getInitialValues = (questions, answers = []) => {
@@ -60,191 +59,168 @@ const getInitialValues = (questions, answers = []) => {
     return initialValues;
 };
 
-const steps = answers => {
-    return [
-        {
-            id: 'LastDentalExam',
-            validationSchema: Yup.object().shape({}),
-            component: null,
-            initialValues: getInitialValues(LastDentalExam.questions, answers),
-        },
-        {
-            id: 'LastDentalExamProcedure',
-            validationSchema: Yup.object().shape({}),
-            component: null,
-            initialValues: getInitialValues(
-                LastDentalExamProcedure.questions,
-                answers
+const steps = answers => [
+    {
+        id: 'LastDentalExam',
+        validationSchema: Yup.object().shape({}),
+        component: null,
+        initialValues: getInitialValues(LastDentalExam.questions, answers),
+    },
+    {
+        id: 'LastDentalExamProcedure',
+        validationSchema: Yup.object().shape({}),
+        component: null,
+        initialValues: getInitialValues(
+            LastDentalExamProcedure.questions,
+            answers
+        ),
+    },
+    {
+        id: 'DoctorGeneralInformation',
+        validationSchema: Yup.object().shape({
+            'Physician address': Yup.string(),
+            'Physician name': Yup.string(),
+            'Physician phone number': Yup.string(),
+        }),
+        component: null,
+        initialValues: getInitialValues(
+            DoctorGeneralInformation.questions,
+            answers
+        ),
+    },
+    {
+        id: 'GeneralHealth',
+        validationSchema: Yup.object().shape({
+            'Any changes in your general health within the past year?': Yup.string().required(
+                'Required'
             ),
-        },
-        {
-            id: 'DoctorGeneralInformation',
-            validationSchema: Yup.object().shape({
-                'Physician address': Yup.string(),
-                'Physician name': Yup.string(),
-                'Physician phone number': Yup.string(),
-            }),
-            component: null,
-            initialValues: getInitialValues(
-                DoctorGeneralInformation.questions,
-                answers
+            'Any changes in your general health within the past year? (Explanation)': Yup.string(),
+            'Are you being treated for any conditions? If yes, please list': Yup.string().required(
+                'Required'
             ),
-        },
-        {
-            id: 'GeneralHealth',
-            validationSchema: Yup.object().shape({
-                'Any changes in your general health within the past year?': Yup.string().required(
-                    'Required'
-                ),
-                'Any changes in your general health within the past year? (Explanation)': Yup.string(),
-                'Are you being treated for any conditions? If yes, please list': Yup.string().required(
-                    'Required'
-                ),
-                'Are you currently taking any prescription or over the counter medicine(s)?': Yup.string().required(
-                    'Required'
-                ),
-                'Are you in good health?': Yup.string().required('Required'),
-                'Have you been hospitalized in the past 5 years?': Yup.string().required(
-                    'Required'
-                ),
-                'When was your last physical exam? (Month)': Yup.string(),
-                'When was your last physical exam? (Year)': Yup.string(),
-            }),
-            component: null,
-            initialValues: getInitialValues(GeneralHealth.questions, answers),
-        },
-        {
-            id: 'GeneralMedicalInfo1',
-            validationSchema: Yup.object().shape({}),
-            component: null,
-            initialValues: getInitialValues(
-                GeneralMedicalInfo1.questions,
-                answers
+            'Are you currently taking any prescription or over the counter medicine(s)?': Yup.string().required(
+                'Required'
             ),
-        },
-        {
-            id: 'GeneralMedicalInfo2',
-            validationSchema: Yup.object().shape({}),
-            component: null,
-            initialValues: getInitialValues(
-                GeneralMedicalInfo2.questions,
-                answers
+            'Are you in good health?': Yup.string().required('Required'),
+            'Have you been hospitalized in the past 5 years?': Yup.string().required(
+                'Required'
             ),
-        },
-        {
-            id: 'WomenOnly',
-            validationSchema: Yup.object().shape({}),
-            component: null,
-            initialValues: getInitialValues(WomenOnly.questions, answers),
-        },
-        {
-            id: 'GeneralDentalInfo1',
-            validationSchema: Yup.object().shape({}),
-            component: null,
-            initialValues: getInitialValues(
-                GeneralDentalInfo1.questions,
-                answers
+            'When was your last physical exam? (Month)': Yup.string(),
+            'When was your last physical exam? (Year)': Yup.string(),
+        }),
+        component: null,
+        initialValues: getInitialValues(GeneralHealth.questions, answers),
+    },
+    {
+        id: 'GeneralMedicalInfo1',
+        validationSchema: Yup.object().shape({}),
+        component: null,
+        initialValues: getInitialValues(GeneralMedicalInfo1.questions, answers),
+    },
+    {
+        id: 'GeneralMedicalInfo2',
+        validationSchema: Yup.object().shape({}),
+        component: null,
+        initialValues: getInitialValues(GeneralMedicalInfo2.questions, answers),
+    },
+    {
+        id: 'WomenOnly',
+        validationSchema: Yup.object().shape({}),
+        component: null,
+        initialValues: getInitialValues(WomenOnly.questions, answers),
+    },
+    {
+        id: 'GeneralDentalInfo1',
+        validationSchema: Yup.object().shape({}),
+        component: null,
+        initialValues: getInitialValues(GeneralDentalInfo1.questions, answers),
+    },
+    {
+        id: 'GeneralDentalInfo2',
+        validationSchema: Yup.object().shape({}),
+        component: null,
+        initialValues: getInitialValues(GeneralDentalInfo2.questions, answers),
+    },
+    {
+        id: 'DrugAllergies',
+        validationSchema: Yup.object().shape({}),
+        component: null,
+        initialValues: getInitialValues(DrugAllergies.questions, answers),
+    },
+    {
+        id: 'UrgentHeartConditions',
+        validationSchema: Yup.object().shape({}),
+        component: null,
+        initialValues: getInitialValues(
+            UrgentHeartConditions.questions,
+            answers
+        ),
+    },
+    {
+        id: 'OtherHeartConditions',
+        validationSchema: Yup.object().shape({}),
+        component: null,
+        initialValues: getInitialValues(
+            OtherHeartConditions.questions,
+            answers
+        ),
+    },
+    {
+        id: 'BloodDisorders',
+        validationSchema: Yup.object().shape({}),
+        component: null,
+        initialValues: getInitialValues(BloodDisorders.questions, answers),
+    },
+    {
+        id: 'NutritionalDiseases',
+        validationSchema: Yup.object().shape({}),
+        component: null,
+        initialValues: getInitialValues(NutritionalDiseases.questions, answers),
+    },
+    {
+        id: 'ImmuneAndCancer',
+        validationSchema: Yup.object().shape({}),
+        component: null,
+        initialValues: getInitialValues(ImmuneAndCancer.questions, answers),
+    },
+    {
+        id: 'RespiratoryDisorders',
+        validationSchema: Yup.object().shape({}),
+        component: null,
+        initialValues: getInitialValues(
+            RespiratoryDisorders.questions,
+            answers
+        ),
+    },
+    {
+        id: 'TerminalIllness',
+        validationSchema: Yup.object().shape({}),
+        component: null,
+        initialValues: getInitialValues(TerminalIllness.questions, answers),
+    },
+    {
+        id: 'BrainDisorders',
+        validationSchema: Yup.object().shape({}),
+        component: null,
+        initialValues: getInitialValues(BrainDisorders.questions, answers),
+    },
+    {
+        id: 'DrugsAndAlcohol1',
+        validationSchema: Yup.object().shape({}),
+        component: null,
+        initialValues: getInitialValues(DrugsAndAlcohol1.questions, answers),
+    },
+    {
+        id: 'DrugsAndAlcohol2',
+        validationSchema: Yup.object().shape({
+            'Has a physician or previous dentist recommended that you take antibiotics prior to your dental treatment?': Yup.string().required(
+                'Required'
             ),
-        },
-        {
-            id: 'GeneralDentalInfo2',
-            validationSchema: Yup.object().shape({}),
-            component: null,
-            initialValues: getInitialValues(
-                GeneralDentalInfo2.questions,
-                answers
-            ),
-        },
-        {
-            id: 'DrugAllergies',
-            validationSchema: Yup.object().shape({}),
-            component: null,
-            initialValues: getInitialValues(DrugAllergies.questions, answers),
-        },
-        {
-            id: 'UrgentHeartConditions',
-            validationSchema: Yup.object().shape({}),
-            component: null,
-            initialValues: getInitialValues(
-                UrgentHeartConditions.questions,
-                answers
-            ),
-        },
-        {
-            id: 'OtherHeartConditions',
-            validationSchema: Yup.object().shape({}),
-            component: null,
-            initialValues: getInitialValues(
-                OtherHeartConditions.questions,
-                answers
-            ),
-        },
-        {
-            id: 'BloodDisorders',
-            validationSchema: Yup.object().shape({}),
-            component: null,
-            initialValues: getInitialValues(BloodDisorders.questions, answers),
-        },
-        {
-            id: 'NutritionalDiseases',
-            validationSchema: Yup.object().shape({}),
-            component: null,
-            initialValues: getInitialValues(
-                NutritionalDiseases.questions,
-                answers
-            ),
-        },
-        {
-            id: 'ImmuneAndCancer',
-            validationSchema: Yup.object().shape({}),
-            component: null,
-            initialValues: getInitialValues(ImmuneAndCancer.questions, answers),
-        },
-        {
-            id: 'RespiratoryDisorders',
-            validationSchema: Yup.object().shape({}),
-            component: null,
-            initialValues: getInitialValues(
-                RespiratoryDisorders.questions,
-                answers
-            ),
-        },
-        {
-            id: 'TerminalIllness',
-            validationSchema: Yup.object().shape({}),
-            component: null,
-            initialValues: getInitialValues(TerminalIllness.questions, answers),
-        },
-        {
-            id: 'BrainDisorders',
-            validationSchema: Yup.object().shape({}),
-            component: null,
-            initialValues: getInitialValues(BrainDisorders.questions, answers),
-        },
-        {
-            id: 'DrugsAndAlcohol1',
-            validationSchema: Yup.object().shape({}),
-            component: null,
-            initialValues: getInitialValues(
-                DrugsAndAlcohol1.questions,
-                answers
-            ),
-        },
-        {
-            id: 'DrugsAndAlcohol2',
-            validationSchema: Yup.object().shape({
-                'Has a physician or previous dentist recommended that you take antibiotics prior to your dental treatment?': Yup.string().required(
-                    'Required'
-                ),
-            }),
-            component: null,
-            initialValues: getInitialValues(
-                DrugsAndAlcohol2.questions,
-                answers
-            ),
-        },
-    ];
-};
+        }),
+        component: null,
+        initialValues: getInitialValues(DrugsAndAlcohol2.questions, answers),
+    },
+];
 
 const render = props => {
     let Step = null;

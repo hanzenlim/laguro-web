@@ -1,6 +1,6 @@
-import history from '../history';
 import _isEqual from 'lodash/isEqual';
 import _isEmpty from 'lodash/isEmpty';
+import history from '../history';
 
 // used in dashboard pages
 const SELETED_TAB_SEARCH_PARAM_VALUE = 'selectedTab';
@@ -14,9 +14,8 @@ export const GENERAL_ERROR_PAGE_URL = '/error';
 export const COUNTDOWN_PAGE_URL = '/countdown';
 export const TERMS_PAGE_URL = '/terms';
 export const PRIVACY_PAGE_URL = '/privacy';
-export const KIOSK_REGISTRATION_PAGE_URL = '/kiosk/registration';
-export const KIOSK_CONFIRMATION_PAGE_URL = '/kiosk/confirmation/:id';
-
+export const KIOSK_URL = '/kiosk';
+export const KIOSK_REG_PAGE_URL = '/kiosk/registration';
 export const NEW_REVIEW_PAGE_URL_PREFIX = '/review';
 
 export const URLS_FOR_ALL_USER_PAGES = [
@@ -28,8 +27,6 @@ export const URLS_FOR_ALL_USER_PAGES = [
     COUNTDOWN_PAGE_URL,
     TERMS_PAGE_URL,
     PRIVACY_PAGE_URL,
-    KIOSK_REGISTRATION_PAGE_URL,
-    KIOSK_CONFIRMATION_PAGE_URL,
     NEW_REVIEW_PAGE_URL_PREFIX,
 ];
 
@@ -40,19 +37,12 @@ export const PATIENT_ONBOARDING_INSURANCE_FORM = '/kiosk/insurance';
 export const PROCEDURE_PAYMENT_REQUEST_PAGE_URL = '/procedure-payment';
 export const APPOINTMENT_CONFIRMATION_PAGE_URL = '/appointment-confirmation';
 export const DENTIST_SEARCH_PAGE_URL = '/dentist/search';
-export const KIOSK_BOOK_APPT_URL = '/kiosk/book-appointment';
-export const KIOSK_REASON_OF_VISIT_PAGE_URL = '/kiosk/reason-of-visit';
-export const KIOSK_SELECT_PROCEDURE_PAGE_URL = '/kiosk/select-procedure';
 export const KIOSK_MEDICAL_HISTORY_FORM_CONFIRMATION_PAGE_URL =
     '/kiosk/medical-history-form-confirmation';
 export const DENTIST_DETAILS_PAGE_URL_PREFIX = '/dentist';
 export const PATIENT_DASHBOARD_PAGE_URL = '/dashboard/patient';
 export const DENTIST_DASHBOARD_PAGE_URL = '/dashboard/dentist';
 export const HOST_DASHBOARD_PAGE_URL = '/dashboard/host';
-
-export const KIOSK_BOOKING_CONFIRMATION_URL_PREFIX =
-    '/kiosk/booking-confirmation/:id';
-export const KIOSK_CHECKIN_PAGE_URL_PREFIX = '/kiosk/check-in/:id';
 
 export const PATIENT_DASHBOARD_PAGE_URL_BASE = `${PATIENT_DASHBOARD_PAGE_URL}?${SELETED_TAB_SEARCH_PARAM_VALUE}=`;
 export const DENTIST_DASHBOARD_PAGE_URL_BASE = `${DENTIST_DASHBOARD_PAGE_URL}?${SELETED_TAB_SEARCH_PARAM_VALUE}=`;
@@ -65,15 +55,11 @@ export const URLS_FOR_PATIENT_PAGES = [
     PROCEDURE_PAYMENT_REQUEST_PAGE_URL,
     APPOINTMENT_CONFIRMATION_PAGE_URL,
     DENTIST_SEARCH_PAGE_URL,
-    KIOSK_BOOK_APPT_URL,
-    KIOSK_REASON_OF_VISIT_PAGE_URL,
-    KIOSK_SELECT_PROCEDURE_PAGE_URL,
-    KIOSK_BOOKING_CONFIRMATION_URL_PREFIX,
     KIOSK_MEDICAL_HISTORY_FORM_CONFIRMATION_PAGE_URL,
     DENTIST_DETAILS_PAGE_URL_PREFIX,
-    KIOSK_BOOKING_CONFIRMATION_URL_PREFIX,
-    KIOSK_CHECKIN_PAGE_URL_PREFIX,
     PATIENT_DASHBOARD_PAGE_URL,
+    KIOSK_URL,
+    KIOSK_REG_PAGE_URL,
 ];
 
 // pages for hosts and dentists
@@ -121,6 +107,7 @@ export const getPageType = (pathname = history.location.pathname) => {
     } else if (isAtSomeGivenUrls(pathname, URLS_FOR_HOST_AND_DENTIST_PAGES)) {
         return DENTIST_AND_HOST_PAGE_TYPE;
     }
+    return ALL_USER_PAGE_TYPE;
 };
 
 export const getLTMBaseUrl = () => {

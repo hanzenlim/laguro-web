@@ -32,20 +32,15 @@ import {
     COUNTDOWN_PAGE_URL,
     TERMS_PAGE_URL,
     PRIVACY_PAGE_URL,
-    KIOSK_REGISTRATION_PAGE_URL,
-    KIOSK_BOOK_APPT_URL,
-    KIOSK_REASON_OF_VISIT_PAGE_URL,
-    KIOSK_SELECT_PROCEDURE_PAGE_URL,
-    KIOSK_BOOKING_CONFIRMATION_URL_PREFIX,
     KIOSK_MEDICAL_HISTORY_FORM_CONFIRMATION_PAGE_URL,
-    KIOSK_CHECKIN_PAGE_URL_PREFIX,
     OFFICE_SEARCH_PAGE_URL,
     NEW_REVIEW_PAGE_URL_PREFIX,
-    KIOSK_CONFIRMATION_PAGE_URL,
     DENTIST_SEARCH_PAGE_URL,
     PATIENT_DASHBOARD_PAGE_URL,
     DENTIST_DASHBOARD_PAGE_URL,
     HOST_DASHBOARD_PAGE_URL,
+    KIOSK_URL,
+    KIOSK_REG_PAGE_URL,
 } from './util/urls';
 import ScrollToTop from './ScrollToTop';
 
@@ -162,36 +157,6 @@ const AppointmentConfirmationPage = Loadable({
     loading: () => null,
 });
 
-const KioskRegistrationPage = Loadable({
-    loader: () =>
-        import('./pages/KioskRegistrationPage' /* webpackChunkName: "kioskRegistrationPage" */),
-    loading: () => null,
-});
-
-const KioskBookAnAppointmentPage = Loadable({
-    loader: () =>
-        import('./pages/KioskBookAnAppointmentPage/BookAppointment' /* webpackChunkName: "kioskBookAnAppointmentPage" */),
-    loading: () => null,
-});
-
-const KioskReasonOfVisitPage = Loadable({
-    loader: () =>
-        import('./pages/KioskBookAnAppointmentPage/ReasonOfVisit' /* webpackChunkName: "kioskBookAnAppointmentPage" */),
-    loading: () => null,
-});
-
-const KioskSelectProcedurePage = Loadable({
-    loader: () =>
-        import('./pages/KioskBookAnAppointmentPage/SelectProcedure' /* webpackChunkName: "kioskBookAnAppointmentPage" */),
-    loading: () => null,
-});
-
-const KioskBookingConfirmationPage = Loadable({
-    loader: () =>
-        import('./pages/KioskBookingConfirmationPage' /* webpackChunkName: "kioskBookingConfirmationPage" */),
-    loading: () => null,
-});
-
 const KioskMedicalHistoryFormPage = Loadable({
     loader: () =>
         import('./pages/KioskMedicalHistoryFormPage' /* webpackChunkName: "kioskMedicalHistoryFormPage" */),
@@ -201,18 +166,6 @@ const KioskMedicalHistoryFormPage = Loadable({
 const KioskInsurancePage = Loadable({
     loader: () =>
         import('./pages/KioskInsurancePage' /* webpackChunkName: "kioskInsurancePage" */),
-    loading: () => null,
-});
-
-const KioskConfirmationPage = Loadable({
-    loader: () =>
-        import('./pages/KioskConfirmationPage' /* webpackChunkName: "kioskConfirmationPage" */),
-    loading: () => null,
-});
-
-const KioskCheckInPage = Loadable({
-    loader: () =>
-        import('./pages/KioskCheckInPage' /* webpackChunkName: "kioskCheckInPage" */),
     loading: () => null,
 });
 
@@ -255,6 +208,18 @@ const DentistDashboardPage = Loadable({
 const HostDashboardPage = Loadable({
     loader: () =>
         import('./pages/HostDashboardPage' /* webpackChunkName: "DentistDashboardPage" */),
+    loading: () => null,
+});
+
+const KioskPage = Loadable({
+    loader: () =>
+        import('./pages/KioskPage' /* webpackChunkName: "KioskPage" */),
+    loading: () => null,
+});
+
+const KioskRegPage = Loadable({
+    loader: () =>
+        import('./pages/KioskRegPage' /* webpackChunkName: "KioskRegPage" */),
     loading: () => null,
 });
 
@@ -416,41 +381,7 @@ class App extends Component {
                                             }
                                             component={NameAndPersonaPage}
                                         />
-                                        <Route
-                                            path={KIOSK_REGISTRATION_PAGE_URL}
-                                            exact
-                                            component={KioskRegistrationPage}
-                                        />
-                                        <Route
-                                            path={KIOSK_BOOK_APPT_URL}
-                                            exact
-                                            component={
-                                                KioskBookAnAppointmentPage
-                                            }
-                                        />
-                                        <Route
-                                            path={
-                                                KIOSK_REASON_OF_VISIT_PAGE_URL
-                                            }
-                                            exact
-                                            component={KioskReasonOfVisitPage}
-                                        />
-                                        <Route
-                                            path={
-                                                KIOSK_SELECT_PROCEDURE_PAGE_URL
-                                            }
-                                            exact
-                                            component={KioskSelectProcedurePage}
-                                        />
-                                        <Route
-                                            path={
-                                                KIOSK_BOOKING_CONFIRMATION_URL_PREFIX
-                                            }
-                                            exact
-                                            component={
-                                                KioskBookingConfirmationPage
-                                            }
-                                        />
+
                                         <Route
                                             path={
                                                 PATIENT_ONBOARDING_MEDICAL_HISTORY_FORM
@@ -476,22 +407,19 @@ class App extends Component {
                                             exact
                                             component={KioskInsurancePage}
                                         />
-                                        <Route
-                                            path={KIOSK_CHECKIN_PAGE_URL_PREFIX}
-                                            exact
-                                            component={KioskCheckInPage}
-                                        />
-
-                                        <Route
-                                            path={KIOSK_CONFIRMATION_PAGE_URL}
-                                            exact
-                                            component={KioskConfirmationPage}
-                                        />
                                         <PrivateRoute
                                             path={
                                                 DENTIST_ONBOARDING_PROFILE_URL
                                             }
                                             component={KioskDentistProfilePage}
+                                        />
+                                        <Route
+                                            path={KIOSK_REG_PAGE_URL}
+                                            component={KioskRegPage}
+                                        />
+                                        <Route
+                                            path={KIOSK_URL}
+                                            component={KioskPage}
                                         />
                                         <Route component={Error404Page} />
                                     </Switch>
