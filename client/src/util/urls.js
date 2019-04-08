@@ -15,7 +15,7 @@ export const COUNTDOWN_PAGE_URL = '/countdown';
 export const TERMS_PAGE_URL = '/terms';
 export const PRIVACY_PAGE_URL = '/privacy';
 export const KIOSK_URL = '/kiosk';
-export const KIOSK_REG_PAGE_URL = '/kiosk/reg';
+export const KIOSK_REG_PAGE_URL = '/kiosk/registration';
 export const NEW_REVIEW_PAGE_URL_PREFIX = '/review';
 
 export const URLS_FOR_ALL_USER_PAGES = [

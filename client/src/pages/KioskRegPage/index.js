@@ -1,5 +1,4 @@
-import React, { Component, Fragment } from 'react';
-import { Flex } from '@laguro/basic-components';
+import React, { Component } from 'react';
 import * as Yup from 'yup';
 import {
     PreviousButton,
@@ -10,6 +9,7 @@ import {
 } from '@laguro/the-bright-side-components';
 import _get from 'lodash/get';
 import cookies from 'browser-cookies';
+import { Flex, Box } from '../../components/index';
 import { onLogoutWithoutRedirect } from '../../util/authUtils';
 import { PatientName } from './StepComponents/GetPatientName';
 import { RegisterStep } from './StepComponents/Register';
@@ -195,7 +195,7 @@ class KioskPage extends Component {
         };
 
         return (
-            <Fragment>
+            <Box className="kiosk-reg-page">
                 <Progress
                     steps={KIOSK_PAGE_PROGRESS_STEPS}
                     step={1}
@@ -221,7 +221,7 @@ class KioskPage extends Component {
                     )}
                     steps={steps}
                 />
-            </Fragment>
+            </Box>
         );
     }
 }

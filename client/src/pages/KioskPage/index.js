@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import {
     PreviousButton,
     Wizard,
@@ -688,7 +688,7 @@ class KioskPage extends Component {
                     }
 
                     return (
-                        <Fragment>
+                        <Box className="kiosk-pages">
                             <Progress
                                 steps={KIOSK_PAGE_PROGRESS_STEPS}
                                 step={currentStep}
@@ -723,7 +723,7 @@ class KioskPage extends Component {
                                     steps={this.steps}
                                 />
                             )}
-                        </Fragment>
+                        </Box>
                     );
                 }}
             </Composed>

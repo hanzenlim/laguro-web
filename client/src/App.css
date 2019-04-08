@@ -51,10 +51,10 @@
 /* Source: https://medium.com/connect-the-dots/css-media-queries-for-ipad-pro-8cad10e17106*/
 @media only screen
   and (min-device-width: 1024px)
-  and (max-device-width: 1366px)
+  and (max-device-width: 1024px)
   and (orientation: landscape)
   and (-webkit-min-device-pixel-ratio: 2) {
-      html {
+      .kiosk-reg-page, .kiosk-pages {
           zoom: 150%;
       }
 
