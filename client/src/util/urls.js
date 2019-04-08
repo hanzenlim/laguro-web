@@ -17,6 +17,7 @@ export const PRIVACY_PAGE_URL = '/privacy';
 export const KIOSK_URL = '/kiosk';
 export const KIOSK_REG_PAGE_URL = '/kiosk/registration';
 export const NEW_REVIEW_PAGE_URL_PREFIX = '/review';
+export const KIOSK_OFFICE_SETUP_PAGE_URL = '/kiosk/office-setup';
 
 export const URLS_FOR_ALL_USER_PAGES = [
     ONBOARDING_NAME_AND_PERSONA_PAGE,

@@ -21,6 +21,7 @@ import {
     KioskFlowSuccess,
 } from '@laguro/the-bright-side-components';
 import _get from 'lodash/get';
+import _isNull from 'lodash/isNull';
 import cookies from 'browser-cookies';
 import _isEmpty from 'lodash/isEmpty';
 import moment from 'moment';
@@ -84,7 +85,11 @@ import {
     BOOK_APPT_STAGE_WIZARD_STEP_IDS,
     KIOSK_FLOW_SUCCESS_WIZARD_STEP_ID,
 } from './getKioskPageWizardSteps';
-import { KIOSK_URL, KIOSK_REG_PAGE_URL } from '../../util/urls';
+import {
+    KIOSK_URL,
+    KIOSK_REG_PAGE_URL,
+    KIOSK_OFFICE_SETUP_PAGE_URL,
+} from '../../util/urls';
 import history, { redirect } from '../../history';
 import { kioskPurposeOfVisitCookieVariableName } from '../KioskRegPage';
 import {
@@ -95,6 +100,8 @@ import {
     redirectFromHealthHistory,
 } from './utils';
 import defaultUserImage from '../../components/Image/defaultUserImage.svg';
+
+export const KIOSK_OFFICE_ID_COOKIE_VARIABLE_NAME = 'kiosk-office-id';
 
 const {
     BloodDisorders,
@@ -133,7 +140,6 @@ const procedureList = {
     Braces: false,
 };
 
-const KIOSK_OFFICE_ID_COOKIE_VARIABLE_NAME = 'kiosk-office-id';
 const bellDentalOfficeId = 'e91ba710-2b37-11e9-998e-9da6024c6b32';
 const WIZARD_STEP_IDS_WITHOUT_PREVIOUS_BUTTON = [
     BOOKING_CONFIRMATION_WIZARD_STEP_ID,
@@ -316,9 +322,16 @@ class KioskPage extends Component {
                         'patient.insuranceInfo'
                     );
 
+                    // default office id is production bell office
+                    // if this id or other id doesn't exist in the backend, redirect to setUp page
+                    const office = _get(officeData, 'getOffice');
+                    if (_isNull(office)) {
+                        redirect({ url: KIOSK_OFFICE_SETUP_PAGE_URL });
+                    }
+
                     const activeDentistsWithAppointmentSlots = _get(
-                        officeData,
-                        'getOffice.activeDentists'
+                        office,
+                        'activeDentists'
                     );
                     const dentistTimes = getDentistTimes(
                         activeDentistsWithAppointmentSlots

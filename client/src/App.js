@@ -41,6 +41,7 @@ import {
     HOST_DASHBOARD_PAGE_URL,
     KIOSK_URL,
     KIOSK_REG_PAGE_URL,
+    KIOSK_OFFICE_SETUP_PAGE_URL,
 } from './util/urls';
 import ScrollToTop from './ScrollToTop';
 
@@ -220,6 +221,12 @@ const KioskPage = Loadable({
 const KioskRegPage = Loadable({
     loader: () =>
         import('./pages/KioskRegPage' /* webpackChunkName: "KioskRegPage" */),
+    loading: () => null,
+});
+
+const KioskOfficeSetUpPage = Loadable({
+    loader: () =>
+        import('./pages/KioskOfficeSetUpPage' /* webpackChunkName: "KioskOfficeSetUpPage" */),
     loading: () => null,
 });
 
@@ -418,6 +425,10 @@ class App extends Component {
                                             component={KioskRegPage}
                                         />
                                         <Route
+                                            path={KIOSK_OFFICE_SETUP_PAGE_URL}
+                                            component={KioskOfficeSetUpPage}
+                                        />
+                                        <PrivateRoute
                                             path={KIOSK_URL}
                                             component={KioskPage}
                                         />
