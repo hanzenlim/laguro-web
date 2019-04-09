@@ -433,7 +433,6 @@ UpdateProfileForm.propTypes = {
 export default withFormik({
     validationSchema: Yup.object().shape({
         firstName: Yup.string().required('Please fill out this field.'),
-        middleName: Yup.string(),
         lastName: Yup.string().required('Please fill out this field.'),
         phoneNumber: Yup.string()
             .matches(/^[0-9]*$/, 'Please use a valid phone number')

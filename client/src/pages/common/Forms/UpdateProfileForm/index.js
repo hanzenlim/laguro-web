@@ -122,7 +122,7 @@ class UpdateProfileContainer extends PureComponent {
                                             : newProfileImage ||
                                               mappedData.imageUrl,
                                         firstName: values.firstName,
-                                        middleName: values.middleName,
+                                        middleName: values.middleName || null,
                                         lastName: values.lastName,
                                         dob:
                                             values.birthMonth &&
