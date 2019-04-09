@@ -666,7 +666,7 @@ class KioskPage extends Component {
                                     <Box width="330px" mx="auto" pt="100px">
                                         <Onboarding.SkipButton
                                             onSkip={handleSkip}
-                                            text="Skip"
+                                            text="Skip all"
                                         />
                                         {step}
                                     </Box>
