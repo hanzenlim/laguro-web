@@ -2,13 +2,16 @@ import React from 'react';
 
 const LocationPinWithBackground = props => (
     <svg
-        {...props}
-        width="30px"
-        height="30px"
+        width={30}
+        height={30}
         viewBox="0 0 30 30"
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink"
+        style={{
+            transform: 'translate(-20px, -36px)',
+        }}
+        {...props}
     >
         <title>Artboard Copy 6</title>
         <desc>Created with Sketch.</desc>
