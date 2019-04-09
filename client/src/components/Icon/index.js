@@ -20,7 +20,6 @@ import {
 } from 'styled-system';
 
 import LocationPin from './LocationPin';
-import LocationPinWithBackground from './LocationPinWithBackground';
 import LocationPinWithFill from './LocationPinWithFill';
 import LocationPinForMap from './LocationPinForMap';
 import LeftArrow from './LeftArrow';
@@ -84,9 +83,6 @@ const Icon = props => {
             break;
         case 'locationPin':
             ReturnIcon = LocationPin;
-            break;
-        case 'locationPinWithBackground':
-            ReturnIcon = LocationPinWithBackground;
             break;
         case 'locationPinWithFill':
             ReturnIcon = LocationPinWithFill;

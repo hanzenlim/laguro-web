@@ -1,6 +1,6 @@
 import React from 'react';
 
-const LocationPinWithBackground = props => (
+const LocationPinForMap = props => (
     <svg
         width={30}
         height={30}
@@ -62,4 +62,4 @@ const LocationPinWithBackground = props => (
     </svg>
 );
 
-export default LocationPinWithBackground;
+export default LocationPinForMap;
