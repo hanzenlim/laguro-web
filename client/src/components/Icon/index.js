@@ -20,8 +20,8 @@ import {
 } from 'styled-system';
 
 import LocationPin from './LocationPin';
-import LocationPinWithBackground from './LocationPinWithBackground';
 import LocationPinWithFill from './LocationPinWithFill';
+import LocationPinForMap from './LocationPinForMap';
 import LeftArrow from './LeftArrow';
 import RightArrow from './RightArrow';
 import Plus from './Plus';
@@ -84,11 +84,11 @@ const Icon = props => {
         case 'locationPin':
             ReturnIcon = LocationPin;
             break;
-        case 'locationPinWithBackground':
-            ReturnIcon = LocationPinWithBackground;
-            break;
         case 'locationPinWithFill':
             ReturnIcon = LocationPinWithFill;
+            break;
+        case 'locationPinForMap':
+            ReturnIcon = LocationPinForMap;
             break;
         case 'coloredPlus':
             ReturnIcon = Plus;

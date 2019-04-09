@@ -218,9 +218,9 @@ class Map extends PureComponent {
                                     onClick={this.showPopup}
                                 />
                                 <Icon
-                                    type="locationPinWithBackground"
-                                    width="50px"
-                                    height="50px"
+                                    type="locationPinForMap"
+                                    height={35}
+                                    width={35}
                                 />
                             </StyledMarkerContainer>
                         )
