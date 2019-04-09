@@ -330,7 +330,7 @@ const UpdateProfileForm = props => {
                                         text: 'Male',
                                     },
                                     {
-                                        name: 'I do not wish to answer',
+                                        name: 'unknown',
                                         text: 'I do not wish to answer',
                                     },
                                 ]}
