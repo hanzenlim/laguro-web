@@ -195,7 +195,7 @@ export const LoginStep = props => (
                                 );
                             } else {
                                 message.warning(
-                                    'We do not recognize this phone number/email address. Please sign up.'
+                                    'We do not recognize this Phone number or e-mail. Please sign up.'
                                 );
                             }
 

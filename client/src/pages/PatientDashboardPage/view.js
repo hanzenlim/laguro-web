@@ -95,7 +95,9 @@ class PatientDashboardPageView extends Component {
     // this will be displayed instead of the dentist insurance form. insuranceConfirmation will be turned back to null if displayed once, due to componentDidUpdate
     onInsuranceFormComplete = () => {
         this.insuranceConfirmation = (
-            <Confirmation formName={INSURANCE_MENU_TEXT} />
+            <Card>
+                <Confirmation formName={INSURANCE_MENU_TEXT} />
+            </Card>
         );
         this.setState({ showInsuranceConfirmation: true }); // this will cause a re-render to show insuranceConfirmation
     };
@@ -103,7 +105,9 @@ class PatientDashboardPageView extends Component {
     // this will be displayed instead of the dentist medical history form. medicalHistoryConfirmation will be turned back to null if displayed once, due to componentDidUpdate
     onMedicalHistoryFormComplete = () => {
         this.medicalHistoryConfirmation = (
-            <Confirmation formName={MEDICAL_HISTORY_MENU_TEXT} />
+            <Card>
+                <Confirmation formName={MEDICAL_HISTORY_MENU_TEXT} />
+            </Card>
         );
         this.setState({ showMedicalHistoryConfirmation: true }); // this will cause a re-render to show medicalHistoryConfirmation
     };
