@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react';
 import _get from 'lodash/get';
 import { Query, graphql, compose } from 'react-apollo';
-import cookies from 'browser-cookies';
 
 import UpdateDentistProfileFormView from './view';
 import { Loading } from '../../../../components';
@@ -11,7 +10,7 @@ import {
     updateDentistMutation,
     createDentistMutation,
 } from './queries';
-import { getUser, setUser } from '../../../../util/authUtils';
+import { getUser, setUser, setAuthToken } from '../../../../util/authUtils';
 
 class UpdateDentistProfileContainer extends PureComponent {
     state = {
@@ -136,13 +135,10 @@ export default compose(
                         input,
                     },
                     update: (proxy, { data: { createDentistWithAuth } }) => {
-                        cookies.set(
-                            'laguroAuthToken',
-                            createDentistWithAuth.token
-                        );
+                        setAuthToken(createDentistWithAuth.token);
                         setUser({
-                            ...createDentistWithAuth.dentist.user,
-                            dentistId: createDentistWithAuth.dentist.id,
+                            ...createDentistWithAuth.user,
+                            dentistId: createDentistWithAuth.id,
                         });
                     },
                 }),

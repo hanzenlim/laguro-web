@@ -19,7 +19,7 @@ import {
     getSearchParamValueByKey,
     attemptToRedirectBack,
 } from '../../history';
-import { getUser, setUser } from '../../util/authUtils';
+import { getUser, setUser, setAuthToken } from '../../util/authUtils';
 import Loading from '../../components/Loading/index';
 import { execute } from '../../util/gqlUtils';
 import { isBioUpdated } from '../../util/dentistUtils';
@@ -69,7 +69,7 @@ const Composed = adopt({
     createDentist: ({ render }) => (
         <Mutation
             update={(proxy, { data: { createDentistWithAuth } }) => {
-                cookies.set('laguroAuthToken', createDentistWithAuth.token);
+                setAuthToken(createDentistWithAuth.token);
                 setUser({
                     ...createDentistWithAuth.user,
                     dentistId: createDentistWithAuth.id,
