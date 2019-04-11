@@ -27,6 +27,7 @@ import _isEmpty from 'lodash/isEmpty';
 import moment from 'moment';
 import { adopt } from 'react-adopt';
 import { Query, Mutation } from 'react-apollo';
+import { Alert } from 'antd';
 import {
     getUser,
     onKioskLogout,
@@ -43,7 +44,7 @@ import {
     UPDATE_PATIENT_HEALTH_DATA,
     GET_PATIENT_HEALTH_DATA_UNSTRUCTURED,
 } from './queries';
-import { Flex, Text, Loading, Box } from '../../components/index';
+import { Flex, Text, Loading, Box, Container } from '../../components/index';
 import {
     getKioskPageWizardSteps,
     ADDRESS_WIZARD_STEP_ID,
@@ -91,15 +92,18 @@ import {
     KIOSK_OFFICE_SETUP_PAGE_URL,
 } from '../../util/urls';
 import history, { redirect } from '../../history';
-import { kioskPurposeOfVisitCookieVariableName } from '../KioskRegPage';
+import {
+    kioskPurposeOfVisitCookieVariableName,
+    kioskIsAccountNewCookieVariableName,
+    KIOSK_PURPOSE_OF_VISIT_WALKIN,
+} from '../KioskRegPage';
 import {
     addActionsToWizardSteps,
     getDentistTimes,
-    handleSkip,
     KIOSK_PAGE_PROGRESS_STEPS,
-    redirectFromHealthHistory,
 } from './utils';
 import defaultUserImage from '../../components/Image/defaultUserImage.svg';
+import { hasSkippedMedicalHistoryFormCookieVariableName } from '../../util/strings';
 
 export const KIOSK_OFFICE_ID_COOKIE_VARIABLE_NAME = 'kiosk-office-id';
 
@@ -342,6 +346,58 @@ class KioskPage extends Component {
                         'getPatientHealthDataUnstructured.groupedItems'
                     );
 
+                    const userAppt = _get(this.userFromDB, 'appointments');
+
+                    const isCheckInButNoUpcomingAppt =
+                        cookies.get(kioskPurposeOfVisitCookieVariableName) ===
+                            'checkIn' && _isEmpty(userAppt);
+
+                    const isCheckInAndHasUpcomingAppt =
+                        cookies.get(kioskPurposeOfVisitCookieVariableName) ===
+                            'checkIn' && !_isEmpty(userAppt);
+
+                    const redirectFromHealthHistory = () => {
+                        if (isCheckInAndHasUpcomingAppt) {
+                            redirect({
+                                url: `${KIOSK_URL}/${CHECKIN_WIZARD_STEP_ID}`,
+                            });
+                        } else if (
+                            JSON.parse(
+                                cookies.get(kioskIsAccountNewCookieVariableName)
+                            )
+                        ) {
+                            redirect({
+                                url: `${KIOSK_URL}/${KIOSK_CONFIRMATION_WIZARD_STEP_ID}`,
+                            });
+                        } else {
+                            redirect({
+                                url: `${KIOSK_URL}/${KIOSK_FLOW_SUCCESS_WIZARD_STEP_ID}`,
+                            });
+                        }
+                    };
+
+                    const handleSkip = () => {
+                        cookies.set(
+                            hasSkippedMedicalHistoryFormCookieVariableName,
+                            'true',
+                            {
+                                expires: 0,
+                            }
+                        );
+                        redirectFromHealthHistory();
+                    };
+
+                    if (
+                        currentWizardStepId ===
+                            BOOK_APPT_STAGE_WIZARD_STEP_IDS[0] &&
+                        isCheckInButNoUpcomingAppt
+                    ) {
+                        cookies.set(
+                            kioskPurposeOfVisitCookieVariableName,
+                            KIOSK_PURPOSE_OF_VISIT_WALKIN
+                        );
+                    }
+
                     // add redirects here
                     // if user has already filled out general information skip to insurance
                     if (
@@ -371,8 +427,7 @@ class KioskPage extends Component {
                     } else if (
                         currentWizardStepId ===
                             BOOK_APPT_STAGE_WIZARD_STEP_IDS[0] &&
-                        cookies.get(kioskPurposeOfVisitCookieVariableName) ===
-                            'checkIn'
+                        isCheckInAndHasUpcomingAppt
                     ) {
                         redirect({
                             url: `${KIOSK_URL}/${
@@ -707,6 +762,25 @@ class KioskPage extends Component {
                                 step={currentStep}
                                 percent={20}
                             />
+
+                            {getCurrentWizardStep() ===
+                                BOOK_APPT_STAGE_WIZARD_STEP_IDS[0] &&
+                                isCheckInButNoUpcomingAppt && (
+                                    <Container
+                                        position="relative"
+                                        maxWidth={['', '', 700]}
+                                        px={[25, '', 0]}
+                                        mt={30}
+                                    >
+                                        <Box mt={20} mb={-20}>
+                                            <Alert
+                                                type="info"
+                                                showIcon
+                                                message="It looks like you don't have an appointment scheduled. You can book a new appointment here."
+                                            />
+                                        </Box>
+                                    </Container>
+                                )}
 
                             {!_isEmpty(this.steps) && (
                                 <Wizard
