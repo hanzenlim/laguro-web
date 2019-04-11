@@ -36,6 +36,7 @@ export const REGISTER_WIZARD_STEP_IDS = [
 
 export const kioskPurposeOfVisitCookieVariableName = 'kioskPurposeOfVisit';
 export const kioskIsAccountNewCookieVariableName = 'kioskIsAccountNew';
+export const KIOSK_PURPOSE_OF_VISIT_WALKIN = 'walkIn';
 
 // depending on user, some steps will be optional
 // onAction will return true if there is an error, return false if there isn't
@@ -50,7 +51,7 @@ export const KioskRegWizardSteps = [
             ),
         }),
         initialValues: {
-            purposeOfVisit: 'walkIn',
+            purposeOfVisit: KIOSK_PURPOSE_OF_VISIT_WALKIN,
         },
         onAction: stepValues => {
             cookies.set(

@@ -1,19 +1,6 @@
 import _isEmpty from 'lodash/isEmpty';
-import cookies from 'browser-cookies';
 import _flatten from 'lodash/flatten';
 import defaultUserImage from '../../components/Image/defaultUserImage.svg';
-import { hasSkippedMedicalHistoryFormCookieVariableName } from '../../util/strings';
-import { redirect } from '../../history';
-import { KIOSK_URL } from '../../util/urls';
-import {
-    KIOSK_CONFIRMATION_WIZARD_STEP_ID,
-    CHECKIN_WIZARD_STEP_ID,
-    KIOSK_FLOW_SUCCESS_WIZARD_STEP_ID,
-} from './getKioskPageWizardSteps';
-import {
-    kioskPurposeOfVisitCookieVariableName,
-    kioskIsAccountNewCookieVariableName,
-} from '../KioskRegPage';
 
 export const KIOSK_PAGE_PROGRESS_STEPS = [
     '1.         REGISTRATION',
@@ -83,26 +70,3 @@ export const getDentistTimes = activeDentistsWithAppointmentSlots =>
             }))
         )
     );
-
-export const redirectFromHealthHistory = () => {
-    if (cookies.get(kioskPurposeOfVisitCookieVariableName) === 'checkIn') {
-        redirect({
-            url: `${KIOSK_URL}/${CHECKIN_WIZARD_STEP_ID}`,
-        });
-    } else if (JSON.parse(cookies.get(kioskIsAccountNewCookieVariableName))) {
-        redirect({
-            url: `${KIOSK_URL}/${KIOSK_CONFIRMATION_WIZARD_STEP_ID}`,
-        });
-    } else {
-        redirect({
-            url: `${KIOSK_URL}/${KIOSK_FLOW_SUCCESS_WIZARD_STEP_ID}`,
-        });
-    }
-};
-
-export const handleSkip = () => {
-    cookies.set(hasSkippedMedicalHistoryFormCookieVariableName, 'true', {
-        expires: 0,
-    });
-    redirectFromHealthHistory();
-};
