@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import _isEmpty from 'lodash/isEmpty';
 import _truncate from 'lodash/truncate';
+import _get from 'lodash/get';
 import defaultOfficeImage from '../../../components/Image/office-placeholder.png';
 import {
     Box,
@@ -65,9 +66,11 @@ class OfficeListingCard extends Component {
     }
 
     updateWorkingWidth = () => {
-        this.setState({
-            workingWidth: this.cardRef.buttonNode.offsetWidth,
-        });
+        if (_get(this.cardRef, 'buttonNode.offsetWidth')) {
+            this.setState({
+                workingWidth: this.cardRef.buttonNode.offsetWidth,
+            });
+        }
     };
 
     renderEquipments({ equip = [] }) {
