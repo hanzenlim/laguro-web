@@ -290,8 +290,17 @@ class DentistListingCard extends PureComponent {
                                                 dentist.availableTimes[0]
                                                     .startTime
                                             ).diff(moment(), 'days') === 0
-                                                ? 'today'
-                                                : `on ${earliestAvailableDate}`}
+                                                && 'today'}
+                                            {moment(
+                                                dentist.availableTimes[0]
+                                                    .startTime
+                                            ).diff(moment(), 'days') === 1
+                                                && 'tomorrow'}
+                                            {moment(
+                                                dentist.availableTimes[0]
+                                                    .startTime
+                                            ).diff(moment(), 'days') > 1
+                                                && `on ${earliestAvailableDate}`}
                                         </Text>
                                         <Flex flexWrap="wrap">
                                             {availableTimes.map(
