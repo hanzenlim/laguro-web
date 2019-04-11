@@ -54,17 +54,14 @@ class DentistDetailsView extends PureComponent {
     }
 
     setContentWidth = () => {
-        debugger;
-        if (this.screenWidthRef.current) {
-            this.setState({
-                contentWidth:
-                    Math.min(
-                        this.screenWidthRef.current.offsetWidth,
-                        numMaxContainerWidth
-                    ) -
-                    (SIDEBAR_WIDTH + GUTTER + CONTAINER_PADDINGS),
-            });
-        }
+        this.setState({
+            contentWidth:
+                Math.min(
+                    this.screenWidthRef.current.offsetWidth,
+                    numMaxContainerWidth
+                ) -
+                (SIDEBAR_WIDTH + GUTTER + CONTAINER_PADDINGS),
+        });
     };
 
     componentDidMount() {
