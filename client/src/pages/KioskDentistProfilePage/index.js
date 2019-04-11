@@ -4,7 +4,6 @@ import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 import compact from 'lodash/compact';
 import { adopt } from 'react-adopt';
-import cookies from 'browser-cookies';
 import * as Yup from 'yup';
 import KioskDentistProfileView from './view';
 import {

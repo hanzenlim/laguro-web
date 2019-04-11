@@ -3,21 +3,19 @@ import { gql } from 'apollo-boost';
 export const CREATE_DENTIST = gql`
     mutation createDentistWithAuth($input: CreateDentistInput!) {
         createDentistWithAuth(input: $input) {
-            dentist {
-                id
-                languages
-                acceptedInsurances
-                bio
-                procedures {
-                    code
-                    duration
-                    group
-                    name
-                }
-                user {
-                    isDentist
-                    isHost
-                }
+            id
+            languages
+            acceptedInsurances
+            bio
+            procedures {
+                code
+                duration
+                group
+                name
+            }
+            user {
+                isDentist
+                isHost
             }
             token
         }

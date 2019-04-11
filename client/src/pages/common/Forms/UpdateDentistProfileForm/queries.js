@@ -23,21 +23,19 @@ export const getUserDentistQuery = gql`
 export const createDentistMutation = gql`
     mutation createDentistWithAuth($input: CreateDentistInput!) {
         createDentistWithAuth(input: $input) {
-            dentist {
+            id
+            specialty
+            bio
+            user {
                 id
-                specialty
-                bio
-                user {
-                    id
-                }
-                procedures {
-                    group
-                    name
-                    code
-                    duration
-                }
-                firstAppointmentDuration
             }
+            procedures {
+                group
+                name
+                code
+                duration
+            }
+            firstAppointmentDuration
             token
         }
     }
