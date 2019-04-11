@@ -53,15 +53,19 @@ class DentistDetailsView extends PureComponent {
         };
     }
 
-    setContentWidth = () =>
-        this.setState({
-            contentWidth:
-                Math.min(
-                    this.screenWidthRef.current.offsetWidth,
-                    numMaxContainerWidth
-                ) -
-                (SIDEBAR_WIDTH + GUTTER + CONTAINER_PADDINGS),
-        });
+    setContentWidth = () => {
+        debugger;
+        if (this.screenWidthRef.current) {
+            this.setState({
+                contentWidth:
+                    Math.min(
+                        this.screenWidthRef.current.offsetWidth,
+                        numMaxContainerWidth
+                    ) -
+                    (SIDEBAR_WIDTH + GUTTER + CONTAINER_PADDINGS),
+            });
+        }
+    };
 
     componentDidMount() {
         window.addEventListener('resize', this.setContentWidth);
@@ -96,7 +100,7 @@ class DentistDetailsView extends PureComponent {
                     width="100vw"
                     position="fixed"
                     left={0}
-                    innerRef={this.screenWidthRef}
+                    ref={this.screenWidthRef}
                 />
                 <Flex
                     mb={[0, '', 56]}

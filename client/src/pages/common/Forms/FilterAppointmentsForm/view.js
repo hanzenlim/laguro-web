@@ -117,16 +117,16 @@ FilterAppointmentsFormView.propTypes = {
     // Default value for time filter
     defaultDate: PropTypes.string,
     handleSubmit: PropTypes.func,
-    hasTimeFilter: PropTypes.boolean,
+    hasTimeFilter: PropTypes.bool,
     locationList: PropTypes.array,
     onSelectLocation: PropTypes.func,
     // withScreenSizes props
     screenWidth: PropTypes.number,
-    desktopOnly: PropTypes.boolean,
-    tabletDesktopOnly: PropTypes.boolean,
-    tabletMobileOnly: PropTypes.boolean,
-    tabletOnly: PropTypes.boolean,
-    mobileOnly: PropTypes.boolean,
+    desktopOnly: PropTypes.bool,
+    tabletDesktopOnly: PropTypes.bool,
+    tabletMobileOnly: PropTypes.bool,
+    tabletOnly: PropTypes.bool,
+    mobileOnly: PropTypes.bool,
 };
 
 FilterAppointmentsFormView.defaultProps = {

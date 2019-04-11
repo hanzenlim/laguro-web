@@ -54,6 +54,7 @@ const StripePayoutButtons = ({ userId, accountToken, totalAvailable }) => (
                                             <a
                                                 href={payoutLoginLink}
                                                 target="_blank"
+                                                rel="noopener noreferrer"
                                             >
                                                 <Button
                                                     my={1}

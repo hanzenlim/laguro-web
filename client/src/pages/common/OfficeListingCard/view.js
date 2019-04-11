@@ -157,7 +157,7 @@ class OfficeListingCard extends Component {
                 height="auto"
                 width="100%"
                 onClick={onRedirect}
-                innerRef={node => (this.cardRef = node)}
+                ref={node => (this.cardRef = node)}
             >
                 <StyledCard showMap={showMap}>
                     <Box>
