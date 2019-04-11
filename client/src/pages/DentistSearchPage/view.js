@@ -222,11 +222,11 @@ const DentistSearchPageView = props => {
 
 DentistSearchPageView.propTypes = {
     data: PropTypes.func,
-    showMap: PropTypes.boolean,
-    defaultPosition: PropTypes.boolean,
-    mapDimensions: PropTypes.boolean,
-    total: PropTypes.boolean,
-    urlParams: PropTypes.boolean,
+    showMap: PropTypes.bool,
+    defaultPosition: PropTypes.bool,
+    mapDimensions: PropTypes.bool,
+    total: PropTypes.bool,
+    urlParams: PropTypes.bool,
     toggleMap: PropTypes.func,
     onShowMore: PropTypes.func,
 };

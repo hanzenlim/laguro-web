@@ -14,7 +14,6 @@ import {
     bottom,
     right,
     position,
-    transform,
     propTypes,
     lineHeight,
 } from 'styled-system';
@@ -147,7 +146,6 @@ const Icon = props => {
 
     const StyledIcon = styled(ReturnIcon)`
         && {
-            ${transform};
             ${color};
             ${space};
             ${width};

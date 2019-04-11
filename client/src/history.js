@@ -1,4 +1,4 @@
-import createHistory from 'history/createBrowserHistory';
+import { createBrowserHistory } from 'history';
 import ReactGA from 'react-ga';
 import queryString from 'query-string';
 import _isEmpty from 'lodash/isEmpty';
@@ -8,7 +8,7 @@ ReactGA.initialize(gaTrackingId, {
     debug: process.env.NODE_ENV !== 'production',
 });
 
-const history = createHistory();
+const history = createBrowserHistory();
 
 // Tracks the page load.
 ReactGA.set({ page: window.location.pathname + window.location.search });

@@ -362,7 +362,7 @@ export const RegisterOrLoginStep = props => (
                                 message.error(() => (
                                     <div>
                                         This phone number is already registered.{' '}
-                                        <a>Please sign in</a>
+                                        <div>Please sign in instead.</div>
                                     </div>
                                 ));
                             }

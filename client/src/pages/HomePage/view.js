@@ -68,9 +68,9 @@ const aboutUsTextProps = {
 export const AnchorTag = ({ id, children }) => (
     <Box position="relative">
         <Box position="absolute" top={-40}>
-            <a id={id}>
+            <div id={id}>
                 <div />
-            </a>
+            </div>
         </Box>
         {children}
     </Box>

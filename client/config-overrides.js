@@ -1,23 +1,24 @@
 const path = require('path');
-const { injectBabelPlugin } = require('react-app-rewired');
-const rewireReactHotLoader = require('react-app-rewire-hot-loader');
+const {
+    override,
+    fixBabelImports,
+    addWebpackAlias,
+    addWebpackResolve,
+} = require('customize-cra');
 
-module.exports = function override(config, env) {
-    config = rewireReactHotLoader(config, env);
-    config = injectBabelPlugin(
-        [
-            'import',
-            { libraryName: 'antd', libraryDirectory: 'es', style: 'css' },
-        ],
-        config
-    );
-    const alias = config.resolve.alias || {};
-    alias['@ant-design/icons/lib/dist$'] = path.resolve(
-        __dirname,
-        './src/icons.js'
-    );
-    config.devtool = 'eval';
-
-    config.resolve.alias = alias;
-    return config;
-};
+module.exports = override(
+    fixBabelImports('import', {
+        libraryName: 'antd',
+        libraryDirectory: 'es',
+        style: 'css',
+    }),
+    addWebpackAlias({
+        '@ant-design/icons/lib/dist$': path.resolve(
+            __dirname,
+            './src/icons.js'
+        ),
+    }),
+    addWebpackResolve({
+        modules: [path.resolve(__dirname, 'node_modules'), 'node_modules'],
+    })
+);

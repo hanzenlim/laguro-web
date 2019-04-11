@@ -168,7 +168,7 @@ class SearchResultsList extends PureComponent {
 SearchResultsList.propTypes = {
     data: PropTypes.array,
     // Toggle size of image in search results list
-    showMap: PropTypes.boolean,
+    showMap: PropTypes.bool,
     total: PropTypes.number,
     onShowMore: PropTypes.func,
 };

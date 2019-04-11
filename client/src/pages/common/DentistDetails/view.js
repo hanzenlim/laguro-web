@@ -53,7 +53,7 @@ class DentistDetailsView extends PureComponent {
         };
     }
 
-    setContentWidth = () =>
+    setContentWidth = () => {
         this.setState({
             contentWidth:
                 Math.min(
@@ -62,6 +62,7 @@ class DentistDetailsView extends PureComponent {
                 ) -
                 (SIDEBAR_WIDTH + GUTTER + CONTAINER_PADDINGS),
         });
+    };
 
     componentDidMount() {
         window.addEventListener('resize', this.setContentWidth);
@@ -96,7 +97,7 @@ class DentistDetailsView extends PureComponent {
                     width="100vw"
                     position="fixed"
                     left={0}
-                    innerRef={this.screenWidthRef}
+                    ref={this.screenWidthRef}
                 />
                 <Flex
                     mb={[0, '', 56]}

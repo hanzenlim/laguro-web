@@ -76,7 +76,7 @@ class OfficeDetailsView extends PureComponent {
                     width="100vw"
                     position="fixed"
                     left={0}
-                    innerRef={this.screenWidthRef}
+                    ref={this.screenWidthRef}
                 />
                 <Flex
                     alignItems={['left', '', 'center']}
