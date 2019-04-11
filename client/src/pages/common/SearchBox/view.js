@@ -23,7 +23,7 @@ const StyledButton = styled(Button)`
     && {
         max-width: ${window.location.pathname.includes('/search')
             ? '100%'
-            : TABLET_MOBILE_SEARCHBOX_MAX_WIDTH.concat('px')};
+            : TABLET_MOBILE_SEARCHBOX_MAX_WIDTH.toString().concat('px')};
 
         @media (min-width: ${props => props.theme.breakpoints[1]}) {
             max-width: unset;
