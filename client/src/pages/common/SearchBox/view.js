@@ -21,7 +21,10 @@ export const TABLET_MOBILE_SEARCHBOX_MAX_WIDTH = 590;
 
 const StyledButton = styled(Button)`
     && {
-        max-width: ${TABLET_MOBILE_SEARCHBOX_MAX_WIDTH}px;
+        max-width: ${window.location.pathname.includes('/search')
+            ? '100%'
+            : TABLET_MOBILE_SEARCHBOX_MAX_WIDTH.concat('px')};
+
         @media (min-width: ${props => props.theme.breakpoints[1]}) {
             max-width: unset;
         }
@@ -51,6 +54,7 @@ const SearchBox = props => {
         '',
         DESKTOP_LARGE_SEARCHBOX_WIDTH * 0.07,
     ];
+    const isSearch = window.location.pathname.includes('/search');
 
     return (
         <Flex
@@ -59,13 +63,21 @@ const SearchBox = props => {
                 '',
                 isLarge ? DESKTOP_LARGE_SEARCHBOX_WIDTH : '78%',
             ]}
-            maxWidth={[TABLET_MOBILE_SEARCHBOX_MAX_WIDTH, '', 'unset']}
+            maxWidth={[
+                isSearch ? '100%' : TABLET_MOBILE_SEARCHBOX_MAX_WIDTH,
+                '',
+                'unset',
+            ]}
             justifyContent="center"
             onKeyPress={onKeyPress}
             flexDirection={['column', '', 'row']}
         >
             <Box
-                maxWidth={[TABLET_MOBILE_SEARCHBOX_MAX_WIDTH, '', 'unset']}
+                maxWidth={[
+                    isSearch ? '100%' : TABLET_MOBILE_SEARCHBOX_MAX_WIDTH,
+                    '',
+                    'unset',
+                ]}
                 width={['100%', '', '61%']}
                 mr={[0, '', '1%']}
                 mb={[7, '', 0]}
@@ -84,7 +96,11 @@ const SearchBox = props => {
             </Box>
             <Box
                 width={['100%', '', isLarge ? '30%' : '25%']}
-                maxWidth={[TABLET_MOBILE_SEARCHBOX_MAX_WIDTH, '', 'unset']}
+                maxWidth={[
+                    isSearch ? '100%' : TABLET_MOBILE_SEARCHBOX_MAX_WIDTH,
+                    '',
+                    'unset',
+                ]}
                 mr={[0, '', '1%']}
                 mb={[7, '', 0]}
             >
