@@ -21,7 +21,10 @@ class FilestackImage extends Component {
     }
 
     render() {
-        const tree = makePictureTree(this.props.handle, this.props);
+        const tree = makePictureTree(this.props.handle, {
+            ...this.props,
+            useValidator: false,
+        });
 
         return (
             <StyledPicture>
