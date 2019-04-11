@@ -10,7 +10,7 @@ import {
     updateDentistMutation,
     createDentistMutation,
 } from './queries';
-import { getUser, setUser } from '../../../../util/authUtils';
+import { getUser, setUser, setAuthToken } from '../../../../util/authUtils';
 
 class UpdateDentistProfileContainer extends PureComponent {
     state = {
@@ -134,10 +134,11 @@ export default compose(
                     variables: {
                         input,
                     },
-                    update: (proxy, { data: { createDentist } }) => {
+                    update: (proxy, { data: { createDentistWithAuth } }) => {
+                        setAuthToken(createDentistWithAuth.token);
                         setUser({
-                            ...createDentist.user,
-                            dentistId: createDentist.id,
+                            ...createDentistWithAuth.user,
+                            dentistId: createDentistWithAuth.id,
                         });
                     },
                 }),

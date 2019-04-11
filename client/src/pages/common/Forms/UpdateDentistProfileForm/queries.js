@@ -21,8 +21,8 @@ export const getUserDentistQuery = gql`
 `;
 
 export const createDentistMutation = gql`
-    mutation createDentist($input: CreateDentistInput!) {
-        createDentist(input: $input) {
+    mutation createDentistWithAuth($input: CreateDentistInput!) {
+        createDentistWithAuth(input: $input) {
             id
             specialty
             bio
@@ -36,6 +36,7 @@ export const createDentistMutation = gql`
                 duration
             }
             firstAppointmentDuration
+            token
         }
     }
 `;
