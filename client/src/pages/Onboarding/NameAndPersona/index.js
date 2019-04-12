@@ -22,8 +22,11 @@ import {
 import {
     PATIENT_ONBOARDING_MEDICAL_HISTORY_FORM,
     DENTIST_ONBOARDING_PROFILE_URL,
+    PATIENT_WEB_ONBOARDING_PAGE_URL,
 } from '../../../util/urls';
 import { execute } from '../../../util/gqlUtils';
+import { setSessionCookie } from '../../../util/cookieUtils';
+import { PATIENT_WEB_ONBOARDING_PAGE_REDIRECT_TO_COOKIE_VARIABLE_NAME } from '../../PatientWebOnboardingPage';
 
 const steps = [
     {
@@ -163,10 +166,12 @@ const KioskNameAndPersonaPage = componentProps => (
                 switch (objectOfValues.persona) {
                     case 'patient':
                         redirect({
-                            url: PATIENT_ONBOARDING_MEDICAL_HISTORY_FORM,
-                            newSearchParamKey: 'referer',
-                            newSearchParamValue: 'PersonaSelection',
+                            url: PATIENT_WEB_ONBOARDING_PAGE_URL,
                         });
+                        setSessionCookie(
+                            PATIENT_WEB_ONBOARDING_PAGE_REDIRECT_TO_COOKIE_VARIABLE_NAME,
+                            getRedirectUrl()
+                        );
                         break;
                     case 'dentist':
                         redirect({

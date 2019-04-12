@@ -23,7 +23,6 @@ import { profileMenuTexts } from '../../util/menuItems';
 import { getLTMBaseUrl } from '../../util/urls';
 import { onLogout } from '../../util/authUtils';
 import KioskMedicalHistoryFormPage from '../KioskMedicalHistoryFormPage';
-import KioskInsurancePage from '../KioskInsurancePage';
 import { getKeyFromText } from '../Dashboard/utils';
 import { addSearchParams } from '../../history';
 import Confirmation from '../Dashboard/Confirmation';
@@ -34,6 +33,7 @@ import {
 } from '../Dashboard/common';
 import PaymentMethods from '../PaymentMethods';
 import { Responsive, Container } from '../../components/index';
+import PatientInsuranceForm from '../PatientInsuranceForm';
 
 const { TabletMobile, Desktop, withScreenSizes } = Responsive;
 
@@ -181,10 +181,8 @@ class PatientDashboardPageView extends Component {
                 panelContent = (
                     <Card>
                         {this.renderPanelHeader(key)}
-                        <KioskInsurancePage
+                        <PatientInsuranceForm
                             onFinish={this.onInsuranceFormComplete} // to render confirmation panel on finish
-                            fromPatientDashboard={true}
-                            withoutProgressBar={true}
                         />
                     </Card>
                 );

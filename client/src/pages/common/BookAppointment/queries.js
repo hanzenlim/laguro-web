@@ -63,18 +63,3 @@ export const createAppointmentMutation = gql`
         }
     }
 `;
-
-export const checkPatientVerified = gql`
-    query($id: String!) {
-        getUser(id: $id) {
-            id
-            isVerified
-            sentVerificationDocuments
-            firstName
-            hasSubmittedHealthHistoryForm
-            insuranceInfo {
-                useInsurance
-            }
-        }
-    }
-`;

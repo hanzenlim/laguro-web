@@ -1,32 +1,17 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import _get from 'lodash/get';
-import _isEmpty from 'lodash/isEmpty';
+import queryString from 'query-string';
 import moment from 'moment';
 import { compose, Query, graphql, withApollo } from 'react-apollo';
 import { message } from 'antd';
-
 import { stripTimezone } from '../../../util/timeUtil';
-
-import {
-    getDentistQuery,
-    createAppointmentMutation,
-    checkPatientVerified,
-} from './queries';
-
+import { getDentistQuery, createAppointmentMutation } from './queries';
 import BookAppointmentView from './view';
 import { Loading } from '../../../components';
 import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
-import { redirect } from '../../../history';
-import {
-    PATIENT_ONBOARDING_MEDICAL_HISTORY_FORM,
-    PATIENT_ONBOARDING_INSURANCE_FORM,
-    ONBOARDING_NAME_AND_PERSONA_PAGE,
-} from '../../../util/urls';
-import { userHasSkippedMedicalHistory } from '../../../util/cookieUtils';
 import emitter from '../../../util/emitter';
 import { getUser } from '../../../util/authUtils';
-import queryString from 'query-string';
 import history from '../../../history';
 
 const HANDLED_TIMESLOT_ERRORS = [
@@ -73,51 +58,6 @@ class BookAppointment extends PureComponent {
         return false;
     };
 
-    handlePay = async paymentOptionId => {
-        const user = getUser();
-        const { client } = this.props;
-
-        const {
-            data: { getUser: getUserData },
-        } = await client.query({
-            query: checkPatientVerified,
-            variables: { id: _get(user, 'id') },
-            fetchPolicy: 'network-only',
-        });
-
-        this.redirectPatient(getUserData);
-
-        try {
-            this.setState({ isSubmitting: true });
-
-            await this.props.mutate({
-                variables: {
-                    input: {
-                        reservationId: this.state.reservationId,
-                        patientId: _get(user, 'id'),
-                        procedure: this.state.procedure,
-                        localStartTime: this.state.startTime,
-                        localEndTime: this.state.endTime,
-                        paymentOptionId,
-                    },
-                },
-            });
-
-            this.setState({
-                bookedAppointment: {
-                    location: this.state.location,
-                    time: moment(this.state.startTime).format('LLLL'),
-                },
-                isSubmitting: false,
-            });
-        } catch (error) {
-            const errorMessage = error.graphQLErrors[0].message;
-            if (HANDLED_TIMESLOT_ERRORS.includes(errorMessage))
-                message.error(errorMessage);
-            this.setState({ isSubmitting: false });
-        }
-    };
-
     handleBookAppointment = async (timezone, firstAppointmentDuration) => {
         const user = getUser();
 
@@ -144,8 +84,6 @@ class BookAppointment extends PureComponent {
                                 .add(firstAppointmentDuration, 'minutes')
                                 .format()
                         ),
-                        // procedure: this.state.procedure,
-                        // paymentOptionId,
                     },
                 },
             });
@@ -163,59 +101,6 @@ class BookAppointment extends PureComponent {
                 message.error(errorMessage);
             this.setState({ isSubmitting: false });
         }
-    };
-
-    checkIfVerified = async () => {
-        const user = getUser();
-        const { client } = this.props;
-
-        const {
-            data: { getUser: getUserData },
-        } = await client.query({
-            query: checkPatientVerified,
-            variables: { id: _get(user, 'id') },
-            fetchPolicy: 'network-only',
-        });
-        return !this.redirectPatient(getUserData);
-    };
-
-    redirectPatient = user => {
-        if (_isEmpty(_get(user, 'firstName'))) {
-            this.setState({ isSubmitting: false });
-            redirect({
-                url: ONBOARDING_NAME_AND_PERSONA_PAGE,
-                includeNewRedirectTo: true,
-                newSearchParamKey: 'referer',
-                newSearchParamValue: 'BookAppointment',
-            });
-            return true;
-        } else if (
-            !_get(user, 'hasSubmittedHealthHistoryForm') &&
-            !userHasSkippedMedicalHistory()
-        ) {
-            this.setState({ isSubmitting: false });
-            redirect({
-                url: PATIENT_ONBOARDING_MEDICAL_HISTORY_FORM,
-                includeNewRedirectTo: true,
-                newSearchParamKey: 'referer',
-                newSearchParamValue: 'BookAppointment',
-            });
-            return true;
-        } else if (_isEmpty(_get(user, 'insuranceInfo'))) {
-            this.setState({ isSubmitting: false });
-            redirect({
-                url: PATIENT_ONBOARDING_INSURANCE_FORM,
-                includeNewRedirectTo: true,
-                newSearchParamKey: 'referer',
-                newSearchParamValue: 'BookAppointment',
-            });
-            return true;
-        }
-        return false;
-    };
-
-    updateSubmittingState = isSubmitting => {
-        this.setState({ isSubmitting });
     };
 
     render() {
@@ -253,8 +138,6 @@ class BookAppointment extends PureComponent {
                             onSelect={this.handleSelect}
                             onVerificationResult={this.handleVerificationResult}
                             isSubmitting={this.state.isSubmitting}
-                            updateSubmittingState={this.updateSubmittingState}
-                            checkIfVerified={this.checkIfVerified}
                         />
                     );
                 }}

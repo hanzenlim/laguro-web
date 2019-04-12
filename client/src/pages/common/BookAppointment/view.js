@@ -16,9 +16,6 @@ const BookAppointmentView = props => {
         onSelect,
         onFilter,
         isSubmitting,
-        // checkIfVerified,
-        // onPay,
-        // updateSubmittingState,
     } = props;
 
     if (bookedAppointment)
@@ -57,62 +54,6 @@ const BookAppointmentView = props => {
                             Make An Appointment
                         </Button>
                     </Box>
-                    {/* <Box mt={40} mb={38}>
-                        <Text
-                            mb={16}
-                            lineHeight="30px"
-                            fontWeight="bold"
-                            color="text.black"
-                            fontSize={[1, '', 4]}
-                        >
-                            Payment Summary
-                        </Text>
-                        <Text
-                            mb={40}
-                            fontSize={[0, '', 1]}
-                            letterSpacing="0.4px"
-                            color="text.black"
-                        >
-                            * This is just a reservation fee. You will be
-                            refunded after your appointment.
-                        </Text>
-                        <Flex mb={10} justifyContent="space-between">
-                            <Text fontSize={[0, '', 2]} color="text.black">
-                                Service fee
-                            </Text>
-                            <Text fontSize={[0, '', 2]} color="text.black">
-                                $0.00
-                            </Text>
-                        </Flex>
-                        <Box
-                            borderBottom="1px solid"
-                            borderColor="divider.darkGray"
-                            mb={10}
-                        />
-                        <Flex justifyContent="space-between">
-                            <Text
-                                fontSize={[0, '', 3]}
-                                fontWeight={['bold', '', 'regular']}
-                                color="text.blue"
-                            >
-                                Total
-                            </Text>
-                            <Text
-                                fontSize={[0, '', 3]}
-                                fontWeight={['bold', '', 'regular']}
-                                color="text.blue"
-                            >
-                                $0.00
-                            </Text>
-                        </Flex>
-                    </Box>
-                    */}
-                    {/* <Payment
-                        onPay={onPay}
-                        isSubmitting={isSubmitting}
-                        updateSubmittingState={updateSubmittingState}
-                        checkIfVerified={checkIfVerified}
-                    /> */}
                 </Fragment>
             ) : null}
         </Fragment>

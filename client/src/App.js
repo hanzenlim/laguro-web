@@ -32,7 +32,6 @@ import {
     COUNTDOWN_PAGE_URL,
     TERMS_PAGE_URL,
     PRIVACY_PAGE_URL,
-    KIOSK_MEDICAL_HISTORY_FORM_CONFIRMATION_PAGE_URL,
     OFFICE_SEARCH_PAGE_URL,
     NEW_REVIEW_PAGE_URL_PREFIX,
     DENTIST_SEARCH_PAGE_URL,
@@ -42,6 +41,7 @@ import {
     KIOSK_URL,
     KIOSK_REG_PAGE_URL,
     KIOSK_OFFICE_SETUP_PAGE_URL,
+    PATIENT_WEB_ONBOARDING_PAGE_URL,
 } from './util/urls';
 import ScrollToTop from './ScrollToTop';
 
@@ -176,12 +176,6 @@ const KioskDentistProfilePage = Loadable({
     loading: () => null,
 });
 
-const KioskMedicalHistoryFormConfirmationPage = Loadable({
-    loader: () =>
-        import('./pages/KioskMedicalHistoryFormPage/Confirmation' /* webpackChunkName: "kioskMedicalHistoryFormConfirmationPage" */),
-    loading: () => null,
-});
-
 const NameAndPersonaPage = Loadable({
     loader: () =>
         import('./pages/Onboarding/NameAndPersona' /* webpackChunkName: "NameAndPersona" */),
@@ -230,6 +224,12 @@ const KioskOfficeSetUpPage = Loadable({
     loading: () => null,
 });
 
+const PatientWebOnboardingPage = Loadable({
+    loader: () =>
+        import('./pages/PatientWebOnboardingPage' /* webpackChunkName: "PatientWebOnboardingPage" */),
+    loading: () => null,
+});
+
 const PrivateRoute = ({ component: ComponentToBeRendered, ...rest }) => {
     let user = cookies.get('user');
     let isUserLoggedIn = false;
@@ -269,15 +269,14 @@ const PrivateRoute = ({ component: ComponentToBeRendered, ...rest }) => {
 
 class App extends Component {
     render() {
+        const { pathname } = history.location;
         return (
             <ThemeProvider theme={theme}>
                 <Router history={history}>
                     <ScrollToTop>
                         <Layout>
                             {/* TODO: Refactor */}
-                            {!history.location.pathname.includes('kiosk') && (
-                                <Header />
-                            )}
+                            {!pathname.includes('kiosk') && <Header />}
                             <Content>
                                 <ErrorBoundary>
                                     <Switch>
@@ -400,15 +399,6 @@ class App extends Component {
                                         />
                                         <Route
                                             path={
-                                                KIOSK_MEDICAL_HISTORY_FORM_CONFIRMATION_PAGE_URL
-                                            }
-                                            exact
-                                            component={
-                                                KioskMedicalHistoryFormConfirmationPage
-                                            }
-                                        />
-                                        <Route
-                                            path={
                                                 PATIENT_ONBOARDING_INSURANCE_FORM
                                             }
                                             exact
@@ -432,14 +422,18 @@ class App extends Component {
                                             path={KIOSK_URL}
                                             component={KioskPage}
                                         />
+                                        <Route
+                                            path={
+                                                PATIENT_WEB_ONBOARDING_PAGE_URL
+                                            }
+                                            component={PatientWebOnboardingPage}
+                                        />
                                         <Route component={Error404Page} />
                                     </Switch>
                                 </ErrorBoundary>
                             </Content>
                             {/* TODO: Refactor */}
-                            {!history.location.pathname.includes('kiosk') && (
-                                <Footer />
-                            )}
+                            {!pathname.includes('kiosk') && <Footer />}
                         </Layout>
                     </ScrollToTop>
                 </Router>
