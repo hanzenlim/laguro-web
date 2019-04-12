@@ -285,7 +285,13 @@ class DentistListingCard extends PureComponent {
                                             fontSize={['12px', '18px']}
                                             textAlign="left"
                                         >
-                                            {`Available times on ${earliestAvailableDate}`}
+                                            {`Available times `}
+                                            {moment(
+                                                dentist.availableTimes[0]
+                                                    .startTime
+                                            ).diff(moment(), 'days') === 0
+                                                ? 'today'
+                                                : `on ${earliestAvailableDate}`}
                                         </Text>
                                         <Flex flexWrap="wrap">
                                             {availableTimes.map(
