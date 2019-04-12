@@ -16,6 +16,10 @@ import {
     ALL_USER_PAGE_TYPE,
     PATIENT_PAGE_TYPE,
     DENTIST_AND_HOST_PAGE_TYPE,
+    DENTIST_DASHBOARD_PAGE_URL,
+    HOST_DASHBOARD_PAGE_URL,
+    OFFICE_PAGES_URL_PREFIX,
+    HOST_ONBOARDING_PAGE_URL_PREFIX,
 } from '../../../util/urls';
 import ProfileButton from './ProfileButton';
 
@@ -92,9 +96,10 @@ class Header extends Component {
         const onLandingPage = pathname === '/';
         // We show the office search bar on office search page and host dashboard page.
         if (
-            pathname.startsWith('/office') ||
-            pathname.includes('dashboard/host') ||
-            pathname.includes('/add-office')
+            pathname.startsWith(OFFICE_PAGES_URL_PREFIX) ||
+            pathname.includes(HOST_DASHBOARD_PAGE_URL) ||
+            pathname.includes(HOST_ONBOARDING_PAGE_URL_PREFIX) ||
+            pathname.includes(DENTIST_DASHBOARD_PAGE_URL)
         ) {
             placeholder = 'Search for offices by name and location';
         } else {

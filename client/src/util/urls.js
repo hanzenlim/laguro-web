@@ -71,7 +71,7 @@ export const DENTIST_PROFILE_PAGE_URL = '/dentist-profile';
 export const OFFICE_SEARCH_PAGE_URL = '/office/search';
 
 export const HOST_ONBOARDING_PAGE_URL_PREFIX = '/host-onboarding';
-export const OFFICE_DETAILS_PAGE_URL_PREFIX = '/office';
+export const OFFICE_PAGES_URL_PREFIX = '/office';
 
 // used to make header background blue
 export const URLS_FOR_HOST_AND_DENTIST_PAGES = [
@@ -80,7 +80,7 @@ export const URLS_FOR_HOST_AND_DENTIST_PAGES = [
     DENTIST_PROFILE_PAGE_URL,
     OFFICE_SEARCH_PAGE_URL,
     HOST_ONBOARDING_PAGE_URL_PREFIX,
-    OFFICE_DETAILS_PAGE_URL_PREFIX,
+    OFFICE_PAGES_URL_PREFIX,
     HOST_DASHBOARD_PAGE_URL,
     DENTIST_DASHBOARD_PAGE_URL,
 ];
@@ -94,6 +94,7 @@ const isAtGivenUrl = (pathname, url) =>
     // first boolean is for when pathname is identical to url, and the second is for when the pathname includes this.props.match.props like :step, or :id at the end of the pathname. e.g. /dentist/"dentist_id". we drop these match.props and compare if pathname and url are equal
     pathname === url ||
     _isEqual(pathname.split('/').slice(0, -1), url.split('/'));
+
 const isAtSomeGivenUrls = (pathname, urls) =>
     urls.map(url => isAtGivenUrl(pathname, url)).some(boolean => boolean);
 

@@ -178,7 +178,7 @@ const KioskNameAndPersonaPage = componentProps => (
                     case 'host':
                         // hostOnboarding does not redirect
                         redirect({
-                            url: '/host-onboarding/add-office/',
+                            url: '/host-onboarding/add-office',
                         });
                         break;
                     default:

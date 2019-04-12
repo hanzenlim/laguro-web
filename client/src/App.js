@@ -25,7 +25,7 @@ import {
     APPOINTMENT_CONFIRMATION_PAGE_URL,
     DENTIST_PROFILE_PAGE_URL,
     DENTIST_DETAILS_PAGE_URL_PREFIX,
-    OFFICE_DETAILS_PAGE_URL_PREFIX,
+    OFFICE_PAGES_URL_PREFIX,
     RESET_PASSWORD_PAGE_URL,
     ABOUT_PAGE_URL,
     GENERAL_ERROR_PAGE_URL,
@@ -334,7 +334,7 @@ class App extends Component {
                                             component={OfficeSearchPage}
                                         />
                                         <Route
-                                            path={`${OFFICE_DETAILS_PAGE_URL_PREFIX}/:id`}
+                                            path={`${OFFICE_PAGES_URL_PREFIX}/:id`}
                                             component={OfficeDetailsPage}
                                         />
                                         <PrivateRoute
