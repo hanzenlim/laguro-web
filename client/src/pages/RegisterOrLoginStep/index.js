@@ -8,7 +8,7 @@ import {
 } from '@laguro/the-bright-side-components';
 import { Mutation } from 'react-apollo';
 import { message } from 'antd';
-import validator from 'validator';
+import { validatePhoneOrEmail } from '../../util/validationUtils';
 
 import {
     SEND_KIOSK_LOGIN_CODE,
@@ -37,28 +37,6 @@ const Composed = adopt({
 const validateEmail = email => {
     const re = /\S+@\S+\.\S+/;
     return re.test(email);
-};
-
-const validatePhoneOrEmail = phoneOrEmail => {
-    const isEmail = validator.isEmail(phoneOrEmail);
-    const isNumeric = validator.isNumeric(phoneOrEmail);
-    const hasCorrectDigitCount = phoneOrEmail.length === 10;
-
-    if (!phoneOrEmail) {
-        return false;
-    }
-
-    if (!isEmail) {
-        if (!isNumeric) {
-            return false;
-        }
-
-        if (!hasCorrectDigitCount) {
-            return false;
-        }
-    }
-
-    return true;
 };
 
 const getLoginResult = data => {

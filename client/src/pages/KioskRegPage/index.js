@@ -21,6 +21,7 @@ import {
     KIOSK_PAGE_PROGRESS_STEPS,
     addActionsToWizardSteps,
 } from '../KioskPage/utils';
+import { validatePhoneOrEmail } from '../../util/validationUtils';
 
 // in order
 // stage 1 registration
@@ -76,6 +77,13 @@ export const KioskRegWizardSteps = [
         },
         validationSchema: Yup.object().shape({
             mode: Yup.string().required(),
+            emailOrPhoneNumber: Yup.string()
+                .required('This field is required')
+                .test(
+                    'is phone number or email valid',
+                    'Please use a valid email or phone number',
+                    validatePhoneOrEmail
+                ),
         }),
     },
     // only if user clicks sign-up in login
