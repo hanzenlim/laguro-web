@@ -201,6 +201,7 @@ const DentistSearchPageView = props => {
                             <Desktop>
                                 <Box
                                     position="fixed"
+                                    mt={15}
                                     transform="translateX(calc(100% + 34px))"
                                 >
                                     <Map
