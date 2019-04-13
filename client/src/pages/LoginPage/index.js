@@ -24,11 +24,16 @@ class LoginPage extends Component {
     render() {
         const search = queryString.parse(_get(this.props, 'location.search'));
         const { location } = this.props;
+        const { isLoginModalOpen} = this.state;
         const user = getUser();
 
         // Check if user is logged in or not.
         if (_get(user, 'id')) {
             return <Redirect to={search.redirectTo} />;
+        }
+
+        if(!isLoginModalOpen) {
+            return <Redirect to='/' />
         }
 
         return (
