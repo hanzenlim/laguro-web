@@ -3,11 +3,11 @@ import _flatten from 'lodash/flatten';
 import defaultUserImage from '../../components/Image/defaultUserImage.svg';
 
 export const KIOSK_PAGE_PROGRESS_STEPS = [
-    '1.         REGISTRATION',
-    '2.  GENERAL INFORMATION',
-    '3.            INSURANCE',
-    '4.  BOOK AN APPOINTMENT',
-    '5. MEDICAL HISTORY FORM',
+    'REGISTRATION',
+    'GENERAL INFORMATION',
+    'INSURANCE',
+    'BOOK AN APPOINTMENT',
+    'MEDICAL HISTORY FORM',
 ];
 
 const addActionToWizardStep = ({ action, step }) => {

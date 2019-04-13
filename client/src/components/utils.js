@@ -32,9 +32,6 @@ export const flexWrap = style({
 const getProgressStepsFromStep = (index, progressSteps) =>
     progressSteps.slice(index - 1);
 
-const getProgressStepsWithNumbers = progressSteps =>
-    progressSteps.map((step, index2) => `${index2 + 1} ${step}`);
-
 export const getProgressBarProps = ({
     startStep = 1,
     currentStep,
@@ -44,8 +41,6 @@ export const getProgressBarProps = ({
         getProgressStepsFromStep(startStep, progressSteps).indexOf(
             currentStep
         ) + 1,
-    steps: getProgressStepsWithNumbers(
-        getProgressStepsFromStep(startStep, progressSteps)
-    ),
+    steps: progressSteps,
     percent: 100 / getProgressStepsFromStep(startStep, progressSteps).length,
 });
