@@ -4,7 +4,7 @@ import _get from 'lodash/get';
 import {
     Wizard,
     Progress,
-    Insurance,
+    KioskInsurance,
     Address,
     Gender,
     Birthday,
@@ -44,7 +44,7 @@ const Composed = adopt({
 const Step0 = props => (
     <Composed>
         {({ updateInsuranceInfoMutation }) => (
-            <Insurance
+            <KioskInsurance
                 {...props}
                 onSkip={async () => {
                     const user = getUser();
