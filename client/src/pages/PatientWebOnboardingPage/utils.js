@@ -7,9 +7,9 @@ import { redirect } from '../../history';
 import { PATIENT_WEB_ONBOARDING_PAGE_REDIRECT_TO_COOKIE_VARIABLE_NAME } from '.';
 
 export const PATIENT_WEB_ONBOARDING_PAGE_PROGRESS_STEPS = [
-    '1.  GENERAL INFORMATION',
-    '2.            INSURANCE',
-    '3. MEDICAL HISTORY FORM',
+    'GENERAL INFORMATION',
+    'INSURANCE',
+    'MEDICAL HISTORY FORM',
 ];
 
 const addActionToWizardStep = ({ action, step }) => {
