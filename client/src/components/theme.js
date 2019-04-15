@@ -52,6 +52,7 @@ export default {
             dustyGray: '#979797',
             transparent: 'rgba(0, 0, 0, 0)',
             blue: '#3481F8',
+            red: '#f5222d',
         },
         rating: {
             yellow: '#FFCE70',

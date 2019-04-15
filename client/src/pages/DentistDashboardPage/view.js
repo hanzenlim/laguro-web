@@ -35,6 +35,7 @@ import ReviewContainer from '../common/ReviewContainer/index';
 import { Responsive, Link, Button, Flex } from '../../components/index';
 import styled from 'styled-components';
 import PreferredLocations from '../common/PreferredLocations';
+import DentistAvailabilityForm from '../common/Forms/DentistAvailabilityForm';
 
 const currentUrl = window.location.href;
 const { TabletMobile, Desktop, withScreenSizes } = Responsive;
@@ -153,7 +154,10 @@ class DentistDashboardPageView extends Component {
                             />
                         </Card>
                         <Box mb="13px" />
-                        <Card>{/** Availability settings here * */}</Card>
+                        <Card>
+                            {this.renderPanelHeader('Availability settings')}
+                            <DentistAvailabilityForm />
+                        </Card>
                     </Box>
                 );
                 TabletMobileContainerComponent = Fragment;

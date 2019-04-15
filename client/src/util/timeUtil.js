@@ -226,6 +226,7 @@ export const ListingTime = ({
                                     'End date'}`}
         </Text>
         <Text
+            mt={8}
             fontSize={[0, '', 1]}
             color="#9b9b9b"
             letterSpacing="-0.5px"

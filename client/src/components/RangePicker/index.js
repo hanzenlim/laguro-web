@@ -12,7 +12,11 @@ const StyledContainer = styled.div`
     width: ${props => (props.width ? props.width : '455px')};
     border-radius: 2px;
     background-color: ${props => props.theme.colors.background.white};
-    border: 1px solid ${props => props.theme.colors.divider.gray};
+    border: 1px solid
+        ${props =>
+            props.hasError
+                ? props.theme.colors.divider.red
+                : props.theme.colors.divider.gray};
     height: 100px;
     cursor: pointer;
     @media (min-width: ${props => props.theme.breakpoints[1]}) {
