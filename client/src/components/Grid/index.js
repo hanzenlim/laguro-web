@@ -31,6 +31,7 @@ const GridSystem = system(
     'gridTemplateRows',
     'gridColumnGap',
     'gridRowGap',
+    'gridGap',
     //
     'space',
     'position',

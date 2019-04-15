@@ -13,6 +13,7 @@ import {
     VIEW_PROFILE_MENU_TEXT,
     CALENDAR_MENU_TEXT,
     DENTIST,
+    AVAILABILITY_SETTINGS,
 } from '../../util/strings';
 import { dentistDashboardMenuTexts } from '../../util/menuItems';
 import { getKeyFromText } from '../Dashboard/utils';
@@ -33,6 +34,7 @@ import DentistDetails from '../common/DentistDetails';
 import ReviewContainer from '../common/ReviewContainer/index';
 import { Responsive, Link, Button, Flex } from '../../components/index';
 import styled from 'styled-components';
+import PreferredLocations from '../common/PreferredLocations';
 
 const currentUrl = window.location.href;
 const { TabletMobile, Desktop, withScreenSizes } = Responsive;
@@ -54,6 +56,7 @@ const menuTextToDescription = {
     [BOOKINGS_MENU_TEXT]: 'View and edit your bookings',
     [LAGURO_BALANCE_MENU_TEXT]: 'View your current account balance',
     [VIEW_PROFILE_MENU_TEXT]: 'View your public dentist page',
+    [AVAILABILITY_SETTINGS]: 'Set your availability preference', // todo update when design is ready
 };
 
 class DentistDashboardPageView extends Component {
@@ -107,11 +110,54 @@ class DentistDashboardPageView extends Component {
         this.setState({ showDentistVerificationConfirmation: true }); // this will cause a re-render to show dentistVerificationConfirmation
     };
 
+    renderPanelHeader = key => (
+        <Box
+            borderBottom="solid 0.5px"
+            borderColor="divider.gray"
+            width="auto"
+            mb={30}
+            // Hacky implementation for custom position of card heading
+            mx={-22}
+            mt={-28}
+            pt={15}
+            pl={10}
+        >
+            <Text
+                color="text.lightGray"
+                opacity="0.6"
+                mb={15}
+                fontWeight="normal"
+                fontSize={1}
+            >
+                {key}
+            </Text>
+        </Box>
+    );
+
     renderPanel = key => {
         let panelContent;
         let TabletMobileContainerComponent = Container;
+        const { offices, preferredLocations, zipCode, dentistId } = this.props;
 
         switch (key) {
+            case AVAILABILITY_SETTINGS:
+                panelContent = (
+                    <Box>
+                        <Card>
+                            <PreferredLocations
+                                renderPanelHeader={this.renderPanelHeader}
+                                offices={offices}
+                                preferredLocations={preferredLocations}
+                                zipCode={zipCode}
+                                dentistId={dentistId}
+                            />
+                        </Card>
+                        <Box mb="13px" />
+                        <Card>{/** Availability settings here * */}</Card>
+                    </Box>
+                );
+                TabletMobileContainerComponent = Fragment;
+                break;
             case PROFILE_SETTINGS_MENU_TEXT:
                 panelContent = (
                     <KioskDentistProfilePage
@@ -177,6 +223,10 @@ class DentistDashboardPageView extends Component {
         const ContainerComponent = this.props.tabletMobileOnly
             ? TabletMobileContainerComponent
             : Card;
+
+        if (key === AVAILABILITY_SETTINGS) {
+            return this.renderPanelContent(panelContent);
+        }
 
         return (
             <ContainerComponent>

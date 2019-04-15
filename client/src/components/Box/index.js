@@ -50,7 +50,8 @@ const Box = system(
     'backgroundPosition',
     'backgroundRepeat',
     // misc
-    'boxShadow'
+    'boxShadow',
+    'overflow'
 );
 
 const StyledBox = styled(Box)`

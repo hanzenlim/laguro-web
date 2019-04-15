@@ -55,6 +55,15 @@ class DentistDashboardPage extends Component {
                         dataUserQuery,
                         'getUser.dentist.offices'
                     );
+                    const preferredLocations = get(
+                        dataUserQuery,
+                        'getUser.dentist.preferredLocations'
+                    );
+                    const zipCode = get(
+                        dataUserQuery,
+                        'getUser.address.zipCode',
+                        ''
+                    );
 
                     return (
                         <DentistDashboardView
@@ -65,6 +74,8 @@ class DentistDashboardPage extends Component {
                             offices={offices}
                             userId={id}
                             panel={getTextFromKey(params.selectedTab)}
+                            preferredLocations={preferredLocations}
+                            zipCode={zipCode}
                         />
                     );
                 }}

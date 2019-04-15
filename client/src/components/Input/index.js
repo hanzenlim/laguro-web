@@ -8,6 +8,7 @@ import {
     textAlign,
     borderRadius,
     space,
+    background,
 } from 'styled-system';
 
 const StyledInput = styled(AntdInput)`
@@ -18,6 +19,7 @@ const StyledInput = styled(AntdInput)`
         ${textAlign};
         ${borderRadius};
         ${space};
+        ${background}
     }
 `;
 

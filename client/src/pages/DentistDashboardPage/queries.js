@@ -11,11 +11,30 @@ export const getUserQuery = gql`
             dentistId
             isHost
             isDentist
+            address {
+                zipCode
+            }
             dentist {
                 id
                 deaRegistrationNumber
+                preferredLocations {
+                    id
+                    name
+                    location {
+                        name
+                    }
+                    numReviews
+                    averageRating
+                }
                 offices {
                     id
+                    name
+                    location {
+                        addressDetails
+                        name
+                    }
+                    numReviews
+                    averageRating
                 }
                 bio
                 specialty

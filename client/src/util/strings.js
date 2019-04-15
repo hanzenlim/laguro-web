@@ -123,6 +123,7 @@ export const BOOKINGS_MENU_TEXT = 'Bookings';
 export const LAGURO_BALANCE_MENU_TEXT = 'Laguro balance';
 export const SEARCH_FOR_CHAIRS_MENU_TEXT = 'Search for chairs';
 export const VIEW_PROFILE_MENU_TEXT = 'View profile';
+export const AVAILABILITY_SETTINGS = 'Availability settings';
 
 // host menu
 // used in header hosts link and in host dashboard
