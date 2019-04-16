@@ -8,6 +8,7 @@ import { Form, Field, withFormik } from 'formik';
 import * as Yup from 'yup';
 import _range from 'lodash/range';
 import { message } from 'antd';
+import _trim from 'lodash/trim';
 
 import { Box, Text, Image, Button, Flex } from '../../../../components';
 import { filestackKey } from '../../../../config/keys';
@@ -459,8 +460,14 @@ export default withFormik({
         return { ...data };
     },
     handleSubmit: async (values, actions) => {
+        const formattedValues = { ...values };
+
+        if (values.email) {
+            formattedValues.email = _trim(values.email).toLowerCase();
+        }
+
         actions.setSubmitting(true);
-        const result = await actions.props.onSuccess(values);
+        const result = await actions.props.onSuccess(formattedValues);
         actions.setSubmitting(false);
 
         if (result) {
