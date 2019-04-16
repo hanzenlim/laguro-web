@@ -1,6 +1,5 @@
 import _isEmpty from 'lodash/isEmpty';
 import _flatten from 'lodash/flatten';
-import moment from 'moment-timezone';
 
 import defaultUserImage from '../../components/Image/defaultUserImage.svg';
 
@@ -53,9 +52,7 @@ export const getDentistTimes = activeDentistsWithAppointmentSlots =>
     _flatten(
         activeDentistsWithAppointmentSlots.map(dent =>
             dent.availableAppointmentSlots.map(apptSlot => ({
-                startTime: moment
-                    .tz(apptSlot.startTime, apptSlot.timezone)
-                    .format(),
+                startTime: apptSlot.startTime,
                 reservationId: apptSlot.reservationId,
                 ...dent,
                 id: `${dent.id}${apptSlot.startTime}`,

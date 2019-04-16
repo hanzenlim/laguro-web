@@ -289,7 +289,6 @@ export const GET_OFFICE = gql`
                 ) {
                     startTime
                     reservationId
-                    timezone
                 }
                 firstAppointmentDuration
                 languages
