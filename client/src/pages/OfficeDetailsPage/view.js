@@ -162,7 +162,7 @@ class OfficeDetailsPageView extends PureComponent {
                             justifyContent="space-between"
                             flexDirection={['column', '', 'row']}
                         >
-                            <Box width={['100%', '', 'calc(100% - 460px)']}>
+                            <Box>
                                 <Box mt={20} mr={[0, '', 34]}>
                                     <OfficeDetails
                                         id={id}
@@ -189,10 +189,14 @@ class OfficeDetailsPageView extends PureComponent {
                                 </Box>
                             </Box>
                             {isReserveOfficeVisible && (
-                                <Sticky mt={[0, '', 20]} offset="20px">
+                                <Sticky
+                                    mt={[0, '', 20]}
+                                    offset="20px"
+                                    width={['100%', '', 460]}
+                                    maxWidth={['100%', '', '40%']}
+                                >
                                     <Box
                                         mt={[20, '', 44]}
-                                        width={['100%', '', 460]}
                                     >
                                         <ReserveOffice
                                             officeId={id}

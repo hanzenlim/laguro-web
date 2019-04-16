@@ -50,7 +50,7 @@ class DentistDetailsPageView extends PureComponent {
                         justifyContent="space-between"
                         flexDirection={['column', '', 'row']}
                     >
-                        <Box width={['100%', '', 'calc(100% - 460px)']}>
+                        <Box>
                             <Box mt={30} mr={[0, '', 34]}>
                                 <DentistDetails
                                     dentist={dentist}
@@ -67,10 +67,12 @@ class DentistDetailsPageView extends PureComponent {
                             </Box>
                         </Box>
                         {isBookAppointmentVisible && (
-                            <Sticky>
+                            <Sticky 
+                                width={['100%', '', 460]}
+                                maxWidth={['100%', '', '40%']}
+                            >
                                 <Box
                                     mt={[22, '', 44]}
-                                    width={['100%', '', '460px']}
                                     border={['none', '', '1px solid']}
                                     borderColor={['', '', 'divider.gray']}
                                     boxShadow={['none', '', 0]}
