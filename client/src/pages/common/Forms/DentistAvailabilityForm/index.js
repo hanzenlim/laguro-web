@@ -60,7 +60,7 @@ class DentistAvailabilityForm extends PureComponent {
                           startTime: '',
                           endTime: '',
                           range: [],
-                          days: [],
+                          days: {},
                           selectedLocations: '',
                           isOpen: true,
                       },
