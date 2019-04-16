@@ -1,5 +1,6 @@
 import _isEmpty from 'lodash/isEmpty';
 import _flatten from 'lodash/flatten';
+
 import defaultUserImage from '../../components/Image/defaultUserImage.svg';
 
 export const KIOSK_PAGE_PROGRESS_STEPS = [

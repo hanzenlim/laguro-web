@@ -3,12 +3,13 @@ import * as Yup from 'yup';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 import _find from 'lodash/find';
-import moment from 'moment';
 import {
     KioskInsurance,
     HealthHistoryForm,
 } from '@laguro/the-bright-side-components';
 import cookies from 'browser-cookies';
+import moment from 'moment-timezone';
+
 import { execute } from '../../util/gqlUtils';
 import { getDentistTimes } from './utils';
 
@@ -409,15 +410,26 @@ export const getKioskPageWizardSteps = ({
                                 input: {
                                     patientId: _get(user, 'id'),
                                     reservationId: dentistTime.reservationId,
-                                    localStartTime: moment(
-                                        dentistTime.startTime
-                                    ),
-                                    localEndTime: moment(
-                                        dentistTime.startTime
-                                    ).add(
-                                        dentistTime.firstAppointmentDuration,
-                                        'minutes'
-                                    ),
+                                    /* hardcoding timezone to make temporary fix
+                                     * within next two weeks, appointmentslot will
+                                     * be updated to return localStartTime, localEndTime
+                                     */
+                                    localStartTime: moment
+                                        .tz(
+                                            dentistTime.startTime,
+                                            'America/Los_Angeles'
+                                        )
+                                        .format('YYYY-MM-DDTHH:mm:ss'),
+                                    localEndTime: moment
+                                        .tz(
+                                            dentistTime.startTime,
+                                            'America/Los_Angeles'
+                                        )
+                                        .add(
+                                            dentistTime.firstAppointmentDuration,
+                                            'minutes'
+                                        )
+                                        .format('YYYY-MM-DDTHH:mm:ss'),
                                     reasonOfVisit: !_isEmpty(
                                         selectProcedureListOfProcedures
                                     )
