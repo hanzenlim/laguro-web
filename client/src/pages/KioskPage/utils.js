@@ -1,5 +1,7 @@
 import _isEmpty from 'lodash/isEmpty';
 import _flatten from 'lodash/flatten';
+import moment from 'moment-timezone';
+
 import defaultUserImage from '../../components/Image/defaultUserImage.svg';
 
 export const KIOSK_PAGE_PROGRESS_STEPS = [
@@ -51,7 +53,9 @@ export const getDentistTimes = activeDentistsWithAppointmentSlots =>
     _flatten(
         activeDentistsWithAppointmentSlots.map(dent =>
             dent.availableAppointmentSlots.map(apptSlot => ({
-                startTime: apptSlot.startTime,
+                startTime: moment
+                    .tz(apptSlot.startTime, apptSlot.timezone)
+                    .format(),
                 reservationId: apptSlot.reservationId,
                 ...dent,
                 id: `${dent.id}${apptSlot.startTime}`,
