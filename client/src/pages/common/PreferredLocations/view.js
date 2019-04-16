@@ -55,17 +55,17 @@ const PreferredLocations = ({
         loc => !selectedIds.includes(loc.id)
     );
 
-    let header = 'Preferred Locations';
+    let header = 'Preferred locations';
     if (preferredLocationOne || preferredLocationTwo) {
-        header = 'Preferred Locations (1/2 selected)';
+        header = 'Preferred locations (1/2 selected)';
     }
 
     if (preferredLocationOne && preferredLocationTwo) {
-        header = 'Preferred Locations (2/2 selected)';
+        header = 'Preferred locations (2/2 selected)';
     }
 
     if (!preferredLocationOne && !preferredLocationTwo) {
-        header = 'Preferred Locations (0/2 selected)';
+        header = 'Preferred locations (0/2 selected)';
     }
 
     let zipCodeAndLocation = '';
@@ -86,7 +86,7 @@ const PreferredLocations = ({
         <Fragment>
             {renderPanelHeader(header)}
             <Box mt={[22, '', 0]} mb={[42, '', 0]}>
-                <Text fontSize={0} color="#303449">
+                <Text fontSize={1} color="#303449">
                     Choose your desired dental offices below. We will match your
                     patients and locations accordingly.
                 </Text>
@@ -94,8 +94,8 @@ const PreferredLocations = ({
                 <Box height={15} />
                 <Grid
                     gridTemplateColumns={[
-                        'repeat(auto-fit, minmax(318px, 1fr))',
-                        'repeat(auto-fit, minmax(330px, 1fr))',
+                        'repeat(auto-fit, minmax(260px, 1fr))',
+                        '',
                         'repeat(auto-fit, 424px)',
                     ]}
                     gridGap={12}
@@ -163,28 +163,38 @@ const PreferredLocations = ({
 
                 {!showLocations && (
                     <Fragment>
-                        <Flex flexDirection="row" alignItems="center">
-                            <Text fontSize={0} color="#303449" mr={10}>
+                        <Flex
+                            flexDirection={['column', '', 'row']}
+                            alignItems={['flex-start', '', 'center']}
+                        >
+                            <Text
+                                fontSize={1}
+                                color="#303449"
+                                mr={10}
+                                mb={[8, '', 0]}
+                            >
                                 Recommended locations around
                             </Text>
-                            <Input
-                                width={152}
-                                height={33}
-                                borderRadius={2}
-                                border="solid 1px #dbdbdb"
-                                background="#fff"
-                                mr={10}
-                                onChange={handleZipCodeChange}
-                                value={zipCode}
-                            />
-                            <Text
-                                fontSize={0}
-                                color="#3481f8"
-                                role="button"
-                                onClick={() => toggleShowLocations(true)}
-                            >
-                                update
-                            </Text>
+                            <Flex alignItems="center">
+                                <Input
+                                    width={152}
+                                    height={33}
+                                    borderRadius={2}
+                                    border="solid 1px #dbdbdb"
+                                    background="#fff"
+                                    mr={10}
+                                    onChange={handleZipCodeChange}
+                                    value={zipCode}
+                                />
+                                <Text
+                                    fontSize={1}
+                                    color="#3481f8"
+                                    role="button"
+                                    onClick={() => toggleShowLocations(true)}
+                                >
+                                    update
+                                </Text>
+                            </Flex>
                         </Flex>
 
                         <Box height={30} />
@@ -196,7 +206,7 @@ const PreferredLocations = ({
                             m="30px auto"
                         >
                             <Text
-                                fontSize={18}
+                                fontSize={3}
                                 opacity={0.46}
                                 fontFamily="Silka"
                                 fontWeight="bold"
@@ -250,7 +260,7 @@ const PreferredLocations = ({
                         <Box height={30} />
                         <Desktop>
                             <Text
-                                fontSize={0}
+                                fontSize={1}
                                 color="#303449"
                                 display="flex"
                                 flexDirection="row"
@@ -270,7 +280,7 @@ const PreferredLocations = ({
                             </Text>
                         </Desktop>
                         <Mobile>
-                            <Text fontSize={0} color="#303449">
+                            <Text fontSize={1} color="#303449">
                                 {`${locationsText} ${zipCodeAndLocation}`}
                                 <Text
                                     ml={[0, 8]}
@@ -286,8 +296,8 @@ const PreferredLocations = ({
                         {loadingLocations && <Loading />}
                         <Grid
                             gridTemplateColumns={[
-                                'repeat(auto-fit, minmax(318px, 1fr))',
-                                'repeat(auto-fit, minmax(330px, 1fr))',
+                                'repeat(auto-fit, minmax(260px, 1fr))',
+                                '',
                                 'repeat(auto-fit, 424px)',
                             ]}
                             gridGap={12}

@@ -145,12 +145,12 @@ class PatientDashboardPageView extends Component {
                 panelContent = (
                     <Box>
                         <Card>
-                            {this.renderPanelHeader('Account Settings')}
+                            {this.renderPanelHeader('Account settings')}
                             <UpdateProfileForm />
                         </Card>
-                        <Box mb="13px" />
+                        <Box mb="40px" />
                         <Card>
-                            {this.renderPanelHeader('Contact Information')}
+                            {this.renderPanelHeader('Contact information')}
                             <ContactInformationForm />
                         </Card>
                     </Box>

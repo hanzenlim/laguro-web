@@ -137,7 +137,6 @@ class DentistDashboardPageView extends Component {
 
     renderPanel = key => {
         let panelContent;
-        let TabletMobileContainerComponent = Container;
         const { offices, preferredLocations, zipCode, dentistId } = this.props;
 
         switch (key) {
@@ -153,101 +152,96 @@ class DentistDashboardPageView extends Component {
                                 dentistId={dentistId}
                             />
                         </Card>
-                        <Box mb="13px" />
+                        <Box mb="40px" />
                         <Card>
                             {this.renderPanelHeader('Availability settings')}
                             <DentistAvailabilityForm />
                         </Card>
                     </Box>
                 );
-                TabletMobileContainerComponent = Fragment;
                 break;
             case PROFILE_SETTINGS_MENU_TEXT:
                 panelContent = (
-                    <KioskDentistProfilePage
-                        onFinish={this.onDentistProfileFormComplete} // to render confirmation panel on finish
-                        withoutProgressBar={true}
-                        fromDentistDashboard={true}
-                    />
+                    <Card>
+                        {this.renderPanelHeader(key)}
+                        <KioskDentistProfilePage
+                            onFinish={this.onDentistProfileFormComplete} // to render confirmation panel on finish
+                            withoutProgressBar={true}
+                            fromDentistDashboard={true}
+                        />
+                    </Card>
                 );
-                TabletMobileContainerComponent = Fragment;
                 break;
             case DENTIST_VERIFICATION_MENU_TEXT:
                 panelContent = (
-                    <DentistVerification
-                        onFinish={this.onDentistVerificationComplete} // to render confirmation panel on finish
-                        withoutProgressBar={true}
-                        fromDentistDashboard={true}
-                    />
+                    <Card>
+                        {this.renderPanelHeader(key)}
+                        <DentistVerification
+                            onFinish={this.onDentistVerificationComplete} // to render confirmation panel on finish
+                            withoutProgressBar={true}
+                            fromDentistDashboard={true}
+                        />
+                    </Card>
                 );
-                TabletMobileContainerComponent = Fragment;
                 break;
             case CREATE_A_NEW_APPOINTMENT_MENU_TEXT:
-                panelContent = <NewAppointment />;
-                TabletMobileContainerComponent = this.props.tabletOnly
-                    ? Container
-                    : Fragment;
+                panelContent = (
+                    <Card>
+                        {this.renderPanelHeader(key)}
+                        <NewAppointment />
+                    </Card>
+                );
                 break;
             case MY_PATIENTS_MENU_TEXT:
-                panelContent = <PatientsList />;
-                TabletMobileContainerComponent = Fragment;
+                panelContent = (
+                    <Card>
+                        {this.renderPanelHeader(key)}
+                        <PatientsList />
+                    </Card>
+                );
                 break;
             case BOOKINGS_MENU_TEXT:
-                panelContent = <DentistAppointments />;
-                TabletMobileContainerComponent = Fragment;
+                panelContent = (
+                    <Card>
+                        {this.renderPanelHeader(key)}
+                        <DentistAppointments />
+                    </Card>
+                );
                 break;
             case LAGURO_BALANCE_MENU_TEXT:
                 panelContent = (
-                    <BalanceHistory
-                        userId={this.props.userId}
-                        persona={DENTIST}
-                    />
+                    <Card>
+                        {this.renderPanelHeader(key)}
+                        <BalanceHistory
+                            userId={this.props.userId}
+                            persona={DENTIST}
+                        />
+                    </Card>
                 );
-                TabletMobileContainerComponent = Fragment;
                 break;
             case VIEW_PROFILE_MENU_TEXT:
                 panelContent = (
-                    <Container px={[25, '', 0]}>
-                        <DentistDetails
-                            dentist={this.props.dentist}
-                            viewOnly={true}
-                        />
-                        <ReviewContainer
-                            type={DENTIST}
-                            id={this.props.dentistId}
-                            viewOnly={true}
-                        />
-                    </Container>
+                    <Card>
+                        {this.renderPanelHeader(key)}
+                        <Container px={[25, '', 0]}>
+                            <DentistDetails
+                                dentist={this.props.dentist}
+                                viewOnly={true}
+                            />
+                            <ReviewContainer
+                                type={DENTIST}
+                                id={this.props.dentistId}
+                                viewOnly={true}
+                            />
+                        </Container>
+                    </Card>
                 );
-                TabletMobileContainerComponent = Fragment;
                 break;
             default:
         }
 
-        const ContainerComponent = this.props.tabletMobileOnly
-            ? TabletMobileContainerComponent
-            : Card;
-
-        if (key === AVAILABILITY_SETTINGS) {
-            return this.renderPanelContent(panelContent);
-        }
-
         return (
-            <ContainerComponent>
-                <Desktop>
-                    <Box
-                        borderBottom="solid 0.5px"
-                        borderColor="divider.gray"
-                        width="100%"
-                        mb={30}
-                    >
-                        <Text mb={15} fontWeight="bold" fontSize={1}>
-                            {key}
-                        </Text>
-                    </Box>
-                </Desktop>
-                {this.renderPanelContent(panelContent)}
-            </ContainerComponent>
+            <Box pt={[10, '', 0]}>{this.renderPanelContent(panelContent)}</Box>
         );
     };
 
@@ -311,17 +305,6 @@ class DentistDashboardPageView extends Component {
         return (
             <Fragment>
                 <TabletMobile>
-                    <Container>
-                        <Text
-                            fontSize={1}
-                            color="text.blue"
-                            fontWeight="bold"
-                            lineHeight={2.86}
-                            my={8}
-                        >
-                            {this.props.panel}
-                        </Text>
-                    </Container>
                     <Box pb={50}>{this.renderPanel(this.props.panel)}</Box>
                 </TabletMobile>
                 <Desktop>

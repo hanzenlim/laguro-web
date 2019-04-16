@@ -113,35 +113,46 @@ const { CheckableTag } = Tag;
 const StyledCheckableTag = styled(CheckableTag)`
     &&.ant-tag-checkable {
         line-height: ${props => (props.desktopOnly ? '30px' : '41px')};
-        border-radius: ${props => (props.desktopOnly ? '22.5px' : '0')};
-        border: ${props =>
-            props.desktopOnly ? 'none' : 'solid 0.1px #dbdbdb'};
-        background-color: ${props =>
-            props.desktopOnly
-                ? props.theme.colors.background.whiteSmoke
-                : props.theme.colors.background.white};
+        border-radius: ${props => (props.desktopOnly ? '22.5px' : '50%')};
+        border: none;
+        background-color: #f5f5f5;
     }
 `;
 
 const DayPickerField = props => {
     const { desktopOnly } = props;
 
-    return ABBREVIATED_DAYS.map(d => (
-        <StyledCheckableTag
-            width={[41, '', 60]}
-            height={[41, '', 30]}
-            mr={8}
-            mb={[5, '', 0]}
-            borderRadius={['50%', '', '0']}
-            checked={props.field.value && props.field.value[d]}
-            onChange={isActive =>
-                props.form.setFieldValue(`${props.field.name}.${d}`, isActive)
+    return ABBREVIATED_DAYS.map(d => {
+        let dayText = d.charAt(0).toUpperCase() + d.slice(1);
+
+        if (!desktopOnly) {
+            if (d === 'sat' || d === 'sun') {
+                dayText = d.charAt(0).toUpperCase() + d.charAt(1);
+            } else {
+                dayText = d.charAt(0).toUpperCase();
             }
-            desktopOnly={desktopOnly}
-        >
-            {d.charAt(0).toUpperCase() + d.slice(1)}
-        </StyledCheckableTag>
-    ));
+        }
+
+        return (
+            <StyledCheckableTag
+                width={[40, '', 60]}
+                height={[40, '', 30]}
+                mr={8}
+                mb={[5, '', 0]}
+                borderRadius={['50%', '', '0']}
+                checked={props.field.value && props.field.value[d]}
+                onChange={isActive =>
+                    props.form.setFieldValue(
+                        `${props.field.name}.${d}`,
+                        isActive
+                    )
+                }
+                desktopOnly={desktopOnly}
+            >
+                {dayText}
+            </StyledCheckableTag>
+        );
+    });
 };
 
 const StyledNextButton = styled(Button)`
@@ -153,7 +164,7 @@ const StyledNextButton = styled(Button)`
 `;
 
 const DentistAvailabilityForm = props => (
-    <Box mx={[-30, '', 0]}>
+    <Box mx={[-20, '', 0]}>
         <Form>
             <FieldArray
                 name="availabilityList"
@@ -259,6 +270,7 @@ const DentistAvailabilityForm = props => (
                                                         letterSpacing="-0.4px"
                                                         color="text.black"
                                                         mt={[0, '', 20]}
+                                                        mb={10}
                                                     >
                                                         From
                                                     </Text>
@@ -280,6 +292,7 @@ const DentistAvailabilityForm = props => (
                                                             '',
                                                             'center',
                                                         ]}
+                                                        mb={10}
                                                     >
                                                         to
                                                     </Text>
