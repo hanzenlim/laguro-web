@@ -66,7 +66,7 @@ const NewsletterView = props => (
             </Text>
             <Flex width="100%" justifyContent="center">
                 <Box width={['100%', '', '535px']}>
-                    <StyledForm noValidate>
+                    <StyledForm noValidate onSubmit={props.handleSubmit}>
                         <Box width="100%">
                             <Flex width="100%">
                                 <Field
