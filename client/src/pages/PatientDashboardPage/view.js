@@ -34,6 +34,7 @@ import {
 import PaymentMethods from '../PaymentMethods';
 import { Responsive, Container } from '../../components/index';
 import PatientInsuranceForm from '../PatientInsuranceForm';
+import { version } from '../../../package.json';
 
 const { TabletMobile, Desktop, withScreenSizes } = Responsive;
 
@@ -288,6 +289,13 @@ class PatientDashboardPageView extends Component {
                     <Container>
                         <Text mt={20} mb={13} fontWeight="medium" fontSize={4}>
                             Patient Dashboard
+                            <Text is='span'
+                                fontSize={1}
+                                color='text.darkGray'
+                                ml={10}
+                            >
+                                {`v${version}`}
+                            </Text>
                         </Text>
                         <DashboardGrid pb={50}>
                             {this.renderMenu(this.props.panel)}

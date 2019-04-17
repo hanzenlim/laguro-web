@@ -36,6 +36,7 @@ import { Responsive, Link, Button, Flex } from '../../components/index';
 import styled from 'styled-components';
 import PreferredLocations from '../common/PreferredLocations';
 import DentistAvailabilityForm from '../common/Forms/DentistAvailabilityForm';
+import { version } from '../../../package.json';
 
 const currentUrl = window.location.href;
 const { TabletMobile, Desktop, withScreenSizes } = Responsive;
@@ -321,6 +322,13 @@ class DentistDashboardPageView extends Component {
                                 fontSize={4}
                             >
                                 Dentist Dashboard
+                                <Text is='span'
+                                    fontSize={1}
+                                    color='text.darkGray'
+                                    ml={10}
+                                >
+                                    {`v${version}`}
+                                </Text>
                             </Text>
                             <Desktop>
                                 <Link
