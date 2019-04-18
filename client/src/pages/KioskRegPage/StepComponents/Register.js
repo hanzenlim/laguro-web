@@ -100,6 +100,7 @@ export const RegisterStep = props => (
                     });
 
                     if (!hasNoError) {
+                        props.clear();
                         return;
                     }
 
@@ -107,7 +108,10 @@ export const RegisterStep = props => (
                         registerUserResult
                     );
 
-                    if (!isPinValid) return;
+                    if (!isPinValid) {
+                        props.clear();
+                        return;
+                    }
 
                     props.formikProps.setFieldValue('isPinValid', true);
 

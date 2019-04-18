@@ -8,6 +8,7 @@ import {
     Progress,
 } from '@laguro/the-bright-side-components';
 import _get from 'lodash/get';
+import _isEmpty from 'lodash/isEmpty';
 import cookies from 'browser-cookies';
 import { Flex, Box } from '../../components/index';
 import { onLogoutWithoutRedirect } from '../../util/authUtils';
@@ -137,6 +138,17 @@ class KioskPage extends Component {
         cookies.erase(kioskPurposeOfVisitCookieVariableName);
         cookies.erase(kioskIsAccountNewCookieVariableName);
     }
+
+    setReference = node => {
+        this.pinInputRef = node;
+    };
+
+    clear = () => {
+        if (!_isEmpty(this.pinInputRef)) {
+            this.pinInputRef.clear();
+        }
+    };
+
     render() {
         // add redirects here
         const steps = addActionsToWizardSteps({
@@ -174,7 +186,13 @@ class KioskPage extends Component {
                     step = <PurposeOfVisit {...props} />;
                     break;
                 case LOGIN_WIZARD_STEP_ID:
-                    step = <LoginStep {...props} />;
+                    step = (
+                        <LoginStep
+                            setReference={this.setReference}
+                            clear={this.clear}
+                            {...props}
+                        />
+                    );
                     break;
                 // optional
                 case GET_PATIENT_NAME_WIZARD_STEP_ID:
@@ -188,6 +206,8 @@ class KioskPage extends Component {
                                 props.values[LOGIN_WIZARD_STEP_ID]
                                     .emailOrPhoneNumber
                             }
+                            setReference={this.setReference}
+                            clear={this.clear}
                             {...props}
                         />
                     );
