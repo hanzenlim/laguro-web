@@ -34,6 +34,7 @@ export const LOGIN = gql`
                     useInsurance
                 }
                 dentist {
+                    id
                     bio
                 }
                 appointments(
