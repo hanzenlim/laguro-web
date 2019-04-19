@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@laguro/the-bright-side-components": "^0.0.55",
+    "@laguro/the-bright-side-components": "^0.0.56",
     "@laguro/basic-components": "^1.0.22",
     "@material-ui/core": "^1.1.0",
     "@material-ui/icons": "^1.1.0",
