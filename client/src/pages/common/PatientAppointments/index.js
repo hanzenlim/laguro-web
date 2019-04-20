@@ -15,6 +15,7 @@ import {
     STATUS,
     PENDING_PATIENT_APPROVAL,
     ACTIVE,
+    CANCELLED
 } from '../../../util/strings';
 import { getUser } from '../../../util/authUtils';
 
@@ -39,6 +40,7 @@ const PatientAppoinmentsContainer = () => {
                                 filterValues: [
                                     `${PENDING_PATIENT_APPROVAL}`,
                                     `${ACTIVE}`,
+                                    `${CANCELLED}`
                                 ],
                             },
                         ],

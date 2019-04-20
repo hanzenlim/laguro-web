@@ -11,12 +11,21 @@ import {
     Card,
     Link,
     Responsive,
+    Icon
 } from '../../../components';
 import { CANCELLED } from '../../../util/strings';
 import { setImageSizeToUrl } from '../../../util/imageUtil';
 import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
 
 const { TabletMobile, Desktop } = Responsive;
+
+const filterAppointments = ({ appointments, isUpcoming }) => {
+    return appointments.filter(({ endTime }) =>
+        isUpcoming
+            ? moment(endTime).diff(moment()) > -1
+            : moment(endTime).diff(moment()) < 0
+        )
+}
 
 export const NoAppointmentsCard = ({ text }) => (
     <Fragment>
@@ -51,8 +60,8 @@ export const NoAppointmentsCard = ({ text }) => (
 );
 
 class PatientAppointments extends PureComponent {
-    renderAppointments = appointments =>
-        appointments.map(
+    renderAppointments = appointments => {
+        return appointments.map(
             ({
                 id,
                 localStartTime,
@@ -60,6 +69,7 @@ class PatientAppointments extends PureComponent {
                 dentist,
                 reservation,
                 status,
+                location
             }) => {
                 const { lastName, firstName, imageUrl } = dentist.user;
                 const dentistName = `Dr. ${firstName} ${lastName}`;
@@ -71,9 +81,9 @@ class PatientAppointments extends PureComponent {
                         <Flex
                             key={id}
                             justifyContent="space-between"
-                            alignItems="center"
+                            alignItems="flex-start"
                             p={[20, '', 30]}
-                            mb={[0, '', 12]}
+                            mb={[10, '', 12]}
                             border="1px solid"
                             borderColor="divider.gray"
                             borderRadius={2}
@@ -86,28 +96,21 @@ class PatientAppointments extends PureComponent {
                                         30
                                     )}
                                     alt={dentistName}
-                                    width={50}
-                                    height={50}
+                                    width={40}
+                                    height={40}
                                     borderRadius="50%"
+                                    mr={10}
                                 />
                                 <Box fontSize={1} minWidth="108px">
                                     <Text
                                         fontWeight="bold"
                                         letterSpacing="-0.3px"
+                                        style={{ textDecoration: isCancelled && "line-through" }}
                                     >
                                         {moment(localStartTime).format(
                                             'MMM D, h:mmA'
                                         )}
                                     </Text>
-                                    <Link
-                                        target="_blank"
-                                        to={`/office/${officeId}`}
-                                        isExternal
-                                    >
-                                        <Text fontWeight="light">
-                                            {officeName}
-                                        </Text>
-                                    </Link>
                                     <Link
                                         target="_blank"
                                         to={`/dentist/${dentist.id}`}
@@ -120,55 +123,100 @@ class PatientAppointments extends PureComponent {
                                             fontWeight="medium"
                                             fontSize={1}
                                             letterSpacing="-0.3px"
+                                            mb={15}
                                         >
                                             {dentistName}
                                         </Text>
                                     </Link>
-                                </Box>
-
-                                <Button
-                                    type="ghost"
-                                    border="none"
-                                    onClick={this.props.toggleModalState(id)}
-                                >
-                                    <Text color="text.blue" fontSize={0}>
-                                        cancel
+                                    <Link
+                                        target="_blank"
+                                        to={`/office/${officeId}`}
+                                        isExternal
+                                    >
+                                        <Text fontWeight="light" color='text.blue'>
+                                            {officeName}
+                                        </Text>
+                                    </Link>
+                                    <Text color="text.lightGray" mt={4}>
+                                        <Icon
+                                            type="locationPinWithFill"
+                                            color="text.lightGray"
+                                            fontSize={10}
+                                            mr={5}
+                                        />
+                                        {location.name}
                                     </Text>
-                                </Button>
+                                    {!isCancelled && (
+                                        <Box mt={15}>
+                                            <Link to='/'>
+                                                <Text color='text.blue'>
+                                                    View Treatment Detail
+                                                </Text>
+                                            </Link>
+                                            <Link to='/' color='text.blue'>
+                                                <Text color='text.blue'>
+                                                    View Receipt
+                                                </Text>
+                                            </Link>
+                                        </Box>
+                                    )}
+
+                                </Box>
+                                {isCancelled
+                                    ? (<Text fontWeight="medium" fontSize={0}>cancelled</Text>)
+                                    : moment().isBefore(moment(startTime)) && (
+                                        <Button
+                                            type="ghost"
+                                            border="none"
+                                            height="auto"
+                                            onClick={this.props.toggleModalState(
+                                                id
+                                            )}
+                                        >
+                                            <Text color="text.lightGray" fontSize={0}>
+                                                cancel
+                                            </Text>
+                                        </Button>
+                                    )
+                                }
                             </TabletMobile>
                             <Desktop>
                                 <Flex
-                                    alignItems="center"
+                                    alignItems="flex-start"
                                     justifyContent="space-between"
-                                    minWidth="474px"
                                 >
-                                    <Box
-                                        textAlign="center"
-                                        fontSize={4}
-                                        minWidth="140px"
+                                    <Text
+                                        fontSize={2}
+                                        mt={12}
+                                        mr={30}
+                                        style={{ textDecoration: isCancelled && "line-through" }}
+                                        width={190}
+                                        maxWidth='25%'
                                     >
-                                        <Text fontWeight="bold">
+                                        <Text fontWeight="bold" is='span'>
                                             {moment(localStartTime).format(
                                                 'ddd, M/D/YY'
                                             )}
                                         </Text>
-                                        <Text fontWeight="light">
+                                        <Text fontWeight="light" is="span">
+                                            {' '}
                                             {moment(localStartTime).format(
                                                 'h:mm A'
                                             )}
                                         </Text>
-                                    </Box>
+                                    </Text>
                                     <Image
                                         src={setImageSizeToUrl(
                                             imageUrl || defaultUserImage,
                                             48
                                         )}
                                         alt={dentistName}
-                                        width={48}
-                                        height={48}
+                                        width={40}
+                                        height={40}
                                         borderRadius="50%"
+                                        mr={30}
                                     />
-                                    <Box maxWidth="220px">
+                                    <Box mt={12} mr={30} maxWidth={300}>
                                         <Link
                                             target="_blank"
                                             to={`/dentist/${dentist.id}`}
@@ -179,7 +227,7 @@ class PatientAppointments extends PureComponent {
                                                 whiteSpace="nowrap"
                                                 overflow="hidden"
                                                 fontWeight="medium"
-                                                fontSize={4}
+                                                fontSize={2}
                                             >
                                                 {dentistName}
                                             </Text>
@@ -191,39 +239,84 @@ class PatientAppointments extends PureComponent {
                                         >
                                             <Text
                                                 fontWeight="light"
-                                                fontSize={4}
+                                                fontSize={2}
+                                                color='text.blue'
+                                                mt={15}
                                             >
                                                 {officeName}
                                             </Text>
                                         </Link>
+                                        <Text color="text.lightGray" mt={4}>
+                                            <Icon
+                                                type="locationPinWithFill"
+                                                color="text.lightGray"
+                                                fontSize={10}
+                                                mr={5}
+                                            />
+                                            {location.name}
+                                        </Text>
+                                        {!isCancelled && (
+                                            <Box mt={15}>
+                                                <Link to='/' mr={10}>
+                                                    <Text color='text.blue' is='span'>
+                                                        View Treatment Detail
+                                                    </Text>
+                                                </Link>
+                                                <Link to='/' color='text.blue'>
+                                                    <Text color='text.blue' is='span'>
+                                                        View Receipt
+                                                    </Text>
+                                                </Link>
+                                            </Box>
+                                        )}
                                     </Box>
                                 </Flex>
-                                {moment().isBefore(moment(startTime)) && (
-                                    <Button
-                                        type="ghost"
-                                        border="none"
-                                        onClick={this.props.toggleModalState(
-                                            id
-                                        )}
-                                    >
-                                        <Text color="text.blue" fontSize={2}>
-                                            cancel
-                                        </Text>
-                                    </Button>
-                                )}
+                                {isCancelled
+                                    ? (<Text fontWeight="medium" fontSize={2} mt={12}>cancelled</Text>)
+                                    : moment().isBefore(moment(startTime)) && (
+                                        <Button
+                                            type="ghost"
+                                            border="none"
+                                            height="auto"
+                                            onClick={this.props.toggleModalState(
+                                                id
+                                            )}
+                                        >
+                                            <Text color="text.lightGray" mt={14}>
+                                                cancel
+                                            </Text>
+                                        </Button>
+                                    )
+                                }
                             </Desktop>
                         </Flex>
                     </Fragment>
                 );
             }
         );
+    }
 
     render() {
         const { appointments } = this.props;
+        const upcomingAppointments = filterAppointments({ appointments, isUpcoming: true })
+        const pastAppointments = filterAppointments({ appointments, isUpcoming: false })
         return (
             <Box>
                 {!isEmpty(appointments) ? (
-                    this.renderAppointments(appointments)
+                    <Fragment>
+                        {upcomingAppointments.length ? (
+                            <Box mb={50}>
+                                <Text fontSize={2} fontWeight="medium" mb={8}>Upcoming appointments</Text>
+                                {this.renderAppointments(upcomingAppointments)}
+                            </Box>
+                        ): null}
+                        {pastAppointments.length ? (
+                            <Box mb={50}>
+                                <Text fontSize={2} fontWeight="medium" mb={8}>Past appointments</Text>
+                                {this.renderAppointments(pastAppointments)}
+                            </Box>
+                        ): null}
+                    </Fragment>
                 ) : (
                     <NoAppointmentsCard text="You have no appointments yet!" />
                 )}

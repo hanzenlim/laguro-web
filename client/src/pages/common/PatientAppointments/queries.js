@@ -20,8 +20,13 @@ export const getAppointmentsQuery = gql`
                     name
                 }
             }
+            location {
+                name
+            }
             startTime
+            endTime
             localStartTime
+            localEndTime
             status
         }
     }
