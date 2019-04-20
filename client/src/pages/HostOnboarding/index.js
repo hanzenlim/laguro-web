@@ -616,7 +616,6 @@ class HostOnboarding extends Component {
                                 ...user,
                             });
                             
-                            debugger
                             setAuthToken(
                                  get(result, 'data.createUserOffice.host.token')
                             );
