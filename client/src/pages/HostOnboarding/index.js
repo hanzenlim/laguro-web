@@ -13,7 +13,7 @@ import {
     CREATE_LISTING,
     UPDATE_OFFICE,
 } from './queries';
-import { getUser, setUser } from '../../util/authUtils';
+import { getUser, setUser, setAuthToken } from '../../util/authUtils';
 
 import {
     saveUploadedImagesMutation,
@@ -615,6 +615,10 @@ class HostOnboarding extends Component {
                             setUser({
                                 ...user,
                             });
+                            
+                            setAuthToken(
+                                 get(result, 'data.createUserOffice.host.token')
+                            );
                         }
 
                         await this.saveWizardState({
