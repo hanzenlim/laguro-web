@@ -9,6 +9,8 @@ import Layout from './components/Layout';
 import Content from './components/Content';
 import Footer from './pages/common/Footer';
 import ErrorBoundary from './components/ErrorBoundary';
+import { trackPageview, trackUserAuth } from './util/trackingUtils';
+import { getUser } from './util/authUtils';
 
 import './Silka.css';
 import theme from './components/theme';
@@ -268,6 +270,26 @@ const PrivateRoute = ({ component: ComponentToBeRendered, ...rest }) => {
 };
 
 class App extends Component {
+    componentDidMount() {
+        const user = getUser();
+        if (user && user.id) {
+            trackUserAuth({ userId: user.id });
+        }
+
+        this.trackPageView();
+
+        history.listen(() => {
+            this.trackPageView();
+        });
+    }
+
+    trackPageView = () => {
+        trackPageview({
+            urlPath: history.location.pathname + history.location.search,
+            pageName: history.location.title,
+        });
+    };
+
     render() {
         const { pathname } = history.location;
         return (

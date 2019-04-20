@@ -11,6 +11,7 @@ import { setUser, setAuthToken } from '../../../util/authUtils';
 import { GET_PATIENT_NAME_WIZARD_STEP_ID } from '..';
 import { execute } from '../../../util/gqlUtils';
 import { validatePhoneOrEmail } from '../../../util/validationUtils';
+import { trackUserSignup, trackUserAuth } from '../../../util/trackingUtils';
 
 const Composed = adopt({
     sendRegistrationCode: ({ render }) => (
@@ -112,6 +113,9 @@ export const RegisterStep = props => (
                         props.clear();
                         return;
                     }
+
+                    trackUserSignup();
+                    trackUserAuth({ userId: user.id });
 
                     props.formikProps.setFieldValue('isPinValid', true);
 

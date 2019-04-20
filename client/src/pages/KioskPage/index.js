@@ -156,6 +156,18 @@ const WIZARD_STEP_IDS_WITHOUT_PREVIOUS_BUTTON = [
 const getCurrentWizardStep = () => history.location.pathname.split('/')[2];
 
 const Composed = adopt({
+    getOfficeWithDentistsWithApptSlots: ({ render, officeId }) => (
+        <Query
+            variables={{
+                id: officeId,
+            }}
+            query={GET_OFFICE}
+            skip={_isEmpty(officeId)}
+            fetchPolicy="network-only"
+        >
+            {render}
+        </Query>
+    ),
     getUserResponse: ({ render, userId }) => (
         <Query
             query={GET_USER}
@@ -203,18 +215,7 @@ const Composed = adopt({
             </Query>
         );
     },
-    getOfficeWithDentistsWithApptSlots: ({ render, officeId }) => (
-        <Query
-            variables={{
-                id: officeId,
-            }}
-            query={GET_OFFICE}
-            skip={_isEmpty(officeId)}
-            fetchPolicy="network-only"
-        >
-            {render}
-        </Query>
-    ),
+
     createPatientAppointmentOnboarding: ({ render }) => (
         <Mutation mutation={CREATE_PATIENT_APPOINTMENT_ONBOARDING}>
             {render}
@@ -331,6 +332,7 @@ class KioskPage extends Component {
                     const office = _get(officeData, 'getOffice');
                     if (_isNull(office)) {
                         redirect({ url: KIOSK_OFFICE_SETUP_PAGE_URL });
+                        return null;
                     }
 
                     const activeDentistsWithAppointmentSlots = _get(

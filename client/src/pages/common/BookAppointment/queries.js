@@ -60,6 +60,16 @@ export const createAppointmentMutation = gql`
     mutation CreateAppointment($input: CreateAppointmentInput!) {
         createAppointment(input: $input) {
             id
+            dentist {
+                id
+            }
+            timezone
+            localStartTime
+            reservation {
+                office {
+                    id
+                }
+            }
         }
     }
 `;

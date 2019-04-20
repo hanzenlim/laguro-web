@@ -10,6 +10,7 @@ import { setUser, setAuthToken } from '../../../util/authUtils';
 import { isBioUpdated } from '../../../util/dentistUtils';
 import { execute } from '../../../util/gqlUtils';
 import { validatePhoneOrEmail } from '../../../util/validationUtils';
+import { trackUserAuth } from '../../../util/trackingUtils';
 
 const Composed = adopt({
     sendKioskLoginCode: ({ render }) => (
@@ -93,6 +94,8 @@ export const LoginStep = props => (
                     props.formikProps.setSubmitting(false);
                     return;
                 }
+
+                trackUserAuth({ userId: user.id });
 
                 props.formikProps.setFieldValue('isPinValid', true);
 

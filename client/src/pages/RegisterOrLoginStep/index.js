@@ -20,6 +20,7 @@ import {
 import history from '../../history';
 import { setUser, setAuthToken } from '../../util/authUtils';
 import { isBioUpdated } from '../../util/dentistUtils';
+import { trackUserAuth, trackUserSignup } from '../../util/trackingUtils';
 
 const Composed = adopt({
     sendKioskLoginCode: ({ render }) => (
@@ -176,6 +177,8 @@ export const RegisterOrLoginStep = props => (
                         });
                         setAuthToken(token);
 
+                        trackUserAuth({ userId: user.id });
+
                         if (props.closeModal) {
                             props.closeModal();
                         }
@@ -213,6 +216,9 @@ export const RegisterOrLoginStep = props => (
                             hasUpdatedDentistBio: false,
                         });
                         setAuthToken(token);
+
+                        trackUserSignup();
+                        trackUserAuth({ userId: user.id });
 
                         if (props.closeModal) {
                             props.closeModal();

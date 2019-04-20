@@ -13,6 +13,7 @@ import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
 import emitter from '../../../util/emitter';
 import { getUser } from '../../../util/authUtils';
 import history from '../../../history';
+import { trackBookAppointment } from '../../../util/trackingUtils';
 
 const HANDLED_TIMESLOT_ERRORS = [
     'Timeslot is in the past',
@@ -71,7 +72,7 @@ class BookAppointment extends PureComponent {
         try {
             this.setState({ isSubmitting: true });
 
-            await this.props.mutate({
+            const appointment = await this.props.mutate({
                 variables: {
                     input: {
                         reservationId: this.state.reservationId,
@@ -86,6 +87,17 @@ class BookAppointment extends PureComponent {
                         ),
                     },
                 },
+            });
+
+            const appointmentData = appointment.data.createAppointment;
+
+            trackBookAppointment({
+                appointmentId: appointmentData.id,
+                dentistId: appointmentData.dentist.id,
+                city: appointmentData.timezone,
+                weekDay: moment(appointmentData.localStartTime).format('dddd'),
+                hour: moment(appointmentData.localStartTime).format('hh:mm a'),
+                officeId: appointmentData.reservation.office.id,
             });
 
             this.setState({
