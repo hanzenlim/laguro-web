@@ -6,6 +6,7 @@ export const CREATE_OFFICE = gql`
             id
             host {
                 id
+                token
                 user {
                     id
                     firstName
