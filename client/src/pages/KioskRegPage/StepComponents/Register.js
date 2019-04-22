@@ -102,6 +102,7 @@ export const RegisterStep = props => (
 
                     if (!hasNoError) {
                         props.clear();
+                        props.formikProps.setFieldValue('code', '')
                         return;
                     }
 
@@ -111,6 +112,7 @@ export const RegisterStep = props => (
 
                     if (!isPinValid) {
                         props.clear();
+                        props.formikProps.setFieldValue('code', '')
                         return;
                     }
 
