@@ -190,7 +190,7 @@ const Menus = props => {
                     <Box
                         borderColor="divider.gray"
                         borderBottom="solid 1px"
-                        my={2}
+                        my={1}
                     />
                 )}
             </Box>
