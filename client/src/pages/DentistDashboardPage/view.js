@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import styled from 'styled-components';
 import { Box, Container, Text, Card, Truncate } from '@laguro/basic-components';
 import _isEmpty from 'lodash/isEmpty';
 import queryString from 'query-string';
@@ -13,7 +14,7 @@ import {
     VIEW_PROFILE_MENU_TEXT,
     CALENDAR_MENU_TEXT,
     DENTIST,
-    AVAILABILITY_SETTINGS,
+    AVAILABILITY_SETTINGS_MENU_TEXT,
 } from '../../util/strings';
 import { dentistDashboardMenuTexts } from '../../util/menuItems';
 import { getKeyFromText } from '../Dashboard/utils';
@@ -33,7 +34,6 @@ import BalanceHistory from '../common/BalanceHistory';
 import DentistDetails from '../common/DentistDetails';
 import ReviewContainer from '../common/ReviewContainer/index';
 import { Responsive, Link, Button, Flex } from '../../components/index';
-import styled from 'styled-components';
 import PreferredLocations from '../common/PreferredLocations';
 import DentistAvailabilityForm from '../common/Forms/DentistAvailabilityForm';
 import { version } from '../../../package.json';
@@ -49,6 +49,8 @@ const StyledButton = styled(Button)`
 const menuTextToDescription = {
     [PROFILE_SETTINGS_MENU_TEXT]:
         'Manage your dentist profile and insurance policy',
+    [AVAILABILITY_SETTINGS_MENU_TEXT]:
+        'Select your location and time preferences',
     [DENTIST_VERIFICATION_MENU_TEXT]:
         'Submit your verification information and documents',
     [CALENDAR_MENU_TEXT]: 'View your upcoming appointments and make changes',
@@ -58,7 +60,6 @@ const menuTextToDescription = {
     [BOOKINGS_MENU_TEXT]: 'View and edit your bookings',
     [LAGURO_BALANCE_MENU_TEXT]: 'View your current account balance',
     [VIEW_PROFILE_MENU_TEXT]: 'View your public dentist page',
-    [AVAILABILITY_SETTINGS]: 'Set your availability preference', // todo update when design is ready
 };
 
 class DentistDashboardPageView extends Component {
@@ -94,6 +95,8 @@ class DentistDashboardPageView extends Component {
             selectedTab: getKeyFromText(key),
         };
         addSearchParams(newParams);
+
+        return null;
     };
 
     onDentistProfileFormComplete = () => {
@@ -141,7 +144,19 @@ class DentistDashboardPageView extends Component {
         const { offices, preferredLocations, zipCode, dentistId } = this.props;
 
         switch (key) {
-            case AVAILABILITY_SETTINGS:
+            case PROFILE_SETTINGS_MENU_TEXT:
+                panelContent = (
+                    <Card>
+                        {this.renderPanelHeader(key)}
+                        <KioskDentistProfilePage
+                            onFinish={this.onDentistProfileFormComplete} // to render confirmation panel on finish
+                            withoutProgressBar={true}
+                            fromDentistDashboard={true}
+                        />
+                    </Card>
+                );
+                break;
+            case AVAILABILITY_SETTINGS_MENU_TEXT:
                 panelContent = (
                     <Box>
                         <Card>
@@ -155,22 +170,10 @@ class DentistDashboardPageView extends Component {
                         </Card>
                         <Box mb="40px" />
                         <Card>
-                            {this.renderPanelHeader('Availability settings')}
+                            {this.renderPanelHeader(key)}
                             <DentistAvailabilityForm />
                         </Card>
                     </Box>
-                );
-                break;
-            case PROFILE_SETTINGS_MENU_TEXT:
-                panelContent = (
-                    <Card>
-                        {this.renderPanelHeader(key)}
-                        <KioskDentistProfilePage
-                            onFinish={this.onDentistProfileFormComplete} // to render confirmation panel on finish
-                            withoutProgressBar={true}
-                            fromDentistDashboard={true}
-                        />
-                    </Card>
                 );
                 break;
             case DENTIST_VERIFICATION_MENU_TEXT:
@@ -322,9 +325,10 @@ class DentistDashboardPageView extends Component {
                                 fontSize={4}
                             >
                                 Dentist Dashboard
-                                <Text is='span'
+                                <Text
+                                    is="span"
                                     fontSize={1}
-                                    color='text.darkGray'
+                                    color="text.darkGray"
                                     ml={10}
                                 >
                                     {`v${version}`}

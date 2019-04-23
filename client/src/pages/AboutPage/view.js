@@ -64,22 +64,6 @@ const AboutPage = () => (
                 <StyledBox>
                     <Container>
                         <Box pt={[45, '', 120]} maxWidth={1044} mx="auto">
-                            <Box mb={[15, '', 20]} position="relative">
-                                <Box
-                                    position="relative"
-                                    zIndex={1}
-                                    lineHeight={['26px', '', '50px']}
-                                >
-                                    <Text
-                                        fontSize={[20, '', 36]}
-                                        fontWeight="bold"
-                                        color="text.blue"
-                                    >
-                                        Our Mission –
-                                    </Text>
-                                </Box>
-                            </Box>
-
                             <Box mb={[45, '', 120]}>
                                 <Text
                                     mb={[30, '', 70]}

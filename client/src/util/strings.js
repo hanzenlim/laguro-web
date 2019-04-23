@@ -105,7 +105,6 @@ export const DENTAL_RECORDS_MENU_TEXT = 'Dental Records';
 export const MEDICAL_HISTORY_MENU_TEXT = 'Medical history';
 export const INSURANCE_MENU_TEXT = 'Insurance';
 export const PENDING_REQUESTS_MENU_TEXT = 'Pending requests';
-export const RECEIPTS_MENU_TEXT = 'Receipts';
 export const PAYMENT_METHODS_MENU_TEXT = 'Payment methods';
 export const BECOME_A_DENTIST_MENU_TEXT = 'Become a dentist';
 export const BECOME_A_HOST_MENU_TEXT = 'Become a host';
@@ -123,7 +122,7 @@ export const BOOKINGS_MENU_TEXT = 'Bookings';
 export const LAGURO_BALANCE_MENU_TEXT = 'Laguro balance';
 export const SEARCH_FOR_CHAIRS_MENU_TEXT = 'Search for chairs';
 export const VIEW_PROFILE_MENU_TEXT = 'View profile';
-export const AVAILABILITY_SETTINGS = 'Availability settings';
+export const AVAILABILITY_SETTINGS_MENU_TEXT = 'Availability settings';
 
 // host menu
 // used in header hosts link and in host dashboard

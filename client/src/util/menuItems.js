@@ -7,7 +7,6 @@ import {
     MEDICAL_HISTORY_MENU_TEXT,
     INSURANCE_MENU_TEXT,
     PENDING_REQUESTS_MENU_TEXT,
-    RECEIPTS_MENU_TEXT,
     PAYMENT_METHODS_MENU_TEXT,
     // dentist menu
     LAGURO_TREATMENT_MODULE_MENU_TEXT,
@@ -20,7 +19,7 @@ import {
     LAGURO_BALANCE_MENU_TEXT,
     SEARCH_FOR_CHAIRS_MENU_TEXT,
     VIEW_PROFILE_MENU_TEXT,
-    AVAILABILITY_SETTINGS,
+    AVAILABILITY_SETTINGS_MENU_TEXT,
     // host menu
     MY_OFFICES_MENU_TEXT,
     ADD_A_NEW_OFFICE_MENU_TEXT,
@@ -56,7 +55,6 @@ const patientMenuTexts = [
 
 const paymentMenuTexts = [
     PENDING_REQUESTS_MENU_TEXT,
-    RECEIPTS_MENU_TEXT,
     PAYMENT_METHODS_MENU_TEXT,
 ];
 
@@ -99,6 +97,7 @@ export const profileMenuTextToLinkTo = {
 const unclassfiedDentistMenuTexts = [LAGURO_TREATMENT_MODULE_MENU_TEXT];
 const unclassfiedDentistMenuTexts2 = [
     PROFILE_SETTINGS_MENU_TEXT,
+    AVAILABILITY_SETTINGS_MENU_TEXT,
     DENTIST_VERIFICATION_MENU_TEXT,
 ];
 
@@ -126,7 +125,6 @@ export const dentistDashboardMenuTexts = [
     ...unclassfiedDentistMenuTexts2,
     ...apptsMenuTexts,
     VIEW_PROFILE_MENU_TEXT,
-    AVAILABILITY_SETTINGS,
 ];
 
 // divider will appear at the top of each menu section

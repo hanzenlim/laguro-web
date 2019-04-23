@@ -4,7 +4,7 @@ import _isEmpty from 'lodash/isEmpty';
 import queryString from 'query-string';
 import UpdateProfileForm from '../../pages/common/Forms/UpdateProfileForm';
 import ContactInformationForm from '../../pages/common/Forms/ContactInformationForm';
-import PaymentHistory from '../common/PaymentHistory';
+// import PaymentHistory from '../common/PaymentHistory'; //TODO We need to remove the code relateded with this old page
 import PatientAppointments from '../common/PatientAppointments';
 import ProcedurePaymentRequestPage from '../../pages/ProcedurePaymentRequestPage';
 import {
@@ -15,7 +15,6 @@ import {
     MEDICAL_HISTORY_MENU_TEXT,
     INSURANCE_MENU_TEXT,
     PENDING_REQUESTS_MENU_TEXT,
-    RECEIPTS_MENU_TEXT,
     PAYMENT_METHODS_MENU_TEXT,
     LOG_OUT_MENU_TEXT,
 } from '../../util/strings';
@@ -49,10 +48,8 @@ const menuTextToDescription = {
     [INSURANCE_MENU_TEXT]: 'View and edit your dental insurance information',
     [PENDING_REQUESTS_MENU_TEXT]:
         'View procedure payment requests from your dentist',
-    [RECEIPTS_MENU_TEXT]:
-        'View details about your completed treatment payments and print invoices',
     [PAYMENT_METHODS_MENU_TEXT]: 'Manage your payment options',
-    [LOG_OUT_MENU_TEXT]: 'Log out from platform',
+    [LOG_OUT_MENU_TEXT]: '',
 };
 
 const LTM_LINK_BASE_URL = getLTMBaseUrl();
@@ -138,8 +135,6 @@ class PatientDashboardPageView extends Component {
     );
 
     renderPanel = key => {
-        const { userId } = this.props;
-
         let panelContent;
         switch (key) {
             case ACCOUNT_SETTINGS_MENU_TEXT:
@@ -193,14 +188,6 @@ class PatientDashboardPageView extends Component {
                     <Card>
                         {this.renderPanelHeader(key)}
                         <ProcedurePaymentRequestPage />
-                    </Card>
-                );
-                break;
-            case RECEIPTS_MENU_TEXT:
-                panelContent = (
-                    <Card>
-                        {this.renderPanelHeader(key)}
-                        <PaymentHistory userId={userId} />
                     </Card>
                 );
                 break;
@@ -289,9 +276,10 @@ class PatientDashboardPageView extends Component {
                     <Container>
                         <Text mt={20} mb={13} fontWeight="medium" fontSize={4}>
                             Patient Dashboard
-                            <Text is='span'
+                            <Text
+                                is="span"
                                 fontSize={1}
-                                color='text.darkGray'
+                                color="text.darkGray"
                                 ml={10}
                             >
                                 {`v${version}`}
