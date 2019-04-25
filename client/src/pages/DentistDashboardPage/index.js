@@ -11,6 +11,7 @@ import { dentistDashboardMenuTexts } from '../../util/menuItems';
 import { addSearchParams } from '../../history';
 import { PROFILE_SETTINGS_MENU_TEXT } from '../../util/strings';
 import { getKeyFromText, getTextFromKey } from '../Dashboard/utils';
+import { defaultClient } from '../../util/apolloClients';
 
 class DentistDashboardPage extends Component {
     constructor(props) {
@@ -35,7 +36,7 @@ class DentistDashboardPage extends Component {
         const params = queryString.parse(window.location.search);
 
         return (
-            <Query query={getUserQuery} variables={{ id }}>
+            <Query query={getUserQuery} variables={{ id }} client={defaultClient}>
                 {({
                     loading: loadingUserQuery,
                     error: errorUserQuery,

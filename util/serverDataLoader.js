@@ -5,7 +5,7 @@ import { execute, makePromise } from 'apollo-link';
 import { createHttpLink } from 'apollo-link-http';
 import { parse } from 'graphql';
 
-const uri = process.env.GRAPHQL_URL;
+const uri = process.env.REACT_APP_GRAPHQL_LAGURO_API;
 
 const link = createHttpLink({
     uri,

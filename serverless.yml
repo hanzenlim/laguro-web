@@ -8,7 +8,8 @@ provider:
   stage: dev
   environment:
     # These environments are used on the server side.
-    GRAPHQL_URL: ${env:GRAPHQL_URL}
+    REACT_APP_GRAPHQL_LAGURO_API: ${env:REACT_APP_GRAPHQL_LAGURO_API}
+    REACT_APP_GRAPHQL_INSURANCE_API: ${env:REACT_APP_GRAPHQL_INSURANCE_API}
     GRAPHQL_SECRET_KEY: ${env:GRAPHQL_SECRET_KEY}
     GOOGLE_CLIENT_ID: ${env:GOOGLE_CLIENT_ID}
     GOOGLE_CLIENT_SECRET: ${env:GOOGLE_CLIENT_SECRET}
