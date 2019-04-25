@@ -12,11 +12,11 @@ const requestHandler = async (operation) => {
 };
 
 export const defaultClient = new ApolloClient({
-    uri: process.env.GRAPHQL_LAGURO_API,
+    uri: 'http://localhost:4000/graphql',
     request: requestHandler,
 });
 
 export const insuranceClient = new ApolloClient({
-    uri: process.env.GRAPHQL_INSURANCE_API,
+    uri: 'http://localhost:5001/graphql',
     request: requestHandler,
 });
