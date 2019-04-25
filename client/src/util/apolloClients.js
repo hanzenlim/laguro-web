@@ -12,6 +12,11 @@ const requestHandler = async (operation) => {
 };
 
 export const defaultClient = new ApolloClient({
-    uri: process.env.REACT_APP_API_URL,
+    uri: process.env.GRAPHQL_LAGURO_API,
+    request: requestHandler,
+});
+
+export const insuranceClient = new ApolloClient({
+    uri: process.env.GRAPHQL_INSURANCE_API,
     request: requestHandler,
 });
