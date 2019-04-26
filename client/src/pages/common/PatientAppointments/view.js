@@ -146,7 +146,7 @@ class PatientAppointments extends PureComponent {
                                         />
                                         {location.name}
                                     </Text>
-                                    {!isCancelled && (
+                                    {/* {!isCancelled && (
                                         <Box mt={15}>
                                             <Link to='/'>
                                                 <Text color='text.blue'>
@@ -159,7 +159,7 @@ class PatientAppointments extends PureComponent {
                                                 </Text>
                                             </Link>
                                         </Box>
-                                    )}
+                                    )} */}
 
                                 </Box>
                                 {isCancelled
@@ -255,7 +255,7 @@ class PatientAppointments extends PureComponent {
                                             />
                                             {location.name}
                                         </Text>
-                                        {!isCancelled && (
+                                        {/* {!isCancelled && (
                                             <Box mt={15}>
                                                 <Link to='/' mr={10}>
                                                     <Text color='text.blue' is='span'>
@@ -268,7 +268,7 @@ class PatientAppointments extends PureComponent {
                                                     </Text>
                                                 </Link>
                                             </Box>
-                                        )}
+                                        )} */}
                                     </Box>
                                 </Flex>
                                 {isCancelled
