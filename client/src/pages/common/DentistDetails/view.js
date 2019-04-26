@@ -1,6 +1,4 @@
-import React, { Fragment, PureComponent } from 'react';
-import Loadable from 'react-loadable';
-import _get from 'lodash/get';
+import React, { PureComponent } from 'react';
 import _isEmpty from 'lodash/isEmpty';
 import {
     Flex,
@@ -8,22 +6,13 @@ import {
     Box,
     Text,
     Rating,
-    Truncate,
     Button,
-    Responsive,
     Icon,
 } from '../../../components';
 import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
-import { numMaxContainerWidth } from '../../../components/theme';
 import { withScreenSizes } from '../../../components/Responsive';
 import { setImageSizeToUrl } from '../../../util/imageUtil';
-import { formatAddress } from '../../../util/styleUtil';
 import styled from 'styled-components';
-
-const Map = Loadable({
-    loader: () => import('../Map' /* webpackChunkName: "map" */),
-    loading: () => null,
-});
 
 const TAG_COLORS = [
     'background.blue',
@@ -32,12 +21,6 @@ const TAG_COLORS = [
     'background.darkBlue',
 ];
 
-const { TabletMobile, Desktop } = Responsive;
-
-const SIDEBAR_WIDTH = 460;
-const GUTTER = 34;
-const CONTAINER_PADDINGS = 50;
-
 const DefaultCursorButton = styled(Button)`
     && {
         cursor: default;
@@ -45,51 +28,8 @@ const DefaultCursorButton = styled(Button)`
 `;
 
 class DentistDetailsView extends PureComponent {
-    constructor(props) {
-        super(props);
-        this.screenWidthRef = React.createRef();
-        this.state = {
-            contentWidth: 0,
-        };
-    }
-
-    setContentWidth = () => {
-        this.setState({
-            contentWidth:
-                Math.min(
-                    this.screenWidthRef.current.offsetWidth,
-                    numMaxContainerWidth
-                ) -
-                (SIDEBAR_WIDTH + GUTTER + CONTAINER_PADDINGS),
-        });
-    };
-
-    componentDidMount() {
-        window.addEventListener('resize', this.setContentWidth);
-        this.setContentWidth();
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener('resize', this.setContentWidth);
-    }
-
     render() {
-        const {
-            data,
-            tabletMobileOnly,
-            isBookAppointmentVisible,
-            toggleBookAppointment,
-        } = this.props;
-
-        const { contentWidth } = this.state;
-
-        const isContentVisible = tabletMobileOnly
-            ? !isBookAppointmentVisible
-            : true;
-
-        const screenWidth = this.screenWidthRef.current
-            ? this.screenWidthRef.current.offsetWidth
-            : 0;
+        const { data, tabletMobileOnly } = this.props;
 
         return (
             <Box>
@@ -97,16 +37,15 @@ class DentistDetailsView extends PureComponent {
                     width="100vw"
                     position="fixed"
                     left={0}
-                    ref={this.screenWidthRef}
                 />
                 <Flex
-                    mb={[0, '', 56]}
+                    mb={[48, '', 56]}
                     flexDirection={['column', '', 'row']}
                     textAlign={['center', '', 'left']}
                 >
                     <Image
-                        width={[102, '', 130]}
-                        height={[102, '', 130]}
+                        width={[102, '', 143]}
+                        height={[102, '', 143]}
                         src={setImageSizeToUrl(
                             data.image || defaultUserImage,
                             tabletMobileOnly ? 102 : 130
@@ -115,15 +54,17 @@ class DentistDetailsView extends PureComponent {
                         borderRadius="50%"
                         mr={['auto', '', 20]}
                         ml={['auto', '', 0]}
+                        mb={[15, '', 0]}
                     />
                     <Box>
                         <Text
                             textTransform="uppercase"
                             fontSize={[1, '', 3]}
                             color="#adadad"
-                            lineHeight={[3, '', 1]}
+                            lineHeight={['14px', '', '34px']}
                             fontWeight="bold"
-                            letterSpacing="-0.8px"
+                            letterSpacing={['-0.3px', '', '-0.46px']}
+                            mb={[3, '', 0]}
                         >
                             {data.specialization}
                         </Text>
@@ -131,13 +72,14 @@ class DentistDetailsView extends PureComponent {
                             is="h1"
                             color="text.black"
                             fontSize={[4, '', 5]}
-                            lineHeight={[1, '', '40px']}
+                            lineHeight={['24px', '', '34px']}
+                            letterSpacing={['-0.51px', '', '-0.76px']}
+                            mb={0}
                         >
                             {data.name}
                         </Text>
 
                         <Flex
-                            mt={5}
                             alignItems="center"
                             flexDirection={['column', '', 'row']}
                         >
@@ -148,23 +90,32 @@ class DentistDetailsView extends PureComponent {
                             />
                             <Text
                                 mt={[8, '', 0]}
+                                mb={[6, '', 0]}
                                 ml={[0, '', 10]}
-                                lineHeight="16px"
+                                lineHeight={['14px', '', '16px']}
                                 color="text.black"
                                 fontSize={[0, '', 1]}
                             >
                                 {data.numReviews} reviews
                             </Text>
                         </Flex>
+                        <Text
+                            fontSize={0}
+                            color="text.lightGray"
+                            letterSpacing="-0.34px"
+                        >
+                            {`NPI: ${data.npiNumber}`}
+                        </Text>
                         {!_isEmpty(data.acceptedInsurances) && (
                             <Flex
                                 mt={5}
+                                mb={4}
                                 alignItems="center"
                                 flexDirection={['column', '', 'row']}
                             >
                                 <Flex alignItems="center">
                                     <Icon type="insurance" />
-                                    <Text fontSize={['12px', '14px']} ml="8px">
+                                    <Text fontSize={1} ml="8px" lineHeight="17px">
                                         Accepts{' '}
                                         {data.acceptedInsurances.length > 1
                                             ? data.acceptedInsurances.map(
@@ -173,10 +124,10 @@ class DentistDetailsView extends PureComponent {
                                                       data.acceptedInsurances
                                                           .length -
                                                           1
-                                                          ? `${sp}, `
-                                                          : `and ${sp}`
+                                                          ? <Text is='span' textTransform='capitalize'>{`${sp.toLowerCase()}, `}</Text>
+                                                          : <>{`and `}<Text is='span' textTransform='capitalize'>{sp.toLowerCase()}</Text></>
                                               )
-                                            : data.acceptedInsurances[0]}
+                                            : <Text is='span' textTransform='capitalize'>{data.acceptedInsurances[0].toLowerCase()}</Text>}
                                     </Text>
                                 </Flex>
                             </Flex>
@@ -188,16 +139,16 @@ class DentistDetailsView extends PureComponent {
                             >
                                 <Flex alignItems="center">
                                     <Icon type="languages" />
-                                    <Text fontSize={['12px', '14px']} ml="8px">
+                                    <Text fontSize={1} ml="8px" lineHeight="17px">
                                         Speaks{' '}
                                         {data.languages.length > 1
                                             ? data.languages.map((sp, index) =>
                                                   index !==
                                                   data.languages.length - 1
-                                                      ? `${sp}, `
-                                                      : `and ${sp}`
+                                                    ? <Text is='span' textTransform='capitalize'>{`${sp.toLowerCase()}, `}</Text>
+                                                    : <>{`and `}<Text is='span' textTransform='capitalize'>{sp.toLowerCase()}</Text></>
                                               )
-                                            : data.languages[0]}
+                                            : <Text is='span' textTransform='capitalize'>{data.languages[0].toLowerCase()}</Text>}
                                     </Text>
                                 </Flex>
                             </Flex>
@@ -205,194 +156,67 @@ class DentistDetailsView extends PureComponent {
                     </Box>
                 </Flex>
 
-                <TabletMobile>
-                    <Button
-                        mt={30}
-                        mb={34}
-                        width="100%"
-                        onClick={toggleBookAppointment}
-                    >
-                        <Text color="text.white" fontWeight="bold" fontSize={1}>
-                            {isContentVisible
-                                ? 'Find appointment'
-                                : 'Back to Profile'}
-                        </Text>
-                    </Button>
-                </TabletMobile>
+                <Text
+                    fontSize={[1, '', 2]}
+                    letterSpacing={['0.05px', '', '-0.4px']}
+                    lineHeight="30px"
+                    fontWeight='medium'
+                    mb={12}
+                >
+                    Available procedures
+                </Text>
 
-                {isContentVisible && this.screenWidthRef.current && (
-                    <Fragment>
-                        <Text
-                            fontSize={[1, '', 4]}
-                            fontWeight={['medium', '', 'bold']}
-                            mb={[12, '', 26]}
-                        >
-                            available procedures
-                        </Text>
-
-                        {data.procedures.length ? (
-                            <Flex flexWrap="wrap" mb="34px">
-                                {data.procedures.map((procedure, index) => (
-                                    <DefaultCursorButton
-                                        type="ghost"
-                                        height={['auto', '', '50px']}
-                                    >
-                                        <Box
-                                            px={[12, '', 24]}
-                                            py={[0, '', 10]}
-                                            bg={TAG_COLORS[index % 4]}
-                                            borderRadius="25px"
-                                            mr="6px"
-                                            mb="6px"
-                                        >
-                                            <Text
-                                                textTransform="lowercase"
-                                                color="text.white"
-                                                lineHeight="22px"
-                                                fontSize={[0, '', 1]}
-                                                letterSpacing="-0.4px"
-                                            >
-                                                {procedure}
-                                            </Text>
-                                        </Box>
-                                    </DefaultCursorButton>
-                                ))}
-                            </Flex>
-                        ) : (
-                            <Text mb={34}>No procedures selected.</Text>
-                        )}
-
-                        {data.bio && (
-                            // Added fixed width to fix bug in rendering truncated text
-                            <Box
-                                pb={[0, '', 42]}
-                                width={
-                                    tabletMobileOnly
-                                        ? screenWidth - 50
-                                        : contentWidth
-                                }
+                {data.procedures.length ? (
+                    <Flex flexWrap="wrap" mb={[18, '', 38]}>
+                        {data.procedures.map((procedure, index) => (
+                            <DefaultCursorButton
+                                type="ghost"
+                                height="auto"
                             >
-                                <TabletMobile>
-                                    <Text
-                                        fontSize={1}
-                                        fontWeight="medium"
-                                        mb={12}
-                                    >
-                                        About the Dentist
-                                    </Text>
-                                </TabletMobile>
-                                <Text fontSize={1} lineHeight="1.86">
-                                    <Truncate
-                                        lines={3}
-                                        toggle={
-                                            <Text
-                                                is="span"
-                                                color="text.blue"
-                                                fontWeight="bold"
-                                            >
-                                                … show more.
-                                            </Text>
-                                        }
-                                    >
-                                        {data.bio}
-                                    </Truncate>
-                                </Text>
-                            </Box>
-                        )}
-
-                        {data.locations && data.locations.length > 0 && (
-                            <Box
-                                pt={40}
-                                borderTop={['none', '', '1px solid']}
-                                borderColor="divider.gray"
-                            >
-                                <Text
-                                    color="text.black"
-                                    fontSize={[1, '', 4]}
-                                    lineHeight="1.5"
-                                    letterSpacing="1.5"
-                                    fontWeight={['bold', '', 'regular']}
-                                >
-                                    address information{' '}
-                                    {data.locations.map(location => (
-                                        <Box key={location.name}>
-                                            <Text
-                                                is="span"
-                                                fontWeight={[
-                                                    'regular',
-                                                    '',
-                                                    'bold',
-                                                ]}
-                                                fontSize={[0, '', 4]}
-                                                display={[
-                                                    'block',
-                                                    '',
-                                                    'inline',
-                                                ]}
-                                                mt={[14, '', 0]}
-                                            >
-                                                <Desktop>{' - '}</Desktop>
-                                                {formatAddress(
-                                                    location.name,
-                                                    location.addressDetails
-                                                )}
-                                            </Text>
-                                        </Box>
-                                    ))}
-                                </Text>
-
                                 <Box
-                                    width="100%"
-                                    height={[184, '', 440]}
-                                    mt={20}
-                                    ml={[-25, '', 0]}
+                                    px={[12, '', 24]}
+                                    bg={TAG_COLORS[index % 4]}
+                                    borderRadius="25px"
+                                    mr="6px"
+                                    mb="6px"
                                 >
-                                    <Map
-                                        height={tabletMobileOnly ? 184 : 440}
-                                        width={
-                                            tabletMobileOnly
-                                                ? screenWidth
-                                                : contentWidth
-                                        }
-                                        zoom={
-                                            data.locations.length === 1 ? 13 : 3
-                                        }
-                                        data={data.locations.map(location => ({
-                                            address: formatAddress(
-                                                location.name,
-                                                location.addressDetails
-                                            ),
-                                            url: location.url,
-                                            latitude: _get(
-                                                location,
-                                                'geoPoint.lat'
-                                            ),
-                                            longitude: _get(
-                                                location,
-                                                'geoPoint.lon'
-                                            ),
-                                        }))}
-                                    />
+                                    <Text
+                                        textTransform="lowercase"
+                                        fontWeight="medium"
+                                        color="text.white"
+                                        lineHeight="22px"
+                                        fontSize={[0, '', 1]}
+                                        letterSpacing={['-0.38px', '', '-0.4px']}
+                                    >
+                                        {procedure}
+                                    </Text>
                                 </Box>
-                            </Box>
-                        )}
-                        <TabletMobile>
-                            <Button
-                                mt={24}
-                                mb={30}
-                                width="100%"
-                                onClick={toggleBookAppointment}
-                            >
-                                <Text
-                                    color="text.white"
-                                    fontWeight="bold"
-                                    fontSize={1}
-                                >
-                                    Find appointment
-                                </Text>
-                            </Button>
-                        </TabletMobile>
-                    </Fragment>
+                            </DefaultCursorButton>
+                        ))}
+                    </Flex>
+                ) : (
+                    <Text mb={34}>No procedures selected.</Text>
+                )}
+
+                {data.bio && (
+                    <Box pb={[0, '', 42]} >
+                        <Text
+                            fontSize={[1, '', 2]}
+                            letterSpacing={['0.05px', '', '-0.4px']}
+                            lineHeight="30px"
+                            fontWeight='medium'
+                            mb={[3, '', 5]}
+                        >
+                            About the dentist
+                        </Text>
+                        <Text
+                            fontSize={1}
+                            lineHeight="26px"
+                            letterSpacing="-0.51px"
+                        >
+                            {data.bio}
+                        </Text>
+                    </Box>
                 )}
             </Box>
         );

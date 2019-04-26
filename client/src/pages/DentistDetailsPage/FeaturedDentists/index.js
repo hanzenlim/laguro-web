@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 import FeaturedListView from './view';
 import getFeaturedDentists from './queries';
+import { withScreenSizes } from '../../../components/Responsive';
 
 class FeaturedList extends Component {
     constructor(props) {
@@ -24,6 +25,7 @@ class FeaturedList extends Component {
 
     render() {
         if (!this.state.featuredDentists) return null;
+        const { desktopOnly } = this.props;
 
         let mappedData = this.state.featuredDentists.map(item => ({
             id: item._id,
@@ -36,10 +38,10 @@ class FeaturedList extends Component {
 
         mappedData = mappedData
             .filter(dentist => dentist.id !== this.props.currentDentist.id)
-            .splice(0, 4);
+            .splice(0, desktopOnly ? 5 : 4);
 
         return <FeaturedListView featuredDentists={mappedData} />;
     }
 }
 
-export default FeaturedList;
+export default withScreenSizes(FeaturedList);

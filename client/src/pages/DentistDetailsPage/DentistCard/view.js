@@ -1,59 +1,55 @@
 import React from 'react';
 
-import { Box, Rating, Text, Image, Flex, Truncate } from '../../../components';
+import { Box, Rating, Text, Image } from '../../../components';
 import defaultDentistProfileImg from '../../../components/Image/default_dentist_profile_img_square.svg';
 
 const DentistCard = props => {
     const { rating, image, name, specialty, numReviews } = props;
 
     return (
-        <Box minWidth="186px" width="100%">
-            <Box position="relative" borderRadius="4px">
-                <Image
-                    borderRadius="4px"
-                    width="100%"
-                    height="100%"
-                    objectFit="cover"
-                    src={image}
-                    alt={name}
-                />
-            </Box>
+        <Box
+            width="100%"
+            textAlign="center"
+        >
+            <Image
+                borderRadius="50%"
+                width={[74, '', 128]}
+                height={[74, '', 128]}
+                src={image}
+                alt={name}
+                mx="auto"
+                mb={[6, '', 13]}
+            />
 
-            <Box mt={10}>
-                <Text
-                    color="text.black"
-                    lineHeight="1.22"
-                    fontSize={4}
-                    letterSpacing="-0.8px"
-                >
-                    <Truncate lines={1}>{name}</Truncate>
+            <Text
+                fontWeight="bold"
+                fontSize={[0, '', 1]}
+                color="#adadad"
+                lineHeight="34px"
+                letterSpacing={['-0.3px', '', '-0.35px']}
+                textTransform="uppercase"
+            >
+                {specialty}
+            </Text>
+
+            <Text
+                fontSize={[1, '', 3]}
+                letterSpacing={['-0.35px', '', '-0.46px']}
+            >
+                {name}
+            </Text>
+
+            <Rating
+                fontSize={[16, '', 18]}
+                value={rating}
+                disabled
+                mb={[6, '', 10]}
+            />
+            {numReviews && (
+                <Text fontSize={[0, '', 1]}>
+                    {numReviews}
                 </Text>
-
-                <Text
-                    fontStyle="italic"
-                    lineHeight="1.1"
-                    fontSize={3}
-                    color="text.black"
-                    fontWeight="bold"
-                    truncate
-                >
-                    <Truncate lines={1}>{specialty}</Truncate>
-                </Text>
-
-                <Flex mt={10} alignItems="center">
-                    <Rating size="18px" value={rating} disabled />
-                    {numReviews && (
-                        <Text
-                            ml={10}
-                            lineHeight="16px"
-                            color="text.black"
-                            fontSize={1}
-                        >
-                            {numReviews}
-                        </Text>
-                    )}
-                </Flex>
-            </Box>
+            )}
         </Box>
     );
 };

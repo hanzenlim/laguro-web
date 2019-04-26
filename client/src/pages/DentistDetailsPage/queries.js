@@ -8,6 +8,7 @@ export const getDentistQuery = gql`
             bio
             specialty
             languages
+            npiNumber
             acceptedInsurances
             procedures {
                 group

@@ -5,7 +5,7 @@ import isEmpty from 'lodash/isEmpty';
 import _get from 'lodash/get';
 import queryString from 'query-string';
 import history from '../../../history';
-import { Box, Flex, Image, Text, Rating, Truncate } from '../../../components';
+import { Box, Flex, Image, Text, Rating } from '../../../components';
 import { withScreenSizes } from '../../../components/Responsive';
 import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
 import { setImageSizeToUrl } from '../../../util/imageUtil';
@@ -13,8 +13,6 @@ import { setImageSizeToUrl } from '../../../util/imageUtil';
 const ReviewContainer = props => {
     const {
         reviews,
-        averageRating,
-        numReviews,
         toggleModalState,
         viewOnly,
         tabletMobileOnly,
@@ -22,60 +20,11 @@ const ReviewContainer = props => {
         info,
     } = props;
 
-    const renderReviewsStats = (
-        <Flex
-            alignItems="center"
-            justifyContent="space-between"
-            pt={[0, '', 40]}
-        >
-            <Flex alignItems="center">
-                <Flex alignItems="center" justifyContent="center">
-                    <Rating
-                        disabled
-                        mr={10}
-                        value={averageRating}
-                        fontSize={tabletMobileOnly ? '12px' : '18px'}
-                    />
-                </Flex>
-                <Text
-                    display="inline"
-                    lineHeight="34px"
-                    fontSize={[1, '', 5]}
-                    fontWeight={['bold', '', 'regular']}
-                >{`${numReviews} Review${numReviews !== 1 ? 's' : ''}`}</Text>
-            </Flex>
-            {!viewOnly && (
-                <Text
-                    is="a"
-                    color="text.blue"
-                    fontSize={1}
-                    mr={20}
-                    fontWeight={['medium', '', 'bold']}
-                    lineHeight="22px"
-                    alignSelf={['center', '', 'flex-end']}
-                    onClick={
-                        tabletMobileOnly
-                            ? () =>
-                                  history.push(
-                                      `/review/${_get(
-                                          match,
-                                          'params.id'
-                                      )}?${queryString.stringify(info)}`
-                                  )
-                            : toggleModalState
-                    }
-                >
-                    add review
-                </Text>
-            )}
-        </Flex>
-    );
-
     const renderReviews = isEmpty(reviews) ? (
         <Flex
             alignItems="center"
             justifyContent="center"
-            py={20}
+            py={40}
             color="text.black50"
         >
             <Text fontSize={[1, '', 2]} fontWeight="bold">
@@ -85,15 +34,16 @@ const ReviewContainer = props => {
     ) : (
         reviews.map(review => (
             <Box
-                py={[22, '', 40]}
+                py={[24, '', 40]}
                 borderBottom="1px solid"
                 borderColor="divider.gray"
                 key={review.id}
             >
-                <Flex alignItems="center">
+                <Flex alignItems='center' mb={[24, '', 5]}>
                     <Image
                         width={[80, '', 82]}
                         height={[80, '', 82]}
+                        mr={10}
                         borderRadius="50%"
                         src={setImageSizeToUrl(
                             review.reviewer.imageUrl || defaultUserImage,
@@ -101,7 +51,7 @@ const ReviewContainer = props => {
                         )}
                         alt="reviewer-photo"
                     />
-                    <Box px={10}>
+                    <Box>
                         <Flex
                             alignItems="center"
                             fontSize={3}
@@ -109,10 +59,16 @@ const ReviewContainer = props => {
                             color="text.black"
                             lineHeight="22px"
                         >
-                            {`${
-                                review.reviewer.firstName
-                            } ${review.reviewer.lastName.charAt(0)}.`}
-                            <Flex alignItems="center" justifyContent="center">
+                            <Text
+                                fontSize={3}
+                                lineHeight="22px"
+                                letterSpacing="-0.35px"
+                            >
+                                {`${
+                                    review.reviewer.firstName
+                                } ${review.reviewer.lastName.charAt(0)}.`}
+                            </Text>
+                            <Flex alignItems="center" justifyContent="center" pb={3}>
                                 <Rating
                                     disabled
                                     ml={10}
@@ -123,28 +79,72 @@ const ReviewContainer = props => {
                                 />
                             </Flex>
                         </Flex>
-                        <Text fontSize={1} color="text.black" lineHeight="22px">
+                        <Text
+                            fontSize={1}
+                            color="text.black"
+                            lineHeight="22px"
+                            letterSpacing="-0.35px"
+                        >
                             {moment(review.dateCreated).format('MMMM D YYYY')}
                         </Text>
                     </Box>
                 </Flex>
+                
                 <Text
-                    mt={4}
-                    fontSize={[0, '', 1]}
+                    pl={[0, '', 92]}
+                    fontSize={1}
                     color="text.black"
                     lineHeight="22px"
+                    letterSpacing="-0.44px"
                 >
-                    <Truncate lines={3} hasToggle>
-                        {review.text}
-                    </Truncate>
+                    {review.text}
                 </Text>
             </Box>
         ))
     );
 
     return (
-        <Box mx="auto" mb={-1}>
-            {renderReviewsStats}
+        <Box width="100%" mx="auto" mb={-1}>
+            <Flex
+                alignItems="center"
+                justifyContent="space-between"
+                pt={40}
+                borderTop={['none', '', "1px solid"]}
+                borderColor={['', '', 'divider.gray']}
+            >
+                <Text
+                    fontSize={[1, '', 2]}
+                    fontWeight='medium'
+                    lineHeight="30px"
+                    letterSpacing={['-0.35px', '', '-0.4px']}
+                >
+                    Reviews
+                </Text>
+                {!viewOnly && (
+                    <Text
+                        is="a"
+                        color="text.blue"
+                        fontSize={1}
+                        fontWeight={['medium', '', 'bold']}
+                        lineHeight="22px"
+                        letterSpacing="-0.44px"
+                        alignSelf={['center', '', 'flex-end']}
+                        onClick={
+                            tabletMobileOnly
+                                ? () =>
+                                    history.push(
+                                        `/review/${_get(
+                                            match,
+                                            'params.id'
+                                        )}?${queryString.stringify(info)}`
+                                    )
+                                : toggleModalState
+                        }
+                    >
+                        Add a review
+                    </Text>
+                )}
+            </Flex>
             {renderReviews}
         </Box>
     );

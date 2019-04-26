@@ -11,12 +11,27 @@ const FeaturedDentistsView = props => {
     if (featuredDentists.length === 0) return null;
 
     return (
-        <Box mt={40} mb={80}>
-            <Text fontSize={5}>similar dentists</Text>
+        <Box mt={34} mb={85}>
+            <Text
+                fontSize={[1, '', 2]}
+                fontWeight="medium"
+                lineHeight="30px"
+                letterSpacing={['-0.35px', '', '-0.4px']}
+                mb={[6, '', 34]}
+            >
+                Suggested dentists
+            </Text>
 
-            <Flex justifyContent="space-between" mt={30}>
+            <Flex flexWrap='wrap'>
                 {featuredDentists.map(item => (
-                    <Box width="20%">
+                    <Box
+                        border="1px solid"
+                        borderColor="divider.gray"
+                        width={['calc(50% - 4px)', '', 'calc(20% - 12px)']}
+                        mx={[2, '', 6]}
+                        my={[2, '', 0]}
+                        p={20}
+                    >
                         <Link type="ghost" to={`/dentist/${item.id}`}>
                             <DentistCard
                                 name={item.name}

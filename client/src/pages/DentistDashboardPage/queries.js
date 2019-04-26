@@ -38,6 +38,9 @@ export const getUserQuery = gql`
                 }
                 bio
                 specialty
+                languages
+                npiNumber
+                acceptedInsurances
                 procedures {
                     group
                 }
@@ -50,7 +53,7 @@ export const getUserQuery = gql`
                 reviews {
                     id
                     rating
-                }
+                }       
             }
         }
     }

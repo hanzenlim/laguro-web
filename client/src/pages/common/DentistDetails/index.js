@@ -11,8 +11,6 @@ class DentistDetails extends PureComponent {
     render() {
         const {
             dentist,
-            toggleBookAppointment,
-            isBookAppointmentVisible,
         } = this.props;
         const { user } = dentist;
         const procedures = dentist.procedures.map(p => p.group);
@@ -38,13 +36,12 @@ class DentistDetails extends PureComponent {
             locations,
             languages: dentist.languages,
             acceptedInsurances: dentist.acceptedInsurances,
+            npiNumber: dentist.npiNumber
         };
 
         return (
             <DentistDetailsView
                 data={mappedData}
-                toggleBookAppointment={toggleBookAppointment}
-                isBookAppointmentVisible={isBookAppointmentVisible}
             />
         );
     }
