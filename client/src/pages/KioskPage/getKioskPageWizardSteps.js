@@ -12,6 +12,8 @@ import moment from 'moment-timezone';
 
 import { execute } from '../../util/gqlUtils';
 import { getDentistTimes } from './utils';
+import { insuranceClient } from '../../util/apolloClients';
+import { CHECK_ELIGIBILITY } from './queries';
 
 // contains renderRegistrationStage which renders correct step within Registation stage of kiosk flow
 // contains getStageOneRegWizardSteps which return an array of step information objects, which contain step id(id), validations(validationSchema), and initialValues, given a user object. This user object is from getUser in Kiosk/index.js.
@@ -318,6 +320,41 @@ export const getKioskPageWizardSteps = ({
 
             formikProps.setSubmitting(true);
             const updateInsuranceHasNoError = await execute({
+                reportGqlErrorOnly: true,
+                beforeAction: async () => {
+                    const { firstName, lastName } = user;
+
+                    const eligibility = await insuranceClient.query({
+                        query: CHECK_ELIGIBILITY,
+                        variables: {
+                            input: {
+                                patientId: 'user.id',
+                                firstName,
+                                lastName,
+                                dob: `${patientBirthMonth}/${patientBirthDate}/${patientBirthYear}`,
+                                insuranceInfo: {
+                                    insuranceProvider,
+                                    insuranceProviderId,
+                                    policyHolderId: patientInsuranceNum,
+                                },
+                            },
+                        },
+                        fetchPolicy: 'network-only',
+                    });
+
+                    const isEligible = _get(
+                        eligibility,
+                        'data.checkEligibility.isEligible',
+                        false
+                    );
+
+                    if (!isEligible) {
+                        const errorMessage =
+                            'Your insurance information has expired. Please contact your insurance provider to resolve this issue';
+
+                        throw new Error({ clientErrorMessage: errorMessage });
+                    }
+                },
                 action: async () => {
                     await updateInsuranceInfoMutation({
                         variables: {

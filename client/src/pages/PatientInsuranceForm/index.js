@@ -19,6 +19,7 @@ import {
     PATIENT_INSURANCE_FORM_LAST_WIZARD_STEP_ID,
 } from './getPatientInsuranceFormWizardSteps';
 import history from '../../history';
+import { withApollo } from 'react-apollo';
 
 const getCurrentWizardStep = () => history.location.pathname.split('/')[2];
 
@@ -127,4 +128,4 @@ class PatientInsuranceForm extends Component {
         );
     }
 }
-export default PatientInsuranceForm;
+export default withApollo(PatientInsuranceForm);

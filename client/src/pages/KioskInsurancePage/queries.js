@@ -31,3 +31,12 @@ export const GET_USER = gql`
         }
     }
 `;
+
+export const CHECK_ELIGIBILITY = gql`
+    query checkEligibility($input: InsurancePatientInput!) {
+        checkEligibility(input: $input) {
+            id
+            isEligible
+        }
+    }
+`;
