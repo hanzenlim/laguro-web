@@ -12,6 +12,7 @@ import {
 import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
 import { withScreenSizes } from '../../../components/Responsive';
 import { setImageSizeToUrl } from '../../../util/imageUtil';
+import { getInsuranceText } from '../../../util/insuranceUtil';
 import styled from 'styled-components';
 
 const TAG_COLORS = [
@@ -124,8 +125,8 @@ class DentistDetailsView extends PureComponent {
                                                       data.acceptedInsurances
                                                           .length -
                                                           1
-                                                          ? <Text is='span' textTransform='capitalize'>{`${sp.toLowerCase()}, `}</Text>
-                                                          : <>{`and `}<Text is='span' textTransform='capitalize'>{sp.toLowerCase()}</Text></>
+                                                          ? `${getInsuranceText(sp)}, `
+                                                          : `and ${getInsuranceText(sp)}`
                                               )
                                             : <Text is='span' textTransform='capitalize'>{data.acceptedInsurances[0].toLowerCase()}</Text>}
                                     </Text>

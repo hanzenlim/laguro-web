@@ -1,4 +1,4 @@
-const payerList = [
+export const payerList = [
     { name: '32 BJ', id: '32_BJ' },
     { name: '3M Dental Services', id: '3M' },
     { name: 'AARP Dental Insurance Plan', id: 'AARP' },
@@ -132,7 +132,7 @@ const payerList = [
         id: 'CHICAGO_TRANSIT_AUTHORITY',
     },
     { name: 'Choice Plus', id: 'CHOICE_PLUS' },
-    { name: 'CIGNA', id: 'CIGNA' },
+    { name: 'Cigna', id: 'CIGNA' },
     { name: 'Cigna DHMO', id: 'CIGNA_DHMO' },
     { name: 'CIGNA International', id: 'CIGNA_INTERNATIONAL' },
     { name: 'Cigna Select (Formerly known as Great West)', id: 'CIGNA_SELECT' },
@@ -166,7 +166,7 @@ const payerList = [
     { name: 'Delta Dental Ins. Co. - Nevada', id: 'DD_NEVADA' },
     { name: 'Delta Dental Ins. Co. - Texas', id: 'DD_TEXAS' },
     { name: 'Delta Dental Ins. Co. - Utah', id: 'DD_UTAH' },
-    { name: 'Delta Dental CA - California', id: 'DD_CALIFORNIA' },
+    { name: 'Delta Dental of California', id: 'DD_CALIFORNIA' },
     { name: 'Delta Dental of Colorado', id: 'DD_COLORADO' },
     { name: 'Delta Dental of Connecticut', id: 'DD_CONNECTICUT' },
     { name: 'Delta Dental of Delaware', id: 'DD_DELAWARE' },

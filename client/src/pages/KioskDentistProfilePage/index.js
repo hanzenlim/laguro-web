@@ -49,6 +49,11 @@ const specialties = [
 
 const CIGNA_FORM_ITEM_NAME = 'CIGNA';
 const METLIFE_FORM_ITEM_NAME = 'METLIFE';
+const DD_CALIFORNIA_FORM_ITEM_NAME = 'DD_CALIFORNIA';
+
+const checkAcceptedInsurance = (key, acceptedInsurances) => {
+    return !_isEmpty(acceptedInsurances) && acceptedInsurances.includes(key)
+}
 
 const Composed = adopt({
     dentistResponse: ({ render }) => {
@@ -174,15 +179,11 @@ class KioskDentistProfilePage extends Component {
                             component: null,
                             initialValues: {
                                 [CIGNA_FORM_ITEM_NAME]:
-                                    !_isEmpty(acceptedInsurances) &&
-                                    acceptedInsurances.includes(
-                                        CIGNA_FORM_ITEM_NAME
-                                    ),
+                                    checkAcceptedInsurance(CIGNA_FORM_ITEM_NAME, acceptedInsurances),
                                 [METLIFE_FORM_ITEM_NAME]:
-                                    !_isEmpty(acceptedInsurances) &&
-                                    acceptedInsurances.includes(
-                                        METLIFE_FORM_ITEM_NAME
-                                    ),
+                                    checkAcceptedInsurance(METLIFE_FORM_ITEM_NAME, acceptedInsurances),
+                                [DD_CALIFORNIA_FORM_ITEM_NAME]:
+                                    checkAcceptedInsurance(DD_CALIFORNIA_FORM_ITEM_NAME, acceptedInsurances),
                             },
                         },
                     ];
