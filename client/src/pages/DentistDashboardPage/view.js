@@ -141,7 +141,7 @@ class DentistDashboardPageView extends Component {
 
     renderPanel = key => {
         let panelContent;
-        const { offices, preferredLocations, zipCode, dentistId } = this.props;
+        const { offices, preferredLocations, zipCode, dentistId, dentist } = this.props;
 
         switch (key) {
             case PROFILE_SETTINGS_MENU_TEXT:
@@ -184,6 +184,7 @@ class DentistDashboardPageView extends Component {
                             onFinish={this.onDentistVerificationComplete} // to render confirmation panel on finish
                             withoutProgressBar={true}
                             fromDentistDashboard={true}
+                            dentist={dentist}
                         />
                     </Card>
                 );

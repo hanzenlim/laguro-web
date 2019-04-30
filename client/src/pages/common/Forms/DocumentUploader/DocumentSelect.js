@@ -98,17 +98,9 @@ const DocumentImagePreview = styled.img`
 `;
 
 class SelectDocument extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            signedURL: null,
-        };
-    }
-
     render() {
         const {
-            document: { side, url },
+            document: { side, url, signedUrl },
             onClick,
             onDeleteDocument,
         } = this.props;
@@ -118,10 +110,10 @@ class SelectDocument extends React.Component {
                 className="documentSelect-documentUploadSelector"
                 onClick={onClick}
             >
-                {url ? (
+                {signedUrl || url ? (
                     <DocumentPreview className="documentSelect-documentPreview">
                         <DeleteIcon onClick={onDeleteDocument} />
-                        <DocumentImagePreview src={url} />
+                        <DocumentImagePreview src={signedUrl ? signedUrl : url} />
                     </DocumentPreview>
                 ) : (
                     <DocumentPreview className="documentSelect-documentPreview">

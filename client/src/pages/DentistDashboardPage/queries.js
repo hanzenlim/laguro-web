@@ -17,6 +17,9 @@ export const getUserQuery = gql`
             dentist {
                 id
                 deaRegistrationNumber
+                licenseNumber
+                ssnOrEinOrTin
+                npiNumber
                 preferredLocations {
                     id
                     name
@@ -53,7 +56,26 @@ export const getUserQuery = gql`
                 reviews {
                     id
                     rating
-                }       
+                }
+                documents {
+                    dentistPhotoId {
+                        url
+                        signedUrl
+                        side
+                    }
+                    stateDentalLicense {
+                        url
+                        signedUrl
+                    }
+                    warranty {
+                        url
+                        signedUrl
+                    }
+                    dea {
+                        url
+                        signedUrl
+                    }
+                }   
             }
         }
     }

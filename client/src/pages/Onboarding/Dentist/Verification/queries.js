@@ -3,29 +3,18 @@ import { graphql } from 'react-apollo';
 
 const patientDocumentFragment = `
     id
-    healthInsuranceImages {
-        url
-        side
-    }
-    license {
-        url
-        side
-    }
     dentistPhotoId {
         url
         side
     }
     stateDentalLicense {
         url
-        side
     }
-    deaRegistration {
+    dea {
         url
-        side
     }
     warranty {
         url
-        side
     }
 `;
 
@@ -38,6 +27,7 @@ export const requestDentistVerificationMutation = gql`
             deaRegistrationNumber
             npiNumber
             ssnOrEinOrTin
+            licenseNumber
         }
     }
 `;
