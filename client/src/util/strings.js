@@ -109,6 +109,8 @@ export const PAYMENT_METHODS_MENU_TEXT = 'Payment methods';
 export const BECOME_A_DENTIST_MENU_TEXT = 'Become a dentist';
 export const BECOME_A_HOST_MENU_TEXT = 'Become a host';
 export const LOG_OUT_MENU_TEXT = 'Log out';
+export const INSURANCE_CONFIRMATION_TEXT =
+    'Hooray! Your insurance has been successfully verified.';
 
 // dentist menu
 // used in header dentists link and in dentist dashboard

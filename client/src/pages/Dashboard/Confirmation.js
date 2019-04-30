@@ -7,9 +7,13 @@ const Confirmation = props => (
     <Flex width="100%" justifyContent="center">
         <Box my={[0, '', 120]}>
             <CheckMarkAnimation />
-            <Text mt={35}>{`Congrats! You have finished your ${_lowerCase(
-                props.formName
-            )} form.`}</Text>
+            <Text mt={35}>
+                {props.ownMessage
+                    ? props.ownMessage
+                    : `Congrats! You have finished your ${_lowerCase(
+                          props.formName
+                      )} form.`}
+            </Text>
         </Box>
     </Flex>
 );

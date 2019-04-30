@@ -17,6 +17,7 @@ import {
     PENDING_REQUESTS_MENU_TEXT,
     PAYMENT_METHODS_MENU_TEXT,
     LOG_OUT_MENU_TEXT,
+    INSURANCE_CONFIRMATION_TEXT,
 } from '../../util/strings';
 import { profileMenuTexts } from '../../util/menuItems';
 import { getLTMBaseUrl } from '../../util/urls';
@@ -94,7 +95,7 @@ class PatientDashboardPageView extends Component {
     onInsuranceFormComplete = () => {
         this.insuranceConfirmation = (
             <Card>
-                <Confirmation formName={INSURANCE_MENU_TEXT} />
+                <Confirmation ownMessage={INSURANCE_CONFIRMATION_TEXT} />
             </Card>
         );
         this.setState({ showInsuranceConfirmation: true }); // this will cause a re-render to show insuranceConfirmation
