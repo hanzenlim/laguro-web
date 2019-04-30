@@ -13,8 +13,11 @@ import {
     Image,
     Rating,
     Text,
-} from '../../../components/index';
+    Grid,
+    Responsive,
+} from '../../../components';
 import { withScreenSizes } from '../../../components/Responsive';
+import Bundle from '../Bundle';
 
 const TAG_COLORS = [
     'background.blue',
@@ -23,10 +26,16 @@ const TAG_COLORS = [
     'background.darkBlue',
 ];
 
+const { Desktop, Mobile } = Responsive;
+
 const StyledCard = styled(Card)`
     &&.ant-card-bordered {
+        height: 350px;
+        width: ${({ showMap }) => (showMap ? '839px' : '100%')};
         border-radius: 0;
-        box-shadow: none;
+        border: none;
+        box-shadow: 1px 1px 12px 0 rgba(0, 0, 0, 0.06),
+            -1px -1px 12px 0 rgba(0, 0, 0, 0.06);
         border: 1px solid #ececec;
     }
 
@@ -38,18 +47,60 @@ const StyledCard = styled(Card)`
         }
     }
 
+    @media (max-width: ${props => props.theme.breakpoints[1]}) {
+        &&.ant-card-bordered {
+            height: 100%;
+            width: 100%;
+        }
+    }
+
     && {
         .ant-card-body {
-            padding: 14px 20px;
+            padding: 10px 16px;
+            height: 100%;
 
             @media (min-width: ${props => props.theme.breakpoints[1]}) {
-                padding: 24px 26px;
+                padding: 20px 22px;
+            }
+
+            @media (max-width: 767px) {
+                padding-top: 23px;
+                padding-bottom: 23px;
             }
         }
     }
 `;
 
 class DentistListingCard extends PureComponent {
+    state = {
+        tagStopPoint: null,
+    };
+
+    componentDidMount() {
+        if (this.props.dentist && !_isEmpty(this.props.dentist.procedures)) {
+            this.setState({
+                tagStopPoint: this.getStopPoint({
+                    procedures: this.props.dentist.procedures,
+                }),
+            });
+        }
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.showMap !== this.props.showMap) {
+            if (
+                this.props.dentist &&
+                !_isEmpty(this.props.dentist.procedures)
+            ) {
+                this.setState({
+                    tagStopPoint: this.getStopPoint({
+                        procedures: this.props.dentist.procedures,
+                    }),
+                });
+            }
+        }
+    }
+
     handleSelectAppointment = e => {
         e.stopPropagation();
 
@@ -67,47 +118,68 @@ class DentistListingCard extends PureComponent {
         }
     };
 
+    getStopPoint = ({ procedures = [] }) => {
+        const { showMap, mobileOnly } = this.props;
+        let stopPoint = null;
+
+        let threshold = showMap ? 394 : 1188;
+
+        if (mobileOnly) {
+            threshold = 330;
+        }
+
+        procedures.reduce((acc, cur, i) => {
+            if (!stopPoint && stopPoint !== 0 && acc >= threshold) {
+                stopPoint = i;
+            }
+
+            return acc + cur.length * 6.5 + 38;
+        }, 0);
+
+        return stopPoint;
+    };
+
     render() {
-        const { dentist, variant, onRedirect, desktopOnly } = this.props;
-        const isShowMoreVisibile =
-            (desktopOnly &&
-                dentist.availableTimes &&
-                dentist.availableTimes.length > 7) ||
-            (!desktopOnly &&
-                dentist.availableTimes &&
-                dentist.availableTimes.length > 3);
+        const {
+            dentist,
+            variant,
+            screenWidth,
+            tabletOnly,
+            mobileOnly,
+            tabletMobileOnly,
+            showMap,
+        } = this.props;
 
         const earliestAvailableDate =
             dentist.availableTimes.length > 0 &&
             moment(dentist.availableTimes[0].startTime).format('dddd, MMMM D');
 
-        const availableTimes =
-            dentist.availableTimes && desktopOnly
-                ? dentist.availableTimes.slice(0, 7)
-                : dentist.availableTimes.slice(0, 3);
+        const availableTimes = dentist.availableTimes;
+
+        const { tagStopPoint } = this.state;
 
         return (
             <Button
                 type="ghost"
                 height="auto"
                 width="100%"
-                onClick={onRedirect}
+                // onClick={onRedirect}
             >
-                <StyledCard>
-                    <Box>
-                        <Flex mb={10}>
+                <StyledCard showMap={showMap}>
+                    <Flex height="100%" flexDirection={['column', 'row']}>
+                        <Flex width={['100%', 'calc(100% - 304px)']}>
                             <Box
                                 display={['none', 'block']}
                                 width={variant === 'small' ? '90px' : '136px'}
-                                mr={32}
                             >
                                 <Image
                                     src={dentist.imageUrl || defaultUserImage}
-                                    width="100%"
-                                    height="auto"
+                                    width="136px"
+                                    height="136px"
                                     borderRadius="50%"
                                 />
                             </Box>
+                            <Box width="32px" display={['none', 'block']} />
                             <Box width="100%">
                                 <Flex>
                                     <Box
@@ -141,12 +213,12 @@ class DentistListingCard extends PureComponent {
                                         <Flex
                                             mb={4}
                                             alignItems={
-                                                variant === 'small'
+                                                showMap
                                                     ? 'flex-start'
                                                     : ['flex-start', 'center']
                                             }
                                             flexDirection={
-                                                variant === 'small'
+                                                showMap
                                                     ? 'column'
                                                     : ['column', 'row']
                                             }
@@ -163,24 +235,33 @@ class DentistListingCard extends PureComponent {
                                             >
                                                 {dentist.name}
                                             </Text>
-                                            <Flex
-                                                alignItems="flex-end"
-                                                lineHeight="15px"
-                                            >
-                                                <Rating
-                                                    disabled={true}
-                                                    fontSize={['12px', '15px']}
-                                                    value={dentist.rating}
-                                                />
-                                                <Text ml={6} fontSize="12px">
-                                                    {dentist.reviewCount &&
-                                                    dentist.reviewCount !== 0
-                                                        ? `(${
-                                                              dentist.reviewCount
-                                                          })`
-                                                        : ''}
-                                                </Text>
-                                            </Flex>
+                                            {!showMap && (
+                                                <Flex
+                                                    alignItems="flex-end"
+                                                    lineHeight="15px"
+                                                >
+                                                    <Rating
+                                                        disabled={true}
+                                                        fontSize={[
+                                                            '12px',
+                                                            '15px',
+                                                        ]}
+                                                        value={dentist.rating}
+                                                    />
+                                                    <Text
+                                                        ml={6}
+                                                        fontSize="12px"
+                                                    >
+                                                        {dentist.reviewCount &&
+                                                        dentist.reviewCount !==
+                                                            0
+                                                            ? `(${
+                                                                  dentist.reviewCount
+                                                              })`
+                                                            : ''}
+                                                    </Text>
+                                                </Flex>
+                                            )}
                                         </Flex>
 
                                         <Text
@@ -198,6 +279,87 @@ class DentistListingCard extends PureComponent {
                                         </Text>
                                     </Flex>
                                 </Flex>
+
+                                <Mobile>
+                                    {!_isEmpty(dentist.procedures) &&
+                                        dentist.procedures.length && (
+                                            <Box overflow="hidden">
+                                                <Flex
+                                                    flexWrap="wrap"
+                                                    mb={6}
+                                                    mt={10}
+                                                >
+                                                    {dentist.procedures.map(
+                                                        (procedure, index) => {
+                                                            if (
+                                                                tagStopPoint &&
+                                                                index >
+                                                                    tagStopPoint
+                                                            ) {
+                                                                return null;
+                                                            }
+
+                                                            if (
+                                                                tagStopPoint &&
+                                                                index ===
+                                                                    tagStopPoint
+                                                            ) {
+                                                                return (
+                                                                    <Box
+                                                                        bg={
+                                                                            TAG_COLORS[
+                                                                                index %
+                                                                                    4
+                                                                            ]
+                                                                        }
+                                                                        px={12}
+                                                                        py="3px"
+                                                                        borderRadius="15.5px"
+                                                                        mr="6px"
+                                                                        mb="6px"
+                                                                    >
+                                                                        <Text
+                                                                            color="text.white"
+                                                                            lineHeight="normal"
+                                                                            fontSize="10px"
+                                                                        >
+                                                                            ...
+                                                                        </Text>
+                                                                    </Box>
+                                                                );
+                                                            }
+
+                                                            return (
+                                                                <Box
+                                                                    bg={
+                                                                        TAG_COLORS[
+                                                                            index %
+                                                                                4
+                                                                        ]
+                                                                    }
+                                                                    px={12}
+                                                                    py="2px"
+                                                                    borderRadius="15.5px"
+                                                                    mr="6px"
+                                                                    mb="6px"
+                                                                >
+                                                                    <Text
+                                                                        color="text.white"
+                                                                        lineHeight="normal"
+                                                                        fontSize="10px"
+                                                                    >
+                                                                        {
+                                                                            procedure
+                                                                        }
+                                                                    </Text>
+                                                                </Box>
+                                                            );
+                                                        }
+                                                    )}
+                                                </Flex>
+                                            </Box>
+                                        )}
+                                </Mobile>
 
                                 {!_isEmpty(dentist.insurance) && (
                                     <Flex alignItems="center">
@@ -244,37 +406,94 @@ class DentistListingCard extends PureComponent {
                                     </Flex>
                                 )}
 
-                                {!_isEmpty(dentist.procedures) &&
-                                    dentist.procedures.length && (
-                                        <Flex flexWrap="wrap" mb={6} mt={10}>
-                                            {dentist.procedures.map(
-                                                (procedure, index) => (
-                                                    <Box
-                                                        bg={
-                                                            TAG_COLORS[
-                                                                index % 4
-                                                            ]
+                                <Desktop>
+                                    {!_isEmpty(dentist.procedures) &&
+                                        dentist.procedures.length && (
+                                            <Box
+                                                height={68}
+                                                maxHeight={68}
+                                                overflow="hidden"
+                                            >
+                                                <Flex
+                                                    flexWrap="wrap"
+                                                    mb={6}
+                                                    mt={10}
+                                                >
+                                                    {dentist.procedures.map(
+                                                        (procedure, index) => {
+                                                            if (
+                                                                tagStopPoint &&
+                                                                index >
+                                                                    tagStopPoint
+                                                            ) {
+                                                                return null;
+                                                            }
+
+                                                            if (
+                                                                tagStopPoint &&
+                                                                index ===
+                                                                    tagStopPoint
+                                                            ) {
+                                                                return (
+                                                                    <Box
+                                                                        bg={
+                                                                            TAG_COLORS[
+                                                                                index %
+                                                                                    4
+                                                                            ]
+                                                                        }
+                                                                        px={16}
+                                                                        borderRadius="19.5px"
+                                                                        mr="6px"
+                                                                        mb="6px"
+                                                                    >
+                                                                        <Text
+                                                                            color="text.white"
+                                                                            lineHeight="20px"
+                                                                            fontSize={[
+                                                                                '10px',
+                                                                                '12px',
+                                                                            ]}
+                                                                        >
+                                                                            ...
+                                                                        </Text>
+                                                                    </Box>
+                                                                );
+                                                            }
+
+                                                            return (
+                                                                <Box
+                                                                    bg={
+                                                                        TAG_COLORS[
+                                                                            index %
+                                                                                4
+                                                                        ]
+                                                                    }
+                                                                    px={16}
+                                                                    borderRadius="19.5px"
+                                                                    mr="6px"
+                                                                    mb="6px"
+                                                                >
+                                                                    <Text
+                                                                        color="text.white"
+                                                                        lineHeight="20px"
+                                                                        fontSize={[
+                                                                            '10px',
+                                                                            '12px',
+                                                                        ]}
+                                                                    >
+                                                                        {
+                                                                            procedure
+                                                                        }
+                                                                    </Text>
+                                                                </Box>
+                                                            );
                                                         }
-                                                        px={16}
-                                                        borderRadius="19.5px"
-                                                        mr="6px"
-                                                        mb="6px"
-                                                    >
-                                                        <Text
-                                                            color="text.white"
-                                                            lineHeight="20px"
-                                                            fontSize={[
-                                                                '10px',
-                                                                '12px',
-                                                            ]}
-                                                        >
-                                                            {procedure}
-                                                        </Text>
-                                                    </Box>
-                                                )
-                                            )}
-                                        </Flex>
-                                    )}
+                                                    )}
+                                                </Flex>
+                                            </Box>
+                                        )}
+                                </Desktop>
 
                                 {dentist.availableTimes &&
                                 dentist.availableTimes.length !== 0 ? (
@@ -284,78 +503,155 @@ class DentistListingCard extends PureComponent {
                                             fontWeight="500"
                                             fontSize={['12px', '18px']}
                                             textAlign="left"
+                                            mt={[5, 0]}
                                         >
                                             {`Available times `}
                                             {moment(
                                                 dentist.availableTimes[0]
                                                     .startTime
-                                            ).diff(moment(), 'days') === 0
-                                                && 'today'}
+                                            ).diff(moment(), 'days') === 0 &&
+                                                'today'}
                                             {moment(
                                                 dentist.availableTimes[0]
                                                     .startTime
-                                            ).diff(moment(), 'days') === 1
-                                                && 'tomorrow'}
+                                            ).diff(moment(), 'days') === 1 &&
+                                                'tomorrow'}
                                             {moment(
                                                 dentist.availableTimes[0]
                                                     .startTime
-                                            ).diff(moment(), 'days') > 1
-                                                && `on ${earliestAvailableDate}`}
+                                            ).diff(moment(), 'days') > 1 &&
+                                                `on ${earliestAvailableDate}`}
                                         </Text>
-                                        <Flex flexWrap="wrap">
-                                            {availableTimes.map(
-                                                availableTime => (
-                                                    <Button
-                                                        data-start={
-                                                            availableTime.startTime
-                                                        }
-                                                        data-reservation={
-                                                            availableTime.reservationId
-                                                        }
-                                                        type="primary"
-                                                        height={40}
-                                                        width={[
-                                                            '75px',
-                                                            '100px',
-                                                            '100px',
-                                                        ]}
-                                                        mx="2px"
-                                                        my="2px"
-                                                        ghost={true}
-                                                        onClick={
-                                                            this
-                                                                .handleSelectAppointment
-                                                        }
-                                                        fontSize={[
-                                                            '12px',
-                                                            '18px',
-                                                        ]}
-                                                    >
-                                                        {moment(
-                                                            availableTime.startTime
-                                                        ).format('h:mm A')}
-                                                    </Button>
-                                                )
-                                            )}
+                                        <Box
+                                            height={84}
+                                            maxHeight={84}
+                                            overflow="hidden"
+                                            width="100%"
+                                        >
+                                            <Grid
+                                                gridTemplateColumns={[
+                                                    'repeat(auto-fit, 79px)',
+                                                    'repeat(auto-fit, 147px)',
+                                                ]}
+                                                gridGap={3}
+                                            >
+                                                {[
+                                                    ...availableTimes,
+                                                    ...availableTimes,
+                                                ].map(
+                                                    (availableTime, index) => {
+                                                        if (
+                                                            (index > 9 ||
+                                                                (showMap &&
+                                                                    index >
+                                                                        3)) &&
+                                                            !tabletOnly &&
+                                                            !tabletMobileOnly
+                                                        )
+                                                            return null;
 
-                                            {isShowMoreVisibile && (
-                                                <Button
-                                                    type="primary"
-                                                    width={[
-                                                        '75px',
-                                                        '100px',
-                                                        '100px',
-                                                    ]}
-                                                    height={40}
-                                                    my="2px"
-                                                    mx="2px"
-                                                    onClick={onRedirect}
-                                                    fontSize={['12px', '18px']}
-                                                >
-                                                    More
-                                                </Button>
-                                            )}
-                                        </Flex>
+                                                        if (
+                                                            (index === 9 ||
+                                                                (showMap &&
+                                                                    index ===
+                                                                        3)) &&
+                                                            !tabletOnly &&
+                                                            !tabletMobileOnly
+                                                        ) {
+                                                            return (
+                                                                <Button
+                                                                    type="primary"
+                                                                    height={40}
+                                                                    width="100%"
+                                                                    ghost={true}
+                                                                    pb={10}
+                                                                    fontSize={
+                                                                        20
+                                                                    }
+                                                                    fontWeight="700"
+                                                                >
+                                                                    ...
+                                                                </Button>
+                                                            );
+                                                        }
+
+                                                        if (
+                                                            (index > 7 &&
+                                                                mobileOnly) ||
+                                                            (index > 3 &&
+                                                                tabletMobileOnly &&
+                                                                !tabletOnly) ||
+                                                            (index > 5 &&
+                                                                tabletOnly) ||
+                                                            (screenWidth ===
+                                                                768 &&
+                                                                index > 3)
+                                                        ) {
+                                                            return null;
+                                                        }
+
+                                                        if (
+                                                            (index === 7 &&
+                                                                mobileOnly) ||
+                                                            (index === 3 &&
+                                                                tabletMobileOnly &&
+                                                                !tabletOnly) ||
+                                                            (index === 5 &&
+                                                                tabletOnly) ||
+                                                            (screenWidth ===
+                                                                768 &&
+                                                                index === 3)
+                                                        ) {
+                                                            return (
+                                                                <Button
+                                                                    type="primary"
+                                                                    height={40}
+                                                                    width="100%"
+                                                                    ghost={true}
+                                                                    pb={10}
+                                                                    fontSize={[
+                                                                        12,
+                                                                        18,
+                                                                    ]}
+                                                                    fontWeight="700"
+                                                                >
+                                                                    ...
+                                                                </Button>
+                                                            );
+                                                        }
+
+                                                        return (
+                                                            <Button
+                                                                data-start={
+                                                                    availableTime.startTime
+                                                                }
+                                                                data-reservation={
+                                                                    availableTime.reservationId
+                                                                }
+                                                                type="primary"
+                                                                height={40}
+                                                                width="100%"
+                                                                ghost={true}
+                                                                onClick={
+                                                                    this
+                                                                        .handleSelectAppointment
+                                                                }
+                                                                fontSize={[
+                                                                    12,
+                                                                    18,
+                                                                ]}
+                                                            >
+                                                                {moment(
+                                                                    availableTime.startTime
+                                                                ).format(
+                                                                    'h:mm A'
+                                                                )}
+                                                            </Button>
+                                                        );
+                                                    }
+                                                )}
+                                            </Grid>
+                                        </Box>
                                     </Fragment>
                                 ) : (
                                     <Text
@@ -369,7 +665,31 @@ class DentistListingCard extends PureComponent {
                                 )}
                             </Box>
                         </Flex>
-                    </Box>
+                        <Desktop>
+                            <Box
+                                width="1px"
+                                border="solid 0.5px #dbdbdb"
+                                my={12}
+                            />
+                        </Desktop>
+                        <Mobile>
+                            <Box
+                                width="100%"
+                                height="1px"
+                                border="solid 0.5px #dbdbdb"
+                                mt={18}
+                                mb={12}
+                            />
+                        </Mobile>
+                        <Flex justifyContent="center">
+                            <Box width={304}>
+                                <Bundle
+                                    procedures={dentist.procedures}
+                                    insurance={dentist.insurance}
+                                />
+                            </Box>
+                        </Flex>
+                    </Flex>
                 </StyledCard>
             </Button>
         );

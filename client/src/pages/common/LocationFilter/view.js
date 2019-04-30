@@ -20,8 +20,6 @@ const StyledIcon = styled(Icon)`
     z-index: ${props => props.theme.zIndex.inputElement};
 `;
 
-const INPUT_PADDING_LEFT_IN_PIXELS = 28;
-
 const StyledAutocomplete = styled(AntdAutocomplete)`
     && {
         position: relative;
@@ -33,14 +31,8 @@ const StyledAutocomplete = styled(AntdAutocomplete)`
         }
         && .ant-input {
             ${height};
-            padding-left: ${props =>
-                props.withDentists
-                    ? `${INPUT_PADDING_LEFT_IN_PIXELS - 3}px`
-                    : '45px'};
-            padding-right: ${props =>
-                props.withDentists
-                    ? `${INPUT_PADDING_LEFT_IN_PIXELS - 3}px`
-                    : '45px'};
+            padding-left: 18px;
+            padding-right: 50px;
             border: 1px solid;
             border-color: ${props => props.theme.colors.divider.darkGray};
             background-color: ${props => props.theme.colors.background.white};
@@ -61,14 +53,8 @@ const StyledAutocomplete = styled(AntdAutocomplete)`
             ${height};
             margin-left: 0;
             margin-right: 0;
-            padding-left: ${props =>
-                props.withDentists
-                    ? `${INPUT_PADDING_LEFT_IN_PIXELS}px`
-                    : '35px'};
-            padding-right: ${props =>
-                props.withDentists
-                    ? `${INPUT_PADDING_LEFT_IN_PIXELS}px`
-                    : '35px'};
+            padding-left: 18px;
+            padding-right: 50px
             z-index: ${props => props.theme.zIndex.inputElement};
             letter-spacing: -0.32px;
             font-weight: ${props => props.theme.fontWeights.medium}
@@ -217,11 +203,21 @@ const LocationFilterView = ({
                     placeholder ||
                     'Start searching for dental offices or dentists near you'
                 }
-                defaultActiveFirstOption={false}
+                defaultActiveFirstOption={true}
                 {...rest}
             >
-                {withDentists && DentistOptions}
-                {withDentists ? GroupedLocationOptions : LocationOptions}
+                <Option
+                    key={queryString || 'null '}
+                    text={queryString}
+                    data={{ type: 'STRING', string: queryString }}
+                    style={{ display: 'none' }}
+                >
+                    <Box width={width - 50}>{queryString}</Box>
+                </Option>
+                {withDentists && dentistResults.length ? DentistOptions : null}
+                {withDentists && locationResults.length
+                    ? GroupedLocationOptions
+                    : LocationOptions}
             </StyledAutocomplete>
         </StyledFlex>
     );

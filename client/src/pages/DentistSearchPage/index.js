@@ -13,7 +13,6 @@ import history from '../../history';
 import esClient from '../../util/esClient';
 import { formatAddress } from '../../util/styleUtil';
 import { DENTISTS } from '../../util/strings';
-import { Loading, Box } from '../../components';
 import { getMyPosition, DEFAULT_LOCATION } from '../../util/navigatorUtil';
 import { numMaxContainerWidth } from '../../components/theme';
 import { batchGetUsers } from './queries';
@@ -41,6 +40,8 @@ class DetailsSearchPage extends PureComponent {
                 width,
                 height,
             },
+            urlParams: {},
+            isFilterVisible: false,
         };
     }
 
@@ -164,8 +165,8 @@ class DetailsSearchPage extends PureComponent {
         const windowInnerWidth = window.innerWidth;
         const windowInnerHeight = window.innerHeight;
         const margins = windowInnerWidth - numMaxContainerWidth;
-        const verticalOffset = 180;
-        const horizontalOffset = 41.5;
+        const verticalOffset = 330;
+        const horizontalOffset = 220;
 
         return {
             width:
@@ -347,14 +348,11 @@ class DetailsSearchPage extends PureComponent {
         this.setState({ showMap: !this.state.showMap });
     };
 
-    render() {
-        if (this.state.loading)
-            return (
-                <Box pt={[48, '', 160]}>
-                    <Loading />
-                </Box>
-            );
+    onToggleFilter = () => {
+        this.setState({ isFilterVisible: !this.state.isFilterVisible });
+    };
 
+    render() {
         return (
             <Fragment>
                 <Helmet>
@@ -384,6 +382,9 @@ class DetailsSearchPage extends PureComponent {
                     urlParams={this.state.urlParams}
                     mapDimensions={this.state.mapDimensions}
                     onShowMore={this.updateSearchResults}
+                    loading={this.state.loading}
+                    isFilterVisible={this.state.isFilterVisible}
+                    onToggleFilter={this.onToggleFilter}
                 />
             </Fragment>
         );

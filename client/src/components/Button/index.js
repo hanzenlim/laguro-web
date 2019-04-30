@@ -47,6 +47,8 @@ const StyledButton = styled(AntdButton)`
         ${minWidth};
     }
 
+
+
     &.ant-btn-primary,
     &.ant-btn-submit,
     &.ant-btn-primary:hover,
@@ -113,6 +115,10 @@ const StyledButton = styled(AntdButton)`
     &&.ant-btn-background-ghost {
         color: ${props => props.theme.colors.text.blue};
         border-color: ${props => props.theme.colors.text.blue};
+    }
+
+    &&.ant-btn-primary {
+        ${color}
     }
 
     &&.ant-btn-primary.disabled,

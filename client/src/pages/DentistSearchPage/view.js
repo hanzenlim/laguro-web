@@ -10,18 +10,20 @@ import {
     Responsive,
     Switch,
     Text,
+    Loading,
 } from '../../components';
 import SearchBox from '../common/SearchBox';
 import SearchResultsList from '../common/SearchResultsList';
 import { formatAddress } from '../../util/styleUtil';
 import { ContainerPaddingInPixels } from '../../components/Container';
+import SearchFilter from '../common/SearchFilter';
 
 const Map = Loadable({
     loader: () => import('../common/Map' /* webpackChunkName: "map" */),
     loading: () => null,
 });
 
-const { Desktop } = Responsive;
+const { Desktop, TabletMobile } = Responsive;
 
 const handleMultiLocation = reservations => {
     // Pull just the string addresses from reservations into an array
@@ -40,10 +42,12 @@ const DentistSearchPageView = props => {
         total,
         urlParams,
         defaultPosition,
-        mapDimensions,
         showMap,
         toggleMap,
         onShowMore,
+        loading,
+        onToggleFilter,
+        isFilterVisible,
     } = props;
 
     data.forEach((dentist, index) => {
@@ -103,6 +107,7 @@ const DentistSearchPageView = props => {
                                     <SearchBox
                                         size="large"
                                         placeholder="Search for dentists by name, location, or specialty"
+                                        toggleFilter={onToggleFilter}
                                     />
                                 </Box>
                             )
@@ -121,6 +126,9 @@ const DentistSearchPageView = props => {
                             bg="white"
                         >
                             <Container px={[0, 0, 25]}>
+                                <TabletMobile>
+                                    {isFilterVisible ? <SearchFilter /> : null}
+                                </TabletMobile>
                                 <Flex justifyContent="space-between">
                                     {urlParams.text && !urlParams.location && (
                                         <Text
@@ -170,13 +178,18 @@ const DentistSearchPageView = props => {
                                         <Switch onClick={toggleMap} />
                                     </Flex>
                                 </Flex>
+                                <Desktop>
+                                    <Box mt={34}>
+                                        <SearchFilter />
+                                    </Box>
+                                </Desktop>
                             </Container>
                         </Flex>
                     )}
                 </Box>
                 <Box pt={0}>
                     <Grid
-                        gridColumnGap={['', '', '33px']}
+                        gridColumnGap={['', '', '10px']}
                         gridTemplateColumns={[
                             '1fr',
                             '',
@@ -188,12 +201,18 @@ const DentistSearchPageView = props => {
                                 height={['auto', '', 'calc(100vh - 220px)']}
                                 p={[0, '', PADDING_FOR_BOX_SHADOWS_IN_PIXELS]}
                             >
-                                <SearchResultsList
-                                    data={data}
-                                    total={total}
-                                    showMap={showMap}
-                                    onShowMore={onShowMore}
-                                />
+                                {loading ? (
+                                    <Box mt={15}>
+                                        <Loading />
+                                    </Box>
+                                ) : (
+                                    <SearchResultsList
+                                        data={data}
+                                        total={total}
+                                        showMap={showMap}
+                                        onShowMore={onShowMore}
+                                    />
+                                )}
                             </Box>
                         </Box>
 
@@ -202,12 +221,12 @@ const DentistSearchPageView = props => {
                                 <Box
                                     position="fixed"
                                     mt={15}
-                                    transform="translateX(calc(100% + 34px))"
+                                    transform="translateX(calc(100% + 425px))"
                                 >
                                     <Map
                                         data={markers}
-                                        width={mapDimensions.width}
-                                        height={mapDimensions.height}
+                                        width={441}
+                                        height={500}
                                         urlParams={urlParams}
                                         defaultPosition={defaultPosition}
                                     />

@@ -16,9 +16,15 @@ class SearchBox extends PureComponent {
         const urlParams = queryString.parse(history.location.search);
 
         this.state = {
-            location: '',
+            location: urlParams.location
+                ? {
+                      name: urlParams.location,
+                      lat: urlParams.lat,
+                      long: urlParams.long,
+                  }
+                : '',
             date: '',
-            text: '',
+            text: urlParams.text || '',
             urlParams,
         };
 
@@ -46,12 +52,14 @@ class SearchBox extends PureComponent {
         this.setState({ text, location: '' });
     };
 
-    handleLocationFilterChange = location => {
-        this.setState({ location, text: '' });
+    handleLocationFilterChange = async location => {
+        await this.setState({ location, text: '' });
+        this.handleSubmit();
     };
 
-    handleDateFilterChange = date => {
-        this.setState({ date });
+    handleQueryString = async string => {
+        await this.setState({ text: string });
+        this.handleSubmit();
     };
 
     handleSubmit = () => {
@@ -98,9 +106,9 @@ class SearchBox extends PureComponent {
         history.push(`${path}?${queryString.stringify(urlParams)}`);
     };
 
-    handleKeyPress = event => {
-        if (event.key === 'Enter') {
-            this.handleSubmit();
+    toggleFilter = () => {
+        if (this.props.toggleFilter) {
+            this.props.toggleFilter();
         }
     };
 
@@ -116,12 +124,12 @@ class SearchBox extends PureComponent {
                 } // if defaultSearch, don't display text in search box, if not, display text
                 initialDateFilterValue={this.state.urlParams.startTime}
                 onLocationFilterChange={this.handleLocationFilterChange}
+                onQueryString={this.handleQueryString}
                 onTextChange={this.handleTextChange}
-                onDateFilterChange={this.handleDateFilterChange}
-                onSubmit={this.handleSubmit}
                 size={this.props.size}
                 locationPlaceholder={this.props.placeholder}
-                onKeyPress={this.handleKeyPress}
+                toggleFilter={this.toggleFilter}
+                onSubmit={this.handleSubmit}
             />
         );
     }

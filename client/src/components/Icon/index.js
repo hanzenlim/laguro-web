@@ -47,6 +47,7 @@ import Medium from './Medium';
 import Facebook from './Facebook';
 import Instagram from './Instagram';
 import Alert from './Alert';
+import Filter from './Filter';
 
 const Icon = props => {
     const { type, isButton, ...rest } = props;
@@ -139,6 +140,9 @@ const Icon = props => {
             break;
         case 'alert':
             ReturnIcon = Alert;
+            break;
+        case 'filter':
+            ReturnIcon = Filter;
             break;
         default:
             ReturnIcon = AntdIcon;

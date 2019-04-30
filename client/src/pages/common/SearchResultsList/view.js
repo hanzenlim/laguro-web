@@ -76,7 +76,7 @@ class SearchResultsList extends PureComponent {
         const type = isOffice ? OFFICES : DENTISTS;
 
         return (
-            <Flex flexDirection="column" mb="100px">
+            <Flex flexDirection="column" mb="100px" mt={[0, '20px', '90px']}>
                 {!data.length && (
                     <NoSearchResults
                         location={urlParams.location}
@@ -87,7 +87,7 @@ class SearchResultsList extends PureComponent {
 
                 <Grid
                     gridColumnGap="17px"
-                    gridRowGap={[0, '', 13]}
+                    gridRowGap={[10, 11, 13]}
                     gridTemplateColumns={
                         // eslint-disable-next-line
                         showMap && isOffice
@@ -124,8 +124,9 @@ class SearchResultsList extends PureComponent {
                                       />
                                   ) : (
                                       <DentistListingCard
-                                          variant={showMap ? 'small' : 'large'}
+                                          variant="large"
                                           dentist={item}
+                                          showMap={showMap}
                                           onRedirect={() =>
                                               this.handleRedirect(item.url)
                                           }

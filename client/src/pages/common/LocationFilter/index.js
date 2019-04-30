@@ -147,6 +147,9 @@ class LocationFilter extends PureComponent {
     };
 
     handleSuggestionSelect = async (value, option) => {
+        if (option.props.data.type === 'STRING') {
+            this.props.onQueryString(option.props.data.string);
+        }
         if (option.props.data.type === LOCATION) {
             this.props.onLocationChange(option.props.data.location);
             await this.setState({

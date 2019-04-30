@@ -142,7 +142,7 @@ class Header extends Component {
                     justifyContent="space-between"
                     alignItems="center"
                 >
-                    <Flex width="77%">
+                    <Flex>
                         <Link mr={32} to={'/'} display="flex">
                             {/* mb is because the icon has extra space at the bottom */}
                             <Flex alignItems="center" height="100%" mb={6}>
