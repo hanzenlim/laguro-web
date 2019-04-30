@@ -13,13 +13,17 @@ import { HEADER_HEIGHT } from './constants';
 import {
     getPageType,
     HOME_PAGE_TYPE,
+    ABOUT_PAGE_URL,
     ALL_USER_PAGE_TYPE,
     PATIENT_PAGE_TYPE,
     DENTIST_AND_HOST_PAGE_TYPE,
     DENTIST_DASHBOARD_PAGE_URL,
+    DENTIST_ONBOARDING_PROFILE_URL,
     HOST_DASHBOARD_PAGE_URL,
     OFFICE_PAGES_URL_PREFIX,
     HOST_ONBOARDING_PAGE_URL_PREFIX,
+    PATIENT_DASHBOARD_PAGE_URL,
+    PATIENT_WEB_ONBOARDING_PAGE_URL,
 } from '../../../util/urls';
 import ProfileButton from './ProfileButton';
 
@@ -29,16 +33,27 @@ const StyledFlex = styled(Flex)`
     box-shadow: ${props => props.boxShadow};
 `;
 
-const IntercomContainer = ({ auth }) => {
-    const user = auth
-        ? {
+const IntercomContainer = ({ auth, pathname}) => {
+    if (process.env.NODE_ENV === 'production' && (
+        pathname.includes(HOST_DASHBOARD_PAGE_URL) ||
+        pathname.includes(HOST_ONBOARDING_PAGE_URL_PREFIX) ||
+        pathname.includes(DENTIST_DASHBOARD_PAGE_URL) ||
+        pathname.includes(DENTIST_ONBOARDING_PROFILE_URL) ||
+        pathname.includes(PATIENT_DASHBOARD_PAGE_URL) ||
+        pathname.includes(PATIENT_WEB_ONBOARDING_PAGE_URL) ||
+        pathname.includes(ABOUT_PAGE_URL))){
+        
+        const user = auth ? {
               user_id: auth.id,
               email: auth.email,
               name: auth.firstName,
-              user_hash: auth.intercomHash,
-          }
-        : {};
-    return <Intercom appID={intercomKey} {...user} />;
+              user_hash: auth.intercomHash
+        } : {};
+
+        return <Intercom appID={intercomKey} {...user} />;
+    }else{
+        return null;
+    }
 };
 
 const getHeaderBackgroundColor = () => {
@@ -131,7 +146,7 @@ class Header extends Component {
                 style={{ zIndex: 600 }}
                 position={position()}
             >
-                <IntercomContainer auth={auth} />
+                <IntercomContainer auth={auth} pathname={pathname} />
                 <LoginModal
                     toggleLoginModal={toggleLoginModal}
                     isLoginModalOpen={isLoginModalOpen}
