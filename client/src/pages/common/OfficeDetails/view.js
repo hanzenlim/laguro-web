@@ -1,108 +1,65 @@
-import React, { Fragment, PureComponent } from 'react';
-import Loadable from 'react-loadable';
+import React, { PureComponent } from 'react';
 import _get from 'lodash/get';
+import styled from 'styled-components'
+
 import {
     Flex,
     Box,
     Text,
     Rating,
-    Truncate,
-    Button,
-    Responsive,
+    Button
 } from '../../../components';
 import { formatAddress } from '../../../util/styleUtil';
-import { numMaxContainerWidth } from '../../../components/theme';
 import { withScreenSizes } from '../../../components/Responsive';
 
-const Map = Loadable({
-    loader: () => import('../../common/Map' /* webpackChunkName: "map" */),
-    loading: () => null,
-});
+const TAG_COLORS = [
+    'background.blue',
+    'background.yellow',
+    'background.orange',
+    'background.darkBlue',
+];
 
-const { TabletMobile, Desktop } = Responsive;
-
-const SIDEBAR_WIDTH = 460;
-const GUTTER = 34;
-const CONTAINER_PADDINGS = 50;
+const DefaultCursorButton = styled(Button)`
+    && {
+        cursor: default;
+    }
+`;
 
 class OfficeDetailsView extends PureComponent {
-    constructor(props) {
-        super(props);
-        this.screenWidthRef = React.createRef();
-        this.state = {
-            contentWidth: 0,
-        };
-    }
-
-    setContentWidth = () =>
-        this.setState({
-            contentWidth:
-                Math.min(
-                    this.screenWidthRef.current.offsetWidth,
-                    numMaxContainerWidth
-                ) -
-                (SIDEBAR_WIDTH + GUTTER + CONTAINER_PADDINGS),
-        });
-
-    componentDidMount() {
-        window.addEventListener('resize', this.setContentWidth);
-        this.setContentWidth();
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener('resize', this.setContentWidth);
-    }
-
     render() {
-        const {
-            data,
-            tabletMobileOnly,
-            toggleReserveOffice,
-            isReserveOfficeVisible,
-        } = this.props;
-        const { contentWidth } = this.state;
-
-        const isContentVisible = tabletMobileOnly
-            ? !isReserveOfficeVisible
-            : true;
-
-        const screenWidth = this.screenWidthRef.current
-            ? this.screenWidthRef.current.offsetWidth
-            : 0;
+        const { data, tabletMobileOnly } = this.props;
 
         return (
-            <Fragment>
+            <Box>
                 <Box
-                    width="100vw"
-                    position="fixed"
-                    left={0}
-                    ref={this.screenWidthRef}
-                />
-                <Flex
-                    alignItems={['left', '', 'center']}
-                    mb={[0, '', 40]}
-                    flexDirection="column"
+                    textAlign={['left', '', 'center']}
+                    mb={[50, '', 40]}
                 >
                     <Text
                         is="h1"
                         color="text.black"
                         fontSize={[4, '', 5]}
                         lineHeight="34px"
-                        letterSpacing="-0.8px"
+                        letterSpacing={['-0.51px', '', '-0.76px']}
+                        m={0}
                     >
                         {data.officeName}
                     </Text>
                     <Text
                         fontSize={[0, '', 4]}
-                        lineHeight={['1.5', '', '34px']}
-                        letterSpacing="-0.8px"
+                        fontWeight='light'
+                        lineHeight={['24px', '', '34px']}
+                        letterSpacing={['-0.3px', '', '-0.76px']}
                     >
                         {formatAddress(
                             _get(data, 'address.name'),
                             _get(data, 'address.addressDetails')
                         )}
                     </Text>
-                    <Flex mt={[0, '', 10]} alignItems="center">
+                    <Flex
+                        alignItems="center"
+                        justifyContent={['flex-start', '', 'center']}
+                    >
                         <Rating
                             fontSize={tabletMobileOnly ? '15px' : '18px'}
                             value={data.rating}
@@ -110,145 +67,79 @@ class OfficeDetailsView extends PureComponent {
                         />
                         <Text
                             ml={10}
-                            lineHeight="16px"
+                            mt={3}
                             color="text.black"
                             fontSize={[0, '', 1]}
+                            lineHeight="17px"
                         >
                             {data.numReviews} reviews
                         </Text>
                     </Flex>
-                </Flex>
+                </Box>
 
-                <TabletMobile>
-                    <Button
-                        mt={16}
-                        mb={24}
-                        width="100%"
-                        onClick={toggleReserveOffice}
-                    >
-                        <Text color="text.white" fontWeight="bold" fontSize={1}>
-                            {isContentVisible
-                                ? 'Book a chair'
-                                : 'Back to office details'}
-                        </Text>
-                    </Button>
-                </TabletMobile>
-
-                {isContentVisible && this.screenWidthRef.current && (
-                    <Fragment>
-                        {data.description && (
-                            // Added fixed width to fix bug in rendering truncated text
-                            <Box
-                                pb={[0, '', 42]}
-                                width={
-                                    tabletMobileOnly
-                                        ? screenWidth - 50
-                                        : contentWidth
-                                }
-                            >
-                                <Text
-                                    fontSize={[1, '', 4]}
-                                    lineHeight="1.3"
-                                    fontWeight={['bold', '', 'regular']}
-                                    mb={[16, '', 0]}
-                                >
-                                    description
-                                </Text>
-                                <Text
-                                    style={{ 'white-space': 'pre-line' }}
-                                    fontSize={[0, '', 1]}
-                                    lineHeight="1.86"
-                                >
-                                    <Truncate lines={3} hasToggle>
-                                        {data.description}
-                                    </Truncate>
-                                </Text>
-                            </Box>
-                        )}
-
-                        <Box
-                            pt={[20, '', 40]}
-                            borderTop={['none', '', '1px solid']}
-                            borderColor={['', '', 'divider.gray']}
+                {data.equipments.length ? (
+                    <Box mb={[15, '', 38]}>
+                        <Text
+                            fontSize={[1, '', 2]}
+                            lineHeight="30px"
+                            letterSpacing={['0.05px', '', '-0.4px']}
+                            fontWeight="medium"
+                            mb={[6, '', 13]}
                         >
-                            <Text
-                                color="text.black"
-                                fontSize={[1, '', 4]}
-                                lineHeight="1.5"
-                                letterSpacing="1.5"
-                                fontWeight={['bold', '', 'regular']}
+                            Available equipments
+                        </Text>
+                        {data.equipments.map((equipment, index) => (
+                            <DefaultCursorButton
+                                key={index}
+                                type="ghost"
+                                height="auto"
                             >
-                                address information{' '}
-                                <Text
-                                    is="span"
-                                    fontWeight={['regular', '', 'bold']}
-                                    fontSize={[0, '', 4]}
-                                    display={['block', '', 'inline']}
-                                    mt={[14, '', 0]}
-                                >
-                                    <Desktop>{' - '}</Desktop>
-                                    {formatAddress(
-                                        _get(data, 'address.name'),
-                                        _get(data, 'address.addressDetails')
-                                    )}
-                                </Text>
-                            </Text>
-
-                            <Box
-                                width="100%"
-                                height={[184, '', 440]}
-                                mt={20}
-                                ml={[-25, '', 0]}
-                            >
-                                <Map
-                                    height={tabletMobileOnly ? 184 : 440}
-                                    width={
-                                        tabletMobileOnly
-                                            ? screenWidth
-                                            : contentWidth
-                                    }
-                                    zoom={13}
-                                    center={[
-                                        data.address.geoPoint.lon,
-                                        data.address.geoPoint.lat,
-                                    ]}
-                                    data={[
-                                        {
-                                            title: data.officeName,
-                                            image: data.imageUrls[0],
-                                            address: data.address.name,
-                                            latitude: _get(
-                                                data,
-                                                'address.geoPoint.lat'
-                                            ),
-                                            longitude: _get(
-                                                data,
-                                                'address.geoPoint.lon'
-                                            ),
-                                        },
-                                    ]}
-                                />
-                            </Box>
-                            <TabletMobile>
-                                <Button
-                                    mt={24}
-                                    mb={30}
-                                    width="100%"
-                                    onClick={toggleReserveOffice}
+                                <Box
+                                    px={[12, '', 24]}
+                                    bg={TAG_COLORS[index % 4]}
+                                    borderRadius="25px"
+                                    mr="6px"
+                                    mb="6px"
                                 >
                                     <Text
+                                        textTransform="capitalize"
+                                        fontWeight="medium"
                                         color="text.white"
-                                        fontWeight="bold"
-                                        fontSize={1}
+                                        lineHeight="22px"
+                                        fontSize={[0, '', 1]}
+                                        letterSpacing={['-0.38px', '', '-0.4px']}
                                     >
-                                        Book a chair
+                                        {equipment.name}
                                     </Text>
-                                </Button>
-                            </TabletMobile>
-                        </Box>
-                    </Fragment>
+                                </Box>
+                            </DefaultCursorButton>
+                        ))}
+                    </Box>
+                ) : null}
+
+                {data.description && (
+                    // Added fixed width to fix bug in rendering truncated text
+                    <Box pb={[20, '', 40]} >
+                        <Text
+                            fontSize={[1, '', 2]}
+                            lineHeight={['25px', '', '30px']}
+                            letterSpacing={['0.05px', '', '-0.4px']}
+                            fontWeight="medium"
+                            mb={5}
+                        >
+                            About the office
+                        </Text>
+                        <Text
+                            style={{ 'white-space': 'pre-line' }}
+                            fontSize={[0, '', 1]}
+                            lineHeight="26px"
+                            letterSpacing="-0.51px"
+                        >
+                            {data.description}
+                        </Text>
+                    </Box>
                 )}
-            </Fragment>
+            </Box>
         );
     }
 }

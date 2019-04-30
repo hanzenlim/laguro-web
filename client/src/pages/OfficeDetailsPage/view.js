@@ -7,11 +7,9 @@ import {
     Box,
     SlickCarousel,
     FilestackImage,
-    Sticky,
     Responsive,
 } from '../../components';
 import theme from '../../components/theme';
-import { withScreenSizes } from '../../components/Responsive';
 import OfficeDetails from '../common/OfficeDetails';
 import Payment from '../common/Payment';
 import ReserveOffice from '../common/ReserveOffice';
@@ -19,8 +17,9 @@ import { OFFICE } from '../../util/strings';
 import ReviewContainer from '../common/ReviewContainer';
 import FeaturedOffices from './FeaturedOffices';
 import { getIdFromFilestackUrl } from '../../util/imageUtil';
+import OfficeLocation from './OfficeLocation';
 
-const { Desktop } = Responsive;
+const { Desktop, TabletMobile } = Responsive;
 
 const renderReservationModule = () => <Payment hasBackButton />;
 
@@ -28,11 +27,12 @@ const StyledCarousel = styled(SlickCarousel)`
     &&,
     && div {
         height: 208px;
+        margin-bottom: 8px;
         transition: height 0.2s;
 
         @media (min-width: ${theme.breakpoints[1]}) {
-            margin-bottom: 20px;
-            height: 370px;
+            margin-bottom: 66px;
+            height: 482px;
         }
     }
 
@@ -81,7 +81,6 @@ class OfficeDetailsPageView extends PureComponent {
 
         this.state = {
             carouselClass: '',
-            isReserveOfficeVisible: this.props.desktopOnly,
         };
     }
 
@@ -93,23 +92,15 @@ class OfficeDetailsPageView extends PureComponent {
         }
     };
 
-    toggleReserveOffice = () =>
-        this.setState(({ isReserveOfficeVisible }) => ({
-            isReserveOfficeVisible: !isReserveOfficeVisible,
-        }));
-
     render() {
         const {
             id,
             imageUrls,
             officeDetailsDoneLoadingHandler,
-            officeDetailsDoneLoading,
-            desktopOnly,
+            officeDetailsDoneLoading
         } = this.props;
 
-        const { isReserveOfficeVisible, carouselClass } = this.state;
-
-        const isContentVisible = desktopOnly ? true : !isReserveOfficeVisible;
+        const { carouselClass } = this.state;
 
         return (
             <Flex flexDirection="column" height="100%">
@@ -125,7 +116,6 @@ class OfficeDetailsPageView extends PureComponent {
                                 settings: {
                                     arrows: false,
                                     draggable: true,
-                                    dots: true,
                                 },
                             },
                         ]}
@@ -150,72 +140,58 @@ class OfficeDetailsPageView extends PureComponent {
                         ))}
                     </StyledCarousel>
                 ) : (
-                    <Box mb={30} />
+                    <Box mb={66} />
                 )}
-                <Container style={{ flex: 1 }}>
-                    <Flex
-                        height="100%"
-                        flexDirection="column"
-                        justifyContent="space-between"
-                    >
+                <Container>
+                    <Box>
                         <Flex
                             justifyContent="space-between"
                             flexDirection={['column', '', 'row']}
                         >
-                            <Box>
-                                <Box mt={20} mr={[0, '', 34]}>
-                                    <OfficeDetails
+                            <Box flex={1} mr={[0, '', 34]}>
+                                <OfficeDetails
+                                    id={id}
+                                    viewOnly={false}
+                                    doneLoading={
+                                        officeDetailsDoneLoadingHandler
+                                    }
+                                    renderStickyComponent={
+                                        renderReservationModule
+                                    }
+                                />
+                                <Desktop>
+                                    <ReviewContainer
+                                        type={OFFICE}
                                         id={id}
-                                        viewOnly={false}
-                                        doneLoading={
-                                            officeDetailsDoneLoadingHandler
-                                        }
-                                        renderStickyComponent={
-                                            renderReservationModule
-                                        }
-                                        toggleReserveOffice={
-                                            this.toggleReserveOffice
-                                        }
-                                        isReserveOfficeVisible={
-                                            isReserveOfficeVisible
-                                        }
                                     />
-                                    {isContentVisible && (
-                                        <ReviewContainer
-                                            type={OFFICE}
-                                            id={id}
-                                        />
-                                    )}
-                                </Box>
+                                </Desktop>
                             </Box>
-                            {isReserveOfficeVisible && (
-                                <Sticky
-                                    mt={[0, '', 20]}
-                                    offset="20px"
-                                    width={['100%', '', 460]}
-                                    maxWidth={['100%', '', '40%']}
-                                >
-                                    <Box
-                                        mt={[20, '', 44]}
-                                    >
-                                        <ReserveOffice
-                                            officeId={id}
-                                            startLoading={
-                                                officeDetailsDoneLoading
-                                            }
-                                        />
-                                    </Box>
-                                </Sticky>
-                            )}
+                            <Box
+                                width={['100%', '', 460]}
+                                maxWidth={['100%', '', '40%']}
+                            >
+                                <ReserveOffice
+                                    officeId={id}
+                                    startLoading={
+                                        officeDetailsDoneLoading
+                                    }
+                                />
+
+                                <OfficeLocation id={id} />
+                            </Box>
                         </Flex>
-                        <Desktop>
-                            <FeaturedOffices currentOffice={id} />
-                        </Desktop>
-                    </Flex>
+                        <TabletMobile>
+                            <ReviewContainer
+                                type={OFFICE}
+                                id={id}
+                            />
+                        </TabletMobile>
+                        <FeaturedOffices currentOffice={id} />
+                    </Box>
                 </Container>
             </Flex>
         );
     }
 }
 
-export default withScreenSizes(OfficeDetailsPageView);
+export default OfficeDetailsPageView;

@@ -20,6 +20,9 @@ export const getOfficeQuery = gql`
             imageUrls
             averageRating
             numReviews
+            equipment {
+                name
+            }
         }
     }
 `;

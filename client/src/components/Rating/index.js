@@ -6,6 +6,7 @@ import { space, fontSize } from 'styled-system';
 const StyledRating = styled(AntdRate)`
     &&.ant-rate {
         display: block;
+        line-height: 1;
         ${space};
         ${fontSize};
     }

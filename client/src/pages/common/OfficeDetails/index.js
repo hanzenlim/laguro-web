@@ -13,12 +13,7 @@ class OfficeDetails extends PureComponent {
     }
 
     render() {
-        const {
-            id,
-            doneLoading,
-            toggleReserveOffice,
-            isReserveOfficeVisible,
-        } = this.props;
+        const { id, doneLoading } = this.props;
 
         return (
             <Query query={getOfficeQuery} variables={{ id }}>
@@ -50,14 +45,11 @@ class OfficeDetails extends PureComponent {
                         rating: office.averageRating,
                         numReviews: office.numReviews,
                         address: office.location,
+                        equipments: office.equipment
                     };
 
                     return (
-                        <OfficeDetailsView
-                            data={mappedData}
-                            toggleReserveOffice={toggleReserveOffice}
-                            isReserveOfficeVisible={isReserveOfficeVisible}
-                        />
+                        <OfficeDetailsView data={mappedData} />
                     );
                 }}
             </Query>

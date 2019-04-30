@@ -1,34 +1,45 @@
 import React from 'react';
 import _get from 'lodash/get';
 import PropTypes from 'prop-types';
+
 import { Box, Flex, Text } from '../../../components';
-import LinkCard from '../../common/LinkCard';
+import OfficeCard from '../OfficeCard';
 import { formatAddress } from '../../../util/styleUtil';
 import officePlaceholder from '../../../components/Image/office-placeholder.png';
 
 const FeaturedOfficesView = props => {
     const { featuredOffices } = props;
 
-    if (!featuredOffices) return null;
+    if (!featuredOffices.length) return null;
 
     return (
-        <Box mt={40} height={360} mb={80}>
-            <Text fontSize={5}>find our highlights</Text>
+        <Box
+            mt={[34, '', 90]}
+            mb={[21, '', 173]}
+        >
+            <Text
+                fontSize={[1, '', 2]}
+                lineHeight="30px"
+                letterSpacing={['-0.35px', '', '-0.4px']}
+                fontWeight="medium"
+                mb={[7, '', 36]}
+            >
+                Similar offices
+            </Text>
 
-            <Flex justifyContent="space-between" mt={30}>
+            <Flex flexWrap='wrap'>
                 {featuredOffices.map(item => (
-                    <Box width="186px" key={item.id} mr={30}>
-                        <LinkCard
-                            subtitle={item.name}
-                            address={formatAddress(
-                                _get(item, 'location.name'),
-                                _get(item, 'location.addressDetails')
-                            )}
-                            rating={item.averageRating}
-                            image={item.imageUrls[0] || officePlaceholder}
-                            url={`/office/${item.id}`}
-                        />
-                    </Box>
+                    <OfficeCard
+                        key={item.id}
+                        name={item.name}
+                        address={formatAddress(
+                            _get(item, 'location.name'),
+                            _get(item, 'location.addressDetails')
+                        )}
+                        rating={item.averageRating}
+                        image={item.imageUrls[0] || officePlaceholder}
+                        url={`/office/${item.id}`}
+                    />
                 ))}
             </Flex>
         </Box>

@@ -213,6 +213,7 @@ class DentistDetailsView extends PureComponent {
                             fontSize={1}
                             lineHeight="26px"
                             letterSpacing="-0.51px"
+                            style={{ 'white-space': 'pre-line' }}
                         >
                             {data.bio}
                         </Text>

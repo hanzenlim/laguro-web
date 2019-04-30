@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
-import { Container, Flex, Box, Sticky, Responsive } from '../../components';
+import { Container, Flex, Box, Responsive } from '../../components';
 import FeaturedDentists from './FeaturedDentists';
 import ReviewContainer from '../common/ReviewContainer';
 import BookAppointment from '../common/BookAppointment';
@@ -34,7 +34,7 @@ class DentistDetailsPageView extends PureComponent {
                                 </Desktop>
                             </Box>
                         </Box>
-                        <Sticky 
+                        <Box 
                             width={['100%', '', 460]}
                             maxWidth={['100%', '', '40%']}
                         >
@@ -50,7 +50,7 @@ class DentistDetailsPageView extends PureComponent {
                             >
                                 <BookAppointment id={id} />
                             </Box>
-                        </Sticky>
+                        </Box>
                     </Flex>
                     <TabletMobile>
                         <ReviewContainer type={DENTIST} id={id} />

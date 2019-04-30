@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 
 import FeaturedOfficesView from './view';
 import getFeaturedOffices from './queries';
-
-const OFFICE_COUNT = window.innerWidth > 1600 ? 5 : 4;
+import { withScreenSizes } from '../../../components/Responsive';
 
 class FeaturedList extends Component {
     constructor(props) {
@@ -24,6 +23,7 @@ class FeaturedList extends Component {
 
     render() {
         if (!this.state.featuredOffices) return null;
+        const { desktopOnly } = this.props;
 
         let mappedData = this.state.featuredOffices.map(item => ({
             id: item._id,
@@ -37,10 +37,10 @@ class FeaturedList extends Component {
 
         mappedData = mappedData
             .filter(office => office.id !== this.props.currentOffice)
-            .splice(0, OFFICE_COUNT + 1);
+            .splice(0, desktopOnly ? 5 : 4);
 
         return <FeaturedOfficesView featuredOffices={mappedData} />;
     }
 }
 
-export default FeaturedList;
+export default withScreenSizes(FeaturedList);

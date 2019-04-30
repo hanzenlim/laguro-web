@@ -96,6 +96,7 @@ const ReviewContainer = props => {
                     color="text.black"
                     lineHeight="22px"
                     letterSpacing="-0.44px"
+                    style={{ 'white-space': 'pre-line' }}
                 >
                     {review.text}
                 </Text>

@@ -63,7 +63,12 @@ class HostListings extends PureComponent {
                             {name}
                         </Text>
                         <Flex>
-                            <Link to={`/office/${id}`} type="ghost">
+                            <Link
+                                to={`/office/${id}`}
+                                type="ghost"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
                                 <Text
                                     color="text.blue"
                                     fontSize={[0, '', 1]}
