@@ -148,6 +148,7 @@ class DentistListingCard extends PureComponent {
             mobileOnly,
             tabletMobileOnly,
             showMap,
+            onRedirect,
         } = this.props;
 
         const earliestAvailableDate =
@@ -163,7 +164,7 @@ class DentistListingCard extends PureComponent {
                 type="ghost"
                 height="auto"
                 width="100%"
-                // onClick={onRedirect}
+                onClick={onRedirect}
             >
                 <StyledCard showMap={showMap}>
                     <Flex height="100%" flexDirection={['column', 'row']}>

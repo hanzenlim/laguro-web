@@ -52,7 +52,8 @@ class Bundle extends Component {
 
         const menu = (
             <Menu
-                onClick={({ key, item }) => {
+                onClick={({ key, item, domEvent }) => {
+                    domEvent.stopPropagation();
                     this.setState({
                         selectedProcedure: key,
                         selectedIndex: item.props.index,
@@ -67,7 +68,8 @@ class Bundle extends Component {
 
         const insuranceMenu = (
             <Menu
-                onClick={({ key }) => {
+                onClick={({ key, domEvent }) => {
+                    domEvent.stopPropagation();
                     this.setState({
                         selectedInsurance: key,
                     });
@@ -110,6 +112,9 @@ class Bundle extends Component {
                         borderColor="#3481f8"
                         fontSize="12px"
                         fontWeight="500"
+                        onClick={e => {
+                            e.stopPropagation();
+                        }}
                         color={
                             !isNullSelectedIndex
                                 ? 'text.white'
@@ -162,7 +167,8 @@ class Bundle extends Component {
                         borderColor="#3481f8"
                         fontSize="12px"
                         fontWeight="500"
-                        onClick={() => {
+                        onClick={e => {
+                            e.stopPropagation();
                             if (!_isEmpty(insurance)) {
                                 this.setState({
                                     selectedInsurance: insurance[0],
@@ -185,6 +191,9 @@ class Bundle extends Component {
                             borderColor="transparent"
                             bg="transparent"
                             fontSize="12px"
+                            onClick={e => {
+                                e.stopPropagation();
+                            }}
                         >
                             <Flex
                                 width="100%"
@@ -227,6 +236,9 @@ class Bundle extends Component {
                     height="40px"
                     borderRadius="2px"
                     textAlign="center"
+                    onClick={e => {
+                        e.stopPropagation();
+                    }}
                 >
                     <Text
                         fontSize="14px"
