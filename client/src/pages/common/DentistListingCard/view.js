@@ -175,6 +175,7 @@ class DentistListingCard extends PureComponent {
                             >
                                 <Image
                                     src={dentist.imageUrl || defaultUserImage}
+                                    alt={`Dr. ${dentist.name}`}
                                     width="136px"
                                     height="136px"
                                     borderRadius="50%"
@@ -193,6 +194,7 @@ class DentistListingCard extends PureComponent {
                                                 dentist.imageUrl ||
                                                 defaultUserImage
                                             }
+                                            alt={`Dr. ${dentist.name}`}
                                             width="100%"
                                             height="auto"
                                             borderRadius="50%"

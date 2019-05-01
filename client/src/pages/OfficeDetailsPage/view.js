@@ -96,8 +96,9 @@ class OfficeDetailsPageView extends PureComponent {
         const {
             id,
             imageUrls,
+            officeName,
             officeDetailsDoneLoadingHandler,
-            officeDetailsDoneLoading
+            officeDetailsDoneLoading,
         } = this.props;
 
         const { carouselClass } = this.state;
@@ -129,8 +130,7 @@ class OfficeDetailsPageView extends PureComponent {
                             >
                                 <FilestackImage
                                     handle={getIdFromFilestackUrl(imageUrl)}
-                                    // TODO: Use a more description alt name
-                                    alt="laguro"
+                                    alt={officeName}
                                     sizes={{
                                         fallback: '100vw',
                                     }}
@@ -160,10 +160,7 @@ class OfficeDetailsPageView extends PureComponent {
                                     }
                                 />
                                 <Desktop>
-                                    <ReviewContainer
-                                        type={OFFICE}
-                                        id={id}
-                                    />
+                                    <ReviewContainer type={OFFICE} id={id} />
                                 </Desktop>
                             </Box>
                             <Box
@@ -172,19 +169,14 @@ class OfficeDetailsPageView extends PureComponent {
                             >
                                 <ReserveOffice
                                     officeId={id}
-                                    startLoading={
-                                        officeDetailsDoneLoading
-                                    }
+                                    startLoading={officeDetailsDoneLoading}
                                 />
 
                                 <OfficeLocation id={id} />
                             </Box>
                         </Flex>
                         <TabletMobile>
-                            <ReviewContainer
-                                type={OFFICE}
-                                id={id}
-                            />
+                            <ReviewContainer type={OFFICE} id={id} />
                         </TabletMobile>
                         <FeaturedOffices currentOffice={id} />
                     </Box>

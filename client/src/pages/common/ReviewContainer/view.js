@@ -39,7 +39,7 @@ const ReviewContainer = props => {
                 borderColor="divider.gray"
                 key={review.id}
             >
-                <Flex alignItems='center' mb={[24, '', 5]}>
+                <Flex alignItems="center" mb={[24, '', 5]}>
                     <Image
                         width={[80, '', 82]}
                         height={[80, '', 82]}
@@ -49,7 +49,9 @@ const ReviewContainer = props => {
                             review.reviewer.imageUrl || defaultUserImage,
                             tabletMobileOnly ? 80 : 82
                         )}
-                        alt="reviewer-photo"
+                        alt={`${
+                            review.reviewer.firstName
+                        } ${review.reviewer.lastName.charAt(0)}.`}
                     />
                     <Box>
                         <Flex
@@ -68,7 +70,11 @@ const ReviewContainer = props => {
                                     review.reviewer.firstName
                                 } ${review.reviewer.lastName.charAt(0)}.`}
                             </Text>
-                            <Flex alignItems="center" justifyContent="center" pb={3}>
+                            <Flex
+                                alignItems="center"
+                                justifyContent="center"
+                                pb={3}
+                            >
                                 <Rating
                                     disabled
                                     ml={10}
@@ -89,7 +95,7 @@ const ReviewContainer = props => {
                         </Text>
                     </Box>
                 </Flex>
-                
+
                 <Text
                     pl={[0, '', 92]}
                     fontSize={1}
@@ -110,12 +116,12 @@ const ReviewContainer = props => {
                 alignItems="center"
                 justifyContent="space-between"
                 pt={40}
-                borderTop={['none', '', "1px solid"]}
+                borderTop={['none', '', '1px solid']}
                 borderColor={['', '', 'divider.gray']}
             >
                 <Text
                     fontSize={[1, '', 2]}
-                    fontWeight='medium'
+                    fontWeight="medium"
                     lineHeight="30px"
                     letterSpacing={['-0.35px', '', '-0.4px']}
                 >
@@ -133,12 +139,12 @@ const ReviewContainer = props => {
                         onClick={
                             tabletMobileOnly
                                 ? () =>
-                                    history.push(
-                                        `/review/${_get(
-                                            match,
-                                            'params.id'
-                                        )}?${queryString.stringify(info)}`
-                                    )
+                                      history.push(
+                                          `/review/${_get(
+                                              match,
+                                              'params.id'
+                                          )}?${queryString.stringify(info)}`
+                                      )
                                 : toggleModalState
                         }
                     >

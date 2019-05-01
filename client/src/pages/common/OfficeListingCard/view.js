@@ -180,6 +180,7 @@ class OfficeListingCard extends Component {
                             >
                                 <StyledImage
                                     src={office.image || defaultOfficeImage}
+                                    alt={office.title}
                                     display="block"
                                     width="100%"
                                     height="100%"

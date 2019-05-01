@@ -69,6 +69,7 @@ class OfficeDetailsPageContainer extends PureComponent {
                                     this.state.officeDetailsDoneLoading
                                 }
                                 imageUrls={get(data, 'getOffice.imageUrls')}
+                                officeName={officeName}
                                 id={id}
                             />
                         </Fragment>
