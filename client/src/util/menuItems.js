@@ -15,8 +15,6 @@ import {
     CALENDAR_MENU_TEXT,
     CREATE_A_NEW_APPOINTMENT_MENU_TEXT,
     MY_PATIENTS_MENU_TEXT,
-    BOOKINGS_MENU_TEXT,
-    LAGURO_BALANCE_MENU_TEXT,
     SEARCH_FOR_CHAIRS_MENU_TEXT,
     VIEW_PROFILE_MENU_TEXT,
     AVAILABILITY_SETTINGS_MENU_TEXT,
@@ -105,8 +103,6 @@ const apptsMenuTexts = [
     CALENDAR_MENU_TEXT,
     CREATE_A_NEW_APPOINTMENT_MENU_TEXT,
     MY_PATIENTS_MENU_TEXT,
-    BOOKINGS_MENU_TEXT,
-    LAGURO_BALANCE_MENU_TEXT,
 ];
 
 const unclassfiedDentistMenuTexts3 = [
@@ -162,7 +158,6 @@ export const dentistMenuTextToLinkTo = {
 // unclassified means there is no section header for given menu texts
 const unclassfiedHostMenuTexts = [
     MY_OFFICES_MENU_TEXT,
-    LAGURO_BALANCE_MENU_TEXT,
 ];
 const unclassfiedHostMenuTexts2 = [ADD_A_NEW_OFFICE_MENU_TEXT];
 

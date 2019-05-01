@@ -3,14 +3,11 @@ import styled from 'styled-components';
 import { Box, Container, Text, Card, Truncate } from '@laguro/basic-components';
 import _isEmpty from 'lodash/isEmpty';
 import queryString from 'query-string';
-import DentistAppointments from '../common/DentistAppointments';
 import {
     PROFILE_SETTINGS_MENU_TEXT,
     DENTIST_VERIFICATION_MENU_TEXT,
     CREATE_A_NEW_APPOINTMENT_MENU_TEXT,
     MY_PATIENTS_MENU_TEXT,
-    BOOKINGS_MENU_TEXT,
-    LAGURO_BALANCE_MENU_TEXT,
     VIEW_PROFILE_MENU_TEXT,
     CALENDAR_MENU_TEXT,
     DENTIST,
@@ -30,7 +27,6 @@ import DentistVerification from '../Onboarding/Dentist/Verification/';
 import NewAppointment from '../common/NewAppointment';
 import { DENTIST_PROFILE_PAGE_URL } from '../../util/urls';
 import PatientsList from '../common/PatientsList';
-import BalanceHistory from '../common/BalanceHistory';
 import DentistDetails from '../common/DentistDetails';
 import ReviewContainer from '../common/ReviewContainer/index';
 import { Responsive, Link, Button, Flex } from '../../components/index';
@@ -57,8 +53,6 @@ const menuTextToDescription = {
     [CREATE_A_NEW_APPOINTMENT_MENU_TEXT]:
         'Create a follow-up appointment for your patients',
     [MY_PATIENTS_MENU_TEXT]: 'View your patients and their documents',
-    [BOOKINGS_MENU_TEXT]: 'View and edit your bookings',
-    [LAGURO_BALANCE_MENU_TEXT]: 'View your current account balance',
     [VIEW_PROFILE_MENU_TEXT]: 'View your public dentist page',
 };
 
@@ -202,25 +196,6 @@ class DentistDashboardPageView extends Component {
                     <Card>
                         {this.renderPanelHeader(key)}
                         <PatientsList />
-                    </Card>
-                );
-                break;
-            case BOOKINGS_MENU_TEXT:
-                panelContent = (
-                    <Card>
-                        {this.renderPanelHeader(key)}
-                        <DentistAppointments />
-                    </Card>
-                );
-                break;
-            case LAGURO_BALANCE_MENU_TEXT:
-                panelContent = (
-                    <Card>
-                        {this.renderPanelHeader(key)}
-                        <BalanceHistory
-                            userId={this.props.userId}
-                            persona={DENTIST}
-                        />
                     </Card>
                 );
                 break;

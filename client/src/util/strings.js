@@ -120,8 +120,6 @@ export const DENTIST_VERIFICATION_MENU_TEXT = 'Dentist verification';
 export const CALENDAR_MENU_TEXT = 'Calendar';
 export const CREATE_A_NEW_APPOINTMENT_MENU_TEXT = 'Create a new appointment';
 export const MY_PATIENTS_MENU_TEXT = 'My patients';
-export const BOOKINGS_MENU_TEXT = 'Bookings';
-export const LAGURO_BALANCE_MENU_TEXT = 'Laguro balance';
 export const SEARCH_FOR_CHAIRS_MENU_TEXT = 'Search for chairs';
 export const VIEW_PROFILE_MENU_TEXT = 'View profile';
 export const AVAILABILITY_SETTINGS_MENU_TEXT = 'Availability settings';
@@ -129,7 +127,6 @@ export const AVAILABILITY_SETTINGS_MENU_TEXT = 'Availability settings';
 // host menu
 // used in header hosts link and in host dashboard
 export const MY_OFFICES_MENU_TEXT = 'My offices';
-// LAGURO_BALANCE_MENU_TEXT from dentist menu uses for host
 export const ADD_A_NEW_OFFICE_MENU_TEXT = 'Add a new office';
 
 // Payment method

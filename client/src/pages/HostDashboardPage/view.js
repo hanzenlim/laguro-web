@@ -3,9 +3,7 @@ import { Container, Box, Text, Card, Truncate } from '@laguro/basic-components';
 import queryString from 'query-string';
 import {
     MY_OFFICES_MENU_TEXT,
-    LAGURO_BALANCE_MENU_TEXT,
     ADD_A_NEW_OFFICE_MENU_TEXT,
-    HOST,
 } from '../../util/strings';
 import { hostDashboardMenuTexts } from '../../util/menuItems';
 import { getKeyFromText } from '../Dashboard/utils';
@@ -16,7 +14,6 @@ import {
     StyledDashboardMenuItem,
 } from '../Dashboard/common';
 import HostListing from '../common/HostListings/index';
-import BalanceHistory from '../common/BalanceHistory/index';
 import { HOST_ONBOARDING_PAGE_URL_PREFIX } from '../../util/urls';
 import { Responsive } from '../../components/index';
 import { version } from '../../../package.json';
@@ -25,7 +22,6 @@ const { TabletMobile, Desktop, withScreenSizes } = Responsive;
 
 const menuTextToDescription = {
     [MY_OFFICES_MENU_TEXT]: 'View and add listings to your offices',
-    [LAGURO_BALANCE_MENU_TEXT]: 'View your current account balance',
     [ADD_A_NEW_OFFICE_MENU_TEXT]: 'Create a new office and listings',
 };
 
@@ -55,12 +51,6 @@ class HostDashboardPageView extends Component {
         switch (key) {
             case MY_OFFICES_MENU_TEXT:
                 panelContent = <HostListing />;
-                TabletMobileContainerComponent = Fragment;
-                break;
-            case LAGURO_BALANCE_MENU_TEXT:
-                panelContent = (
-                    <BalanceHistory userId={this.props.userId} persona={HOST} />
-                );
                 TabletMobileContainerComponent = Fragment;
                 break;
             default:
