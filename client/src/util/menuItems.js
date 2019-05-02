@@ -23,6 +23,7 @@ import {
     ADD_A_NEW_OFFICE_MENU_TEXT,
     BECOME_A_DENTIST_MENU_TEXT,
     BECOME_A_HOST_MENU_TEXT,
+    LAGURO_WALLET_MENU_TEXT,
 } from './strings';
 import {
     PATIENT_DASHBOARD_PAGE_URL_BASE,
@@ -54,6 +55,7 @@ const patientMenuTexts = [
 const paymentMenuTexts = [
     PENDING_REQUESTS_MENU_TEXT,
     PAYMENT_METHODS_MENU_TEXT,
+    LAGURO_WALLET_MENU_TEXT,
 ];
 
 export const profileMenuTexts = [

@@ -108,6 +108,7 @@ export const PENDING_REQUESTS_MENU_TEXT = 'Pending requests';
 export const PAYMENT_METHODS_MENU_TEXT = 'Payment methods';
 export const BECOME_A_DENTIST_MENU_TEXT = 'Become a dentist';
 export const BECOME_A_HOST_MENU_TEXT = 'Become a host';
+export const LAGURO_WALLET_MENU_TEXT = 'Laguro wallet';
 export const LOG_OUT_MENU_TEXT = 'Log out';
 export const INSURANCE_CONFIRMATION_TEXT =
     'Hooray! Your insurance has been successfully verified.';

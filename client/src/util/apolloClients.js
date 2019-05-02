@@ -25,3 +25,8 @@ export const appointmentClient = new ApolloClient({
     uri: process.env.REACT_APP_GRAPHQL_APPOINTMENT_API,
     request: requestHandler,
 });
+
+export const walletClient = new ApolloClient({
+    uri: process.env.REACT_APP_GRAPHQL_WALLET_API,
+    request: requestHandler,
+});

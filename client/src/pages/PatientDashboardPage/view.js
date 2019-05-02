@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { Box, Text, Card, Truncate } from '@laguro/basic-components';
 import _isEmpty from 'lodash/isEmpty';
 import queryString from 'query-string';
+import styled from 'styled-components';
 import UpdateProfileForm from '../../pages/common/Forms/UpdateProfileForm';
 import ContactInformationForm from '../../pages/common/Forms/ContactInformationForm';
 // import PaymentHistory from '../common/PaymentHistory'; //TODO We need to remove the code relateded with this old page
@@ -18,6 +19,7 @@ import {
     PAYMENT_METHODS_MENU_TEXT,
     LOG_OUT_MENU_TEXT,
     INSURANCE_CONFIRMATION_TEXT,
+    LAGURO_WALLET_MENU_TEXT,
 } from '../../util/strings';
 import { profileMenuTexts } from '../../util/menuItems';
 import { getLTMBaseUrl } from '../../util/urls';
@@ -35,6 +37,7 @@ import PaymentMethods from '../PaymentMethods';
 import { Responsive, Container } from '../../components/index';
 import PatientInsuranceForm from '../PatientInsuranceForm';
 import { version } from '../../../package.json';
+import WalletDashboard from '../WalletDashboard';
 
 const { TabletMobile, Desktop, withScreenSizes } = Responsive;
 
@@ -50,10 +53,17 @@ const menuTextToDescription = {
     [PENDING_REQUESTS_MENU_TEXT]:
         'View procedure payment requests from your dentist',
     [PAYMENT_METHODS_MENU_TEXT]: 'Manage your payment options',
+    [LAGURO_WALLET_MENU_TEXT]: 'View current balance and past transactions',
     [LOG_OUT_MENU_TEXT]: '',
 };
 
 const LTM_LINK_BASE_URL = getLTMBaseUrl();
+
+const StyledCard = styled(Card)`
+    &&.ant-card {
+        min-height: calc(100vh - 73px);
+    }
+`;
 
 class PatientDashboardPageView extends Component {
     constructor(props) {
@@ -200,6 +210,14 @@ class PatientDashboardPageView extends Component {
                     </Card>
                 );
                 break;
+            case LAGURO_WALLET_MENU_TEXT:
+                panelContent = (
+                    <StyledCard>
+                        {this.renderPanelHeader(key)}
+                        <WalletDashboard />
+                    </StyledCard>
+                );
+                break;
             case LOG_OUT_MENU_TEXT:
                 onLogout();
                 break;
@@ -276,7 +294,7 @@ class PatientDashboardPageView extends Component {
                 <Desktop>
                     <Container>
                         <Text mt={20} mb={13} fontWeight="medium" fontSize={4}>
-                            Patient Dashboard
+                            General Dashboard
                             <Text
                                 is="span"
                                 fontSize={1}
