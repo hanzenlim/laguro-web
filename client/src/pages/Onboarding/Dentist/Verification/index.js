@@ -49,12 +49,12 @@ const Composed = adopt({
 const steps = dentist => [
     {
         id: '0',
-        initialValues: {
+        initialValues: dentist ? {
             [DEA_NUM_FORM_ITEM_NAME]: dentist.deaRegistrationNumber,
             [NPI_NUM_FORM_ITEM_NAME]: dentist.npiNumber,
             [SSN_FORM_ITEM_NAME]: dentist.ssnOrEinOrTin,
             [LIC_NUM_FORM_ITEM_NAME]: dentist.licenseNumber,
-        },
+        }: {},
         validationSchema: Yup.object().shape({
             [SSN_FORM_ITEM_NAME]: Yup.string()
                 .required(`Please provide your SSN or EIN/TIN`)
@@ -96,7 +96,7 @@ const steps = dentist => [
     },
     {
         id: '1',
-        initialValues: dentist.documents ? {
+        initialValues: dentist && dentist.documents ? {
             [DENTIST_PHOTO_ID_FORM_ITEM_NAME]: dentist.documents.dentistPhotoId,
             [WARRANTY_FORM_ITEM_NAME]: dentist.documents.warranty,
             [STATE_DENTAL_LICENSE_FORM_ITEM_NAME]: dentist.documents.stateDentalLicense,
