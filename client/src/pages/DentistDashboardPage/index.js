@@ -41,6 +41,7 @@ class DentistDashboardPage extends Component {
                     loading: loadingUserQuery,
                     error: errorUserQuery,
                     data: dataUserQuery,
+                    refetch,
                 }) => {
                     if (loadingUserQuery) {
                         return <Loading />;
@@ -77,6 +78,7 @@ class DentistDashboardPage extends Component {
                             panel={getTextFromKey(params.selectedTab)}
                             preferredLocations={preferredLocations}
                             zipCode={zipCode}
+                            refetch={refetch}
                         />
                     );
                 }}

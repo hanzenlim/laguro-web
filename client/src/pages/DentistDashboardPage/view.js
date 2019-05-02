@@ -135,7 +135,7 @@ class DentistDashboardPageView extends Component {
 
     renderPanel = key => {
         let panelContent;
-        const { offices, preferredLocations, zipCode, dentistId, dentist } = this.props;
+        const { offices, preferredLocations, zipCode, dentistId, dentist, refetch } = this.props;
 
         switch (key) {
             case PROFILE_SETTINGS_MENU_TEXT:
@@ -200,6 +200,7 @@ class DentistDashboardPageView extends Component {
                 );
                 break;
             case VIEW_PROFILE_MENU_TEXT:
+                refetch();
                 panelContent = (
                     <Card>
                         {this.renderPanelHeader(key)}
