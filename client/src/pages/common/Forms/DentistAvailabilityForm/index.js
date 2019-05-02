@@ -92,14 +92,21 @@ class DentistAvailabilityForm extends PureComponent {
                                             availability => {
                                                 const days = Object.keys(
                                                     availability.days
-                                                ).map(day => {
-                                                    const dayIndex = ABBREVIATED_DAYS.indexOf(
-                                                        day
-                                                    );
-                                                    return UPPERCASE_DAYS[
-                                                        dayIndex
-                                                    ];
-                                                });
+                                                )
+                                                    .filter(
+                                                        key =>
+                                                            availability.days[
+                                                                key
+                                                            ]
+                                                    )
+                                                    .map(day => {
+                                                        const dayIndex = ABBREVIATED_DAYS.indexOf(
+                                                            day
+                                                        );
+                                                        return UPPERCASE_DAYS[
+                                                            dayIndex
+                                                        ];
+                                                    });
                                                 return {
                                                     days,
                                                     preferredLocationIndices: JSON.parse(
