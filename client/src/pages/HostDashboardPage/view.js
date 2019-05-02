@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import styled from 'styled-components';
 import { Container, Box, Text, Card, Truncate } from '@laguro/basic-components';
 import queryString from 'query-string';
 import {
@@ -15,7 +16,7 @@ import {
 } from '../Dashboard/common';
 import HostListing from '../common/HostListings/index';
 import { HOST_ONBOARDING_PAGE_URL_PREFIX } from '../../util/urls';
-import { Responsive } from '../../components/index';
+import { Responsive, Link, Button, Flex } from '../../components/index';
 import { version } from '../../../package.json';
 
 const { TabletMobile, Desktop, withScreenSizes } = Responsive;
@@ -24,6 +25,13 @@ const menuTextToDescription = {
     [MY_OFFICES_MENU_TEXT]: 'View and add listings to your offices',
     [ADD_A_NEW_OFFICE_MENU_TEXT]: 'Create a new office and listings',
 };
+
+const currentUrl = window.location.href;
+const StyledButton = styled(Button)`
+    &&&& {
+        border-radius: 17px;
+    }
+`;
 
 class HostDashboardPageView extends Component {
     handleClick = ({ key }) => {
@@ -133,17 +141,49 @@ class HostDashboardPageView extends Component {
                     <Box pb={50}>{this.renderPanel(this.props.panel)}</Box>
                 </TabletMobile>
                 <Desktop>
-                    <Container>
-                        <Text mt={20} mb={13} fontWeight="medium" fontSize={4}>
-                            Host Dashboard
-                            <Text is='span'
-                                fontSize={1}
-                                color='text.darkGray'
-                                ml={10}
+                <Container>
+                        <Flex
+                            justifyContent="space-between"
+                            alignItems="flex-end"
+                            mb={9}
+                        >
+                            <Text
+                                mt={20}
+                                mb={4}
+                                fontWeight="medium"
+                                fontSize={4}
                             >
-                                {`v${version}`}
+                                Host Dashboard
+                                <Text
+                                    is="span"
+                                    fontSize={1}
+                                    color="text.darkGray"
+                                    ml={10}
+                                >
+                                    {`v${version}`}
+                                </Text>
                             </Text>
-                        </Text>
+                            <Desktop>
+                                <Link
+                                    height={34}
+                                    isExternal
+                                    target="_blank"
+                                    to={
+                                        currentUrl.includes('laguro-stage')
+                                            ? 'http://portal.laguro-stage.com/'
+                                            : 'http://portal.laguro.com/'
+                                    }
+                                >
+                                    <StyledButton
+                                        px={30}
+                                        height="100%"
+                                        fontSize={1}
+                                    >
+                                        Laguro Portal
+                                    </StyledButton>
+                                </Link>
+                            </Desktop>
+                        </Flex>
                         <DashboardGrid pb={50}>
                             {this.renderMenu(this.props.panel)}
                             {this.renderPanel(this.props.panel)}
