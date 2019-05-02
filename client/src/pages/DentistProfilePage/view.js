@@ -7,6 +7,10 @@ import { MY_CALENDAR_MENU } from '../../util/strings';
 const { TabPane } = Tabs;
 
 const StyledTabs = styled(Tabs)`
+    &&.ant-tabs {
+        overflow: visible;
+    }
+
     && .ant-tabs-nav {
         .ant-tabs-tab-active {
             color: ${props => props.theme.colors.text.black};
