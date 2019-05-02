@@ -24,7 +24,7 @@ class CancelListingContainer extends PureComponent {
         return (
             <Mutation
                 mutation={cancelListingMutation}
-                refetchQueries={refetchQueries(_get(user, 'id'))}
+                refetchQueries={refetchQueries(_get(user, 'dentistId'))}
             >
                 {(cancelListing, { loading }) => {
                     const onSubmit = async () => {

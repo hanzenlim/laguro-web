@@ -51,38 +51,6 @@ export const getDentistQuery = gql`
                     }
                     localStartTime
                     localEndTime
-                    reservations(
-                        options: {
-                            sortKey: "${END_TIME}",
-                            rangeStart: "${moment()
-                                .startOf('hour')
-                                .startOf('days')
-                                .format()}",
-                            filters: [
-                                {
-                                    filterKey: "${STATUS}",
-                                    filterValues: ["${ACTIVE}"]
-                                }
-                            ]
-                        }
-                    ) {
-                        id
-                        availableTimes {
-                            startTime
-                            endTime
-                        }
-                        reservedBy {
-                            id
-                            user {
-                                id
-                                firstName
-                                lastName
-                                imageUrl
-                            }
-                        }
-                        numChairsSelected
-                        equipmentSelected
-                    }
                 }
             }
         }

@@ -4,7 +4,6 @@ import { Collapse } from 'antd';
 
 import { Box, Text, Flex, Button, Responsive } from '../../../components';
 import { withScreenSizes } from '../../../components/Responsive';
-import Reservations from './Reservations';
 import { ListingTime } from '../../../util/timeUtil';
 
 const { TabletMobile, Desktop } = Responsive;
@@ -41,15 +40,12 @@ const Listings = ({ listings, toggleCancelModalState, desktopOnly }) => {
         const {
             id,
             availability,
-            reservations,
             localStartTime,
             localEndTime,
         } = listing;
 
         const { startDay, endDay, days } = availability;
         const frequency = days.map(d => d.charAt(0) + d.slice(1).toLowerCase());
-
-        const isResevationsEmpty = reservations.length === 0;
 
         return desktopOnly ? (
             <Box key={id} mb={28}>
@@ -65,22 +61,14 @@ const Listings = ({ listings, toggleCancelModalState, desktopOnly }) => {
                     <Flex justifyContent="flex-end">
                         <Button
                             type="ghost"
-                            onClick={
-                                isResevationsEmpty
-                                    ? toggleCancelModalState(id)
-                                    : null
-                            }
+                            onClick={toggleCancelModalState(id)}
                             height="auto"
                         >
                             <Text
                                 fontSize={1}
-                                color={
-                                    isResevationsEmpty
-                                        ? 'text.blue'
-                                        : 'text.gray'
-                                }
+                                color={'text.blue'}
                             >
-                                Delete Listing
+                                delete
                             </Text>
                         </Button>
                     </Flex>
@@ -102,28 +90,6 @@ const Listings = ({ listings, toggleCancelModalState, desktopOnly }) => {
                             frequency={frequency}
                         />
                     </Box>
-
-                    <Text
-                        fontWeight="medium"
-                        fontSize={[1, '', 2]}
-                        color="text.blue"
-                        mb={9}
-                    >
-                        BOOKINGS
-                    </Text>
-                    <Box mt={18}>
-                        {reservations.length ? (
-                            <Reservations reservations={reservations} />
-                        ) : (
-                            <Text
-                                textAlign="center"
-                                color="text.darkGray"
-                                my={50}
-                            >
-                                NO BOOKINGS
-                            </Text>
-                        )}
-                    </Box>
                 </Box>
             </Box>
         ) : (
@@ -137,48 +103,24 @@ const Listings = ({ listings, toggleCancelModalState, desktopOnly }) => {
                             endTime={localEndTime}
                             frequency={frequency}
                         />
-                        <Text
-                            fontWeight="medium"
-                            display="inline"
-                            color="text.blue"
-                            ml={6}
-                        >
-                            {reservations.length > 0 &&
-                                `(${reservations.length})`}
-                        </Text>
                     </Flex>
                 }
                 key={id}
             >
-                <Flex justifyContent="space-between" mb={20}>
-                    <Text fontWeight="medium">Reservations</Text>
+                 <Flex justifyContent="flex-end">
                     <Button
                         type="ghost"
-                        onClick={
-                            isResevationsEmpty
-                                ? toggleCancelModalState(id)
-                                : null
-                        }
+                        onClick={toggleCancelModalState(id)}
                         height="auto"
                     >
                         <Text
                             fontSize={1}
-                            color={
-                                isResevationsEmpty ? 'text.blue' : 'text.gray'
-                            }
+                            color={'text.blue'}
                         >
-                            Delete Listing
+                            delete
                         </Text>
                     </Button>
-                </Flex>
-
-                {reservations.length ? (
-                    <Reservations reservations={reservations} />
-                ) : (
-                    <Text textAlign="center" color="text.darkGray" my={20}>
-                        NO BOOKINGS
-                    </Text>
-                )}
+                    </Flex>
             </Panel>
         );
     });

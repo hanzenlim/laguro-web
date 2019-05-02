@@ -73,7 +73,6 @@ export const BALANCE = 'balance';
 export const PUBLIC_PROFILE = 'public_profile';
 export const DENTIST_PROFILE = 'dentist_profile';
 export const MY_LISTINGS = 'my_listings';
-export const MY_BOOKINGS = 'my_bookings';
 export const NEW_APPOINTMENT = 'new_appointment';
 
 // menu items
@@ -89,7 +88,6 @@ export const PAYMENT_HISTORY_MENU = 'Payment history';
 export const LAGURO_BALANCE_MENU = 'Laguro balance';
 export const PREVIEW_PUBLIC_PROFILE_MENU = 'Preview public profile';
 export const MY_LISTINGS_MENU = 'My listings';
-export const MY_BOOKINGS_MENU = 'My bookings';
 export const NEW_APPOINTMENT_MENU = 'New appointment';
 export const PAYMENT_REQUEST_MENU = 'Payment request';
 export const SEARCH_FOR_CHAIRS_MENU = 'Search for chairs';
