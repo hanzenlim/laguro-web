@@ -5,13 +5,7 @@ import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 
 import { Button, Flex, Text, Box } from '../../../components';
-
-const TAG_COLORS = [
-    'background.blue',
-    'background.yellow',
-    'background.orange',
-    'background.darkBlue',
-];
+import { getProcedureColor } from '../../../util/dentistUtils';
 
 const Item = Menu.Item;
 const StyledButton = styled(Button)`
@@ -118,11 +112,11 @@ class Bundle extends Component {
                         color={
                             !isNullSelectedIndex
                                 ? 'text.white'
-                                : TAG_COLORS[selectedIndex % 4]
+                                : getProcedureColor(selectedProcedure)
                         }
                         bg={
                             !isNullSelectedIndex
-                                ? TAG_COLORS[selectedIndex % 4]
+                                ? getProcedureColor(selectedProcedure)
                                 : 'background.white'
                         }
                     >
