@@ -31,7 +31,8 @@ const StyledAutocomplete = styled(AntdAutocomplete)`
         }
         && .ant-input {
             ${height};
-            padding-left: 18px;
+            padding-left: ${props =>
+                props.withSuffixIcon ? '42px' : '18px'};            
             padding-right: 50px;
             border: 1px solid;
             border-color: ${props => props.theme.colors.divider.darkGray};
@@ -53,7 +54,7 @@ const StyledAutocomplete = styled(AntdAutocomplete)`
             ${height};
             margin-left: 0;
             margin-right: 0;
-            padding-left: 18px;
+            padding-left: ${props => (props.withSuffixIcon ? '42px' : '18px')};
             padding-right: 50px
             z-index: ${props => props.theme.zIndex.inputElement};
             letter-spacing: -0.32px;
@@ -204,6 +205,7 @@ const LocationFilterView = ({
                     'Start searching for dental offices or dentists near you'
                 }
                 defaultActiveFirstOption={true}
+                withSuffixIcon={!withDentists}
                 {...rest}
             >
                 <Option
