@@ -324,23 +324,25 @@ export const getKioskPageWizardSteps = ({
                 beforeAction: async () => {
                     const { firstName, lastName } = user;
 
-                    const eligibility = await insuranceClient.query({
-                        query: CHECK_ELIGIBILITY,
-                        variables: {
-                            input: {
-                                patientId: 'user.id',
-                                firstName,
-                                lastName,
-                                dob: `${patientBirthMonth}/${patientBirthDate}/${patientBirthYear}`,
-                                insuranceInfo: {
-                                    insuranceProvider,
-                                    insuranceProviderId,
-                                    policyHolderId: patientInsuranceNum,
-                                },
-                            },
-                        },
-                        fetchPolicy: 'network-only',
-                    });
+                    const eligibility = !hasNoInsurance
+                        ? await insuranceClient.query({
+                              query: CHECK_ELIGIBILITY,
+                              variables: {
+                                  input: {
+                                      patientId: user.id,
+                                      firstName,
+                                      lastName,
+                                      dob: `${patientBirthMonth}/${patientBirthDate}/${patientBirthYear}`,
+                                      insuranceInfo: {
+                                          insuranceProvider,
+                                          insuranceProviderId,
+                                          policyHolderId: patientInsuranceNum,
+                                      },
+                                  },
+                              },
+                              fetchPolicy: 'network-only',
+                          })
+                        : null;
 
                     const isEligible = _get(
                         eligibility,
@@ -348,7 +350,7 @@ export const getKioskPageWizardSteps = ({
                         false
                     );
 
-                    if (!isEligible) {
+                    if (!isEligible && !hasNoInsurance) {
                         const errorMessage =
                             'Your insurance information has expired. Please contact your insurance provider to resolve this issue';
 

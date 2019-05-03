@@ -292,25 +292,27 @@ export const getPatientWebOnboardingPageWizardSteps = ({
             const updateInsuranceHasNoError = await execute({
                 reportGqlErrorOnly: true,
                 beforeAction: async () => {
-                    const { firstName, lastName, dob } = user;
+                    const { firstName, lastName } = user;
 
-                    const eligibility = await insuranceClient.query({
-                        query: CHECK_ELIGIBILITY,
-                        variables: {
-                            input: {
-                                patientId: user.id,
-                                firstName,
-                                lastName,
-                                dob,
-                                insuranceInfo: {
-                                    insuranceProvider,
-                                    insuranceProviderId,
-                                    policyHolderId: patientInsuranceNum,
-                                },
-                            },
-                        },
-                        fetchPolicy: 'network-only',
-                    });
+                    const eligibility = !hasNoInsurance
+                        ? await insuranceClient.query({
+                              query: CHECK_ELIGIBILITY,
+                              variables: {
+                                  input: {
+                                      patientId: user.id,
+                                      firstName: firstName,
+                                      lastName: lastName,
+                                      dob: `${patientBirthMonth}/${patientBirthDate}/${patientBirthYear}`,
+                                      insuranceInfo: {
+                                          insuranceProvider,
+                                          insuranceProviderId,
+                                          policyHolderId: patientInsuranceNum,
+                                      },
+                                  },
+                              },
+                              fetchPolicy: 'network-only',
+                          })
+                        : null;
 
                     const isEligible = _get(
                         eligibility,
@@ -318,7 +320,7 @@ export const getPatientWebOnboardingPageWizardSteps = ({
                         false
                     );
 
-                    if (!isEligible) {
+                    if (!isEligible && !hasNoInsurance) {
                         const errorMessage =
                             'Your insurance information has expired. Please contact your insurance provider to resolve this issue';
 

@@ -142,26 +142,38 @@ const KioskInsurancePage = componentProps => {
                         initialValues: {
                             patientInsuranceNum:
                                 _get(user, 'insuranceInfo.policyHolderId') ||
-                                '',
-                            insuranceProvider: _get(
-                                user,
-                                'insuranceInfo.insuranceProvider'
-                            ),
+                                undefined,
+                            insuranceProvider:
+                                _get(user, 'insuranceInfo.insuranceProvider') ||
+                                undefined,
                             insuranceProviderId: _get(
                                 user,
-                                'insuranceInfo.insuranceProviderId'
+                                'insuranceInfo.insuranceProviderId' || undefined
                             ),
-                            planOrGroupNumber: _get(
-                                user,
-                                'insuranceInfo.planOrGroupNumber'
-                            ),
+                            planOrGroupNumber:
+                                _get(user, 'insuranceInfo.planOrGroupNumber') ||
+                                undefined,
+                            hasNoInsurance: 'false',
                         },
                         validationSchema: Yup.object().shape({
-                            insuranceProvider: Yup.string().required(
-                                'Insurance is required'
+                            hasNoInsurance: Yup.string(),
+                            insuranceProvider: Yup.string().when(
+                                'hasNoInsurance',
+                                {
+                                    is: 'false',
+                                    then: Yup.string().required(
+                                        'Insurance is required'
+                                    ),
+                                }
                             ),
-                            patientInsuranceNum: Yup.string().required(
-                                'Insurance number is required'
+                            patientInsuranceNum: Yup.string().when(
+                                'hasNoInsurance',
+                                {
+                                    is: 'false',
+                                    then: Yup.string().required(
+                                        'Insurance number is required'
+                                    ),
+                                }
                             ),
                         }),
                     },
