@@ -200,7 +200,8 @@ class Map extends PureComponent {
                 )}
                 {data.map(
                     (marker, index) =>
-                        marker.address && (
+                        marker.longitude &&
+                        marker.latitude && (
                             <StyledMarkerContainer
                                 key={index}
                                 latitude={marker.latitude}

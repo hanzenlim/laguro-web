@@ -27,15 +27,15 @@ const format = 'ha';
 
 const SELECTED_LOCATION_OPTIONS = [
     {
-        key: '[1,2]',
+        key: '[0,1]',
         value: 'All preferred locations',
     },
     {
-        key: '[1]',
+        key: '[0]',
         value: 'Preferred location 1',
     },
     {
-        key: '[2]',
+        key: '[1]',
         value: 'Preferred location 2',
     },
 ];

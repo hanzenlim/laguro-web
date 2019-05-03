@@ -12,12 +12,12 @@ import {
 import theme from '../../components/theme';
 import OfficeDetails from '../common/OfficeDetails';
 import Payment from '../common/Payment';
-import ReserveOffice from '../common/ReserveOffice';
 import { OFFICE } from '../../util/strings';
 import ReviewContainer from '../common/ReviewContainer';
 import FeaturedOffices from './FeaturedOffices';
 import { getIdFromFilestackUrl } from '../../util/imageUtil';
 import OfficeLocation from './OfficeLocation';
+import BookAppointment from '../common/BookAppointment';
 
 const { Desktop, TabletMobile } = Responsive;
 
@@ -98,7 +98,6 @@ class OfficeDetailsPageView extends PureComponent {
             imageUrls,
             officeName,
             officeDetailsDoneLoadingHandler,
-            officeDetailsDoneLoading,
         } = this.props;
 
         const { carouselClass } = this.state;
@@ -145,6 +144,7 @@ class OfficeDetailsPageView extends PureComponent {
                 <Container>
                     <Box>
                         <Flex
+                            alignItems="flex-start"
                             justifyContent="space-between"
                             flexDirection={['column', '', 'row']}
                         >
@@ -163,15 +163,23 @@ class OfficeDetailsPageView extends PureComponent {
                                     <ReviewContainer type={OFFICE} id={id} />
                                 </Desktop>
                             </Box>
+
                             <Box
                                 width={['100%', '', 460]}
                                 maxWidth={['100%', '', '40%']}
                             >
-                                <ReserveOffice
-                                    officeId={id}
-                                    startLoading={officeDetailsDoneLoading}
-                                />
-
+                                <Box
+                                    mt={[22, '', 44]}
+                                    border={['none', '', '1px solid']}
+                                    borderColor={['', '', 'divider.gray']}
+                                    boxShadow={['none', '', 0]}
+                                    pt={[0, '', 16]}
+                                    pr={[0, '', 32]}
+                                    pl={[0, '', 32]}
+                                    pb={32}
+                                >
+                                    <BookAppointment id={id} />
+                                </Box>
                                 <OfficeLocation id={id} />
                             </Box>
                         </Flex>

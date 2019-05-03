@@ -1,12 +1,12 @@
-import React, { Fragment, PureComponent } from 'react';
-import { Helmet } from 'react-helmet';
 import get from 'lodash/get';
+import React, { Fragment, PureComponent } from 'react';
 import { Query } from 'react-apollo';
-import { getOfficeImageQuery } from './queries';
-import OfficeDetailsPageView from './view';
+import { Helmet } from 'react-helmet';
 import { Loading } from '../../components';
 import GeneralErrorPage from '../../pages/GeneralErrorPage';
 import Error404Page from '../Error404Page';
+import { getOfficeImageQuery } from './queries';
+import OfficeDetailsPageView from './view';
 
 class OfficeDetailsPageContainer extends PureComponent {
     state = {

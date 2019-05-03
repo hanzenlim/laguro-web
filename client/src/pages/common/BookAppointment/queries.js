@@ -1,56 +1,65 @@
 import { gql } from 'apollo-boost';
-import moment from 'moment';
+import _get from 'lodash/get';
+import esClient from '../../../util/esClient';
 
-import {
-    STATUS,
-    ACTIVE,
-    END_TIME,
-    PENDING_PATIENT_APPROVAL,
-} from '../../../util/strings';
+export const getSuggestedDentist = async args => {
+    const { officeId } = args;
+
+    const query = {
+        bool: {
+            must: [{ match: { 'appointmentAvailability.officeId': officeId } }],
+            filter: { term: { isVerified: true } },
+        },
+    };
+
+    const res = await esClient.search({
+        index: 'dentists',
+        type: '_doc',
+        size: 20,
+        from: 0,
+        body: {
+            query,
+        },
+    });
+
+    const dentists = _get(res, 'hits.hits') || [];
+
+    // TODO implement some kind of score
+    const randomIndex = Math.floor(Math.random() * dentists.length);
+
+    return {
+        dentist: dentists[randomIndex]._source,
+        total: _get(res, 'hits.total'),
+    };
+};
 
 export const getDentistQuery = gql`
     query($id: String!) {
         getDentist(id: $id) {
             id
-            firstAppointmentDuration
-            reservations(
-                options: {
-                    sortKey: "${END_TIME}",
-                    rangeStart: "${moment()
-                        .startOf('days')
-                        .format()}",
-                    filters: [
-                        {
-                            filterKey: "${STATUS}",
-                            filterValues: ["${ACTIVE}"]
-                        }
-                    ]
-                }
-            ) {
+            preferredLocations {
                 id
-                status
+                timezone
                 location {
                     name
-                    addressDetails
-                }
-                timezone
-                numChairsSelected
-                localAvailableTimes {
-                    startTime
-                    endTime
-                }
-                appointments(
-                    options: {
-                        filters: [
-                            { filterKey: "status", filterValues: ["${ACTIVE}", "${PENDING_PATIENT_APPROVAL}"] }
-                        ]
+                    geoPoint {
+                        lat
+                        lon
                     }
-                ) {
-                    id
-                    localStartTime
-                    localEndTime
-                    status
                 }
+            }
+        }
+    }
+`;
+
+export const getDentistAppointmentSlotsQuery = gql`
+    query getDentistAppointmentSlots($input: GetDentistAppointmentSlotsInput!) {
+        getDentistAppointmentSlots(input: $input) {
+            office {
+                id
+            }
+            appointmentTimeslots {
+                localStartTime
             }
         }
     }
@@ -58,18 +67,6 @@ export const getDentistQuery = gql`
 
 export const createAppointmentMutation = gql`
     mutation CreateAppointment($input: CreateAppointmentInput!) {
-        createAppointment(input: $input) {
-            id
-            dentist {
-                id
-            }
-            timezone
-            localStartTime
-            reservation {
-                office {
-                    id
-                }
-            }
-        }
+        createAppointment(input: $input)
     }
 `;

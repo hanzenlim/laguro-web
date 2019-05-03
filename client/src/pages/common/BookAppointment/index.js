@@ -1,170 +1,405 @@
-import React, { PureComponent } from 'react';
-import PropTypes from 'prop-types';
 import _get from 'lodash/get';
-import queryString from 'query-string';
+import _isEmpty from 'lodash/isEmpty';
 import moment from 'moment';
-import { compose, Query, graphql, withApollo } from 'react-apollo';
-import { message } from 'antd';
-import { stripTimezone } from '../../../util/timeUtil';
-import { getDentistQuery, createAppointmentMutation } from './queries';
-import BookAppointmentView from './view';
+import queryString from 'query-string';
+import React, { PureComponent } from 'react';
+import { adopt } from 'react-adopt';
+import { Mutation, Query } from 'react-apollo';
 import { Loading } from '../../../components';
-import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
-import emitter from '../../../util/emitter';
-import { getUser } from '../../../util/authUtils';
 import history from '../../../history';
-import { trackBookAppointment } from '../../../util/trackingUtils';
-
-const HANDLED_TIMESLOT_ERRORS = [
-    'Timeslot is in the past',
-    'Timeslot is no longer available',
-];
+import { appointmentClient } from '../../../util/apolloClients';
+import { getUser } from '../../../util/authUtils';
+import emitter from '../../../util/emitter';
+import { execute } from '../../../util/gqlUtils';
+import { stripTimezone } from '../../../util/timeUtil';
+import NoAvailability from './NoAvailability';
+import {
+    createAppointmentMutation,
+    getDentistAppointmentSlotsQuery,
+    getDentistQuery,
+    getSuggestedDentist,
+} from './queries';
+import BookAppointmentView from './view';
 
 class BookAppointment extends PureComponent {
     constructor(props) {
         super(props);
 
         const urlParams = queryString.parse(history.location.search);
+        const isOnOfficePage = history.location.pathname.includes('office');
+        const isOnDentistPage = history.location.pathname.includes('dentist');
 
         this.state = {
-            reservationId: urlParams.reservationId || null,
-            patientId: null,
-            location: null,
-            procedure: null,
-            startTime: urlParams.startTime || null,
-            endTime: null,
-            isPaymentVisible: !!urlParams.startTime,
-            bookedAppointment: null,
-            paymentError: null,
-            isSubmitting: false,
+            isOnOfficePage,
+            isOnDentistPage,
+            selectedTimeSlot: null,
+            officeId: isOnOfficePage
+                ? history.location.pathname.split('/')[2]
+                : urlParams.officeId,
+            dentistId: isOnDentistPage
+                ? history.location.pathname.split('/')[1]
+                : urlParams.dentistId,
+            bookedAppointmentId: null,
+            isBooking: false,
+            hasAgreed: false,
         };
     }
 
-    handleFilter = () => {
-        this.setState({ isPaymentVisible: false });
-    };
-
-    handleSelect = async data => {
-        const user = getUser();
-        this.setState({
-            reservationId: data.reservationId,
-            patientId: _get(user, 'id'),
-            location: data.location,
-            procedure: data.procedure,
-            startTime: stripTimezone(data.startTime),
-            endTime: stripTimezone(data.endTime),
-            isPaymentVisible: true,
+    componentDidMount() {
+        history.listen(location => {
+            const nextParams = queryString.parse(location.search);
+            if (this.state.officeId !== nextParams.officeId) {
+                this.setState({
+                    officeId: nextParams.officeId,
+                });
+            }
         });
+    }
 
-        return false;
-    };
-
-    handleBookAppointment = async (timezone, firstAppointmentDuration) => {
+    handleBookNow = async () => {
         const user = getUser();
-
         // Show login modal if not logged in.
         if (!user) {
             emitter.emit('loginModal');
-
             return;
         }
 
-        try {
-            this.setState({ isSubmitting: true });
+        const { createAppointment, suggestedDentist } = this.props;
+        const {
+            selectedTimeSlot,
+            isOnOfficePage,
+            isOnDentistPage,
+        } = this.state;
+        const urlParams = queryString.parse(history.location.search);
 
-            const appointment = await this.props.mutate({
-                variables: {
-                    input: {
-                        reservationId: this.state.reservationId,
-                        patientId: _get(user, 'id'),
-                        localStartTime: stripTimezone(
-                            moment.tz(this.state.startTime, timezone).format()
-                        ),
-                        localEndTime: stripTimezone(
-                            moment(this.state.startTime)
-                                .add(firstAppointmentDuration, 'minutes')
-                                .format()
-                        ),
+        await execute({
+            action: async () => {
+                await this.setState({ isBooking: true });
+
+                const officeId = isOnOfficePage
+                    ? history.location.pathname.split('/')[2]
+                    : urlParams.officeId;
+                const dentistId = isOnDentistPage
+                    ? history.location.pathname.split('/')[2]
+                    : suggestedDentist.id;
+
+                const createAppointmentResult = await createAppointment({
+                    variables: {
+                        input: {
+                            patientId: user.id,
+                            officeId,
+                            dentistId,
+                            localStartTime: stripTimezone(selectedTimeSlot),
+                        },
                     },
-                },
-            });
+                });
 
-            const appointmentData = appointment.data.createAppointment;
+                const bookedAppointmentId = _get(
+                    createAppointmentResult,
+                    'data.createAppointment'
+                );
 
-            trackBookAppointment({
-                appointmentId: appointmentData.id,
-                dentistId: appointmentData.dentist.id,
-                city: appointmentData.timezone,
-                weekDay: moment(appointmentData.localStartTime).format('dddd'),
-                hour: moment(appointmentData.localStartTime).format('hh:mm a'),
-                officeId: appointmentData.reservation.office.id,
-            });
+                await this.setState({
+                    isBooking: false,
+                    bookedAppointmentId,
+                });
+            },
+        });
 
-            this.setState({
-                bookedAppointment: {
-                    location: this.state.location,
-                    time: moment(this.state.startTime).format('LLLL'),
-                },
-                isSubmitting: false,
-            });
-        } catch (error) {
-            const errorMessage = error.graphQLErrors[0].message;
-            if (HANDLED_TIMESLOT_ERRORS.includes(errorMessage))
-                message.error(errorMessage);
-            this.setState({ isSubmitting: false });
-        }
+        await this.setState({ isBooking: false });
+    };
+
+    handleToggleCheckbox = () => {
+        this.setState({ hasAgreed: !this.state.hasAgreed });
+    };
+
+    handleSelectTimeSlot = utcFormattedTimeSlot => {
+        this.setState({ selectedTimeSlot: utcFormattedTimeSlot });
     };
 
     render() {
-        const { id } = this.props;
+        const {
+            bookedAppointmentId,
+            isBooking,
+            officeId,
+            hasAgreed,
+            selectedTimeSlot,
+        } = this.state;
 
-        const { isPaymentVisible, bookedAppointment } = this.state;
+        const {
+            timeSlotList,
+            locationList,
+            suggestedDentist,
+            onFindAnotherMatch,
+            isFetchingNewData,
+            totalDentists,
+        } = this.props;
+
+        const isButtonDisabled = !selectedTimeSlot || !hasAgreed;
+        const isShowingSuggestedDentist = history.location.pathname.includes(
+            'office'
+        );
+        const isShowingAvailableLocations = history.location.pathname.includes(
+            'dentist'
+        );
 
         return (
-            <Query
-                query={getDentistQuery}
-                variables={{ id }}
-                fetchPolicy="network-only"
-            >
-                {({ loading, error, data }) => {
-                    if (loading) {
-                        return <Loading />;
-                    }
-
-                    if (error) {
-                        return <RedirectErrorPage />;
-                    }
-
-                    return (
-                        <BookAppointmentView
-                            data={_get(data, 'getDentist.reservations')}
-                            firstAppointmentDuration={_get(
-                                data,
-                                'getDentist.firstAppointmentDuration'
-                            )}
-                            isPaymentVisible={isPaymentVisible}
-                            bookedAppointment={bookedAppointment}
-                            onFilter={this.handleFilter}
-                            onPay={this.handlePay}
-                            onBookAppointment={this.handleBookAppointment}
-                            onSelect={this.handleSelect}
-                            onVerificationResult={this.handleVerificationResult}
-                            isSubmitting={this.state.isSubmitting}
-                        />
-                    );
-                }}
-            </Query>
+            <BookAppointmentView
+                isFindAnotherMatchDisabled={totalDentists === 1}
+                suggestedDentist={suggestedDentist}
+                hasAgreed={hasAgreed}
+                officeId={officeId}
+                locationList={locationList}
+                bookedAppointmentId={bookedAppointmentId}
+                onBookNow={this.handleBookNow}
+                isBooking={isBooking}
+                timeSlotList={timeSlotList}
+                isShowingSuggestedDentist={isShowingSuggestedDentist}
+                isShowingAvailableLocations={isShowingAvailableLocations}
+                onToggleCheckbox={this.handleToggleCheckbox}
+                isButtonDisabled={isButtonDisabled}
+                onSelectTimeSlot={this.handleSelectTimeSlot}
+                onFindAnotherMatch={onFindAnotherMatch}
+                isFetchingNewData={isFetchingNewData}
+            />
         );
     }
 }
 
-BookAppointment.propTypes = {
-    client: PropTypes.object,
-    id: PropTypes.string,
-    mutate: PropTypes.func,
-};
+const Composed = adopt({
+    createAppointment: ({ render }) => (
+        <Mutation
+            mutation={createAppointmentMutation}
+            client={appointmentClient}
+        >
+            {render}
+        </Mutation>
+    ),
+    getDentist: ({ render, dentistId }) => (
+        <Query query={getDentistQuery} variables={{ id: dentistId }}>
+            {render}
+        </Query>
+    ),
+    getDentistAppointmentSlots: ({ render, dentistId }) => {
+        const input = {
+            dentistId,
+            rangeStart: moment()
+                .add(1, 'hours')
+                .startOf('hour')
+                .utcOffset(0, true)
+                .format(),
+            rangeEnd: moment()
+                .add(14, 'days')
+                .startOf('hour')
+                .utcOffset(0, true)
+                .format(),
+        };
 
-export default compose(
-    withApollo,
-    graphql(createAppointmentMutation)
-)(BookAppointment);
+        return (
+            <Query
+                query={getDentistAppointmentSlotsQuery}
+                client={appointmentClient}
+                fetchPolicy="network-only"
+                variables={{
+                    input,
+                }}
+            >
+                {render}
+            </Query>
+        );
+    },
+});
+
+class BookAppointmentContainer extends PureComponent {
+    constructor(props) {
+        super(props);
+
+        const urlParams = queryString.parse(history.location.search);
+        const isOnDentistPage = history.location.pathname.includes('dentist');
+        const isOnOfficePage = history.location.pathname.includes('office');
+
+        this.state = {
+            dentistId: isOnDentistPage
+                ? history.location.pathname.split('/')[2]
+                : urlParams.dentistId,
+            officeId: isOnOfficePage
+                ? history.location.pathname.split('/')[2]
+                : urlParams.officeId,
+            suggestedDentist: null,
+            isFetchingNewData: false,
+            totalDentists: null,
+        };
+    }
+
+    componentDidMount() {
+        const isShowingSuggestedDentist = history.location.pathname.includes(
+            'office'
+        );
+
+        if (isShowingSuggestedDentist) {
+            this.fetchSuggestedDentist();
+        }
+    }
+
+    fetchSuggestedDentist = async () => {
+        const { officeId } = this.state;
+
+        const suggestedDentist = await getSuggestedDentist({
+            officeId,
+        });
+
+        await this.setState({
+            suggestedDentist: suggestedDentist.dentist,
+            dentistId: suggestedDentist.dentist.id,
+            totalDentists: suggestedDentist.total,
+            isFetchingNewData: false,
+        });
+    };
+
+    getTimeSlotList = timeSlot => {
+        let timeSlotList = [];
+        timeSlot.forEach(dentistAppointmentSlot => {
+            // Collect all unique days
+            const dateStringList = [];
+            dentistAppointmentSlot.appointmentTimeslots.forEach(
+                appointmentTimeslot => {
+                    const day = moment(
+                        appointmentTimeslot.localStartTime
+                    ).format('LL');
+
+                    if (!dateStringList.includes(day)) {
+                        dateStringList.push(day);
+                    }
+                }
+            );
+
+            // Create timeslot object for UI
+            const timeSlotMap = dateStringList.map(dateString => ({
+                day: new Date(dateString),
+                time: [],
+            }));
+
+            // Populate time list
+            dentistAppointmentSlot.appointmentTimeslots.forEach(
+                appointmentTimeslot => {
+                    const day = moment(
+                        appointmentTimeslot.localStartTime
+                    ).format('LL');
+
+                    const index = timeSlotMap.findIndex(
+                        t => moment(t.day).format('LL') === day
+                    );
+
+                    timeSlotMap[index].time.push(
+                        new Date(appointmentTimeslot.localStartTime)
+                    );
+                }
+            );
+
+            timeSlotList = timeSlotMap;
+        });
+
+        return timeSlotList;
+    };
+
+    getAppointmentSlotsByOfficeId = getDentistAppointmentSlotsData => {
+        const urlParams = queryString.parse(history.location.search);
+
+        if (urlParams.officeId) {
+            return getDentistAppointmentSlotsData.filter(
+                timeSlot => timeSlot.office.id === urlParams.officeId
+            );
+        }
+
+        return [getDentistAppointmentSlotsData[0]];
+    };
+
+    handleFindAnotherMatch = async () => {
+        await this.setState({ isFetchingNewData: true });
+        await this.fetchSuggestedDentist();
+    };
+
+    render() {
+        const {
+            dentistId,
+            suggestedDentist,
+            isFetchingNewData,
+            totalDentists,
+        } = this.state;
+
+        if (!dentistId) return null;
+
+        return (
+            <Composed dentistId={dentistId}>
+                {({
+                    createAppointment,
+                    getDentist,
+                    getDentistAppointmentSlots,
+                }) => {
+                    const getDentistData = getDentist.data.getDentist;
+                    const getDentistAppointmentSlotsData = _get(
+                        getDentistAppointmentSlots,
+                        'data.getDentistAppointmentSlots'
+                    );
+
+                    if (!getDentistData) return null;
+
+                    if (
+                        getDentistAppointmentSlots.loading &&
+                        !getDentistAppointmentSlotsData &&
+                        !isFetchingNewData
+                    ) {
+                        return <Loading />;
+                    }
+
+                    if (_isEmpty(getDentistAppointmentSlotsData)) {
+                        return <NoAvailability />;
+                    }
+
+                    // TODO: refactor
+                    // Get list of locations
+                    const officeIdsWithAppointmentSlots = [];
+                    getDentistAppointmentSlotsData.forEach(appointmentSlot => {
+                        if (
+                            appointmentSlot.appointmentTimeslots &&
+                            appointmentSlot.appointmentTimeslots.length !== 0
+                        ) {
+                            officeIdsWithAppointmentSlots.push(
+                                appointmentSlot.office.id
+                            );
+                        }
+                    });
+                    const locationList = getDentistData.preferredLocations.filter(
+                        preferredLocation =>
+                            officeIdsWithAppointmentSlots.includes(
+                                preferredLocation.id
+                            )
+                    );
+
+                    // TODO: refactor
+                    const timeSlot = this.getAppointmentSlotsByOfficeId(
+                        getDentistAppointmentSlotsData
+                    );
+
+                    if (timeSlot.length === 0) return null;
+                    const timeSlotList = this.getTimeSlotList(timeSlot);
+
+                    return (
+                        <BookAppointment
+                            totalDentists={totalDentists}
+                            suggestedDentist={suggestedDentist}
+                            isFetchingNewData={isFetchingNewData}
+                            locationList={locationList}
+                            timeSlotList={timeSlotList}
+                            getDentistData={getDentistData}
+                            createAppointment={createAppointment}
+                            onFindAnotherMatch={this.handleFindAnotherMatch}
+                        />
+                    );
+                }}
+            </Composed>
+        );
+    }
+}
+
+export default BookAppointmentContainer;

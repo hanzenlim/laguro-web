@@ -9,7 +9,7 @@ import DentistDetails from '../common/DentistDetails';
 
 import { DENTIST } from '../../util/strings';
 
-const { Desktop, TabletMobile } = Responsive
+const { Desktop, TabletMobile } = Responsive;
 
 class DentistDetailsPageView extends PureComponent {
     render() {
@@ -23,6 +23,7 @@ class DentistDetailsPageView extends PureComponent {
                     justifyContent="space-between"
                 >
                     <Flex
+                        alignItems="flex-start"
                         justifyContent="space-between"
                         flexDirection={['column', '', 'row']}
                     >
@@ -34,22 +35,19 @@ class DentistDetailsPageView extends PureComponent {
                                 </Desktop>
                             </Box>
                         </Box>
-                        <Box 
+                        <Box
                             width={['100%', '', 460]}
                             maxWidth={['100%', '', '40%']}
+                            mt={[22, '', 44]}
+                            border={['none', '', '1px solid']}
+                            borderColor={['', '', 'divider.gray']}
+                            boxShadow={['none', '', 0]}
+                            pt={[0, '', 16]}
+                            pr={[0, '', 32]}
+                            pl={[0, '', 32]}
+                            pb={32}
                         >
-                            <Box
-                                mt={[22, '', 44]}
-                                border={['none', '', '1px solid']}
-                                borderColor={['', '', 'divider.gray']}
-                                boxShadow={['none', '', 0]}
-                                pt={[0, '', 16]}
-                                pr={[0, '', 32]}
-                                pl={[0, '', 32]}
-                                pb={32}
-                            >
-                                <BookAppointment id={id} />
-                            </Box>
+                            <BookAppointment id={id} />
                         </Box>
                     </Flex>
                     <TabletMobile>

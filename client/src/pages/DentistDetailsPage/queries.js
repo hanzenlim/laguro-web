@@ -27,20 +27,6 @@ export const getDentistQuery = gql`
             totalRating
             numReviews
             averageRating
-            reservations {
-                id
-                office {
-                    id
-                }
-                location {
-                    name
-                    addressDetails
-                    geoPoint {
-                        lat
-                        lon
-                    }
-                }
-            }
         }
     }
 `;

@@ -36,7 +36,11 @@ class DentistDashboardPage extends Component {
         const params = queryString.parse(window.location.search);
 
         return (
-            <Query query={getUserQuery} variables={{ id }} client={defaultClient}>
+            <Query
+                query={getUserQuery}
+                variables={{ id }}
+                client={defaultClient}
+            >
                 {({
                     loading: loadingUserQuery,
                     error: errorUserQuery,

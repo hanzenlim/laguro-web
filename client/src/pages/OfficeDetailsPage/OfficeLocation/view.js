@@ -15,9 +15,9 @@ class OfficeLocationView extends PureComponent {
 
     state = { sideWidth: 0 };
 
-    componentDidMount() {	
-        window.addEventListener('resize', this.setSideWidth);	
-        this.setSideWidth();	
+    componentDidMount() {
+        window.addEventListener('resize', this.setSideWidth);
+        this.setSideWidth();
     }
 
     componentWillUnmount() {
@@ -26,19 +26,15 @@ class OfficeLocationView extends PureComponent {
 
     setSideWidth = () => {
         this.setState(() => ({
-            sideWidth: this.sideWidthRef.current.offsetWidth
-        }))
-    }
+            sideWidth: this.sideWidthRef.current.offsetWidth,
+        }));
+    };
 
-    render () {
+    render() {
         const { sideWidth } = this.state;
         const { data, desktopOnly } = this.props;
         return (
-            <Box
-                mt={[27, '', 32]}
-                mb={[0, '', 40]}
-                ref={this.sideWidthRef}
-            >
+            <Box mt={[27, '', 32]} mb={[0, '', 40]} ref={this.sideWidthRef}>
                 <Text
                     fontWeight="bold"
                     fontSize={[1, '', 2]}
@@ -48,38 +44,28 @@ class OfficeLocationView extends PureComponent {
                 >
                     Office location
                 </Text>
-                <Text
-                    fontSize={0}
-                    lineHeight="14px"
-                    letterSpacing="-0.27px"
-                >
+                <Text fontSize={0} lineHeight="14px" letterSpacing="-0.27px">
                     {data.address.name}
                 </Text>
 
                 <Box mt={[13, '', 22]}>
                     <Map
-                        height={desktopOnly ? 305 : 228 }
-                        width={sideWidth}	
-                        zoom={13}	
-                        center={[	
-                            data.address.geoPoint.lon,	
-                            data.address.geoPoint.lat,	
-                        ]}	
-                        data={[	
-                            {	
-                                title: data.officeName,	
-                                image: data.imageUrls[0],	
-                                address: data.address.name,	
-                                latitude: _get(	
-                                    data,	
-                                    'address.geoPoint.lat'	
-                                ),	
-                                longitude: _get(	
-                                    data,	
-                                    'address.geoPoint.lon'	
-                                ),	
-                            },	
-                        ]}	
+                        height={desktopOnly ? 305 : 228}
+                        width={sideWidth}
+                        zoom={13}
+                        center={[
+                            data.address.geoPoint.lon,
+                            data.address.geoPoint.lat,
+                        ]}
+                        data={[
+                            {
+                                title: data.officeName,
+                                image: data.imageUrls[0],
+                                address: data.address.name,
+                                latitude: _get(data, 'address.geoPoint.lat'),
+                                longitude: _get(data, 'address.geoPoint.lon'),
+                            },
+                        ]}
                     />
                 </Box>
             </Box>
@@ -87,4 +73,4 @@ class OfficeLocationView extends PureComponent {
     }
 }
 
-export default withScreenSizes(OfficeLocationView)
+export default withScreenSizes(OfficeLocationView);

@@ -48,6 +48,8 @@ import Facebook from './Facebook';
 import Instagram from './Instagram';
 import Alert from './Alert';
 import Filter from './Filter';
+import BlueLeftArrow from './BlueLeftArrow';
+import BlueRightArrow from './BlueRightArrow';
 
 const Icon = props => {
     const { type, isButton, ...rest } = props;
@@ -143,6 +145,12 @@ const Icon = props => {
             break;
         case 'filter':
             ReturnIcon = Filter;
+            break;
+        case 'blueLeftArrow':
+            ReturnIcon = BlueLeftArrow;
+            break;
+        case 'blueRightArrow':
+            ReturnIcon = BlueRightArrow;
             break;
         default:
             ReturnIcon = AntdIcon;

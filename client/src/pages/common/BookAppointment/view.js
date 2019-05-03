@@ -1,78 +1,87 @@
 import React, { Fragment } from 'react';
-import PropTypes from 'prop-types';
-
-import SearchAvailableAppointments from '../SearchAvailableAppointments';
-import PaymentConfirmation from '../PaymentConfirmation';
-// import Payment from '../Payment';
-
-import { Box, Button } from '../../../components';
+import { Button, Checkbox, Flex, Link, Text } from '../../../components';
+import { TERMS_PAGE_URL } from '../../../util/urls';
+import AppointmentConfirmation from '../AppointmentConfirmation';
+import AvailableLocations from './AvailableLocations';
+import AvailableTimes from './AvailableTimes';
+import SuggestedDentist from './SuggestedDentist';
 
 const BookAppointmentView = props => {
     const {
-        data,
-        bookedAppointment,
-        isPaymentVisible,
-        firstAppointmentDuration,
-        onSelect,
-        onFilter,
-        isSubmitting,
+        bookedAppointmentId,
+        locationList,
+        onBookNow,
+        isBooking,
+        onFindAnotherMatch,
+        timeSlotList,
+        isFetchingNewData,
+        isShowingSuggestedDentist,
+        isShowingAvailableLocations,
+        hasAgreed,
+        onToggleCheckbox,
+        isButtonDisabled,
+        onSelectTimeSlot,
+        suggestedDentist,
+        isFindAnotherMatchDisabled,
     } = props;
 
-    if (bookedAppointment)
-        return (
-            <PaymentConfirmation
-                h1="YOUR BOOKING IS CONFIRMED"
-                h2={bookedAppointment.time}
-                h3={bookedAppointment.location}
-            />
-        );
+    if (bookedAppointmentId)
+        return <AppointmentConfirmation appointmentId={bookedAppointmentId} />;
 
     return (
         <Fragment>
-            <SearchAvailableAppointments
-                data={data}
-                firstAppointmentDuration={firstAppointmentDuration}
-                onSelect={onSelect}
-                onFilter={onFilter}
+            {isShowingSuggestedDentist && (
+                <SuggestedDentist
+                    suggestedDentist={suggestedDentist}
+                    onFindAnotherMatch={onFindAnotherMatch}
+                    isFindAnotherMatchDisabled={isFindAnotherMatchDisabled}
+                />
+            )}
+            {isShowingAvailableLocations && (
+                <AvailableLocations locationList={locationList} />
+            )}
+
+            <AvailableTimes
+                onSelectTimeSlot={onSelectTimeSlot}
+                timeSlotList={timeSlotList}
+                isFetchingNewData={isFetchingNewData}
             />
-            {isPaymentVisible ? (
-                <Fragment>
-                    <Box mt={40}>
-                        <Button
-                            width={'100%'}
-                            height={['50px', '', '60px']}
-                            fontSize={[1, '', 3]}
-                            px={14}
-                            isSubmitting={isSubmitting}
-                            onClick={() =>
-                                props.onBookAppointment(
-                                    data[0].timezone,
-                                    firstAppointmentDuration
-                                )
-                            }
-                        >
-                            Make An Appointment
-                        </Button>
-                    </Box>
-                </Fragment>
-            ) : null}
+
+            <Flex pt={28} pb={34} alignItems="center" justifyContent="center">
+                <Checkbox checked={hasAgreed} onChange={onToggleCheckbox} />
+                <Text
+                    ml={11}
+                    fontSize="12px"
+                    letterSpacing="-0.3px"
+                    lineHeight="1.5"
+                >
+                    By clicking this checkbox, I am agreeing to{' '}
+                    <Link to={TERMS_PAGE_URL}>
+                        <Text is="span" color="text.blue">
+                            Terms & Conditions
+                        </Text>
+                    </Link>
+                </Text>
+            </Flex>
+
+            <Button
+                disabled={isButtonDisabled}
+                loading={isBooking}
+                onClick={onBookNow}
+                width="100%"
+            >
+                {/* <Text
+                    color="text.white"
+                    fontSize="14px"
+                    fontWeight="bold"
+                    letterSpacing="-0.3px"
+                >
+
+                </Text> */}
+                Book now
+            </Button>
         </Fragment>
     );
-};
-
-BookAppointmentView.propTypes = {
-    bookedAppointment: PropTypes.object,
-    checkIfVerified: PropTypes.func,
-    data: PropTypes.array,
-    firstAppointmentDuration: PropTypes.number,
-    isPaymentVisible: PropTypes.bool,
-    isSubmitting: PropTypes.bool,
-    onBookAppointment: PropTypes.func,
-    onFilter: PropTypes.func,
-    onPay: PropTypes.func,
-    onSelect: PropTypes.func,
-    onVerificationResult: PropTypes.func,
-    updateSubmittingState: PropTypes.func,
 };
 
 export default BookAppointmentView;
