@@ -99,6 +99,10 @@ class PatientDashboardPageView extends Component {
             selectedTab: getKeyFromText(key),
         };
         addSearchParams(newParams);
+
+        if (this.props.refetch) {
+            this.props.refetch();
+        }
     };
 
     // this will be displayed instead of the dentist insurance form. insuranceConfirmation will be turned back to null if displayed once, due to componentDidUpdate

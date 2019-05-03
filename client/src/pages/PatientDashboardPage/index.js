@@ -36,6 +36,7 @@ class PatientDashboardPage extends Component {
                     loading: loadingUserQuery,
                     error: errorUserQuery,
                     data: dataUserQuery,
+                    refetch,
                 }) => {
                     if (loadingUserQuery) {
                         return <Loading />;
@@ -61,6 +62,7 @@ class PatientDashboardPage extends Component {
                             offices={offices}
                             userId={id}
                             panel={getTextFromKey(params.selectedTab)}
+                            refetch={refetch}
                         />
                     );
                 }}
