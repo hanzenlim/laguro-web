@@ -13,14 +13,8 @@ import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
 import { withScreenSizes } from '../../../components/Responsive';
 import { setImageSizeToUrl } from '../../../util/imageUtil';
 import { getInsuranceText } from '../../../util/insuranceUtil';
+import { getProcedureColor } from '../../../util/dentistUtils';
 import styled from 'styled-components';
-
-const TAG_COLORS = [
-    'background.blue',
-    'background.yellow',
-    'background.orange',
-    'background.darkBlue',
-];
 
 const DefaultCursorButton = styled(Button)`
     && {
@@ -34,11 +28,7 @@ class DentistDetailsView extends PureComponent {
 
         return (
             <Box>
-                <Box
-                    width="100vw"
-                    position="fixed"
-                    left={0}
-                />
+                <Box width="100vw" position="fixed" left={0} />
                 <Flex
                     mb={[48, '', 56]}
                     flexDirection={['column', '', 'row']}
@@ -116,19 +106,34 @@ class DentistDetailsView extends PureComponent {
                             >
                                 <Flex alignItems="center">
                                     <Icon type="insurance" />
-                                    <Text fontSize={1} ml="8px" lineHeight="17px">
+                                    <Text
+                                        fontSize={1}
+                                        ml="8px"
+                                        lineHeight="17px"
+                                    >
                                         Accepts{' '}
-                                        {data.acceptedInsurances.length > 1
-                                            ? data.acceptedInsurances.map(
-                                                  (sp, index) =>
-                                                      index !==
-                                                      data.acceptedInsurances
-                                                          .length -
-                                                          1
-                                                          ? `${getInsuranceText(sp)}, `
-                                                          : `and ${getInsuranceText(sp)}`
-                                              )
-                                            : <Text is='span' textTransform='capitalize'>{data.acceptedInsurances[0].toLowerCase()}</Text>}
+                                        {data.acceptedInsurances.length > 1 ? (
+                                            data.acceptedInsurances.map(
+                                                (sp, index) =>
+                                                    index !==
+                                                    data.acceptedInsurances
+                                                        .length -
+                                                        1
+                                                        ? `${getInsuranceText(
+                                                              sp
+                                                          )}, `
+                                                        : `and ${getInsuranceText(
+                                                              sp
+                                                          )}`
+                                            )
+                                        ) : (
+                                            <Text
+                                                is="span"
+                                                textTransform="capitalize"
+                                            >
+                                                {data.acceptedInsurances[0].toLowerCase()}
+                                            </Text>
+                                        )}
                                     </Text>
                                 </Flex>
                             </Flex>
@@ -140,16 +145,40 @@ class DentistDetailsView extends PureComponent {
                             >
                                 <Flex alignItems="center">
                                     <Icon type="languages" />
-                                    <Text fontSize={1} ml="8px" lineHeight="17px">
+                                    <Text
+                                        fontSize={1}
+                                        ml="8px"
+                                        lineHeight="17px"
+                                    >
                                         Speaks{' '}
-                                        {data.languages.length > 1
-                                            ? data.languages.map((sp, index) =>
-                                                  index !==
-                                                  data.languages.length - 1
-                                                    ? <Text is='span' textTransform='capitalize'>{`${sp.toLowerCase()}, `}</Text>
-                                                    : <>{`and `}<Text is='span' textTransform='capitalize'>{sp.toLowerCase()}</Text></>
-                                              )
-                                            : <Text is='span' textTransform='capitalize'>{data.languages[0].toLowerCase()}</Text>}
+                                        {data.languages.length > 1 ? (
+                                            data.languages.map((sp, index) =>
+                                                index !==
+                                                data.languages.length - 1 ? (
+                                                    <Text
+                                                        is="span"
+                                                        textTransform="capitalize"
+                                                    >{`${sp.toLowerCase()}, `}</Text>
+                                                ) : (
+                                                    <>
+                                                        {`and `}
+                                                        <Text
+                                                            is="span"
+                                                            textTransform="capitalize"
+                                                        >
+                                                            {sp.toLowerCase()}
+                                                        </Text>
+                                                    </>
+                                                )
+                                            )
+                                        ) : (
+                                            <Text
+                                                is="span"
+                                                textTransform="capitalize"
+                                            >
+                                                {data.languages[0].toLowerCase()}
+                                            </Text>
+                                        )}
                                     </Text>
                                 </Flex>
                             </Flex>
@@ -161,7 +190,7 @@ class DentistDetailsView extends PureComponent {
                     fontSize={[1, '', 2]}
                     letterSpacing={['0.05px', '', '-0.4px']}
                     lineHeight="30px"
-                    fontWeight='medium'
+                    fontWeight="medium"
                     mb={12}
                 >
                     Available procedures
@@ -169,14 +198,11 @@ class DentistDetailsView extends PureComponent {
 
                 {data.procedures.length ? (
                     <Flex flexWrap="wrap" mb={[18, '', 38]}>
-                        {data.procedures.map((procedure, index) => (
-                            <DefaultCursorButton
-                                type="ghost"
-                                height="auto"
-                            >
+                        {data.procedures.map(procedure => (
+                            <DefaultCursorButton type="ghost" height="auto">
                                 <Box
                                     px={[12, '', 24]}
-                                    bg={TAG_COLORS[index % 4]}
+                                    bg={getProcedureColor(procedure)}
                                     borderRadius="25px"
                                     mr="6px"
                                     mb="6px"
@@ -187,7 +213,11 @@ class DentistDetailsView extends PureComponent {
                                         color="text.white"
                                         lineHeight="22px"
                                         fontSize={[0, '', 1]}
-                                        letterSpacing={['-0.38px', '', '-0.4px']}
+                                        letterSpacing={[
+                                            '-0.38px',
+                                            '',
+                                            '-0.4px',
+                                        ]}
                                     >
                                         {procedure}
                                     </Text>
@@ -200,12 +230,12 @@ class DentistDetailsView extends PureComponent {
                 )}
 
                 {data.bio && (
-                    <Box pb={[0, '', 42]} >
+                    <Box pb={[0, '', 42]}>
                         <Text
                             fontSize={[1, '', 2]}
                             letterSpacing={['0.05px', '', '-0.4px']}
                             lineHeight="30px"
-                            fontWeight='medium'
+                            fontWeight="medium"
                             mb={[3, '', 5]}
                         >
                             About the dentist

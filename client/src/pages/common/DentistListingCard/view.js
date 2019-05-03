@@ -18,13 +18,7 @@ import {
 } from '../../../components';
 import { withScreenSizes } from '../../../components/Responsive';
 import Bundle from '../Bundle';
-
-const TAG_COLORS = [
-    'background.blue',
-    'background.yellow',
-    'background.orange',
-    'background.darkBlue',
-];
+import { getProcedureColor } from '../../../util/dentistUtils';
 
 const { Desktop, Mobile } = Responsive;
 
@@ -309,12 +303,7 @@ class DentistListingCard extends PureComponent {
                                                             ) {
                                                                 return (
                                                                     <Box
-                                                                        bg={
-                                                                            TAG_COLORS[
-                                                                                index %
-                                                                                    4
-                                                                            ]
-                                                                        }
+                                                                        bg="background.blue"
                                                                         px={12}
                                                                         py="3px"
                                                                         borderRadius="15.5px"
@@ -334,12 +323,9 @@ class DentistListingCard extends PureComponent {
 
                                                             return (
                                                                 <Box
-                                                                    bg={
-                                                                        TAG_COLORS[
-                                                                            index %
-                                                                                4
-                                                                        ]
-                                                                    }
+                                                                    bg={getProcedureColor(
+                                                                        procedure
+                                                                    )}
                                                                     px={12}
                                                                     py="2px"
                                                                     borderRadius="15.5px"
@@ -439,12 +425,7 @@ class DentistListingCard extends PureComponent {
                                                             ) {
                                                                 return (
                                                                     <Box
-                                                                        bg={
-                                                                            TAG_COLORS[
-                                                                                index %
-                                                                                    4
-                                                                            ]
-                                                                        }
+                                                                        bg="background.blue"
                                                                         px={16}
                                                                         borderRadius="19.5px"
                                                                         mr="6px"
@@ -466,12 +447,9 @@ class DentistListingCard extends PureComponent {
 
                                                             return (
                                                                 <Box
-                                                                    bg={
-                                                                        TAG_COLORS[
-                                                                            index %
-                                                                                4
-                                                                        ]
-                                                                    }
+                                                                    bg={getProcedureColor(
+                                                                        procedure
+                                                                    )}
                                                                     px={16}
                                                                     borderRadius="19.5px"
                                                                     mr="6px"
