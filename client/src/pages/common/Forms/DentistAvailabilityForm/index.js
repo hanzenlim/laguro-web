@@ -57,9 +57,18 @@ class DentistAvailabilityForm extends PureComponent {
                   })
                 : [
                       {
-                          startTime: '',
-                          endTime: '',
-                          range: [],
+                          startTime: moment()
+                              .startOf('hour')
+                              .hour(8),
+                          endTime: moment()
+                              .startOf('hour')
+                              .hour(15),
+                          range: [
+                              moment()
+                                  .startOf('day')
+                                  .add(1, 'day'),
+                              null,
+                          ],
                           days: {},
                           selectedLocations: '',
                           isOpen: true,
@@ -107,6 +116,11 @@ class DentistAvailabilityForm extends PureComponent {
                                                             dayIndex
                                                         ];
                                                     });
+
+                                                const endDay =
+                                                    availability.range[1] ||
+                                                    moment().add(5, 'years');
+
                                                 return {
                                                     days,
                                                     preferredLocationIndices: JSON.parse(
@@ -127,7 +141,7 @@ class DentistAvailabilityForm extends PureComponent {
                                                     startDay: availability.range[0]
                                                         .format()
                                                         .split('T')[0],
-                                                    endDay: availability.range[1]
+                                                    endDay: endDay
                                                         .format()
                                                         .split('T')[0],
                                                 };

@@ -51,10 +51,9 @@ const ListingConfirmation = props => {
                         id,
                         availability,
                         numChairsAvailable,
-                        chairHourlyPrice,
-                        cleaningFee,
                         localStartTime,
                         localEndTime,
+                        category,
                     },
                     index
                 ) => {
@@ -88,24 +87,6 @@ const ListingConfirmation = props => {
                                     frequency={frequency}
                                     index={index}
                                 />
-                                <Text
-                                    fontSize={[1, '', 4]}
-                                    fontWeight="bold"
-                                    mt={10}
-                                    color="text.blue"
-                                    pb={10}
-                                >
-                                    CLEANING FEE
-                                </Text>
-                                <Text
-                                    fontSize={2}
-                                    fontWeight="500"
-                                    color="text.black"
-                                    pb={18}
-                                    lineHeight={1}
-                                >
-                                    {cleaningFee}
-                                </Text>
                                 <Flex
                                     justifyContent="space-between"
                                     flexDirection={['column', '', 'row']}
@@ -134,7 +115,7 @@ const ListingConfirmation = props => {
                                             }`}
                                         </Text>
                                     </Box>
-                                    <Box width={['100%', '', '262px']}>
+                                    <Box width={['100%', '', '256px']}>
                                         <Text
                                             fontSize={[1, '', 4]}
                                             fontWeight="bold"
@@ -142,7 +123,7 @@ const ListingConfirmation = props => {
                                             pb={10}
                                             mt={10}
                                         >
-                                            HOURLY CHAIR PRICE
+                                            PLAN
                                         </Text>
                                         <Text
                                             fontSize={2}
@@ -151,7 +132,7 @@ const ListingConfirmation = props => {
                                             lineHeight={1}
                                             pb={18}
                                         >
-                                            {`${chairHourlyPrice} per hour`}
+                                            Option {category}
                                         </Text>
                                     </Box>
                                 </Flex>

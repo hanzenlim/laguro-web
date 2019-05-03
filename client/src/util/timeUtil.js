@@ -1,6 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import _isEqual from 'lodash/isEqual';
+import _isNull from 'lodash/isNull';
 
 import { Box, Text } from '../components';
 
@@ -213,58 +214,74 @@ export const ListingTime = ({
     startTime,
     endTime,
     frequency,
-}) => (
-    <Box>
-        <Text fontSize={[1, '', 3]} letterSpacing="-0.6px" color="text.black">
-            {`${(startDate && moment(startDate).format('dddd, MMM DD, YYYY')) ||
-                'Start date'}
+}) => {
+    let hasEndDay = true;
+    if (moment(endDate).isAfter(moment().add(1, 'year')) || _isNull(endDate)) {
+        hasEndDay = false;
+    }
+    return (
+        <Box>
+            <Text
+                fontSize={[1, '', 3]}
+                letterSpacing="-0.6px"
+                color="text.black"
+            >
+                {hasEndDay
+                    ? `${(startDate &&
+                          moment(startDate).format('dddd, MMM DD, YYYY')) ||
+                          'Start date'}
                                 —
                                 ${(endDate &&
                                     moment(endDate).format(
                                         'dddd, MMM DD, YYYY'
                                     )) ||
-                                    'End date'}`}
-        </Text>
-        <Text
-            mt={8}
-            fontSize={[0, '', 1]}
-            color="#9b9b9b"
-            letterSpacing="-0.5px"
-            whiteSpace="normal"
-        >
-            <Text is="span" color="inherit" whiteSpace="inherit">
-                Repeat{' '}
+                                    'End date'}`
+                    : `Starting from ${(startDate &&
+                          moment(startDate).format('dddd, MMM DD, YYYY')) ||
+                          'Start date'}`}
             </Text>
             <Text
-                is="span"
-                fontWeight="medium"
-                color="inherit"
-                whiteSpace="inherit"
+                mt={8}
+                fontSize={[0, '', 1]}
+                color="#9b9b9b"
+                letterSpacing="-0.5px"
+                whiteSpace="normal"
             >
-                {describeFrequency(frequency)}{' '}
+                <Text is="span" color="inherit" whiteSpace="inherit">
+                    Repeat{' '}
+                </Text>
+                <Text
+                    is="span"
+                    fontWeight="medium"
+                    color="inherit"
+                    whiteSpace="inherit"
+                >
+                    {describeFrequency(frequency)}{' '}
+                </Text>
+                <Text is="span" color="inherit" whiteSpace="inherit">
+                    from{' '}
+                </Text>
+                <Text
+                    is="span"
+                    color="inherit"
+                    fontWeight="medium"
+                    whiteSpace="inherit"
+                >
+                    {(startTime && moment(startTime).format('LT')) ||
+                        'start time'}{' '}
+                </Text>
+                <Text is="span" color="inherit" whiteSpace="inherit">
+                    to{' '}
+                </Text>
+                <Text
+                    is="span"
+                    color="inherit"
+                    fontWeight="medium"
+                    whiteSpace="inherit"
+                >
+                    {(endTime && moment(endTime).format('LT')) || 'end time'}
+                </Text>
             </Text>
-            <Text is="span" color="inherit" whiteSpace="inherit">
-                from{' '}
-            </Text>
-            <Text
-                is="span"
-                color="inherit"
-                fontWeight="medium"
-                whiteSpace="inherit"
-            >
-                {(startTime && moment(startTime).format('LT')) || 'start time'}{' '}
-            </Text>
-            <Text is="span" color="inherit" whiteSpace="inherit">
-                to{' '}
-            </Text>
-            <Text
-                is="span"
-                color="inherit"
-                fontWeight="medium"
-                whiteSpace="inherit"
-            >
-                {(endTime && moment(endTime).format('LT')) || 'end time'}
-            </Text>
-        </Text>
-    </Box>
-);
+        </Box>
+    );
+};

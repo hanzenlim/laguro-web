@@ -1,10 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
+import moment from 'moment';
 import { Alert, message } from 'antd';
 import { Query, Mutation, compose, withApollo } from 'react-apollo';
 import queryString from 'query-string';
 import get from 'lodash/get';
-import isEmpty from 'lodash/isEmpty';
+import _isEmpty from 'lodash/isEmpty';
 
 import { renderCents } from '../../util/paymentUtil';
 import {
@@ -134,17 +135,11 @@ const parseListingFormData = values =>
             const startTime =
                 values[`startTime${key.slice(AVAILABILITY.length)}`];
             const endTime = values[`endTime${key.slice(AVAILABILITY.length)}`];
-            const cleaningFee = renderCents(
-                values[`cleaningFee${key.slice(AVAILABILITY.length)}`]
-            );
-            const chairHourlyPrice = renderCents(
-                values[`hourlyChairPrice${key.slice(AVAILABILITY.length)}`]
-            );
             const numChairsAvailable =
                 values[`numChairs${key.slice(AVAILABILITY.length)}`];
             // this.values[key] is availability array
             const startDay = values[key][0];
-            const endDay = values[key][1];
+            const endDay = values[key][1] || moment().add(5, 'years');
 
             if (startTime >= endTime) {
                 message.error(
@@ -154,8 +149,6 @@ const parseListingFormData = values =>
             }
 
             return {
-                cleaningFee,
-                chairHourlyPrice,
                 numChairsAvailable,
                 availability: {
                     startTime: startTime
@@ -289,7 +282,7 @@ class HostOnboarding extends Component {
                     numImage = 0;
                 }
 
-                if (!isEmpty(wizardState)) {
+                if (!_isEmpty(wizardState)) {
                     resumeWarning = true;
                 }
 
@@ -597,7 +590,7 @@ class HostOnboarding extends Component {
                                             lat: locationLat,
                                             lon: locationLong,
                                         },
-                                        addressDetails: !isEmpty(addressDetail)
+                                        addressDetails: !_isEmpty(addressDetail)
                                             ? addressDetail
                                             : undefined,
                                     },
@@ -615,9 +608,9 @@ class HostOnboarding extends Component {
                             setUser({
                                 ...user,
                             });
-                            
+
                             setAuthToken(
-                                 get(result, 'data.createUserOffice.host.token')
+                                get(result, 'data.createUserOffice.host.token')
                             );
                         }
 
@@ -657,23 +650,17 @@ class HostOnboarding extends Component {
         // save officeId to pass to confirmation step
         this.officeId = officeId;
 
-        // find all properties that start with availability and find matching index data(startTime, endTime, cleaningFee, hourlyChairPrice, numChairs)
+        // find all properties that start with availability and find matching index data(startTime, endTime, numChairs)
         const listings = Object.keys(this.values)
             .filter(key => key.startsWith(AVAILABILITY))
             .map(key => {
                 const index = key.slice(AVAILABILITY.length);
                 const startTime = this.values[`startTime${index}`];
                 const endTime = this.values[`endTime${index}`];
-                const cleaningFee = renderCents(
-                    this.values[`cleaningFee${index}`]
-                );
-                const chairHourlyPrice = renderCents(
-                    this.values[`hourlyChairPrice${index}`]
-                );
                 const numChairsAvailable = this.values[`numChairs${index}`];
                 // this.values[key] is availability array
                 const startDay = this.values[key][0];
-                const endDay = this.values[key][1];
+                const endDay = this.values[key][1] || moment().add(5, 'years');
                 const recurringDays = ABBREVIATED_DAYS.map(
                     d => this.values[`${d}${index}`]
                 );
@@ -702,8 +689,6 @@ class HostOnboarding extends Component {
 
                 return {
                     officeId,
-                    cleaningFee,
-                    chairHourlyPrice,
                     numChairsAvailable,
                     availability: {
                         startTime: startTime
@@ -724,6 +709,7 @@ class HostOnboarding extends Component {
                             (num, i) => recurringDays[i]
                         ),
                     },
+                    category: this.values[`plan${index}`],
                 };
             });
 
@@ -775,7 +761,7 @@ class HostOnboarding extends Component {
 
     // after receiving existing office data, turn it into urlParams
     turnOfficeDataIntoParams = data => {
-        if (isEmpty(data)) {
+        if (_isEmpty(data)) {
             return {};
         }
 

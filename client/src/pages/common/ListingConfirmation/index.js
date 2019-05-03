@@ -6,7 +6,6 @@ import ListingConfirmationView from './view';
 import { Loading } from '../../../components';
 import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
 import { getOfficeQuery } from './queries';
-import { renderPrice } from '../../../util/paymentUtil';
 import { formatAddress } from '../../../util/styleUtil';
 
 const mapListings = (listings, equipment) =>
@@ -15,19 +14,17 @@ const mapListings = (listings, equipment) =>
             id,
             availability,
             numChairsAvailable,
-            cleaningFee,
-            chairHourlyPrice,
             localStartTime,
             localEndTime,
+            category,
         }) => ({
             id,
             availability,
-            cleaningFee: renderPrice(cleaningFee),
             equipments: equipment.map(item => item.name),
             numChairsAvailable,
-            chairHourlyPrice: renderPrice(chairHourlyPrice),
             localStartTime,
             localEndTime,
+            category,
         })
     );
 

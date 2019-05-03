@@ -15,6 +15,7 @@ export const getOfficeQuery = gql`
             }
             listings {
                 id
+                category
                 availability {
                     startDay
                     endDay
@@ -24,7 +25,6 @@ export const getOfficeQuery = gql`
                 }
                 localStartTime
                 localEndTime
-                cleaningFee
                 numChairsAvailable
                 chairHourlyPrice
             }

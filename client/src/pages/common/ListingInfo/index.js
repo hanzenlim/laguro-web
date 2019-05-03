@@ -1,8 +1,8 @@
 import React from 'react';
-import { Grid, Flex, Text } from '../../../components';
+import { Flex, Text, Grid } from '../../../components';
 
-const ListingInfo = ({ availableChairs, pricePerChair, cleaningFee }) => (
-    <Grid gridTemplateColumns="1fr 1fr 1fr">
+const ListingInfo = ({ availableChairs, category }) => (
+    <Grid gridTemplateColumns="1fr 1fr">
         <Flex
             borderRight="solid 1px rgba(0, 0, 0, 0.08)"
             flexDirection="column"
@@ -19,7 +19,7 @@ const ListingInfo = ({ availableChairs, pricePerChair, cleaningFee }) => (
                 color="text.black"
                 mb={2}
             >
-                Available chairs
+                Available chair{availableChairs > 1 ? 's' : ''}
             </Text>
             <Text
                 fontWeight="medium"
@@ -31,33 +31,6 @@ const ListingInfo = ({ availableChairs, pricePerChair, cleaningFee }) => (
                 {availableChairs || '0'}
             </Text>
         </Flex>
-
-        <Flex
-            textAlign="center"
-            borderRight="solid 1px rgba(0, 0, 0, 0.08)"
-            flexDirection="column"
-            justifyContent="center"
-        >
-            <Text
-                fontWeight="light"
-                fontSize={[0, '', 2]}
-                lineHeight="18px"
-                letterSpacing="-0.4px"
-                color="text.black"
-                mb={2}
-            >
-                Price per chair
-            </Text>
-            <Text
-                fontWeight="medium"
-                fontSize={[1, '', 2]}
-                lineHeight="18px"
-                letterSpacing="-0.4px"
-                color="text.blue"
-            >
-                {pricePerChair || '$0'}
-            </Text>
-        </Flex>
         <Flex textAlign="center" flexDirection="column" justifyContent="center">
             <Text
                 fontWeight="light"
@@ -67,7 +40,7 @@ const ListingInfo = ({ availableChairs, pricePerChair, cleaningFee }) => (
                 color="text.black"
                 mb={2}
             >
-                Cleaning fee
+                Plan
             </Text>
             <Text
                 fontWeight="medium"
@@ -76,7 +49,7 @@ const ListingInfo = ({ availableChairs, pricePerChair, cleaningFee }) => (
                 letterSpacing="-0.4px"
                 color="text.blue"
             >
-                {cleaningFee || '$0'}
+                Option {category}
             </Text>
         </Flex>
     </Grid>

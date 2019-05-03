@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import moment from 'moment';
+import _isEmpty from 'lodash/isEmpty';
+import _get from 'lodash/get';
 import {
     Box,
     Button,
@@ -10,23 +12,23 @@ import {
     InnerForm,
     Input,
     Tag,
-    RangePicker,
     Text,
     TimePicker,
     Counter,
 } from '../../../../components';
 import ListingCard from '../../ListingCard';
 import { withScreenSizes } from '../../../../components/Responsive';
-import { renderPrice } from '../../../../util/paymentUtil';
 import { ABBREVIATED_DAYS, DAYS } from '../../../../util/timeUtil';
+import ListingRangePicker from '../../ListingRangePicker';
+import { ListingPlan } from '../../ListingPlan';
 
+const TIMEPICKER_FORMAT = 'ha';
 const { FormItem } = InnerForm;
-const format = 'h:mm a';
 const { CheckableTag } = Tag;
 
 const DEFAULT_DAYS = ABBREVIATED_DAYS.slice(0, 5);
-const DEFAULT_START_TIME = moment('08:00', format);
-const DEFAULT_END_TIME = moment('17:00', format);
+const DEFAULT_START_TIME = moment('08:00', TIMEPICKER_FORMAT);
+const DEFAULT_END_TIME = moment('17:00', TIMEPICKER_FORMAT);
 
 const StyledFormItem = styled(FormItem)`
     height: 20px;
@@ -38,7 +40,7 @@ const StyledForm = styled(InnerForm)`
     }
 `;
 
-const StyledRangePicker = styled(RangePicker)`
+const StyledRangePicker = styled(ListingRangePicker)`
     && {
         width: 100%;
     }
@@ -52,30 +54,6 @@ const StyledButton = styled(Button)`
         ${props => !props.visible && `display: none;`};
     }
 `;
-
-// This function is used by antd datepicker to determin which days are disabled.
-const disabledDate = currentDate => {
-    const today = moment()
-        .startOf('day')
-        .startOf('hour');
-    return currentDate.isBefore(today);
-};
-
-const minPriceValidator = (rule, value, callback) => {
-    if (!value) {
-        callback('Price cannot less than $1.00');
-        return;
-    }
-
-    // strip off the $ character
-    const price = parseFloat(value.substring(1));
-    // eslint-disable-next-line
-    if (isNaN(price) || price < 1) {
-        callback('Price cannot less than $1.00');
-    }
-
-    callback();
-};
 
 const chairsValidator = (rule, value, callback) => {
     if (value <= 0) {
@@ -139,6 +117,7 @@ class CreateListing extends Component {
         const endDate = availability && availability[1];
         const startTime = values[`startTime${index}`];
         const endTime = values[`endTime${index}`];
+        const category = values[`plan${index}`];
 
         // if monday, tuesday, friday => form will return [true, true, false, false, true, false, false] for repeatingDayBooleans
         const repeatingDayBooleans = ABBREVIATED_DAYS.map(
@@ -163,11 +142,10 @@ class CreateListing extends Component {
                         frequency={frequency}
                         startDate={startDate}
                         endDate={endDate}
+                        category={category}
                         startTime={startTime}
                         endTime={endTime}
                         availableChairs={values[`numChairs${index}`]}
-                        pricePerChair={values[`hourlyChairPrice${index}`]}
-                        cleaningFee={values[`cleaningFee${index}`]}
                     />
                 </StyledButton>
                 {/* current, open listing */}
@@ -255,7 +233,7 @@ class CreateListing extends Component {
                                     gridTemplateColumns={[
                                         '100%',
                                         '',
-                                        `64px 1fr 64px 1fr`,
+                                        `64px 150px 64px 150px`,
                                     ]}
                                     alignItems="center"
                                     onClick={this.toggleDatePicker}
@@ -290,10 +268,13 @@ class CreateListing extends Component {
                                                 <TimePicker
                                                     px={30}
                                                     py={12}
+                                                    format={TIMEPICKER_FORMAT}
                                                     height={52}
                                                     use12Hours
-                                                    minuteStep={60}
-                                                    format={format}
+                                                    placeholder=""
+                                                    defaultOpenValue={moment().hour(
+                                                        8
+                                                    )}
                                                 />
                                             }
                                         />
@@ -334,8 +315,10 @@ class CreateListing extends Component {
                                                 py={12}
                                                 height={52}
                                                 use12Hours
-                                                minuteStep={60}
-                                                format={format}
+                                                format={TIMEPICKER_FORMAT}
+                                                defaultOpenValue={moment().hour(
+                                                    10
+                                                )}
                                             />
                                         }
                                     />
@@ -343,22 +326,44 @@ class CreateListing extends Component {
 
                                 <FormItem
                                     name={`availability${index}`}
-                                    label="Listing Duration"
+                                    label={
+                                        this.props.tabletMobileOnly &&
+                                        'Listing Duration'
+                                    }
+                                    validateTrigger="onSubmit"
                                     rules={[
                                         {
-                                            required: true,
-                                            message: 'Please select your dates',
+                                            validator: (
+                                                rule,
+                                                value,
+                                                callback
+                                            ) => {
+                                                if (
+                                                    _isEmpty(_get(value, '[0]'))
+                                                ) {
+                                                    return callback(
+                                                        'You must select the starting date'
+                                                    );
+                                                }
+                                                return callback();
+                                            },
+                                            message:
+                                                'Please provide listing date',
                                         },
+                                    ]}
+                                    initialValue={[
+                                        moment()
+                                            .startOf('day')
+                                            .add(1, 'day'),
+                                        null,
                                     ]}
                                     input={
                                         <StyledRangePicker
                                             onDateChange={() => {}}
-                                            disabledDate={disabledDate}
                                             width={608}
                                         />
                                     }
                                 />
-
                                 <Text
                                     fontWeight="bold"
                                     fontSize={[2, '', 4]}
@@ -388,7 +393,6 @@ class CreateListing extends Component {
                                         />
                                     </Box>
                                 </Flex>
-
                                 <FormItem
                                     name={`numChairs${index}`}
                                     initialValue={1}
@@ -402,73 +406,56 @@ class CreateListing extends Component {
                                     ]}
                                     input={<Input type="hidden" />}
                                 />
-
+                                <Text
+                                    fontWeight="bold"
+                                    fontSize={[2, '', 4]}
+                                    color="text.blue"
+                                    mb={27}
+                                >
+                                    SELECT PLAN
+                                </Text>
+                                <Box position="absolute">
+                                    <FormItem
+                                        name={`plan${index}`}
+                                        initialValue={2}
+                                        input={<Input type="hidden" />}
+                                    />
+                                </Box>
                                 <Grid
                                     gridTemplateColumns={[
-                                        '100%',
+                                        'unset',
                                         '',
-                                        '1fr 1fr',
+                                        '1fr 1fr 1fr',
                                     ]}
-                                    gridColumnGap="44px"
-                                    gridTemplateRows={['auto auto', '', 'auto']}
+                                    gridColumnGap={8}
+                                    gridRowGap={8}
                                 >
-                                    <FormItem
-                                        name={`hourlyChairPrice${index}`}
-                                        tooltip="The cost of booking a chair on an hourly basis."
-                                        label="Hourly Chair Price"
-                                        getValueFromEvent={e => {
-                                            if (!e || !e.target) {
-                                                return e;
-                                            }
-                                            const { target } = e;
-                                            return target.type === 'checkbox'
-                                                ? target.checked
-                                                : renderPrice(target.value);
-                                        }}
-                                        rules={[
-                                            {
-                                                required: true,
-                                                validator: minPriceValidator,
-                                                message:
-                                                    'Please enter a value no less than $1.00',
-                                            },
-                                        ]}
-                                        input={
-                                            <Input
-                                                placeholder="$0.00"
-                                                textAlign="right"
-                                                height="50px"
-                                            />
-                                        }
+                                    <ListingPlan
+                                        onSelect={this.onChairCounterHandler(
+                                            `plan${index}`
+                                        )}
+                                        option={1}
+                                        selectedOption={this.props.form.getFieldValue(
+                                            `plan${index}`
+                                        )}
                                     />
-
-                                    <FormItem
-                                        name={`cleaningFee${index}`}
-                                        label="Cleaning fee"
-                                        tooltip="The total cost that the Host will charge for cleaning the chair and equipments after the Dentist is done. Rates will vary."
-                                        getValueFromEvent={e => {
-                                            if (!e || !e.target) {
-                                                return e;
-                                            }
-                                            const { target } = e;
-                                            return target.type === 'checkbox'
-                                                ? target.checked
-                                                : renderPrice(target.value);
-                                        }}
-                                        rules={[
-                                            {
-                                                required: true,
-                                                message:
-                                                    'Please enter a value.',
-                                            },
-                                        ]}
-                                        input={
-                                            <Input
-                                                placeholder="$0.00"
-                                                textAlign="right"
-                                                height="50px"
-                                            />
-                                        }
+                                    <ListingPlan
+                                        onSelect={this.onChairCounterHandler(
+                                            `plan${index}`
+                                        )}
+                                        selectedOption={this.props.form.getFieldValue(
+                                            `plan${index}`
+                                        )}
+                                        option={2}
+                                    />
+                                    <ListingPlan
+                                        onSelect={this.onChairCounterHandler(
+                                            `plan${index}`
+                                        )}
+                                        selectedOption={this.props.form.getFieldValue(
+                                            `plan${index}`
+                                        )}
+                                        option={3}
                                     />
                                 </Grid>
                             </StyledForm>

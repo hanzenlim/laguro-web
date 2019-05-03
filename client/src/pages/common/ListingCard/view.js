@@ -10,10 +10,9 @@ const ListingCard = props => {
         startTime,
         endTime,
         availableChairs,
-        pricePerChair,
-        cleaningFee,
         frequency,
         index,
+        category,
     } = props;
 
     return (
@@ -40,8 +39,7 @@ const ListingCard = props => {
                 />
                 <ListingInfo
                     availableChairs={availableChairs}
-                    pricePerChair={pricePerChair}
-                    cleaningFee={cleaningFee}
+                    category={category}
                 />
             </Flex>
         </Card>

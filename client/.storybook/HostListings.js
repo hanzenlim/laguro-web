@@ -19,7 +19,6 @@ storiesOf('HostListings', module).add('default', () => (
                             hostId: '8a921730-e922-11e8-a2c8-e33fc78354c0',
                             numChairsAvailable: 2,
                             startTime: '2018-11-16T05:00:00Z',
-                            cleaningFee: 125,
                             availability: {
                                 days: [
                                     'FRIDAY',
@@ -116,7 +115,6 @@ storiesOf('HostListings', module).add('default', () => (
                             hostId: '8a921730-e922-11e8-a2c8-e33fc78354c0',
                             numChairsAvailable: 2,
                             startTime: '2018-11-16T05:00:00Z',
-                            cleaningFee: 125,
                             availability: {
                                 days: ['FRIDAY'],
                                 startTime: '00:00:00',
@@ -207,7 +205,6 @@ storiesOf('HostListings', module).add('default', () => (
                             hostId: '8a921730-e922-11e8-a2c8-e33fc78354c0',
                             numChairsAvailable: 2,
                             startTime: '2018-11-16T05:00:00Z',
-                            cleaningFee: 125,
                             availability: {
                                 days: ['FRIDAY'],
                                 startTime: '00:00:00',
