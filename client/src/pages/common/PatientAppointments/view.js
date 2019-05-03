@@ -11,7 +11,7 @@ import {
     Card,
     Link,
     Responsive,
-    Icon
+    Icon,
 } from '../../../components';
 import { CANCELLED } from '../../../util/strings';
 import { setImageSizeToUrl } from '../../../util/imageUtil';
@@ -19,13 +19,12 @@ import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
 
 const { TabletMobile, Desktop } = Responsive;
 
-const filterAppointments = ({ appointments, isUpcoming }) => {
-    return appointments.filter(({ endTime }) =>
+const filterAppointments = ({ appointments, isUpcoming }) =>
+    appointments.filter(({ endTime }) =>
         isUpcoming
             ? moment(endTime).diff(moment()) > -1
             : moment(endTime).diff(moment()) < 0
-        )
-}
+    );
 
 export const NoAppointmentsCard = ({ text }) => (
     <Fragment>
@@ -60,20 +59,12 @@ export const NoAppointmentsCard = ({ text }) => (
 );
 
 class PatientAppointments extends PureComponent {
-    renderAppointments = appointments => {
-        return appointments.map(
-            ({
-                id,
-                localStartTime,
-                startTime,
-                dentist,
-                reservation,
-                status,
-                location
-            }) => {
+    renderAppointments = appointments =>
+        appointments.map(
+            ({ id, localStartTime, startTime, dentist, office, status }) => {
                 const { lastName, firstName, imageUrl } = dentist.user;
                 const dentistName = `Dr. ${firstName} ${lastName}`;
-                const { name: officeName, id: officeId } = reservation.office;
+                const { name: officeName, id: officeId, location } = office;
                 const isCancelled = status === CANCELLED;
 
                 return (
@@ -105,7 +96,10 @@ class PatientAppointments extends PureComponent {
                                     <Text
                                         fontWeight="bold"
                                         letterSpacing="-0.3px"
-                                        style={{ textDecoration: isCancelled && "line-through" }}
+                                        style={{
+                                            textDecoration:
+                                                isCancelled && 'line-through',
+                                        }}
                                     >
                                         {moment(localStartTime).format(
                                             'MMM D, h:mmA'
@@ -133,7 +127,10 @@ class PatientAppointments extends PureComponent {
                                         to={`/office/${officeId}`}
                                         isExternal
                                     >
-                                        <Text fontWeight="light" color='text.blue'>
+                                        <Text
+                                            fontWeight="light"
+                                            color="text.blue"
+                                        >
                                             {officeName}
                                         </Text>
                                     </Link>
@@ -160,11 +157,13 @@ class PatientAppointments extends PureComponent {
                                             </Link>
                                         </Box>
                                     )} */}
-
                                 </Box>
-                                {isCancelled
-                                    ? (<Text fontWeight="medium" fontSize={0}>cancelled</Text>)
-                                    : moment().isBefore(moment(startTime)) && (
+                                {isCancelled ? (
+                                    <Text fontWeight="medium" fontSize={0}>
+                                        cancelled
+                                    </Text>
+                                ) : (
+                                    moment().isBefore(moment(startTime)) && (
                                         <Button
                                             type="ghost"
                                             border="none"
@@ -173,12 +172,15 @@ class PatientAppointments extends PureComponent {
                                                 id
                                             )}
                                         >
-                                            <Text color="text.lightGray" fontSize={0}>
+                                            <Text
+                                                color="text.lightGray"
+                                                fontSize={0}
+                                            >
                                                 cancel
                                             </Text>
                                         </Button>
                                     )
-                                }
+                                )}
                             </TabletMobile>
                             <Desktop>
                                 <Flex
@@ -189,11 +191,14 @@ class PatientAppointments extends PureComponent {
                                         fontSize={2}
                                         mt={12}
                                         mr={30}
-                                        style={{ textDecoration: isCancelled && "line-through" }}
+                                        style={{
+                                            textDecoration:
+                                                isCancelled && 'line-through',
+                                        }}
                                         width={190}
-                                        maxWidth='25%'
+                                        maxWidth="25%"
                                     >
-                                        <Text fontWeight="bold" is='span'>
+                                        <Text fontWeight="bold" is="span">
                                             {moment(localStartTime).format(
                                                 'ddd, M/D/YY'
                                             )}
@@ -240,7 +245,7 @@ class PatientAppointments extends PureComponent {
                                             <Text
                                                 fontWeight="light"
                                                 fontSize={2}
-                                                color='text.blue'
+                                                color="text.blue"
                                                 mt={15}
                                             >
                                                 {officeName}
@@ -271,9 +276,16 @@ class PatientAppointments extends PureComponent {
                                         )} */}
                                     </Box>
                                 </Flex>
-                                {isCancelled
-                                    ? (<Text fontWeight="medium" fontSize={2} mt={12}>cancelled</Text>)
-                                    : moment().isBefore(moment(startTime)) && (
+                                {isCancelled ? (
+                                    <Text
+                                        fontWeight="medium"
+                                        fontSize={2}
+                                        mt={12}
+                                    >
+                                        cancelled
+                                    </Text>
+                                ) : (
+                                    moment().isBefore(moment(startTime)) && (
                                         <Button
                                             type="ghost"
                                             border="none"
@@ -282,40 +294,52 @@ class PatientAppointments extends PureComponent {
                                                 id
                                             )}
                                         >
-                                            <Text color="text.lightGray" mt={14}>
+                                            <Text
+                                                color="text.lightGray"
+                                                mt={14}
+                                            >
                                                 cancel
                                             </Text>
                                         </Button>
                                     )
-                                }
+                                )}
                             </Desktop>
                         </Flex>
                     </Fragment>
                 );
             }
         );
-    }
 
     render() {
         const { appointments } = this.props;
-        const upcomingAppointments = filterAppointments({ appointments, isUpcoming: true })
-        const pastAppointments = filterAppointments({ appointments, isUpcoming: false })
+        const upcomingAppointments = filterAppointments({
+            appointments,
+            isUpcoming: true,
+        });
+        const pastAppointments = filterAppointments({
+            appointments,
+            isUpcoming: false,
+        });
         return (
             <Box>
                 {!isEmpty(appointments) ? (
                     <Fragment>
                         {upcomingAppointments.length ? (
                             <Box mb={50}>
-                                <Text fontSize={2} fontWeight="medium" mb={8}>Upcoming appointments</Text>
+                                <Text fontSize={2} fontWeight="medium" mb={8}>
+                                    Upcoming appointments
+                                </Text>
                                 {this.renderAppointments(upcomingAppointments)}
                             </Box>
-                        ): null}
+                        ) : null}
                         {pastAppointments.length ? (
                             <Box mb={50}>
-                                <Text fontSize={2} fontWeight="medium" mb={8}>Past appointments</Text>
+                                <Text fontSize={2} fontWeight="medium" mb={8}>
+                                    Past appointments
+                                </Text>
                                 {this.renderAppointments(pastAppointments)}
                             </Box>
-                        ): null}
+                        ) : null}
                     </Fragment>
                 ) : (
                     <NoAppointmentsCard text="You have no appointments yet!" />

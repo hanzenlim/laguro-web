@@ -13,15 +13,12 @@ export const getAppointmentsQuery = gql`
                     imageUrl
                 }
             }
-            reservation {
+            office {
                 id
-                office {
-                    id
+                name
+                location {
                     name
                 }
-            }
-            location {
-                name
             }
             startTime
             endTime
