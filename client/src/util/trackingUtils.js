@@ -35,6 +35,7 @@ export const trackBookAppointment = ({
     appointmentId,
     city,
     weekDay,
+    internalPage,
     hour,
 }) => {
     const gtmArgs = {
@@ -47,7 +48,7 @@ export const trackBookAppointment = ({
             city,
             weekDay,
             officeId,
-            internalPage: 'dentist',
+            internalPage,
             appointmentId,
         },
     };

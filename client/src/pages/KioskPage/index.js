@@ -40,9 +40,11 @@ import {
     UPDATE_USER_MUTATION,
     GET_APPOINTMENT,
     GET_OFFICE,
+    GET_APPOINTMENT_SLOTS_FOR_KIOSK,
     CREATE_PATIENT_APPOINTMENT_ONBOARDING,
     UPDATE_PATIENT_HEALTH_DATA,
     GET_PATIENT_HEALTH_DATA_UNSTRUCTURED,
+    CREATE_APPOINTMENT_FROM_KIOSK,
 } from './queries';
 import { Flex, Text, Loading, Box, Container } from '../../components/index';
 import {
@@ -91,6 +93,7 @@ import {
     KIOSK_REG_PAGE_URL,
     KIOSK_OFFICE_SETUP_PAGE_URL,
 } from '../../util/urls';
+import { appointmentClient } from '../../util/apolloClients';
 import history, { redirect } from '../../history';
 import {
     kioskPurposeOfVisitCookieVariableName,
@@ -168,6 +171,28 @@ const Composed = adopt({
             {render}
         </Query>
     ),
+    getAppointmentSlotForKiosk: ({ render, officeId }) => (
+        <Query
+            variables={{
+                input: {
+                    officeId,
+                    rangeStart: moment()
+                        .utc()
+                        .format(),
+                    rangeEnd: moment()
+                        .utc()
+                        .add(14, 'days')
+                        .format(),
+                },
+            }}
+            query={GET_APPOINTMENT_SLOTS_FOR_KIOSK}
+            skip={_isEmpty(officeId)}
+            fetchPolicy="network-only"
+            client={appointmentClient}
+        >
+            {render}
+        </Query>
+    ),
     getUserResponse: ({ render, userId }) => (
         <Query
             query={GET_USER}
@@ -215,9 +240,16 @@ const Composed = adopt({
             </Query>
         );
     },
-
     createPatientAppointmentOnboarding: ({ render }) => (
         <Mutation mutation={CREATE_PATIENT_APPOINTMENT_ONBOARDING}>
+            {render}
+        </Mutation>
+    ),
+    createAppointmentFromKiosk: ({ render }) => (
+        <Mutation
+            mutation={CREATE_APPOINTMENT_FROM_KIOSK}
+            client={appointmentClient}
+        >
             {render}
         </Mutation>
     ),
@@ -280,6 +312,11 @@ class KioskPage extends Component {
                         error: getOfficeWithDentistsWithApptSlotsHasError,
                         data: officeData,
                     },
+                    getAppointmentSlotForKiosk: {
+                        loading: isGetAppointmentSlotForKioskLoading,
+                        error: getAppointmentSlotForKioskHasError,
+                        data: appointmentSlotForKioskData,
+                    },
                     getPatientHealthDataUnstructured: {
                         loading: isGetPatientHealthDataUnstructuredLoading,
                         error: getPatientHealthDataUnstructuredHasError,
@@ -288,6 +325,7 @@ class KioskPage extends Component {
                     updateInsuranceInfoMutation,
                     updateUserMutation,
                     createPatientAppointmentOnboarding,
+                    createAppointmentFromKiosk,
                     updatePatientHealthData,
                 }) => {
                     if (
@@ -303,7 +341,8 @@ class KioskPage extends Component {
                         getUserHasError ||
                         getApptHasError ||
                         getOfficeWithDentistsWithApptSlotsHasError ||
-                        getPatientHealthDataUnstructuredHasError
+                        getPatientHealthDataUnstructuredHasError ||
+                        getAppointmentSlotForKioskHasError
                     ) {
                         return <RedirectErrorPage />;
                     }
@@ -327,8 +366,6 @@ class KioskPage extends Component {
                         'patient.insuranceInfo'
                     );
 
-                    // default office id is production bell office
-                    // if this id or other id doesn't exist in the backend, redirect to setUp page
                     const office = _get(officeData, 'getOffice');
                     if (_isNull(office)) {
                         redirect({ url: KIOSK_OFFICE_SETUP_PAGE_URL });
@@ -336,11 +373,15 @@ class KioskPage extends Component {
                     }
 
                     const activeDentistsWithAppointmentSlots = _get(
-                        office,
-                        'activeDentists'
+                        appointmentSlotForKioskData,
+                        'getAppointmentSlotsForKiosk'
                     );
+
                     const dentistTimes = getDentistTimes(
-                        activeDentistsWithAppointmentSlots
+                        _get(
+                            appointmentSlotForKioskData,
+                            'getAppointmentSlotsForKiosk'
+                        )
                     );
 
                     const healthHistoryAnswers = _get(
@@ -494,11 +535,13 @@ class KioskPage extends Component {
 
                             wizardSteps: getKioskPageWizardSteps({
                                 user: this.userFromDB,
+                                officeId,
                                 activeDentistsWithAppointmentSlots,
                                 mutations: {
                                     updateInsuranceInfoMutation,
                                     updateUserMutation,
                                     createPatientAppointmentOnboarding,
+                                    createAppointmentFromKiosk,
                                     updatePatientHealthData,
                                 },
                                 answers: healthHistoryAnswers,

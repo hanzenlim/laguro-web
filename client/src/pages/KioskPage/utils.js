@@ -51,15 +51,14 @@ export const getDentistTimes = activeDentistsWithAppointmentSlots =>
     !_isEmpty(activeDentistsWithAppointmentSlots) &&
     _flatten(
         activeDentistsWithAppointmentSlots.map(dent =>
-            dent.availableAppointmentSlots.map(apptSlot => ({
-                startTime: apptSlot.startTime,
-                reservationId: apptSlot.reservationId,
+            dent.appointmentTimeslots.map(apptSlot => ({
+                startTime: apptSlot.localStartTime,
                 ...dent,
-                id: `${dent.id}${apptSlot.startTime}`,
-                dentistId: dent.id,
-                name: `Dr. ${dent.user.firstName} ${dent.user.lastName}`,
+                id: `${dent.id}${apptSlot.localStartTime}`,
+                dentistId: dent.dentistId,
+                name: `Dr. ${dent.firstName} ${dent.lastName}`,
                 rating: dent.averageRating,
-                imageUrl: dent.user.imageUrl || defaultUserImage,
+                imageUrl: dent.imageUrl || defaultUserImage,
                 appointmentDuration: dent.firstAppointmentDuration,
                 procedures: dent.procedures.map(p => p.group),
                 languages: dent.languages.map(

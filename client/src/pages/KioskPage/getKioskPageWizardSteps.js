@@ -13,6 +13,7 @@ import moment from 'moment-timezone';
 import { execute } from '../../util/gqlUtils';
 import { getDentistTimes } from './utils';
 import { insuranceClient } from '../../util/apolloClients';
+import { trackBookAppointment } from '../../util/trackingUtils';
 import { CHECK_ELIGIBILITY } from './queries';
 
 // contains renderRegistrationStage which renders correct step within Registation stage of kiosk flow
@@ -162,6 +163,7 @@ const getInitialValues = (questions, answers = []) => {
 // eslint-disable-next-line
 export const getKioskPageWizardSteps = ({
     user,
+    officeId,
     activeDentistsWithAppointmentSlots,
     mutations,
     healthHistoryAnswers,
@@ -443,32 +445,16 @@ export const getKioskPageWizardSteps = ({
                     action: async () => {
                         const result = await _get(
                             mutations,
-                            'createPatientAppointmentOnboarding'
+                            'createAppointmentFromKiosk'
                         )({
                             variables: {
                                 input: {
+                                    officeId,
+                                    dentistId: dentistTime.dentistId,
                                     patientId: _get(user, 'id'),
-                                    reservationId: dentistTime.reservationId,
-                                    /* hardcoding timezone to make temporary fix
-                                     * within next two weeks, appointmentslot will
-                                     * be updated to return localStartTime, localEndTime
-                                     */
-                                    localStartTime: moment
-                                        .tz(
-                                            dentistTime.startTime,
-                                            'America/Los_Angeles'
-                                        )
-                                        .format('YYYY-MM-DDTHH:mm:ss'),
-                                    localEndTime: moment
-                                        .tz(
-                                            dentistTime.startTime,
-                                            'America/Los_Angeles'
-                                        )
-                                        .add(
-                                            dentistTime.firstAppointmentDuration,
-                                            'minutes'
-                                        )
-                                        .format('YYYY-MM-DDTHH:mm:ss'),
+                                    localStartTime: moment(
+                                        dentistTime.startTime
+                                    ).format(),
                                     reasonOfVisit: !_isEmpty(
                                         selectProcedureListOfProcedures
                                     )
@@ -481,9 +467,24 @@ export const getKioskPageWizardSteps = ({
                             },
                         });
 
+                        // Track the appointment creation.
+                        if (_get(result, 'data.createAppointment')) {
+                            trackBookAppointment({
+                                appointmentId: result.data.createAppointment,
+                                dentistId: dentistTime.dentistId,
+                                weekDay: moment(dentistTime.startTime).format(
+                                    'dddd'
+                                ),
+                                hour: moment(dentistTime.startTime).format(
+                                    'hh:mm a'
+                                ),
+                                internalPage: 'kiosk',
+                            });
+                        }
+
                         cookies.set(
                             KIOSK_APPT_ID_COOKIE_VARIABLE_NAME,
-                            result.data.createPatientAppointmentOnboarding.id,
+                            result.data.createAppointment,
                             {
                                 expires: 0,
                             }

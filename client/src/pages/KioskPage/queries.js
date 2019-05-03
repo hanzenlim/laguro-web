@@ -263,9 +263,7 @@ export const GET_OFFICE = gql`
                         .format()}"
                 }
             ) {
-                id
                 specialty
-                isHostVerified
                 user {
                     firstName
                     lastName
@@ -298,6 +296,31 @@ export const GET_OFFICE = gql`
     }
 `;
 
+export const GET_APPOINTMENT_SLOTS_FOR_KIOSK = gql`
+    query getAppointmentSlotsForKiosk(
+        $input: GetAppointmentSlotsForKioskInput!
+    ) {
+        getAppointmentSlotsForKiosk(input: $input) {
+            dentistId
+            officeId
+            firstName
+            lastName
+            averageRating
+            acceptedInsurances
+            specialty
+            firstAppointmentDuration
+            procedures {
+                name
+                duration
+            }
+            languages
+            appointmentTimeslots {
+                localStartTime
+            }
+        }
+    }
+`;
+
 export const CREATE_PATIENT_APPOINTMENT_ONBOARDING = gql`
     mutation CreatePatientAppointmentOnboarding(
         $input: CreatePatientAppointmentOnboardingInput!
@@ -305,6 +328,12 @@ export const CREATE_PATIENT_APPOINTMENT_ONBOARDING = gql`
         createPatientAppointmentOnboarding(input: $input) {
             id
         }
+    }
+`;
+
+export const CREATE_APPOINTMENT_FROM_KIOSK = gql`
+    mutation createAppointment($input: CreateAppointmentInput!) {
+        createAppointment(input: $input)
     }
 `;
 
