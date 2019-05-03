@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import _isEmpty from 'lodash/isEmpty';
 import { Mutation } from 'react-apollo';
 import { message } from 'antd';
-
+import _get from 'lodash/get';
 import PreferredLocationsView from './view';
 import esClient from '../../../util/esClient';
 import { updateDentist } from './queries';
@@ -176,30 +176,22 @@ class PreferredLocations extends Component {
                         updateLoading={updateLoading}
                         handleOnSave={async () => {
                             try {
-                                const preferredLocations = [];
-
-                                const {
-                                    preferredLocationOne,
-                                    preferredLocationTwo,
-                                } = this.state;
-
-                                if (preferredLocationOne) {
-                                    preferredLocations.push(
-                                        preferredLocationOne.id
-                                    );
-                                }
-
-                                if (preferredLocationTwo) {
-                                    preferredLocations.push(
-                                        preferredLocationTwo.id
-                                    );
-                                }
-
                                 await updateDentist({
                                     variables: {
                                         input: {
                                             id: dentistId,
-                                            preferredLocations,
+                                            preferredLocations: [
+                                                _get(
+                                                    this,
+                                                    'state.preferredLocationOne.id',
+                                                    null
+                                                ),
+                                                _get(
+                                                    this,
+                                                    'state.preferredLocationTwo.id',
+                                                    null
+                                                ),
+                                            ],
                                         },
                                     },
                                 });
