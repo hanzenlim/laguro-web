@@ -4,6 +4,7 @@ import { Mutation } from 'react-apollo';
 import CancelAppointmentModal from './view';
 import { cancelAppointmentMutation } from './queries';
 import { CANCELLED_BY_PATIENT } from '../../../../util/strings';
+import { appointmentClient } from '../../../../util/apolloClients';
 
 class CancelAppointmentContainer extends PureComponent {
     onCancel = () => {
@@ -13,13 +14,16 @@ class CancelAppointmentContainer extends PureComponent {
     render() {
         const { refetch } = this.props;
         return (
-            <Mutation mutation={cancelAppointmentMutation}>
+            <Mutation
+                mutation={cancelAppointmentMutation}
+                client={appointmentClient}
+            >
                 {(cancelAppointment, { loading }) => {
                     const onSubmit = async () => {
                         await cancelAppointment({
                             variables: {
                                 input: {
-                                    id: this.props.id,
+                                    appointmentId: this.props.id,
                                     cancellationType: this.props
                                         .cancellationType,
                                 },
