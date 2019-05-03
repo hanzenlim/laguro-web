@@ -76,7 +76,16 @@ class WalletDashboard extends Component {
 
         const wallet = _get(this.state.walletData, 'getWalletByUserId', {});
         const transactions = _get(wallet, 'transactions', []);
-        const balanceBreakdown = _get(wallet, 'balanceBreakdown', {});
+        const pendingAmount = _get(wallet, 'pendingAmount');
+        const processingAmount = _get(wallet, 'processingAmount');
+        const availableAmount = _get(wallet, 'availableAmount');
+        const totalAmount = _get(wallet, 'totalAmount');
+        const balanceBreakdown = {
+            pendingAmount,
+            processingAmount,
+            availableAmount,
+            totalAmount,
+        };
 
         return (
             <WalletDashboardView

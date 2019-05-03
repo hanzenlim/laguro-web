@@ -22,7 +22,12 @@ const TABLE_DIVIDER_COLOR = 'divider.gray';
 const TABLE_BORDER = 'solid 1px';
 const TABLE_PX_IN_PIXELS = 45;
 
-const CATEGORIES = ['All categories', 'CHAIR_TIME', 'TREATMENT_PLAN', 'XRAY'];
+const CATEGORIES = [
+    'All categories',
+    'CHAIR_RENTAL',
+    'TREATMENT_PLAN',
+    'IMAGE_REQUEST',
+];
 
 const FILTER_BUTTON_STYLES = `
 border-radius: 2px;
@@ -77,14 +82,14 @@ const StyledTable = styled(Table)`
             background-color: transparent;
         }
         .ant-table-tbody > tr {
-            border-bottom: solid 1px 
+            border-bottom: solid 1px
             border-color: rgba(236,236,236,0.5)
         }
         .ant-table-tbody > tr:hover:not(.ant-table-expanded-row) > td {
             background: transparent;
         }
         .ant-table-thead > tr {
-            border-bottom: solid 0.5px 
+            border-bottom: solid 0.5px
             border-color: #c7c7c7;
         }
         .ant-table-thead > tr, .ant-table-tbody > tr {
@@ -112,7 +117,7 @@ const StyledTable = styled(Table)`
                 _get(props.theme.colors, TABLE_DIVIDER_COLOR)};
         }
         td.column-amount > div {
-            text-align: right; 
+            text-align: right;
         }
         .ant-table-body {
             padding: 0 ${TABLE_PX_IN_PIXELS}px 6px ${TABLE_PX_IN_PIXELS}px;
@@ -174,10 +179,21 @@ const renderTransactionPrice = (amount, props) => {
     );
 };
 
+// TODO confirm these string values
+const TYPE_TO_FILTER_NAME = {
+    TREATMENT_PLAN: 'Treatment',
+    IMAGE_REQUEST: 'Images',
+    CHAIR_RENTAL: 'Chair Rental',
+    [`All categories`]: 'All categories',
+};
+
 const TYPE_TO_DISPLAY_NAME = {
     TREATMENT_PLAN: 'Treatment',
-    XRAY: 'Images',
-    CHAIR_TIME: 'Chair time',
+    IMAGE_REQUEST: 'Images',
+    CHAIR_RENTAL: 'Chair Rental',
+    TREATMENT_PLAN_SERVICE_FEE: 'Treatment Service Fee',
+    CHAIR_RENTAL_SERVICE_FEE: 'Chair Rental Service Fee',
+    TREATMENT_PLAN_PAYMENT: 'Payment for Treatment',
     [`All categories`]: 'All categories',
 };
 
@@ -301,7 +317,7 @@ export const WalletTransactions = props => {
                         >
                             {CATEGORIES.map(item => (
                                 <Select.Option key={item} value={item}>
-                                    {TYPE_TO_DISPLAY_NAME[item]}
+                                    {TYPE_TO_FILTER_NAME[item]}
                                 </Select.Option>
                             ))}
                         </StyledSelect>

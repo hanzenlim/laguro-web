@@ -5,13 +5,10 @@ export const GET_WALLET_BY_USER_ID = (rangeStart, rangeEnd) => gql`
         getWalletByUserId(input: $input) {
             id
             userId
-            balance
-            balanceBreakdown {
-                pendingAmount
-                processingAmount
-                availableAmount
-                balance
-            }
+            pendingAmount
+            processingAmount
+            availableAmount
+            totalAmount
             transactions(
                 options: {
                     rangeStart: "${rangeStart}",

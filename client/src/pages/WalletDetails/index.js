@@ -17,8 +17,8 @@ const StyledTable = styled(Table)`
         .ant-table-thead > tr > th, .ant-table-tbody > tr > td {
             padding: 9px 0px;
             @media (min-width: ${props => props.theme.breakpoints[1]}) {
-               padding: 16px 
-            } 
+               padding: 16px
+            }
         }
         .ant-table-thead > tr, .ant-table-tbody > tr {
             width: 100%;
@@ -69,8 +69,8 @@ const StyledTable = styled(Table)`
         .ant-table-body {
             padding: 8px ${TABLET_MOBILE_TABLE_PX_IN_PIXELS}px 8px ${TABLET_MOBILE_TABLE_PX_IN_PIXELS}px;
             @media (min-width: ${props => props.theme.breakpoints[1]}) {
-                padding: 6px ${TABLE_PX_IN_PIXELS}px 6px ${TABLE_PX_IN_PIXELS}px;            
-            } 
+                padding: 6px ${TABLE_PX_IN_PIXELS}px 6px ${TABLE_PX_IN_PIXELS}px;
+            }
         }
         .ant-table-tbody {
             tr:last-child > td {
@@ -112,7 +112,7 @@ export const WalletDetails = ({ details }) => {
         },
         {
             title: 'Total',
-            dataIndex: 'balance',
+            dataIndex: 'totalAmount',
             render: balance => {
                 const textColor = balance < 0 ? 'text.black' : 'text.blue';
 
