@@ -19,7 +19,7 @@ const patientDocumentFragment = `
         url
         side
     }
-    deaRegistration {
+    dea {
         url
         side
     }
