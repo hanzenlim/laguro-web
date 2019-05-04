@@ -7,7 +7,15 @@ export const getSuggestedDentist = async args => {
 
     const query = {
         bool: {
-            must: [{ match: { 'appointmentAvailability.officeId': officeId } }],
+            must: [
+                {
+                    term: {
+                        'appointmentAvailability.officeId.keyword': {
+                            value: officeId,
+                        },
+                    },
+                },
+            ],
             filter: { term: { isVerified: true } },
         },
     };
