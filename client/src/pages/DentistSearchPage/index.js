@@ -356,6 +356,17 @@ class DetailsSearchPage extends PureComponent {
 
     render() {
         const urlParams = queryString.parse(this.props.location.search);
+        let queryParams = {
+            textQuery: urlParams && urlParams.text ? urlParams.text : '',
+        };
+        if (urlParams.lat && urlParams.long) {
+            queryParams = {
+                locationQuery: {
+                    lat: parseFloat(urlParams.lat),
+                    lon: parseFloat(urlParams.long),
+                },
+            };
+        }
 
         return (
             <Fragment>
@@ -380,12 +391,7 @@ class DetailsSearchPage extends PureComponent {
                     query={GET_DENTISTS_AND_APPOINTMENT_SLOTS}
                     client={appointmentClient}
                     variables={{
-                        input: {
-                            textQuery:
-                                urlParams && urlParams.text
-                                    ? urlParams.text
-                                    : '',
-                        },
+                        input: queryParams,
                     }}
                 >
                     {({ data, loading }) => {
