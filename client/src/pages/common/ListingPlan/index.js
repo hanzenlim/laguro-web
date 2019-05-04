@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import styled from 'styled-components';
-import { Box, Text, Flex, Button, Responsive } from '../../../components';
+import { Box, Text, Icon, Flex, Button, Responsive } from '../../../components';
 import { withScreenSizes } from '../../../components/Responsive';
 
 const OPTION_NUM_TO_DATA = {
-    1: { type: '1 chair', assistant: 'Shared assitant', price: 5 },
-    2: { type: '1 chair', assistant: 'Shared assitant', price: 10 },
-    3: { type: '1 reserved room', assistant: 'Private assitant', price: 15 },
+    1: { type: 'Chair only', assistant: '', price: 20 },
+    2: { type: 'Chair', assistant: 'Shared assitant*', price: 35 },
+    3: { type: 'Private chair**', assistant: 'Personal assitant', price: 50 },
 };
 
 const StyledButton = styled(Button)`
@@ -27,7 +27,7 @@ const ListingPlanComponent = props => {
     return (
         <Flex
             width="100%"
-            borderColor="divider.blue"
+            borderColor={`divider.${isSelected ? 'blue' : 'gray'}`}
             border="solid 1px"
             borderRadius="2px"
             flexDirection={['row', '', 'column']}
@@ -81,7 +81,9 @@ const ListingPlanComponent = props => {
                     fontWeight="bold"
                     textAlign={['unset', '', 'center']}
                 >
-                    Option {props.option}
+                    {props.option === 1 && 'Basic'}
+                    {props.option === 2 && 'Plus'}
+                    {props.option === 3 && 'Premium'}
                 </Text>
                 <Text fontSize={10} letterSpacing="-0.28px" mb={[5, '', 14]}>
                     This plan comes with:{' '}
@@ -92,14 +94,17 @@ const ListingPlanComponent = props => {
                     letterSpacing="-0.28px"
                     ml={[-20, '', -15]}
                     mb={[10, '', 31]}
+                    minHeight={40}
                 >
                     <ul>
                         <li>
                             <Text>{data.type}</Text>
                         </li>
-                        <li>
-                            <Text>{data.assistant}</Text>
-                        </li>
+                        {data.assistant && (
+                            <li>
+                                <Text>{data.assistant}</Text>
+                            </li>
+                        )}
                     </ul>
                 </Box>
             </Flex>
@@ -142,9 +147,16 @@ const ListingPlanComponent = props => {
                     mb={[15, '', 26]}
                     height={33}
                     fontSize={0}
-                    ghost
+                    ghost={!isSelected}
+                    primary={isSelected}
                 >
-                    Choose plan
+                    {!isSelected && 'Choose plan'}
+                    {isSelected && (
+                        <Fragment>
+                            <Icon type="check" color="text.white" />
+                            {' Selected'}
+                        </Fragment>
+                    )}
                 </StyledButton>
             </Desktop>
         </Flex>

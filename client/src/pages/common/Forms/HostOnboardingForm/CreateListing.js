@@ -458,6 +458,23 @@ class CreateListing extends Component {
                                         option={3}
                                     />
                                 </Grid>
+                                <Text
+                                    fontWeight="medium"
+                                    fontSize="10px"
+                                    letterSpacing="-0.28px"
+                                    mt={10}
+                                >
+                                    *Shared assistant can help with materials
+                                    and sterilization. Note: max of 3 D.D.S. per
+                                    shared assistant
+                                </Text>
+                                <Text
+                                    fontWeight="medium"
+                                    fontSize="10px"
+                                    letterSpacing="-0.28px"
+                                >
+                                    **Enclosed surgical room optional
+                                </Text>
                             </StyledForm>
                         </Box>
                     </StyledCard>
