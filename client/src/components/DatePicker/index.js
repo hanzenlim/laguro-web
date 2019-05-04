@@ -35,6 +35,10 @@ const StyledContainer = styled.div`
         width: 100%;
         padding: 1px;
 
+        .ant-input {
+            cursor: pointer
+        }
+
         .ant-input-suffix {
             visibility: hidden;
         }
@@ -158,7 +162,7 @@ class DatePicker extends PureComponent {
                 <Input
                     onClick={this.toggleDatePicker}
                     value={dateString}
-                    placeholder={moment().format(this.props.format)}
+                    placeholder="Select a date"
                     prefix={
                         <Icon
                             type="calendar"

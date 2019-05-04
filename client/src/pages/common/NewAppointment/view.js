@@ -16,14 +16,14 @@ const renderAppointmentSuccess = onMakeAnotherAppt => (
             borderColor="background.lightGray"
             borderRadius="4px"
         >
-            <Flex flexDirection="column" mt="30px" justifyContent="center">
+            <Flex flexDirection="column" my="30px" justifyContent="center">
                 <CheckMarkAnimation />
-                <Text textAlign="center">Appointment has been made</Text>
+                <Text textAlign="center">Appointment confirmation requested</Text>
                 <Button
                     width="80%"
                     mx="auto"
                     onClick={onMakeAnotherAppt}
-                    mt="10px"
+                    my="10px"
                 >
                     Make another appointment
                 </Button>
@@ -31,12 +31,16 @@ const renderAppointmentSuccess = onMakeAnotherAppt => (
         </Box>
     </Fragment>
 );
-const NewAppointmentView = ({ showForm, onMakeAnotherAppt, ...rest }) => (
+const NewAppointmentView = ({
+    showConfirmationMessage,
+    onMakeAnotherAppt,
+    ...rest
+}) => (
     <Fragment>
-        {showForm ? (
-            <AppointmentForm {...rest} />
-        ) : (
+        {showConfirmationMessage ? (
             renderAppointmentSuccess(onMakeAnotherAppt)
+        ) : (
+            <AppointmentForm {...rest} />
         )}
     </Fragment>
 );

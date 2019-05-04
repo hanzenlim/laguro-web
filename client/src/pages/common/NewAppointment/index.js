@@ -1,49 +1,62 @@
 import React, { PureComponent } from 'react';
-import { compose, Query, withApollo, graphql } from 'react-apollo';
-import { NewAppointment as NewAppointmentView } from '@laguro/the-bright-side-components';
+import moment from 'moment';
+import { message } from 'antd';
+import { Query } from 'react-apollo';
 import _get from 'lodash/get';
-
+import NewAppointmentView from './view';
 import { Loading } from '../../../components';
 import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
+import { appointmentClient } from '../../../util/apolloClients';
 
-import { getDentistQuery, requestAppointmentMutation } from './queries';
+import { getDentistQuery, createAppointmentMutation } from './queries';
 import { getUser } from '../../../util/authUtils';
 
 class NewAppointment extends PureComponent {
-    onSubmit = async (values, refetchFormData) => {
-        const { reservationId } = values;
-        const { patientId } = values;
-        const localStartTime = values.startTime;
-        const localEndTime = values.endTime;
-        const { notes } = values;
+    state = {
+        showConfirmationMessage: false,
+    };
 
-        const result = await this.props.requestAppointment({
-            variables: {
-                input: {
-                    reservationId,
-                    patientId,
-                    localStartTime,
-                    localEndTime,
-                    notes,
+    onSubmit = async (values, dentistId) => {
+        const localStartTimeHour = moment(values.selectedStartTime).format(
+            'HH'
+        );
+        const localStartTimeMinutes = moment(values.selectedStartTime).format(
+            'mm'
+        );
+        const localEndTimeHour = moment(values.selectedEndTime).format('HH');
+        const localEndTimeMinutes = moment(values.selectedEndTime).format('mm');
+
+        try {
+            const result = await appointmentClient.mutate({
+                mutation: createAppointmentMutation,
+                variables: {
+                    input: {
+                        officeId: values.dentalOfficeId,
+                        dentistId,
+                        patientId: values.selectedPatientId,
+                        localStartTime: moment(values.selectedDate)
+                            .hour(localStartTimeHour)
+                            .minute(localStartTimeMinutes)
+                            .format(),
+                        localEndTime: moment(values.selectedDate)
+                            .hour(localEndTimeHour)
+                            .minute(localEndTimeMinutes)
+                            .format(),
+                    },
                 },
-            },
-        });
+            });
 
-        if (result) {
-            // Closes the form
-            if (this.props.onClose) {
-                this.props.onClose();
+            if (result) {
+                this.setState({
+                    showConfirmationMessage: true,
+                });
+
+                window.scrollTo(0, 0);
             }
+        } catch (error) {
+            const errorMessage = error.graphQLErrors[0].message;
 
-            window.scrollTo(0, 0);
-        }
-
-        // Refetch the form data
-        refetchFormData();
-
-        // Calls the refetch function to refetch the data for big calendar.
-        if (this.props.refetch) {
-            this.props.refetch();
+            message.error(errorMessage);
         }
     };
 
@@ -56,11 +69,12 @@ class NewAppointment extends PureComponent {
                     id: _get(user, 'dentistId'),
                 }}
             >
-                {({ loading, error, data, refetch }) => {
+                {({ loading, error, data }) => {
                     if (error) return <RedirectErrorPage />;
                     if (loading) return <Loading />;
 
                     const { patients } = _get(data, 'getDentist');
+                    const dentistId = _get(data, 'getDentist.id');
 
                     const patientsNameMap = patients.map(value => {
                         const key = value.id;
@@ -74,14 +88,26 @@ class NewAppointment extends PureComponent {
 
                     return (
                         <NewAppointmentView
-                            data={_get(data, 'getDentist.reservations')}
+                            preferredLocations={_get(
+                                data,
+                                'getDentist.preferredLocations'
+                            )}
+                            data={_get(data, 'getDentist')}
                             firstAppointmentDuration={_get(
                                 data,
                                 'getDentist.firstAppointmentDuration'
                             )}
+                            showConfirmationMessage={
+                                this.state.showConfirmationMessage
+                            }
+                            onMakeAnotherAppt={() => {
+                                this.setState({
+                                    showConfirmationMessage: false,
+                                });
+                            }}
                             patientsName={patientsNameMap}
                             onSubmit={values => {
-                                this.onSubmit(values, refetch);
+                                this.onSubmit(values, dentistId);
                             }}
                             onClose={this.props.onClose}
                         />
@@ -92,9 +118,4 @@ class NewAppointment extends PureComponent {
     }
 }
 
-export default compose(
-    withApollo,
-    graphql(requestAppointmentMutation, {
-        name: 'requestAppointment',
-    })
-)(NewAppointment);
+export default NewAppointment;

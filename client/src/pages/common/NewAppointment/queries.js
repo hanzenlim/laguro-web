@@ -1,17 +1,8 @@
 import { gql } from 'apollo-boost';
-import moment from 'moment';
-import {
-    STATUS,
-    ACTIVE,
-    PENDING_PATIENT_APPROVAL,
-    END_TIME,
-} from '../../../util/strings';
 
-export const requestAppointmentMutation = gql`
-    mutation RequestAppointment($input: RequestAppointmentInput!) {
-        requestAppointment(input: $input) {
-            id
-        }
+export const createAppointmentMutation = gql`
+    mutation requestAppointment($input: RequestAppointmentInput!) {
+        requestAppointment(input: $input)
     }
 `;
 
@@ -26,7 +17,9 @@ export const getDentistQuery = gql`
                 imageUrl
                 appointments(
                     options: {
-                        filters: [{ filterKey: "dentistId", filterValues: [$id] }]
+                        filters: [
+                            { filterKey: "dentistId", filterValues: [$id] }
+                        ]
                     }
                 ) {
                     id
@@ -38,44 +31,9 @@ export const getDentistQuery = gql`
                 }
             }
             firstAppointmentDuration
-            reservations(
-                options: {
-                    sortKey: "${END_TIME}",
-                    rangeStart: "${moment()
-                        .startOf('days')
-                        .format()}",
-                    filters: [
-                        {
-                            filterKey: "${STATUS}",
-                            filterValues: ["${ACTIVE}"]
-                        }
-                    ]
-                }
-            ) {
+            preferredLocations {
                 id
-                status
-                location {
-                    name
-                    addressDetails
-                }
-                timezone
-                numChairsSelected
-                localAvailableTimes {
-                    startTime
-                    endTime
-                }
-                appointments(
-                    options: {
-                        filters: [
-                            { filterKey: "status", filterValues: ["${PENDING_PATIENT_APPROVAL}", "${ACTIVE}"] }
-                        ]
-                    }
-                ) {
-                    id
-                    localStartTime
-                    localEndTime
-                    status
-                }
+                name
             }
         }
     }

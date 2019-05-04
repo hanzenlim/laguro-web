@@ -197,7 +197,9 @@ class DentistDashboardPageView extends Component {
                 panelContent = (
                     <Card>
                         {this.renderPanelHeader(key)}
-                        <NewAppointment />
+                        <Flex justifyContent="center">
+                            <NewAppointment />
+                        </Flex>
                     </Card>
                 );
                 break;

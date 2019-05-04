@@ -11,22 +11,24 @@ const StyledTimePicker = styled(AntdTimePicker)`
     & .ant-time-picker-input {
         ${height};
         width: 100%;
-        padding: 0 28px;
+        padding: ${props => (props.padding ? props.padding : '0 28px')};
         font-family: ${props => props.theme.fontFamily};
         font-weight: ${props => props.theme.fontWeights.regular};
-        font-size: ${props => props.theme.fontSizes[0]};
+        font-size: ${props =>
+            props.fontSize ? props.fontSize : props.theme.fontSizes[0]};
         letter-spacing: -0.6px;
         ${props => props.borderless && `border: none;`};
         ::placeholder {
             color: ${props => props.theme.colors.text.black50};
         }
         @media (min-width: ${props => props.theme.breakpoints[1]}) {
-            font-size: ${props => props.theme.fontSizes[3]};
+            font-size: ${props =>
+                props.fontSize ? props.fontSize : props.theme.fontSizes[3]};
         }
     }
     & .ant-time-picker-icon {
         margin: 0;
-        right: 30px;
+        right: 22px;
         width: 26px;
         height: 26px;
         top: 12px;
