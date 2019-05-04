@@ -29,6 +29,7 @@ export const getUserQuery = gql`
                     numReviews
                     averageRating
                 }
+                serializedPreferredLocations
                 offices {
                     id
                     name
@@ -75,7 +76,7 @@ export const getUserQuery = gql`
                         url
                         signedUrl
                     }
-                }   
+                }
             }
         }
     }

@@ -11,18 +11,25 @@ class PreferredLocations extends Component {
     constructor(props) {
         super(props);
 
-        const { preferredLocations, zipCode } = props;
+        const {
+            preferredLocations,
+            serializedPreferredLocations,
+            zipCode,
+        } = props;
+
+        const officeMap = {};
+        for (let i = 0; i < preferredLocations.length; i += 1) {
+            const office = preferredLocations[i];
+            officeMap[office.id] = office;
+        }
+
+        const preferredLocationOne = officeMap[serializedPreferredLocations[0]];
+        const preferredLocationTwo = officeMap[serializedPreferredLocations[1]];
 
         this.state = {
             zipCode: zipCode || '',
-            preferredLocationOne: !_isEmpty(preferredLocations)
-                ? preferredLocations[0]
-                : null,
-            preferredLocationTwo:
-                !_isEmpty(preferredLocations) &&
-                !_isEmpty(preferredLocations[1])
-                    ? preferredLocations[1]
-                    : null,
+            preferredLocationOne,
+            preferredLocationTwo,
             selectedEmptyLocation:
                 !_isEmpty(preferredLocations) &&
                 !_isEmpty(preferredLocations[0])

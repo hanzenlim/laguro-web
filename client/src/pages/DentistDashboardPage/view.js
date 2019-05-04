@@ -141,6 +141,7 @@ class DentistDashboardPageView extends Component {
         const {
             offices,
             preferredLocations,
+            serializedPreferredLocations,
             zipCode,
             dentistId,
             dentist,
@@ -167,6 +168,9 @@ class DentistDashboardPageView extends Component {
                                 renderPanelHeader={this.renderPanelHeader}
                                 offices={offices}
                                 preferredLocations={preferredLocations}
+                                serializedPreferredLocations={
+                                    serializedPreferredLocations
+                                }
                                 zipCode={zipCode}
                                 dentistId={dentistId}
                             />

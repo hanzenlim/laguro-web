@@ -13,6 +13,7 @@ export const updateDentist = gql`
                 numReviews
                 averageRating
             }
+            serializedPreferredLocations
         }
     }
 `;

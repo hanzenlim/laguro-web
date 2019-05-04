@@ -66,6 +66,10 @@ class DentistDashboardPage extends Component {
                         dataUserQuery,
                         'getUser.dentist.preferredLocations'
                     );
+                    const serializedPreferredLocations = get(
+                        dataUserQuery,
+                        'getUser.dentist.serializedPreferredLocations'
+                    );
                     const zipCode = get(
                         dataUserQuery,
                         'getUser.address.zipCode',
@@ -82,6 +86,9 @@ class DentistDashboardPage extends Component {
                             userId={id}
                             panel={getTextFromKey(params.selectedTab)}
                             preferredLocations={preferredLocations}
+                            serializedPreferredLocations={
+                                serializedPreferredLocations
+                            }
                             zipCode={zipCode}
                             refetch={refetch}
                         />
