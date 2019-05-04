@@ -113,7 +113,9 @@ class SelectDocument extends React.Component {
                 {signedUrl || url ? (
                     <DocumentPreview className="documentSelect-documentPreview">
                         <DeleteIcon onClick={onDeleteDocument} />
-                        <DocumentImagePreview src={signedUrl ? signedUrl : url} />
+                        <DocumentImagePreview
+                            src={signedUrl ? signedUrl : url}
+                        />
                     </DocumentPreview>
                 ) : (
                     <DocumentPreview className="documentSelect-documentPreview">
@@ -132,6 +134,13 @@ class SelectDocument extends React.Component {
 
 const DocumentSelect = props => {
     const { onDocumentUpload, uploadPolicySignature, isLoading } = props;
+
+    if (
+        !isLoading &&
+        (!uploadPolicySignature.policy && !uploadPolicySignature.signature)
+    ) {
+        return <div />;
+    }
 
     return isLoading ? (
         <SelectDocument {...props} />

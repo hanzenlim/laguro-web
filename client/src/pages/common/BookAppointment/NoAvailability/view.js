@@ -36,7 +36,7 @@ const NoAvailabilityView = () => {
             </Text>
             <Link to={url}>
                 <Text fontSize="14px" color="#3481f8">
-                    Redo search
+                    Click here to search again
                 </Text>
             </Link>
         </Flex>

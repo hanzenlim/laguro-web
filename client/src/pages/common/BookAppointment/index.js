@@ -248,12 +248,21 @@ class BookAppointmentContainer extends PureComponent {
             officeId,
         });
 
-        await this.setState({
-            suggestedDentist: suggestedDentist.dentist,
-            dentistId: suggestedDentist.dentist.id,
-            totalDentists: suggestedDentist.total,
-            isFetchingNewData: false,
-        });
+        if (suggestedDentist.dentist) {
+            await this.setState({
+                suggestedDentist: suggestedDentist.dentist,
+                dentistId: suggestedDentist.dentist.id,
+                totalDentists: suggestedDentist.total,
+                isFetchingNewData: false,
+            });
+        } else {
+            await this.setState({
+                suggestedDentist: null,
+                dentistId: null,
+                totalDentists: [],
+                isFetchingNewData: false,
+            });
+        }
     };
 
     getTimeSlotList = timeSlot => {
@@ -327,7 +336,7 @@ class BookAppointmentContainer extends PureComponent {
             totalDentists,
         } = this.state;
 
-        if (!dentistId) return null;
+        if (!dentistId) return <NoAvailability />;
 
         return (
             <Composed dentistId={dentistId}>
@@ -381,7 +390,7 @@ class BookAppointmentContainer extends PureComponent {
                         getDentistAppointmentSlotsData
                     );
 
-                    if (timeSlot.length === 0) return null;
+                    if (timeSlot.length === 0) return <NoAvailability />;
                     const timeSlotList = this.getTimeSlotList(timeSlot);
 
                     return (

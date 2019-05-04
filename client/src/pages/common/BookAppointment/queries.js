@@ -36,7 +36,7 @@ export const getSuggestedDentist = async args => {
     const randomIndex = Math.floor(Math.random() * dentists.length);
 
     return {
-        dentist: dentists[randomIndex]._source,
+        dentist: _get(dentists[randomIndex], '_source'),
         total: _get(res, 'hits.total'),
     };
 };
