@@ -31,6 +31,7 @@ const ListingPlanComponent = props => {
             border="solid 1px"
             borderRadius="2px"
             flexDirection={['row', '', 'column']}
+            justifyContent={['space-between', '', 'unset']}
             alignItems="center"
             onClick={
                 props.tabletMobileOnly
@@ -102,36 +103,38 @@ const ListingPlanComponent = props => {
                     </ul>
                 </Box>
             </Flex>
-            <Text
-                textAlign="center"
-                color={isSelected ? '#245197' : 'text.black'}
-                fontSize={[1, '', 2]}
-                letterSpacing="-0.45px"
-                fontWeight="bold"
-                mb={[10, '', 18]}
-                mr={[17, '', 0]}
-                width={[62, '', 'unset']}
-            >
-                ${data.price}/hour
-            </Text>
-            <TabletMobile>
-                <Flex
-                    width={24}
-                    bg={isSelected && 'background.blue'}
-                    height={145}
-                    alignItems="center"
-                    justifyContent="center"
+            <Flex alignItems="center">
+                <Text
+                    textAlign="center"
+                    color={isSelected ? '#245197' : 'text.black'}
+                    fontSize={[1, '', 2]}
+                    letterSpacing="-0.45px"
+                    fontWeight="bold"
+                    mb={[10, '', 18]}
+                    mr={[17, '', 0]}
+                    width={[62, '', 'unset']}
                 >
-                    <StyledText
-                        width={18}
-                        color="text.white"
-                        fontSize={0}
-                        letterSpacing="-0.34px"
+                    ${data.price}/hour
+                </Text>
+                <TabletMobile>
+                    <Flex
+                        width={24}
+                        bg={isSelected && 'background.blue'}
+                        height={145}
+                        alignItems="center"
+                        justifyContent="center"
                     >
-                        {isSelected && 'SELECTED'}
-                    </StyledText>
-                </Flex>
-            </TabletMobile>
+                        <StyledText
+                            width={18}
+                            color="text.white"
+                            fontSize={0}
+                            letterSpacing="-0.34px"
+                        >
+                            {isSelected && 'SELECTED'}
+                        </StyledText>
+                    </Flex>
+                </TabletMobile>
+            </Flex>
             <Desktop>
                 <StyledButton
                     width="calc(100% - 36px)"
