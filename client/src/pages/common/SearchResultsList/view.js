@@ -62,10 +62,11 @@ class SearchResultsList extends PureComponent {
     };
 
     handleSelectAppointment = appointment => {
-        const { startTime, address, reservationId, url } = appointment;
+        const { localStartTime, dentistId } = appointment;
+        const url = `/dentist/${dentistId}`;
 
         history.push(
-            `${url}?startTime=${startTime}&address=${address}&reservationId=${reservationId}`
+            localStartTime ? `${url}?startTime=${localStartTime}` : url
         );
     };
 
@@ -107,7 +108,7 @@ class SearchResultsList extends PureComponent {
                     {data.length
                         ? data.map(item => (
                               <Flex
-                                  key={item.url}
+                                  key={isOffice ? item.url : item.dentistId}
                                   width={
                                       data.length === 1 && isOffice && showMap
                                           ? ['100%', '50%']
@@ -128,7 +129,9 @@ class SearchResultsList extends PureComponent {
                                           dentist={item}
                                           showMap={showMap}
                                           onRedirect={() =>
-                                              this.handleRedirect(item.url)
+                                              this.handleRedirect(
+                                                  item.dentistId
+                                              )
                                           }
                                           onSelectAppointment={e =>
                                               this.handleSelectAppointment(

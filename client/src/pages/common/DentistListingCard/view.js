@@ -2,6 +2,8 @@ import React, { PureComponent, Fragment } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import _isEmpty from 'lodash/isEmpty';
+import _truncate from 'lodash/truncate';
+import { Dropdown, Menu } from 'antd';
 import moment from 'moment';
 import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
 import {
@@ -68,6 +70,7 @@ const StyledCard = styled(Card)`
 class DentistListingCard extends PureComponent {
     state = {
         tagStopPoint: null,
+        indexToMap: 0,
     };
 
     componentDidMount() {
@@ -96,27 +99,27 @@ class DentistListingCard extends PureComponent {
     }
 
     handleSelectAppointment = e => {
-        e.stopPropagation();
+        const { start, dentistid } = e.currentTarget.dataset;
+        const { onSelectAppointment } = this.props;
 
-        const { start, reservation } = e.currentTarget.dataset;
+        const appointment = {};
 
-        const appointment = {
-            startTime: start,
-            address: this.props.dentist.address,
-            reservationId: reservation,
-            url: this.props.dentist.url,
-        };
-
-        if (this.props.onSelectAppointment) {
-            this.props.onSelectAppointment(appointment);
+        if (start) {
+            appointment.localStartTime = start;
         }
+
+        if (dentistid) {
+            appointment.dentistId = dentistid;
+        }
+
+        onSelectAppointment && onSelectAppointment(appointment);
     };
 
     getStopPoint = ({ procedures = [] }) => {
         const { showMap, mobileOnly } = this.props;
         let stopPoint = null;
 
-        let threshold = showMap ? 394 : 1188;
+        let threshold = showMap ? 374 : 1188;
 
         if (mobileOnly) {
             threshold = 330;
@@ -146,12 +149,32 @@ class DentistListingCard extends PureComponent {
         } = this.props;
 
         const earliestAvailableDate =
-            dentist.availableTimes.length > 0 &&
-            moment(dentist.availableTimes[0].startTime).format('dddd, MMMM D');
-
-        const availableTimes = dentist.availableTimes;
+            dentist.appointmentTimeslotsByOffice &&
+            dentist.appointmentTimeslotsByOffice.length !== 0 &&
+            !_isEmpty(
+                dentist.appointmentTimeslotsByOffice[0].appointmentTimeslots
+            ) &&
+            dentist.appointmentTimeslotsByOffice[0].appointmentTimeslots[0]
+                .localStartTime;
 
         const { tagStopPoint } = this.state;
+
+        const menu = (
+            <Menu
+                onClick={({ key, domEvent }) => {
+                    domEvent.stopPropagation();
+                    this.setState({ indexToMap: key });
+                }}
+            >
+                {dentist.appointmentTimeslotsByOffice.map((item, index) => (
+                    <Menu.Item key={index}>
+                        {item.office.location.addressDetails}
+                    </Menu.Item>
+                ))}
+            </Menu>
+        );
+
+        const indexToMap = parseInt(this.state.indexToMap);
 
         return (
             <Button
@@ -243,17 +266,18 @@ class DentistListingCard extends PureComponent {
                                                             '12px',
                                                             '15px',
                                                         ]}
-                                                        value={dentist.rating}
+                                                        value={
+                                                            dentist.averageRating
+                                                        }
                                                     />
                                                     <Text
                                                         ml={6}
                                                         fontSize="12px"
                                                     >
-                                                        {dentist.reviewCount &&
-                                                        dentist.reviewCount !==
-                                                            0
+                                                        {dentist.numReviews &&
+                                                        dentist.numReviews !== 0
                                                             ? `(${
-                                                                  dentist.reviewCount
+                                                                  dentist.numReviews
                                                               })`
                                                             : ''}
                                                     </Text>
@@ -261,7 +285,7 @@ class DentistListingCard extends PureComponent {
                                             )}
                                         </Flex>
 
-                                        <Text
+                                        {/* <Text
                                             style={{
                                                 'white-space': 'pre-line',
                                             }}
@@ -273,7 +297,7 @@ class DentistListingCard extends PureComponent {
                                             textAlign="left"
                                         >
                                             {dentist.address}
-                                        </Text>
+                                        </Text> */}
                                     </Flex>
                                 </Flex>
 
@@ -350,7 +374,7 @@ class DentistListingCard extends PureComponent {
                                         )}
                                 </Mobile>
 
-                                {!_isEmpty(dentist.insurance) && (
+                                {!_isEmpty(dentist.acceptedInsurances) && (
                                     <Flex alignItems="center">
                                         <Icon type="insurance" />
                                         <Text
@@ -358,17 +382,19 @@ class DentistListingCard extends PureComponent {
                                             ml="8px"
                                         >
                                             Accepts{' '}
-                                            {dentist.insurance.length > 1
-                                                ? dentist.insurance.map(
+                                            {dentist.acceptedInsurances.length >
+                                            1
+                                                ? dentist.acceptedInsurances.map(
                                                       (sp, index) =>
                                                           index !==
-                                                          dentist.insurance
+                                                          dentist
+                                                              .acceptedInsurances
                                                               .length -
                                                               1
                                                               ? `${sp}, `
                                                               : `and ${sp}`
                                                   )
-                                                : dentist.insurance[0]}
+                                                : dentist.acceptedInsurances[0]}
                                         </Text>
                                     </Flex>
                                 )}
@@ -475,34 +501,156 @@ class DentistListingCard extends PureComponent {
                                             </Box>
                                         )}
                                 </Desktop>
-
-                                {dentist.availableTimes &&
-                                dentist.availableTimes.length !== 0 ? (
+                                <Box height="5px" />
+                                {dentist.appointmentTimeslotsByOffice &&
+                                dentist.appointmentTimeslotsByOffice.length !==
+                                    0 &&
+                                !_isEmpty(
+                                    dentist.appointmentTimeslotsByOffice[0]
+                                        .appointmentTimeslots
+                                ) ? (
                                     <Fragment>
                                         <Text
                                             mb={[5, 8]}
                                             fontWeight="500"
-                                            fontSize={['12px', '18px']}
+                                            fontSize={['12px', '14px']}
                                             textAlign="left"
                                             mt={[5, 0]}
                                         >
                                             {`Available times `}
                                             {moment(
-                                                dentist.availableTimes[0]
-                                                    .startTime
+                                                dentist
+                                                    .appointmentTimeslotsByOffice[
+                                                    indexToMap
+                                                ].appointmentTimeslots[
+                                                    indexToMap
+                                                ].localStartTime
                                             ).diff(moment(), 'days') === 0 &&
                                                 'today'}
                                             {moment(
-                                                dentist.availableTimes[0]
-                                                    .startTime
+                                                dentist
+                                                    .appointmentTimeslotsByOffice[
+                                                    indexToMap
+                                                ].appointmentTimeslots[
+                                                    indexToMap
+                                                ].localStartTime
                                             ).diff(moment(), 'days') === 1 &&
                                                 'tomorrow'}
                                             {moment(
-                                                dentist.availableTimes[0]
-                                                    .startTime
+                                                dentist
+                                                    .appointmentTimeslotsByOffice[
+                                                    indexToMap
+                                                ].appointmentTimeslots[
+                                                    indexToMap
+                                                ].localStartTime
                                             ).diff(moment(), 'days') > 1 &&
-                                                `on ${earliestAvailableDate}`}
+                                                `on ${moment(
+                                                    earliestAvailableDate
+                                                ).format('LL')}`}
+                                            {!showMap && (
+                                                <Desktop>{` at `}</Desktop>
+                                            )}
+                                            {!showMap && (
+                                                <Fragment>
+                                                    {dentist
+                                                        .appointmentTimeslotsByOffice
+                                                        .length > 1 ? (
+                                                        <Desktop>
+                                                            <Dropdown
+                                                                overlay={menu}
+                                                            >
+                                                                <Button
+                                                                    type="default"
+                                                                    ghost
+                                                                    border="none"
+                                                                    bg="#ffffff"
+                                                                    width="fit-content"
+                                                                    height="fit-content"
+                                                                    onClick={e => {
+                                                                        e.stopPropagation();
+                                                                    }}
+                                                                >
+                                                                    <Flex
+                                                                        width="380px"
+                                                                        height="40px"
+                                                                        flexDirection="row"
+                                                                        alignItems="center"
+                                                                        border="solid 1px #f6f6f6"
+                                                                        borderRadius="2px"
+                                                                        boxShadow="0 1px 2px 0"
+                                                                        px="6px"
+                                                                        position="relative"
+                                                                    >
+                                                                        <Text
+                                                                            fontWeight="normal"
+                                                                            fontSize={[
+                                                                                '12px',
+                                                                                '14px',
+                                                                            ]}
+                                                                            mt={[
+                                                                                5,
+                                                                                0,
+                                                                            ]}
+                                                                            ml={[
+                                                                                '0px',
+                                                                                '5px',
+                                                                            ]}
+                                                                        >
+                                                                            {_truncate(
+                                                                                dentist
+                                                                                    .appointmentTimeslotsByOffice[
+                                                                                    indexToMap
+                                                                                ]
+                                                                                    .office
+                                                                                    .location
+                                                                                    .addressDetails,
+                                                                                {
+                                                                                    length: 35,
+                                                                                    separator:
+                                                                                        ' ',
+                                                                                }
+                                                                            )}
+                                                                        </Text>
+                                                                        <Icon
+                                                                            type="down"
+                                                                            style={{
+                                                                                color:
+                                                                                    '#3481f8',
+                                                                                background:
+                                                                                    'transparent',
+                                                                                fontSize: 12,
+                                                                                position:
+                                                                                    'absolute',
+                                                                                right: 4,
+                                                                                bottom: 6,
+                                                                            }}
+                                                                        />
+                                                                    </Flex>
+                                                                </Button>
+                                                            </Dropdown>
+                                                        </Desktop>
+                                                    ) : (
+                                                        <Desktop>
+                                                            <span
+                                                                style={{
+                                                                    fontWeight:
+                                                                        'normal',
+                                                                }}
+                                                            >
+                                                                {
+                                                                    dentist
+                                                                        .appointmentTimeslotsByOffice[0]
+                                                                        .office
+                                                                        .location
+                                                                        .addressDetails
+                                                                }
+                                                            </span>
+                                                        </Desktop>
+                                                    )}
+                                                </Fragment>
+                                            )}
                                         </Text>
+                                        <Box height="10px" />
                                         <Box
                                             height={84}
                                             maxHeight={84}
@@ -516,10 +664,9 @@ class DentistListingCard extends PureComponent {
                                                 ]}
                                                 gridGap={3}
                                             >
-                                                {[
-                                                    ...availableTimes,
-                                                    ...availableTimes,
-                                                ].map(
+                                                {dentist.appointmentTimeslotsByOffice[
+                                                    indexToMap
+                                                ].appointmentTimeslots.map(
                                                     (availableTime, index) => {
                                                         if (
                                                             (index > 9 ||
@@ -550,6 +697,13 @@ class DentistListingCard extends PureComponent {
                                                                         20
                                                                     }
                                                                     fontWeight="700"
+                                                                    data-dentistid={
+                                                                        dentist.dentistId
+                                                                    }
+                                                                    onClick={
+                                                                        this
+                                                                            .handleSelectAppointment
+                                                                    }
                                                                 >
                                                                     ...
                                                                 </Button>
@@ -595,6 +749,13 @@ class DentistListingCard extends PureComponent {
                                                                         18,
                                                                     ]}
                                                                     fontWeight="700"
+                                                                    data-dentistid={
+                                                                        dentist.dentistId
+                                                                    }
+                                                                    onClick={
+                                                                        this
+                                                                            .handleSelectAppointment
+                                                                    }
                                                                 >
                                                                     ...
                                                                 </Button>
@@ -604,10 +765,10 @@ class DentistListingCard extends PureComponent {
                                                         return (
                                                             <Button
                                                                 data-start={
-                                                                    availableTime.startTime
+                                                                    availableTime.localStartTime
                                                                 }
-                                                                data-reservation={
-                                                                    availableTime.reservationId
+                                                                data-dentistid={
+                                                                    dentist.dentistId
                                                                 }
                                                                 type="primary"
                                                                 height={40}
@@ -623,7 +784,7 @@ class DentistListingCard extends PureComponent {
                                                                 ]}
                                                             >
                                                                 {moment(
-                                                                    availableTime.startTime
+                                                                    availableTime.localStartTime
                                                                 ).format(
                                                                     'h:mm A'
                                                                 )}
@@ -666,7 +827,10 @@ class DentistListingCard extends PureComponent {
                             <Box width={304}>
                                 <Bundle
                                     procedures={dentist.procedures}
-                                    insurance={dentist.insurance}
+                                    insurance={dentist.acceptedInsurances || []}
+                                    price={dentist.bundles[0].price}
+                                    bundles={dentist.bundles || []}
+                                    dentistId={dentist.dentistId}
                                 />
                             </Box>
                         </Flex>

@@ -33,27 +33,29 @@ const StyledFlex = styled(Flex)`
     box-shadow: ${props => props.boxShadow};
 `;
 
-const IntercomContainer = ({ auth, pathname}) => {
-    if (process.env.NODE_ENV === 'production' && (
-        pathname.includes(HOST_DASHBOARD_PAGE_URL) ||
-        pathname.includes(HOST_ONBOARDING_PAGE_URL_PREFIX) ||
-        pathname.includes(DENTIST_DASHBOARD_PAGE_URL) ||
-        pathname.includes(DENTIST_ONBOARDING_PROFILE_URL) ||
-        pathname.includes(PATIENT_DASHBOARD_PAGE_URL) ||
-        pathname.includes(PATIENT_WEB_ONBOARDING_PAGE_URL) ||
-        pathname.includes(ABOUT_PAGE_URL))){
-        
-        const user = auth ? {
-              user_id: auth.id,
-              email: auth.email,
-              name: auth.firstName,
-              user_hash: auth.intercomHash
-        } : {};
+const IntercomContainer = ({ auth, pathname }) => {
+    if (
+        process.env.NODE_ENV === 'production' &&
+        (pathname.includes(HOST_DASHBOARD_PAGE_URL) ||
+            pathname.includes(HOST_ONBOARDING_PAGE_URL_PREFIX) ||
+            pathname.includes(DENTIST_DASHBOARD_PAGE_URL) ||
+            pathname.includes(DENTIST_ONBOARDING_PROFILE_URL) ||
+            pathname.includes(PATIENT_DASHBOARD_PAGE_URL) ||
+            pathname.includes(PATIENT_WEB_ONBOARDING_PAGE_URL) ||
+            pathname.includes(ABOUT_PAGE_URL))
+    ) {
+        const user = auth
+            ? {
+                  user_id: auth.id,
+                  email: auth.email,
+                  name: auth.firstName,
+                  user_hash: auth.intercomHash,
+              }
+            : {};
 
         return <Intercom appID={intercomKey} {...user} />;
-    }else{
-        return null;
     }
+    return null;
 };
 
 const getHeaderBackgroundColor = () => {
@@ -104,6 +106,7 @@ class Header extends Component {
             toggleLoginModal,
             onLogout,
             desktopOnly,
+            customRedirect,
         } = this.props;
 
         let placeholder;
@@ -150,6 +153,7 @@ class Header extends Component {
                 <LoginModal
                     toggleLoginModal={toggleLoginModal}
                     isLoginModalOpen={isLoginModalOpen}
+                    customRedirect={customRedirect}
                 />
                 <Container
                     display="flex"

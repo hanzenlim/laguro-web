@@ -14,7 +14,6 @@ import {
 } from '../../components';
 import SearchBox from '../common/SearchBox';
 import SearchResultsList from '../common/SearchResultsList';
-import { formatAddress } from '../../util/styleUtil';
 import { ContainerPaddingInPixels } from '../../components/Container';
 import SearchFilter from '../common/SearchFilter';
 
@@ -24,17 +23,6 @@ const Map = Loadable({
 });
 
 const { Desktop, TabletMobile } = Responsive;
-
-const handleMultiLocation = reservations => {
-    // Pull just the string addresses from reservations into an array
-    const allAddresses = reservations.map(res => res.address);
-    // filter out duplicate addresses (if not the first instance of that address within the array, filter it out), prevent many pins from one dentist on the map for a given location if they keep renting the same place over and over
-    const uniqueAddresses = reservations.filter(
-        (res, index) => allAddresses.indexOf(res.address) === index
-    );
-
-    return uniqueAddresses;
-};
 
 const DentistSearchPageView = props => {
     const {
@@ -50,38 +38,35 @@ const DentistSearchPageView = props => {
         isFilterVisible,
     } = props;
 
-    data.forEach((dentist, index) => {
-        const { reservations } = dentist;
-        const uniqueAddresses = handleMultiLocation(reservations);
-        const uniqueLocations = uniqueAddresses.map(res => ({
-            address: res.address,
-            addressDetails: res.addressDetails,
-            geoPoint: res.geoPoint,
-        }));
+    // data.forEach((dentist, index) => {
+    //     const { reservations } = dentist;
+    //     const uniqueAddresses = handleMultiLocation(reservations);
+    //     const uniqueLocations = uniqueAddresses.map(res => ({
+    //         address: res.address,
+    //         addressDetails: res.addressDetails,
+    //         geoPoint: res.geoPoint,
+    //     }));
 
-        data[index] = {
-            ...dentist,
-            uniqueLocations,
-            address:
-                uniqueLocations.length > 1
-                    ? 'Multiple Locations!'
-                    : dentist.address,
-        };
-    });
+    //     data[index] = {
+    //         ...dentist,
+    //         uniqueLocations,
+    //         address:
+    //             uniqueLocations.length > 1
+    //                 ? 'Multiple Locations!'
+    //                 : dentist.address,
+    //     };
+    // });
 
     const markers = [];
 
     // create marker for each location a dentist has
     data.forEach(dentist => {
-        dentist.uniqueLocations.forEach(location => {
+        dentist.appointmentTimeslotsByOffice.forEach(location => {
             markers.push({
                 ...dentist,
-                address: formatAddress(
-                    location.address,
-                    location.addressDetails
-                ),
-                latitude: location.geoPoint.lat,
-                longitude: location.geoPoint.lon,
+                address: location.office.location.addressDetails,
+                latitude: location.office.location.geoPoint.lat,
+                longitude: location.office.location.geoPoint.lon,
             });
         });
     });

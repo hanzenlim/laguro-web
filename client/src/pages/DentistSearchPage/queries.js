@@ -19,3 +19,53 @@ export const batchGetUsers = (rangeStart, rangeEnd) => gql`
             }
         }
     `;
+
+export const GET_DENTISTS_AND_APPOINTMENT_SLOTS = gql`
+    query searchForDentistsAndAppointmentSlots(
+        $input: SearchForDentistsAndAppointmentSlotsInput!
+    ) {
+        searchForDentistsAndAppointmentSlots(input: $input) {
+            dentistId
+            name
+            numReviews
+            imageUrl
+            languages
+            procedures
+            acceptedInsurances
+            firstAppointmentDuration
+            averageRating
+            bundles {
+                id
+                name
+                group
+                proceduresDetail {
+                    code
+                    group
+                    name
+                }
+                insuranceList {
+                    name
+                    price
+                }
+                price
+            }
+            specialty
+            appointmentTimeslotsByOffice {
+                office {
+                    id
+                    name
+                    location {
+                        addressDetails
+                        geoPoint {
+                            lat
+                            lon
+                        }
+                    }
+                }
+                appointmentTimeslots {
+                    localStartTime
+                }
+            }
+        }
+    }
+`;

@@ -15,6 +15,7 @@ class HeaderContainer extends PureComponent {
             isSubmitting: false,
             pathname: window.location.pathname + window.location.search,
             isLoginModalOpen: false,
+            customRedirect: history.location.pathname,
         };
 
         history.listen(location => {
@@ -23,7 +24,7 @@ class HeaderContainer extends PureComponent {
             });
         });
 
-        emitter.on('loginModal', () => {
+        emitter.on('loginModal', ({ redirectPath }) => {
             const { mobileOnly } = this.props;
             if (mobileOnly) {
                 history.push(`/login?redirectTo=${this.state.pathname}`);
@@ -31,6 +32,7 @@ class HeaderContainer extends PureComponent {
             } else {
                 this.setState({
                     isLoginModalOpen: true,
+                    customRedirect: redirectPath || history.location.pathname,
                 });
             }
         });
@@ -55,6 +57,7 @@ class HeaderContainer extends PureComponent {
 
     render() {
         const user = getUser();
+
         return (
             <HeaderView
                 auth={user}
@@ -66,6 +69,7 @@ class HeaderContainer extends PureComponent {
                 toggleLoginModal={this.toggleLoginModal}
                 isLoginModalOpen={this.state.isLoginModalOpen}
                 pathname={this.state.pathname}
+                customRedirect={this.state.customRedirect}
             />
         );
     }

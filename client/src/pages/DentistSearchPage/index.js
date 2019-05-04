@@ -15,8 +15,10 @@ import { formatAddress } from '../../util/styleUtil';
 import { DENTISTS } from '../../util/strings';
 import { getMyPosition, DEFAULT_LOCATION } from '../../util/navigatorUtil';
 import { numMaxContainerWidth } from '../../components/theme';
-import { batchGetUsers } from './queries';
+import { batchGetUsers, GET_DENTISTS_AND_APPOINTMENT_SLOTS } from './queries';
 import moment from 'moment';
+import { Query } from 'react-apollo';
+import { appointmentClient } from '../../util/apolloClients';
 
 const PAGE_SIZE = 14;
 const DISTANCE = '75km';
@@ -353,6 +355,8 @@ class DetailsSearchPage extends PureComponent {
     };
 
     render() {
+        const urlParams = queryString.parse(this.props.location.search);
+
         return (
             <Fragment>
                 <Helmet>
@@ -372,20 +376,42 @@ class DetailsSearchPage extends PureComponent {
                         href="https://www.laguro.com/dentist/search"
                     />
                 </Helmet>
+                <Query
+                    query={GET_DENTISTS_AND_APPOINTMENT_SLOTS}
+                    client={appointmentClient}
+                    variables={{
+                        input: {
+                            textQuery:
+                                urlParams && urlParams.text
+                                    ? urlParams.text
+                                    : '',
+                        },
+                    }}
+                >
+                    {({ data, loading }) => {
+                        const items = _get(
+                            data,
+                            'searchForDentistsAndAppointmentSlots',
+                            []
+                        );
 
-                <DentistSearchPageView
-                    data={this.state.data}
-                    showMap={this.state.showMap}
-                    total={this.state.total}
-                    toggleMap={this.toggleMap}
-                    defaultPosition={this.state.defaultPosition}
-                    urlParams={this.state.urlParams}
-                    mapDimensions={this.state.mapDimensions}
-                    onShowMore={this.updateSearchResults}
-                    loading={this.state.loading}
-                    isFilterVisible={this.state.isFilterVisible}
-                    onToggleFilter={this.onToggleFilter}
-                />
+                        return (
+                            <DentistSearchPageView
+                                data={items}
+                                showMap={this.state.showMap}
+                                total={this.state.total}
+                                toggleMap={this.toggleMap}
+                                defaultPosition={this.state.defaultPosition}
+                                urlParams={this.state.urlParams}
+                                mapDimensions={this.state.mapDimensions}
+                                onShowMore={this.updateSearchResults}
+                                loading={loading}
+                                isFilterVisible={this.state.isFilterVisible}
+                                onToggleFilter={this.onToggleFilter}
+                            />
+                        );
+                    }}
+                </Query>
             </Fragment>
         );
     }

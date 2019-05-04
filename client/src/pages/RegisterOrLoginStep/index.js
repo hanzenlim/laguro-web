@@ -78,10 +78,11 @@ export const RegisterOrLoginStep = props => (
             const redirectUser = ({ user }) => {
                 if (props.context === 'web') {
                     if (props.formikProps.values.mode === 'signUp') {
+                        const redirect = props.customRedirect
+                            ? props.customRedirect
+                            : history.location.pathname;
                         history.push(
-                            `/onboarding/name-and-persona/?redirectTo=${
-                                history.location.pathname
-                            }`
+                            `/onboarding/name-and-persona/?redirectTo=${redirect}`
                         );
                     } else {
                         // Redirect based on user data

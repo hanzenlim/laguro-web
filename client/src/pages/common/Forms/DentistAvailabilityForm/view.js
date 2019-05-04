@@ -186,45 +186,76 @@ const DentistAvailabilityForm = props => (
                 render={arrayHelpers => (
                     <div>
                         {props.values.availabilityList.map(
-                            (availability, index) => {
-                                return (
-                                    <Box key={index} mb="14px">
-                                        <Card>
-                                            {availability.isOpen ? (
-                                                <Fragment>
-                                                    <Flex
-                                                        justifyContent="space-between"
-                                                        alignItems="center"
-                                                        mb={25}
+                            (availability, index) => (
+                                <Box key={index} mb="14px">
+                                    <Card>
+                                        {availability.isOpen ? (
+                                            <Fragment>
+                                                <Flex
+                                                    justifyContent="space-between"
+                                                    alignItems="center"
+                                                    mb={25}
+                                                >
+                                                    <Text
+                                                        fontSize={3}
+                                                        fontWeight="500"
+                                                        color="text.blue"
                                                     >
-                                                        <Text
-                                                            fontSize={3}
-                                                            fontWeight="500"
-                                                            color="text.blue"
+                                                        New availability
+                                                    </Text>
+                                                    {props.values
+                                                        .availabilityList
+                                                        .length > 1 && (
+                                                        <Button
+                                                            type="ghost"
+                                                            height="auto"
+                                                            onClick={() =>
+                                                                arrayHelpers.remove(
+                                                                    index
+                                                                )
+                                                            }
                                                         >
-                                                            New availability
-                                                        </Text>
-                                                        {props.values
-                                                            .availabilityList
-                                                            .length > 1 && (
-                                                            <Button
-                                                                type="ghost"
-                                                                height="auto"
-                                                                onClick={() =>
-                                                                    arrayHelpers.remove(
-                                                                        index
-                                                                    )
-                                                                }
+                                                            <Text
+                                                                fontSize={1}
+                                                                color="#3481f8"
                                                             >
-                                                                <Text
-                                                                    fontSize={1}
-                                                                    color="#3481f8"
-                                                                >
-                                                                    delete
-                                                                </Text>
-                                                            </Button>
-                                                        )}
-                                                    </Flex>
+                                                                delete
+                                                            </Text>
+                                                        </Button>
+                                                    )}
+                                                </Flex>
+                                                <Text
+                                                    fontSize={1}
+                                                    fontWeight="500"
+                                                    letterSpacing="-0.4px"
+                                                    color="text.black"
+                                                    mb="10px"
+                                                >
+                                                    Select locations
+                                                </Text>
+                                                <Field
+                                                    name={`availabilityList.${index}.selectedLocations`}
+                                                    placeholder="Selected Locations"
+                                                    component={props => (
+                                                        <Onboarding.SelectField
+                                                            {...props}
+                                                            options={SELECTED_LOCATION_OPTIONS.map(
+                                                                option => (
+                                                                    <Onboarding.SelectOption
+                                                                        value={
+                                                                            option.key
+                                                                        }
+                                                                    >
+                                                                        {
+                                                                            option.value
+                                                                        }
+                                                                    </Onboarding.SelectOption>
+                                                                )
+                                                            )}
+                                                        />
+                                                    )}
+                                                />
+                                                <Box mb={15}>
                                                     <Text
                                                         fontSize={1}
                                                         fontWeight="500"
@@ -232,196 +263,155 @@ const DentistAvailabilityForm = props => (
                                                         color="text.black"
                                                         mb="10px"
                                                     >
-                                                        Select locations
+                                                        Repeat on
                                                     </Text>
                                                     <Field
-                                                        name={`availabilityList.${index}.selectedLocations`}
-                                                        placeholder="Selected Locations"
-                                                        component={props => (
-                                                            <Onboarding.SelectField
-                                                                {...props}
-                                                                options={SELECTED_LOCATION_OPTIONS.map(
-                                                                    option => (
-                                                                        <Onboarding.SelectOption
-                                                                            value={
-                                                                                option.key
-                                                                            }
-                                                                        >
-                                                                            {
-                                                                                option.value
-                                                                            }
-                                                                        </Onboarding.SelectOption>
-                                                                    )
-                                                                )}
-                                                            />
+                                                        name={`availabilityList.${index}.days`}
+                                                        component={withScreenSizes(
+                                                            DayPickerField
                                                         )}
                                                     />
-                                                    <Box mb={15}>
-                                                        <Text
-                                                            fontSize={1}
-                                                            fontWeight="500"
-                                                            letterSpacing="-0.4px"
-                                                            color="text.black"
-                                                            mb="10px"
-                                                        >
-                                                            Repeat on
-                                                        </Text>
-                                                        <Field
-                                                            name={`availabilityList.${index}.days`}
-                                                            component={withScreenSizes(
-                                                                DayPickerField
-                                                            )}
-                                                        />
-                                                    </Box>
-                                                    <Grid
-                                                        gridTemplateColumns={[
-                                                            '100%',
-                                                            '',
-                                                            `64px 150px 64px 150px`,
-                                                        ]}
-                                                    >
-                                                        <Text
-                                                            fontSize={1}
-                                                            fontWeight="500"
-                                                            letterSpacing="-0.4px"
-                                                            color="text.black"
-                                                            mt={[0, '', 20]}
-                                                            mb={10}
-                                                        >
-                                                            From
-                                                        </Text>
-                                                        <Field
-                                                            name={`availabilityList.${index}.startTime`}
-                                                            component={getTimePickerField(
-                                                                {
-                                                                    defaultOpenValue: moment()
-                                                                        .startOf(
-                                                                            'hour'
-                                                                        )
-                                                                        .hour(
-                                                                            8
-                                                                        ),
-                                                                }
-                                                            )}
-                                                        />
-
-                                                        <Text
-                                                            fontSize={1}
-                                                            fontWeight="500"
-                                                            letterSpacing="-0.4px"
-                                                            color="text.black"
-                                                            mt={[0, '', 20]}
-                                                            textAlign={[
-                                                                'left',
-                                                                '',
-                                                                'center',
-                                                            ]}
-                                                            mb={10}
-                                                        >
-                                                            to
-                                                        </Text>
-                                                        <Field
-                                                            name={`availabilityList.${index}.endTime`}
-                                                            component={getTimePickerField(
-                                                                {
-                                                                    defaultOpenValue: moment()
-                                                                        .startOf(
-                                                                            'hour'
-                                                                        )
-                                                                        .hour(
-                                                                            10
-                                                                        ),
-                                                                }
-                                                            )}
-                                                        />
-                                                    </Grid>
-                                                    <Field
-                                                        name={`availabilityList.${index}.range`}
-                                                        component={
-                                                            RangePickerField
-                                                        }
-                                                    />
-                                                </Fragment>
-                                            ) : (
-                                                <Button
-                                                    type="ghost"
-                                                    height="auto"
-                                                    onClick={() => {
-                                                        props.values.availabilityList.forEach(
-                                                            (
-                                                                availability,
-                                                                index2
-                                                            ) => {
-                                                                if (
-                                                                    index ===
-                                                                    index2
-                                                                ) {
-                                                                    props.setFieldValue(
-                                                                        `availabilityList.${index2}.isOpen`,
-                                                                        true
-                                                                    );
-                                                                } else {
-                                                                    props.setFieldValue(
-                                                                        `availabilityList.${index2}.isOpen`,
-                                                                        false
-                                                                    );
-                                                                }
-                                                            }
-                                                        );
-                                                    }}
+                                                </Box>
+                                                <Grid
+                                                    gridTemplateColumns={[
+                                                        '100%',
+                                                        '',
+                                                        `64px 150px 64px 150px`,
+                                                    ]}
                                                 >
-                                                    <Box textAlign="left">
-                                                        {props.values
-                                                            .availabilityList[
-                                                            index
-                                                        ].selectedLocations && (
-                                                            <Text
-                                                                fontSize={3}
-                                                                color="text.blue"
-                                                                fontWeight="500"
-                                                                mb="7px"
-                                                            >
-                                                                {
-                                                                    SELECTED_LOCATION_OPTIONS.find(
-                                                                        option =>
-                                                                            props
-                                                                                .values
-                                                                                .availabilityList[
-                                                                                index
-                                                                            ]
-                                                                                .selectedLocations ===
-                                                                            option.key
-                                                                    ).value
-                                                                }
-                                                            </Text>
+                                                    <Text
+                                                        fontSize={1}
+                                                        fontWeight="500"
+                                                        letterSpacing="-0.4px"
+                                                        color="text.black"
+                                                        mt={[0, '', 20]}
+                                                        mb={10}
+                                                    >
+                                                        From
+                                                    </Text>
+                                                    <Field
+                                                        name={`availabilityList.${index}.startTime`}
+                                                        component={getTimePickerField(
+                                                            {
+                                                                defaultOpenValue: moment()
+                                                                    .startOf(
+                                                                        'hour'
+                                                                    )
+                                                                    .hour(8),
+                                                            }
                                                         )}
-                                                        <ListingTime
-                                                            startDate={
-                                                                availability
-                                                                    .range[0]
+                                                    />
+
+                                                    <Text
+                                                        fontSize={1}
+                                                        fontWeight="500"
+                                                        letterSpacing="-0.4px"
+                                                        color="text.black"
+                                                        mt={[0, '', 20]}
+                                                        textAlign={[
+                                                            'left',
+                                                            '',
+                                                            'center',
+                                                        ]}
+                                                        mb={10}
+                                                    >
+                                                        to
+                                                    </Text>
+                                                    <Field
+                                                        name={`availabilityList.${index}.endTime`}
+                                                        component={getTimePickerField(
+                                                            {
+                                                                defaultOpenValue: moment()
+                                                                    .startOf(
+                                                                        'hour'
+                                                                    )
+                                                                    .hour(10),
                                                             }
-                                                            endDate={
-                                                                availability
-                                                                    .range[1]
+                                                        )}
+                                                    />
+                                                </Grid>
+                                                <Field
+                                                    name={`availabilityList.${index}.range`}
+                                                    component={RangePickerField}
+                                                />
+                                            </Fragment>
+                                        ) : (
+                                            <Button
+                                                type="ghost"
+                                                height="auto"
+                                                onClick={() => {
+                                                    props.values.availabilityList.forEach(
+                                                        (
+                                                            availability,
+                                                            index2
+                                                        ) => {
+                                                            if (
+                                                                index === index2
+                                                            ) {
+                                                                props.setFieldValue(
+                                                                    `availabilityList.${index2}.isOpen`,
+                                                                    true
+                                                                );
+                                                            } else {
+                                                                props.setFieldValue(
+                                                                    `availabilityList.${index2}.isOpen`,
+                                                                    false
+                                                                );
                                                             }
-                                                            startTime={
-                                                                availability.startTime
+                                                        }
+                                                    );
+                                                }}
+                                            >
+                                                <Box textAlign="left">
+                                                    {props.values
+                                                        .availabilityList[index]
+                                                        .selectedLocations && (
+                                                        <Text
+                                                            fontSize={3}
+                                                            color="text.blue"
+                                                            fontWeight="500"
+                                                            mb="7px"
+                                                        >
+                                                            {
+                                                                SELECTED_LOCATION_OPTIONS.find(
+                                                                    option =>
+                                                                        props
+                                                                            .values
+                                                                            .availabilityList[
+                                                                            index
+                                                                        ]
+                                                                            .selectedLocations ===
+                                                                        option.key
+                                                                ).value
                                                             }
-                                                            endTime={
-                                                                availability.endTime
-                                                            }
-                                                            frequency={getFrequency(
-                                                                availability.days
-                                                            )}
-                                                            index={0}
-                                                        />
-                                                    </Box>
-                                                </Button>
-                                            )}
-                                        </Card>
-                                    </Box>
-                                );
-                            }
+                                                        </Text>
+                                                    )}
+                                                    <ListingTime
+                                                        startDate={
+                                                            availability
+                                                                .range[0]
+                                                        }
+                                                        endDate={
+                                                            availability
+                                                                .range[1]
+                                                        }
+                                                        startTime={
+                                                            availability.startTime
+                                                        }
+                                                        endTime={
+                                                            availability.endTime
+                                                        }
+                                                        frequency={getFrequency(
+                                                            availability.days
+                                                        )}
+                                                        index={0}
+                                                    />
+                                                </Box>
+                                            </Button>
+                                        )}
+                                    </Card>
+                                </Box>
+                            )
                         )}
 
                         <Button type="ghost" mt={16} ml={30}>
