@@ -7,7 +7,6 @@ import queryString from 'query-string';
 import get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 
-import { renderCents } from '../../util/paymentUtil';
 import {
     GET_OFFICE,
     CREATE_OFFICE,
