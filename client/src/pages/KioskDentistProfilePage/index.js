@@ -154,7 +154,6 @@ class KioskDentistProfilePage extends Component {
                     const steps = [
                         {
                             id: '1',
-                            validationSchema: Yup.object().shape({}),
                             component: null,
                             initialValues: {
                                 profilePicture: user.imageUrl,
@@ -162,6 +161,19 @@ class KioskDentistProfilePage extends Component {
                                 time: firstAppointmentDuration || 30,
                                 languages: languages || [ENGLISH],
                                 procedureList: defaultProceduresList,
+                            },
+                            validationSchema: Yup.object().shape({
+                                procedureList: Yup.object().test(
+                                    'has at least one procedure',
+                                    'Please select at lease one procedure',
+                                    procedureObject =>
+                                        Object.values(procedureObject).some(
+                                            i => i
+                                        )
+                                ),
+                            }),
+                            onAction: () => {
+                                window.scrollTo(0, 0);
                             },
                         },
 
