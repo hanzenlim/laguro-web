@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Query } from 'react-apollo';
 import get from 'lodash/get';
+import _isEmpty from 'lodash/isEmpty';
 import queryString from 'query-string';
 import DentistDashboardView from './view';
 import { Loading } from '../../components';
@@ -47,7 +48,7 @@ class DentistDashboardPage extends Component {
                     data: dataUserQuery,
                     refetch,
                 }) => {
-                    if (loadingUserQuery) {
+                    if (_isEmpty(dataUserQuery) && loadingUserQuery) {
                         return <Loading />;
                     }
 

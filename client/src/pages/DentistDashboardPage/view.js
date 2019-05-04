@@ -25,7 +25,7 @@ import {
 import KioskDentistProfilePage from '../KioskDentistProfilePage';
 import DentistVerification from '../Onboarding/Dentist/Verification/';
 import NewAppointment from '../common/NewAppointment';
-import { DENTIST_PROFILE_PAGE_URL } from '../../util/urls';
+import { DENTIST_PROFILE_PAGE_URL, getLTMBaseUrl } from '../../util/urls';
 import PatientsList from '../common/PatientsList';
 import DentistDetails from '../common/DentistDetails';
 import ReviewContainer from '../common/ReviewContainer/index';
@@ -34,7 +34,6 @@ import PreferredLocations from '../common/PreferredLocations';
 import DentistAvailabilityForm from '../common/Forms/DentistAvailabilityForm';
 import { version } from '../../../package.json';
 
-const currentUrl = window.location.href;
 const { TabletMobile, Desktop, withScreenSizes } = Responsive;
 
 const StyledButton = styled(Button)`
@@ -327,11 +326,8 @@ class DentistDashboardPageView extends Component {
                                     height={34}
                                     isExternal
                                     target="_blank"
-                                    to={
-                                        currentUrl.includes('laguro-stage')
-                                            ? 'http://ltm.laguro-stage.com/'
-                                            : 'http://ltm.laguro.com/'
-                                    }
+                                    rel="noopener"
+                                    to={getLTMBaseUrl()}
                                 >
                                     <StyledButton
                                         px={30}

@@ -11,6 +11,7 @@ import { Loading } from '../../components';
 import { RedirectErrorPage } from '../../pages/GeneralErrorPage';
 import { PENDING } from '../../util/strings';
 import { getUser } from '../../util/authUtils';
+import { execute } from '../../util/gqlUtils';
 
 class ProcedurePaymentRequest extends PureComponent {
     constructor(props) {
@@ -34,23 +35,25 @@ class ProcedurePaymentRequest extends PureComponent {
         status
     ) => {
         await this.setState({ isSubmitting: true });
+        let hasNoError;
+        await execute({
+            action: async () => {
+                hasNoError = await this.props.acceptOrRejectPaymentRequestMutation(
+                    {
+                        variables: {
+                            input: {
+                                accept: status,
+                                paymentRequestId,
+                                paymentOptionId,
+                            },
+                        },
+                    }
+                );
+            },
+        });
 
-        try {
-            await this.props.acceptOrRejectPaymentRequestMutation({
-                variables: {
-                    input: {
-                        accept: status,
-                        paymentRequestId,
-                        paymentOptionId,
-                    },
-                },
-            });
-
-            if (status === true) {
-                this.setState({ isPaymentSuccessful: true });
-            }
-        } catch (error) {
-            throw error;
+        if (status === true && hasNoError) {
+            this.setState({ isPaymentSuccessful: true });
         }
 
         this.setState({ isSubmitting: false });
