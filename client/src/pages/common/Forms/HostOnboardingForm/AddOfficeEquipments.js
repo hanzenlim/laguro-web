@@ -9,13 +9,10 @@ import {
     Form,
     Grid,
     Icon,
-    Input,
     TextArea,
     Select,
     Text,
-    Tooltip,
 } from '../../../../components';
-import { renderPrice } from '../../../../util/paymentUtil';
 
 const { FormItem } = Form;
 const { Option } = Select;
@@ -29,7 +26,6 @@ const StyledForm = styled(Form)`
 
 const EQUIPMENT = 'equipment';
 const EQUIPMENT_NAME = `${EQUIPMENT}Name`;
-const EQUIPMENT_PRICE = `${EQUIPMENT}Price`;
 const EQUIPMENT_LIST = [
     'Digital Xray Sensors',
     'Panoramic',
@@ -55,31 +51,6 @@ const EQUIPMENT_LIST = [
     'Extraction set up',
 ];
 
-const PRICE_MAP = {
-    'Digital Xray Sensors': '$20.00',
-    Panoramic: '$20.00',
-    'Lateral Ceph': '$20.00',
-    CBCT: '$100.00',
-    'Intraoral Camera': '$20.00',
-    'Caries Detection Cameras': '$20.00',
-    'Cerec CAD/CAM': '$200.00',
-    'Digital Scanner': '$75.00',
-    'Endodontic Microscope': '$50.00',
-    'Endo Rotary Instruments (Motor and New Files)': '$100.00',
-    'Periodontic Scalers': '$10.00',
-    'Cavitron/Piezo Unit and Tips': '$25.00',
-    'Hard Tissue Laser': '$50.00',
-    'Soft Tissue Laser': '$50.00',
-    'Implant System': '$200.00',
-    'Implant System 2': '$400.00',
-    'Implant System 3': '$600.00',
-    'Nitrous Oxide': '$50.00',
-    'Composite set up': '$25.00',
-    'Crown and bridge set up': '$25.00',
-    'Removable set up': '$25.00',
-    'Extraction set up': '$25.00',
-};
-
 class AddOfficeEquipments extends Component {
     constructor(props) {
         super(props);
@@ -90,10 +61,9 @@ class AddOfficeEquipments extends Component {
             equipment: isEmpty(equipment)
                 ? []
                 : equipment.reduce(
-                      (acc, { name, price }, i) => ({
+                      (acc, { name }, i) => ({
                           ...acc,
                           [`${EQUIPMENT_NAME}${i}`]: name,
-                          [`${EQUIPMENT_PRICE}${i}`]: price,
                       }),
                       {}
                   ),
@@ -112,7 +82,7 @@ class AddOfficeEquipments extends Component {
             const lastEquipmentIndex = Object.keys(equipment)
                 .slice(-1)
                 .pop()
-                .slice(EQUIPMENT_PRICE.length);
+                .slice(EQUIPMENT_NAME.length);
 
             newIndex = Number(lastEquipmentIndex) + 1;
         } else {
@@ -120,12 +90,10 @@ class AddOfficeEquipments extends Component {
         }
 
         const key1 = `${EQUIPMENT_NAME}${newIndex}`;
-        const key2 = `${EQUIPMENT_PRICE}${newIndex}`;
 
         const newEquipment = {
             ...equipment,
             [key1]: undefined,
-            [key2]: undefined,
         };
 
         this.setState({
@@ -135,7 +103,6 @@ class AddOfficeEquipments extends Component {
 
     removeEquipment = e => {
         const { index } = e.target.dataset;
-        const { form } = this.props;
         const { equipment } = this.state;
 
         this.setState({
@@ -145,15 +112,8 @@ class AddOfficeEquipments extends Component {
             ),
         });
 
-        const key = `${EQUIPMENT_PRICE}${index}`;
-        form.setFieldsValue({ [key]: undefined });
-    };
-
-    handleEquipmentChange = (value, options) => {
-        const { form } = this.props;
-        form.setFieldsValue({
-            [options.props['data-price-key']]: PRICE_MAP[value],
-        });
+        const key = `${EQUIPMENT_NAME}${index}`;
+        this.props.form.setFieldsValue({ [key]: undefined });
     };
 
     componentDidUpdate(prevProps) {
@@ -166,10 +126,9 @@ class AddOfficeEquipments extends Component {
 
             this.setState({
                 equipment: equipment.reduce(
-                    (acc, { name, price }, i) => ({
+                    (acc, { name }, i) => ({
                         ...acc,
                         [`${EQUIPMENT_NAME}${i}`]: name,
-                        [`${EQUIPMENT_PRICE}${i}`]: price,
                     }),
                     {}
                 ),
@@ -179,7 +138,7 @@ class AddOfficeEquipments extends Component {
 
     renderEquipment = (equipment, form) => {
         const eqNameKeys = Object.keys(equipment).filter(eq =>
-            eq.startsWith(EQUIPMENT_PRICE)
+            eq.startsWith(EQUIPMENT_NAME)
         );
 
         const selectNameKeys = Object.keys(equipment).filter(eq =>
@@ -194,90 +153,58 @@ class AddOfficeEquipments extends Component {
             el => !selectedEquipment.includes(el)
         );
 
-        return eqNameKeys.map(key => (
-            <Flex flexDirection={['column', '', 'row']}>
-                <Box mr={[0, '', 23]} width={['auto', '', 431]}>
-                    <FormItem
-                        name={`${EQUIPMENT_NAME}${key.slice(
-                            EQUIPMENT_PRICE.length
-                        )}`}
-                        rules={[
-                            {
-                                required: true,
-                                message: 'Please select equipment',
-                            },
-                        ]}
-                        initialValue={
-                            equipment[
-                                `${EQUIPMENT_NAME}${key.slice(
-                                    EQUIPMENT_PRICE.length
-                                )}`
-                            ]
-                        }
-                        input={
-                            <Select
-                                height={50}
-                                onSelect={this.handleEquipmentChange}
-                                placeholder="Select an equipment"
-                            >
-                                {equipmentList.map((eq2, index2) => (
-                                    <Option
-                                        key={index2}
-                                        data-price-key={key}
-                                        value={eq2}
-                                    >
-                                        {eq2}
-                                    </Option>
-                                ))}
-                            </Select>
-                        }
-                    />
-                </Box>
-
-                <Flex>
-                    <Box
-                        mr={[0, '', 17]}
-                        width={['calc(100% - 48px)', '', '128px']}
-                    >
+        return eqNameKeys.map(key => {
+            const formItemName = `${EQUIPMENT_NAME}${key.slice(
+                EQUIPMENT_NAME.length
+            )}`;
+            return (
+                <Flex flexDirection={['column', '', 'row']}>
+                    <Box mr={[0, '', 23]} width={['auto', '', '100%']}>
                         <FormItem
-                            name={key}
+                            name={formItemName}
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Please provide equipment price',
+                                    message: 'Please select equipment',
                                 },
                             ]}
-                            getValueFromEvent={e => {
-                                if (!e || !e.target) {
-                                    return e;
-                                }
-                                const { target } = e;
-                                return target.type === 'checkbox'
-                                    ? target.checked
-                                    : renderPrice(target.value);
-                            }}
-                            initialValue={renderPrice(equipment[key])}
-                            input={<Input textAlign="right" height="50px" />}
+                            initialValue={equipment[formItemName]}
+                            input={
+                                <Select
+                                    height={50}
+                                    onSelect={this.handleEquipmentChange}
+                                    placeholder="Select an equipment"
+                                >
+                                    {equipmentList.map((eq2, index2) => (
+                                        <Option key={index2} value={eq2}>
+                                            {eq2}
+                                        </Option>
+                                    ))}
+                                </Select>
+                            }
                         />
                     </Box>
-                    <Button
-                        type="ghost"
-                        width={[48, '', 'auto']}
-                        mb={20}
-                        height={[48, '', 'auto']}
-                        data-index={key.slice(EQUIPMENT_NAME.length)}
-                        onClick={this.removeEquipment}
-                    >
-                        <Icon
-                            lineHeight="50px"
-                            fontSize={[1, '', 3]}
-                            color="text.gray"
-                            type="close-circle"
-                        />
-                    </Button>
+
+                    <Flex>
+                        <Button
+                            type="ghost"
+                            width={[48, '', 'auto']}
+                            mb={20}
+                            height={[48, '', 'auto']}
+                            data-index={key.slice(EQUIPMENT_NAME.length)}
+                            onClick={this.removeEquipment}
+                        >
+                            <Icon
+                                lineHeight="50px"
+                                fontSize={[1, '', 3]}
+                                color="text.gray"
+                                type="close-circle"
+                            />
+                        </Button>
+                    </Flex>
                 </Flex>
-            </Flex>
-        ));
+            );
+        });
     };
 
     render() {
@@ -358,12 +285,8 @@ class AddOfficeEquipments extends Component {
                                     letterSpacing="0px"
                                     color="text.blue"
                                 >
-                                    Equipment &amp; Usage Fees
+                                    Equipment offered in this office
                                 </Text>
-                                <Tooltip
-                                    size={[18, '', 22]}
-                                    text="The rates will vary at each dental office as the Host will set the prices for each equipment used."
-                                />
                             </Flex>
                         </GridItem>
 

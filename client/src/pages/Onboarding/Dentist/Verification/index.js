@@ -84,12 +84,12 @@ const steps = dentist => [
                     )
                 ),
             [LIC_NUM_FORM_ITEM_NAME]: Yup.string()
-                .required('Please provide your LICENSE number')
+                .required('Please provide your dental license number')
                 .nullable()
                 .concat(
                     Yup.string().matches(
                         /^\d{6}$/,
-                        'Please double-check your LICENSE number'
+                        'Please double-check your dental license number'
                     )
                 ),
         }),
@@ -107,7 +107,7 @@ const steps = dentist => [
                 "You must provide a photo of your driver's license"
             ),
             [STATE_DENTAL_LICENSE_FORM_ITEM_NAME]: Yup.array().required(
-                'You must provide a photo of dental license'
+                'You must provide a photo of your dental license'
             ),
             [WARRANTY_FORM_ITEM_NAME]: Yup.array().required(
                 'You must provide a proof of your malpractice insurance'

@@ -99,7 +99,6 @@ const HOST_PROFILE_URL = `${HOST_DASHBOARD_PAGE_URL_BASE}${MY_OFFICES_MENU_TEXT}
 
 const EQUIPMENT = 'equipment';
 const EQUIPMENT_NAME = `${EQUIPMENT}Name`;
-const EQUIPMENT_PRICE = `${EQUIPMENT}Price`;
 const StyledContainer = styled(Container)`
     min-height: 100vh;
 `;
@@ -121,11 +120,10 @@ const GO_TO_MY_OFFICES = 'Go to My offices';
 
 const parseEquipmentFormData = values =>
     Object.keys(values)
-        .filter(key => key.startsWith('equipmentPrice'))
+        .filter(key => key.startsWith(EQUIPMENT_NAME))
         .map(key => ({
             name:
-                values[`${EQUIPMENT_NAME}${key.slice(EQUIPMENT_PRICE.length)}`],
-            price: renderCents(values[key]),
+                values[`${EQUIPMENT_NAME}${key.slice(EQUIPMENT_NAME.length)}`],
         }));
 
 const parseListingFormData = values =>
@@ -765,7 +763,7 @@ class HostOnboarding extends Component {
             return {};
         }
 
-        // going from [{name: "equipmentName", price: $20.00}...] to { equipmentName: 'equipmentName', equipmentPrice: '$20.00' }
+        // going from [{name: "equipmentName"}] to { equipmentName: 'equipmentName' }
         const { equipment, name, location, imageUrls, description } = data;
 
         return {

@@ -78,7 +78,7 @@ const Listings = ({ listings, toggleCancelModalState, desktopOnly }) => {
                         color="text.blue"
                         mb={9}
                     >
-                        LISTING DETAILS
+                        Listing details
                     </Text>
 
                     <Box mb={21}>

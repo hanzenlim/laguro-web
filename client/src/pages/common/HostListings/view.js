@@ -120,7 +120,7 @@ class HostListings extends PureComponent {
                             mb={14}
                             color={['text.black', '', 'text.blue']}
                         >
-                            Equipments offered in this office
+                            Equipment offered
                         </Text>
                         <StyledList>
                             {equipment.map(({ name: itemName }, index) => (
@@ -150,7 +150,7 @@ class HostListings extends PureComponent {
                                     color="text.blue"
                                     fontSize={[0, '', 1]}
                                 >
-                                    Add a New Listing
+                                    Add a new Listing
                                 </Text>
                             </Link>
                         </Box>
