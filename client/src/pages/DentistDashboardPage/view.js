@@ -324,6 +324,7 @@ class DentistDashboardPageView extends Component {
                                     height={34}
                                     isExternal
                                     target="_blank"
+                                    rel="noopener"
                                     to={getLTMBaseUrl()}
                                 >
                                     <StyledButton
