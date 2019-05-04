@@ -70,7 +70,7 @@ const AppointmentConfirmationView = props => {
                             dentist={appointment.dentist}
                             dentistUser={dentistUser}
                             isSubmitting={isCardSubmitting}
-                            office={appointment.reservation.office}
+                            office={appointment.office}
                             status={status}
                             onAccept={onAccept}
                             onReject={onReject}

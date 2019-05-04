@@ -14,12 +14,10 @@ export const getAppointmentsQuery = gql`
                     imageUrl
                 }
             }
-            reservation {
-                office {
+            office {
+                name
+                location {
                     name
-                    location {
-                        name
-                    }
                 }
             }
             localStartTime
