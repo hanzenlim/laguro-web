@@ -10,6 +10,7 @@ import {
 import { execute } from '../../util/gqlUtils';
 import { insuranceClient } from '../../util/apolloClients';
 import { CHECK_ELIGIBILITY } from './queries';
+import { ENGLISH } from '../../util/strings';
 
 // contains getPatientWebOnboardingPageWizardSteps which return an array of step information objects, which contain step id(id), validations(validationSchema), and initialValues, given a user object. This user object is from getUser in PatientWebOnboardingPage/index.js.
 
@@ -172,7 +173,7 @@ export const getPatientWebOnboardingPageWizardSteps = ({
             ),
         }),
         initialValues: {
-            languages: _get(user, 'languages') || ['ENGLISH'],
+            languages: _get(user, 'languages') || [ENGLISH],
         },
     },
     {

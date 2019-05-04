@@ -1,14 +1,15 @@
 import React, { PureComponent } from 'react';
 import { Query, Mutation } from 'react-apollo';
 import get from 'lodash/get';
+import _isEmpty from 'lodash/isEmpty';
 import { message } from 'antd';
-
 import UpdateProfileFormView from './view';
 import { Loading } from '../../../../components';
 import { RedirectErrorPage } from '../../../../pages/GeneralErrorPage';
 import { getUserQuery, updateUserMutation } from './queries';
 import { getUser, setUser } from '../../../../util/authUtils';
 import { execute } from '../../../../util/gqlUtils';
+import { ENGLISH } from '../../../../util/strings';
 
 class UpdateProfileContainer extends PureComponent {
     state = { newProfileImage: null };
@@ -71,7 +72,7 @@ class UpdateProfileContainer extends PureComponent {
             firstName,
             middleName,
             lastName,
-            languages: languages || [],
+            languages: !_isEmpty(languages) ? languages : [ENGLISH],
             birthMonth: dob && dob.split('/')[0],
             birthDate: dob && dob.split('/')[1],
             birthYear: dob && dob.split('/')[2],

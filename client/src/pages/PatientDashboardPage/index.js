@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Query } from 'react-apollo';
 import get from 'lodash/get';
 import queryString from 'query-string';
+import _isEmpty from 'lodash/isEmpty';
 import PatientDashboardView from './view';
 import { Loading } from '../../components';
 import GeneralErrorPage from '../../pages/GeneralErrorPage';
@@ -38,7 +39,7 @@ class PatientDashboardPage extends Component {
                     data: dataUserQuery,
                     refetch,
                 }) => {
-                    if (loadingUserQuery) {
+                    if (_isEmpty(dataUserQuery) && loadingUserQuery) {
                         return <Loading />;
                     }
 

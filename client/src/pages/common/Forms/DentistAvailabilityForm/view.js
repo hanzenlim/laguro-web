@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import _isEmpty from 'lodash/isEmpty';
 import { Onboarding } from '@laguro/the-bright-side-components';
 import { Form, Field, withFormik, FieldArray, getIn } from 'formik';
 import * as Yup from 'yup';

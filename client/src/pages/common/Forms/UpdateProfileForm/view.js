@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import styled from 'styled-components';
@@ -9,7 +9,6 @@ import * as Yup from 'yup';
 import _range from 'lodash/range';
 import { message } from 'antd';
 import _trim from 'lodash/trim';
-
 import { Box, Text, Image, Button, Flex } from '../../../../components';
 import { filestackKey } from '../../../../config/keys';
 import { profileImageRatio } from '../../../../util/uiUtil';
@@ -44,370 +43,377 @@ const months = [
 
 const years = _range(moment().format('YYYY'), 1900).map(i => i.toString());
 
-const UpdateProfileForm = props => {
-    const {
-        data,
-        newProfileImage,
-        setNewProfileImage,
-        removeProfileImage,
-        hasRemovedProfileImage,
-    } = props;
+class UpdateProfileForm extends PureComponent {
+    render() {
+        const {
+            data,
+            newProfileImage,
+            setNewProfileImage,
+            removeProfileImage,
+            hasRemovedProfileImage,
+        } = this.props;
 
-    return (
-        <Form>
-            <Box mt={[22, '', 0]} mb={[42, '', 0]} pl={['', '', 10]}>
-                <Text
-                    fontSize={1}
-                    fontWeight="500"
-                    letterSpacing="-0.4px"
-                    color="text.black"
-                >
-                    Profile picture
-                </Text>
-                <Text
-                    fontSize={1}
-                    fontWeight="500"
-                    letterSpacing="-0.4px"
-                    color="text.lightGray"
-                    mb="16px"
-                >
-                    Your picture will be available for all users to see
-                </Text>
-                <Box
-                    mb={20}
-                    ml={0}
-                    mr={0}
-                    width="78px"
-                    height="78px"
-                    position="relative"
-                >
-                    <Image
-                        alt="profile photo"
-                        borderRadius="50%"
+        return (
+            <Form>
+                <Box mt={[22, '', 0]} mb={[42, '', 0]} pl={['', '', 10]}>
+                    <Text
+                        fontSize={1}
+                        fontWeight="500"
+                        letterSpacing="-0.4px"
+                        color="text.black"
+                    >
+                        Profile picture
+                    </Text>
+                    <Text
+                        fontSize={1}
+                        fontWeight="500"
+                        letterSpacing="-0.4px"
+                        color="text.lightGray"
+                        mb="16px"
+                    >
+                        Your picture will be available for all users to see
+                    </Text>
+                    <Box
+                        mb={20}
+                        ml={0}
+                        mr={0}
                         width="78px"
                         height="78px"
-                        src={setImageSizeToUrl(
-                            hasRemovedProfileImage
-                                ? defaultUserImage
-                                : newProfileImage ||
-                                      data.imageUrl ||
-                                      defaultUserImage,
-                            78
-                        )}
-                    />
-                    <ReactFilestack
-                        apikey={filestackKey}
-                        options={{
-                            accept: ['image/*'],
-                            imageMin: [300, 300],
-                            fromSources: [
-                                'local_file_system',
-                                'url',
-                                'imagesearch',
-                                'facebook',
-                                'instagram',
-                            ],
-                            transformations: {
-                                crop: {
-                                    aspectRatio: profileImageRatio,
-                                    force: true,
+                        position="relative"
+                    >
+                        <Image
+                            alt="profile photo"
+                            borderRadius="50%"
+                            width="78px"
+                            height="78px"
+                            src={setImageSizeToUrl(
+                                hasRemovedProfileImage
+                                    ? defaultUserImage
+                                    : newProfileImage ||
+                                          data.imageUrl ||
+                                          defaultUserImage,
+                                78
+                            )}
+                        />
+                        <ReactFilestack
+                            apikey={filestackKey}
+                            options={{
+                                accept: ['image/*'],
+                                imageMin: [300, 300],
+                                fromSources: [
+                                    'local_file_system',
+                                    'url',
+                                    'imagesearch',
+                                    'facebook',
+                                    'instagram',
+                                ],
+                                transformations: {
+                                    crop: {
+                                        aspectRatio: profileImageRatio,
+                                        force: true,
+                                    },
                                 },
-                            },
-                            uploadInBackground: false,
-                            storeTo: { container: USER_PHOTOS_CONTAINER },
-                        }}
-                        onSuccess={setNewProfileImage}
-                        render={({ onPick }) => (
-                            <Flex position="absolute" top="30px" left="100px">
-                                <Button
-                                    type="ghost"
-                                    height="auto"
-                                    onClick={onPick}
-                                    mr={14}
+                                uploadInBackground: false,
+                                storeTo: { container: USER_PHOTOS_CONTAINER },
+                            }}
+                            onSuccess={setNewProfileImage}
+                            render={({ onPick }) => (
+                                <Flex
+                                    position="absolute"
+                                    top="30px"
+                                    left="100px"
                                 >
-                                    <Text color="text.blue" fontSize={0}>
-                                        Upload new image
-                                    </Text>
-                                </Button>
-                                <Button
-                                    type="ghost"
-                                    height="auto"
-                                    onClick={removeProfileImage}
-                                >
-                                    <Text color="#cb4242" fontSize={0}>
-                                        Remove
-                                    </Text>
-                                </Button>
-                            </Flex>
-                        )}
-                    />
-                </Box>
-                <Text
-                    fontSize={1}
-                    fontWeight="500"
-                    letterSpacing="-0.4px"
-                    color="text.black"
-                    mb="10px"
-                >
-                    Name
-                </Text>
-                <Text
-                    fontSize={1}
-                    fontWeight="500"
-                    letterSpacing="-0.4px"
-                    color="text.lightGray"
-                    mb="16px"
-                    maxWidth="590px"
-                >
-                    Your profile will show your first name and the first initial
-                    of your last name. When you book an appointment, your
-                    dentist will see your full name.
-                </Text>
-                <Flex width={['100%', '', '500px']}>
-                    <Box width={['100%', '', '160px']} mr={11}>
-                        <Field
-                            name="firstName"
-                            placeholder="First Name"
-                            component={Onboarding.InputField}
+                                    <Button
+                                        type="ghost"
+                                        height="auto"
+                                        onClick={onPick}
+                                        mr={14}
+                                    >
+                                        <Text color="text.blue" fontSize={0}>
+                                            Upload new image
+                                        </Text>
+                                    </Button>
+                                    <Button
+                                        type="ghost"
+                                        height="auto"
+                                        onClick={removeProfileImage}
+                                    >
+                                        <Text color="#cb4242" fontSize={0}>
+                                            Remove
+                                        </Text>
+                                    </Button>
+                                </Flex>
+                            )}
                         />
                     </Box>
-                    <Box width={['100%', '', '160px']} mr={11}>
-                        <Field
-                            name="middleName"
-                            placeholder="Middle Name"
-                            component={Onboarding.InputField}
-                        />
-                    </Box>
-                    <Box width={['100%', '', '160px']} mr={11}>
-                        <Field
-                            name="lastName"
-                            placeholder="Last Name"
-                            component={Onboarding.InputField}
-                        />
-                    </Box>
-                </Flex>
-                <Flex flexDirection={['column', '', 'row']}>
-                    <Box
-                        width={['100%', '', '340px']}
-                        mr={['0', '', '11px']}
+                    <Text
+                        fontSize={1}
+                        fontWeight="500"
+                        letterSpacing="-0.4px"
+                        color="text.black"
                         mb="10px"
                     >
-                        <Text
-                            fontSize={1}
-                            fontWeight="500"
-                            letterSpacing="-0.4px"
-                            color="text.black"
-                            mb="10px"
-                        >
-                            Mobile number
-                        </Text>
-                        <Text
-                            fontSize={1}
-                            fontWeight="500"
-                            letterSpacing="-0.4px"
-                            color="text.lightGray"
-                            mb="16px"
-                        >
-                            The number to receive booking and listing
-                            confirmations, reminders, and other notifications.
-                        </Text>
-                        <Field
-                            name="phoneNumber"
-                            placeholder="1232342342"
-                            component={Onboarding.InputField}
-                        />
-                    </Box>
-                    <Box width={['100%', '', '340px']}>
-                        <Text
-                            fontSize={1}
-                            fontWeight="500"
-                            letterSpacing="-0.4px"
-                            color="text.black"
-                            mb="10px"
-                        >
-                            Email address
-                        </Text>
-                        <Text
-                            fontSize={1}
-                            fontWeight="500"
-                            letterSpacing="-0.4px"
-                            color="text.lightGray"
-                            mb="16px"
-                        >
-                            Your email for login and notification purposes. We
-                            won’t share this with anyone else.
-                        </Text>
-                        <Field
-                            name="email"
-                            type="email"
-                            placeholder="joe@example.com"
-                            component={Onboarding.InputField}
-                        />
-                    </Box>
-                </Flex>
-                <Text
-                    fontSize={1}
-                    fontWeight="500"
-                    letterSpacing="-0.4px"
-                    color="text.black"
-                    mb="10px"
-                >
-                    Date of birth
-                </Text>
-                <Flex>
-                    <Box width={['100%', '', '160px']} mr="10px">
-                        <Field
-                            name="birthMonth"
-                            placeholder="Month"
-                            component={props => (
-                                <Onboarding.SelectField
-                                    {...props}
-                                    options={months.map((i, index) => (
-                                        <Onboarding.SelectOption
-                                            value={(index + 1).toString()}
-                                        >
-                                            {i}
-                                        </Onboarding.SelectOption>
-                                    ))}
-                                />
-                            )}
-                        />
-                    </Box>
-                    <Box width={['100%', '', '160px']} mr="10px">
-                        <Field
-                            name="birthDate"
-                            placeholder="Date"
-                            component={props => (
-                                <Onboarding.SelectField
-                                    {...props}
-                                    options={dates.map(i => (
-                                        <Onboarding.SelectOption value={i}>
-                                            {i}
-                                        </Onboarding.SelectOption>
-                                    ))}
-                                />
-                            )}
-                        />
-                    </Box>
-                    <Box width={['100%', '', '160px']} mr="10px">
-                        <Field
-                            name="birthYear"
-                            placeholder="Year"
-                            component={props => (
-                                <Onboarding.SelectField
-                                    {...props}
-                                    options={years.map(i => (
-                                        <Onboarding.SelectOption value={i}>
-                                            {i}
-                                        </Onboarding.SelectOption>
-                                    ))}
-                                />
-                            )}
-                        />
-                    </Box>
-                </Flex>
-                <Text
-                    fontSize={1}
-                    fontWeight="500"
-                    letterSpacing="-0.4px"
-                    color="text.black"
-                    mb="10px"
-                >
-                    Gender
-                </Text>
-                <Box width={['100%', '', '500px']}>
-                    <Field
-                        name="gender"
-                        component={props => (
-                            <Onboarding.ChoicesField
-                                {...props}
-                                namesAndTexts={[
-                                    {
-                                        name: 'female',
-                                        text: 'Female',
-                                    },
-                                    {
-                                        name: 'male',
-                                        text: 'Male',
-                                    },
-                                    {
-                                        name: 'unknown',
-                                        text: 'I do not wish to answer',
-                                    },
-                                ]}
-                            />
-                        )}
-                    />
-                </Box>
-                <Text
-                    fontSize={1}
-                    fontWeight="500"
-                    letterSpacing="-0.4px"
-                    color="text.black"
-                    mb="10px"
-                >
-                    Which languages do you speak?
-                </Text>
-                <Field
-                    name="languages"
-                    component={props => (
-                        <SelectLanguage
-                            value={props.field.value}
-                            onSelect={languages =>
-                                props.form.setFieldValue(
-                                    props.field.name,
-                                    languages
-                                )
-                            }
-                        />
-                    )}
-                />
-                <Box mb={20} />
-                <Text
-                    fontSize={1}
-                    fontWeight="500"
-                    letterSpacing="-0.4px"
-                    color="text.black"
-                    mb="10px"
-                >
-                    Notification settings
-                </Text>
-                <Box width={['100%', '', '500px']}>
-                    <Field
-                        name="notificationSettings"
-                        component={props => (
-                            <Onboarding.ChoicesField
-                                {...props}
-                                namesAndTexts={[
-                                    {
-                                        name: 'sms',
-                                        text: 'Text Message',
-                                    },
-                                    {
-                                        name: 'email',
-                                        text: 'E-mail',
-                                    },
-                                    { name: 'both', text: 'Both' },
-                                ]}
-                            />
-                        )}
-                    />
-                </Box>
-                <Flex width="100%" justifyContent="center" mt={28}>
-                    <StyledNextButton
-                        htmlType="submit"
-                        loading={props.isSubmitting}
-                        width={329}
-                        height={50}
-                        ghost={true}
+                        Name
+                    </Text>
+                    <Text
+                        fontSize={1}
+                        fontWeight="500"
+                        letterSpacing="-0.4px"
+                        color="text.lightGray"
+                        mb="16px"
+                        maxWidth="590px"
                     >
-                        Save changes
-                    </StyledNextButton>
-                </Flex>
-            </Box>
-        </Form>
-    );
-};
+                        Your profile will show your first name and the first
+                        initial of your last name. When you book an appointment,
+                        your dentist will see your full name.
+                    </Text>
+                    <Flex width={['100%', '', '500px']}>
+                        <Box width={['100%', '', '160px']} mr={11}>
+                            <Field
+                                name="firstName"
+                                placeholder="First Name"
+                                component={Onboarding.InputField}
+                            />
+                        </Box>
+                        <Box width={['100%', '', '160px']} mr={11}>
+                            <Field
+                                name="middleName"
+                                placeholder="Middle Name"
+                                component={Onboarding.InputField}
+                            />
+                        </Box>
+                        <Box width={['100%', '', '160px']} mr={11}>
+                            <Field
+                                name="lastName"
+                                placeholder="Last Name"
+                                component={Onboarding.InputField}
+                            />
+                        </Box>
+                    </Flex>
+                    <Flex flexDirection={['column', '', 'row']}>
+                        <Box
+                            width={['100%', '', '340px']}
+                            mr={['0', '', '11px']}
+                            mb="10px"
+                        >
+                            <Text
+                                fontSize={1}
+                                fontWeight="500"
+                                letterSpacing="-0.4px"
+                                color="text.black"
+                                mb="10px"
+                            >
+                                Mobile number
+                            </Text>
+                            <Text
+                                fontSize={1}
+                                fontWeight="500"
+                                letterSpacing="-0.4px"
+                                color="text.lightGray"
+                                mb="16px"
+                            >
+                                The number to receive booking and listing
+                                confirmations, reminders, and other
+                                notifications.
+                            </Text>
+                            <Field
+                                name="phoneNumber"
+                                placeholder="1232342342"
+                                component={Onboarding.InputField}
+                            />
+                        </Box>
+                        <Box width={['100%', '', '340px']}>
+                            <Text
+                                fontSize={1}
+                                fontWeight="500"
+                                letterSpacing="-0.4px"
+                                color="text.black"
+                                mb="10px"
+                            >
+                                Email address
+                            </Text>
+                            <Text
+                                fontSize={1}
+                                fontWeight="500"
+                                letterSpacing="-0.4px"
+                                color="text.lightGray"
+                                mb="16px"
+                            >
+                                Your email for login and notification purposes.
+                                We won’t share this with anyone else.
+                            </Text>
+                            <Field
+                                name="email"
+                                type="email"
+                                placeholder="joe@example.com"
+                                component={Onboarding.InputField}
+                            />
+                        </Box>
+                    </Flex>
+                    <Text
+                        fontSize={1}
+                        fontWeight="500"
+                        letterSpacing="-0.4px"
+                        color="text.black"
+                        mb="10px"
+                    >
+                        Date of birth
+                    </Text>
+                    <Flex>
+                        <Box width={['100%', '', '160px']} mr="10px">
+                            <Field
+                                name="birthMonth"
+                                placeholder="Month"
+                                component={props => (
+                                    <Onboarding.SelectField
+                                        {...props}
+                                        options={months.map((i, index) => (
+                                            <Onboarding.SelectOption
+                                                value={(index + 1).toString()}
+                                            >
+                                                {i}
+                                            </Onboarding.SelectOption>
+                                        ))}
+                                    />
+                                )}
+                            />
+                        </Box>
+                        <Box width={['100%', '', '160px']} mr="10px">
+                            <Field
+                                name="birthDate"
+                                placeholder="Date"
+                                component={props => (
+                                    <Onboarding.SelectField
+                                        {...props}
+                                        options={dates.map(i => (
+                                            <Onboarding.SelectOption value={i}>
+                                                {i}
+                                            </Onboarding.SelectOption>
+                                        ))}
+                                    />
+                                )}
+                            />
+                        </Box>
+                        <Box width={['100%', '', '160px']} mr="10px">
+                            <Field
+                                name="birthYear"
+                                placeholder="Year"
+                                component={props => (
+                                    <Onboarding.SelectField
+                                        {...props}
+                                        options={years.map(i => (
+                                            <Onboarding.SelectOption value={i}>
+                                                {i}
+                                            </Onboarding.SelectOption>
+                                        ))}
+                                    />
+                                )}
+                            />
+                        </Box>
+                    </Flex>
+                    <Text
+                        fontSize={1}
+                        fontWeight="500"
+                        letterSpacing="-0.4px"
+                        color="text.black"
+                        mb="10px"
+                    >
+                        Gender
+                    </Text>
+                    <Box width={['100%', '', '500px']}>
+                        <Field
+                            name="gender"
+                            component={props => (
+                                <Onboarding.ChoicesField
+                                    {...props}
+                                    namesAndTexts={[
+                                        {
+                                            name: 'female',
+                                            text: 'Female',
+                                        },
+                                        {
+                                            name: 'male',
+                                            text: 'Male',
+                                        },
+                                        {
+                                            name: 'unknown',
+                                            text: 'I do not wish to answer',
+                                        },
+                                    ]}
+                                />
+                            )}
+                        />
+                    </Box>
+                    <Text
+                        fontSize={1}
+                        fontWeight="500"
+                        letterSpacing="-0.4px"
+                        color="text.black"
+                        mb="10px"
+                    >
+                        Which languages do you speak?
+                    </Text>
+                    <Field
+                        name="languages"
+                        component={props => (
+                            <SelectLanguage
+                                value={props.field.value}
+                                onSelect={languages =>
+                                    props.form.setFieldValue(
+                                        props.field.name,
+                                        languages
+                                    )
+                                }
+                            />
+                        )}
+                    />
+                    <Box mb={20} />
+                    <Text
+                        fontSize={1}
+                        fontWeight="500"
+                        letterSpacing="-0.4px"
+                        color="text.black"
+                        mb="10px"
+                    >
+                        Notification settings
+                    </Text>
+                    <Box width={['100%', '', '500px']}>
+                        <Field
+                            name="notificationSettings"
+                            component={props => (
+                                <Onboarding.ChoicesField
+                                    {...props}
+                                    namesAndTexts={[
+                                        {
+                                            name: 'sms',
+                                            text: 'Text Message',
+                                        },
+                                        {
+                                            name: 'email',
+                                            text: 'E-mail',
+                                        },
+                                        { name: 'both', text: 'Both' },
+                                    ]}
+                                />
+                            )}
+                        />
+                    </Box>
+                    <Flex width="100%" justifyContent="center" mt={28}>
+                        <StyledNextButton
+                            htmlType="submit"
+                            loading={this.props.isSubmitting}
+                            width={329}
+                            height={50}
+                            ghost={true}
+                        >
+                            Save changes
+                        </StyledNextButton>
+                    </Flex>
+                </Box>
+            </Form>
+        );
+    }
+}
 
 UpdateProfileForm.defaultProps = {
     onSuccess: async () => {},
@@ -454,6 +460,12 @@ export default withFormik({
                     ? schema.oneOf(['sms'], 'Please add your email.')
                     : schema
             ),
+        birthMonth: Yup.string().required('Month is required'),
+        birthDate: Yup.string().required('Date is required'),
+        birthYear: Yup.string().required('Year is required'),
+        gender: Yup.string()
+            .required('Gender is required')
+            .nullable(),
     }),
     mapPropsToValues: props => {
         const { data } = props;

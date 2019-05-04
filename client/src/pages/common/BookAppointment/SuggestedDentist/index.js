@@ -10,6 +10,7 @@ class SuggestedDentist extends PureComponent {
 
     render() {
         const dentist = {
+            id: this.props.suggestedDentist.id,
             imageUrl: this.props.suggestedDentist.imageUrl,
             specialty: this.props.suggestedDentist.specialty,
             name: `Dr. ${this.props.suggestedDentist.name}`,

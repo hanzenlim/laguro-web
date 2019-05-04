@@ -22,6 +22,7 @@ import { getUser, setUser, setAuthToken } from '../../util/authUtils';
 import Loading from '../../components/Loading/index';
 import { execute } from '../../util/gqlUtils';
 import { isBioUpdated } from '../../util/dentistUtils';
+import { ENGLISH } from '../../util/strings';
 
 const procedureList = {
     Fillings: false,
@@ -52,8 +53,8 @@ const METLIFE_FORM_ITEM_NAME = 'METLIFE';
 const DD_CALIFORNIA_FORM_ITEM_NAME = 'DD_CALIFORNIA';
 
 const checkAcceptedInsurance = (key, acceptedInsurances) => {
-    return !_isEmpty(acceptedInsurances) && acceptedInsurances.includes(key)
-}
+    return !_isEmpty(acceptedInsurances) && acceptedInsurances.includes(key);
+};
 
 const Composed = adopt({
     dentistResponse: ({ render }) => {
@@ -159,7 +160,7 @@ class KioskDentistProfilePage extends Component {
                                 profilePicture: user.imageUrl,
                                 key: specialty || specialties[0],
                                 time: firstAppointmentDuration || 30,
-                                languages: languages || ['ENGLISH'],
+                                languages: languages || [ENGLISH],
                                 procedureList: defaultProceduresList,
                             },
                         },
@@ -178,12 +179,18 @@ class KioskDentistProfilePage extends Component {
                             id: '3',
                             component: null,
                             initialValues: {
-                                [CIGNA_FORM_ITEM_NAME]:
-                                    checkAcceptedInsurance(CIGNA_FORM_ITEM_NAME, acceptedInsurances),
-                                [METLIFE_FORM_ITEM_NAME]:
-                                    checkAcceptedInsurance(METLIFE_FORM_ITEM_NAME, acceptedInsurances),
-                                [DD_CALIFORNIA_FORM_ITEM_NAME]:
-                                    checkAcceptedInsurance(DD_CALIFORNIA_FORM_ITEM_NAME, acceptedInsurances),
+                                [CIGNA_FORM_ITEM_NAME]: checkAcceptedInsurance(
+                                    CIGNA_FORM_ITEM_NAME,
+                                    acceptedInsurances
+                                ),
+                                [METLIFE_FORM_ITEM_NAME]: checkAcceptedInsurance(
+                                    METLIFE_FORM_ITEM_NAME,
+                                    acceptedInsurances
+                                ),
+                                [DD_CALIFORNIA_FORM_ITEM_NAME]: checkAcceptedInsurance(
+                                    DD_CALIFORNIA_FORM_ITEM_NAME,
+                                    acceptedInsurances
+                                ),
                             },
                         },
                     ];

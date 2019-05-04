@@ -15,6 +15,7 @@ import { getDentistTimes } from './utils';
 import { insuranceClient } from '../../util/apolloClients';
 import { trackBookAppointment } from '../../util/trackingUtils';
 import { CHECK_ELIGIBILITY } from './queries';
+import { ENGLISH } from '../../util/strings';
 
 // contains renderRegistrationStage which renders correct step within Registation stage of kiosk flow
 // contains getStageOneRegWizardSteps which return an array of step information objects, which contain step id(id), validations(validationSchema), and initialValues, given a user object. This user object is from getUser in Kiosk/index.js.
@@ -204,7 +205,7 @@ export const getKioskPageWizardSteps = ({
             ),
         }),
         initialValues: {
-            languages: _get(user, 'languages') || ['ENGLISH'],
+            languages: _get(user, 'languages') || [ENGLISH],
         },
     },
     {
