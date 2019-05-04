@@ -119,6 +119,8 @@ export const RegisterOrLoginStep = props => (
                 const isEmail = validateEmail(
                     props.formikProps.values.emailOrPhoneNumber
                 );
+                const phoneNumberFromSignup =
+                    props.formikProps.values.phoneNumber;
 
                 return {
                     passcode,
@@ -131,7 +133,7 @@ export const RegisterOrLoginStep = props => (
                     ...(!_isEmpty(props.formikProps.values.lastName) && {
                         lastName: props.formikProps.values.lastName,
                     }),
-                    ...(isEmail
+                    ...(!phoneNumberFromSignup && isEmail
                         ? {
                               email:
                                   props.formikProps.values.emailOrPhoneNumber,
@@ -141,6 +143,9 @@ export const RegisterOrLoginStep = props => (
                                   props.formikProps.values.emailOrPhoneNumber
                               }`,
                           }),
+                    ...(phoneNumberFromSignup && {
+                        phoneNumber: `+1${phoneNumberFromSignup}`,
+                    }),
                 };
             };
 

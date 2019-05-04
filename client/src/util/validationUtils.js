@@ -19,3 +19,20 @@ export const validatePhoneOrEmail = phoneOrEmail => {
 
     return true;
 };
+
+export const validatePhone = phone => {
+    if (!phone) return false;
+
+    const isNumeric = validator.isNumeric(phone);
+    const hasCorrectDigitCount = phone.length === 10;
+
+    if (!isNumeric) {
+        return false;
+    }
+
+    if (!hasCorrectDigitCount) {
+        return false;
+    }
+
+    return true;
+};

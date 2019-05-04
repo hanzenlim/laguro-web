@@ -2,7 +2,10 @@ import React, { Fragment } from 'react';
 import * as Yup from 'yup';
 import { Wizard } from '@laguro/the-bright-side-components';
 import { Flex } from '@laguro/basic-components';
-import { validatePhoneOrEmail } from '../../../util/validationUtils';
+import {
+    validatePhoneOrEmail,
+    validatePhone,
+} from '../../../util/validationUtils';
 
 import { RegisterOrLoginStep } from '../../RegisterOrLoginStep';
 
@@ -28,12 +31,23 @@ const steps = [
                         validatePhoneOrEmail
                     ),
             }),
+            phoneNumber: Yup.string().when('mode', {
+                is: 'signUp',
+                then: Yup.string()
+                    .required('This field is required')
+                    .test(
+                        'is phone number',
+                        'Please use a valid phone number',
+                        validatePhone
+                    ),
+            }),
         }),
         component: null,
         initialValues: {
             mode: 'signIn',
             isPinValid: false,
             emailOrPhoneNumber: '',
+            phoneNumber: '',
             isCodeSent: false,
             code: '',
             firstName: '',
