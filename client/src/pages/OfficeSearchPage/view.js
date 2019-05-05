@@ -142,6 +142,7 @@ const OfficeSearchPageView = props => {
                                     transform="translateX(calc(100% + 34px))"
                                 >
                                     <Map
+                                        withLinkedMarkers
                                         data={data}
                                         width={mapDimensions.width}
                                         height={mapDimensions.height}

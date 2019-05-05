@@ -186,6 +186,7 @@ class Map extends PureComponent {
             >
                 {this.state.popupInfo && (
                     <MapInfoWindow
+                        isLinked={this.props.withLinkedMarkers}
                         title={this.state.popupInfo.title || ''}
                         subtitle={this.state.popupInfo.subtitle || ''}
                         body={this.state.popupInfo.address}

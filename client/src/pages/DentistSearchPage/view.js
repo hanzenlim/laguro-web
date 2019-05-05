@@ -209,6 +209,7 @@ const DentistSearchPageView = props => {
                                     transform="translateX(calc(100% + 425px))"
                                 >
                                     <Map
+                                        withLinkedMarkers
                                         data={markers}
                                         width={441}
                                         height={500}
