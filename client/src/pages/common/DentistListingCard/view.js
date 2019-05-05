@@ -836,17 +836,21 @@ class DentistListingCard extends PureComponent {
                                 mb={12}
                             />
                         </Mobile>
-                        <Flex justifyContent="center">
-                            <Box width={304}>
-                                <Bundle
-                                    procedures={dentist.procedures}
-                                    insurance={dentist.acceptedInsurances || []}
-                                    price={dentist.bundles[0].price}
-                                    bundles={dentist.bundles || []}
-                                    dentistId={dentist.dentistId}
-                                />
-                            </Box>
-                        </Flex>
+                        {dentist.bundles && dentist.bundles.length && (
+                            <Flex justifyContent="center">
+                                <Box width={304}>
+                                    <Bundle
+                                        procedures={dentist.procedures}
+                                        insurance={
+                                            dentist.acceptedInsurances || []
+                                        }
+                                        price={dentist.bundles[0].price}
+                                        bundles={dentist.bundles || []}
+                                        dentistId={dentist.dentistId}
+                                    />
+                                </Box>
+                            </Flex>
+                        )}
                     </Flex>
                 </StyledCard>
             </Button>
