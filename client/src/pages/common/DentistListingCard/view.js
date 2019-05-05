@@ -837,7 +837,7 @@ class DentistListingCard extends PureComponent {
                             />
                         </Mobile>
                         <Flex justifyContent="center">
-                            {dentist.bundles && dentist.bundles.length && (
+                            {dentist.bundles && dentist.bundles.length ? (
                                 <Box width={304}>
                                     <Bundle
                                         procedures={dentist.procedures}
@@ -849,7 +849,7 @@ class DentistListingCard extends PureComponent {
                                         dentistId={dentist.dentistId}
                                     />
                                 </Box>
-                                )} : {(
+                                ) : (
                                     <Box width={304}>
                                         <Text>
                                             There are no available prices
