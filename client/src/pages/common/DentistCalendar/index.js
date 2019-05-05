@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import moment from 'moment';
 import _flatten from 'lodash/flatten';
 import _isEmpty from 'lodash/isEmpty';
+import _isEqual from 'lodash/isEqual';
 import hexToRgba from 'hex-to-rgba';
 import DentistCalendarView from './view';
 import {
     CANCELLED,
-    ACTIVE,
     REJECTED_BY_PATIENT,
     PENDING_PATIENT_APPROVAL,
 } from '../../../util/strings';
@@ -43,7 +43,7 @@ const getOfficeIdToColorMap = officeIds => {
     return map;
 };
 
-class DentistCalendar extends Component {
+class DentistCalendar extends PureComponent {
     constructor() {
         super();
         this.state = {
@@ -53,7 +53,7 @@ class DentistCalendar extends Component {
     }
 
     onReservationClick = (e, resEvent) => {
-        this.setState({ resId: resEvent.id.slice(0, 36) });
+        this.setState({ resId: resEvent.id.slice(0, 12) });
     };
 
     closeResModal = () => this.setState({ resId: null });
@@ -66,15 +66,13 @@ class DentistCalendar extends Component {
 
     render() {
         const officeIdToColorMap = getOfficeIdToColorMap(
-            this.props.reservations
-                .filter(res => res.status === ACTIVE)
-                .map(res => res.office.id)
+            this.props.allOfficeIds
         );
 
         const appointmentEvents = this.props.appointments
             .filter(
                 appt =>
-                    this.props.offices.includes(appt.reservation.office.id) &&
+                    this.props.officeIds.includes(appt.office.id) &&
                     appt.status !== CANCELLED &&
                     appt.status !== REJECTED_BY_PATIENT
             )
@@ -84,42 +82,49 @@ class DentistCalendar extends Component {
                 start: moment(appt.startTime).toDate(),
                 end: moment(appt.endTime).toDate(),
                 color:
-                    appt.reservation.status !== CANCELLED
-                        ? officeIdToColorMap[appt.reservation.office.id]
+                    appt.status !== CANCELLED
+                        ? officeIdToColorMap[appt.office.id]
                         : '#b7b7b7',
                 image: appt.patient.imageUrl,
                 isPending: appt.status === PENDING_PATIENT_APPROVAL,
+                listingId: appt.listingId,
             }));
 
-        const reservationEvents = _flatten(
-            this.props.reservations
-                .filter(
-                    res =>
-                        this.props.offices.includes(res.office.id) &&
-                        res.status !== CANCELLED
-                )
-                .map(res =>
-                    res.localAvailableTimes.map(lat => ({
-                        id: `${res.id}${lat.startTime}`,
-                        start: moment(lat.startTime).toDate(),
-                        end: moment(lat.endTime).toDate(),
-                        color: hexToRgba(
-                            officeIdToColorMap[res.office.id],
-                            0.1
-                        ),
-                    }))
-                )
-        );
+        if (!_isEqual(this.officeIds, this.props.officeIds)) {
+            this.officeIds = this.props.officeIds;
+            this.reservationEvents = _flatten(
+                this.props.reservations
+                    .filter(
+                        res =>
+                            this.props.officeIds.includes(res.office.id) &&
+                            res.status !== CANCELLED
+                    )
+                    .map(res =>
+                        res.localAvailableTimes.map(lat => ({
+                            id: `${res.id}${lat.startTime}`,
+                            start: moment(lat.startTime).toDate(),
+                            end: moment(lat.endTime).toDate(),
+                            color: hexToRgba(
+                                officeIdToColorMap[res.office.id],
+                                0.1
+                            ),
+                        }))
+                    )
+            );
+        }
+
         return (
             <DentistCalendarView
                 date={this.props.date}
                 onReservationClick={this.onReservationClick}
                 onAppointmentClick={this.onAppointmentClick}
                 appointmentEvents={
-                    !_isEmpty(this.props.offices) ? appointmentEvents : []
+                    !_isEmpty(this.props.officeIds) ? appointmentEvents : []
                 }
                 reservationEvents={
-                    !_isEmpty(this.props.offices) ? reservationEvents : []
+                    !_isEmpty(this.props.officeIds)
+                        ? this.reservationEvents
+                        : []
                 }
                 reservation={
                     this.props.reservations.filter(

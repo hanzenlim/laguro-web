@@ -1,13 +1,11 @@
 import React, { Fragment, PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import _get from 'lodash/get';
-import _isEmpty from 'lodash/isEmpty';
 import styled from 'styled-components';
 import { height } from 'styled-system';
 import moment from 'moment';
 import { Formik } from 'formik';
 import { Form, AutoComplete } from 'antd';
-
 import DatePicker from '../../../../../components/DatePicker';
 import {
     Box,
@@ -22,11 +20,10 @@ import {
 
 const NoAppointmentsMessage = () => (
     <Flex mt={20} justifyContent="center">
-        <Link
-                to="/dashboard/dentist?selectedTab=availability%20settings"
-            >
+        <Link to="/dashboard/dentist?selectedTab=availability%20settings">
             <Text fontSize="14px" color="#3481f8">
-                    Click here to set your preferred locations before you can make an appointment.
+                Click here to set your preferred locations before you can make
+                an appointment.
             </Text>
         </Link>
     </Flex>
@@ -65,9 +62,12 @@ class AppointmentFormView extends PureComponent {
     };
 
     render() {
-        const { validate, onSubmit, preferredLocations } = this.props;
+        const { preferredLocations, validate, onSubmit } = this.props;
 
-        if (_isEmpty(preferredLocations)) {
+        if (
+            _get(preferredLocations, 'length') &&
+            _get(preferredLocations, 'length') < 0
+        ) {
             return <NoAppointmentsMessage />;
         }
 
@@ -133,12 +133,14 @@ class AppointmentFormView extends PureComponent {
                                                 my="15px"
                                                 mx="20px"
                                             >
-                                                Create a new appointment
+                                                Create a New Appointment
                                             </Text>
                                             <Text
                                                 fontSize={1}
                                                 my="15px"
                                                 mx="20px"
+                                                cursor="pointer"
+                                                onClick={this.props.onClose}
                                             >
                                                 x
                                             </Text>

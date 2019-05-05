@@ -8,8 +8,10 @@ import { Loading } from '../../../components';
 import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
 import { appointmentClient } from '../../../util/apolloClients';
 
-import { getDentistQuery, createAppointmentMutation } from './queries';
+import { getDentistQuery, requestAppointmentMutation } from './queries';
 import { getUser } from '../../../util/authUtils';
+
+const LOCAL_TIME_FORMAT = 'YYYY-MM-DDTHH:mm:ss';
 
 class NewAppointment extends PureComponent {
     state = {
@@ -28,7 +30,7 @@ class NewAppointment extends PureComponent {
 
         try {
             const result = await appointmentClient.mutate({
-                mutation: createAppointmentMutation,
+                mutation: requestAppointmentMutation,
                 variables: {
                     input: {
                         officeId: values.dentalOfficeId,
@@ -37,11 +39,11 @@ class NewAppointment extends PureComponent {
                         localStartTime: moment(values.selectedDate)
                             .hour(localStartTimeHour)
                             .minute(localStartTimeMinutes)
-                            .format(),
+                            .format(LOCAL_TIME_FORMAT),
                         localEndTime: moment(values.selectedDate)
                             .hour(localEndTimeHour)
                             .minute(localEndTimeMinutes)
-                            .format(),
+                            .format(LOCAL_TIME_FORMAT),
                     },
                 },
             });
@@ -50,6 +52,10 @@ class NewAppointment extends PureComponent {
                 this.setState({
                     showConfirmationMessage: true,
                 });
+
+                if (this.props.onSuccessApptCreation) {
+                    this.props.onSuccessApptCreation();
+                }
 
                 window.scrollTo(0, 0);
             }

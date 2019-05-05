@@ -66,6 +66,7 @@ class AppointmentForm extends PureComponent {
                 validate={this.validateForm}
                 patientsName={this.props.patientsName}
                 onSubmit={this.onSubmit}
+                onClose={this.props.onClose}
             />
         );
     }

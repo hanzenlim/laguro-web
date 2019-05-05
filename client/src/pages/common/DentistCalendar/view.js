@@ -143,7 +143,9 @@ class DentistCalendar extends Component {
                                             onClose={
                                                 this.toggleShowNewAppointment
                                             }
-                                            refetch={this.props.refetch}
+                                            onSuccessApptCreation={
+                                                this.props.refetch
+                                            }
                                         />
                                     </StyledNewAppointmentModal>
                                 )}

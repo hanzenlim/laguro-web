@@ -16,9 +16,9 @@ const { Desktop, TabletMobile } = Responsive;
 class DentistDetailsPageView extends PureComponent {
     getDentistBundles = (procedures, bundles) => {
         const procedureStringList = procedures.map(p => p.group);
-        const filteredBundles = bundles.filter(b =>
+        const filteredBundles = bundles ? bundles.filter(b =>
             procedureStringList.includes(b.group)
-        );
+        ) : [];
         return filteredBundles;
     };
 

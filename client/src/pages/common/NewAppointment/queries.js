@@ -1,6 +1,6 @@
 import { gql } from 'apollo-boost';
 
-export const createAppointmentMutation = gql`
+export const requestAppointmentMutation = gql`
     mutation requestAppointment($input: RequestAppointmentInput!) {
         requestAppointment(input: $input)
     }

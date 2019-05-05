@@ -22,7 +22,7 @@ export const insuranceClient = new ApolloClient({
 });
 
 export const appointmentClient = new ApolloClient({
-    uri: 'https://eyzqa7mzs9.execute-api.us-east-1.amazonaws.com/stage/graphql',
+    uri: process.env.REACT_APP_GRAPHQL_APPOINTMENT_API,
     request: requestHandler,
 });
 

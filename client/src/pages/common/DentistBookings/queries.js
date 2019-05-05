@@ -1,15 +1,9 @@
 import { gql } from 'apollo-boost';
-import moment from 'moment';
-
-import { END_TIME } from '../../../util/strings';
+import { STATUS, ACTIVE } from '../../../util/strings';
 
 export const updateAppointmentMutation = gql`
     mutation updateAppointmentTime($input: UpdateAppointmentTimeInput!) {
-        updateAppointmentTime(input: $input) {
-            id
-            localStartTime
-            localEndTime
-        }
+        updateAppointmentTime(input: $input)
     }
 `;
 
@@ -17,10 +11,51 @@ export const getDentistQuery = gql`
     query getDentist($id: String!) {
         getDentist(id: $id) {
             id
+            preferredLocations {
+                id
+                name
+                location {
+                    name
+                }
+                host {
+                    user {
+                        id
+                        firstName
+                        lastName
+                    }
+                }
+                listings (
+                    options: {
+                        filters: [
+                            {
+                                filterKey: "${STATUS}",
+                                filterValues: ["${ACTIVE}"]
+                            }
+                        ]
+                    }
+                ) {
+                    id
+                    numChairsAvailable
+                    availability {
+                        startDay
+                        endDay
+                        startTime
+                        endTime
+                        type
+                        days
+                    }
+                    status
+                }
+                imageUrls
+                equipment {
+                    name
+                }
+            }
             appointments {
                 id
                 localStartTime
                 localEndTime
+                listingId
                 patient {
                     id
                     lastName
@@ -28,49 +63,11 @@ export const getDentistQuery = gql`
                     imageUrl
                 }
                 status
-                reservation {
-                    office {
-                        id
-                        name
-                    }
-                }
-                notes
-            }
-            reservations(
-                options: {
-                    sortKey: "${END_TIME}",
-                    rangeStart: "${moment
-                        .unix(0)
-                        .utc()
-                        .format()}",
-                }
-            ) {
-                id
                 office {
                     id
                     name
-                    location {
-                        name
-                    }
-                    imageUrls
                 }
-                localAvailableTimes {
-                    startTime
-                    endTime
-                }
-                host {
-                    user {
-                        firstName
-                        lastName
-                        imageUrl
-                    }
-                }
-                numChairsSelected
-                equipmentSelected
-                appointments {
-                    id
-                }
-                status
+                notes
             }
         }
     }
