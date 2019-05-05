@@ -5,8 +5,8 @@ import { withScreenSizes } from '../../../components/Responsive';
 
 const OPTION_NUM_TO_DATA = {
     1: { type: 'Chair only', assistant: '', price: 20 },
-    2: { type: 'Chair', assistant: 'Shared assitant*', price: 35 },
-    3: { type: 'Private chair**', assistant: 'Personal assitant', price: 50 },
+    2: { type: 'Chair', assistant: 'Shared assistant*', price: 35 },
+    3: { type: 'Private chair**', assistant: 'Personal assistant', price: 50 },
 };
 
 const StyledButton = styled(Button)`
