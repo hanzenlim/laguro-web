@@ -1,36 +1,68 @@
 import React, { Fragment, PureComponent } from 'react';
-import { compose, withApollo } from 'react-apollo';
+import { Query, compose, withApollo } from 'react-apollo';
 import { Helmet } from 'react-helmet';
-import _throttle from 'lodash/throttle';
-import _startCase from 'lodash/startCase';
-import _toLower from 'lodash/toLower';
-import _isArray from 'lodash/isArray';
-import _isEmpty from 'lodash/isEmpty';
 import queryString from 'query-string';
 import _get from 'lodash/get';
 import DentistSearchPageView from './view';
 import history from '../../history';
-import esClient from '../../util/esClient';
-import { formatAddress } from '../../util/styleUtil';
-import { DENTISTS } from '../../util/strings';
 import { getMyPosition, DEFAULT_LOCATION } from '../../util/navigatorUtil';
-import { numMaxContainerWidth } from '../../components/theme';
-import { batchGetUsers, GET_DENTISTS_AND_APPOINTMENT_SLOTS } from './queries';
-import moment from 'moment';
-import { Query } from 'react-apollo';
+import { GET_DENTISTS_AND_APPOINTMENT_SLOTS } from './queries';
+
 import { appointmentClient } from '../../util/apolloClients';
 
-const PAGE_SIZE = 14;
-const DISTANCE = '75km';
+const daysAvailabilityMapping = {
+    'All days': [
+        'MONDAY',
+        'TUESDAY',
+        'WEDNESDAY',
+        'THURSDAY',
+        'FRIDAY',
+        'SATURDAY',
+        'SUNDAY',
+    ],
+    Monday: ['MONDAY'],
+    Tuesday: ['TUESDAY'],
+    Wednesday: ['WEDNESDAY'],
+    Thursday: ['THURSDAY'],
+    Friday: ['FRIDAY'],
+    Saturday: ['SATURDAY'],
+    Sunday: ['SUNDAY'],
+};
 
-// ignore timezone-related characters in timestamp
-const TIME_PRECISION = 19;
+const getHoursFromTimeAvailability = {
+    'ANY TIME': {
+        startHour: '00:00:00',
+        endHour: '23:00:00',
+    },
+    'EARLY MORNING': {
+        startHour: '06:00:00',
+        endHour: '09:00:00',
+    },
+    MORNING: {
+        startHour: '08:00:00',
+        endHour: '12:00:00',
+    },
+    LUNCH: {
+        startHour: '12:00:00',
+        endHour: '13:00:00',
+    },
+    'EARLY AFTERNOON': {
+        startHour: '11:00:00',
+        endHour: '15:00:00',
+    },
+    AFTERNOON: {
+        startHour: '14:00:00',
+        endHour: '17:00:00',
+    },
+    EVENING: {
+        startHour: '14:00:00',
+        endHour: '23:00:00',
+    },
+};
 
 class DetailsSearchPage extends PureComponent {
     constructor(props) {
         super(props);
-
-        const { width, height } = this.getDimensions();
 
         this.state = {
             data: [],
@@ -38,12 +70,9 @@ class DetailsSearchPage extends PureComponent {
             loading: true,
             showMap: false,
             defaultPosition: DEFAULT_LOCATION,
-            mapDimensions: {
-                width,
-                height,
-            },
             urlParams: {},
             isFilterVisible: false,
+            queryUrl: this.props.location.search,
         };
     }
 
@@ -59,32 +88,7 @@ class DetailsSearchPage extends PureComponent {
         if (!urlParams.lat || !urlParams.long) {
             this.setState({ defaultPosition: await getMyPosition() });
         }
-        const response = await this.fetchData(urlParams);
-        const total = this.getDataCount(response);
-
-        const mappedData = this.getMappedData(response);
-        await this.setState({
-            data: mappedData,
-            loading: false,
-            total,
-            urlParams,
-        });
-
-        const mappedDataWithTimeSlots = await this.addTimeSlots(
-            mappedData,
-            urlParams.startTime
-        );
-        this.setState({
-            data: mappedDataWithTimeSlots,
-        });
-
-        this.updateDimensions();
-        window.addEventListener('resize', _throttle(this.updateDimensions));
     };
-
-    componentWillUnmount() {
-        window.removeEventListener('resize', _throttle(this.updateDimensions));
-    }
 
     componentDidUpdate = async prevProps => {
         if (prevProps.location.search !== this.props.location.search) {
@@ -93,257 +97,14 @@ class DetailsSearchPage extends PureComponent {
             // Do not set loading to true if user clicked show more
             if (newUrlParams.limit) return;
 
-            this.setState(() => ({ loading: true }));
-            await this.updateSearchResults();
-            this.setState(() => ({ loading: false }));
-        }
-    };
-
-    updateSearchResults = async () => {
-        const nextUrlParams = queryString.parse(this.props.location.search);
-        const response = await this.fetchData(nextUrlParams);
-        const total = this.getDataCount(response);
-
-        const mappedData = this.getMappedData(response);
-        await this.setState({
-            data: mappedData,
-            total,
-            urlParams: nextUrlParams,
-        });
-
-        const mappedDataWithTimeSlots = await this.addTimeSlots(mappedData);
-        await this.setState({ data: mappedDataWithTimeSlots });
-
-        return true;
-    };
-
-    addTimeSlots = async (mappedData, startTime) => {
-        const rangeStart = moment(startTime)
-            .utc()
-            .format();
-        const rangeEnd = startTime
-            ? moment(startTime)
-                  .utc()
-                  .endOf('day')
-                  .format()
-            : moment
-                  .utc()
-                  .add(28, 'days')
-                  .endOf('day')
-                  .format();
-        const result = await this.props.client.query({
-            query: batchGetUsers(rangeStart, rangeEnd),
-            variables: {
-                input: {
-                    ids: mappedData.map(d => d.userId),
-                },
-            },
-        });
-
-        const timeSlots = [];
-        result.data.batchGetUsers.forEach(user => {
-            user.dentist.availableAppointmentSlots.forEach(timeSlot => {
-                timeSlots.push(timeSlot);
-            });
-        });
-
-        const mappedDataWithTimeSlots = [...mappedData];
-        mappedData.forEach((data, index) =>
-            data.reservations.forEach(reservation => {
-                timeSlots.forEach(timeSlot => {
-                    if (timeSlot.reservationId === reservation.id) {
-                        mappedDataWithTimeSlots[index].availableTimes.push(
-                            timeSlot
-                        );
-                    }
+            if (this.refetch) {
+                const urlParams = queryString.parse(this.props.location.search);
+                const queryParams = this.buildQueryParams(urlParams);
+                this.refetch({
+                    input: queryParams,
                 });
-            })
-        );
-
-        return mappedDataWithTimeSlots;
-    };
-
-    getDimensions = () => {
-        const windowInnerWidth = window.innerWidth;
-        const windowInnerHeight = window.innerHeight;
-        const margins = windowInnerWidth - numMaxContainerWidth;
-        const verticalOffset = 330;
-        const horizontalOffset = 220;
-
-        return {
-            width:
-                windowInnerWidth < numMaxContainerWidth
-                    ? windowInnerWidth / 2 - horizontalOffset
-                    : (windowInnerWidth - margins) / 2 - horizontalOffset,
-            height: windowInnerHeight - verticalOffset,
-        };
-    };
-
-    updateDimensions = () => {
-        const { width, height } = this.getDimensions();
-
-        this.setState({
-            mapDimensions: {
-                width,
-                height,
-            },
-        });
-    };
-
-    getOffset = (page, pageSize) => {
-        if (!page) return 0;
-
-        let offset = page - 1;
-
-        if (page > 1) {
-            offset *= pageSize;
+            }
         }
-
-        return offset;
-    };
-
-    getMappedData = data => {
-        let mappedData = [];
-
-        if (data.hits.hits.length > 0) {
-            mappedData = data.hits.hits.map(item => {
-                const source = item._source;
-                let reservations = [];
-
-                if (
-                    _isArray(source.reservations) &&
-                    !_isEmpty(source.reservations)
-                ) {
-                    /**
-                     * Adding a small offset so that dentists' map markers
-                     * who has the same lat and long will be rendered in different area
-                     */
-
-                    reservations = source.reservations.map(res => ({
-                        ...res,
-                        geoPoint: {
-                            lat: res.geoPoint.lat + Math.random() / 1000,
-                            lon: res.geoPoint.lon,
-                        },
-                    }));
-                }
-
-                return {
-                    id: source.id,
-                    userId: source.userId,
-                    name: source.name,
-                    rating: source.averageRating,
-                    reviewCount: source.numReviews,
-                    imageUrl: source.imageUrl,
-                    reservations,
-                    address: formatAddress(
-                        _get(source, 'reservations[0].address'),
-                        _get(source, 'reservations[0].addressDetails')
-                    ),
-                    insurance: _get(source, 'acceptedInsurances', []).map(i =>
-                        _startCase(_toLower(i))
-                    ),
-                    longitude: _get(source, 'reservations[0].geoPoint.lon'),
-                    latitude: _get(source, 'reservations[0].geoPoint.lat'),
-                    specialty: source.specialty,
-                    languages: _get(source, 'languages', []).map(l =>
-                        _startCase(_toLower(l))
-                    ),
-                    procedures: _get(source, 'procedures', []).map(
-                        p => p.group
-                    ),
-                    url: `/dentist/${item._id}`,
-                    availableTimes: [],
-                };
-            });
-        }
-
-        return mappedData;
-    };
-
-    getDataCount = data => data.hits.total;
-
-    fetchData = async params => {
-        const {
-            endTime,
-            startTime,
-            lat,
-            long: lon,
-            page,
-            text,
-            limit,
-        } = params;
-        const from = this.getOffset(page, PAGE_SIZE);
-        const { defaultPosition } = this.state;
-        // must in the elasticsearch context
-        // see https://www.elastic.co/guide/en/elasticsearch/reference/6.3/query-dsl-bool-query.html
-        const must = [
-            {
-                term: { isVerified: { value: true } },
-            },
-        ];
-        let distanceFilter = null;
-
-        if (text) {
-            must.push({
-                multi_match: {
-                    query: text,
-                    type: 'phrase_prefix',
-                    fields: [
-                        // the carrot syntax multiplies the score of the result
-                        'name^2',
-                        'specialty',
-                        'procedures.name',
-                        'reservations.address',
-                    ],
-                },
-            });
-        } else {
-            distanceFilter = {
-                geo_distance: {
-                    distance: DISTANCE,
-                    'reservations.geoPoint': {
-                        lon: lon || defaultPosition.lon,
-                        lat: lat || defaultPosition.lat,
-                    },
-                },
-            };
-        }
-
-        if (startTime && endTime) {
-            must.push(
-                {
-                    range: {
-                        'reservations.availableTimes.endTime': {
-                            gte: startTime.substring(0, TIME_PRECISION),
-                        },
-                    },
-                },
-                {
-                    range: {
-                        'reservations.availableTimes.startTime': {
-                            lte: endTime.substring(0, TIME_PRECISION),
-                        },
-                    },
-                }
-            );
-        }
-
-        const res = await esClient.search({
-            index: DENTISTS,
-            size: limit || PAGE_SIZE,
-            from,
-            body: {
-                query: {
-                    bool: {
-                        must,
-                        filter: distanceFilter,
-                    },
-                },
-            },
-        });
-
-        return res;
     };
 
     toggleMap = () => {
@@ -354,8 +115,7 @@ class DetailsSearchPage extends PureComponent {
         this.setState({ isFilterVisible: !this.state.isFilterVisible });
     };
 
-    render() {
-        const urlParams = queryString.parse(this.props.location.search);
+    buildQueryParams = urlParams => {
         let queryParams = {
             textQuery: urlParams && urlParams.text ? urlParams.text : '',
         };
@@ -367,6 +127,67 @@ class DetailsSearchPage extends PureComponent {
                 },
             };
         }
+
+        // Add more filters
+        if (
+            urlParams.language ||
+            urlParams.procedure ||
+            urlParams.insurance ||
+            urlParams.dayAvailability ||
+            urlParams.timeAvailability
+        ) {
+            const options = {};
+
+            if (urlParams.language && urlParams.language !== 'Any languages') {
+                options.language = urlParams.language;
+            }
+
+            // We don't want to include the filter if the
+            // selected procedure is all procedures
+            if (
+                urlParams.procedure &&
+                urlParams.procedure !== 'All procedures'
+            ) {
+                options.procedure = urlParams.procedure;
+            }
+
+            if (
+                urlParams.insurance &&
+                urlParams.insurance !== 'All insurances'
+            ) {
+                if (urlParams.insurance === 'Delta Dental of California') {
+                    options.acceptedInsurance = 'DD_CALIFORNIA';
+                } else {
+                    options.acceptedInsurance = urlParams.insurance;
+                }
+            }
+
+            if (urlParams.dayAvailability) {
+                options.days =
+                    daysAvailabilityMapping[urlParams.dayAvailability];
+            }
+
+            if (urlParams.timeAvailability) {
+                const { startHour, endHour } = getHoursFromTimeAvailability[
+                    urlParams.timeAvailability.toUpperCase()
+                ];
+                options.timeRange = {
+                    startHour,
+                    endHour,
+                };
+            }
+
+            queryParams.options = options;
+
+            return queryParams;
+        }
+
+        return queryParams;
+    };
+
+    render() {
+        const urlParams = queryString.parse(this.state.queryUrl);
+        const queryParams = this.buildQueryParams(urlParams);
 
         return (
             <Fragment>
@@ -390,11 +211,14 @@ class DetailsSearchPage extends PureComponent {
                 <Query
                     query={GET_DENTISTS_AND_APPOINTMENT_SLOTS}
                     client={appointmentClient}
+                    fetchPolicy="network-only"
                     variables={{
                         input: queryParams,
                     }}
+                    notifyOnNetworkStatusChange
                 >
-                    {({ data, loading }) => {
+                    {({ data, loading, refetch }) => {
+                        this.refetch = refetch;
                         const items = _get(
                             data,
                             'searchForDentistsAndAppointmentSlots',
@@ -405,11 +229,10 @@ class DetailsSearchPage extends PureComponent {
                             <DentistSearchPageView
                                 data={items}
                                 showMap={this.state.showMap}
-                                total={this.state.total}
+                                total={items.length}
                                 toggleMap={this.toggleMap}
                                 defaultPosition={this.state.defaultPosition}
                                 urlParams={this.state.urlParams}
-                                mapDimensions={this.state.mapDimensions}
                                 onShowMore={this.updateSearchResults}
                                 loading={loading}
                                 isFilterVisible={this.state.isFilterVisible}

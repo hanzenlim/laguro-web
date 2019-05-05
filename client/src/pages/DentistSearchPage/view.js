@@ -98,79 +98,78 @@ const DentistSearchPageView = props => {
                             )
                         }
                     </Desktop>
-                    {total > 0 && (
-                        <Flex
-                            pb={16}
-                            width="100%"
-                            left="0"
-                            px={[25, '', 0]}
-                            position={['relative', '', 'fixed']}
-                            zIndex="10"
-                            pt={[0, 0, 120]}
-                            top={['auto', '', 0]}
-                            bg="white"
-                        >
-                            <Container px={[0, 0, 25]}>
-                                <TabletMobile>
-                                    {isFilterVisible ? <SearchFilter /> : null}
-                                </TabletMobile>
-                                <Flex justifyContent="space-between">
-                                    {urlParams.text && !urlParams.location && (
-                                        <Text
-                                            fontSize={['20px', '22px']}
-                                            color="text.black"
-                                        >
-                                            Search results for{' '}
-                                            <Text
-                                                display="inline-block"
-                                                fontWeight="bold"
-                                            >
-                                                "{urlParams.text}"
-                                            </Text>
-                                        </Text>
-                                    )}
+
+                    <Flex
+                        pb={16}
+                        width="100%"
+                        left="0"
+                        px={[25, '', 0]}
+                        position={['relative', '', 'fixed']}
+                        zIndex="10"
+                        pt={[0, 0, 120]}
+                        top={['auto', '', 0]}
+                        bg="white"
+                    >
+                        <Container px={[0, 0, 25]}>
+                            <TabletMobile>
+                                {isFilterVisible ? <SearchFilter /> : null}
+                            </TabletMobile>
+                            <Flex justifyContent="space-between">
+                                {urlParams.text && !urlParams.location && (
                                     <Text
                                         fontSize={['20px', '22px']}
                                         color="text.black"
                                     >
-                                        {urlParams.location && 'Dentists near '}
+                                        Search results for{' '}
                                         <Text
                                             display="inline-block"
                                             fontWeight="bold"
                                         >
-                                            {urlParams.location}
+                                            "{urlParams.text}"
                                         </Text>
-                                        {urlParams.startTime && ' on '}
-                                        {urlParams.startTime && (
-                                            <Text
-                                                display="inline-block"
-                                                fontWeight="bold"
-                                            >
-                                                {moment(
-                                                    urlParams.startTime
-                                                ).format('MMM D, YYYY')}
-                                            </Text>
-                                        )}
                                     </Text>
-                                    <Flex display={['none', '', 'flex']}>
+                                )}
+                                <Text
+                                    fontSize={['20px', '22px']}
+                                    color="text.black"
+                                >
+                                    {urlParams.location && 'Dentists near '}
+                                    <Text
+                                        display="inline-block"
+                                        fontWeight="bold"
+                                    >
+                                        {urlParams.location}
+                                    </Text>
+                                    {urlParams.startTime && ' on '}
+                                    {urlParams.startTime && (
                                         <Text
-                                            fontSize="16px"
-                                            color="text.black"
-                                            mr="13px"
+                                            display="inline-block"
+                                            fontWeight="bold"
                                         >
-                                            Map View
+                                            {moment(urlParams.startTime).format(
+                                                'MMM D, YYYY'
+                                            )}
                                         </Text>
-                                        <Switch onClick={toggleMap} />
-                                    </Flex>
+                                    )}
+                                </Text>
+                                <Flex display={['none', '', 'flex']}>
+                                    <Text
+                                        fontSize="16px"
+                                        color="text.black"
+                                        mr="13px"
+                                    >
+                                        Map View
+                                    </Text>
+                                    <Switch onClick={toggleMap} />
                                 </Flex>
-                                <Desktop>
-                                    <Box mt={34}>
-                                        <SearchFilter />
-                                    </Box>
-                                </Desktop>
-                            </Container>
-                        </Flex>
-                    )}
+                            </Flex>
+                            <Desktop>
+                                <Box mt={34}>
+                                    <SearchFilter />
+                                </Box>
+                            </Desktop>
+                        </Container>
+                    </Flex>
                 </Box>
                 <Box pt={0}>
                     <Grid
@@ -187,7 +186,7 @@ const DentistSearchPageView = props => {
                                 p={[0, '', PADDING_FOR_BOX_SHADOWS_IN_PIXELS]}
                             >
                                 {loading ? (
-                                    <Box mt={15}>
+                                    <Box mt="100px">
                                         <Loading />
                                     </Box>
                                 ) : (

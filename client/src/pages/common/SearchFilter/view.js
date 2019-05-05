@@ -68,7 +68,7 @@ const SearchFilterView = props => {
                         )}
                     />
                 </Box>
-                <Box width={['100%', '', '141px']} mr={[0, '', 10]}>
+                <Box width={['100%', '', '171px']} mr={[0, '', 10]}>
                     <Field
                         name="dayAvailability"
                         placeholder="Day availability"

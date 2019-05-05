@@ -21,6 +21,7 @@ export const PROCEDURE_LIST = [
 ];
 
 export const LANGUAGE_LIST = [
+    'Any languages',
     'English',
     'Spanish',
     'Chinese',
@@ -34,14 +35,29 @@ export const LANGUAGE_LIST = [
     'Portuguese',
 ];
 
-export const DAY_AVAILABILITY_LIST = ['Weekdays', 'Weekends'];
+export const DAY_AVAILABILITY_LIST = [
+    'All days',
+    'Monday',
+    'Tueday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday',
+];
 
 export const TIME_AVAILABILITY_LIST = [
-    'During business hours',
-    'Before/After business hours',
+    'Any time',
+    'Early morning',
+    'Morning',
+    'Lunch',
+    'Early afternoon',
+    'Afternoon',
+    'Evening',
 ];
 
 export const INSURANCE_LIST = [
+    'All insurances',
     'MetLife',
     'Cigna',
     'Delta Dental of California',
