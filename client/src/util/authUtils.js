@@ -22,6 +22,7 @@ export const getUser = () => {
 };
 
 export const setUser = newUser => {
+    delete newUser.appointments;
     let user = cookies.get('user');
 
     try {

@@ -24,7 +24,8 @@ class HeaderContainer extends PureComponent {
             });
         });
 
-        emitter.on('loginModal', ({ redirectPath }) => {
+        emitter.on('loginModal', args => {
+            const redirectPath = _get(args, 'redirectPath');
             const { mobileOnly } = this.props;
             if (mobileOnly) {
                 history.push(`/login?redirectTo=${this.state.pathname}`);

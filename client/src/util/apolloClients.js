@@ -30,3 +30,8 @@ export const walletClient = new ApolloClient({
     uri: process.env.REACT_APP_GRAPHQL_WALLET_API,
     request: requestHandler,
 });
+
+export const pricingClient = new ApolloClient({
+    uri: process.env.REACT_APP_GRAPHQL_PRICING_API,
+    request: requestHandler,
+});

@@ -32,6 +32,7 @@ export const LOGIN = gql`
                 hasSubmittedHealthHistoryForm
                 insuranceInfo {
                     useInsurance
+                    policyHolderId
                 }
                 dentist {
                     id
@@ -92,6 +93,7 @@ export const REGISTER_USER = gql`
                 hasSubmittedHealthHistoryForm
                 insuranceInfo {
                     useInsurance
+                    policyHolderId
                 }
                 appointments(
                     options: {

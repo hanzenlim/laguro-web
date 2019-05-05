@@ -1,4 +1,16 @@
 import { gql } from 'apollo-boost';
+import esClient from '../../util/esClient';
+import { DENTISTS } from '../../util/strings';
+
+export const fetchDentistFromES = async queryString => {
+    const res = await esClient.get({
+        index: DENTISTS,
+        id: queryString,
+        type: '_doc'
+    });
+
+    return res;
+};
 
 // eslint-disable-next-line
 export const getDentistQuery = gql`
