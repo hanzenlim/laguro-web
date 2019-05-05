@@ -45,6 +45,7 @@ import {
     UPDATE_PATIENT_HEALTH_DATA,
     GET_PATIENT_HEALTH_DATA_UNSTRUCTURED,
     CREATE_APPOINTMENT_FROM_KIOSK,
+    CHECK_IN_FOR_APPOINTMENT,
 } from './queries';
 import { Flex, Text, Loading, Box, Container } from '../../components/index';
 import {
@@ -107,6 +108,7 @@ import {
 } from './utils';
 import defaultUserImage from '../../components/Image/defaultUserImage.svg';
 import { hasSkippedMedicalHistoryFormCookieVariableName } from '../../util/strings';
+import { execute } from '../../util/gqlUtils';
 
 export const KIOSK_OFFICE_ID_COOKIE_VARIABLE_NAME = 'kiosk-office-id';
 
@@ -256,6 +258,14 @@ const Composed = adopt({
     updatePatientHealthData: ({ render }) => (
         <Mutation mutation={UPDATE_PATIENT_HEALTH_DATA}>{render}</Mutation>
     ),
+    checkInForAppointment: ({ render }) => (
+        <Mutation
+            mutation={CHECK_IN_FOR_APPOINTMENT}
+            client={appointmentClient}
+        >
+            {render}
+        </Mutation>
+    ),
     getPatientHealthDataUnstructured: ({ render, userId }) => (
         <Query
             query={GET_PATIENT_HEALTH_DATA_UNSTRUCTURED}
@@ -327,6 +337,7 @@ class KioskPage extends Component {
                     createPatientAppointmentOnboarding,
                     createAppointmentFromKiosk,
                     updatePatientHealthData,
+                    checkInForAppointment,
                 }) => {
                     if (
                         isGetUserLoading ||
@@ -391,13 +402,15 @@ class KioskPage extends Component {
 
                     const userAppt = _get(this.userFromDB, 'appointments');
 
-                    const isCheckInButNoUpcomingAppt =
+                    const isCheckIn =
                         cookies.get(kioskPurposeOfVisitCookieVariableName) ===
-                            'checkIn' && _isEmpty(userAppt);
+                        'checkIn';
+
+                    const isCheckInButNoUpcomingAppt =
+                        isCheckIn && _isEmpty(userAppt);
 
                     const isCheckInAndHasUpcomingAppt =
-                        cookies.get(kioskPurposeOfVisitCookieVariableName) ===
-                            'checkIn' && !_isEmpty(userAppt);
+                        isCheckIn && !_isEmpty(userAppt);
 
                     const redirectFromHealthHistory = () => {
                         if (isCheckInAndHasUpcomingAppt) {
@@ -439,6 +452,37 @@ class KioskPage extends Component {
                             kioskPurposeOfVisitCookieVariableName,
                             KIOSK_PURPOSE_OF_VISIT_WALKIN
                         );
+                    }
+
+                    // if the user is checking in, let the backend know as soon as possible
+                    if (
+                        currentWizardStepId ===
+                            GENERAL_INFO_STAGE_WIZARD_STEP_IDS[0] &&
+                        isCheckIn &&
+                        !this.hasCheckedIn
+                    ) {
+                        this.hasCheckedIn = true;
+                        const upcomingApptId = _get(
+                            this.userFromDB,
+                            'appointments[0].id'
+                        );
+                        if (!_isEmpty(upcomingApptId)) {
+                            execute({
+                                action: async () => {
+                                    _get(
+                                        await checkInForAppointment({
+                                            variables: {
+                                                input: {
+                                                    appointmentId: upcomingApptId,
+                                                },
+                                            },
+                                        }),
+                                        'data.checkInForAppointment'
+                                    );
+                                    console.log('1232', this.hasCheckedIn);
+                                },
+                            });
+                        }
                     }
 
                     // add redirects here

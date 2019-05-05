@@ -160,8 +160,13 @@ export const GET_USER = gql`
             appointments(
                     options: {
                         sortKey: "${END_TIME}",
-                        rangeStart: "${moment()
-                            .startOf('days')
+                        rangeStart:"${moment()
+                            .startOf('day')
+                            .utc()
+                            .format()}", 
+                        rangeEnd: "${moment()
+                            .endOf('day')
+                            .utc()
                             .format()}",
                         filters: [
                             {
@@ -374,5 +379,11 @@ export const CHECK_ELIGIBILITY = gql`
             id
             isEligible
         }
+    }
+`;
+
+export const CHECK_IN_FOR_APPOINTMENT = gql`
+    mutation checkInForAppointment($input: CheckInForAppointmentInput!) {
+        checkInForAppointment(input: $input)
     }
 `;
