@@ -4,6 +4,8 @@ import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 import styled, { css } from 'styled-components';
 
+import { getProcedureColor } from '../../../util/dentistUtils';
+import { getInsuranceText } from '../../../util/insuranceUtil';
 import { Button, Flex, Text, Box } from '../../../components';
 import { getUser } from '../../../util/authUtils';
 import emitter from '../../../util/emitter';
@@ -69,7 +71,7 @@ const BundleView = ({
             Check out the price estimation for:
         </Text>
         <Box height={8} />
-        <Dropdown overlay={menu}>
+        <Dropdown overlay={menu} trigger={['click']}>
             <StyledButton
                 type="primary"
                 ghost={isNullSelectedIndex}
@@ -85,11 +87,7 @@ const BundleView = ({
                         ? 'text.white'
                         : TAG_COLORS[selectedIndex % 4]
                 }
-                bg={
-                    !isNullSelectedIndex
-                        ? TAG_COLORS[selectedIndex % 4]
-                        : 'background.white'
-                }
+                bg={getProcedureColor(selectedProcedure)}
             >
                 {selectedProcedure || 'Select procedure'}
                 <Icon
@@ -147,7 +145,7 @@ const BundleView = ({
                     </StyledButton>
                 )}
                 {selectedInsurance && (
-                    <Dropdown overlay={insuranceMenu}>
+                    <Dropdown overlay={insuranceMenu} trigger={['click']}>
                         <Button
                             type="default"
                             ghost
@@ -179,7 +177,9 @@ const BundleView = ({
                                 >
                                     with
                                     <Text ml={5} color="#3481f8">
-                                        {selectedInsurance.name}
+                                        {getInsuranceText(
+                                            selectedInsurance.name
+                                        )}
                                     </Text>
                                 </Text>
                                 <Icon

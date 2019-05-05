@@ -21,6 +21,7 @@ import {
 import { withScreenSizes } from '../../../components/Responsive';
 import Bundle from '../Bundle';
 import { getProcedureColor } from '../../../util/dentistUtils';
+import { getInsuranceText } from '../../../util/insuranceUtil';
 
 const { Desktop, Mobile } = Responsive;
 
@@ -167,9 +168,7 @@ class DentistListingCard extends PureComponent {
                 }}
             >
                 {dentist.appointmentTimeslotsByOffice.map((item, index) => (
-                    <Menu.Item key={index}>
-                        {item.office.location.addressDetails}
-                    </Menu.Item>
+                    <Menu.Item key={index}>{item.office.location.name.split(",", 3).toString()}</Menu.Item>
                 ))}
             </Menu>
         );
@@ -284,20 +283,6 @@ class DentistListingCard extends PureComponent {
                                                 </Flex>
                                             )}
                                         </Flex>
-
-                                        {/* <Text
-                                            style={{
-                                                'white-space': 'pre-line',
-                                            }}
-                                            mb={8}
-                                            fontSize="12px"
-                                            color="#9b9b9b"
-                                            fontWeight="normal"
-                                            textTransform="uppercase"
-                                            textAlign="left"
-                                        >
-                                            {dentist.address}
-                                        </Text> */}
                                     </Flex>
                                 </Flex>
 
@@ -391,10 +376,17 @@ class DentistListingCard extends PureComponent {
                                                               .acceptedInsurances
                                                               .length -
                                                               1
-                                                              ? `${sp}, `
-                                                              : `and ${sp}`
+                                                              ? `${getInsuranceText(
+                                                                    sp
+                                                                )}, `
+                                                              : `and ${getInsuranceText(
+                                                                    sp
+                                                                )}`
                                                   )
-                                                : dentist.acceptedInsurances[0]}
+                                                : getInsuranceText(
+                                                      dentist
+                                                          .acceptedInsurances[0]
+                                                  )}
                                         </Text>
                                     </Flex>
                                 )}
@@ -406,17 +398,35 @@ class DentistListingCard extends PureComponent {
                                             ml="8px"
                                         >
                                             Speaks{' '}
-                                            {dentist.languages.length > 1
-                                                ? dentist.languages.map(
-                                                      (sp, index) =>
-                                                          index !==
-                                                          dentist.languages
-                                                              .length -
-                                                              1
-                                                              ? `${sp}, `
-                                                              : `and ${sp}`
-                                                  )
-                                                : dentist.languages[0]}
+                                            {dentist.languages.length > 1 ? (
+                                                dentist.languages.map(
+                                                    (sp, index) =>
+                                                        index !==
+                                                        dentist.languages
+                                                            .length -
+                                                            1 ? (
+                                                            <Text
+                                                                is="span"
+                                                                textTransform="capitalize"
+                                                            >{`${sp.toLowerCase()}, `}</Text>
+                                                        ) : (
+                                                            <Fragment>
+                                                                and
+                                                                <Text
+                                                                    is="span"
+                                                                    textTransform="capitalize"
+                                                                >{` ${sp.toLowerCase()}`}</Text>
+                                                            </Fragment>
+                                                        )
+                                                )
+                                            ) : (
+                                                <Text
+                                                    is="span"
+                                                    textTransform="capitalize"
+                                                >
+                                                    {dentist.languages[0].toLowerCase()}
+                                                </Text>
+                                            )}
                                         </Text>
                                     </Flex>
                                 )}
@@ -558,6 +568,9 @@ class DentistListingCard extends PureComponent {
                                                         <Desktop>
                                                             <Dropdown
                                                                 overlay={menu}
+                                                                trigger={[
+                                                                    'click',
+                                                                ]}
                                                             >
                                                                 <Button
                                                                     type="default"
@@ -603,7 +616,7 @@ class DentistListingCard extends PureComponent {
                                                                                 ]
                                                                                     .office
                                                                                     .location
-                                                                                    .addressDetails,
+                                                                                    .name.split(",", 2).toString(),
                                                                                 {
                                                                                     length: 35,
                                                                                     separator:
@@ -642,7 +655,7 @@ class DentistListingCard extends PureComponent {
                                                                         .appointmentTimeslotsByOffice[0]
                                                                         .office
                                                                         .location
-                                                                        .addressDetails
+                                                                        .name.split(",", 3).toString()
                                                                 }
                                                             </span>
                                                         </Desktop>

@@ -55,7 +55,7 @@ export const GET_DENTISTS_AND_APPOINTMENT_SLOTS = gql`
                     id
                     name
                     location {
-                        addressDetails
+                        name
                         geoPoint {
                             lat
                             lon

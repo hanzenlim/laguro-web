@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Menu } from 'antd';
 import _isEmpty from 'lodash/isEmpty';
+import { getInsuranceText } from '../../../util/insuranceUtil';
 
 import BundleView from './view';
 
@@ -85,7 +86,7 @@ class Bundle extends Component {
                 }}
             >
                 {insuranceList.map(item => (
-                    <Item key={item.name}>{item.name}</Item>
+                    <Item key={item.name}>{getInsuranceText(item.name)}</Item>
                 ))}
             </Menu>
         );
