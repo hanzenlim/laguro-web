@@ -75,10 +75,19 @@ class PreferredLocations extends Component {
                 from: 0,
                 body: {
                     query: {
-                        query_string: {
-                            default_field: 'location.name',
-                            query: zipCode.toString(),
-                        },
+                        bool: {
+                            must: {
+                              query_string : {
+                                  default_field : 'location.name',
+                                  query : zipCode.toString(),
+                              }
+                            },
+                            filter: {
+                              term: {
+                                isVerified: true
+                              }
+                            }
+                          }
                     },
                 },
             });
