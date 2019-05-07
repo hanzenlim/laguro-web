@@ -2,7 +2,6 @@ import React from 'react';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 import { adopt } from 'react-adopt';
-import { KioskRegister } from '@laguro/the-bright-side-components';
 import { Mutation } from 'react-apollo';
 import { message } from 'antd';
 import { SEND_REGISTRATION_CODE, REGISTER_USER } from '../queries';
@@ -12,6 +11,7 @@ import { GET_PATIENT_NAME_WIZARD_STEP_ID } from '..';
 import { execute } from '../../../util/gqlUtils';
 import { validatePhoneOrEmail } from '../../../util/validationUtils';
 import { trackUserSignup, trackUserAuth } from '../../../util/trackingUtils';
+import { KioskRegister } from '../../common/KioskRegister';
 
 const Composed = adopt({
     sendRegistrationCode: ({ render }) => (
@@ -102,7 +102,7 @@ export const RegisterStep = props => (
 
                     if (!hasNoError) {
                         props.clear();
-                        props.formikProps.setFieldValue('code', '')
+                        props.formikProps.setFieldValue('code', '');
                         return;
                     }
 
@@ -112,7 +112,7 @@ export const RegisterStep = props => (
 
                     if (!isPinValid) {
                         props.clear();
-                        props.formikProps.setFieldValue('code', '')
+                        props.formikProps.setFieldValue('code', '');
                         return;
                     }
 
