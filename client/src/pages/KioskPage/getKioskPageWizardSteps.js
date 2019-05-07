@@ -156,6 +156,10 @@ const getInitialValues = (questions, answers = []) => {
     return initialValues;
 };
 
+const minAdultAge = moment()
+    .subtract(18, 'years')
+    .format();
+
 // depending on user, some steps will be optional
 // onAction will return true if there is an error, return false if there isn't
 // add backend calls here. add redirects in index.js
@@ -175,7 +179,9 @@ export const getKioskPageWizardSteps = ({
         validationSchema: Yup.object().shape({
             patientBirthMonth: Yup.string().required('Month is required'),
             patientBirthDate: Yup.string().required('Date is required'),
-            patientBirthYear: Yup.string().required('Year is required'),
+            patientBirthYear: Yup.date()
+                .max(minAdultAge, 'Under minimum age')
+                .required('Year is required'),
         }),
         initialValues: {
             patientBirthMonth:

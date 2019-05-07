@@ -29,7 +29,8 @@ export const execute = async ({
             if (!_isEmpty(parsedError)) {
                 if (parsedError.type === 'Onederful') {
                     message.error(
-                        'The information that you have provided does not match our records. Please check your details and try again'
+                        'The information that you have provided does not match our records. Please check your details and try again',
+                        10
                     );
                 }
 

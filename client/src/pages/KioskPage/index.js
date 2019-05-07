@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import {
     PreviousButton,
     Wizard,
@@ -25,7 +25,7 @@ import _isEmpty from 'lodash/isEmpty';
 import moment from 'moment';
 import { adopt } from 'react-adopt';
 import { Query, Mutation } from 'react-apollo';
-import { Alert } from 'antd';
+import { Alert, message } from 'antd';
 import {
     getUser,
     onKioskLogout,
@@ -276,7 +276,7 @@ const Composed = adopt({
     ),
 });
 
-class KioskPage extends Component {
+class KioskPage extends PureComponent {
     constructor(props) {
         super(props);
         // used for check in confirmation and booking confirmation pages
@@ -290,6 +290,22 @@ class KioskPage extends Component {
                 {
                     expires: 0,
                 }
+            );
+        }
+    }
+
+    componentDidUpdate() {
+        // HACKY fix. Need to show this warning message until we start accepting dependent subscriber.
+        // I put it here because the KioskInsurance component gets rerendered multiple times for some reason
+        // Putting the warning message there will render this message multiple times.
+        if (
+            _get(this.props, 'location.pathname').includes(
+                INSURANCE_WIZARD_STEP_ID
+            )
+        ) {
+            message.warning(
+                "We only accept the primary holder's insurance information at this time. If you are a dependent, then please reach out to our support team.",
+                10
             );
         }
     }
@@ -341,7 +357,8 @@ class KioskPage extends Component {
                         isGetUserLoading ||
                         isGetApptLoading ||
                         isGetOfficeWithDentistsWithApptSlotsLoading ||
-                        isGetPatientHealthDataUnstructuredLoading
+                        isGetPatientHealthDataUnstructuredLoading ||
+                        isGetAppointmentSlotForKioskLoading
                     ) {
                         return <Loading />;
                     }

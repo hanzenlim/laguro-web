@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import _mapValues from 'lodash/mapValues';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import styled from 'styled-components';
@@ -42,6 +43,10 @@ const months = [
 ];
 
 const years = _range(moment().format('YYYY'), 1900).map(i => i.toString());
+
+const minAdultAge = moment()
+    .subtract(18, 'years')
+    .format();
 
 class UpdateProfileForm extends PureComponent {
     render() {
@@ -462,14 +467,22 @@ export default withFormik({
             ),
         birthMonth: Yup.string().required('Month is required'),
         birthDate: Yup.string().required('Date is required'),
-        birthYear: Yup.string().required('Year is required'),
+        birthYear: Yup.date()
+            .max(minAdultAge, 'Under minimum age')
+            .required('Year is required'),
         gender: Yup.string()
             .required('Gender is required')
             .nullable(),
     }),
     mapPropsToValues: props => {
         const { data } = props;
-        return { ...data };
+        // Updating null values to undefined. This is for yup validation since
+        // yup will throw a weird error if the value was null.
+        return _mapValues(data, o => {
+            if (o === null) return undefined;
+
+            return o;
+        });
     },
     handleSubmit: async (values, actions) => {
         const formattedValues = { ...values };
