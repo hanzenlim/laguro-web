@@ -137,6 +137,13 @@ class DentistListingCard extends PureComponent {
         return stopPoint;
     };
 
+    filterProcedureList = (procedures) => {
+        if (this.props.dentist.bundles.length === 0) return [];
+        const bundlesWithPrices = this.props.dentist.bundles.filter(b => b.price);
+        const bundlesNameWithPrices = bundlesWithPrices.map(p => p.group);
+        return procedures.filter(p => bundlesNameWithPrices.includes(p));
+    }
+
     render() {
         const {
             dentist,
@@ -836,15 +843,15 @@ class DentistListingCard extends PureComponent {
                                 mb={12}
                             />
                         </Mobile>
-                        <Flex justifyContent="center">
-                            {dentist.bundles && dentist.bundles.length ? (
-                                <Box width={304}>
+                        <Flex justifyContent="center" flex="1">
+                        {dentist.bundles && dentist.bundles.length ? (
+                                <Box width="100%" maxWidth="304px" minHeight="310px">
                                     <Bundle
-                                        procedures={dentist.procedures}
+                                        procedures={this.filterProcedureList(dentist.procedures)}
                                         insurance={
                                             dentist.acceptedInsurances || []
                                         }
-                                        price={dentist.bundles[0].price}
+                                        price={dentist.bundles && dentist.bundles.length !== 0 && dentist.bundles[0].price}
                                         bundles={dentist.bundles || []}
                                         dentistId={dentist.dentistId}
                                     />

@@ -23,8 +23,7 @@ const OfficeCard = props => {
 
     return (
         <Box
-            width={['calc(50% - 4px)', '', 'calc(20% - 12px)']}
-            mx={[2, '', 6]}
+            width="100%"
             mb={[4, '', 0]}
             border="1px solid"
             borderColor="divider.gray"

@@ -2,7 +2,7 @@ import React from 'react';
 import _get from 'lodash/get';
 import PropTypes from 'prop-types';
 
-import { Box, Flex, Text } from '../../../components';
+import { Box, Grid, Text } from '../../../components';
 import OfficeCard from '../OfficeCard';
 import { formatAddress } from '../../../util/styleUtil';
 import officePlaceholder from '../../../components/Image/office-placeholder.png';
@@ -13,21 +13,18 @@ const FeaturedOfficesView = props => {
     if (!featuredOffices.length) return null;
 
     return (
-        <Box
-            mt={[34, '', 90]}
-            mb={[21, '', 173]}
-        >
+        <Box>
             <Text
                 fontSize={[1, '', 2]}
                 lineHeight="30px"
                 letterSpacing={['-0.35px', '', '-0.4px']}
                 fontWeight="medium"
-                mb={[7, '', 36]}
+                mb="7px"
             >
-                Similar offices
+                Featured offices
             </Text>
 
-            <Flex flexWrap='wrap'>
+            <Grid gridTemplateColumns={["1fr 1fr", "", "1fr 1fr 1fr 1fr"]} gridColumnGap="4px">
                 {featuredOffices.map(item => (
                     <OfficeCard
                         key={item.id}
@@ -41,7 +38,7 @@ const FeaturedOfficesView = props => {
                         url={`/office/${item.id}`}
                     />
                 ))}
-            </Flex>
+            </Grid>
         </Box>
     );
 };

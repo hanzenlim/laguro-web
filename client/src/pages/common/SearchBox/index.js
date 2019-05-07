@@ -63,13 +63,8 @@ class SearchBox extends PureComponent {
     };
 
     handleSubmit = () => {
-        const { date, location: locationFromState, text } = this.state;
+        const { location, text } = this.state;
         const urlParams = {};
-        const location = locationFromState || {
-            name: 'San Francisco, California, United States',
-            lat: 37.7648,
-            long: -122.463,
-        };
 
         if (text) {
             urlParams.text = text;
@@ -77,20 +72,6 @@ class SearchBox extends PureComponent {
             urlParams.location = location.name;
             urlParams.lat = location.lat;
             urlParams.long = location.long;
-        }
-        // if both text and location are empty, this is a default search. in this case, we don't populate the input box, but use San Francisco as default location
-        urlParams.defaultSearch = _isEmpty(text) && _isEmpty(locationFromState);
-
-        if (date) {
-            const startTime = moment(date)
-                .startOf('day')
-                .utc();
-            const endTime = moment(date)
-                .endOf('day')
-                .utc();
-
-            urlParams.startTime = startTime.format();
-            urlParams.endTime = endTime.format();
         }
 
         const currentPath = _get(history, 'location.pathname') || DENTIST_PATH;

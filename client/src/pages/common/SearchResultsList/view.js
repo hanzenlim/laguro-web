@@ -77,7 +77,7 @@ class SearchResultsList extends PureComponent {
         const type = isOffice ? OFFICES : DENTISTS;
 
         return (
-            <Flex flexDirection="column" mb="100px" mt={[0, '20px', '90px']}>
+            <Flex flexDirection="column" mb={[0, '20px', '']}>
                 {!data.length && (
                     <NoSearchResults
                         location={urlParams.location}

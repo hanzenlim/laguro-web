@@ -186,7 +186,9 @@ class OfficeDetailsPageView extends PureComponent {
                         <TabletMobile>
                             <ReviewContainer type={OFFICE} id={id} />
                         </TabletMobile>
-                        <FeaturedOffices currentOffice={id} />
+                        <Box mt={[34, '', 90]} mb={[21, '', 173]}>
+                            <FeaturedOffices currentOffice={id} />
+                        </Box>
                     </Box>
                 </Container>
             </Flex>

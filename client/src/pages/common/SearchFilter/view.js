@@ -4,6 +4,7 @@ import { Form, Field, withFormik } from 'formik';
 import * as Yup from 'yup';
 import { Onboarding } from '@laguro/the-bright-side-components';
 import { Box, Flex, Responsive, Text } from '../../../components';
+import styled from 'styled-components';
 import {
     PROCEDURE_LIST,
     LANGUAGE_LIST,
@@ -14,15 +15,19 @@ import {
 
 const { TabletMobile } = Responsive;
 
+const StyledForm = styled(Form)`
+    width: 100%;
+`;
+
 const SearchFilterView = props => {
     const { onSelect } = props;
 
     return (
-        <Form>
+        <StyledForm>
             <Flex
+                width="100%"
                 flexDirection={['column', '', 'row']}
                 bg={['#f7f8fc', '', 'white']}
-                mx={[-30, '', 0]}
                 p={[30, '', 0]}
             >
                 <TabletMobile>
@@ -126,7 +131,7 @@ const SearchFilterView = props => {
                     />
                 </Box>
             </Flex>
-        </Form>
+        </StyledForm>
     );
 };
 
@@ -141,14 +146,5 @@ export default withFormik({
     mapPropsToValues: props => {
         const { data } = props;
         return { ...data };
-    },
-    handleSubmit: async (values, actions) => {
-        actions.setSubmitting(true);
-        const result = await actions.props.onSuccess(values);
-        actions.setSubmitting(false);
-
-        if (result) {
-            // message.success('Contact information successfully updated!');
-        }
     },
 })(SearchFilterView);

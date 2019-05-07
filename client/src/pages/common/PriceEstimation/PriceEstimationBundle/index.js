@@ -115,7 +115,7 @@ class PriceEstimationBundle extends PureComponent {
                     <StyledButton
                         type="primary"
                         ghost={isNullSelectedIndex}
-                        height="20px"
+                        height="30px"
                         borderColor="#3481f8"
                         fontSize="12px"
                         fontWeight="500"

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Box, Flex, Text, Link } from '../../../components';
+import { Box, Grid, Text, Link } from '../../../components';
 import DentistCard from '../DentistCard';
 import { setImageSizeToUrl } from '../../../util/imageUtil';
 import defaultDentistProfileImg from '../../../components/Image/default_dentist_profile_img_square.svg';
@@ -17,19 +17,17 @@ const FeaturedDentistsView = props => {
                 fontWeight="medium"
                 lineHeight="30px"
                 letterSpacing={['-0.35px', '', '-0.4px']}
-                mb={[6, '', 34]}
+                mb={[6, '', 20]}
             >
-                Suggested dentists
+                Featured dentists
             </Text>
 
-            <Flex flexWrap='wrap'>
+            <Grid gridTemplateColumns={['1fr 1fr', '1fr 1fr', '1fr 1fr 1fr 1fr 1fr']} gridColumnGap="12px">
                 {featuredDentists.map(item => (
                     <Box
                         border="1px solid"
                         borderColor="divider.gray"
-                        width={['calc(50% - 4px)', '', 'calc(20% - 12px)']}
-                        mx={[2, '', 6]}
-                        my={[2, '', 0]}
+                        my={[4, '', 0]}
                         p={20}
                     >
                         <Link type="ghost" to={`/dentist/${item.id}`}>
@@ -46,7 +44,7 @@ const FeaturedDentistsView = props => {
                         </Link>
                     </Box>
                 ))}
-            </Flex>
+            </Grid>
         </Box>
     );
 };

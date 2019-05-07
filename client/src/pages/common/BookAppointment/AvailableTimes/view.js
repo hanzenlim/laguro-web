@@ -78,7 +78,7 @@ const AvailableTimesView = props => {
                             {moment(activeTimeSlot.day).format('ddd')}
                         </Text>
                         <Text fontSize={0}>
-                            {moment(activeTimeSlot.day).format('D/M')}
+                            {moment(activeTimeSlot.day).format('M/D')}
                         </Text>
                     </Flex>
                 ))}
