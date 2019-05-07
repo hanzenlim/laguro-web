@@ -88,7 +88,7 @@ const steps = dentist => [
                 .nullable()
                 .concat(
                     Yup.string().matches(
-                        /^\d{6}$/,
+                        /^\d{5,6}$/,
                         'Please double-check your dental license number'
                     )
                 ),

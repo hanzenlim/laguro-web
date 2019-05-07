@@ -30,7 +30,7 @@ const PATIENT_LINKS_MAP = [
 
 const DENTIST_LINKS_MAP = [
     { label: 'Become a dentist', url: DENTIST_ONBOARDING_PROFILE_URL },
-    { label: 'Book a chair', url: OFFICE_SEARCH_PAGE_URL },
+    { label: 'Check our offices', url: OFFICE_SEARCH_PAGE_URL },
 ];
 
 const HOST_LINKS_MAP = [

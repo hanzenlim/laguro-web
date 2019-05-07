@@ -10,7 +10,7 @@ class DentistDetails extends PureComponent {
         const { dentist } = this.props;
 
         const mappedData = {
-            name: `Dr. ${dentist.name}`,
+            name: `Dr. ${dentist.name ? dentist.name : dentist.user.firstName + ' ' + dentist.user.lastName}`,
             specialization: dentist.specialty,
             image: dentist.imageUrl,
             procedures: dentist.procedures.map(p => p.group),
