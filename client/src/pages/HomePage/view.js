@@ -153,6 +153,7 @@ const HomePageView = props => {
                         <SearchBox
                             size="large"
                             placeholder="Search by name, location, or specialty"
+                            hasFilter={false}
                         />
                     </Flex>
                 </HeroContent>

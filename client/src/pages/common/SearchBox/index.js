@@ -111,6 +111,7 @@ class SearchBox extends PureComponent {
                 locationPlaceholder={this.props.placeholder}
                 toggleFilter={this.toggleFilter}
                 onSubmit={this.handleSubmit}
+                hasFilter={this.props.hasFilter}
             />
         );
     }

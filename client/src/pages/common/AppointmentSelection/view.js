@@ -9,7 +9,6 @@ import {
     Icon,
 } from '@laguro/basic-components';
 import { Onboarding } from '@laguro/the-bright-side-components';
-import _flatten from 'lodash/flatten';
 import _get from 'lodash/get';
 import _groupBy from 'lodash/groupBy';
 import _isEmpty from 'lodash/isEmpty';

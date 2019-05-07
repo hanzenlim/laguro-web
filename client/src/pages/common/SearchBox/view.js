@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import _isBoolean from 'lodash/isBoolean';
 import { Flex, Button, Box, Icon, Responsive } from '../../../components';
 import LocationFilter from '../LocationFilter';
 
@@ -26,7 +27,7 @@ const SearchBox = props => {
         onSubmit();
     };
 
-    const hasFilter = true;
+    const hasFilter = _isBoolean(props.hasFilter) ? props.hasFilter : true;
 
     return (
         <Flex
