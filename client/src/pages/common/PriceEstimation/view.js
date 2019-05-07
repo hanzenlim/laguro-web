@@ -11,7 +11,6 @@ const PriceEstimationView = props => {
         annualMaximumRemaining,
         coverage,
         price,
-        group,
         outOfPocket,
         procedures,
         proceduresDetail,
@@ -26,6 +25,7 @@ const PriceEstimationView = props => {
         onAddInsurance,
         isLoading,
         selectedProcedure,
+        selectedProcedureName,
         selectedInsurance,
         hasCheckedOutOfPocketCost,
     } = props;
@@ -84,6 +84,7 @@ const PriceEstimationView = props => {
                             }
                             selectedInsurance={selectedInsurance}
                             selectedProcedure={selectedProcedure}
+                            selectedProcedureName={selectedProcedureName}
                             price={price}
                             insurancePrice={insurancePrice}
                             variant="priceEstimation"
@@ -150,7 +151,7 @@ const PriceEstimationView = props => {
                                     fontSize="12px"
                                     letterSpacing="-0.7px"
                                 >
-                                    Estimated price for {group}
+                                    Estimated price for {selectedProcedureName}
                                 </Text>
                                 <Text
                                     fontSize="12px"

@@ -25,6 +25,7 @@ import { isBioUpdated } from '../../util/dentistUtils';
 import { ENGLISH } from '../../util/strings';
 
 const procedureList = {
+    Exams: true,
     Fillings: false,
     'Crowns, Bridges, Veneers': false,
     'Root Canals': false,
@@ -52,9 +53,8 @@ const CIGNA_FORM_ITEM_NAME = 'CIGNA';
 const METLIFE_FORM_ITEM_NAME = 'METLIFE';
 const DD_CALIFORNIA_FORM_ITEM_NAME = 'DD_CALIFORNIA';
 
-const checkAcceptedInsurance = (key, acceptedInsurances) => {
-    return !_isEmpty(acceptedInsurances) && acceptedInsurances.includes(key);
-};
+const checkAcceptedInsurance = (key, acceptedInsurances) =>
+    !_isEmpty(acceptedInsurances) && acceptedInsurances.includes(key);
 
 const Composed = adopt({
     dentistResponse: ({ render }) => {

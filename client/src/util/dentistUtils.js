@@ -7,6 +7,7 @@ export const isBioUpdated = bio => !_isEmpty(bio) && bio !== ' ';
 
 export const PROCEDURE_LIST = [
     'All procedures',
+    'Exams',
     'Fillings',
     'Crowns/Bridges/Venners',
     'Root Canals',
@@ -65,6 +66,8 @@ export const INSURANCE_LIST = [
 
 export const getProcedureColor = procedureName => {
     switch (procedureName) {
+        case 'Exams':
+            return theme.colors.background.gray;
         case 'Fillings':
             return theme.colors.background.blue;
         case 'Crowns, Bridges, Veneers':

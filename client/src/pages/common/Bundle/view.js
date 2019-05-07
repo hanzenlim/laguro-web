@@ -50,6 +50,7 @@ const BundleView = ({
     insurance,
     setInitialInsurance,
     dentistId,
+    selectedProcedureGroup,
 }) => (
     <Flex
         height="100%"
@@ -87,7 +88,7 @@ const BundleView = ({
                         ? 'text.white'
                         : TAG_COLORS[selectedIndex % 4]
                 }
-                bg={getProcedureColor(selectedProcedure)}
+                bg={getProcedureColor(selectedProcedureGroup)}
             >
                 {selectedProcedure || 'Select procedure'}
                 <Icon

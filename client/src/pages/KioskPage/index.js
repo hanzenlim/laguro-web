@@ -134,6 +134,7 @@ const {
 } = HealthHistoryForm;
 
 const procedureList = {
+    Exams: true,
     Fillings: false,
     'Crowns, Bridges, Veneers': false,
     'Root Canals': false,
@@ -474,7 +475,6 @@ class KioskPage extends PureComponent {
                                         }),
                                         'data.checkInForAppointment'
                                     );
-                                    console.log('1232', this.hasCheckedIn);
                                 },
                             });
                         }

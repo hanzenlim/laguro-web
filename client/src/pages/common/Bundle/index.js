@@ -12,16 +12,17 @@ class Bundle extends Component {
         selectedProcedure: '',
         selectedIndex: null,
         selectedInsurance: null,
+        price: null,
+        insuranceList: [],
     };
 
-    getCurrentBundle = () => {
+    getCurrentBundle = selectedProcedure => {
         const { bundles } = this.props;
 
         if (!_isEmpty(bundles)) {
             const filteredBundleElement = bundles.filter(
                 item =>
-                    item.group.toLowerCase() ===
-                    this.state.selectedProcedure.toLowerCase()
+                    item.name.toLowerCase() === selectedProcedure.toLowerCase()
             );
 
             if (!_isEmpty(filteredBundleElement)) {
@@ -38,53 +39,81 @@ class Bundle extends Component {
         this.setState({ selectedInsurance });
     };
 
+    getProcedureList = () => {
+        const { bundles, procedures } = this.props;
+
+        const bundlesByDentist = bundles.filter(b =>
+            procedures.includes(b.group)
+        );
+        return bundlesByDentist;
+    };
+
+    getProcedureGroupByName = name => {
+        const { bundles } = this.props;
+        const filteredBundle = bundles.filter(b => b.name === name);
+
+        if (!_isEmpty(filteredBundle)) {
+            return filteredBundle[0].group;
+        }
+
+        return null;
+    };
+
+    onSelectBundle = ({ key, item, domEvent }) => {
+        domEvent.stopPropagation();
+
+        const { selectedInsurance } = this.state;
+        const currentBundle = this.getCurrentBundle(key);
+
+        let insurance = null;
+        if (
+            selectedInsurance &&
+            currentBundle &&
+            currentBundle.insuranceList.length !== 0
+        ) {
+            insurance = currentBundle.insuranceList.filter(
+                i => i.name === selectedInsurance.name
+            )[0];
+        }
+
+        this.setState(() => ({
+            selectedProcedure: key,
+            selectedIndex: item.props.index,
+            selectedInsurance: insurance,
+            price: currentBundle.price,
+            insuranceList: currentBundle.insuranceList,
+        }));
+    };
+
+    onSelectInsurance = ({ key, domEvent }) => {
+        domEvent.stopPropagation();
+
+        this.setState({
+            selectedInsurance: this.state.insuranceList.filter(
+                item => item.name === key
+            )[0],
+        });
+    };
+
     render() {
-        const { procedures = [], dentistId } = this.props;
+        const { dentistId } = this.props;
         const {
             selectedProcedure,
             selectedIndex,
             selectedInsurance,
+            insuranceList,
         } = this.state;
 
-        let basePrice = null;
-        let insuranceList = [];
-
-        const currentBundle = this.getCurrentBundle();
-
-        if (!_isEmpty(currentBundle)) {
-            basePrice = currentBundle.price;
-            insuranceList = currentBundle.insuranceList;
-        }
-
         const menu = (
-            <Menu
-                onClick={({ key, item, domEvent }) => {
-                    domEvent.stopPropagation();
-                    this.setState({
-                        selectedProcedure: key,
-                        selectedIndex: item.props.index,
-                        selectedInsurance: null,
-                    });
-                }}
-            >
-                {procedures.map(procedure => (
-                    <Item key={procedure}>{procedure}</Item>
+            <Menu onClick={this.onSelectBundle}>
+                {this.getProcedureList().map(procedure => (
+                    <Item key={procedure.name}>{procedure.name}</Item>
                 ))}
             </Menu>
         );
 
         const insuranceMenu = (
-            <Menu
-                onClick={({ key, domEvent }) => {
-                    domEvent.stopPropagation();
-
-                    this.setState({
-                        selectedInsurance: insuranceList.filter(
-                            item => item.name === key
-                        )[0],
-                    });
-                }}
-            >
+            <Menu onClick={this.onSelectInsurance}>
                 {insuranceList.map(item => (
                     <Item key={item.name}>{getInsuranceText(item.name)}</Item>
                 ))}
@@ -99,9 +128,12 @@ class Bundle extends Component {
                 isNullSelectedIndex={isNullSelectedIndex}
                 selectedIndex={selectedIndex}
                 selectedProcedure={selectedProcedure}
+                selectedProcedureGroup={this.getProcedureGroupByName(
+                    selectedProcedure
+                )}
                 selectedInsurance={selectedInsurance}
                 insuranceMenu={insuranceMenu}
-                price={basePrice}
+                price={this.state.price}
                 insurance={insuranceList}
                 setInitialInsurance={this.setInitialInsurance}
                 dentistId={dentistId}

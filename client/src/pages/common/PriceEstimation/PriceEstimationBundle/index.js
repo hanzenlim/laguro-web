@@ -46,6 +46,7 @@ class PriceEstimationBundle extends PureComponent {
             selectedInsurance,
             hasCheckedOutOfPocketCost,
             selectedProcedure,
+            selectedProcedureName,
         } = this.props;
 
         const { selectedIndex } = this.state;
@@ -65,7 +66,7 @@ class PriceEstimationBundle extends PureComponent {
                 }}
             >
                 {procedures.map(procedure => (
-                    <Item key={procedure}>{procedure}</Item>
+                    <Item key={procedure.name}>{procedure.name}</Item>
                 ))}
             </Menu>
         );
@@ -133,7 +134,7 @@ class PriceEstimationBundle extends PureComponent {
                                 : 'background.white'
                         }
                     >
-                        {selectedProcedure || 'Select procedure'}
+                        {selectedProcedureName || 'Select procedure'}
                         <Icon
                             type="down"
                             style={{

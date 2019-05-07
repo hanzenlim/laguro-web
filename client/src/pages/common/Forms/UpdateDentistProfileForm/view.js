@@ -33,6 +33,7 @@ const StyledCheckboxGroup = styled(CheckboxGroup)`
 `;
 
 const PROCEDURE_GROUP_LIST = [
+    'Exams',
     'Fillings',
     'Crowns, Bridges, Veneers',
     'Root Canals',

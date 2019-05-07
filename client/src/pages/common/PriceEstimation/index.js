@@ -59,8 +59,9 @@ class PriceEstimation extends PureComponent {
         hasCheckedOutOfPocketCost: this.state.hasCheckedOutOfPocketCost,
         // Left card info
         selectedProcedure: this.state.selectedProcedure.group,
+        selectedProcedureName: this.state.selectedProcedure.name,
         bundles: this.props.bundles,
-        procedures: this.props.bundles.map(p => p.group),
+        procedures: this.props.bundles,
         insurance: [
             _get(getBundleCoverageData, 'getBundleCoverage.insuranceName'),
         ],
@@ -109,7 +110,8 @@ class PriceEstimation extends PureComponent {
     getPriceEstimtationData = () => ({
         selectedInsurance: this.state.selectedInsurance,
         selectedProcedure: this.state.selectedProcedure.group,
-        procedures: this.props.bundles.map(p => p.group),
+        selectedProcedureName: this.state.selectedProcedure.name,
+        procedures: this.props.bundles,
         insurance: this.props.acceptedInsurances,
         proceduresDetail: this.props.bundles[this.state.procedureIndex]
             .proceduresDetail,
