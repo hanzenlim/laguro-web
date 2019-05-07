@@ -415,7 +415,7 @@ export const getKioskPageWizardSteps = ({
         initialValues: {},
         onAction:
             !_isEmpty(activeDentistsWithAppointmentSlots) &&
-            (async (stepValues, allValues) => {
+            (async (stepValues, allValues, formikProps) => {
                 const dentistTime = getDentistTimes(
                     activeDentistsWithAppointmentSlots
                 ).find(
@@ -438,6 +438,9 @@ export const getKioskPageWizardSteps = ({
                     .toString();
 
                 return !(await execute({
+                    beforeAction: () => {
+                        formikProps.setSubmitting(true);
+                    },
                     action: async () => {
                         const result = await _get(
                             mutations,
@@ -485,6 +488,9 @@ export const getKioskPageWizardSteps = ({
                                 expires: 0,
                             }
                         );
+                    },
+                    afterAction: () => {
+                        formikProps.setSubmitting(false);
                     },
                 }));
             }),

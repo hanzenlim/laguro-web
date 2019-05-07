@@ -11,7 +11,6 @@ import {
     ReasonOfVisit,
     KioskBookingConfirmation,
     SelectProcedure,
-    AppointmentSelection,
     Onboarding,
     KioskCheckInConfirmation,
     HealthHistoryForm,
@@ -107,6 +106,7 @@ import {
 import defaultUserImage from '../../components/Image/defaultUserImage.svg';
 import { hasSkippedMedicalHistoryFormCookieVariableName } from '../../util/strings';
 import { execute } from '../../util/gqlUtils';
+import { AppointmentSelection } from '../common/AppointmentSelection';
 
 export const KIOSK_OFFICE_ID_COOKIE_VARIABLE_NAME = 'kiosk-office-id';
 
