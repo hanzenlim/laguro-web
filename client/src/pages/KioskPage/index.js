@@ -13,7 +13,6 @@ import {
     SelectProcedure,
     AppointmentSelection,
     Onboarding,
-    KioskTerms,
     KioskCheckInConfirmation,
     HealthHistoryForm,
     OnboardSuccess,
@@ -60,7 +59,6 @@ import {
     SELECT_PROCEDURE_WIZARD_STEP_ID,
     BOOKING_CONFIRMATION_WIZARD_STEP_ID,
     BOOK_APPOINTMENT_WIZARD_STEP_ID,
-    TERMS_WIZARD_STEP_ID,
     KIOSK_APPT_ID_COOKIE_VARIABLE_NAME,
     CHECKIN_WIZARD_STEP_ID,
     HEALTH_HISTORY_STAGE_WIZARD_STEP_IDS,
@@ -98,13 +96,13 @@ import { appointmentClient } from '../../util/apolloClients';
 import history, { redirect } from '../../history';
 import {
     kioskPurposeOfVisitCookieVariableName,
-    kioskIsAccountNewCookieVariableName,
     KIOSK_PURPOSE_OF_VISIT_WALKIN,
 } from '../KioskRegPage';
 import {
     addActionsToWizardSteps,
     getDentistTimes,
     KIOSK_PAGE_PROGRESS_STEPS,
+    redirectFromHealthHistory,
 } from './utils';
 import defaultUserImage from '../../components/Image/defaultUserImage.svg';
 import { hasSkippedMedicalHistoryFormCookieVariableName } from '../../util/strings';
@@ -412,26 +410,6 @@ class KioskPage extends Component {
                     const isCheckInAndHasUpcomingAppt =
                         isCheckIn && !_isEmpty(userAppt);
 
-                    const redirectFromHealthHistory = () => {
-                        if (isCheckInAndHasUpcomingAppt) {
-                            redirect({
-                                url: `${KIOSK_URL}/${CHECKIN_WIZARD_STEP_ID}`,
-                            });
-                        } else if (
-                            JSON.parse(
-                                cookies.get(kioskIsAccountNewCookieVariableName)
-                            )
-                        ) {
-                            redirect({
-                                url: `${KIOSK_URL}/${KIOSK_CONFIRMATION_WIZARD_STEP_ID}`,
-                            });
-                        } else {
-                            redirect({
-                                url: `${KIOSK_URL}/${KIOSK_FLOW_SUCCESS_WIZARD_STEP_ID}`,
-                            });
-                        }
-                    };
-
                     const handleSkip = () => {
                         cookies.set(
                             hasSkippedMedicalHistoryFormCookieVariableName,
@@ -490,7 +468,12 @@ class KioskPage extends Component {
                     if (
                         currentWizardStepId ===
                             GENERAL_INFO_STAGE_WIZARD_STEP_IDS[0] &&
-                        !_isEmpty(_get(this.userFromDB, 'dob'))
+                        !_isEmpty(_get(this.userFromDB, 'dob')) &&
+                        !_isEmpty(
+                            _get(this.userFromDB, 'address.streetAddress')
+                        ) &&
+                        !_isEmpty(_get(this.userFromDB, 'gender')) &&
+                        !_isEmpty(_get(this.userFromDB, 'languages'))
                     ) {
                         redirect({
                             url: `${KIOSK_URL}/${INSURANCE_WIZARD_STEP_ID}`,
@@ -658,9 +641,6 @@ class KioskPage extends Component {
                                         </Flex>
                                     );
                                 }
-                                break;
-                            case TERMS_WIZARD_STEP_ID:
-                                step = <KioskTerms {...props} />;
                                 break;
                             case BOOKING_CONFIRMATION_WIZARD_STEP_ID:
                                 step = (

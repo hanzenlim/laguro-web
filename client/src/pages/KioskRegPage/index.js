@@ -23,12 +23,14 @@ import {
     addActionsToWizardSteps,
 } from '../KioskPage/utils';
 import { validatePhoneOrEmail } from '../../util/validationUtils';
+import { KioskTerms } from '../common/KioskTerms';
 
 // in order
 // stage 1 registration
 export const PURPOSE_OF_VISIT_WIZARD_STEP_ID = 'purpose-of-visit-step';
 export const LOGIN_WIZARD_STEP_ID = 'login-step';
 export const GET_PATIENT_NAME_WIZARD_STEP_ID = 'get-patient-name-step';
+export const TERMS_WIZARD_STEP_ID = 'terms';
 export const REGISTER_WIZARD_STEP_ID = 'register-step';
 
 export const REGISTER_WIZARD_STEP_IDS = [
@@ -95,6 +97,7 @@ export const KioskRegWizardSteps = [
             lastName: Yup.string().required(),
         }),
     },
+    { id: TERMS_WIZARD_STEP_ID },
     // only if user clicks sign-up in login
     {
         id: REGISTER_WIZARD_STEP_ID,
@@ -197,6 +200,10 @@ class KioskPage extends Component {
                 // optional
                 case GET_PATIENT_NAME_WIZARD_STEP_ID:
                     step = <PatientName {...props} />;
+                    break;
+                // optional
+                case TERMS_WIZARD_STEP_ID:
+                    step = <KioskTerms {...props} />;
                     break;
                 // optional
                 case REGISTER_WIZARD_STEP_ID:

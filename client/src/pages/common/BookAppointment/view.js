@@ -56,7 +56,7 @@ const BookAppointmentView = props => {
                     lineHeight="1.5"
                 >
                     By clicking this checkbox, I am agreeing to{' '}
-                    <Link to={TERMS_PAGE_URL}>
+                    <Link to={TERMS_PAGE_URL} target="_blank" isExternal>
                         <Text is="span" color="text.blue">
                             Terms & Conditions
                         </Text>

@@ -11,7 +11,7 @@ import cookies from 'browser-cookies';
 import moment from 'moment-timezone';
 
 import { execute } from '../../util/gqlUtils';
-import { getDentistTimes } from './utils';
+import { getDentistTimes, redirectFromHealthHistory } from './utils';
 import { insuranceClient } from '../../util/apolloClients';
 import { trackBookAppointment } from '../../util/trackingUtils';
 import { CHECK_ELIGIBILITY } from './queries';
@@ -43,14 +43,12 @@ export const INSURANCE_WIZARD_STEP_ID = 'insurance-step';
 export const REASON_OF_VISIT_WIZARD_STEP_ID = 'reason-of-visit-step';
 export const SELECT_PROCEDURE_WIZARD_STEP_ID = 'select-procedure-step';
 export const BOOK_APPOINTMENT_WIZARD_STEP_ID = 'book-appointment-step';
-export const TERMS_WIZARD_STEP_ID = 'terms-step';
 export const BOOKING_CONFIRMATION_WIZARD_STEP_ID = 'booking-confirmation-step';
 
 export const BOOK_APPT_WIZARD_STEP_IDS = [
     REASON_OF_VISIT_WIZARD_STEP_ID,
     SELECT_PROCEDURE_WIZARD_STEP_ID,
     BOOK_APPOINTMENT_WIZARD_STEP_ID,
-    TERMS_WIZARD_STEP_ID,
     BOOKING_CONFIRMATION_WIZARD_STEP_ID,
 ];
 
@@ -289,38 +287,6 @@ export const getKioskPageWizardSteps = ({
                 _get(combinedObject, `${KioskInsurance.HAS_NO_INSURANCE}`)
             );
 
-            const formattedValues = {
-                userId,
-                address: {
-                    streetAddress: patientAddress1,
-                    addressDetails: patientAddress2,
-                    city: patientCity,
-                    zipCode: patientZIP,
-                    state: patientState,
-                },
-                dob: `${patientBirthMonth}/${patientBirthDate}/${patientBirthYear}`,
-                gender: patientGender,
-                insuranceInfo: {
-                    useInsurance: !hasNoInsurance,
-                    ...(!hasNoInsurance &&
-                        !_isEmpty(insuranceProvider) && {
-                            insuranceProvider,
-                        }),
-                    ...(!hasNoInsurance &&
-                        !_isEmpty(insuranceProviderId) && {
-                            insuranceProviderId,
-                        }),
-                    ...(!hasNoInsurance &&
-                        !_isEmpty(patientInsuranceNum) && {
-                            policyHolderId: patientInsuranceNum,
-                        }),
-                    ...(!hasNoInsurance &&
-                        !_isEmpty(planOrGroupNumber) && {
-                            planOrGroupNumber,
-                        }),
-                },
-            };
-
             formikProps.setSubmitting(true);
             const updateInsuranceHasNoError = await execute({
                 reportGqlErrorOnly: true,
@@ -361,6 +327,38 @@ export const getKioskPageWizardSteps = ({
                     }
                 },
                 action: async () => {
+                    const formattedValues = {
+                        userId,
+                        address: {
+                            streetAddress: patientAddress1,
+                            addressDetails: patientAddress2,
+                            city: patientCity,
+                            zipCode: patientZIP,
+                            state: patientState,
+                        },
+                        dob: `${patientBirthMonth}/${patientBirthDate}/${patientBirthYear}`,
+                        gender: patientGender,
+                        insuranceInfo: {
+                            useInsurance: !hasNoInsurance,
+                            ...(!hasNoInsurance &&
+                                !_isEmpty(insuranceProvider) && {
+                                    insuranceProvider,
+                                }),
+                            ...(!hasNoInsurance &&
+                                !_isEmpty(insuranceProviderId) && {
+                                    insuranceProviderId,
+                                }),
+                            ...(!hasNoInsurance &&
+                                !_isEmpty(patientInsuranceNum) && {
+                                    policyHolderId: patientInsuranceNum,
+                                }),
+                            ...(!hasNoInsurance &&
+                                !_isEmpty(planOrGroupNumber) && {
+                                    planOrGroupNumber,
+                                }),
+                        },
+                    };
+
                     await updateInsuranceInfoMutation({
                         variables: {
                             input: formattedValues,
@@ -415,9 +413,6 @@ export const getKioskPageWizardSteps = ({
             ),
         }),
         initialValues: {},
-    },
-    {
-        id: TERMS_WIZARD_STEP_ID,
         onAction:
             !_isEmpty(activeDentistsWithAppointmentSlots) &&
             (async (stepValues, allValues) => {
@@ -731,6 +726,7 @@ export const getKioskPageWizardSteps = ({
                         },
                     });
                 },
+                afterAction: () => redirectFromHealthHistory(),
             }));
         },
     },

@@ -1,141 +1,66 @@
 import React from 'react';
-import { adopt } from 'react-adopt';
-import _isEmpty from 'lodash/isEmpty';
 import {
     Wizard,
-    GetPatientName,
     PreviousButton,
     PersonaSelection,
 } from '@laguro/the-bright-side-components';
 import * as Yup from 'yup';
+import styled from 'styled-components';
 import { Flex, Box } from '@laguro/basic-components';
-import cookies from 'browser-cookies';
-import { Mutation } from 'react-apollo';
-
-import { StyledPreviousButtonContainer } from '../common';
-import { UPDATE_USER } from './queries';
+import { getRedirectUrl, redirect } from '../../../history';
 import {
-    getRedirectUrl,
-    redirectWithSearchParams,
-    redirect,
-} from '../../../history';
-import {
-    PATIENT_ONBOARDING_MEDICAL_HISTORY_FORM,
     DENTIST_ONBOARDING_PROFILE_URL,
     PATIENT_WEB_ONBOARDING_PAGE_URL,
 } from '../../../util/urls';
-import { execute } from '../../../util/gqlUtils';
 import { setSessionCookie } from '../../../util/cookieUtils';
 import { PATIENT_WEB_ONBOARDING_PAGE_REDIRECT_TO_COOKIE_VARIABLE_NAME } from '../../PatientWebOnboardingPage';
+import { KioskTerms } from '../../common/KioskTerms';
+
+const PERSONA_SELECTION_WIZARD_STEP_ID = 'persona-selection';
+const TERMS_WIZARD_STEP_ID = 'terms';
 
 const steps = [
     {
-        id: '0',
+        id: PERSONA_SELECTION_WIZARD_STEP_ID,
         validationSchema: Yup.object().shape({
             persona: Yup.string().required('Persona is required'),
         }),
-        component: null,
+    },
+    {
+        id: TERMS_WIZARD_STEP_ID,
     },
 ];
-const ComposedStep0 = adopt({
-    updateUser: ({ render }) => (
-        <Mutation mutation={UPDATE_USER}>{render}</Mutation>
-    ),
-});
-
-const Step0 = props => (
-    <ComposedStep0>
-        {({ updateUser }) => (
-            // TODO: FIX COPY
-            <GetPatientName
-                {...props}
-                onNext={async values => {
-                    let user = cookies.get('user');
-                    if (user) {
-                        user = JSON.parse(user);
-                    }
-
-                    if (
-                        _isEmpty(values.firstName) ||
-                        _isEmpty(values.lastName)
-                    ) {
-                        // telling the-bright-side-components to show validation warning
-                        return true;
-                    }
-
-                    if (
-                        !(await execute({
-                            action: async () => {
-                                await updateUser({
-                                    variables: {
-                                        input: {
-                                            id: user.id,
-                                            firstName: values.firstName,
-                                            ...(!_isEmpty(
-                                                values.middleName
-                                            ) && {
-                                                middleName: values.middleName,
-                                            }),
-                                            lastName: values.lastName,
-                                        },
-                                    },
-                                });
-                            },
-                        }))
-                    ) {
-                        // telling the-bright-side-components not to move to next step
-                        return false;
-                    }
-
-                    // skip persona selection for patients from booking appointments
-                    if (getRedirectUrl().includes('/dentist/')) {
-                        redirect({
-                            url: PATIENT_ONBOARDING_MEDICAL_HISTORY_FORM,
-                            newSearchParamKey: 'referer',
-                            newSearchParamValue: 'GetPatientName',
-                        });
-                        // telling the-bright-side-components not to move to next step
-                        return false;
-                    }
-                    // skip persona selection for patients from booking reservations
-                    else if (getRedirectUrl().includes('/office/')) {
-                        redirectWithSearchParams(
-                            DENTIST_ONBOARDING_PROFILE_URL
-                        );
-                        // telling the-bright-side-components not to move to next step
-                        return false;
-                    }
-
-                    // telling the-bright-side-components to move to next step
-                    return true;
-                }}
-            />
-        )}
-    </ComposedStep0>
-);
-
-const Step1 = props => <PersonaSelection {...props} />;
 
 const render = props => {
     let step = null;
 
     switch (props.actions.currentStep) {
-        case '0':
-            step = Step1(props);
+        case PERSONA_SELECTION_WIZARD_STEP_ID:
+            step = <PersonaSelection {...props} />;
             break;
-        case '1':
-            step = Step0(props);
+        case TERMS_WIZARD_STEP_ID:
+            step = <KioskTerms {...props} />;
             break;
         default:
-            step = Step0(props);
+            step = <div />;
     }
 
     return (
-        <Flex justifyContent="center" mt="100px">
+        <Flex justifyContent="center" mt={50}>
             {step}
         </Flex>
     );
 };
+
+const StyledPreviousButtonContainer = styled(Box)`
+    && .onboarding-previous-button {
+        position: absolute;
+        top: 72px;
+        @media (min-width: ${props => props.theme.breakpoints[1]}) {
+            top: 100px;
+        }
+    }
+`;
 
 const KioskNameAndPersonaPage = componentProps => (
     <Box pt={48}>

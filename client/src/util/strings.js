@@ -40,6 +40,7 @@ export const DATE_CREATED = 'dateCreated';
 // STATUSES
 export const STATUS = 'status';
 export const ACTIVE = 'ACTIVE';
+export const CHECKED_IN = 'CHECKED_IN';
 export const PENDING_PATIENT_APPROVAL = 'PENDING_PATIENT_APPROVAL';
 export const REJECTED_BY_PATIENT = 'REJECTED_BY_PATIENT';
 export const CANCELLED_BY_DENTIST = 'CANCELLED_BY_DENTIST';

@@ -1,7 +1,18 @@
 import _isEmpty from 'lodash/isEmpty';
 import _flatten from 'lodash/flatten';
-
+import cookies from 'browser-cookies';
 import defaultUserImage from '../../components/Image/defaultUserImage.svg';
+import {
+    kioskPurposeOfVisitCookieVariableName,
+    kioskIsAccountNewCookieVariableName,
+} from '../KioskRegPage';
+import {
+    CHECKIN_WIZARD_STEP_ID,
+    KIOSK_CONFIRMATION_WIZARD_STEP_ID,
+    KIOSK_FLOW_SUCCESS_WIZARD_STEP_ID,
+} from './getKioskPageWizardSteps';
+import { KIOSK_URL } from '../../util/urls';
+import { redirect } from '../../history';
 
 export const KIOSK_PAGE_PROGRESS_STEPS = [
     'REGISTRATION',
@@ -54,7 +65,7 @@ export const getDentistTimes = activeDentistsWithAppointmentSlots =>
             dent.appointmentTimeslots.map(apptSlot => ({
                 startTime: apptSlot.localStartTime,
                 ...dent,
-                id: `${dent.id}${apptSlot.localStartTime}`,
+                id: `${dent.dentistId}${apptSlot.localStartTime}`,
                 dentistId: dent.dentistId,
                 name: `Dr. ${dent.firstName} ${dent.lastName}`,
                 rating: dent.averageRating,
@@ -70,3 +81,22 @@ export const getDentistTimes = activeDentistsWithAppointmentSlots =>
             }))
         )
     );
+
+export const redirectFromHealthHistory = () => {
+    const isCheckIn =
+        cookies.get(kioskPurposeOfVisitCookieVariableName) === 'checkIn';
+
+    if (isCheckIn) {
+        redirect({
+            url: `${KIOSK_URL}/${CHECKIN_WIZARD_STEP_ID}`,
+        });
+    } else if (JSON.parse(cookies.get(kioskIsAccountNewCookieVariableName))) {
+        redirect({
+            url: `${KIOSK_URL}/${KIOSK_CONFIRMATION_WIZARD_STEP_ID}`,
+        });
+    } else {
+        redirect({
+            url: `${KIOSK_URL}/${KIOSK_FLOW_SUCCESS_WIZARD_STEP_ID}`,
+        });
+    }
+};
