@@ -25,11 +25,20 @@ const DentistSearchPageView = props => {
         isFilterVisible,
     } = props;
 
+    const transformedData = data.map(dentist => {
+        return {
+            ...dentist,
+            appointmentTimeslotsByOffice: dentist.appointmentTimeslotsByOffice.filter(
+                i => i.appointmentTimeslots.length > 0
+            ),
+        };
+    });
+
     return (
         <Box height="100%">
-            <Container pt={[48, '', total === 0 ? 110 : 84]} >
-            <Box mt="20px">
-                <FeaturedOffices />
+            <Container pt={[48, '', total === 0 ? 110 : 84]}>
+                <Box mt="20px">
+                    <FeaturedOffices />
                 </Box>
                 <Box>
                     <Desktop>
@@ -48,7 +57,11 @@ const DentistSearchPageView = props => {
 
                     <Flex width="100%">
                         <TabletMobile>
-                                {isFilterVisible ? <Box mb={20} width="100%"><SearchFilter /></Box> : null}
+                            {isFilterVisible ? (
+                                <Box mb={20} width="100%">
+                                    <SearchFilter />
+                                </Box>
+                            ) : null}
                         </TabletMobile>
                         <Desktop>
                             <Box mt={34}>
@@ -63,16 +76,14 @@ const DentistSearchPageView = props => {
                         gridTemplateColumns="1fr"
                     >
                         <Box>
-                            <Box
-                                height={['auto', '', 'calc(100vh - 220px)']}
-                            >
+                            <Box height={['auto', '', 'calc(100vh - 220px)']}>
                                 {loading ? (
                                     <Box mt="100px">
                                         <Loading />
                                     </Box>
                                 ) : (
                                     <SearchResultsList
-                                        data={data}
+                                        data={transformedData}
                                         total={total}
                                         onShowMore={onShowMore}
                                     />
