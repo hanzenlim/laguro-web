@@ -16,14 +16,7 @@ import FeaturedOffices from '../OfficeDetailsPage/FeaturedOffices';
 const { Desktop, TabletMobile } = Responsive;
 
 const DentistSearchPageView = props => {
-    const {
-        data,
-        total,
-        onShowMore,
-        loading,
-        onToggleFilter,
-        isFilterVisible,
-    } = props;
+    const { data, total, loading, onToggleFilter, isFilterVisible } = props;
 
     const transformedData = data.map(dentist => {
         return {
@@ -85,7 +78,6 @@ const DentistSearchPageView = props => {
                                     <SearchResultsList
                                         data={transformedData}
                                         total={total}
-                                        onShowMore={onShowMore}
                                     />
                                 )}
                             </Box>
@@ -103,7 +95,6 @@ DentistSearchPageView.propTypes = {
     mapDimensions: PropTypes.bool,
     total: PropTypes.bool,
     toggleMap: PropTypes.func,
-    onShowMore: PropTypes.func,
 };
 
 export default DentistSearchPageView;

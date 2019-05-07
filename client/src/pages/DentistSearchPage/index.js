@@ -233,7 +233,6 @@ class DetailsSearchPage extends PureComponent {
                                 toggleMap={this.toggleMap}
                                 defaultPosition={this.state.defaultPosition}
                                 urlParams={this.state.urlParams}
-                                onShowMore={this.updateSearchResults}
                                 loading={loading}
                                 isFilterVisible={this.state.isFilterVisible}
                                 onToggleFilter={this.onToggleFilter}

@@ -14,14 +14,29 @@ class DentistDetailsPageContainer extends PureComponent {
         this.state = {
             isLoading: true,
             dentist: null,
-        }
+        };
     }
 
-    componentDidMount = async () => {
-        const { id } = this.props.match.params;
-        const result = await fetchDentistFromES(id);
-        this.setState({ isLoading: false, dentist: _get(result, '_source') })
+    componentDidMount() {
+        this.fetchDentist(this.props.match.params.id);
     }
+
+    componentDidUpdate = async () => {
+        const { id } = this.props.match.params;
+
+        if (_get(this.state.dentist, 'id') !== id) {
+            this.fetchDentist(id);
+        }
+    };
+
+    fetchDentist = async id => {
+        this.setState({ isLoading: true });
+        const result = await fetchDentistFromES(id);
+        this.setState({
+            isLoading: false,
+            dentist: _get(result, '_source'),
+        });
+    };
 
     render() {
         const { isLoading, dentist } = this.state;

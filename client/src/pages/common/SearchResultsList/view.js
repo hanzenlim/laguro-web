@@ -18,7 +18,6 @@ class SearchResultsList extends PureComponent {
         this.state = {
             urlParams: this.urlParams,
             limit: ITEMS_COUNT,
-            isShowingMore: false,
             hasShowMore: false,
         };
     }
@@ -48,13 +47,7 @@ class SearchResultsList extends PureComponent {
             search: queryString.stringify(search),
         });
 
-        await this.setState(() => ({ limit, isShowingMore: true }));
-        await this.props.onShowMore();
-        await this.setState(() => ({ isShowingMore: false }));
-
-        if (this.props.total <= limit) {
-            await this.setState(() => ({ hasShowMore: false }));
-        }
+        this.setState(() => ({ limit, hasShowMore: this.props.total > limit }));
     };
 
     handleRedirect = url => {
@@ -72,7 +65,7 @@ class SearchResultsList extends PureComponent {
 
     render() {
         const { data, title, showMap } = this.props;
-        const { urlParams, isShowingMore } = this.state;
+        const { urlParams } = this.state;
         const isOffice = title === 'Office Results';
         const type = isOffice ? OFFICES : DENTISTS;
 
@@ -106,7 +99,7 @@ class SearchResultsList extends PureComponent {
                     }
                 >
                     {data.length
-                        ? data.map(item => (
+                        ? data.slice(0, this.state.limit).map(item => (
                               <Flex
                                   key={isOffice ? item.url : item.dentistId}
                                   width={
@@ -158,7 +151,6 @@ class SearchResultsList extends PureComponent {
                             onClick={this.showMore}
                             width={327}
                             height={51}
-                            loading={isShowingMore}
                         >
                             Show more
                         </Button>
@@ -174,7 +166,6 @@ SearchResultsList.propTypes = {
     // Toggle size of image in search results list
     showMap: PropTypes.bool,
     total: PropTypes.number,
-    onShowMore: PropTypes.func,
 };
 
 export default SearchResultsList;
