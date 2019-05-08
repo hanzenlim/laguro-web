@@ -358,8 +358,9 @@ class KioskPage extends PureComponent {
                         isGetUserLoading ||
                         isGetApptLoading ||
                         isGetOfficeWithDentistsWithApptSlotsLoading ||
-                        isGetPatientHealthDataUnstructuredLoading ||
-                        isGetAppointmentSlotForKioskLoading
+                        isGetPatientHealthDataUnstructuredLoading
+                        // TODO: include this code and also allow wizard to preserve state when moving to the next step
+                        // || isGetAppointmentSlotForKioskLoading
                     ) {
                         return <Loading />;
                     }

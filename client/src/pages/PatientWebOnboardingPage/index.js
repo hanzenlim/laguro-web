@@ -65,6 +65,7 @@ import {
     handleSkip,
     PATIENT_WEB_ONBOARDING_PAGE_PROGRESS_STEPS,
 } from './utils';
+import { withScreenSizes } from '../../components/Responsive';
 
 export const PATIENT_WEB_ONBOARDING_PAGE_REDIRECT_TO_COOKIE_VARIABLE_NAME =
     'patient-onboarding-redirectTo';
@@ -171,6 +172,15 @@ class PatientWebOnboardingPage extends Component {
                     ) {
                         return <RedirectErrorPage />;
                     }
+
+                    const PATIENT_WEB_ONBOARDING_PAGE_PROGRESS_STEPS = this
+                        .props.tabletDesktopOnly
+                        ? [
+                              'GENERAL INFORMATION',
+                              'INSURANCE',
+                              'MEDICAL HISTORY FORM',
+                          ]
+                        : ['', '', ''];
 
                     this.userFromDB =
                         _get(userData, 'getUser') || this.userFromDB; // work around for userFromDB not getting set at random moments
@@ -384,4 +394,4 @@ class PatientWebOnboardingPage extends Component {
         );
     }
 }
-export default PatientWebOnboardingPage;
+export default withScreenSizes(PatientWebOnboardingPage);

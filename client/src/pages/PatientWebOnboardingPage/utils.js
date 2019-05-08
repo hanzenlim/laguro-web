@@ -6,12 +6,6 @@ import { hasSkippedMedicalHistoryFormCookieVariableName } from '../../util/strin
 import { redirect } from '../../history';
 import { PATIENT_WEB_ONBOARDING_PAGE_REDIRECT_TO_COOKIE_VARIABLE_NAME } from '.';
 
-export const PATIENT_WEB_ONBOARDING_PAGE_PROGRESS_STEPS = [
-    'GENERAL INFORMATION',
-    'INSURANCE',
-    'MEDICAL HISTORY FORM',
-];
-
 const addActionToWizardStep = ({ action, step }) => {
     const copyOfStep = { ...step };
     const newOnAction = async (stepValues, allValues, formikProps) => {
