@@ -1,8 +1,9 @@
 import React from 'react';
-import { Box, Text, Flex } from '../../../components';
+import { Box, Text, Flex, Link } from '../../../components';
 import { Spin } from 'antd';
 import PriceEstimationBundle from './PriceEstimationBundle';
 import { getInsuranceText } from '../../../util/insuranceUtil';
+import { TERMS_PAGE_URL } from '../../../util/urls';
 
 const PriceEstimationView = props => {
     const {
@@ -62,7 +63,17 @@ const PriceEstimationView = props => {
                 style={{ 'white-space': 'pre-line' }}
                 mb="22px"
             >
-                {/* TODO: Get copy */}{' '}
+                The treatment cost estimates provided in this tool are only
+                estimates and are not a guarantee of payment or benefits. Your
+                actual cost may be higher or lower than the estimate for various
+                reasons. By using our Cost Estimator tool, you agree to Section
+                9 of Laguro’s{' '}
+                <Link to={TERMS_PAGE_URL} target="_blank" isExternal>
+                    <Text is="span" color="text.blue">
+                        Terms of Service
+                    </Text>
+                </Link>
+                .
             </Text>
             <Box
                 width="100%"
