@@ -727,7 +727,7 @@ export const getKioskPageWizardSteps = ({
                 });
             });
 
-            return !(await execute({
+            await execute({
                 action: async () => {
                     await _get(mutations, 'updatePatientHealthData')({
                         variables: {
@@ -741,7 +741,8 @@ export const getKioskPageWizardSteps = ({
                     });
                 },
                 afterAction: () => redirectFromHealthHistory(),
-            }));
+            });
+            return true;
         },
     },
     {
