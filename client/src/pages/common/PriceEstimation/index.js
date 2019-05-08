@@ -156,7 +156,7 @@ class PriceEstimation extends PureComponent {
 
         return {
             input: {
-                id: _get(selectedProcedure, 'id'),
+                id: _get(selectedProcedure, 'bundleId'),
                 dentistId,
                 patientId: _get(user, 'id'),
             },
