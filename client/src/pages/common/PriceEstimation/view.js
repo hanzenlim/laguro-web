@@ -132,9 +132,12 @@ const PriceEstimationView = props => {
                                         fontSize="10px"
                                         letterSpacing="-0.7px"
                                     >
-                                        Estimation for {patientName} • Insurance
-                                        no. {insuranceNumber} • Last updated on{' '}
-                                        {dateUpdated}
+                                        Estimation for {patientName} •{' '}
+                                        {insuranceNumber
+                                            ? `Insurance
+                                        no. ${insuranceNumber}  •`
+                                            : ''}{' '}
+                                        Last updated on {dateUpdated}
                                     </Text>
                                 </Flex>
                             )}

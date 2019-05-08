@@ -34,3 +34,15 @@ export const getBundleCoverage = gql`
         }
     }
 `;
+
+export const getUserQuery = gql`
+    query getUser($id: String!) {
+        getUser(id: $id) {
+            id
+            insuranceInfo {
+                useInsurance
+                policyHolderId
+            }
+        }
+    }
+`;

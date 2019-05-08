@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 import { Query } from 'react-apollo';
-import { getBundleCoverage } from './queries';
+import { getBundleCoverage, getUserQuery } from './queries';
 import { pricingClient } from '../../../util/apolloClients';
 import { renderPrice } from '../../../util/paymentUtil';
 import moment from 'moment';
@@ -44,19 +44,26 @@ class PriceEstimation extends PureComponent {
             });
         }
 
-        this.setState({ hasCheckedOutOfPocketCost: true, withInsurance: true });
+        this.setState({
+            hasCheckedOutOfPocketCost: true,
+            withInsurance: true,
+        });
     };
 
     handleAddInsurance = selectedInsurance => {
         this.setState({ selectedInsurance });
     };
 
-    getOutOfPocketData = ({ getBundleCoverageData }) => ({
+    getOutOfPocketData = ({ getBundleCoverageData, userData }) => ({
         selectedInsurance: _get(
             getBundleCoverageData,
             'getBundleCoverage.insuranceName'
         ),
         hasCheckedOutOfPocketCost: this.state.hasCheckedOutOfPocketCost,
+        insuranceNumber: _get(userData, 'getUser.insuranceInfo.policyHolderId'),
+        withInsurance:
+            this.state.withInsurance &&
+            _get(userData, 'getUser.insuranceInfo.policyHolderId'),
         // Left card info
         selectedProcedure: this.state.selectedProcedure.group,
         selectedProcedureName: this.state.selectedProcedure.name,
@@ -99,12 +106,10 @@ class PriceEstimation extends PureComponent {
         ),
         // from local state
         patientName: `${getUser().firstName} ${getUser().lastName}`,
-        insuranceNumber: getUser().insuranceInfo.policyHolderId,
         dateUpdated: moment(
             _get(getBundleCoverageData, 'getBundleCoverage.dateUpdated') ||
                 _get(getBundleCoverageData, 'getBundleCoverage.dateCreated')
         ).format('MM/DD/YY'),
-        withInsurance: this.state.withInsurance,
     });
 
     getPriceEstimtationData = () => ({
@@ -142,12 +147,13 @@ class PriceEstimation extends PureComponent {
     };
 
     render() {
+        const user = getUser();
         const { hasCheckedOutOfPocketCost } = this.state;
         const priceEstimationData = this.getPriceEstimtationData();
         const priceEstimationAction = this.getPriceEstimtationAction();
         const queryVariables = this.getQueryVariables();
 
-        if (!hasCheckedOutOfPocketCost) {
+        if (!hasCheckedOutOfPocketCost || !user || !user.id) {
             return (
                 <PriceEstimationView
                     {...priceEstimationData}
@@ -158,54 +164,67 @@ class PriceEstimation extends PureComponent {
 
         return (
             <Query
-                client={pricingClient}
-                query={getBundleCoverage}
-                variables={queryVariables}
-            >
-                {({
-                    loading: getBundleCoverageLoading,
-                    error: getBundleCoverageError,
-                    data: getBundleCoverageData,
-                    refetch,
-                }) => {
-                    if (_isEmpty(getBundleCoverageData)) {
-                        return (
-                            <PriceEstimationView
-                                isLoading={getBundleCoverageLoading}
-                                {...priceEstimationData}
-                                {...priceEstimationAction}
-                            />
-                        );
-                    }
-
-                    if (getBundleCoverageError) {
-                        return <div>error</div>;
-                    }
-
-                    const outOfPocketData = this.getOutOfPocketData({
-                        getBundleCoverageData,
-                    });
-
-                    return (
-                        <PriceEstimationView
-                            {...outOfPocketData}
-                            {...priceEstimationAction}
-                            isLoading={
-                                this.state.isRefetching ||
-                                getBundleCoverageLoading
-                            }
-                            onCheckOutOfPocketCost={() => {
-                                this.setState(
-                                    { isRefetching: true },
-                                    async () => {
-                                        await refetch();
-                                        this.setState({ isRefetching: false });
-                                    }
-                                );
-                            }}
-                        />
-                    );
+                query={getUserQuery}
+                variables={{
+                    id: user.id,
                 }}
+            >
+                {({ loading: userLoading, data: userData }) => (
+                    <Query
+                        client={pricingClient}
+                        query={getBundleCoverage}
+                        variables={queryVariables}
+                    >
+                        {({
+                            loading: getBundleCoverageLoading,
+                            error: getBundleCoverageError,
+                            data: getBundleCoverageData,
+                            refetch,
+                        }) => {
+                            if (_isEmpty(getBundleCoverageData)) {
+                                return (
+                                    <PriceEstimationView
+                                        isLoading={getBundleCoverageLoading}
+                                        {...priceEstimationData}
+                                        {...priceEstimationAction}
+                                    />
+                                );
+                            }
+
+                            if (getBundleCoverageError) {
+                                return <div>error</div>;
+                            }
+
+                            const outOfPocketData = this.getOutOfPocketData({
+                                getBundleCoverageData,
+                                userData,
+                            });
+
+                            return (
+                                <PriceEstimationView
+                                    {...outOfPocketData}
+                                    {...priceEstimationAction}
+                                    isLoading={
+                                        this.state.isRefetching ||
+                                        getBundleCoverageLoading ||
+                                        userLoading
+                                    }
+                                    onCheckOutOfPocketCost={() => {
+                                        this.setState(
+                                            { isRefetching: true },
+                                            async () => {
+                                                await refetch();
+                                                this.setState({
+                                                    isRefetching: false,
+                                                });
+                                            }
+                                        );
+                                    }}
+                                />
+                            );
+                        }}
+                    </Query>
+                )}
             </Query>
         );
     }
