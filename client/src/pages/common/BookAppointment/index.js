@@ -300,7 +300,7 @@ class BookAppointmentContainer extends PureComponent {
                     );
 
                     timeSlotMap[index].time.push(
-                        new Date(appointmentTimeslot.localStartTime)
+                        appointmentTimeslot.localStartTime
                     );
                 }
             );
