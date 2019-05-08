@@ -47,6 +47,7 @@ class PriceEstimationBundle extends PureComponent {
             hasCheckedOutOfPocketCost,
             selectedProcedure,
             selectedProcedureName,
+            withInsurance,
         } = this.props;
 
         const { selectedIndex } = this.state;
@@ -271,25 +272,43 @@ class PriceEstimationBundle extends PureComponent {
                     textAlign="center"
                     onClick={e => {
                         e.stopPropagation();
-                        if (this.props.onCheckOutOfPocketCost) {
-                            this.props.onCheckOutOfPocketCost();
+                        if (!withInsurance && hasCheckedOutOfPocketCost) {
+                            if (this.props.redirectToAddInsurance) {
+                                this.props.redirectToAddInsurance();
+                            }
+                        } else {
+                            if (this.props.onCheckOutOfPocketCost) {
+                                this.props.onCheckOutOfPocketCost();
+                            }
+                            this.setState({ hasCheckedOutOfPocketCost: true });
                         }
-                        this.setState({ hasCheckedOutOfPocketCost: true });
                     }}
                 >
-                    <Text
-                        fontSize="14px"
-                        color="text.white"
-                        display="flex"
-                        flexDirection="row"
-                        justifyContent="center"
-                    >
-                        {hasCheckedOutOfPocketCost ? 'Refresh' : 'Check'} my{' '}
-                        <Text mx={4} fontWeight="bold" color="text.white">
-                            out-of-pocket
-                        </Text>{' '}
-                        cost
-                    </Text>
+                    {!withInsurance && hasCheckedOutOfPocketCost ? (
+                        <Text
+                            fontSize="14px"
+                            color="text.white"
+                            display="flex"
+                            flexDirection="row"
+                            justifyContent="center"
+                        >
+                            Add my insurance
+                        </Text>
+                    ) : (
+                        <Text
+                            fontSize="14px"
+                            color="text.white"
+                            display="flex"
+                            flexDirection="row"
+                            justifyContent="center"
+                        >
+                            {hasCheckedOutOfPocketCost ? 'Refresh' : 'Check'} my{' '}
+                            <Text mx={4} fontWeight="bold" color="text.white">
+                                out-of-pocket
+                            </Text>{' '}
+                            cost
+                        </Text>
+                    )}
                 </Button>
                 <Text
                     mt="5px"

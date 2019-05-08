@@ -28,6 +28,7 @@ const PriceEstimationView = props => {
         selectedProcedureName,
         selectedInsurance,
         hasCheckedOutOfPocketCost,
+        redirectToAddInsurance,
     } = props;
 
     return (
@@ -82,6 +83,8 @@ const PriceEstimationView = props => {
                             hasCheckedOutOfPocketCost={
                                 hasCheckedOutOfPocketCost
                             }
+                            redirectToAddInsurance={redirectToAddInsurance}
+                            withInsurance={withInsurance}
                             selectedInsurance={selectedInsurance}
                             selectedProcedure={selectedProcedure}
                             selectedProcedureName={selectedProcedureName}
