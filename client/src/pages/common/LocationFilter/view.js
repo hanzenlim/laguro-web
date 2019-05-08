@@ -167,7 +167,7 @@ const LocationFilterView = ({
                             ml={6}
                             mr={10}
                         />
-                        <Box width={width - 50}>
+                        <Box width={[250, '', 400]}>
                             <Truncate lines={1} ellipsis trimWhitespace>
                                 {DentistResultString(result)}
                             </Truncate>

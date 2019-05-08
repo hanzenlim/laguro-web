@@ -10,6 +10,7 @@ import { getAppointmentQuery } from './queries';
 import AppointmentConfirmationView from './view';
 import { stripTimezone } from '../../../util/timeUtil';
 import history from '../../../history';
+import { formatAddress } from '../../../util/styleUtil';
 
 const Composed = adopt({
     getAppointment: ({ render, appointmentId }) => (
@@ -54,6 +55,7 @@ class AppointmentConfirmation extends PureComponent {
                     }
 
                     const internalPage = this.getInternalPage();
+                    const officeId = _get(data, 'office.id');
 
                     trackBookAppointment({
                         appointmentId: _get(data, 'id'),
@@ -67,7 +69,7 @@ class AppointmentConfirmation extends PureComponent {
                         ),
                         internalPage,
                         // TODO: Put back when API is ready
-                        // officeId: _get(data, 'officeId')
+                        officeId,
                     });
 
                     return (
@@ -78,7 +80,9 @@ class AppointmentConfirmation extends PureComponent {
                             )
                                 .utcOffset(0, true)
                                 .format('LLLL')}
-                            h3={_get(data, 'location.name')}
+                            h3={formatAddress(_get(data, 'location.name'))}
+                            appointmentId={_get(data, 'id')}
+                            officeId={officeId}
                         />
                     );
                 }}

@@ -12,6 +12,9 @@ export const getAppointmentQuery = gql`
             dentist {
                 id
             }
+            office {
+                id
+            }
         }
     }
 `;

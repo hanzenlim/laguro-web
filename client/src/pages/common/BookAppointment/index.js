@@ -346,7 +346,7 @@ class BookAppointmentContainer extends PureComponent {
                     getDentistAppointmentSlots,
                 }) => {
                     const getDentistData = getDentist.data.getDentist;
-                    const getDentistAppointmentSlotsData = _get(
+                    const officeAppointmentSlots = _get(
                         getDentistAppointmentSlots,
                         'data.getDentistAppointmentSlots'
                     );
@@ -355,20 +355,27 @@ class BookAppointmentContainer extends PureComponent {
 
                     if (
                         getDentistAppointmentSlots.loading &&
-                        !getDentistAppointmentSlotsData &&
+                        !officeAppointmentSlots &&
                         !isFetchingNewData
                     ) {
                         return <Loading />;
                     }
 
-                    if (_isEmpty(getDentistAppointmentSlotsData)) {
+                    if (
+                        _isEmpty(officeAppointmentSlots) ||
+                        _isEmpty(
+                            officeAppointmentSlots
+                                .map(oas => _get(oas, 'appointmentTimeslots'))
+                                .flat()
+                        )
+                    ) {
                         return <NoAvailability />;
                     }
 
                     // TODO: refactor
                     // Get list of locations
                     const officeIdsWithAppointmentSlots = [];
-                    getDentistAppointmentSlotsData.forEach(appointmentSlot => {
+                    officeAppointmentSlots.forEach(appointmentSlot => {
                         if (
                             appointmentSlot.appointmentTimeslots &&
                             appointmentSlot.appointmentTimeslots.length !== 0
@@ -387,7 +394,7 @@ class BookAppointmentContainer extends PureComponent {
 
                     // TODO: refactor
                     const timeSlot = this.getAppointmentSlotsByOfficeId(
-                        getDentistAppointmentSlotsData
+                        officeAppointmentSlots
                     );
 
                     if (timeSlot.length === 0) return <NoAvailability />;

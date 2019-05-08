@@ -1,7 +1,20 @@
-import _get from 'lodash/get';
 import React from 'react';
-import { Box, Button, Flex, Grid, Text } from '../../../../components';
+import {
+    Box,
+    Button,
+    Flex,
+    Grid,
+    Text,
+    Truncate,
+    Image,
+    Link,
+} from '../../../../components';
+import _get from 'lodash/get';
 import Map from '../../Map';
+import LinkIcon from '../../../../components/Icon/link.svg';
+import { OFFICE_PAGES_URL_PREFIX } from '../../../../util/urls';
+import { withScreenSizes } from '../../../../components/Responsive';
+import { formatAddress } from '../../../../util/styleUtil';
 
 const DEFAULT_COORDINATES = {
     latitude: 42.93552,
@@ -32,17 +45,22 @@ const AvailableLocationsView = props => {
             </Flex>
 
             {showMap && (
-                <Box
+                <Flex
                     // Hacky fix for centering the map on location change
                     key={_get(selectedLocation, 'id')}
                     width="100%"
                     height="304px"
                     mb="24px"
+                    justifyContent="center"
                 >
                     <Map
                         height={304}
-                        width={394}
-                        zoom={2}
+                        width={
+                            props.tabletMobileOnly
+                                ? window.innerWidth - 50
+                                : 430
+                        }
+                        zoom={9}
                         data={
                             selectedLocation
                                 ? [
@@ -60,7 +78,7 @@ const AvailableLocationsView = props => {
                                 : [DEFAULT_COORDINATES]
                         }
                     />
-                </Box>
+                </Flex>
             )}
 
             <Grid gridTemplateColumn="auto" gridRowGap="4px">
@@ -89,14 +107,36 @@ const AvailableLocationsView = props => {
                             borderRadius="2px"
                         >
                             <Text
+                                is="span"
                                 fontSize={1}
+                                fontFamily="'Silka', 'Courier new', sans-serif"
                                 fontWeight="500"
                                 color="rgba(0, 0, 0, 0.5)"
                                 letterSpacing="-0.3px"
-                                style={{ 'white-space': 'pre-line' }}
                                 lineHeight="normal"
+                                width={[285, 500, 370]}
                             >
-                                {location && location.location.name}
+                                <Flex
+                                    justifyContent="center"
+                                    alignItems="center"
+                                >
+                                    <Truncate lines={1}>
+                                        {formatAddress(
+                                            _get(location, 'location.name')
+                                        )}
+                                    </Truncate>
+                                    <Link
+                                        ml={6}
+                                        onClick={e => e.stopPropagation()}
+                                        target="_blank"
+                                        to={`${OFFICE_PAGES_URL_PREFIX}/${_get(
+                                            location,
+                                            'id'
+                                        )}`}
+                                    >
+                                        <Image src={LinkIcon} alt="link-icon" />
+                                    </Link>
+                                </Flex>
                             </Text>
                         </Flex>
                     </Button>
@@ -108,4 +148,4 @@ const AvailableLocationsView = props => {
 
 AvailableLocationsView.propTypes = {};
 
-export default AvailableLocationsView;
+export default withScreenSizes(AvailableLocationsView);

@@ -1,7 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { CheckMarkAnimation, Text, Box, Flex, Icon } from '../../../components';
+import {
+    CheckMarkAnimation,
+    Text,
+    Box,
+    Flex,
+    Icon,
+    Link,
+} from '../../../components';
+import {
+    PATIENT_DASHBOARD_PAGE_URL_BASE,
+    OFFICE_PAGES_URL_PREFIX,
+} from '../../../util/urls';
 
 const PaymentConfirmationView = props => {
     const { h1, h2, h3 } = props;
@@ -24,23 +35,52 @@ const PaymentConfirmationView = props => {
                         >
                             {h1}
                         </Text>
-                        <Text fontSize={[3, '', 5]}>{h2}</Text>
+                        <Text fontSize={[2, '', 4]}>{h2}</Text>
+
                         {h3 ? (
-                            <Flex
-                                mt={5}
-                                flexDirection="row"
-                                justifyContent="center"
+                            <Link
+                                to={`${OFFICE_PAGES_URL_PREFIX}/${
+                                    props.officeId
+                                }`}
                             >
-                                <Icon
-                                    type="locationPin"
-                                    width="20px"
-                                    height="20px"
-                                    color="icon.lightGray"
-                                    mx={5}
-                                />
-                                <Text color="text.blue">{h3}</Text>
-                            </Flex>
+                                <Flex
+                                    mt={5}
+                                    mb={24}
+                                    flexDirection="row"
+                                    justifyContent="center"
+                                >
+                                    <Icon
+                                        type="locationPin"
+                                        width="20px"
+                                        height="20px"
+                                        color="icon.lightGray"
+                                        mx={5}
+                                    />
+                                    <Text color="text.blue">{h3}</Text>
+                                </Flex>
+                            </Link>
                         ) : null}
+                        <Link
+                            to={`${PATIENT_DASHBOARD_PAGE_URL_BASE}appointments`}
+                        >
+                            <Flex
+                                justifyContent="center"
+                                color="text.blue"
+                                fontWeight="medium"
+                                alignItems="center"
+                            >
+                                <Text mr={5} color="inherit">
+                                    View and manage your appointments{' '}
+                                </Text>
+                                <Icon
+                                    color="inherit"
+                                    fill="currentColor"
+                                    width={13}
+                                    height={13}
+                                    type="rightForwardArrow"
+                                />
+                            </Flex>
+                        </Link>
                     </Box>
                 </Flex>
             </Text>
