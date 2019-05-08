@@ -61,10 +61,7 @@ import {
 } from './getPatientWebOnboardingPageWizardSteps';
 import history from '../../history';
 
-import {
-    handleSkip,
-    PATIENT_WEB_ONBOARDING_PAGE_PROGRESS_STEPS,
-} from './utils';
+import { handleSkip } from './utils';
 import { withScreenSizes } from '../../components/Responsive';
 
 export const PATIENT_WEB_ONBOARDING_PAGE_REDIRECT_TO_COOKIE_VARIABLE_NAME =

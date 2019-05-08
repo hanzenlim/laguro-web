@@ -172,7 +172,7 @@ const Composed = adopt({
             {render}
         </Query>
     ),
-    getAppointmentSlotForKiosk: ({ render, officeId }) => (
+    getAppointmentSlotForKiosk: ({ render, officeId, currentWizardStepId }) => (
         <Query
             variables={{
                 input: {
@@ -187,7 +187,10 @@ const Composed = adopt({
                 },
             }}
             query={GET_APPOINTMENT_SLOTS_FOR_KIOSK}
-            skip={_isEmpty(officeId)}
+            skip={
+                _isEmpty(officeId) ||
+                currentWizardStepId !== BOOK_APPOINTMENT_WIZARD_STEP_ID
+            }
             fetchPolicy="network-only"
             client={appointmentClient}
         >
@@ -358,9 +361,8 @@ class KioskPage extends PureComponent {
                         isGetUserLoading ||
                         isGetApptLoading ||
                         isGetOfficeWithDentistsWithApptSlotsLoading ||
-                        isGetPatientHealthDataUnstructuredLoading
-                        // TODO: include this code and also allow wizard to preserve state when moving to the next step
-                        // || isGetAppointmentSlotForKioskLoading
+                        isGetPatientHealthDataUnstructuredLoading ||
+                        isGetAppointmentSlotForKioskLoading
                     ) {
                         return <Loading />;
                     }
