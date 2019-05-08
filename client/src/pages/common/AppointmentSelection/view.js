@@ -254,26 +254,24 @@ class AppointmentSelectionView extends React.PureComponent {
             <Box width={794} mb="100px">
                 <Onboarding.StepTitleText text="Book an appointment" />
                 <Onboarding.StepBlurbText text="Here are some of the dentists that are available in the next few days." />
-                {_sortBy(Object.keys(dentistsGroupedByDates), 'startTime').map(
-                    date => (
-                        <Box mb={25}>
-                            <Box
-                                mb={15}
-                                textAlign="center"
-                                fontWeight="bold"
-                                color="text.blue"
-                            >
-                                <Onboarding.FormItemLabelText
-                                    text={`${date}`}
-                                />
-                            </Box>
-                            {this.renderDentistPanel(
-                                dentistsGroupedByDates[date],
-                                date
-                            )}
+                {_sortBy(Object.keys(dentistsGroupedByDates), [
+                    val => moment(val),
+                ]).map(date => (
+                    <Box mb={25}>
+                        <Box
+                            mb={15}
+                            textAlign="center"
+                            fontWeight="bold"
+                            color="text.blue"
+                        >
+                            <Onboarding.FormItemLabelText text={`${date}`} />
                         </Box>
-                    )
-                )}
+                        {this.renderDentistPanel(
+                            dentistsGroupedByDates[date],
+                            date
+                        )}
+                    </Box>
+                ))}
                 {!_isEmpty(
                     this.props.formikProps.values.appointmentSelected
                 ) && (
