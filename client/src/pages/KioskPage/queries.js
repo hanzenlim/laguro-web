@@ -163,7 +163,7 @@ export const GET_USER = gql`
                         rangeStart:"${moment()
                             .startOf('day')
                             .utc()
-                            .format()}", 
+                            .format()}",
                         rangeEnd: "${moment()
                             .endOf('day')
                             .utc()
@@ -312,6 +312,7 @@ export const GET_APPOINTMENT_SLOTS_FOR_KIOSK = gql`
             firstName
             lastName
             averageRating
+            numReviews
             acceptedInsurances
             specialty
             firstAppointmentDuration
