@@ -220,6 +220,8 @@ export const GET_APPOINTMENT = gql`
             dentist {
                 id
                 totalRating
+                numReviews
+                averageRating
                 user {
                     firstName
                     lastName
@@ -311,6 +313,7 @@ export const GET_APPOINTMENT_SLOTS_FOR_KIOSK = gql`
             officeId
             firstName
             lastName
+            imageUrl
             averageRating
             numReviews
             acceptedInsurances

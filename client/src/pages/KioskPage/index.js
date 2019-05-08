@@ -386,7 +386,8 @@ class KioskPage extends PureComponent {
 
                     const appt = _get(apptData, 'getAppointment');
                     const localStartTime = _get(appt, 'localStartTime');
-                    const totalRating = _get(appt, 'dentist.totalRating');
+                    const numReviews = _get(appt, 'dentist.numReviews');
+                    const rating = _get(appt, 'dentist.averageRating');
                     const firstName = _get(appt, 'dentist.user.firstName');
                     const lastName = _get(appt, 'dentist.user.lastName');
                     const imageUrl = _get(appt, 'dentist.user.imageUrl');
@@ -669,7 +670,8 @@ class KioskPage extends PureComponent {
                                         date={moment(localStartTime).format(
                                             'MMM D, YYYY'
                                         )}
-                                        rating={totalRating || 0}
+                                        rating={rating || 0}
+                                        numReviews={numReviews}
                                         time={moment(localStartTime).format(
                                             'h:mm A'
                                         )}
@@ -767,7 +769,8 @@ class KioskPage extends PureComponent {
                                         date={moment(localStartTime).format(
                                             'MMM D, YYYY'
                                         )}
-                                        rating={totalRating || 0}
+                                        rating={rating || 0}
+                                        numReviews={numReviews}
                                         time={moment(localStartTime).format(
                                             'h:mm A'
                                         )}
