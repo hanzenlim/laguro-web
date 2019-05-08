@@ -19,11 +19,11 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { Rating } from '../../../components';
 
-export const DentistRating = ({ rating }) => (
+export const DentistRating = ({ rating, numReviews }) => (
     <Flex alignItems="center">
         <Rating disabled={true} fontSize="16px" value={rating} />
         <Text textAlign="center" ml={6} mt={4} fontSize={0} lineHeight="22.5px">
-            {rating.toString()}
+            {numReviews.toString()}
         </Text>
     </Flex>
 );
@@ -82,7 +82,10 @@ class AppointmentSelectionView extends React.PureComponent {
                                 >
                                     {dentist.name}
                                 </Text>
-                                <DentistRating rating={dentist.rating} />
+                                <DentistRating
+                                    rating={dentist.rating}
+                                    numReviews={dentist.numReviews}
+                                />
                             </Flex>
                             {!_isEmpty(dentist.procedures) &&
                             dentist.procedures.length ? (
