@@ -11,6 +11,14 @@ export const renderPrice = price => {
     const formattedPrice = removeSpecialChars(price);
     return `${isNegative ? '-' : ''}$${Math.abs(
         Number(formattedPrice) / 100
+    ).toFixed(2)}`;
+};
+
+export const renderPriceWithoutZeros = price => {
+    const isNegative = price < 0;
+    const formattedPrice = removeSpecialChars(price);
+    return `${isNegative ? '-' : ''}$${Math.abs(
+        Number(formattedPrice) / 100
     ).toString()}`;
 };
 

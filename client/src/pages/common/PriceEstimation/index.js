@@ -5,7 +5,7 @@ import _isEmpty from 'lodash/isEmpty';
 import { Query } from 'react-apollo';
 import { getBundleCoverage, getUserQuery } from './queries';
 import { pricingClient } from '../../../util/apolloClients';
-import { renderPrice } from '../../../util/paymentUtil';
+import { renderPriceWithoutZeros } from '../../../util/paymentUtil';
 import moment from 'moment';
 import history from '../../../history';
 import { getUser } from '../../../util/authUtils';
@@ -82,28 +82,30 @@ class PriceEstimation extends PureComponent {
             getBundleCoverageData,
             'getBundleCoverage.insuranceName'
         ),
-        insurancePrice: renderPrice(
+        insurancePrice: renderPriceWithoutZeros(
             _get(getBundleCoverageData, 'getBundleCoverage.insurancePrice')
         ),
-        outOfPocket: renderPrice(
+        outOfPocket: renderPriceWithoutZeros(
             _get(getBundleCoverageData, 'getBundleCoverage.outOfPocket')
         ),
         price: this.state.hasCheckedOutOfPocket
-            ? renderPrice(
+            ? renderPriceWithoutZeros(
                   _get(getBundleCoverageData, 'getBundleCoverage.price')
               )
-            : renderPrice(this.props.bundles[this.state.procedureIndex].price),
+            : renderPriceWithoutZeros(
+                  this.props.bundles[this.state.procedureIndex].price
+              ),
         group: _get(getBundleCoverageData, 'getBundleCoverage.group'),
-        deductibleRemaining: renderPrice(
+        deductibleRemaining: renderPriceWithoutZeros(
             _get(getBundleCoverageData, 'getBundleCoverage.deductibleRemaining')
         ),
-        annualMaximumRemaining: renderPrice(
+        annualMaximumRemaining: renderPriceWithoutZeros(
             _get(
                 getBundleCoverageData,
                 'getBundleCoverage.annualMaximumRemaining'
             )
         ),
-        coverage: renderPrice(
+        coverage: renderPriceWithoutZeros(
             _get(getBundleCoverageData, 'getBundleCoverage.coverage')
         ),
         // from local state
@@ -122,9 +124,11 @@ class PriceEstimation extends PureComponent {
         insurance: this.props.acceptedInsurances,
         proceduresDetail: this.props.bundles[this.state.procedureIndex]
             .proceduresDetail,
-        price: renderPrice(this.props.bundles[this.state.procedureIndex].price),
+        price: renderPriceWithoutZeros(
+            this.props.bundles[this.state.procedureIndex].price
+        ),
         insurancePrice: this.state.selectedInsurance
-            ? renderPrice(
+            ? renderPriceWithoutZeros(
                   this.props.bundles[
                       this.state.procedureIndex
                   ].insuranceList.filter(
