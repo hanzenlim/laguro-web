@@ -160,6 +160,8 @@ const minAdultAge = moment()
     .subtract(18, 'years')
     .format();
 
+const LOCAL_TIME_FORMAT = 'YYYY-MM-DDTHH:mm:ss';
+
 // depending on user, some steps will be optional
 // onAction will return true if there is an error, return false if there isn't
 // add backend calls here. add redirects in index.js
@@ -459,7 +461,7 @@ export const getKioskPageWizardSteps = ({
                                     patientId: _get(user, 'id'),
                                     localStartTime: moment(
                                         dentistTime.startTime
-                                    ).format(),
+                                    ).format(LOCAL_TIME_FORMAT),
                                     reasonOfVisit: !_isEmpty(
                                         selectProcedureListOfProcedures
                                     )
