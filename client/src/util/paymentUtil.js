@@ -11,7 +11,7 @@ export const renderPrice = price => {
     const formattedPrice = removeSpecialChars(price);
     return `${isNegative ? '-' : ''}$${Math.abs(
         Number(formattedPrice) / 100
-    ).toFixed(2)}`;
+    ).toString()}`;
 };
 
 export const renderCents = price => Number(removeSpecialChars(price));

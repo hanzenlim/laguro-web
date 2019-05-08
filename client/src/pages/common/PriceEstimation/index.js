@@ -123,9 +123,15 @@ class PriceEstimation extends PureComponent {
         proceduresDetail: this.props.bundles[this.state.procedureIndex]
             .proceduresDetail,
         price: renderPrice(this.props.bundles[this.state.procedureIndex].price),
-        insurancePrice: renderPrice(
-            this.props.bundles[this.state.procedureIndex].price
-        ),
+        insurancePrice: this.state.selectedInsurance
+            ? renderPrice(
+                  this.props.bundles[
+                      this.state.procedureIndex
+                  ].insuranceList.filter(
+                      i => i.name === this.state.selectedInsurance
+                  )[0].price
+              )
+            : this.props.bundles[this.state.procedureIndex].price,
     });
 
     getPriceEstimtationAction = () => ({
