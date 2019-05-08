@@ -189,7 +189,7 @@ const Composed = adopt({
                 .utcOffset(0, true)
                 .format(),
             rangeEnd: moment()
-                .add(14, 'days')
+                .add(30, 'days')
                 .startOf('hour')
                 .utcOffset(0, true)
                 .format(),
