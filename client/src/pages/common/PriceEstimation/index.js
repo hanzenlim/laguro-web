@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { message } from 'antd';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 import { Query } from 'react-apollo';
@@ -9,6 +10,7 @@ import moment from 'moment';
 import history from '../../../history';
 import { getUser } from '../../../util/authUtils';
 import emitter from '../../../util/emitter';
+import { PATIENT_DASHBOARD_PAGE_URL_BASE } from '../../../util/urls';
 
 import PriceEstimationView from './view';
 
@@ -130,7 +132,12 @@ class PriceEstimation extends PureComponent {
         onSelectProcedure: this.handleSelectProcedure,
         onCheckOutOfPocketCost: this.handleCheckOutOfPocketCost,
         onAddInsurance: this.handleAddInsurance,
+        redirectToAddInsurance: this.handleRedirect,
     });
+
+    handleRedirect = () => {
+        window.open(`${PATIENT_DASHBOARD_PAGE_URL_BASE}insurance`, '_blank');
+    };
 
     getQueryVariables = () => {
         const { selectedProcedure } = this.state;
@@ -144,6 +151,14 @@ class PriceEstimation extends PureComponent {
                 patientId: _get(user, 'id'),
             },
         };
+    };
+
+    onGetBundleComplete = data => {
+        if (!_get(data, 'getBundleCoverage.insuranceName')) {
+            message.warning(
+                'You have not provided insurance information. Please input the information and reload this page'
+            );
+        }
     };
 
     render() {
@@ -174,6 +189,7 @@ class PriceEstimation extends PureComponent {
                         client={pricingClient}
                         query={getBundleCoverage}
                         variables={queryVariables}
+                        onCompleted={this.onGetBundleComplete}
                     >
                         {({
                             loading: getBundleCoverageLoading,
