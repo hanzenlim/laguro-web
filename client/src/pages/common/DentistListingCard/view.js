@@ -1,33 +1,20 @@
-import React, { PureComponent, Fragment } from 'react';
+import React, { PureComponent } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import _isEmpty from 'lodash/isEmpty';
-import _truncate from 'lodash/truncate';
-import { Dropdown, Menu } from 'antd';
-import moment from 'moment';
+import { Menu } from 'antd';
 import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
-import {
-    Icon,
-    Box,
-    Button,
-    Card,
-    Flex,
-    Image,
-    Rating,
-    Text,
-    Grid,
-    Responsive,
-} from '../../../components';
+import { Box, Card, Flex, Image, Text, Responsive } from '../../../components';
 import { withScreenSizes } from '../../../components/Responsive';
 import Bundle from '../Bundle';
-import { getProcedureColor } from '../../../util/dentistUtils';
-import { getInsuranceText } from '../../../util/insuranceUtil';
+import TopBlock from './TopBlock';
+import MiddleBlock from './MiddleBlock';
+import AppointmentTimeslots from './AppointmentTimeslots';
 
-const { Desktop, Mobile } = Responsive;
+const { Desktop } = Responsive;
 
 const StyledCard = styled(Card)`
     &&.ant-card-bordered {
-        height: 350px;
         width: ${({ showMap }) => (showMap ? '839px' : '100%')};
         border-radius: 0;
         border: none;
@@ -57,12 +44,7 @@ const StyledCard = styled(Card)`
             height: 100%;
 
             @media (min-width: ${props => props.theme.breakpoints[1]}) {
-                padding: 20px 22px;
-            }
-
-            @media (max-width: 767px) {
-                padding-top: 23px;
-                padding-bottom: 23px;
+                padding: 32px;
             }
         }
     }
@@ -137,24 +119,17 @@ class DentistListingCard extends PureComponent {
         return stopPoint;
     };
 
-    filterProcedureList = (procedures) => {
+    filterProcedureList = procedures => {
         if (this.props.dentist.bundles.length === 0) return [];
-        const bundlesWithPrices = this.props.dentist.bundles.filter(b => b.price);
+        const bundlesWithPrices = this.props.dentist.bundles.filter(
+            b => b.price
+        );
         const bundlesNameWithPrices = bundlesWithPrices.map(p => p.group);
         return procedures.filter(p => bundlesNameWithPrices.includes(p));
-    }
+    };
 
     render() {
-        const {
-            dentist,
-            variant,
-            screenWidth,
-            tabletOnly,
-            mobileOnly,
-            tabletMobileOnly,
-            showMap,
-            onRedirect,
-        } = this.props;
+        const { dentist, onRedirect } = this.props;
 
         const earliestAvailableDate =
             dentist.appointmentTimeslotsByOffice &&
@@ -175,7 +150,9 @@ class DentistListingCard extends PureComponent {
                 }}
             >
                 {dentist.appointmentTimeslotsByOffice.map((item, index) => (
-                    <Menu.Item key={index}>{item.office.location.name.split(",", 3).toString()}</Menu.Item>
+                    <Menu.Item key={index}>
+                        {item.office.location.name.split(',', 3).toString()}
+                    </Menu.Item>
                 ))}
             </Menu>
         );
@@ -183,690 +160,94 @@ class DentistListingCard extends PureComponent {
         const indexToMap = parseInt(this.state.indexToMap);
 
         return (
-            <Button
-                type="ghost"
-                height="auto"
+            <Box
                 width="100%"
+                style={{ cursor: 'pointer' }}
                 onClick={onRedirect}
             >
-                <StyledCard showMap={showMap}>
-                    <Flex height="100%" flexDirection={['column', 'row']}>
-                        <Flex width={['100%', 'calc(100% - 304px)']}>
-                            <Box
-                                display={['none', 'block']}
-                                width={variant === 'small' ? '90px' : '136px'}
-                            >
+                <StyledCard>
+                    <Flex height="100%" flexDirection={['column', '', 'row']}>
+                        <Flex
+                            width={['100%', '', 'calc(100% - 304px)']}
+                            borderRight={['none', '', '1px solid #dbdbdb']}
+                            borderBottom={['1px solid #dbdbdb', '', 'none']}
+                            pb={[20, '', 0]}
+                        >
+                            <Desktop>
                                 <Image
                                     src={dentist.imageUrl || defaultUserImage}
                                     alt={`Dr. ${dentist.name}`}
-                                    width="136px"
-                                    height="136px"
+                                    width={[90, '', 136]}
+                                    height={[90, '', 136]}
                                     borderRadius="50%"
+                                    mr={32}
+                                />
+                            </Desktop>
+                            <Box
+                                flex={1}
+                                width={['', '', 'calc(100% - 136px - 32px)']}
+                                pr={['', '', 32]}
+                            >
+                                <TopBlock dentist={dentist} />
+                                <MiddleBlock
+                                    dentist={dentist}
+                                    tagStopPoint={tagStopPoint}
+                                />
+                                <AppointmentTimeslots
+                                    dentist={dentist}
+                                    indexToMap={indexToMap}
+                                    earliestAvailableDate={
+                                        earliestAvailableDate
+                                    }
+                                    handleSelectAppointment={
+                                        this.handleSelectAppointment
+                                    }
+                                    menu={menu}
                                 />
                             </Box>
-                            <Box width="32px" display={['none', 'block']} />
-                            <Box width="100%">
-                                <Flex>
-                                    <Box
-                                        display={['block', 'none']}
-                                        width={'46px'}
-                                        mr={17}
-                                    >
-                                        <Image
-                                            src={
-                                                dentist.imageUrl ||
-                                                defaultUserImage
-                                            }
-                                            alt={`Dr. ${dentist.name}`}
-                                            width="100%"
-                                            height="auto"
-                                            borderRadius="50%"
-                                        />
-                                    </Box>
-                                    <Flex
-                                        flex="1"
-                                        flexDirection="column"
-                                        alignItems="flex-start"
-                                    >
-                                        <Text
-                                            fontSize={['11px', '14px']}
-                                            color="#c7c7c7"
-                                            fontWeight="bold"
-                                            textTransform="uppercase"
-                                        >
-                                            {dentist.specialty}
-                                        </Text>
-                                        <Flex
-                                            mb={4}
-                                            alignItems={
-                                                showMap
-                                                    ? 'flex-start'
-                                                    : ['flex-start', 'center']
-                                            }
-                                            flexDirection={
-                                                showMap
-                                                    ? 'column'
-                                                    : ['column', 'row']
-                                            }
-                                        >
-                                            <Text
-                                                style={{
-                                                    'white-space': 'pre-line',
-                                                }}
-                                                fontWeight="bold"
-                                                fontSize={['14px', '20px']}
-                                                mr={14}
-                                                color="#303449"
-                                                textAlign="left"
-                                            >
-                                                {dentist.name}
-                                            </Text>
-                                            {!showMap && (
-                                                <Flex
-                                                    alignItems="flex-end"
-                                                    lineHeight="15px"
-                                                >
-                                                    <Rating
-                                                        disabled={true}
-                                                        fontSize={[
-                                                            '12px',
-                                                            '15px',
-                                                        ]}
-                                                        value={
-                                                            dentist.averageRating
-                                                        }
-                                                    />
-                                                    <Text
-                                                        ml={6}
-                                                        fontSize="12px"
-                                                    >
-                                                        {dentist.numReviews &&
-                                                        dentist.numReviews !== 0
-                                                            ? `(${
-                                                                  dentist.numReviews
-                                                              })`
-                                                            : ''}
-                                                    </Text>
-                                                </Flex>
-                                            )}
-                                        </Flex>
-                                    </Flex>
-                                </Flex>
-
-                                <Mobile>
-                                    {!_isEmpty(dentist.procedures) &&
-                                        dentist.procedures.length && (
-                                            <Box overflow="hidden">
-                                                <Flex
-                                                    flexWrap="wrap"
-                                                    mb={6}
-                                                    mt={10}
-                                                >
-                                                    {dentist.procedures.map(
-                                                        (procedure, index) => {
-                                                            if (
-                                                                tagStopPoint &&
-                                                                index >
-                                                                    tagStopPoint
-                                                            ) {
-                                                                return null;
-                                                            }
-
-                                                            if (
-                                                                tagStopPoint &&
-                                                                index ===
-                                                                    tagStopPoint
-                                                            ) {
-                                                                return (
-                                                                    <Box
-                                                                        bg="background.blue"
-                                                                        px={12}
-                                                                        py="3px"
-                                                                        borderRadius="15.5px"
-                                                                        mr="6px"
-                                                                        mb="6px"
-                                                                    >
-                                                                        <Text
-                                                                            color="text.white"
-                                                                            lineHeight="normal"
-                                                                            fontSize="10px"
-                                                                        >
-                                                                            ...
-                                                                        </Text>
-                                                                    </Box>
-                                                                );
-                                                            }
-
-                                                            return (
-                                                                <Box
-                                                                    bg={getProcedureColor(
-                                                                        procedure
-                                                                    )}
-                                                                    px={12}
-                                                                    py="2px"
-                                                                    borderRadius="15.5px"
-                                                                    mr="6px"
-                                                                    mb="6px"
-                                                                >
-                                                                    <Text
-                                                                        color="text.white"
-                                                                        lineHeight="normal"
-                                                                        fontSize="10px"
-                                                                    >
-                                                                        {
-                                                                            procedure
-                                                                        }
-                                                                    </Text>
-                                                                </Box>
-                                                            );
-                                                        }
-                                                    )}
-                                                </Flex>
-                                            </Box>
-                                        )}
-                                </Mobile>
-
-                                {!_isEmpty(dentist.acceptedInsurances) && (
-                                    <Flex alignItems="center">
-                                        <Icon type="insurance" />
-                                        <Text
-                                            fontSize={['12px', '14px']}
-                                            ml="8px"
-                                        >
-                                            Accepts{' '}
-                                            {dentist.acceptedInsurances.length >
-                                            1
-                                                ? dentist.acceptedInsurances.map(
-                                                      (sp, index) =>
-                                                          index !==
-                                                          dentist
-                                                              .acceptedInsurances
-                                                              .length -
-                                                              1
-                                                              ? `${getInsuranceText(
-                                                                    sp
-                                                                )}, `
-                                                              : `and ${getInsuranceText(
-                                                                    sp
-                                                                )}`
-                                                  )
-                                                : getInsuranceText(
-                                                      dentist
-                                                          .acceptedInsurances[0]
-                                                  )}
-                                        </Text>
-                                    </Flex>
-                                )}
-                                {!_isEmpty(dentist.languages) && (
-                                    <Flex alignItems="center">
-                                        <Icon type="languages" />
-                                        <Text
-                                            fontSize={['12px', '14px']}
-                                            ml="8px"
-                                        >
-                                            Speaks{' '}
-                                            {dentist.languages.length > 1 ? (
-                                                dentist.languages.map(
-                                                    (sp, index) =>
-                                                        index !==
-                                                        dentist.languages
-                                                            .length -
-                                                            1 ? (
-                                                            <Text
-                                                                is="span"
-                                                                textTransform="capitalize"
-                                                            >{`${sp.toLowerCase()}, `}</Text>
-                                                        ) : (
-                                                            <Fragment>
-                                                                and
-                                                                <Text
-                                                                    is="span"
-                                                                    textTransform="capitalize"
-                                                                >{` ${sp.toLowerCase()}`}</Text>
-                                                            </Fragment>
-                                                        )
-                                                )
-                                            ) : (
-                                                <Text
-                                                    is="span"
-                                                    textTransform="capitalize"
-                                                >
-                                                    {dentist.languages[0].toLowerCase()}
-                                                </Text>
-                                            )}
-                                        </Text>
-                                    </Flex>
-                                )}
-
-                                <Desktop>
-                                    {!_isEmpty(dentist.procedures) &&
-                                        dentist.procedures.length && (
-                                            <Box
-                                                height={68}
-                                                maxHeight={68}
-                                                overflow="hidden"
-                                            >
-                                                <Flex
-                                                    flexWrap="wrap"
-                                                    mb={6}
-                                                    mt={10}
-                                                >
-                                                    {dentist.procedures.map(
-                                                        (procedure, index) => {
-                                                            if (
-                                                                tagStopPoint &&
-                                                                index >
-                                                                    tagStopPoint
-                                                            ) {
-                                                                return null;
-                                                            }
-
-                                                            if (
-                                                                tagStopPoint &&
-                                                                index ===
-                                                                    tagStopPoint
-                                                            ) {
-                                                                return (
-                                                                    <Box
-                                                                        bg="background.blue"
-                                                                        px={16}
-                                                                        borderRadius="19.5px"
-                                                                        mr="6px"
-                                                                        mb="6px"
-                                                                    >
-                                                                        <Text
-                                                                            color="text.white"
-                                                                            lineHeight="20px"
-                                                                            fontSize={[
-                                                                                '10px',
-                                                                                '12px',
-                                                                            ]}
-                                                                        >
-                                                                            ...
-                                                                        </Text>
-                                                                    </Box>
-                                                                );
-                                                            }
-
-                                                            return (
-                                                                <Box
-                                                                    bg={getProcedureColor(
-                                                                        procedure
-                                                                    )}
-                                                                    px={16}
-                                                                    borderRadius="19.5px"
-                                                                    mr="6px"
-                                                                    mb="6px"
-                                                                >
-                                                                    <Text
-                                                                        color="text.white"
-                                                                        lineHeight="20px"
-                                                                        fontSize={[
-                                                                            '10px',
-                                                                            '12px',
-                                                                        ]}
-                                                                    >
-                                                                        {
-                                                                            procedure
-                                                                        }
-                                                                    </Text>
-                                                                </Box>
-                                                            );
-                                                        }
-                                                    )}
-                                                </Flex>
-                                            </Box>
-                                        )}
-                                </Desktop>
-                                <Box height="5px" />
-                                {dentist.appointmentTimeslotsByOffice &&
-                                dentist.appointmentTimeslotsByOffice.length !==
-                                    0 &&
-                                !_isEmpty(
-                                    dentist.appointmentTimeslotsByOffice[0]
-                                        .appointmentTimeslots
-                                ) ? (
-                                    <Fragment>
-                                        <Text
-                                            mb={[5, 8]}
-                                            fontWeight="500"
-                                            fontSize={['12px', '14px']}
-                                            textAlign="left"
-                                            mt={[5, 0]}
-                                        >
-                                            {`Available times `}
-                                            {moment(
-                                                dentist
-                                                    .appointmentTimeslotsByOffice[
-                                                    indexToMap
-                                                ].appointmentTimeslots[
-                                                    indexToMap
-                                                ].localStartTime
-                                            ).diff(moment(), 'days') === 0 &&
-                                                'today'}
-                                            {moment(
-                                                dentist
-                                                    .appointmentTimeslotsByOffice[
-                                                    indexToMap
-                                                ].appointmentTimeslots[
-                                                    indexToMap
-                                                ].localStartTime
-                                            ).diff(moment(), 'days') === 1 &&
-                                                'tomorrow'}
-                                            {moment(
-                                                dentist
-                                                    .appointmentTimeslotsByOffice[
-                                                    indexToMap
-                                                ].appointmentTimeslots[
-                                                    indexToMap
-                                                ].localStartTime
-                                            ).diff(moment(), 'days') > 1 &&
-                                                `on ${moment(
-                                                    earliestAvailableDate
-                                                ).format('LL')}`}
-                                            {!showMap && (
-                                                <Desktop>{` at `}</Desktop>
-                                            )}
-                                            {!showMap && (
-                                                <Fragment>
-                                                    {dentist
-                                                        .appointmentTimeslotsByOffice
-                                                        .length > 1 ? (
-                                                        <Desktop>
-                                                            <Dropdown
-                                                                overlay={menu}
-                                                                trigger={[
-                                                                    'click',
-                                                                ]}
-                                                            >
-                                                                <Button
-                                                                    type="default"
-                                                                    ghost
-                                                                    border="none"
-                                                                    bg="#ffffff"
-                                                                    width="fit-content"
-                                                                    height="fit-content"
-                                                                    onClick={e => {
-                                                                        e.stopPropagation();
-                                                                    }}
-                                                                >
-                                                                    <Flex
-                                                                        width="380px"
-                                                                        height="40px"
-                                                                        flexDirection="row"
-                                                                        alignItems="center"
-                                                                        border="solid 1px #f6f6f6"
-                                                                        borderRadius="2px"
-                                                                        boxShadow="0 1px 2px 0"
-                                                                        px="6px"
-                                                                        position="relative"
-                                                                    >
-                                                                        <Text
-                                                                            fontWeight="normal"
-                                                                            fontSize={[
-                                                                                '12px',
-                                                                                '14px',
-                                                                            ]}
-                                                                            mt={[
-                                                                                5,
-                                                                                0,
-                                                                            ]}
-                                                                            ml={[
-                                                                                '0px',
-                                                                                '5px',
-                                                                            ]}
-                                                                        >
-                                                                            {_truncate(
-                                                                                dentist
-                                                                                    .appointmentTimeslotsByOffice[
-                                                                                    indexToMap
-                                                                                ]
-                                                                                    .office
-                                                                                    .location
-                                                                                    .name.split(",", 2).toString(),
-                                                                                {
-                                                                                    length: 35,
-                                                                                    separator:
-                                                                                        ' ',
-                                                                                }
-                                                                            )}
-                                                                        </Text>
-                                                                        <Icon
-                                                                            type="down"
-                                                                            style={{
-                                                                                color:
-                                                                                    '#3481f8',
-                                                                                background:
-                                                                                    'transparent',
-                                                                                fontSize: 12,
-                                                                                position:
-                                                                                    'absolute',
-                                                                                right: 4,
-                                                                                bottom: 6,
-                                                                            }}
-                                                                        />
-                                                                    </Flex>
-                                                                </Button>
-                                                            </Dropdown>
-                                                        </Desktop>
-                                                    ) : (
-                                                        <Desktop>
-                                                            <span
-                                                                style={{
-                                                                    fontWeight:
-                                                                        'normal',
-                                                                }}
-                                                            >
-                                                                {
-                                                                    dentist
-                                                                        .appointmentTimeslotsByOffice[0]
-                                                                        .office
-                                                                        .location
-                                                                        .name.split(",", 3).toString()
-                                                                }
-                                                            </span>
-                                                        </Desktop>
-                                                    )}
-                                                </Fragment>
-                                            )}
-                                        </Text>
-                                        <Box height="10px" />
-                                        <Box
-                                            height={84}
-                                            maxHeight={84}
-                                            overflow="hidden"
-                                            width="100%"
-                                        >
-                                            <Grid
-                                                gridTemplateColumns={[
-                                                    'repeat(auto-fit, 79px)',
-                                                    'repeat(auto-fit, 147px)',
-                                                ]}
-                                                gridGap={3}
-                                            >
-                                                {dentist.appointmentTimeslotsByOffice[
-                                                    indexToMap
-                                                ].appointmentTimeslots.map(
-                                                    (availableTime, index) => {
-                                                        if (
-                                                            (index > 9 ||
-                                                                (showMap &&
-                                                                    index >
-                                                                        3)) &&
-                                                            !tabletOnly &&
-                                                            !tabletMobileOnly
-                                                        )
-                                                            return null;
-
-                                                        if (
-                                                            (index === 9 ||
-                                                                (showMap &&
-                                                                    index ===
-                                                                        3)) &&
-                                                            !tabletOnly &&
-                                                            !tabletMobileOnly
-                                                        ) {
-                                                            return (
-                                                                <Button
-                                                                    type="primary"
-                                                                    height={40}
-                                                                    width="100%"
-                                                                    ghost={true}
-                                                                    pb={10}
-                                                                    fontSize={
-                                                                        20
-                                                                    }
-                                                                    fontWeight="700"
-                                                                    data-dentistid={
-                                                                        dentist.dentistId
-                                                                    }
-                                                                    onClick={
-                                                                        this
-                                                                            .handleSelectAppointment
-                                                                    }
-                                                                >
-                                                                    ...
-                                                                </Button>
-                                                            );
-                                                        }
-
-                                                        if (
-                                                            (index > 7 &&
-                                                                mobileOnly) ||
-                                                            (index > 3 &&
-                                                                tabletMobileOnly &&
-                                                                !tabletOnly) ||
-                                                            (index > 5 &&
-                                                                tabletOnly) ||
-                                                            (screenWidth ===
-                                                                768 &&
-                                                                index > 3)
-                                                        ) {
-                                                            return null;
-                                                        }
-
-                                                        if (
-                                                            (index === 7 &&
-                                                                mobileOnly) ||
-                                                            (index === 3 &&
-                                                                tabletMobileOnly &&
-                                                                !tabletOnly) ||
-                                                            (index === 5 &&
-                                                                tabletOnly) ||
-                                                            (screenWidth ===
-                                                                768 &&
-                                                                index === 3)
-                                                        ) {
-                                                            return (
-                                                                <Button
-                                                                    type="primary"
-                                                                    height={40}
-                                                                    width="100%"
-                                                                    ghost={true}
-                                                                    pb={10}
-                                                                    fontSize={[
-                                                                        12,
-                                                                        18,
-                                                                    ]}
-                                                                    fontWeight="700"
-                                                                    data-dentistid={
-                                                                        dentist.dentistId
-                                                                    }
-                                                                    onClick={
-                                                                        this
-                                                                            .handleSelectAppointment
-                                                                    }
-                                                                >
-                                                                    ...
-                                                                </Button>
-                                                            );
-                                                        }
-
-                                                        return (
-                                                            <Button
-                                                                data-start={
-                                                                    availableTime.localStartTime
-                                                                }
-                                                                data-dentistid={
-                                                                    dentist.dentistId
-                                                                }
-                                                                type="primary"
-                                                                height={40}
-                                                                width="100%"
-                                                                ghost={true}
-                                                                onClick={
-                                                                    this
-                                                                        .handleSelectAppointment
-                                                                }
-                                                                fontSize={[
-                                                                    12,
-                                                                    18,
-                                                                ]}
-                                                            >
-                                                                {moment(
-                                                                    availableTime.localStartTime
-                                                                ).format(
-                                                                    'h:mm A'
-                                                                )}
-                                                            </Button>
-                                                        );
-                                                    }
-                                                )}
-                                            </Grid>
-                                        </Box>
-                                    </Fragment>
-                                ) : (
-                                    <Text
-                                        style={{ 'white-space': 'pre-line' }}
-                                        fontSize={['12px', '18px']}
-                                        fontWeight="500"
-                                        textAlign="left"
-                                    >
-                                        There are no available times
-                                    </Text>
-                                )}
-                            </Box>
                         </Flex>
-                        <Desktop>
-                            <Box
-                                width="1px"
-                                border="solid 0.5px #dbdbdb"
-                                my={12}
-                            />
-                        </Desktop>
-                        <Mobile>
-                            <Box
-                                width="100%"
-                                height="1px"
-                                border="solid 0.5px #dbdbdb"
-                                mt={18}
-                                mb={12}
-                            />
-                        </Mobile>
                         <Flex justifyContent="center" flex="1">
-                        {dentist.bundles && dentist.bundles.length ? (
-                                <Box width="100%" maxWidth="304px" minHeight="310px">
+                            {dentist.bundles && dentist.bundles.length ? (
+                                <Box
+                                    width="100%"
+                                    maxWidth="304px"
+                                    minHeight={['auto', '', '310px']}
+                                    pt={[12, '', 0]}
+                                    pb={[10, '', 0]}
+                                >
                                     <Bundle
-                                        procedures={this.filterProcedureList(dentist.procedures)}
+                                        procedures={this.filterProcedureList(
+                                            dentist.procedures
+                                        )}
                                         insurance={
                                             dentist.acceptedInsurances || []
                                         }
-                                        price={dentist.bundles && dentist.bundles.length !== 0 && dentist.bundles[0].price}
+                                        price={
+                                            dentist.bundles &&
+                                            dentist.bundles.length !== 0 &&
+                                            dentist.bundles[0].price
+                                        }
                                         bundles={dentist.bundles || []}
                                         dentistId={dentist.dentistId}
                                     />
                                 </Box>
-                                ) : (
-                                    <Box width={304}>
-                                        <Text>
-                                            There are no available prices
-                                        </Text>
-                                    </Box>
-                                )}
+                            ) : (
+                                <Flex
+                                    alignItems="center"
+                                    justifyContent="center"
+                                    width={304}
+                                    pl={[0, '', 18]}
+                                    py={20}
+                                >
+                                    <Text textAlign="center">
+                                        There are no available prices
+                                    </Text>
+                                </Flex>
+                            )}
                         </Flex>
                     </Flex>
                 </StyledCard>
-            </Button>
+            </Box>
         );
     }
 }
