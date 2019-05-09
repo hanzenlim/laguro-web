@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import _isString from 'lodash/isString';
 import Intercom from 'react-intercom';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -111,7 +112,11 @@ class Header extends Component {
 
         let placeholder;
 
-        const onLandingPage = pathname === '/';
+        const pathnameWithoutParams = _isString(pathname)
+            ? pathname.split('?')[0]
+            : pathname;
+
+        const onLandingPage = pathnameWithoutParams === '/';
         // We show the office search bar on office search page and host dashboard page.
         if (
             pathname.startsWith(OFFICE_PAGES_URL_PREFIX) ||
