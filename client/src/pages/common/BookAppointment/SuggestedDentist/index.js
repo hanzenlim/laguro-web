@@ -14,7 +14,7 @@ class SuggestedDentist extends PureComponent {
             imageUrl: this.props.suggestedDentist.imageUrl,
             specialty: this.props.suggestedDentist.specialty,
             name: `Dr. ${this.props.suggestedDentist.name}`,
-            rating: this.props.suggestedDentist.totalRating,
+            rating: this.props.suggestedDentist.averageRating,
             reviewCount: this.props.suggestedDentist.numReviews,
             insurance: this.props.suggestedDentist.acceptedInsurances,
             languages: this.props.suggestedDentist.languages,
