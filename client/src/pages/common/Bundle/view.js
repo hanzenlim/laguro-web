@@ -6,10 +6,12 @@ import styled, { css } from 'styled-components';
 
 import { getProcedureColor } from '../../../util/dentistUtils';
 import { getInsuranceText } from '../../../util/insuranceUtil';
-import { Button, Flex, Text, Box } from '../../../components';
+import { Button, Flex, Text, Responsive } from '../../../components';
 import { getUser } from '../../../util/authUtils';
 import emitter from '../../../util/emitter';
 import history from '../../../history';
+
+const { Desktop, Mobile } = Responsive;
 
 const TAG_COLORS = [
     'background.blue',
@@ -63,23 +65,24 @@ const BundleView = ({
     >
         <Text
             maxWidth="200px"
-            fontSize="18px"
+            fontSize={selectedProcedure ? 0 : [0, '', 3]}
             color="#161616"
             textAlign="center"
             whiteSpace="normal"
-            letterSpacing={-0.6}
+            letterSpacing={selectedProcedure ? '-0.41px' : '-0.62px'}
+            mb={8}
         >
             Check out the price estimation for:
         </Text>
-        <Box height={8} />
         <Dropdown overlay={menu} trigger={['click']}>
             <StyledButton
                 type="primary"
                 ghost={isNullSelectedIndex}
+                width={190}
                 height="30px"
                 borderColor="#3481f8"
-                fontSize="12px"
-                fontWeight="500"
+                fontSize={0}
+                fontWeight="medium"
                 onClick={e => {
                     e.stopPropagation();
                 }}
@@ -102,39 +105,40 @@ const BundleView = ({
         </Dropdown>
         {selectedProcedure && (
             <Fragment>
-                <Box height={14} />
                 <Text
                     opacity={0.5}
-                    fontSize="15px"
+                    fontSize={0}
                     fontWeight="500"
-                    letterSpacing={-0.9}
+                    letterSpacing="-0.71px"
                     color="#303449"
+                    mt={18}
+                    mb={10}
                 >
                     {selectedInsurance
                         ? `Regular price: $ ${price / 100}`
                         : 'Regular price:'}
                 </Text>
-                <Box height={14} />
                 <Text
-                    lineHeight={0.62}
-                    fontSize="30px"
+                    lineHeight="26px"
+                    fontSize={5}
                     fontWeight="bold"
-                    letterSpacing={-1.2}
+                    letterSpacing="-0.84px"
                     color="#303449"
+                    mb={14}
                 >
                     {selectedInsurance
                         ? `$ ${selectedInsurance.price / 100}`
                         : `$ ${price / 100}`}
                 </Text>
-                <Box height={14} />
                 {!selectedInsurance && (
                     <StyledButton
                         type="primary"
                         ghost
-                        height="20px"
+                        width={190}
+                        height="30px"
                         borderColor="#3481f8"
-                        fontSize="12px"
-                        fontWeight="500"
+                        fontSize={0}
+                        fontWeight="medium"
                         onClick={e => {
                             e.stopPropagation();
                             if (!_isEmpty(insurance)) {
@@ -156,7 +160,7 @@ const BundleView = ({
                             borderWidth="0px"
                             borderColor="transparent"
                             bg="transparent"
-                            fontSize="12px"
+                            fontSize={0}
                             onClick={e => {
                                 e.stopPropagation();
                             }}
@@ -167,7 +171,7 @@ const BundleView = ({
                                 alignItems="center"
                             >
                                 <Text
-                                    fontSize="20px"
+                                    fontSize={4}
                                     fontWeight="bold"
                                     textAlign="center"
                                     lineHeight={1.3}
@@ -196,12 +200,12 @@ const BundleView = ({
                         </Button>
                     </Dropdown>
                 )}
-                <Box height={15} />
 
                 <Button
-                    type="primary"
-                    width="254px"
-                    height="40px"
+                    type="ghost"
+                    width="228px"
+                    height="auto"
+                    mt={!selectedInsurance ? 15 : 30}
                     borderRadius="2px"
                     textAlign="center"
                     onClick={e => {
@@ -219,7 +223,10 @@ const BundleView = ({
                     }}
                 >
                     <Text
-                        fontSize="14px"
+                        bg="background.blue"
+                        borderRadius="2px"
+                        lineHeight="40px"
+                        fontSize={1}
                         color="text.white"
                         display="flex"
                         flexDirection="row"
@@ -234,15 +241,29 @@ const BundleView = ({
                 </Button>
             </Fragment>
         )}
-        <Text
-            position="absolute"
-            bottom="7px"
-            color="#9b9b9b"
-            fontSize="10px"
-            letterSpacing={-0.3}
-        >
-            Learn more about price estimations
-        </Text>
+        <Mobile>
+            {selectedProcedure && (
+                <Text
+                    mt={12}
+                    color="text.gray"
+                    fontSize={0}
+                    letterSpacing={-0.3}
+                >
+                    Learn more about price estimations
+                </Text>
+            )}
+        </Mobile>
+        <Desktop>
+            <Text
+                position="absolute"
+                bottom="7px"
+                color="text.gray"
+                fontSize={0}
+                letterSpacing={-0.3}
+            >
+                Learn more about price estimations
+            </Text>
+        </Desktop>
     </Flex>
 );
 
