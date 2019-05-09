@@ -49,24 +49,32 @@ class OfficeLocationView extends PureComponent {
                 </Text>
 
                 <Box mt={[13, '', 22]}>
-                    <Map
-                        height={desktopOnly ? 305 : 228}
-                        width={sideWidth}
-                        zoom={13}
-                        center={[
-                            data.address.geoPoint.lon,
-                            data.address.geoPoint.lat,
-                        ]}
-                        data={[
-                            {
-                                title: data.officeName,
-                                image: data.imageUrls[0],
-                                address: data.address.name,
-                                latitude: _get(data, 'address.geoPoint.lat'),
-                                longitude: _get(data, 'address.geoPoint.lon'),
-                            },
-                        ]}
-                    />
+                    {this.sideWidthRef.current && (
+                        <Map
+                            height={desktopOnly ? 305 : 228}
+                            width={sideWidth}
+                            zoom={13}
+                            center={[
+                                data.address.geoPoint.lon,
+                                data.address.geoPoint.lat,
+                            ]}
+                            data={[
+                                {
+                                    title: data.officeName,
+                                    image: data.imageUrls[0],
+                                    address: data.address.name,
+                                    latitude: _get(
+                                        data,
+                                        'address.geoPoint.lat'
+                                    ),
+                                    longitude: _get(
+                                        data,
+                                        'address.geoPoint.lon'
+                                    ),
+                                },
+                            ]}
+                        />
+                    )}
                 </Box>
             </Box>
         );
