@@ -35,6 +35,7 @@ export const LANGUAGE_LIST = [
     'German',
     'Persian',
     'Portuguese',
+    'Russian',
 ];
 
 export const DAY_AVAILABILITY_LIST = [
