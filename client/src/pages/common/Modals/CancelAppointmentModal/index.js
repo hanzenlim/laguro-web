@@ -5,6 +5,8 @@ import CancelAppointmentModal from './view';
 import { cancelAppointmentMutation } from './queries';
 import { CANCELLED_BY_PATIENT } from '../../../../util/strings';
 import { appointmentClient } from '../../../../util/apolloClients';
+import { trackBookAppointment } from '../../../../util/trackingUtils';
+import { getUser } from '../../../../util/authUtils';
 
 class CancelAppointmentContainer extends PureComponent {
     onCancel = () => {
@@ -13,6 +15,7 @@ class CancelAppointmentContainer extends PureComponent {
 
     render() {
         const { refetch } = this.props;
+        const user = getUser();
         return (
             <Mutation
                 mutation={cancelAppointmentMutation}
@@ -29,6 +32,13 @@ class CancelAppointmentContainer extends PureComponent {
                                 },
                             },
                         });
+
+                        trackBookAppointment({
+                            dentistId: user.dentistId,
+                            appointmentId: this.props.id,
+                            eventAction: 'Cancel',
+                        });
+
                         refetch && (await refetch());
                         this.props.toggleModalState();
                     };

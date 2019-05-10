@@ -68,6 +68,7 @@ class AppointmentConfirmation extends PureComponent {
                             'hh:mm a'
                         ),
                         internalPage,
+                        eventAction: 'Conversion',
                         // TODO: Put back when API is ready
                         officeId,
                     });

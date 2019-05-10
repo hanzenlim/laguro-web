@@ -10,6 +10,7 @@ import { appointmentClient } from '../../../util/apolloClients';
 
 import { getDentistQuery, requestAppointmentMutation } from './queries';
 import { getUser } from '../../../util/authUtils';
+import { trackBookAppointment } from '../../../util/trackingUtils';
 
 const LOCAL_TIME_FORMAT = 'YYYY-MM-DDTHH:mm:ss';
 
@@ -49,6 +50,15 @@ class NewAppointment extends PureComponent {
             });
 
             if (result) {
+                trackBookAppointment({
+                    dentistId,
+                    officeId: values.dentalOfficeId,
+                    appointmentId: result.data.requestAppointment,
+                    weekDay: moment(values.selectedDate).format('dddd'),
+                    hour: moment(values.selectedStartTime).format('hh:mm a'),
+                    eventAction: 'Conversion',
+                });
+
                 this.setState({
                     showConfirmationMessage: true,
                 });

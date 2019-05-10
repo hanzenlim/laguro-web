@@ -37,13 +37,14 @@ export const trackBookAppointment = ({
     weekDay,
     internalPage,
     hour,
+    eventAction,
 }) => {
     const gtmArgs = {
         dataLayer: {
             event: 'GA Event',
-            eventAction: 'Conversion',
             eventCategory: 'Appointment',
             eventLabel: dentistId,
+            eventAction,
             hour,
             city,
             weekDay,

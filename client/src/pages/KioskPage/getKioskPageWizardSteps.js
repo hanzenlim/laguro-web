@@ -486,6 +486,7 @@ export const getKioskPageWizardSteps = ({
                                     'hh:mm a'
                                 ),
                                 internalPage: 'kiosk',
+                                eventAction: 'Conversion',
                             });
                         }
 

@@ -118,6 +118,7 @@ class DentistCalendar extends Component {
                     cancellationType={CANCELLED_BY_DENTIST}
                     visible={this.state.appointmentIdToCancel !== null}
                     toggleModalState={this.togglCancelAppointment}
+                    appointment={this.props.appointment}
                 />
                 <StyledBigCalendarContainer>
                     <BigCalendar
