@@ -1,3 +1,4 @@
+import { lighten, darken } from 'polished';
 import _isEmpty from 'lodash/isEmpty';
 import theme from '../components/theme';
 
@@ -67,29 +68,29 @@ export const INSURANCE_LIST = [
 export const getProcedureColor = procedureName => {
     switch (procedureName) {
         case 'Exams':
-            return theme.colors.background.gray;
-        case 'Fillings':
             return theme.colors.background.blue;
+        case 'Fillings':
+            return lighten(0.1, theme.colors.background.blue);
         case 'Crowns, Bridges, Veneers':
-            return theme.colors.background.yellow;
+            return darken(0.1, theme.colors.background.blue);
         case 'Root Canals':
-            return theme.colors.background.orange;
+            return theme.colors.background.yellow;
         case 'Gum Surgery / Grafting':
-            return theme.colors.background.darkBlue;
+            return theme.colors.background.orange;
         case 'Extractions / Surgery':
-            return '#6bd2b0';
+            return darken(0.1, theme.colors.background.yellow);
         case 'Deep Cleaning':
-            return '#89c5cc';
+            return '#6bd2b0';
         case 'Whitening / Cosmetic':
-            return '#053c75';
+            return lighten(0.1, '#6bd2b0');
         case 'Dentures':
-            return '#f97171';
+            return darken(0.1, '#6bd2b0');
         case 'Implant placement':
-            return '#69a1ac';
+            return '#f97171';
         case 'Braces':
-            return '#a5c8fd';
+            return lighten(0.1, '#f97171');
         case 'Implant crown':
-            return '#bfccdf';
+            return darken(0.1, '#f97171');
         default:
             return theme.colors.background.blue;
     }

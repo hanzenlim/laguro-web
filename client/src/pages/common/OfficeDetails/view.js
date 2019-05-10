@@ -1,23 +1,11 @@
 import React, { PureComponent } from 'react';
 import _get from 'lodash/get';
-import styled from 'styled-components'
+import styled from 'styled-components';
 
-import {
-    Flex,
-    Box,
-    Text,
-    Rating,
-    Button
-} from '../../../components';
+import { Flex, Box, Text, Rating, Button } from '../../../components';
 import { formatAddress } from '../../../util/styleUtil';
 import { withScreenSizes } from '../../../components/Responsive';
-
-const TAG_COLORS = [
-    'background.blue',
-    'background.yellow',
-    'background.orange',
-    'background.darkBlue',
-];
+import { getEquipmentColor } from '../../../util/tagUtils';
 
 const DefaultCursorButton = styled(Button)`
     && {
@@ -31,10 +19,7 @@ class OfficeDetailsView extends PureComponent {
 
         return (
             <Box>
-                <Box
-                    textAlign={['left', '', 'center']}
-                    mb={[50, '', 40]}
-                >
+                <Box textAlign={['left', '', 'center']} mb={[50, '', 40]}>
                     <Text
                         is="h1"
                         color="text.black"
@@ -47,7 +32,7 @@ class OfficeDetailsView extends PureComponent {
                     </Text>
                     <Text
                         fontSize={[0, '', 4]}
-                        fontWeight='light'
+                        fontWeight="light"
                         lineHeight={['24px', '', '34px']}
                         letterSpacing={['-0.3px', '', '-0.76px']}
                     >
@@ -96,7 +81,7 @@ class OfficeDetailsView extends PureComponent {
                             >
                                 <Box
                                     px={[12, '', 24]}
-                                    bg={TAG_COLORS[index % 4]}
+                                    bg={getEquipmentColor(equipment.name)}
                                     borderRadius="25px"
                                     mr="6px"
                                     mb="6px"
@@ -107,7 +92,11 @@ class OfficeDetailsView extends PureComponent {
                                         color="text.white"
                                         lineHeight="22px"
                                         fontSize={[0, '', 1]}
-                                        letterSpacing={['-0.38px', '', '-0.4px']}
+                                        letterSpacing={[
+                                            '-0.38px',
+                                            '',
+                                            '-0.4px',
+                                        ]}
                                     >
                                         {equipment.name}
                                     </Text>
@@ -119,7 +108,7 @@ class OfficeDetailsView extends PureComponent {
 
                 {data.description && (
                     // Added fixed width to fix bug in rendering truncated text
-                    <Box pb={[20, '', 40]} >
+                    <Box pb={[20, '', 40]}>
                         <Text
                             fontSize={[1, '', 2]}
                             lineHeight={['25px', '', '30px']}
