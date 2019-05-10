@@ -184,7 +184,7 @@ const Composed = adopt({
         const input = {
             dentistId,
             rangeStart: moment()
-                .add(1, 'hours')
+                .add(1, 'days')
                 .startOf('hour')
                 .utcOffset(0, true)
                 .format(),
