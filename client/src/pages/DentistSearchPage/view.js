@@ -18,14 +18,12 @@ const { Desktop, TabletMobile } = Responsive;
 const DentistSearchPageView = props => {
     const { data, total, loading, onToggleFilter, isFilterVisible } = props;
 
-    const transformedData = data.map(dentist => {
-        return {
-            ...dentist,
-            appointmentTimeslotsByOffice: dentist.appointmentTimeslotsByOffice.filter(
-                i => i.appointmentTimeslots.length > 0
-            ),
-        };
-    });
+    const transformedData = data.map(dentist => ({
+        ...dentist,
+        appointmentTimeslotsByOffice: dentist.appointmentTimeslotsByOffice.filter(
+            i => i.appointmentTimeslots.length > 0
+        ),
+    }));
 
     return (
         <Box height="100%">
@@ -68,19 +66,17 @@ const DentistSearchPageView = props => {
                         gridColumnGap={['', '', '10px']}
                         gridTemplateColumns="1fr"
                     >
-                        <Box>
-                            <Box height={['auto', '', 'calc(100vh - 220px)']}>
-                                {loading ? (
-                                    <Box mt="100px">
-                                        <Loading />
-                                    </Box>
-                                ) : (
-                                    <SearchResultsList
-                                        data={transformedData}
-                                        total={total}
-                                    />
-                                )}
-                            </Box>
+                        <Box pb="50px">
+                            {loading ? (
+                                <Box mt="100px">
+                                    <Loading />
+                                </Box>
+                            ) : (
+                                <SearchResultsList
+                                    data={transformedData}
+                                    total={total}
+                                />
+                            )}
                         </Box>
                     </Grid>
                 </Box>

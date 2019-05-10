@@ -70,7 +70,7 @@ const Footer = () => {
     const pathname = _get(window, 'location.pathname');
     const shouldShowFooter =
         !pathname.startsWith('/host-onboarding') &&
-        !pathname.includes('search');
+        !pathname.includes('/office/search');
     if (!shouldShowFooter) return null;
 
     const NUM_COLUMNS = [2, 2, 5];
