@@ -2,6 +2,7 @@ import { gql } from 'apollo-boost';
 import _get from 'lodash/get';
 import esClient from '../../../util/esClient';
 
+let suggestedDentist = null;
 export const getSuggestedDentist = async args => {
     const { officeId } = args;
 
@@ -30,13 +31,16 @@ export const getSuggestedDentist = async args => {
         },
     });
 
-    const dentists = _get(res, 'hits.hits') || [];
+    let dentists = _get(res, 'hits.hits') || [];
+    if (suggestedDentist && suggestedDentist._id) {
+        dentists = dentists.filter(item => item._id !== suggestedDentist._id);
+    }
 
-    // TODO implement some kind of score
     const randomIndex = Math.floor(Math.random() * dentists.length);
+    suggestedDentist = dentists[randomIndex];
 
     return {
-        dentist: _get(dentists[randomIndex], '_source'),
+        dentist: _get(suggestedDentist, '_source'),
         total: _get(res, 'hits.total'),
     };
 };
