@@ -1,5 +1,7 @@
 import React, { Fragment } from 'react';
 import _range from 'lodash/range';
+import { Helmet } from 'react-helmet';
+
 import { Box, Flex, Grid, Responsive } from '../../components';
 import { DesktopHowItWorksStep } from './DesktopHowItWorksStep';
 import { MobileHowItWorksStep } from './MobileHowItWorksStep';
@@ -61,8 +63,16 @@ const getHowItWorksStepProps = num => ({
     description: HOW_IT_WORKS_TEXTS[num].description,
 });
 
+const descriptionContent =
+    "Learn more about Laguro Patient's five-step on-boarding process and how it works";
+
 export const HowItWorks = withScreenSizes(props => (
     <Fragment>
+        <Helmet>
+            <title>How It Works - Laguro</title>
+            <link rel="canonical" href="https://www.laguro.com/#how-it-works" />
+            <meta name="description" content={descriptionContent} />
+        </Helmet>
         <SectionHeading heading="How it works" />
         <Box mt={-30} mb={[73, 105, 73]}>
             {props.desktopOnly || props.mobileOnly ? (

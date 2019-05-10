@@ -259,16 +259,10 @@ class OfficeSearchPage extends PureComponent {
         return (
             <Fragment>
                 <Helmet>
-                    <title>
-                        {this.state.urlParams.location
-                            ? `${
-                                  this.state.urlParams.location
-                              } | Offices | Laguro`
-                            : 'Laguro'}
-                    </title>
+                    <title>Search Office - Laguro</title>
                     <meta
                         name="description"
-                        content="Search for your next dental office in your current location."
+                        content="Searching for your next dental office is now available at the touch of your fingertip"
                     />
                     <link
                         rel="canonical"

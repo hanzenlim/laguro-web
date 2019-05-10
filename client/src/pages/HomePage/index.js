@@ -16,8 +16,12 @@ class HomePage extends Component {
         return (
             <Fragment>
                 <Helmet>
-                    <title>Smile Anywhere | Laguro</title>
-                    <link rel="canonical" href="https://www.laguro.com" />
+                    <title>Laguro</title>
+                    <link rel="canonical" href="https://www.laguro.com/" />
+                    <meta
+                        name="description"
+                        content="Laguro is a dental care platform matching patients with the right dentist anytime, anywhere"
+                    />
                 </Helmet>
                 <HomePageView />
                 <Newsletter />

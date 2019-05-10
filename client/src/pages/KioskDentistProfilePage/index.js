@@ -1,10 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Mutation, Query } from 'react-apollo';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 import compact from 'lodash/compact';
 import { adopt } from 'react-adopt';
 import * as Yup from 'yup';
+import { Helmet } from 'react-helmet';
+
 import KioskDentistProfileView from './view';
 import {
     CREATE_DENTIST,
@@ -318,15 +320,31 @@ class KioskDentistProfilePage extends Component {
                         });
                     };
 
-                    if (isDentistLoading) {
-                        return <Loading />;
-                    }
                     return (
-                        <KioskDentistProfileView
-                            onCreate={onCreate}
-                            steps={steps}
-                            withoutProgressBar={this.props.withoutProgressBar} // used in dentist dashboard
-                        />
+                        <Fragment>
+                            <Helmet>
+                                <title>Laguro Dentist</title>
+                                <link
+                                    rel="canonical"
+                                    href="https://www.laguro.com/onboarding/dentist/profile/"
+                                />
+                                <meta
+                                    name="description"
+                                    content="Become a Laguro Dentist today. Tell us about the different dental services that you offer"
+                                />
+                            </Helmet>
+                            {isDentistLoading ? (
+                                <Loading />
+                            ) : (
+                                <KioskDentistProfileView
+                                    onCreate={onCreate}
+                                    steps={steps}
+                                    withoutProgressBar={
+                                        this.props.withoutProgressBar
+                                    } // used in dentist dashboard
+                                />
+                            )}
+                        </Fragment>
                     );
                 }}
             </Composed>

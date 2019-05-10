@@ -3,6 +3,8 @@ import _range from 'lodash/range';
 import _uppercase from 'lodash/upperCase';
 import { Collapse } from 'antd';
 import styled from 'styled-components';
+import { Helmet } from 'react-helmet';
+
 import { Text, Box, Flex, Grid, Responsive, Image } from '../../components';
 import { SectionHeading } from './common';
 import FlexibleTime from '../../components/Icon/flexible-time.svg';
@@ -191,8 +193,19 @@ const WhatMakesUsDifferentCard = props => (
     </StyledFlex>
 );
 
+const descriptionContent =
+    "Discover what makes us different from our competitors and see how we're reinventing dentistry";
+
 export const HowWeAreDiff = withScreenSizes(props => (
     <Fragment>
+        <Helmet>
+            <title>Our Features - Laguro</title>
+            <link
+                rel="canonical"
+                href="https://www.laguro.com/#our-features "
+            />
+            <meta name="description" content={descriptionContent} />
+        </Helmet>
         <SectionHeading heading="What makes us different" />
         <Box mb={73}>
             {props.desktopOnly ? (

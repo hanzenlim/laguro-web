@@ -12,10 +12,11 @@ const AboutPage = () => (
             minHeight="100vh"
         >
             <Helmet>
-                <title>About Us | Laguro</title>
+                <title>About Laguro</title>
+                <link rel="canonical" href="https://www.laguro.com/about" />
                 <meta
                     name="description"
-                    content="Our Mission: To create efficiency and transparency in the provision of dental care to patients, one office at a time."
+                    content="Now you can smile anytime, anywhere. Learn more about Laguro and what we do"
                 />
             </Helmet>
             <AboutPageView />

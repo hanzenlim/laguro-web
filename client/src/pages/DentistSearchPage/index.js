@@ -192,16 +192,10 @@ class DetailsSearchPage extends PureComponent {
         return (
             <Fragment>
                 <Helmet>
-                    <title>
-                        {this.state.urlParams.location
-                            ? `${
-                                  this.state.urlParams.location
-                              } | Dentists | Laguro`
-                            : 'Laguro'}
-                    </title>
+                    <title>Search Dentist - Laguro</title>
                     <meta
                         name="description"
-                        content="Search for your next dentist with Laguro and start your treatments today."
+                        content="The Laguro Dentist Search tool can help you find a dentist that will best fit your needs"
                     />
                     <link
                         rel="canonical"
