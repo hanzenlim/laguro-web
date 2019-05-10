@@ -5,7 +5,6 @@ import {
     Flex,
     Grid,
     Text,
-    Truncate,
     Image,
     Link,
 } from '../../../../components';
@@ -119,12 +118,13 @@ const AvailableLocationsView = props => {
                                 <Flex
                                     justifyContent="center"
                                     alignItems="center"
+                                    style={{
+                                        'white-space': 'pre-line',
+                                    }}
                                 >
-                                    <Truncate lines={1}>
-                                        {formatAddress(
-                                            _get(location, 'location.name')
-                                        )}
-                                    </Truncate>
+                                    {formatAddress(
+                                        _get(location, 'location.name')
+                                    )}
                                     <Link
                                         ml={6}
                                         onClick={e => e.stopPropagation()}
