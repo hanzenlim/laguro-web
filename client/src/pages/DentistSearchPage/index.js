@@ -155,7 +155,7 @@ class DetailsSearchPage extends PureComponent {
                 urlParams.insurance &&
                 urlParams.insurance !== 'All insurances'
             ) {
-                if (urlParams.insurance === 'Delta Dental of California') {
+                if (urlParams.insurance === 'Delta Dental (CA)') {
                     options.acceptedInsurance = 'DD_CALIFORNIA';
                 } else {
                     options.acceptedInsurance = urlParams.insurance;

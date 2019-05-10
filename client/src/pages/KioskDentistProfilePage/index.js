@@ -54,6 +54,7 @@ const specialties = [
 const CIGNA_FORM_ITEM_NAME = 'CIGNA';
 const METLIFE_FORM_ITEM_NAME = 'METLIFE';
 const DD_CALIFORNIA_FORM_ITEM_NAME = 'DD_CALIFORNIA';
+const GUARDIAN_FORM_ITEM_NAME = 'GUARDIAN';
 
 const checkAcceptedInsurance = (key, acceptedInsurances) =>
     !_isEmpty(acceptedInsurances) && acceptedInsurances.includes(key);
@@ -203,6 +204,10 @@ class KioskDentistProfilePage extends Component {
                                 ),
                                 [DD_CALIFORNIA_FORM_ITEM_NAME]: checkAcceptedInsurance(
                                     DD_CALIFORNIA_FORM_ITEM_NAME,
+                                    acceptedInsurances
+                                ),
+                                [GUARDIAN_FORM_ITEM_NAME]: checkAcceptedInsurance(
+                                    GUARDIAN_FORM_ITEM_NAME,
                                     acceptedInsurances
                                 ),
                             },

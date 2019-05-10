@@ -63,7 +63,8 @@ export const INSURANCE_LIST = [
     'All insurances',
     'MetLife',
     'Cigna',
-    'Delta Dental of California',
+    'Delta Dental (CA)',
+    'Guardian',
 ];
 
 export const getProcedureColor = procedureName => {
