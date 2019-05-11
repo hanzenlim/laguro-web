@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
+import _shuffle from 'lodash/shuffle';
 
 import FeaturedListView from './view';
 import getFeaturedDentists from './queries';
 import { withScreenSizes } from '../../../components/Responsive';
 
-class FeaturedList extends Component {
+class FeaturedList extends PureComponent {
     constructor(props) {
         super(props);
 
@@ -36,11 +37,16 @@ class FeaturedList extends Component {
             imageUrl: item._source.imageUrl,
         }));
 
-        mappedData = mappedData
-            .filter(dentist => dentist.id !== this.props.currentDentist.id)
-            .splice(0, desktopOnly ? 5 : 4);
+        mappedData = mappedData.filter(
+            dentist => dentist.id !== this.props.currentDentist.id
+        );
 
-        return <FeaturedListView featuredDentists={mappedData} />;
+        const shuffledMappedData = _shuffle(mappedData).splice(
+            0,
+            desktopOnly ? 5 : 4
+        );
+
+        return <FeaturedListView featuredDentists={shuffledMappedData} />;
     }
 }
 
