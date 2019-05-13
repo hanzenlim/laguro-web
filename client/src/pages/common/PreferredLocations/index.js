@@ -71,23 +71,22 @@ class PreferredLocations extends Component {
         try {
             const res = await esClient.search({
                 index: 'offices',
-                size: 6,
                 from: 0,
                 body: {
                     query: {
                         bool: {
                             must: {
-                              query_string : {
-                                  default_field : 'location.name',
-                                  query : zipCode.toString(),
-                              }
+                                query_string: {
+                                    default_field: 'location.name',
+                                    query: zipCode.toString(),
+                                },
                             },
                             filter: {
-                              term: {
-                                isVerified: true
-                              }
-                            }
-                          }
+                                term: {
+                                    isVerified: true,
+                                },
+                            },
+                        },
                     },
                 },
             });
@@ -95,7 +94,7 @@ class PreferredLocations extends Component {
             this.setState({ errorLocations: null });
 
             const result = res.hits.hits || [];
-            this.mapAndSaveLocations({ fetchedLocations: result });
+            return this.mapAndSaveLocations({ fetchedLocations: result });
         } catch (error) {
             this.setState({ errorLocations: 'Error fetching locations' });
             return [];
@@ -180,7 +179,7 @@ class PreferredLocations extends Component {
 
         return (
             <Mutation mutation={updateDentist}>
-                {(updateDentist, { loading: updateLoading }) => (
+                {(updateDentistMutation, { loading: updateLoading }) => (
                     <PreferredLocationsView
                         renderPanelHeader={renderPanelHeader}
                         searchLocations={this.state.locations}
@@ -192,7 +191,7 @@ class PreferredLocations extends Component {
                         updateLoading={updateLoading}
                         handleOnSave={async () => {
                             try {
-                                await updateDentist({
+                                await updateDentistMutation({
                                     variables: {
                                         input: {
                                             id: dentistId,

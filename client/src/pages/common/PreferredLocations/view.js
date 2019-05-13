@@ -96,7 +96,7 @@ const PreferredLocations = ({
                     gridTemplateColumns={[
                         'repeat(auto-fit, minmax(260px, 1fr))',
                         '',
-                        'repeat(auto-fit, 424px)',
+                        'repeat(auto-fit, 400px)',
                     ]}
                     gridGap={12}
                 >
@@ -294,44 +294,51 @@ const PreferredLocations = ({
                         </Mobile>
                         <Box height={20} />
                         {loadingLocations && <Loading />}
-                        <Grid
-                            gridTemplateColumns={[
-                                'repeat(auto-fit, minmax(260px, 1fr))',
-                                '',
-                                'repeat(auto-fit, 424px)',
-                            ]}
-                            gridGap={12}
+                        <Box
+                            maxHeight={347}
+                            py={10}
+                            px={25}
+                            mx={-25}
+                            style={{ overflow: 'auto' }}
                         >
-                            {!loadingLocations &&
-                                !_isEmpty(searchLocations) &&
-                                searchLocations.map(item => (
-                                    <FlexCard
-                                        key={item.id}
-                                        {...item}
-                                        address={
-                                            item &&
-                                            item.location &&
-                                            item.location.name
-                                        }
-                                        isChoice
-                                        selected={
-                                            (preferredLocationOne &&
-                                                preferredLocationOne.id ===
-                                                    item.id) ||
-                                            (preferredLocationTwo &&
-                                                preferredLocationTwo.id ===
-                                                    item.id)
-                                        }
-                                        handleClick={() =>
-                                            setPreferredLocation({
-                                                location: { ...item },
-                                                locationNumber: selectedEmptyLocation,
-                                            })
-                                        }
-                                    />
-                                ))}
-                        </Grid>
-
+                            <Grid
+                                gridTemplateColumns={[
+                                    'repeat(auto-fit, minmax(260px, 1fr))',
+                                    '',
+                                    'repeat(auto-fit, 400px)',
+                                ]}
+                                gridGap={12}
+                            >
+                                {!loadingLocations &&
+                                    !_isEmpty(searchLocations) &&
+                                    searchLocations.map(item => (
+                                        <FlexCard
+                                            key={item.id}
+                                            {...item}
+                                            address={
+                                                item &&
+                                                item.location &&
+                                                item.location.name
+                                            }
+                                            isChoice
+                                            selected={
+                                                (preferredLocationOne &&
+                                                    preferredLocationOne.id ===
+                                                        item.id) ||
+                                                (preferredLocationTwo &&
+                                                    preferredLocationTwo.id ===
+                                                        item.id)
+                                            }
+                                            handleClick={() =>
+                                                setPreferredLocation({
+                                                    location: { ...item },
+                                                    locationNumber: selectedEmptyLocation,
+                                                })
+                                            }
+                                        />
+                                    ))}
+                            </Grid>
+                        </Box>
                         <Box height={30} />
                     </Fragment>
                 )}
