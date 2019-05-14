@@ -51,6 +51,9 @@ export const PATIENT_DASHBOARD_PAGE_URL_BASE = `${PATIENT_DASHBOARD_PAGE_URL}?${
 export const DENTIST_DASHBOARD_PAGE_URL_BASE = `${DENTIST_DASHBOARD_PAGE_URL}?${SELETED_TAB_SEARCH_PARAM_VALUE}=`;
 export const HOST_DASHBOARD_PAGE_URL_BASE = `${HOST_DASHBOARD_PAGE_URL}?${SELETED_TAB_SEARCH_PARAM_VALUE}=`;
 
+export const OFFICE_PAGES_URL_PREFIX = '/office';
+export const OFFICE_SEARCH_PAGE_URL = '/office/search';
+
 // used to make header background white
 export const URLS_FOR_PATIENT_PAGES = [
     PATIENT_ONBOARDING_MEDICAL_HISTORY_FORM,
@@ -63,6 +66,8 @@ export const URLS_FOR_PATIENT_PAGES = [
     PATIENT_DASHBOARD_PAGE_URL,
     KIOSK_URL,
     KIOSK_REG_PAGE_URL,
+    OFFICE_SEARCH_PAGE_URL,
+    OFFICE_PAGES_URL_PREFIX,
 ];
 
 // pages for hosts and dentists
@@ -70,19 +75,15 @@ export const DENTIST_ONBOARDING_PROFILE_URL = '/onboarding/dentist/profile/';
 export const DENTIST_ONBOARDING_VERIFICATION_URL =
     '/onboarding/dentist/verification/';
 export const DENTIST_PROFILE_PAGE_URL = '/dentist-profile';
-export const OFFICE_SEARCH_PAGE_URL = '/office/search';
-
 export const HOST_ONBOARDING_PAGE_URL_PREFIX = '/host-onboarding';
-export const OFFICE_PAGES_URL_PREFIX = '/office';
+
 
 // used to make header background blue
 export const URLS_FOR_HOST_AND_DENTIST_PAGES = [
     DENTIST_ONBOARDING_PROFILE_URL,
     DENTIST_ONBOARDING_VERIFICATION_URL,
     DENTIST_PROFILE_PAGE_URL,
-    OFFICE_SEARCH_PAGE_URL,
     HOST_ONBOARDING_PAGE_URL_PREFIX,
-    OFFICE_PAGES_URL_PREFIX,
     HOST_DASHBOARD_PAGE_URL,
     DENTIST_DASHBOARD_PAGE_URL,
 ];

@@ -21,7 +21,6 @@ import {
     DENTIST_DASHBOARD_PAGE_URL,
     DENTIST_ONBOARDING_PROFILE_URL,
     HOST_DASHBOARD_PAGE_URL,
-    OFFICE_PAGES_URL_PREFIX,
     HOST_ONBOARDING_PAGE_URL_PREFIX,
     PATIENT_DASHBOARD_PAGE_URL,
     PATIENT_WEB_ONBOARDING_PAGE_URL,
@@ -119,7 +118,6 @@ class Header extends Component {
         const onLandingPage = pathnameWithoutParams === '/';
         // We show the office search bar on office search page and host dashboard page.
         if (
-            pathname.startsWith(OFFICE_PAGES_URL_PREFIX) ||
             pathname.includes(HOST_DASHBOARD_PAGE_URL) ||
             pathname.includes(HOST_ONBOARDING_PAGE_URL_PREFIX) ||
             pathname.includes(DENTIST_DASHBOARD_PAGE_URL)
