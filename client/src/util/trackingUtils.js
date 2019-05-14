@@ -91,3 +91,14 @@ export const trackSelectInsurance = ({ eventLabel }) => {
     };
     TagManager.dataLayer(gtmArgs);
 };
+
+export const trackSignupAttempt = () => {
+    const gtmArgs = {
+        dataLayer: {
+            event: 'GA Event',
+            eventAction: 'Interaction',
+            eventCategory: 'Sign Up - Attempt',
+        },
+    };
+    TagManager.dataLayer(gtmArgs);
+};

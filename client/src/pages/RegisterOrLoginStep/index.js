@@ -20,7 +20,11 @@ import {
 import history from '../../history';
 import { setUser, setAuthToken } from '../../util/authUtils';
 import { isBioUpdated } from '../../util/dentistUtils';
-import { trackUserAuth, trackUserSignup } from '../../util/trackingUtils';
+import {
+    trackUserAuth,
+    trackUserSignup,
+    trackSignupAttempt,
+} from '../../util/trackingUtils';
 
 const Composed = adopt({
     sendKioskLoginCode: ({ render }) => (
@@ -250,6 +254,11 @@ export const RegisterOrLoginStep = props => (
                 return (
                     <Verification
                         {...props}
+                        onClickSignup={() => {
+                            if (trackSignupAttempt) {
+                                trackSignupAttempt();
+                            }
+                        }}
                         onRequestPinCode={async username => {
                             props.formikProps.setFieldValue(
                                 'isCodeSent',
