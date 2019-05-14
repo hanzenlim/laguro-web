@@ -10,6 +10,7 @@ import { Button, Flex, Text, Responsive } from '../../../components';
 import { getUser } from '../../../util/authUtils';
 import emitter from '../../../util/emitter';
 import history from '../../../history';
+import { trackCheckOutOfPocketAttempt } from '../../../util/trackingUtils';
 
 const { Desktop, Mobile } = Responsive;
 
@@ -210,6 +211,12 @@ const BundleView = ({
                     textAlign="center"
                     onClick={e => {
                         e.stopPropagation();
+
+                        if (trackCheckOutOfPocketAttempt) {
+                            trackCheckOutOfPocketAttempt({
+                                internalPage: 'search',
+                            });
+                        }
 
                         const user = getUser();
 

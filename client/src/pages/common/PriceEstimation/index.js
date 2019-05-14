@@ -14,6 +14,7 @@ import { PATIENT_DASHBOARD_PAGE_URL_BASE } from '../../../util/urls';
 import {
     trackSelectProcedure,
     trackSelectInsurance,
+    trackCheckOutOfPocketAttempt,
 } from '../../../util/trackingUtils';
 import { getInsuranceText } from '../../../util/insuranceUtil';
 
@@ -52,6 +53,10 @@ class PriceEstimation extends PureComponent {
     handleCheckOutOfPocketCost = () => {
         const user = getUser();
         const dentistId = history.location.pathname.split('/')[2];
+
+        if (trackCheckOutOfPocketAttempt) {
+            trackCheckOutOfPocketAttempt({ internalPage: 'dentist' });
+        }
 
         if (!_get(user, 'id')) {
             emitter.emit('loginModal', {

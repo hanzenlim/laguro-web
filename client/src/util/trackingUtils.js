@@ -102,3 +102,15 @@ export const trackSignupAttempt = () => {
     };
     TagManager.dataLayer(gtmArgs);
 };
+
+export const trackCheckOutOfPocketAttempt = ({ internalPage }) => {
+    const gtmArgs = {
+        dataLayer: {
+            event: 'GA Event',
+            eventAction: 'Interaction',
+            eventCategory: 'Check out of pocket',
+            internalPage,
+        },
+    };
+    TagManager.dataLayer(gtmArgs);
+};
