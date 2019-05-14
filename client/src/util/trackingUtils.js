@@ -67,3 +67,27 @@ export const trackPageview = ({ urlPath, pageName }) => {
 
     TagManager.dataLayer(gtmArgs);
 };
+
+export const trackSelectProcedure = ({ eventLabel }) => {
+    const gtmArgs = {
+        dataLayer: {
+            event: 'GA Event',
+            eventAction: 'Interaction',
+            eventCategory: 'Price',
+            eventLabel,
+        },
+    };
+    TagManager.dataLayer(gtmArgs);
+};
+
+export const trackSelectInsurance = ({ eventLabel }) => {
+    const gtmArgs = {
+        dataLayer: {
+            event: 'GA Event',
+            eventAction: 'Interaction',
+            eventCategory: 'Insurance',
+            eventLabel,
+        },
+    };
+    TagManager.dataLayer(gtmArgs);
+};

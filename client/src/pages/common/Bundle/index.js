@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import { Menu } from 'antd';
 import _isEmpty from 'lodash/isEmpty';
 import { getInsuranceText } from '../../../util/insuranceUtil';
+import {
+    trackSelectProcedure,
+    trackSelectInsurance,
+} from '../../../util/trackingUtils';
 
 import BundleView from './view';
 
@@ -37,6 +41,12 @@ class Bundle extends Component {
 
     setInitialInsurance = selectedInsurance => {
         this.setState({ selectedInsurance });
+
+        if (trackSelectInsurance && !_isEmpty(selectedInsurance)) {
+            trackSelectInsurance({
+                eventLabel: getInsuranceText(selectedInsurance.name),
+            });
+        }
     };
 
     getProcedureList = () => {
@@ -83,6 +93,12 @@ class Bundle extends Component {
             price: currentBundle.price,
             insuranceList: currentBundle.insuranceList,
         }));
+
+        if (trackSelectProcedure && !_isEmpty(currentBundle)) {
+            trackSelectProcedure({
+                eventLabel: `${currentBundle.group} - ${currentBundle.name}`,
+            });
+        }
     };
 
     onSelectInsurance = ({ key, domEvent }) => {
@@ -93,6 +109,12 @@ class Bundle extends Component {
                 item => item.name === key
             )[0],
         });
+
+        if (trackSelectInsurance && !_isEmpty(key)) {
+            trackSelectInsurance({
+                eventLabel: getInsuranceText(key),
+            });
+        }
     };
 
     render() {

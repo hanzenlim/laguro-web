@@ -11,6 +11,11 @@ import history from '../../../history';
 import { getUser } from '../../../util/authUtils';
 import emitter from '../../../util/emitter';
 import { PATIENT_DASHBOARD_PAGE_URL_BASE } from '../../../util/urls';
+import {
+    trackSelectProcedure,
+    trackSelectInsurance,
+} from '../../../util/trackingUtils';
+import { getInsuranceText } from '../../../util/insuranceUtil';
 
 import PriceEstimationView from './view';
 
@@ -34,6 +39,14 @@ class PriceEstimation extends PureComponent {
         const selectedProcedure = bundles[procedureIndex];
 
         this.setState({ selectedProcedure, procedureIndex });
+
+        if (trackSelectProcedure && !_isEmpty(selectedProcedure)) {
+            trackSelectProcedure({
+                eventLabel: `${selectedProcedure.group} - ${
+                    selectedProcedure.name
+                }`,
+            });
+        }
     };
 
     handleCheckOutOfPocketCost = () => {
@@ -54,6 +67,12 @@ class PriceEstimation extends PureComponent {
 
     handleAddInsurance = selectedInsurance => {
         this.setState({ selectedInsurance });
+
+        if (trackSelectInsurance && !_isEmpty(selectedInsurance)) {
+            trackSelectInsurance({
+                eventLabel: getInsuranceText(selectedInsurance),
+            });
+        }
     };
 
     getOutOfPocketData = ({ getBundleCoverageData, userData }) => ({
