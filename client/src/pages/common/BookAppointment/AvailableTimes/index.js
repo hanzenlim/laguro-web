@@ -1,7 +1,10 @@
 import moment from 'moment-timezone';
 import React, { PureComponent } from 'react';
-import AvailableTimesView from './view';
 import _isEqual from 'lodash/isEqual';
+import qs from 'query-string';
+
+import AvailableTimesView from './view';
+import history from '../../../../history';
 
 class AvailableTimes extends PureComponent {
     constructor(props) {
@@ -20,6 +23,11 @@ class AvailableTimes extends PureComponent {
 
     componentDidMount() {
         const { timeSlotList } = this.props;
+        const urlParams = qs.parse(history.location.search);
+
+        if (urlParams && urlParams.startTime) {
+            this.handleSelectTimeSlot(urlParams.startTime);
+        }
 
         if (timeSlotList && timeSlotList.length !== 0) {
             this.updateActiveTimeSlots();

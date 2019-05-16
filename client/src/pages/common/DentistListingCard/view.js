@@ -96,6 +96,8 @@ class DentistListingCard extends PureComponent {
         }
 
         onSelectAppointment && onSelectAppointment(appointment);
+
+        e.stopPropagation();
     };
 
     getStopPoint = ({ procedures = [] }) => {
