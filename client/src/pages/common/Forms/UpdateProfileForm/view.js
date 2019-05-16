@@ -223,8 +223,39 @@ class UpdateProfileForm extends PureComponent {
                             </Text>
                             <Field
                                 name="phoneNumber"
-                                placeholder="1232342342"
-                                component={Onboarding.InputField}
+                                render={props => {
+                                    const handlePhoneNumberChange = event => {
+                                        if (
+                                            event.target &&
+                                            event.target.value &&
+                                            typeof parseInt(
+                                                event.target.value
+                                            ) === 'number'
+                                        ) {
+                                            props.form.setFieldValue(
+                                                'notificationSettings',
+                                                'both'
+                                            );
+                                        }
+
+                                        props.field.onChange(event);
+                                    };
+
+                                    const newProps = {
+                                        ...props,
+                                        field: {
+                                            ...props.field,
+                                            onChange: handlePhoneNumberChange,
+                                        },
+                                    };
+
+                                    return (
+                                        <Onboarding.InputField
+                                            {...newProps}
+                                            placeholder="1232342342"
+                                        />
+                                    );
+                                }}
                             />
                         </Box>
                         <Box width={['100%', '', '340px']}>
