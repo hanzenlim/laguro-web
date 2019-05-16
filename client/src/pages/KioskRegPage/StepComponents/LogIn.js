@@ -75,7 +75,10 @@ export const LoginStep = props => (
                         });
                     },
                     onError: () => {
-                        props.clear && props.clear();
+                        const { clear } = props;
+                        if (clear) {
+                            clear();
+                        }
                     },
                 });
 
@@ -90,8 +93,11 @@ export const LoginStep = props => (
                 );
 
                 if (!isPinValid) {
-                    props.clear && props.clear();
-                    props.formikProps.setSubmitting(false);
+                    const { clear, formikProps } = props;
+                    if (clear) {
+                        clear();
+                    }
+                    formikProps.setSubmitting(false);
                     return;
                 }
 

@@ -285,27 +285,34 @@ export const RegisterOrLoginStep = props => (
 
                             props.formikProps.setSubmitting(true);
                             if (props.formikProps.values.mode === 'signIn') {
-                                const sendKioskLoginCodeResult = await sendKioskLoginCode(
-                                    {
-                                        variables: {
-                                            input,
-                                        },
-                                    }
-                                );
-
-                                const isCodeSent = _get(
-                                    sendKioskLoginCodeResult,
-                                    'data.sendKioskLoginCode'
-                                );
-
-                                if (isCodeSent) {
-                                    props.formikProps.setFieldValue(
-                                        'isCodeSent',
-                                        true
+                                try {
+                                    const sendKioskLoginCodeResult = await sendKioskLoginCode(
+                                        {
+                                            variables: {
+                                                input,
+                                            },
+                                        }
                                     );
-                                } else {
-                                    message.warning(
-                                        'We do not recognize this Phone number or e-mail. Please sign up.'
+
+                                    const isCodeSent = _get(
+                                        sendKioskLoginCodeResult,
+                                        'data.sendKioskLoginCode'
+                                    );
+
+                                    if (isCodeSent) {
+                                        props.formikProps.setFieldValue(
+                                            'isCodeSent',
+                                            true
+                                        );
+                                    } else {
+                                        message.warning(
+                                            'We do not recognize this Phone number or e-mail. Please sign up.'
+                                        );
+                                    }
+                                } catch (error) {
+                                    props.formikProps.setSubmitting(false);
+                                    message.error(
+                                        error.graphQLErrors[0].message
                                     );
                                 }
 
@@ -346,6 +353,7 @@ export const RegisterOrLoginStep = props => (
 
                                 props.formikProps.setSubmitting(false);
                             }
+                            return null;
                         }}
                         onPinComplete={async pin => {
                             if (props.formikProps.values.mode === 'signUp')
@@ -376,8 +384,6 @@ export const RegisterOrLoginStep = props => (
                                 await validatePin({
                                     input: getValidatePinInput(pin),
                                 });
-
-                                return true;
                             } catch (error) {
                                 message.error(error.graphQLErrors[0].message);
                             }
