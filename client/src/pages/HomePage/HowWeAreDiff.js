@@ -175,7 +175,7 @@ const WhatMakesUsDifferentCard = props => (
                 {_uppercase(props.title)}
             </Text>
             <Text
-                fontFamily={APPLE_SD_GOTHIC_NEO}
+                fontFamily={`${APPLE_SD_GOTHIC_NEO}, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"`}
                 fontWeight="bold"
                 fontSize={2}
                 lineHeight="23px"
