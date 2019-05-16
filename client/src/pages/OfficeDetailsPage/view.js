@@ -7,6 +7,7 @@ import {
     Box,
     SlickCarousel,
     FilestackImage,
+    Text,
     Responsive,
 } from '../../components';
 import theme from '../../components/theme';
@@ -26,26 +27,29 @@ const renderReservationModule = () => <Payment hasBackButton />;
 const StyledCarousel = styled(SlickCarousel)`
     &&,
     && div {
-        height: 208px;
-        margin-bottom: 8px;
+        height: auto;
         transition: height 0.2s;
 
+        @media (min-width: 576px) {
+            height: 250px;
+        }
+
         @media (min-width: ${theme.breakpoints[1]}) {
-            margin-bottom: 66px;
             height: 482px;
         }
     }
 
-    &&.expanded,
-    &&.expanded div {
-        height: 250px;
+    &&.full-screen {
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+    }
 
-        @media (min-width: ${theme.breakpoints[1]}) {
-            height: 66vw;
-        }
+    &&.full-screen .image-container img {
+        object-fit: cover;
 
-        @media (min-width: 1300px) {
-            height: 850px;
+        @media (min-width: 576px) {
+            object-fit: contain;
         }
     }
 
@@ -67,29 +71,40 @@ const StyledCarousel = styled(SlickCarousel)`
     }
 
     && button.rightArrow {
-        right: 100px;
+        right: 5vw;
     }
 
     && button.leftArrow {
-        left: 100px;
+        left: 5vw;
+    }
+
+    && .slick-dots {
+        bottom: 5px;
+
+        li {
+            margin: 0;
+
+            button:before {
+                color: ${props => props.theme.colors.text.white};
+                opacity: 0.5;
+            }
+
+            &.slick-active button:before {
+                opacity: 1;
+                font-size: 8px;
+                margin-top: 1px;
+            }
+        }
     }
 `;
 
 class OfficeDetailsPageView extends PureComponent {
-    constructor(props) {
-        super(props);
+    state = {
+        isCarouselFullScreen: false,
+    };
 
-        this.state = {
-            carouselClass: '',
-        };
-    }
-
-    toggleCarouselHeight = () => {
-        if (this.state.carouselClass === '') {
-            this.setState({ carouselClass: 'expanded' });
-        } else {
-            this.setState({ carouselClass: '' });
-        }
+    setCarouselFullScreen = isCarouselFullScreen => () => {
+        this.setState({ isCarouselFullScreen });
     };
 
     render() {
@@ -100,44 +115,80 @@ class OfficeDetailsPageView extends PureComponent {
             officeDetailsDoneLoadingHandler,
         } = this.props;
 
-        const { carouselClass } = this.state;
+        const { isCarouselFullScreen } = this.state;
 
         return (
             <Flex flexDirection="column" height="100%">
                 {_get(imageUrls, 'length') > 0 ? (
-                    <StyledCarousel
-                        className={carouselClass}
-                        infinite={true}
-                        centerPadding={0}
-                        variableWidth={true}
-                        responsive={[
-                            {
-                                breakpoint: 991,
-                                settings: {
-                                    arrows: false,
-                                    draggable: true,
-                                },
-                            },
-                        ]}
+                    <Box
+                        position={isCarouselFullScreen ? 'fixed' : 'static'}
+                        top={0}
+                        zIndex="9999"
+                        height={isCarouselFullScreen ? '100vh' : 'auto'}
+                        width="100%"
+                        mb={[8, '', 66]}
                     >
-                        {imageUrls.map((imageUrl, index) => (
-                            <Flex
-                                className="image-container"
-                                key={index}
-                                alignItems="center"
-                                onClick={this.toggleCarouselHeight}
+                        {isCarouselFullScreen && (
+                            <Box
+                                bg="#262626"
+                                position="absolute"
+                                width="100%"
+                                height="100%"
+                                style={{ cursor: 'pointer' }}
+                                onClick={this.setCarouselFullScreen(false)}
+                            />
+                        )}
+                        {isCarouselFullScreen && (
+                            <Text
+                                color="text.white"
+                                position="absolute"
+                                top={0}
+                                right="5vw"
+                                fontSize={6}
+                                style={{ cursor: 'pointer' }}
+                                onClick={this.setCarouselFullScreen(false)}
                             >
-                                <FilestackImage
-                                    handle={getIdFromFilestackUrl(imageUrl)}
-                                    alt={officeName}
-                                    sizes={{
-                                        fallback: '100vw',
-                                    }}
-                                    formats={['webp', 'pjpg']}
-                                />
-                            </Flex>
-                        ))}
-                    </StyledCarousel>
+                                &times;
+                            </Text>
+                        )}
+                        <StyledCarousel
+                            className={isCarouselFullScreen && 'full-screen'}
+                            infinite={true}
+                            centerPadding={0}
+                            variableWidth={true}
+                            dots
+                            responsive={[
+                                {
+                                    breakpoint: 991,
+                                    settings: {
+                                        arrows: isCarouselFullScreen,
+                                        draggable: true,
+                                    },
+                                },
+                            ]}
+                        >
+                            {imageUrls.map((imageUrl, index) => (
+                                <Flex
+                                    className="image-container"
+                                    key={index}
+                                    alignItems="center"
+                                >
+                                    <FilestackImage
+                                        handle={getIdFromFilestackUrl(imageUrl)}
+                                        alt={officeName}
+                                        sizes={{
+                                            fallback: '100vw',
+                                        }}
+                                        formats={['webp', 'pjpg']}
+                                        style={{ cursor: 'pointer' }}
+                                        onClick={this.setCarouselFullScreen(
+                                            true
+                                        )}
+                                    />
+                                </Flex>
+                            ))}
+                        </StyledCarousel>
+                    </Box>
                 ) : (
                     <Box mb={66} />
                 )}

@@ -17,7 +17,7 @@ class FilestackImage extends Component {
 
     renderImage(imageObj) {
         const { alt, ...rest } = imageObj;
-        return <img alt={alt} {...rest} />;
+        return <img alt={alt} {...rest} onClick={this.props.onClick} />;
     }
 
     render() {
