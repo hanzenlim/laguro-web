@@ -180,7 +180,15 @@ const SuggestedDentistView = props => {
                         alignItems="center"
                         justifyContent="center"
                     >
-                        <Text fontSize={1} fontWeight="bold" color="inherit">
+                        <Text
+                            fontSize={1}
+                            fontWeight="bold"
+                            color={
+                                isFindAnotherMatchDisabled
+                                    ? 'text.gray'
+                                    : 'text.blue'
+                            }
+                        >
                             Find me another match
                         </Text>
                     </Flex>

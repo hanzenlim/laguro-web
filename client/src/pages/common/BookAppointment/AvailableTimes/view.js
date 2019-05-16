@@ -83,29 +83,36 @@ const AvailableTimesView = props => {
                     </Flex>
                 ))}
             </Grid>
-            {hasShowPrevTimeSlots && (
-                <Button
-                    onClick={onShowPrevTimeSlots}
-                    type="ghost"
-                    height="auto"
+            <Button
+                onClick={onShowPrevTimeSlots}
+                type="ghost"
+                height="auto"
+                width="100%"
+                mb="7px"
+                disabled={!hasShowPrevTimeSlots}
+                style={
+                    !hasShowPrevTimeSlots
+                        ? {
+                              filter: 'saturate(0)',
+                              opacity: 0.4,
+                          }
+                        : null
+                }
+            >
+                <Flex
+                    height="30px"
                     width="100%"
-                    mb="7px"
+                    alignItems="center"
+                    justifyContent="center"
+                    borderColor="#3481f8"
+                    border="1px solid"
+                    borderRadius="2px"
                 >
-                    <Flex
-                        height="30px"
-                        width="100%"
-                        alignItems="center"
-                        justifyContent="center"
-                        borderColor="#3481f8"
-                        border="1px solid"
-                        borderRadius="2px"
-                    >
-                        <Box transform="rotate(90deg)">
-                            <Icon type="blueLeftArrow" />
-                        </Box>
-                    </Flex>
-                </Button>
-            )}
+                    <Box transform="rotate(90deg)">
+                        <Icon type="blueLeftArrow" />
+                    </Box>
+                </Flex>
+            </Button>
 
             <Grid
                 gridTemplateRows={'auto'}
@@ -160,28 +167,35 @@ const AvailableTimesView = props => {
                     </Flex>
                 ))}
             </Grid>
-            {hasShowNextTimeSlots && (
-                <Button
-                    onClick={onShowNextTimeSlots}
-                    type="ghost"
-                    height="auto"
+            <Button
+                onClick={onShowNextTimeSlots}
+                type="ghost"
+                height="auto"
+                width="100%"
+                disabled={!hasShowNextTimeSlots}
+                style={
+                    !hasShowNextTimeSlots
+                        ? {
+                              filter: 'saturate(0)',
+                              opacity: 0.4,
+                          }
+                        : null
+                }
+            >
+                <Flex
+                    height="30px"
                     width="100%"
+                    alignItems="center"
+                    justifyContent="center"
+                    borderColor="#3481f8"
+                    border="1px solid"
+                    borderRadius="2px"
                 >
-                    <Flex
-                        height="30px"
-                        width="100%"
-                        alignItems="center"
-                        justifyContent="center"
-                        borderColor="#3481f8"
-                        border="1px solid"
-                        borderRadius="2px"
-                    >
-                        <Box transform="rotate(-90deg)">
-                            <Icon type="blueLeftArrow" />
-                        </Box>
-                    </Flex>
-                </Button>
-            )}
+                    <Box transform="rotate(-90deg)">
+                        <Icon type="blueLeftArrow" />
+                    </Box>
+                </Flex>
+            </Button>
         </Box>
     );
 };
