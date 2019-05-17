@@ -114,3 +114,16 @@ export const trackCheckOutOfPocketAttempt = ({ internalPage }) => {
     };
     TagManager.dataLayer(gtmArgs);
 };
+
+export const trackSelectTimeSlot = ({ eventLabel, internalPage }) => {
+    const gtmArgs = {
+        dataLayer: {
+            event: 'GA Event',
+            eventAction: 'Interaction',
+            eventCategory: 'Time slot',
+            eventLabel,
+            internalPage,
+        },
+    };
+    TagManager.dataLayer(gtmArgs);
+};

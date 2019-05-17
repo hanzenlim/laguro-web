@@ -12,6 +12,7 @@ import { getUser } from '../../../util/authUtils';
 import emitter from '../../../util/emitter';
 import { execute } from '../../../util/gqlUtils';
 import { stripTimezone } from '../../../util/timeUtil';
+import { trackSelectTimeSlot } from '../../../util/trackingUtils';
 import NoAvailability from './NoAvailability';
 import {
     createAppointmentMutation,
@@ -115,6 +116,17 @@ class BookAppointment extends PureComponent {
 
     handleSelectTimeSlot = utcFormattedTimeSlot => {
         this.setState({ selectedTimeSlot: utcFormattedTimeSlot });
+
+        if (trackSelectTimeSlot) {
+            const { isOnOfficePage } = this.state;
+
+            trackSelectTimeSlot({
+                eventLabel: moment(stripTimezone(utcFormattedTimeSlot)).format(
+                    'hh:mm a'
+                ),
+                internalPage: isOnOfficePage ? 'office' : 'dentist',
+            });
+        }
     };
 
     render() {
