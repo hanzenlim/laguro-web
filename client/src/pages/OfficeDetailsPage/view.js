@@ -161,7 +161,7 @@ class OfficeDetailsPageView extends PureComponent {
                                 {
                                     breakpoint: 991,
                                     settings: {
-                                        arrows: isCarouselFullScreen,
+                                        arrows: false,
                                         draggable: true,
                                     },
                                 },
