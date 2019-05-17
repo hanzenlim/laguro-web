@@ -2,7 +2,7 @@ export const containerPaddings = 50;
 export const contentWidthInPixels = 1280;
 export const numMaxContainerWidth = contentWidthInPixels + containerPaddings;
 export const breakpointsInPixels = [768, 1025, 1200];
-export const APPLE_SD_GOTHIC_NEO = 'AppleSDGothicNeo-Regular';
+export const APPLE_SD_GOTHIC_NEO = `AppleSDGothicNeo-Regular, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"`;
 export const PLACE_HOLDER_OPACITY = 0.65;
 export const MOBILE_SCREEN_WIDTH_IN_PIXELS = 375;
 
