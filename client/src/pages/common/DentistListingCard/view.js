@@ -4,12 +4,21 @@ import PropTypes from 'prop-types';
 import _isEmpty from 'lodash/isEmpty';
 import { Menu } from 'antd';
 import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
-import { Box, Card, Flex, Image, Text, Responsive } from '../../../components';
+import {
+    Box,
+    Card,
+    Flex,
+    Image,
+    Text,
+    FilestackImage,
+    Responsive,
+} from '../../../components';
 import { withScreenSizes } from '../../../components/Responsive';
 import Bundle from '../Bundle';
 import TopBlock from './TopBlock';
 import MiddleBlock from './MiddleBlock';
 import AppointmentTimeslots from './AppointmentTimeslots';
+import { getIdFromFilestackUrl } from '../../../util/imageUtil';
 
 const { Desktop } = Responsive;
 
@@ -176,14 +185,34 @@ class DentistListingCard extends PureComponent {
                             pb={[20, '', 0]}
                         >
                             <Desktop>
-                                <Image
-                                    src={dentist.imageUrl || defaultUserImage}
-                                    alt={`Dr. ${dentist.name}`}
-                                    width={[90, '', 136]}
-                                    height={[90, '', 136]}
+                                <Box
+                                    width={136}
+                                    height={136}
                                     borderRadius="50%"
                                     mr={32}
-                                />
+                                    overflow="hidden"
+                                >
+                                    {dentist.imageUrl &&
+                                    dentist.imageUrl.includes('filestack') ? (
+                                        <FilestackImage
+                                            handle={getIdFromFilestackUrl(
+                                                dentist.imageUrl
+                                            )}
+                                            alt={`Dr. ${dentist.name}`}
+                                            sizes={{
+                                                fallback: '136px',
+                                            }}
+                                            formats={['webp', 'pjpg']}
+                                        />
+                                    ) : (
+                                        <Image
+                                            src={defaultUserImage}
+                                            alt={`Dr. ${dentist.name}`}
+                                            width="100%"
+                                            height="100%"
+                                        />
+                                    )}
+                                </Box>
                             </Desktop>
                             <Box
                                 flex={1}

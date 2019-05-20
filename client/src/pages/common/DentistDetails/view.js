@@ -1,7 +1,9 @@
 import React, { PureComponent } from 'react';
 import _isEmpty from 'lodash/isEmpty';
+import styled from 'styled-components';
 import {
     Flex,
+    FilestackImage,
     Image,
     Box,
     Text,
@@ -9,12 +11,12 @@ import {
     Button,
     Icon,
 } from '../../../components';
-import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
+import theme from '../../../components/theme';
 import { withScreenSizes } from '../../../components/Responsive';
-import { setImageSizeToUrl } from '../../../util/imageUtil';
+import { getIdFromFilestackUrl } from '../../../util/imageUtil';
 import { getInsuranceText } from '../../../util/insuranceUtil';
 import { getProcedureColor } from '../../../util/dentistUtils';
-import styled from 'styled-components';
+import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
 
 const DefaultCursorButton = styled(Button)`
     && {
@@ -24,7 +26,7 @@ const DefaultCursorButton = styled(Button)`
 
 class DentistDetailsView extends PureComponent {
     render() {
-        const { data, tabletMobileOnly } = this.props;
+        const { data } = this.props;
 
         return (
             <Box>
@@ -34,19 +36,39 @@ class DentistDetailsView extends PureComponent {
                     flexDirection={['column', '', 'row']}
                     textAlign={['center', '', 'left']}
                 >
-                    <Image
+                    <Box
                         width={[102, '', 143]}
                         height={[102, '', 143]}
-                        src={setImageSizeToUrl(
-                            data.image || defaultUserImage,
-                            tabletMobileOnly ? 102 : 130
-                        )}
-                        alt={data.name}
                         borderRadius="50%"
                         mr={['auto', '', 20]}
                         ml={['auto', '', 0]}
                         mb={[15, '', 0]}
-                    />
+                        overflow="hidden"
+                    >
+                        {data.image && data.image.includes('filestack') ? (
+                            <FilestackImage
+                                handle={getIdFromFilestackUrl(data.image)}
+                                alt={data.name}
+                                sizes={{
+                                    [`(min-width: ${
+                                        theme.breakpoints[1]
+                                    })`]: '143px',
+                                    [`(min-width: ${
+                                        theme.breakpoints[0]
+                                    }px)`]: '102px',
+                                    fallback: '102px',
+                                }}
+                                formats={['webp', 'pjpg']}
+                            />
+                        ) : (
+                            <Image
+                                src={defaultUserImage}
+                                alt={data.name}
+                                width="100%"
+                                height="100%"
+                            />
+                        )}
+                    </Box>
                     <Box>
                         <Text
                             textTransform="uppercase"

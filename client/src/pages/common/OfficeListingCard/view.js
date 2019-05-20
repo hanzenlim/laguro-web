@@ -4,16 +4,16 @@ import PropTypes from 'prop-types';
 import _isEmpty from 'lodash/isEmpty';
 import _truncate from 'lodash/truncate';
 import _get from 'lodash/get';
-import defaultOfficeImage from '../../../components/Image/office-placeholder.png';
 import {
     Box,
     Button,
     Card,
     Flex,
-    Image,
     Rating,
     Text,
 } from '@laguro/basic-components';
+import { FilestackImage } from '../../../components';
+import { getIdFromFilestackUrl } from '../../../util/imageUtil';
 
 const TAG_COLORS = [
     'background.blue',
@@ -36,10 +36,6 @@ const StyledCard = styled(Card)`
             height: 378px;
         }
     }
-`;
-
-const StyledImage = styled(Image)`
-    object-fit: cover;
 `;
 
 const ESTIMATED_IMAGE_WIDTH = 251;
@@ -178,12 +174,13 @@ class OfficeListingCard extends Component {
                                 position="relative"
                                 overflow="hidden"
                             >
-                                <StyledImage
-                                    src={office.image || defaultOfficeImage}
+                                <FilestackImage
+                                    handle={getIdFromFilestackUrl(office.image)}
                                     alt={office.title}
-                                    display="block"
-                                    width="100%"
-                                    height="100%"
+                                    sizes={{
+                                        fallback: '250px',
+                                    }}
+                                    formats={['webp', 'pjpg']}
                                 />
                             </Box>
                             <Box width="100%" ml={[0, 10]} p={[10, 12]}>

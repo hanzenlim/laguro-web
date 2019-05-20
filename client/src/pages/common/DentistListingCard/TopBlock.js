@@ -3,26 +3,45 @@ import React from 'react';
 import {
     Box,
     Flex,
+    FilestackImage,
     Image,
     Rating,
     Text,
     Responsive,
 } from '../../../components';
 import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
+import { getIdFromFilestackUrl } from '../../../util/imageUtil';
 
 const { TabletMobile } = Responsive;
 
 const TopBlock = ({ dentist }) => (
     <Flex>
         <TabletMobile>
-            <Image
-                src={dentist.imageUrl || defaultUserImage}
-                alt={`Dr. ${dentist.name}`}
+            <Box
                 width={46}
                 height={46}
                 borderRadius="50%"
                 mr={17}
-            />
+                overflow="hidden"
+            >
+                {dentist.imageUrl && dentist.imageUrl.includes('filestack') ? (
+                    <FilestackImage
+                        handle={getIdFromFilestackUrl(dentist.imageUrl)}
+                        alt={`Dr. ${dentist.name}`}
+                        sizes={{
+                            fallback: '46px',
+                        }}
+                        formats={['webp', 'pjpg']}
+                    />
+                ) : (
+                    <Image
+                        src={defaultUserImage}
+                        alt={`Dr. ${dentist.name}`}
+                        width="100%"
+                        height="100%"
+                    />
+                )}
+            </Box>
         </TabletMobile>
         <Box textAlign="left" flex={1}>
             <Text

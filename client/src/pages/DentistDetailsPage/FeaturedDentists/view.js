@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Box, Grid, Text, Link } from '../../../components';
 import DentistCard from '../DentistCard';
-import { setImageSizeToUrl } from '../../../util/imageUtil';
 import defaultDentistProfileImg from '../../../components/Image/default_dentist_profile_img_square.svg';
 
 const FeaturedDentistsView = props => {
@@ -22,7 +21,14 @@ const FeaturedDentistsView = props => {
                 Featured dentists
             </Text>
 
-            <Grid gridTemplateColumns={['1fr 1fr', '1fr 1fr', '1fr 1fr 1fr 1fr 1fr']} gridColumnGap="12px">
+            <Grid
+                gridTemplateColumns={[
+                    '1fr 1fr',
+                    '1fr 1fr',
+                    '1fr 1fr 1fr 1fr 1fr',
+                ]}
+                gridColumnGap="12px"
+            >
                 {featuredDentists.map(item => (
                     <Box
                         border="1px solid"
@@ -36,10 +42,9 @@ const FeaturedDentistsView = props => {
                                 specialty={item.specialty}
                                 numReviews={item.numReviews}
                                 rating={item.averageRating}
-                                image={setImageSizeToUrl(
-                                    item.imageUrl || defaultDentistProfileImg,
-                                    260
-                                )}
+                                image={
+                                    item.imageUrl || defaultDentistProfileImg
+                                }
                             />
                         </Link>
                     </Box>
