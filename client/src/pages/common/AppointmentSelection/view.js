@@ -61,8 +61,8 @@ class AppointmentSelectionView extends React.PureComponent {
                             <Image
                                 src={dentist.imageUrl}
                                 width={103}
-                                height={94}
-                                borderRadius={4}
+                                height={103}
+                                borderRadius="50%"
                             />
                         </Box>
                         <Box width="100%">
