@@ -12,7 +12,10 @@ import { getUser } from '../../../util/authUtils';
 import emitter from '../../../util/emitter';
 import { execute } from '../../../util/gqlUtils';
 import { stripTimezone } from '../../../util/timeUtil';
-import { trackSelectTimeSlot } from '../../../util/trackingUtils';
+import {
+    trackSelectTimeSlot,
+    trackBookAppointmentAttempt,
+} from '../../../util/trackingUtils';
 import NoAvailability from './NoAvailability';
 import {
     createAppointmentMutation,
@@ -57,14 +60,22 @@ class BookAppointment extends PureComponent {
         });
     }
 
-    handleBookNow = async () => {
-        const user = getUser();
-        // Show login modal if not logged in.
-        if (!user) {
-            emitter.emit('loginModal');
-            return;
+    getInternalPage = () => {
+        const isOnOfficePage = history.location.pathname.includes('office');
+        const isOnDentistPage = history.location.pathname.includes('dentist');
+
+        if (isOnOfficePage) {
+            return 'office';
         }
 
+        if (isOnDentistPage) {
+            return 'dentist';
+        }
+
+        return '';
+    };
+
+    handleBookNow = async () => {
         const { createAppointment, suggestedDentist } = this.props;
         const {
             selectedTimeSlot,
@@ -72,17 +83,36 @@ class BookAppointment extends PureComponent {
             isOnDentistPage,
         } = this.state;
         const urlParams = queryString.parse(history.location.search);
+        const localStartTime = stripTimezone(selectedTimeSlot);
+
+        const officeId = isOnOfficePage
+            ? history.location.pathname.split('/')[2]
+            : urlParams.officeId;
+        const dentistId = isOnDentistPage
+            ? history.location.pathname.split('/')[2]
+            : suggestedDentist.id;
+
+        if (trackBookAppointmentAttempt) {
+            trackBookAppointmentAttempt({
+                dentistId,
+                weekDay: moment(localStartTime).format('dddd'),
+                hour: moment(localStartTime).format('hh:mm a'),
+                internalPage: this.getInternalPage(),
+                eventAction: 'Interaction',
+                officeId,
+            });
+        }
+
+        const user = getUser();
+        // Show login modal if not logged in.
+        if (!user) {
+            emitter.emit('loginModal');
+            return;
+        }
 
         await execute({
             action: async () => {
                 await this.setState({ isBooking: true });
-
-                const officeId = isOnOfficePage
-                    ? history.location.pathname.split('/')[2]
-                    : urlParams.officeId;
-                const dentistId = isOnDentistPage
-                    ? history.location.pathname.split('/')[2]
-                    : suggestedDentist.id;
 
                 const createAppointmentResult = await createAppointment({
                     variables: {
@@ -90,7 +120,7 @@ class BookAppointment extends PureComponent {
                             patientId: user.id,
                             officeId,
                             dentistId,
-                            localStartTime: stripTimezone(selectedTimeSlot),
+                            localStartTime,
                         },
                     },
                 });
