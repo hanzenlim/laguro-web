@@ -1,3 +1,4 @@
+import React, { Fragment } from 'react';
 import {
     Box,
     Button,
@@ -9,34 +10,30 @@ import {
     Icon,
 } from '@laguro/basic-components';
 import { Onboarding } from '@laguro/the-bright-side-components';
-import _get from 'lodash/get';
 import _groupBy from 'lodash/groupBy';
 import _isEmpty from 'lodash/isEmpty';
 import _mapValues from 'lodash/mapValues';
 import _sortBy from 'lodash/sortBy';
 import moment from 'moment';
-import * as React from 'react';
 import styled from 'styled-components';
 import { Rating } from '../../../components';
+import { getInsuranceText } from '../../../util/insuranceUtil';
 
 export const DentistRating = ({ rating, numReviews }) => (
     <Flex alignItems="center">
-        <Rating disabled={true} fontSize="16px" value={rating} />
-        <Text textAlign="center" ml={6} mt={4} fontSize={0} lineHeight="22.5px">
-            {numReviews.toString()}
+        <Rating disabled={true} fontSize={15} value={rating} />
+        <Text ml={6} fontSize={0}>
+            {numReviews && numReviews !== 0 ? `(${numReviews.toString()})` : ''}
         </Text>
     </Flex>
 );
 
-const TAG_COLORS = [
-    'background.blue',
-    'background.yellow',
-    'background.orange',
-    'background.darkBlue',
-];
-
 const StyledCard = styled(Card)`
     overflow: hidden;
+    &&.ant-card-bordered {
+        box-shadow: 1px 1px 12px 0 rgba(0, 0, 0, 0.06),
+            -1px -1px 12px 0 rgba(0, 0, 0, 0.06);
+    }
 `;
 
 const StyledNextButton = styled(Button)`
@@ -47,7 +44,7 @@ const StyledNextButton = styled(Button)`
 
 class AppointmentSelectionView extends React.PureComponent {
     renderDentistPanel = (dentists, date) => (
-        <Grid gridRowGap="6px">
+        <Grid gridRowGap="13px">
             {dentists.map(dentist => this.renderDentistCard(dentist, date))}
         </Grid>
     );
@@ -55,8 +52,7 @@ class AppointmentSelectionView extends React.PureComponent {
     renderDentistCard = (dentist, date) => {
         const availableTimes = this.props.moreMap[`${dentist.id}${date}`]
             ? dentist.availableTimes
-            : dentist.availableTimes.slice(0, 3);
-        const languages = _get(dentist, 'languages');
+            : dentist.availableTimes.slice(0, 7);
         return (
             <StyledCard p={0}>
                 <Box px={28} py={26}>
@@ -70,15 +66,26 @@ class AppointmentSelectionView extends React.PureComponent {
                             />
                         </Box>
                         <Box width="100%">
-                            <Text textTransform="uppercase">
-                                {' '}
-                                {dentist.specialty}{' '}
+                            <Text
+                                fontSize={14}
+                                color="text.gray"
+                                fontWeight="bold"
+                                lineHeight="17px"
+                                textTransform="uppercase"
+                            >
+                                {dentist.specialty}
                             </Text>
-                            <Flex mb={9}>
+                            <Flex mb={4} alignItems="center">
                                 <Text
+                                    style={{
+                                        'white-space': 'pre-line',
+                                    }}
                                     fontWeight="bold"
-                                    fontSize={[3, 4, '']}
-                                    mr={14}
+                                    fontSize={4}
+                                    lineHeight="24px"
+                                    mr={9}
+                                    color="#303449"
+                                    textAlign="left"
                                 >
                                     {dentist.name}
                                 </Text>
@@ -87,82 +94,90 @@ class AppointmentSelectionView extends React.PureComponent {
                                     numReviews={dentist.numReviews}
                                 />
                             </Flex>
-                            {!_isEmpty(dentist.procedures) &&
-                            dentist.procedures.length ? (
-                                <Flex flexWrap="wrap" mb={6}>
-                                    {dentist.procedures.map(
-                                        (procedure, index) => (
-                                            <Button type="ghost" height="auto">
-                                                <Box
-                                                    bg={TAG_COLORS[index % 4]}
-                                                    px={16}
-                                                    borderRadius="19.5px"
-                                                    mr="6px"
-                                                    mb="6px"
-                                                >
-                                                    <Text
-                                                        color="text.white"
-                                                        lineHeight="20px"
-                                                        fontSize={0}
-                                                        letterSpacing="-0.4px"
-                                                    >
-                                                        {procedure}
-                                                    </Text>
-                                                </Box>
-                                            </Button>
-                                        )
-                                    )}
-                                </Flex>
-                            ) : (
-                                <Text mb={34}>No procedures selected.</Text>
-                            )}
-                            {!_isEmpty(dentist.insurance) && (
-                                <Flex alignItems="center">
+
+                            {!_isEmpty(dentist.acceptedInsurances) && (
+                                <Flex alignItems="flex-start" mb={4}>
                                     <Icon type="insurance" />
-                                    <Text fontSize={0} ml="8px">
+                                    <Text
+                                        fontSize={1}
+                                        lineHeight="17px"
+                                        ml="8px"
+                                    >
                                         Accepts{' '}
-                                        {dentist.insurance.length > 1
-                                            ? dentist.insurance.map(
+                                        {dentist.acceptedInsurances.length > 1
+                                            ? dentist.acceptedInsurances.map(
                                                   (sp, index) =>
                                                       index !==
-                                                      dentist.insurance.length -
+                                                      dentist.acceptedInsurances
+                                                          .length -
                                                           1
-                                                          ? `${sp}, `
-                                                          : `and ${sp}`
+                                                          ? `${getInsuranceText(
+                                                                sp
+                                                            )}, `
+                                                          : `and ${getInsuranceText(
+                                                                sp
+                                                            )}`
                                               )
-                                            : dentist.insurance[0]}
+                                            : getInsuranceText(
+                                                  dentist.acceptedInsurances[0]
+                                              )}
                                     </Text>
                                 </Flex>
                             )}
-                            {!_isEmpty(languages) && (
-                                <Flex alignItems="center">
+
+                            {!_isEmpty(dentist.languages) && (
+                                <Flex alignItems="center" mb={10}>
                                     <Icon type="languages" />
-                                    <Text fontSize={0} ml="8px">
-                                        Languages spoken:{' '}
-                                        {languages.length > 1
-                                            ? dentist.languages.map(
-                                                  (sp, index) =>
-                                                      index !==
-                                                      dentist.languages.length -
-                                                          1
-                                                          ? `${sp}, `
-                                                          : `and ${sp}`
-                                              )
-                                            : languages[0]}
+                                    <Text
+                                        fontSize={1}
+                                        lineHeight="17px"
+                                        ml="8px"
+                                    >
+                                        Speaks{' '}
+                                        {dentist.languages.length > 1 ? (
+                                            dentist.languages.map((sp, index) =>
+                                                index !==
+                                                dentist.languages.length - 1 ? (
+                                                    <Text
+                                                        is="span"
+                                                        textTransform="capitalize"
+                                                    >{`${sp.toLowerCase()}, `}</Text>
+                                                ) : (
+                                                    <Fragment>
+                                                        and
+                                                        <Text
+                                                            is="span"
+                                                            textTransform="capitalize"
+                                                        >{` ${sp.toLowerCase()}`}</Text>
+                                                    </Fragment>
+                                                )
+                                            )
+                                        ) : (
+                                            <Text
+                                                is="span"
+                                                textTransform="capitalize"
+                                            >
+                                                {dentist.languages[0].toLowerCase()}
+                                            </Text>
+                                        )}
                                     </Text>
                                 </Flex>
                             )}
-                            <Text fontSize={0} mb={10}>
+
+                            <Text fontSize={1} mb={10}>
                                 {`Appointment duration: ${
                                     dentist.appointmentDuration === 30
                                         ? '30 min'
                                         : '1 hour'
                                 }`}
                             </Text>
+
                             <Text
-                                mb={9}
+                                mb={16}
                                 fontWeight="medium"
-                                fontSize={[2, 3, '']}
+                                fontSize={1}
+                                lineHeight="17px"
+                                textAlign="left"
                             >
                                 Available Times
                             </Text>
@@ -198,18 +213,20 @@ class AppointmentSelectionView extends React.PureComponent {
                                 ))}
 
                                 {!this.props.moreMap[`${dentist.id}${date}`] &&
-                                    dentist.availableTimes.length > 3 && (
+                                    dentist.availableTimes.length > 7 && (
                                         <Button
                                             height={40}
                                             width="100%"
-                                            type="primary"
+                                            ghost
+                                            pb={10}
+                                            fontWeight="700"
                                             onClick={() => {
                                                 this.props.onMore(
                                                     `${dentist.id}${date}`
                                                 );
                                             }}
                                         >
-                                            More
+                                            ...
                                         </Button>
                                     )}
                             </Grid>
@@ -241,10 +258,10 @@ class AppointmentSelectionView extends React.PureComponent {
                     dentistTime => ({
                         ...dentistTime[0],
                         availableTimes: dentistTime.map(
-                            dentistTime => dentistTime.startTime
+                            dentistTimeItem => dentistTimeItem.startTime
                         ),
                         dentistTimeIds: dentistTime.map(
-                            dentistTime => dentistTime.id
+                            dentistTimeItem => dentistTimeItem.id
                         ),
                     })
                 )
