@@ -252,7 +252,7 @@ class DentistDetailsView extends PureComponent {
                 )}
 
                 {data.bio && (
-                    <Box pb={[0, '', 42]}>
+                    <Box pb={[22, '', 42]}>
                         <Text
                             fontSize={[1, '', 2]}
                             letterSpacing={['0.05px', '', '-0.4px']}
