@@ -1,0 +1,26 @@
+version: '3.5'
+
+services:
+  laguro:
+    image: laguro:local
+    container_name: laguro
+    build: .
+    volumes:
+      - ./client/src:/usr/src/app/client/src
+      - ./client/public:/usr/src/app/client/public
+      - ./client/etc:/usr/src/app/client/etc
+      - ./client/storybook:/usr/src/app/client/.storybook
+      - .npm_cache:/root/.cache
+    ports:
+      - 3000:3000
+      - 5000:5000
+    environment:
+      - "NODE_ENV=development"
+      - "AWS_REGION=localhost"
+      - "AWS_ACCESS_KEY_ID=MOCK_ACCESS_KEY_ID"
+      - "AWS_SECRET_ACCESS_KEY=MOCK_SECRET_ACCESS_KEY"
+
+networks:
+  default:
+    external:
+      name: laguro_network

@@ -17,7 +17,12 @@
         "domain": "env-cmd /home/runner/security.env.stage sls create_domain",
         "deploy-stage": "env-cmd /home/runner/security.env.stage sls deploy -v --stage stage --region us-east-1",
         "deploy-prod": "env-cmd /home/runner/security.env.prod sls deploy -v --stage prod",
-        "cy:open": "cypress open"
+        "cy:open": "cypress open",
+        "start:env": "docker-compose up -d laguro",
+        "build:env": "docker-compose up -d --build laguro",
+        "stop:env": "docker-compose stop laguro",
+        "restart:env": "docker-compose restart -d laguro",
+        "logs:env": "docker-compose logs --follow laguro"
     },
     "lint-staged": {
         "client/src/**/*.js": [
