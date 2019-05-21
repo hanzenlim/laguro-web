@@ -141,15 +141,17 @@ class DentistListingCard extends PureComponent {
 
     render() {
         const { dentist, onRedirect } = this.props;
+        const indexToMap = parseInt(this.state.indexToMap);
 
         const earliestAvailableDate =
             dentist.appointmentTimeslotsByOffice &&
             dentist.appointmentTimeslotsByOffice.length !== 0 &&
             !_isEmpty(
-                dentist.appointmentTimeslotsByOffice[0].appointmentTimeslots
+                dentist.appointmentTimeslotsByOffice[indexToMap]
+                    .appointmentTimeslots
             ) &&
-            dentist.appointmentTimeslotsByOffice[0].appointmentTimeslots[0]
-                .localStartTime;
+            dentist.appointmentTimeslotsByOffice[indexToMap]
+                .appointmentTimeslots[indexToMap].localStartTime;
 
         const { tagStopPoint } = this.state;
 
@@ -167,8 +169,6 @@ class DentistListingCard extends PureComponent {
                 ))}
             </Menu>
         );
-
-        const indexToMap = parseInt(this.state.indexToMap);
 
         return (
             <Box
