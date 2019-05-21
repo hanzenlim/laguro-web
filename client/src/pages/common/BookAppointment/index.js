@@ -2,9 +2,10 @@ import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 import moment from 'moment';
 import queryString from 'query-string';
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Component } from 'react';
 import { adopt } from 'react-adopt';
 import { Mutation, Query } from 'react-apollo';
+
 import { Loading } from '../../../components';
 import history from '../../../history';
 import { appointmentClient } from '../../../util/apolloClients';
@@ -222,7 +223,7 @@ const Composed = adopt({
     },
 });
 
-class BookAppointmentContainer extends PureComponent {
+class BookAppointmentContainer extends Component {
     constructor(props) {
         super(props);
 
@@ -253,11 +254,17 @@ class BookAppointmentContainer extends PureComponent {
         }
     }
 
-    fetchSuggestedDentist = async () => {
-        const { officeId } = this.state;
+    componentDidUpdate(prev) {
+        const { id } = this.props;
+        if (prev.id !== id) {
+            this.fetchSuggestedDentist(id);
+        }
+    }
 
+    fetchSuggestedDentist = async latestOfficeId => {
+        const { officeId } = this.state;
         const suggestedDentist = await getSuggestedDentist({
-            officeId,
+            officeId: latestOfficeId || officeId,
         });
 
         if (suggestedDentist.dentist) {
@@ -335,9 +342,9 @@ class BookAppointmentContainer extends PureComponent {
         return [getDentistAppointmentSlotsData[0]];
     };
 
-    handleFindAnotherMatch = async () => {
+    handleFindAnotherMatch = async latestOfficeId => {
         await this.setState({ isFetchingNewData: true });
-        await this.fetchSuggestedDentist();
+        await this.fetchSuggestedDentist(latestOfficeId);
     };
 
     render() {
@@ -421,7 +428,11 @@ class BookAppointmentContainer extends PureComponent {
                             timeSlotList={timeSlotList}
                             getDentistData={getDentistData}
                             createAppointment={createAppointment}
-                            onFindAnotherMatch={this.handleFindAnotherMatch}
+                            onFindAnotherMatch={async () => {
+                                await this.handleFindAnotherMatch(
+                                    this.props.id
+                                );
+                            }}
                         />
                     );
                 }}
