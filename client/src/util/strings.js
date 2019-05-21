@@ -117,6 +117,7 @@ export const INSURANCE_CONFIRMATION_TEXT =
 export const LAGURO_TREATMENT_MODULE_MENU_TEXT = 'Laguro Treatment Module';
 export const PROFILE_SETTINGS_MENU_TEXT = 'Profile settings';
 export const DENTIST_VERIFICATION_MENU_TEXT = 'Dentist verification';
+export const DENTIST_POS_PIN_CODE = 'Pos pin code';
 export const CALENDAR_MENU_TEXT = 'Calendar';
 export const CREATE_A_NEW_APPOINTMENT_MENU_TEXT = 'Create a new appointment';
 export const MY_PATIENTS_MENU_TEXT = 'My patients';

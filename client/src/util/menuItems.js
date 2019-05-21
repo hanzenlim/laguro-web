@@ -18,6 +18,7 @@ import {
     SEARCH_FOR_CHAIRS_MENU_TEXT,
     VIEW_PROFILE_MENU_TEXT,
     AVAILABILITY_SETTINGS_MENU_TEXT,
+    DENTIST_POS_PIN_CODE,
     // host menu
     MY_OFFICES_MENU_TEXT,
     ADD_A_NEW_OFFICE_MENU_TEXT,
@@ -110,6 +111,7 @@ const apptsMenuTexts = [
 const unclassfiedDentistMenuTexts3 = [
     SEARCH_FOR_CHAIRS_MENU_TEXT,
     VIEW_PROFILE_MENU_TEXT,
+    DENTIST_POS_PIN_CODE,
 ];
 
 const dentistMenuTexts = [
@@ -122,6 +124,7 @@ const dentistMenuTexts = [
 export const dentistDashboardMenuTexts = [
     ...unclassfiedDentistMenuTexts2,
     ...apptsMenuTexts,
+    DENTIST_POS_PIN_CODE,
     VIEW_PROFILE_MENU_TEXT,
 ];
 

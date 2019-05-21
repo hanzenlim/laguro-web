@@ -12,6 +12,7 @@ import {
     CALENDAR_MENU_TEXT,
     DENTIST,
     AVAILABILITY_SETTINGS_MENU_TEXT,
+    DENTIST_POS_PIN_CODE,
 } from '../../util/strings';
 import { dentistDashboardMenuTexts } from '../../util/menuItems';
 import { getKeyFromText } from '../Dashboard/utils';
@@ -28,6 +29,7 @@ import NewAppointment from '../common/NewAppointment';
 import { DENTIST_PROFILE_PAGE_URL, getLTMBaseUrl } from '../../util/urls';
 import PatientsList from '../common/PatientsList';
 import DentistDetails from '../common/DentistDetails';
+import DentistPosPinCode from '../common/DentistPosPinCode';
 import ReviewContainer from '../common/ReviewContainer/index';
 import { Responsive, Link, Button, Flex } from '../../components/index';
 import PreferredLocations from '../common/PreferredLocations';
@@ -53,6 +55,7 @@ const menuTextToDescription = {
         'Create a follow-up appointment for your patients',
     [MY_PATIENTS_MENU_TEXT]: 'View your patients and their documents',
     [VIEW_PROFILE_MENU_TEXT]: 'View your public dentist page',
+    [DENTIST_POS_PIN_CODE]: 'View your dentist pos pin code',
 };
 
 class DentistDashboardPageView extends Component {
@@ -193,6 +196,14 @@ class DentistDashboardPageView extends Component {
                             fromDentistDashboard={true}
                             dentist={dentist}
                         />
+                    </Card>
+                );
+                break;
+            case DENTIST_POS_PIN_CODE:
+                panelContent = (
+                    <Card>
+                        {this.renderPanelHeader(key)}
+                        <DentistPosPinCode />
                     </Card>
                 );
                 break;
