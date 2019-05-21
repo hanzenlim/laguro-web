@@ -173,3 +173,28 @@ export const trackNewsletterSignup = () => {
     };
     TagManager.dataLayer(gtmArgs);
 };
+
+export const trackSearch = ({ eventLabel = '', internalPage = '' }) => {
+    const gtmArgs = {
+        dataLayer: {
+            event: 'GA Event',
+            eventAction: 'Interaction',
+            eventCategory: 'Search',
+            eventLabel,
+            internalPage,
+        },
+    };
+    TagManager.dataLayer(gtmArgs);
+};
+
+export const trackSearchFilter = ({ eventLabel = '' }) => {
+    const gtmArgs = {
+        dataLayer: {
+            event: 'GA Event',
+            eventAction: 'Interaction',
+            eventCategory: 'Search Filter',
+            eventLabel,
+        },
+    };
+    TagManager.dataLayer(gtmArgs);
+};
