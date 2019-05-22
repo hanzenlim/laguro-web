@@ -17,17 +17,17 @@ class AvailableLocations extends PureComponent {
 
     componentDidMount() {
         const { locationList } = this.props;
-        const urlParams = queryString.parse(history.location.search);
-        if (!_isEmpty(locationList) && urlParams.officeId) {
-            const location = locationList.filter(
-                item => item.id === urlParams.officeId
-            )[0];
-
-            history.push({
-                search: queryString.stringify(urlParams),
-            });
-
-            this.handleSelectLocation(location);
+        if (!_isEmpty(locationList)) {
+            const urlParams = queryString.parse(history.location.search);
+            if (urlParams.officeId) {
+                const location = locationList.filter(
+                    item => item.id === urlParams.officeId
+                )[0];
+                this.handleSelectLocation(location);
+            } else {
+                const location = locationList[0];
+                this.handleSelectLocation(location);
+            }
         }
     }
 
