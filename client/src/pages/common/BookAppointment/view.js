@@ -27,7 +27,11 @@ const BookAppointmentView = props => {
     } = props;
 
     if (bookedAppointmentId)
-        return <AppointmentConfirmation appointmentId={bookedAppointmentId} />;
+        return (
+            <Box {...wrapperStyles}>
+                <AppointmentConfirmation appointmentId={bookedAppointmentId} />
+            </Box>
+        );
 
     return (
         <Box {...wrapperStyles}>
