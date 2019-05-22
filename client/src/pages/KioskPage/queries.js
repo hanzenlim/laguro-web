@@ -319,10 +319,7 @@ export const GET_APPOINTMENT_SLOTS_FOR_KIOSK = gql`
             acceptedInsurances
             specialty
             firstAppointmentDuration
-            procedures {
-                name
-                duration
-            }
+            procedures
             languages
             appointmentTimeslots {
                 localStartTime

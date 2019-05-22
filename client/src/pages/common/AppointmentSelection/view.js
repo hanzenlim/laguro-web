@@ -18,15 +18,7 @@ import moment from 'moment';
 import styled from 'styled-components';
 import { Rating } from '../../../components';
 import { getInsuranceText } from '../../../util/insuranceUtil';
-
-export const DentistRating = ({ rating, numReviews }) => (
-    <Flex alignItems="center">
-        <Rating disabled={true} fontSize={15} value={rating} />
-        <Text ml={6} fontSize={0}>
-            {numReviews && numReviews !== 0 ? `(${numReviews.toString()})` : ''}
-        </Text>
-    </Flex>
-);
+import Procedures from './Procedures';
 
 const StyledCard = styled(Card)`
     overflow: hidden;
@@ -41,6 +33,15 @@ const StyledNextButton = styled(Button)`
         border-radius: 29px;
     }
 `;
+
+export const DentistRating = ({ rating, numReviews }) => (
+    <Flex alignItems="center">
+        <Rating disabled={true} fontSize={15} value={rating} />
+        <Text ml={6} fontSize={0}>
+            {numReviews && numReviews !== 0 ? `(${numReviews.toString()})` : ''}
+        </Text>
+    </Flex>
+);
 
 class AppointmentSelectionView extends React.PureComponent {
     renderDentistPanel = (dentists, date) => (
@@ -163,6 +164,8 @@ class AppointmentSelectionView extends React.PureComponent {
                                     </Text>
                                 </Flex>
                             )}
+
+                            <Procedures procedures={dentist.procedures} />
 
                             <Text fontSize={1} mb={10}>
                                 {`Appointment duration: ${

@@ -71,7 +71,7 @@ export const getDentistTimes = activeDentistsWithAppointmentSlots =>
                 rating: dent.averageRating,
                 imageUrl: dent.imageUrl || defaultUserImage,
                 appointmentDuration: dent.firstAppointmentDuration,
-                procedures: dent.procedures.map(p => p.group),
+                procedures: dent.procedures,
                 languages: dent.languages.map(
                     lang =>
                         lang.charAt(0).toUpperCase() +
