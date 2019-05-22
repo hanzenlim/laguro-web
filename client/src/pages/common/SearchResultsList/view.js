@@ -55,12 +55,23 @@ class SearchResultsList extends PureComponent {
     };
 
     handleSelectAppointment = appointment => {
-        const { localStartTime, dentistId } = appointment;
-        const url = `/dentist/${dentistId}`;
+        const { localStartTime, dentistId, officeId } = appointment;
 
-        history.push(
-            localStartTime ? `${url}?startTime=${localStartTime}` : url
-        );
+        let url = `/dentist/${dentistId}`;
+
+        if (officeId && localStartTime) {
+            url = `${url}?officeId=${officeId}&startTime=${localStartTime}`;
+        }
+
+        if (localStartTime && !officeId) {
+            url = `${url}?startTime=${localStartTime}`;
+        }
+
+        if (officeId && !localStartTime) {
+            url = `${url}?officeId=${officeId}`;
+        }
+
+        history.push(url);
     };
 
     render() {

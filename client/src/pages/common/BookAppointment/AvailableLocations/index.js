@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import _get from 'lodash/get';
+import _isEmpty from 'lodash/isEmpty';
 import queryString from 'query-string';
 import AvailableLocationsView from './view';
 import history from '../../../../history';
@@ -17,11 +18,16 @@ class AvailableLocations extends PureComponent {
     componentDidMount() {
         const { locationList } = this.props;
         const urlParams = queryString.parse(history.location.search);
-        if (_get(locationList, '[0]')) {
-            urlParams.officeId = _get(locationList, '[0].id');
+        if (!_isEmpty(locationList) && urlParams.officeId) {
+            const location = locationList.filter(
+                item => item.id === urlParams.officeId
+            )[0];
+
             history.push({
                 search: queryString.stringify(urlParams),
             });
+
+            this.handleSelectLocation(location);
         }
     }
 

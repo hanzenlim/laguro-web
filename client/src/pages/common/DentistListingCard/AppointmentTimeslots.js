@@ -164,6 +164,9 @@ class AppointmentTimeslots extends React.Component {
                                     if (index + 1 === numOfVisibleSlots) {
                                         return (
                                             <Button
+                                                key={
+                                                    availableTime.localStartTime
+                                                }
                                                 type="primary"
                                                 height={40}
                                                 width="100%"
@@ -173,6 +176,12 @@ class AppointmentTimeslots extends React.Component {
                                                 fontWeight="700"
                                                 data-dentistid={
                                                     dentist.dentistId
+                                                }
+                                                data-officeId={
+                                                    dentist
+                                                        .appointmentTimeslotsByOffice[
+                                                        indexToMap
+                                                    ].office.id
                                                 }
                                                 onClick={
                                                     handleSelectAppointment
@@ -184,10 +193,17 @@ class AppointmentTimeslots extends React.Component {
                                     }
                                     return (
                                         <Button
+                                            key={availableTime.localStartTime}
                                             data-start={
                                                 availableTime.localStartTime
                                             }
                                             data-dentistid={dentist.dentistId}
+                                            data-officeId={
+                                                dentist
+                                                    .appointmentTimeslotsByOffice[
+                                                    indexToMap
+                                                ].office.id
+                                            }
                                             type="primary"
                                             height={40}
                                             width="100%"

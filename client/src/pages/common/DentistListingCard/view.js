@@ -91,7 +91,8 @@ class DentistListingCard extends PureComponent {
     }
 
     handleSelectAppointment = e => {
-        const { start, dentistid } = e.currentTarget.dataset;
+        const { start, dentistid, officeid } = e.currentTarget.dataset;
+
         const { onSelectAppointment } = this.props;
 
         const appointment = {};
@@ -102,6 +103,10 @@ class DentistListingCard extends PureComponent {
 
         if (dentistid) {
             appointment.dentistId = dentistid;
+        }
+
+        if (officeid) {
+            appointment.officeId = officeid;
         }
 
         onSelectAppointment && onSelectAppointment(appointment);
@@ -158,8 +163,8 @@ class DentistListingCard extends PureComponent {
         const menu = (
             <Menu
                 onClick={({ key, domEvent }) => {
-                    domEvent.stopPropagation();
                     this.setState({ indexToMap: key });
+                    domEvent.stopPropagation();
                 }}
             >
                 {dentist.appointmentTimeslotsByOffice.map((item, index) => (
