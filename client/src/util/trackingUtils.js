@@ -56,6 +56,29 @@ export const trackBookAppointment = ({
     TagManager.dataLayer(gtmArgs);
 };
 
+export const trackBookAppointmentAttempt = ({
+    dentistId,
+    officeId,
+    weekDay,
+    internalPage,
+    hour,
+    eventAction,
+}) => {
+    const gtmArgs = {
+        dataLayer: {
+            event: 'GA Event',
+            eventCategory: 'Appointment - Attempt',
+            eventLabel: dentistId,
+            eventAction,
+            hour,
+            weekDay,
+            officeId,
+            internalPage,
+        },
+    };
+    TagManager.dataLayer(gtmArgs);
+};
+
 export const trackPageview = ({ urlPath, pageName }) => {
     const gtmArgs = {
         dataLayer: {
@@ -123,6 +146,54 @@ export const trackSelectTimeSlot = ({ eventLabel, internalPage }) => {
             eventCategory: 'Time slot',
             eventLabel,
             internalPage,
+        },
+    };
+    TagManager.dataLayer(gtmArgs);
+};
+
+export const trackAddReview = ({ eventLabel }) => {
+    const gtmArgs = {
+        dataLayer: {
+            event: 'GA Event',
+            eventAction: 'Conversion',
+            eventCategory: 'Review',
+            eventLabel,
+        },
+    };
+    TagManager.dataLayer(gtmArgs);
+};
+
+export const trackNewsletterSignup = () => {
+    const gtmArgs = {
+        dataLayer: {
+            event: 'GA Event',
+            eventAction: 'Conversion',
+            eventCategory: 'Newsletter',
+        },
+    };
+    TagManager.dataLayer(gtmArgs);
+};
+
+export const trackSearch = ({ eventLabel = '', internalPage = '' }) => {
+    const gtmArgs = {
+        dataLayer: {
+            event: 'GA Event',
+            eventAction: 'Interaction',
+            eventCategory: 'Search',
+            eventLabel,
+            internalPage,
+        },
+    };
+    TagManager.dataLayer(gtmArgs);
+};
+
+export const trackSearchFilter = ({ eventLabel = '' }) => {
+    const gtmArgs = {
+        dataLayer: {
+            event: 'GA Event',
+            eventAction: 'Interaction',
+            eventCategory: 'Search Filter',
+            eventLabel,
         },
     };
     TagManager.dataLayer(gtmArgs);

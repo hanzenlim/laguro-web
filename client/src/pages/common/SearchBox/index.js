@@ -5,6 +5,7 @@ import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 import SearchBoxView from './view';
 import history from '../../../history';
+import { trackSearch } from '../../../util/trackingUtils';
 
 const OFFICE_PATH = '/office/search';
 const DENTIST_PATH = '/dentist/search';
@@ -82,6 +83,13 @@ class SearchBox extends PureComponent {
             currentPath.includes('/add-office')
                 ? OFFICE_PATH
                 : DENTIST_PATH;
+
+        if (trackSearch) {
+            trackSearch({
+                eventLabel: text,
+                internalPage: currentPath === '/' ? 'Home' : 'Header',
+            });
+        }
 
         history.push(`${path}?${queryString.stringify(urlParams)}`);
     };

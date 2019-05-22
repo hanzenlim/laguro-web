@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
 import { Mutation } from 'react-apollo';
 import { adopt } from 'react-adopt';
-import { addEmailToWaitlistMutation } from './queries';
 import _get from 'lodash/get';
+import { addEmailToWaitlistMutation } from './queries';
+import { trackNewsletterSignup } from '../../../util/trackingUtils';
 
 import SubscribeView from './view';
 
@@ -21,6 +22,9 @@ class Newsletter extends PureComponent {
                         });
 
                         if (_get(result, 'data.addEmailToWaitlist.id')) {
+                            if (trackNewsletterSignup) {
+                                trackNewsletterSignup();
+                            }
                             return true;
                         }
                         return false;

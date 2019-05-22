@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { withRouter } from 'react-router-dom';
 import { graphql, compose, withApollo } from 'react-apollo';
-import get from 'lodash/get';
+import _get from 'lodash/get';
 
 import NewReviewView from './view';
 
@@ -12,6 +12,7 @@ import {
 } from '../ReviewContainer/queries';
 import { DENTIST } from '../../../util/strings';
 import { getUser } from '../../../util/authUtils';
+import { trackAddReview } from '../../../util/trackingUtils';
 
 class NewReview extends PureComponent {
     state = {
@@ -34,7 +35,7 @@ class NewReview extends PureComponent {
         const user = getUser();
         const { mutate, match, info } = this.props;
         const { rating } = this.state;
-        const reviewerId = get(user, 'id');
+        const reviewerId = _get(user, 'id');
         const revieweeId = match.params.id;
         const { type } = info;
 
@@ -48,7 +49,7 @@ class NewReview extends PureComponent {
 
         try {
             this.setState({ mutationLoading: true });
-            await mutate({
+            const createReview = await mutate({
                 variables: { input },
                 refetchQueries: [
                     {
@@ -60,6 +61,18 @@ class NewReview extends PureComponent {
                     },
                 ],
             });
+
+            if (_get(createReview, 'data.createReview.id')) {
+                if (trackAddReview) {
+                    trackAddReview({
+                        eventLabel:
+                            type === DENTIST
+                                ? 'Dentist Review'
+                                : 'Office Review',
+                    });
+                }
+            }
+
             this.setErrorMessage('');
             this.setRating(0);
 
