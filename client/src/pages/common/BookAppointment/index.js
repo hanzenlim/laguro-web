@@ -6,7 +6,7 @@ import React, { PureComponent, Component } from 'react';
 import { adopt } from 'react-adopt';
 import { Mutation, Query } from 'react-apollo';
 
-import { Loading } from '../../../components';
+import { Loading, Box } from '../../../components';
 import history from '../../../history';
 import { appointmentClient } from '../../../util/apolloClients';
 import { getUser } from '../../../util/authUtils';
@@ -25,6 +25,17 @@ import {
     getSuggestedDentist,
 } from './queries';
 import BookAppointmentView from './view';
+
+export const wrapperStyles = {
+    mt: [22, '', 44],
+    border: ['none', '', '1px solid'],
+    borderColor: ['', '', 'divider.gray'],
+    boxShadow: ['none', '', 0],
+    pt: [0, '', 16],
+    pr: [0, '', 32],
+    pl: [0, '', 32],
+    pb: 32,
+};
 
 class BookAppointment extends PureComponent {
     constructor(props) {
@@ -407,7 +418,11 @@ class BookAppointmentContainer extends Component {
                         !officeAppointmentSlots &&
                         !isFetchingNewData
                     ) {
-                        return <Loading />;
+                        return (
+                            <Box {...wrapperStyles}>
+                                <Loading />
+                            </Box>
+                        );
                     }
 
                     if (

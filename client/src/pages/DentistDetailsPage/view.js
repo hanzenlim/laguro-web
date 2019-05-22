@@ -16,9 +16,9 @@ const { Desktop, TabletMobile } = Responsive;
 class DentistDetailsPageView extends PureComponent {
     getDentistBundles = (procedures, bundles) => {
         const procedureStringList = procedures.map(p => p.group);
-        const filteredBundles = bundles ? bundles.filter(b =>
-            procedureStringList.includes(b.group)
-        ) : [];
+        const filteredBundles = bundles
+            ? bundles.filter(b => procedureStringList.includes(b.group))
+            : [];
         return filteredBundles;
     };
 
@@ -57,18 +57,7 @@ class DentistDetailsPageView extends PureComponent {
                                 </Desktop>
                             </Box>
                         </Box>
-                        <Box
-                            width="100%"
-                            maxWidth={['100%', '', '505px']}
-                            mt={[22, '', 44]}
-                            border={['none', '', '1px solid']}
-                            borderColor={['', '', 'divider.gray']}
-                            boxShadow={['none', '', 0]}
-                            pt={[0, '', 16]}
-                            pr={[0, '', 32]}
-                            pl={[0, '', 32]}
-                            pb={32}
-                        >
+                        <Box width="100%" maxWidth={['100%', '', '505px']}>
                             <BookAppointment id={id} />
                         </Box>
                     </Flex>

@@ -1,10 +1,11 @@
-import React, { Fragment } from 'react';
-import { Button, Checkbox, Flex, Link, Text } from '../../../components';
+import React from 'react';
+import { Button, Checkbox, Flex, Link, Text, Box } from '../../../components';
 import { TERMS_PAGE_URL } from '../../../util/urls';
 import AppointmentConfirmation from '../AppointmentConfirmation';
 import AvailableLocations from './AvailableLocations';
 import AvailableTimes from './AvailableTimes';
 import SuggestedDentist from './SuggestedDentist';
+import { wrapperStyles } from '.';
 
 const BookAppointmentView = props => {
     const {
@@ -29,7 +30,7 @@ const BookAppointmentView = props => {
         return <AppointmentConfirmation appointmentId={bookedAppointmentId} />;
 
     return (
-        <Fragment>
+        <Box {...wrapperStyles}>
             {isShowingSuggestedDentist && (
                 <SuggestedDentist
                     suggestedDentist={suggestedDentist}
@@ -80,7 +81,7 @@ const BookAppointmentView = props => {
                 </Text> */}
                 Book now
             </Button>
-        </Fragment>
+        </Box>
     );
 };
 

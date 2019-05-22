@@ -219,18 +219,7 @@ class OfficeDetailsPageView extends PureComponent {
                                 width={['100%', '', 460]}
                                 maxWidth={['100%', '', '40%']}
                             >
-                                <Box
-                                    mt={[22, '', 44]}
-                                    border={['none', '', '1px solid']}
-                                    borderColor={['', '', 'divider.gray']}
-                                    boxShadow={['none', '', 0]}
-                                    pt={[0, '', 16]}
-                                    pr={[0, '', 32]}
-                                    pl={[0, '', 32]}
-                                    pb={32}
-                                >
-                                    <BookAppointment id={id} />
-                                </Box>
+                                <BookAppointment id={id} />
                                 <OfficeLocation id={id} />
                             </Box>
                         </Flex>
