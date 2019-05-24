@@ -12,6 +12,7 @@ import {
     Text,
     FilestackImage,
     Responsive,
+    Button,
 } from '../../../components';
 import { withScreenSizes } from '../../../components/Responsive';
 import Bundle from '../Bundle';
@@ -176,11 +177,7 @@ class DentistListingCard extends PureComponent {
         );
 
         return (
-            <Box
-                width="100%"
-                style={{ cursor: 'pointer' }}
-                onClick={onRedirect}
-            >
+            <Box width="100%">
                 <StyledCard>
                     <Flex height="100%" flexDirection={['column', '', 'row']}>
                         <Flex
@@ -190,34 +187,42 @@ class DentistListingCard extends PureComponent {
                             pb={[20, '', 0]}
                         >
                             <Desktop>
-                                <Box
-                                    width={136}
-                                    height={136}
-                                    borderRadius="50%"
-                                    mr={32}
-                                    overflow="hidden"
+                                <Button
+                                    type="ghost"
+                                    onClick={onRedirect}
+                                    height="136px"
                                 >
-                                    {dentist.imageUrl &&
-                                    dentist.imageUrl.includes('filestack') ? (
-                                        <FilestackImage
-                                            handle={getIdFromFilestackUrl(
-                                                dentist.imageUrl
-                                            )}
-                                            alt={`Dr. ${dentist.name}`}
-                                            sizes={{
-                                                fallback: '136px',
-                                            }}
-                                            formats={['webp', 'pjpg']}
-                                        />
-                                    ) : (
-                                        <Image
-                                            src={defaultUserImage}
-                                            alt={`Dr. ${dentist.name}`}
-                                            width="100%"
-                                            height="100%"
-                                        />
-                                    )}
-                                </Box>
+                                    <Box
+                                        width={136}
+                                        height={136}
+                                        borderRadius="50%"
+                                        mr={32}
+                                        overflow="hidden"
+                                    >
+                                        {dentist.imageUrl &&
+                                        dentist.imageUrl.includes(
+                                            'filestack'
+                                        ) ? (
+                                            <FilestackImage
+                                                handle={getIdFromFilestackUrl(
+                                                    dentist.imageUrl
+                                                )}
+                                                alt={`Dr. ${dentist.name}`}
+                                                sizes={{
+                                                    fallback: '136px',
+                                                }}
+                                                formats={['webp', 'pjpg']}
+                                            />
+                                        ) : (
+                                            <Image
+                                                src={defaultUserImage}
+                                                alt={`Dr. ${dentist.name}`}
+                                                width="100%"
+                                                height="100%"
+                                            />
+                                        )}
+                                    </Box>
+                                </Button>
                             </Desktop>
                             <Box
                                 flex={1}

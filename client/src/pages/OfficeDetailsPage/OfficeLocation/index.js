@@ -21,6 +21,7 @@ const OfficeLocation = ({ id }) => (
                 officeName: office.name,
                 imageUrls: office.imageUrls,
                 address: office.location,
+                rating: office.averageRating,
             };
 
             return <OfficeLocationView data={mappedData} />;

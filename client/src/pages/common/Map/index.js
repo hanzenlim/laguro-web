@@ -8,7 +8,6 @@ import isEqual from 'lodash/isEqual';
 
 import { Box, Icon } from '../../../components';
 import MapInfoWindow from '../MapInfoWindow';
-import defaultDentistImage from '../../../components/Image/default_dentist_profile_img_square.svg';
 
 const StyledMarkerContainer = styled(Marker)`
     width: 0;
@@ -193,10 +192,9 @@ class Map extends PureComponent {
                         onClose={this.hidePopup}
                         longitude={this.state.popupInfo.longitude}
                         latitude={this.state.popupInfo.latitude}
-                        image={
-                            this.state.popupInfo.imageUrl || defaultDentistImage
-                        }
+                        image={this.state.popupInfo.image}
                         url={this.state.popupInfo.url || ''}
+                        rating={this.state.popupInfo.rating}
                     />
                 )}
                 {data.map(

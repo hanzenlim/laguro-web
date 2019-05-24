@@ -2,14 +2,8 @@
 import { gql } from 'apollo-boost';
 
 export const GET_DENTIST_PINCODE_QUERY = gql`
-    query($id: String!) {
-        getUser(id: $id) {
-            id
-            dentist {
-                id
-                posPincode
-            }
-        }
+    query($dentistId: String!) {
+        getDentistPosPincode(dentistId: $dentistId) 
     }
 `;
 

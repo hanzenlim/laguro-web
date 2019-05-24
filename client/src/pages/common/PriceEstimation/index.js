@@ -35,11 +35,43 @@ class PriceEstimation extends PureComponent {
         };
     }
 
-    handleSelectProcedure = procedureIndex => {
+    getCurrentBundle = selectedProcedure => {
         const { bundles } = this.props;
-        const selectedProcedure = bundles[procedureIndex];
 
-        this.setState({ selectedProcedure, procedureIndex });
+        if (!_isEmpty(bundles)) {
+            const filteredBundleElement = bundles.filter(
+                item =>
+                    item.name.toLowerCase() === selectedProcedure.toLowerCase()
+            );
+
+            if (!_isEmpty(filteredBundleElement)) {
+                return filteredBundleElement[0];
+            }
+
+            return null;
+        }
+
+        return null;
+    };
+
+    getIndexOfBundle = selectedProcedure => {
+        const { bundles } = this.props;
+
+        const index = bundles.findIndex(
+            bundle => bundle.name === selectedProcedure
+        );
+
+        return index;
+    };
+
+    handleSelectProcedure = args => {
+        const { key = '' } = args;
+        const selectedProcedure = this.getCurrentBundle(key);
+
+        this.setState({
+            selectedProcedure,
+            procedureIndex: this.getIndexOfBundle(key),
+        });
 
         if (trackSelectProcedure && !_isEmpty(selectedProcedure)) {
             trackSelectProcedure({

@@ -30,7 +30,7 @@ class SearchResultsList extends PureComponent {
 
         if (
             this.props.total > ITEMS_COUNT &&
-            !(this.urlParams.limit >= this.props.total)
+            !(this.urlParams.limit > this.props.total)
         ) {
             this.setState({ hasShowMore: true });
         }
@@ -91,23 +91,20 @@ class SearchResultsList extends PureComponent {
                 )}
 
                 <Grid
-                    gridColumnGap="17px"
-                    gridRowGap={[10, 11, 13]}
-                    gridTemplateColumns={
-                        // eslint-disable-next-line
-                        showMap && isOffice
+                    gridColumnGap={10}
+                    gridRowGap={isOffice ? [20, '', 10] : [10, '', 13]}
+                    gridTemplateColumns={[
+                        'none',
+                        ...(isOffice && showMap
                             ? [
-                                  'repeat(auto-fit, minmax(300px, 1fr))',
-                                  'repeat(auto-fit, minmax(200px, 1fr))',
+                                  'repeat(2, 1fr)',
+                                  'repeat(2, minmax(200px, 1fr))',
                               ]
-                            : isOffice
-                            ? [
-                                  'repeat(auto-fit, minmax(300px, 1fr))',
-                                  'repeat(auto-fit, minmax(250px, 1fr))',
-                                  '1fr',
-                              ]
-                            : ['1fr']
-                    }
+                            : []),
+                        ...(isOffice && !showMap
+                            ? ['repeat(2, 1fr)', 'none']
+                            : []),
+                    ]}
                 >
                     {data.length
                         ? data.slice(0, this.state.limit).map(item => (

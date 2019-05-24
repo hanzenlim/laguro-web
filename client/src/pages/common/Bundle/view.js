@@ -7,10 +7,8 @@ import styled, { css } from 'styled-components';
 import { getProcedureColor } from '../../../util/dentistUtils';
 import { getInsuranceText } from '../../../util/insuranceUtil';
 import { Button, Flex, Text, Responsive } from '../../../components';
-import { getUser } from '../../../util/authUtils';
-import emitter from '../../../util/emitter';
-import history from '../../../history';
-import { trackCheckOutOfPocketAttempt } from '../../../util/trackingUtils';
+
+import SelectProcedureModal from '../SelectProcedureModal';
 
 const { Desktop, Mobile } = Responsive;
 
@@ -43,7 +41,6 @@ const StyledButton = styled(Button)`
 `;
 
 const BundleView = ({
-    menu,
     isNullSelectedIndex,
     selectedIndex,
     selectedProcedure,
@@ -52,8 +49,13 @@ const BundleView = ({
     price,
     insurance,
     setInitialInsurance,
-    dentistId,
     selectedProcedureGroup,
+    onLearnMore,
+    onCheckOutOfPocket,
+    procedureList = [],
+    isModalVisible = false,
+    onToggleModal = () => {},
+    onSelectBundle = () => {},
 }) => (
     <Flex
         height="100%"
@@ -64,6 +66,12 @@ const BundleView = ({
         position="relative"
         pl={['none', '18px']}
     >
+        <SelectProcedureModal
+            procedureList={procedureList}
+            isModalVisible={isModalVisible}
+            onToggleModal={onToggleModal}
+            onSelectBundle={onSelectBundle}
+        />
         <Text
             maxWidth="200px"
             fontSize={selectedProcedure ? 0 : [0, '', 3]}
@@ -75,35 +83,31 @@ const BundleView = ({
         >
             Check out the price estimation for:
         </Text>
-        <Dropdown overlay={menu} trigger={['click']}>
-            <StyledButton
-                type="primary"
-                ghost={isNullSelectedIndex}
-                width={190}
-                height="30px"
-                borderColor="#3481f8"
-                fontSize={0}
-                fontWeight="medium"
-                onClick={e => {
-                    e.stopPropagation();
+        <StyledButton
+            type="primary"
+            ghost={isNullSelectedIndex}
+            width={190}
+            height="30px"
+            borderColor="#3481f8"
+            fontSize={0}
+            fontWeight="medium"
+            onClick={onToggleModal}
+            color={
+                !isNullSelectedIndex
+                    ? 'text.white'
+                    : TAG_COLORS[selectedIndex % 4]
+            }
+            bg={getProcedureColor(selectedProcedureGroup)}
+        >
+            {selectedProcedure || 'Select procedure'}
+            <Icon
+                type="down"
+                style={{
+                    color: isNullSelectedIndex ? '#3481f8' : '#fff',
+                    background: 'transparent',
                 }}
-                color={
-                    !isNullSelectedIndex
-                        ? 'text.white'
-                        : TAG_COLORS[selectedIndex % 4]
-                }
-                bg={getProcedureColor(selectedProcedureGroup)}
-            >
-                {selectedProcedure || 'Select procedure'}
-                <Icon
-                    type="down"
-                    style={{
-                        color: isNullSelectedIndex ? '#3481f8' : '#fff',
-                        background: 'transparent',
-                    }}
-                />
-            </StyledButton>
-        </Dropdown>
+            />
+        </StyledButton>
         {selectedProcedure && (
             <Fragment>
                 <Text
@@ -209,25 +213,7 @@ const BundleView = ({
                     mt={!selectedInsurance ? 15 : 30}
                     borderRadius="2px"
                     textAlign="center"
-                    onClick={e => {
-                        e.stopPropagation();
-
-                        if (trackCheckOutOfPocketAttempt) {
-                            trackCheckOutOfPocketAttempt({
-                                internalPage: 'search',
-                            });
-                        }
-
-                        const user = getUser();
-
-                        if (user) {
-                            history.push(`/dentist/${dentistId}`);
-                        } else {
-                            emitter.emit('loginModal', {
-                                redirectPath: `/dentist/${dentistId}`,
-                            });
-                        }
-                    }}
+                    onClick={onCheckOutOfPocket}
                 >
                     <Text
                         bg="background.blue"
@@ -250,26 +236,30 @@ const BundleView = ({
         )}
         <Mobile>
             {selectedProcedure && (
-                <Text
-                    mt={12}
-                    color="text.gray"
-                    fontSize={0}
-                    letterSpacing={-0.3}
-                >
-                    Learn more about price estimations
-                </Text>
+                <Button type="ghost" height="auto" onClick={onLearnMore}>
+                    <Text
+                        mt={12}
+                        color="text.gray"
+                        fontSize={0}
+                        letterSpacing={-0.3}
+                    >
+                        Learn more about price estimations
+                    </Text>
+                </Button>
             )}
         </Mobile>
         <Desktop>
-            <Text
+            <Button
+                type="ghost"
+                height="auto"
+                onClick={onLearnMore}
                 position="absolute"
                 bottom="7px"
-                color="text.gray"
-                fontSize={0}
-                letterSpacing={-0.3}
             >
-                Learn more about price estimations
-            </Text>
+                <Text color="text.gray" fontSize={0} letterSpacing={-0.3}>
+                    Learn more about price estimations
+                </Text>
+            </Button>
         </Desktop>
     </Flex>
 );

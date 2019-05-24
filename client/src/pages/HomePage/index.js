@@ -22,6 +22,22 @@ class HomePage extends Component {
                         name="description"
                         content="Laguro is a dental care platform matching patients with the right dentist anytime, anywhere"
                     />
+                    <script
+                        type="application/ld+json"
+                        dangerouslySetInnerHTML={{
+                            __html: JSON.stringify({
+                                '@context': 'http://schema.org',
+                                '@type': 'WebSite',
+                                url: 'https://www.laguro.com/',
+                                potentialAction: {
+                                    '@type': 'SearchAction',
+                                    target:
+                                        'https://www.laguro.com/dentist/search?text={query}',
+                                    query: 'Dentist',
+                                },
+                            }),
+                        }}
+                    />
                 </Helmet>
                 <HomePageView />
                 <Newsletter />

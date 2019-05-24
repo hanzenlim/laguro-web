@@ -13,13 +13,7 @@ import { getIdFromFilestackUrl } from '../../util/imageUtil';
 import theme from '../../components/theme';
 
 const OfficeCard = props => {
-    const {
-        image,
-        name,
-        url,
-        rating,
-        address
-    } = props;
+    const { image, name, url, rating, address } = props;
 
     return (
         <Box
@@ -65,13 +59,18 @@ const OfficeCard = props => {
                 >
                     <Text
                         fontSize={[1, '', 3]}
-                        lineHeight="34px"
+                        lineHeight="18px"
+                        py={8}
                         letterSpacing={['-0.35px', '', '-0.46px']}
                     >
                         {name}
                     </Text>
                     <Box mb={10}>
-                        <Rating disabled fontSize={['16px', '', '24px']} value={rating} />
+                        <Rating
+                            disabled
+                            fontSize={['16px', '', '24px']}
+                            value={rating}
+                        />
                     </Box>
                     <Text
                         fontSize={[0, '', 2]}

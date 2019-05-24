@@ -1,6 +1,7 @@
 import moment from 'moment-timezone';
 import React, { PureComponent } from 'react';
 import _isEqual from 'lodash/isEqual';
+import _isEmpty from 'lodash/isEmpty';
 import qs from 'query-string';
 
 import AvailableTimesView from './view';
@@ -21,12 +22,43 @@ class AvailableTimes extends PureComponent {
         };
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         const { timeSlotList } = this.props;
         const urlParams = qs.parse(history.location.search);
 
         if (urlParams && urlParams.startTime) {
-            this.handleSelectTimeSlot(urlParams.startTime);
+            const time = urlParams.startTime;
+            this.handleSelectTimeSlot(time);
+
+            let numberOfCalls = null;
+
+            if (!_isEmpty(timeSlotList)) {
+                timeSlotList.forEach(item => {
+                    const itemIndex = item.time.findIndex(
+                        strTime => strTime.toString() === time.toString()
+                    );
+
+                    if (itemIndex > this.state.timeCount) {
+                        const possibleNumberOfCalls = Math.floor(
+                            itemIndex / this.state.timeCount
+                        );
+
+                        if (possibleNumberOfCalls > numberOfCalls) {
+                            numberOfCalls = possibleNumberOfCalls;
+                        }
+                    }
+                });
+            }
+
+            if (numberOfCalls > 0) {
+                const callArrays = new Array(numberOfCalls);
+
+                callArrays.fill(this.handleShowNextTimeSlots);
+
+                for (const callShowNextTimeSlots of callArrays) {
+                    await callShowNextTimeSlots();
+                }
+            }
         }
 
         if (timeSlotList && timeSlotList.length !== 0) {

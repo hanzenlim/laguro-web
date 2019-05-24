@@ -2,15 +2,26 @@ import React from 'react';
 import { Popup } from 'react-map-gl';
 import styled from 'styled-components';
 
+import {
+    Box,
+    Text,
+    Image,
+    Link,
+    Rating,
+    FilestackImage,
+} from '../../../components';
+import { getIdFromFilestackUrl } from '../../../util/imageUtil';
 import officePlaceholder from '../../../components/Image/office-placeholder.png';
-import { Flex, Box, Text, Image, Truncate, Link } from '../../../components';
-import { setImageSizeToUrl } from '../../../util/imageUtil';
 
 const StyledPopup = styled(Popup)`
     z-index: ${props => props.theme.zIndex.overlay};
 
     && .mapboxgl-popup-content {
-        padding: ${props => props.theme.space[8]};
+        padding: 0;
+    }
+
+    && .mapboxgl-popup-close-button {
+        background-color: ${props => props.theme.colors.background.white};
     }
 `;
 
@@ -20,47 +31,59 @@ const MapInfoWindow = props => {
         longitude,
         latitude,
         title,
-        subtitle,
         body,
         image,
         url,
+        rating,
         isLinked,
     } = props;
 
     const Content = () => (
-        <Flex alignItems="center">
-            <Image
-                src={setImageSizeToUrl(image || officePlaceholder, 60)}
-                alt="dentist/office image"
-                borderRadius="50%"
-                height={60}
-                width={60}
-                objectFit="cover"
-            />
-            <Box width="160px" ml={5}>
+        <Box width={160}>
+            <Box height={90}>
+                {image && image.includes('filestack') ? (
+                    <FilestackImage
+                        handle={getIdFromFilestackUrl(image)}
+                        alt={title}
+                        sizes={{
+                            fallback: '160px',
+                        }}
+                        formats={['webp', 'pjpg']}
+                    />
+                ) : (
+                    <Image
+                        src={officePlaceholder}
+                        alt={title}
+                        style={{
+                            height: '100%',
+                            width: '100%',
+                            objectFit: 'cover',
+                        }}
+                    />
+                )}
+            </Box>
+            <Box px={12} pt={2} pb={28} textAlign="center">
                 <Text
-                    fontSize={3}
-                    lineHeight="1.29"
-                    color="text.black"
-                    letterSpacing="-0.8px"
-                >
-                    <Truncate lines={1}>{title}</Truncate>
-                </Text>
-
-                <Text
-                    fontWeight="bold"
-                    fontStyle="italic"
                     fontSize={1}
-                    color="text.black"
-                    lineHeight="1"
+                    lineHeight="18px"
+                    py={8}
+                    letterSpacing="-0.35px"
                 >
-                    <Truncate lines={1}>{subtitle}</Truncate>
+                    {title}
                 </Text>
-                <Text color="text.black" lineHeight="1.29" fontSize={1}>
-                    <Truncate lines={3}>{body}</Truncate>
+                <Box mb={10}>
+                    <Rating disabled fontSize="16px" value={Number(rating)} />
+                </Box>
+                <Text
+                    fontSize={0}
+                    color="text.lightGray"
+                    lineHeight="14px"
+                    letterSpacing="0px"
+                >
+                    {body}
                 </Text>
             </Box>
-        </Flex>
+        </Box>
     );
 
     return (

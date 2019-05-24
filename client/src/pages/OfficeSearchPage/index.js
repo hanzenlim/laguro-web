@@ -8,9 +8,10 @@ import history from '../../history';
 import esClient from '../../util/esClient';
 import { OFFICES } from '../../util/strings';
 import { Loading, Box } from '../../components';
+import { withScreenSizes } from '../../components/Responsive';
 import { getMyPosition, DEFAULT_LOCATION } from '../../util/navigatorUtil';
 import { numMaxContainerWidth } from '../../components/theme';
-import { formatAddress } from '../../util/styleUtil';
+import { trimAddress } from '../../util/styleUtil';
 
 const PAGE_SIZE = 14;
 const DISTANCE = '75km';
@@ -25,7 +26,7 @@ class OfficeSearchPage extends PureComponent {
             data: [],
             total: 0,
             loading: true,
-            showMap: false,
+            showMap: this.props.desktopOnly,
             defaultPosition: DEFAULT_LOCATION,
             mapDimensions: {
                 width,
@@ -67,15 +68,19 @@ class OfficeSearchPage extends PureComponent {
     }
 
     componentDidUpdate = async prevProps => {
-        if (prevProps.location.search !== this.props.location.search) {
-            const newUrlParams = queryString.parse(this.props.location.search);
+        const { location, tabletMobileOnly } = this.props;
+        const { showMap } = this.state;
 
-            // Do not set loading to true if user clicked show more
-            if (newUrlParams.limit) return;
+        if (prevProps.location.search !== location.search) {
+            const newUrlParams = queryString.parse(location.search);
 
-            this.setState(() => ({ loading: true }));
+            if (!newUrlParams.limit) this.setState(() => ({ loading: true }));
             await this.updateSearchResults();
-            this.setState(() => ({ loading: false }));
+            if (!newUrlParams.limit) this.setState(() => ({ loading: false }));
+        }
+
+        if (tabletMobileOnly && showMap) {
+            this.setState({ showMap: false });
         }
     };
 
@@ -97,13 +102,13 @@ class OfficeSearchPage extends PureComponent {
         const windowInnerHeight = window.innerHeight;
         const margins = windowInnerWidth - numMaxContainerWidth;
         const verticalOffset = 180;
-        const horizontalOffset = 41.5;
+        const horizontalOffset = 18;
 
         return {
             width:
                 windowInnerWidth < numMaxContainerWidth
-                    ? windowInnerWidth / 2 - horizontalOffset
-                    : (windowInnerWidth - margins) / 2 - horizontalOffset,
+                    ? windowInnerWidth / 2.22 - horizontalOffset
+                    : (windowInnerWidth - margins) / 2.22 - horizontalOffset,
             height: windowInnerHeight - verticalOffset,
         };
     };
@@ -143,10 +148,7 @@ class OfficeSearchPage extends PureComponent {
                     title: source.name,
                     rating: source.averageRating,
                     image: source.imageUrls[0],
-                    address: formatAddress(
-                        get(source, 'location.name'),
-                        get(source, 'location.addressDetails')
-                    ),
+                    address: trimAddress(get(source, 'location.name')),
                     longitude: get(source, 'location.geoPoint.lon'),
                     latitude: get(source, 'location.geoPoint.lat'),
                     subtitle: source.description,
@@ -284,4 +286,4 @@ class OfficeSearchPage extends PureComponent {
     }
 }
 
-export default OfficeSearchPage;
+export default withScreenSizes(OfficeSearchPage);

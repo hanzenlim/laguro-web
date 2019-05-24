@@ -4,6 +4,7 @@ import _get from 'lodash/get';
 
 import { Box, Text } from '../../../components';
 import { withScreenSizes } from '../../../components/Responsive';
+import { trimAddress } from '../../../util/styleUtil';
 
 const Map = Loadable({
     loader: () => import('../../common/Map' /* webpackChunkName: "map" */),
@@ -62,7 +63,9 @@ class OfficeLocationView extends PureComponent {
                                 {
                                     title: data.officeName,
                                     image: data.imageUrls[0],
-                                    address: data.address.name,
+                                    address: trimAddress(
+                                        _get(data, 'address.name')
+                                    ),
                                     latitude: _get(
                                         data,
                                         'address.geoPoint.lat'
@@ -71,6 +74,7 @@ class OfficeLocationView extends PureComponent {
                                         data,
                                         'address.geoPoint.lon'
                                     ),
+                                    rating: data.rating,
                                 },
                             ]}
                         />

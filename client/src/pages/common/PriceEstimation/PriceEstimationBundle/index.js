@@ -8,6 +8,8 @@ import { Button, Flex, Text, Box } from '../../../../components';
 import { getProcedureColor } from '../../../../util/dentistUtils';
 import { getInsuranceText } from '../../../../util/insuranceUtil';
 
+import SelectProcedureModal from '../../SelectProcedureModal';
+
 const Item = Menu.Item;
 const StyledButton = styled(Button)`
     && {
@@ -33,8 +35,18 @@ const StyledButton = styled(Button)`
 class PriceEstimationBundle extends PureComponent {
     constructor(props) {
         super(props);
-        this.state = { selectedIndex: 0 };
+        this.state = { selectedIndex: 0, isModalVisible: false };
     }
+
+    handleToggleModal = () => {
+        this.setState({ isModalVisible: !this.state.isModalVisible });
+    };
+
+    handleSelectProcedure = args => {
+        const { onSelectProcedure = () => {} } = this.props;
+        this.setState({ isModalVisible: !this.state.isModalVisible });
+        onSelectProcedure(args);
+    };
 
     render() {
         const {
@@ -51,26 +63,6 @@ class PriceEstimationBundle extends PureComponent {
         } = this.props;
 
         const { selectedIndex } = this.state;
-
-        const menu = (
-            <Menu
-                onClick={({ key, item, domEvent }) => {
-                    domEvent.stopPropagation();
-                    this.setState({
-                        selectedProcedure: key,
-                        selectedIndex: item.props.index,
-                    });
-
-                    if (this.props.onSelectProcedure) {
-                        this.props.onSelectProcedure(item.props.index);
-                    }
-                }}
-            >
-                {procedures.map(procedure => (
-                    <Item key={procedure.name}>{procedure.name}</Item>
-                ))}
-            </Menu>
-        );
 
         const insuranceMenu = (
             <Menu
@@ -113,38 +105,40 @@ class PriceEstimationBundle extends PureComponent {
                     Check out the price estimation for:
                 </Text>
                 <Box height={8} />
-                <Dropdown overlay={menu}>
-                    <StyledButton
-                        type="primary"
-                        ghost={isNullSelectedIndex}
-                        height="30px"
-                        borderColor="#3481f8"
-                        fontSize="12px"
-                        fontWeight="500"
-                        onClick={e => {
-                            e.stopPropagation();
+                <SelectProcedureModal
+                    procedureList={procedures}
+                    isModalVisible={this.state.isModalVisible}
+                    onToggleModal={this.handleToggleModal}
+                    onSelectBundle={this.handleSelectProcedure}
+                />
+                <StyledButton
+                    type="primary"
+                    ghost={isNullSelectedIndex}
+                    height="30px"
+                    borderColor="#3481f8"
+                    fontSize="12px"
+                    fontWeight="500"
+                    onClick={this.handleToggleModal}
+                    color={
+                        !isNullSelectedIndex
+                            ? 'text.white'
+                            : getProcedureColor(selectedProcedure)
+                    }
+                    bg={
+                        !isNullSelectedIndex
+                            ? getProcedureColor(selectedProcedure)
+                            : 'background.white'
+                    }
+                >
+                    {selectedProcedureName || 'Select procedure'}
+                    <Icon
+                        type="down"
+                        style={{
+                            color: isNullSelectedIndex ? '#3481f8' : '#fff',
+                            background: 'transparent',
                         }}
-                        color={
-                            !isNullSelectedIndex
-                                ? 'text.white'
-                                : getProcedureColor(selectedProcedure)
-                        }
-                        bg={
-                            !isNullSelectedIndex
-                                ? getProcedureColor(selectedProcedure)
-                                : 'background.white'
-                        }
-                    >
-                        {selectedProcedureName || 'Select procedure'}
-                        <Icon
-                            type="down"
-                            style={{
-                                color: isNullSelectedIndex ? '#3481f8' : '#fff',
-                                background: 'transparent',
-                            }}
-                        />
-                    </StyledButton>
-                </Dropdown>
+                    />
+                </StyledButton>
                 <Box height={14} />
                 <Text
                     opacity={0.5}
@@ -310,14 +304,6 @@ class PriceEstimationBundle extends PureComponent {
                         </Text>
                     )}
                 </Button>
-                <Text
-                    mt="5px"
-                    color="#9b9b9b"
-                    fontSize="10px"
-                    letterSpacing={-0.3}
-                >
-                    Learn more about price estimations
-                </Text>
             </Flex>
         );
     }

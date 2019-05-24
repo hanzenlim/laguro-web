@@ -63,3 +63,12 @@ export const formatAddress = (addressString, addressDetail) => {
         addressDetail ? `${addressDetail}, ` : ''
     }${addressElements.slice(1)}`;
 };
+
+export const trimAddress = (address = '') => {
+    const formattedAddress = address
+        .split(', ')
+        .slice(1, 3)
+        .join(', ')
+        .replace(/[0-9]/g, '');
+    return formattedAddress;
+};

@@ -66,7 +66,6 @@ const StyledCarousel = styled(SlickCarousel)`
     }
 
     && button {
-        z-index: ${props => props.theme.zIndex.overlay};
         top: 50%;
     }
 
@@ -121,9 +120,10 @@ class OfficeDetailsPageView extends PureComponent {
             <Flex flexDirection="column" height="100%">
                 {_get(imageUrls, 'length') > 0 ? (
                     <Box
-                        position={isCarouselFullScreen ? 'fixed' : 'static'}
+                        {...(isCarouselFullScreen
+                            ? { position: 'fixed', zIndex: '9999' }
+                            : {})}
                         top={0}
-                        zIndex="9999"
                         height={isCarouselFullScreen ? '100vh' : 'auto'}
                         width="100%"
                         mb={[8, '', 66]}

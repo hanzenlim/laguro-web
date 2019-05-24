@@ -37,7 +37,7 @@ class DentistPosPinCode extends PureComponent {
                 query={GET_DENTIST_PINCODE_QUERY}
                 fetchPolicy="network-only"
                 variables={{
-                    id: this.userId,
+                    dentistId: this.dentistId,
                 }}
             >
                 {({
@@ -46,6 +46,7 @@ class DentistPosPinCode extends PureComponent {
                     data,
                     refetch,
                 }) => {
+                    
                     if (loading) {
                         return <Loading />
                     }
@@ -53,12 +54,11 @@ class DentistPosPinCode extends PureComponent {
                     if (error) {
                         return <GeneralErrorPage />;
                     }
-
-                    const pinCode = _get(data, 'getUser.dentist.posPincode');
+                    const pinCode = _get(data, 'getDentistPosPincode');
 
                     return (
                         <DentistPosPinCodeView pinCode={pinCode} onRenewPincode={() => this.onRenewPincode(refetch)} />
-                    )
+                    )  
                 }}
             </Query>
         )

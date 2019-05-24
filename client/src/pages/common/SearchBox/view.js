@@ -49,7 +49,7 @@ const SearchBox = props => {
                     withDentists={true}
                 />
             </Box>
-            <Box position="absolute" right="0" zIndex="9999">
+            <Box position="absolute" right="0" zIndex="100">
                 {tabletMobileOnly && hasFilter ? (
                     <Button
                         onClick={toggleFilter}

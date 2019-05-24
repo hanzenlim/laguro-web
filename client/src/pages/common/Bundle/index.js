@@ -2,10 +2,14 @@ import React, { Component } from 'react';
 import { Menu } from 'antd';
 import _isEmpty from 'lodash/isEmpty';
 import { getInsuranceText } from '../../../util/insuranceUtil';
+import history from '../../../history';
+import { getUser } from '../../../util/authUtils';
+import emitter from '../../../util/emitter';
 import {
     trackSelectProcedure,
     trackSelectInsurance,
 } from '../../../util/trackingUtils';
+import { trackCheckOutOfPocketAttempt } from '../../../util/trackingUtils';
 
 import BundleView from './view';
 
@@ -18,6 +22,7 @@ class Bundle extends Component {
         selectedInsurance: null,
         price: null,
         insuranceList: [],
+        isModalVisible: false,
     };
 
     getCurrentBundle = selectedProcedure => {
@@ -55,6 +60,7 @@ class Bundle extends Component {
         const bundlesByDentist = bundles.filter(b =>
             procedures.includes(b.group)
         );
+
         return bundlesByDentist;
     };
 
@@ -69,11 +75,20 @@ class Bundle extends Component {
         return null;
     };
 
-    onSelectBundle = ({ key, item, domEvent }) => {
-        domEvent.stopPropagation();
+    getIndexOfBundle = selectedProcedure => {
+        const bundles = this.getProcedureList();
 
+        const index = bundles.findIndex(
+            bundle => bundle.name === selectedProcedure
+        );
+
+        return index;
+    };
+
+    onSelectBundle = ({ key }) => {
         const { selectedInsurance } = this.state;
         const currentBundle = this.getCurrentBundle(key);
+        const selectedIndex = this.getIndexOfBundle(key);
 
         let insurance = null;
         if (
@@ -88,10 +103,11 @@ class Bundle extends Component {
 
         this.setState(() => ({
             selectedProcedure: key,
-            selectedIndex: item.props.index,
+            selectedIndex,
             selectedInsurance: insurance,
             price: currentBundle.price,
             insuranceList: currentBundle.insuranceList,
+            isModalVisible: false,
         }));
 
         if (trackSelectProcedure && !_isEmpty(currentBundle)) {
@@ -117,6 +133,47 @@ class Bundle extends Component {
         }
     };
 
+    getDentistUrl = () => {
+        const { dentistId } = this.props;
+
+        return `/dentist/${dentistId}?scrollTo=priceEstimation`;
+    };
+
+    onLearnMore = e => {
+        const dentistUrl = this.getDentistUrl();
+
+        if (dentistUrl) {
+            history.push(dentistUrl);
+        }
+
+        e.stopPropagation();
+    };
+
+    onCheckOutOfPocket = e => {
+        e.stopPropagation();
+
+        if (trackCheckOutOfPocketAttempt) {
+            trackCheckOutOfPocketAttempt({
+                internalPage: 'search',
+            });
+        }
+
+        const user = getUser();
+        const dentistUrl = this.getDentistUrl();
+
+        if (user) {
+            history.push(dentistUrl);
+        } else {
+            emitter.emit('loginModal', {
+                redirectPath: dentistUrl,
+            });
+        }
+    };
+
+    handleToggleModal = () => {
+        this.setState({ isModalVisible: !this.state.isModalVisible });
+    };
+
     render() {
         const { dentistId } = this.props;
         const {
@@ -125,14 +182,6 @@ class Bundle extends Component {
             selectedInsurance,
             insuranceList,
         } = this.state;
-
-        const menu = (
-            <Menu onClick={this.onSelectBundle}>
-                {this.getProcedureList().map(procedure => (
-                    <Item key={procedure.name}>{procedure.name}</Item>
-                ))}
-            </Menu>
-        );
 
         const insuranceMenu = (
             <Menu onClick={this.onSelectInsurance}>
@@ -146,13 +195,19 @@ class Bundle extends Component {
 
         return (
             <BundleView
-                menu={menu}
+                isModalVisible={this.state.isModalVisible}
+                isProceduresListShown={this.state.isProceduresListShown}
+                procedureList={this.getProcedureList()}
+                onLearnMore={this.onLearnMore}
+                onCheckOutOfPocket={this.onCheckOutOfPocket}
                 isNullSelectedIndex={isNullSelectedIndex}
                 selectedIndex={selectedIndex}
                 selectedProcedure={selectedProcedure}
                 selectedProcedureGroup={this.getProcedureGroupByName(
                     selectedProcedure
                 )}
+                onSelectBundle={this.onSelectBundle}
+                onToggleModal={this.handleToggleModal}
                 selectedInsurance={selectedInsurance}
                 insuranceMenu={insuranceMenu}
                 price={this.state.price}

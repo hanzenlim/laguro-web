@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import { Box, Grid, Text } from '../../../components';
 import OfficeCard from '../OfficeCard';
-import { formatAddress } from '../../../util/styleUtil';
+import { trimAddress } from '../../../util/styleUtil';
 import officePlaceholder from '../../../components/Image/office-placeholder.png';
 
 const FeaturedOfficesView = props => {
@@ -24,15 +24,15 @@ const FeaturedOfficesView = props => {
                 Featured offices
             </Text>
 
-            <Grid gridTemplateColumns={["1fr 1fr", "", "1fr 1fr 1fr 1fr"]} gridColumnGap="4px">
+            <Grid
+                gridTemplateColumns={['1fr 1fr', '', '1fr 1fr 1fr 1fr']}
+                gridColumnGap="4px"
+            >
                 {featuredOffices.map(item => (
                     <OfficeCard
                         key={item.id}
                         name={item.name}
-                        address={formatAddress(
-                            _get(item, 'location.name'),
-                            _get(item, 'location.addressDetails')
-                        )}
+                        address={trimAddress(_get(item, 'location.name'))}
                         rating={item.averageRating}
                         image={item.imageUrls[0] || officePlaceholder}
                         url={`/office/${item.id}`}

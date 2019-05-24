@@ -18,7 +18,7 @@ const Map = Loadable({
     loading: () => null,
 });
 
-const { Desktop } = Responsive;
+const { Desktop, TabletMobile } = Responsive;
 
 const OfficeSearchPageView = props => {
     const {
@@ -33,20 +33,16 @@ const OfficeSearchPageView = props => {
     } = props;
 
     return (
-        <Box height="100%">
-            <Container pt={[48, '', total === 0 ? 110 : 160]}>
-                <Desktop>
-                    {matches =>
-                        matches ? null : (
-                            <Box mb={20} mt={[24, '', 0]}>
-                                <SearchBox
-                                    size="large"
-                                    placeholder="Search for dentists by name, location, or specialty"
-                                />
-                            </Box>
-                        )
-                    }
-                </Desktop>
+        <Box height={['', '', '100vh']}>
+            <Container pt={[48, '', total === 0 ? 110 : 169]}>
+                <TabletMobile>
+                    <Box mb={20} mt={[24, '', 0]}>
+                        <SearchBox
+                            size="large"
+                            placeholder="Search for dentists by name, location, or specialty"
+                        />
+                    </Box>
+                </TabletMobile>
                 {total > 0 && (
                     <Flex
                         pb={16}
@@ -108,7 +104,10 @@ const OfficeSearchPageView = props => {
                                     >
                                         Map View
                                     </Text>
-                                    <Switch onClick={toggleMap} />
+                                    <Switch
+                                        onClick={toggleMap}
+                                        checked={showMap}
+                                    />
                                 </Flex>
                             </Flex>
                         </Container>
@@ -116,15 +115,22 @@ const OfficeSearchPageView = props => {
                 )}
                 <Box pt={0}>
                     <Grid
-                        gridColumnGap={['', '', '33px']}
+                        gridColumnGap={['', '', '18px']}
                         gridTemplateColumns={[
                             '1fr',
                             '',
-                            `${total > 0 && showMap ? '1fr 1fr' : ''}`,
+                            `${
+                                total > 0 && showMap
+                                    ? 'fit-content(55%) fit-content(45%)'
+                                    : ''
+                            }`,
                         ]}
                     >
                         <Box>
-                            <Box height={['auto', '', 'calc(100vh - 220px)']}>
+                            <Box
+                                height={['auto', '', 'calc(100vh - 180px)']}
+                                overflow={['', '', 'auto']}
+                            >
                                 <SearchResultsList
                                     data={data}
                                     total={total}
@@ -137,10 +143,7 @@ const OfficeSearchPageView = props => {
 
                         {total > 0 && showMap ? (
                             <Desktop>
-                                <Box
-                                    position="fixed"
-                                    transform="translateX(calc(100% + 34px))"
-                                >
+                                <Box>
                                     <Map
                                         withLinkedMarkers
                                         data={data}
