@@ -35,6 +35,7 @@ const StyledForm = styled(Form)`
 const StyledButton = styled(Button)`
     && {
         border: none;
+        min-width: 94px;
 
         :hover,
         :focus {
@@ -82,7 +83,6 @@ const NewsletterView = props => (
                                 <StyledButton
                                     htmlType="submit"
                                     height="50px"
-                                    minWidth="94px"
                                     loading={props.isSubmitting}
                                 >
                                     Join

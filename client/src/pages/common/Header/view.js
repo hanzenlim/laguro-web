@@ -4,8 +4,8 @@ import Intercom from 'react-intercom';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import SearchBox from '../SearchBox';
-import { Icon, Responsive, Link } from '../../../components/';
-import { Flex, Container } from '@laguro/basic-components';
+import { Icon, Responsive, Link, Flex } from '../../../components/';
+import { Container } from '@laguro/basic-components';
 import LoginModal from '../Modals/LoginModal';
 import { intercomKey } from '../../../config/keys';
 import { DentistLink, HostLink } from './Links';
@@ -30,7 +30,7 @@ import ProfileButton from './ProfileButton';
 const { Desktop, withScreenSizes } = Responsive;
 
 const StyledFlex = styled(Flex)`
-    box-shadow: ${props => props.boxShadow};
+    box-shadow: ${props => (props.boxShadow ? props.boxShadow : 'none')};
 `;
 
 const IntercomContainer = ({ auth, pathname }) => {
