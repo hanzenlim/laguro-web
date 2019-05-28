@@ -152,10 +152,11 @@ const Menus = props => {
         });
     }
 
-    const renderDivider = ({ text, isLong }) => {
+    const renderDivider = ({ text, isLong, key }) => {
         const mobileTextComponentHeight = _isEmpty(text) ? 10 : 30;
         const textComponent = (
             <Text
+                key={key}
                 fontWeight={['medium', '', 'bold']}
                 fontSize={[0, '', 10]}
                 px={[menuPx, '', 0]}
@@ -172,6 +173,7 @@ const Menus = props => {
 
         return desktopOnly ? (
             <div
+                key={key}
                 style={{
                     paddingLeft: isLong ? 0 : menuPx,
                     paddingRight: isLong ? 0 : menuPx,
@@ -214,6 +216,7 @@ const Menus = props => {
                     renderDivider({
                         text: menuSection.dividerText,
                         isLong: menuSection.isLong,
+                        key: 1,
                     }),
                 menuSection.menuTexts
                     // do not show dentist calendar on mobile
@@ -238,7 +241,7 @@ const Menus = props => {
                             : {};
 
                         return [
-                            <StyledMenuItem p={menuItemPadding}>
+                            <StyledMenuItem key={menuText} p={menuItemPadding}>
                                 <Link
                                     {...desktopOnly && {
                                         className: 'ant-dropdown-menu-item',
@@ -258,11 +261,16 @@ const Menus = props => {
 
             {hasLogOut && [
                 desktopOnly ? (
-                    <Box mt={0} borderBottom="solid 1px #e6e6e6" my={1.5} />
+                    <Box
+                        mt={0}
+                        borderBottom="solid 1px #e6e6e6"
+                        my={1.5}
+                        key={10}
+                    />
                 ) : (
-                    renderDivider('')
+                    renderDivider({ key: 11 })
                 ),
-                <StyledMenuItem p={menuItemPadding}>
+                <StyledMenuItem key={12} p={menuItemPadding}>
                     <Link
                         {...desktopOnly && {
                             className: 'ant-dropdown-menu-item',
