@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, Component } from 'react';
 import { Menu } from 'antd';
 import styled from 'styled-components';
 import { space, width, borderBottom, borderColor } from 'styled-system';
@@ -119,6 +119,58 @@ const renderText = text => {
     );
 };
 
+class RenderDivider extends Component {
+    render() {
+        const {
+            text,
+            isLong,
+            key,
+            desktopOnly,
+            menuPx,
+            textComponent,
+        } = this.props;
+
+        if (desktopOnly) {
+            return (
+                <Box key={key} mt={0} px={isLong ? 0 : menuPx}>
+                    {!_isEmpty(text) ? (
+                        <Grid
+                            gridColumnGap="7px"
+                            gridTemplateColumns="1fr 1fr 1fr"
+                        >
+                            <Box
+                                borderColor="divider.gray"
+                                borderBottom="solid 1px"
+                                height={7}
+                            />
+                            {textComponent}
+                            <Box
+                                borderColor="divider.gray"
+                                borderBottom="solid 1px"
+                                height={7}
+                            />
+                        </Grid>
+                    ) : (
+                        <Box
+                            borderColor="divider.gray"
+                            borderBottom="solid 1px"
+                            my={1}
+                        />
+                    )}
+                </Box>
+            );
+        }
+
+        return textComponent;
+    }
+}
+
+class CustomBox extends Component {
+    render() {
+        return <Box mt={0} borderBottom="solid 1px #e6e6e6" my={1.5} />;
+    }
+}
+
 const Menus = props => {
     const {
         isHost,
@@ -171,39 +223,15 @@ const Menus = props => {
             </Text>
         );
 
-        return desktopOnly ? (
-            <div
+        return (
+            <RenderDivider
+                text={text}
+                isLong={isLong}
                 key={key}
-                style={{
-                    paddingLeft: isLong ? 0 : menuPx,
-                    paddingRight: isLong ? 0 : menuPx,
-                    marginTop: 0,
-                }}
-            >
-                {!_isEmpty(text) ? (
-                    <Grid gridColumnGap="7px" gridTemplateColumns="1fr 1fr 1fr">
-                        <Box
-                            borderColor="divider.gray"
-                            borderBottom="solid 1px"
-                            height={7}
-                        />
-                        {textComponent}
-                        <Box
-                            borderColor="divider.gray"
-                            borderBottom="solid 1px"
-                            height={7}
-                        />
-                    </Grid>
-                ) : (
-                    <Box
-                        borderColor="divider.gray"
-                        borderBottom="solid 1px"
-                        my={1}
-                    />
-                )}
-            </div>
-        ) : (
-            textComponent
+                desktopOnly={desktopOnly}
+                menuPx={menuPx}
+                textComponent={textComponent}
+            />
         );
     };
 
@@ -261,12 +289,7 @@ const Menus = props => {
 
             {hasLogOut && [
                 desktopOnly ? (
-                    <Box
-                        mt={0}
-                        borderBottom="solid 1px #e6e6e6"
-                        my={1.5}
-                        key={10}
-                    />
+                    <CustomBox key={11} />
                 ) : (
                     renderDivider({ key: 11 })
                 ),
