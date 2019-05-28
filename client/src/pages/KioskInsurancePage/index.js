@@ -1,20 +1,10 @@
 import React from 'react';
 import * as Yup from 'yup';
 import _get from 'lodash/get';
-import {
-    Wizard,
-    Progress,
-    KioskInsurance,
-    Address,
-    Gender,
-    Birthday,
-    PreviousButton,
-} from '@laguro/the-bright-side-components';
 import { Query, Mutation } from 'react-apollo';
 import { adopt } from 'react-adopt';
 import { Box, Flex, Loading } from '@laguro/basic-components';
 import _isEmpty from 'lodash/isEmpty';
-
 import { UPDATE_INSURANCE_INFO_MUTATION, GET_USER } from './queries';
 import { RedirectErrorPage } from '../GeneralErrorPage';
 import {
@@ -25,6 +15,15 @@ import {
 import { getProgressBarProps } from '../../components/utils';
 import { execute } from '../../util/gqlUtils';
 import { getUser } from '../../util/authUtils';
+import { Address } from '../common/the-bright-side-components/components/Onboarding/Patient/Insurance/Address';
+import { Gender } from '../common/the-bright-side-components/components/Onboarding/Patient/Insurance/Gender';
+import { Progress } from '../common/the-bright-side-components/components/Onboarding/Patient/Progress';
+import { KioskInsurance } from '../common/the-bright-side-components/components/Kiosk/KioskInsurance';
+import {
+    Onboarding,
+    Wizard,
+    Birthday,
+} from '../common/the-bright-side-components';
 
 const progressSteps = [
     'REGISTRATION',
@@ -354,7 +353,7 @@ const KioskInsurancePage = componentProps => {
                                         render={props => (
                                             <React.Fragment>
                                                 {props.actions.canGoBack && (
-                                                    <PreviousButton
+                                                    <Onboarding.PreviousButton
                                                         goToPreviousStep={
                                                             props.actions
                                                                 .goToPreviousStep

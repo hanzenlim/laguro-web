@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Box } from '../../../components';
-import { Onboarding } from '@laguro/the-bright-side-components';
 import { Terms } from '../Terms';
+import { Onboarding } from '../the-bright-side-components';
 
 const KioskTermsView = props => (
     <Box height={['calc(100vh - 170px)', '', 'calc(100vh - 200px)']}>

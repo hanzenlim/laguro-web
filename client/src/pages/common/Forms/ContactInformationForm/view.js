@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Onboarding } from '@laguro/the-bright-side-components';
 import { Form, Field, withFormik } from 'formik';
 import * as Yup from 'yup';
 import { message } from 'antd';
 import { Box, Text, Button, Flex, Grid } from '../../../../components';
+import { Onboarding } from '../../the-bright-side-components';
 
 const StyledNextButton = styled(Button)`
     && {

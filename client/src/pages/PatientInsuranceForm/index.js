@@ -1,11 +1,6 @@
 /* eslint-disable camelcase */
 import React, { Component } from 'react';
 import { message } from 'antd';
-import {
-    PreviousButton,
-    Wizard,
-    KioskInsurance,
-} from '@laguro/the-bright-side-components';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 import { adopt } from 'react-adopt';
@@ -20,6 +15,8 @@ import {
     PATIENT_INSURANCE_FORM_LAST_WIZARD_STEP_ID,
 } from './getPatientInsuranceFormWizardSteps';
 import history from '../../history';
+import { KioskInsurance } from '../common/the-bright-side-components/components/Kiosk/KioskInsurance';
+import { Onboarding, Wizard } from '../common/the-bright-side-components';
 
 const getCurrentWizardStep = () => history.location.pathname.split('/')[2];
 
@@ -108,7 +105,7 @@ class PatientInsuranceForm extends Component {
                                 render={wizardProps => (
                                     <React.Fragment>
                                         {wizardProps.actions.canGoBack && (
-                                            <PreviousButton
+                                            <Onboarding.PreviousButton
                                                 goToPreviousStep={
                                                     wizardProps.actions
                                                         .goToPreviousStep

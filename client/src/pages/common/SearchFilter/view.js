@@ -2,7 +2,6 @@ import React from 'react';
 import PropType from 'prop-types';
 import { Form, Field, withFormik } from 'formik';
 import * as Yup from 'yup';
-import { Onboarding } from '@laguro/the-bright-side-components';
 import { Box, Flex, Responsive, Text } from '../../../components';
 import styled from 'styled-components';
 import {
@@ -12,6 +11,7 @@ import {
     TIME_AVAILABILITY_LIST,
     INSURANCE_LIST,
 } from '../../../util/dentistUtils';
+import { Onboarding } from '../the-bright-side-components';
 
 const { TabletMobile } = Responsive;
 

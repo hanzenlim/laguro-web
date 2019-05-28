@@ -9,7 +9,6 @@ import {
     Text,
     Icon,
 } from '@laguro/basic-components';
-import { Onboarding } from '@laguro/the-bright-side-components';
 import _groupBy from 'lodash/groupBy';
 import _isEmpty from 'lodash/isEmpty';
 import _mapValues from 'lodash/mapValues';
@@ -19,6 +18,7 @@ import styled from 'styled-components';
 import { Rating } from '../../../components';
 import { getInsuranceText } from '../../../util/insuranceUtil';
 import Procedures from './Procedures';
+import { Onboarding } from '../the-bright-side-components';
 
 const StyledCard = styled(Card)`
     overflow: hidden;

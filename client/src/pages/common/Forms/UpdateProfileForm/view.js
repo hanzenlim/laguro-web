@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import styled from 'styled-components';
 import ReactFilestack from 'filestack-react';
-import { Onboarding, SelectLanguage } from '@laguro/the-bright-side-components';
 import { Form, Field, withFormik } from 'formik';
 import * as Yup from 'yup';
 import _range from 'lodash/range';
@@ -16,6 +15,8 @@ import { profileImageRatio } from '../../../../util/uiUtil';
 import { USER_PHOTOS_CONTAINER } from '../../../../util/strings';
 import { setImageSizeToUrl } from '../../../../util/imageUtil';
 import defaultUserImage from '../../../../components/Image/defaultUserImage.svg';
+import { SelectLanguage } from '../../the-bright-side-components/components/Onboarding/SelectLanguage';
+import { Onboarding } from '../../the-bright-side-components';
 
 const StyledNextButton = styled(Button)`
     && {

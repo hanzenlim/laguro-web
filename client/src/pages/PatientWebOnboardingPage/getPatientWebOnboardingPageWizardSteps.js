@@ -3,14 +3,12 @@ import * as Yup from 'yup';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 import _find from 'lodash/find';
-import {
-    KioskInsurance,
-    HealthHistoryForm,
-} from '@laguro/the-bright-side-components';
 import { execute } from '../../util/gqlUtils';
 import { insuranceClient } from '../../util/apolloClients';
 import { CHECK_ELIGIBILITY } from './queries';
 import { ENGLISH } from '../../util/strings';
+import { KioskInsurance } from '../common/the-bright-side-components/components/Kiosk/KioskInsurance';
+import { HealthHistoryForm } from '../common/the-bright-side-components/components/Onboarding/Patient/HealthHistoryForm';
 
 // contains getPatientWebOnboardingPageWizardSteps which return an array of step information objects, which contain step id(id), validations(validationSchema), and initialValues, given a user object. This user object is from getUser in PatientWebOnboardingPage/index.js.
 

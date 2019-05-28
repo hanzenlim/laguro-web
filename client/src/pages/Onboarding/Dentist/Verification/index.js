@@ -1,12 +1,5 @@
 import React, { Component } from 'react';
 import cookies from 'browser-cookies';
-import {
-    Wizard,
-    Numbers,
-    Pictures,
-    PreviousButton,
-    Progress,
-} from '@laguro/the-bright-side-components';
 import { Flex, Box } from '@laguro/basic-components';
 import _isEmpty from 'lodash/isEmpty';
 import { Mutation, compose, withApollo } from 'react-apollo';
@@ -23,6 +16,10 @@ import {
 import { getSearchParamValueByKey } from '../../../../history';
 import { getProgressBarProps } from '../../../../components/utils';
 import { execute } from '../../../../util/gqlUtils';
+import Numbers from '../../../common/the-bright-side-components/components/Onboarding/Dentist/Verification/Numbers';
+import { Progress } from '../../../common/the-bright-side-components/components/Onboarding/Patient/Progress';
+import { Pictures } from '../../../common/the-bright-side-components/components/Onboarding/Dentist/Verification/Pictures';
+import { Wizard, Onboarding } from '../../../common/the-bright-side-components';
 
 const SSN_FORM_ITEM_NAME = 'ssn';
 const DEA_NUM_FORM_ITEM_NAME = 'deaNum';
@@ -49,12 +46,14 @@ const Composed = adopt({
 const steps = dentist => [
     {
         id: '0',
-        initialValues: dentist ? {
-            [DEA_NUM_FORM_ITEM_NAME]: dentist.deaRegistrationNumber,
-            [NPI_NUM_FORM_ITEM_NAME]: dentist.npiNumber,
-            [SSN_FORM_ITEM_NAME]: dentist.ssnOrEinOrTin,
-            [LIC_NUM_FORM_ITEM_NAME]: dentist.licenseNumber,
-        }: {},
+        initialValues: dentist
+            ? {
+                  [DEA_NUM_FORM_ITEM_NAME]: dentist.deaRegistrationNumber,
+                  [NPI_NUM_FORM_ITEM_NAME]: dentist.npiNumber,
+                  [SSN_FORM_ITEM_NAME]: dentist.ssnOrEinOrTin,
+                  [LIC_NUM_FORM_ITEM_NAME]: dentist.licenseNumber,
+              }
+            : {},
         validationSchema: Yup.object().shape({
             [SSN_FORM_ITEM_NAME]: Yup.string()
                 .required(`Please provide your SSN or EIN/TIN`)
@@ -96,12 +95,20 @@ const steps = dentist => [
     },
     {
         id: '1',
-        initialValues: dentist && dentist.documents ? {
-            [DENTIST_PHOTO_ID_FORM_ITEM_NAME]: dentist.documents.dentistPhotoId,
-            [WARRANTY_FORM_ITEM_NAME]: dentist.documents.warranty,
-            [STATE_DENTAL_LICENSE_FORM_ITEM_NAME]: dentist.documents.stateDentalLicense,
-            [DEA_FORM_ITEM_NAME]: dentist.documents.dea && dentist.documents.dea.length ? dentist.documents.dea : null,
-        } : {},
+        initialValues:
+            dentist && dentist.documents
+                ? {
+                      [DENTIST_PHOTO_ID_FORM_ITEM_NAME]:
+                          dentist.documents.dentistPhotoId,
+                      [WARRANTY_FORM_ITEM_NAME]: dentist.documents.warranty,
+                      [STATE_DENTAL_LICENSE_FORM_ITEM_NAME]:
+                          dentist.documents.stateDentalLicense,
+                      [DEA_FORM_ITEM_NAME]:
+                          dentist.documents.dea && dentist.documents.dea.length
+                              ? dentist.documents.dea
+                              : null,
+                  }
+                : {},
         validationSchema: Yup.object().shape({
             [DENTIST_PHOTO_ID_FORM_ITEM_NAME]: Yup.array().required(
                 "You must provide a photo of your driver's license"
@@ -112,7 +119,9 @@ const steps = dentist => [
             [WARRANTY_FORM_ITEM_NAME]: Yup.array().required(
                 'You must provide a proof of your malpractice insurance'
             ),
-            [DEA_FORM_ITEM_NAME]: Yup.array().nullable().notRequired()
+            [DEA_FORM_ITEM_NAME]: Yup.array()
+                .nullable()
+                .notRequired(),
         }),
     },
 ];
@@ -162,8 +171,9 @@ class RenderDentistOnboarding extends Component {
             fetchPolicy: 'network-only',
         });
 
-        if (docs.data.queryPatientDocument) return docs.data.queryPatientDocument[0];
-        else return null
+        if (docs.data.queryPatientDocument)
+            return docs.data.queryPatientDocument[0];
+        else return null;
     }
 
     render() {
@@ -198,7 +208,7 @@ class RenderDentistOnboarding extends Component {
                                     position="relative"
                                 >
                                     {props.actions.canGoBack && (
-                                        <PreviousButton
+                                        <Onboarding.PreviousButton
                                             goToPreviousStep={
                                                 props.actions.goToPreviousStep
                                             }
@@ -223,72 +233,125 @@ class RenderDentistOnboarding extends Component {
                                     user = JSON.parse(user);
                                 }
 
-                                const { 
-                                    ssn, deaNum, npiNum, license, 
-                                    dentistPhotoId, warranty, stateDentalLicense, dea 
+                                const {
+                                    ssn,
+                                    deaNum,
+                                    npiNum,
+                                    license,
+                                    dentistPhotoId,
+                                    warranty,
+                                    stateDentalLicense,
+                                    dea,
                                 } = objectOfValues;
-                                
+
                                 await execute({
                                     action: async () => {
                                         await requestDentistVerification({
                                             variables: {
                                                 input: {
                                                     dentistId: user.dentistId,
-                                                    deaRegistrationNumber: _isEmpty(deaNum) ? null: deaNum.toUpperCase(),
+                                                    deaRegistrationNumber: _isEmpty(
+                                                        deaNum
+                                                    )
+                                                        ? null
+                                                        : deaNum.toUpperCase(),
                                                     npiNumber: npiNum,
                                                     ssnOrEinOrTin: ssn,
                                                     licenseNumber: license,
                                                 },
                                             },
                                         });
-                                        
-                                        let existingDocs = await this.fetchUserDocuments(user.id);
+
+                                        let existingDocs = await this.fetchUserDocuments(
+                                            user.id
+                                        );
 
                                         if (!existingDocs) {
-                                            existingDocs = await this.props.createPatientDocument({patientId: user.id,});
-                                            existingDocs = existingDocs.data.createPatientDocument;
-
+                                            existingDocs = await this.props.createPatientDocument(
+                                                { patientId: user.id }
+                                            );
+                                            existingDocs =
+                                                existingDocs.data
+                                                    .createPatientDocument;
                                         }
 
                                         let new_docs = {
-                                            [DENTIST_PHOTO_ID_FORM_ITEM_NAME]: dentistPhotoId, 
+                                            [DENTIST_PHOTO_ID_FORM_ITEM_NAME]: dentistPhotoId,
                                             [WARRANTY_FORM_ITEM_NAME]: warranty,
                                             [STATE_DENTAL_LICENSE_FORM_ITEM_NAME]: stateDentalLicense,
-                                            [DEA_FORM_ITEM_NAME]: (dea ? dea : [{}])
+                                            [DEA_FORM_ITEM_NAME]: dea
+                                                ? dea
+                                                : [{}],
                                         };
-                                        
+
                                         // find the diff between persisted documents and new ones
                                         let diffDocs = {};
 
-                                        Object.keys(new_docs).forEach(docType => {
-                                            let _doc = new_docs[docType];
+                                        Object.keys(new_docs).forEach(
+                                            docType => {
+                                                let _doc = new_docs[docType];
 
-                                            if (!existingDocs[docType] || !existingDocs[docType].length){
-                                                if (_doc.length && _doc[0].url){ //it is a new document
-                                                    diffDocs[docType] = _doc;
+                                                if (
+                                                    !existingDocs[docType] ||
+                                                    !existingDocs[docType]
+                                                        .length
+                                                ) {
+                                                    if (
+                                                        _doc.length &&
+                                                        _doc[0].url
+                                                    ) {
+                                                        //it is a new document
+                                                        diffDocs[
+                                                            docType
+                                                        ] = _doc;
+                                                    }
+                                                } else {
+                                                    if (
+                                                        _doc.length &&
+                                                        _doc[0].url &&
+                                                        _doc[0].url !==
+                                                            existingDocs[
+                                                                docType
+                                                            ][0].url
+                                                    ) {
+                                                        // the document has changed
+                                                        diffDocs[
+                                                            docType
+                                                        ] = _doc;
+                                                    } else if (
+                                                        !_doc.length ||
+                                                        !_doc[0].url
+                                                    ) {
+                                                        //document was deleted
+                                                        diffDocs[docType] = [];
+                                                    }
                                                 }
-                                            }else{
-                                                if (_doc.length && _doc[0].url && _doc[0].url !== existingDocs[docType][0].url){ // the document has changed
-                                                    diffDocs[docType] = _doc;
-                                                }else if (!_doc.length || !_doc[0].url){ //document was deleted
-                                                    diffDocs[docType] = [];
-                                                }
-                                            }
 
-                                            //force side only in this case
-                                            if (docType === DENTIST_PHOTO_ID_FORM_ITEM_NAME && diffDocs[docType]) diffDocs[docType][0]['side'] = 'front';
-                                        });
-
-                                        // save only new documents
-                                        const uploadResults = Object.keys(diffDocs).map(
-                                            async docType => {
-                                                await this.props.saveUploadedImages({
-                                                    id: existingDocs.id,
-                                                    documentType: docType,
-                                                    documentList: diffDocs[docType],
-                                                });
+                                                //force side only in this case
+                                                if (
+                                                    docType ===
+                                                        DENTIST_PHOTO_ID_FORM_ITEM_NAME &&
+                                                    diffDocs[docType]
+                                                )
+                                                    diffDocs[docType][0][
+                                                        'side'
+                                                    ] = 'front';
                                             }
                                         );
+
+                                        // save only new documents
+                                        const uploadResults = Object.keys(
+                                            diffDocs
+                                        ).map(async docType => {
+                                            await this.props.saveUploadedImages(
+                                                {
+                                                    id: existingDocs.id,
+                                                    documentType: docType,
+                                                    documentList:
+                                                        diffDocs[docType],
+                                                }
+                                            );
+                                        });
 
                                         await Promise.all(uploadResults);
                                     },
@@ -297,8 +360,14 @@ class RenderDentistOnboarding extends Component {
                                         if (this.props.fromDentistDashboard) {
                                             this.props.onFinish();
                                         } else {
-                                            const { redirectTo } = queryString.parse(this.props.location.search);
-                                            this.props.history.push(redirectTo || '/' );
+                                            const {
+                                                redirectTo,
+                                            } = queryString.parse(
+                                                this.props.location.search
+                                            );
+                                            this.props.history.push(
+                                                redirectTo || '/'
+                                            );
                                         }
                                     },
                                 });

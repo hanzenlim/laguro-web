@@ -2,14 +2,9 @@ import React from 'react';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 import { adopt } from 'react-adopt';
-import {
-    Verification,
-    GetPatientName,
-} from '@laguro/the-bright-side-components';
 import { Mutation } from 'react-apollo';
 import { message } from 'antd';
 import { validatePhoneOrEmail } from '../../util/validationUtils';
-
 import {
     SEND_KIOSK_LOGIN_CODE,
     SEND_REGISTRATION_CODE,
@@ -25,6 +20,8 @@ import {
     trackUserSignup,
     trackSignupAttempt,
 } from '../../util/trackingUtils';
+import { Verification } from '../common/the-bright-side-components/components/Onboarding/Patient/Verification';
+import { GetPatientName } from '../common/the-bright-side-components/components/Onboarding/Registration/GetPatientName';
 
 const Composed = adopt({
     sendKioskLoginCode: ({ render }) => (
