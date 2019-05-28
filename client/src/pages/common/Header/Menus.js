@@ -2,10 +2,10 @@ import React, { Fragment } from 'react';
 import { Menu } from 'antd';
 import styled from 'styled-components';
 import { space, width, borderBottom, borderColor } from 'styled-system';
-import { Box, Text, Grid } from '@laguro/basic-components';
 import _isEmpty from 'lodash/isEmpty';
 import _cloneDeep from 'lodash/cloneDeep';
-import { Link } from '../../../components/index';
+
+import { Link, Box, Text, Grid } from '../../../components';
 import {
     LOG_OUT_MENU_TEXT,
     BECOME_A_DENTIST_MENU_TEXT,
@@ -171,7 +171,13 @@ const Menus = props => {
         );
 
         return desktopOnly ? (
-            <Box px={isLong ? 0 : menuPx} mt={0}>
+            <div
+                style={{
+                    paddingLeft: isLong ? 0 : menuPx,
+                    paddingRight: isLong ? 0 : menuPx,
+                    marginTop: 0,
+                }}
+            >
                 {!_isEmpty(text) ? (
                     <Grid gridColumnGap="7px" gridTemplateColumns="1fr 1fr 1fr">
                         <Box
@@ -193,7 +199,7 @@ const Menus = props => {
                         my={1}
                     />
                 )}
-            </Box>
+            </div>
         ) : (
             textComponent
         );
@@ -202,12 +208,7 @@ const Menus = props => {
     const menuItemPadding = ['18px 25px', '', `14px ${menuPx}px`];
 
     return (
-        <StyledMenu
-            width={props.width}
-            pt={[0, '', 1]}
-            pb={0}
-            {...mobileBorderProps}
-        >
+        <StyledMenu width={props.width} pt={[0, '', 1]} pb={0}>
             {modifiedMenuSections.map((menuSection, index) => [
                 index !== 0 &&
                     renderDivider({
