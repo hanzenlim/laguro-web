@@ -2,7 +2,7 @@ import { Box, Button, Flex, Text } from '@laguro/basic-components';
 import * as React from 'react';
 import validator from 'validator';
 import _isEmpty from 'lodash/isEmpty';
-import { Onboarding } from '@laguro/the-bright-side-components';
+import { Onboarding } from '../the-bright-side-components';
 import InfoIcon from '../../../components/Icon/infoIcon';
 import PinInput from '../PinInput';
 
@@ -90,12 +90,10 @@ class KioskRegisterView extends React.Component {
                                         'emailOrPhoneNumber',
                                         validate(emailOrPhoneNumber)
                                     );
-                                } else {
-                                    if (this.props.onRequestPinCode) {
-                                        this.props.onRequestPinCode(
-                                            emailOrPhoneNumber
-                                        );
-                                    }
+                                } else if (this.props.onRequestPinCode) {
+                                    this.props.onRequestPinCode(
+                                        emailOrPhoneNumber
+                                    );
                                 }
                             }}
                         >

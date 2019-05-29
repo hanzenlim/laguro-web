@@ -1,0 +1,17 @@
+import React from 'react';
+
+const SvgComponent = props => (
+    <svg width={24} height={24} {...props}>
+        <title>{'Apple'}</title>
+        <image
+            x={2}
+            width={21}
+            height={23.032}
+            xlinkHref="data:image/png;base64,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"
+            fill="none"
+            fillRule="evenodd"
+        />
+    </svg>
+);
+
+export default SvgComponent;

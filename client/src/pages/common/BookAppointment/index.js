@@ -239,12 +239,12 @@ const Composed = adopt({
             dentistId,
             rangeStart: moment()
                 .add(1, 'days')
-                .startOf('hour')
+                .startOf('day')
                 .utcOffset(0, true)
                 .format(),
             rangeEnd: moment()
                 .add(30, 'days')
-                .startOf('hour')
+                .startOf('day')
                 .utcOffset(0, true)
                 .format(),
         };

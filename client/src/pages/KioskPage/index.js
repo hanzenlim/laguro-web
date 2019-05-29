@@ -4,7 +4,7 @@ import {
     PreviousButton,
     Wizard,
     Address,
-    Birthday,
+    // Birthday,
     Gender,
     SelectLanguagePage,
     KioskInsurance,
@@ -18,6 +18,7 @@ import {
     Progress,
     KioskFlowSuccess,
 } from '@laguro/the-bright-side-components';
+import { Birthday } from '../common/the-bright-side-components';
 import _get from 'lodash/get';
 import _isNull from 'lodash/isNull';
 import cookies from 'browser-cookies';

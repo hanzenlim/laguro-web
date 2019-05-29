@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import * as Yup from 'yup';
-import { Wizard } from '@laguro/the-bright-side-components';
 import { Flex } from '@laguro/basic-components';
+import Wizard from '../the-bright-side-components/components/Wizard';
 import {
     validatePhoneOrEmail,
     validatePhone,
