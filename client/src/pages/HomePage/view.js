@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import {
     Box,
@@ -26,6 +27,7 @@ import howWeAreDiffBackgroundMobile from '../../images/whatMakesUsDifferent_1024
 import aboutUsDesktop from '../../images/aboutUs_2560x631.png';
 import aboutUsMobile from '../../images/aboutUs_1024x323.png';
 import { BecomeAHostLink, BecomeADentistLink } from '../common/Links';
+import ResponsivePropTypes from '../../types/responsive';
 
 const { Desktop, withScreenSizes } = Responsive;
 
@@ -93,11 +95,12 @@ const HomePageView = props => {
             height="100%"
             justifyContent="space-between"
         >
-            <Box
+            <Flex
                 width="100%"
                 height={[405, '', 595]}
                 mb={[80, '', 137]}
                 position="relative"
+                alignItems="center"
             >
                 <StyledFlex
                     position="absolute"
@@ -124,14 +127,11 @@ const HomePageView = props => {
                         height={367} // comes from the side width of homepageBackground
                         zIndex={1}
                         bg="background.blue"
+                        alignSelf="flex-start"
                     />
                 </Desktop>
 
-                <HeroContent
-                    color="text.white"
-                    pt={[65, 50, 197]}
-                    textAlign="center"
-                >
+                <HeroContent color="text.white" textAlign="center">
                     <Box mb={[40, 35, 50]}>
                         <Text
                             fontWeight="bold"
@@ -157,7 +157,7 @@ const HomePageView = props => {
                         />
                     </Flex>
                 </HeroContent>
-            </Box>
+            </Flex>
 
             <Container>
                 <AnchorTag id="how-it-works">
@@ -312,6 +312,15 @@ const HomePageView = props => {
             </Box>
         </StyledFlex>
     );
+};
+
+HomePageView.propTypes = {
+    ...ResponsivePropTypes,
+};
+
+AnchorTag.propTypes = {
+    id: PropTypes.string.isRequired,
+    children: PropTypes.node.isRequired,
 };
 
 export default withScreenSizes(HomePageView);
