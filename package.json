@@ -9,7 +9,7 @@
     },
     "scripts": {
         "prettier:fix": "eslint --ignore-path .eslintignore --fix client/src",
-        "precommit": "npm run prettier:fix && npm run test",
+        "precommit": "lint-staged",
         "serverLocal": "nodemon serverLocal.js --exec babel-node --presets es2015,stage-2",
         "dev": "npm run start --prefix client",
         "test": "npm run test --prefix client",
@@ -27,6 +27,7 @@
     "lint-staged": {
         "client/src/**/*.js": [
             "prettier --write",
+            "eslint --ignore-path .eslintignore --fix src/",
             "git add"
         ]
     },
