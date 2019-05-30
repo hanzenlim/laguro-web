@@ -107,44 +107,41 @@ class SearchResultsList extends PureComponent {
                     ]}
                 >
                     {data.length
-                        ? data.slice(0, this.state.limit).map(item => (
-                              <Flex
-                                  key={isOffice ? item.url : item.dentistId}
-                                  width={
-                                      data.length === 1 && isOffice && showMap
-                                          ? ['100%', '50%']
-                                          : '100%'
-                                  }
-                              >
-                                  {isOffice ? (
-                                      <OfficeListingCard
-                                          office={item}
-                                          showMap={showMap}
-                                          onRedirect={() =>
-                                              this.handleRedirect(item.url)
-                                          }
-                                      />
-                                  ) : (
-                                      <DentistListingCard
-                                          variant="large"
-                                          dentist={item}
-                                          showMap={showMap}
-                                          onRedirect={() =>
-                                              this.handleRedirect(
-                                                  item.dentistId
-                                              )
-                                          }
-                                          onSelectAppointment={e =>
-                                              this.handleSelectAppointment(
-                                                  e,
-                                                  item.url,
-                                                  item.startTime
-                                              )
-                                          }
-                                      />
-                                  )}
-                              </Flex>
-                          ))
+                        ? data
+                              .slice(0, this.state.limit)
+                              .map(item => (
+                                  <Flex
+                                      key={isOffice ? item.url : item.dentistId}
+                                  >
+                                      {isOffice ? (
+                                          <OfficeListingCard
+                                              office={item}
+                                              showMap={showMap}
+                                              onRedirect={() =>
+                                                  this.handleRedirect(item.url)
+                                              }
+                                          />
+                                      ) : (
+                                          <DentistListingCard
+                                              variant="large"
+                                              dentist={item}
+                                              showMap={showMap}
+                                              onRedirect={() =>
+                                                  this.handleRedirect(
+                                                      item.dentistId
+                                                  )
+                                              }
+                                              onSelectAppointment={e =>
+                                                  this.handleSelectAppointment(
+                                                      e,
+                                                      item.url,
+                                                      item.startTime
+                                                  )
+                                              }
+                                          />
+                                      )}
+                                  </Flex>
+                              ))
                         : null}
                 </Grid>
 
