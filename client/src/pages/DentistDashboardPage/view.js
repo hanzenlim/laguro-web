@@ -13,6 +13,7 @@ import {
     DENTIST,
     AVAILABILITY_SETTINGS_MENU_TEXT,
     DENTIST_POS_PIN_CODE,
+    APPOINTMENTS_MENU_TEXT,
 } from '../../util/strings';
 import { dentistDashboardMenuTexts } from '../../util/menuItems';
 import { getKeyFromText } from '../Dashboard/utils';
@@ -34,6 +35,7 @@ import ReviewContainer from '../common/ReviewContainer/index';
 import { Responsive, Link, Button, Flex } from '../../components/index';
 import PreferredLocations from '../common/PreferredLocations';
 import DentistAvailabilityForm from '../common/Forms/DentistAvailabilityForm';
+import DentistDashboardAppoinments from '../common/DentistDashboardAppointments';
 import { version } from '../../../package.json';
 
 const { TabletMobile, Desktop, withScreenSizes } = Responsive;
@@ -46,6 +48,7 @@ const StyledButton = styled(Button)`
 const menuTextToDescription = {
     [PROFILE_SETTINGS_MENU_TEXT]:
         'Manage your dentist profile and insurance policy',
+    [APPOINTMENTS_MENU_TEXT]: 'View your upcoming patient visits',
     [AVAILABILITY_SETTINGS_MENU_TEXT]:
         'Select your location and time preferences',
     [DENTIST_VERIFICATION_MENU_TEXT]:
@@ -160,6 +163,14 @@ class DentistDashboardPageView extends Component {
                             withoutProgressBar={true}
                             fromDentistDashboard={true}
                         />
+                    </Card>
+                );
+                break;
+            case APPOINTMENTS_MENU_TEXT:
+                panelContent = (
+                    <Card>
+                        {this.renderPanelHeader(key)}
+                        <DentistDashboardAppoinments />
                     </Card>
                 );
                 break;

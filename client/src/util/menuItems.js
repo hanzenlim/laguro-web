@@ -98,6 +98,7 @@ export const profileMenuTextToLinkTo = {
 const unclassfiedDentistMenuTexts = [LAGURO_TREATMENT_MODULE_MENU_TEXT];
 const unclassfiedDentistMenuTexts2 = [
     PROFILE_SETTINGS_MENU_TEXT,
+    APPOINTMENTS_MENU_TEXT,
     AVAILABILITY_SETTINGS_MENU_TEXT,
     DENTIST_VERIFICATION_MENU_TEXT,
 ];
@@ -161,9 +162,7 @@ export const dentistMenuTextToLinkTo = {
 
 // host menu
 // unclassified means there is no section header for given menu texts
-const unclassfiedHostMenuTexts = [
-    MY_OFFICES_MENU_TEXT,
-];
+const unclassfiedHostMenuTexts = [MY_OFFICES_MENU_TEXT];
 const unclassfiedHostMenuTexts2 = [ADD_A_NEW_OFFICE_MENU_TEXT];
 
 export const hostMenuSections = [
