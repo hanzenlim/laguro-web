@@ -261,7 +261,9 @@ export const getPatientWebOnboardingPageWizardSteps = ({
                 userId,
                 address: {
                     streetAddress: patientAddress1,
-                    addressDetails: patientAddress2,
+                    addressDetails: _isEmpty(patientAddress2)
+                        ? undefined
+                        : patientAddress2,
                     city: patientCity,
                     zipCode: patientZIP,
                     state: patientState,
@@ -301,8 +303,8 @@ export const getPatientWebOnboardingPageWizardSteps = ({
                               variables: {
                                   input: {
                                       patientId: user.id,
-                                      firstName: firstName,
-                                      lastName: lastName,
+                                      firstName,
+                                      lastName,
                                       dob: `${patientBirthMonth}/${patientBirthDate}/${patientBirthYear}`,
                                       insuranceInfo: {
                                           insuranceProvider,

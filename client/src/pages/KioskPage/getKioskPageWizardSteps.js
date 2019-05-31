@@ -339,7 +339,9 @@ export const getKioskPageWizardSteps = ({
                         userId,
                         address: {
                             streetAddress: patientAddress1,
-                            addressDetails: patientAddress2,
+                            addressDetails: _isEmpty(patientAddress2)
+                                ? undefined
+                                : patientAddress2,
                             city: patientCity,
                             zipCode: patientZIP,
                             state: patientState,
