@@ -6,6 +6,7 @@ import { Progress } from 'antd';
 import { Box, Flex, Button, Text } from '../../../components';
 import ProcedureSelection from './ProcedureSelection';
 import AvailabilitySelection from './AvailabilitySelection';
+import DaysSelection from './DaysSelection';
 import { FORM_STEPS } from '.';
 
 const StyledProgress = styled(Progress)`
@@ -36,6 +37,7 @@ const shouldNextButtonRender = step => {
     const excludedSteps = [
         FORM_STEPS.SELECT_PROCEDURE,
         FORM_STEPS.SELECT_AVAILABILITY,
+        FORM_STEPS.SELECT_DAYS,
     ];
     return !excludedSteps.includes(step);
 };
@@ -79,6 +81,10 @@ const PriceEstimationQuiz = ({
 
                 {step === FORM_STEPS.SELECT_AVAILABILITY && (
                     <AvailabilitySelection setStep={setStep} />
+                )}
+
+                {step === FORM_STEPS.SELECT_DAYS && (
+                    <DaysSelection setStep={setStep} />
                 )}
 
                 <Flex

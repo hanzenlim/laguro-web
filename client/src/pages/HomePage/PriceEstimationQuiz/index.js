@@ -8,6 +8,7 @@ export const FORM_STEPS = {
     SELECT_PROCEDURE: 'Which procedure are you looking for?',
     SELECT_AVAILABILITY: 'When are you available for your appointment?',
     SELECT_DAYS: 'Which days do you prefer?',
+    INPUT_NAME: 'What is your name?',
 };
 
 class PriceEstimationQuiz extends PureComponent {
@@ -29,9 +30,14 @@ class PriceEstimationQuiz extends PureComponent {
             toggleQuizVisibility();
         }
 
-        if (step === FORM_STEPS.SELECT_AVAILABILITY) {
+        if (step === FORM_STEPS.SELECT_AVAILABILITY)
             this.setStep(FORM_STEPS.SELECT_PROCEDURE);
-        }
+
+        if (step === FORM_STEPS.SELECT_DAYS)
+            this.setStep(FORM_STEPS.SELECT_AVAILABILITY);
+
+        if (step === FORM_STEPS.INPUT_NAME)
+            this.setStep(FORM_STEPS.SELECT_DAYS);
     };
 
     // Handler for next button
@@ -42,7 +48,7 @@ class PriceEstimationQuiz extends PureComponent {
 
         return (
             <Formik
-                initialValues={{ procedure: '', availability: '' }}
+                initialValues={{ procedure: '', availability: '', days: '' }}
                 onSubmit={() => {}}
                 render={formikProps => (
                     <PriceEstimationQuizView
