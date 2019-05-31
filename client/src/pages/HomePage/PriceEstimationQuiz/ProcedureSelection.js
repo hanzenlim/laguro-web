@@ -1,7 +1,10 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Field } from 'formik';
+
 import { Box, Button, Flex, Text } from '../../../components';
+import { FORM_STEPS } from '.';
 
 const selection = [
     {
@@ -26,7 +29,7 @@ const selection = [
     },
 ];
 
-const ProcedureSelection = () => (
+const ProcedureSelection = ({ setStep }) => (
     <Box mt={33}>
         {selection.map(({ value, title, subtitle }) => (
             <Field
@@ -38,13 +41,21 @@ const ProcedureSelection = () => (
                         height="auto"
                         mb={12}
                         mx="auto"
-                        onClick={() => form.setValues({ procedure: value })}
+                        onClick={() => {
+                            form.setValues({ procedure: value });
+                            setStep(FORM_STEPS.SELECT_AVAILABILITY);
+                        }}
                     >
                         <Flex
                             alignItems="center"
                             px={36}
                             py={12}
-                            border="1px solid #dfe0e2"
+                            border="1px solid"
+                            borderColor={
+                                form.values.procedure === value
+                                    ? 'divider.blue'
+                                    : '#dfe0e2'
+                            }
                             borderRadius={32}
                             bg="background.white"
                             boxShadow="0 2px 7px 0 rgba(48, 53, 73, 0.1)"
@@ -79,5 +90,9 @@ const ProcedureSelection = () => (
         ))}
     </Box>
 );
+
+ProcedureSelection.propTypes = {
+    setStep: PropTypes.func.isRequired,
+};
 
 export default ProcedureSelection;

@@ -13,14 +13,38 @@ const StyledProgress = styled(Progress)`
     }
 `;
 
+const NextButton = styled(Button)`
+    &&.ant-btn-ghost.disabled,
+    &&.ant-btn-ghost[disabled],
+    &&.ant-btn-ghost.disabled:hover,
+    &&.ant-btn-ghost[disabled]:hover,
+    &&.ant-btn-ghost.disabled:focus,
+    &&.ant-btn-ghost[disabled]:focus,
+    &&.ant-btn-ghost.disabled:active,
+    &&.ant-btn-ghost[disabled]:active,
+    &&.ant-btn-ghost.disabled.active,
+    &&.ant-btn-ghost[disabled].active {
+        background-color: transparent;
+    }
+`;
+
+// const checkDisabledState = (step, values) =>
+//     step === FORM_STEPS.SELECT_PROCEDURE && !values.procedure;
+
+const shouldNextButtonRender = step => step !== FORM_STEPS.SELECT_PROCEDURE;
+
 const PriceEstimationQuiz = ({
     progress = 0,
     step = '',
     onPrev,
+    onNext,
+    setStep,
     formikProps,
 }) => {
     const title = step;
-    const { handleSubmit } = formikProps;
+    const { handleSubmit /* , values  */ } = formikProps;
+
+    // const isNextDisabled = checkDisabledState(step, values);
 
     return (
         <Box
@@ -42,7 +66,9 @@ const PriceEstimationQuiz = ({
                     {title}
                 </Text>
 
-                {step === FORM_STEPS.SELECT_PROCEDURE && <ProcedureSelection />}
+                {step === FORM_STEPS.SELECT_PROCEDURE && (
+                    <ProcedureSelection setStep={setStep} />
+                )}
 
                 <Flex
                     justifyContent="space-between"
@@ -55,17 +81,27 @@ const PriceEstimationQuiz = ({
                     <Button height={40} type="ghost" px={12} onClick={onPrev}>
                         <Text color="text.blue">← Previous</Text>
                     </Button>
-                    <Button height={40} width={126} type="ghost">
-                        <Text
-                            color="text.blue"
-                            lineHeight="38px"
-                            border="1px solid"
-                            borderColor="divider.blue"
-                            borderRadius={32}
+
+                    {shouldNextButtonRender(step) && (
+                        <NextButton
+                            height={40}
+                            width={126}
+                            type="ghost"
+                            onClick={onNext}
+                            // disabled={isNextDisabled}
                         >
-                            Next
-                        </Text>
-                    </Button>
+                            <Text
+                                color="text.blue"
+                                lineHeight="38px"
+                                border="1px solid"
+                                borderColor="divider.blue"
+                                borderRadius={32}
+                                // opacity={isNextDisabled ? 0.2 : 1}
+                            >
+                                Next
+                            </Text>
+                        </NextButton>
+                    )}
                 </Flex>
 
                 <Box
@@ -90,6 +126,8 @@ PriceEstimationQuiz.propTypes = {
     progress: PropTypes.number.isRequired,
     step: PropTypes.string.isRequired,
     onPrev: PropTypes.func.isRequired,
+    onNext: PropTypes.func.isRequired,
+    setStep: PropTypes.func.isRequired,
     formikProps: PropTypes.shape({
         handleSubmit: PropTypes.func,
     }).isRequired,

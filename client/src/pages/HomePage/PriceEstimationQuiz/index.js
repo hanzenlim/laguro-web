@@ -6,6 +6,7 @@ import PriceEstimationQuizView from './view';
 
 export const FORM_STEPS = {
     SELECT_PROCEDURE: 'Which procedure are you looking for?',
+    SELECT_AVAILABILITY: 'When are you available for your appointment?',
 };
 
 class PriceEstimationQuiz extends PureComponent {
@@ -16,6 +17,8 @@ class PriceEstimationQuiz extends PureComponent {
 
     setProgress = progress => this.setState({ progress });
 
+    setStep = step => this.setState({ step });
+
     // Handler for previous button
     onPrev = () => {
         const { step } = this.state;
@@ -24,7 +27,14 @@ class PriceEstimationQuiz extends PureComponent {
             const { toggleQuizVisibility } = this.props;
             toggleQuizVisibility();
         }
+
+        if (step === FORM_STEPS.SELECT_AVAILABILITY) {
+            this.setStep(FORM_STEPS.SELECT_PROCEDURE);
+        }
     };
+
+    // Handler for next button
+    onNext = () => {};
 
     render() {
         const { progress, step } = this.state;
@@ -38,6 +48,8 @@ class PriceEstimationQuiz extends PureComponent {
                         progress={progress}
                         step={step}
                         onPrev={this.onPrev}
+                        onNext={this.onNext}
+                        setStep={this.setStep}
                         formikProps={formikProps}
                     />
                 )}
