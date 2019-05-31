@@ -1,24 +1,10 @@
 /* eslint-disable camelcase */
 import React, { PureComponent } from 'react';
 import {
-    PreviousButton,
-    Wizard,
-    Address,
-    // Birthday,
-    Gender,
-    SelectLanguagePage,
-    KioskInsurance,
-    ReasonOfVisit,
-    KioskBookingConfirmation,
-    SelectProcedure,
+    Birthday,
     Onboarding,
-    KioskCheckInConfirmation,
-    HealthHistoryForm,
-    OnboardSuccess,
-    Progress,
-    KioskFlowSuccess,
-} from '@laguro/the-bright-side-components';
-import { Birthday } from '../common/the-bright-side-components';
+    Wizard,
+} from '../common/the-bright-side-components';
 import _get from 'lodash/get';
 import _isNull from 'lodash/isNull';
 import cookies from 'browser-cookies';
@@ -108,6 +94,18 @@ import defaultUserImage from '../../components/Image/defaultUserImage.svg';
 import { hasSkippedMedicalHistoryFormCookieVariableName } from '../../util/strings';
 import { execute } from '../../util/gqlUtils';
 import { AppointmentSelection } from '../common/AppointmentSelection';
+import { Address } from '../common/the-bright-side-components/components/Onboarding/Patient/Insurance/Address';
+import { Gender } from '../common/the-bright-side-components/components/Onboarding/Patient/Insurance/Gender';
+import { ReasonOfVisit } from '../common/the-bright-side-components/components/Onboarding/Patient/BookAppointment/ReasonOfVisit';
+import { SelectProcedure } from '../common/the-bright-side-components/components/Onboarding/Patient/BookAppointment/SelectProcedure';
+import { Progress } from '../common/the-bright-side-components/components/Onboarding/Patient/Progress';
+import { OnboardSuccess } from '../common/the-bright-side-components/components/Onboarding/Patient/OnboardSuccess';
+import SelectLanguagePage from '../common/the-bright-side-components/components/Onboarding/Patient/SelectLanguagePage';
+import { KioskInsurance } from '../common/the-bright-side-components/components/Kiosk/KioskInsurance';
+import { KioskBookingConfirmation } from '../common/the-bright-side-components/components/Kiosk/KioskBookingConfirmation';
+import { KioskCheckInConfirmation } from '../common/the-bright-side-components/components/Kiosk/KioskCheckInConfirmation';
+import { KioskFlowSuccess } from '../common/the-bright-side-components/components/Kiosk/KioskFlowSuccess';
+import { HealthHistoryForm } from '../common/the-bright-side-components/components/Onboarding/Patient/HealthHistoryForm';
 
 export const KIOSK_OFFICE_ID_COOKIE_VARIABLE_NAME = 'kiosk-office-id';
 
@@ -887,7 +885,7 @@ class KioskPage extends PureComponent {
                                                     wizardProps.actions
                                                         .currentStep
                                                 ) && (
-                                                    <PreviousButton
+                                                    <Onboarding.PreviousButton
                                                         goToPreviousStep={
                                                             wizardProps.actions
                                                                 .goToPreviousStep

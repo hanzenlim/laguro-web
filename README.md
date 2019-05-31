@@ -9,10 +9,8 @@
 - If you run an into an issue where you have multiple copies of `react` or `styled-components` getting loaded, run these following commands inside the client folder:
 ```
 react
-rm -r ./node_modules/\@laguro/the-bright-side-components/node_modules/react
 rm -r ./node_modules/\@laguro/basic-components/node_modules/react;
 
 styled-components
-rm -r ./node_modules/\@laguro/the-bright-side-components/node_modules/styled-components
 rm -r ./node_modules/\@laguro/basic-components/node_modules/styled-components;
 ```

@@ -1,5 +1,5 @@
 import React from 'react';
-import { GetPatientName } from '@laguro/the-bright-side-components';
+import { GetPatientName } from '../../common/the-bright-side-components/components/Onboarding/Registration/GetPatientName';
 
 export const PatientName = props => (
     <GetPatientName

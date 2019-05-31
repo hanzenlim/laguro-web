@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
-import {
-    MiniCalendar,
-    OfficeFilter,
-    UpcomingAppointments,
-} from '@laguro/the-bright-side-components';
 import moment from 'moment';
-
 import { Box, Grid, Flex } from '../../../components/';
 import DentistCalendar from '../DentistCalendar';
 import AppointmentUpdateConfirmModal from './AppointmentUpdateConfirmModal';
+import { MiniCalendar } from '../the-bright-side-components/components/Calendar-page/MiniCalendar';
+import { UpcomingAppointments } from '../the-bright-side-components/components/Calendar-page/UpcomingAppointments';
+import { OfficeFilter } from '../the-bright-side-components/components/Calendar-page/OfficeFilter';
 
 class DentistBookingsView extends Component {
     render() {

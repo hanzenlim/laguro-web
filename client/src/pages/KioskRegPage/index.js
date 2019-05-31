@@ -1,12 +1,5 @@
 import React, { Component } from 'react';
 import * as Yup from 'yup';
-import {
-    PreviousButton,
-    Wizard,
-    PurposeOfVisit,
-    KioskLogIn,
-    Progress,
-} from '@laguro/the-bright-side-components';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 import cookies from 'browser-cookies';
@@ -24,6 +17,10 @@ import {
 } from '../KioskPage/utils';
 import { validatePhoneOrEmail } from '../../util/validationUtils';
 import { KioskTerms } from '../common/KioskTerms';
+import { Progress } from '../common/the-bright-side-components/components/Onboarding/Patient/Progress';
+import { KioskLogIn } from '../common/the-bright-side-components/components/Kiosk/KioskLogIn';
+import { PurposeOfVisit } from '../common/the-bright-side-components/components/Onboarding/Registration/Patient/PurposeOfVisit';
+import { Onboarding, Wizard } from '../common/the-bright-side-components';
 
 // in order
 // stage 1 registration
@@ -243,7 +240,7 @@ class KioskPage extends Component {
                     render={wizardProps => (
                         <React.Fragment>
                             {wizardProps.actions.canGoBack && (
-                                <PreviousButton
+                                <Onboarding.PreviousButton
                                     goToPreviousStep={
                                         wizardProps.actions.goToPreviousStep
                                     }

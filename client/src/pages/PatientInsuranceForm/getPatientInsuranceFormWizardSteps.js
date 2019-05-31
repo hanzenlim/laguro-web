@@ -2,11 +2,11 @@
 import * as Yup from 'yup';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
-import { KioskInsurance } from '@laguro/the-bright-side-components';
 
 import { execute } from '../../util/gqlUtils';
 import { insuranceClient } from '../../util/apolloClients';
 import { CHECK_ELIGIBILITY } from './queries';
+import { KioskInsurance } from '../common/the-bright-side-components/components/Kiosk/KioskInsurance';
 
 // contains renderRegistrationStage which renders correct step within Registation stage of kiosk flow
 // contains getStageOneRegWizardSteps which return an array of step information objects, which contain step id(id), validations(validationSchema), and initialValues, given a user object. This user object is from getUser in Kiosk/index.js.

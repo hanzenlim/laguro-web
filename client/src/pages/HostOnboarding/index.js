@@ -6,7 +6,6 @@ import { Query, Mutation, compose, withApollo } from 'react-apollo';
 import queryString from 'query-string';
 import get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
-
 import {
     GET_OFFICE,
     CREATE_OFFICE,

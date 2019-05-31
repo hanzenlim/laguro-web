@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Progress } from '@laguro/the-bright-side-components';
 import { Box } from '@laguro/basic-components';
 import { adopt } from 'react-adopt';
 import { Query, Mutation } from 'react-apollo';
@@ -22,6 +21,7 @@ import {
 import { hasSkippedMedicalHistoryFormCookieVariableName } from '../../util/strings';
 import { execute } from '../../util/gqlUtils';
 import { getUser } from '../../util/authUtils';
+import { Progress } from '../common/the-bright-side-components/components/Onboarding/Patient/Progress';
 
 const progressSteps = [
     'REGISTRATION',

@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Onboarding } from '@laguro/the-bright-side-components';
 import { Form, Field, withFormik, FieldArray, getIn } from 'formik';
 import * as Yup from 'yup';
 import { message } from 'antd';
@@ -21,6 +20,7 @@ import moment from 'moment';
 import _get from 'lodash/get';
 import { ListingTime, ABBREVIATED_DAYS, DAYS } from '../../../../util/timeUtil';
 import ListingRangePicker from '../../ListingRangePicker';
+import { Onboarding } from '../../the-bright-side-components';
 
 const format = 'ha';
 

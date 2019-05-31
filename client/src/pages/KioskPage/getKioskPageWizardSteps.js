@@ -3,10 +3,6 @@ import * as Yup from 'yup';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 import _find from 'lodash/find';
-import {
-    KioskInsurance,
-    HealthHistoryForm,
-} from '@laguro/the-bright-side-components';
 import cookies from 'browser-cookies';
 import moment from 'moment-timezone';
 
@@ -16,6 +12,8 @@ import { insuranceClient } from '../../util/apolloClients';
 import { trackBookAppointment } from '../../util/trackingUtils';
 import { CHECK_ELIGIBILITY } from './queries';
 import { ENGLISH } from '../../util/strings';
+import { KioskInsurance } from '../common/the-bright-side-components/components/Kiosk/KioskInsurance';
+import { HealthHistoryForm } from '../common/the-bright-side-components/components/Onboarding/Patient/HealthHistoryForm';
 
 // contains renderRegistrationStage which renders correct step within Registation stage of kiosk flow
 // contains getStageOneRegWizardSteps which return an array of step information objects, which contain step id(id), validations(validationSchema), and initialValues, given a user object. This user object is from getUser in Kiosk/index.js.

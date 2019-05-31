@@ -1,7 +1,6 @@
 import React from 'react';
 import _get from 'lodash/get';
 import { adopt } from 'react-adopt';
-import { KioskLogIn } from '@laguro/the-bright-side-components';
 import { Mutation } from 'react-apollo';
 import { message } from 'antd';
 import { SEND_KIOSK_LOGIN_CODE, LOGIN } from '../queries';
@@ -11,6 +10,7 @@ import { isBioUpdated } from '../../../util/dentistUtils';
 import { execute } from '../../../util/gqlUtils';
 import { validatePhoneOrEmail } from '../../../util/validationUtils';
 import { trackUserAuth } from '../../../util/trackingUtils';
+import { KioskLogIn } from '../../common/the-bright-side-components/components/Kiosk/KioskLogIn';
 
 const Composed = adopt({
     sendKioskLoginCode: ({ render }) => (

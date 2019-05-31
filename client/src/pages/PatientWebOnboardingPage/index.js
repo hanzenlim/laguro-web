@@ -1,17 +1,5 @@
 /* eslint-disable camelcase */
 import React, { Component } from 'react';
-import {
-    PreviousButton,
-    Wizard,
-    Address,
-    Birthday,
-    Gender,
-    SelectLanguagePage,
-    KioskInsurance,
-    Onboarding,
-    HealthHistoryForm,
-    Progress,
-} from '@laguro/the-bright-side-components';
 import styled from 'styled-components';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
@@ -60,9 +48,19 @@ import {
     REDIRECT_WIZARD_STEP_ID,
 } from './getPatientWebOnboardingPageWizardSteps';
 import history from '../../history';
-
 import { handleSkip } from './utils';
 import { withScreenSizes } from '../../components/Responsive';
+import { Address } from '../common/the-bright-side-components/components/Onboarding/Patient/Insurance/Address';
+import { Gender } from '../common/the-bright-side-components/components/Onboarding/Patient/Insurance/Gender';
+import { HealthHistoryForm } from '../common/the-bright-side-components/components/Onboarding/Patient/HealthHistoryForm';
+import { Progress } from '../common/the-bright-side-components/components/Onboarding/Patient/Progress';
+import SelectLanguagePage from '../common/the-bright-side-components/components/Onboarding/Patient/SelectLanguagePage';
+import { KioskInsurance } from '../common/the-bright-side-components/components/Kiosk/KioskInsurance';
+import {
+    Onboarding,
+    Wizard,
+    Birthday,
+} from '../common/the-bright-side-components';
 
 export const PATIENT_WEB_ONBOARDING_PAGE_REDIRECT_TO_COOKIE_VARIABLE_NAME =
     'patient-onboarding-redirectTo';
@@ -366,7 +364,7 @@ class PatientWebOnboardingPage extends Component {
                                                         .currentStep
                                                 ) && (
                                                     <StyledBox>
-                                                        <PreviousButton
+                                                        <Onboarding.PreviousButton
                                                             goToPreviousStep={
                                                                 wizardProps
                                                                     .actions
