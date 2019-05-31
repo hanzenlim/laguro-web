@@ -5,6 +5,7 @@ import { Progress } from 'antd';
 
 import { Box, Flex, Button, Text } from '../../../components';
 import ProcedureSelection from './ProcedureSelection';
+import AvailabilitySelection from './AvailabilitySelection';
 import { FORM_STEPS } from '.';
 
 const StyledProgress = styled(Progress)`
@@ -31,7 +32,13 @@ const NextButton = styled(Button)`
 // const checkDisabledState = (step, values) =>
 //     step === FORM_STEPS.SELECT_PROCEDURE && !values.procedure;
 
-const shouldNextButtonRender = step => step !== FORM_STEPS.SELECT_PROCEDURE;
+const shouldNextButtonRender = step => {
+    const excludedSteps = [
+        FORM_STEPS.SELECT_PROCEDURE,
+        FORM_STEPS.SELECT_AVAILABILITY,
+    ];
+    return !excludedSteps.includes(step);
+};
 
 const PriceEstimationQuiz = ({
     progress = 0,
@@ -68,6 +75,10 @@ const PriceEstimationQuiz = ({
 
                 {step === FORM_STEPS.SELECT_PROCEDURE && (
                     <ProcedureSelection setStep={setStep} />
+                )}
+
+                {step === FORM_STEPS.SELECT_AVAILABILITY && (
+                    <AvailabilitySelection setStep={setStep} />
                 )}
 
                 <Flex

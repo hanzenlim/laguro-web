@@ -7,6 +7,7 @@ import PriceEstimationQuizView from './view';
 export const FORM_STEPS = {
     SELECT_PROCEDURE: 'Which procedure are you looking for?',
     SELECT_AVAILABILITY: 'When are you available for your appointment?',
+    SELECT_DAYS: 'Which days do you prefer?',
 };
 
 class PriceEstimationQuiz extends PureComponent {
@@ -41,7 +42,7 @@ class PriceEstimationQuiz extends PureComponent {
 
         return (
             <Formik
-                initialValues={{ procedure: '' }}
+                initialValues={{ procedure: '', availability: '' }}
                 onSubmit={() => {}}
                 render={formikProps => (
                     <PriceEstimationQuizView

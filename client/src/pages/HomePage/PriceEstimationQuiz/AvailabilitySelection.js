@@ -7,31 +7,15 @@ import { Box, Button, Flex, Text } from '../../../components';
 import { FORM_STEPS } from '.';
 
 const selection = [
-    {
-        value: 'First Visit',
-        title: 'First Visit',
-        subtitle: 'General checkup, X-rays or Exams',
-    },
-    {
-        value: 'General procedures',
-        title: 'General procedures',
-        subtitle: 'Fillings, Crowns, Bridges or Veneers',
-    },
-    {
-        value: 'Surgery',
-        title: 'Surgery',
-        subtitle: 'General checkup, X-rays or Exams',
-    },
-    {
-        value: 'Special treatment',
-        title: 'Special treatment',
-        subtitle: 'Special treatment',
-    },
+    { value: 'Morning', title: 'Morning' },
+    { value: 'Afternoon', title: 'Afternoon' },
+    { value: 'Evening', title: 'Evening' },
+    { value: 'Any time', title: 'Any time' },
 ];
 
-const ProcedureSelection = ({ setStep }) => (
+const AvailabilitySelection = ({ setStep }) => (
     <Box mt={33}>
-        {selection.map(({ value, title, subtitle }) => (
+        {selection.map(({ value, title }) => (
             <Field
                 key={value}
                 render={({ form }) => (
@@ -44,18 +28,18 @@ const ProcedureSelection = ({ setStep }) => (
                         onClick={() => {
                             form.setValues({
                                 ...form.values,
-                                procedure: value,
+                                availability: value,
                             });
-                            setStep(FORM_STEPS.SELECT_AVAILABILITY);
+                            setStep(FORM_STEPS.SELECT_DAYS);
                         }}
                     >
                         <Flex
                             alignItems="center"
-                            px={36}
-                            py={12}
+                            px={74}
+                            py={20}
                             border="1px solid"
                             borderColor={
-                                form.values.procedure === value
+                                form.values.availability === value
                                     ? 'divider.blue'
                                     : '#dfe0e2'
                             }
@@ -75,16 +59,8 @@ const ProcedureSelection = ({ setStep }) => (
                                     fontSize={3}
                                     fontWeight="medium"
                                     lineHeight="21px"
-                                    mb={6}
                                 >
                                     {title}
-                                </Text>
-                                <Text
-                                    color="#757575"
-                                    fontSize={0}
-                                    lineHeight="14px"
-                                >
-                                    {subtitle}
                                 </Text>
                             </Box>
                         </Flex>
@@ -95,8 +71,8 @@ const ProcedureSelection = ({ setStep }) => (
     </Box>
 );
 
-ProcedureSelection.propTypes = {
+AvailabilitySelection.propTypes = {
     setStep: PropTypes.func.isRequired,
 };
 
-export default ProcedureSelection;
+export default AvailabilitySelection;
