@@ -75,6 +75,11 @@ class DentistDashboardPage extends Component {
                         'getUser.address.zipCode',
                         ''
                     );
+                    const userLanguages = get(
+                        dataUserQuery,
+                        'getUser.languages',
+                        ['ENGLISH']
+                    );
 
                     return (
                         <DentistDashboardView
@@ -91,6 +96,8 @@ class DentistDashboardPage extends Component {
                             }
                             zipCode={zipCode}
                             refetch={refetch}
+                            userLanguages={userLanguages}
+                            refetchUser={refetch}
                         />
                     );
                 }}
