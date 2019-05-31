@@ -222,8 +222,9 @@ export const HowWeAreDiff = withScreenSizes(props => (
                         gridColumnGap={HOW_WE_ARE_DIFF_COLUMN_GAP_IN_PIXELS}
                         gridRowGap={15}
                     >
-                        {_range(HOW_WE_ARE_DIFF_NUM_STEPS).map(num => (
+                        {_range(HOW_WE_ARE_DIFF_NUM_STEPS).map((num, index) => (
                             <WhatMakesUsDifferentCard
+                                key={index}
                                 {...WHAT_MAKES_US_DIFF_TEXTS[num]}
                             />
                         ))}
