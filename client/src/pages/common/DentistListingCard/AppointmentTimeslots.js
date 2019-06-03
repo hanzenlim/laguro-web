@@ -56,7 +56,7 @@ class AppointmentTimeslots extends React.Component {
 
         const numOfVisibleSlots = this.getNumOfVisibleSlots();
 
-        let filteredTimeSlots = [];
+        let timeSlots = [];
 
         if (
             dentist.appointmentTimeslotsByOffice &&
@@ -66,28 +66,9 @@ class AppointmentTimeslots extends React.Component {
                     .appointmentTimeslots
             )
         ) {
-            filteredTimeSlots = dentist.appointmentTimeslotsByOffice[
-                indexToMap
-            ].appointmentTimeslots.filter(
-                item =>
-                    moment(item.localStartTime)
-                        .startOf('day')
-                        .diff(moment().startOf('day'), 'days') >= 1
-            );
-
-            // Get 1 day range of timeslots
-            if (filteredTimeSlots.length) {
-                const firstSlotDay = moment(
-                    filteredTimeSlots[0].localStartTime
-                ).startOf('day');
-
-                filteredTimeSlots = [...filteredTimeSlots].filter(
-                    item =>
-                        moment(item.localStartTime)
-                            .startOf('day')
-                            .diff(firstSlotDay, 'days') === 0
-                );
-            }
+            timeSlots =
+                dentist.appointmentTimeslotsByOffice[indexToMap]
+                    .appointmentTimeslots;
         }
 
         return hasTimeslots ? (
@@ -101,15 +82,15 @@ class AppointmentTimeslots extends React.Component {
                     mt={[5, '', 0]}
                 >
                     {`Available times `}
-                    {moment(filteredTimeSlots[indexToMap].localStartTime).diff(
+                    {moment(timeSlots[indexToMap].localStartTime).diff(
                         moment().startOf('day'),
                         'days'
                     ) === 0 && 'today'}
-                    {moment(filteredTimeSlots[indexToMap].localStartTime).diff(
+                    {moment(timeSlots[indexToMap].localStartTime).diff(
                         moment().startOf('day'),
                         'days'
                     ) === 1 && 'tomorrow'}
-                    {moment(filteredTimeSlots[indexToMap].localStartTime).diff(
+                    {moment(timeSlots[indexToMap].localStartTime).diff(
                         moment().startOf('day'),
                         'days'
                     ) > 1 && `on ${moment(earliestAvailableDate).format('LL')}`}
@@ -189,7 +170,7 @@ class AppointmentTimeslots extends React.Component {
                             ]}
                             gridGap={3}
                         >
-                            {filteredTimeSlots
+                            {timeSlots
                                 .slice(0, numOfVisibleSlots)
                                 .map((availableTime, index) => {
                                     if (index + 1 === numOfVisibleSlots) {
