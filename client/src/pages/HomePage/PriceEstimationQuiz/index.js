@@ -10,6 +10,7 @@ export const FORM_STEPS = {
     SELECT_DAYS: 'Which days do you prefer?',
     INPUT_NAME: 'What is your name?',
     CHECK_INSURANCE: 'Do you have insurance?',
+    GET_INSURANCE_PROVIDER: 'What is the name of your insurance provider?',
 };
 
 class PriceEstimationQuiz extends PureComponent {
@@ -42,6 +43,10 @@ class PriceEstimationQuiz extends PureComponent {
 
         if (step === FORM_STEPS.CHECK_INSURANCE)
             this.setStep(FORM_STEPS.INPUT_NAME);
+
+        if (step === FORM_STEPS.GET_INSURANCE_PROVIDER) {
+            this.setStep(FORM_STEPS.CHECK_INSURANCE);
+        }
     };
 
     // Handler for next button
@@ -63,6 +68,7 @@ class PriceEstimationQuiz extends PureComponent {
                     days: '',
                     firstName: '',
                     lastName: '',
+                    hasInsurance: null,
                 }}
                 onSubmit={() => {}}
                 render={formikProps => (

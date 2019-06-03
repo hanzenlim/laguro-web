@@ -8,6 +8,7 @@ import ProcedureSelection from './ProcedureSelection';
 import AvailabilitySelection from './AvailabilitySelection';
 import DaysSelection from './DaysSelection';
 import NameStep from './NameStep';
+import CheckInsurance from './CheckInsurance';
 import { FORM_STEPS } from '.';
 
 const StyledProgress = styled(Progress)`
@@ -103,6 +104,10 @@ const PriceEstimationQuiz = ({
                 )}
 
                 {step === FORM_STEPS.INPUT_NAME && <NameStep />}
+
+                {step === FORM_STEPS.CHECK_INSURANCE && (
+                    <CheckInsurance setStep={setStep} />
+                )}
 
                 <Flex
                     justifyContent="space-between"

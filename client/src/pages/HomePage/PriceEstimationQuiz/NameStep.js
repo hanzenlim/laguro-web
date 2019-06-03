@@ -18,7 +18,7 @@ const NameStep = () => (
         <Field
             name="firstName"
             render={({ field }) => (
-                <Box mb={10}>
+                <Box mb={10} mx="auto" maxWidth={320}>
                     <Input type="text" placeholder="First Name" {...field} />
                 </Box>
             )}
@@ -26,7 +26,7 @@ const NameStep = () => (
         <Field
             name="lastName"
             render={({ field }) => (
-                <Box mb={10}>
+                <Box mb={10} mx="auto" maxWidth={320}>
                     <Input type="text" placeholder="Last Name" {...field} />
                 </Box>
             )}
