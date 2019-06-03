@@ -9,6 +9,7 @@ export const FORM_STEPS = {
     SELECT_AVAILABILITY: 'When are you available for your appointment?',
     SELECT_DAYS: 'Which days do you prefer?',
     INPUT_NAME: 'What is your name?',
+    CHECK_INSURANCE: 'Do you have insurance?',
 };
 
 class PriceEstimationQuiz extends PureComponent {
@@ -38,17 +39,31 @@ class PriceEstimationQuiz extends PureComponent {
 
         if (step === FORM_STEPS.INPUT_NAME)
             this.setStep(FORM_STEPS.SELECT_DAYS);
+
+        if (step === FORM_STEPS.CHECK_INSURANCE)
+            this.setStep(FORM_STEPS.INPUT_NAME);
     };
 
     // Handler for next button
-    onNext = () => {};
+    onNext = () => {
+        const { step } = this.state;
+
+        if (step === FORM_STEPS.INPUT_NAME)
+            this.setStep(FORM_STEPS.CHECK_INSURANCE);
+    };
 
     render() {
         const { progress, step } = this.state;
 
         return (
             <Formik
-                initialValues={{ procedure: '', availability: '', days: '' }}
+                initialValues={{
+                    procedure: '',
+                    availability: '',
+                    days: '',
+                    firstName: '',
+                    lastName: '',
+                }}
                 onSubmit={() => {}}
                 render={formikProps => (
                     <PriceEstimationQuizView

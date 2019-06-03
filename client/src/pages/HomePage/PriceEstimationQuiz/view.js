@@ -7,6 +7,7 @@ import { Box, Flex, Button, Text } from '../../../components';
 import ProcedureSelection from './ProcedureSelection';
 import AvailabilitySelection from './AvailabilitySelection';
 import DaysSelection from './DaysSelection';
+import NameStep from './NameStep';
 import { FORM_STEPS } from '.';
 
 const StyledProgress = styled(Progress)`
@@ -30,14 +31,17 @@ const NextButton = styled(Button)`
     }
 `;
 
-// const checkDisabledState = (step, values) =>
-//     step === FORM_STEPS.SELECT_PROCEDURE && !values.procedure;
+// Check disabled state for next button. Return true to set it to disabled mode
+const checkDisabledState = (step, values) =>
+    step === FORM_STEPS.INPUT_NAME && (!values.firstName || !values.lastName);
 
+// This function check if step is allowed to render Next button. Add a step to excludedSteps to exclude it from UI.
 const shouldNextButtonRender = step => {
     const excludedSteps = [
         FORM_STEPS.SELECT_PROCEDURE,
         FORM_STEPS.SELECT_AVAILABILITY,
         FORM_STEPS.SELECT_DAYS,
+        FORM_STEPS.CHECK_INSURANCE,
     ];
     return !excludedSteps.includes(step);
 };
@@ -51,9 +55,9 @@ const PriceEstimationQuiz = ({
     formikProps,
 }) => {
     const title = step;
-    const { handleSubmit /* , values  */ } = formikProps;
+    const { handleSubmit, values } = formikProps;
 
-    // const isNextDisabled = checkDisabledState(step, values);
+    const isNextDisabled = checkDisabledState(step, values);
 
     return (
         <Box
@@ -71,6 +75,17 @@ const PriceEstimationQuiz = ({
             style={{ transform: 'translateX(-50%)' }}
         >
             <form onSubmit={handleSubmit}>
+                {step === FORM_STEPS.CHECK_INSURANCE && (
+                    <Text
+                        fontSize={1}
+                        color="text.gray"
+                        lineHeight="17px"
+                        mb={10}
+                        mt={-27}
+                    >
+                        Hang in there, you're halfway done!
+                    </Text>
+                )}
                 <Text fontSize={3} fontWeight="bold">
                     {title}
                 </Text>
@@ -86,6 +101,8 @@ const PriceEstimationQuiz = ({
                 {step === FORM_STEPS.SELECT_DAYS && (
                     <DaysSelection setStep={setStep} />
                 )}
+
+                {step === FORM_STEPS.INPUT_NAME && <NameStep />}
 
                 <Flex
                     justifyContent="space-between"
@@ -105,7 +122,7 @@ const PriceEstimationQuiz = ({
                             width={126}
                             type="ghost"
                             onClick={onNext}
-                            // disabled={isNextDisabled}
+                            disabled={isNextDisabled}
                         >
                             <Text
                                 color="text.blue"
@@ -113,7 +130,7 @@ const PriceEstimationQuiz = ({
                                 border="1px solid"
                                 borderColor="divider.blue"
                                 borderRadius={32}
-                                // opacity={isNextDisabled ? 0.2 : 1}
+                                opacity={isNextDisabled ? 0.2 : 1}
                             >
                                 Next
                             </Text>
