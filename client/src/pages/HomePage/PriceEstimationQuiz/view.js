@@ -9,6 +9,8 @@ import AvailabilitySelection from './AvailabilitySelection';
 import DaysSelection from './DaysSelection';
 import NameStep from './NameStep';
 import CheckInsurance from './CheckInsurance';
+import InsuranceProvider from './InsuranceProvider';
+import AskPrimaryHolder from './AskPrimaryHolder';
 import { FORM_STEPS } from '.';
 
 const StyledProgress = styled(Progress)`
@@ -33,18 +35,23 @@ const NextButton = styled(Button)`
 `;
 
 // Check disabled state for next button. Return true to set it to disabled mode
-const checkDisabledState = (step, values) =>
-    step === FORM_STEPS.INPUT_NAME && (!values.firstName || !values.lastName);
+const checkDisabledState = (step, values) => {
+    if (step === FORM_STEPS.INPUT_NAME)
+        return !values.firstName || !values.lastName;
 
-// This function check if step is allowed to render Next button. Add a step to excludedSteps to exclude it from UI.
+    if (step === FORM_STEPS.GET_INSURANCE_PROVIDER)
+        return !values.insuranceProvider;
+
+    return false;
+};
+
+// This function check if step is allowed to render Next button. Add a step to stepsWithNext to include it from UI.
 const shouldNextButtonRender = step => {
-    const excludedSteps = [
-        FORM_STEPS.SELECT_PROCEDURE,
-        FORM_STEPS.SELECT_AVAILABILITY,
-        FORM_STEPS.SELECT_DAYS,
-        FORM_STEPS.CHECK_INSURANCE,
+    const stepsWithNext = [
+        FORM_STEPS.INPUT_NAME,
+        FORM_STEPS.GET_INSURANCE_PROVIDER,
     ];
-    return !excludedSteps.includes(step);
+    return stepsWithNext.includes(step);
 };
 
 const PriceEstimationQuiz = ({
@@ -76,7 +83,11 @@ const PriceEstimationQuiz = ({
             style={{ transform: 'translateX(-50%)' }}
         >
             <form onSubmit={handleSubmit}>
-                {step === FORM_STEPS.CHECK_INSURANCE && (
+                {[
+                    FORM_STEPS.CHECK_INSURANCE,
+                    FORM_STEPS.GET_INSURANCE_PROVIDER,
+                    FORM_STEPS.ASK_PRIMARY_HOLDER,
+                ].includes(step) && (
                     <Text
                         fontSize={1}
                         color="text.gray"
@@ -107,6 +118,14 @@ const PriceEstimationQuiz = ({
 
                 {step === FORM_STEPS.CHECK_INSURANCE && (
                     <CheckInsurance setStep={setStep} />
+                )}
+
+                {step === FORM_STEPS.GET_INSURANCE_PROVIDER && (
+                    <InsuranceProvider />
+                )}
+
+                {step === FORM_STEPS.ASK_PRIMARY_HOLDER && (
+                    <AskPrimaryHolder setStep={setStep} />
                 )}
 
                 <Flex

@@ -13,25 +13,21 @@ const Input = styled(AntdInput)`
     }
 `;
 
-const NameStep = () => (
-    <Box mt={30} textAlign="center">
+const InsuranceProvider = () => (
+    <Box mt={38} textAlign="center">
         <Field
-            name="firstName"
+            name="insuranceProvider"
             render={({ field }) => (
                 <Box mb={10} mx="auto" maxWidth={320}>
-                    <Input type="text" placeholder="First Name" {...field} />
-                </Box>
-            )}
-        />
-        <Field
-            name="lastName"
-            render={({ field }) => (
-                <Box mb={10} mx="auto" maxWidth={320}>
-                    <Input type="text" placeholder="Last Name" {...field} />
+                    <Input
+                        type="text"
+                        placeholder="Type your insurance"
+                        {...field}
+                    />
                 </Box>
             )}
         />
     </Box>
 );
 
-export default NameStep;
+export default InsuranceProvider;

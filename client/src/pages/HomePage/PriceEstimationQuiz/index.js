@@ -11,7 +11,29 @@ export const FORM_STEPS = {
     INPUT_NAME: 'What is your name?',
     CHECK_INSURANCE: 'Do you have insurance?',
     GET_INSURANCE_PROVIDER: 'What is the name of your insurance provider?',
+    ASK_PRIMARY_HOLDER: 'Are you the primary holder?',
+    ASK_HOLDER_INFO: `What is the primary holder's name and your relationship?`,
+    INPUT_BIRTHDAY: 'When is your birthday?',
 };
+
+const PriceEstimationQuizContainer = props => (
+    <Formik
+        initialValues={{
+            procedure: '',
+            availability: '',
+            days: '',
+            firstName: '',
+            lastName: '',
+            hasInsurance: null,
+            insuranceProvider: '',
+            isPrimaryHolder: null,
+        }}
+        onSubmit={() => {}}
+        render={formikProps => (
+            <PriceEstimationQuiz formikProps={formikProps} {...props} />
+        )}
+    />
+);
 
 class PriceEstimationQuiz extends PureComponent {
     state = {
@@ -26,26 +48,51 @@ class PriceEstimationQuiz extends PureComponent {
     // Handler for previous button
     onPrev = () => {
         const { step } = this.state;
+        const { toggleQuizVisibility, formikProps } = this.props;
 
-        if (step === FORM_STEPS.SELECT_PROCEDURE) {
-            const { toggleQuizVisibility } = this.props;
-            toggleQuizVisibility();
-        }
+        switch (step) {
+            case FORM_STEPS.SELECT_PROCEDURE:
+                toggleQuizVisibility();
+                break;
 
-        if (step === FORM_STEPS.SELECT_AVAILABILITY)
-            this.setStep(FORM_STEPS.SELECT_PROCEDURE);
+            case FORM_STEPS.SELECT_AVAILABILITY:
+                this.setStep(FORM_STEPS.SELECT_PROCEDURE);
+                break;
 
-        if (step === FORM_STEPS.SELECT_DAYS)
-            this.setStep(FORM_STEPS.SELECT_AVAILABILITY);
+            case FORM_STEPS.SELECT_DAYS:
+                this.setStep(FORM_STEPS.SELECT_AVAILABILITY);
+                break;
 
-        if (step === FORM_STEPS.INPUT_NAME)
-            this.setStep(FORM_STEPS.SELECT_DAYS);
+            case FORM_STEPS.INPUT_NAME:
+                this.setStep(FORM_STEPS.SELECT_DAYS);
+                break;
 
-        if (step === FORM_STEPS.CHECK_INSURANCE)
-            this.setStep(FORM_STEPS.INPUT_NAME);
+            case FORM_STEPS.CHECK_INSURANCE:
+                this.setStep(FORM_STEPS.INPUT_NAME);
+                break;
 
-        if (step === FORM_STEPS.GET_INSURANCE_PROVIDER) {
-            this.setStep(FORM_STEPS.CHECK_INSURANCE);
+            case FORM_STEPS.GET_INSURANCE_PROVIDER:
+                this.setStep(FORM_STEPS.CHECK_INSURANCE);
+                break;
+
+            case FORM_STEPS.ASK_PRIMARY_HOLDER:
+                this.setStep(FORM_STEPS.GET_INSURANCE_PROVIDER);
+                break;
+
+            case FORM_STEPS.ASK_HOLDER_INFO:
+                this.setStep(FORM_STEPS.ASK_PRIMARY_HOLDER);
+                break;
+
+            case FORM_STEPS.INPUT_BIRTHDAY:
+                this.setStep(
+                    formikProps.values.isPrimaryHolder
+                        ? FORM_STEPS.ASK_PRIMARY_HOLDER
+                        : FORM_STEPS.ASK_HOLDER_INFO
+                );
+                break;
+
+            default:
+                break;
         }
     };
 
@@ -53,34 +100,32 @@ class PriceEstimationQuiz extends PureComponent {
     onNext = () => {
         const { step } = this.state;
 
-        if (step === FORM_STEPS.INPUT_NAME)
-            this.setStep(FORM_STEPS.CHECK_INSURANCE);
+        switch (step) {
+            case FORM_STEPS.INPUT_NAME:
+                this.setStep(FORM_STEPS.CHECK_INSURANCE);
+                break;
+
+            case FORM_STEPS.GET_INSURANCE_PROVIDER:
+                this.setStep(FORM_STEPS.ASK_PRIMARY_HOLDER);
+                break;
+
+            default:
+                break;
+        }
     };
 
     render() {
         const { progress, step } = this.state;
+        const { formikProps } = this.props;
 
         return (
-            <Formik
-                initialValues={{
-                    procedure: '',
-                    availability: '',
-                    days: '',
-                    firstName: '',
-                    lastName: '',
-                    hasInsurance: null,
-                }}
-                onSubmit={() => {}}
-                render={formikProps => (
-                    <PriceEstimationQuizView
-                        progress={progress}
-                        step={step}
-                        onPrev={this.onPrev}
-                        onNext={this.onNext}
-                        setStep={this.setStep}
-                        formikProps={formikProps}
-                    />
-                )}
+            <PriceEstimationQuizView
+                progress={progress}
+                step={step}
+                onPrev={this.onPrev}
+                onNext={this.onNext}
+                setStep={this.setStep}
+                formikProps={formikProps}
             />
         );
     }
@@ -88,6 +133,7 @@ class PriceEstimationQuiz extends PureComponent {
 
 PriceEstimationQuiz.propTypes = {
     toggleQuizVisibility: PropTypes.func.isRequired,
+    formikProps: PropTypes.shape({}).isRequired,
 };
 
-export default PriceEstimationQuiz;
+export default PriceEstimationQuizContainer;
