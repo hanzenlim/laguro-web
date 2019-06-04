@@ -11,6 +11,7 @@ import NameStep from './NameStep';
 import CheckInsurance from './CheckInsurance';
 import InsuranceProvider from './InsuranceProvider';
 import AskPrimaryHolder from './AskPrimaryHolder';
+import AskHolderInfo from './AskHolderInfo';
 import { FORM_STEPS } from '.';
 
 const StyledProgress = styled(Progress)`
@@ -34,6 +35,16 @@ const NextButton = styled(Button)`
     }
 `;
 
+// This function check if step is allowed to render Next button. Add a step to stepsWithNext to include it from UI.
+const shouldNextButtonRender = step => {
+    const stepsWithNext = [
+        FORM_STEPS.INPUT_NAME,
+        FORM_STEPS.GET_INSURANCE_PROVIDER,
+        FORM_STEPS.ASK_HOLDER_INFO,
+    ];
+    return stepsWithNext.includes(step);
+};
+
 // Check disabled state for next button. Return true to set it to disabled mode
 const checkDisabledState = (step, values) => {
     if (step === FORM_STEPS.INPUT_NAME)
@@ -42,16 +53,14 @@ const checkDisabledState = (step, values) => {
     if (step === FORM_STEPS.GET_INSURANCE_PROVIDER)
         return !values.insuranceProvider;
 
-    return false;
-};
+    if (step === FORM_STEPS.ASK_HOLDER_INFO)
+        return (
+            !values.holderFirstName ||
+            !values.holderLastName ||
+            !values.holderRelationship
+        );
 
-// This function check if step is allowed to render Next button. Add a step to stepsWithNext to include it from UI.
-const shouldNextButtonRender = step => {
-    const stepsWithNext = [
-        FORM_STEPS.INPUT_NAME,
-        FORM_STEPS.GET_INSURANCE_PROVIDER,
-    ];
-    return stepsWithNext.includes(step);
+    return false;
 };
 
 const PriceEstimationQuiz = ({
@@ -127,6 +136,8 @@ const PriceEstimationQuiz = ({
                 {step === FORM_STEPS.ASK_PRIMARY_HOLDER && (
                     <AskPrimaryHolder setStep={setStep} />
                 )}
+
+                {step === FORM_STEPS.ASK_HOLDER_INFO && <AskHolderInfo />}
 
                 <Flex
                     justifyContent="space-between"

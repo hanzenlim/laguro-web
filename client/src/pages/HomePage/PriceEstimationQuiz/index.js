@@ -27,6 +27,9 @@ const PriceEstimationQuizContainer = props => (
             hasInsurance: null,
             insuranceProvider: '',
             isPrimaryHolder: null,
+            holderFirstName: '',
+            holderLastName: '',
+            holderRelationship: null,
         }}
         onSubmit={() => {}}
         render={formikProps => (

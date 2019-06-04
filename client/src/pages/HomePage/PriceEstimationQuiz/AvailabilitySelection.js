@@ -26,10 +26,7 @@ const AvailabilitySelection = ({ setStep }) => (
                         mb={12}
                         mx="auto"
                         onClick={() => {
-                            form.setValues({
-                                ...form.values,
-                                availability: value,
-                            });
+                            form.setFieldValue('availability', value);
                             setStep(FORM_STEPS.SELECT_DAYS);
                         }}
                     >

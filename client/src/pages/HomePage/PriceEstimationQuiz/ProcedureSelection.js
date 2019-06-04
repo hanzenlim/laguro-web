@@ -42,10 +42,7 @@ const ProcedureSelection = ({ setStep }) => (
                         mb={12}
                         mx="auto"
                         onClick={() => {
-                            form.setValues({
-                                ...form.values,
-                                procedure: value,
-                            });
+                            form.setFieldValue('procedure', value);
                             setStep(FORM_STEPS.SELECT_AVAILABILITY);
                         }}
                     >

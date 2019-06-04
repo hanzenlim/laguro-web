@@ -24,10 +24,7 @@ const DaysSelection = ({ setStep }) => (
                         mb={12}
                         mx="auto"
                         onClick={() => {
-                            form.setValues({
-                                ...form.values,
-                                days: value,
-                            });
+                            form.setFieldValue('days', value);
                             setStep(FORM_STEPS.INPUT_NAME);
                         }}
                     >

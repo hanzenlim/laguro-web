@@ -29,10 +29,7 @@ const CheckInsurance = ({ setStep, history }) => (
                             height="auto"
                             mb={12}
                             onClick={() => {
-                                form.setValues({
-                                    ...form.values,
-                                    hasInsurance: value,
-                                });
+                                form.setFieldValue('hasInsurance', value);
 
                                 if (value) {
                                     setStep(FORM_STEPS.GET_INSURANCE_PROVIDER);
