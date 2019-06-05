@@ -33,6 +33,7 @@ const PriceEstimationQuizContainer = props => (
             holderBirthMonth: '',
             holderBirthDay: '',
             holderBirthYear: '',
+            memberId: '',
         }}
         onSubmit={() => {}}
         render={formikProps => (
@@ -109,6 +110,7 @@ class PriceEstimationQuiz extends PureComponent {
                 break;
 
             default:
+                this.setStep(FORM_STEPS.INPUT_BIRTHDAY);
                 break;
         }
     };

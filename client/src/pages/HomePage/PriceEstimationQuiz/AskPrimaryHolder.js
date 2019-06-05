@@ -16,6 +16,7 @@ const resetHolderFields = form => {
     form.setFieldValue('holderBirthMonth', '');
     form.setFieldValue('holderBirthDay', '');
     form.setFieldValue('holderBirthYear', '');
+    form.setFieldValue('memberId');
 };
 
 const AskPrimaryHolder = ({ setStep }) => (

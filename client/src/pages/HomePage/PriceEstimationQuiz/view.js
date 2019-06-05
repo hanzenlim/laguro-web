@@ -123,6 +123,8 @@ const PriceEstimationQuiz = ({
                     FORM_STEPS.CHECK_INSURANCE,
                     FORM_STEPS.GET_INSURANCE_PROVIDER,
                     FORM_STEPS.ASK_PRIMARY_HOLDER,
+                    FORM_STEPS.INPUT_BIRTHDAY,
+                    FORM_STEPS.INPUT_MEMBER_ID,
                 ].includes(step) && (
                     <Text
                         fontSize={1}
@@ -131,7 +133,17 @@ const PriceEstimationQuiz = ({
                         mb={10}
                         mt={-27}
                     >
-                        Hang in there, you're halfway done!
+                        {[
+                            FORM_STEPS.CHECK_INSURANCE,
+                            FORM_STEPS.GET_INSURANCE_PROVIDER,
+                            FORM_STEPS.ASK_PRIMARY_HOLDER,
+                        ].includes(step) &&
+                            `Hang in there, you're halfway done!`}
+
+                        {step === FORM_STEPS.INPUT_BIRTHDAY && 'One more step!'}
+
+                        {step === FORM_STEPS.INPUT_MEMBER_ID &&
+                            `You're almost there!`}
                     </Text>
                 )}
                 <Text fontSize={3} fontWeight="bold">
