@@ -14,6 +14,7 @@ import InsuranceProvider from './InsuranceProvider';
 import AskPrimaryHolder from './AskPrimaryHolder';
 import AskHolderInfo from './AskHolderInfo';
 import GetBirthday from './GetBirthday';
+import MemberIdStep from './MemberIdStep';
 import { FORM_STEPS } from '.';
 
 const StyledProgress = styled(Progress)`
@@ -179,6 +180,8 @@ const PriceEstimationQuiz = ({
                 {step === FORM_STEPS.ASK_HOLDER_INFO && <AskHolderInfo />}
 
                 {step === FORM_STEPS.INPUT_BIRTHDAY && <GetBirthday />}
+
+                {step === FORM_STEPS.INPUT_MEMBER_ID && <MemberIdStep />}
 
                 <Flex
                     justifyContent="space-between"

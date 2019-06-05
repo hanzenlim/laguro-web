@@ -35,7 +35,9 @@ const PriceEstimationQuizContainer = props => (
             holderBirthYear: '',
             memberId: '',
         }}
-        onSubmit={() => {}}
+        onSubmit={() => {
+            // TODO: ('do mutation here');
+        }}
         render={formikProps => (
             <PriceEstimationQuiz formikProps={formikProps} {...props} />
         )}

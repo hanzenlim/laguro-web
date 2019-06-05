@@ -13,7 +13,7 @@ const selection = [
 
 const CheckInsurance = ({ setStep, history }) => (
     <Box mt={20}>
-        <Text fontSize={0} color="#757575" width={324} mx="auto">
+        <Text fontSize={0} color="#757575" maxWidth={320} mx="auto">
             By entering your insurance information, we’ll give you an estimate
             of how much you’ll be paying for this procedure.
         </Text>
@@ -42,7 +42,6 @@ const CheckInsurance = ({ setStep, history }) => (
                             <Box
                                 py={20}
                                 border="1px solid"
-                                borderColor="#dfe0e2"
                                 borderRadius={32}
                                 borderColor={
                                     form.values.hasInsurance === value

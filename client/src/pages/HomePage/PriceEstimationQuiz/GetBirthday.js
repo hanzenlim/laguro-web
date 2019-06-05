@@ -1,47 +1,12 @@
 import React, { Fragment } from 'react';
 import { Select as AntdSelect } from 'antd';
-import styled from 'styled-components';
 import { Field } from 'formik';
 import moment from 'moment';
 
 import { Box, Text } from '../../../components';
+import { Select } from './CustomInputs';
 
 const { Option } = AntdSelect;
-
-const Select = styled(AntdSelect)`
-    & .ant-select-selection {
-        height: 46px;
-        border-radius: 32px;
-    }
-
-    & .ant-select-selection__rendered {
-        height: 46px;
-
-        &:after {
-            display: none;
-        }
-    }
-
-    & .ant-select-selection__placeholder {
-        text-align: center;
-        font-size: ${props => props.theme.fontSizes[3]};
-        position: unset;
-        margin-top: 0;
-        height: 46px;
-        line-height: 46px;
-    }
-
-    & .ant-select-selection-selected-value {
-        float: none;
-        padding-right: 0;
-        font-size: 18px;
-        line-height: 46px;
-    }
-
-    .ant-select-arrow {
-        right: 30px;
-    }
-`;
 
 const months = [
     'January',

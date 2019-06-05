@@ -1,17 +1,8 @@
 import React from 'react';
 import { Field } from 'formik';
-import styled from 'styled-components';
 
-import { Box, Input as AntdInput } from '../../../components';
-
-const Input = styled(AntdInput)`
-    &.ant-input {
-        text-align: center;
-        height: 46px;
-        font-size: ${props => props.theme.fontSizes[3]};
-        border-radius: 32px;
-    }
-`;
+import { Box } from '../../../components';
+import { Input } from './CustomInputs';
 
 const InsuranceProvider = () => (
     <Box mt={38} textAlign="center">

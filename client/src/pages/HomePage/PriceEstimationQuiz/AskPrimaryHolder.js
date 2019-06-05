@@ -48,7 +48,6 @@ const AskPrimaryHolder = ({ setStep }) => (
                                 border="1px solid"
                                 borderColor="#dfe0e2"
                                 borderRadius={32}
-                                borderColor="#dfe0e2"
                                 boxShadow="0 2px 7px 0 rgba(48, 53, 73, 0.1)"
                                 textAlign="center"
                             >
