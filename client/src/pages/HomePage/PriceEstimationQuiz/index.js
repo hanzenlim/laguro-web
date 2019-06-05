@@ -14,6 +14,7 @@ export const FORM_STEPS = {
     ASK_PRIMARY_HOLDER: 'Are you the primary holder?',
     ASK_HOLDER_INFO: `What is the primary holder's name?`,
     INPUT_BIRTHDAY: 'When is your birthday?',
+    INPUT_MEMBER_ID: `What's your member ID?`,
 };
 
 const PriceEstimationQuizContainer = props => (
@@ -42,13 +43,24 @@ const PriceEstimationQuizContainer = props => (
 
 class PriceEstimationQuiz extends PureComponent {
     state = {
-        progress: 50,
+        progress: 10,
         step: FORM_STEPS.SELECT_PROCEDURE,
     };
 
     setProgress = progress => this.setState({ progress });
 
-    setStep = step => this.setState({ step });
+    setStep = step => {
+        const formStepsKeys = Object.keys(FORM_STEPS);
+
+        const indexOfStep = formStepsKeys.findIndex(
+            stepKey => FORM_STEPS[stepKey] === step
+        );
+
+        const progress =
+            (indexOfStep / formStepsKeys.length) * 100 + formStepsKeys.length;
+
+        this.setState({ step, progress });
+    };
 
     // Handler for previous button
     onPrev = () => {
@@ -119,6 +131,7 @@ class PriceEstimationQuiz extends PureComponent {
                 break;
 
             default:
+                this.setStep(FORM_STEPS.INPUT_MEMBER_ID);
                 break;
         }
     };
