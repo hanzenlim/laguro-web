@@ -28,10 +28,6 @@ const AskPrimaryHolder = ({ setStep }) => (
                                 if (value) {
                                     form.setFieldValue('holderFirstName', '');
                                     form.setFieldValue('holderLastName', '');
-                                    form.setFieldValue(
-                                        'holderRelationship',
-                                        ''
-                                    );
                                     setStep(FORM_STEPS.INPUT_BIRTHDAY);
                                 } else {
                                     setStep(FORM_STEPS.ASK_HOLDER_INFO);

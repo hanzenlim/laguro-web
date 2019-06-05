@@ -54,11 +54,7 @@ const checkDisabledState = (step, values) => {
         return !values.insuranceProvider;
 
     if (step === FORM_STEPS.ASK_HOLDER_INFO)
-        return (
-            !values.holderFirstName ||
-            !values.holderLastName ||
-            !values.holderRelationship
-        );
+        return !values.holderFirstName || !values.holderLastName;
 
     return false;
 };

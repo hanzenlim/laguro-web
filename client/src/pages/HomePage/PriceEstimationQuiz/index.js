@@ -12,7 +12,7 @@ export const FORM_STEPS = {
     CHECK_INSURANCE: 'Do you have insurance?',
     GET_INSURANCE_PROVIDER: 'What is the name of your insurance provider?',
     ASK_PRIMARY_HOLDER: 'Are you the primary holder?',
-    ASK_HOLDER_INFO: `What is the primary holder's name and your relationship?`,
+    ASK_HOLDER_INFO: `What is the primary holder's name?`,
     INPUT_BIRTHDAY: 'When is your birthday?',
 };
 
@@ -29,7 +29,6 @@ const PriceEstimationQuizContainer = props => (
             isPrimaryHolder: null,
             holderFirstName: '',
             holderLastName: '',
-            holderRelationship: null,
         }}
         onSubmit={() => {}}
         render={formikProps => (
@@ -110,6 +109,10 @@ class PriceEstimationQuiz extends PureComponent {
 
             case FORM_STEPS.GET_INSURANCE_PROVIDER:
                 this.setStep(FORM_STEPS.ASK_PRIMARY_HOLDER);
+                break;
+
+            case FORM_STEPS.ASK_HOLDER_INFO:
+                this.setStep(FORM_STEPS.INPUT_BIRTHDAY);
                 break;
 
             default:
