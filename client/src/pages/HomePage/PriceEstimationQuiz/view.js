@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Progress } from 'antd';
+import moment from 'moment';
 
 import { Box, Flex, Button, Text } from '../../../components';
 import ProcedureSelection from './ProcedureSelection';
@@ -12,6 +13,7 @@ import CheckInsurance from './CheckInsurance';
 import InsuranceProvider from './InsuranceProvider';
 import AskPrimaryHolder from './AskPrimaryHolder';
 import AskHolderInfo from './AskHolderInfo';
+import GetBirthday from './GetBirthday';
 import { FORM_STEPS } from '.';
 
 const StyledProgress = styled(Progress)`
@@ -41,6 +43,7 @@ const shouldNextButtonRender = step => {
         FORM_STEPS.INPUT_NAME,
         FORM_STEPS.GET_INSURANCE_PROVIDER,
         FORM_STEPS.ASK_HOLDER_INFO,
+        FORM_STEPS.INPUT_BIRTHDAY,
     ];
     return stepsWithNext.includes(step);
 };
@@ -55,6 +58,34 @@ const checkDisabledState = (step, values) => {
 
     if (step === FORM_STEPS.ASK_HOLDER_INFO)
         return !values.holderFirstName || !values.holderLastName;
+
+    if (step === FORM_STEPS.INPUT_BIRTHDAY) {
+        const isBdayFieldsEmpty =
+            !values.holderBirthMonth ||
+            !values.holderBirthDay ||
+            !values.holderBirthYear;
+
+        let isMinor = true;
+
+        if (
+            values.holderBirthMonth &&
+            values.holderBirthDay &&
+            values.holderBirthYear
+        ) {
+            const {
+                holderBirthMonth: month,
+                holderBirthDay: day,
+                holderBirthYear: year,
+            } = values;
+
+            const completeBirthDate = new Date(
+                `${month} ${day}, ${year}`
+            ).toISOString();
+
+            isMinor = moment().diff(completeBirthDate, 'years') < 18;
+        }
+        return isBdayFieldsEmpty || isMinor;
+    }
 
     return false;
 };
@@ -134,6 +165,8 @@ const PriceEstimationQuiz = ({
                 )}
 
                 {step === FORM_STEPS.ASK_HOLDER_INFO && <AskHolderInfo />}
+
+                {step === FORM_STEPS.INPUT_BIRTHDAY && <GetBirthday />}
 
                 <Flex
                     justifyContent="space-between"

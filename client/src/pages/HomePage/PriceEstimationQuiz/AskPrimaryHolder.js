@@ -10,6 +10,14 @@ const selection = [
     { value: false, title: 'No' },
 ];
 
+const resetHolderFields = form => {
+    form.setFieldValue('holderFirstName', '');
+    form.setFieldValue('holderLastName', '');
+    form.setFieldValue('holderBirthMonth', '');
+    form.setFieldValue('holderBirthDay', '');
+    form.setFieldValue('holderBirthYear', '');
+};
+
 const AskPrimaryHolder = ({ setStep }) => (
     <Box mt={30}>
         <Flex width={324} mt={24} mx="auto" justifyContent="space-between">
@@ -25,9 +33,9 @@ const AskPrimaryHolder = ({ setStep }) => (
                             onClick={() => {
                                 form.setFieldValue('isPrimaryHolder', value);
 
+                                resetHolderFields(form);
+
                                 if (value) {
-                                    form.setFieldValue('holderFirstName', '');
-                                    form.setFieldValue('holderLastName', '');
                                     setStep(FORM_STEPS.INPUT_BIRTHDAY);
                                 } else {
                                     setStep(FORM_STEPS.ASK_HOLDER_INFO);
@@ -39,11 +47,7 @@ const AskPrimaryHolder = ({ setStep }) => (
                                 border="1px solid"
                                 borderColor="#dfe0e2"
                                 borderRadius={32}
-                                borderColor={
-                                    form.values.isPrimaryHolder === value
-                                        ? 'divider.blue'
-                                        : '#dfe0e2'
-                                }
+                                borderColor="#dfe0e2"
                                 boxShadow="0 2px 7px 0 rgba(48, 53, 73, 0.1)"
                                 textAlign="center"
                             >

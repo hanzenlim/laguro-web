@@ -29,6 +29,9 @@ const PriceEstimationQuizContainer = props => (
             isPrimaryHolder: null,
             holderFirstName: '',
             holderLastName: '',
+            holderBirthMonth: '',
+            holderBirthDay: '',
+            holderBirthYear: '',
         }}
         onSubmit={() => {}}
         render={formikProps => (
