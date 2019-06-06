@@ -1,9 +1,4 @@
 import React from 'react';
-import {
-    Wizard,
-    PreviousButton,
-    PersonaSelection,
-} from '@laguro/the-bright-side-components';
 import * as Yup from 'yup';
 import styled from 'styled-components';
 import { Flex, Box } from '@laguro/basic-components';
@@ -15,6 +10,8 @@ import {
 import { setSessionCookie } from '../../../util/cookieUtils';
 import { PATIENT_WEB_ONBOARDING_PAGE_REDIRECT_TO_COOKIE_VARIABLE_NAME } from '../../PatientWebOnboardingPage';
 import { KioskTerms } from '../../common/KioskTerms';
+import { PersonaSelection } from '../../common/the-bright-side-components/components/Onboarding/Registration/PersonaSelection';
+import { Wizard, Onboarding } from '../../common/the-bright-side-components';
 
 const PERSONA_SELECTION_WIZARD_STEP_ID = 'persona-selection';
 const TERMS_WIZARD_STEP_ID = 'terms';
@@ -70,7 +67,7 @@ const KioskNameAndPersonaPage = componentProps => (
                 <React.Fragment>
                     {props.actions.canGoBack && (
                         <StyledPreviousButtonContainer>
-                            <PreviousButton
+                            <Onboarding.PreviousButton
                                 goToPreviousStep={
                                     props.actions.goToPreviousStep
                                 }

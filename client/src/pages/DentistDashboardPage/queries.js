@@ -11,6 +11,7 @@ export const getUserQuery = gql`
             dentistId
             isHost
             isDentist
+            languages
             address {
                 zipCode
             }

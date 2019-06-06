@@ -127,7 +127,12 @@ const OnboardingCheckbox = props => {
 };
 
 const Choices = props => {
-    const { formKey, namesAndTexts, size = 'large' } = props;
+    const {
+        formKey,
+        namesAndTexts,
+        size = 'large',
+        submitOnClick = true,
+    } = props;
     const hasError =
         props.formikProps.touched[formKey] && props.formikProps.errors[formKey];
 
@@ -159,7 +164,9 @@ const Choices = props => {
                                             formKey,
                                             nameAndText.name
                                         );
-                                        props.formikProps.submitForm();
+                                        if (submitOnClick) {
+                                            props.formikProps.submitForm();
+                                        }
                                     }}
                                 >
                                     <StyledFlex

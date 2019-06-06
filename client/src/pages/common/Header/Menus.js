@@ -1,11 +1,11 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, Component } from 'react';
 import { Menu } from 'antd';
 import styled from 'styled-components';
 import { space, width, borderBottom, borderColor } from 'styled-system';
-import { Box, Text, Grid } from '@laguro/basic-components';
 import _isEmpty from 'lodash/isEmpty';
 import _cloneDeep from 'lodash/cloneDeep';
-import { Link } from '../../../components/index';
+
+import { Link, Box, Text, Grid } from '../../../components';
 import {
     LOG_OUT_MENU_TEXT,
     BECOME_A_DENTIST_MENU_TEXT,
@@ -119,6 +119,58 @@ const renderText = text => {
     );
 };
 
+class RenderDivider extends Component {
+    render() {
+        const {
+            text,
+            isLong,
+            key,
+            desktopOnly,
+            menuPx,
+            textComponent,
+        } = this.props;
+
+        if (desktopOnly) {
+            return (
+                <Box key={key} mt={0} px={isLong ? 0 : menuPx}>
+                    {!_isEmpty(text) ? (
+                        <Grid
+                            gridColumnGap="7px"
+                            gridTemplateColumns="1fr 1fr 1fr"
+                        >
+                            <Box
+                                borderColor="divider.gray"
+                                borderBottom="solid 1px"
+                                height={7}
+                            />
+                            {textComponent}
+                            <Box
+                                borderColor="divider.gray"
+                                borderBottom="solid 1px"
+                                height={7}
+                            />
+                        </Grid>
+                    ) : (
+                        <Box
+                            borderColor="divider.gray"
+                            borderBottom="solid 1px"
+                            my={1}
+                        />
+                    )}
+                </Box>
+            );
+        }
+
+        return textComponent;
+    }
+}
+
+class CustomBox extends Component {
+    render() {
+        return <Box mt={0} borderBottom="solid 1px #e6e6e6" my={1.5} />;
+    }
+}
+
 const Menus = props => {
     const {
         isHost,
@@ -152,10 +204,11 @@ const Menus = props => {
         });
     }
 
-    const renderDivider = ({ text, isLong }) => {
+    const renderDivider = ({ text, isLong, key }) => {
         const mobileTextComponentHeight = _isEmpty(text) ? 10 : 30;
         const textComponent = (
             <Text
+                key={key}
                 fontWeight={['medium', '', 'bold']}
                 fontSize={[0, '', 10]}
                 px={[menuPx, '', 0]}
@@ -170,49 +223,28 @@ const Menus = props => {
             </Text>
         );
 
-        return desktopOnly ? (
-            <Box px={isLong ? 0 : menuPx} mt={0}>
-                {!_isEmpty(text) ? (
-                    <Grid gridColumnGap="7px" gridTemplateColumns="1fr 1fr 1fr">
-                        <Box
-                            borderColor="divider.gray"
-                            borderBottom="solid 1px"
-                            height={7}
-                        />
-                        {textComponent}
-                        <Box
-                            borderColor="divider.gray"
-                            borderBottom="solid 1px"
-                            height={7}
-                        />
-                    </Grid>
-                ) : (
-                    <Box
-                        borderColor="divider.gray"
-                        borderBottom="solid 1px"
-                        my={1}
-                    />
-                )}
-            </Box>
-        ) : (
-            textComponent
+        return (
+            <RenderDivider
+                text={text}
+                isLong={isLong}
+                key={key}
+                desktopOnly={desktopOnly}
+                menuPx={menuPx}
+                textComponent={textComponent}
+            />
         );
     };
 
     const menuItemPadding = ['18px 25px', '', `14px ${menuPx}px`];
 
     return (
-        <StyledMenu
-            width={props.width}
-            pt={[0, '', 1]}
-            pb={0}
-            {...mobileBorderProps}
-        >
+        <StyledMenu width={props.width} pt={[0, '', 1]} pb={0}>
             {modifiedMenuSections.map((menuSection, index) => [
                 index !== 0 &&
                     renderDivider({
                         text: menuSection.dividerText,
                         isLong: menuSection.isLong,
+                        key: 1,
                     }),
                 menuSection.menuTexts
                     // do not show dentist calendar on mobile
@@ -237,7 +269,7 @@ const Menus = props => {
                             : {};
 
                         return [
-                            <StyledMenuItem p={menuItemPadding}>
+                            <StyledMenuItem key={menuText} p={menuItemPadding}>
                                 <Link
                                     {...desktopOnly && {
                                         className: 'ant-dropdown-menu-item',
@@ -257,11 +289,11 @@ const Menus = props => {
 
             {hasLogOut && [
                 desktopOnly ? (
-                    <Box mt={0} borderBottom="solid 1px #e6e6e6" my={1.5} />
+                    <CustomBox key={11} />
                 ) : (
-                    renderDivider('')
+                    renderDivider({ key: 11 })
                 ),
-                <StyledMenuItem p={menuItemPadding}>
+                <StyledMenuItem key={12} p={menuItemPadding}>
                     <Link
                         {...desktopOnly && {
                             className: 'ant-dropdown-menu-item',

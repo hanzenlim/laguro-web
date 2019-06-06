@@ -151,6 +151,8 @@ class DentistDashboardPageView extends Component {
             zipCode,
             dentistId,
             dentist,
+            userLanguages,
+            refetchUser,
         } = this.props;
 
         switch (key) {
@@ -162,6 +164,8 @@ class DentistDashboardPageView extends Component {
                             onFinish={this.onDentistProfileFormComplete} // to render confirmation panel on finish
                             withoutProgressBar={true}
                             fromDentistDashboard={true}
+                            userLanguages={userLanguages}
+                            refetchUser={refetchUser}
                         />
                     </Card>
                 );

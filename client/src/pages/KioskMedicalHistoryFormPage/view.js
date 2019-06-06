@@ -1,14 +1,11 @@
-import {
-    HealthHistoryForm,
-    Wizard,
-    Onboarding,
-} from '@laguro/the-bright-side-components';
 import { Box } from '@laguro/basic-components';
 import * as React from 'react';
 import * as Yup from 'yup';
 import _isEmpty from 'lodash/isEmpty';
 import _find from 'lodash/find';
 import { getRedirectUrl } from '../../history';
+import { HealthHistoryForm } from '../common/the-bright-side-components/components/Onboarding/Patient/HealthHistoryForm';
+import { Onboarding, Wizard } from '../common/the-bright-side-components';
 
 const {
     BloodDisorders,

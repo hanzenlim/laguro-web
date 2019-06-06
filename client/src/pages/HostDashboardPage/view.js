@@ -141,7 +141,7 @@ class HostDashboardPageView extends Component {
                     <Box pb={50}>{this.renderPanel(this.props.panel)}</Box>
                 </TabletMobile>
                 <Desktop>
-                <Container>
+                    <Container>
                         <Flex
                             justifyContent="space-between"
                             alignItems="flex-end"
@@ -185,7 +185,7 @@ class HostDashboardPageView extends Component {
                             </Desktop>
                         </Flex>
                         <DashboardGrid pb={50}>
-                            {this.renderMenu(this.props.panel)}
+                            {this.renderMenu([this.props.panel])}
                             {this.renderPanel(this.props.panel)}
                         </DashboardGrid>
                     </Container>

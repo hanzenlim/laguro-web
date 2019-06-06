@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Box } from '@laguro/basic-components';
-import { DentistProfile, Progress } from '@laguro/the-bright-side-components';
 import { getProgressBarProps } from '../../components/utils';
 import { getSearchParamValueByKey } from '../../history';
+import { Progress } from '../common/the-bright-side-components/components/Onboarding/Patient/Progress';
+import { DentistProfile } from '../common/the-bright-side-components/components/Onboarding/Dentist/DentistProfile';
 
 const propTypes = {
     onCreate: PropTypes.func,

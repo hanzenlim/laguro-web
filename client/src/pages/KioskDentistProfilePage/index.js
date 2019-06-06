@@ -121,6 +121,7 @@ const Composed = adopt({
 
 class KioskDentistProfilePage extends Component {
     render() {
+        const { refetchUser } = this.props;
         return (
             <Composed>
                 {({
@@ -136,7 +137,6 @@ class KioskDentistProfilePage extends Component {
                     const {
                         firstAppointmentDuration,
                         specialty,
-                        languages,
                         procedures,
                         bio,
                         acceptedInsurances,
@@ -162,7 +162,9 @@ class KioskDentistProfilePage extends Component {
                                 profilePicture: user.imageUrl,
                                 key: specialty || specialties[0],
                                 time: firstAppointmentDuration || 30,
-                                languages: languages || [ENGLISH],
+                                languages: this.props.userLanguages || [
+                                    ENGLISH,
+                                ],
                                 procedureList: defaultProceduresList,
                             },
                             validationSchema: Yup.object().shape({
@@ -285,6 +287,8 @@ class KioskDentistProfilePage extends Component {
                                             },
                                         },
                                     });
+
+                                    await refetchUser();
                                 } else {
                                     await updateDentist({
                                         variables: {
@@ -294,6 +298,8 @@ class KioskDentistProfilePage extends Component {
                                             },
                                         },
                                     });
+
+                                    await refetchUser();
                                 }
                             },
                             afterAction: () => {

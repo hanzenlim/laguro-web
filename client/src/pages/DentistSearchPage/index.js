@@ -7,6 +7,7 @@ import DentistSearchPageView from './view';
 import history from '../../history';
 import { getMyPosition, DEFAULT_LOCATION } from '../../util/navigatorUtil';
 import { GET_DENTISTS_AND_APPOINTMENT_SLOTS } from './queries';
+import moment from 'moment';
 
 import { appointmentClient } from '../../util/apolloClients';
 
@@ -128,6 +129,16 @@ class DetailsSearchPage extends PureComponent {
             };
         }
 
+        queryParams.options = {};
+        queryParams.options.rangeStart = moment()
+            .add(1, 'days')
+            .startOf('day')
+            .utcOffset(0, true)
+            .format();
+        queryParams.options.resultLimit = {
+            numDays: 1,
+        };
+
         // Add more filters
         if (
             urlParams.language ||
@@ -177,7 +188,10 @@ class DetailsSearchPage extends PureComponent {
                 };
             }
 
-            queryParams.options = options;
+            queryParams.options = {
+                ...queryParams.options,
+                ...options,
+            };
 
             return queryParams;
         }

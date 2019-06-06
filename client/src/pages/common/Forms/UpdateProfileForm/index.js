@@ -60,10 +60,10 @@ class UpdateProfileContainer extends PureComponent {
             lastName,
             phoneNumber,
             notificationSettings,
-            languages,
             dob,
             gender,
             email,
+            languages,
         } = userData;
 
         return {

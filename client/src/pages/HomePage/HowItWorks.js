@@ -91,15 +91,17 @@ export const HowItWorks = withScreenSizes(props => (
                                 : ''
                         }
                         gridColumnGap={HOW_IT_WORKS_COLUMN_GAP_IN_PIXELS}
-                        gridRowGap={props.mobileOnly && 30}
+                        gridRowGap={props.mobileOnly ? 30 : 0}
                     >
-                        {_range(HOW_IT_WORKS_NUM_STEPS).map(num =>
+                        {_range(HOW_IT_WORKS_NUM_STEPS).map((num, index) =>
                             props.desktopOnly ? (
                                 <DesktopHowItWorksStep
+                                    key={index}
                                     {...getHowItWorksStepProps(num)}
                                 />
                             ) : (
                                 <MobileHowItWorksStep
+                                    key={index}
                                     {...getHowItWorksStepProps(num)}
                                 />
                             )
@@ -120,17 +122,21 @@ export const HowItWorks = withScreenSizes(props => (
                         gridTemplateColumns="repeat(2, auto)"
                     >
                         <Grid {...TabletGridProps}>
-                            {_range(0, HOW_IT_WORKS_NUM_STEPS, 2).map(num => (
-                                <TabletHowItWorksStep
-                                    {...getHowItWorksStepProps(num)}
-                                />
-                            ))}
+                            {_range(0, HOW_IT_WORKS_NUM_STEPS, 2).map(
+                                (num, index) => (
+                                    <TabletHowItWorksStep
+                                        key={index}
+                                        {...getHowItWorksStepProps(num)}
+                                    />
+                                )
+                            )}
                         </Grid>
                         <Box mt={106}>
                             <Grid {...TabletGridProps}>
                                 {_range(1, HOW_IT_WORKS_NUM_STEPS, 2).map(
-                                    num => (
+                                    (num, index) => (
                                         <TabletHowItWorksStep
+                                            key={index}
                                             {...getHowItWorksStepProps(num)}
                                         />
                                     )

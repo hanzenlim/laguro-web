@@ -2,11 +2,6 @@ import React, { Component, Fragment } from 'react';
 import { Modal, Box } from '@laguro/basic-components';
 import _get from 'lodash/get';
 import styled from 'styled-components';
-import {
-    BigCalendar,
-    ReservationPopUp,
-    AppointmentPopUp,
-} from '@laguro/the-bright-side-components';
 import CancelAppoinmentModal from '../Modals/CancelAppointmentModal';
 import NewAppointment from '../NewAppointment';
 import {
@@ -14,6 +9,9 @@ import {
     CANCELLED_BY_PATIENT,
     CANCELLED_BY_DENTIST,
 } from '../../../util/strings';
+import { ReservationPopUp } from '../the-bright-side-components/components/Calendar-page/ReservationPopUp';
+import AppointmentPopUp from '../the-bright-side-components/components/Calendar-page/AppointmentPopUp';
+import { BigCalendar } from '../the-bright-side-components/components/Calendar-page/BigCalendar';
 
 const StyledModal = styled(Modal)`
     && {

@@ -176,7 +176,11 @@ Button.defaultProps = {
 };
 
 Button.propTypes = {
-    height: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
+    height: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.array,
+        PropTypes.number,
+    ]),
     fontSize: PropTypes.oneOf([1, 2, 3, 4]),
 };
 
