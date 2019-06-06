@@ -87,6 +87,7 @@ const questions = [
                     <Onboarding.Choices
                         size="small"
                         formKey={key}
+                        submitOnClick={false}
                         namesAndTexts={[
                             { name: 'Yes', text: 'Yes' },
                             { name: 'No', text: 'No' },
@@ -110,6 +111,7 @@ const questions = [
                     <Onboarding.Choices
                         size="small"
                         formKey={key}
+                        submitOnClick={false}
                         namesAndTexts={[
                             { name: 'Yes', text: 'Yes' },
                             { name: 'No', text: 'No' },
@@ -126,7 +128,7 @@ const questions = [
             'Any changes in your general health within the past year? (Explanation)',
         value: '',
         component: props => {
-            if ('Yes' !== props.formikProps.values[questions[3].name]) {
+            if (props.formikProps.values[questions[3].name] !== 'Yes') {
                 return null;
             }
 
@@ -157,6 +159,7 @@ const questions = [
                     <Onboarding.Choices
                         size="small"
                         formKey={key}
+                        submitOnClick={false}
                         namesAndTexts={[
                             { name: 'Yes', text: 'Yes' },
                             { name: 'No', text: 'No' },
@@ -173,7 +176,7 @@ const questions = [
             'Are you being treated for any conditions? If yes, please list (List)',
         value: '',
         component: props => {
-            if ('Yes' !== props.formikProps.values[questions[5].name]) {
+            if (props.formikProps.values[questions[5].name] !== 'Yes') {
                 return null;
             }
 
@@ -209,6 +212,7 @@ const questions = [
                     <Onboarding.Choices
                         size="small"
                         formKey={key}
+                        submitOnClick={false}
                         namesAndTexts={[
                             { name: 'Yes', text: 'Yes' },
                             { name: 'No', text: 'No' },
@@ -233,6 +237,7 @@ const questions = [
                     <Onboarding.Choices
                         size="small"
                         formKey={key}
+                        submitOnClick={false}
                         namesAndTexts={[
                             { name: 'Yes', text: 'Yes' },
                             { name: 'No', text: 'No' },

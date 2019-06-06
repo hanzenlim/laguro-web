@@ -18,6 +18,7 @@ const questions = [
                 <Onboarding.Choices
                     formKey={key}
                     size="small"
+                    submitOnClick={false}
                     namesAndTexts={[
                         { name: 'Yes', text: 'Yes' },
                         { name: 'No', text: 'No' },
@@ -32,7 +33,7 @@ const questions = [
         name: 'How many weeks pregnant?',
         value: undefined,
         component: props => {
-            if ('Yes' !== props.formikProps.values[questions[0].name]) {
+            if (props.formikProps.values[questions[0].name] !== 'Yes') {
                 return null;
             }
 
@@ -62,7 +63,7 @@ const questions = [
         name: 'Taking birth control or hormonal replacement?',
         value: false,
         component: props => {
-            if ('Yes' !== props.formikProps.values[questions[0].name]) {
+            if (props.formikProps.values[questions[0].name] !== 'Yes') {
                 return null;
             }
 
@@ -88,7 +89,7 @@ const questions = [
         name: 'Are you nursing?',
         value: false,
         component: props => {
-            if ('Yes' !== props.formikProps.values[questions[0].name]) {
+            if (props.formikProps.values[questions[0].name] !== 'Yes') {
                 return null;
             }
 

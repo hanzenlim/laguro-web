@@ -16,6 +16,7 @@ const questions = [
                 <Onboarding.Choices
                     size="small"
                     formKey={key}
+                    submitOnClick={false}
                     namesAndTexts={[
                         { name: 'Yes', text: 'Yes' },
                         { name: 'No', text: 'No' },
