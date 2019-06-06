@@ -130,6 +130,7 @@ class PriceEstimationQuiz extends PureComponent {
 
     render() {
         const { progress, step } = this.state;
+        const { toggleQuizVisibility, setQuizDone } = this.props;
 
         return (
             <Formik
@@ -152,6 +153,11 @@ class PriceEstimationQuiz extends PureComponent {
                 onSubmit={() => {
                     // TODO: ('do mutation here');
                     this.setStep(FORM_LOADERS.CALCULATING_PRICE);
+
+                    setTimeout(() => {
+                        toggleQuizVisibility();
+                        setQuizDone(true);
+                    }, 3000);
                 }}
                 render={formikProps => (
                     <PriceEstimationQuizView
@@ -171,6 +177,7 @@ class PriceEstimationQuiz extends PureComponent {
 
 PriceEstimationQuiz.propTypes = {
     toggleQuizVisibility: PropTypes.func.isRequired,
+    setQuizDone: PropTypes.func.isRequired,
 };
 
 export default PriceEstimationQuiz;

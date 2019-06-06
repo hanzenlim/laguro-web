@@ -21,7 +21,12 @@ const MemberIdStep = () => (
             name="memberId"
             render={({ field }) => (
                 <Box mb={20} mx="auto" maxWidth={320}>
-                    <Input type="text" placeholder="Member ID" {...field} />
+                    <Input
+                        type="text"
+                        placeholder="Member ID"
+                        {...field}
+                        required
+                    />
                 </Box>
             )}
         />

@@ -81,6 +81,7 @@ export const AnchorTag = ({ id, children }) => (
 class HomePageView extends PureComponent {
     state = {
         isQuizVisible: false,
+        isQuizDone: false,
     };
 
     toggleQuizVisibility = () => {
@@ -88,6 +89,8 @@ class HomePageView extends PureComponent {
             isQuizVisible: !isQuizVisible,
         }));
     };
+
+    setQuizDone = isQuizDone => this.setState({ isQuizDone });
 
     render() {
         const {
@@ -97,7 +100,7 @@ class HomePageView extends PureComponent {
             tabletDesktopOnly,
         } = this.props;
 
-        const { isQuizVisible } = this.state;
+        const { isQuizVisible, isQuizDone } = this.state;
 
         let background;
 
@@ -151,80 +154,83 @@ class HomePageView extends PureComponent {
                         />
                     </Desktop>
 
-                    <HeroContent color="text.white" textAlign="center">
-                        <Box pt={[]} mb={[40, 35, 50]}>
-                            <Text
-                                fontWeight="bold"
-                                color="text.white"
-                                fontSize={[4, 5, 6]}
-                                mb={[15, '', 25]}
-                            >
-                                Smile anywhere.
-                            </Text>
-                            <Text
-                                color="text.white"
-                                fontSize={[2, 3, 4]}
-                                lineHeight={1.4}
-                                maxWidth={670}
-                                mx="auto"
-                                mb={40}
-                            >
-                                Answer a few questions, get price estimation
-                                with your insurance coverage, and we’ll curate
-                                your dentist search for you!
-                            </Text>
-
-                            <Button
-                                type="ghost"
-                                height="auto"
-                                mb={20}
-                                width={277}
-                                onClick={this.toggleQuizVisibility}
-                            >
+                    {!isQuizDone && (
+                        <HeroContent color="text.white" textAlign="center">
+                            <Box pt={[]} mb={[40, 35, 50]}>
                                 <Text
-                                    color="text.blue"
-                                    bg="background.white"
-                                    lineHeight="50px"
-                                    borderRadius={32}
-                                    style={{
-                                        boxShadow:
-                                            '0 2px 7px 0 rgba(24, 54, 100, 0.39)',
-                                    }}
+                                    fontWeight="bold"
+                                    color="text.white"
+                                    fontSize={[4, 5, 6]}
+                                    mb={[15, '', 25]}
                                 >
-                                    Take the quiz →
+                                    Smile anywhere.
                                 </Text>
-                            </Button>
+                                <Text
+                                    color="text.white"
+                                    fontSize={[2, 3, 4]}
+                                    lineHeight={1.4}
+                                    maxWidth={670}
+                                    mx="auto"
+                                    mb={40}
+                                >
+                                    Answer a few questions, get price estimation
+                                    with your insurance coverage, and we’ll
+                                    curate your dentist search for you!
+                                </Text>
 
-                            {isQuizVisible && (
-                                <PriceEstimationQuiz
-                                    toggleQuizVisibility={
-                                        this.toggleQuizVisibility
-                                    }
-                                />
-                            )}
+                                <Button
+                                    type="ghost"
+                                    height="auto"
+                                    mb={20}
+                                    width={277}
+                                    onClick={this.toggleQuizVisibility}
+                                >
+                                    <Text
+                                        color="text.blue"
+                                        bg="background.white"
+                                        lineHeight="50px"
+                                        borderRadius={32}
+                                        style={{
+                                            boxShadow:
+                                                '0 2px 7px 0 rgba(24, 54, 100, 0.39)',
+                                        }}
+                                    >
+                                        Take the quiz →
+                                    </Text>
+                                </Button>
 
-                            <Text
-                                color="text.white"
-                                fontSize={[0, '', 1]}
-                                lineHeight="14px"
-                                fontWeight="light"
-                                mb={4}
-                            >
-                                Want to skip this step?
-                            </Text>
-                            <Link to="/dentist/search">
+                                {isQuizVisible && (
+                                    <PriceEstimationQuiz
+                                        toggleQuizVisibility={
+                                            this.toggleQuizVisibility
+                                        }
+                                        setQuizDone={this.setQuizDone}
+                                    />
+                                )}
+
                                 <Text
                                     color="text.white"
                                     fontSize={[0, '', 1]}
                                     lineHeight="14px"
-                                    fontWeight="medium"
-                                    style={{ textDecoration: 'underline' }}
+                                    fontWeight="light"
+                                    mb={4}
                                 >
-                                    Go to dentist search page instead
+                                    Want to skip this step?
                                 </Text>
-                            </Link>
-                        </Box>
-                    </HeroContent>
+                                <Link to="/dentist/search">
+                                    <Text
+                                        color="text.white"
+                                        fontSize={[0, '', 1]}
+                                        lineHeight="14px"
+                                        fontWeight="medium"
+                                        style={{ textDecoration: 'underline' }}
+                                    >
+                                        Go to dentist search page instead
+                                    </Text>
+                                </Link>
+                            </Box>
+                        </HeroContent>
+                    )}
                 </Flex>
 
                 <Container>
