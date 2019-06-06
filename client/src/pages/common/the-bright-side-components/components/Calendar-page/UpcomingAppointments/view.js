@@ -150,7 +150,10 @@ class MiniCalendarView extends React.PureComponent {
                                             borderRadius="50%"
                                         />
                                     ) : (
-                                        <DefaultUserImage width={28} />
+                                        <Image
+                                            src={DefaultUserImage}
+                                            width={28}
+                                        />
                                     )}
                                 </Box>
                                 <Box
