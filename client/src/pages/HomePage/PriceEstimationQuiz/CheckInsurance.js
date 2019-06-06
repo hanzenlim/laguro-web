@@ -4,7 +4,7 @@ import { Field } from 'formik';
 import { withRouter } from 'react-router-dom';
 
 import { Box, Text, Button, Flex } from '../../../components';
-import { FORM_STEPS } from '.';
+import { FORM_STEPS, FORM_LOADERS } from '.';
 
 const selection = [
     { value: true, title: 'Yes' },
@@ -35,7 +35,12 @@ const CheckInsurance = ({ setStep, history }) => (
                                     setStep(FORM_STEPS.GET_INSURANCE_PROVIDER);
                                 } else {
                                     // TODO: Add query params based on answers
-                                    history.push('/dentist/search');
+                                    setStep(
+                                        FORM_LOADERS.MATCH_DENTIST_AVAILABLE
+                                    );
+                                    setTimeout(() => {
+                                        history.push('/dentist/search');
+                                    }, 3000);
                                 }
                             }}
                         >

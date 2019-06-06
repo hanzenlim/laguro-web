@@ -15,7 +15,8 @@ import AskPrimaryHolder from './AskPrimaryHolder';
 import AskHolderInfo from './AskHolderInfo';
 import GetBirthday from './GetBirthday';
 import MemberIdStep from './MemberIdStep';
-import { FORM_STEPS } from '.';
+import Loader from './Loader';
+import { FORM_STEPS, FORM_LOADERS } from '.';
 
 const StyledProgress = styled(Progress)`
     .ant-progress {
@@ -97,12 +98,26 @@ const PriceEstimationQuiz = ({
     onPrev,
     onNext,
     setStep,
+    setIsHolder,
     formikProps,
 }) => {
     const title = step;
     const { handleSubmit, values } = formikProps;
 
     const isNextDisabled = checkDisabledState(step, values);
+
+    const formLoaderSteps = [
+        FORM_LOADERS.MATCH_DENTIST_AVAILABLE,
+        FORM_LOADERS.CALCULATING_PRICE,
+    ];
+
+    const stepsWithPreText = [
+        FORM_STEPS.CHECK_INSURANCE,
+        FORM_STEPS.GET_INSURANCE_PROVIDER,
+        FORM_STEPS.ASK_PRIMARY_HOLDER,
+        FORM_STEPS.INPUT_BIRTHDAY,
+        FORM_STEPS.INPUT_MEMBER_ID,
+    ];
 
     return (
         <Box
@@ -115,122 +130,128 @@ const PriceEstimationQuiz = ({
             bg="background.aquaBlue"
             boxShadow="6px 6px 31px 2px rgba(0, 0, 0, 0.14)"
             px={25}
-            pt={50}
             textAlign="center"
             style={{ transform: 'translateX(-50%)' }}
         >
-            <form onSubmit={handleSubmit}>
-                {[
-                    FORM_STEPS.CHECK_INSURANCE,
-                    FORM_STEPS.GET_INSURANCE_PROVIDER,
-                    FORM_STEPS.ASK_PRIMARY_HOLDER,
-                    FORM_STEPS.INPUT_BIRTHDAY,
-                    FORM_STEPS.INPUT_MEMBER_ID,
-                ].includes(step) && (
-                    <Text
-                        fontSize={1}
-                        color="text.gray"
-                        lineHeight="17px"
-                        mb={10}
-                        mt={-27}
-                    >
-                        {[
-                            FORM_STEPS.CHECK_INSURANCE,
-                            FORM_STEPS.GET_INSURANCE_PROVIDER,
-                            FORM_STEPS.ASK_PRIMARY_HOLDER,
-                        ].includes(step) &&
-                            `Hang in there, you're halfway done!`}
+            {formLoaderSteps.includes(step) && <Loader step={step} />}
 
-                        {step === FORM_STEPS.INPUT_BIRTHDAY && 'One more step!'}
-
-                        {step === FORM_STEPS.INPUT_MEMBER_ID &&
-                            `You're almost there!`}
-                    </Text>
-                )}
-                <Text fontSize={3} fontWeight="bold">
-                    {title}
-                </Text>
-
-                {step === FORM_STEPS.SELECT_PROCEDURE && (
-                    <ProcedureSelection setStep={setStep} />
-                )}
-
-                {step === FORM_STEPS.SELECT_AVAILABILITY && (
-                    <AvailabilitySelection setStep={setStep} />
-                )}
-
-                {step === FORM_STEPS.SELECT_DAYS && (
-                    <DaysSelection setStep={setStep} />
-                )}
-
-                {step === FORM_STEPS.INPUT_NAME && <NameStep />}
-
-                {step === FORM_STEPS.CHECK_INSURANCE && (
-                    <CheckInsurance setStep={setStep} />
-                )}
-
-                {step === FORM_STEPS.GET_INSURANCE_PROVIDER && (
-                    <InsuranceProvider />
-                )}
-
-                {step === FORM_STEPS.ASK_PRIMARY_HOLDER && (
-                    <AskPrimaryHolder setStep={setStep} />
-                )}
-
-                {step === FORM_STEPS.ASK_HOLDER_INFO && <AskHolderInfo />}
-
-                {step === FORM_STEPS.INPUT_BIRTHDAY && <GetBirthday />}
-
-                {step === FORM_STEPS.INPUT_MEMBER_ID && <MemberIdStep />}
-
-                <Flex
-                    justifyContent="space-between"
-                    position="absolute"
-                    bottom={26}
-                    left={0}
-                    right={0}
-                    px={25}
-                >
-                    <Button height={40} type="ghost" px={12} onClick={onPrev}>
-                        <Text color="text.blue">← Previous</Text>
-                    </Button>
-
-                    {shouldNextButtonRender(step) && (
-                        <NextButton
-                            height={40}
-                            width={126}
-                            type="ghost"
-                            onClick={onNext}
-                            disabled={isNextDisabled}
+            {!formLoaderSteps.includes(step) && (
+                <Box is="form" pt={50} onSubmit={handleSubmit}>
+                    {stepsWithPreText.includes(step) && (
+                        <Text
+                            fontSize={1}
+                            color="text.gray"
+                            lineHeight="17px"
+                            mb={10}
+                            mt={-27}
                         >
-                            <Text
-                                color="text.blue"
-                                lineHeight="38px"
-                                border="1px solid"
-                                borderColor="divider.blue"
-                                borderRadius={32}
-                                opacity={isNextDisabled ? 0.2 : 1}
-                            >
-                                Next
-                            </Text>
-                        </NextButton>
-                    )}
-                </Flex>
+                            {[
+                                FORM_STEPS.CHECK_INSURANCE,
+                                FORM_STEPS.GET_INSURANCE_PROVIDER,
+                                FORM_STEPS.ASK_PRIMARY_HOLDER,
+                            ].includes(step) &&
+                                `Hang in there, you're halfway done!`}
 
-                <Box
-                    position="absolute"
-                    bottom={0}
-                    left={0}
-                    right={0}
-                    height={8}
-                >
-                    <StyledProgress
-                        percent={progress}
-                        status="active"
-                        showInfo={false}
-                    />
+                            {step === FORM_STEPS.INPUT_BIRTHDAY &&
+                                'One more step!'}
+
+                            {step === FORM_STEPS.INPUT_MEMBER_ID &&
+                                `You're almost there!`}
+                        </Text>
+                    )}
+                    <Text fontSize={3} fontWeight="bold">
+                        {title}
+                    </Text>
+
+                    {step === FORM_STEPS.SELECT_PROCEDURE && (
+                        <ProcedureSelection setStep={setStep} />
+                    )}
+
+                    {step === FORM_STEPS.SELECT_AVAILABILITY && (
+                        <AvailabilitySelection setStep={setStep} />
+                    )}
+
+                    {step === FORM_STEPS.SELECT_DAYS && (
+                        <DaysSelection setStep={setStep} />
+                    )}
+
+                    {step === FORM_STEPS.INPUT_NAME && <NameStep />}
+
+                    {step === FORM_STEPS.CHECK_INSURANCE && (
+                        <CheckInsurance setStep={setStep} />
+                    )}
+
+                    {step === FORM_STEPS.GET_INSURANCE_PROVIDER && (
+                        <InsuranceProvider />
+                    )}
+
+                    {step === FORM_STEPS.ASK_PRIMARY_HOLDER && (
+                        <AskPrimaryHolder
+                            setStep={setStep}
+                            setIsHolder={setIsHolder}
+                        />
+                    )}
+
+                    {step === FORM_STEPS.ASK_HOLDER_INFO && <AskHolderInfo />}
+
+                    {step === FORM_STEPS.INPUT_BIRTHDAY && <GetBirthday />}
+
+                    {step === FORM_STEPS.INPUT_MEMBER_ID && <MemberIdStep />}
+
+                    <Flex
+                        justifyContent="space-between"
+                        position="absolute"
+                        bottom={26}
+                        left={0}
+                        right={0}
+                        px={25}
+                    >
+                        <Button
+                            height={40}
+                            type="ghost"
+                            px={12}
+                            onClick={onPrev}
+                        >
+                            <Text color="text.blue">← Previous</Text>
+                        </Button>
+
+                        {shouldNextButtonRender(step) && (
+                            <NextButton
+                                height={40}
+                                width={126}
+                                type="ghost"
+                                onClick={onNext}
+                                disabled={isNextDisabled}
+                            >
+                                <Text
+                                    color="text.blue"
+                                    lineHeight="38px"
+                                    border="1px solid"
+                                    borderColor="divider.blue"
+                                    borderRadius={32}
+                                    opacity={isNextDisabled ? 0.2 : 1}
+                                >
+                                    Next
+                                </Text>
+                            </NextButton>
+                        )}
+                    </Flex>
+
+                    <Box
+                        position="absolute"
+                        bottom={0}
+                        left={0}
+                        right={0}
+                        height={8}
+                    >
+                        <StyledProgress
+                            percent={progress}
+                            status="active"
+                            showInfo={false}
+                        />
+                    </Box>
                 </Box>
-            </form>
+            )}
         </Box>
     );
 };
@@ -241,6 +262,7 @@ PriceEstimationQuiz.propTypes = {
     onPrev: PropTypes.func.isRequired,
     onNext: PropTypes.func.isRequired,
     setStep: PropTypes.func.isRequired,
+    setIsHolder: PropTypes.func.isRequired,
     formikProps: PropTypes.shape({
         handleSubmit: PropTypes.func,
     }).isRequired,

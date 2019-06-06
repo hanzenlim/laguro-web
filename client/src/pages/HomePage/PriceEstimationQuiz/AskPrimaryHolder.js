@@ -19,7 +19,7 @@ const resetHolderFields = form => {
     form.setFieldValue('memberId');
 };
 
-const AskPrimaryHolder = ({ setStep }) => (
+const AskPrimaryHolder = ({ setStep, setIsHolder }) => (
     <Box mt={30}>
         <Flex width={324} mt={24} mx="auto" justifyContent="space-between">
             {selection.map(({ value, title }) => (
@@ -37,8 +37,10 @@ const AskPrimaryHolder = ({ setStep }) => (
                                 resetHolderFields(form);
 
                                 if (value) {
+                                    setIsHolder(true);
                                     setStep(FORM_STEPS.INPUT_BIRTHDAY);
                                 } else {
+                                    setIsHolder(false);
                                     setStep(FORM_STEPS.ASK_HOLDER_INFO);
                                 }
                             }}
@@ -70,6 +72,7 @@ const AskPrimaryHolder = ({ setStep }) => (
 
 AskPrimaryHolder.propTypes = {
     setStep: PropTypes.func.isRequired,
+    setIsHolder: PropTypes.func.isRequired,
 };
 
 export default AskPrimaryHolder;
