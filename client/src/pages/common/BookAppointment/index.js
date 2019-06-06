@@ -240,12 +240,12 @@ const Composed = adopt({
             rangeStart: moment()
                 .add(1, 'days')
                 .startOf('day')
-                .utcOffset(0, true)
+                .utc()
                 .format(),
             rangeEnd: moment()
                 .add(30, 'days')
                 .startOf('day')
-                .utcOffset(0, true)
+                .utc()
                 .format(),
         };
 
