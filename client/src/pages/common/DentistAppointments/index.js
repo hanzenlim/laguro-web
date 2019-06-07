@@ -9,13 +9,11 @@ import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
 import { getDentistQuery } from './queries';
 import { getUser } from '../../../util/authUtils';
 
-const user = getUser();
-
 const DentistAppointmentsContainer = () => (
     <Query
         query={getDentistQuery}
         fetchPolicy="cache-and-network"
-        variables={{ id: get(user, 'dentistId') }}
+        variables={{ id: get(getUser(), 'dentistId') }}
     >
         {({ loading, error, data }) => {
             if (error) return <RedirectErrorPage />;

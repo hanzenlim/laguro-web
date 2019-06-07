@@ -20,14 +20,12 @@ import { getUser } from '../../../util/authUtils';
 import { RecurringWeekDayAvailability } from '../../../util/recurringWeekDayAvailability';
 import { appointmentClient } from '../../../util/apolloClients';
 
-const userDentistId = _get(getUser(), 'dentistId');
-
 const Composed = adopt({
     getDentist: ({ render }) => (
         <Query
             query={getDentistQuery}
             fetchPolicy="network-only"
-            variables={{ id: userDentistId }}
+            variables={{ id: _get(getUser(), 'dentistId') }}
         >
             {render}
         </Query>
