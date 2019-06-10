@@ -121,7 +121,8 @@ const Composed = adopt({
 
 class KioskDentistProfilePage extends Component {
     render() {
-        const { refetchUser } = this.props;
+        const refetchUser = _get(this.props, 'refetchUser', () => {});
+
         return (
             <Composed>
                 {({
