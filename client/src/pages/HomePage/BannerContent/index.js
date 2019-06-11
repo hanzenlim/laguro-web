@@ -1,30 +1,23 @@
-import React, { Component } from 'react';
+import React, { useState, useCallback } from 'react';
 
 import BannerContentView from './view';
 
-export default class BannerContent extends Component {
-    state = {
-        isQuizVisible: false,
-        isQuizDone: true,
-    };
+const BannerContent = () => {
+    const [isQuizVisible, setQuizVisible] = useState(false);
+    const [isQuizDone, setQuizDone] = useState(false);
 
-    toggleQuizVisibility = () => {
-        this.setState(({ isQuizVisible }) => ({
-            isQuizVisible: !isQuizVisible,
-        }));
-    };
+    const toggleQuizVisibility = useCallback(() => {
+        setQuizVisible(!isQuizVisible);
+    }, [isQuizVisible]);
 
-    setQuizDone = isQuizDone => this.setState({ isQuizDone });
+    return (
+        <BannerContentView
+            isQuizVisible={isQuizVisible}
+            isQuizDone={isQuizDone}
+            toggleQuizVisibility={toggleQuizVisibility}
+            setQuizDone={setQuizDone}
+        />
+    );
+};
 
-    render() {
-        const { isQuizVisible, isQuizDone } = this.state;
-        return (
-            <BannerContentView
-                isQuizVisible={isQuizVisible}
-                isQuizDone={isQuizDone}
-                toggleQuizVisibility={this.toggleQuizVisibility}
-                setQuizDone={this.setQuizDone}
-            />
-        );
-    }
-}
+export default BannerContent;

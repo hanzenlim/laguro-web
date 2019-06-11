@@ -41,7 +41,7 @@ const Slider = styled(SlickSlider)`
         }
 
         .white-box {
-            transform: scale(0.85);
+            transform: scale(0.9);
 
             > * {
                 opacity: 0.1;
@@ -50,7 +50,8 @@ const Slider = styled(SlickSlider)`
     }
 
     .slick-dots {
-        bottom: -30px;
+        position: static;
+        margin-top: 16px;
     }
 
     .slick-dots li {
@@ -85,39 +86,51 @@ const Slider = styled(SlickSlider)`
     }
 `;
 
-const PriceEstimationResultView = ({ screenWidth }) => (
-    <Box position="relative" zIndex={100} width="100%">
-        <Box>
-            <Text
-                color="text.white"
-                fontSize={[3, '', '24px']}
-                fontWeight="bold"
-                mb={[30, '', 45]}
-                px={25}
-                textAlign="center"
-            >
-                Nice! Here is a breakdown of how much you’ll be saving.
-            </Text>
+const PriceEstimationResultView = ({ screenWidth, mobileOnly }) => {
+    const itemWidth = mobileOnly ? 320 : 377;
+    return (
+        <Box position="relative" zIndex={100} width="100%">
+            <Box>
+                <Text
+                    color="text.white"
+                    fontSize={[3, '', '24px']}
+                    fontWeight="bold"
+                    mt={50}
+                    mb={[30, '', 45]}
+                    px={25}
+                    textAlign="center"
+                >
+                    Nice! Here is a breakdown of how much you’ll be saving.
+                </Text>
 
-            <Slider
-                centerMode
-                dots
-                focusOnSelect
-                variableWidth
-                centerPadding={`${(screenWidth - 394) / 2}px`}
-            >
-                {Array(10)
-                    .fill('')
-                    .map((_, index) => (
-                        <ResultCard key={index} />
-                    ))}
-            </Slider>
+                <Slider
+                    centerMode
+                    dots
+                    focusOnSelect
+                    variableWidth
+                    centerPadding={`${(screenWidth - itemWidth) / 2}px`}
+                >
+                    {Array(10)
+                        .fill('')
+                        .map((_, index) => (
+                            <ResultCard key={index} />
+                        ))}
+                </Slider>
+
+                <Text color="text.white" mt={24} mb={4} textAlign="center">
+                    Estimated for Tina Park (ID: 19283192)
+                </Text>
+                <Text color="text.white" textAlign="center" opacity={0.5}>
+                    Last updated on : 12/31/2019
+                </Text>
+            </Box>
         </Box>
-    </Box>
-);
+    );
+};
 
 PriceEstimationResultView.propTypes = {
     screenWidth: PropTypes.number.isRequired,
+    mobileOnly: PropTypes.bool.isRequired,
 };
 
 export default withScreenSizes(PriceEstimationResultView);

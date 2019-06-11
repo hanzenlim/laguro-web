@@ -1,10 +1,17 @@
 import React from 'react';
+import styled from 'styled-components';
 
-import { Box, Text, Flex } from '../../../components';
+import { Box, Text, Flex, Button } from '../../../components';
+
+const StyledButton = styled(Button)`
+    &&.ant-btn {
+        border-radius: 32px;
+    }
+`;
 
 const ResultCard = () => (
     <Box
-        maxWidth={[324, '', 377]}
+        maxWidth={[320, 377, '']}
         width="100%"
         mx="auto"
         px={[6, '', 17]}
@@ -116,6 +123,21 @@ const ResultCard = () => (
                 *This is an estimation based on the insurance input. Actual
                 coverage pricing may differ.
             </Text>
+
+            <StyledButton
+                type="primary"
+                maxWidth="100%"
+                width={260}
+                height={50}
+                mx="auto"
+                mt={30}
+                px={35}
+                fontWeight="medium"
+                fontSize={1}
+                style={{ whiteSpace: 'initial', display: 'block' }}
+            >
+                See dentists available for this procedure
+            </StyledButton>
         </Box>
     </Box>
 );
