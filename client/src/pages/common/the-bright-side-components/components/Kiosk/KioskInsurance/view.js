@@ -6,11 +6,25 @@ import * as React from 'react';
 import Onboarding from '../../Onboarding';
 import InsuranceUmbrella from '../../Onboarding/Assets/insuranceUmbrella';
 import insuranceList from './insuranceList';
+import { getFormatTextFromProps } from '../../../../../../util/intlUtils';
+import {
+    GENERALINFORMATION_INSURANCE_PLEASESELECT,
+    GENERALINFORMATION_INSURANCE_INSURANCE,
+    GENERALINFORMATION_INSURANCE_STEP1,
+    GENERALINFORMATION_INSURANCE_YOURINSURANCE,
+    GENERALINFORMATION_INSURANCE_STEP2,
+    GENERALINFORMATION_INSURANCE_YOURINSURANCENUMBER,
+    GENERALINFORMATION_INSURANCE_STEP3,
+    GENERALINFORMATION_INSURANCE_YOURPLAN,
+    GENERALINFORMATION_INSURANCE_NOINSURANCE,
+} from '../../../../../../strings/messageStrings';
+import { injectIntl } from 'react-intl';
 
 const HAS_NO_INSURANCE = 'hasNoInsurance';
 
 class InsuranceView extends React.PureComponent {
     render() {
+        const formatText = getFormatTextFromProps(this.props);
         const hasNoInsurance = this.props.formikProps.values.HAS_NO_INSURANCE;
         // in case user clicks i don't have insurance and presses back button
         if (!_isEmpty(hasNoInsurance) && JSON.parse(hasNoInsurance)) {
@@ -24,11 +38,15 @@ class InsuranceView extends React.PureComponent {
                 <Flex justifyContent="center">
                     <InsuranceUmbrella />
                 </Flex>
-                <Onboarding.StepTitleText text="Insurance" />
+                <Onboarding.StepTitleText
+                    text={formatText(GENERALINFORMATION_INSURANCE_INSURANCE)}
+                />
                 <Onboarding.StepBlurbText
                     text={
                         pathname === '/kiosk'
-                            ? "Select your insurance provider and type in your insurance number. If you do not have insurance, then select 'I don't have insurance' to continue"
+                            ? formatText(
+                                  GENERALINFORMATION_INSURANCE_PLEASESELECT
+                              )
                             : "Select your insurance provider and type in your insurance number. To ensure your insurance will be verified when clicking 'Next', please check that your general information in your Account Settings is correct (i.e.: full name, DOB). If you do not have insurance, then select 'I don't have insurance' to continue"
                     }
                 />
@@ -38,10 +56,16 @@ class InsuranceView extends React.PureComponent {
                     justifyContent="center"
                 >
                     <Box width={['100%', '400px', '400px']}>
-                        <Onboarding.FormItemLabelText text="Step 1. Select insurance" />
+                        <Onboarding.FormItemLabelText
+                            text={formatText(
+                                GENERALINFORMATION_INSURANCE_STEP1
+                            )}
+                        />
                         <Field
                             name="insuranceProvider"
-                            placeholder="Your insurance here"
+                            placeholder={formatText(
+                                GENERALINFORMATION_INSURANCE_YOURINSURANCE
+                            )}
                             component={props => (
                                 <Onboarding.SelectField
                                     {...props}
@@ -68,17 +92,29 @@ class InsuranceView extends React.PureComponent {
                             )}
                         />
                         <Box mb="15px" />
-                        <Onboarding.FormItemLabelText text="Step 2. Enter insurance number" />
+                        <Onboarding.FormItemLabelText
+                            text={formatText(
+                                GENERALINFORMATION_INSURANCE_STEP2
+                            )}
+                        />
                         <Field
                             name="patientInsuranceNum"
-                            placeholder="Your insurance number here"
+                            placeholder={formatText(
+                                GENERALINFORMATION_INSURANCE_YOURINSURANCENUMBER
+                            )}
                             component={Onboarding.InputField}
                             disabled={this.props.formikProps.isSubmitting}
                         />
-                        <Onboarding.FormItemLabelText text="Step 3. Enter plan/group number (optional)" />
+                        <Onboarding.FormItemLabelText
+                            text={formatText(
+                                GENERALINFORMATION_INSURANCE_STEP3
+                            )}
+                        />
                         <Field
                             name="planOrGroupNumber"
-                            placeholder="Your plan/group number here"
+                            placeholder={formatText(
+                                GENERALINFORMATION_INSURANCE_YOURPLAN
+                            )}
                             component={Onboarding.InputField}
                             disabled={this.props.formikProps.isSubmitting}
                         />
@@ -102,7 +138,9 @@ class InsuranceView extends React.PureComponent {
                     >
                         {this.props.formikProps.isSubmitting
                             ? 'Loading...'
-                            : "I don't have insurance"}
+                            : formatText(
+                                  GENERALINFORMATION_INSURANCE_NOINSURANCE
+                              )}
                     </Text>
                 </Button>
                 <Onboarding.NextButton
@@ -124,4 +162,4 @@ class InsuranceView extends React.PureComponent {
 
 InsuranceView['HAS_NO_INSURANCE'] = HAS_NO_INSURANCE;
 
-export default InsuranceView;
+export default injectIntl(InsuranceView);

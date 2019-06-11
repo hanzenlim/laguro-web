@@ -3,17 +3,18 @@ import * as Yup from 'yup';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 import cookies from 'browser-cookies';
+import { injectIntl } from 'react-intl';
 import { Flex, Box } from '../../components/index';
 import { onLogoutWithoutRedirect } from '../../util/authUtils';
 import { PatientName } from './StepComponents/GetPatientName';
 import { RegisterStep } from './StepComponents/Register';
 import { LoginStep } from './StepComponents/LogIn';
-import { KIOSK_URL } from '../../util/urls';
+import { KIOSK_URL, KIOSK_REG_PAGE_URL } from '../../util/urls';
 import { getKioskPageWizardSteps } from '../KioskPage/getKioskPageWizardSteps';
 import { redirect } from '../../history';
 import {
-    KIOSK_PAGE_PROGRESS_STEPS,
     addActionsToWizardSteps,
+    getKioskPageProgressSteps,
 } from '../KioskPage/utils';
 import { validatePhoneOrEmail } from '../../util/validationUtils';
 import { KioskTerms } from '../common/KioskTerms';
@@ -21,9 +22,14 @@ import { Progress } from '../common/the-bright-side-components/components/Onboar
 import { KioskLogIn } from '../common/the-bright-side-components/components/Kiosk/KioskLogIn';
 import { PurposeOfVisit } from '../common/the-bright-side-components/components/Onboarding/Registration/Patient/PurposeOfVisit';
 import { Onboarding, Wizard } from '../common/the-bright-side-components';
+import { getFormatTextFromProps } from '../../util/intlUtils';
+import { ChooseLanguage } from '../../wizardComponents/ChooseLanguage';
+import { KIOSK_FLOW_LANGUAGE_FORM_KEY } from '../../wizardComponents/ChooseLanguage/view';
+import { ENGLISH_CODE } from '../../strings/languageStrings';
 
 // in order
 // stage 1 registration
+export const CHOOSE_LANGUAGE_WIZARD_STEP_ID = 'choose-language-step';
 export const PURPOSE_OF_VISIT_WIZARD_STEP_ID = 'purpose-of-visit-step';
 export const LOGIN_WIZARD_STEP_ID = 'login-step';
 export const GET_PATIENT_NAME_WIZARD_STEP_ID = 'get-patient-name-step';
@@ -39,16 +45,36 @@ export const kioskPurposeOfVisitCookieVariableName = 'kioskPurposeOfVisit';
 export const kioskIsAccountNewCookieVariableName = 'kioskIsAccountNew';
 export const KIOSK_PURPOSE_OF_VISIT_WALKIN = 'walkIn';
 
+const REGISTRATION_SIGNIN_FIELDISREQUIRED =
+    'registration.signIn.fieldIsRequired';
+const REGISTRATION_SIGNIN_USEVALID = 'registration.signIn.useValid';
+const REGISTRATION_STEPTWO_PROVIDEVALIDPIN =
+    'registration.stepTwo.provideValidPin';
+const REGISTRATION_REGISTRATION_LIKETODO_SELECTPURPOSE =
+    'registration.likeTodo.selectPurpose';
+
 // depending on user, some steps will be optional
 // onAction will return true if there is an error, return false if there isn't
 // add graphql calls to onAction
-// eslint-disable-next-line
-export const KioskRegWizardSteps = [
+export const getKioskRegWizardSteps = ({ formatText = text => text }) => [
+    {
+        id: CHOOSE_LANGUAGE_WIZARD_STEP_ID,
+        initialValues: {
+            [KIOSK_FLOW_LANGUAGE_FORM_KEY]: ENGLISH_CODE,
+        },
+        onAction: stepValues => {
+            window.location.href = `${KIOSK_REG_PAGE_URL}/${PURPOSE_OF_VISIT_WIZARD_STEP_ID}?lang=${_get(
+                stepValues,
+                KIOSK_FLOW_LANGUAGE_FORM_KEY
+            )}`;
+            return true;
+        },
+    },
     {
         id: PURPOSE_OF_VISIT_WIZARD_STEP_ID,
         validationSchema: Yup.object().shape({
             purposeOfVisit: Yup.string().required(
-                'You must select your purpose of visit.'
+                formatText(REGISTRATION_REGISTRATION_LIKETODO_SELECTPURPOSE)
             ),
         }),
         initialValues: {
@@ -78,10 +104,10 @@ export const KioskRegWizardSteps = [
         validationSchema: Yup.object().shape({
             mode: Yup.string().required(),
             emailOrPhoneNumber: Yup.string()
-                .required('This field is required')
+                .required(formatText(REGISTRATION_SIGNIN_FIELDISREQUIRED))
                 .test(
                     'is phone number or email valid',
-                    'Please use a valid email or phone number',
+                    formatText(REGISTRATION_SIGNIN_USEVALID),
                     validatePhoneOrEmail
                 ),
         }),
@@ -109,7 +135,7 @@ export const KioskRegWizardSteps = [
         validationSchema: Yup.object().shape({
             isPinValid: Yup.mixed().oneOf(
                 [true],
-                'You must provide a valid pin'
+                formatText(REGISTRATION_STEPTWO_PROVIDEVALIDPIN)
             ),
         }),
         onAction: () => {
@@ -151,6 +177,7 @@ class KioskPage extends Component {
 
     render() {
         // add redirects here
+        const formatText = getFormatTextFromProps(this.props);
         const steps = addActionsToWizardSteps({
             actions: [
                 {
@@ -174,7 +201,7 @@ class KioskPage extends Component {
                     },
                 },
             ],
-            wizardSteps: KioskRegWizardSteps,
+            wizardSteps: getKioskRegWizardSteps({ formatText }),
         });
 
         const render = props => {
@@ -182,6 +209,9 @@ class KioskPage extends Component {
 
             // in order
             switch (props.actions.currentStep) {
+                case CHOOSE_LANGUAGE_WIZARD_STEP_ID:
+                    step = <ChooseLanguage {...props} />;
+                    break;
                 case PURPOSE_OF_VISIT_WIZARD_STEP_ID:
                     step = <PurposeOfVisit {...props} />;
                     break;
@@ -230,7 +260,7 @@ class KioskPage extends Component {
         return (
             <Box className="kiosk-reg-page">
                 <Progress
-                    steps={KIOSK_PAGE_PROGRESS_STEPS}
+                    steps={getKioskPageProgressSteps(formatText)}
                     step={1}
                     percent={20}
                 />
@@ -258,4 +288,4 @@ class KioskPage extends Component {
         );
     }
 }
-export default KioskPage;
+export default injectIntl(KioskPage);

@@ -2,50 +2,99 @@ import { Box, Flex } from '@laguro/basic-components';
 import React from 'react';
 import Onboarding from '../../../../Onboarding';
 import DentistIcon from '../../../Assets/dentistIcon';
+import {
+    MEDICALHISTORYFORM_URGENTHEARTCONDITIONS_ARTIFICIALPROSTHETICHEARTVALUE,
+    MEDICALHISTORYFORM_URGENTHEARTCONDITIONS_DAMAGEDVALVESINTRANSPLANTEDHEART,
+    MEDICALHISTORYFORM_URGENTHEARTCONDITIONS_CONGENITALHEARTDISEASEREPAIRED,
+    MEDICALHISTORYFORM_URGENTHEARTCONDITIONS_CONGENITALHEARTDISEASEREPAIREDCOMPLETELY,
+    MEDICALHISTORYFORM_URGENTHEARTCONDITIONS_CONGENITALHEARTDISEASEUNREPAIRED,
+    MEDICALHISTORYFORM_URGENTHEARTCONDITIONS_PREVIOUSINFECTIVEENDOCARDITIS,
+    MEDICALHISTORYFORM_URGENTHEARTCONDITIONS_URGENTHEARTCONDITIONS,
+    GENERAL_PLEASE_CHOOSE_CONDITIONS,
+} from '../../../../../../../../strings/messageStrings';
+import { renderQuestionComponent } from '../../../../../../../../util/questionUtils';
+import { getFormatTextFromProps } from '../../../../../../../../util/intlUtils';
+import { reduceArrayOfObjects } from '../../../../../../../../util/arrayUtils';
+import { injectIntl } from 'react-intl';
+
+const ARTIFICIAL_HEART_VALVE = 'Artificial (prosthetic heart value)';
+const DAMAGED_VALVES = 'Damaged valves in transplanted heart';
+const CHD_REPAIRED_COMPLETELY =
+    'Congenital heart disease - Repaired (completely) in the last 6 months ';
+const PREVIOUS_ENDOCARDITIS = 'Previous infective endocarditis';
+const UNREPARIED_CHD = 'Congenital heart disease - Unrepaired, cyanotic CHD';
+const REPAIRED_CHD =
+    'Congenital heart disease - repaired CHD with residual defects';
 
 const list = [
-    'Artificial (prosthetic heart value)',
-    'Damaged valves in transplanted heart',
-    'Congenital heart disease - Repaired (completely) in the last 6 months ',
-    'Previous infective endocarditis',
-    'Congenital heart disease - Unrepaired, cyanotic CHD',
-    'Congenital heart disease - repaired CHD with residual defects',
+    ARTIFICIAL_HEART_VALVE,
+    DAMAGED_VALVES,
+    CHD_REPAIRED_COMPLETELY,
+    PREVIOUS_ENDOCARDITIS,
+    UNREPARIED_CHD,
+    REPAIRED_CHD,
 ];
 
-const questions = list.map((item, i) => {
-    return {
-        id: i,
-        name: `Urgent heart conditions (${item})`,
-        value: false,
-        component: props => {
-            const key = `Urgent heart conditions (${item})`;
+const texts = {
+    [ARTIFICIAL_HEART_VALVE]: MEDICALHISTORYFORM_URGENTHEARTCONDITIONS_ARTIFICIALPROSTHETICHEARTVALUE,
+    [DAMAGED_VALVES]: MEDICALHISTORYFORM_URGENTHEARTCONDITIONS_DAMAGEDVALVESINTRANSPLANTEDHEART,
+    [CHD_REPAIRED_COMPLETELY]: MEDICALHISTORYFORM_URGENTHEARTCONDITIONS_CONGENITALHEARTDISEASEREPAIREDCOMPLETELY,
+    [PREVIOUS_ENDOCARDITIS]: MEDICALHISTORYFORM_URGENTHEARTCONDITIONS_PREVIOUSINFECTIVEENDOCARDITIS,
+    [UNREPARIED_CHD]: MEDICALHISTORYFORM_URGENTHEARTCONDITIONS_CONGENITALHEARTDISEASEUNREPAIRED,
+    [REPAIRED_CHD]: MEDICALHISTORYFORM_URGENTHEARTCONDITIONS_CONGENITALHEARTDISEASEREPAIRED,
+};
 
-            return (
-                <Onboarding.Checkbox
-                    key={key}
-                    field={item}
-                    value={props.formikProps.values[key]}
-                    onClick={() =>
-                        props.formikProps.setFieldValue(
-                            key,
-                            !props.formikProps.values[key]
-                        )
-                    }
-                />
-            );
-        },
+const getQuestionName = item => `Urgent heart conditions (${item})`;
+
+const questionConfigs = list.map(item => {
+    return {
+        name: getQuestionName(item),
+        value: false,
     };
 });
 
-export default class UrgentHeartConditions extends React.Component {
-    static questions = questions;
+class UrgentHeartConditions extends React.Component {
+    static questions = questionConfigs;
+    constructor(props) {
+        super(props);
+        const formatText = getFormatTextFromProps(this.props);
+        this.questionComponents = reduceArrayOfObjects(
+            list.map(item => {
+                return {
+                    [getQuestionName(item)]: props => {
+                        const key = getQuestionName(item);
+                        return (
+                            <Onboarding.Checkbox
+                                key={key}
+                                field={formatText(texts[item])}
+                                value={props.formikProps.values[key]}
+                                onClick={() =>
+                                    props.formikProps.setFieldValue(
+                                        key,
+                                        !props.formikProps.values[key]
+                                    )
+                                }
+                            />
+                        );
+                    },
+                };
+            })
+        );
+    }
 
     render() {
         const props = this.props;
-
+        const formatText = getFormatTextFromProps(this.props);
         const renderQuestions = [];
-        for (let i = 0; i < questions.length; i++) {
-            renderQuestions.push(questions[i].component(props));
+        for (let i = 0; i < questionConfigs.length; i++) {
+            renderQuestions.push(
+                renderQuestionComponent(
+                    this.questionComponents,
+                    questionConfigs,
+                    i,
+                    props
+                )
+            );
         }
 
         return (
@@ -56,8 +105,14 @@ export default class UrgentHeartConditions extends React.Component {
                 height="100%"
             >
                 <DentistIcon />
-                <Onboarding.StepTitleText text="Urgent heart conditions" />
-                <Onboarding.StepBlurbText text="Please choose from the following that applies to you" />
+                <Onboarding.StepTitleText
+                    text={formatText(
+                        MEDICALHISTORYFORM_URGENTHEARTCONDITIONS_URGENTHEARTCONDITIONS
+                    )}
+                />
+                <Onboarding.StepBlurbText
+                    text={formatText(GENERAL_PLEASE_CHOOSE_CONDITIONS)}
+                />
                 <Box>{renderQuestions}</Box>
                 <Onboarding.NoneButton
                     list={props.formikProps.values}
@@ -67,3 +122,5 @@ export default class UrgentHeartConditions extends React.Component {
         );
     }
 }
+
+export default injectIntl(UrgentHeartConditions);

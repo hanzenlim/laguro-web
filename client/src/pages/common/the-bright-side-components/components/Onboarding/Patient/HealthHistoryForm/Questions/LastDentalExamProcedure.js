@@ -3,6 +3,24 @@ import React from 'react';
 import _sortBy from 'lodash/sortBy';
 import Onboarding from '../../../../Onboarding';
 import ToolsIcon from '../../../Assets/toolsIcon';
+import { getFormatTextFromProps } from '../../../../../../../../util/intlUtils';
+import {
+    MEDICALHISTORYFORM_WHATWASDONE_BRACES,
+    MEDICALHISTORYFORM_WHATWASDONE_FILLING,
+    MEDICALHISTORYFORM_WHATWASDONE_ROOTCANAL,
+    MEDICALHISTORYFORM_WHATWASDONE_WISDOMTEETH,
+    MEDICALHISTORYFORM_WHATWASDONE_BRIDGES,
+    MEDICALHISTORYFORM_WHATWASDONE_IMPLANTS,
+    MEDICALHISTORYFORM_WHATWASDONE_TOOTHEXTRACTIONS,
+    MEDICALHISTORYFORM_WHATWASDONE_NITROUSSEDATION,
+    MEDICALHISTORYFORM_WHATWASDONE_WHITENING,
+    MEDICALHISTORYFORM_ALLERGIES_OTHER,
+    MEDICALHISTORYFORM_WHATWASDONE_WHATWASDONE,
+    GENERAL_NEXT,
+} from '../../../../../../../../strings/messageStrings';
+import { renderQuestionComponent } from '../../../../../../../../util/questionUtils';
+import { reduceArrayOfObjects } from '../../../../../../../../util/arrayUtils';
+import { injectIntl } from 'react-intl';
 
 const list = _sortBy([
     'Braces',
@@ -18,41 +36,78 @@ const list = _sortBy([
 ]);
 list.push('Other');
 
-const questions = list.map((item, i) => {
-    return {
-        id: i,
-        name: `Last dental procedures (${item})`,
-        value: false,
-        component: props => {
-            const key = `Last dental procedures (${item})`;
+const texts = {
+    Braces: MEDICALHISTORYFORM_WHATWASDONE_BRACES,
+    Filling: MEDICALHISTORYFORM_WHATWASDONE_FILLING,
+    'Root canal': MEDICALHISTORYFORM_WHATWASDONE_ROOTCANAL,
+    'Wisdom teeth removal': MEDICALHISTORYFORM_WHATWASDONE_WISDOMTEETH,
+    'Bridges/Dentures': MEDICALHISTORYFORM_WHATWASDONE_BRIDGES,
+    Implants: MEDICALHISTORYFORM_WHATWASDONE_IMPLANTS,
+    'Tooth extraction': MEDICALHISTORYFORM_WHATWASDONE_TOOTHEXTRACTIONS,
+    'Crown/Cap': MEDICALHISTORYFORM_WHATWASDONE_TOOTHEXTRACTIONS,
+    'Nitrous sedation': MEDICALHISTORYFORM_WHATWASDONE_NITROUSSEDATION,
+    Whitening: MEDICALHISTORYFORM_WHATWASDONE_WHITENING,
+    Other: MEDICALHISTORYFORM_ALLERGIES_OTHER,
+};
 
-            return (
-                <Onboarding.Checkbox
-                    width={290}
-                    key={key}
-                    field={item}
-                    value={props.formikProps.values[key]}
-                    onClick={() =>
-                        props.formikProps.setFieldValue(
-                            key,
-                            !props.formikProps.values[key]
-                        )
-                    }
-                />
-            );
-        },
+const getQuestionName = item => `Last dental procedures (${item})`;
+
+const questionConfigs = list.map(item => {
+    return {
+        name: getQuestionName(item),
+        value: false,
     };
 });
 
-export default class LastDentalExamProcedure extends React.Component {
-    static questions = questions;
+class LastDentalExamProcedure extends React.Component {
+    static questions = questionConfigs;
+    constructor(props) {
+        super(props);
+        const formatText = getFormatTextFromProps(this.props);
+        this.questionComponents = reduceArrayOfObjects(
+            list.map((item, i) => {
+                return {
+                    [getQuestionName(item)]: props => {
+                        const key = `Last dental procedures (${item})`;
+
+                        return (
+                            <Onboarding.Checkbox
+                                width={290}
+                                key={key}
+                                field={formatText(texts[item])}
+                                value={props.formikProps.values[key]}
+                                onClick={() =>
+                                    props.formikProps.setFieldValue(
+                                        key,
+                                        !props.formikProps.values[key]
+                                    )
+                                }
+                            />
+                        );
+                    },
+                };
+            })
+        );
+    }
 
     render() {
         const props = this.props;
+        const formatText = getFormatTextFromProps(this.props);
 
         const renderQuestions = [];
-        for (let i = 0; i < questions.length; i++) {
-            renderQuestions.push(questions[i].component(props));
+        for (
+            let i = 0;
+            i < Object.values(this.questionComponents).length;
+            i++
+        ) {
+            renderQuestions.push(
+                renderQuestionComponent(
+                    this.questionComponents,
+                    questionConfigs,
+                    i,
+                    props
+                )
+            );
         }
 
         return (
@@ -64,7 +119,11 @@ export default class LastDentalExamProcedure extends React.Component {
                 width="100%"
             >
                 <ToolsIcon />
-                <Onboarding.StepTitleText text="What was done at that time?" />
+                <Onboarding.StepTitleText
+                    text={formatText(
+                        MEDICALHISTORYFORM_WHATWASDONE_WHATWASDONE
+                    )}
+                />
                 <Onboarding.StepBlurbText />
 
                 <Grid gridTemplateColumns={['1fr', '1fr 1fr', '1fr 1fr 1fr']}>
@@ -76,9 +135,13 @@ export default class LastDentalExamProcedure extends React.Component {
                         props.formikProps.submitForm();
                     }}
                 >
-                    {props.formikProps.dirty ? 'Next' : 'Skip'}
+                    {props.formikProps.dirty
+                        ? formatText(GENERAL_NEXT)
+                        : 'Skip'}
                 </Onboarding.NextButton>
             </Flex>
         );
     }
 }
+
+export default injectIntl(LastDentalExamProcedure);

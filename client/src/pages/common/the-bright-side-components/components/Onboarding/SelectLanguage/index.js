@@ -1,7 +1,13 @@
 import { Select } from '@laguro/basic-components';
-import React from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 import Onboarding from '../index';
+import { injectIntl } from 'react-intl';
+import {
+    getFormatTextFromProps,
+    getIntlLanguages,
+} from '../../../../../../util/intlUtils';
+import { GENERALINFORMATION_LANGUAGE_SELECTLANGUAGES } from '../../../../../../strings/messageStrings';
 
 export const LANGUAGES = [
     { value: 'ENGLISH', label: 'English' },
@@ -46,18 +52,27 @@ const StyledSelect = styled(Select)`
     }
 `;
 
-export const SelectLanguage = ({ onSelect, value }) => {
-    return (
-        <StyledSelect
-            mode="multiple"
-            style={{ width: '100%' }}
-            placeholder="Select languages"
-            value={value}
-            onChange={onSelect}
-        >
-            {LANGUAGES.map(item => (
-                <Option key={item.value}>{item.label}</Option>
-            ))}
-        </StyledSelect>
-    );
-};
+class SelectLanguageClass extends Component {
+    render() {
+        const formatText = getFormatTextFromProps(this.props);
+        const languages = getIntlLanguages(formatText);
+
+        return (
+            <StyledSelect
+                mode="multiple"
+                style={{ width: '100%' }}
+                placeholder={formatText(
+                    GENERALINFORMATION_LANGUAGE_SELECTLANGUAGES
+                )}
+                value={this.props.value}
+                onChange={this.props.onSelect}
+            >
+                {languages.map(item => (
+                    <Option key={item.value}>{item.label}</Option>
+                ))}
+            </StyledSelect>
+        );
+    }
+}
+
+export const SelectLanguage = injectIntl(SelectLanguageClass);

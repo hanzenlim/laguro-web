@@ -11,6 +11,30 @@ export default {
             pleaseSpecify: 'Please specify',
             pleaseExplain: 'Please explain',
             done: 'Done',
+            next: 'Next',
+            send: 'Send',
+            mustHave10: 'Must have 10 digits',
+            invalidPhone: 'Invalid phone number',
+            month: 'Month',
+            year: 'Year',
+            date: 'Date',
+            yes: 'Yes',
+            no: 'No',
+            pleaseList: 'Please list',
+            anyComplications: 'Any complications?',
+            doneWhen: 'When was it done?',
+            treatmentStart: 'When was the start of treatment?',
+            howManyWeeks: 'How many weeks?',
+            pleaseChooseFollowingQuestions:
+                'Please choose from the following questions that apply to you',
+            other: 'Other',
+            pleaseChooseTheConditionsThatApplyToYou:
+                'Please choose the conditions that apply to you',
+            and: 'and',
+            speaks: 'Speaks',
+            minutes: 'min',
+            hour: 'hour',
+            accountAlreadyExists: 'Account already exists',
         },
         registration: {
             title: 'Registration',
@@ -24,7 +48,7 @@ export default {
             signIn: {
                 signIn: 'Sign in',
                 typeInfromation:
-                    'Type in your information below to log in NEW_LINE A temporary log-in code will be sent',
+                    'Type in your information below to log in.\n A temporary log-in code will be sent',
                 phoneOrEmail: 'Phone number or e-mail',
                 send: 'Send',
                 fieldIsRequired: 'This field is required',
@@ -36,6 +60,7 @@ export default {
                 codeSent: 'Your log-in code has been sent',
                 enterCode: 'Enter log-in code',
                 signUp: 'Sign up',
+                incorrectCode: 'Incorrect code',
             },
             stepOne: {
                 stepOne: 'Step 1. What is your name?',
@@ -47,8 +72,8 @@ export default {
             stepTwo: {
                 stepTwo: 'Step 2. Verification',
                 typeInformation:
-                    'Type in your information below to log in NEW_LINE A verification will be sent',
-                phoneOrEmail: 'Phone number or e-mail',
+                    'Type in your information below to log in.\n A verification will be sent',
+                phone: 'Phone number',
                 send: 'Send',
                 provideValidPin: 'You must provide a valid pin',
                 provideName: 'Please provide your name',
@@ -64,13 +89,10 @@ export default {
             title: 'General information',
             birthday: {
                 birthday: 'What is your birthday?',
-                month: 'Month',
                 monthIsRequired: 'Month is required',
-                januaryDecember: 'January - December',
-                date: 'Date',
                 dateIsRequired: 'Date is required',
-                year: 'Year',
                 yearIsRequired: 'Year is required',
+                underage: 'Under minimum age',
             },
             gender: {
                 gender: 'What is your gender?',
@@ -93,6 +115,8 @@ export default {
                 persian: 'Persian',
                 portuguese: 'Portuguese',
                 atLeastOne: 'At least one language is required',
+                selectLanguages: 'Select languages',
+                russian: 'Russian',
             },
             address: {
                 address: 'What is your address?',
@@ -102,6 +126,7 @@ export default {
                 address2: 'Address 2',
                 apartments: 'Apartment, suite, unit, building, etc.',
                 city: 'City',
+                cityPlaceholder: 'City / district / suburb',
                 cityIsRequired: 'City is required',
                 state: 'State',
                 fieldIsRequired: 'This field is required',
@@ -128,9 +153,9 @@ export default {
                 reasonOfVisit: 'What is your reason of visit today?',
                 letUsKnow:
                     'Let us know what you need so that we could find you the best dentists around according to your needs.',
-                exam: 'Exam/Check-up/Cleaning NEW_LINE Routine initial visit',
+                exam: 'Exam/Check-up/Cleaning\n Routine initial visit',
                 specialTreatment:
-                    'Special Treatment (E.g. Crown or Root canal)',
+                    'Special Treatment\n (E.g. Crown or Root canal)',
             },
             bookAnAppointment: {
                 bookAppointment: 'Book an appointment',
@@ -145,6 +170,7 @@ export default {
                 periodontics: 'Periodontics',
                 prosthodontics: 'Prosthodontics',
                 dr: 'Dr.',
+                exams: 'Exams',
                 fillings: 'Fillings',
                 crowns: 'Crowns, Bridges, Veneers',
                 rootCanals: 'Root Canals',
@@ -156,19 +182,22 @@ export default {
                 extractions: 'Extractions / Surgery',
                 dentures: 'Dentures',
                 braces: 'Braces',
-                accepts: 'Accepts BLANK and BLANK',
+                accepts: 'Accepts',
                 languagesSpoken: 'Languages spoken:',
-                appointmentDuration: 'Appointment duration: 30min, 1hr',
+                appointmentDuration: 'Appointment duration',
                 availableTimes: 'Available times',
+                allProcedures: 'All procedures',
+                youMustSelectAppt: 'You must select an appointment',
+                bookAppt: 'Book now',
             },
             terms: {
                 terms: 'Terms & Conditions',
-                agree: 'Agree & Book appointment',
+                agree: 'Agree',
             },
             appointmentConfirmation: {
                 appointmentConfirmation: 'Appointment confirmation',
                 yourAppointment:
-                    'Your appointment with Dr. BLANK has been scheduled',
+                    'Your appointment with {dentistName} has been scheduled',
                 notifiedDentist:
                     'We have notified your dentist about this appointment',
             },
@@ -205,7 +234,7 @@ export default {
             generalMedicalInformation2: {
                 pleaseComplete:
                     'Please complete the information below about your general health',
-                lastPhysicalExam: 'When was your last physical exam? (Month)',
+                lastPhysicalExam: 'When was your last physical exam?',
                 inGoodHealth: 'Are you in good health?',
                 generalHealthChanges:
                     'Any changes in your general health within the past year?',
@@ -250,8 +279,6 @@ export default {
                 pleaseCompleteIfPregnant:
                     'Please complete the information below if you are expecting or nursing',
                 areYouPregnant: 'Are you pregnant?',
-                yes: 'Yes',
-                no: 'No',
             },
             generalDentalInformation1: {
                 generalDentalInformation: 'General dental information',
@@ -323,6 +350,7 @@ export default {
                     'Other heart/cardiovascular conditons',
             },
             otherHeartConditions: {
+                otherHeartConditions: 'Other heart/cardiovascular conditions',
                 pleaseChooseTheFollowing:
                     'Please choose from the following that applies to you',
                 cardiovascularDisease: 'Cardiovascular disease',
@@ -428,14 +456,14 @@ export default {
         },
         final: {
             final: 'Final',
-            welcomeAboard: 'Welcome aboard,',
+            welcomeAboard: 'Welcome aboard',
             thankYou: 'Thank you for completing these questionnaires.',
             officiallyLaguroPatient: 'You are now officially a Laguro Patient!',
             pleaseTakeASeat:
                 'Please take a seat and your dentist will be with you shortly',
             appointmentDetails: 'Appointment details',
-            haveAppointmentWith: 'You have 1 appointment with Dr.',
-            congrats: 'Congrats,',
+            haveAppointmentWith: 'You have 1 appointment with',
+            congrats: 'Congrats',
             thankYouForCompleting:
                 "Thank you for completing these questionnaires. You're all set for your appointment.",
         },
@@ -452,6 +480,30 @@ export default {
             pleaseSpecify: 'Por favor, especifique',
             pleaseExplain: 'Por favor, explique',
             done: 'Listo',
+            next: 'Siguiente',
+            send: 'Enviar',
+            mustHave10: 'Debe contener 10 dígitos',
+            invalidPhone: 'El número de teléfono no es válido',
+            month: 'Mes',
+            year: 'Año',
+            date: 'Fecha',
+            yes: 'Sí',
+            no: 'No',
+            pleaseList: 'Por favor, especifique',
+            anyComplications: '¿Alguna complicación?',
+            doneWhen: '¿Cuando fue hecho?',
+            treatmentStart: '¿Cuándo fue el inicio del tratamiento?',
+            howManyWeeks: '¿Cuantas semanas?',
+            pleaseChooseFollowingQuestions:
+                'Por favor, elija de entre las siguientes opciones las que apliquen a usted',
+            other: 'Otra',
+            pleaseChooseTheConditionsThatApplyToYou:
+                'Por favor elija las condiciones que apliquen a usted',
+            and: 'y',
+            speaks: 'Habla',
+            minutes: 'minutos',
+            hour: 'hora',
+            accountAlreadyExists: 'La cuenta ya existe',
         },
         registration: {
             title: 'Registro',
@@ -465,7 +517,7 @@ export default {
             signIn: {
                 signIn: 'Ingresar',
                 typeInfromation:
-                    'Ingrese su información a continuación para iniciar sesión NUEVA_LÍNEA Le enviaremos un código de inicio de sesión temporal',
+                    'Ingrese su información a continuación para iniciar sesión \n Le enviaremos un código de inicio de sesión temporal',
                 phoneOrEmail: 'Número de teléfono o correo electrónico',
                 send: 'Enviar',
                 fieldIsRequired: 'Este campo es requerido',
@@ -479,6 +531,7 @@ export default {
                 codeSent: 'Su código de inicio de sesión ha sido enviado',
                 enterCode: 'Ingrese su código de inicio de sesión',
                 signUp: 'Registrarse',
+                incorrectCode: 'Código incorrecto',
             },
             stepOne: {
                 stepOne: 'Paso 1. ¿Cuál es su nombre?',
@@ -490,9 +543,8 @@ export default {
             stepTwo: {
                 stepTwo: 'Paso 2. Verificación',
                 typeInformation:
-                    'Ingrese su información a continuación para iniciar sesión NUEVA_LÍNEA Le enviaremos una verificación',
-                phoneOrEmail: 'Número de teléfono o correo electrónico',
-                send: 'Enviar',
+                    'Ingrese su información a continuación para iniciar sesión \n Le enviaremos una verificación',
+                phone: 'Número de teléfono',
                 provideValidPin: 'Debe proporcionar un pin válido',
                 provideName: 'Por favor, introduzca su nombre',
                 alreadyHaveAccount: 'Ya dispone de una cuenta',
@@ -508,13 +560,10 @@ export default {
             title: 'Información general',
             birthday: {
                 birthday: '¿Cuál es su cumpleaños?',
-                month: 'Mes',
                 monthIsRequired: 'Se requiere un mes',
-                januaryDecember: 'Enero - Diciembre',
-                date: 'Fecha',
                 dateIsRequired: 'Se requiere una fecha',
-                year: 'Año',
                 yearIsRequired: 'Se requiere un año',
+                underage: 'Bajo edad mínima',
             },
             gender: {
                 gender: '¿Cuál es su género?',
@@ -526,17 +575,19 @@ export default {
                 language: 'Idioma',
                 whichLanguages: '¿Qué idiomas habla?',
                 english: 'Inglés',
-                spanish: 'español',
-                chinese: 'chino',
-                tagalog: 'tagalo',
-                vietnamese: 'vietnamita',
-                korean: 'coreano',
-                armenian: 'armenio',
-                japanese: 'japonés',
-                german: 'alemán',
-                persian: 'persa',
-                portuguese: 'portugués',
+                spanish: 'Español',
+                chinese: 'Chino',
+                tagalog: 'Tagalo',
+                vietnamese: 'Vietnamita',
+                korean: 'Coreano',
+                armenian: 'Armenio',
+                japanese: 'Japonés',
+                german: 'Alemán',
+                persian: 'Persa',
+                portuguese: 'Portugués',
+                russian: 'Ruso',
                 atLeastOne: 'Se requiere por lo menos un idioma',
+                selectLanguages: 'Seleccionar idiomas',
             },
             address: {
                 address: '¿Cuál es su dirección?',
@@ -546,6 +597,7 @@ export default {
                 address2: 'Dirección 2',
                 apartments: 'Apartamento, suite, casa, edificio, etc.',
                 city: 'Ciudad',
+                cityPlaceholder: 'Ciudad / distrito / suburbio',
                 cityIsRequired: 'Se requiere una ciudad',
                 state: 'Estado',
                 fieldIsRequired: 'Este campo es requerido',
@@ -572,10 +624,9 @@ export default {
                 reasonOfVisit: '¿Cuál es el motivo de su visita hoy?',
                 letUsKnow:
                     'Háganos saber lo que necesita para que podamos encontrarle los mejores dentistas del mercado de acuerdo con sus necesidades.',
-                exam:
-                    'Examen/revisión/limpieza NUEVA_LÍNEA Visita inicial de rutina',
+                exam: 'Examen/revisión/limpieza\n Visita inicial de rutina',
                 specialTreatment:
-                    'Tratamiento especial (por ejemplo, corona o conducto radicular)',
+                    'Tratamiento especial\n (por ejemplo, corona o conducto radicular)',
             },
             bookAnAppointment: {
                 bookAppointment: 'Concertar una cita',
@@ -590,6 +641,7 @@ export default {
                 periodontics: 'Periodoncia',
                 prosthodontics: 'Prostodoncia',
                 dr: 'Dr./Dra.',
+                exams: 'Examenes',
                 fillings: 'Rellenos',
                 crowns: 'Coronas, puentes, carillas',
                 rootCanals: 'Conductos radiculares',
@@ -601,25 +653,27 @@ export default {
                 extractions: 'Extracciones/cirugía',
                 dentures: 'Dentaduras postizas',
                 braces: 'Frenos',
-                accepts: 'Acepta EN BLANCO y EN BLANCO',
+                accepts: 'Acepta',
                 languagesSpoken: 'Idiomas que habla:',
-                appointmentDuration: 'Duración de la cita: 30 minutos, 1 hora',
+                appointmentDuration: 'Duración de la cita',
                 availableTimes: 'Horarios disponibles',
+                allProcedures: 'Todos los procedimientos',
+                youMustSelectAppt: 'Debes seleccionar una cita',
+                bookAppt: 'Concertar cita',
             },
             terms: {
                 terms: 'Términos y condiciones',
-                agree: 'Aceptar y concertar una cita',
+                agree: 'Aceptar',
             },
             appointmentConfirmation: {
                 appointmentConfirmation: 'Confirmación de la cita',
-                yourAppointment:
-                    'Su cita con el/la Dr./Dra. BLANK ha sido programada',
+                yourAppointment: 'Su cita con {dentistName} ha sido programada',
                 notifiedDentist:
                     'Hemos notificado a su dentista sobre esta cita',
             },
         },
         medicalHistoryForm: {
-            title: '',
+            title: 'Formulario de historial medico',
             lastDentalExam: {
                 lastDentalExam:
                     '¿Cuándo se realizó su último examen dental y radiografías?',
@@ -641,17 +695,17 @@ export default {
                 generalMedicalInformation: 'Información médica general',
             },
             generalMedicalInformation1: {
-                pleaseFillOut: 'Información médica general',
-                generalInformation: 'Por favor, rellene los siguientes campos',
-                name: 'a. Nombre',
-                phoneNumber: 'b. Número de teléfono',
-                address: 'c. Dirección',
+                pleaseFillOut: 'Por favor, rellene los siguientes campos',
+                generalInformation: 'Información general sobre tu doctor',
+                name: 'Nombre',
+                phoneNumber: 'Número de teléfono',
+                address: 'Dirección',
                 generalMedicalInformation: 'Información médica general',
             },
             generalMedicalInformation2: {
                 pleaseComplete:
                     'Por favor, complete la siguiente información sobre su salud en general',
-                lastPhysicalExam: '¿Cuándo fue su último examen físico? (mes)',
+                lastPhysicalExam: '¿Cuándo fue su último examen físico?',
                 inGoodHealth: '¿Tiene buena salud?',
                 generalHealthChanges:
                     '¿Ha tenido algún cambio en su salud en general durante el último año?',
@@ -696,8 +750,6 @@ export default {
                 pleaseCompleteIfPregnant:
                     'Por favor, complete la siguiente información si está embarazada o amamantando',
                 areYouPregnant: '¿Está usted embarazada?',
-                yes: 'Sí',
-                no: 'No',
             },
             generalDentalInformation1: {
                 generalDentalInformation: 'Información dental general',
@@ -768,6 +820,8 @@ export default {
                     'Otras condiciones cardíacas/cardiovasculares',
             },
             otherHeartConditions: {
+                otherHeartConditions:
+                    'Otras afecciones cardíacas / cardiovasculares',
                 pleaseChooseTheFollowing:
                     'Por favor, elija de entre las siguientes opciones las que apliquen a usted',
                 cardiovascularDisease: 'Enfermedad cardiovascular',
@@ -876,15 +930,15 @@ export default {
         },
         final: {
             final: 'Lo último',
-            welcomeAboard: 'Bienvenido/a,',
+            welcomeAboard: 'Bienvenido(a)',
             thankYou: 'Gracias por completar estos cuestionarios.',
             officiallyLaguroPatient:
                 '¡Usted es ahora oficialmente un/a paciente de Laguro!',
             pleaseTakeASeat:
                 'Por favor, tome asiento. Su dentista estará con usted en breve.',
             appointmentDetails: 'Detalles de la cita',
-            haveAppointmentWith: 'Tiene 1 cita con el/la Dr./Dra.',
-            congrats: 'Felicitaciones,',
+            haveAppointmentWith: 'Tiene 1 cita con',
+            congrats: 'Felicitaciones',
             thankYouForCompleting:
                 'Gracias por completar estos cuestionarios. Ya está todo listo para su cita.',
         },

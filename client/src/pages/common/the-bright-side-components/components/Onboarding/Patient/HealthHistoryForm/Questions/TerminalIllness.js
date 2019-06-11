@@ -1,150 +1,185 @@
 import { Box, Flex, TextArea } from '@laguro/basic-components';
 import React from 'react';
+import _range from 'lodash/range';
 import Onboarding from '../../../../Onboarding';
 import DentistIcon from '../../../Assets/dentistIcon';
+import {
+    MEDICALHISTORYFORM_TERMINALILLNESS_NAMERECURRENTINFECTIONS,
+    GENERAL_PLEASESPECIFY,
+    MEDICALHISTORYFORM_TERMINALILLNESS_HIVORAIDS,
+    MEDICALHISTORYFORM_TERMINALILLNESS_HEPATITIS,
+    MEDICALHISTORYFORM_TERMINALILLNESS_SEXUALLYTRANSMITTEDDISEASES,
+    MEDICALHISTORYFORM_TERMINALILLNESS_TERMINALILLNESS,
+    GENERAL_PLEASE_CHOOSE_CONDITIONS,
+} from '../../../../../../../../strings/messageStrings';
+import { getFormatTextFromProps } from '../../../../../../../../util/intlUtils';
+import { injectIntl } from 'react-intl';
+import { renderQuestionComponent } from '../../../../../../../../util/questionUtils';
 
-const questions = [
+const RECURRENT_INFECTIONS = 'Recurrent infections';
+const RECURRENT_INFECTIONS_PLEASE_SPECIFY =
+    'Recurrent infections (Please specify)';
+const HIV_OR_AIDS = 'HIV or AIDS';
+const HEPATITIS = 'Hepatitis';
+const SEXUALLY_TRANSMITTED_DISEASES = 'Sexually transmitted diseases';
+const SEXUALLY_TRANSMITTED_DISEASES_PLEASE_SPECIFY =
+    'Sexually transmitted diseases (Please specify)';
+
+const questionConfigs = [
     {
-        id: 0,
-        name: 'Recurrent infections',
+        name: RECURRENT_INFECTIONS,
         value: false,
-        component: props => {
-            const key = questions[0].name;
-
-            return (
-                <Onboarding.Checkbox
-                    key={key}
-                    field={key}
-                    value={props.formikProps.values[key]}
-                    onClick={() =>
-                        props.formikProps.setFieldValue(
-                            key,
-                            !props.formikProps.values[key]
-                        )
-                    }
-                />
-            );
-        },
     },
     {
-        id: 1,
-        name: 'Recurrent infections (Please specify)',
+        name: RECURRENT_INFECTIONS_PLEASE_SPECIFY,
         value: '',
-        component: props => {
-            if (!props.formikProps.values[questions[0].name]) {
-                return null;
-            }
-
-            const key = questions[1].name;
-
-            return (
-                <TextArea
-                    placeholder="Please specify"
-                    value={props.formikProps.values[key]}
-                    onChange={value =>
-                        props.formikProps.setFieldValue(key, value.target.value)
-                    }
-                    height="180px"
-                />
-            );
-        },
     },
     {
-        id: 2,
-        name: 'HIV or AIDS',
+        name: HIV_OR_AIDS,
         value: false,
-        component: props => {
-            const key = questions[2].name;
-
-            return (
-                <Onboarding.Checkbox
-                    key={key}
-                    field={key}
-                    value={props.formikProps.values[key]}
-                    onClick={() =>
-                        props.formikProps.setFieldValue(
-                            key,
-                            !props.formikProps.values[key]
-                        )
-                    }
-                />
-            );
-        },
     },
     {
-        id: 3,
-        name: 'Hepatitis',
+        name: HEPATITIS,
         value: false,
-        component: props => {
-            const key = questions[3].name;
-
-            return (
-                <Onboarding.Checkbox
-                    key={key}
-                    field={key}
-                    value={props.formikProps.values[key]}
-                    onClick={() =>
-                        props.formikProps.setFieldValue(
-                            key,
-                            !props.formikProps.values[key]
-                        )
-                    }
-                />
-            );
-        },
     },
     {
-        id: 4,
-        name: 'Sexually transmitted diseases',
+        name: SEXUALLY_TRANSMITTED_DISEASES,
         value: false,
-        component: props => {
-            const key = questions[4].name;
-
-            return (
-                <Onboarding.Checkbox
-                    key={key}
-                    field={key}
-                    value={props.formikProps.values[key]}
-                    onClick={() =>
-                        props.formikProps.setFieldValue(
-                            key,
-                            !props.formikProps.values[key]
-                        )
-                    }
-                />
-            );
-        },
     },
     {
-        id: 5,
-        name: 'Sexually transmitted diseases (Please specify)',
+        name: SEXUALLY_TRANSMITTED_DISEASES_PLEASE_SPECIFY,
         value: '',
-        component: props => {
-            if (!props.formikProps.values[questions[4].name]) {
-                return null;
-            }
-
-            const key = questions[5].name;
-
-            return (
-                <TextArea
-                    placeholder="Please specify"
-                    value={props.formikProps.values[key]}
-                    onChange={value =>
-                        props.formikProps.setFieldValue(key, value.target.value)
-                    }
-                    height="180px"
-                />
-            );
-        },
     },
 ];
 
-export default class TerminalIllness extends React.Component {
-    static questions = questions;
+class TerminalIllness extends React.Component {
+    static questions = questionConfigs;
+    constructor(props) {
+        super(props);
+        const formatText = getFormatTextFromProps(this.props);
+        this.questionComponents = {
+            [RECURRENT_INFECTIONS]: props => {
+                const key = RECURRENT_INFECTIONS;
+
+                return (
+                    <Onboarding.Checkbox
+                        key={key}
+                        field={formatText(
+                            MEDICALHISTORYFORM_TERMINALILLNESS_NAMERECURRENTINFECTIONS
+                        )}
+                        value={props.formikProps.values[key]}
+                        onClick={() =>
+                            props.formikProps.setFieldValue(
+                                key,
+                                !props.formikProps.values[key]
+                            )
+                        }
+                    />
+                );
+            },
+            [RECURRENT_INFECTIONS_PLEASE_SPECIFY]: props => {
+                if (!props.formikProps.values[RECURRENT_INFECTIONS]) {
+                    return null;
+                }
+
+                const key = RECURRENT_INFECTIONS_PLEASE_SPECIFY;
+
+                return (
+                    <TextArea
+                        placeholder={formatText(GENERAL_PLEASESPECIFY)}
+                        value={props.formikProps.values[key]}
+                        onChange={value =>
+                            props.formikProps.setFieldValue(
+                                key,
+                                value.target.value
+                            )
+                        }
+                        height="180px"
+                    />
+                );
+            },
+            [HIV_OR_AIDS]: props => {
+                const key = HIV_OR_AIDS;
+                return (
+                    <Onboarding.Checkbox
+                        key={key}
+                        field={formatText(
+                            MEDICALHISTORYFORM_TERMINALILLNESS_HIVORAIDS
+                        )}
+                        value={props.formikProps.values[key]}
+                        onClick={() =>
+                            props.formikProps.setFieldValue(
+                                key,
+                                !props.formikProps.values[key]
+                            )
+                        }
+                    />
+                );
+            },
+            [HEPATITIS]: props => {
+                const key = HEPATITIS;
+                return (
+                    <Onboarding.Checkbox
+                        key={key}
+                        field={formatText(
+                            MEDICALHISTORYFORM_TERMINALILLNESS_HEPATITIS
+                        )}
+                        value={props.formikProps.values[key]}
+                        onClick={() =>
+                            props.formikProps.setFieldValue(
+                                key,
+                                !props.formikProps.values[key]
+                            )
+                        }
+                    />
+                );
+            },
+            [SEXUALLY_TRANSMITTED_DISEASES]: props => {
+                const key = SEXUALLY_TRANSMITTED_DISEASES;
+
+                return (
+                    <Onboarding.Checkbox
+                        key={key}
+                        field={formatText(
+                            MEDICALHISTORYFORM_TERMINALILLNESS_SEXUALLYTRANSMITTEDDISEASES
+                        )}
+                        value={props.formikProps.values[key]}
+                        onClick={() =>
+                            props.formikProps.setFieldValue(
+                                key,
+                                !props.formikProps.values[key]
+                            )
+                        }
+                    />
+                );
+            },
+            [SEXUALLY_TRANSMITTED_DISEASES_PLEASE_SPECIFY]: props => {
+                if (!props.formikProps.values[SEXUALLY_TRANSMITTED_DISEASES]) {
+                    return null;
+                }
+
+                const key = SEXUALLY_TRANSMITTED_DISEASES_PLEASE_SPECIFY;
+
+                return (
+                    <TextArea
+                        placeholder={formatText(GENERAL_PLEASESPECIFY)}
+                        value={props.formikProps.values[key]}
+                        onChange={value =>
+                            props.formikProps.setFieldValue(
+                                key,
+                                value.target.value
+                            )
+                        }
+                        height="180px"
+                    />
+                );
+            },
+        };
+    }
 
     render() {
         const props = this.props;
+        const formatText = getFormatTextFromProps(this.props);
 
         return (
             <Flex
@@ -154,18 +189,25 @@ export default class TerminalIllness extends React.Component {
                 height="100%"
             >
                 <DentistIcon />
-                <Onboarding.StepTitleText text="Terminal illness" />
-                <Onboarding.StepBlurbText text="Please choose the conditions that apply to you" />
+                <Onboarding.StepTitleText
+                    text={formatText(
+                        MEDICALHISTORYFORM_TERMINALILLNESS_TERMINALILLNESS
+                    )}
+                />
+                <Onboarding.StepBlurbText
+                    text={formatText(GENERAL_PLEASE_CHOOSE_CONDITIONS)}
+                />
 
                 <Box>
-                    {questions[0].component(props)}
-                    {questions[1].component(props)}
-                    {questions[2].component(props)}
-                    {questions[3].component(props)}
-                    {questions[4].component(props)}
-                    {questions[5].component(props)}
+                    {_range(6).map(i =>
+                        renderQuestionComponent(
+                            this.questionComponents,
+                            questionConfigs,
+                            i,
+                            props
+                        )
+                    )}
                 </Box>
-
                 <Onboarding.NextButton
                     onClick={() => props.formikProps.submitForm()}
                 />
@@ -173,3 +215,5 @@ export default class TerminalIllness extends React.Component {
         );
     }
 }
+
+export default injectIntl(TerminalIllness);

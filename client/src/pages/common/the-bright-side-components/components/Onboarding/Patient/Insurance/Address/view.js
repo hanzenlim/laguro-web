@@ -3,6 +3,20 @@ import { Field } from 'formik';
 import * as React from 'react';
 import Onboarding from '../../..';
 import InsuranceUmbrella from '../../../Assets/insuranceUmbrella';
+import { getFormatTextFromProps } from '../../../../../../../../util/intlUtils';
+import { injectIntl } from 'react-intl';
+import {
+    GENERAL_NEXT,
+    GENERALINFORMATION_ADDRESS_ADDRESS,
+    GENERALINFORMATION_ADDRESS_ADDRESS1,
+    GENERALINFORMATION_ADDRESS_ADDRESS2,
+    GENERALINFORMATION_ADDRESS_STREETNUMBER,
+    GENERALINFORMATION_ADDRESS_APARTMENTS,
+    GENERALINFORMATION_ADDRESS_CITY,
+    GENERALINFORMATION_ADDRESS_CITYPLACEHOLDER,
+    GENERALINFORMATION_ADDRESS_STATE,
+    GENERALINFORMATION_ADDRESS_POSTALCODE,
+} from '../../../../../../../../strings/messageStrings';
 
 const states = [
     'AL',
@@ -59,33 +73,50 @@ const states = [
 
 class AddressView extends React.PureComponent {
     render() {
+        const formatText = getFormatTextFromProps(this.props);
         return (
             <Box width={['100%', '329px', '329px']} px={['20px', '0', '0']}>
                 <Flex justifyContent="center">
                     <InsuranceUmbrella />
                 </Flex>
-                <Onboarding.StepTitleText text="What is your address?" />
+                <Onboarding.StepTitleText
+                    text={formatText(GENERALINFORMATION_ADDRESS_ADDRESS)}
+                />
                 <Onboarding.StepBlurbText />
 
-                <Onboarding.FormItemLabelText text="Address 1" />
+                <Onboarding.FormItemLabelText
+                    text={formatText(GENERALINFORMATION_ADDRESS_ADDRESS1)}
+                />
                 <Field
                     name="patientAddress1"
-                    placeholder="Street number, street name"
+                    placeholder={formatText(
+                        GENERALINFORMATION_ADDRESS_STREETNUMBER
+                    )}
                     component={Onboarding.InputField}
                 />
-                <Onboarding.FormItemLabelText text="Address 2" />
+                <Onboarding.FormItemLabelText
+                    text={formatText(GENERALINFORMATION_ADDRESS_ADDRESS2)}
+                />
                 <Field
                     name="patientAddress2"
-                    placeholder="Apartment, suite, unit, building, etc."
+                    placeholder={formatText(
+                        GENERALINFORMATION_ADDRESS_APARTMENTS
+                    )}
                     component={Onboarding.InputField}
                 />
-                <Onboarding.FormItemLabelText text="City" />
+                <Onboarding.FormItemLabelText
+                    text={formatText(GENERALINFORMATION_ADDRESS_CITY)}
+                />
                 <Field
                     name="patientCity"
-                    placeholder="City / District / Suburb"
+                    placeholder={formatText(
+                        GENERALINFORMATION_ADDRESS_CITYPLACEHOLDER
+                    )}
                     component={Onboarding.InputField}
                 />
-                <Onboarding.FormItemLabelText text="State" />
+                <Onboarding.FormItemLabelText
+                    text={formatText(GENERALINFORMATION_ADDRESS_STATE)}
+                />
                 <Field
                     name="patientState"
                     component={props => (
@@ -100,16 +131,18 @@ class AddressView extends React.PureComponent {
                     )}
                 />
                 <Box mb="15px" />
-                <Onboarding.FormItemLabelText text="Postal code" />
+                <Onboarding.FormItemLabelText
+                    text={formatText(GENERALINFORMATION_ADDRESS_POSTALCODE)}
+                />
                 <Field name="patientZIP" component={Onboarding.InputField} />
                 <Onboarding.NextButton
                     onClick={() => this.props.formikProps.submitForm()}
                 >
-                    Next
+                    {formatText(GENERAL_NEXT)}
                 </Onboarding.NextButton>
             </Box>
         );
     }
 }
 
-export default AddressView;
+export default injectIntl(AddressView);

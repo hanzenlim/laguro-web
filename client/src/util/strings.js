@@ -199,3 +199,4 @@ export const hasSkippedMedicalHistoryFormCookieVariableName =
 
 export const LAGURO_AUTH_TOKEN = 'laguroAuthToken';
 export const ENGLISH = 'ENGLISH';
+export const SPANISH = 'SPANISH';

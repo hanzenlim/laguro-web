@@ -5,47 +5,66 @@ import _isEmpty from 'lodash/isEmpty';
 import { Onboarding } from '../the-bright-side-components';
 import InfoIcon from '../../../components/Icon/infoIcon';
 import PinInput from '../PinInput';
-
-const validate = phoneNumber => {
-    const isNumeric = validator.isNumeric(phoneNumber);
-    const hasCorrectDigitCount =
-        !_isEmpty(phoneNumber) && phoneNumber.length === 10;
-
-    if (!phoneNumber) {
-        return 'Phone number is required';
-    }
-
-    if (!isNumeric) {
-        return 'Invalid phone number';
-    }
-
-    if (!hasCorrectDigitCount) {
-        return 'Phone number must have 10 digits';
-    }
-
-    return '';
-};
+import { getFormatTextFromProps } from '../../../util/intlUtils';
+import { injectIntl } from 'react-intl';
+import {
+    GENERAL_SEND,
+    GENERAL_PLEASEFILL,
+    GENERAL_MUSTHAVE10,
+    GENERAL_INVALIDPHONE,
+    REGISTRATION_STEPTWO_STEPTWO,
+    REGISTRATION_STEPTWO_TYPEINFORMATION,
+    REGISTRATION_STEPTWO_PHONE,
+    REGISTRATION_STEPTWO_VERIFICATIONCODESENT,
+    REGISTRATION_STEPTWO_ENTERVERIFICATIONCODE,
+    REGISTRATION_STEPTWO_SENDING,
+    REGISTRATION_STEPTWO_PHONEVERIFIED,
+    REGISTRATION_STEPTWO_CREATENEWACCOUNT,
+} from '../../../strings/messageStrings';
 
 class KioskRegisterView extends React.Component {
+    validate = phoneNumber => {
+        const formatText = getFormatTextFromProps(this.props);
+        const isNumeric = validator.isNumeric(phoneNumber);
+        const hasCorrectDigitCount =
+            !_isEmpty(phoneNumber) && phoneNumber.length === 10;
+
+        if (!phoneNumber) {
+            return formatText(GENERAL_PLEASEFILL);
+        }
+
+        if (!isNumeric) {
+            return formatText(GENERAL_INVALIDPHONE);
+        }
+
+        if (!hasCorrectDigitCount) {
+            return formatText(GENERAL_MUSTHAVE10);
+        }
+
+        return '';
+    };
+
     render() {
         const emailOrPhoneNumber =
             (!this.numberEmailInputhasBeenTouched &&
                 this.props.defaultNumberEmailValue) ||
             this.props.formikProps.values.emailOrPhoneNumber;
+        const formatText = getFormatTextFromProps(this.props);
 
         return (
             <Flex flexDirection="column" width="100%">
                 <Flex justifyContent="center" width="100%">
                     <InfoIcon />
                 </Flex>
-                <Onboarding.StepTitleText text="Step 2. Verification" />
+                <Onboarding.StepTitleText
+                    text={formatText(REGISTRATION_STEPTWO_STEPTWO)}
+                />
                 <Onboarding.StepBlurbText
-                    text="Type in your information below to log in
-             A verification will be sent"
+                    text={formatText(REGISTRATION_STEPTWO_TYPEINFORMATION)}
                 />
                 <Flex flexDirection="column" mb="40px">
                     <Flex alignItems="flex-start" mb="10px">
-                        <Text>Phone number</Text>
+                        <Text>{formatText(REGISTRATION_STEPTWO_PHONE)}</Text>
                     </Flex>
 
                     <Flex>
@@ -85,10 +104,10 @@ class KioskRegisterView extends React.Component {
                                 this.props.formikProps.isSubmitting
                             }
                             onClick={() => {
-                                if (validate(emailOrPhoneNumber)) {
+                                if (this.validate(emailOrPhoneNumber)) {
                                     this.props.formikProps.setFieldError(
                                         'emailOrPhoneNumber',
-                                        validate(emailOrPhoneNumber)
+                                        this.validate(emailOrPhoneNumber)
                                     );
                                 } else if (this.props.onRequestPinCode) {
                                     this.props.onRequestPinCode(
@@ -97,7 +116,7 @@ class KioskRegisterView extends React.Component {
                                 }
                             }}
                         >
-                            Send
+                            {formatText(GENERAL_SEND)}
                         </Button>
                     </Flex>
                     {this.props.formikProps.errors.emailOrPhoneNumber && (
@@ -113,12 +132,18 @@ class KioskRegisterView extends React.Component {
                     {this.props.formikProps.values.isCodeSent && (
                         <div>
                             <Text color="#3481f8" fontSize="12px" mb={15}>
-                                Your verification code has been sent
+                                {formatText(
+                                    REGISTRATION_STEPTWO_VERIFICATIONCODESENT
+                                )}
                             </Text>
 
                             <Box>
                                 <Box mb={10}>
-                                    <Text>Enter verification code</Text>
+                                    <Text>
+                                        {formatText(
+                                            REGISTRATION_STEPTWO_ENTERVERIFICATIONCODE
+                                        )}
+                                    </Text>
                                 </Box>
                                 <PinInput
                                     length={6}
@@ -136,13 +161,17 @@ class KioskRegisterView extends React.Component {
 
                                 {this.props.formikProps.isSubmitting && (
                                     <Text color="#3481f8" fontSize="12px">
-                                        Sending...
+                                        {formatText(
+                                            REGISTRATION_STEPTWO_SENDING
+                                        )}
                                     </Text>
                                 )}
 
                                 {this.props.formikProps.values.isPinValid && (
                                     <Text color="#3481f8" fontSize="12px">
-                                        Your phone number has been verified
+                                        {formatText(
+                                            REGISTRATION_STEPTWO_PHONEVERIFIED
+                                        )}
                                     </Text>
                                 )}
                             </Box>
@@ -166,7 +195,7 @@ class KioskRegisterView extends React.Component {
                             this.props.formikProps.values.code.length !== 6
                         }
                     >
-                        Create a new account
+                        {formatText(REGISTRATION_STEPTWO_CREATENEWACCOUNT)}
                     </Onboarding.NextButton>
                 )}
             </Flex>
@@ -174,4 +203,4 @@ class KioskRegisterView extends React.Component {
     }
 }
 
-export default KioskRegisterView;
+export default injectIntl(KioskRegisterView);

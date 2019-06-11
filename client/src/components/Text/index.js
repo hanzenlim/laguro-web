@@ -60,6 +60,7 @@ const StyledText = styled(Text)`
     :hover {
         ${props => props.hoverColor && `color: ${props.hoverColor}`};
     }
+    ${props => props.multiline && `text-overflow: clip; white-space: pre-line;`}
 `;
 
 StyledText.displayName = 'Text';
