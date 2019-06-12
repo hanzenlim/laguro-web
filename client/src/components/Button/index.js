@@ -181,7 +181,6 @@ Button.propTypes = {
         PropTypes.array,
         PropTypes.number,
     ]),
-    fontSize: PropTypes.oneOf([1, 2, 3, 4]),
 };
 
 export default Button;
