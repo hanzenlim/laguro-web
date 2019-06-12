@@ -934,7 +934,8 @@ class HostOnboarding extends Component {
                                                                         stepCount
                                                                     }
                                                                     size={
-                                                                        numSteps
+                                                                        numSteps &&
+                                                                        numSteps.toString()
                                                                     }
                                                                     direction={
                                                                         this
