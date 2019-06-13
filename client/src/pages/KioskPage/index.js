@@ -106,6 +106,7 @@ import { KioskBookingConfirmation } from '../common/the-bright-side-components/c
 import { KioskCheckInConfirmation } from '../common/the-bright-side-components/components/Kiosk/KioskCheckInConfirmation';
 import { KioskFlowSuccess } from '../common/the-bright-side-components/components/Kiosk/KioskFlowSuccess';
 import { HealthHistoryForm } from '../common/the-bright-side-components/components/Onboarding/Patient/HealthHistoryForm';
+import { procedureList } from '../../staticData';
 import { getFormatTextFromProps } from '../../util/intlUtils';
 import { injectIntl } from 'react-intl';
 
@@ -133,21 +134,6 @@ const {
     UrgentHeartConditions,
     WomenOnly,
 } = HealthHistoryForm;
-
-const procedureList = {
-    Exams: true,
-    Fillings: false,
-    'Crowns, Bridges, Veneers': false,
-    'Root Canals': false,
-    'Gum Surgery / Grafting': false,
-    'Deep Cleaning': false,
-    'Whitening / Cosmetic': false,
-    'Implant placement': false,
-    'Implant crown': false,
-    'Extractions / Surgery': false,
-    Dentures: false,
-    Braces: false,
-};
 
 const bellDentalOfficeId = 'e91ba710-2b37-11e9-998e-9da6024c6b32';
 const WIZARD_STEP_IDS_WITHOUT_PREVIOUS_BUTTON = [

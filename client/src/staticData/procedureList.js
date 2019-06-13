@@ -1,16 +1,16 @@
-const procedureList = [
-    { id: 1, name: 'Exam/Cleaning' },
-    { id: 2, name: 'Fillings' },
-    { id: 3, name: 'Root Canal' },
-    { id: 4, name: 'Dentures' },
-    { id: 5, name: 'Bleach/Veneers' },
-    { id: 6, name: 'Dental Implants' },
-    { id: 7, name: 'Crown/Bridge' },
-    { id: 8, name: 'Extractions' },
-    { id: 9, name: 'Wisdom Teeth' },
-    { id: 10, name: 'Braces' },
-    { id: 11, name: 'Invisalign' },
-    { id: 12, name: 'Pediatrics' },
-];
+const procedureList = {
+    Exams: true,
+    Fillings: false,
+    'Crowns, Bridges, Veneers': false,
+    'Root Canals': false,
+    'Gum Surgery / Grafting': false,
+    'Deep Cleaning': false,
+    'Whitening / Cosmetic': false,
+    'Implant placement': false,
+    'Implant crown': false,
+    'Extractions / Surgery': false,
+    Dentures: false,
+    Braces: false,
+};
 
 export default procedureList;

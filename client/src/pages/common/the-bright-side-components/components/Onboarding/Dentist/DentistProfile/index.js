@@ -15,21 +15,7 @@ import InfoIcon from '../../Assets/infoIcon';
 import { SelectLanguage } from '../../SelectLanguage';
 import { SelectTime } from '../../SelectTime';
 import { DentistInsurance } from '../Profile/DentistInsurance';
-
-const procedureList = {
-    Exams: true,
-    Fillings: false,
-    'Crowns, Bridges, Veneers': false,
-    'Root Canals': false,
-    'Gum Surgery / Grafting': false,
-    'Deep Cleaning': false,
-    'Whitening / Cosmetic': false,
-    'Implant placement': false,
-    'Implant crown': false,
-    'Extractions / Surgery': false,
-    Dentures: false,
-    Braces: false,
-};
+import { procedureList } from '../../../../../../../staticData';
 
 const UploadButton = styled.button`
     padding: 3px;
