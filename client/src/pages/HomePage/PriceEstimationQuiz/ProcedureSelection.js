@@ -29,7 +29,7 @@ const selection = [
     },
 ];
 
-const ProcedureSelection = ({ setStep }) => (
+const ProcedureSelection = ({ setFormStep }) => (
     <Box mt={33}>
         {selection.map(({ value, title, subtitle }) => (
             <Field
@@ -43,7 +43,7 @@ const ProcedureSelection = ({ setStep }) => (
                         mx="auto"
                         onClick={() => {
                             form.setFieldValue('procedure', value);
-                            setStep(FORM_STEPS.SELECT_AVAILABILITY);
+                            setFormStep(FORM_STEPS.SELECT_AVAILABILITY);
                         }}
                     >
                         <Flex
@@ -93,7 +93,7 @@ const ProcedureSelection = ({ setStep }) => (
 );
 
 ProcedureSelection.propTypes = {
-    setStep: PropTypes.func.isRequired,
+    setFormStep: PropTypes.func.isRequired,
 };
 
 export default ProcedureSelection;

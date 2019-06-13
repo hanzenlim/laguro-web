@@ -43,11 +43,45 @@ const NextButton = styled(Button)`
 const shouldNextButtonRender = step => {
     const stepsWithNext = [
         FORM_STEPS.INPUT_NAME,
+        FORM_STEPS.INPUT_BIRTHDAY,
         FORM_STEPS.GET_INSURANCE_PROVIDER,
         FORM_STEPS.ASK_HOLDER_INFO,
-        FORM_STEPS.INPUT_BIRTHDAY,
+        FORM_STEPS.INPUT_HOLDER_BIRTHDAY,
     ];
     return stepsWithNext.includes(step);
+};
+
+// This function checks if the bday fields are valid
+const checkIfNextOnBdayIsDisabled = (values, isInputHolderBirthday) => {
+    const isBdayFieldsEmpty =
+        !values[isInputHolderBirthday ? 'holderBirthMonth' : 'birthMonth'] ||
+        !values[isInputHolderBirthday ? 'holderBirthDay' : 'birthDay'] ||
+        !values[isInputHolderBirthday ? 'holderBirthYear' : 'birthYear'];
+
+    let isMinor = true;
+
+    if (
+        values[isInputHolderBirthday ? 'holderBirthMonth' : 'birthMonth'] &&
+        values[isInputHolderBirthday ? 'holderBirthDay' : 'birthDay'] &&
+        values[isInputHolderBirthday ? 'holderBirthYear' : 'birthYear']
+    ) {
+        const month = isInputHolderBirthday
+            ? values.holderBirthMonth
+            : values.birthMonth;
+        const day = isInputHolderBirthday
+            ? values.holderBirthDay
+            : values.birthDay;
+        const year = isInputHolderBirthday
+            ? values.holderBirthYear
+            : values.birthYear;
+
+        const completeBirthDate = new Date(
+            `${month} ${day}, ${year}`
+        ).toISOString();
+
+        isMinor = moment().diff(completeBirthDate, 'years') < 18;
+    }
+    return isBdayFieldsEmpty || isMinor;
 };
 
 // Check disabled state for next button. Return true to set it to disabled mode
@@ -55,38 +89,18 @@ const checkDisabledState = (step, values) => {
     if (step === FORM_STEPS.INPUT_NAME)
         return !values.firstName || !values.lastName;
 
+    if (step === FORM_STEPS.INPUT_BIRTHDAY) {
+        return checkIfNextOnBdayIsDisabled(values, false);
+    }
+
     if (step === FORM_STEPS.GET_INSURANCE_PROVIDER)
         return !values.insuranceProvider;
 
     if (step === FORM_STEPS.ASK_HOLDER_INFO)
         return !values.holderFirstName || !values.holderLastName;
 
-    if (step === FORM_STEPS.INPUT_BIRTHDAY) {
-        const isBdayFieldsEmpty =
-            !values.holderBirthMonth ||
-            !values.holderBirthDay ||
-            !values.holderBirthYear;
-
-        let isMinor = true;
-
-        if (
-            values.holderBirthMonth &&
-            values.holderBirthDay &&
-            values.holderBirthYear
-        ) {
-            const {
-                holderBirthMonth: month,
-                holderBirthDay: day,
-                holderBirthYear: year,
-            } = values;
-
-            const completeBirthDate = new Date(
-                `${month} ${day}, ${year}`
-            ).toISOString();
-
-            isMinor = moment().diff(completeBirthDate, 'years') < 18;
-        }
-        return isBdayFieldsEmpty || isMinor;
+    if (step === FORM_STEPS.INPUT_HOLDER_BIRTHDAY) {
+        return checkIfNextOnBdayIsDisabled(values, true);
     }
 
     return false;
@@ -97,9 +111,10 @@ const PriceEstimationQuiz = ({
     step = '',
     onPrev,
     onNext,
-    setStep,
+    setFormStep,
     setIsHolder,
     formikProps,
+    isCheckEligibilityLoading,
 }) => {
     const title = step;
     const { handleSubmit, values } = formikProps;
@@ -115,7 +130,7 @@ const PriceEstimationQuiz = ({
         FORM_STEPS.CHECK_INSURANCE,
         FORM_STEPS.GET_INSURANCE_PROVIDER,
         FORM_STEPS.ASK_PRIMARY_HOLDER,
-        FORM_STEPS.INPUT_BIRTHDAY,
+        FORM_STEPS.INPUT_HOLDER_BIRTHDAY,
         FORM_STEPS.INPUT_MEMBER_ID,
     ];
 
@@ -152,7 +167,7 @@ const PriceEstimationQuiz = ({
                             ].includes(step) &&
                                 `Hang in there, you're halfway done!`}
 
-                            {step === FORM_STEPS.INPUT_BIRTHDAY &&
+                            {step === FORM_STEPS.INPUT_HOLDER_BIRTHDAY &&
                                 'One more step!'}
 
                             {step === FORM_STEPS.INPUT_MEMBER_ID &&
@@ -164,21 +179,23 @@ const PriceEstimationQuiz = ({
                     </Text>
 
                     {step === FORM_STEPS.SELECT_PROCEDURE && (
-                        <ProcedureSelection setStep={setStep} />
+                        <ProcedureSelection setFormStep={setFormStep} />
                     )}
 
                     {step === FORM_STEPS.SELECT_AVAILABILITY && (
-                        <AvailabilitySelection setStep={setStep} />
+                        <AvailabilitySelection setFormStep={setFormStep} />
                     )}
 
                     {step === FORM_STEPS.SELECT_DAYS && (
-                        <DaysSelection setStep={setStep} />
+                        <DaysSelection setFormStep={setFormStep} />
                     )}
 
                     {step === FORM_STEPS.INPUT_NAME && <NameStep />}
 
+                    {step === FORM_STEPS.INPUT_BIRTHDAY && <GetBirthday />}
+
                     {step === FORM_STEPS.CHECK_INSURANCE && (
-                        <CheckInsurance setStep={setStep} />
+                        <CheckInsurance setFormStep={setFormStep} />
                     )}
 
                     {step === FORM_STEPS.GET_INSURANCE_PROVIDER && (
@@ -187,16 +204,24 @@ const PriceEstimationQuiz = ({
 
                     {step === FORM_STEPS.ASK_PRIMARY_HOLDER && (
                         <AskPrimaryHolder
-                            setStep={setStep}
+                            setFormStep={setFormStep}
                             setIsHolder={setIsHolder}
                         />
                     )}
 
                     {step === FORM_STEPS.ASK_HOLDER_INFO && <AskHolderInfo />}
 
-                    {step === FORM_STEPS.INPUT_BIRTHDAY && <GetBirthday />}
+                    {step === FORM_STEPS.INPUT_HOLDER_BIRTHDAY && (
+                        <GetBirthday forHolder />
+                    )}
 
-                    {step === FORM_STEPS.INPUT_MEMBER_ID && <MemberIdStep />}
+                    {step === FORM_STEPS.INPUT_MEMBER_ID && (
+                        <MemberIdStep
+                            isCheckEligibilityLoading={
+                                isCheckEligibilityLoading
+                            }
+                        />
+                    )}
 
                     <Flex
                         justifyContent="space-between"
@@ -261,11 +286,12 @@ PriceEstimationQuiz.propTypes = {
     step: PropTypes.string.isRequired,
     onPrev: PropTypes.func.isRequired,
     onNext: PropTypes.func.isRequired,
-    setStep: PropTypes.func.isRequired,
+    setFormStep: PropTypes.func.isRequired,
     setIsHolder: PropTypes.func.isRequired,
     formikProps: PropTypes.shape({
         handleSubmit: PropTypes.func,
     }).isRequired,
+    isCheckEligibilityLoading: PropTypes.bool.isRequired,
 };
 
 export default PriceEstimationQuiz;

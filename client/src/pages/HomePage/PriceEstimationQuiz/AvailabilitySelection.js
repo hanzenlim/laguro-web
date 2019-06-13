@@ -13,7 +13,7 @@ const selection = [
     { value: 'Any time', title: 'Any time' },
 ];
 
-const AvailabilitySelection = ({ setStep }) => (
+const AvailabilitySelection = ({ setFormStep }) => (
     <Box mt={33}>
         {selection.map(({ value, title }) => (
             <Field
@@ -27,7 +27,7 @@ const AvailabilitySelection = ({ setStep }) => (
                         mx="auto"
                         onClick={() => {
                             form.setFieldValue('availability', value);
-                            setStep(FORM_STEPS.SELECT_DAYS);
+                            setFormStep(FORM_STEPS.SELECT_DAYS);
                         }}
                     >
                         <Flex
@@ -69,7 +69,7 @@ const AvailabilitySelection = ({ setStep }) => (
 );
 
 AvailabilitySelection.propTypes = {
-    setStep: PropTypes.func.isRequired,
+    setFormStep: PropTypes.func.isRequired,
 };
 
 export default AvailabilitySelection;

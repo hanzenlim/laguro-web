@@ -11,7 +11,7 @@ const selection = [
     { value: 'Any day', title: 'Any day' },
 ];
 
-const DaysSelection = ({ setStep }) => (
+const DaysSelection = ({ setFormStep }) => (
     <Box mt={33}>
         {selection.map(({ value, title }) => (
             <Field
@@ -25,7 +25,7 @@ const DaysSelection = ({ setStep }) => (
                         mx="auto"
                         onClick={() => {
                             form.setFieldValue('days', value);
-                            setStep(FORM_STEPS.INPUT_NAME);
+                            setFormStep(FORM_STEPS.INPUT_NAME);
                         }}
                     >
                         <Box
@@ -59,7 +59,7 @@ const DaysSelection = ({ setStep }) => (
 );
 
 DaysSelection.propTypes = {
-    setStep: PropTypes.func.isRequired,
+    setFormStep: PropTypes.func.isRequired,
 };
 
 export default DaysSelection;

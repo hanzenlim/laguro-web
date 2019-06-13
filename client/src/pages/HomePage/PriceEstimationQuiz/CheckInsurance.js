@@ -11,7 +11,7 @@ const selection = [
     { value: false, title: 'No' },
 ];
 
-const CheckInsurance = ({ setStep, history }) => (
+const CheckInsurance = ({ setFormStep, history }) => (
     <Box mt={20}>
         <Text fontSize={0} color="#757575" maxWidth={320} mx="auto">
             By entering your insurance information, we’ll give you an estimate
@@ -32,10 +32,12 @@ const CheckInsurance = ({ setStep, history }) => (
                                 form.setFieldValue('hasInsurance', value);
 
                                 if (value) {
-                                    setStep(FORM_STEPS.GET_INSURANCE_PROVIDER);
+                                    setFormStep(
+                                        FORM_STEPS.GET_INSURANCE_PROVIDER
+                                    );
                                 } else {
                                     // TODO: Add query params based on answers
-                                    setStep(
+                                    setFormStep(
                                         FORM_LOADERS.MATCH_DENTIST_AVAILABLE
                                     );
                                     setTimeout(() => {
@@ -74,7 +76,7 @@ const CheckInsurance = ({ setStep, history }) => (
 );
 
 CheckInsurance.propTypes = {
-    setStep: PropTypes.func.isRequired,
+    setFormStep: PropTypes.func.isRequired,
     history: PropTypes.shape({
         push: PropTypes.func.isRequired,
     }).isRequired,

@@ -1,20 +1,43 @@
 import React from 'react';
 import { Field } from 'formik';
+import { Select as AntdSelect } from 'antd';
 
 import { Box } from '../../../components';
-import { Input } from './CustomInputs';
+import { Select } from './CustomInputs';
+
+import insuranceList from '../../common/the-bright-side-components/components/Kiosk/KioskInsurance/insuranceList';
+
+const { Option } = AntdSelect;
 
 const InsuranceProvider = () => (
     <Box mt={38} textAlign="center">
         <Field
             name="insuranceProvider"
-            render={({ field }) => (
-                <Box mb={10} mx="auto" maxWidth={320}>
-                    <Input
-                        type="text"
-                        placeholder="Type your insurance"
-                        {...field}
-                    />
+            render={({ form }) => (
+                <Box
+                    id="insurance-provider-input"
+                    mx="auto"
+                    mb={10}
+                    maxWidth={320}
+                >
+                    <Select
+                        {...(form.values.insuranceProvider
+                            ? { value: form.values.insuranceProvider }
+                            : {})}
+                        placeholder="Select your insurance"
+                        onChange={value =>
+                            form.setFieldValue('insuranceProvider', value)
+                        }
+                        getPopupContainer={() =>
+                            document.getElementById('insurance-provider-input')
+                        }
+                    >
+                        {insuranceList.map(insurance => (
+                            <Option key={insurance.id} value={insurance.id}>
+                                {insurance.name}
+                            </Option>
+                        ))}
+                    </Select>
                 </Box>
             )}
         />
