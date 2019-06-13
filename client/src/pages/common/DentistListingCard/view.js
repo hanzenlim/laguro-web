@@ -170,7 +170,18 @@ class DentistListingCard extends PureComponent {
             >
                 {dentist.appointmentTimeslotsByOffice.map((item, index) => (
                     <Menu.Item key={index}>
-                        {item.office.location.name.split(',', 3).toString()}
+                        <Text
+                            fontWeight="normal"
+                            fontSize={[0, '', 1]}
+                            width={['calc(100vw - 104px)', '', 380]}
+                            style={{
+                                whiteSpace: 'nowrap',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                            }}
+                        >
+                            {item.office.location.name.split(',', 3).toString()}
+                        </Text>
                     </Menu.Item>
                 ))}
             </Menu>
