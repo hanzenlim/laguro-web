@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Field } from 'formik';
+import { Field, ErrorMessage } from 'formik';
 import styled from 'styled-components';
 
 import { Box, Text, Button } from '../../../components';
@@ -32,7 +32,7 @@ const MemberIdStep = ({ isCheckEligibilityLoading }) => (
             )}
         />
 
-        <Box width={320} maxWidth="100%" mb={12} mx="auto">
+        <Box width={320} maxWidth="100%" mb={15} mx="auto">
             <StyledButton
                 type="primary"
                 maxWidth="100%"
@@ -46,6 +46,18 @@ const MemberIdStep = ({ isCheckEligibilityLoading }) => (
                 Calculate my price estimation
             </StyledButton>
         </Box>
+
+        <Text
+            color="#ea424c"
+            fontSize={0}
+            fontWeight="medium"
+            textAlign="left"
+            width={320}
+            maxWidth="100%"
+            mx="auto"
+        >
+            <ErrorMessage name="memberId" />
+        </Text>
     </Box>
 );
 

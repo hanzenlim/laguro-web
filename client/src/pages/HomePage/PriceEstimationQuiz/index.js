@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
+import _get from 'lodash/get';
 
 import PriceEstimationQuizView from './view';
 import { CHECK_ELIGIBILITY } from './queries';
@@ -155,28 +156,33 @@ const PriceEstimationQuiz = ({ toggleQuizVisibility, setQuizDone }) => {
                 holderBirthYear: '',
                 memberId: '',
             }}
-            onSubmit={async ({
-                firstName,
-                lastName,
-                birthMonth,
-                birthDay,
-                birthYear,
-                holderBirthMonth,
-                holderBirthDay,
-                holderBirthYear,
-                insuranceProvider,
-                memberId,
-                holderFirstName,
-                holderLastName,
-                isPrimaryHolder,
-            }) => {
+            onSubmit={async (
+                {
+                    firstName,
+                    lastName,
+                    birthMonth,
+                    birthDay,
+                    birthYear,
+                    holderBirthMonth,
+                    holderBirthDay,
+                    holderBirthYear,
+                    insuranceProvider,
+                    memberId,
+                    holderFirstName,
+                    holderLastName,
+                    isPrimaryHolder,
+                },
+                { setErrors }
+            ) => {
+                let response = {};
                 try {
-                    const patientId = isPrimaryHolder
+                    const patientId = (isPrimaryHolder
                         ? `${lastName.toUpperCase()}-${firstName.toUpperCase()}-${birthMonth}${birthDay}${birthYear}`
-                        : `${holderLastName.toUpperCase()}-${holderFirstName.toUpperCase()}-${holderBirthMonth}${holderBirthDay}${holderBirthYear}`;
+                        : `${holderLastName.toUpperCase()}-${holderFirstName.toUpperCase()}-${holderBirthMonth}${holderBirthDay}${holderBirthYear}`
+                    ).replace(/\s+/g, '-');
 
                     setCheckEligibilityLoading(true);
-                    await insuranceClient.query({
+                    response = await insuranceClient.query({
                         query: CHECK_ELIGIBILITY,
                         variables: {
                             input: {
@@ -202,17 +208,19 @@ const PriceEstimationQuiz = ({ toggleQuizVisibility, setQuizDone }) => {
                         },
                     });
                 } catch (error) {
-                    alert('test');
+                    setErrors({ memberId: error.message });
                 } finally {
                     setCheckEligibilityLoading(false);
                 }
 
-                setFormStep(FORM_LOADERS.CALCULATING_PRICE);
+                if (_get(response, 'data.checkEligibility.isEligible')) {
+                    setFormStep(FORM_LOADERS.CALCULATING_PRICE);
 
-                setTimeout(() => {
-                    toggleQuizVisibility();
-                    setQuizDone(true);
-                }, 3000);
+                    setTimeout(() => {
+                        toggleQuizVisibility();
+                        setQuizDone(true);
+                    }, 3000);
+                }
             }}
             render={formikProps => (
                 <PriceEstimationQuizView
