@@ -32,6 +32,7 @@ const PriceEstimationQuiz = ({
     toggleQuizVisibility,
     setQuizDone,
     setBundleGroupCoverageData,
+    setFormValues,
 }) => {
     const [progress, setProgress] = useState((1 / formStepsKeys.length) * 100);
     const [step, setStep] = useState(FORM_STEPS.SELECT_BUNDLE_GROUP);
@@ -160,8 +161,8 @@ const PriceEstimationQuiz = ({
                 holderBirthYear: '',
                 memberId: '',
             }}
-            onSubmit={async (
-                {
+            onSubmit={async (values, { setErrors }) => {
+                const {
                     firstName,
                     lastName,
                     birthMonth,
@@ -176,9 +177,7 @@ const PriceEstimationQuiz = ({
                     holderLastName,
                     isPrimaryHolder,
                     bundleGroup,
-                },
-                { setErrors }
-            ) => {
+                } = values;
                 let response = {};
                 let patientId = '';
 
@@ -240,6 +239,7 @@ const PriceEstimationQuiz = ({
                         setBundleGroupCoverageData(
                             _get(response, 'data.getBundleGroupCoverage')
                         );
+                        setFormValues(values);
                         toggleQuizVisibility();
                         setQuizDone(true);
                     } catch (error) {
@@ -268,6 +268,7 @@ PriceEstimationQuiz.propTypes = {
     toggleQuizVisibility: PropTypes.func.isRequired,
     setQuizDone: PropTypes.func.isRequired,
     setBundleGroupCoverageData: PropTypes.func.isRequired,
+    setFormValues: PropTypes.func.isRequired,
 };
 
 export default PriceEstimationQuiz;

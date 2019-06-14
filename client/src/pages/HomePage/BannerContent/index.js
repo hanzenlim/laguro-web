@@ -6,6 +6,7 @@ const BannerContent = () => {
     const [isQuizVisible, setQuizVisible] = useState(false);
     const [isQuizDone, setQuizDone] = useState(false);
     const [bundleGroupCoverageData, setBundleGroupCoverageData] = useState([]);
+    const [formValues, setFormValues] = useState({});
 
     const toggleQuizVisibility = useCallback(() => {
         setQuizVisible(!isQuizVisible);
@@ -16,9 +17,11 @@ const BannerContent = () => {
             isQuizVisible={isQuizVisible}
             isQuizDone={isQuizDone}
             bundleGroupCoverageData={bundleGroupCoverageData}
+            formValues={formValues}
             toggleQuizVisibility={toggleQuizVisibility}
             setQuizDone={setQuizDone}
             setBundleGroupCoverageData={setBundleGroupCoverageData}
+            setFormValues={setFormValues}
         />
     );
 };

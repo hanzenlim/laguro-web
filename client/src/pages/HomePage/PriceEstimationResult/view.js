@@ -89,7 +89,7 @@ const Slider = styled(SlickSlider)`
     }
 `;
 
-const PriceEstimationResultView = ({ bundleGroupCoverageData }) => (
+const PriceEstimationResultView = ({ bundleGroupCoverageData, formValues }) => (
     <Box position="relative" zIndex={100} width="100%">
         {bundleGroupCoverageData.length && (
             <Box>
@@ -146,11 +146,17 @@ const PriceEstimationResultView = ({ bundleGroupCoverageData }) => (
                 </Slider>
 
                 <Text color="text.white" mt={24} mb={4} textAlign="center">
-                    Estimated for Tina Park (ID: 19283192)
+                    {`Estimated for `}
+                    {formValues.isPrimaryHolder
+                        ? `${formValues.firstName} ${formValues.lastName}`
+                        : `${formValues.holderFirstName} ${
+                              formValues.holderLastName
+                          }`}
+                    {` (ID: ${formValues.memberId})`}
                 </Text>
-                <Text color="text.white" textAlign="center" opacity={0.5}>
+                {/* <Text color="text.white" textAlign="center" opacity={0.5}>
                     Last updated on : 12/31/2019
-                </Text>
+                </Text> */}
             </Box>
         )}
     </Box>
@@ -158,6 +164,7 @@ const PriceEstimationResultView = ({ bundleGroupCoverageData }) => (
 
 PriceEstimationResultView.propTypes = {
     bundleGroupCoverageData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    formValues: PropTypes.shape({}).isRequired,
 };
 
 export default withScreenSizes(PriceEstimationResultView);

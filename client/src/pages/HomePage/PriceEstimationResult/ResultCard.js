@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { withRouter } from 'react-router-dom';
 
 import { Box, Text, Flex, Button } from '../../../components';
 
@@ -19,9 +20,10 @@ const ResultCard = ({
     deductibleRemaining,
     annualMaximumRemaining,
     outOfPocket,
+    history,
 }) => (
     <Box
-        maxWidth={[320, 377, '']}
+        maxWidth={[316, 377, '']}
         width="100%"
         mx="auto"
         px={[6, '', 17]}
@@ -147,6 +149,7 @@ const ResultCard = ({
                 fontWeight="medium"
                 fontSize={1}
                 style={{ whiteSpace: 'initial', display: 'block' }}
+                onClick={() => history.push('/dentist/search')}
             >
                 See dentists available for this procedure
             </StyledButton>
@@ -158,11 +161,19 @@ ResultCard.propTypes = {
     name: PropTypes.string.isRequired,
     group: PropTypes.string.isRequired,
     price: PropTypes.string.isRequired,
-    proceduresDetail: PropTypes.string.isRequired,
+    proceduresDetail: PropTypes.arrayOf(
+        PropTypes.shape({
+            name: PropTypes.string,
+            code: PropTypes.string,
+        })
+    ).isRequired,
     coverage: PropTypes.string.isRequired,
     deductibleRemaining: PropTypes.string.isRequired,
     annualMaximumRemaining: PropTypes.string.isRequired,
     outOfPocket: PropTypes.string.isRequired,
+    history: PropTypes.shape({
+        push: PropTypes.func.isRequired,
+    }).isRequired,
 };
 
-export default ResultCard;
+export default withRouter(ResultCard);

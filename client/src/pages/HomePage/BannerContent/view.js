@@ -44,9 +44,11 @@ const BannerContentView = ({
     isQuizDone,
     isQuizVisible,
     bundleGroupCoverageData,
+    formValues,
     toggleQuizVisibility,
     setQuizDone,
     setBundleGroupCoverageData,
+    setFormValues,
     tabletMobileOnly,
 }) => (
     <Flex
@@ -137,6 +139,7 @@ const BannerContentView = ({
                             setBundleGroupCoverageData={
                                 setBundleGroupCoverageData
                             }
+                            setFormValues={setFormValues}
                         />
                     )}
 
@@ -167,6 +170,7 @@ const BannerContentView = ({
         {isQuizDone && (
             <PriceEstimationResult
                 bundleGroupCoverageData={bundleGroupCoverageData}
+                formValues={formValues}
             />
         )}
     </Flex>
@@ -180,6 +184,8 @@ BannerContentView.propTypes = {
     setBundleGroupCoverageData: PropTypes.func.isRequired,
     tabletMobileOnly: PropTypes.bool.isRequired,
     bundleGroupCoverageData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    setFormValues: PropTypes.func.isRequired,
+    formValues: PropTypes.shape({}).isRequired,
 };
 
 export default withScreenSizes(BannerContentView);
