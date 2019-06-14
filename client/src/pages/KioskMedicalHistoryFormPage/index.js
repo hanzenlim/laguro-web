@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Box } from '@laguro/basic-components';
+import { Loading } from '../../components';
 import { adopt } from 'react-adopt';
 import { Query, Mutation } from 'react-apollo';
 import cookies from 'browser-cookies';
@@ -15,6 +16,7 @@ import { PATIENT_ONBOARDING_INSURANCE_FORM } from '../../util/urls';
 import { getProgressBarProps } from '../../components/utils';
 import HealthHistoryForm from './view';
 import {
+    GET_USER,
     UPDATE_PATIENT_HEALTH_DATA,
     GET_PATIENT_HEALTH_DATA_UNSTRUCTURED,
 } from './queries';
@@ -45,9 +47,21 @@ const Composed = adopt({
             {render}
         </Query>
     ),
+    getUser: ({ render, patientId }) => (
+        <Query
+            skip={!patientId}
+            query={GET_USER}
+            variables={{ id: patientId }}
+            fetchPolicy="network-only"
+        >
+            {render}
+        </Query>
+    ),
 });
 
 const KioskMedicalHistoryFormPage = props => {
+    const { userId = '' } = props;
+
     const handleSkip = () => {
         cookies.set(hasSkippedMedicalHistoryFormCookieVariableName, 'true', {
             expires: 0,
@@ -71,13 +85,19 @@ const KioskMedicalHistoryFormPage = props => {
     }
 
     const user = getUser();
+    const patientId = userId || user.id;
 
     return (
-        <Composed patientId={user.id}>
+        <Composed patientId={patientId}>
             {({
+                getUser,
                 updatePatientHealthData,
                 getPatientHealthDataUnstructured,
             }) => {
+                const getUserData = _get(getUser, 'data.getUser');
+                const getUserLoading = _get(getUser, 'loading');
+
+                if (getUserLoading) return <Loading />;
                 if (getPatientHealthDataUnstructured.loading) return <div />;
 
                 const answers = _get(
@@ -100,7 +120,7 @@ const KioskMedicalHistoryFormPage = props => {
                         <HealthHistoryForm
                             answers={answers}
                             canSkip={
-                                _isEmpty(_get(user, 'insuranceInfo')) &&
+                                _isEmpty(_get(getUserData, 'insuranceInfo')) &&
                                 !props.cannotSkip
                             }
                             onFinishForm={async values => {
@@ -127,7 +147,7 @@ const KioskMedicalHistoryFormPage = props => {
                                                 variables: {
                                                     input: {
                                                         patientId: _get(
-                                                            user,
+                                                            getUserData,
                                                             'id'
                                                         ),
                                                         patientHealthData: {

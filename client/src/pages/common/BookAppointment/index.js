@@ -5,9 +5,9 @@ import queryString from 'query-string';
 import React, { PureComponent, Component } from 'react';
 import { adopt } from 'react-adopt';
 import { Mutation, Query } from 'react-apollo';
-
+import _find from 'lodash/find';
 import { Loading, Box } from '../../../components';
-import history from '../../../history';
+import history, { getSearchParamValueByKey } from '../../../history';
 import { appointmentClient } from '../../../util/apolloClients';
 import { getUser } from '../../../util/authUtils';
 import emitter from '../../../util/emitter';
@@ -23,8 +23,10 @@ import {
     getDentistAppointmentSlotsQuery,
     getDentistQuery,
     getSuggestedDentist,
+    getUserQuery,
 } from './queries';
 import BookAppointmentView from './view';
+import { getUserId } from '../../../util/userUtils';
 
 export const wrapperStyles = {
     mt: [22, '', 44],
@@ -36,6 +38,11 @@ export const wrapperStyles = {
     pl: [0, '', 32],
     pb: 32,
 };
+
+const getCurrentOfficeId = () =>
+    history.location.pathname.includes('office')
+        ? history.location.pathname.split('/')[2]
+        : getSearchParamValueByKey('officeId');
 
 class BookAppointment extends PureComponent {
     constructor(props) {
@@ -58,6 +65,12 @@ class BookAppointment extends PureComponent {
             bookedAppointmentId: null,
             isBooking: false,
             hasAgreed: false,
+            currentPatientId: getUserId(
+                _find(_get(this.props.user, 'family.members'), [
+                    'relationshipToPrimary',
+                    'SELF',
+                ])
+            ),
         };
     }
 
@@ -87,6 +100,7 @@ class BookAppointment extends PureComponent {
         return '';
     };
 
+    // returns boolean for hasNoError
     handleBookNow = async () => {
         const { createAppointment, suggestedDentist } = this.props;
         const {
@@ -119,17 +133,17 @@ class BookAppointment extends PureComponent {
         // Show login modal if not logged in.
         if (!user) {
             emitter.emit('loginModal');
-            return;
+            return false;
         }
 
-        await execute({
+        return await execute({
             action: async () => {
                 await this.setState({ isBooking: true });
 
                 const createAppointmentResult = await createAppointment({
                     variables: {
                         input: {
-                            patientId: user.id,
+                            patientId: this.state.currentPatientId,
                             officeId,
                             dentistId,
                             localStartTime,
@@ -147,9 +161,8 @@ class BookAppointment extends PureComponent {
                     bookedAppointmentId,
                 });
             },
+            onError: () => this.setState({ isBooking: false }),
         });
-
-        await this.setState({ isBooking: false });
     };
 
     handleToggleCheckbox = () => {
@@ -171,11 +184,13 @@ class BookAppointment extends PureComponent {
         }
     };
 
+    onPatientSelect = patientId =>
+        this.setState({ currentPatientId: patientId });
+
     render() {
         const {
             bookedAppointmentId,
             isBooking,
-            officeId,
             hasAgreed,
             selectedTimeSlot,
         } = this.state;
@@ -197,6 +212,8 @@ class BookAppointment extends PureComponent {
             'dentist'
         );
 
+        const officeId = getCurrentOfficeId();
+
         return (
             <BookAppointmentView
                 isFindAnotherMatchDisabled={totalDentists === 1}
@@ -215,6 +232,19 @@ class BookAppointment extends PureComponent {
                 onSelectTimeSlot={this.handleSelectTimeSlot}
                 onFindAnotherMatch={onFindAnotherMatch}
                 isFetchingNewData={isFetchingNewData}
+                patient={_find(_get(this.props.user, 'family.members'), [
+                    'id',
+                    this.state.currentPatientId,
+                ])}
+                apptStartTime={
+                    this.state.selectedTimeSlot &&
+                    stripTimezone(this.state.selectedTimeSlot)
+                }
+                dentist={this.props.dentist}
+                office={_find(locationList, ['id', officeId])}
+                user={this.props.user}
+                currentPatientId={this.state.currentPatientId}
+                onPatientSelect={this.onPatientSelect}
             />
         );
     }
@@ -230,7 +260,11 @@ const Composed = adopt({
         </Mutation>
     ),
     getDentist: ({ render, dentistId }) => (
-        <Query query={getDentistQuery} variables={{ id: dentistId }}>
+        <Query
+            query={getDentistQuery}
+            variables={{ id: dentistId }}
+            fetchPolicy="network-only"
+        >
             {render}
         </Query>
     ),
@@ -262,6 +296,11 @@ const Composed = adopt({
             </Query>
         );
     },
+    getUser: ({ render }) => (
+        <Query query={getUserQuery} variables={{ id: _get(getUser(), 'id') }}>
+            {render}
+        </Query>
+    ),
 });
 
 class BookAppointmentContainer extends Component {
@@ -404,6 +443,7 @@ class BookAppointmentContainer extends Component {
                     createAppointment,
                     getDentist,
                     getDentistAppointmentSlots,
+                    getUser,
                 }) => {
                     const getDentistData = getDentist.data.getDentist;
                     const officeAppointmentSlots = _get(
@@ -471,13 +511,14 @@ class BookAppointmentContainer extends Component {
                             isFetchingNewData={isFetchingNewData}
                             locationList={locationList}
                             timeSlotList={timeSlotList}
-                            getDentistData={getDentistData}
+                            dentist={getDentistData}
                             createAppointment={createAppointment}
                             onFindAnotherMatch={async () => {
                                 await this.handleFindAnotherMatch(
                                     this.props.id
                                 );
                             }}
+                            user={_get(getUser, 'data.getUser')}
                         />
                     );
                 }}

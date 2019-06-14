@@ -342,7 +342,7 @@ class PatientAppointments extends PureComponent {
                         ) : null}
                     </Fragment>
                 ) : (
-                    <NoAppointmentsCard text="You have no appointments yet!" />
+                    <NoAppointmentsCard text="There are no appointments to show" />
                 )}
             </Box>
         );

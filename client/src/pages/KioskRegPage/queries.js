@@ -29,9 +29,6 @@ export const LOGIN = gql`
                 isDentist
                 isHost
                 hasSubmittedHealthHistoryForm
-                insuranceInfo {
-                    useInsurance
-                }
                 dentist {
                     bio
                 }
@@ -59,9 +56,6 @@ export const REGISTER_USER = gql`
                 isDentist
                 isHost
                 hasSubmittedHealthHistoryForm
-                insuranceInfo {
-                    useInsurance
-                }
                 appointments(
                     options: {
                         sortKey: "${END_TIME}",
@@ -112,7 +106,6 @@ export const GET_USER = gql`
         getUser(id: $id) {
             id
             insuranceInfo {
-                useInsurance
                 policyHolderId
                 insuranceProvider
                 insuranceProviderId
@@ -177,9 +170,6 @@ export const GET_APPOINTMENT = gql`
             patient {
                 id
                 hasSubmittedHealthHistoryForm
-                insuranceInfo {
-                    useInsurance
-                }
             }
         }
     }

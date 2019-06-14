@@ -58,7 +58,13 @@ export const getDentistQuery = gql`
                         lat
                         lon
                     }
+                    addressDetails
                 }
+            }
+            user {
+                id
+                firstName
+                lastName
             }
         }
     }
@@ -80,5 +86,22 @@ export const getDentistAppointmentSlotsQuery = gql`
 export const createAppointmentMutation = gql`
     mutation CreateAppointment($input: CreateAppointmentInput!) {
         createAppointment(input: $input)
+    }
+`;
+
+export const getUserQuery = gql`
+    query getUser($id: String!) {
+        getUser(id: $id) {
+            id
+            family {
+                members {
+                    id
+                    firstName
+                    lastName
+                    imageUrl
+                    relationshipToPrimary
+                }
+            }
+        }
     }
 `;

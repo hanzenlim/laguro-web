@@ -15,12 +15,12 @@ import {
     STATUS,
     PENDING_PATIENT_APPROVAL,
     ACTIVE,
-    CANCELLED
+    CANCELLED,
 } from '../../../util/strings';
 import { getUser } from '../../../util/authUtils';
 
-const PatientAppoinmentsContainer = () => {
-    const user = getUser();
+const PatientAppoinmentsContainer = props => {
+    const user = props.user || getUser();
     return (
         <Query
             query={getAppointmentsQuery}
@@ -40,7 +40,7 @@ const PatientAppoinmentsContainer = () => {
                                 filterValues: [
                                     `${PENDING_PATIENT_APPROVAL}`,
                                     `${ACTIVE}`,
-                                    `${CANCELLED}`
+                                    `${CANCELLED}`,
                                 ],
                             },
                         ],
