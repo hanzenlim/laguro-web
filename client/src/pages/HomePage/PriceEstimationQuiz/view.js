@@ -5,7 +5,7 @@ import { Progress } from 'antd';
 import moment from 'moment';
 
 import { Box, Flex, Button, Text } from '../../../components';
-import ProcedureSelection from './ProcedureSelection';
+import BundleGroupSelection from './BundleGroupSelection';
 import AvailabilitySelection from './AvailabilitySelection';
 import DaysSelection from './DaysSelection';
 import NameStep from './NameStep';
@@ -178,8 +178,8 @@ const PriceEstimationQuiz = ({
                         {title}
                     </Text>
 
-                    {step === FORM_STEPS.SELECT_PROCEDURE && (
-                        <ProcedureSelection setFormStep={setFormStep} />
+                    {step === FORM_STEPS.SELECT_BUNDLE_GROUP && (
+                        <BundleGroupSelection setFormStep={setFormStep} />
                     )}
 
                     {step === FORM_STEPS.SELECT_AVAILABILITY && (

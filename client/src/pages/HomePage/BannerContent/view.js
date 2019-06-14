@@ -43,8 +43,10 @@ const StyledFlex = styled(Flex)`
 const BannerContentView = ({
     isQuizDone,
     isQuizVisible,
+    bundleGroupCoverageData,
     toggleQuizVisibility,
     setQuizDone,
+    setBundleGroupCoverageData,
     tabletMobileOnly,
 }) => (
     <Flex
@@ -132,6 +134,9 @@ const BannerContentView = ({
                         <PriceEstimationQuiz
                             toggleQuizVisibility={toggleQuizVisibility}
                             setQuizDone={setQuizDone}
+                            setBundleGroupCoverageData={
+                                setBundleGroupCoverageData
+                            }
                         />
                     )}
 
@@ -159,7 +164,11 @@ const BannerContentView = ({
             </HeroContent>
         )}
 
-        {isQuizDone && <PriceEstimationResult />}
+        {isQuizDone && (
+            <PriceEstimationResult
+                bundleGroupCoverageData={bundleGroupCoverageData}
+            />
+        )}
     </Flex>
 );
 
@@ -168,7 +177,9 @@ BannerContentView.propTypes = {
     isQuizVisible: PropTypes.bool.isRequired,
     setQuizDone: PropTypes.func.isRequired,
     toggleQuizVisibility: PropTypes.func.isRequired,
+    setBundleGroupCoverageData: PropTypes.func.isRequired,
     tabletMobileOnly: PropTypes.bool.isRequired,
+    bundleGroupCoverageData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
 export default withScreenSizes(BannerContentView);

@@ -4,11 +4,11 @@ import { Formik } from 'formik';
 import _get from 'lodash/get';
 
 import PriceEstimationQuizView from './view';
-import { CHECK_ELIGIBILITY } from './queries';
-import { insuranceClient } from '../../../util/apolloClients';
+import { CHECK_ELIGIBILITY, GET_BUNDLE_GROUP_COVERAGE } from './queries';
+import { insuranceClient, pricingClient } from '../../../util/apolloClients';
 
 export const FORM_STEPS = {
-    SELECT_PROCEDURE: 'Which procedure are you looking for?',
+    SELECT_BUNDLE_GROUP: 'Which procedure are you looking for?',
     SELECT_AVAILABILITY: 'When are you available for your appointment?',
     SELECT_DAYS: 'Which days do you prefer?',
     INPUT_NAME: 'What is your name?',
@@ -28,9 +28,13 @@ export const FORM_LOADERS = {
 
 const formStepsKeys = Object.keys(FORM_STEPS);
 
-const PriceEstimationQuiz = ({ toggleQuizVisibility, setQuizDone }) => {
+const PriceEstimationQuiz = ({
+    toggleQuizVisibility,
+    setQuizDone,
+    setBundleGroupCoverageData,
+}) => {
     const [progress, setProgress] = useState((1 / formStepsKeys.length) * 100);
-    const [step, setStep] = useState(FORM_STEPS.SELECT_PROCEDURE);
+    const [step, setStep] = useState(FORM_STEPS.SELECT_BUNDLE_GROUP);
     const [isHolder, setIsHolder] = useState(true);
     const [isCheckEligibilityLoading, setCheckEligibilityLoading] = useState(
         false
@@ -60,12 +64,12 @@ const PriceEstimationQuiz = ({ toggleQuizVisibility, setQuizDone }) => {
     // Handler for previous button
     const onPrev = () => {
         switch (step) {
-            case FORM_STEPS.SELECT_PROCEDURE:
+            case FORM_STEPS.SELECT_BUNDLE_GROUP:
                 toggleQuizVisibility();
                 break;
 
             case FORM_STEPS.SELECT_AVAILABILITY:
-                setFormStep(FORM_STEPS.SELECT_PROCEDURE);
+                setFormStep(FORM_STEPS.SELECT_BUNDLE_GROUP);
                 break;
 
             case FORM_STEPS.SELECT_DAYS:
@@ -138,7 +142,7 @@ const PriceEstimationQuiz = ({ toggleQuizVisibility, setQuizDone }) => {
     return (
         <Formik
             initialValues={{
-                procedure: '',
+                bundleGroup: '',
                 availability: '',
                 days: '',
                 firstName: '',
@@ -171,15 +175,21 @@ const PriceEstimationQuiz = ({ toggleQuizVisibility, setQuizDone }) => {
                     holderFirstName,
                     holderLastName,
                     isPrimaryHolder,
+                    bundleGroup,
                 },
                 { setErrors }
             ) => {
                 let response = {};
+                let patientId = '';
+
+                // Check Eligibility query run
                 try {
-                    const patientId = (isPrimaryHolder
-                        ? `${lastName.toUpperCase()}-${firstName.toUpperCase()}-${birthMonth}${birthDay}${birthYear}`
-                        : `${holderLastName.toUpperCase()}-${holderFirstName.toUpperCase()}-${holderBirthMonth}${holderBirthDay}${holderBirthYear}`
-                    ).replace(/\s+/g, '-');
+                    patientId = (isPrimaryHolder
+                        ? `${lastName}-${firstName}-${insuranceProvider}-${birthMonth}${birthDay}${birthYear}`
+                        : `${holderLastName}-${holderFirstName}-${insuranceProvider}-${holderBirthMonth}${holderBirthDay}${holderBirthYear}`
+                    )
+                        .replace(/\s+/g, '-')
+                        .toUpperCase();
 
                     setCheckEligibilityLoading(true);
                     response = await insuranceClient.query({
@@ -213,13 +223,29 @@ const PriceEstimationQuiz = ({ toggleQuizVisibility, setQuizDone }) => {
                     setCheckEligibilityLoading(false);
                 }
 
+                // getBundleGroupCoverage run
                 if (_get(response, 'data.checkEligibility.isEligible')) {
-                    setFormStep(FORM_LOADERS.CALCULATING_PRICE);
+                    try {
+                        setFormStep(FORM_LOADERS.CALCULATING_PRICE);
+                        response = await pricingClient.query({
+                            query: GET_BUNDLE_GROUP_COVERAGE,
+                            variables: {
+                                input: {
+                                    patientId,
+                                    bundleGroup,
+                                },
+                            },
+                        });
 
-                    setTimeout(() => {
+                        setBundleGroupCoverageData(
+                            _get(response, 'data.getBundleGroupCoverage')
+                        );
                         toggleQuizVisibility();
                         setQuizDone(true);
-                    }, 3000);
+                    } catch (error) {
+                        setErrors({ memberId: error.message });
+                        setFormStep(FORM_STEPS.INPUT_MEMBER_ID);
+                    }
                 }
             }}
             render={formikProps => (
@@ -241,6 +267,7 @@ const PriceEstimationQuiz = ({ toggleQuizVisibility, setQuizDone }) => {
 PriceEstimationQuiz.propTypes = {
     toggleQuizVisibility: PropTypes.func.isRequired,
     setQuizDone: PropTypes.func.isRequired,
+    setBundleGroupCoverageData: PropTypes.func.isRequired,
 };
 
 export default PriceEstimationQuiz;

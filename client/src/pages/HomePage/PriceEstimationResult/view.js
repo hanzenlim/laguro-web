@@ -86,10 +86,9 @@ const Slider = styled(SlickSlider)`
     }
 `;
 
-const PriceEstimationResultView = ({ screenWidth, mobileOnly }) => {
-    const itemWidth = mobileOnly ? 320 : 377;
-    return (
-        <Box position="relative" zIndex={100} width="100%">
+const PriceEstimationResultView = ({ bundleGroupCoverageData }) => (
+    <Box position="relative" zIndex={100} width="100%">
+        {bundleGroupCoverageData.length && (
             <Box>
                 <Text
                     color="text.white"
@@ -108,13 +107,11 @@ const PriceEstimationResultView = ({ screenWidth, mobileOnly }) => {
                     dots
                     focusOnSelect
                     variableWidth
-                    centerPadding={`${(screenWidth - itemWidth) / 2}px`}
+                    infinite={false}
                 >
-                    {Array(10)
-                        .fill('')
-                        .map((_, index) => (
-                            <ResultCard key={index} />
-                        ))}
+                    {bundleGroupCoverageData.map(({ id }) => (
+                        <ResultCard key={id} />
+                    ))}
                 </Slider>
 
                 <Text color="text.white" mt={24} mb={4} textAlign="center">
@@ -124,13 +121,12 @@ const PriceEstimationResultView = ({ screenWidth, mobileOnly }) => {
                     Last updated on : 12/31/2019
                 </Text>
             </Box>
-        </Box>
-    );
-};
+        )}
+    </Box>
+);
 
 PriceEstimationResultView.propTypes = {
-    screenWidth: PropTypes.number.isRequired,
-    mobileOnly: PropTypes.bool.isRequired,
+    bundleGroupCoverageData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
 export default withScreenSizes(PriceEstimationResultView);

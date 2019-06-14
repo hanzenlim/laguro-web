@@ -8,28 +8,28 @@ import { FORM_STEPS } from '.';
 
 const selection = [
     {
-        value: 'First Visit',
+        value: 'FIRST_VISIT',
         title: 'First Visit',
         subtitle: 'General checkup, X-rays or Exams',
     },
     {
-        value: 'General procedures',
+        value: 'GENERAL',
         title: 'General procedures',
         subtitle: 'Fillings, Crowns, Bridges or Veneers',
     },
     {
-        value: 'Surgery',
+        value: 'SURGERY',
         title: 'Surgery',
         subtitle: 'General checkup, X-rays or Exams',
     },
     {
-        value: 'Special treatment',
+        value: 'SPECIAL',
         title: 'Special treatment',
         subtitle: 'Special treatment',
     },
 ];
 
-const ProcedureSelection = ({ setFormStep }) => (
+const BundleGroupSelection = ({ setFormStep }) => (
     <Box mt={33}>
         {selection.map(({ value, title, subtitle }) => (
             <Field
@@ -42,7 +42,7 @@ const ProcedureSelection = ({ setFormStep }) => (
                         mb={12}
                         mx="auto"
                         onClick={() => {
-                            form.setFieldValue('procedure', value);
+                            form.setFieldValue('bundleGroup', value);
                             setFormStep(FORM_STEPS.SELECT_AVAILABILITY);
                         }}
                     >
@@ -52,7 +52,7 @@ const ProcedureSelection = ({ setFormStep }) => (
                             py={12}
                             border="1px solid"
                             borderColor={
-                                form.values.procedure === value
+                                form.values.bundleGroup === value
                                     ? 'divider.blue'
                                     : '#dfe0e2'
                             }
@@ -92,8 +92,8 @@ const ProcedureSelection = ({ setFormStep }) => (
     </Box>
 );
 
-ProcedureSelection.propTypes = {
+BundleGroupSelection.propTypes = {
     setFormStep: PropTypes.func.isRequired,
 };
 
-export default ProcedureSelection;
+export default BundleGroupSelection;
