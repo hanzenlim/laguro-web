@@ -3,19 +3,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'formik';
 
-import { Box, Button, Flex, Text } from '../../../components';
+import { Box, Button, Flex, Text, Icon } from '../../../components';
 import { FORM_STEPS } from '.';
 
 const selection = [
-    { value: 'Morning', title: 'Morning' },
-    { value: 'Afternoon', title: 'Afternoon' },
-    { value: 'Evening', title: 'Evening' },
-    { value: 'Any time', title: 'Any time' },
+    { value: 'Morning', title: 'Morning', icon: 'Morning' },
+    { value: 'Afternoon', title: 'Afternoon', icon: 'Afternoon' },
+    { value: 'Evening', title: 'Evening', icon: 'Evening' },
+    { value: 'Any time', title: 'Any time', icon: 'Anytime' },
 ];
 
 const AvailabilitySelection = ({ setFormStep }) => (
     <Box mt={33}>
-        {selection.map(({ value, title }) => (
+        {selection.map(({ value, title, icon }) => (
             <Field
                 key={value}
                 render={({ form }) => (
@@ -44,12 +44,7 @@ const AvailabilitySelection = ({ setFormStep }) => (
                             bg="background.white"
                             boxShadow="0 2px 7px 0 rgba(48, 53, 73, 0.1)"
                         >
-                            <Box
-                                bg="background.gray"
-                                width={20}
-                                height={20}
-                                mr={12}
-                            />
+                            <Icon type={icon} fontSize={20} mr={12} />
                             <Box textAlign="left">
                                 <Text
                                     color="text.blue"

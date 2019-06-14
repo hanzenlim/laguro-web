@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Box, Flex, Text } from '../../../components';
+import { Box, Flex, Text, Icon } from '../../../components';
+import { FORM_LOADERS } from './';
 
 const Loader = ({ step = '' }) => (
     <Flex
@@ -12,7 +13,14 @@ const Loader = ({ step = '' }) => (
         width={234}
         height="100%"
     >
-        <Box width={130} height={130} bg="background.gray" borderRadius="50%" />
+        <Icon
+            fontSize={130}
+            type={
+                step === FORM_LOADERS.CALCULATING_PRICE
+                    ? 'Calculate'
+                    : 'Searching'
+            }
+        />
         <Box mt={28}>
             <Text fontWeight="bold" fontSize={3}>
                 Hang on tight!

@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'formik';
 
-import { Box, Button, Flex, Text } from '../../../components';
+import { Box, Button, Flex, Text, Icon } from '../../../components';
 import { FORM_STEPS } from '.';
 
 const selection = [
@@ -11,27 +11,31 @@ const selection = [
         value: 'FIRST_VISIT',
         title: 'First Visit',
         subtitle: 'General checkup, X-rays or Exams',
+        icon: 'FirstVisit',
     },
     {
         value: 'GENERAL',
         title: 'General procedures',
         subtitle: 'Fillings, Crowns, Bridges or Veneers',
+        icon: 'GeneralProcedures',
     },
     {
         value: 'SURGERY',
         title: 'Surgery',
         subtitle: 'General checkup, X-rays or Exams',
+        icon: 'Surgery',
     },
     {
         value: 'SPECIAL',
         title: 'Special treatment',
         subtitle: 'Special treatment',
+        icon: 'SpecialTreatment',
     },
 ];
 
 const BundleGroupSelection = ({ setFormStep }) => (
     <Box mt={33}>
-        {selection.map(({ value, title, subtitle }) => (
+        {selection.map(({ value, title, subtitle, icon }) => (
             <Field
                 key={value}
                 render={({ form }) => (
@@ -60,12 +64,7 @@ const BundleGroupSelection = ({ setFormStep }) => (
                             bg="background.white"
                             boxShadow="0 2px 7px 0 rgba(48, 53, 73, 0.1)"
                         >
-                            <Box
-                                bg="background.gray"
-                                width={20}
-                                height={20}
-                                mr={12}
-                            />
+                            <Icon type={icon} fontSize={20} mr={12} />
                             <Box textAlign="left">
                                 <Text
                                     color="text.blue"
