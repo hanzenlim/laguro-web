@@ -8,6 +8,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import { Box, Text } from '../../../components';
 import { withScreenSizes } from '../../../components/Responsive';
 import ResultCard from './ResultCard';
+import { renderPriceWithoutZeros } from '../../../util/paymentUtil';
 
 const Slider = styled(SlickSlider)`
     /* .slick-slide .white-box {
@@ -42,9 +43,11 @@ const Slider = styled(SlickSlider)`
 
         .white-box {
             transform: scale(0.9);
+            height: 310px;
+            overflow: hidden;
 
             > * {
-                opacity: 0.1;
+                opacity: 0;
             }
         }
     }
@@ -109,9 +112,37 @@ const PriceEstimationResultView = ({ bundleGroupCoverageData }) => (
                     variableWidth
                     infinite={false}
                 >
-                    {bundleGroupCoverageData.map(({ id }) => (
-                        <ResultCard key={id} />
-                    ))}
+                    {bundleGroupCoverageData.map(
+                        ({
+                            id,
+                            name,
+                            group,
+                            price,
+                            proceduresDetail,
+                            coverage,
+                            deductibleRemaining,
+                            annualMaximumRemaining,
+                            outOfPocket,
+                        }) => (
+                            <ResultCard
+                                key={id}
+                                name={name}
+                                group={group}
+                                price={renderPriceWithoutZeros(price)}
+                                proceduresDetail={proceduresDetail}
+                                coverage={renderPriceWithoutZeros(coverage)}
+                                deductibleRemaining={renderPriceWithoutZeros(
+                                    deductibleRemaining
+                                )}
+                                annualMaximumRemaining={renderPriceWithoutZeros(
+                                    annualMaximumRemaining
+                                )}
+                                outOfPocket={renderPriceWithoutZeros(
+                                    outOfPocket
+                                )}
+                            />
+                        )
+                    )}
                 </Slider>
 
                 <Text color="text.white" mt={24} mb={4} textAlign="center">

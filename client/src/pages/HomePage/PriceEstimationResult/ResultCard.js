@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Box, Text, Flex, Button } from '../../../components';
@@ -9,7 +10,16 @@ const StyledButton = styled(Button)`
     }
 `;
 
-const ResultCard = () => (
+const ResultCard = ({
+    name,
+    group,
+    price,
+    proceduresDetail,
+    coverage,
+    deductibleRemaining,
+    annualMaximumRemaining,
+    outOfPocket,
+}) => (
     <Box
         maxWidth={[320, 377, '']}
         width="100%"
@@ -29,7 +39,7 @@ const ResultCard = () => (
             width="fit-content"
             className="title-tag"
         >
-            Cast metal denture per arch
+            {name}
         </Text>
 
         <Box className="inactive-box-text" textAlign="center">
@@ -47,7 +57,7 @@ const ResultCard = () => (
                 position="relative"
                 width="fit-content"
             >
-                Cast metal denture per arch
+                {name}
             </Text>
         </Box>
 
@@ -59,29 +69,31 @@ const ResultCard = () => (
         >
             <Flex justifyContent="space-between" mb={8}>
                 <Text fontSize={0} fontWeight="medium">
-                    Estimated price for Braces
+                    Estimated price for {group}
                 </Text>
                 <Text fontSize={0} fontWeight="medium">
-                    $500
+                    {price}
                 </Text>
             </Flex>
-            <Box mb={8} pl={10}>
-                <Text color="text.gray" fontSize="10px" mb={4}>
-                    X-ray X-ray X-ray X-ray X-ray X-ray X-ray X-ray X-ray X-ray
-                </Text>
-                <Text color="text.gray" fontSize="10px" mb={4}>
-                    Braces Braces Braces Braces Braces Braces
-                </Text>
-                <Text color="text.gray" fontSize="10px" mb={4}>
-                    Equipments
-                </Text>
+            <Box mb={8} pl={20} is="ul">
+                {proceduresDetail.map(item => (
+                    <Text
+                        key={item.code}
+                        color="text.gray"
+                        fontSize="10px"
+                        mb={4}
+                        is="li"
+                    >
+                        {item.name}
+                    </Text>
+                ))}
             </Box>
             <Flex justifyContent="space-between" mb={8}>
                 <Text fontSize={0} fontWeight="medium">
                     Insurance coverage
                 </Text>
                 <Text fontSize={0} fontWeight="medium" color="#b11f29">
-                    -$100.22
+                    {coverage}
                 </Text>
             </Flex>
             <Box mb={8} pl={10}>
@@ -90,15 +102,15 @@ const ResultCard = () => (
                         Deductable
                     </Text>
                     <Text color="text.gray" fontSize="10px">
-                        -$50 (Up to $50)
+                        {deductibleRemaining}
                     </Text>
                 </Flex>
                 <Flex justifyContent="space-between" mb={4}>
                     <Text color="text.gray" fontSize="10px">
-                        -$50 (Up to $50)
+                        Remaining annual coverage
                     </Text>
                     <Text color="text.gray" fontSize="10px">
-                        -$233.23
+                        {annualMaximumRemaining}
                     </Text>
                 </Flex>
             </Box>
@@ -115,7 +127,7 @@ const ResultCard = () => (
                     ml={10}
                     is="span"
                 >
-                    $234.23
+                    {outOfPocket}
                 </Text>
             </Box>
 
@@ -141,5 +153,16 @@ const ResultCard = () => (
         </Box>
     </Box>
 );
+
+ResultCard.propTypes = {
+    name: PropTypes.string.isRequired,
+    group: PropTypes.string.isRequired,
+    price: PropTypes.string.isRequired,
+    proceduresDetail: PropTypes.string.isRequired,
+    coverage: PropTypes.string.isRequired,
+    deductibleRemaining: PropTypes.string.isRequired,
+    annualMaximumRemaining: PropTypes.string.isRequired,
+    outOfPocket: PropTypes.string.isRequired,
+};
 
 export default ResultCard;
