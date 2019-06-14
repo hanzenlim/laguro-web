@@ -111,6 +111,7 @@ const PriceEstimationResultView = ({ bundleGroupCoverageData, formValues }) => (
                     focusOnSelect
                     variableWidth
                     infinite={false}
+                    centerPadding={0}
                 >
                     {bundleGroupCoverageData.map(
                         ({

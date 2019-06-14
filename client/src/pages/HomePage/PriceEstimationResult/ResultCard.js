@@ -23,7 +23,7 @@ const ResultCard = ({
     history,
 }) => (
     <Box
-        maxWidth={[316, 377, '']}
+        maxWidth={[320, 377, '']}
         width="100%"
         mx="auto"
         px={[6, '', 17]}
