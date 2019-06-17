@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Formik } from 'formik';
 import _get from 'lodash/get';
@@ -40,6 +40,15 @@ const PriceEstimationQuiz = ({
     const [isCheckEligibilityLoading, setCheckEligibilityLoading] = useState(
         false
     );
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+        document.body.style.overflow = 'hidden';
+
+        return () => {
+            document.body.style.overflow = '';
+        };
+    }, []);
 
     const setFormStep = nextStep => {
         if (
