@@ -43,7 +43,16 @@ export const Select = styled(AntdSelect)`
         line-height: 46px;
     }
 
-    .ant-select-arrow {
+    & .ant-select-arrow {
         right: 30px;
+    }
+
+    & .ant-select-search--inline {
+        top: 0;
+
+        .ant-select-search__field {
+            text-align: center;
+            font-size: ${props => props.theme.fontSizes[3]};
+        }
     }
 `;

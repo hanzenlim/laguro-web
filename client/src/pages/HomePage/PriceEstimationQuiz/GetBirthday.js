@@ -119,6 +119,7 @@ const GetBirthday = ({ forHolder }) => (
                         <Select
                             {...monthPropValue}
                             placeholder="Month"
+                            showSearch
                             onChange={value =>
                                 form.setFieldValue(
                                     forHolder
@@ -129,6 +130,11 @@ const GetBirthday = ({ forHolder }) => (
                             }
                             getPopupContainer={() =>
                                 document.getElementById('birth-month-input')
+                            }
+                            filterOption={(input, option) =>
+                                option.props.children
+                                    .toLowerCase()
+                                    .includes(input.toLowerCase())
                             }
                         >
                             {months.map(month => (
@@ -151,6 +157,7 @@ const GetBirthday = ({ forHolder }) => (
                         <Select
                             {...dayPropValue}
                             placeholder="Day"
+                            showSearch
                             onChange={value =>
                                 form.setFieldValue(
                                     forHolder ? 'holderBirthDay' : 'birthDay',
@@ -188,6 +195,7 @@ const GetBirthday = ({ forHolder }) => (
                             <Select
                                 {...yearPropValue}
                                 placeholder="Year"
+                                showSearch
                                 onChange={value =>
                                     form.setFieldValue(
                                         forHolder

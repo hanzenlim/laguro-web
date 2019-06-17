@@ -35,7 +35,6 @@ const MemberIdStep = ({ isCheckEligibilityLoading }) => (
         <Box width={320} maxWidth="100%" mb={15} mx="auto">
             <StyledButton
                 type="primary"
-                maxWidth="100%"
                 width="100%"
                 height={60}
                 fontWeight="bold"

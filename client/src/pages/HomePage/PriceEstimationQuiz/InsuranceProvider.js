@@ -21,16 +21,22 @@ const InsuranceProvider = () => (
                     maxWidth={320}
                 >
                     <Select
-                        {...(form.values.insuranceProvider
-                            ? { value: form.values.insuranceProvider }
-                            : {})}
                         placeholder="Select your insurance"
+                        showSearch
                         onChange={value =>
                             form.setFieldValue('insuranceProvider', value)
                         }
                         getPopupContainer={() =>
                             document.getElementById('insurance-provider-input')
                         }
+                        filterOption={(input, option) =>
+                            option.props.children
+                                .toLowerCase()
+                                .includes(input.toLowerCase())
+                        }
+                        {...(form.values.insuranceProvider
+                            ? { value: form.values.insuranceProvider }
+                            : {})}
                     >
                         {insuranceList.map(insurance => (
                             <Option key={insurance.id} value={insurance.id}>
