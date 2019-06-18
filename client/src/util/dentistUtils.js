@@ -40,14 +40,16 @@ export const LANGUAGE_LIST = [
 ];
 
 export const DAY_AVAILABILITY_LIST = [
-    'All days',
+    'Any day',
     'Monday',
-    'Tueday',
+    'Tuesday',
     'Wednesday',
     'Thursday',
     'Friday',
     'Saturday',
     'Sunday',
+    'Weekdays',
+    'Weekends',
 ];
 
 export const TIME_AVAILABILITY_LIST = [
