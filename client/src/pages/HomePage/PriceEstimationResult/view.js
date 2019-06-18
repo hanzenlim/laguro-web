@@ -34,7 +34,11 @@ const Slider = styled(SlickSlider)`
             right: 0;
             z-index: 1;
             font-size: 11px;
-            display: block;
+            display: flex;
+            height: 100%;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
         .title-tag {
@@ -141,6 +145,7 @@ const PriceEstimationResultView = ({ bundleGroupCoverageData, formValues }) => (
                                 outOfPocket={renderPriceWithoutZeros(
                                     outOfPocket
                                 )}
+                                formValues={formValues}
                             />
                         )
                     )}

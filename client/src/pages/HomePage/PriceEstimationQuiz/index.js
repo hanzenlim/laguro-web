@@ -9,7 +9,7 @@ import { insuranceClient, pricingClient } from '../../../util/apolloClients';
 
 export const FORM_STEPS = {
     SELECT_BUNDLE_GROUP: 'Which procedure are you looking for?',
-    SELECT_AVAILABILITY: 'When are you available for your appointment?',
+    SELECT_TIME_AVAILABILITY: 'When are you available for your appointment?',
     SELECT_DAYS: 'Which days do you prefer?',
     INPUT_NAME: 'What is your name?',
     INPUT_BIRTHDAY: 'When is your birthday?',
@@ -78,12 +78,12 @@ const PriceEstimationQuiz = ({
                 toggleQuizVisibility();
                 break;
 
-            case FORM_STEPS.SELECT_AVAILABILITY:
+            case FORM_STEPS.SELECT_TIME_AVAILABILITY:
                 setFormStep(FORM_STEPS.SELECT_BUNDLE_GROUP);
                 break;
 
             case FORM_STEPS.SELECT_DAYS:
-                setFormStep(FORM_STEPS.SELECT_AVAILABILITY);
+                setFormStep(FORM_STEPS.SELECT_TIME_AVAILABILITY);
                 break;
 
             case FORM_STEPS.INPUT_NAME:
@@ -153,8 +153,8 @@ const PriceEstimationQuiz = ({
         <Formik
             initialValues={{
                 bundleGroup: '',
-                availability: '',
-                days: '',
+                timeAvailability: '',
+                dayAvailability: '',
                 firstName: '',
                 lastName: '',
                 birthMonth: '',

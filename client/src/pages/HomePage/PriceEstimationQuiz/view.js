@@ -6,7 +6,7 @@ import moment from 'moment';
 
 import { Box, Flex, Button, Text } from '../../../components';
 import BundleGroupSelection from './BundleGroupSelection';
-import AvailabilitySelection from './AvailabilitySelection';
+import TimeAvailabilitySelection from './TimeAvailabilitySelection';
 import DaysSelection from './DaysSelection';
 import NameStep from './NameStep';
 import CheckInsurance from './CheckInsurance';
@@ -182,8 +182,8 @@ const PriceEstimationQuiz = ({
                         <BundleGroupSelection setFormStep={setFormStep} />
                     )}
 
-                    {step === FORM_STEPS.SELECT_AVAILABILITY && (
-                        <AvailabilitySelection setFormStep={setFormStep} />
+                    {step === FORM_STEPS.SELECT_TIME_AVAILABILITY && (
+                        <TimeAvailabilitySelection setFormStep={setFormStep} />
                     )}
 
                     {step === FORM_STEPS.SELECT_DAYS && (

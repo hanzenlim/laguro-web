@@ -41,7 +41,13 @@ const CheckInsurance = ({ setFormStep, history }) => (
                                         FORM_LOADERS.MATCH_DENTIST_AVAILABLE
                                     );
                                     setTimeout(() => {
-                                        history.push('/dentist/search');
+                                        history.push(
+                                            `/dentist/search?dayAvailability=${
+                                                form.values.dayAvailability
+                                            }&timeAvailability=${
+                                                form.values.timeAvailability
+                                            }`
+                                        );
                                     }, 3000);
                                 }
                             }}
