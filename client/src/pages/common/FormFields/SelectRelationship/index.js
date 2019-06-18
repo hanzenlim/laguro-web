@@ -1,11 +1,6 @@
 import React from 'react';
 import { Onboarding } from '../../the-bright-side-components';
-
-const relationshipMap = [
-    { key: 'CHILD', name: 'Child' },
-    { key: 'SPOUSE', name: 'Spouse' },
-    { key: 'OTHER_DEPENDENT', name: 'Dependent' },
-];
+import { relationshipList } from '../../../../staticData/relationshipList';
 
 const SelectRelationship = props => {
     const { form, field } = props;
@@ -14,7 +9,7 @@ const SelectRelationship = props => {
             form={form}
             field={field}
             placeholder="Select relationship"
-            options={relationshipMap.map(i => (
+            options={relationshipList.map(i => (
                 <Onboarding.SelectOption value={i.key}>
                     {i.name}
                 </Onboarding.SelectOption>
