@@ -533,6 +533,7 @@ const SelectField = props => {
                 children={options}
                 disabled={disabled}
                 getPopupContainer={() => wrapperRef.current}
+                showSearch={props.showSearch}
             />
             {hasError && <Onboarding.ValidationMessage text={errorMessage} />}
         </Box>

@@ -15,7 +15,6 @@ export const GET_USER = gql`
         getUser(id: $id) {
             id
             insuranceInfo {
-                useInsurance
                 policyHolderId
                 insuranceProvider
                 insuranceProviderId
@@ -84,9 +83,6 @@ export const UPDATE_PATIENT_HEALTH_DATA = gql`
         updatePatientHealthData(input: $input) {
             id
             hasSubmittedHealthHistoryForm
-            insuranceInfo {
-                useInsurance
-            }
         }
     }
 `;

@@ -6,7 +6,7 @@ export const UPDATE_PATIENT_HEALTH_DATA = gql`
             id
             hasSubmittedHealthHistoryForm
             insuranceInfo {
-                useInsurance
+                insuranceProvider
             }
         }
     }
@@ -27,6 +27,17 @@ export const GET_PATIENT_HEALTH_DATA_UNSTRUCTURED = gql`
                 group
             }
             dateCreated
+        }
+    }
+`;
+
+export const GET_USER = gql`
+    query($id: String!) {
+        getUser(id: $id) {
+            id
+            insuranceInfo {
+                insuranceProvider
+            }
         }
     }
 `;

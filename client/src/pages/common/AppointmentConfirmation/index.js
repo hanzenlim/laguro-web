@@ -3,6 +3,7 @@ import moment from 'moment-timezone';
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { Query } from 'react-apollo';
+import _isEmpty from 'lodash/isEmpty';
 import { Loading } from '../../../components';
 import { trackBookAppointment } from '../../../util/trackingUtils';
 import { RedirectErrorPage } from '../../GeneralErrorPage';
@@ -14,7 +15,11 @@ import { formatAddress } from '../../../util/styleUtil';
 
 const Composed = adopt({
     getAppointment: ({ render, appointmentId }) => (
-        <Query query={getAppointmentQuery} variables={{ id: appointmentId }}>
+        <Query
+            query={getAppointmentQuery}
+            variables={{ id: appointmentId }}
+            skip={_isEmpty(appointmentId)}
+        >
             {render}
         </Query>
     ),
@@ -73,14 +78,17 @@ class AppointmentConfirmation extends PureComponent {
                         officeId,
                     });
 
+                    const localStartTime = _get(data, 'localStartTime');
+
                     return (
                         <AppointmentConfirmationView
                             h1="YOUR BOOKING IS CONFIRMED"
-                            h2={moment(
-                                stripTimezone(_get(data, 'localStartTime'))
-                            )
-                                .utcOffset(0, true)
-                                .format('LLLL')}
+                            h2={
+                                !_isEmpty(localStartTime) &&
+                                moment(stripTimezone(localStartTime))
+                                    .utcOffset(0, true)
+                                    .format('LLLL')
+                            }
                             h3={formatAddress(_get(data, 'location.name'))}
                             appointmentId={_get(data, 'id')}
                             officeId={officeId}

@@ -269,7 +269,6 @@ export const getPatientWebOnboardingPageWizardSteps = ({
                 dob: `${patientBirthMonth}/${patientBirthDate}/${patientBirthYear}`,
                 gender: patientGender,
                 insuranceInfo: {
-                    useInsurance: !hasNoInsurance,
                     ...(!hasNoInsurance &&
                         !_isEmpty(insuranceProvider) && {
                             insuranceProvider,

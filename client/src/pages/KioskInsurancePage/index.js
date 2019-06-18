@@ -55,9 +55,7 @@ const Step0 = props => (
                                 variables: {
                                     input: {
                                         userId,
-                                        insuranceInfo: {
-                                            useInsurance: false,
-                                        },
+                                        insuranceInfo: null,
                                     },
                                 },
                             });
@@ -282,7 +280,6 @@ const KioskInsurancePage = componentProps => {
                                     dob: `${patientBirthMonth}/${patientBirthDate}/${patientBirthYear}`,
                                     gender: patientGender,
                                     insuranceInfo: {
-                                        useInsurance: true,
                                         insuranceProvider,
                                         insuranceProviderId,
                                         policyHolderId: patientInsuranceNum,

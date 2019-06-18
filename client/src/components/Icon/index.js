@@ -50,6 +50,10 @@ import Alert from './Alert';
 import Filter from './Filter';
 import BlueLeftArrow from './BlueLeftArrow';
 import BlueRightArrow from './BlueRightArrow';
+import Umbrella from './Umbrella';
+import MedicalDocument from './MedicalDocument';
+import DentalRecords from './DentalRecords';
+import Clock from './Clock';
 
 const Icon = props => {
     const { type, isButton, ...rest } = props;
@@ -151,6 +155,18 @@ const Icon = props => {
             break;
         case 'blueRightArrow':
             ReturnIcon = BlueRightArrow;
+            break;
+        case 'dentalRecords':
+            ReturnIcon = DentalRecords;
+            break;
+        case 'umbrella':
+            ReturnIcon = Umbrella;
+            break;
+        case 'medicalDocument':
+            ReturnIcon = MedicalDocument;
+            break;
+        case 'clock':
+            ReturnIcon = Clock;
             break;
         default:
             ReturnIcon = AntdIcon;

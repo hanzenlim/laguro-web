@@ -77,7 +77,6 @@ export const DENTIST_ONBOARDING_VERIFICATION_URL =
 export const DENTIST_PROFILE_PAGE_URL = '/dentist-profile';
 export const HOST_ONBOARDING_PAGE_URL_PREFIX = '/host-onboarding';
 
-
 // used to make header background blue
 export const URLS_FOR_HOST_AND_DENTIST_PAGES = [
     DENTIST_ONBOARDING_PROFILE_URL,
