@@ -41,12 +41,15 @@ export const LANGUAGE_LIST = [
 export const DAY_AVAILABILITY_LIST = [
     'All days',
     'Monday',
-    'Tueday',
+    'Tuesday',
     'Wednesday',
     'Thursday',
     'Friday',
     'Saturday',
     'Sunday',
+    'Weekdays',
+    'Weekends',
+    'Any day',
 ];
 
 export const TIME_AVAILABILITY_LIST = [

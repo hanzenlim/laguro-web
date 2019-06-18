@@ -11,16 +11,20 @@ import moment from 'moment';
 
 import { appointmentClient } from '../../util/apolloClients';
 
+const allDays = [
+    'MONDAY',
+    'TUESDAY',
+    'WEDNESDAY',
+    'THURSDAY',
+    'FRIDAY',
+    'SATURDAY',
+    'SUNDAY',
+];
+
+const getAnyDay = () => allDays[Math.floor(Math.random() * 7)];
+
 const daysAvailabilityMapping = {
-    'All days': [
-        'MONDAY',
-        'TUESDAY',
-        'WEDNESDAY',
-        'THURSDAY',
-        'FRIDAY',
-        'SATURDAY',
-        'SUNDAY',
-    ],
+    'All days': allDays,
     Monday: ['MONDAY'],
     Tuesday: ['TUESDAY'],
     Wednesday: ['WEDNESDAY'],
@@ -28,6 +32,9 @@ const daysAvailabilityMapping = {
     Friday: ['FRIDAY'],
     Saturday: ['SATURDAY'],
     Sunday: ['SUNDAY'],
+    Weekdays: ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY'],
+    Weekends: ['SATURDAY', 'SUNDAY'],
+    'Any day': [getAnyDay()],
 };
 
 const getHoursFromTimeAvailability = {
