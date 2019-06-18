@@ -39,7 +39,7 @@ export const LANGUAGE_LIST = [
 ];
 
 export const DAY_AVAILABILITY_LIST = [
-    'All days',
+    'Any day',
     'Monday',
     'Tuesday',
     'Wednesday',
@@ -49,7 +49,6 @@ export const DAY_AVAILABILITY_LIST = [
     'Sunday',
     'Weekdays',
     'Weekends',
-    'Any day',
 ];
 
 export const TIME_AVAILABILITY_LIST = [
