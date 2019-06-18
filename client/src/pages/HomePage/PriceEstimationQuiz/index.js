@@ -226,7 +226,22 @@ const PriceEstimationQuiz = ({
                         },
                     });
                 } catch (error) {
-                    setErrors({ memberId: error.message });
+                    const gqlErrorOnly = _get(
+                        error,
+                        'graphQLErrors[0].message'
+                    );
+                    const parsedError = JSON.parse(
+                        gqlErrorOnly.replace('Error: ', '')
+                    );
+
+                    setErrors({
+                        memberId:
+                            parsedError.type === 'Onederful'
+                                ? `${parsedError.message[0].reason}. ${
+                                      parsedError.message[0].followup
+                                  }.`
+                                : 'Something went wrong. Please Try again later.',
+                    });
                 } finally {
                     setCheckEligibilityLoading(false);
                 }
@@ -252,7 +267,10 @@ const PriceEstimationQuiz = ({
                         toggleQuizVisibility();
                         setQuizDone(true);
                     } catch (error) {
-                        setErrors({ memberId: error.message });
+                        setErrors({
+                            memberId:
+                                'Something went wrong. Please Try again later.',
+                        });
                         setFormStep(FORM_STEPS.INPUT_MEMBER_ID);
                     }
                 }
