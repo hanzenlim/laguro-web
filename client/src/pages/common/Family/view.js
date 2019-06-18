@@ -2,7 +2,6 @@ import React from 'react';
 import { Onboarding } from '../the-bright-side-components/';
 import styled from 'styled-components';
 import _get from 'lodash/get';
-import _capitalize from 'lodash/capitalize';
 import {
     Box,
     Text,
@@ -22,7 +21,10 @@ import { getIdFromFilestackUrl } from '../../../util/imageUtil';
 import defaultDentistProfileImg from '../../../components/Image/default_dentist_profile_img_square.svg';
 import _isEmpty from 'lodash/isEmpty';
 import PatientAppoinments from '../PatientAppointments';
-import { getUserFullName } from '../../../util/userUtils';
+import {
+    getUserFullName,
+    getUserRelationshipToPrimary,
+} from '../../../util/userUtils';
 import { width } from 'styled-system';
 import { getLTMBaseUrl } from '../../../util/urls';
 
@@ -267,11 +269,8 @@ const FamilyView = ({
                                                 color="white"
                                                 fontWeight="500"
                                             >
-                                                {_capitalize(
-                                                    _get(
-                                                        member,
-                                                        'relationshipToPrimary'
-                                                    )
+                                                {getUserRelationshipToPrimary(
+                                                    member
                                                 )}
                                             </Text>
                                         </Flex>
