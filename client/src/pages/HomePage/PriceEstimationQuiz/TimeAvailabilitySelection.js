@@ -13,7 +13,7 @@ const selection = [
     { value: 'Any time', title: 'Any time', icon: 'Anytime' },
 ];
 
-const AvailabilitySelection = ({ setFormStep }) => (
+const TimeAvailabilitySelection = ({ setFormStep }) => (
     <Box mt={33}>
         {selection.map(({ value, title, icon }) => (
             <Field
@@ -26,7 +26,7 @@ const AvailabilitySelection = ({ setFormStep }) => (
                         mb={12}
                         mx="auto"
                         onClick={() => {
-                            form.setFieldValue('availability', value);
+                            form.setFieldValue('timeAvailability', value);
                             setFormStep(FORM_STEPS.SELECT_DAYS);
                         }}
                     >
@@ -36,7 +36,7 @@ const AvailabilitySelection = ({ setFormStep }) => (
                             py={20}
                             border="1px solid"
                             borderColor={
-                                form.values.availability === value
+                                form.values.timeAvailability === value
                                     ? 'divider.blue'
                                     : '#dfe0e2'
                             }
@@ -63,8 +63,8 @@ const AvailabilitySelection = ({ setFormStep }) => (
     </Box>
 );
 
-AvailabilitySelection.propTypes = {
+TimeAvailabilitySelection.propTypes = {
     setFormStep: PropTypes.func.isRequired,
 };
 
-export default AvailabilitySelection;
+export default TimeAvailabilitySelection;

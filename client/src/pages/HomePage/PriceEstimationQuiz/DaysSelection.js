@@ -24,7 +24,7 @@ const DaysSelection = ({ setFormStep }) => (
                         mb={12}
                         mx="auto"
                         onClick={() => {
-                            form.setFieldValue('days', value);
+                            form.setFieldValue('dayAvailability', value);
                             setFormStep(FORM_STEPS.INPUT_NAME);
                         }}
                     >
@@ -33,7 +33,7 @@ const DaysSelection = ({ setFormStep }) => (
                             py={20}
                             border="1px solid"
                             borderColor={
-                                form.values.days === value
+                                form.values.dayAvailability === value
                                     ? 'divider.blue'
                                     : '#dfe0e2'
                             }

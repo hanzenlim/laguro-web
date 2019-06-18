@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { withRouter } from 'react-router-dom';
 
-import { Box, Text, Flex, Button } from '../../../components';
+import { Box, Text, Flex, Button, Link } from '../../../components';
 
 const StyledButton = styled(Button)`
     &&.ant-btn {
@@ -20,7 +19,7 @@ const ResultCard = ({
     deductibleRemaining,
     annualMaximumRemaining,
     outOfPocket,
-    history,
+    formValues,
 }) => (
     <Box
         maxWidth={[320, 377, '']}
@@ -138,21 +137,28 @@ const ResultCard = ({
                 coverage pricing may differ.
             </Text>
 
-            <StyledButton
-                type="primary"
-                maxWidth="100%"
-                width={260}
-                height={50}
-                mx="auto"
-                mt={30}
-                px={35}
-                fontWeight="medium"
-                fontSize={1}
-                style={{ whiteSpace: 'initial', display: 'block' }}
-                onClick={() => history.push('/dentist/search')}
-            >
-                See dentists available for this procedure
-            </StyledButton>
+            <Box>
+                <Link
+                    to={`/dentist/search?dayAvailability=${
+                        formValues.dayAvailability
+                    }&timeAvailability=${formValues.timeAvailability}`}
+                >
+                    <StyledButton
+                        type="primary"
+                        maxWidth="100%"
+                        width={260}
+                        height={50}
+                        mx="auto"
+                        mt={30}
+                        px={35}
+                        fontWeight="medium"
+                        fontSize={1}
+                        style={{ whiteSpace: 'initial', display: 'block' }}
+                    >
+                        See dentists available for this procedure
+                    </StyledButton>
+                </Link>
+            </Box>
         </Box>
     </Box>
 );
@@ -174,6 +180,7 @@ ResultCard.propTypes = {
     history: PropTypes.shape({
         push: PropTypes.func.isRequired,
     }).isRequired,
+    formValues: PropTypes.shape({}).isRequired,
 };
 
-export default withRouter(ResultCard);
+export default ResultCard;

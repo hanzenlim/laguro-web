@@ -47,7 +47,7 @@ const BundleGroupSelection = ({ setFormStep }) => (
                         mx="auto"
                         onClick={() => {
                             form.setFieldValue('bundleGroup', value);
-                            setFormStep(FORM_STEPS.SELECT_AVAILABILITY);
+                            setFormStep(FORM_STEPS.SELECT_TIME_AVAILABILITY);
                         }}
                     >
                         <Flex
