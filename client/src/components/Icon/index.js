@@ -54,6 +54,16 @@ import Umbrella from './Umbrella';
 import MedicalDocument from './MedicalDocument';
 import DentalRecords from './DentalRecords';
 import Clock from './Clock';
+import FirstVisit from './FirstVisit';
+import GeneralProcedures from './GeneralProcedures';
+import Surgery from './Surgery';
+import SpecialTreatment from './SpecialTreatment';
+import Morning from './Morning';
+import Afternoon from './Afternoon';
+import Evening from './Evening';
+import Anytime from './Anytime';
+import Calculate from './Calculate';
+import Searching from './Searching';
 
 const Icon = props => {
     const { type, isButton, ...rest } = props;
@@ -168,6 +178,36 @@ const Icon = props => {
         case 'clock':
             ReturnIcon = Clock;
             break;
+        case 'FirstVisit':
+            ReturnIcon = FirstVisit;
+            break;
+        case 'GeneralProcedures':
+            ReturnIcon = GeneralProcedures;
+            break;
+        case 'Surgery':
+            ReturnIcon = Surgery;
+            break;
+        case 'SpecialTreatment':
+            ReturnIcon = SpecialTreatment;
+            break;
+        case 'Morning':
+            ReturnIcon = Morning;
+            break;
+        case 'Afternoon':
+            ReturnIcon = Afternoon;
+            break;
+        case 'Evening':
+            ReturnIcon = Evening;
+            break;
+        case 'Anytime':
+            ReturnIcon = Anytime;
+            break;
+        case 'Searching':
+            ReturnIcon = Searching;
+            break;
+        case 'Calculate':
+            ReturnIcon = Calculate;
+            break;
         default:
             ReturnIcon = AntdIcon;
     }
@@ -191,7 +231,10 @@ const Icon = props => {
 
     const StyledIconContainer = styled.span`
         &&&& {
-            ${lineHeight} ${fontSize} ${height} ${display};
+            ${lineHeight};
+            ${fontSize};
+            ${height};
+            ${display};
             ${!isButton &&
                 (cssProps =>
                     cssProps.color
