@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Progress } from 'antd';
 import moment from 'moment';
+import { transparentize } from 'polished';
 
 import { Box, Flex, Button, Text } from '../../../components';
 import BundleGroupSelection from './BundleGroupSelection';
@@ -19,8 +20,11 @@ import Loader from './Loader';
 import { FORM_STEPS, FORM_LOADERS } from '.';
 
 const StyledProgress = styled(Progress)`
-    .ant-progress {
+    &.ant-progress {
         line-height: 8px;
+        display: block;
+        overflow: hidden;
+        margin-top: 14px;
     }
 `;
 
@@ -107,6 +111,8 @@ const checkDisabledState = (step, values) => {
     return false;
 };
 
+const { innerHeight } = window;
+
 const PriceEstimationQuiz = ({
     progress = 0,
     step = '',
@@ -139,99 +145,115 @@ const PriceEstimationQuiz = ({
         <Box
             width={587}
             maxWidth="100%"
-            height={['calc(100vh - 48px)', 547, '']}
+            height={[innerHeight - 48, 547, '']}
+            maxHeight={innerHeight - 48}
             position="fixed"
-            top={[48, '', 114]}
+            top={48}
             left="50%"
-            bg="background.aquaBlue"
-            boxShadow="6px 6px 31px 2px rgba(0, 0, 0, 0.14)"
-            px={25}
             textAlign="center"
             style={{ transform: 'translateX(-50%)' }}
         >
-            {formLoaderSteps.includes(step) && <Loader step={step} />}
+            <Box
+                height="100%"
+                bg="background.aquaBlue"
+                boxShadow="6px 6px 31px 2px rgba(0, 0, 0, 0.14)"
+                px={25}
+                position="relative"
+                style={{ overflowY: 'auto' }}
+            >
+                {formLoaderSteps.includes(step) && <Loader step={step} />}
+                {!formLoaderSteps.includes(step) && (
+                    <Box is="form" pt={50} onSubmit={handleSubmit}>
+                        {stepsWithPreText.includes(step) && (
+                            <Text
+                                fontSize={1}
+                                color="text.gray"
+                                lineHeight="17px"
+                                mb={10}
+                                mt={-27}
+                            >
+                                {[
+                                    FORM_STEPS.CHECK_INSURANCE,
+                                    FORM_STEPS.GET_INSURANCE_PROVIDER,
+                                    FORM_STEPS.ASK_PRIMARY_HOLDER,
+                                ].includes(step) &&
+                                    `Hang in there, you're halfway done!`}
 
+                                {step === FORM_STEPS.INPUT_HOLDER_BIRTHDAY &&
+                                    'One more step!'}
+
+                                {step === FORM_STEPS.INPUT_MEMBER_ID &&
+                                    `You're almost there!`}
+                            </Text>
+                        )}
+                        <Box mb={63}>
+                            <Text fontSize={3} fontWeight="bold">
+                                {title}
+                            </Text>
+
+                            {step === FORM_STEPS.SELECT_BUNDLE_GROUP && (
+                                <BundleGroupSelection
+                                    setFormStep={setFormStep}
+                                />
+                            )}
+
+                            {step === FORM_STEPS.SELECT_TIME_AVAILABILITY && (
+                                <TimeAvailabilitySelection
+                                    setFormStep={setFormStep}
+                                />
+                            )}
+
+                            {step === FORM_STEPS.SELECT_DAYS && (
+                                <DaysSelection setFormStep={setFormStep} />
+                            )}
+
+                            {step === FORM_STEPS.INPUT_NAME && <NameStep />}
+
+                            {step === FORM_STEPS.INPUT_BIRTHDAY && (
+                                <GetBirthday />
+                            )}
+
+                            {step === FORM_STEPS.CHECK_INSURANCE && (
+                                <CheckInsurance setFormStep={setFormStep} />
+                            )}
+
+                            {step === FORM_STEPS.GET_INSURANCE_PROVIDER && (
+                                <InsuranceProvider />
+                            )}
+
+                            {step === FORM_STEPS.ASK_PRIMARY_HOLDER && (
+                                <AskPrimaryHolder
+                                    setFormStep={setFormStep}
+                                    setIsHolder={setIsHolder}
+                                />
+                            )}
+
+                            {step === FORM_STEPS.ASK_HOLDER_INFO && (
+                                <AskHolderInfo />
+                            )}
+
+                            {step === FORM_STEPS.INPUT_HOLDER_BIRTHDAY && (
+                                <GetBirthday forHolder />
+                            )}
+
+                            {step === FORM_STEPS.INPUT_MEMBER_ID && (
+                                <MemberIdStep
+                                    isCheckEligibilityLoading={
+                                        isCheckEligibilityLoading
+                                    }
+                                />
+                            )}
+                        </Box>
+                    </Box>
+                )}
+            </Box>
             {!formLoaderSteps.includes(step) && (
-                <Box is="form" pt={50} onSubmit={handleSubmit}>
-                    {stepsWithPreText.includes(step) && (
-                        <Text
-                            fontSize={1}
-                            color="text.gray"
-                            lineHeight="17px"
-                            mb={10}
-                            mt={-27}
-                        >
-                            {[
-                                FORM_STEPS.CHECK_INSURANCE,
-                                FORM_STEPS.GET_INSURANCE_PROVIDER,
-                                FORM_STEPS.ASK_PRIMARY_HOLDER,
-                            ].includes(step) &&
-                                `Hang in there, you're halfway done!`}
-
-                            {step === FORM_STEPS.INPUT_HOLDER_BIRTHDAY &&
-                                'One more step!'}
-
-                            {step === FORM_STEPS.INPUT_MEMBER_ID &&
-                                `You're almost there!`}
-                        </Text>
-                    )}
-                    <Text fontSize={3} fontWeight="bold">
-                        {title}
-                    </Text>
-
-                    {step === FORM_STEPS.SELECT_BUNDLE_GROUP && (
-                        <BundleGroupSelection setFormStep={setFormStep} />
-                    )}
-
-                    {step === FORM_STEPS.SELECT_TIME_AVAILABILITY && (
-                        <TimeAvailabilitySelection setFormStep={setFormStep} />
-                    )}
-
-                    {step === FORM_STEPS.SELECT_DAYS && (
-                        <DaysSelection setFormStep={setFormStep} />
-                    )}
-
-                    {step === FORM_STEPS.INPUT_NAME && <NameStep />}
-
-                    {step === FORM_STEPS.INPUT_BIRTHDAY && <GetBirthday />}
-
-                    {step === FORM_STEPS.CHECK_INSURANCE && (
-                        <CheckInsurance setFormStep={setFormStep} />
-                    )}
-
-                    {step === FORM_STEPS.GET_INSURANCE_PROVIDER && (
-                        <InsuranceProvider />
-                    )}
-
-                    {step === FORM_STEPS.ASK_PRIMARY_HOLDER && (
-                        <AskPrimaryHolder
-                            setFormStep={setFormStep}
-                            setIsHolder={setIsHolder}
-                        />
-                    )}
-
-                    {step === FORM_STEPS.ASK_HOLDER_INFO && <AskHolderInfo />}
-
-                    {step === FORM_STEPS.INPUT_HOLDER_BIRTHDAY && (
-                        <GetBirthday forHolder />
-                    )}
-
-                    {step === FORM_STEPS.INPUT_MEMBER_ID && (
-                        <MemberIdStep
-                            isCheckEligibilityLoading={
-                                isCheckEligibilityLoading
-                            }
-                        />
-                    )}
-
-                    <Flex
-                        justifyContent="space-between"
-                        position="absolute"
-                        bottom={26}
-                        left={0}
-                        right={0}
-                        px={25}
-                    >
+                <Box
+                    position="relative"
+                    mt={-63}
+                    bg={transparentize(0.4, '#f7f8fc')}
+                >
+                    <Flex justifyContent="space-between" px={25}>
                         <Button
                             height={40}
                             type="ghost"
@@ -263,19 +285,11 @@ const PriceEstimationQuiz = ({
                         )}
                     </Flex>
 
-                    <Box
-                        position="absolute"
-                        bottom={0}
-                        left={0}
-                        right={0}
-                        height={8}
-                    >
-                        <StyledProgress
-                            percent={progress}
-                            status="active"
-                            showInfo={false}
-                        />
-                    </Box>
+                    <StyledProgress
+                        percent={progress}
+                        status="active"
+                        showInfo={false}
+                    />
                 </Box>
             )}
         </Box>
