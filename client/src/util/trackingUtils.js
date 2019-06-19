@@ -198,3 +198,14 @@ export const trackSearchFilter = ({ eventLabel = '' }) => {
     };
     TagManager.dataLayer(gtmArgs);
 };
+
+export const trackAddFamilyMember = () => {
+    const gtmArgs = {
+        dataLayer: {
+            event: 'GA Event',
+            eventAction: 'Conversion',
+            eventCategory: 'Add Family Member',
+        },
+    };
+    TagManager.dataLayer(gtmArgs);
+};
