@@ -156,6 +156,7 @@ const FamilyView = ({
                     title={getModalTitle(activeModal)}
                     visible={!_isEmpty(activeModal)}
                     onCancel={closeModal}
+                    maskClosable={activeModal !== MEDICAL_HISTORY_MODAL_NAME}
                 >
                     {modal}
                 </StyledModal>
