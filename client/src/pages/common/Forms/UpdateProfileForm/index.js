@@ -76,7 +76,7 @@ class UpdateProfileContainer extends PureComponent {
             birthMonth: dob && dob.split('/')[0],
             birthDate: dob && dob.split('/')[1],
             birthYear: dob && dob.split('/')[2],
-            gender,
+            gender: id && !gender ? 'unknown' : gender,
             email: email || '',
             phoneNumber: phoneNumber ? phoneNumber.split('+1')[1] : '',
             notificationSettings: this.getNotificationSettings(
@@ -133,7 +133,10 @@ class UpdateProfileContainer extends PureComponent {
                                                       values.birthDate
                                                   }/${values.birthYear}`
                                                 : null,
-                                        gender: values.gender,
+                                        gender:
+                                            values.gender === 'unknown'
+                                                ? null
+                                                : values.gender,
                                         languages: values.languages,
                                         phoneNumber: values.phoneNumber
                                             ? `+1${values.phoneNumber}`
