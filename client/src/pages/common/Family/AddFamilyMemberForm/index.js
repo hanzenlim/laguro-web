@@ -166,7 +166,7 @@ class AddFamilyMemberForm extends PureComponent {
                 });
                 if (result) {
                     await this.handleRefreshAuthToken();
-                    await trackAddFamilyMember();
+                    trackAddFamilyMember();
                     await onSuccess();
                 }
             },
