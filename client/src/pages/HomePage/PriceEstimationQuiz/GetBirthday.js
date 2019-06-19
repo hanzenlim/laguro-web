@@ -80,8 +80,9 @@ const checkIfMinor = ({ form, forHolder }) => {
         } = form;
 
         if (holderBirthMonth && holderBirthDay && holderBirthYear) {
-            const completeBirthDate = new Date(
-                `${holderBirthMonth} ${holderBirthDay}, ${holderBirthYear}`
+            const completeBirthDate = moment(
+                `${holderBirthMonth}/${holderBirthDay}/${holderBirthYear}`,
+                'MM-DD-YYYY'
             ).toISOString();
             isMinor = moment().diff(completeBirthDate, 'years') < 18;
         }
@@ -91,8 +92,9 @@ const checkIfMinor = ({ form, forHolder }) => {
         } = form;
 
         if (birthMonth && birthDay && birthYear) {
-            const completeBirthDate = new Date(
-                `${birthMonth} ${birthDay}, ${birthYear}`
+            const completeBirthDate = moment(
+                `${birthMonth}/${birthDay}/${birthYear}`,
+                'MM-DD-YYYY'
             ).toISOString();
             isMinor = moment().diff(completeBirthDate, 'years') < 18;
         }
