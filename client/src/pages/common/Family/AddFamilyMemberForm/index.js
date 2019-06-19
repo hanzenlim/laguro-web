@@ -174,7 +174,6 @@ class AddFamilyMemberForm extends PureComponent {
     handleUpdateUser = async ({ values }) => {
         const { userId = '', onSuccess = () => {} } = this.props;
         const input = this.getInputFromForm({ values });
-        delete input.relationshipToPrimary;
         delete input.primaryUserId;
         input.id = userId;
         const result = await this.updateUser({
