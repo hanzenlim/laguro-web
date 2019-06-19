@@ -209,3 +209,14 @@ export const trackAddFamilyMember = () => {
     };
     TagManager.dataLayer(gtmArgs);
 };
+
+export const trackPriceEstimationQuizAttempt = () => {
+    const gtmArgs = {
+        dataLayer: {
+            event: 'GA Event',
+            eventAction: 'Interaction',
+            eventCategory: 'Price Estimation Quiz - Attempt',
+        },
+    };
+    TagManager.dataLayer(gtmArgs);
+};
