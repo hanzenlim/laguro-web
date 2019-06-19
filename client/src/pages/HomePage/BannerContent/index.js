@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import { trackPriceEstimationQuizAttempt } from '../../../util/trackingUtils';
 
 import BannerContentView from './view';
 
@@ -10,6 +11,7 @@ const BannerContent = () => {
 
     const toggleQuizVisibility = useCallback(() => {
         setQuizVisible(!isQuizVisible);
+        trackPriceEstimationQuizAttempt();
     }, [isQuizVisible]);
 
     return (

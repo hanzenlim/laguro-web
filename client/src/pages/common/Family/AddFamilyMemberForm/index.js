@@ -6,6 +6,7 @@ import { adopt } from 'react-adopt';
 import { Mutation, Query } from 'react-apollo';
 import { Loading } from '../../../../components';
 import { getUser, setAuthToken } from '../../../../util/authUtils';
+import { trackAddFamilyMember } from '../../../../util/trackingUtils';
 import {
     addMemberToFamilyMutation,
     getFamilyQuery,
@@ -165,6 +166,7 @@ class AddFamilyMemberForm extends PureComponent {
                 });
                 if (result) {
                     await this.handleRefreshAuthToken();
+                    trackAddFamilyMember();
                     await onSuccess();
                 }
             },
