@@ -3,257 +3,269 @@ import _range from 'lodash/range';
 import React from 'react';
 import Onboarding from '../../../../Onboarding';
 import DentistIcon from '../../../Assets/dentistIcon';
-
-const months = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-];
+import {
+    MEDICALHISTORYFORM_GENERALMEDICALINFORMATION4_HADANORTHOPEDICJOINT,
+    GENERAL_ANY_COMPLICATIONS,
+    MEDICALHISTORYFORM_GENERALMEDICALINFORMATION4_TAKINGMEDICATION,
+    MEDICALHISTORYFORM_GENERALMEDICALINFORMATION4_INTRAVENOUSBISPHOSPHONATES,
+    MEDICALHISTORYFORM_GENERALMEDICALINFORMATION3_GENERALMEDICALINFORMATION,
+    MEDICALHISTORYFORM_GENERALMEDICALINFORMATION4_PLEASECHOOSEFOLLOWINGQUESTIONS,
+    GENERAL_DONE_WHEn,
+    GENERAL_TREATMENT_START,
+} from '../../../../../../../../strings/messageStrings';
+import {
+    getIntlMonths,
+    getIntlYear,
+    getIntlMonth,
+    getFormatTextFromProps,
+    getFormatDateFromProps,
+} from '../../../../../../../../util/intlUtils';
+import { injectIntl } from 'react-intl';
+import { renderQuestionComponent } from '../../../../../../../../util/questionUtils';
 
 const years = _range(2019, 1900).map(i => i.toString());
 
-const questions = [
+const ORTHOPEDIC_JOINT_REPLACEMENT =
+    'Have you had an orthopedic joint (hip, knee, elbow, finger) replacement?';
+const ORTHOPEDIC_JOINT_REPLACEMENT_MONTH =
+    'Have you had an orthopedic joint (hip, knee, elbow, finger) replacement? (Month)';
+const ORTHOPEDIC_JOINT_REPLACEMENT_YEAR =
+    'Have you had an orthopedic joint (hip, knee, elbow, finger) replacement? (Year)';
+const ORTHOPEDIC_JOINT_REPLACEMENT_EXPLANATION =
+    'Have you had an orthopedic joint (hip, knee, elbow, finger) replacement? (Explanation)';
+const SPECIAL_MEDS =
+    'Are you taking or scheduled to begin taking either of the medications, alendronate (Fosamax) or risedronate (Actonel) for osteoporosis or Pagets disease? ';
+const SKELETAL_COMPLICATIONS =
+    "Since 2001, were you treated or are you presently scheduled to begin treatment with the intravenous bisphosphonates (aredia or Zometa) for bone pain, hypercalcemia or skeletal complications resulting from Paget's disease, multiple myeloma or metastatic cancer?";
+const SKELETAL_COMPLICATIONS_MONTH =
+    "Since 2001, were you treated or are you presently scheduled to begin treatment with the intravenous bisphosphonates (aredia or Zometa) for bone pain, hypercalcemia or skeletal complications resulting from Paget's disease, multiple myeloma or metastatic cancer? (Month)";
+const SKELETAL_COMPLICATIONS_YEAR =
+    "Since 2001, were you treated or are you presently scheduled to begin treatment with the intravenous bisphosphonates (aredia or Zometa) for bone pain, hypercalcemia or skeletal complications resulting from Paget's disease, multiple myeloma or metastatic cancer? (Year)";
+
+const questionConfigs = [
     {
-        id: 0,
-        name:
-            'Have you had an orthopedic joint (hip, knee, elbow, finger) replacement?',
+        name: ORTHOPEDIC_JOINT_REPLACEMENT,
         value: false,
-        component: props => {
-            const key = questions[0].name;
-
-            return (
-                <Onboarding.Checkbox
-                    key={key}
-                    field={key}
-                    width="100%"
-                    value={props.formikProps.values[key]}
-                    onClick={() =>
-                        props.formikProps.setFieldValue(
-                            key,
-                            !props.formikProps.values[key]
-                        )
-                    }
-                />
-            );
-        },
     },
     {
-        id: 1,
-        name:
-            'Have you had an orthopedic joint (hip, knee, elbow, finger) replacement? (Month)',
+        name: ORTHOPEDIC_JOINT_REPLACEMENT_MONTH,
         value: undefined,
-        component: props => {
-            if (!props.formikProps.values[questions[0].name]) {
-                return null;
-            }
-
-            const key = questions[1].name;
-
-            return (
-                <div>
-                    <Box width="160px" height="46px" mr="10px">
-                        <Onboarding.Select
-                            placeholder="Month"
-                            value={props.formikProps.values[key]}
-                            onSelect={value =>
-                                props.formikProps.setFieldValue(key, value)
-                            }
-                        >
-                            {months.map(i => (
-                                <Onboarding.SelectOption value={i}>
-                                    {i}
-                                </Onboarding.SelectOption>
-                            ))}
-                        </Onboarding.Select>
-                    </Box>
-                </div>
-            );
-        },
     },
     {
-        id: 2,
-        name:
-            'Have you had an orthopedic joint (hip, knee, elbow, finger) replacement? (Year)',
+        name: ORTHOPEDIC_JOINT_REPLACEMENT_YEAR,
         value: undefined,
-        component: props => {
-            if (!props.formikProps.values[questions[0].name]) {
-                return null;
-            }
-
-            const key = questions[2].name;
-
-            return (
-                <Box width="160px" height="46px" mr="10px">
-                    <Onboarding.Select
-                        placeholder="Year"
-                        value={props.formikProps.values[key]}
-                        onSelect={value =>
-                            props.formikProps.setFieldValue(key, value)
-                        }
-                    >
-                        {years.map(i => (
-                            <Onboarding.SelectOption value={i}>
-                                {i}
-                            </Onboarding.SelectOption>
-                        ))}
-                    </Onboarding.Select>
-                </Box>
-            );
-        },
     },
     {
-        id: 3,
-        name:
-            'Have you had an orthopedic joint (hip, knee, elbow, finger) replacement? (Explanation)',
+        name: ORTHOPEDIC_JOINT_REPLACEMENT_EXPLANATION,
         value: '',
-        component: props => {
-            if (!props.formikProps.values[questions[0].name]) {
-                return null;
-            }
-
-            const key = questions[3].name;
-
-            return (
-                <TextArea
-                    placeholder="Any complications?"
-                    value={props.formikProps.values[key]}
-                    onChange={value =>
-                        props.formikProps.setFieldValue(key, value.target.value)
-                    }
-                    height="180px"
-                />
-            );
-        },
     },
     {
-        id: 4,
-        name:
-            'Are you taking or scheduled to begin taking either of the medications, alendronate (Fosamax) or risedronate (Actonel) for osteoporosis or Pagets disease? ',
+        name: SPECIAL_MEDS,
         value: false,
-        component: props => {
-            const key = questions[4].name;
-
-            return (
-                <Onboarding.Checkbox
-                    key={key}
-                    field={key}
-                    width="100%"
-                    value={props.formikProps.values[key]}
-                    onClick={() =>
-                        props.formikProps.setFieldValue(
-                            key,
-                            !props.formikProps.values[key]
-                        )
-                    }
-                />
-            );
-        },
     },
     {
-        id: 5,
-        name:
-            "Since 2001, were you treated or are you presently scheduled to begin treatment with the intravenous bisphosphonates (aredia or Zometa) for bone pain, hypercalcemia or skeletal complications resulting from Paget's disease, multiple myeloma or metastatic cancer?",
+        name: SKELETAL_COMPLICATIONS,
         value: false,
-        component: props => {
-            const key = questions[5].name;
-
-            return (
-                <Onboarding.Checkbox
-                    key={key}
-                    field={key}
-                    width="100%"
-                    value={props.formikProps.values[key]}
-                    onClick={() =>
-                        props.formikProps.setFieldValue(
-                            key,
-                            !props.formikProps.values[key]
-                        )
-                    }
-                />
-            );
-        },
     },
     {
-        id: 6,
-        name:
-            "Since 2001, were you treated or are you presently scheduled to begin treatment with the intravenous bisphosphonates (aredia or Zometa) for bone pain, hypercalcemia or skeletal complications resulting from Paget's disease, multiple myeloma or metastatic cancer? (Month)",
+        name: SKELETAL_COMPLICATIONS_MONTH,
         value: undefined,
-        component: props => {
-            if (!props.formikProps.values[questions[5].name]) {
-                return null;
-            }
-
-            const key = questions[6].name;
-
-            return (
-                <div>
-                    <Box width="160px" height="46px" mr="10px">
-                        <Onboarding.Select
-                            placeholder="Month"
-                            value={props.formikProps.values[key]}
-                            onSelect={value =>
-                                props.formikProps.setFieldValue(key, value)
-                            }
-                        >
-                            {months.map(i => (
-                                <Onboarding.SelectOption value={i}>
-                                    {i}
-                                </Onboarding.SelectOption>
-                            ))}
-                        </Onboarding.Select>
-                    </Box>
-                </div>
-            );
-        },
     },
     {
-        id: 7,
-        name:
-            "Since 2001, were you treated or are you presently scheduled to begin treatment with the intravenous bisphosphonates (aredia or Zometa) for bone pain, hypercalcemia or skeletal complications resulting from Paget's disease, multiple myeloma or metastatic cancer? (Year)",
+        name: SKELETAL_COMPLICATIONS_YEAR,
         value: undefined,
-        component: props => {
-            if (!props.formikProps.values[questions[5].name]) {
-                return null;
-            }
-
-            const key = questions[7].name;
-
-            return (
-                <Box width="160px" height="46px" mr="10px">
-                    <Onboarding.Select
-                        placeholder="Year"
-                        value={props.formikProps.values[key]}
-                        onSelect={value =>
-                            props.formikProps.setFieldValue(key, value)
-                        }
-                    >
-                        {years.map(i => (
-                            <Onboarding.SelectOption value={i}>
-                                {i}
-                            </Onboarding.SelectOption>
-                        ))}
-                    </Onboarding.Select>
-                </Box>
-            );
-        },
     },
 ];
 
-export default class GeneralMedicalInfo2 extends React.Component {
-    static questions = questions;
+class GeneralMedicalInfo2 extends React.Component {
+    static questions = questionConfigs;
+    constructor(props) {
+        super(props);
+        const formatText = getFormatTextFromProps(this.props);
+
+        this.questionComponents = {
+            [ORTHOPEDIC_JOINT_REPLACEMENT]: props => {
+                const key = ORTHOPEDIC_JOINT_REPLACEMENT;
+                return (
+                    <Onboarding.Checkbox
+                        key={key}
+                        field={formatText(
+                            MEDICALHISTORYFORM_GENERALMEDICALINFORMATION4_HADANORTHOPEDICJOINT
+                        )}
+                        width="100%"
+                        value={props.formikProps.values[key]}
+                        onClick={() =>
+                            props.formikProps.setFieldValue(
+                                key,
+                                !props.formikProps.values[key]
+                            )
+                        }
+                    />
+                );
+            },
+            [ORTHOPEDIC_JOINT_REPLACEMENT_MONTH]: props => {
+                if (!props.formikProps.values[ORTHOPEDIC_JOINT_REPLACEMENT]) {
+                    return null;
+                }
+                const key = ORTHOPEDIC_JOINT_REPLACEMENT_MONTH;
+                return (
+                    <div>
+                        <Box width="160px" height="46px" mr="10px">
+                            <Onboarding.Select
+                                placeholder={getIntlMonth(formatText)}
+                                value={props.formikProps.values[key]}
+                                onSelect={value =>
+                                    props.formikProps.setFieldValue(key, value)
+                                }
+                            >
+                                {getIntlMonths(
+                                    getFormatDateFromProps(this.props)
+                                ).map(i => (
+                                    <Onboarding.SelectOption value={i}>
+                                        {i}
+                                    </Onboarding.SelectOption>
+                                ))}
+                            </Onboarding.Select>
+                        </Box>
+                    </div>
+                );
+            },
+            [ORTHOPEDIC_JOINT_REPLACEMENT_YEAR]: props => {
+                if (!props.formikProps.values[ORTHOPEDIC_JOINT_REPLACEMENT]) {
+                    return null;
+                }
+                const key = ORTHOPEDIC_JOINT_REPLACEMENT_YEAR;
+                return (
+                    <Box width="160px" height="46px" mr="10px">
+                        <Onboarding.Select
+                            placeholder={getIntlYear(formatText)}
+                            value={props.formikProps.values[key]}
+                            onSelect={value =>
+                                props.formikProps.setFieldValue(key, value)
+                            }
+                        >
+                            {years.map(i => (
+                                <Onboarding.SelectOption value={i}>
+                                    {i}
+                                </Onboarding.SelectOption>
+                            ))}
+                        </Onboarding.Select>
+                    </Box>
+                );
+            },
+            [ORTHOPEDIC_JOINT_REPLACEMENT_EXPLANATION]: props => {
+                if (!props.formikProps.values[ORTHOPEDIC_JOINT_REPLACEMENT]) {
+                    return null;
+                }
+                const key = ORTHOPEDIC_JOINT_REPLACEMENT_EXPLANATION;
+                return (
+                    <TextArea
+                        placeholder={formatText(GENERAL_ANY_COMPLICATIONS)}
+                        value={props.formikProps.values[key]}
+                        onChange={value =>
+                            props.formikProps.setFieldValue(
+                                key,
+                                value.target.value
+                            )
+                        }
+                        height="180px"
+                    />
+                );
+            },
+            [SPECIAL_MEDS]: props => {
+                const key = SPECIAL_MEDS;
+                return (
+                    <Onboarding.Checkbox
+                        key={key}
+                        field={formatText(
+                            MEDICALHISTORYFORM_GENERALMEDICALINFORMATION4_TAKINGMEDICATION
+                        )}
+                        width="100%"
+                        value={props.formikProps.values[key]}
+                        onClick={() =>
+                            props.formikProps.setFieldValue(
+                                key,
+                                !props.formikProps.values[key]
+                            )
+                        }
+                    />
+                );
+            },
+            [SKELETAL_COMPLICATIONS]: props => {
+                const key = SKELETAL_COMPLICATIONS;
+                return (
+                    <Onboarding.Checkbox
+                        key={key}
+                        field={formatText(
+                            MEDICALHISTORYFORM_GENERALMEDICALINFORMATION4_INTRAVENOUSBISPHOSPHONATES
+                        )}
+                        width="100%"
+                        value={props.formikProps.values[key]}
+                        onClick={() =>
+                            props.formikProps.setFieldValue(
+                                key,
+                                !props.formikProps.values[key]
+                            )
+                        }
+                    />
+                );
+            },
+            [SKELETAL_COMPLICATIONS_MONTH]: props => {
+                if (!props.formikProps.values[SKELETAL_COMPLICATIONS]) {
+                    return null;
+                }
+                const key = SKELETAL_COMPLICATIONS_MONTH;
+                return (
+                    <div>
+                        <Box width="160px" height="46px" mr="10px">
+                            <Onboarding.Select
+                                placeholder={getIntlMonth(formatText)}
+                                value={props.formikProps.values[key]}
+                                onSelect={value =>
+                                    props.formikProps.setFieldValue(key, value)
+                                }
+                            >
+                                {getIntlMonths(
+                                    getFormatDateFromProps(this.props)
+                                ).map(i => (
+                                    <Onboarding.SelectOption value={i}>
+                                        {i}
+                                    </Onboarding.SelectOption>
+                                ))}
+                            </Onboarding.Select>
+                        </Box>
+                    </div>
+                );
+            },
+            [SKELETAL_COMPLICATIONS_YEAR]: props => {
+                if (!props.formikProps.values[SKELETAL_COMPLICATIONS]) {
+                    return null;
+                }
+                const key = SKELETAL_COMPLICATIONS_YEAR;
+                return (
+                    <Box width="160px" height="46px" mr="10px">
+                        <Onboarding.Select
+                            placeholder={getIntlYear(formatText)}
+                            value={props.formikProps.values[key]}
+                            onSelect={value =>
+                                props.formikProps.setFieldValue(key, value)
+                            }
+                        >
+                            {years.map(i => (
+                                <Onboarding.SelectOption value={i}>
+                                    {i}
+                                </Onboarding.SelectOption>
+                            ))}
+                        </Onboarding.Select>
+                    </Box>
+                );
+            },
+        };
+    }
 
     render() {
         const props = this.props;
-
+        const formatText = getFormatTextFromProps(this.props);
         return (
             <Flex
                 flexDirection="column"
@@ -262,36 +274,91 @@ export default class GeneralMedicalInfo2 extends React.Component {
                 height="100%"
             >
                 <DentistIcon />
-                <Onboarding.StepTitleText text="General medical information" />
-                <Onboarding.StepBlurbText text="Please choose from the following questions that apply to you" />
+                <Onboarding.StepTitleText
+                    text={formatText(
+                        MEDICALHISTORYFORM_GENERALMEDICALINFORMATION3_GENERALMEDICALINFORMATION
+                    )}
+                />
+                <Onboarding.StepBlurbText
+                    text={formatText(
+                        MEDICALHISTORYFORM_GENERALMEDICALINFORMATION4_PLEASECHOOSEFOLLOWINGQUESTIONS
+                    )}
+                />
 
                 <Flex
                     maxWidth="700px"
                     width={['100%', '100%', '700px']}
                     flexDirection="column"
                 >
-                    {questions[0].component(props)}
-
-                    {!props.formikProps.values[questions[0].name] ? null : (
-                        <Box mt="6px">
-                            <Onboarding.FormItemLabelText text="When was it done?" />
-                            <Flex mb="6px">
-                                {questions[1].component(props)}
-                                {questions[2].component(props)}
-                            </Flex>
-                            {questions[3].component(props)}
-                        </Box>
+                    {renderQuestionComponent(
+                        this.questionComponents,
+                        questionConfigs,
+                        0,
+                        props
                     )}
 
-                    {questions[4].component(props)}
-                    {questions[5].component(props)}
-
-                    {!props.formikProps.values[questions[5].name] ? null : (
+                    {!props.formikProps.values[
+                        ORTHOPEDIC_JOINT_REPLACEMENT
+                    ] ? null : (
                         <Box mt="6px">
-                            <Onboarding.FormItemLabelText text="When was the start of treatment?" />
+                            <Onboarding.FormItemLabelText
+                                text={formatText(GENERAL_DONE_WHEn)}
+                            />
+                            <Flex mb="6px">
+                                {renderQuestionComponent(
+                                    this.questionComponents,
+                                    questionConfigs,
+                                    1,
+                                    props
+                                )}
+                                {renderQuestionComponent(
+                                    this.questionComponents,
+                                    questionConfigs,
+                                    2,
+                                    props
+                                )}
+                            </Flex>
+                            {renderQuestionComponent(
+                                this.questionComponents,
+                                questionConfigs,
+                                3,
+                                props
+                            )}
+                        </Box>
+                    )}
+                    {renderQuestionComponent(
+                        this.questionComponents,
+                        questionConfigs,
+                        4,
+                        props
+                    )}
+                    {renderQuestionComponent(
+                        this.questionComponents,
+                        questionConfigs,
+                        5,
+                        props
+                    )}
+
+                    {!props.formikProps.values[
+                        SKELETAL_COMPLICATIONS
+                    ] ? null : (
+                        <Box mt="6px">
+                            <Onboarding.FormItemLabelText
+                                text={formatText(GENERAL_TREATMENT_START)}
+                            />
                             <Flex>
-                                {questions[6].component(props)}
-                                {questions[7].component(props)}
+                                {renderQuestionComponent(
+                                    this.questionComponents,
+                                    questionConfigs,
+                                    6,
+                                    props
+                                )}
+                                {renderQuestionComponent(
+                                    this.questionComponents,
+                                    questionConfigs,
+                                    7,
+                                    props
+                                )}
                             </Flex>
                         </Box>
                     )}
@@ -305,3 +372,5 @@ export default class GeneralMedicalInfo2 extends React.Component {
         );
     }
 }
+
+export default injectIntl(GeneralMedicalInfo2);

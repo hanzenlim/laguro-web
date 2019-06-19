@@ -5,16 +5,30 @@ import * as React from 'react';
 import Onboarding from '../../../Onboarding';
 import DentistIcon from '../../Assets/dentistIcon';
 import { SelectLanguage } from '../../SelectLanguage';
+import { getFormatTextFromProps } from '../../../../../../../util/intlUtils';
+import {
+    GENERALINFORMATION_LANGUAGE_WHICHLANGUAGES,
+    GENERALINFORMATION_LANGUAGE_LANGUAGE,
+    GENERAL_NEXT,
+} from '../../../../../../../strings/messageStrings';
+import { injectIntl } from 'react-intl';
 
 class SelectLanguagePage extends React.PureComponent {
     render() {
+        const formatText = getFormatTextFromProps(this.props);
         return (
             <Box minWidth={329}>
                 <Flex justifyContent="center">
                     <DentistIcon />
                 </Flex>
-                <Onboarding.StepTitleText text="Language" />
-                <Onboarding.StepBlurbText text="Which languages do you speak?" />
+                <Onboarding.StepTitleText
+                    text={formatText(GENERALINFORMATION_LANGUAGE_LANGUAGE)}
+                />
+                <Onboarding.StepBlurbText
+                    text={formatText(
+                        GENERALINFORMATION_LANGUAGE_WHICHLANGUAGES
+                    )}
+                />
 
                 <Field
                     name="languages"
@@ -48,11 +62,11 @@ class SelectLanguagePage extends React.PureComponent {
                 <Onboarding.NextButton
                     onClick={() => this.props.formikProps.submitForm()}
                 >
-                    Next
+                    {formatText(GENERAL_NEXT)}
                 </Onboarding.NextButton>
             </Box>
         );
     }
 }
 
-export default SelectLanguagePage;
+export default injectIntl(SelectLanguagePage);

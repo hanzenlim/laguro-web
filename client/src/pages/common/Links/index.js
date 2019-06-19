@@ -51,3 +51,9 @@ export const GenericLink = ({ text, url }) => (
         </Text>
     </Link>
 );
+
+export const NewTabLink = ({ to, children }) => (
+    <Link to={to} isExternal target="_blank">
+        {children}
+    </Link>
+);

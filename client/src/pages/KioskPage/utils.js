@@ -13,14 +13,22 @@ import {
 } from './getKioskPageWizardSteps';
 import { KIOSK_URL } from '../../util/urls';
 import { redirect } from '../../history';
+import {
+    GENERALINFORMATION_INSURANCE_INSURANCE,
+    BOOKAPPOINTMENT_TITLE,
+    MEDICALHISTORYFORM_TITLE,
+    REGISTRATION_TITLE,
+    GENERALINFORMATION_TITLE,
+} from '../../strings/messageStrings';
 
-export const KIOSK_PAGE_PROGRESS_STEPS = [
-    'REGISTRATION',
-    'GENERAL INFORMATION',
-    'INSURANCE',
-    'BOOK AN APPOINTMENT',
-    'MEDICAL HISTORY FORM',
-];
+export const getKioskPageProgressSteps = formatText =>
+    [
+        REGISTRATION_TITLE,
+        GENERALINFORMATION_TITLE,
+        GENERALINFORMATION_INSURANCE_INSURANCE,
+        BOOKAPPOINTMENT_TITLE,
+        MEDICALHISTORYFORM_TITLE,
+    ].map(t => formatText(t).toUpperCase());
 
 const addActionToWizardStep = ({ action, step }) => {
     const copyOfStep = { ...step };

@@ -1,191 +1,188 @@
 import { Box, Flex, TextArea } from '@laguro/basic-components';
 import _range from 'lodash/range';
 import React from 'react';
+import { injectIntl } from 'react-intl';
 import Onboarding from '../../../../Onboarding';
 import DentistIcon from '../../../Assets/dentistIcon';
+import {
+    getIntlMonth,
+    getIntlYear,
+    getFormatDateFromProps,
+    getIntlYes,
+    getIntlNo,
+    getFormatTextFromProps,
+    getIntlMonths,
+} from '../../../../../../../../util/intlUtils';
+import {
+    MEDICALHISTORYFORM_GENERALMEDICALINFORMATION2_INGOODHEALTH,
+    MEDICALHISTORYFORM_GENERALMEDICALINFORMATION2_GENERALHEALTHCHANGES,
+    GENERAL_PLEASEEXPLAIN,
+    MEDICALHISTORYFORM_GENERALMEDICALINFORMATION2_BEINGTREATED,
+    GENERAL_PLEASE_LIST,
+    MEDICALHISTORYFORM_GENERALMEDICALINFORMATION4_HADANORTHOPEDICJOINT,
+    MEDICALHISTORYFORM_GENERALMEDICALINFORMATION4_TAKINGMEDICATION,
+    MEDICALHISTORYFORM_GENERALMEDICALINFORMATION2_GENERALMEDICALINFORMATION,
+    MEDICALHISTORYFORM_GENERALMEDICALINFORMATION2_PLEASECOMPLETE,
+    MEDICALHISTORYFORM_GENERALMEDICALINFORMATION2_LASTPHYSICALEXAM,
+    GENERAL_NEXT,
+} from '../../../../../../../../strings/messageStrings';
+import { renderQuestionComponent } from '../../../../../../../../util/questionUtils';
 
-const months = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-];
+export const PHYSICAL_EXAM_MONTH = 'When was your last physical exam? (Month)';
+export const PHYSICAL_EXAM_YEAR = 'When was your last physical exam? (Year)';
+export const GOOD_HEALTH = 'Are you in good health?';
+export const ANY_CHANGES =
+    'Any changes in your general health within the past year?';
+export const ANY_CHANGES_EXPLANATION =
+    'Any changes in your general health within the past year? (Explanation)';
+export const ANY_CONDITION =
+    'Are you being treated for any conditions? If yes, please list';
+export const ANY_CONDITION_LIST =
+    'Are you being treated for any conditions? If yes, please list (List)';
+export const HOSPITALIZED = 'Have you been hospitalized in the past 5 years?';
+export const CURRENT_PRESCRIPTION =
+    'Are you currently taking any prescription or over the counter medicine(s)?';
 
 const years = _range(2019, 1900).map(i => i.toString());
 
-const questions = [
+const questionConfigs = [
     {
-        id: 0,
-        name: 'When was your last physical exam? (Month)',
+        name: PHYSICAL_EXAM_MONTH,
         value: undefined,
-        component: props => {
-            const key = questions[0].name;
-
-            return (
-                <Box width="160px" height="46px" mr="10px">
-                    <Onboarding.Select
-                        placeholder="Month"
-                        value={props.formikProps.values[key]}
-                        onSelect={value =>
-                            props.formikProps.setFieldValue(key, value)
-                        }
-                    >
-                        {months.map(i => (
-                            <Onboarding.SelectOption value={i}>
-                                {i}
-                            </Onboarding.SelectOption>
-                        ))}
-                    </Onboarding.Select>
-                </Box>
-            );
-        },
     },
     {
-        id: 1,
-        name: 'When was your last physical exam? (Year)',
+        name: PHYSICAL_EXAM_YEAR,
         value: undefined,
-        component: props => {
-            const key = questions[1].name;
-
-            return (
-                <Box width="160px" height="46px">
-                    <Onboarding.Select
-                        placeholder="Year"
-                        value={props.formikProps.values[key]}
-                        onSelect={value =>
-                            props.formikProps.setFieldValue(key, value)
-                        }
-                    >
-                        {years.map(i => (
-                            <Onboarding.SelectOption value={i}>
-                                {i}
-                            </Onboarding.SelectOption>
-                        ))}
-                    </Onboarding.Select>
-                </Box>
-            );
-        },
     },
     {
-        id: 2,
-        name: 'Are you in good health?',
+        name: GOOD_HEALTH,
         value: '',
-        component: props => {
-            const key = questions[2].name;
-
-            return (
-                <div>
-                    <Onboarding.FormItemLabelText text="Are you in good health?" />
-                    <Onboarding.Choices
-                        size="small"
-                        formKey={key}
-                        submitOnClick={false}
-                        namesAndTexts={[
-                            { name: 'Yes', text: 'Yes' },
-                            { name: 'No', text: 'No' },
-                        ]}
-                        {...props}
-                    />
-                </div>
-            );
-        },
     },
     {
-        id: 3,
-        name: 'Any changes in your general health within the past year?',
+        name: ANY_CHANGES,
         value: '',
-        component: props => {
-            const key = questions[3].name;
-
-            return (
-                <div>
-                    <Onboarding.FormItemLabelText text="Any changes in your general health within the past year?" />
-                    <Onboarding.Choices
-                        size="small"
-                        formKey={key}
-                        submitOnClick={false}
-                        namesAndTexts={[
-                            { name: 'Yes', text: 'Yes' },
-                            { name: 'No', text: 'No' },
-                        ]}
-                        {...props}
-                    />
-                </div>
-            );
-        },
     },
     {
-        id: 4,
-        name:
-            'Any changes in your general health within the past year? (Explanation)',
+        name: ANY_CHANGES_EXPLANATION,
         value: '',
-        component: props => {
-            if (props.formikProps.values[questions[3].name] !== 'Yes') {
-                return null;
-            }
-
-            const key = questions[4].name;
-
-            return (
-                <TextArea
-                    placeholder="Please explain"
-                    value={props.formikProps.values[key]}
-                    onChange={value =>
-                        props.formikProps.setFieldValue(key, value.target.value)
-                    }
-                    height="180px"
-                />
-            );
-        },
     },
     {
-        id: 5,
-        name: 'Are you being treated for any conditions? If yes, please list',
+        name: ANY_CONDITION,
         value: '',
-        component: props => {
-            const key = questions[5].name;
-
-            return (
-                <div>
-                    <Onboarding.FormItemLabelText text="Are you being treated for any conditions? If yes, please list." />
-                    <Onboarding.Choices
-                        size="small"
-                        formKey={key}
-                        submitOnClick={false}
-                        namesAndTexts={[
-                            { name: 'Yes', text: 'Yes' },
-                            { name: 'No', text: 'No' },
-                        ]}
-                        {...props}
-                    />
-                </div>
-            );
-        },
     },
     {
-        id: 6,
-        name:
-            'Are you being treated for any conditions? If yes, please list (List)',
+        name: ANY_CONDITION_LIST,
         value: '',
-        component: props => {
-            if (props.formikProps.values[questions[5].name] !== 'Yes') {
-                return null;
-            }
+    },
+    {
+        name: HOSPITALIZED,
+        value: '',
+    },
+    {
+        name: CURRENT_PRESCRIPTION,
+        value: '',
+    },
+];
 
-            const key = questions[6].name;
-
-            return (
-                <div>
+class GeneralHealth extends React.Component {
+    static questions = questionConfigs;
+    constructor(props) {
+        super(props);
+        const formatText = getFormatTextFromProps(this.props);
+        const months = getIntlMonths(getFormatDateFromProps(this.props));
+        this.questionComponents = {
+            [PHYSICAL_EXAM_MONTH]: props => {
+                const key = PHYSICAL_EXAM_MONTH;
+                return (
+                    <Box width="160px" height="46px" mr="10px">
+                        <Onboarding.Select
+                            placeholder={getIntlMonth(formatText)}
+                            value={props.formikProps.values[key]}
+                            onSelect={value =>
+                                props.formikProps.setFieldValue(key, value)
+                            }
+                        >
+                            {months.map(i => (
+                                <Onboarding.SelectOption value={i}>
+                                    {i}
+                                </Onboarding.SelectOption>
+                            ))}
+                        </Onboarding.Select>
+                    </Box>
+                );
+            },
+            [PHYSICAL_EXAM_YEAR]: props => {
+                const key = PHYSICAL_EXAM_YEAR;
+                return (
+                    <Box width="160px" height="46px">
+                        <Onboarding.Select
+                            placeholder={getIntlYear(formatText)}
+                            value={props.formikProps.values[key]}
+                            onSelect={value =>
+                                props.formikProps.setFieldValue(key, value)
+                            }
+                        >
+                            {years.map(i => (
+                                <Onboarding.SelectOption value={i}>
+                                    {i}
+                                </Onboarding.SelectOption>
+                            ))}
+                        </Onboarding.Select>
+                    </Box>
+                );
+            },
+            [GOOD_HEALTH]: props => {
+                const key = GOOD_HEALTH;
+                return (
+                    <div>
+                        <Onboarding.FormItemLabelText
+                            text={formatText(
+                                MEDICALHISTORYFORM_GENERALMEDICALINFORMATION2_INGOODHEALTH
+                            )}
+                        />
+                        <Onboarding.Choices
+                            size="small"
+                            formKey={key}
+                            submitOnClick={false}
+                            namesAndTexts={[
+                                { name: 'Yes', text: getIntlYes(formatText) },
+                                { name: 'No', text: getIntlNo(formatText) },
+                            ]}
+                            {...props}
+                        />
+                    </div>
+                );
+            },
+            [ANY_CHANGES]: props => {
+                const key = ANY_CHANGES;
+                return (
+                    <div>
+                        <Onboarding.FormItemLabelText
+                            text={formatText(
+                                MEDICALHISTORYFORM_GENERALMEDICALINFORMATION2_GENERALHEALTHCHANGES
+                            )}
+                        />
+                        <Onboarding.Choices
+                            size="small"
+                            formKey={key}
+                            submitOnClick={false}
+                            namesAndTexts={[
+                                { name: 'Yes', text: getIntlYes(formatText) },
+                                { name: 'No', text: getIntlNo(formatText) },
+                            ]}
+                            {...props}
+                        />
+                    </div>
+                );
+            },
+            [ANY_CHANGES_EXPLANATION]: props => {
+                if (props.formikProps.values[ANY_CHANGES] !== 'Yes') {
+                    return null;
+                }
+                const key = ANY_CHANGES_EXPLANATION;
+                return (
                     <TextArea
-                        placeholder="Please list"
+                        placeholder={formatText(GENERAL_PLEASEEXPLAIN)}
                         value={props.formikProps.values[key]}
                         onChange={value =>
                             props.formikProps.setFieldValue(
@@ -195,66 +192,102 @@ const questions = [
                         }
                         height="180px"
                     />
-                </div>
-            );
-        },
-    },
-    {
-        id: 7,
-        name: 'Have you been hospitalized in the past 5 years?',
-        value: '',
-        component: props => {
-            const key = questions[7].name;
-
-            return (
-                <div>
-                    <Onboarding.FormItemLabelText text="Have you had a serious illness or been hospitalized in the past 5 years?" />
-                    <Onboarding.Choices
-                        size="small"
-                        formKey={key}
-                        submitOnClick={false}
-                        namesAndTexts={[
-                            { name: 'Yes', text: 'Yes' },
-                            { name: 'No', text: 'No' },
-                        ]}
-                        {...props}
-                    />
-                </div>
-            );
-        },
-    },
-    {
-        id: 8,
-        name:
-            'Are you currently taking any prescription or over the counter medicine(s)?',
-        value: '',
-        component: props => {
-            const key = questions[8].name;
-
-            return (
-                <div>
-                    <Onboarding.FormItemLabelText text="Are you currently taking any prescription or over the counter medicine(s)?" />
-                    <Onboarding.Choices
-                        size="small"
-                        formKey={key}
-                        submitOnClick={false}
-                        namesAndTexts={[
-                            { name: 'Yes', text: 'Yes' },
-                            { name: 'No', text: 'No' },
-                        ]}
-                        {...props}
-                    />
-                </div>
-            );
-        },
-    },
-];
-
-export default class GeneralHealth extends React.Component {
-    static questions = questions;
+                );
+            },
+            [ANY_CONDITION]: props => {
+                const key = ANY_CONDITION;
+                return (
+                    <div>
+                        <Onboarding.FormItemLabelText
+                            text={formatText(
+                                MEDICALHISTORYFORM_GENERALMEDICALINFORMATION2_BEINGTREATED
+                            )}
+                            s
+                        />
+                        <Onboarding.Choices
+                            size="small"
+                            formKey={key}
+                            submitOnClick={false}
+                            namesAndTexts={[
+                                { name: 'Yes', text: getIntlYes(formatText) },
+                                { name: 'No', text: getIntlNo(formatText) },
+                            ]}
+                            {...props}
+                        />
+                    </div>
+                );
+            },
+            [ANY_CONDITION_LIST]: props => {
+                if ('Yes' !== props.formikProps.values[ANY_CONDITION]) {
+                    return null;
+                }
+                const key = ANY_CONDITION_LIST;
+                return (
+                    <div>
+                        <TextArea
+                            placeholder={formatText(GENERAL_PLEASE_LIST)}
+                            value={props.formikProps.values[key]}
+                            onChange={value =>
+                                props.formikProps.setFieldValue(
+                                    key,
+                                    value.target.value
+                                )
+                            }
+                            height="180px"
+                        />
+                    </div>
+                );
+            },
+            [HOSPITALIZED]: props => {
+                const key = HOSPITALIZED;
+                return (
+                    <div>
+                        <Onboarding.FormItemLabelText
+                            text={formatText(
+                                MEDICALHISTORYFORM_GENERALMEDICALINFORMATION4_HADANORTHOPEDICJOINT
+                            )}
+                        />
+                        <Onboarding.Choices
+                            size="small"
+                            formKey={key}
+                            submitOnClick={false}
+                            namesAndTexts={[
+                                { name: 'Yes', text: getIntlYes(formatText) },
+                                { name: 'No', text: getIntlNo(formatText) },
+                            ]}
+                            {...props}
+                        />
+                    </div>
+                );
+            },
+            [CURRENT_PRESCRIPTION]: props => {
+                const key = CURRENT_PRESCRIPTION;
+                return (
+                    <div>
+                        <Onboarding.FormItemLabelText
+                            text={formatText(
+                                MEDICALHISTORYFORM_GENERALMEDICALINFORMATION4_TAKINGMEDICATION
+                            )}
+                        />
+                        <Onboarding.Choices
+                            size="small"
+                            formKey={key}
+                            submitOnClick={false}
+                            namesAndTexts={[
+                                { name: 'Yes', text: getIntlYes(formatText) },
+                                { name: 'No', text: getIntlNo(formatText) },
+                            ]}
+                            {...props}
+                        />
+                    </div>
+                );
+            },
+        };
+    }
 
     render() {
         const props = this.props;
+        const formatText = getFormatTextFromProps(this.props);
 
         return (
             <Flex
@@ -264,31 +297,55 @@ export default class GeneralHealth extends React.Component {
                 height="100%"
             >
                 <DentistIcon />
-                <Onboarding.StepTitleText text="General medical information" />
-                <Onboarding.StepBlurbText text="Please complete the information below about your general health" />
+                <Onboarding.StepTitleText
+                    text={formatText(
+                        MEDICALHISTORYFORM_GENERALMEDICALINFORMATION2_GENERALMEDICALINFORMATION
+                    )}
+                />
+                <Onboarding.StepBlurbText
+                    text={formatText(
+                        MEDICALHISTORYFORM_GENERALMEDICALINFORMATION2_PLEASECOMPLETE
+                    )}
+                />
 
                 <Box>
-                    <Onboarding.FormItemLabelText text="When was your last physical exam?" />
+                    <Onboarding.FormItemLabelText
+                        text={formatText(
+                            MEDICALHISTORYFORM_GENERALMEDICALINFORMATION2_LASTPHYSICALEXAM
+                        )}
+                    />
                     <Flex mb="25px">
-                        {questions[0].component(props)}
-                        {questions[1].component(props)}
+                        {renderQuestionComponent(
+                            this.questionComponents,
+                            questionConfigs,
+                            0,
+                            props
+                        )}
+                        {renderQuestionComponent(
+                            this.questionComponents,
+                            questionConfigs,
+                            1,
+                            props
+                        )}
                     </Flex>
-
-                    {questions[2].component(props)}
-                    {questions[3].component(props)}
-                    {questions[4].component(props)}
-                    {questions[5].component(props)}
-                    {questions[6].component(props)}
-                    {questions[7].component(props)}
-                    {questions[8].component(props)}
+                    {_range(2, 9).map(i =>
+                        renderQuestionComponent(
+                            this.questionComponents,
+                            questionConfigs,
+                            i,
+                            props
+                        )
+                    )}
                 </Box>
 
                 <Onboarding.NextButton
                     onClick={() => props.formikProps.submitForm()}
                 >
-                    Next
+                    {formatText(GENERAL_NEXT)}
                 </Onboarding.NextButton>
             </Flex>
         );
     }
 }
+
+export default injectIntl(GeneralHealth);

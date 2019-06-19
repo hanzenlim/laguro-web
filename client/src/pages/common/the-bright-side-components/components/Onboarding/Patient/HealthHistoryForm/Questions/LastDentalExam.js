@@ -3,136 +3,146 @@ import _range from 'lodash/range';
 import React from 'react';
 import Onboarding from '../../..';
 import ToothIcon from '../../../Assets/toothIcon';
-
-const months = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-];
+import {
+    MEDICALHISTORYFORM_LASTDENTALEXAM_LASTDENTALEXAM,
+    MEDICALHISTORYFORM_LASTDENTALEXAM_DENTALEXAM,
+    MEDICALHISTORYFORM_LASTDENTALEXAM_DENTALXRAY,
+    GENERAL_NEXT,
+    GENERAL_MONTH,
+    GENERAL_YEAR,
+} from '../../../../../../../../strings/messageStrings';
+import {
+    getFormatTextFromProps,
+    getFormatDateFromProps,
+    getIntlMonths,
+} from '../../../../../../../../util/intlUtils';
+import { injectIntl } from 'react-intl';
+import { renderQuestionComponent } from '../../../../../../../../util/questionUtils';
 
 const years = _range(2019, 1900).map(i => i.toString());
 
-const questions = [
-    {
-        id: 0,
-        name: 'Last dental exam month',
-        value: undefined,
-        component: props => {
-            const key = questions[0].name;
+const LAST_DENTAL_EXAM_MONTH = 'Last dental exam month';
+const LAST_DENTAL_EXAM_YEAR = 'Last dental exam year';
+const LAST_DENTAL_XRAY_MONTH = 'Last dental x-ray month';
+const LAST_DENTAL_XRAY_YEAR = 'Last dental x-ray year';
 
-            return (
-                <Box width="160px" height="46px" mr="10px">
-                    <Onboarding.Select
-                        placeholder="Month"
-                        value={props.formikProps.values[key]}
-                        onSelect={value =>
-                            props.formikProps.setFieldValue(key, value)
-                        }
-                    >
-                        {months.map(i => (
-                            <Onboarding.SelectOption value={i}>
-                                {i}
-                            </Onboarding.SelectOption>
-                        ))}
-                    </Onboarding.Select>
-                </Box>
-            );
-        },
+const questionConfigs = [
+    {
+        name: LAST_DENTAL_EXAM_MONTH,
+        value: undefined,
     },
     {
-        id: 1,
-        name: 'Last dental exam year',
+        name: LAST_DENTAL_EXAM_YEAR,
         value: undefined,
-        component: props => {
-            const key = questions[1].name;
-
-            return (
-                <Box width="160px" height="46px">
-                    <Onboarding.Select
-                        placeholder="Year"
-                        value={props.formikProps.values[key]}
-                        onSelect={value =>
-                            props.formikProps.setFieldValue(key, value)
-                        }
-                    >
-                        {years.map(i => (
-                            <Onboarding.SelectOption value={i}>
-                                {i}
-                            </Onboarding.SelectOption>
-                        ))}
-                    </Onboarding.Select>
-                </Box>
-            );
-        },
     },
     {
-        id: 2,
-        name: 'Last dental x-ray month',
+        name: LAST_DENTAL_XRAY_MONTH,
         value: undefined,
-        component: props => {
-            const key = questions[2].name;
-
-            return (
-                <Box width="160px" height="46px" mr="10px">
-                    <Onboarding.Select
-                        placeholder="Month"
-                        value={props.formikProps.values[key]}
-                        onSelect={value =>
-                            props.formikProps.setFieldValue(key, value)
-                        }
-                    >
-                        {months.map(i => (
-                            <Onboarding.SelectOption value={i}>
-                                {i}
-                            </Onboarding.SelectOption>
-                        ))}
-                    </Onboarding.Select>
-                </Box>
-            );
-        },
     },
     {
-        id: 3,
-        name: 'Last dental x-ray year',
+        name: LAST_DENTAL_XRAY_YEAR,
         value: undefined,
-        component: props => {
-            const key = questions[3].name;
-
-            return (
-                <Box width="160px" height="46px">
-                    <Onboarding.Select
-                        placeholder="Year"
-                        value={props.formikProps.values[key]}
-                        onSelect={value =>
-                            props.formikProps.setFieldValue(key, value)
-                        }
-                    >
-                        {years.map(i => (
-                            <Onboarding.SelectOption value={i}>
-                                {i}
-                            </Onboarding.SelectOption>
-                        ))}
-                    </Onboarding.Select>
-                </Box>
-            );
-        },
     },
 ];
 
-export default class LastDentalExam extends React.Component {
-    static questions = questions;
+class LastDentalExam extends React.Component {
+    static questions = questionConfigs;
+
+    constructor(props) {
+        super(props);
+        const months = getIntlMonths(getFormatDateFromProps(this.props));
+        const formatText = getFormatTextFromProps(this.props);
+        this.questionComponents = {
+            [LAST_DENTAL_EXAM_MONTH]: props => {
+                const key = questionConfigs[0].name;
+
+                return (
+                    <Box width="160px" height="46px" mr="10px">
+                        <Onboarding.Select
+                            placeholder={formatText(GENERAL_MONTH)}
+                            value={props.formikProps.values[key]}
+                            onSelect={value =>
+                                props.formikProps.setFieldValue(key, value)
+                            }
+                        >
+                            {months.map(i => (
+                                <Onboarding.SelectOption value={i}>
+                                    {i}
+                                </Onboarding.SelectOption>
+                            ))}
+                        </Onboarding.Select>
+                    </Box>
+                );
+            },
+            [LAST_DENTAL_EXAM_YEAR]: props => {
+                const key = questionConfigs[1].name;
+
+                return (
+                    <Box width="160px" height="46px">
+                        <Onboarding.Select
+                            placeholder={formatText(GENERAL_YEAR)}
+                            value={props.formikProps.values[key]}
+                            onSelect={value =>
+                                props.formikProps.setFieldValue(key, value)
+                            }
+                        >
+                            {years.map(i => (
+                                <Onboarding.SelectOption value={i}>
+                                    {i}
+                                </Onboarding.SelectOption>
+                            ))}
+                        </Onboarding.Select>
+                    </Box>
+                );
+            },
+            [LAST_DENTAL_XRAY_MONTH]: props => {
+                const key = questionConfigs[2].name;
+
+                return (
+                    <Box width="160px" height="46px" mr="10px">
+                        <Onboarding.Select
+                            placeholder={formatText(GENERAL_MONTH)}
+                            value={props.formikProps.values[key]}
+                            onSelect={value =>
+                                props.formikProps.setFieldValue(key, value)
+                            }
+                        >
+                            {months.map(i => (
+                                <Onboarding.SelectOption value={i}>
+                                    {i}
+                                </Onboarding.SelectOption>
+                            ))}
+                        </Onboarding.Select>
+                    </Box>
+                );
+            },
+            [LAST_DENTAL_XRAY_YEAR]: props => {
+                const key = questionConfigs[3].name;
+
+                return (
+                    <Box width="160px" height="46px">
+                        <Onboarding.Select
+                            placeholder={formatText(GENERAL_YEAR)}
+                            value={props.formikProps.values[key]}
+                            onSelect={value =>
+                                props.formikProps.setFieldValue(key, value)
+                            }
+                        >
+                            {years.map(i => (
+                                <Onboarding.SelectOption value={i}>
+                                    {i}
+                                </Onboarding.SelectOption>
+                            ))}
+                        </Onboarding.Select>
+                    </Box>
+                );
+            },
+        };
+    }
 
     render() {
         const props = this.props;
+        const formatText = getFormatTextFromProps(this.props);
 
         return (
             <Flex
@@ -142,29 +152,65 @@ export default class LastDentalExam extends React.Component {
                 height="100%"
             >
                 <ToothIcon />
-                <Onboarding.StepTitleText text="When was your last dental exam and x-rays?" />
+                <Onboarding.StepTitleText
+                    text={formatText(
+                        MEDICALHISTORYFORM_LASTDENTALEXAM_LASTDENTALEXAM
+                    )}
+                />
                 <Onboarding.StepBlurbText />
 
                 <Box>
-                    <Onboarding.FormItemLabelText text="Dental exam" />
+                    <Onboarding.FormItemLabelText
+                        text={formatText(
+                            MEDICALHISTORYFORM_LASTDENTALEXAM_DENTALEXAM
+                        )}
+                    />
                     <Flex mb="25px">
-                        {questions[0].component(props)}
-                        {questions[1].component(props)}
+                        {renderQuestionComponent(
+                            this.questionComponents,
+                            questionConfigs,
+                            0,
+                            props
+                        )}
+                        {renderQuestionComponent(
+                            this.questionComponents,
+                            questionConfigs,
+                            1,
+                            props
+                        )}
                     </Flex>
 
-                    <Onboarding.FormItemLabelText text="Dental x-ray" />
+                    <Onboarding.FormItemLabelText
+                        text={formatText(
+                            MEDICALHISTORYFORM_LASTDENTALEXAM_DENTALXRAY
+                        )}
+                    />
                     <Flex mb="25px">
-                        {questions[2].component(props)}
-                        {questions[3].component(props)}
+                        {renderQuestionComponent(
+                            this.questionComponents,
+                            questionConfigs,
+                            2,
+                            props
+                        )}
+                        {renderQuestionComponent(
+                            this.questionComponents,
+                            questionConfigs,
+                            3,
+                            props
+                        )}
                     </Flex>
                 </Box>
 
                 <Onboarding.NextButton
                     onClick={() => props.formikProps.submitForm()}
                 >
-                    {props.formikProps.dirty ? 'Next' : 'Skip'}
+                    {props.formikProps.dirty
+                        ? formatText(GENERAL_NEXT)
+                        : 'Skip'}
                 </Onboarding.NextButton>
             </Flex>
         );
     }
 }
+
+export default injectIntl(LastDentalExam);

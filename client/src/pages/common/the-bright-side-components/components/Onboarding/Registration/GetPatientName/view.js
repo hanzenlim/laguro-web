@@ -2,24 +2,44 @@ import { Box, Flex, Grid } from '@laguro/basic-components';
 import * as React from 'react';
 import Onboarding from '../..';
 import AppleIcon from '../../Assets/appleIcon';
+import { injectIntl } from 'react-intl';
+import { getFormatTextFromProps } from '../../../../../../../util/intlUtils';
+import {
+    GENERAL_NEXT,
+    GENERAL_PLEASEFILL,
+} from '../../../../../../../strings/messageStrings';
 
 const FIRST_NAME_FORM_INPUT_NAME = 'firstName';
 const MIDDLE_NAME_FORM_INPUT_NAME = 'middleName';
 const LAST_NAME_FORM_INPUT_NAME = 'lastName';
 
+const REGISTRATION_STEPONE_STEPONE = 'registration.stepOne.stepOne';
+const REGISTRATION_STEPONE_TYPELEGALNAME = 'registration.stepOne.typeLegalName';
+const REGISTRATION_STEPONE_FIRSTNAME = 'registration.stepOne.firstName';
+const REGISTRATION_STEPONE_MIDDLENAME = 'registration.stepOne.middleName';
+const REGISTRATION_STEPONE_LASTNAME = 'registration.stepOne.lastName';
+
 class GetPatientNameView extends React.PureComponent {
     render() {
+        const formatText = getFormatTextFromProps(this.props);
+
         return (
             <Box width={329}>
                 <Flex justifyContent="center">
                     <AppleIcon />
                 </Flex>
-                <Onboarding.StepTitleText text="Step 1. What is your name?" />
-                <Onboarding.StepBlurbText text="Please type in your full legal name" />
+                <Onboarding.StepTitleText
+                    text={formatText(REGISTRATION_STEPONE_STEPONE)}
+                />
+                <Onboarding.StepBlurbText
+                    text={formatText(REGISTRATION_STEPONE_TYPELEGALNAME)}
+                />
 
                 <Grid gridTemplateColumns="1fr 1fr" gridColumnGap="11px">
                     <Box>
-                        <Onboarding.FormItemLabelText text="First Name" />
+                        <Onboarding.FormItemLabelText
+                            text={formatText(REGISTRATION_STEPONE_FIRSTNAME)}
+                        />
                         <Onboarding.Input
                             type="text"
                             name={FIRST_NAME_FORM_INPUT_NAME}
@@ -38,7 +58,9 @@ class GetPatientNameView extends React.PureComponent {
                     </Box>
 
                     <Box>
-                        <Onboarding.FormItemLabelText text="Middle Name" />
+                        <Onboarding.FormItemLabelText
+                            text={formatText(REGISTRATION_STEPONE_MIDDLENAME)}
+                        />
                         <Onboarding.Input
                             type="text"
                             name={MIDDLE_NAME_FORM_INPUT_NAME}
@@ -57,7 +79,9 @@ class GetPatientNameView extends React.PureComponent {
                     </Box>
                 </Grid>
 
-                <Onboarding.FormItemLabelText text="Last Name" />
+                <Onboarding.FormItemLabelText
+                    text={formatText(REGISTRATION_STEPONE_LASTNAME)}
+                />
                 <Onboarding.Input
                     type="text"
                     name={LAST_NAME_FORM_INPUT_NAME}
@@ -78,15 +102,17 @@ class GetPatientNameView extends React.PureComponent {
                         await this.props.onNext();
                     }}
                 >
-                    Next
+                    {formatText(GENERAL_NEXT)}
                 </Onboarding.NextButton>
                 {this.props.formikProps.submitCount !== 0 &&
                     Object.keys(this.props.formikProps.errors).length !== 0 && (
-                        <Onboarding.RequiredFieldsMessage />
+                        <Onboarding.RequiredFieldsMessage
+                            text={formatText(GENERAL_PLEASEFILL)}
+                        />
                     )}
             </Box>
         );
     }
 }
 
-export default GetPatientNameView;
+export default injectIntl(GetPatientNameView);

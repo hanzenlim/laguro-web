@@ -18,7 +18,7 @@ const SuggestedDentistView = props => {
     const { onFindAnotherMatch, dentist, isFindAnotherMatchDisabled } = props;
 
     return (
-        <Box mb="13px">
+        <Box>
             <Flex width="100%">
                 <Text fontSize={1} fontWeight="500" mb="12px" color="#303549">
                     Suggested dentist

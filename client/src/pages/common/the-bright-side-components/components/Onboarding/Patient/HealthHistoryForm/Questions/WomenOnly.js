@@ -3,121 +3,131 @@ import _range from 'lodash/range';
 import React from 'react';
 import Onboarding from '../../../../Onboarding';
 import DentistIcon from '../../../Assets/dentistIcon';
+import {
+    getYesOrNoNamesAndTexts,
+    renderQuestionComponent,
+} from '../../../../../../../../util/questionUtils';
+import {
+    GENERAL_HOW_MANY_WEEKS,
+    MEDICALHISTORYFORM_WOMENONLY_WOMENONLY,
+    MEDICALHISTORYFORM_WOMENONLY_PLEASECOMPLETEIFPREGNANT,
+    MEDICALHISTORYFORM_WOMENONLY_AREYOUPREGNANT,
+    GENERAL_NEXT,
+} from '../../../../../../../../strings/messageStrings';
+import { injectIntl } from 'react-intl';
+import { getFormatTextFromProps } from '../../../../../../../../util/intlUtils';
 
 const weeks = _range(1, 40).map(i => i.toString());
 
-const questions = [
+const PREGNANT = 'Are you pregnant?';
+const PREGNANCY_LENGTH = 'How many weeks pregnant?';
+const BIRTH_CONTROL = 'Taking birth control or hormonal replacement?';
+const NURSING = 'Are you nursing?';
+
+const questionConfigs = [
     {
-        id: 0,
-        name: 'Are you pregnant?',
+        name: PREGNANT,
         value: '',
-        component: props => {
-            const key = questions[0].name;
-
-            return (
-                <Onboarding.Choices
-                    formKey={key}
-                    size="small"
-                    submitOnClick={false}
-                    namesAndTexts={[
-                        { name: 'Yes', text: 'Yes' },
-                        { name: 'No', text: 'No' },
-                    ]}
-                    {...props}
-                />
-            );
-        },
     },
     {
-        id: 1,
-        name: 'How many weeks pregnant?',
+        name: PREGNANCY_LENGTH,
         value: undefined,
-        component: props => {
-            if (props.formikProps.values[questions[0].name] !== 'Yes') {
-                return null;
-            }
-
-            const key = questions[1].name;
-
-            return (
-                <Box mb="5px">
-                    <Onboarding.Select
-                        placeholder="How many weeks?"
-                        value={props.formikProps.values[key]}
-                        onSelect={value =>
-                            props.formikProps.setFieldValue(key, value)
-                        }
-                    >
-                        {weeks.map(i => (
-                            <Onboarding.SelectOption value={i}>
-                                {i}
-                            </Onboarding.SelectOption>
-                        ))}
-                    </Onboarding.Select>
-                </Box>
-            );
-        },
     },
     {
-        id: 2,
-        name: 'Taking birth control or hormonal replacement?',
+        name: BIRTH_CONTROL,
         value: false,
-        component: props => {
-            if (props.formikProps.values[questions[0].name] !== 'Yes') {
-                return null;
-            }
-
-            const key = questions[2].name;
-
-            return (
-                <Onboarding.Checkbox
-                    key={key}
-                    field={key}
-                    value={props.formikProps.values[key]}
-                    onClick={() =>
-                        props.formikProps.setFieldValue(
-                            key,
-                            !props.formikProps.values[questions[2].name]
-                        )
-                    }
-                />
-            );
-        },
     },
     {
-        id: 3,
-        name: 'Are you nursing?',
+        name: NURSING,
         value: false,
-        component: props => {
-            if (props.formikProps.values[questions[0].name] !== 'Yes') {
-                return null;
-            }
-
-            const key = questions[3].name;
-
-            return (
-                <Onboarding.Checkbox
-                    key={key}
-                    field={key}
-                    value={props.formikProps.values[key]}
-                    onClick={() =>
-                        props.formikProps.setFieldValue(
-                            key,
-                            !props.formikProps.values[questions[3].name]
-                        )
-                    }
-                />
-            );
-        },
     },
 ];
 
-export default class WomenOnly extends React.Component {
-    static questions = questions;
+class WomenOnly extends React.Component {
+    static questions = questionConfigs;
+    constructor(props) {
+        super(props);
+        const formatText = getFormatTextFromProps(this.props);
+        this.questionComponents = {
+            [PREGNANT]: props => {
+                const key = PREGNANT;
+                return (
+                    <Onboarding.Choices
+                        formKey={key}
+                        size="small"
+                        submitOnClick={false}
+                        namesAndTexts={getYesOrNoNamesAndTexts(formatText)}
+                        {...props}
+                    />
+                );
+            },
+            [PREGNANCY_LENGTH]: props => {
+                if ('Yes' !== props.formikProps.values[PREGNANT]) {
+                    return null;
+                }
+                const key = PREGNANCY_LENGTH;
+                return (
+                    <Box mb="5px">
+                        <Onboarding.Select
+                            placeholder={formatText(GENERAL_HOW_MANY_WEEKS)}
+                            value={props.formikProps.values[key]}
+                            onSelect={value =>
+                                props.formikProps.setFieldValue(key, value)
+                            }
+                        >
+                            {weeks.map(i => (
+                                <Onboarding.SelectOption value={i}>
+                                    {i}
+                                </Onboarding.SelectOption>
+                            ))}
+                        </Onboarding.Select>
+                    </Box>
+                );
+            },
+            [BIRTH_CONTROL]: props => {
+                if ('Yes' !== props.formikProps.values[PREGNANT]) {
+                    return null;
+                }
+                const key = BIRTH_CONTROL;
+                return (
+                    <Onboarding.Checkbox
+                        key={key}
+                        field={key}
+                        value={props.formikProps.values[key]}
+                        onClick={() =>
+                            props.formikProps.setFieldValue(
+                                key,
+                                !props.formikProps.values[key]
+                            )
+                        }
+                    />
+                );
+            },
+            [NURSING]: props => {
+                if ('Yes' !== props.formikProps.values[PREGNANT]) {
+                    return null;
+                }
+                const key = NURSING;
+                return (
+                    <Onboarding.Checkbox
+                        key={key}
+                        field={key}
+                        value={props.formikProps.values[key]}
+                        onClick={() =>
+                            props.formikProps.setFieldValue(
+                                key,
+                                !props.formikProps.values[NURSING]
+                            )
+                        }
+                    />
+                );
+            },
+        };
+    }
 
     render() {
         const props = this.props;
-
+        const formatText = getFormatTextFromProps(this.props);
         return (
             <Flex
                 flexDirection="column"
@@ -126,23 +136,41 @@ export default class WomenOnly extends React.Component {
                 height="100%"
             >
                 <DentistIcon />
-                <Onboarding.StepTitleText text="Women only" />
-                <Onboarding.StepBlurbText text="Please complete the information below if you are expecting or nursing" />
+                <Onboarding.StepTitleText
+                    text={formatText(MEDICALHISTORYFORM_WOMENONLY_WOMENONLY)}
+                />
+                <Onboarding.StepBlurbText
+                    text={formatText(
+                        MEDICALHISTORYFORM_WOMENONLY_PLEASECOMPLETEIFPREGNANT
+                    )}
+                />
 
                 <Box>
-                    <Onboarding.FormItemLabelText text="Are you pregnant?" />
-                    {questions[0].component(props)}
-                    {questions[1].component(props)}
-                    {questions[2].component(props)}
-                    {questions[3].component(props)}
+                    <Onboarding.FormItemLabelText
+                        text={formatText(
+                            MEDICALHISTORYFORM_WOMENONLY_AREYOUPREGNANT
+                        )}
+                    />
+                    {_range(4).map(i =>
+                        renderQuestionComponent(
+                            this.questionComponents,
+                            questionConfigs,
+                            i,
+                            props
+                        )
+                    )}
                 </Box>
 
                 <Onboarding.NextButton
                     onClick={() => props.formikProps.submitForm()}
                 >
-                    {props.formikProps.dirty ? 'Next' : 'Skip'}
+                    {props.formikProps.dirty
+                        ? formatText(GENERAL_NEXT)
+                        : 'Skip'}
                 </Onboarding.NextButton>
             </Flex>
         );
     }
 }
+
+export default injectIntl(WomenOnly);

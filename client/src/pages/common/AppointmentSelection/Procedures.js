@@ -2,11 +2,14 @@ import React, { PureComponent } from 'react';
 import { Box, Flex, Text } from '@laguro/basic-components';
 import _isEmpty from 'lodash/isEmpty';
 import { getProcedureColor } from '../../../util/dentistUtils';
+import { injectIntl } from 'react-intl';
+import { getFormatTextFromProps } from '../../../util/intlUtils';
+import { PROCEDURE_TEXTS } from '../../../util/procedureUtils';
 
 class Procedures extends PureComponent {
     render() {
         const { procedures } = this.props;
-
+        const formatText = getFormatTextFromProps(this.props);
         return (
             !_isEmpty(procedures) &&
             procedures.length && (
@@ -26,7 +29,7 @@ class Procedures extends PureComponent {
                                     lineHeight="normal"
                                     fontSize={['10px', '', '12px']}
                                 >
-                                    {procedure}
+                                    {formatText(PROCEDURE_TEXTS[procedure])}
                                 </Text>
                             </Box>
                         ))}
@@ -37,4 +40,4 @@ class Procedures extends PureComponent {
     }
 }
 
-export default Procedures;
+export default injectIntl(Procedures);

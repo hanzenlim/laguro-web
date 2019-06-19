@@ -2,35 +2,26 @@ import { Box, Button, Flex, Text } from '@laguro/basic-components';
 import { Field } from 'formik';
 import * as React from 'react';
 import validator from 'validator';
-
+import { injectIntl } from 'react-intl';
 import Onboarding from '../../Onboarding';
 import InfoIcon from '../../Onboarding/Assets/infoIcon';
 import PinInput from '../../Onboarding/PinInput';
+import { getFormatTextFromProps } from '../../../../../../util/intlUtils';
+import {
+    GENERAL_FIELDISREQUIRED,
+    REGISTRATION_SIGNIN_INVALID,
+    REGISTRATION_SIGNIN_MUSTHAVE10,
+    REGISTRATION_SIGNIN_SIGNIN,
+    REGISTRATION_SIGNIN_TYPEINFROMATION,
+    REGISTRATION_SIGNIN_PHONEOREMAIL,
+    REGISTRATION_SIGNIN_SEND,
+    REGISTRATION_SIGNIN_ENTERCODE,
+    REGISTRATION_SIGNIN_SIGNUP,
+    REGISTRATION_SIGNIN_CODESENT,
+} from '../../../../../../strings/messageStrings';
 
 const REGISTER_MODE = 'register-mode';
 const LOGIN_MODE = 'logIn-mode';
-
-const validate = phoneOrEmail => {
-    const isEmail = validator.isEmail(phoneOrEmail);
-    const isNumeric = validator.isNumeric(phoneOrEmail);
-    const hasCorrectDigitCount = phoneOrEmail.length === 10;
-
-    if (!phoneOrEmail) {
-        return 'Required';
-    }
-
-    if (!isEmail) {
-        if (!isNumeric) {
-            return 'Invalid phone number or email';
-        }
-
-        if (!hasCorrectDigitCount) {
-            return 'Must have 10 digits';
-        }
-    }
-
-    return '';
-};
 
 // Move outside render so that autofocus doesn't re run on every type
 // See: https://github.com/s-yadav/react-number-format/issues/233
@@ -38,26 +29,57 @@ const InputWithAutoFocus = props => (
     <Onboarding.InputField {...props} autoFocus={true} />
 );
 
-class KioskLogIn extends React.Component {
+class KioskLogInClass extends React.Component {
     static REGISTER_MODE = REGISTER_MODE;
     static LOGIN_MODE = LOGIN_MODE;
 
+    constructor(props) {
+        super(props);
+
+        const formatText = getFormatTextFromProps(this.props);
+        this.validate = phoneOrEmail => {
+            const isEmail = validator.isEmail(phoneOrEmail);
+            const isNumeric = validator.isNumeric(phoneOrEmail);
+            const hasCorrectDigitCount = phoneOrEmail.length === 10;
+
+            if (!phoneOrEmail) {
+                return formatText(GENERAL_FIELDISREQUIRED);
+            }
+
+            if (!isEmail) {
+                if (!isNumeric) {
+                    return formatText(REGISTRATION_SIGNIN_INVALID);
+                }
+
+                if (!hasCorrectDigitCount) {
+                    return formatText(REGISTRATION_SIGNIN_MUSTHAVE10);
+                }
+            }
+
+            return '';
+        };
+    }
+
     render() {
         const { props } = this;
+        const formatText = getFormatTextFromProps(this.props);
 
         return (
             <Flex flexDirection="column" width="100%">
                 <Flex justifyContent="center" width="100%">
                     <InfoIcon />
                 </Flex>
-                <Onboarding.StepTitleText text="Sign in" />
+                <Onboarding.StepTitleText
+                    text={formatText(REGISTRATION_SIGNIN_SIGNIN)}
+                />
                 <Onboarding.StepBlurbText
-                    text="Type in your information below to log in
-                 A temporary log-in code will be sent"
+                    text={formatText(REGISTRATION_SIGNIN_TYPEINFROMATION)}
                 />
                 <Flex flexDirection="column" mb="20px">
                     <Flex alignItems="flex-start" mb="10px">
-                        <Text>Phone number or e-mail</Text>
+                        <Text>
+                            {formatText(REGISTRATION_SIGNIN_PHONEOREMAIL)}
+                        </Text>
                     </Flex>
 
                     <Flex>
@@ -68,14 +90,14 @@ class KioskLogIn extends React.Component {
                                 onKeyPress={e => {
                                     if (e.key === 'Enter') {
                                         if (
-                                            validate(
+                                            this.validate(
                                                 props.formikProps.values
                                                     .emailOrPhoneNumber
                                             )
                                         ) {
                                             props.formikProps.setFieldError(
                                                 'emailOrPhoneNumber',
-                                                validate(
+                                                this.validate(
                                                     props.formikProps.values
                                                         .emailOrPhoneNumber
                                                 )
@@ -104,14 +126,14 @@ class KioskLogIn extends React.Component {
                             }
                             onClick={() => {
                                 if (
-                                    validate(
+                                    this.validate(
                                         props.formikProps.values
                                             .emailOrPhoneNumber
                                     )
                                 ) {
                                     props.formikProps.setFieldError(
                                         'emailOrPhoneNumber',
-                                        validate(
+                                        this.validate(
                                             props.formikProps.values
                                                 .emailOrPhoneNumber
                                         )
@@ -126,18 +148,22 @@ class KioskLogIn extends React.Component {
                                 }
                             }}
                         >
-                            Send
+                            {formatText(REGISTRATION_SIGNIN_SEND)}
                         </Button>
                     </Flex>
                     {props.formikProps.values.isCodeSent && (
                         <div>
                             <Text color="#3481f8" fontSize="12px" mb={15}>
-                                Your log-in code has been sent
+                                {formatText(REGISTRATION_SIGNIN_CODESENT)}
                             </Text>
 
                             <Box>
                                 <Box mb={10}>
-                                    <Text>Enter log-in code</Text>
+                                    <Text>
+                                        {formatText(
+                                            REGISTRATION_SIGNIN_ENTERCODE
+                                        )}
+                                    </Text>
                                 </Box>
                                 <PinInput
                                     length={6}
@@ -188,7 +214,7 @@ class KioskLogIn extends React.Component {
                                 fontSize="16px"
                                 textAlign="center"
                             >
-                                Sign up
+                                {formatText(REGISTRATION_SIGNIN_SIGNUP)}
                             </Text>
                         </Button>
                     </Flex>
@@ -198,4 +224,4 @@ class KioskLogIn extends React.Component {
     }
 }
 
-export { KioskLogIn };
+export const KioskLogIn = injectIntl(KioskLogInClass);

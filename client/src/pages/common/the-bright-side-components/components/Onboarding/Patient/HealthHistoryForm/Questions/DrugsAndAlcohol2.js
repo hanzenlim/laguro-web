@@ -2,57 +2,76 @@ import { Box, Flex, TextArea } from '@laguro/basic-components';
 import React from 'react';
 import Onboarding from '../../../../Onboarding';
 import DentistIcon from '../../../Assets/dentistIcon';
+import {
+    getYesOrNoNamesAndTexts,
+    renderQuestionComponent,
+} from '../../../../../../../../util/questionUtils';
+import {
+    GENERAL_PLEASEEXPLAIN,
+    MEDICALHISTORYFORM_DRUGSALCOHOL2_DRUGSALCOHOL,
+    MEDICALHISTORYFORM_DRUGSALCOHOL2_PLEASEANSWER,
+    MEDICALHISTORYFORM_DRUGSALCOHOL2_NAMEANYADDITIONAL,
+    GENERAL_DONE,
+} from '../../../../../../../../strings/messageStrings';
+import { injectIntl } from 'react-intl';
+import { getFormatTextFromProps } from '../../../../../../../../util/intlUtils';
 
-const questions = [
+const HAS_A_PHYSICIAN_OR_PREVIOUS_DENTIST_RECOMMENDED_THAT_YOU_TAKE_ANTIBIOTICS_PRIOR_TO_YOUR_DENTAL_TREATMENT =
+    'Has a physician or previous dentist recommended that you take antibiotics prior to your dental treatment?';
+const ANY_ADDITIONAL_DISEASE_CONDITION_OR_PROBLEMS_NOT_LISTED_ABOVE_THAT_YOU_THINK_WE_SHOULD_KNOW_ABOUT =
+    'Any additional disease, condition, or problems not listed above that you think we should know about?';
+
+const questionConfigs = [
     {
-        id: 0,
-        name:
-            'Has a physician or previous dentist recommended that you take antibiotics prior to your dental treatment?',
+        name: HAS_A_PHYSICIAN_OR_PREVIOUS_DENTIST_RECOMMENDED_THAT_YOU_TAKE_ANTIBIOTICS_PRIOR_TO_YOUR_DENTAL_TREATMENT,
         value: '',
-        component: props => {
-            const key = questions[0].name;
-
-            return (
-                <Onboarding.Choices
-                    size="small"
-                    formKey={key}
-                    submitOnClick={false}
-                    namesAndTexts={[
-                        { name: 'Yes', text: 'Yes' },
-                        { name: 'No', text: 'No' },
-                    ]}
-                    {...props}
-                />
-            );
-        },
     },
     {
-        id: 1,
-        name:
-            'Any additional disease, condition, or problems not listed above that you think we should know about?',
+        name: ANY_ADDITIONAL_DISEASE_CONDITION_OR_PROBLEMS_NOT_LISTED_ABOVE_THAT_YOU_THINK_WE_SHOULD_KNOW_ABOUT,
         value: '',
-        component: props => {
-            const key = questions[1].name;
-
-            return (
-                <TextArea
-                    placeholder="Please explain"
-                    value={props.formikProps.values[key]}
-                    onChange={value =>
-                        props.formikProps.setFieldValue(key, value.target.value)
-                    }
-                    height="180px"
-                />
-            );
-        },
     },
 ];
 
-export default class DrugsAndAlcohol2 extends React.Component {
-    static questions = questions;
+class DrugsAndAlcohol2 extends React.Component {
+    static questions = questionConfigs;
+    constructor(props) {
+        super(props);
+        const formatText = getFormatTextFromProps(this.props);
+        this.questionComponents = {
+            [HAS_A_PHYSICIAN_OR_PREVIOUS_DENTIST_RECOMMENDED_THAT_YOU_TAKE_ANTIBIOTICS_PRIOR_TO_YOUR_DENTAL_TREATMENT]: props => {
+                const key = HAS_A_PHYSICIAN_OR_PREVIOUS_DENTIST_RECOMMENDED_THAT_YOU_TAKE_ANTIBIOTICS_PRIOR_TO_YOUR_DENTAL_TREATMENT;
+                return (
+                    <Onboarding.Choices
+                        size="small"
+                        submitOnClick={false}
+                        formKey={key}
+                        namesAndTexts={getYesOrNoNamesAndTexts(formatText)}
+                        {...props}
+                    />
+                );
+            },
+            [ANY_ADDITIONAL_DISEASE_CONDITION_OR_PROBLEMS_NOT_LISTED_ABOVE_THAT_YOU_THINK_WE_SHOULD_KNOW_ABOUT]: props => {
+                const key = ANY_ADDITIONAL_DISEASE_CONDITION_OR_PROBLEMS_NOT_LISTED_ABOVE_THAT_YOU_THINK_WE_SHOULD_KNOW_ABOUT;
+                return (
+                    <TextArea
+                        placeholder={formatText(GENERAL_PLEASEEXPLAIN)}
+                        value={props.formikProps.values[key]}
+                        onChange={value =>
+                            props.formikProps.setFieldValue(
+                                key,
+                                value.target.value
+                            )
+                        }
+                        height="180px"
+                    />
+                );
+            },
+        };
+    }
 
     render() {
         const props = this.props;
+        const formatText = getFormatTextFromProps(this.props);
 
         return (
             <Flex
@@ -62,13 +81,39 @@ export default class DrugsAndAlcohol2 extends React.Component {
                 height="100%"
             >
                 <DentistIcon />
-                <Onboarding.StepTitleText text="Drugs & Alcohol" />
-                <Onboarding.StepBlurbText text="Please answer the following questions" />
+                <Onboarding.StepTitleText
+                    text={formatText(
+                        MEDICALHISTORYFORM_DRUGSALCOHOL2_DRUGSALCOHOL
+                    )}
+                />
+                <Onboarding.StepBlurbText
+                    text={formatText(
+                        MEDICALHISTORYFORM_DRUGSALCOHOL2_PLEASEANSWER
+                    )}
+                />
                 <Box>
-                    <Onboarding.FormItemLabelText text="Has a physician or previous dentist recommended that you take antibiotics prior to your dental treatment?" />
-                    {questions[0].component(props)}
-                    <Onboarding.FormItemLabelText text="Any additional disease, condition, or problems not listed above that you think we should know about?" />
-                    {questions[1].component(props)}
+                    <Onboarding.FormItemLabelText
+                        text={formatText(
+                            HAS_A_PHYSICIAN_OR_PREVIOUS_DENTIST_RECOMMENDED_THAT_YOU_TAKE_ANTIBIOTICS_PRIOR_TO_YOUR_DENTAL_TREATMENT
+                        )}
+                    />
+                    {renderQuestionComponent(
+                        this.questionComponents,
+                        questionConfigs,
+                        0,
+                        props
+                    )}
+                    <Onboarding.FormItemLabelText
+                        text={formatText(
+                            MEDICALHISTORYFORM_DRUGSALCOHOL2_NAMEANYADDITIONAL
+                        )}
+                    />
+                    {renderQuestionComponent(
+                        this.questionComponents,
+                        questionConfigs,
+                        1,
+                        props
+                    )}
                 </Box>
                 <Onboarding.NextButton
                     onClick={() => {
@@ -76,9 +121,11 @@ export default class DrugsAndAlcohol2 extends React.Component {
                     }}
                     loading={this.props.formikProps.isSubmitting}
                 >
-                    Done
+                    {formatText(GENERAL_DONE)}
                 </Onboarding.NextButton>
             </Flex>
         );
     }
 }
+
+export default injectIntl(DrugsAndAlcohol2);

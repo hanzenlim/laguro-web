@@ -4,6 +4,13 @@ import styled from 'styled-components';
 import { Box, Flex, Grid } from '@laguro/basic-components';
 import Onboarding, { LastMargin } from '../../../../Onboarding';
 import ToolsIcon from '../../../Assets/toolsIcon';
+import { injectIntl } from 'react-intl';
+import {
+    BOOKAPPOINTMENT_REASONOFVISIT_REASONOFVISIT,
+    BOOKAPPOINTMENT_REASONOFVISIT_LETUSKNOW,
+} from '../../../../../../../../strings/messageStrings';
+import { getFormatTextFromProps } from '../../../../../../../../util/intlUtils';
+import { PROCEDURE_TEXTS } from '../../../../../../../../util/procedureUtils';
 
 const CustomGrid = styled(Grid)`
     grid-template-columns: 1fr 1fr 1fr;
@@ -17,48 +24,59 @@ const CustomGrid = styled(Grid)`
     }
 `;
 
-export const SelectProcedure = props => {
-    return (
-        <Box mx="auto">
-            <Flex justifyContent="center">
-                <ToolsIcon />
-            </Flex>
-            <Onboarding.StepTitleText text="What is your reason of visit today?" />
-            <Onboarding.StepBlurbText text="Let us know what you need so that we could find you the best dentists around according to your needs." />
-
-            <Box mb={LastMargin}>
-                <CustomGrid>
-                    {Object.keys(props.procedureList).map(p => (
-                        <Onboarding.Checkbox
-                            key={p}
-                            field={p}
-                            value={props.formikProps.values[p]}
-                            onClick={() =>
-                                props.formikProps.setFieldValue(
-                                    p,
-                                    !props.formikProps.values[p]
-                                )
-                            }
-                        />
-                    ))}
-                </CustomGrid>
+class SelectProcedureClass extends React.Component {
+    render() {
+        const formatText = getFormatTextFromProps(this.props);
+        return (
+            <Box mx="auto">
+                <Flex justifyContent="center">
+                    <ToolsIcon />
+                </Flex>
+                <Onboarding.StepTitleText
+                    text={formatText(
+                        BOOKAPPOINTMENT_REASONOFVISIT_REASONOFVISIT
+                    )}
+                />
+                <Onboarding.StepBlurbText
+                    text={formatText(BOOKAPPOINTMENT_REASONOFVISIT_LETUSKNOW)}
+                />
+                <Box mb={LastMargin}>
+                    <CustomGrid>
+                        {Object.keys(this.props.procedureList).map(p => (
+                            <Onboarding.Checkbox
+                                key={p}
+                                field={formatText(PROCEDURE_TEXTS[p])}
+                                value={this.props.formikProps.values[p]}
+                                onClick={() =>
+                                    this.props.formikProps.setFieldValue(
+                                        p,
+                                        !this.props.formikProps.values[p]
+                                    )
+                                }
+                            />
+                        ))}
+                    </CustomGrid>
+                </Box>
+                <Onboarding.NextButton
+                    onClick={() => {
+                        // TODO: Move this validation to laguro-web
+                        if (
+                            !Object.values(
+                                this.props.formikProps.values
+                            ).includes(true)
+                        ) {
+                            return;
+                        }
+                        this.props.formikProps.submitForm();
+                    }}
+                />
+                {this.props.formikProps.submitCount !== 0 &&
+                    Object.keys(this.props.formikProps.errors).length !== 0 && (
+                        <Onboarding.RequiredFieldsMessage />
+                    )}
             </Box>
-            <Onboarding.NextButton
-                onClick={() => {
-                    // TODO: Move this validation to laguro-web
-                    if (
-                        !Object.values(props.formikProps.values).includes(true)
-                    ) {
-                        return;
-                    }
+        );
+    }
+}
 
-                    props.formikProps.submitForm();
-                }}
-            />
-            {props.formikProps.submitCount !== 0 &&
-                Object.keys(props.formikProps.errors).length !== 0 && (
-                    <Onboarding.RequiredFieldsMessage />
-                )}
-        </Box>
-    );
-};
+export const SelectProcedure = injectIntl(SelectProcedureClass);

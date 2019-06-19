@@ -11,3 +11,5 @@ export const isMobileDevice = () =>
 
 export const profileImageRatio = 1 / 1;
 export const officeImageRatio = 3 / 2;
+
+export const range = length => [...Array(length).keys()];

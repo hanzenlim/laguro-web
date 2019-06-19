@@ -87,8 +87,8 @@ import {
 import {
     addActionsToWizardSteps,
     getDentistTimes,
-    KIOSK_PAGE_PROGRESS_STEPS,
     redirectFromHealthHistory,
+    getKioskPageProgressSteps,
 } from './utils';
 import defaultUserImage from '../../components/Image/defaultUserImage.svg';
 import { hasSkippedMedicalHistoryFormCookieVariableName } from '../../util/strings';
@@ -106,6 +106,9 @@ import { KioskBookingConfirmation } from '../common/the-bright-side-components/c
 import { KioskCheckInConfirmation } from '../common/the-bright-side-components/components/Kiosk/KioskCheckInConfirmation';
 import { KioskFlowSuccess } from '../common/the-bright-side-components/components/Kiosk/KioskFlowSuccess';
 import { HealthHistoryForm } from '../common/the-bright-side-components/components/Onboarding/Patient/HealthHistoryForm';
+import { procedureList } from '../../staticData';
+import { getFormatTextFromProps } from '../../util/intlUtils';
+import { injectIntl } from 'react-intl';
 
 export const KIOSK_OFFICE_ID_COOKIE_VARIABLE_NAME = 'kiosk-office-id';
 
@@ -131,21 +134,6 @@ const {
     UrgentHeartConditions,
     WomenOnly,
 } = HealthHistoryForm;
-
-const procedureList = {
-    Exams: true,
-    Fillings: false,
-    'Crowns, Bridges, Veneers': false,
-    'Root Canals': false,
-    'Gum Surgery / Grafting': false,
-    'Deep Cleaning': false,
-    'Whitening / Cosmetic': false,
-    'Implant placement': false,
-    'Implant crown': false,
-    'Extractions / Surgery': false,
-    Dentures: false,
-    Braces: false,
-};
 
 const bellDentalOfficeId = 'e91ba710-2b37-11e9-998e-9da6024c6b32';
 const WIZARD_STEP_IDS_WITHOUT_PREVIOUS_BUTTON = [
@@ -318,6 +306,7 @@ class KioskPage extends PureComponent {
         const officeId = cookies.get(KIOSK_OFFICE_ID_COOKIE_VARIABLE_NAME);
         const userId = _get(getUser(), 'id');
         const currentWizardStepId = getCurrentWizardStep();
+        const formatText = getFormatTextFromProps(this.props);
 
         return (
             <Composed
@@ -592,6 +581,7 @@ class KioskPage extends PureComponent {
                                     updatePatientHealthData,
                                 },
                                 answers: healthHistoryAnswers,
+                                formatText: formatText,
                             }),
                         });
 
@@ -820,8 +810,11 @@ class KioskPage extends PureComponent {
                             </Flex>
                         );
                     };
+                    const kioskPageProgressSteps = getKioskPageProgressSteps(
+                        formatText
+                    );
 
-                    let currentStep = KIOSK_PAGE_PROGRESS_STEPS.length + 1;
+                    let currentStep = kioskPageProgressSteps.length + 1;
                     if (
                         GENERAL_INFO_STAGE_WIZARD_STEP_IDS.includes(
                             currentWizardStepId
@@ -849,7 +842,7 @@ class KioskPage extends PureComponent {
                     return (
                         <Box className="kiosk-pages">
                             <Progress
-                                steps={KIOSK_PAGE_PROGRESS_STEPS}
+                                steps={kioskPageProgressSteps}
                                 step={currentStep}
                                 percent={20}
                             />
@@ -908,4 +901,4 @@ class KioskPage extends PureComponent {
         );
     }
 }
-export default KioskPage;
+export default injectIntl(KioskPage);

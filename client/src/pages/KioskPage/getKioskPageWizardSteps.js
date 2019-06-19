@@ -14,6 +14,20 @@ import { CHECK_ELIGIBILITY } from './queries';
 import { ENGLISH } from '../../util/strings';
 import { KioskInsurance } from '../common/the-bright-side-components/components/Kiosk/KioskInsurance';
 import { HealthHistoryForm } from '../common/the-bright-side-components/components/Onboarding/Patient/HealthHistoryForm';
+import {
+    GENERALINFORMATION_BIRTHDAY_MONTHISREQUIRED,
+    GENERALINFORMATION_BIRTHDAY_YEARISREQUIRED,
+    GENERALINFORMATION_BIRTHDAY_DATEISREQUIRED,
+    GENERALINFORMATION_BIRTHDAY_UNDERAGE,
+    GENERALINFORMATION_LANGUAGE_ATLEASTONE,
+    GENERAL_PLEASEFILL,
+    GENERALINFORMATION_ADDRESS_CITYISREQUIRED,
+    GENERALINFORMATION_ADDRESS_STATEISREQUIRED,
+    GENERALINFORMATION_ADDRESS_POSTACODEISREQUIRED,
+    GENERALINFORMATION_ADDRESS_STREETADDRESS,
+    GENERAL_REQUIRED,
+    BOOKAPPOINTMENT_BOOKANAPPOINTMENT_YOUMUSTSELECTAPPT,
+} from '../../strings/messageStrings';
 
 // contains renderRegistrationStage which renders correct step within Registation stage of kiosk flow
 // contains getStageOneRegWizardSteps which return an array of step information objects, which contain step id(id), validations(validationSchema), and initialValues, given a user object. This user object is from getUser in Kiosk/index.js.
@@ -170,6 +184,7 @@ export const getKioskPageWizardSteps = ({
     activeDentistsWithAppointmentSlots,
     mutations,
     healthHistoryAnswers,
+    formatText = text => text,
 }) => [
     // stage 1: registration
     // see KioskRegPage
@@ -177,11 +192,20 @@ export const getKioskPageWizardSteps = ({
     {
         id: BIRTHDAY_WIZARD_STEP_ID,
         validationSchema: Yup.object().shape({
-            patientBirthMonth: Yup.string().required('Month is required'),
-            patientBirthDate: Yup.string().required('Date is required'),
+            patientBirthMonth: Yup.string().required(
+                formatText(GENERALINFORMATION_BIRTHDAY_MONTHISREQUIRED)
+            ),
+            patientBirthDate: Yup.string().required(
+                formatText(GENERALINFORMATION_BIRTHDAY_DATEISREQUIRED)
+            ),
             patientBirthYear: Yup.date()
-                .max(minAdultAge, 'Under minimum age')
-                .required('Year is required'),
+                .max(
+                    minAdultAge,
+                    formatText(GENERALINFORMATION_BIRTHDAY_UNDERAGE)
+                )
+                .required(
+                    formatText(GENERALINFORMATION_BIRTHDAY_YEARISREQUIRED)
+                ),
         }),
         initialValues: {
             patientBirthMonth:
@@ -195,7 +219,7 @@ export const getKioskPageWizardSteps = ({
     {
         id: GENDER_WIZARD_STEP_ID,
         validationSchema: Yup.object().shape({
-            patientGender: Yup.string().required('Gender is required'),
+            patientGender: Yup.string().required(GENERAL_PLEASEFILL),
         }),
         initialValues: {
             patientGender: _get(user, 'gender') || '',
@@ -205,7 +229,7 @@ export const getKioskPageWizardSteps = ({
         id: LANGUAGE_WIZARD_STEP_ID,
         validationSchema: Yup.object().shape({
             languages: Yup.array().required(
-                'At least one language is required.'
+                formatText(GENERALINFORMATION_LANGUAGE_ATLEASTONE)
             ),
         }),
         initialValues: {
@@ -216,11 +240,17 @@ export const getKioskPageWizardSteps = ({
         id: ADDRESS_WIZARD_STEP_ID,
         validationSchema: Yup.object().shape({
             patientAddress1: Yup.string().required(
-                'Street address is required'
+                formatText(GENERALINFORMATION_ADDRESS_STREETADDRESS)
             ),
-            patientCity: Yup.string().required('City is required'),
-            patientState: Yup.string().required('State is required'),
-            patientZIP: Yup.string().required('Postal code is required'),
+            patientCity: Yup.string().required(
+                formatText(GENERALINFORMATION_ADDRESS_CITYISREQUIRED)
+            ),
+            patientState: Yup.string().required(
+                formatText(GENERALINFORMATION_ADDRESS_STATEISREQUIRED)
+            ),
+            patientZIP: Yup.string().required(
+                formatText(GENERALINFORMATION_ADDRESS_POSTACODEISREQUIRED)
+            ),
         }),
         initialValues: {
             patientAddress1: _get(user, 'address.streetAddress'),
@@ -250,11 +280,11 @@ export const getKioskPageWizardSteps = ({
             hasNoInsurance: Yup.string(),
             insuranceProvider: Yup.string().when('hasNoInsurance', {
                 is: 'false',
-                then: Yup.string().required('Insurance is required'),
+                then: Yup.string().required(formatText(GENERAL_REQUIRED)),
             }),
             patientInsuranceNum: Yup.string().when('hasNoInsurance', {
                 is: 'false',
-                then: Yup.string().required('Insurance number is required'),
+                then: Yup.string().required(formatText(GENERAL_REQUIRED)),
             }),
         }),
         onAction: async (stepValues, allValues, formikProps) => {
@@ -345,9 +375,9 @@ export const getKioskPageWizardSteps = ({
                             state: patientState,
                         },
                         dob: `${patientBirthMonth}/${patientBirthDate}/${patientBirthYear}`,
-                        gender: patientGender,
+                        gender:
+                            patientGender === 'unknown' ? null : patientGender,
                         insuranceInfo: {
-                            useInsurance: !hasNoInsurance,
                             ...(!hasNoInsurance &&
                                 !_isEmpty(insuranceProvider) && {
                                     insuranceProvider,
@@ -398,7 +428,7 @@ export const getKioskPageWizardSteps = ({
         id: REASON_OF_VISIT_WIZARD_STEP_ID,
         validationSchema: Yup.object().shape({
             reasonOfVisit: Yup.string().required(
-                'You must select a reason of visit'
+                formatText(GENERAL_PLEASEFILL)
             ),
         }),
         initialValues: {
@@ -417,7 +447,7 @@ export const getKioskPageWizardSteps = ({
         id: BOOK_APPOINTMENT_WIZARD_STEP_ID,
         validationSchema: Yup.object().shape({
             appointmentSelected: Yup.string().required(
-                'You must select an appointment'
+                formatText(BOOKAPPOINTMENT_BOOKANAPPOINTMENT_YOUMUSTSELECTAPPT)
             ),
         }),
         initialValues: {},
@@ -542,18 +572,20 @@ export const getKioskPageWizardSteps = ({
         id: GeneralHealth_WIZARD_STEP_ID,
         validationSchema: Yup.object().shape({
             'Any changes in your general health within the past year?': Yup.string().required(
-                'Required'
+                formatText(GENERAL_REQUIRED)
             ),
             'Any changes in your general health within the past year? (Explanation)': Yup.string(),
             'Are you being treated for any conditions? If yes, please list': Yup.string().required(
-                'Required'
+                formatText(GENERAL_REQUIRED)
             ),
             'Are you currently taking any prescription or over the counter medicine(s)?': Yup.string().required(
-                'Required'
+                formatText(GENERAL_REQUIRED)
             ),
-            'Are you in good health?': Yup.string().required('Required'),
+            'Are you in good health?': Yup.string().required(
+                formatText(GENERAL_REQUIRED)
+            ),
             'Have you been hospitalized in the past 5 years?': Yup.string().required(
-                'Required'
+                formatText(GENERAL_REQUIRED)
             ),
             'When was your last physical exam? (Month)': Yup.string(),
             'When was your last physical exam? (Year)': Yup.string(),
@@ -703,7 +735,7 @@ export const getKioskPageWizardSteps = ({
         id: DrugsAndAlcohol2_WIZARD_STEP_ID,
         validationSchema: Yup.object().shape({
             'Has a physician or previous dentist recommended that you take antibiotics prior to your dental treatment?': Yup.string().required(
-                'Required'
+                formatText(GENERAL_REQUIRED)
             ),
         }),
         component: null,

@@ -30,7 +30,7 @@ const AvailableLocationsView = props => {
     } = props;
 
     return (
-        <Box mb="13px">
+        <Box>
             <Flex justifyContent="space-between" width="100%">
                 <Text fontSize={1} fontWeight="500" mb="12px" color="#303549">
                     Available locations

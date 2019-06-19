@@ -1,260 +1,304 @@
 import { Box, Flex, TextArea } from '@laguro/basic-components';
 import React from 'react';
+import _range from 'lodash/range';
 import Onboarding from '../../../../Onboarding';
 import DentistIcon from '../../../Assets/dentistIcon';
+import {
+    MEDICALHISTORYFORM_BRAINDISORDERS_GLAUCOMA,
+    MEDICALHISTORYFORM_BRAINDISORDERS_STROKE,
+    MEDICALHISTORYFORM_BRAINDISORDERS_EPILEPSY,
+    MEDICALHISTORYFORM_BRAINDISORDERS_SLEEPINGDISORDERS,
+    MEDICALHISTORYFORM_BRAINDISORDERS_NEUROLOGICALDISORDERS,
+    MEDICALHISTORYFORM_BRAINDISORDERS_FAINTINGSPELLS,
+    GENERAL_PLEASESPECIFY,
+    MEDICALHISTORYFORM_BRAINDISORDERS_NIGHTSWEATS,
+    MEDICALHISTORYFORM_BRAINDISORDERS_MENTALHEALTHDISORDERS,
+    MEDICALHISTORYFORM_BRAINDISORDERS_SEVEREHEADACHES,
+    MEDICALHISTORYFORM_BRAINDISORDERS_BRAINDISORDERS,
+    GENERAL_PLEASE_CHOOSE_CONDITIONS,
+} from '../../../../../../../../strings/messageStrings';
+import { getFormatTextFromProps } from '../../../../../../../../util/intlUtils';
+import { renderQuestionComponent } from '../../../../../../../../util/questionUtils';
+import { injectIntl } from 'react-intl';
 
-const questions = [
+const GLAUCOMA = 'Glaucoma';
+const STROKE = 'Stroke';
+const EPILEPSY = 'Epilepsy';
+const FAINTING_SPELLS_OR_SEIZURES = 'Fainting spells or seizures';
+const SLEEPING_DISORDERS = 'Sleeping disorders';
+const NEUROLOGICAL_DISORDERS = 'Neurological disorders';
+const NEUROLOGICAL_DISORDERS_PLEASE_SPECIFY =
+    'Neurological disorders (Please specify)';
+const NIGHT_SWEATS = 'Night sweats';
+const MENTAL_HEALTH_DISORDERS = 'Mental health disorders';
+const MENTAL_HEALTH_DISORDERS_PLEASE_SPECIFY =
+    'Mental health disorders (Please specify)';
+const SEVERE_HEADACHES_OR_MIGRAINES = 'Severe headaches or migraines';
+
+const questionConfigs = [
     {
-        id: 0,
-        name: 'Glaucoma',
+        name: GLAUCOMA,
         value: false,
-        component: props => {
-            const key = questions[0].name;
-
-            return (
-                <Onboarding.Checkbox
-                    key={key}
-                    field={key}
-                    value={props.formikProps.values[key]}
-                    onClick={() =>
-                        props.formikProps.setFieldValue(
-                            key,
-                            !props.formikProps.values[key]
-                        )
-                    }
-                />
-            );
-        },
     },
     {
-        id: 1,
-        name: 'Stroke',
+        name: STROKE,
         value: false,
-        component: props => {
-            const key = questions[1].name;
-
-            return (
-                <Onboarding.Checkbox
-                    key={key}
-                    field={key}
-                    value={props.formikProps.values[key]}
-                    onClick={() =>
-                        props.formikProps.setFieldValue(
-                            key,
-                            !props.formikProps.values[key]
-                        )
-                    }
-                />
-            );
-        },
     },
     {
-        id: 2,
-        name: 'Epilepsy',
+        name: EPILEPSY,
         value: false,
-        component: props => {
-            const key = questions[2].name;
-
-            return (
-                <Onboarding.Checkbox
-                    key={key}
-                    field={key}
-                    value={props.formikProps.values[key]}
-                    onClick={() =>
-                        props.formikProps.setFieldValue(
-                            key,
-                            !props.formikProps.values[key]
-                        )
-                    }
-                />
-            );
-        },
     },
     {
-        id: 3,
-        name: 'Fainting spells or seizures',
+        name: FAINTING_SPELLS_OR_SEIZURES,
         value: false,
-        component: props => {
-            const key = questions[3].name;
-
-            return (
-                <Onboarding.Checkbox
-                    key={key}
-                    field={key}
-                    value={props.formikProps.values[key]}
-                    onClick={() =>
-                        props.formikProps.setFieldValue(
-                            key,
-                            !props.formikProps.values[key]
-                        )
-                    }
-                />
-            );
-        },
     },
     {
-        id: 4,
-        name: 'Sleeping disorders',
+        name: SLEEPING_DISORDERS,
         value: false,
-        component: props => {
-            const key = questions[4].name;
-
-            return (
-                <Onboarding.Checkbox
-                    key={key}
-                    field={key}
-                    value={props.formikProps.values[key]}
-                    onClick={() =>
-                        props.formikProps.setFieldValue(
-                            key,
-                            !props.formikProps.values[key]
-                        )
-                    }
-                />
-            );
-        },
     },
     {
-        id: 5,
-        name: 'Neurological disorders',
+        name: NEUROLOGICAL_DISORDERS,
         value: false,
-        component: props => {
-            const key = questions[5].name;
-
-            return (
-                <Onboarding.Checkbox
-                    key={key}
-                    field={key}
-                    value={props.formikProps.values[key]}
-                    onClick={() =>
-                        props.formikProps.setFieldValue(
-                            key,
-                            !props.formikProps.values[key]
-                        )
-                    }
-                />
-            );
-        },
     },
     {
-        id: 6,
-        name: 'Neurological disorders (Please specify)',
+        name: NEUROLOGICAL_DISORDERS_PLEASE_SPECIFY,
         value: '',
-        component: props => {
-            if (!props.formikProps.values[questions[5].name]) {
-                return null;
-            }
-
-            const key = questions[6].name;
-
-            return (
-                <TextArea
-                    placeholder="Please specify"
-                    value={props.formikProps.values[key]}
-                    onChange={value =>
-                        props.formikProps.setFieldValue(key, value.target.value)
-                    }
-                    height="180px"
-                />
-            );
-        },
     },
     {
-        id: 7,
-        name: 'Night sweats',
+        name: NIGHT_SWEATS,
         value: false,
-        component: props => {
-            const key = questions[7].name;
-
-            return (
-                <Onboarding.Checkbox
-                    key={key}
-                    field={key}
-                    value={props.formikProps.values[key]}
-                    onClick={() =>
-                        props.formikProps.setFieldValue(
-                            key,
-                            !props.formikProps.values[key]
-                        )
-                    }
-                />
-            );
-        },
     },
     {
-        id: 8,
-        name: 'Mental health disorders',
+        name: MENTAL_HEALTH_DISORDERS,
         value: false,
-        component: props => {
-            const key = questions[8].name;
-
-            return (
-                <Onboarding.Checkbox
-                    key={key}
-                    field={key}
-                    value={props.formikProps.values[key]}
-                    onClick={() =>
-                        props.formikProps.setFieldValue(
-                            key,
-                            !props.formikProps.values[key]
-                        )
-                    }
-                />
-            );
-        },
     },
     {
-        id: 9,
-        name: 'Mental health disorders (Please specify)',
+        name: MENTAL_HEALTH_DISORDERS_PLEASE_SPECIFY,
         value: '',
-        component: props => {
-            if (!props.formikProps.values[questions[8].name]) {
-                return null;
-            }
-
-            const key = questions[9].name;
-
-            return (
-                <TextArea
-                    placeholder="Please specify"
-                    value={props.formikProps.values[key]}
-                    onChange={value =>
-                        props.formikProps.setFieldValue(key, value.target.value)
-                    }
-                    height="180px"
-                />
-            );
-        },
     },
     {
-        id: 10,
-        name: 'Severe headaches or migraines',
+        name: SEVERE_HEADACHES_OR_MIGRAINES,
         value: false,
-        component: props => {
-            const key = questions[10].name;
-
-            return (
-                <Onboarding.Checkbox
-                    key={key}
-                    field={key}
-                    value={props.formikProps.values[key]}
-                    onClick={() =>
-                        props.formikProps.setFieldValue(
-                            key,
-                            !props.formikProps.values[key]
-                        )
-                    }
-                />
-            );
-        },
     },
 ];
 
-export default class BrainDisorders extends React.Component {
-    static questions = questions;
+class BrainDisorders extends React.Component {
+    static questions = questionConfigs;
+    constructor(props) {
+        super(props);
+        const formatText = getFormatTextFromProps(this.props);
+        this.questionComponents = {
+            [GLAUCOMA]: props => {
+                const key = GLAUCOMA;
+                return (
+                    <Onboarding.Checkbox
+                        key={key}
+                        field={formatText(
+                            MEDICALHISTORYFORM_BRAINDISORDERS_GLAUCOMA
+                        )}
+                        value={props.formikProps.values[key]}
+                        onClick={() =>
+                            props.formikProps.setFieldValue(
+                                key,
+                                !props.formikProps.values[key]
+                            )
+                        }
+                    />
+                );
+            },
+            [STROKE]: props => {
+                const key = STROKE;
+                return (
+                    <Onboarding.Checkbox
+                        key={key}
+                        field={formatText(
+                            MEDICALHISTORYFORM_BRAINDISORDERS_STROKE
+                        )}
+                        value={props.formikProps.values[key]}
+                        onClick={() =>
+                            props.formikProps.setFieldValue(
+                                key,
+                                !props.formikProps.values[key]
+                            )
+                        }
+                    />
+                );
+            },
+            [EPILEPSY]: props => {
+                const key = EPILEPSY;
+                return (
+                    <Onboarding.Checkbox
+                        key={key}
+                        field={formatText(
+                            MEDICALHISTORYFORM_BRAINDISORDERS_EPILEPSY
+                        )}
+                        value={props.formikProps.values[key]}
+                        onClick={() =>
+                            props.formikProps.setFieldValue(
+                                key,
+                                !props.formikProps.values[key]
+                            )
+                        }
+                    />
+                );
+            },
+            [FAINTING_SPELLS_OR_SEIZURES]: props => {
+                const key = FAINTING_SPELLS_OR_SEIZURES;
+
+                return (
+                    <Onboarding.Checkbox
+                        key={key}
+                        field={formatText(
+                            MEDICALHISTORYFORM_BRAINDISORDERS_FAINTINGSPELLS
+                        )}
+                        value={props.formikProps.values[key]}
+                        onClick={() =>
+                            props.formikProps.setFieldValue(
+                                key,
+                                !props.formikProps.values[key]
+                            )
+                        }
+                    />
+                );
+            },
+            [SLEEPING_DISORDERS]: props => {
+                const key = SLEEPING_DISORDERS;
+                return (
+                    <Onboarding.Checkbox
+                        key={key}
+                        field={formatText(
+                            MEDICALHISTORYFORM_BRAINDISORDERS_SLEEPINGDISORDERS
+                        )}
+                        value={props.formikProps.values[key]}
+                        onClick={() =>
+                            props.formikProps.setFieldValue(
+                                key,
+                                !props.formikProps.values[key]
+                            )
+                        }
+                    />
+                );
+            },
+            [NEUROLOGICAL_DISORDERS]: props => {
+                const key = NEUROLOGICAL_DISORDERS;
+
+                return (
+                    <Onboarding.Checkbox
+                        key={key}
+                        field={formatText(
+                            MEDICALHISTORYFORM_BRAINDISORDERS_NEUROLOGICALDISORDERS
+                        )}
+                        value={props.formikProps.values[key]}
+                        onClick={() =>
+                            props.formikProps.setFieldValue(
+                                key,
+                                !props.formikProps.values[key]
+                            )
+                        }
+                    />
+                );
+            },
+            [NEUROLOGICAL_DISORDERS_PLEASE_SPECIFY]: props => {
+                if (!props.formikProps.values[NEUROLOGICAL_DISORDERS]) {
+                    return null;
+                }
+
+                const key = NEUROLOGICAL_DISORDERS_PLEASE_SPECIFY;
+
+                return (
+                    <TextArea
+                        placeholder={formatText(GENERAL_PLEASESPECIFY)}
+                        value={props.formikProps.values[key]}
+                        onChange={value =>
+                            props.formikProps.setFieldValue(
+                                key,
+                                value.target.value
+                            )
+                        }
+                        height="180px"
+                    />
+                );
+            },
+            [NIGHT_SWEATS]: props => {
+                const key = NIGHT_SWEATS;
+                return (
+                    <Onboarding.Checkbox
+                        key={key}
+                        field={formatText(
+                            MEDICALHISTORYFORM_BRAINDISORDERS_NIGHTSWEATS
+                        )}
+                        value={props.formikProps.values[key]}
+                        onClick={() =>
+                            props.formikProps.setFieldValue(
+                                key,
+                                !props.formikProps.values[key]
+                            )
+                        }
+                    />
+                );
+            },
+            [MENTAL_HEALTH_DISORDERS]: props => {
+                const key = MENTAL_HEALTH_DISORDERS;
+                return (
+                    <Onboarding.Checkbox
+                        key={key}
+                        field={formatText(
+                            MEDICALHISTORYFORM_BRAINDISORDERS_MENTALHEALTHDISORDERS
+                        )}
+                        value={props.formikProps.values[key]}
+                        onClick={() =>
+                            props.formikProps.setFieldValue(
+                                key,
+                                !props.formikProps.values[key]
+                            )
+                        }
+                    />
+                );
+            },
+            [MENTAL_HEALTH_DISORDERS_PLEASE_SPECIFY]: props => {
+                if (!props.formikProps.values[MENTAL_HEALTH_DISORDERS]) {
+                    return null;
+                }
+                const key = MENTAL_HEALTH_DISORDERS_PLEASE_SPECIFY;
+
+                return (
+                    <TextArea
+                        placeholder={formatText(GENERAL_PLEASESPECIFY)}
+                        value={props.formikProps.values[key]}
+                        onChange={value =>
+                            props.formikProps.setFieldValue(
+                                key,
+                                value.target.value
+                            )
+                        }
+                        height="180px"
+                    />
+                );
+            },
+            [SEVERE_HEADACHES_OR_MIGRAINES]: props => {
+                const key = SEVERE_HEADACHES_OR_MIGRAINES;
+                return (
+                    <Onboarding.Checkbox
+                        key={key}
+                        field={formatText(
+                            MEDICALHISTORYFORM_BRAINDISORDERS_SEVEREHEADACHES
+                        )}
+                        value={props.formikProps.values[key]}
+                        onClick={() =>
+                            props.formikProps.setFieldValue(
+                                key,
+                                !props.formikProps.values[key]
+                            )
+                        }
+                    />
+                );
+            },
+        };
+    }
 
     render() {
         const props = this.props;
+        const formatText = getFormatTextFromProps(this.props);
 
         return (
             <Flex
@@ -264,21 +308,24 @@ export default class BrainDisorders extends React.Component {
                 height="100%"
             >
                 <DentistIcon />
-                <Onboarding.StepTitleText text="Brain disorders" />
-                <Onboarding.StepBlurbText text="Please choose the conditions that apply to you" />
+                <Onboarding.StepTitleText
+                    text={formatText(
+                        MEDICALHISTORYFORM_BRAINDISORDERS_BRAINDISORDERS
+                    )}
+                />
+                <Onboarding.StepBlurbText
+                    text={formatText(GENERAL_PLEASE_CHOOSE_CONDITIONS)}
+                />
 
                 <Box>
-                    {questions[0].component(props)}
-                    {questions[1].component(props)}
-                    {questions[2].component(props)}
-                    {questions[3].component(props)}
-                    {questions[4].component(props)}
-                    {questions[5].component(props)}
-                    {questions[6].component(props)}
-                    {questions[7].component(props)}
-                    {questions[8].component(props)}
-                    {questions[9].component(props)}
-                    {questions[10].component(props)}
+                    {_range(11).map(i =>
+                        renderQuestionComponent(
+                            this.questionComponents,
+                            questionConfigs,
+                            i,
+                            props
+                        )
+                    )}
                 </Box>
 
                 <Onboarding.NextButton
@@ -288,3 +335,5 @@ export default class BrainDisorders extends React.Component {
         );
     }
 }
+
+export default injectIntl(BrainDisorders);

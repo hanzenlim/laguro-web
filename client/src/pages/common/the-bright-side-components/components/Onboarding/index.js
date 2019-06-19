@@ -14,6 +14,13 @@ import * as React from 'react';
 import styled from 'styled-components';
 import PreviousIcon from './Assets/previousIcon';
 import BasicComponentsInput from './Input';
+import { getFormatTextFromProps } from '../../../../../util/intlUtils';
+import {
+    GENERAL_NEXT,
+    GENERAL_NONE,
+    GENERAL_PREVIOUSPAGE,
+} from '../../../../../strings/messageStrings';
+import { injectIntl } from 'react-intl';
 
 export const LastMargin = 43;
 const InputSelectHeight = 46;
@@ -266,75 +273,88 @@ const StyledNextButton = styled(Button)`
     }
 `;
 
-const OnboardingNextButton = props => {
-    const { children, onClick, disabled, loading, ...rest } = props;
-
-    return (
-        <FormItem>
-            <Flex
-                {...rest}
-                width="100%"
-                justifyContent="center"
-                mt={NextButtonMarginTop}
-            >
-                <StyledNextButton
-                    loading={loading}
-                    width={329}
-                    height={50}
-                    ghost={true}
-                    onClick={onClick}
-                    disabled={disabled}
-                >
-                    {children || 'Next'}
-                </StyledNextButton>
-            </Flex>
-        </FormItem>
-    );
-};
-
-const OnboardingNoneButton = props => {
-    const { list, onClick } = props;
-
-    const values = Object.values(list);
-
-    if (values.includes(true)) {
-        const count = values.filter(v => v === true).length;
+class OnboardingNextButton extends React.Component {
+    render() {
+        const { children, onClick, disabled, loading, ...rest } = this.props;
+        const formatText = getFormatTextFromProps(this.props);
 
         return (
+            <FormItem>
+                <Flex
+                    {...rest}
+                    width="100%"
+                    justifyContent="center"
+                    mt={NextButtonMarginTop}
+                >
+                    <StyledNextButton
+                        loading={loading}
+                        width={329}
+                        height={50}
+                        ghost={true}
+                        onClick={onClick}
+                        disabled={disabled}
+                    >
+                        {children || formatText(GENERAL_NEXT)}
+                    </StyledNextButton>
+                </Flex>
+            </FormItem>
+        );
+    }
+}
+
+class OnboardingNoneButton extends React.Component {
+    render() {
+        const { list, onClick } = this.props;
+        const values = Object.values(list);
+        const formatText = getFormatTextFromProps(this.props);
+
+        if (values.includes(true)) {
+            const count = values.filter(v => v === true).length;
+            return (
+                <OnboardingNextButton onClick={onClick}>
+                    {`${formatText(GENERAL_NEXT)} (${count})`}
+                </OnboardingNextButton>
+            );
+        }
+        return (
             <OnboardingNextButton onClick={onClick}>
-                Next ({count})
+                {formatText(GENERAL_NONE)}
             </OnboardingNextButton>
         );
     }
-    return (
-        <OnboardingNextButton onClick={onClick}>
-            None of the above
-        </OnboardingNextButton>
-    );
-};
+}
 
-export const PreviousButton = ({ goToPreviousStep }) => (
-    <Box
-        className="onboarding-previous-button"
-        position="absolute"
-        top="51px"
-        left="22px"
-    >
-        <Button type="ghost" height="auto" onClick={() => goToPreviousStep()}>
-            <Flex alignItems="center">
-                <PreviousIcon />
-                <Text
-                    ml="6px"
-                    fontWeight="medium"
-                    fontSize={[0, 1, '']}
-                    color="text.blue"
+class PreviousButtonClass extends React.Component {
+    render() {
+        const formatText = getFormatTextFromProps(this.props);
+        return (
+            <Box
+                className="onboarding-previous-button"
+                position="absolute"
+                top="51px"
+                left="22px"
+            >
+                <Button
+                    type="ghost"
+                    height="auto"
+                    onClick={() => this.props.goToPreviousStep()}
                 >
-                    Previous page
-                </Text>
-            </Flex>
-        </Button>
-    </Box>
-);
+                    <Flex alignItems="center">
+                        <PreviousIcon />
+                        <Text
+                            ml="6px"
+                            fontWeight="medium"
+                            fontSize={[0, 1, '']}
+                            color="text.blue"
+                        >
+                            {formatText(GENERAL_PREVIOUSPAGE)}
+                        </Text>
+                    </Flex>
+                </Button>
+            </Box>
+        );
+    }
+}
 
 export const SkipButton = ({ onSkip, text }) => (
     <Box position="absolute" top="51px" right="22px">
@@ -513,6 +533,7 @@ const SelectField = props => {
                 children={options}
                 disabled={disabled}
                 getPopupContainer={() => wrapperRef.current}
+                showSearch={props.showSearch}
             />
             {hasError && <Onboarding.ValidationMessage text={errorMessage} />}
         </Box>
@@ -693,11 +714,11 @@ const ValidationMessage = ({ text = 'Required' }) => (
 export default class Onboarding extends React.Component {
     static RequiredFieldsMessage = RequiredFieldsMessage;
     static Checkbox = OnboardingCheckbox;
-    static PreviousButton = PreviousButton;
+    static PreviousButton = injectIntl(PreviousButtonClass);
     static SkipButton = SkipButton;
     static Choices = Choices;
-    static NextButton = OnboardingNextButton;
-    static NoneButton = OnboardingNoneButton;
+    static NextButton = injectIntl(OnboardingNextButton);
+    static NoneButton = injectIntl(OnboardingNoneButton);
     static StepTitleText = StepTitleText;
     static StepBlurbText = StepBlurbText;
     static FormItemLabelText = FormItemLabelText;
@@ -716,3 +737,5 @@ export default class Onboarding extends React.Component {
     static InputField = InputField;
     static ChoicesField = ChoicesField;
 }
+
+export const PreviousButton = injectIntl(PreviousButtonClass);

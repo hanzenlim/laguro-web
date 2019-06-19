@@ -19,6 +19,24 @@ import { Rating } from '../../../components';
 import { getInsuranceText } from '../../../util/insuranceUtil';
 import Procedures from './Procedures';
 import { Onboarding } from '../the-bright-side-components';
+import { injectIntl } from 'react-intl';
+import {
+    BOOKAPPOINTMENT_BOOKANAPPOINTMENT_BOOKAPPOINTMENT,
+    BOOKAPPOINTMENT_BOOKANAPPOINTMENT_HEREARESOME,
+    BOOKAPPOINTMENT_BOOKANAPPOINTMENT_ACCEPTS,
+    GENERAL_AND,
+    GENERAL_SPEAKS,
+    BOOKAPPOINTMENT_BOOKANAPPOINTMENT_APPOINTMENTDURATION,
+    GENERAL_MINUTES,
+    GENERAL_HOUR,
+    BOOKAPPOINTMENT_BOOKANAPPOINTMENT_AVAILABLETIMES,
+    BOOKAPPOINTMENT_BOOKANAPPOINTMENT_BOOKAPPT,
+} from '../../../strings/messageStrings';
+import {
+    getFormatTextFromProps,
+    getIntlLanguage,
+} from '../../../util/intlUtils';
+import { DENTIST_SPECIALTY_TEXTS } from '../../../util/dentistSpecialtyUtils';
 
 const StyledCard = styled(Card)`
     overflow: hidden;
@@ -51,9 +69,11 @@ class AppointmentSelectionView extends React.PureComponent {
     );
 
     renderDentistCard = (dentist, date) => {
+        const formatText = getFormatTextFromProps(this.props);
         const availableTimes = this.props.moreMap[`${dentist.id}${date}`]
             ? dentist.availableTimes
             : dentist.availableTimes.slice(0, 7);
+
         return (
             <StyledCard p={0}>
                 <Box px={28} py={26}>
@@ -74,7 +94,9 @@ class AppointmentSelectionView extends React.PureComponent {
                                 lineHeight="17px"
                                 textTransform="uppercase"
                             >
-                                {dentist.specialty}
+                                {formatText(
+                                    DENTIST_SPECIALTY_TEXTS[dentist.specialty]
+                                )}
                             </Text>
                             <Flex mb={4} alignItems="center">
                                 <Text
@@ -104,7 +126,9 @@ class AppointmentSelectionView extends React.PureComponent {
                                         lineHeight="17px"
                                         ml="8px"
                                     >
-                                        Accepts{' '}
+                                        {formatText(
+                                            BOOKAPPOINTMENT_BOOKANAPPOINTMENT_ACCEPTS
+                                        )}{' '}
                                         {dentist.acceptedInsurances.length > 1
                                             ? dentist.acceptedInsurances.map(
                                                   (sp, index) =>
@@ -115,7 +139,9 @@ class AppointmentSelectionView extends React.PureComponent {
                                                           ? `${getInsuranceText(
                                                                 sp
                                                             )}, `
-                                                          : `and ${getInsuranceText(
+                                                          : `${formatText(
+                                                                GENERAL_AND
+                                                            )} ${getInsuranceText(
                                                                 sp
                                                             )}`
                                               )
@@ -134,7 +160,7 @@ class AppointmentSelectionView extends React.PureComponent {
                                         lineHeight="17px"
                                         ml="8px"
                                     >
-                                        Speaks{' '}
+                                        {formatText(GENERAL_SPEAKS)}{' '}
                                         {dentist.languages.length > 1 ? (
                                             dentist.languages.map((sp, index) =>
                                                 index !==
@@ -142,14 +168,22 @@ class AppointmentSelectionView extends React.PureComponent {
                                                     <Text
                                                         is="span"
                                                         textTransform="capitalize"
-                                                    >{`${sp.toLowerCase()}, `}</Text>
+                                                    >{`${getIntlLanguage(
+                                                        sp,
+                                                        formatText
+                                                    )}, `}</Text>
                                                 ) : (
                                                     <Fragment>
-                                                        and
+                                                        {formatText(
+                                                            GENERAL_AND
+                                                        )}
                                                         <Text
                                                             is="span"
                                                             textTransform="capitalize"
-                                                        >{` ${sp.toLowerCase()}`}</Text>
+                                                        >{` ${getIntlLanguage(
+                                                            sp,
+                                                            formatText
+                                                        )}`}</Text>
                                                     </Fragment>
                                                 )
                                             )
@@ -158,7 +192,10 @@ class AppointmentSelectionView extends React.PureComponent {
                                                 is="span"
                                                 textTransform="capitalize"
                                             >
-                                                {dentist.languages[0].toLowerCase()}
+                                                {getIntlLanguage(
+                                                    dentist.languages[0],
+                                                    formatText
+                                                )}
                                             </Text>
                                         )}
                                     </Text>
@@ -168,10 +205,12 @@ class AppointmentSelectionView extends React.PureComponent {
                             <Procedures procedures={dentist.procedures} />
 
                             <Text fontSize={1} mb={10}>
-                                {`Appointment duration: ${
+                                {`${formatText(
+                                    BOOKAPPOINTMENT_BOOKANAPPOINTMENT_APPOINTMENTDURATION
+                                )}: ${
                                     dentist.appointmentDuration === 30
-                                        ? '30 min'
-                                        : '1 hour'
+                                        ? `30 ${formatText(GENERAL_MINUTES)}`
+                                        : `1 ${formatText(GENERAL_HOUR)}`
                                 }`}
                             </Text>
 
@@ -182,7 +221,9 @@ class AppointmentSelectionView extends React.PureComponent {
                                 lineHeight="17px"
                                 textAlign="left"
                             >
-                                Available Times
+                                {formatText(
+                                    BOOKAPPOINTMENT_BOOKANAPPOINTMENT_AVAILABLETIMES
+                                )}
                             </Text>
                             <Grid
                                 gridTemplateColumns="repeat(4, 1fr)"
@@ -269,11 +310,20 @@ class AppointmentSelectionView extends React.PureComponent {
                     })
                 )
         );
+        const formatText = getFormatTextFromProps(this.props);
 
         return (
             <Box width={794} mb="100px">
-                <Onboarding.StepTitleText text="Book an appointment" />
-                <Onboarding.StepBlurbText text="Here are some of the dentists that are available in the next few days." />
+                <Onboarding.StepTitleText
+                    text={formatText(
+                        BOOKAPPOINTMENT_BOOKANAPPOINTMENT_BOOKAPPOINTMENT
+                    )}
+                />
+                <Onboarding.StepBlurbText
+                    text={formatText(
+                        BOOKAPPOINTMENT_BOOKANAPPOINTMENT_HEREARESOME
+                    )}
+                />
                 {_sortBy(Object.keys(dentistsGroupedByDates), [
                     val => moment(val),
                 ]).map(date => (
@@ -302,7 +352,9 @@ class AppointmentSelectionView extends React.PureComponent {
                             loading={this.props.formikProps.isSubmitting}
                             onClick={() => this.props.formikProps.submitForm()}
                         >
-                            Next
+                            {formatText(
+                                BOOKAPPOINTMENT_BOOKANAPPOINTMENT_BOOKAPPT
+                            )}
                         </StyledNextButton>
                     </Onboarding.FixedBox>
                 )}
@@ -311,4 +363,4 @@ class AppointmentSelectionView extends React.PureComponent {
     }
 }
 
-export default AppointmentSelectionView;
+export default injectIntl(AppointmentSelectionView);

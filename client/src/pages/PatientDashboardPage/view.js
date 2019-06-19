@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import UpdateProfileForm from '../../pages/common/Forms/UpdateProfileForm';
 import ContactInformationForm from '../../pages/common/Forms/ContactInformationForm';
 // import PaymentHistory from '../common/PaymentHistory'; //TODO We need to remove the code relateded with this old page
+import Family from '../common/Family';
 import PatientAppointments from '../common/PatientAppointments';
 import ProcedurePaymentRequestPage from '../../pages/ProcedurePaymentRequestPage';
 import {
@@ -20,6 +21,7 @@ import {
     LOG_OUT_MENU_TEXT,
     INSURANCE_CONFIRMATION_TEXT,
     LAGURO_WALLET_MENU_TEXT,
+    FAMILY_PLAN_MENU_TEXT,
 } from '../../util/strings';
 import { profileMenuTexts } from '../../util/menuItems';
 import { getLTMBaseUrl } from '../../util/urls';
@@ -44,6 +46,8 @@ const { TabletMobile, Desktop, withScreenSizes } = Responsive;
 const menuTextToDescription = {
     [ACCOUNT_SETTINGS_MENU_TEXT]:
         'View and edit your general information and notification settings ',
+    [FAMILY_PLAN_MENU_TEXT]:
+        "View, manage, and update your family members' information",
     [APPOINTMENTS_MENU_TEXT]: 'View your upcoming dentist visits',
     [DENTAL_RECORDS_MENU_TEXT]:
         'View your previous treatment details, dental charts, and x-rays',
@@ -165,6 +169,14 @@ class PatientDashboardPageView extends Component {
                             <ContactInformationForm />
                         </Card>
                     </Box>
+                );
+                break;
+            case FAMILY_PLAN_MENU_TEXT:
+                panelContent = (
+                    <Card>
+                        {this.renderPanelHeader(key)}
+                        <Family />
+                    </Card>
                 );
                 break;
             case APPOINTMENTS_MENU_TEXT:

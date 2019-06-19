@@ -99,6 +99,7 @@ export const MY_CALENDAR_MENU = 'My calendar';
 // profile menu
 // used in header profile/patient link and in patient dashboard
 export const ACCOUNT_SETTINGS_MENU_TEXT = 'Account settings';
+export const FAMILY_PLAN_MENU_TEXT = 'My family';
 export const APPOINTMENTS_MENU_TEXT = 'Appointments';
 export const DENTAL_RECORDS_MENU_TEXT = 'Dental Records';
 export const MEDICAL_HISTORY_MENU_TEXT = 'Medical history';
@@ -199,3 +200,4 @@ export const hasSkippedMedicalHistoryFormCookieVariableName =
 
 export const LAGURO_AUTH_TOKEN = 'laguroAuthToken';
 export const ENGLISH = 'ENGLISH';
+export const SPANISH = 'SPANISH';
