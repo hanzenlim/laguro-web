@@ -3,6 +3,7 @@ import _shuffle from 'lodash/shuffle';
 
 import FeaturedOfficesView from './view';
 import getFeaturedOffices from './queries';
+import { withScreenSizes } from '../../../components/Responsive';
 
 class FeaturedList extends PureComponent {
     constructor(props) {
@@ -22,6 +23,7 @@ class FeaturedList extends PureComponent {
     };
 
     render() {
+        const { desktopOnly } = this.props;
         if (!this.state.featuredOffices) return null;
 
         let mappedData = this.state.featuredOffices.map(item => ({
@@ -38,10 +40,13 @@ class FeaturedList extends PureComponent {
             office => office.id !== this.props.currentOffice
         );
 
-        const shuffledMappedData = _shuffle(mappedData).splice(0, 4);
+        const shuffledMappedData = _shuffle(mappedData).splice(
+            0,
+            desktopOnly ? 4 : 2
+        );
 
         return <FeaturedOfficesView featuredOffices={shuffledMappedData} />;
     }
 }
 
-export default FeaturedList;
+export default withScreenSizes(FeaturedList);

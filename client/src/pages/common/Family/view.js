@@ -29,6 +29,7 @@ import { width } from 'styled-system';
 import { getLTMBaseUrl } from '../../../util/urls';
 
 const MEDICAL_HISTORY_MODAL_NAME = 'medicalHistory';
+const APPOINTMENTS_MODAL_NAME = 'appointments';
 const DEFAULT_MODAL_WIDTH = 630;
 
 const StyledModal = styled(Modal)`
@@ -149,13 +150,15 @@ const FamilyView = ({
                 <StyledModal
                     destroyOnClose
                     width={
-                        activeModal === MEDICAL_HISTORY_MODAL_NAME
+                        activeModal === MEDICAL_HISTORY_MODAL_NAME ||
+                        APPOINTMENTS_MODAL_NAME
                             ? [DEFAULT_MODAL_WIDTH, '', 1000]
                             : DEFAULT_MODAL_WIDTH
                     }
                     title={getModalTitle(activeModal)}
                     visible={!_isEmpty(activeModal)}
                     onCancel={closeModal}
+                    maskClosable={activeModal !== MEDICAL_HISTORY_MODAL_NAME}
                 >
                     {modal}
                 </StyledModal>

@@ -77,7 +77,7 @@ class AppointmentFormView extends PureComponent {
                     <Formik
                         initialValues={{
                             patientName: '',
-                            dentalOfficeId: preferredLocations[0].id,
+                            dentalOfficeId: _get(preferredLocations, '[0].id'),
                             selectedEndTime: '',
                             selectedStartTime: '',
                             selectedDate: '',
@@ -178,10 +178,10 @@ class AppointmentFormView extends PureComponent {
                                                     id="dentalOfficeName"
                                                     className="selectbaho"
                                                     width="100%"
-                                                    defaultValue={
-                                                        preferredLocations[0]
-                                                            .name
-                                                    }
+                                                    defaultValue={_get(
+                                                        preferredLocations,
+                                                        '[0].name'
+                                                    )}
                                                     onSelect={handleLocationChange(
                                                         'dentalOfficeId'
                                                     )}
