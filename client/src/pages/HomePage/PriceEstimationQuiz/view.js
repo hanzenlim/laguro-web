@@ -75,9 +75,10 @@ const checkIfNextOnBdayIsDisabled = (values, isInputHolderBirthday) => {
             ? values.holderBirthYear
             : values.birthYear;
 
-        const completeBirthDate = new Date(
-            `${month} ${day}, ${year}`
-        ).toISOString();
+        const completeBirthDate = moment(
+            `${month}/${day}/${year}`,
+            'MM-DD-YYYY'
+        );
 
         isMinor = moment().diff(completeBirthDate, 'years') < 18;
     }
