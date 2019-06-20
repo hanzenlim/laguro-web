@@ -9,7 +9,11 @@ import { onLogoutWithoutRedirect } from '../../util/authUtils';
 import { PatientName } from './StepComponents/GetPatientName';
 import { RegisterStep } from './StepComponents/Register';
 import { LoginStep } from './StepComponents/LogIn';
-import { KIOSK_URL, KIOSK_REG_PAGE_URL } from '../../util/urls';
+import {
+    KIOSK_URL,
+    KIOSK_REG_PAGE_URL,
+    KIOSK_OFFICE_SETUP_PAGE_URL,
+} from '../../util/urls';
 import { getKioskPageWizardSteps } from '../KioskPage/getKioskPageWizardSteps';
 import { redirect } from '../../history';
 import {
@@ -26,6 +30,7 @@ import { getFormatTextFromProps } from '../../util/intlUtils';
 import { ChooseLanguage } from '../../wizardComponents/ChooseLanguage';
 import { KIOSK_FLOW_LANGUAGE_FORM_KEY } from '../../wizardComponents/ChooseLanguage/view';
 import { ENGLISH_CODE } from '../../strings/languageStrings';
+import { KIOSK_OFFICE_ID_COOKIE_VARIABLE_NAME } from '../KioskPage';
 
 // in order
 // stage 1 registration
@@ -157,12 +162,17 @@ const redirectToKioskPage = () =>
         }`,
     });
 
-class KioskPage extends Component {
+class KioskRegPage extends Component {
     constructor(props) {
         super(props);
         onLogoutWithoutRedirect();
         cookies.erase(kioskPurposeOfVisitCookieVariableName);
         cookies.erase(kioskIsAccountNewCookieVariableName);
+
+        // KIOSK_OFFICE_ID_COOKIE_VARIABLE_NAME cookie is not set, redirect to office set-up page
+        if (_isEmpty(cookies.get(KIOSK_OFFICE_ID_COOKIE_VARIABLE_NAME))) {
+            redirect({ url: KIOSK_OFFICE_SETUP_PAGE_URL });
+        }
     }
 
     setReference = node => {
@@ -288,4 +298,4 @@ class KioskPage extends Component {
         );
     }
 }
-export default injectIntl(KioskPage);
+export default injectIntl(KioskRegPage);

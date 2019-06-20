@@ -135,7 +135,6 @@ const {
     WomenOnly,
 } = HealthHistoryForm;
 
-const bellDentalOfficeId = 'e91ba710-2b37-11e9-998e-9da6024c6b32';
 const WIZARD_STEP_IDS_WITHOUT_PREVIOUS_BUTTON = [
     BOOKING_CONFIRMATION_WIZARD_STEP_ID,
     KIOSK_CONFIRMATION_WIZARD_STEP_ID,
@@ -272,17 +271,6 @@ class KioskPage extends PureComponent {
         super(props);
         // used for check in confirmation and booking confirmation pages
         cookies.erase(KIOSK_APPT_ID_COOKIE_VARIABLE_NAME);
-
-        // KIOSK_OFFICE_ID_COOKIE_VARIABLE_NAME cookie is not set, set it to default
-        if (_isEmpty(cookies.get(KIOSK_OFFICE_ID_COOKIE_VARIABLE_NAME))) {
-            cookies.set(
-                KIOSK_OFFICE_ID_COOKIE_VARIABLE_NAME,
-                bellDentalOfficeId,
-                {
-                    expires: 0,
-                }
-            );
-        }
     }
 
     componentDidUpdate() {
@@ -628,6 +616,7 @@ class KioskPage extends PureComponent {
                                         <AppointmentSelection
                                             {...props}
                                             dentistTimes={dentistTimes}
+                                            office={office}
                                         />
                                     );
                                 } else {

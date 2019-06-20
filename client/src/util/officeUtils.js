@@ -1,5 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
+import _get from 'lodash/get';
 import { formatAddress } from './styleUtil';
 import { Flex, Icon, Text } from '../components';
 
@@ -23,3 +24,5 @@ export const renderAddress = address => (
         </Text>
     </Flex>
 );
+
+export const getOfficeName = office => _get(office, 'name');

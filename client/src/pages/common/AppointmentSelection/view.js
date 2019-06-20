@@ -9,6 +9,7 @@ import {
     Text,
     Icon,
 } from '@laguro/basic-components';
+import _upperCase from 'lodash/upperCase';
 import _groupBy from 'lodash/groupBy';
 import _isEmpty from 'lodash/isEmpty';
 import _mapValues from 'lodash/mapValues';
@@ -37,6 +38,7 @@ import {
     getIntlLanguage,
 } from '../../../util/intlUtils';
 import { DENTIST_SPECIALTY_TEXTS } from '../../../util/dentistSpecialtyUtils';
+import { getOfficeName } from '../../../util/officeUtils';
 
 const StyledCard = styled(Card)`
     overflow: hidden;
@@ -314,6 +316,14 @@ class AppointmentSelectionView extends React.PureComponent {
 
         return (
             <Box width={794} mb="100px">
+                <Text
+                    fontWeight="bold"
+                    textAlign="center"
+                    fontSize={1}
+                    color="text.gray"
+                >
+                    {_upperCase(getOfficeName(this.props.office))}
+                </Text>
                 <Onboarding.StepTitleText
                     text={formatText(
                         BOOKAPPOINTMENT_BOOKANAPPOINTMENT_BOOKAPPOINTMENT
