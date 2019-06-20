@@ -19,6 +19,20 @@ export const GET_USER = gql`
                 insuranceProvider
                 insuranceProviderId
                 planOrGroupNumber
+                policyHolderUserId
+                policyHolderUser {
+                    firstName
+                    lastName
+                    gender
+                    dob
+                    address {
+                        streetAddress
+                        addressDetails
+                        zipCode
+                        state
+                        city
+                    }
+                }
             }
             address {
                 streetAddress

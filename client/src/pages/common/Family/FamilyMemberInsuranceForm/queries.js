@@ -29,6 +29,19 @@ export const getFamilyQuery = gql`
                 policyHolderId
                 planOrGroupNumber
                 policyHolderUserId
+                policyHolderUser {
+                    firstName
+                    lastName
+                    dob
+                    gender
+                    address {
+                        streetAddress
+                        addressDetails
+                        zipCode
+                        state
+                        city
+                    }
+                }
             }
         }
     }
