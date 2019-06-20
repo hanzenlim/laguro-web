@@ -44,23 +44,27 @@ class FamilyMemberInsuranceForm extends PureComponent {
             user,
             'insuranceInfo.policyHolderUserId'
         );
+        const policyHolderUser = _get(user, 'insuranceInfo.policyHolderUser');
 
         if (primaryUser.id === policyHolderUserId) {
             isUnderPrimaryUserInsurance = 'yes';
-        } else if (!_isEmpty(policyHolderUserId)) {
+        } else if (!_isEmpty(policyHolderUser)) {
             isUnderPrimaryUserInsurance = 'no';
         }
 
         return {
-            hasInsurance: _get(user, 'insuranceInfo.policyHolderUserId')
-                ? 'yes'
-                : 'no',
-            isUnderPrimaryUserInsurance,
-            firstName: user.firstName || '',
-            lastName: user.lastName || '',
+            firstName: _get(user, 'firstName'),
+            lastName: _get(user, 'lastName'),
             birthMonth: user.dob && user.dob.split('/')[0],
             birthDate: user.dob && user.dob.split('/')[1],
             birthYear: user.dob && user.dob.split('/')[2],
+            hasInsurance: _get(user, 'insuranceInfo') ? 'yes' : 'no',
+            hasOwnInsurance:
+                _get(user, 'insuranceInfo.insuranceNumber') &&
+                !_get(user, 'insuranceInfo.policyHolderUser')
+                    ? 'yes'
+                    : 'no',
+            isUnderPrimaryUserInsurance,
             insuranceProvider:
                 _get(user, 'insuranceInfo.insuranceProvider') || '',
             insuranceProviderId:
@@ -68,6 +72,35 @@ class FamilyMemberInsuranceForm extends PureComponent {
             insuranceNumber: _get(user, 'insuranceInfo.policyHolderId') || '',
             planOrGroupNumber:
                 _get(user, 'insuranceInfo.planOrGroupNumber') || '',
+            policyHolderUser: !_get(user, 'insuranceInfo.policyHolderUser')
+                ? null
+                : {
+                      firstName: _get(policyHolderUser, 'firstName'),
+                      lastName: _get(policyHolderUser, 'lastName'),
+                      birthMonth:
+                          policyHolderUser.dob &&
+                          policyHolderUser.dob.split('/')[0],
+                      birthDate:
+                          policyHolderUser.dob &&
+                          policyHolderUser.dob.split('/')[1],
+                      birthYear:
+                          policyHolderUser.dob &&
+                          policyHolderUser.dob.split('/')[2],
+                      gender: policyHolderUser.gender || 'unknown',
+                      address1: _get(
+                          policyHolderUser,
+                          'address.streetAddress',
+                          ''
+                      ),
+                      address2: _get(
+                          policyHolderUser,
+                          'address.addressDetails',
+                          ''
+                      ),
+                      city: _get(policyHolderUser, 'address.city', ''),
+                      zipCode: _get(policyHolderUser, 'address.zipCode', ''),
+                      state: _get(policyHolderUser, 'address.state', ''),
+                  },
         };
     };
 
@@ -93,7 +126,13 @@ class FamilyMemberInsuranceForm extends PureComponent {
     };
 
     handleUpdateInsuranceInfo = async ({ values }) => {
-        const { userId = '', onSuccess = () => {} } = this.props;
+        const {
+            userId = '',
+            onSuccess = () => {},
+            primaryUser = {},
+        } = this.props;
+        const { policyHolderUser } = values;
+
         const insuranceInfo = {
             insuranceProvider: values.insuranceProvider,
             insuranceProviderId: values.insuranceProviderId,
@@ -105,10 +144,37 @@ class FamilyMemberInsuranceForm extends PureComponent {
 
         const updateInsuranceInfoInput = {
             userId,
-            insuranceInfo,
+            ...{
+                insuranceInfo: {
+                    ...insuranceInfo,
+                    policyHolderUser:
+                        values.hasOwnInsurance === 'no' &&
+                        values.isUnderPrimaryUserInsurance === 'no'
+                            ? {
+                                  firstName: policyHolderUser.firstName,
+                                  lastName: policyHolderUser.lastName,
+                                  dob: `${policyHolderUser.birthMonth}/${
+                                      policyHolderUser.birthDate
+                                  }/${policyHolderUser.birthYear}`,
+                                  gender:
+                                      policyHolderUser.gender === 'unknown'
+                                          ? null
+                                          : policyHolderUser.gender,
+                                  address: {
+                                      streetAddress: policyHolderUser.address1,
+                                      addressDetails:
+                                          policyHolderUser.address2 || null,
+                                      city: policyHolderUser.city,
+                                      zipCode: policyHolderUser.zipCode,
+                                      state: policyHolderUser.state,
+                                  },
+                              }
+                            : null,
+                },
+            },
         };
 
-        const checkEligibilityInput = {
+        const checkEligibilityWithoutDependentInput = {
             patientId: userId,
             firstName: values.firstName,
             lastName: values.lastName,
@@ -116,7 +182,53 @@ class FamilyMemberInsuranceForm extends PureComponent {
             insuranceInfo,
         };
 
+        const checkEligibilityAsDependentOfPrimaryUserInput = {
+            patientId: userId,
+            firstName: primaryUser.firstName,
+            lastName: primaryUser.lastName,
+            dob: primaryUser.dob,
+            insuranceInfo,
+            dependentFirstName: values.firstName,
+            dependentLastName: values.lastName,
+            dependentDob: `${values.birthMonth}/${values.birthDate}/${
+                values.birthYear
+            }`,
+        };
+
+        const checkEligibilityWithDependentInput = {
+            patientId: userId,
+            firstName: policyHolderUser.firstName,
+            lastName: policyHolderUser.lastName,
+            dob: `${policyHolderUser.birthMonth}/${
+                policyHolderUser.birthDate
+            }/${policyHolderUser.birthYear}`,
+            insuranceInfo,
+            dependentFirstName: values.firstName,
+            dependentLastName: values.lastName,
+            dependentDob: `${values.birthMonth}/${values.birthDate}/${
+                values.birthYear
+            }`,
+        };
+
         let isEligible = false;
+
+        const getCheckAvailabilityInput = () => {
+            const isDependentOfPrimaryUser =
+                values.hasOwnInsurance === 'no' &&
+                values.isUnderPrimaryUserInsurance === 'yes';
+
+            const isDependentOfDifferentPerson =
+                values.hasOwnInsurance === 'no' &&
+                values.isUnderPrimaryUserInsurance === 'no';
+
+            if (isDependentOfPrimaryUser) {
+                return checkEligibilityAsDependentOfPrimaryUserInput;
+            } else if (isDependentOfDifferentPerson) {
+                return checkEligibilityWithDependentInput;
+            }
+
+            return checkEligibilityWithoutDependentInput;
+        };
 
         await execute({
             reportGqlErrorOnly: true,
@@ -124,7 +236,7 @@ class FamilyMemberInsuranceForm extends PureComponent {
                 const response = await insuranceClient.query({
                     query: CHECK_ELIGIBILITY_QUERY,
                     variables: {
-                        input: checkEligibilityInput,
+                        input: getCheckAvailabilityInput(),
                     },
                     fetchPolicy: 'network-only',
                 });
@@ -167,24 +279,19 @@ class FamilyMemberInsuranceForm extends PureComponent {
         }
     };
 
-    handleSubmit = async values => {
+    handleSubmit = values => {
+        if (values.hasInsurance === 'no') {
+            return this.handleRemoveInsurance();
+        }
+
         if (
-            values.hasInsurance === 'yes' &&
+            values.hasOwnInsurance === 'no' &&
             values.isUnderPrimaryUserInsurance === 'yes'
         ) {
-            await this.handleAddInsuranceDependent({ values });
+            return this.handleAddInsuranceDependent({ values });
         }
 
-        if (
-            values.hasInsurance === 'yes' &&
-            values.isUnderPrimaryUserInsurance === 'no'
-        ) {
-            await this.handleUpdateInsuranceInfo({ values });
-        }
-
-        if (values.hasInsurance === 'no') {
-            await this.handleRemoveInsurance();
-        }
+        return this.handleUpdateInsuranceInfo({ values });
     };
 
     render() {
@@ -196,11 +303,10 @@ class FamilyMemberInsuranceForm extends PureComponent {
                     this.updateInsuranceInfo = updateInsuranceInfo;
                     this.addInsuranceDependent = addInsuranceDependent;
 
+                    if (_get(getUser, 'loading')) return <Loading />;
                     const initialValues = this.getInitialValues({
                         user: this.user,
                     });
-
-                    if (_get(getUser, 'loading')) return <Loading />;
 
                     return (
                         <FamilyMemberInsuranceFormView

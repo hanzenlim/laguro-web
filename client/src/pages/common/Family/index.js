@@ -69,13 +69,14 @@ class Family extends PureComponent {
                     });
                     const currentFamilyMember = _find(familyMembers, [
                         'id',
-                        this.state.userId,
+                        userId,
                     ]);
 
                     return (
                         <FamilyView
                             refetch={getUser.refetch}
                             userId={userId}
+                            primaryUser={user}
                             familyMembers={familyMembers}
                             activeModal={activeModal}
                             openModal={this.openModal}

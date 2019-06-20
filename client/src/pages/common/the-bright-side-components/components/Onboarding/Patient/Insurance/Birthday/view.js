@@ -18,7 +18,9 @@ import {
     GENERAL_YEAR,
 } from '../../../../../../../../strings/messageStrings';
 
-const dates = _range(1, 32).map(i => i.toString());
+const dates = _range(1, 32)
+    .map(i => i.toString())
+    .map(num => `0${num}`.slice(-2));
 const years = _range(2019, 1900).map(i => i.toString());
 
 class AddressView extends React.PureComponent {
@@ -60,10 +62,8 @@ class AddressView extends React.PureComponent {
                             <Onboarding.SelectField
                                 {...props}
                                 placeholder={formatText(GENERAL_DATE)}
-                                options={dates.map((i, index) => (
-                                    <Onboarding.SelectOption
-                                        value={(index + 1).toString()}
-                                    >
+                                options={dates.map(i => (
+                                    <Onboarding.SelectOption value={i}>
                                         {i}
                                     </Onboarding.SelectOption>
                                 ))}

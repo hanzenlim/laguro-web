@@ -81,6 +81,7 @@ const StyledModal = styled(Modal)`
 
 const FamilyView = ({
     familyMembers = [],
+    primaryUser = {},
     activeModal = '',
     userId = '',
     refetch = () => {},
@@ -132,6 +133,7 @@ const FamilyView = ({
                 modal = (
                     <FamilyMemberInsuranceForm
                         userId={userId}
+                        primaryUser={primaryUser}
                         onSuccess={async () => {
                             await refetch();
                             await closeModal();
@@ -151,7 +153,7 @@ const FamilyView = ({
                     destroyOnClose
                     width={
                         activeModal === MEDICAL_HISTORY_MODAL_NAME ||
-                        APPOINTMENTS_MODAL_NAME
+                        activeModal === APPOINTMENTS_MODAL_NAME
                             ? [DEFAULT_MODAL_WIDTH, '', 1000]
                             : DEFAULT_MODAL_WIDTH
                     }
