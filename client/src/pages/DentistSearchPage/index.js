@@ -77,6 +77,8 @@ class DetailsSearchPage extends PureComponent {
             isFilterVisible: false,
             queryUrl: this.props.location.search,
         };
+
+        this.refetch = () => {};
     }
 
     componentDidMount = async () => {
@@ -202,7 +204,7 @@ class DetailsSearchPage extends PureComponent {
     };
 
     render() {
-        const urlParams = queryString.parse(this.state.queryUrl);
+        const urlParams = queryString.parse(this.props.location.search);
         const queryParams = this.buildQueryParams(urlParams);
 
         return (
