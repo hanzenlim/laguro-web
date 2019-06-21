@@ -18,7 +18,7 @@ export const FORM_STEPS = {
     ASK_PRIMARY_HOLDER: 'Are you the primary holder?',
     ASK_HOLDER_INFO: `What is the primary holder's name?`,
     INPUT_HOLDER_BIRTHDAY: `When is the primary holder's birthday?`,
-    INPUT_MEMBER_ID: `What's your member ID?`,
+    INPUT_MEMBER_ID: `Insurance Information`,
 };
 
 export const FORM_LOADERS = {
