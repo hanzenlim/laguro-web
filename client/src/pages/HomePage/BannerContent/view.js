@@ -154,6 +154,7 @@ const BannerContentView = ({
                     </Text>
                     <Link to="/dentist/search">
                         <Text
+                            is="span"
                             color="text.white"
                             fontSize={[0, '', 1]}
                             lineHeight="14px"
