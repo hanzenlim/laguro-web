@@ -274,14 +274,26 @@ export const getPatientWebOnboardingPageWizardSteps = ({
                               'insuranceInfo.policyHolderUser.address.zipCode'
                           ) || undefined,
                   }
-                : {},
+                : {
+                      firstName: undefined,
+                      lastName: undefined,
+                      gender: undefined,
+                      birthMonth: undefined,
+                      birthDate: undefined,
+                      birthYear: undefined,
+                      address1: undefined,
+                      address2: undefined,
+                      city: undefined,
+                      state: undefined,
+                      zipCode: undefined,
+                  },
         },
         validationSchema: Yup.object().shape({
-            policyHolderUser: Yup.string().when(
+            policyHolderUser: Yup.object().when(
                 ['hasNoInsurance', 'isPrimaryHolder'],
                 {
                     is: (hasNoInsurance, isPrimaryHolder) =>
-                        hasNoInsurance === 'no' && isPrimaryHolder === 'no',
+                        hasNoInsurance === 'false' && isPrimaryHolder === 'no',
                     then: Yup.object().shape({
                         firstName: Yup.string().required(
                             'Please fill out this field.'
