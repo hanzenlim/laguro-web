@@ -40,12 +40,10 @@ class FeaturedList extends PureComponent {
             office => office.id !== this.props.currentOffice
         );
 
-        const shuffledMappedData = _shuffle(mappedData).splice(
-            0,
-            desktopOnly ? 4 : 2
-        );
+        mappedData = _shuffle(mappedData);
 
-        return <FeaturedOfficesView featuredOffices={shuffledMappedData} />;
+        mappedData = mappedData.splice(0, desktopOnly ? 4 : 2);
+        return <FeaturedOfficesView featuredOffices={mappedData} />;
     }
 }
 

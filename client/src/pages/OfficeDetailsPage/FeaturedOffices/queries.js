@@ -5,13 +5,14 @@ import { getMyPosition } from '../../../util/navigatorUtil';
 
 const OFFICES_INDEX = 'offices';
 const MAX_DISTANCE = '100000km';
-const MAX_SIZE = 20;
+const MAX_SIZE = 8;
 
 const getFeaturedOffices = async () => {
     const searchLocation = await getMyPosition();
     const searchResponse = await esClient.search({
         index: OFFICES_INDEX,
         body: {
+            sort: [{ dateCreated: { order: 'asc' } }],
             query: {
                 bool: {
                     must: [
@@ -22,6 +23,7 @@ const getFeaturedOffices = async () => {
                             match_all: {},
                         },
                     ],
+
                     filter: {
                         geo_distance: {
                             distance: MAX_DISTANCE,
