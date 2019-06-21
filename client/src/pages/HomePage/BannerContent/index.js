@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { trackPriceEstimationQuizAttempt } from '../../../util/trackingUtils';
 
 import BannerContentView from './view';
@@ -8,6 +8,12 @@ const BannerContent = () => {
     const [isQuizDone, setQuizDone] = useState(false);
     const [bundleGroupCoverageData, setBundleGroupCoverageData] = useState([]);
     const [formValues, setFormValues] = useState({});
+
+    useEffect(() => {
+        if (window && window.location.search.includes('isQuizVisible=true')) {
+            setQuizVisible(true);
+        }
+    }, []);
 
     const toggleQuizVisibility = useCallback(() => {
         setQuizVisible(!isQuizVisible);
