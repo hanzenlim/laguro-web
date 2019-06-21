@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { Menu, Dropdown, Icon } from 'antd';
 import styled, { css } from 'styled-components';
 import _get from 'lodash/get';
@@ -10,7 +11,7 @@ import { getInsuranceText } from '../../../../util/insuranceUtil';
 
 import SelectProcedureModal from '../../SelectProcedureModal';
 
-const Item = Menu.Item;
+const { Item } = Menu;
 const StyledButton = styled(Button)`
     && {
         border-radius: 19.5px;
@@ -200,7 +201,7 @@ class PriceEstimationBundle extends PureComponent {
                     </Text>
                 )}
                 {selectedInsurance && !hasCheckedOutOfPocketCost && (
-                    <Dropdown overlay={insuranceMenu}>
+                    <Dropdown overlay={insuranceMenu} trigger={['click']}>
                         <Button
                             type="default"
                             ghost
@@ -274,7 +275,9 @@ class PriceEstimationBundle extends PureComponent {
                             if (this.props.onCheckOutOfPocketCost) {
                                 this.props.onCheckOutOfPocketCost();
                             }
-                            this.setState({ hasCheckedOutOfPocketCost: true });
+                            this.setState({
+                                hasCheckedOutOfPocketCost: true,
+                            });
                         }
                     }}
                 >
@@ -308,5 +311,22 @@ class PriceEstimationBundle extends PureComponent {
         );
     }
 }
+
+PriceEstimationBundle.propTypes = {
+    procedures: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    insurance: PropTypes.arrayOf(PropTypes.string).isRequired,
+    isLoading: PropTypes.bool,
+    price: PropTypes.string.isRequired,
+    insurancePrice: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    selectedInsurance: PropTypes.string,
+    hasCheckedOutOfPocketCost: PropTypes.bool,
+    selectedProcedure: PropTypes.string.isRequired,
+    selectedProcedureName: PropTypes.string.isRequired,
+    withInsurance: PropTypes.bool,
+    redirectToAddInsurance: PropTypes.func.isRequired,
+    onCheckOutOfPocketCost: PropTypes.func.isRequired,
+    onAddInsurance: PropTypes.func.isRequired,
+    onSelectProcedure: PropTypes.func.isRequired,
+};
 
 export default PriceEstimationBundle;
