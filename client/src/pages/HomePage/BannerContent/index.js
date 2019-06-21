@@ -12,6 +12,7 @@ const BannerContent = () => {
     useEffect(() => {
         if (window && window.location.search.includes('isQuizVisible=true')) {
             setQuizVisible(true);
+            trackPriceEstimationQuizAttempt();
         }
     }, []);
 
