@@ -21,12 +21,25 @@ const MemberIdStep = ({ isCheckEligibilityLoading }) => (
         <Field
             name="memberId"
             render={({ field }) => (
+                <Box mb={10} mx="auto" maxWidth={320}>
+                    <Input
+                        type="text"
+                        placeholder="Member ID *"
+                        {...field}
+                        required
+                    />
+                </Box>
+            )}
+        />
+
+        <Field
+            name="planOrGroupNumber"
+            render={({ field }) => (
                 <Box mb={20} mx="auto" maxWidth={320}>
                     <Input
                         type="text"
-                        placeholder="Member ID"
+                        placeholder="Plan/Group Number"
                         {...field}
-                        required
                     />
                 </Box>
             )}

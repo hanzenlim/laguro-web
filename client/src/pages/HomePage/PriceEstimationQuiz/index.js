@@ -173,6 +173,7 @@ const PriceEstimationQuiz = ({
                 holderBirthDay: '',
                 holderBirthYear: '',
                 memberId: '',
+                planOrGroupNumber: '',
             }}
             onSubmit={async (values, { setErrors }) => {
                 const {
@@ -190,6 +191,7 @@ const PriceEstimationQuiz = ({
                     holderLastName,
                     isPrimaryHolder,
                     bundleGroup,
+                    planOrGroupNumber,
                 } = values;
                 let response = {};
                 let patientId = '';
@@ -217,7 +219,7 @@ const PriceEstimationQuiz = ({
                                     insuranceProviderId: insuranceProvider,
                                     insuranceProvider,
                                     policyHolderId: memberId,
-                                    planOrGroupNumber: '00449948',
+                                    planOrGroupNumber,
                                 },
                                 ...(!isPrimaryHolder
                                     ? {
