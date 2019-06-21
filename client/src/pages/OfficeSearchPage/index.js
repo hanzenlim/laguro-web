@@ -234,6 +234,7 @@ class OfficeSearchPage extends PureComponent {
             size: limit || PAGE_SIZE,
             from,
             body: {
+                sort: [{ dateCreated: { order: 'asc' } }],
                 query: {
                     bool: {
                         must,
