@@ -410,7 +410,7 @@ class BookAppointmentContainer extends Component {
         return timeSlotList;
     };
 
-    getAppointmentSlotsByOfficeId = getDentistAppointmentSlotsData => {
+    getAppointmentSlotsByOfficeId = (getDentistAppointmentSlotsData = []) => {
         const urlParams = queryString.parse(history.location.search);
 
         if (urlParams.officeId) {
@@ -419,7 +419,11 @@ class BookAppointmentContainer extends Component {
             );
         }
 
-        return [getDentistAppointmentSlotsData[0]];
+        return (
+            getDentistAppointmentSlotsData.filter(
+                timeSlot => timeSlot.office.id === this.props.id
+            ) || []
+        );
     };
 
     handleFindAnotherMatch = async latestOfficeId => {
