@@ -220,3 +220,16 @@ export const trackPriceEstimationQuizAttempt = () => {
     };
     TagManager.dataLayer(gtmArgs);
 };
+
+
+export const trackPriceEstimationQuizStep = ({ eventLabel }) => {
+    const gtmArgs = {
+        dataLayer: {
+            event: 'GA Event',
+            eventAction: 'Interaction',
+            eventCategory: 'Price Estimation Quiz - Step',
+            eventLabel,
+        },
+    };
+    TagManager.dataLayer(gtmArgs);
+};
