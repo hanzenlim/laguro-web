@@ -6,6 +6,7 @@ import _get from 'lodash/get';
 import PriceEstimationQuizView from './view';
 import { CHECK_ELIGIBILITY, GET_BUNDLE_GROUP_COVERAGE } from './queries';
 import { insuranceClient, pricingClient } from '../../../util/apolloClients';
+import { trackPriceEstimationQuizStep } from '../../../util/trackingUtils';
 
 export const FORM_STEPS = {
     SELECT_BUNDLE_GROUP: 'Which procedure are you looking for?',
@@ -55,6 +56,10 @@ const PriceEstimationQuiz = ({
     }, []);
 
     const setFormStep = nextStep => {
+        if (trackPriceEstimationQuizStep) {
+            trackPriceEstimationQuizStep({ eventLabel: nextStep })
+        }
+
         if (
             [
                 FORM_LOADERS.MATCH_DENTIST_AVAILABLE,
