@@ -202,6 +202,7 @@ class BookAppointment extends PureComponent {
             onFindAnotherMatch,
             isFetchingNewData,
             totalDentists,
+            refetch,
         } = this.props;
 
         const isButtonDisabled = !selectedTimeSlot || !hasAgreed;
@@ -245,6 +246,7 @@ class BookAppointment extends PureComponent {
                 user={this.props.user}
                 currentPatientId={this.state.currentPatientId}
                 onPatientSelect={this.onPatientSelect}
+                refetch={refetch}
             />
         );
     }
@@ -523,6 +525,7 @@ class BookAppointmentContainer extends Component {
                                 );
                             }}
                             user={_get(getUser, 'data.getUser')}
+                            refetch={_get(getUser, 'refetch', () => {})}
                         />
                     );
                 }}

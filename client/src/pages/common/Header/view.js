@@ -107,6 +107,7 @@ class Header extends Component {
             onLogout,
             desktopOnly,
             customRedirect,
+            sideEffect,
         } = this.props;
 
         let placeholder;
@@ -157,6 +158,7 @@ class Header extends Component {
                     toggleLoginModal={toggleLoginModal}
                     isLoginModalOpen={isLoginModalOpen}
                     customRedirect={customRedirect}
+                    sideEffect={sideEffect}
                 />
                 <Container
                     display="flex"
