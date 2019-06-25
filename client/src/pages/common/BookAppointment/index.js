@@ -85,19 +85,6 @@ class BookAppointment extends PureComponent {
         });
     }
 
-    componentDidUpdate(prevProps) {
-        if (prevProps.user !== this.props.user) {
-            this.setState({
-                currentPatientId: getUserId(
-                    _find(_get(this.props.user, 'family.members'), [
-                        'relationshipToPrimary',
-                        'SELF',
-                    ])
-                ),
-            });
-        }
-    }
-
     getInternalPage = () => {
         const isOnOfficePage = history.location.pathname.includes('office');
         const isOnDentistPage = history.location.pathname.includes('dentist');
