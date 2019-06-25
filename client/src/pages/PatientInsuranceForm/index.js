@@ -1,6 +1,5 @@
 /* eslint-disable camelcase */
 import React, { Component } from 'react';
-import { message } from 'antd';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 import { adopt } from 'react-adopt';
@@ -42,13 +41,6 @@ class PatientInsuranceForm extends Component {
                 </Mutation>
             ),
         });
-    }
-
-    componentDidMount() {
-        message.warning(
-            "We only accept the primary holder's insurance information at this time. If you are a dependent, then please reach out to our support team.",
-            10
-        );
     }
 
     render() {
