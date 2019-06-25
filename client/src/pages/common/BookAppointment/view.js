@@ -28,7 +28,7 @@ const Container = styled(Box)`
 // step two: decision
 // step three: confirmation of scheduled appointment
 class BookAppointmentView extends React.Component {
-    state = { currentPage: 'selection', userFromSideEffect: null };
+    state = { currentPage: 'selection' };
 
     handleBookNow = () => {
         if (this.props.desktopOnly) {
@@ -43,9 +43,6 @@ class BookAppointmentView extends React.Component {
             emitter.emit('loginModal', {
                 sideEffect: async user => {
                     await this.props.refetch({ id: user.id });
-                    this.setState({
-                        currentPage: 'decision',
-                    });
                 },
             });
         }
