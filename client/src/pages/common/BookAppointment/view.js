@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import styled from 'styled-components';
 import _get from 'lodash/get';
 import _isArray from 'lodash/isArray';
+
 import { Button, Checkbox, Flex, Link, Text, Box } from '../../../components';
 import { TERMS_PAGE_URL } from '../../../util/urls';
 import AppointmentConfirmation from '../AppointmentConfirmation';
@@ -16,6 +17,8 @@ import { getOfficeAddress } from '../../../util/officeUtils';
 import { SelectPatient } from './SelectPatient';
 import { withScreenSizes } from '../../../components/Responsive';
 import { scrollToTop } from '../../../util/windowUtils';
+import { getUser } from '../../../util/authUtils';
+import emitter from '../../../util/emitter';
 
 const Container = styled(Box)`
     ${props => !props.visible && `display: none;`};
@@ -25,13 +28,27 @@ const Container = styled(Box)`
 // step two: decision
 // step three: confirmation of scheduled appointment
 class BookAppointmentView extends React.Component {
-    state = { currentPage: 'selection' };
+    state = { currentPage: 'selection', userFromSideEffect: null };
 
     handleBookNow = () => {
         if (this.props.desktopOnly) {
             scrollToTop();
         }
-        this.setState({ currentPage: 'decision' });
+
+        const user = getUser();
+
+        if (user) {
+            this.setState({ currentPage: 'decision' });
+        } else {
+            emitter.emit('loginModal', {
+                sideEffect: async user => {
+                    await this.props.refetch({ id: user.id });
+                    this.setState({
+                        currentPage: 'decision',
+                    });
+                },
+            });
+        }
     };
 
     renderSelection = () => {
@@ -51,6 +68,7 @@ class BookAppointmentView extends React.Component {
         } = this.props;
 
         const patients = _get(this.props.user, 'family.members');
+
         const moduleMarginBottom = [13, '', 25];
 
         return (
@@ -128,15 +146,13 @@ class BookAppointmentView extends React.Component {
         );
     };
 
-    renderConfirmation = () => {
-        return (
-            <Box {...wrapperStyles}>
-                <AppointmentConfirmation
-                    appointmentId={this.props.bookedAppointmentId}
-                />
-            </Box>
-        );
-    };
+    renderConfirmation = () => (
+        <Box {...wrapperStyles}>
+            <AppointmentConfirmation
+                appointmentId={this.props.bookedAppointmentId}
+            />
+        </Box>
+    );
 
     render() {
         return (

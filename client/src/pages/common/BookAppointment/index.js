@@ -85,6 +85,19 @@ class BookAppointment extends PureComponent {
         });
     }
 
+    componentDidUpdate(prevProps) {
+        if (prevProps.user !== this.props.user) {
+            this.setState({
+                currentPatientId: getUserId(
+                    _find(_get(this.props.user, 'family.members'), [
+                        'relationshipToPrimary',
+                        'SELF',
+                    ])
+                ),
+            });
+        }
+    }
+
     getInternalPage = () => {
         const isOnOfficePage = history.location.pathname.includes('office');
         const isOnDentistPage = history.location.pathname.includes('dentist');
@@ -202,6 +215,7 @@ class BookAppointment extends PureComponent {
             onFindAnotherMatch,
             isFetchingNewData,
             totalDentists,
+            refetch,
         } = this.props;
 
         const isButtonDisabled = !selectedTimeSlot || !hasAgreed;
@@ -245,6 +259,7 @@ class BookAppointment extends PureComponent {
                 user={this.props.user}
                 currentPatientId={this.state.currentPatientId}
                 onPatientSelect={this.onPatientSelect}
+                refetch={refetch}
             />
         );
     }
@@ -523,6 +538,7 @@ class BookAppointmentContainer extends Component {
                                 );
                             }}
                             user={_get(getUser, 'data.getUser')}
+                            refetch={_get(getUser, 'refetch', () => {})}
                         />
                     );
                 }}

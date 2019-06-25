@@ -193,6 +193,9 @@ export const RegisterOrLoginStep = props => (
                         redirectUser({
                             user,
                         });
+
+                        const { sideEffect } = props;
+                        sideEffect && (await sideEffect(user));
                     } catch (error) {
                         props.clear();
                         props.formikProps.setSubmitting(false);
