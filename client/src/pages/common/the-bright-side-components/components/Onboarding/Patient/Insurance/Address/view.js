@@ -122,6 +122,7 @@ class AddressView extends React.PureComponent {
                     component={props => (
                         <Onboarding.SelectField
                             {...props}
+                            showSearch
                             options={states.map(i => (
                                 <Onboarding.SelectOption value={i}>
                                     {i}
