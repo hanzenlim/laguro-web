@@ -6,6 +6,7 @@ import React, { PureComponent, Component } from 'react';
 import { adopt } from 'react-adopt';
 import { Mutation, Query } from 'react-apollo';
 import _find from 'lodash/find';
+
 import { Loading, Box } from '../../../components';
 import history, { getSearchParamValueByKey } from '../../../history';
 import { appointmentClient } from '../../../util/apolloClients';
@@ -202,6 +203,7 @@ class BookAppointment extends PureComponent {
             onFindAnotherMatch,
             isFetchingNewData,
             totalDentists,
+            refetch,
         } = this.props;
 
         const isButtonDisabled = !selectedTimeSlot || !hasAgreed;
@@ -245,6 +247,7 @@ class BookAppointment extends PureComponent {
                 user={this.props.user}
                 currentPatientId={this.state.currentPatientId}
                 onPatientSelect={this.onPatientSelect}
+                refetch={refetch}
             />
         );
     }
@@ -412,11 +415,16 @@ class BookAppointmentContainer extends Component {
 
     getAppointmentSlotsByOfficeId = (getDentistAppointmentSlotsData = []) => {
         const urlParams = queryString.parse(history.location.search);
+        const isOnDentistPage = history.location.pathname.includes('dentist');
 
         if (urlParams.officeId) {
             return getDentistAppointmentSlotsData.filter(
                 timeSlot => timeSlot.office.id === urlParams.officeId
             );
+        }
+
+        if (!urlParams.officeId && isOnDentistPage) {
+            return [getDentistAppointmentSlotsData[0]];
         }
 
         return (
@@ -523,6 +531,7 @@ class BookAppointmentContainer extends Component {
                                 );
                             }}
                             user={_get(getUser, 'data.getUser')}
+                            refetch={_get(getUser, 'refetch', () => {})}
                         />
                     );
                 }}

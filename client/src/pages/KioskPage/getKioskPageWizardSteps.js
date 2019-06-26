@@ -509,51 +509,55 @@ export const getKioskPageWizardSteps = ({
                         dob: `${patientBirthMonth}/${patientBirthDate}/${patientBirthYear}`,
                         gender:
                             patientGender === 'unknown' ? null : patientGender,
-                        insuranceInfo: {
-                            ...(!hasNoInsurance &&
-                                !_isEmpty(insuranceProvider) && {
-                                    insuranceProvider,
-                                }),
-                            ...(!hasNoInsurance &&
-                                !_isEmpty(insuranceProviderId) && {
-                                    insuranceProviderId,
-                                }),
-                            ...(!hasNoInsurance &&
-                                !_isEmpty(patientInsuranceNum) && {
-                                    policyHolderId: patientInsuranceNum,
-                                }),
-                            ...(!hasNoInsurance &&
-                                !_isEmpty(planOrGroupNumber) && {
-                                    planOrGroupNumber,
-                                }),
-                            policyHolderUser:
-                                isPrimaryHolder === 'yes'
-                                    ? null
-                                    : {
-                                          firstName: policyHolderUser.firstName,
-                                          lastName: policyHolderUser.lastName,
-                                          dob: `${
-                                              policyHolderUser.birthMonth
-                                          }/${policyHolderUser.birthDate}/${
-                                              policyHolderUser.birthYear
-                                          }`,
-                                          gender:
-                                              policyHolderUser.gender ===
-                                              'unknown'
-                                                  ? null
-                                                  : policyHolderUser.gender,
-                                          address: {
-                                              streetAddress:
-                                                  policyHolderUser.address1,
-                                              addressDetails:
-                                                  policyHolderUser.address2 ||
-                                                  null,
-                                              city: policyHolderUser.city,
-                                              zipCode: policyHolderUser.zipCode,
-                                              state: policyHolderUser.state,
-                                          },
-                                      },
-                        },
+                        insuranceInfo: hasNoInsurance
+                            ? null
+                            : {
+                                  ...(!_isEmpty(insuranceProvider) && {
+                                      insuranceProvider,
+                                  }),
+                                  ...(!_isEmpty(insuranceProviderId) && {
+                                      insuranceProviderId,
+                                  }),
+                                  ...(!_isEmpty(patientInsuranceNum) && {
+                                      policyHolderId: patientInsuranceNum,
+                                  }),
+                                  ...(!_isEmpty(planOrGroupNumber) && {
+                                      planOrGroupNumber,
+                                  }),
+                                  policyHolderUser:
+                                      isPrimaryHolder === 'yes'
+                                          ? null
+                                          : {
+                                                firstName:
+                                                    policyHolderUser.firstName,
+                                                lastName:
+                                                    policyHolderUser.lastName,
+                                                dob: `${
+                                                    policyHolderUser.birthMonth
+                                                }/${
+                                                    policyHolderUser.birthDate
+                                                }/${
+                                                    policyHolderUser.birthYear
+                                                }`,
+                                                gender:
+                                                    policyHolderUser.gender ===
+                                                    'unknown'
+                                                        ? null
+                                                        : policyHolderUser.gender,
+                                                address: {
+                                                    streetAddress:
+                                                        policyHolderUser.address1,
+                                                    addressDetails:
+                                                        policyHolderUser.address2 ||
+                                                        null,
+                                                    city: policyHolderUser.city,
+                                                    zipCode:
+                                                        policyHolderUser.zipCode,
+                                                    state:
+                                                        policyHolderUser.state,
+                                                },
+                                            },
+                              },
                     };
 
                     await updateInsuranceInfoMutation({

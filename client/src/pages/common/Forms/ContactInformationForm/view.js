@@ -129,6 +129,7 @@ const ContactInformationForm = props => (
                         component={props => (
                             <Onboarding.SelectField
                                 {...props}
+                                showSearch
                                 options={states.map(i => (
                                     <Onboarding.SelectOption value={i}>
                                         {i}

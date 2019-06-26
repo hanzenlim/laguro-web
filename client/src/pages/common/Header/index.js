@@ -16,6 +16,7 @@ class HeaderContainer extends PureComponent {
             pathname: window.location.pathname + window.location.search,
             isLoginModalOpen: false,
             customRedirect: history.location.pathname,
+            sideEffect: () => {},
         };
 
         history.listen(location => {
@@ -26,6 +27,7 @@ class HeaderContainer extends PureComponent {
 
         emitter.on('loginModal', args => {
             const redirectPath = _get(args, 'redirectPath');
+            const sideEffect = _get(args, 'sideEffect');
             const { mobileOnly } = this.props;
             if (mobileOnly) {
                 history.push(`/login?redirectTo=${this.state.pathname}`);
@@ -34,6 +36,7 @@ class HeaderContainer extends PureComponent {
                 this.setState({
                     isLoginModalOpen: true,
                     customRedirect: redirectPath || history.location.pathname,
+                    sideEffect,
                 });
             }
         });
@@ -71,6 +74,7 @@ class HeaderContainer extends PureComponent {
                 isLoginModalOpen={this.state.isLoginModalOpen}
                 pathname={this.state.pathname}
                 customRedirect={this.state.customRedirect}
+                sideEffect={this.state.sideEffect}
             />
         );
     }

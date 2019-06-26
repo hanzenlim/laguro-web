@@ -52,7 +52,7 @@ class Login extends Component {
     };
 
     render() {
-        const { closeModal, history, customRedirect } = this.props;
+        const { closeModal, history, customRedirect, sideEffect } = this.props;
         const { showLoginTitle } = this.state;
 
         return (
@@ -86,6 +86,7 @@ class Login extends Component {
                                     setReference={this.setReference}
                                     clear={this.clear}
                                     customRedirect={customRedirect}
+                                    sideEffect={sideEffect}
                                 />
                             </StyledFlex>
                         </Flex>
@@ -118,6 +119,7 @@ class Login extends Component {
                                     setReference={this.setReference}
                                     clear={this.clear}
                                     customRedirect={customRedirect}
+                                    sideEffect={sideEffect}
                                 />
                             </StyledFlex>
                         </Flex>

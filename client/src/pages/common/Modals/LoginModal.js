@@ -9,6 +9,7 @@ const LoginModal = ({
     toggleLoginModal,
     message,
     customRedirect,
+    sideEffect,
 }) => (
     <Modal
         onCancel={toggleLoginModal}
@@ -21,6 +22,7 @@ const LoginModal = ({
             closeModal={toggleLoginModal}
             message={message}
             customRedirect={customRedirect}
+            sideEffect={sideEffect}
         />
     </Modal>
 );

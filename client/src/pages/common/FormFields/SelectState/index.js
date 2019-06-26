@@ -58,6 +58,7 @@ const SelectState = props => {
     const { form, field } = props;
     return (
         <Onboarding.SelectField
+            showSearch
             form={form}
             field={field}
             placeholder="State"

@@ -135,15 +135,17 @@ class AppointmentFormView extends PureComponent {
                                             >
                                                 Create a New Appointment
                                             </Text>
-                                            <Text
-                                                fontSize={1}
-                                                my="15px"
-                                                mx="20px"
-                                                cursor="pointer"
-                                                onClick={this.props.onClose}
-                                            >
-                                                x
-                                            </Text>
+                                            {this.props.onClose && (
+                                                <Text
+                                                    fontSize={1}
+                                                    my="15px"
+                                                    mx="20px"
+                                                    cursor="pointer"
+                                                    onClick={this.props.onClose}
+                                                >
+                                                    x
+                                                </Text>
+                                            )}
                                         </Flex>
                                         <Box my="30px" mx="22px">
                                             <Text

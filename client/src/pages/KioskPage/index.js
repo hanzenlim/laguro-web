@@ -12,7 +12,7 @@ import _isEmpty from 'lodash/isEmpty';
 import moment from 'moment';
 import { adopt } from 'react-adopt';
 import { Query, Mutation } from 'react-apollo';
-import { Alert, message } from 'antd';
+import { Alert } from 'antd';
 import {
     getUser,
     onKioskLogout,
@@ -271,22 +271,6 @@ class KioskPage extends PureComponent {
         super(props);
         // used for check in confirmation and booking confirmation pages
         cookies.erase(KIOSK_APPT_ID_COOKIE_VARIABLE_NAME);
-    }
-
-    componentDidUpdate() {
-        // HACKY fix. Need to show this warning message until we start accepting dependent subscriber.
-        // I put it here because the KioskInsurance component gets rerendered multiple times for some reason
-        // Putting the warning message there will render this message multiple times.
-        if (
-            _get(this.props, 'location.pathname').includes(
-                INSURANCE_WIZARD_STEP_ID
-            )
-        ) {
-            message.warning(
-                "We only accept the primary holder's insurance information at this time. If you are a dependent, then please reach out to our support team.",
-                10
-            );
-        }
     }
 
     render() {

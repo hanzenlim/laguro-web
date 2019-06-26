@@ -183,8 +183,9 @@ export const getPatientInsuranceFormWizardSteps = ({ user, mutations }) => [
 
             const formattedValues = {
                 userId,
-                insuranceInfo: !hasNoInsurance
-                    ? {
+                insuranceInfo: hasNoInsurance
+                    ? null
+                    : {
                           ...(!_isEmpty(insuranceProvider) && {
                               insuranceProvider,
                           }),
@@ -222,8 +223,7 @@ export const getPatientInsuranceFormWizardSteps = ({ user, mutations }) => [
                                             state: policyHolderUser.state,
                                         },
                                     },
-                      }
-                    : null,
+                      },
             };
 
             formikProps.setSubmitting(true);
