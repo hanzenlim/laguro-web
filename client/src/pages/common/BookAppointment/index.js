@@ -511,7 +511,7 @@ class BookAppointmentContainer extends Component {
                         officeAppointmentSlots
                     );
 
-                    if (timeSlot.length === 0) return <NoAvailability />; // error part
+                    if (timeSlot.length === 0) return <NoAvailability />;
                     const timeSlotList = this.getTimeSlotList(timeSlot);
 
                     return (
