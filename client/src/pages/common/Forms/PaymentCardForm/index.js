@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import get from 'lodash/get';
 import { injectStripe } from 'react-stripe-elements';
 import { Query, graphql } from 'react-apollo';
+import { notification } from 'antd';
 
 import { Loading } from '../../../../components';
 import { getPaymentOptionQuery, addPaymentOptionMutation } from './queries';
@@ -49,8 +50,10 @@ class PaymentCardForm extends Component {
 
         if (error) {
             this.props.updateSubmittingState(false);
+
+            this.handleStripeError(error);
+
             return this.setState({
-                errorMessage: error.message,
                 isCreatingStripeToken: false,
             });
         }
@@ -80,9 +83,7 @@ class PaymentCardForm extends Component {
                 });
             }
         } catch (err) {
-            this.setState({
-                errorMessage: get(err, 'graphQLErrors[0].message'),
-            });
+            this.handleStripeError(err);
         }
 
         this.setState({
@@ -90,6 +91,43 @@ class PaymentCardForm extends Component {
         });
 
         return null;
+    };
+
+    handleStripeError = error => {
+        if (
+            error.message ===
+            'GraphQL error: Treatment plan payment is not authorized'
+        ) {
+            notification.error({
+                message: 'Not authorized',
+                description:
+                    'The pin code entered was not correct. Please verify with your patient that you have the correct code and try again.',
+                duration: 8,
+            });
+        } else if (error.message === 'GraphQL error: Your card was declined.') {
+            notification.error({
+                message: 'Card declined',
+                description:
+                    'Unfortunately your credit card was declined and your payment is unable to be processed. Please check your card and try again.',
+                duration: 8,
+            });
+        } else if (
+            error.message === 'GraphQL error: Your card has insufficient funds.'
+        ) {
+            notification.error({
+                message: 'Insufficient funds',
+                description:
+                    'Unfortunately this credit card does not have enough funds for this payment. Please enter a new card and try again.',
+                duration: 8,
+            });
+        } else {
+            notification.error({
+                message: 'Payment failed',
+                description:
+                    'Unfortunately processing this payment failed. Please verify your card number and try again',
+                duration: 8,
+            });
+        }
     };
 
     onChangeCardSelect = value => {
