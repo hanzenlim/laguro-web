@@ -57,7 +57,7 @@ const PriceEstimationQuiz = ({
 
     const setFormStep = nextStep => {
         if (trackPriceEstimationQuizStep) {
-            trackPriceEstimationQuizStep({ eventLabel: nextStep })
+            trackPriceEstimationQuizStep({ eventLabel: nextStep });
         }
 
         if (
@@ -294,6 +294,7 @@ const PriceEstimationQuiz = ({
                     onNext={onNext}
                     setFormStep={setFormStep}
                     setIsHolder={setIsHolder}
+                    toggleQuizVisibility={toggleQuizVisibility}
                     isCheckEligibilityLoading={isCheckEligibilityLoading}
                     formikProps={formikProps}
                 />
