@@ -197,7 +197,11 @@ class GeneralDentalInfo1 extends React.Component {
                         MEDICALHISTORYFORM_GENERALMEDICALINFORMATION2_PLEASECOMPLETE
                     )}
                 />
-                <Flex maxWidth="700px" width="100%" flexDirection="column">
+                <Flex
+                    maxWidth="700px"
+                    width={['100%', '100%', '700px']}
+                    flexDirection="column"
+                >
                     {_range(6).map(i =>
                         renderQuestionComponent(
                             this.questionComponents,

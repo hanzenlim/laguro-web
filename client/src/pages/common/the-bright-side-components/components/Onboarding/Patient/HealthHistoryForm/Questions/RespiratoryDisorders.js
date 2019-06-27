@@ -55,7 +55,6 @@ class RespiratoryDisorders extends React.Component {
                         return (
                             <Onboarding.Checkbox
                                 key={key}
-                                width="100%"
                                 field={formatText(texts[item])}
                                 value={props.formikProps.values[key]}
                                 onClick={() =>
@@ -91,6 +90,7 @@ class RespiratoryDisorders extends React.Component {
                 flexDirection="column"
                 alignItems="center"
                 justifyContent="center"
+                height="100%"
             >
                 <DentistIcon />
                 <Onboarding.StepTitleText
@@ -101,9 +101,7 @@ class RespiratoryDisorders extends React.Component {
                 <Onboarding.StepBlurbText
                     text={formatText(GENERAL_PLEASE_CHOOSE_CONDITIONS)}
                 />
-                <Box width={320} maxWidth="100%">
-                    {renderQuestions}
-                </Box>
+                <Box>{renderQuestions}</Box>
                 <Onboarding.NoneButton
                     list={props.formikProps.values}
                     onClick={() => props.formikProps.submitForm()}

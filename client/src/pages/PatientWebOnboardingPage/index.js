@@ -306,7 +306,7 @@ class PatientWebOnboardingPage extends Component {
                                 ) ? (
                                     step
                                 ) : (
-                                    <Box mx="auto" pt="100px">
+                                    <Box width="330px" mx="auto" pt="100px">
                                         <Onboarding.SkipButton
                                             onSkip={handleSkip}
                                             text="Skip all"
