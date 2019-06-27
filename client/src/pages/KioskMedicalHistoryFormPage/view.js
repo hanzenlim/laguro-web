@@ -288,7 +288,7 @@ const render = props => {
     }
 
     return (
-        <Box mx="auto" pt="100px">
+        <Box width="330px" mx="auto" pt="100px">
             {/* TODO: Move to render function of wizard */}
             {/* for kiosk registration, redirect url will be empty. for web onboarding, redirect will not be empty */}
             {props.canSkip && !_isEmpty(getRedirectUrl()) && (

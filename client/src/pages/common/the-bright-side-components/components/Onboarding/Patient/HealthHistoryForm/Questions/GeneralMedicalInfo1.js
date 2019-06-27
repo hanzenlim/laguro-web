@@ -147,7 +147,11 @@ class GeneralMedicalInfo1 extends React.Component {
                         MEDICALHISTORYFORM_GENERALMEDICALINFORMATION3_PLEASECHOOSE
                     )}
                 />
-                <Flex maxWidth="700px" width="100%" flexDirection="column">
+                <Flex
+                    maxWidth="700px"
+                    width={['100%', '100%', '700px']}
+                    flexDirection="column"
+                >
                     <Onboarding.FormItemLabelText
                         text={formatText(
                             MEDICALHISTORYFORM_GENERALMEDICALINFORMATION3_ANYOFFOLLOWING
