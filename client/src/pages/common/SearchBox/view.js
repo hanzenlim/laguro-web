@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import _isBoolean from 'lodash/isBoolean';
 import { Flex, Button, Box, Icon, Responsive } from '../../../components';
 import LocationFilter from '../LocationFilter';
+import history from '../../../history';
 
 export const DESKTOP_LARGE_SEARCHBOX_WIDTH = 769;
 
@@ -29,6 +30,8 @@ const SearchBox = props => {
 
     const hasFilter = _isBoolean(props.hasFilter) ? props.hasFilter : true;
 
+    const isOnOfficePage = history.location.pathname.includes('office');
+
     return (
         <Flex
             is="form"
@@ -52,7 +55,7 @@ const SearchBox = props => {
             <Box position="absolute" right="0" zIndex="100">
                 {tabletMobileOnly && hasFilter ? (
                     <Button
-                        onClick={toggleFilter}
+                        onClick={isOnOfficePage ? onSubmit : toggleFilter}
                         type="ghost"
                         width={50}
                         height={50}
@@ -61,7 +64,7 @@ const SearchBox = props => {
                             fontSize={4}
                             style={{ fontWeight: 'bold' }}
                             color="#dbdbdb"
-                            type="filter"
+                            type={isOnOfficePage ? 'search' : 'filter'}
                         />
                     </Button>
                 ) : (
