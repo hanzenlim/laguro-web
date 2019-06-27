@@ -276,7 +276,10 @@ class KioskPage extends PureComponent {
     render() {
         const appointmentId = cookies.get(KIOSK_APPT_ID_COOKIE_VARIABLE_NAME);
         const officeId = cookies.get(KIOSK_OFFICE_ID_COOKIE_VARIABLE_NAME);
-        const userId = _get(getUser(), 'id');
+        const kioskSelectedFamilyMemberId = cookies.get(
+            'kioskSelectedFamilyMember'
+        );
+        const userId = kioskSelectedFamilyMemberId || _get(getUser(), 'id');
         const currentWizardStepId = getCurrentWizardStep();
         const formatText = getFormatTextFromProps(this.props);
 
@@ -553,7 +556,7 @@ class KioskPage extends PureComponent {
                                     updatePatientHealthData,
                                 },
                                 answers: healthHistoryAnswers,
-                                formatText: formatText,
+                                formatText,
                             }),
                         });
 

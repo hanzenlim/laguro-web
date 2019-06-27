@@ -31,6 +31,7 @@ import { ChooseLanguage } from '../../wizardComponents/ChooseLanguage';
 import { KIOSK_FLOW_LANGUAGE_FORM_KEY } from '../../wizardComponents/ChooseLanguage/view';
 import { ENGLISH_CODE } from '../../strings/languageStrings';
 import { KIOSK_OFFICE_ID_COOKIE_VARIABLE_NAME } from '../KioskPage';
+import SelectAppointmentForCheckIn from './StepComponents/SelectAppointmentForCheckIn';
 
 // in order
 // stage 1 registration
@@ -40,6 +41,8 @@ export const LOGIN_WIZARD_STEP_ID = 'login-step';
 export const GET_PATIENT_NAME_WIZARD_STEP_ID = 'get-patient-name-step';
 export const TERMS_WIZARD_STEP_ID = 'terms';
 export const REGISTER_WIZARD_STEP_ID = 'register-step';
+export const SELECT_APPOINTMENT_TO_CHECK_IN_STEP_ID =
+    'select-appointment-to-check-in-step';
 
 export const REGISTER_WIZARD_STEP_IDS = [
     GET_PATIENT_NAME_WIZARD_STEP_ID,
@@ -49,6 +52,7 @@ export const REGISTER_WIZARD_STEP_IDS = [
 export const kioskPurposeOfVisitCookieVariableName = 'kioskPurposeOfVisit';
 export const kioskIsAccountNewCookieVariableName = 'kioskIsAccountNew';
 export const KIOSK_PURPOSE_OF_VISIT_WALKIN = 'walkIn';
+export const KIOSK_SELECTED_FAMILY_MEMBER = 'kioskSelectedFamilyMember';
 
 const REGISTRATION_SIGNIN_FIELDISREQUIRED =
     'registration.signIn.fieldIsRequired';
@@ -149,6 +153,9 @@ export const getKioskRegWizardSteps = ({ formatText = text => text }) => [
             });
         },
     },
+    {
+        id: SELECT_APPOINTMENT_TO_CHECK_IN_STEP_ID,
+    },
     // TO do: allow onAction to be called even if on last step
     {
         id: 'empty-step',
@@ -168,6 +175,7 @@ class KioskRegPage extends Component {
         onLogoutWithoutRedirect();
         cookies.erase(kioskPurposeOfVisitCookieVariableName);
         cookies.erase(kioskIsAccountNewCookieVariableName);
+        cookies.erase(KIOSK_SELECTED_FAMILY_MEMBER);
 
         // KIOSK_OFFICE_ID_COOKIE_VARIABLE_NAME cookie is not set, redirect to office set-up page
         if (_isEmpty(cookies.get(KIOSK_OFFICE_ID_COOKIE_VARIABLE_NAME))) {
@@ -191,8 +199,32 @@ class KioskRegPage extends Component {
         const steps = addActionsToWizardSteps({
             actions: [
                 {
+                    stepId: SELECT_APPOINTMENT_TO_CHECK_IN_STEP_ID,
+                    action: () => {
+                        redirectToKioskPage();
+                        return true;
+                    },
+                },
+                {
                     stepId: LOGIN_WIZARD_STEP_ID,
-                    action: stepValues => {
+                    action: (
+                        stepValues,
+                        formValues,
+                        stepFormActions,
+                        wizard
+                    ) => {
+                        const { purposeOfVisit } = formValues[
+                            PURPOSE_OF_VISIT_WIZARD_STEP_ID
+                        ];
+
+                        if (
+                            _get(stepValues, 'hasFamilyMembers') &&
+                            purposeOfVisit === 'checkIn'
+                        ) {
+                            wizard.push(SELECT_APPOINTMENT_TO_CHECK_IN_STEP_ID);
+                            return true;
+                        }
+
                         // if current mode is logIn not register, skip register wizard steps and go to next stage
                         if (
                             _get(stepValues, 'mode') === KioskLogIn.LOGIN_MODE
@@ -255,6 +287,9 @@ class KioskRegPage extends Component {
                             {...props}
                         />
                     );
+                    break;
+                case SELECT_APPOINTMENT_TO_CHECK_IN_STEP_ID:
+                    step = <SelectAppointmentForCheckIn {...props} />;
                     break;
                 default:
                     step = null;
