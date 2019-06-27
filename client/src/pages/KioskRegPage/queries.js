@@ -32,6 +32,11 @@ export const LOGIN = gql`
                 dentist {
                     bio
                 }
+                family {
+                    members {
+                        id
+                    }
+                }
             }
             authToken {
                 body
