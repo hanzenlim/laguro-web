@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import styled from 'styled-components';
 import _get from 'lodash/get';
 import _isArray from 'lodash/isArray';
+import _find from 'lodash/find';
 
 import { Button, Checkbox, Flex, Link, Text, Box } from '../../../components';
 import { TERMS_PAGE_URL } from '../../../util/urls';
@@ -19,6 +20,7 @@ import { withScreenSizes } from '../../../components/Responsive';
 import { scrollToTop } from '../../../util/windowUtils';
 import { getUser } from '../../../util/authUtils';
 import emitter from '../../../util/emitter';
+import { getUserId } from '../../../util/userUtils';
 
 const Container = styled(Box)`
     ${props => !props.visible && `display: none;`};
@@ -31,18 +33,26 @@ class BookAppointmentView extends React.Component {
     state = { currentPage: 'selection' };
 
     handleBookNow = () => {
-        if (this.props.desktopOnly) {
+        const { onPatientSelect, desktopOnly } = this.props;
+        if (desktopOnly) {
             scrollToTop();
         }
 
-        const user = getUser();
+        const userSaved = getUser();
 
-        if (user) {
+        if (userSaved) {
             this.setState({ currentPage: 'decision' });
         } else {
             emitter.emit('loginModal', {
                 sideEffect: async user => {
                     await this.props.refetch({ id: user.id });
+                    const patientId = getUserId(
+                        _find(_get(this.props.user, 'family.members'), [
+                            'relationshipToPrimary',
+                            'SELF',
+                        ])
+                    );
+                    onPatientSelect && onPatientSelect(patientId);
                 },
             });
         }
