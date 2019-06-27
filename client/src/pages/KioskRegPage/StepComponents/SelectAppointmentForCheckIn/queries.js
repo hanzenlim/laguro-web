@@ -47,14 +47,3 @@ export const GET_FAMILY_MEMBERS = gql`
         }
     }
 `;
-
-// rangeEnd: "${moment()
-//     .endOf('day')
-//     .utc()
-//     .format()}",
-// filters: [
-//     {
-//         filterKey: "${STATUS}",
-//         filterValues: ["${ACTIVE}"]
-//     }
-// ]
