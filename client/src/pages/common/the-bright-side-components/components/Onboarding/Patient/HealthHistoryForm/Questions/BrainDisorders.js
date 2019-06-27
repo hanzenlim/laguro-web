@@ -92,6 +92,7 @@ class BrainDisorders extends React.Component {
                 const key = GLAUCOMA;
                 return (
                     <Onboarding.Checkbox
+                        width="100%"
                         key={key}
                         field={formatText(
                             MEDICALHISTORYFORM_BRAINDISORDERS_GLAUCOMA
@@ -110,6 +111,7 @@ class BrainDisorders extends React.Component {
                 const key = STROKE;
                 return (
                     <Onboarding.Checkbox
+                        width="100%"
                         key={key}
                         field={formatText(
                             MEDICALHISTORYFORM_BRAINDISORDERS_STROKE
@@ -128,6 +130,7 @@ class BrainDisorders extends React.Component {
                 const key = EPILEPSY;
                 return (
                     <Onboarding.Checkbox
+                        width="100%"
                         key={key}
                         field={formatText(
                             MEDICALHISTORYFORM_BRAINDISORDERS_EPILEPSY
@@ -147,6 +150,7 @@ class BrainDisorders extends React.Component {
 
                 return (
                     <Onboarding.Checkbox
+                        width="100%"
                         key={key}
                         field={formatText(
                             MEDICALHISTORYFORM_BRAINDISORDERS_FAINTINGSPELLS
@@ -165,6 +169,7 @@ class BrainDisorders extends React.Component {
                 const key = SLEEPING_DISORDERS;
                 return (
                     <Onboarding.Checkbox
+                        width="100%"
                         key={key}
                         field={formatText(
                             MEDICALHISTORYFORM_BRAINDISORDERS_SLEEPINGDISORDERS
@@ -184,6 +189,7 @@ class BrainDisorders extends React.Component {
 
                 return (
                     <Onboarding.Checkbox
+                        width="100%"
                         key={key}
                         field={formatText(
                             MEDICALHISTORYFORM_BRAINDISORDERS_NEUROLOGICALDISORDERS
@@ -223,6 +229,7 @@ class BrainDisorders extends React.Component {
                 const key = NIGHT_SWEATS;
                 return (
                     <Onboarding.Checkbox
+                        width="100%"
                         key={key}
                         field={formatText(
                             MEDICALHISTORYFORM_BRAINDISORDERS_NIGHTSWEATS
@@ -241,6 +248,7 @@ class BrainDisorders extends React.Component {
                 const key = MENTAL_HEALTH_DISORDERS;
                 return (
                     <Onboarding.Checkbox
+                        width="100%"
                         key={key}
                         field={formatText(
                             MEDICALHISTORYFORM_BRAINDISORDERS_MENTALHEALTHDISORDERS
@@ -279,6 +287,7 @@ class BrainDisorders extends React.Component {
                 const key = SEVERE_HEADACHES_OR_MIGRAINES;
                 return (
                     <Onboarding.Checkbox
+                        width="100%"
                         key={key}
                         field={formatText(
                             MEDICALHISTORYFORM_BRAINDISORDERS_SEVEREHEADACHES
@@ -305,7 +314,6 @@ class BrainDisorders extends React.Component {
                 flexDirection="column"
                 alignItems="center"
                 justifyContent="center"
-                height="100%"
             >
                 <DentistIcon />
                 <Onboarding.StepTitleText
@@ -317,7 +325,7 @@ class BrainDisorders extends React.Component {
                     text={formatText(GENERAL_PLEASE_CHOOSE_CONDITIONS)}
                 />
 
-                <Box>
+                <Box width={320} maxWidth="100%">
                     {_range(11).map(i =>
                         renderQuestionComponent(
                             this.questionComponents,

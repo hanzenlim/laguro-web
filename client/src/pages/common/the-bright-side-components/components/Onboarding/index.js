@@ -102,14 +102,14 @@ const OnboardingCheckbox = props => {
         <Button
             key="key"
             type="ghost"
-            height="auto"
+            height="100%"
             onClick={onClick}
             style={{ textAlign: 'left' }}
-            width={['100%', 'auto', 'auto']}
+            width="100%"
         >
             <Box
                 width={['100%', width || '329px', width || '329px']}
-                height="auto"
+                height="100%"
                 min-height="46px"
                 border-radius="4px"
                 box-shadow="0 2px 7px 0 rgba(207, 218, 235, 0.25)"
@@ -147,7 +147,7 @@ const Choices = props => {
         <fieldset>
             <FormItem>
                 <Flex>
-                    <Box m="auto">
+                    <Box m="auto" width="100%">
                         <Grid
                             m="auto"
                             gridTemplateColumns={
@@ -164,7 +164,6 @@ const Choices = props => {
                             {namesAndTexts.map(nameAndText => (
                                 <Button
                                     height={size === 'large' ? '104px' : '46px'}
-                                    width="159px"
                                     type="ghost"
                                     onClick={async () => {
                                         await props.formikProps.setFieldValue(

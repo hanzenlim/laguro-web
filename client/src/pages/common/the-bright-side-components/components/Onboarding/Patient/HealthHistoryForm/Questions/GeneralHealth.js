@@ -308,7 +308,7 @@ class GeneralHealth extends React.Component {
                     )}
                 />
 
-                <Box>
+                <Box width={330} maxWidth="100%">
                     <Onboarding.FormItemLabelText
                         text={formatText(
                             MEDICALHISTORYFORM_GENERALMEDICALINFORMATION2_LASTPHYSICALEXAM

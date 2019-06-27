@@ -78,6 +78,7 @@ class NutritionalDiseases extends React.Component {
                         return (
                             <Onboarding.Checkbox
                                 key={key}
+                                width="100%"
                                 field={formatText(texts[item])}
                                 value={props.formikProps.values[key]}
                                 onClick={() =>
@@ -126,7 +127,10 @@ class NutritionalDiseases extends React.Component {
                 <Onboarding.StepBlurbText
                     text={formatText(GENERAL_PLEASE_CHOOSE_CONDITIONS)}
                 />
-                <Grid gridTemplateColumns={['1fr', '1fr 1fr', '1fr 1fr']}>
+                <Grid
+                    gridTemplateColumns={['1fr', '1fr 1fr', '1fr 1fr']}
+                    style={{ maxWidth: 900, width: '100%' }}
+                >
                     {renderQuestions}
                 </Grid>
                 <Onboarding.NoneButton

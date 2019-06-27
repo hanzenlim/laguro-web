@@ -285,11 +285,7 @@ class GeneralMedicalInfo2 extends React.Component {
                     )}
                 />
 
-                <Flex
-                    maxWidth="700px"
-                    width={['100%', '100%', '700px']}
-                    flexDirection="column"
-                >
+                <Flex maxWidth="700px" width="100%" flexDirection="column">
                     {renderQuestionComponent(
                         this.questionComponents,
                         questionConfigs,
