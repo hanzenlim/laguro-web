@@ -72,7 +72,7 @@ class LastDentalExamProcedure extends React.Component {
 
                         return (
                             <Onboarding.Checkbox
-                                width={290}
+                                width="100%"
                                 key={key}
                                 field={formatText(texts[item])}
                                 value={props.formikProps.values[key]}
@@ -126,7 +126,10 @@ class LastDentalExamProcedure extends React.Component {
                 />
                 <Onboarding.StepBlurbText />
 
-                <Grid gridTemplateColumns={['1fr', '1fr 1fr', '1fr 1fr 1fr']}>
+                <Grid
+                    gridTemplateColumns={['1fr', '1fr 1fr', '1fr 1fr 1fr']}
+                    style={{ maxWidth: 900, width: '100%' }}
+                >
                     {renderQuestions}
                 </Grid>
 

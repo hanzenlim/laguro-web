@@ -74,7 +74,7 @@ class ImmuneAndCancer extends React.Component {
                         const key = questionName;
                         return (
                             <Onboarding.Checkbox
-                                width={290}
+                                width="100%"
                                 key={key}
                                 field={formatText(texts[item])}
                                 value={props.formikProps.values[key]}
@@ -126,7 +126,8 @@ class ImmuneAndCancer extends React.Component {
                 />
                 <Grid
                     alignItems="flex-start"
-                    gridTemplateColumns={['1fr', '1fr 1fr', '1fr 1fr 1fr']}
+                    gridTemplateColumns={['1fr', '1fr 1fr', '1fr 1fr']}
+                    style={{ maxWidth: 900, width: '100%' }}
                 >
                     {renderQuestions}
                 </Grid>

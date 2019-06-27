@@ -187,11 +187,7 @@ class DrugsAndAlcohol1 extends React.Component {
                 <Onboarding.StepBlurbText
                     text={formatText(GENERAL_PLEASE_CHOOSE)}
                 />
-                <Flex
-                    maxWidth="700px"
-                    width={['100%', '100%', '700px']}
-                    flexDirection="column"
-                >
+                <Flex maxWidth="700px" width="100%" flexDirection="column">
                     {_range(5).map(i =>
                         renderQuestionComponent(
                             this.questionComponents,

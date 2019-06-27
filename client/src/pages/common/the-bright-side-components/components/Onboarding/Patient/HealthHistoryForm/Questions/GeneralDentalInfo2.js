@@ -221,11 +221,7 @@ class GeneralDentalInfo2 extends React.Component {
                 <Onboarding.StepBlurbText
                     text={formatText(GENERAL_PLEASE_CHOOSE)}
                 />
-                <Flex
-                    maxWidth="700px"
-                    width={['100%', '100%', '700px']}
-                    flexDirection="column"
-                >
+                <Flex maxWidth="700px" width="100%" flexDirection="column">
                     {_range(7).map(i =>
                         renderQuestionComponent(
                             this.questionComponents,

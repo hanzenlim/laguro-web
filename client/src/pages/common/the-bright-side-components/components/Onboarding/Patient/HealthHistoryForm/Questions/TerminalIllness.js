@@ -63,6 +63,7 @@ class TerminalIllness extends React.Component {
 
                 return (
                     <Onboarding.Checkbox
+                        width="100%"
                         key={key}
                         field={formatText(
                             MEDICALHISTORYFORM_TERMINALILLNESS_NAMERECURRENTINFECTIONS
@@ -102,6 +103,7 @@ class TerminalIllness extends React.Component {
                 const key = HIV_OR_AIDS;
                 return (
                     <Onboarding.Checkbox
+                        width="100%"
                         key={key}
                         field={formatText(
                             MEDICALHISTORYFORM_TERMINALILLNESS_HIVORAIDS
@@ -120,6 +122,7 @@ class TerminalIllness extends React.Component {
                 const key = HEPATITIS;
                 return (
                     <Onboarding.Checkbox
+                        width="100%"
                         key={key}
                         field={formatText(
                             MEDICALHISTORYFORM_TERMINALILLNESS_HEPATITIS
@@ -139,6 +142,7 @@ class TerminalIllness extends React.Component {
 
                 return (
                     <Onboarding.Checkbox
+                        width="100%"
                         key={key}
                         field={formatText(
                             MEDICALHISTORYFORM_TERMINALILLNESS_SEXUALLYTRANSMITTEDDISEASES
@@ -186,7 +190,6 @@ class TerminalIllness extends React.Component {
                 flexDirection="column"
                 alignItems="center"
                 justifyContent="center"
-                height="100%"
             >
                 <DentistIcon />
                 <Onboarding.StepTitleText
@@ -198,7 +201,7 @@ class TerminalIllness extends React.Component {
                     text={formatText(GENERAL_PLEASE_CHOOSE_CONDITIONS)}
                 />
 
-                <Box>
+                <Box width={320} maxWidth="100%">
                     {_range(6).map(i =>
                         renderQuestionComponent(
                             this.questionComponents,
