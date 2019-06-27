@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Progress } from 'antd';
@@ -121,6 +121,7 @@ const PriceEstimationQuiz = ({
     setFormStep,
     setIsHolder,
     formikProps,
+    toggleQuizVisibility,
     isCheckEligibilityLoading,
 }) => {
     const title = step;
@@ -141,14 +142,16 @@ const PriceEstimationQuiz = ({
         FORM_STEPS.INPUT_MEMBER_ID,
     ];
 
+    const onClose = useCallback(() => toggleQuizVisibility(), []);
+
     return (
         <Box
             width={587}
             maxWidth="100%"
             height={[innerHeight - 48, 547, '']}
-            maxHeight={innerHeight - 48}
+            maxHeight={[innerHeight - 48, '', innerHeight - 83]}
             position="fixed"
-            top={48}
+            top={[48, '', 83]}
             left="50%"
             textAlign="center"
             style={{ transform: 'translateX(-50%)' }}
@@ -161,7 +164,19 @@ const PriceEstimationQuiz = ({
                 position="relative"
                 style={{ overflowY: 'auto' }}
             >
+                <Box position="absolute" top={5} right={5} zIndex={1}>
+                    <Button
+                        type="ghost"
+                        height="auto"
+                        width={30}
+                        onClick={onClose}
+                    >
+                        <Text fontSize={5}>&times;</Text>
+                    </Button>
+                </Box>
+
                 {formLoaderSteps.includes(step) && <Loader step={step} />}
+
                 {!formLoaderSteps.includes(step) && (
                     <Box is="form" pt={50} onSubmit={handleSubmit}>
                         {stepsWithPreText.includes(step) && (
@@ -303,6 +318,7 @@ PriceEstimationQuiz.propTypes = {
     onNext: PropTypes.func.isRequired,
     setFormStep: PropTypes.func.isRequired,
     setIsHolder: PropTypes.func.isRequired,
+    toggleQuizVisibility: PropTypes.func.isRequired,
     formikProps: PropTypes.shape({
         handleSubmit: PropTypes.func,
     }).isRequired,

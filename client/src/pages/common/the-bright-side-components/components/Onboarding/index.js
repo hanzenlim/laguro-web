@@ -437,9 +437,6 @@ const StyledBasicComponentsSelect = styled(BasicComponentsSelect)`
         .ant-select-selection__placeholder {
             font-family: Silka;
             font-size: 16px;
-            line-height: 16px;
-            height: 16px;
-            margin-top: -7px;
         }
     }
 `;
