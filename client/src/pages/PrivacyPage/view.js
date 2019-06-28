@@ -1,872 +1,586 @@
 import React from 'react';
-import { Box, Text } from '../../components/';
+import { Box, Text, Link } from '../../components/';
 
 const PrivacyPageView = () => (
-    <Box m="20px auto" width="50%">
-        <p>
-            <Text is="span">Laguro Privacy Policy</Text>
-        </p>
-        <p>
-            <Text is="span">Last Updated: October 1, 2018</Text>
-        </p>
-        <p>
-            <Text is="span">Thank you for using Laguro!</Text>
-        </p>
-        <p>
-            <Text is="span">
-                This Privacy Policy describes how we collect, use, process, and
-                disclose your information, including personal information, in
-                conjunction with your access to and use of Laguro.
+    <Box m="40px auto" px={25} width="100%" maxWidth={900}>
+        <Box textAlign="center" mb={20}>
+            <Text fontWeight="bold">Laguro, Inc.</Text>
+            <Text fontWeight="bold">
+                Website and Mobile App Privacy Statement
             </Text>
-        </p>
-        <p>
-            <Text is="span">
-                If you see an undefined term in this Privacy Policy (such as
-                &ldquo;Listing&rdquo; or &ldquo;Laguro&rdquo;), it has the same
-                definition as in our Terms of Service.
+        </Box>
+
+        <Text fontWeight="bold" mb={20}>
+            Last modified: June 21, 2019
+        </Text>
+
+        <Text mb={20}>
+            This Laguro, Inc. Privacy Statement (this{' '}
+            <Text fontWeight="bold" is="span">
+                “Statement”
             </Text>
-        </p>
-        <ol>
-            <li>
-                <strong> INFORMATION WE COLLECT</strong>
-            </li>
-        </ol>
-        <p>
-            <Text is="span">
-                There are three general categories of information we collect.
+            ) describes how Laguro, Inc., a Delaware corporation (
+            <Text fontWeight="bold" is="span">
+                “Laguro”
+            </Text>{' '}
+            <Text fontWeight="bold" is="span">
+                “we,”
+            </Text>{' '}
+            <Text fontWeight="bold" is="span">
+                “our, ”
+            </Text>{' '}
+            or{' '}
+            <Text fontWeight="bold" is="span">
+                “us”
             </Text>
-        </p>
-        <p>
-            <strong>1.1 Information You Give to Us.</strong>
-        </p>
-        <p>
-            <Text is="span">
-                1.1.1 Information that is necessary for the use of Laguro.
+            ) collects, uses, maintains, and discloses personal information from
+            you (
+            <Text fontWeight="bold" is="span">
+                “you”
             </Text>
-        </p>
-        <p>
-            <Text is="span">
-                We ask for and collect the following personal information about
-                you when you use Laguro. This information is necessary for the
-                adequate performance of the contract between you and us and to
-                allow us to comply with our legal obligations. Without it, we
-                may not be able to provide you with all the requested services.
+            ), when you use the website www.laguro.com, any other websites
+            created and maintained by Laguro that link to this Statement
+            (collectively the{' '}
+            <Text fontWeight="bold" is="span">
+                “Website”
             </Text>
-        </p>
-        <ul>
-            <li>
-                <strong>Account Information.</strong>
-                <Text is="span">
-                    {' '}
-                    When you sign up for a Laguro account, we require certain
-                    information such as your first name, last name, email
-                    address, date of birth, and dental insurance.
+            ), and Laguro mobile applications as well as any other software
+            created and maintained by Laguro that link to this Statement
+            (collectively the{' '}
+            <Text fontWeight="bold" is="span">
+                “Mobile App,”
+            </Text>{' '}
+            and together with the Website, the{' '}
+            <Text fontWeight="bold" is="span">
+                “Services”
+            </Text>
+            ).
+        </Text>
+
+        <Text mb={20}>
+            This Statement is subject to the{' '}
+            <Link to="/terms">
+                <Text is="span" color="text.blue">
+                    Terms of Service
                 </Text>
-            </li>
-            <li>
-                <strong>Profile and Listing Information.</strong>
-                <Text is="span">
-                    {' '}
-                    To use certain features of Laguro (such as booking or
-                    creating a Listing), we may ask you to provide additional
-                    information, which may include your name, general and
-                    liability insurance, credentials, address, phone number, and
-                    a profile picture.
+            </Link>{' '}
+            for the Website and Mobile App. This Statement does not apply to
+            information collected by us offline or other than through the
+            Services. This Statement also does not apply to information
+            collected by any third-party that may be accessible or linked to or
+            from the Services. This Statement does not apply to Protected Health
+            Information (
+            <Text fontWeight="bold" is="span">
+                "PHI"
+            </Text>
+            ), as defined below, which is governed by your Dental Provider’s, as
+            defined below, PHI Privacy Practices Notice. Please contact your
+            Dental Provider to obtain a copy of their PHI Privacy Practices
+            Notice. We recommend carefully reviewing your Dental Provider’s PHI
+            Privacy Practices Notice to understand their practices concerning
+            PHI. Laguro is not involved with or responsible for your Dental
+            Provider’s handling of PHI. Additionally, certain terms of this
+            Statement apply only to individuals who register for an account on
+            our Services.
+        </Text>
+
+        <Text mb={20}>
+            By accessing or using the Services, you acknowledge that you have
+            read and understand the statements herein. By accessing or using the
+            Services, whether by visiting the Website, downloading or using the
+            Mobile App, and/or voluntarily providing your personal information (
+            <Text fontWeight="bold" is="span">
+                "Personal Information"
+            </Text>
+            ) to us, you acknowledge and agree that we may collect, use, and/or
+            store your Personal Information as provided in this Statement. If
+            you do not agree with the terms of this Statement, do not use the
+            Services or provide any information to us. This Statement may change
+            from time to time and we will post such changes on the Website
+            and/or Mobile App. Your continued use of the Services after any
+            revisions we make to this Statement are posted on the Website and/or
+            Mobile App constitutes your acceptance and agreement to those
+            changes, so please check the Website and/or Mobile App periodically
+            for updates.
+        </Text>
+
+        <Text fontWeight="bold" style={{ textDecoration: 'underline' }} mb={20}>
+            1. INFORMATION WE COLLECT
+        </Text>
+
+        <Text mb={20} pl={20}>
+            We may collect the following types of information when you use the
+            Services:
+        </Text>
+
+        <Box is="ul">
+            <Text is="li" mb={20}>
+                <Text fontWeight="bold" is="span">
+                    "Personal Information"
                 </Text>
-            </li>
-            <li>
-                <strong>Identity Verification Information.</strong>
-                <Text is="span">
-                    {' '}
-                    To help create and maintain a trusted environment, we may
-                    collect identity verification information (such as images of
-                    your government issued ID, passport, national ID card, or
-                    driving license, as permitted by applicable laws) or other
-                    authentication information.
+                : information that identifies you or another person as an
+                individual, such as your or someone else’s name, mailing
+                address, current location, e-mail address, telephone number, IP
+                address, or any other identifier by which you or any other
+                individual may be contacted online or offline.
+            </Text>
+
+            <Text is="li" mb={20}>
+                <Text fontWeight="bold" is="span">
+                    "Protected Health Information” (“PHI”)
                 </Text>
-            </li>
-            <li>
-                <strong>Payment Information. </strong>
-                <Text is="span">
-                    To use certain features of Laguro (such as booking or
-                    creating a Listing), we may require you to provide certain
-                    financial information (like your bank account or credit card
-                    information) in order to facilitate the processing of
-                    payments (via Stripe).
+                : individually identifiable information regarding a patient's
+                health care history; mental or physical condition; or treatment
+                that identifies you or another person, such as your or someone
+                else’s name, sex, race, date of birth, health record number,
+                health plan number, treatment records, date of treatment,
+                treatment history, or any other unique identifiers tied to your
+                or someone else’s health information. The Services are intended
+                for use in association with dental providers (each, a{' '}
+                <Text fontWeight="bold" is="span">
+                    “Dental Provider”
                 </Text>
-            </li>
-            <li>
-                <strong>Communications with Laguro.</strong>
-                <Text is="span">
-                    {' '}
-                    When you communicate with Laguro, we collect information
-                    about your communication and any information you choose to
-                    provide.
+                ) and dental facilities (each, a{' '}
+                <Text fontWeight="bold" is="span">
+                    “Facility”
                 </Text>
-            </li>
-        </ul>
-        <p>
-            <Text is="span">1.1.2 Information you choose to give us.</Text>
-        </p>
-        <p>
-            <Text is="span">
-                You may choose to provide us with additional personal
-                information in order to obtain a better user experience when
-                using Laguro. This additional information will be processed
-                based on your consent.
+                ) as you may request from time-to-time. Our Dental Providers and
+                Facilities are responsible for maintaining their own privacy
+                policies for collection, use and disclosure of Personal
+                Information and Protected Health Information.
             </Text>
-        </p>
-        <ul>
-            <li>
-                <strong>Additional Profile Information. </strong>
-                <Text is="span">
-                    You may choose to provide additional information as part of
-                    your Laguro profile (such as gender, preferred language(s),
-                    city, and a personal description). Some of this information
-                    as indicated in your Account settings is part of your public
-                    profile page, and will be publicly visible to others.
+
+            <Text is="li" mb={20}>
+                <Text fontWeight="bold" is="span">
+                    “Non-Personal Information”
                 </Text>
-            </li>
-            <li>
-                <strong>Other Information.</strong>
-                <Text is="span">
-                    {' '}
-                    You may otherwise choose to provide us information when you
-                    fill in a form, conduct a search, update or add information
-                    to your Laguro Account, respond to surveys, or use other
-                    features of Laguro.
+                : information that does not identify you as an individual, such
+                as your browser type, your internet connection, the URL of the
+                previous web site you visited, the equipment you use to access
+                the Services, and details about how you use the Services.
+            </Text>
+        </Box>
+
+        <Text fontWeight="bold" style={{ textDecoration: 'underline' }} mb={20}>
+            2. HOW WE COLLECT YOUR INFORMATION.
+        </Text>
+
+        <Text mb={20}>
+            We may collect information (i) when you provide it to us, or (ii)
+            automatically through the Services.
+        </Text>
+
+        <Text mb={20}>
+            <Text is="span" style={{ textDecoration: 'underline' }}>
+                Information You Provide to Us via the Website
+            </Text>
+            . When you use the Website, you may choose to provide us with
+            Personal Information and/or Non-Personal Information, including when
+            you:
+        </Text>
+
+        <Box is="ul" mb={20}>
+            <Text is="li">
+                Complete and submit forms on the Services, including registering
+                an account with Laguro.
+            </Text>
+            <Text is="li">Use the Services. </Text>
+            <Text is="li">
+                Request information about your appointment(s) and/or account.
+            </Text>
+            <Text is="li">Contact us.</Text>
+            <Text is="li">Report a problem with the Services.</Text>
+        </Box>
+
+        <Text mb={20}>
+            <Text is="span" style={{ textDecoration: 'underline' }}>
+                Information You Provide to Us via the Mobile App
+            </Text>
+            . When you use the Mobile App, you may choose to provide us with
+            Personal Information and/or Non-Personal Information, including when
+            you:
+        </Text>
+
+        <Box is="ul" mb={20}>
+            <Text is="li">
+                Undertake activities described in the “Information You Provide
+                to Us via the Website” section above through the Mobile App.
+            </Text>
+            <Text is="li">
+                “Opt-in” to providing location services permission for
+                additional functionality (e.g. you ask the Mobile App to locate
+                a provider near you).
+            </Text>
+            <Text is="li">
+                “Opt-in” to providing local storage permission for additional
+                functionality (e.g. store your login information on your device,
+                store your member ID, store backup copies of your account and
+                information on your device, etc.).
+            </Text>
+            <Text is="li">
+                It is your responsibility for securing your devices and any
+                information, including Personal Information and PHI (if any),
+                stored on or accessible from your device.
+            </Text>
+            <Text is="li">
+                Locally stored information may or may not be deleted when you
+                uninstall the Mobile App. To be certain clear the cache and/or
+                app data through your device’s settings to ensure erasure of
+                locally stored information.
+            </Text>
+            <Text is="li">
+                “Opt-in” to providing additional permission requests on your
+                device for additional functionality (e.g. additional permissions
+                to contact your provider directly from within the App, provide
+                push notifications, access and/or upload photos you wish to use
+                with the Services, etc.).
+            </Text>
+        </Box>
+
+        <Text mb={20}>
+            <Text is="span" style={{ textDecoration: 'underline' }}>
+                Information We Collect Automatically
+            </Text>
+            . We do not collect Personal Information or PHI automatically, with
+            the exception of IP addresses, which may be collected automatically
+            and are only used as described below. Other than IP addresses, we do
+            not collect real-time Personal Information or PHI about you or your
+            devices via the Services. When you access and use the Services, we
+            may use automatic data collection technologies to automatically
+            collect:
+        </Text>
+
+        <Box is="ul" mb={20}>
+            <Text is="li">
+                Usage details (e.g., details regarding your access to,
+                performance of, and use of the Website and/or Mobile App) which
+                can include passively collected log files that record website
+                activity; and
+            </Text>
+            <Text is="li">
+                Device information (e.g., information about your computer or
+                mobile device and/or internet connection, including the device's
+                unique device identifier, operating system, browser type, and/or
+                mobile network information).
+            </Text>
+        </Box>
+
+        <Text mb={20}>
+            If you do not want us to collect this information then please do not
+            use the Website.
+        </Text>
+
+        <Text mb={20} pl={20}>
+            The technologies we use for automatic information collection may
+            include “cookies.” A cookie is a small file placed on your browsing
+            device to enhance your experience of the Services. It may be
+            possible to refuse to accept cookies by activating the appropriate
+            setting on your computer, tablet, or smartphone. However, if you
+            select this setting you may be unable to access certain parts of our
+            Website.
+        </Text>
+
+        <Text fontWeight="bold" style={{ textDecoration: 'underline' }} mb={20}>
+            3. THIRD PARTY USE OF COOKIES AND OTHER TRACKING TECHNOLOGIES; DO
+            NOT TRACK
+        </Text>
+
+        <Box is="ul">
+            <Text is="li" mb={20}>
+                <Text is="span" style={{ textDecoration: 'underline' }} mb={20}>
+                    Cookies and Other Tracking Technologies
                 </Text>
-            </li>
-        </ul>
-        <p>
-            <strong>
-                1.2 Information We Automatically Collect from Your Use of
-                Laguro.
-            </strong>
-        </p>
-        <p>
-            <Text is="span">
-                When you use Laguro, we automatically collect information,
-                including personal information, about the services you use and
-                how you use them. This information is necessary for the adequate
-                performance of the contract between you and us, to enable us to
-                comply with legal obligations and given our legitimate interest
-                in being able to provide and improve the functionalities of
-                Laguro.
+                . Some content on the Website or Services, including
+                advertisements, may be served by third-parties, including
+                advertisers, ad networks and servers, content providers, and
+                application providers. These third parties may use cookies or
+                other tracking technologies to collect information about you
+                when you use the Website. We do not control these third parties'
+                tracking technologies or how they may be used. If you have any
+                questions about an advertisement or other targeted content, you
+                should contact the responsible provider directly.
             </Text>
-        </p>
-        <ul>
-            <li>
-                <strong>Geo-location Information.</strong>
-                <Text is="span">
-                    {' '}
-                    When you use certain features of Laguro, we may collect
-                    information about your precise or approximate location as
-                    determined through data such as your IP address or mobile
-                    device&rsquo;s GPS to offer you an improved user experience.
-                    Most mobile devices allow you to control or disable the use
-                    of location services for applications in the device&rsquo;s
-                    settings menu. Laguro may also collect this information even
-                    when you are not using the app if this connection is enabled
-                    through your settings or device permissions.
+
+            <Text is="li" mb={20}>
+                <Text is="span" style={{ textDecoration: 'underline' }} mb={20}>
+                    Do Not Track
                 </Text>
-            </li>
-            <li>
-                <strong>Usage Information. </strong>
-                <Text is="span">
-                    We collect information about your interactions with Laguro
-                    such as the pages or content you view, your searches for
-                    Listings, Appointments or Bookings you have made, and other
-                    actions on Laguro.
+                . “Do Not Track” is a privacy preference that you can set in
+                your web browser. When you turn on the Do Not Track signal, your
+                browser sends a message to websites requesting them not to track
+                you. For information about Do Not Track, visit
+                www.allaboutdnt.org. At this time, we do not respond to Do Not
+                Track browser settings or signals. In addition, we may use other
+                technology that is standard on the internet, such as pixel tags,
+                web beacons, and other similar technologies, to track visitors
+                to the Website. Those tools may be used by us and by third
+                parties to collect information about you and your internet
+                activity, even if you have turned on the Do Not Track signal.
+            </Text>
+        </Box>
+
+        <Text fontWeight="bold" style={{ textDecoration: 'underline' }} mb={20}>
+            4. HOW WE USE YOUR INFORMATION
+        </Text>
+
+        <Text mb={20} pl={20}>
+            We may use the information provided by or collected from you with
+            your consent, including Personal Information, in order to:
+        </Text>
+
+        <Box is="ul" mb={20}>
+            <Text is="li">Make the Website available to you;</Text>
+            <Text is="li">
+                Provide you with information, products, or Services that you
+                request from us;
+            </Text>
+            <Text is="li">
+                Provide such information to a Dental Providers as you may
+                request from time-to-time ;
+            </Text>
+            <Text is="li">
+                Provide such information to a Facility as you may request from
+                time-to-time;
+            </Text>
+            <Text is="li">Comply with applicable law; </Text>
+            <Text is="li">
+                Fulfill any other purpose for which you provide or we receive
+                the information;
+            </Text>
+            <Text is="li">
+                Improve the Website, our products, and the Services;{' '}
+            </Text>
+            <Text is="li">
+                Send notices, updates, support messages, and security alerts;{' '}
+            </Text>
+            <Text is="li">Provide customer support; and </Text>
+            <Text is="li">
+                Investigate and take remedial measures regarding any
+                unauthorized access to your account and any other illegal
+                activity.
+            </Text>
+        </Box>
+
+        <Text fontWeight="bold" style={{ textDecoration: 'underline' }} mb={20}>
+            5. DISCLOSURE OF YOUR INFORMATION
+        </Text>
+
+        <Text mb={20} pl={20}>
+            We do not share your Personal Information with third-parties in any
+            manner not described in this Statement.
+        </Text>
+
+        <Text mb={20} pl={20}>
+            We may disclose aggregated Non-Personal Information about our users,
+            and information that does not identify any individual, to
+            third-parties to help us improve the Services or for any other
+            commercially valid purposes.
+        </Text>
+
+        <Text mb={20} pl={20}>
+            We may disclose your Personal Information:
+        </Text>
+
+        <Box is="ul">
+            <Text is="li" mb={20}>
+                To Facilities, Dental Providers, and to contractors,
+                administrative service providers, and other third-parties we use
+                to support our business (collectively, “Service Providers”). In
+                such circumstances, the Facilities, Dental Providers, and/or
+                Service Providers may be bound by contractual obligations to
+                keep your Personal Information confidential and use it only for
+                the purposes for which we disclose it to them; however, not all
+                such Facilities, Dental Providers, or Service Providers will be
+                bound by such contractual obligations. In such an event your
+                Personal Information will be governed by the Facilities’, Dental
+                Providers’, and Service Providers’ privacy policies. This
+                subsection does not apply to Facilities, Dental Providers,
+                and/or Service Providers that receive your PHI from us. All
+                Facilities, Dental Providers, and/or Service Providers that
+                receive PHI from us are bound by contractual obligations and by
+                Federal and State Laws to keep your PHI confidential and use the
+                disclosed PHI for the purposes for which we disclose it to them.
+            </Text>
+
+            <Text is="li" mb={20}>
+                To a buyer or successor in the event of a merger,
+                reorganization, dissolution, or other sale or transfer of all or
+                substantially all of Laguro’s assets or equity interests.
+            </Text>
+
+            <Text is="li" mb={20}>
+                To fulfill the purpose for which you provide it or we receive it
+                with authorization. For example, if you give us an email address
+                in order for us to provide you more information about the
+                Services or our products, we will use that email address or that
+                social media credential to provide the requested information to
+                you.
+            </Text>
+
+            <Text is="li" mb={20}>
+                For any other purpose disclosed by us when you provide Personal
+                Information.
+            </Text>
+
+            <Text is="li" mb={20}>
+                With your consent.
+            </Text>
+        </Box>
+
+        <Text mb={20} pl={20}>
+            We may also disclose your Personal Information:
+        </Text>
+
+        <Box is="ul">
+            <Text is="li" mb={20}>
+                To comply with any court order, law, or legal process, including
+                to respond to any government or regulatory request.
+            </Text>
+
+            <Text is="li" mb={20}>
+                If we believe disclosure is necessary or appropriate to protect
+                the rights, property, or safety of Laguro or its affiliates,
+                customers, or others.
+            </Text>
+        </Box>
+
+        <Text fontWeight="bold" style={{ textDecoration: 'underline' }} mb={20}>
+            6. YOUR CHOICES AND OPTING OUT
+        </Text>
+
+        <Text mb={20} pl={20}>
+            We may periodically send you email messages describing news,
+            information, updates, or promotional offers related to the Services
+            or our products.
+        </Text>
+
+        <Text mb={20} pl={20}>
+            You can “opt-out” of receiving emails from us at any time by
+            following the instructions included in your email and we will make
+            the requested changes. Whether you opt-out of receiving promotional
+            emails or not, Laguro reserves the right to email or otherwise
+            contact you with respect to important information, important
+            notices, or important changes relating to our products and Services.
+        </Text>
+
+        <Text fontWeight="bold" style={{ textDecoration: 'underline' }} mb={20}>
+            7. ACCESSING AND CORRECTING PERSONAL INFORMATION
+        </Text>
+
+        <Box is="ul">
+            <Text is="li" mb={20}>
+                You can review and change your Personal Information by logging
+                into your account with us; or, if such Personal Information is
+                not available by logging into your account with us, please send
+                us an email at complaints@laguro.com to request access to, or to
+                correct or delete any of your Personal Information in our
+                possession. We may not change or delete information if we
+                believe the change or deletion would violate any law or legal
+                requirement or cause the information to be incorrect.
+            </Text>
+            <Text is="li" mb={20}>
+                California Civil Code Section § 1798.83 permits California
+                residents who use our Services to request certain information
+                regarding our disclosure of Personal Information to third
+                parties for their direct marketing purposes. To make such a
+                request, please send an email to complaints@laguro.com or write
+                us at:
+                <Text mt={20} pl={20}>
+                    Laguro, Inc.
                 </Text>
-            </li>
-            <li>
-                <strong>Log Data and Device Information.</strong>
-                <Text is="span">
-                    {' '}
-                    We automatically collect log data and device information
-                    when you access and use Laguro, even if you have not created
-                    a Laguro Account or logged in. That information includes,
-                    among other things: details about how you&rsquo;ve used
-                    Laguro (including if you clicked on links to third party
-                    applications), IP address, access dates and times, hardware
-                    and software information, device information, device event
-                    information, unique identifiers, crash data, cookie data,
-                    and the pages you&rsquo;ve viewed or engaged with before or
-                    after using Laguro.
-                </Text>
-            </li>
-            <li>
-                <strong>Cookies and Similar Technologies.</strong>
-                <Text is="span">
-                    {' '}
-                    We use cookies and other similar technologies, such as web
-                    beacons, pixels, and mobile identifiers. We may also allow
-                    our business partners to use these tracking technologies on
-                    Laguro, or engage others to track your behavior on our
-                    behalf. While you may disable the usage of cookies through
-                    your browser settings, Laguro currently does not respond to
-                    a &ldquo;Do Not Track&rdquo; signal in the HTTP header from
-                    your browser or mobile application due to lack of
-                    standardization regarding how that signal should be
-                    interpreted.
-                </Text>
-            </li>
-            <li>
-                <strong>Payment Transaction Information.</strong>
-                <Text is="span">
-                    {' '}
-                    Stripe securely collects information related to your payment
-                    transactions through Laguro, including the payment
-                    instrument used, date and time, payment amount, payment
-                    instrument expiration date and billing postcode, your
-                    address and other related transaction details.
-                </Text>
-            </li>
-        </ul>
-        <p>
-            <strong>1.3 Information We Collect from Third Parties.</strong>
-        </p>
-        <p>
-            <Text is="span">
-                Laguro may collect information or obtain information from third
-                parties. We do not control, supervise or respond for how the
-                third parties providing your information process your personal
-                data, and any information request regarding the disclosure of
-                your personal information to us should be directed to such third
-                parties.
+                <Text pl={20}>C/O Privacy Officer</Text>
+                <Text pl={20}>201 Dolores Ave.</Text>
+                <Text pl={20}>San Leandro, CA 94577</Text>
             </Text>
-        </p>
-        <ul>
-            <li>
-                <strong>Third Party Services.</strong>
-                <Text is="span">
-                    {' '}
-                    If you link, connect, or login to your Laguro Account with a
-                    third party service (e.g., Google, Facebook, Twitter, Yelp),
-                    the third party service may send us information such as your
-                    registration and profile information from that service. This
-                    information varies and is controlled by that service or as
-                    authorized by you via your privacy settings at that service.
-                </Text>
-            </li>
-            <li>
-                <strong>Other Sources.</strong>
-                <Text is="span">
-                    {' '}
-                    To the extent permitted by applicable law, we may receive
-                    additional information about you, such as fraud detection
-                    information, from third party service providers and/or
-                    partners, and combine it with information we have about you.
-                    For example, we may receive insurance verification results
-                    or fraud warnings from service providers like identity
-                    verification services for our fraud prevention and risk
-                    assessment efforts.
-                </Text>
-                <Text is="span">
-                    <br />
-                    <br />
-                </Text>
-            </li>
-        </ul>
-        <p>
-            <strong>1.4 A Note About Children.</strong>
-        </p>
-        <p>
-            <Text is="span">
-                We do not intentionally gather information from visitors who are
-                under the age of 13. If a child under 13 submits information to
-                Laguro and we learn that the information is the information of a
-                child under 13, we will attempt to delete the information as
-                soon as possible. If you believe that we might have any Personal
-                Data from a child under 13 outside of the scope of the services
-                to be rendered by Dentists, please contact us at{' '}
-            </Text>
-            <a href="mailto:privacy@laguro.com">
-                <Text is="span">privacy@laguro.com</Text>
-            </a>
-            <Text is="span">.</Text>
-            <Text is="span">
-                <br />
-                <br />
-            </Text>
-        </p>
-        <p>
-            <strong>1.5 You Must be 18 or Older to Create an Account.</strong>
-        </p>
-        <p>
-            <Text is="span">
-                In order to use Laguro&rsquo;s site and services, you must be 18
-                years or older. It is against our Terms of Service to create an
-                account unless you are at least 18 years old. If you are under
-                the age of 18, please do not create an account.
-            </Text>
-            <Text is="span">
-                <br />
-                <br />
-            </Text>
-        </p>
-        <ol start="2">
-            <li>
-                <strong> HOW WE USE INFORMATION WE COLLECT</strong>
-            </li>
-        </ol>
-        <p>
-            <Text is="span">
-                We use, store, and process information, including personal
-                information, about you to provide, understand, improve, and
-                develop Laguro, create and maintain a trusted and safer
-                environment and comply with our legal obligations.
-            </Text>
-        </p>
-        <p>
-            <strong>2.1 Provide, Improve, and Develop Laguro. &nbsp;</strong>
-        </p>
-        <ul>
-            <li>
-                <Text is="span">Enable you to access and use Laguro.</Text>
-            </li>
-            <li>
-                <Text is="span">
-                    Operate, protect, improve, and optimize Laguro and
-                    experience, such as by performing analytics and conducting
-                    research.
-                </Text>
-            </li>
-            <li>
-                <Text is="span">Provide customer service.</Text>
-            </li>
-            <li>
-                <Text is="span">
-                    Send you service or support messages, updates, security
-                    alerts, and account notifications.
-                </Text>
-            </li>
-            <li>
-                <Text is="span">
-                    If you provide us with your contacts&rsquo; information, we
-                    may process this information: (i) to facilitate your
-                    referral invitations, (ii) send your requests for
-                    references, (iii) for fraud detection and prevention, and
-                    (iv) for any purpose you authorize at the time of
-                    collection.
-                </Text>
-            </li>
-            <li>
-                <Text is="span">
-                    To operate, protect, improve, and optimize Laguro and
-                    experience, and personalize and customize your experience
-                    (such as making Listing suggestions or ranking search
-                    results), we conduct profiling based on your interactions
-                    with Laguro, your search and booking history, your profile
-                    information and preferences, and other content you submit to
-                    Laguro.
-                </Text>
-            </li>
-        </ul>
-        <p>
-            <Text is="span">
-                We process this information given our legitimate interest in
-                improving Laguro and the Laguro experience with it.
-            </Text>
-        </p>
-        <p>
-            <strong>
-                2.2 Create and Maintain a Trusted and Safer Environment.
-            </strong>
-        </p>
-        <ul>
-            <li>
-                <Text is="span">
-                    Detect and prevent fraud, spam, abuse, security incidents,
-                    and other harmful activity.
-                </Text>
-            </li>
-            <li>
-                <Text is="span">
-                    Conduct security investigations and risk assessments.
-                </Text>
-            </li>
-            <li>
-                <Text is="span">
-                    Verify or authenticate information or identifications
-                    provided by you (such as to verify your insurance or your
-                    identification photo).
-                </Text>
-            </li>
-            <li>
-                <Text is="span">
-                    Conduct checks against databases and other information
-                    sources, including background or police checks, to the
-                    extent permitted by applicable laws.
-                </Text>
-            </li>
-            <li>
-                <Text is="span">Comply with our legal obligations.</Text>
-            </li>
-            <li>
-                <Text is="span">
-                    Enforce our Terms of Service and other policies.
-                </Text>
-            </li>
-            <li>
-                <Text is="span">
-                    In connection with the activities above, we may conduct
-                    profiling based on your interactions with Laguro, your
-                    profile information and other content you submit to Laguro,
-                    and information obtained from third parties. In limited
-                    cases, automated processes may restrict or suspend access to
-                    Laguro if such processes detect activity that we think poses
-                    a safety or other risk to Laguro, other Users, or third
-                    parties.
-                </Text>
-            </li>
-        </ul>
-        <p>
-            <Text is="span">
-                We process this information given our legitimate interest in
-                protecting Laguro, to measure the adequate performance of our
-                contract with you, and to comply with applicable laws.
-            </Text>
-        </p>
-        <ol start="3">
-            <li>
-                <strong> SHARING &amp; DISCLOSURE</strong>
-            </li>
-        </ol>
-        <p>
-            <strong>3.1 With Your Consent.</strong>
-        </p>
-        <p>
-            <Text is="span">
-                Where you have provided consent, we share your information,
-                including personal information, as described at the time of
-                consent, such as when you authorize a third party application or
-                website to access your Laguro account.
-            </Text>
-        </p>
-        <p>
-            <strong>3.2 Sharing between Laguro Users.</strong>
-        </p>
-        <p>
-            <Text is="span">
-                To help facilitate appointments or other interactions between
-                Laguro Users, we may need to share certain information,
-                including personal information, with other Laguro Users, as it
-                is necessary for the adequate performance of the contract
-                between you and us, as follows: &nbsp;&nbsp;
-            </Text>
-        </p>
-        <ul>
-            <li>
-                <Text is="span">
-                    When you as a Patient submit an appointment request, certain
-                    information about you is shared with the Dentist, including
-                    your full name, the full name of any additional Guests, your
-                    prior treatment history, and other information you agree to
-                    share. This information is stored, and maintained under
-                    HIPAA-compliant methods by HelloSign, and is accessible only
-                    by the treating Dentist.
-                </Text>
-            </li>
-            <li>
-                <Text is="span">
-                    When you as a Host (or Co-Host, if applicable) have a
-                    confirmed booking, certain information is shared with the
-                    Dentist and the Patient to coordinate the booking, such as
-                    your full name, phone number, and address. &nbsp;
-                </Text>
-            </li>
-            <li>
-                <Text is="span">
-                    When you as a Dentist submit a booking request, certain
-                    information about you is shared with the Host, including but
-                    not limited to your full name, phone number, and email
-                    address.
-                </Text>
-            </li>
-        </ul>
-        <p>
-            <strong>
-                3.3 Profiles, Listings, and other Public Information.
-            </strong>
-        </p>
-        <p>
-            <Text is="span">
-                Laguro lets you publish information, including personal
-                information, that may be visible to the general public. For
-                example:
-            </Text>
-        </p>
-        <ul>
-            <li>
-                <Text is="span">
-                    Parts of your public profile page, such as your first name,
-                    your description, and city, may be publicly visible to
-                    others.
-                </Text>
-            </li>
-            <li>
-                <Text is="span">
-                    After completing an appointment, Patients, Dentists, and
-                    Hosts may write Reviews and rate each other. Reviews and
-                    Ratings are a part of your public profile page and may also
-                    be surfaced elsewhere on Laguro (such as the Listing page).
-                </Text>
-            </li>
-            <li>
-                <Text is="span">
-                    If you submit content in a community or discussion forum,
-                    blog or social media post, or use a similar feature on
-                    Laguro, that content is publicly visible. &nbsp;
-                </Text>
-            </li>
-        </ul>
-        <p>
-            <Text is="span">
-                Based on our legitimate interest to promote Laguro we may
-                display parts of Laguro (e.g., your Listing page) on sites
-                operated by Laguro&rsquo;s business partners, using technologies
-                such as widgets or APIs. If your Listings are displayed on a
-                partner&rsquo;s site, information from your public profile page
-                may also be displayed.
-            </Text>
-        </p>
-        <p>
-            <Text is="span">
-                Information you share publicly on Laguro may be indexed through
-                third party search engines. In some cases, you may opt-out of
-                this feature in your Account settings. If you change your
-                settings or your public-facing content, these search engines may
-                not update their databases. We do not control the practices of
-                third party search engines, and they may use caches containing
-                your outdated information.
-            </Text>
-        </p>
-        <p>
-            <strong>
-                3.4 Compliance with Law, Responding to Legal Requests,
-                Preventing Harm and Protection of our Rights.
-            </strong>
-        </p>
-        <p>
-            <Text is="span">
-                Laguro may disclose your information, including personal
-                information, to courts, law enforcement or governmental
-                authorities, or authorized third parties, if and to the extent
-                we are required or permitted to do so by law or if such
-                disclosure is reasonably necessary: (i) to comply with our legal
-                obligations, (ii) to comply with legal process and to respond to
-                claims asserted against Laguro, (iii) to respond to verified
-                requests relating to a criminal investigation or alleged or
-                suspected illegal activity or any other activity that may expose
-                us, you, or any other of our Users to legal liability, (iv) to
-                enforce and administer our Terms of Service, or (v) to protect
-                the rights, property or personal safety of Laguro, its
-                employees, its Users, or members of the public.
-            </Text>
-        </p>
-        <p>
-            <Text is="span">
-                These disclosures may be necessary to comply with our legal
-                obligations, for the protection of your or another person's
-                vital interests or for the purposes of our or a third
-                party&rsquo;s legitimate interest in keeping Laguro secure,
-                preventing harm or crime, enforcing or defending legal rights,
-                or preventing damage.
-            </Text>
-        </p>
-        <p>
-            <Text is="span">
-                Where appropriate, we may notify Users about legal requests
-                unless: (i) providing notice is prohibited by the legal process
-                itself, by court order we receive, or by applicable law, or (ii)
-                we believe that providing notice would be futile, ineffective,
-                create a risk of injury or bodily harm to an individual or
-                group, or create or increase a risk of fraud upon Laguro&rsquo;s
-                property, its Users and the Laguro platform. In instances where
-                we comply with legal requests without notice for these reasons,
-                we will attempt to notify that Member about the request after
-                the fact where appropriate and where we determine in good faith
-                that we are no longer prevented from doing so.
-            </Text>
-        </p>
-        <p>
-            <strong>3.5 Service Providers.</strong>
-        </p>
-        <p>
-            <Text is="span">
-                Laguro uses a variety of third party service providers to help
-                us provide services related to Laguro.
-            </Text>
-        </p>
-        <p>
-            <Text is="span">
-                For example, service providers may help us: (i) verify your
-                identity or authenticate your identification documents, (ii)
-                check information against public databases, (iii) conduct fraud
-                prevention and risk assessment, (iv) perform product
-                development, maintenance and debugging, (v) allow the provision
-                of Laguro through third party platforms and software tools (e.g.
-                through the integration with our APIs), or (vi) provide customer
-                service, advertising, or payments services. These providers have
-                limited access to your information to perform these tasks on our
-                behalf, and are contractually bound to protect and to use it
-                only for the purposes for which it was disclosed and consistent
-                with this Privacy Policy.
-            </Text>
-        </p>
-        <p>
-            <strong>3.6 Business Transfers.</strong>
-        </p>
-        <p>
-            <Text is="span">
-                If Laguro undertakes or is involved in any merger, acquisition,
-                reorganization, sale of assets, bankruptcy, or insolvency event,
-                then we may sell, transfer or share some or all of our assets,
-                including your information in connection with such transaction
-                or in contemplation of such transaction (e.g., due diligence).
-                In this event, we will notify you before your personal
-                information is transferred and becomes subject to a different
-                privacy policy.
-            </Text>
-        </p>
-        <p>
-            <strong>3.7 Aggregated Data.</strong>
-        </p>
-        <p>
-            <Text is="span">
-                We may also share aggregated information (information about our
-                Users that we combine together so that it no longer identifies
-                or references an individual user) and other anonymized
-                information for regulatory compliance, industry and market
-                analysis, demographic profiling, marketing and advertising, and
-                other business purposes.
-            </Text>
-        </p>
-        <ol start="4">
-            <li>
-                <strong> MAPBOX</strong>
-            </li>
-        </ol>
-        <p>
-            <Text is="span">
-                Parts of Laguro use mapbox&rsquo;s services, including the
-                mapbox API(s). Use of mapbox is subject to
-            </Text>
-            <a href="https://www.mapbox.com/tos/">
-                {' '}
-                <Text is="span">mapbox&rsquo;s Terms of Service</Text>
-            </a>
-            <Text is="span"> and the</Text>
-            <a href="https://www.mapbox.com/privacy/">
-                {' '}
-                <Text is="span">mapbox Privacy Policy</Text>
-            </a>
-            <Text is="span">.</Text>
-        </p>
-        <ol start="5">
-            <li>
-                <strong> THIRD PARTY PARTNERS &amp; INTEGRATIONS</strong>
-            </li>
-        </ol>
-        <p>
-            <Text is="span">
-                Laguro may contain links to third party websites or services,
-                such as third party integrations, co-branded services, or third
-                party-branded services (&ldquo;
-            </Text>
-            <strong>Third Party Partners</strong>
-            <Text is="span">
-                &rdquo;). Laguro does not own or control these Third Party
-                Partners and when you interact with them, you may be providing
-                information directly to the Third Party Partner, Laguro, or
-                both. These Third Party Partners will have their own rules about
-                the collection, use, and disclosure of information. We encourage
-                you to review the privacy policies of the other websites you
-                visit.
-            </Text>
-        </p>
-        <ol start="6">
-            <li>
-                <strong> YOUR RIGHTS</strong>
-            </li>
-        </ol>
-        <p>
-            <Text is="span">
-                You may exercise any of the rights described in this section by
-                sending an email to privacy@laguro.com. Please note that we may
-                ask you to verify your identity before taking further action on
-                your request.
-            </Text>
-        </p>
-        <p>
-            <strong>6.1 Managing Your Information.</strong>
-        </p>
-        <p>
-            <Text is="span">
-                You may access and update some of your information through your
-                Account settings. If you have chosen to connect your Laguro
-                Account to a third-party application, like Google, you can
-                change your settings and remove permission for the app by
-                changing your Account settings. You are responsible for keeping
-                your personal information up-to-date.
-            </Text>
-        </p>
-        <p>
-            <strong>
-                6.2 Rectification of Inaccurate or Incomplete Information.
-            </strong>
-        </p>
-        <p>
-            <Text is="span">
-                You have the right to ask us to correct inaccurate or incomplete
-                personal information concerning you (and which you cannot update
-                yourself within your Laguro Account).
-            </Text>
-        </p>
-        <p>
-            <strong>6.3 Data Retention and Erasure.</strong>
-        </p>
-        <p>
-            <Text is="span">
-                We generally retain your personal information for as long as is
-                necessary for the performance of the contract between you and us
-                and to comply with our legal obligations. If you no longer want
-                us to use your information to provide Laguro to you, you can
-                request that we erase your personal information and close your
-                Laguro Account. Please note that if you request the erasure of
-                your personal information:
-            </Text>
-        </p>
-        <ul>
-            <li>
-                <Text is="span">
-                    We may retain some of your personal information as necessary
-                    for our legitimate business interests, such as fraud
-                    detection and prevention and enhancing safety. For example,
-                    if we suspend a Laguro Account for fraud or safety reasons,
-                    we may retain certain information from that Account to
-                    prevent that User from opening a new Laguro Account in the
-                    future.
-                </Text>
-            </li>
-            <li>
-                <Text is="span">
-                    We may retain and use your personal information to the
-                    extent necessary to comply with our legal obligations. For
-                    example, Laguro may keep some of your information for tax,
-                    insurance, legal reporting, and auditing obligations.
-                </Text>
-            </li>
-            <li>
-                <Text is="span">
-                    Information you have shared with others (e.g., Reviews) may
-                    continue to be publicly visible on Laguro, even after your
-                    Laguro Account is cancelled. Additionally, some copies of
-                    your information (e.g., log records) may remain in our
-                    database.
-                </Text>
-            </li>
-            <li>
-                <Text is="span">
-                    Because we maintain Laguro to protect from accidental or
-                    malicious loss and destruction, residual copies of your
-                    personal information may not be removed from our backup
-                    systems for a limited period of time.
-                </Text>
-            </li>
-        </ul>
-        <ol start="7">
-            <li>
-                <strong> CALIFORNIA PRIVACY RIGHTS</strong>
-            </li>
-        </ol>
-        <p>
-            <Text is="span">
-                California law permits Users who are California residents to
-                request and obtain from us once a year, free of charge, a list
-                of the third parties to whom we have disclosed their personal
-                information (if any) for their direct marketing purposes in the
-                prior calendar year, as well as the type of personal information
-                disclosed to those third parties. See the &ldquo;Contact
-                Us&rdquo; section for where to send such requests. Laguro does
-                not share personal information with third parties for their own
-                direct marketing purposes without your prior consent.
-                Accordingly, you can prevent disclosure of your personal
-                information to third parties for their direct marketing purposes
-                by withholding consent.
-            </Text>
-        </p>
-        <ol start="8">
-            <li>
-                <strong> SECURITY</strong>
-            </li>
-        </ol>
-        <p>
-            <Text is="span">
-                We are continuously implementing and updating administrative,
-                technical, and physical security measures to help protect your
-                information against unauthorized access, loss, destruction, or
-                alteration. Some of the safeguards we use to protect your
-                information are firewalls and data encryption, and information
-                access controls. If you know or have reason to believe that your
-                Laguro Account credentials have been lost, stolen,
-                misappropriated, or otherwise compromised or in case of any
-                actual or suspected unauthorized use of your Laguro Account,
-                please contact us following the instructions in the Contact Us
-                section below.
-            </Text>
-        </p>
-        <ol start="9">
-            <li>
-                <strong> CHANGES TO THIS PRIVACY POLICY</strong>
-            </li>
-        </ol>
-        <p>
-            <Text is="span">
-                Laguro reserves the right to modify this Privacy Policy at any
-                time in accordance with this provision. If we make changes to
-                this Privacy Policy, we will post the revised Privacy Policy on
-                the Laguro website and update the &ldquo;Last Updated&rdquo;
-                date at the top of this Privacy Policy. If you disagree with the
-                revised Privacy Policy, you may cancel your Account. If you do
-                not cancel your Account before the date the revised Privacy
-                Policy becomes effective, your continued access to or use of
-                Laguro will be subject to the revised Privacy Policy.
-            </Text>
-        </p>
-        <ol start="10">
-            <li>
-                <strong> CONTACT US</strong>
-            </li>
-        </ol>
-        <p>
-            <Text is="span">
-                If you have any questions or complaints about this Privacy
-                Policy or Laguro&rsquo;s information handling practices, you may
-                email us at privacy@laguro.com or contact us at:
-            </Text>
-        </p>
-        <p>
-            <Text is="span">Laguro</Text>
-            <Text is="span">
-                <br />
-            </Text>
-            <Text is="span">ATTN: Data Privacy Team</Text>
-            <Text is="span">
-                <br />
-            </Text>
-            <Text is="span">201 Dolores Avenue</Text>
-            <Text is="span">
-                <br />
-            </Text>
-            <Text is="span">San Leandro, CA 94577</Text>
-        </p>
-        <p>
-            <br />
-            <br />
-        </p>
+        </Box>
+
+        <Text fontWeight="bold" style={{ textDecoration: 'underline' }} mb={20}>
+            8. RETENTION AND DATA SECURITY
+        </Text>
+
+        <Text mb={20} pl={20}>
+            We retain Personal Information collected through the Services for a
+            reasonable period of time consistent with the purposes of the
+            collection, or for other essential purposes including, without
+            limitation, compliance with applicable laws, dispute resolution, and
+            business operations. The retention periods can vary greatly
+            depending on the type of information collected and the content.{' '}
+        </Text>
+
+        <Text mb={20} pl={20}>
+            The transmission of information via the Internet and the storage of
+            such information is not completely secure. Personal Information is
+            protected using various physical, administrative, and/or technical
+            safeguards in transit and at rest. Although we utilize reasonable
+            security measures to protect your Personal Information, we cannot
+            guarantee the security of your Personal Information as no method of
+            safeguarding information is 100% secure. The email functionality
+            provided by the Services is not a completely secure and confidential
+            means of communication. It is possible that your email communication
+            may be accessed or viewed by another internet user while in transit
+            to us. If you wish to keep your communication private, do not use
+            such email functionality. In such case, please contact Laguro or
+            your Laguro Dental Provider by phone.
+        </Text>
+
+        <Text mb={20} pl={20}>
+            You acknowledge and agree that you are providing, or allow us to
+            gather, your Personal Information to us at your own risk. We are not
+            responsible for failure or circumvention of any privacy settings or
+            security measures we may have in place to protect your Personal
+            Information.{' '}
+        </Text>
+
+        <Text fontWeight="bold" style={{ textDecoration: 'underline' }} mb={20}>
+            9. CHILDREN UNDER THE AGE OF 13
+        </Text>
+
+        <Text mb={20} pl={20}>
+            In compliance with the Children’s Online Privacy Act, 15 U.S.C. § §
+            6501-06 and 16 C.F.R. § § 312.1-312.12, we do not permit children
+            under 13 years of age to become registered users of the Services and
+            we do not knowingly collect information from children under 13 years
+            of age. If you are under 13, do not use our products, the Services,
+            or provide any information to Laguro through the Services. If we
+            learn that Personal Information of a child under the age of 13 is
+            collected, we will delete that information from our systems. If you
+            believe we might have any information from or about a child under
+            13, please contact us at complaints@laguro.com. By using the
+            Services, our products, and/or providing nay information to Laguro,
+            you represent that you are 13 years of age or older.
+        </Text>
+
+        <Text fontWeight="bold" style={{ textDecoration: 'underline' }} mb={20}>
+            10. CHANGES TO OUR PRIVACY STATEMENT
+        </Text>
+
+        <Text mb={20} pl={20}>
+            We may modify or amend this Statement from time to time. The date
+            this Statement was last revised is identified at the top of the page
+            and the terms of this Statement are effective as of that date.
+        </Text>
+
+        <Text fontWeight="bold" style={{ textDecoration: 'underline' }} mb={20}>
+            11. CONTACT INFORMATION
+        </Text>
+
+        <Text mb={20} pl={20}>
+            To ask questions or make comment about this Statement or our other
+            privacy practices, contact us at: complaints@laguro.com
+        </Text>
+
+        <Text mb={20} pl={20}>
+            or:
+        </Text>
+
+        <Text pl={20}>Laguro, Inc.</Text>
+        <Text pl={20}>C/O Privacy Officer</Text>
+        <Text pl={20}>201 Dolores Ave.</Text>
+        <Text pl={20} mb={40}>
+            San Leandro, CA 94577
+        </Text>
+
+        <Text>© 2019 Laguro, Inc. All Rights Reserved.</Text>
     </Box>
 );
 
