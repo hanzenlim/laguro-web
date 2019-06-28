@@ -119,6 +119,12 @@ export const LoginStep = injectIntl(props => {
                     trackUserAuth({ userId: user.id });
 
                     props.formikProps.setFieldValue('isPinValid', true);
+                    if (user.family.members.length > 1) {
+                        props.formikProps.setFieldValue(
+                            'hasFamilyMembers',
+                            true
+                        );
+                    }
 
                     const dentistBio = _get(dentist, 'bio');
 

@@ -6,7 +6,10 @@ export const getUserFullName = user =>
 export const getUserId = user => _get(user, 'id');
 export const getUserRelationshipToPrimary = user => {
     const relationshipToPrimary = _get(user, 'relationshipToPrimary');
-    if (relationshipToPrimary) {
+    if (relationshipToPrimary === 'SELF') {
+        return 'Myself';
+    }
+    if (relationshipToPrimary && relationshipToPrimary !== 'SELF') {
         return relationshipList.filter(r => r.key === relationshipToPrimary)[0]
             .name;
     }

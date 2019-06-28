@@ -38,7 +38,8 @@ class FormikWizard extends React.PureComponent {
                     hasErrorOrRedirect = await onAction(
                         stepValues,
                         this.state.values,
-                        stepFormActions
+                        stepFormActions,
+                        wizard
                     );
                     status = hasErrorOrRedirect;
                 }
@@ -108,7 +109,6 @@ class FormikWizard extends React.PureComponent {
                                     status: undefined,
                                 });
                             },
-
                             currentStep: wizard.step.id,
                             actionLabel: step.actionLabel,
                             isLastStep:

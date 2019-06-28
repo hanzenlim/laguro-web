@@ -8,18 +8,19 @@ import { PATIENT_WEB_ONBOARDING_PAGE_REDIRECT_TO_COOKIE_VARIABLE_NAME } from '.'
 
 const addActionToWizardStep = ({ action, step }) => {
     const copyOfStep = { ...step };
-    const newOnAction = async (stepValues, allValues, formikProps) => {
+    const newOnAction = async (stepValues, allValues, formikProps, wizard) => {
         // if getStageWizardStpes already adds an onAction, add this action on top of the old action
         let hasError;
         if (copyOfStep.onAction) {
             hasError = await copyOfStep.onAction(
                 stepValues,
                 allValues,
-                formikProps
+                formikProps,
+                wizard
             );
         }
 
-        const hasRedirect = action(stepValues, allValues, formikProps);
+        const hasRedirect = action(stepValues, allValues, formikProps, wizard);
 
         return hasError || hasRedirect;
     };
