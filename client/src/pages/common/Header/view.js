@@ -3,9 +3,9 @@ import _isString from 'lodash/isString';
 import Intercom from 'react-intercom';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { Container } from '@laguro/basic-components';
 import SearchBox from '../SearchBox';
 import { Icon, Responsive, Link, Flex } from '../../../components/';
-import { Container } from '@laguro/basic-components';
 import LoginModal from '../Modals/LoginModal';
 import { intercomKey } from '../../../config/keys';
 import { DentistLink, HostLink } from './Links';
@@ -104,6 +104,7 @@ class Header extends Component {
             isHost,
             isLoginModalOpen,
             toggleLoginModal,
+            closeLoginModal,
             onLogout,
             desktopOnly,
             customRedirect,
@@ -156,6 +157,7 @@ class Header extends Component {
                 <IntercomContainer auth={auth} pathname={pathname} />
                 <LoginModal
                     toggleLoginModal={toggleLoginModal}
+                    closeLoginModal={closeLoginModal}
                     isLoginModalOpen={isLoginModalOpen}
                     customRedirect={customRedirect}
                     sideEffect={sideEffect}
@@ -260,6 +262,17 @@ Header.propTypes = {
     isHost: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
     toggleLoginModal: PropTypes.func,
     pathname: PropTypes.string,
+    isLoginModalOpen: PropTypes.bool.isRequired,
+    closeLoginModal: PropTypes.func.isRequired,
+    hasUpdatedDentistBio: PropTypes.bool.isRequired,
+    desktopOnly: PropTypes.bool.isRequired,
+    customRedirect: PropTypes.string.isRequired,
+    sideEffect: PropTypes.func.isRequired,
+};
+
+IntercomContainer.propTypes = {
+    auth: PropTypes.shape({}).isRequired,
+    pathname: PropTypes.string.isRequired,
 };
 
 export default withScreenSizes(Header);

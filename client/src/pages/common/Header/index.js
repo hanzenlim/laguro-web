@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import _get from 'lodash/get';
 
 import HeaderView from './view';
@@ -51,6 +52,12 @@ class HeaderContainer extends PureComponent {
         });
     };
 
+    closeLoginModal = () => {
+        this.setState({
+            isLoginModalOpen: false,
+        });
+    };
+
     onLogout = () => {
         onLogout();
 
@@ -68,9 +75,10 @@ class HeaderContainer extends PureComponent {
                 isSubmitting={this.state.isSubmitting}
                 isDentist={_get(user, 'isDentist')}
                 isHost={_get(user, 'isHost')}
-                hasUpdatedDentistBio={_get(user, 'hasUpdatedDentistBio')}
+                hasUpdatedDentistBio={!!_get(user, 'hasUpdatedDentistBio')}
                 onLogout={this.onLogout}
                 toggleLoginModal={this.toggleLoginModal}
+                closeLoginModal={this.closeLoginModal}
                 isLoginModalOpen={this.state.isLoginModalOpen}
                 pathname={this.state.pathname}
                 customRedirect={this.state.customRedirect}
@@ -79,5 +87,9 @@ class HeaderContainer extends PureComponent {
         );
     }
 }
+
+HeaderContainer.propTypes = {
+    mobileOnly: PropTypes.bool.isRequired,
+};
 
 export default withScreenSizes(HeaderContainer);

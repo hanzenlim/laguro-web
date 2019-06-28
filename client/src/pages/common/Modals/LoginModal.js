@@ -7,12 +7,13 @@ import Login from '../Login';
 const LoginModal = ({
     isLoginModalOpen,
     toggleLoginModal,
+    closeLoginModal,
     message,
     customRedirect,
     sideEffect,
 }) => (
     <Modal
-        onCancel={toggleLoginModal}
+        onCancel={closeLoginModal}
         destroyOnClose={true}
         visible={isLoginModalOpen}
         width={600}
@@ -43,6 +44,11 @@ LoginModal.propTypes = {
     message: PropTypes.string,
     closable: PropTypes.bool,
     isSubmitting: PropTypes.bool,
+    isLoginModalOpen: PropTypes.bool.isRequired,
+    toggleLoginModal: PropTypes.func.isRequired,
+    closeLoginModal: PropTypes.func.isRequired,
+    customRedirect: PropTypes.string.isRequired,
+    sideEffect: PropTypes.func.isRequired,
 };
 
 export default LoginModal;
