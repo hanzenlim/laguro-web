@@ -10,7 +10,7 @@ import SelectAppointmentForCheckInView from './view';
 import { Loading } from '../../../../components';
 
 const Composed = adopt({
-    getUser: ({ render, onCompleted, id }) => (
+    getAppointmentsOfFamilyMembers: ({ render, onCompleted, id }) => (
         <Query
             query={GET_FAMILY_MEMBERS}
             onCompleted={onCompleted}
@@ -53,9 +53,12 @@ const SelectAppointmentForCheckIn = props => {
 
     return (
         <Composed id={_get(loggedInUser, 'id')} onCompleted={handleCompleted}>
-            {({ getUser }) => {
-                if (getUser.loading) return <Loading />;
-                const user = _get(getUser, 'data.getUser');
+            {({ getAppointmentsOfFamilyMembers }) => {
+                if (getAppointmentsOfFamilyMembers.loading) return <Loading />;
+                const user = _get(
+                    getAppointmentsOfFamilyMembers,
+                    'data.getUser'
+                );
                 const familyMembersWithAppointments = getFamilyMembers(user);
 
                 return (
