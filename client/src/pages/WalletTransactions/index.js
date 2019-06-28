@@ -196,7 +196,7 @@ const TYPE_TO_DISPLAY_NAME = {
     POS_TRANSACTION_TYPE: 'Pos Transaction',
     TREATMENT_PLAN_SERVICE_FEE: 'Treatment Service Fee',
     CHAIR_RENTAL_SERVICE_FEE: 'Chair Rental Service Fee',
-    TREATMENT_PLAN_PAYMENT: 'Payment for Treatment',
+    TREATMENT_PLAN_PAYMENT: 'Treatment',
     [`All categories`]: 'All categories',
 };
 
@@ -222,17 +222,15 @@ export const WalletTransactions = props => {
             dataIndex: 'type',
             className: 'column-type',
             filteredValue: props.filteredInfo.type || null,
-            render: type => {
-                return (
-                    <Text
-                        fontSize="inherit"
-                        fontWeight="inherit"
-                        textAlign="center"
-                    >
-                        {TYPE_TO_DISPLAY_NAME[type]}
-                    </Text>
-                );
-            },
+            render: type => (
+                <Text
+                    fontSize="inherit"
+                    fontWeight="inherit"
+                    textAlign="center"
+                >
+                    {TYPE_TO_DISPLAY_NAME[type]}
+                </Text>
+            ),
             onFilter: (value, record) =>
                 value === 'All categories' ? true : record.type.includes(value),
         },
@@ -240,13 +238,11 @@ export const WalletTransactions = props => {
             title: 'Description',
             className: 'column-description',
             dataIndex: 'description',
-            render: description => {
-                return (
-                    <Text fontSize="inherit" fontWeight="inherit">
-                        <Truncate lines={1}> {description}</Truncate>
-                    </Text>
-                );
-            },
+            render: description => (
+                <Text fontSize="inherit" fontWeight="inherit">
+                    <Truncate lines={1}> {description}</Truncate>
+                </Text>
+            ),
         },
         {
             title: 'Amount',
