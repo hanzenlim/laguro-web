@@ -10,7 +10,7 @@ const PrevArrow = props => (
         color="icon.white"
         className={`${props.className} leftArrow`}
         position="absolute"
-        style={{ ...props.style, display: 'block' }}
+        style={{ ...props.style, display: 'block', zIndex: 999 }}
         onClick={props.onClick}
         width="40px"
         left="-80px"
