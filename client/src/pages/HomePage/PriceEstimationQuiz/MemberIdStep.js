@@ -24,7 +24,7 @@ const MemberIdStep = ({ isCheckEligibilityLoading }) => (
                 <Box mb={10} mx="auto" maxWidth={320}>
                     <Input
                         type="text"
-                        placeholder="Policyholder/Subscriber ID *"
+                        placeholder="Subscriber ID *"
                         {...field}
                         required
                     />

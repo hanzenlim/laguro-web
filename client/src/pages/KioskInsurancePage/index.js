@@ -168,7 +168,7 @@ const KioskInsurancePage = componentProps => {
                                 {
                                     is: 'false',
                                     then: Yup.string().required(
-                                        'Policyholder/Subscriber ID is required'
+                                        'Subscriber ID is required'
                                     ),
                                 }
                             ),
