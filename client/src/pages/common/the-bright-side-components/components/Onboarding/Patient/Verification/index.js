@@ -137,7 +137,7 @@ export const Verification = props => {
                     </Text>
                 </Flex>
 
-                <Flex>
+                <Flex flexDirection={['column', 'row', 'row']}>
                     <Box flex="1">
                         {props.formikProps.values.mode === 'signIn' && (
                             <Field
@@ -165,7 +165,8 @@ export const Verification = props => {
                         )}
                     </Box>
                     <Button
-                        ml="20px"
+                        ml={[0, 20, 20]}
+                        height={46}
                         disabled={
                             props.formikProps.values.emailOrPhoneNumber
                                 .length === 0 &&
