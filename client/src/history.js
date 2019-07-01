@@ -4,9 +4,7 @@ import queryString from 'query-string';
 import _isEmpty from 'lodash/isEmpty';
 import { gaTrackingId } from './config/keys';
 
-ReactGA.initialize(gaTrackingId, {
-    debug: process.env.NODE_ENV !== 'production',
-});
+ReactGA.initialize(gaTrackingId);
 
 const history = createBrowserHistory();
 
