@@ -23,6 +23,10 @@ export const GET_FAMILY_MEMBERS = gql`
                                 .startOf('day')
                                 .utc()
                                 .format()}",
+                            rangeEnd: "${moment()
+                                .endOf('day')
+                                .utc()
+                                .format()}",
                             filters: [
                                     {
                                         filterKey: "${STATUS}",
