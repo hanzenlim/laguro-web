@@ -137,7 +137,7 @@ class DetailsSearchPage extends PureComponent {
         queryParams.options.rangeStart = moment()
             .add(1, 'days')
             .startOf('day')
-            .utcOffset(0, true)
+            .utc()
             .format();
         queryParams.options.resultLimit = {
             numDays: 1,
