@@ -5,7 +5,6 @@ import { withKnobs, object } from '@storybook/addon-knobs/react';
 import DentistListingCard from '../src/pages/common/DentistListingCard';
 
 export const actions = {
-    onRedirect: action('onRedirect'),
     onSelectAppointment: action('onSelectAppointment'),
 };
 

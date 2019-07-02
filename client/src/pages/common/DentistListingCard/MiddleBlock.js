@@ -7,6 +7,8 @@ import { getInsuranceText } from '../../../util/insuranceUtil';
 
 const { Desktop, TabletMobile } = Responsive;
 
+// For Desktop: accepted insurances, languages, and procedures, in order
+// For tablet and mobile: procedures, accepted insurances, and languages, in order
 const MiddleBlock = ({ dentist, tagStopPoint }) => (
     <Fragment>
         <TabletMobile>
