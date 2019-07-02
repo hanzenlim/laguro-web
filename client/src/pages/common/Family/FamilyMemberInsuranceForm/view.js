@@ -283,12 +283,12 @@ const FamilyMemberInsuranceFormView = props => {
                                 color="text.black"
                                 mb="10px"
                             >
-                                Insurance number
+                                Subscriber ID
                             </Text>
                             <Box width={['100%', '', '500px']}>
                                 <Field
                                     name="insuranceNumber"
-                                    placeholder="Insurance number"
+                                    placeholder="Subscriber ID"
                                     component={Onboarding.InputField}
                                 />
                             </Box>
@@ -362,7 +362,7 @@ const INSURANCE_PROVIDER_YUP_VALIDATION = Yup.string().required(
     'Insurance provider is required'
 );
 const INSURANCE_NUMBER_YUP_VALIDATION = Yup.string().required(
-    'Insurance number is required'
+    'Subscriber ID is required'
 );
 
 export default withFormik({

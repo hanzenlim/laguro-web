@@ -93,7 +93,7 @@ class UpdateProfileContainer extends PureComponent {
 
         return (
             <Query query={getUserQuery} variables={{ id: get(user, 'id') }}>
-                {({ loading, error, data: userData }) => {
+                {({ loading, error, data: userData, refetch }) => {
                     if (error) return <RedirectErrorPage />;
                     if (loading) return <Loading />;
 
@@ -162,6 +162,8 @@ class UpdateProfileContainer extends PureComponent {
                                                     ..._updateUserData.updateUser,
                                                 });
                                             }
+
+                                            await refetch();
                                         },
                                     });
 

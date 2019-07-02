@@ -12,7 +12,7 @@ import {
     Text,
     FilestackImage,
     Responsive,
-    Button,
+    Link,
 } from '../../../components';
 import { withScreenSizes } from '../../../components/Responsive';
 import Bundle from '../Bundle';
@@ -20,6 +20,7 @@ import TopBlock from './TopBlock';
 import MiddleBlock from './MiddleBlock';
 import AppointmentTimeslots from './AppointmentTimeslots';
 import { getIdFromFilestackUrl } from '../../../util/imageUtil';
+import { DENTIST_DETAILS_PAGE_URL_PREFIX } from '../../../util/urls';
 
 const { Desktop } = Responsive;
 
@@ -146,7 +147,7 @@ class DentistListingCard extends PureComponent {
     };
 
     render() {
-        const { dentist, onRedirect } = this.props;
+        const { dentist } = this.props;
         const indexToMap = parseInt(this.state.indexToMap);
 
         const earliestAvailableDate =
@@ -187,6 +188,10 @@ class DentistListingCard extends PureComponent {
             </Menu>
         );
 
+        const dentistDetailsPageUrl = `${DENTIST_DETAILS_PAGE_URL_PREFIX}/${
+            dentist.dentistId
+        }`;
+
         return (
             <Box width="100%">
                 <StyledCard>
@@ -198,18 +203,14 @@ class DentistListingCard extends PureComponent {
                             pb={[20, '', 0]}
                         >
                             <Desktop>
-                                <Button
-                                    type="ghost"
-                                    onClick={onRedirect}
-                                    height="136px"
+                                <Box
+                                    width={136}
+                                    height={136}
+                                    borderRadius="50%"
+                                    mr={32}
+                                    overflow="hidden"
                                 >
-                                    <Box
-                                        width={136}
-                                        height={136}
-                                        borderRadius="50%"
-                                        mr={32}
-                                        overflow="hidden"
-                                    >
+                                    <Link to={dentistDetailsPageUrl}>
                                         {dentist.imageUrl &&
                                         dentist.imageUrl.includes(
                                             'filestack'
@@ -232,15 +233,19 @@ class DentistListingCard extends PureComponent {
                                                 height="100%"
                                             />
                                         )}
-                                    </Box>
-                                </Button>
+                                    </Link>
+                                </Box>
                             </Desktop>
                             <Box
                                 flex={1}
                                 width={['', '', 'calc(100% - 136px - 32px)']}
                                 pr={['', '', 32]}
                             >
-                                <TopBlock dentist={dentist} />
+                                <Box mb={[8, '', 4]}>
+                                    <Link to={dentistDetailsPageUrl}>
+                                        <TopBlock dentist={dentist} />
+                                    </Link>
+                                </Box>
                                 <MiddleBlock
                                     dentist={dentist}
                                     tagStopPoint={tagStopPoint}
@@ -318,7 +323,6 @@ DentistListingCard.propTypes = {
         insurance: PropTypes.arrayOf(PropTypes.string),
         availableTimes: PropTypes.arrayOf(PropTypes.instanceOf(Date)),
     }),
-    onRedirect: PropTypes.func,
     onSelectAppointment: PropTypes.func,
 };
 

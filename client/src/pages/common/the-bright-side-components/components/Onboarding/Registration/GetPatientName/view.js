@@ -24,7 +24,7 @@ class GetPatientNameView extends React.PureComponent {
         const formatText = getFormatTextFromProps(this.props);
 
         return (
-            <Box width={329}>
+            <Box width={329} maxWidth="100%">
                 <Flex justifyContent="center">
                     <AppleIcon />
                 </Flex>
@@ -35,7 +35,10 @@ class GetPatientNameView extends React.PureComponent {
                     text={formatText(REGISTRATION_STEPONE_TYPELEGALNAME)}
                 />
 
-                <Grid gridTemplateColumns="1fr 1fr" gridColumnGap="11px">
+                <Grid
+                    gridTemplateColumns={['1fr', '1fr 1fr', '1fr 1fr']}
+                    gridColumnGap="11px"
+                >
                     <Box>
                         <Onboarding.FormItemLabelText
                             text={formatText(REGISTRATION_STEPONE_FIRSTNAME)}

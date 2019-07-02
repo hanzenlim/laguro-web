@@ -93,7 +93,7 @@ class Login extends Component {
                     </TabletDesktop>
                     <Mobile>
                         <Flex
-                            p={20}
+                            p={25}
                             flexDirection="column"
                             height="100%"
                             maxWidth={490}
@@ -103,7 +103,6 @@ class Login extends Component {
                                 flex={9}
                                 alignItems="center"
                                 justifyContent="center"
-                                px={10}
                             >
                                 <StandaloneLoginView
                                     closeModal={closeModal}

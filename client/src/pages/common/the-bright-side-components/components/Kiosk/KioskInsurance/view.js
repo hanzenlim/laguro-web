@@ -59,7 +59,7 @@ class InsuranceView extends React.PureComponent {
                             ? formatText(
                                   GENERALINFORMATION_INSURANCE_PLEASESELECT
                               )
-                            : "Select your insurance provider and type in your insurance number. To ensure your insurance will be verified when clicking 'Next', please check that your general information in your Account Settings is correct (i.e.: full name, DOB). If you do not have insurance, then select 'I don't have insurance' to continue"
+                            : "Select your insurance provider and type in your subscriber ID. To ensure your insurance will be verified when clicking 'Next', please check that your general information in your Account Settings is correct (i.e.: full name, DOB). If you do not have insurance, then select 'I don't have insurance' to continue"
                     }
                 />
                 <Flex

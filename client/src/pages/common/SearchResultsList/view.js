@@ -126,11 +126,6 @@ class SearchResultsList extends PureComponent {
                                               variant="large"
                                               dentist={item}
                                               showMap={showMap}
-                                              onRedirect={() =>
-                                                  this.handleRedirect(
-                                                      item.dentistId
-                                                  )
-                                              }
                                               onSelectAppointment={e =>
                                                   this.handleSelectAppointment(
                                                       e,

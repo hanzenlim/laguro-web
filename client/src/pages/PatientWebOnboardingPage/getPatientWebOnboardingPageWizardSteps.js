@@ -325,7 +325,7 @@ export const getPatientWebOnboardingPageWizardSteps = ({
             }),
             patientInsuranceNum: Yup.string().when('hasNoInsurance', {
                 is: 'false',
-                then: Yup.string().required('Insurance number is required'),
+                then: Yup.string().required('Subscriber ID is required'),
             }),
         }),
         onAction: async (stepValues, allValues, formikProps) => {
