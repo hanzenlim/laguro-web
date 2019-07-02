@@ -109,38 +109,33 @@ class DentistBookings extends Component {
         const officeListings = _flatten(
             offices
                 .filter(i => i)
-                .map((office, index) => {
-                    return {
-                        id: (index + 1).toString(),
-                        office,
-                        appointments: [{ id: '' }],
-                        host: office.host,
-                        equipmentSelected: office.equipment.map(eq => eq.name),
-                        localAvailableTimes: _flatten(
-                            office.listings.map(listing =>
-                                new RecurringWeekDayAvailability(
-                                    listing.availability
-                                )
-                                    .getTimeIntervals(
-                                        '2000-01-01',
-                                        '2100-01-01'
-                                    )
-                                    .map(interval => ({
-                                        startTime: interval.localStartTime,
-                                        endTime: interval.localEndTime,
-                                        numChairsAvailable:
-                                            listing.numChairsAvailable,
-                                        listingId: listing.id,
-                                    }))
-                                    .filter(interval =>
-                                        moment(interval.startTime).isBefore(
-                                            moment().add(3, 'years')
-                                        )
-                                    )
+                .map((office, index) => ({
+                    id: (index + 1).toString(),
+                    office,
+                    appointments: [{ id: '' }],
+                    host: office.host,
+                    equipmentSelected: office.equipment.map(eq => eq.name),
+                    localAvailableTimes: _flatten(
+                        office.listings.map(listing =>
+                            new RecurringWeekDayAvailability(
+                                listing.availability
                             )
-                        ),
-                    };
-                })
+                                .getTimeIntervals('2000-01-01', '2100-01-01')
+                                .map(interval => ({
+                                    startTime: interval.localStartTime,
+                                    endTime: interval.localEndTime,
+                                    numChairsAvailable:
+                                        listing.numChairsAvailable,
+                                    listingId: listing.id,
+                                }))
+                                .filter(interval =>
+                                    moment(interval.startTime).isBefore(
+                                        moment().add(3, 'years')
+                                    )
+                                )
+                        )
+                    ),
+                }))
                 .map(officeListing =>
                     officeListing.localAvailableTimes.map((lat, index) => ({
                         ...officeListing,
@@ -210,8 +205,12 @@ class DentistBookings extends Component {
                     input: {
                         appointmentId: this.apptToBeUpdated.event.id,
                         listingId: this.newListingId,
-                        localStartTime: this.apptToBeUpdated.start,
-                        localEndTime: this.apptToBeUpdated.end,
+                        localStartTime: moment(
+                            this.apptToBeUpdated.start
+                        ).format('YYYY-MM-DDTHH:mm:ss'),
+                        localEndTime: moment(this.apptToBeUpdated.end).format(
+                            'YYYY-MM-DDTHH:mm:ss'
+                        ),
                     },
                 },
             });
