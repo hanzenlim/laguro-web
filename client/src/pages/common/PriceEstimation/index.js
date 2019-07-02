@@ -1,12 +1,13 @@
 import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { message } from 'antd';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 import { Query } from 'react-apollo';
+import moment from 'moment';
 import { getBundleCoverage, getUserQuery } from './queries';
 import { pricingClient } from '../../../util/apolloClients';
 import { renderPriceWithoutZeros } from '../../../util/paymentUtil';
-import moment from 'moment';
 import history from '../../../history';
 import { getUser } from '../../../util/authUtils';
 import emitter from '../../../util/emitter';
@@ -172,27 +173,41 @@ class PriceEstimation extends PureComponent {
         ).format('MM/DD/YY'),
     });
 
-    getPriceEstimtationData = () => ({
-        selectedInsurance: this.state.selectedInsurance,
-        selectedProcedure: this.state.selectedProcedure.group,
-        selectedProcedureName: this.state.selectedProcedure.name,
-        procedures: this.props.bundles,
-        insurance: this.props.acceptedInsurances,
-        proceduresDetail: this.props.bundles[this.state.procedureIndex]
-            .proceduresDetail,
-        price: renderPriceWithoutZeros(
-            this.props.bundles[this.state.procedureIndex].price
-        ),
-        insurancePrice: this.state.selectedInsurance
-            ? renderPriceWithoutZeros(
-                  this.props.bundles[
-                      this.state.procedureIndex
-                  ].insuranceList.filter(
-                      i => i.name === this.state.selectedInsurance
-                  )[0].price
-              )
-            : this.props.bundles[this.state.procedureIndex].price,
-    });
+    getPriceEstimtationData = () => {
+        let insurancePrice = '';
+
+        if (this.state.selectedInsurance) {
+            const filteredInsurance = this.props.bundles[
+                this.state.procedureIndex
+            ].insuranceList.filter(
+                i => i.name === this.state.selectedInsurance
+            );
+
+            insurancePrice = renderPriceWithoutZeros(
+                filteredInsurance.length
+                    ? filteredInsurance[0].price
+                    : this.props.bundles[this.state.procedureIndex].price
+            );
+        } else {
+            insurancePrice = renderPriceWithoutZeros(
+                this.props.bundles[this.state.procedureIndex].price
+            );
+        }
+
+        return {
+            selectedInsurance: this.state.selectedInsurance,
+            selectedProcedure: this.state.selectedProcedure.group,
+            selectedProcedureName: this.state.selectedProcedure.name,
+            procedures: this.props.bundles,
+            insurance: this.props.acceptedInsurances,
+            proceduresDetail: this.props.bundles[this.state.procedureIndex]
+                .proceduresDetail,
+            price: renderPriceWithoutZeros(
+                this.props.bundles[this.state.procedureIndex].price
+            ),
+            insurancePrice,
+        };
+    };
 
     getPriceEstimtationAction = () => ({
         onSelectProcedure: this.handleSelectProcedure,
@@ -311,5 +326,34 @@ class PriceEstimation extends PureComponent {
         );
     }
 }
+
+PriceEstimation.propTypes = {
+    acceptedInsurances: PropTypes.arrayOf(PropTypes.string),
+    bundles: PropTypes.shape({
+        dateCreated: PropTypes.string,
+        description: PropTypes.string,
+        group: PropTypes.string,
+        id: PropTypes.string,
+        insuranceList: PropTypes.arrayOf(
+            PropTypes.shape({
+                name: PropTypes.string,
+                price: PropTypes.number,
+            })
+        ),
+        name: PropTypes.string,
+        price: PropTypes.number,
+        procedures: PropTypes.arrayOf(PropTypes.string),
+        proceduresDetail: PropTypes.arrayOf(
+            PropTypes.shape({
+                category_1: PropTypes.string,
+                code: PropTypes.string,
+                group: PropTypes.string,
+                name: PropTypes.string,
+                price: PropTypes.number,
+            })
+        ),
+        status: PropTypes.string,
+    }),
+};
 
 export default PriceEstimation;
