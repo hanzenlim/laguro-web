@@ -26,6 +26,7 @@ import { Progress } from '../common/the-bright-side-components/components/Onboar
 import { KioskLogIn } from '../common/the-bright-side-components/components/Kiosk/KioskLogIn';
 import { PurposeOfVisit } from '../common/the-bright-side-components/components/Onboarding/Registration/Patient/PurposeOfVisit';
 import { Onboarding, Wizard } from '../common/the-bright-side-components';
+import CheckInWithAppointmentCode from '../common/CheckInWithAppointmentCode';
 import { getFormatTextFromProps } from '../../util/intlUtils';
 import { ChooseLanguage } from '../../wizardComponents/ChooseLanguage';
 import { KIOSK_FLOW_LANGUAGE_FORM_KEY } from '../../wizardComponents/ChooseLanguage/view';
@@ -36,6 +37,8 @@ import SelectAppointmentForCheckIn from './StepComponents/SelectAppointmentForCh
 // in order
 // stage 1 registration
 export const CHOOSE_LANGUAGE_WIZARD_STEP_ID = 'choose-language-step';
+export const CHECK_IN_WITH_APPOINTMENT_CODE_STEP_ID =
+    'check-in-with-appointment-code-step';
 export const PURPOSE_OF_VISIT_WIZARD_STEP_ID = 'purpose-of-visit-step';
 export const LOGIN_WIZARD_STEP_ID = 'login-step';
 export const GET_PATIENT_NAME_WIZARD_STEP_ID = 'get-patient-name-step';
@@ -89,7 +92,7 @@ export const getKioskRegWizardSteps = ({ formatText = text => text }) => [
         initialValues: {
             purposeOfVisit: KIOSK_PURPOSE_OF_VISIT_WALKIN,
         },
-        onAction: stepValues => {
+        onAction: (stepValues, formValues, stepFormActions, wizard) => {
             cookies.set(
                 kioskPurposeOfVisitCookieVariableName,
                 stepValues.purposeOfVisit,
@@ -97,7 +100,18 @@ export const getKioskRegWizardSteps = ({ formatText = text => text }) => [
                     expires: 0,
                 }
             );
+
+            if (stepValues.purposeOfVisit === 'checkIn') {
+                wizard.push(CHECK_IN_WITH_APPOINTMENT_CODE_STEP_ID);
+                return true;
+            }
+
+            wizard.push(LOGIN_WIZARD_STEP_ID);
+            return true;
         },
+    },
+    {
+        id: CHECK_IN_WITH_APPOINTMENT_CODE_STEP_ID,
     },
     {
         id: LOGIN_WIZARD_STEP_ID,
@@ -242,6 +256,22 @@ class KioskRegPage extends Component {
                         return true;
                     },
                 },
+                {
+                    stepId: CHECK_IN_WITH_APPOINTMENT_CODE_STEP_ID,
+                    action: (
+                        stepValues,
+                        formValues,
+                        stepFormActions,
+                        wizard
+                    ) => {
+                        if (stepValues.hasAppointmentCode) {
+                            redirectToKioskPage();
+                        } else {
+                            wizard.push(LOGIN_WIZARD_STEP_ID);
+                        }
+                        return true;
+                    },
+                },
             ],
             wizardSteps: getKioskRegWizardSteps({ formatText }),
         });
@@ -256,6 +286,9 @@ class KioskRegPage extends Component {
                     break;
                 case PURPOSE_OF_VISIT_WIZARD_STEP_ID:
                     step = <PurposeOfVisit {...props} />;
+                    break;
+                case CHECK_IN_WITH_APPOINTMENT_CODE_STEP_ID:
+                    step = <CheckInWithAppointmentCode {...props} />;
                     break;
                 case LOGIN_WIZARD_STEP_ID:
                     step = (

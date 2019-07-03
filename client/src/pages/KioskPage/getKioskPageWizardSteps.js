@@ -118,6 +118,7 @@ export const KIOSK_FLOW_SUCCESS_WIZARD_STEP_ID = 'kiosk-flow-success-step';
 export const CHECKIN_WIZARD_STEP_ID = 'checkIn-step';
 
 export const KIOSK_APPT_ID_COOKIE_VARIABLE_NAME = 'kiosk-appt-id';
+export const KIOSK_APPT_CODE_COOKIE_VARIABLE_NAME = 'kiosk-appt-code';
 
 const {
     BloodDisorders,

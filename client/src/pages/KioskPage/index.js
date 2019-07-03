@@ -46,6 +46,7 @@ import {
     BOOKING_CONFIRMATION_WIZARD_STEP_ID,
     BOOK_APPOINTMENT_WIZARD_STEP_ID,
     KIOSK_APPT_ID_COOKIE_VARIABLE_NAME,
+    KIOSK_APPT_CODE_COOKIE_VARIABLE_NAME,
     CHECKIN_WIZARD_STEP_ID,
     HEALTH_HISTORY_STAGE_WIZARD_STEP_IDS,
     LAST_DENTAL_EXAM_WIZARD_STEP_ID,
@@ -274,6 +275,9 @@ class KioskPage extends PureComponent {
     }
 
     render() {
+        const appointmentCode = cookies.get(
+            KIOSK_APPT_CODE_COOKIE_VARIABLE_NAME
+        );
         const appointmentId = cookies.get(KIOSK_APPT_ID_COOKIE_VARIABLE_NAME);
         const officeId = cookies.get(KIOSK_OFFICE_ID_COOKIE_VARIABLE_NAME);
         const kioskSelectedFamilyMemberId = cookies.get(
@@ -429,7 +433,11 @@ class KioskPage extends PureComponent {
                             this.userFromDB,
                             'appointments[0].id'
                         );
-                        if (!_isEmpty(upcomingApptId)) {
+
+                        if (
+                            _isEmpty(appointmentCode) &&
+                            !_isEmpty(upcomingApptId)
+                        ) {
                             execute({
                                 action: async () => {
                                     _get(
