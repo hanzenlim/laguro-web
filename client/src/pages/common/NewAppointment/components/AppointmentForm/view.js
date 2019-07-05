@@ -227,7 +227,18 @@ class AppointmentFormView extends PureComponent {
                                             >
                                                 Select a time
                                             </Text>
-                                            <Flex>
+                                            <Flex
+                                                flexDirection={[
+                                                    'column',
+                                                    'row',
+                                                    'row',
+                                                ]}
+                                                alignItems={[
+                                                    'flex-start',
+                                                    'center',
+                                                    'center',
+                                                ]}
+                                            >
                                                 <TimePicker
                                                     px={30}
                                                     fontSize="14px"
@@ -244,9 +255,15 @@ class AppointmentFormView extends PureComponent {
                                                         8
                                                     )}
                                                 />
-                                                <Box mt="10px" mx="10px">
+                                                <Text
+                                                    mx={[0, 10, 10]}
+                                                    mt={[20, 0, 0]}
+                                                    mb={[5, 0, 0]}
+                                                    fontSize={0}
+                                                    fontWeight="medium"
+                                                >
                                                     To
-                                                </Box>
+                                                </Text>
                                                 <TimePicker
                                                     fontSize="14px"
                                                     padding="0 18px"
@@ -310,6 +327,21 @@ class AppointmentFormView extends PureComponent {
 AppointmentFormView.propTypes = {
     appointments: PropTypes.array,
     onSelect: PropTypes.func,
+    onClose: PropTypes.func.isRequired,
+    validate: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func.isRequired,
+    patientsName: PropTypes.arrayOf(
+        PropTypes.shape({
+            fullName: PropTypes.string,
+            key: PropTypes.string,
+        })
+    ),
+    preferredLocations: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.string,
+            name: PropTypes.string,
+        })
+    ),
 };
 
 export default AppointmentFormView;
