@@ -158,8 +158,8 @@ class AddOfficeEquipments extends Component {
                 EQUIPMENT_NAME.length
             )}`;
             return (
-                <Flex flexDirection={['column', '', 'row']}>
-                    <Box mr={[0, '', 23]} width={['auto', '', '100%']}>
+                <Flex flexDirection="row">
+                    <Box mr={[0, '', 23]} width="100%">
                         <FormItem
                             name={formItemName}
                             rules={[
@@ -188,11 +188,12 @@ class AddOfficeEquipments extends Component {
                     <Flex>
                         <Button
                             type="ghost"
-                            width={[48, '', 'auto']}
+                            width={[30, '', 'auto']}
                             mb={20}
-                            height={[48, '', 'auto']}
+                            height={[30, '', 'auto']}
                             data-index={key.slice(EQUIPMENT_NAME.length)}
                             onClick={this.removeEquipment}
+                            style={{ textAlign: 'right' }}
                         >
                             <Icon
                                 lineHeight="50px"
