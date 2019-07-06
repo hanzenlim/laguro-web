@@ -7,14 +7,10 @@ class DentistDetails extends PureComponent {
     }
 
     render() {
-        const { dentist, dentistId } = this.props;
+        const { dentist } = this.props;
 
         const mappedData = {
-            name: `Dr. ${
-                dentist.name
-                    ? dentist.name
-                    : `${dentist.user.firstName} ${dentist.user.lastName}`
-            }`,
+            name: `Dr. ${dentist.name ? dentist.name : dentist.user.firstName + ' ' + dentist.user.lastName}`,
             specialization: dentist.specialty,
             image: dentist.imageUrl,
             procedures: dentist.procedures.map(p => p.group),
@@ -23,10 +19,12 @@ class DentistDetails extends PureComponent {
             numReviews: dentist.numReviews,
             languages: dentist.languages,
             acceptedInsurances: dentist.acceptedInsurances,
-            npiNumber: dentist.npiNumber,
+            npiNumber: dentist.npiNumber
         };
 
-        return <DentistDetailsView data={mappedData} dentistId={dentistId} />;
+        return (
+            <DentistDetailsView data={mappedData} />
+        );
     }
 }
 
