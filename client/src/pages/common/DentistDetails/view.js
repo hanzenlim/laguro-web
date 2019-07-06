@@ -25,22 +25,8 @@ const DefaultCursorButton = styled(Button)`
 `;
 
 class DentistDetailsView extends PureComponent {
-    handleGotoVideoConference = event => {
-        event.preventDefault();
-
-        if (window && typeof window !== 'undefined' && this.props.dentistId) {
-            const win = window.open(
-                `/session/${this.props.dentistId}`,
-                '_blank'
-            );
-
-            win.focus();
-        }
-    };
-
     render() {
         const { data } = this.props;
-        console.log({ data });
 
         return (
             <Box>
@@ -266,7 +252,7 @@ class DentistDetailsView extends PureComponent {
                 )}
 
                 {data.bio && (
-                    <Box pb={[10, '', 30]}>
+                    <Box pb={[22, '', 42]}>
                         <Text
                             fontSize={[1, '', 2]}
                             letterSpacing={['0.05px', '', '-0.4px']}
@@ -286,23 +272,6 @@ class DentistDetailsView extends PureComponent {
                         </Text>
                     </Box>
                 )}
-
-                <Box pb={[22, '', 42]}>
-                    <Button
-                        type="ghost"
-                        onClick={this.handleGotoVideoConference}
-                    >
-                        <Text
-                            fontSize={1}
-                            lineHeight="26px"
-                            letterSpacing="-0.51px"
-                            style={{ 'white-space': 'pre-line' }}
-                            color="text.blue"
-                        >
-                            Dentist video conference link
-                        </Text>
-                    </Button>
-                </Box>
             </Box>
         );
     }

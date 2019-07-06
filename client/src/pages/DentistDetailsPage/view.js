@@ -43,10 +43,7 @@ class DentistDetailsPageView extends PureComponent {
                     >
                         <Box width="100%" maxWidth={['100%', '', '752px']}>
                             <Box mt={30} mr={[0, '', 34]}>
-                                <DentistDetails
-                                    dentist={dentist}
-                                    dentistId={id}
-                                />
+                                <DentistDetails dentist={dentist} />
                                 {!_isEmpty(dentistBundles) ? (
                                     <PriceEstimation
                                         bundles={dentistBundles}
