@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
 import { Box, Container, Text, Card, Truncate } from '@laguro/basic-components';
 import _isEmpty from 'lodash/isEmpty';
+import _get from 'lodash/get';
 import queryString from 'query-string';
 import {
     PROFILE_SETTINGS_MENU_TEXT,
@@ -323,6 +324,9 @@ class DentistDashboardPageView extends Component {
     );
 
     render() {
+        const { dentist, dentistId } = this.props;
+        const { firstName, lastName } = _get(dentist, 'user', {});
+
         return (
             <Fragment>
                 <TabletMobile>
@@ -352,21 +356,38 @@ class DentistDashboardPageView extends Component {
                                 </Text>
                             </Text>
                             <Desktop>
-                                <Link
-                                    height={34}
-                                    isExternal
-                                    target="_blank"
-                                    rel="noopener"
-                                    to={getLTMBaseUrl()}
-                                >
-                                    <StyledButton
-                                        px={30}
-                                        height="100%"
-                                        fontSize={1}
+                                <Flex>
+                                    <Link
+                                        height={34}
+                                        target="_blank"
+                                        rel="noopener"
+                                        to={`/session/${dentistId}`}
                                     >
-                                        Laguro Treatment Module
-                                    </StyledButton>
-                                </Link>
+                                        <StyledButton
+                                            px={30}
+                                            height="100%"
+                                            fontSize={1}
+                                        >
+                                            Video Conference
+                                        </StyledButton>
+                                    </Link>
+                                    <Box width="5px" />
+                                    <Link
+                                        height={34}
+                                        isExternal
+                                        target="_blank"
+                                        rel="noopener"
+                                        to={getLTMBaseUrl()}
+                                    >
+                                        <StyledButton
+                                            px={30}
+                                            height="100%"
+                                            fontSize={1}
+                                        >
+                                            Laguro Treatment Module
+                                        </StyledButton>
+                                    </Link>
+                                </Flex>
                             </Desktop>
                         </Flex>
                         <DashboardGrid pb={50}>
