@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
 import { Mutation, Query } from 'react-apollo';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
@@ -46,6 +47,7 @@ const checkAcceptedInsurance = (key, acceptedInsurances) =>
     !_isEmpty(acceptedInsurances) && acceptedInsurances.includes(key);
 
 const Composed = adopt({
+    /* eslint-disable-next-line react/prop-types */
     dentistResponse: ({ render }) => {
         const user = getUser();
         return (
@@ -60,6 +62,7 @@ const Composed = adopt({
             </Query>
         );
     },
+    /* eslint-disable-next-line react/prop-types */
     createDentist: ({ render }) => (
         <Mutation
             update={(proxy, { data: { createDentistWithAuth } }) => {
@@ -77,6 +80,7 @@ const Composed = adopt({
             {render}
         </Mutation>
     ),
+    /* eslint-disable-next-line react/prop-types */
     updateUser: ({ render }) => (
         <Mutation
             mutation={UPDATE_USER_IMAGE_URL}
@@ -89,6 +93,7 @@ const Composed = adopt({
             {render}
         </Mutation>
     ),
+    /* eslint-disable-next-line react/prop-types */
     updateDentist: ({ render }) => (
         <Mutation
             update={(proxy, { data: { updateDentist } }) => {
@@ -127,6 +132,7 @@ class KioskDentistProfilePage extends Component {
                         procedures,
                         bio,
                         acceptedInsurances,
+                        languages: dentistLanguages,
                     } = dentist;
                     const user = getUser();
 
@@ -136,9 +142,10 @@ class KioskDentistProfilePage extends Component {
                     );
 
                     if (!_isEmpty(procedures)) {
-                        for (const procedure of procedures) {
+                        procedures.map(procedure => {
                             defaultProceduresList[procedure.group] = true;
-                        }
+                            return null;
+                        });
                     }
 
                     const steps = [
@@ -149,9 +156,7 @@ class KioskDentistProfilePage extends Component {
                                 profilePicture: user.imageUrl,
                                 key: specialty || specialties[0],
                                 time: firstAppointmentDuration || 30,
-                                languages: this.props.userLanguages || [
-                                    ENGLISH,
-                                ],
+                                languages: dentistLanguages || [ENGLISH],
                                 procedureList: defaultProceduresList,
                             },
                             validationSchema: Yup.object().shape({
@@ -207,7 +212,7 @@ class KioskDentistProfilePage extends Component {
                         const {
                             key,
                             languages,
-                            procedureList,
+                            procedureList: procedureListOnCreate,
                             profilePicture,
                             time,
                         } = _get(values, ['1'], {});
@@ -218,31 +223,36 @@ class KioskDentistProfilePage extends Component {
                             dentistInsurance
                         );
 
-                        const acceptedInsurances = insuranceArrayOfKeys.filter(
-                            key => dentistInsurance[key]
+                        const acceptedInsurancesOnCreate = insuranceArrayOfKeys.filter(
+                            insuranceArrayOfKey =>
+                                dentistInsurance[insuranceArrayOfKey]
                         );
 
-                        const procedureArrayOfKeys = Object.keys(procedureList);
+                        const procedureArrayOfKeys = Object.keys(
+                            procedureListOnCreate
+                        );
 
-                        const procedures = procedureArrayOfKeys.map(item => {
-                            if (procedureList[item]) {
-                                return {
-                                    code: 'code',
-                                    duration: 0,
-                                    group: item,
-                                    name: 'name',
-                                };
+                        const proceduresOnCreate = procedureArrayOfKeys.map(
+                            item => {
+                                if (procedureListOnCreate[item]) {
+                                    return {
+                                        code: 'code',
+                                        duration: 0,
+                                        group: item,
+                                        name: 'name',
+                                    };
+                                }
+
+                                return null;
                             }
-
-                            return null;
-                        });
+                        );
 
                         const createQuery = {
                             specialty: key,
                             languages,
-                            acceptedInsurances,
+                            acceptedInsurances: acceptedInsurancesOnCreate,
                             bio: about,
-                            procedures: compact(procedures),
+                            procedures: compact(proceduresOnCreate),
                             firstAppointmentDuration: time,
                         };
 
@@ -349,5 +359,11 @@ class KioskDentistProfilePage extends Component {
         );
     }
 }
+
+KioskDentistProfilePage.propTypes = {
+    withoutProgressBar: PropTypes.bool,
+    fromDentistDashboard: PropTypes.bool,
+    onFinish: PropTypes.func.isRequired,
+};
 
 export default KioskDentistProfilePage;
