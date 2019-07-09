@@ -12,9 +12,13 @@ import {
     Link,
     Responsive,
     Icon,
+    FilestackImage,
 } from '../../../components';
 import { CANCELLED } from '../../../util/strings';
-import { setImageSizeToUrl } from '../../../util/imageUtil';
+import {
+    setImageSizeToUrl,
+    getIdFromFilestackUrl,
+} from '../../../util/imageUtil';
 import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
 
 const { TabletMobile, Desktop } = Responsive;
@@ -61,24 +65,81 @@ export const NoAppointmentsCard = ({ text }) => (
 class PatientAppointments extends PureComponent {
     renderAppointments = appointments =>
         appointments.map(
-            ({ id, localStartTime, startTime, dentist, office, status }) => {
+            ({
+                id,
+                localStartTime,
+                startTime,
+                dentist,
+                office,
+                status,
+                patient,
+            }) => {
                 const { lastName, firstName, imageUrl } = dentist.user;
                 const dentistName = `Dr. ${firstName} ${lastName}`;
                 const { name: officeName, id: officeId, location } = office;
                 const isCancelled = status === CANCELLED;
+                const patientName = `${patient.firstName} ${
+                    patient.lastName
+                }`.toLowerCase();
 
                 return (
-                    <Fragment>
+                    <Box
+                        key={id}
+                        p={['0 20px 20px 20px', '', '0 30px 30px 30px']}
+                        mx={[-20, '', 'auto']}
+                        mb={[10, '', 12]}
+                        border="1px solid"
+                        borderColor="divider.gray"
+                        borderRadius={2}
+                        opacity={isCancelled ? 0.5 : 1}
+                    >
                         <Flex
-                            key={id}
+                            alignItems="center"
+                            pt={8}
+                            pb={6}
+                            mb={10}
+                            borderBottom="1px solid"
+                            borderColor="divider.gray"
+                        >
+                            <Box
+                                width={28}
+                                height={28}
+                                mr={10}
+                                borderRadius="50%"
+                                overflow="hidden"
+                            >
+                                {patient.imageUrl &&
+                                patient.imageUrl.includes('filestack') ? (
+                                    <FilestackImage
+                                        handle={getIdFromFilestackUrl(
+                                            patient.imageUrl
+                                        )}
+                                        alt={patientName}
+                                        sizes={{
+                                            fallback: '28px',
+                                        }}
+                                        formats={['webp', 'pjpg']}
+                                    />
+                                ) : (
+                                    <Image
+                                        src={defaultUserImage}
+                                        alt={`Dr. ${dentist.name}`}
+                                        width="100%"
+                                        height="100%"
+                                    />
+                                )}
+                            </Box>
+                            <Text
+                                fontWeight="medium"
+                                style={{ textTransform: 'capitalize' }}
+                            >
+                                {patientName}
+                            </Text>
+                        </Flex>
+
+                        <Flex
                             justifyContent="space-between"
                             alignItems="flex-start"
-                            p={[20, '', 30]}
-                            mb={[10, '', 12]}
-                            border="1px solid"
-                            borderColor="divider.gray"
-                            borderRadius={2}
-                            opacity={isCancelled ? 0.5 : 1}
                         >
                             <TabletMobile>
                                 <Image
@@ -91,6 +152,7 @@ class PatientAppointments extends PureComponent {
                                     height={40}
                                     borderRadius="50%"
                                     mr={10}
+                                    style={{ flexShrink: 0 }}
                                 />
                                 <Box fontSize={1} minWidth="108px">
                                     <Text
@@ -134,7 +196,11 @@ class PatientAppointments extends PureComponent {
                                             {officeName}
                                         </Text>
                                     </Link>
-                                    <Text color="text.lightGray" mt={4}>
+                                    <Text
+                                        color="text.lightGray"
+                                        mt={4}
+                                        fontSize={0}
+                                    >
                                         <Icon
                                             type="locationPinWithFill"
                                             color="text.lightGray"
@@ -305,7 +371,7 @@ class PatientAppointments extends PureComponent {
                                 )}
                             </Desktop>
                         </Flex>
-                    </Fragment>
+                    </Box>
                 );
             }
         );
@@ -374,6 +440,10 @@ PatientAppointments.propTypes = {
         })
     ),
     toggleModalState: PropTypes.func,
+};
+
+NoAppointmentsCard.propTypes = {
+    text: PropTypes.string.isRequired,
 };
 
 export default PatientAppointments;

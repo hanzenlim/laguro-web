@@ -1,4 +1,5 @@
 import React, { Fragment, PureComponent } from 'react';
+import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import moment from 'moment';
 import get from 'lodash/get';
@@ -10,7 +11,6 @@ import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
 
 import { getAppointmentsQuery } from './queries';
 import {
-    PATIENT_ID,
     END_TIME,
     STATUS,
     PENDING_PATIENT_APPROVAL,
@@ -26,25 +26,22 @@ const PatientAppoinmentsContainer = props => {
             query={getAppointmentsQuery}
             fetchPolicy="cache-and-network"
             variables={{
-                input: {
-                    partitionKey: PATIENT_ID,
-                    partitionValue: get(user, 'id'),
-                    options: {
-                        sortKey: `${END_TIME}`,
-                        rangeStart: `${moment()
-                            .startOf('days')
-                            .format()}`,
-                        filters: [
-                            {
-                                filterKey: `${STATUS}`,
-                                filterValues: [
-                                    `${PENDING_PATIENT_APPROVAL}`,
-                                    `${ACTIVE}`,
-                                    `${CANCELLED}`,
-                                ],
-                            },
-                        ],
-                    },
+                id: get(user, 'id'),
+                queryOptions: {
+                    sortKey: `${END_TIME}`,
+                    rangeStart: `${moment()
+                        .startOf('days')
+                        .format()}`,
+                    filters: [
+                        {
+                            filterKey: `${STATUS}`,
+                            filterValues: [
+                                `${PENDING_PATIENT_APPROVAL}`,
+                                `${ACTIVE}`,
+                                `${CANCELLED}`,
+                            ],
+                        },
+                    ],
                 },
             }}
         >
@@ -52,7 +49,23 @@ const PatientAppoinmentsContainer = props => {
                 if (error) return <RedirectErrorPage />;
                 if (loading) return <Loading />;
 
-                const appointments = get(data, 'queryAppointments');
+                const members = get(data, 'getUser.family.members', []);
+
+                const appointments = members
+                    .reduce(
+                        (mergedAppointments, currentMember) => [
+                            ...mergedAppointments,
+                            ...currentMember.appointments,
+                        ],
+                        []
+                    )
+                    .sort((a, b) => {
+                        const startTimeA = moment(a.startTime);
+                        const startTimeB = moment(b.startTime);
+
+                        return startTimeA.diff(startTimeB);
+                    });
+
                 return (
                     <PatientAppoinmentsView
                         appointments={appointments}
@@ -94,5 +107,52 @@ class PatientAppoinmentsView extends PureComponent {
         );
     }
 }
+
+PatientAppoinmentsContainer.propTypes = {
+    user: PropTypes.shape({}),
+};
+
+PatientAppoinmentsView.propTypes = {
+    refetch: PropTypes.func.isRequired,
+    appointments: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.string,
+            patient: PropTypes.shape({
+                id: PropTypes.string,
+                firstName: PropTypes.string,
+                lastName: PropTypes.string,
+                imageUrl: PropTypes.string,
+            }),
+            dentist: PropTypes.shape({
+                id: PropTypes.string,
+                user: PropTypes.shape({
+                    id: PropTypes.string,
+                    firstName: PropTypes.string,
+                    lastName: PropTypes.string,
+                    imageUrl: PropTypes.string,
+                }),
+            }),
+            office: PropTypes.shape({
+                id: PropTypes.string,
+                name: PropTypes.string,
+                location: PropTypes.shape({
+                    name: PropTypes.string,
+                }),
+            }),
+            startTime: PropTypes.string,
+            endTime: PropTypes.string,
+            localStartTime: PropTypes.string,
+            localEndTime: PropTypes.string,
+            status: PropTypes.string,
+            payment: PropTypes.shape({
+                id: PropTypes.string,
+                procedures: PropTypes.shape({
+                    id: PropTypes.string,
+                    name: PropTypes.string,
+                }),
+            }),
+        })
+    ),
+};
 
 export default PatientAppoinmentsContainer;
