@@ -175,7 +175,12 @@ class PreferredLocations extends Component {
     };
 
     render() {
-        const { renderPanelHeader, offices, dentistId } = this.props;
+        const {
+            renderPanelHeader,
+            offices,
+            dentistId,
+            hasPreferredDays,
+        } = this.props;
 
         return (
             <Mutation mutation={updateDentist}>
@@ -188,32 +193,39 @@ class PreferredLocations extends Component {
                         selectEmptyLocation={this.selectEmptyLocation}
                         toggleShowLocations={this.toggleShowLocations}
                         handleZipCodeChange={this.handleZipCodeChange}
+                        hasPreferredDays={hasPreferredDays}
                         updateLoading={updateLoading}
                         handleOnSave={async () => {
                             try {
-                                await updateDentistMutation({
-                                    variables: {
-                                        input: {
-                                            id: dentistId,
-                                            preferredLocations: [
-                                                _get(
-                                                    this,
-                                                    'state.preferredLocationOne.id',
-                                                    null
-                                                ),
-                                                _get(
-                                                    this,
-                                                    'state.preferredLocationTwo.id',
-                                                    null
-                                                ),
-                                            ],
+                                if (hasPreferredDays) {
+                                    await updateDentistMutation({
+                                        variables: {
+                                            input: {
+                                                id: dentistId,
+                                                preferredLocations: [
+                                                    _get(
+                                                        this,
+                                                        'state.preferredLocationOne.id',
+                                                        null
+                                                    ),
+                                                    _get(
+                                                        this,
+                                                        'state.preferredLocationTwo.id',
+                                                        null
+                                                    ),
+                                                ],
+                                            },
                                         },
-                                    },
-                                });
+                                    });
 
-                                message.success(
-                                    'Successfully saved preferred location(s)'
-                                );
+                                    message.success(
+                                        'Successfully saved preferred location(s)'
+                                    );
+                                } else {
+                                    message.error(
+                                        'Invalid recurring week day availability'
+                                    );
+                                }
                             } catch (error) {
                                 message.error(
                                     'Error occurred, please try again'

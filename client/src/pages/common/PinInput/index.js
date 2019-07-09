@@ -21,7 +21,7 @@ class PinInput extends Component {
     };
 
     onItemChange = (value, index) => {
-        const { length, onComplete, onChange } = this.props;
+        const { length, onComplete, onChange = () => {} } = this.props;
         let currentIndex = index;
 
         this.values[index] = value;

@@ -153,6 +153,8 @@ class DentistDashboardPageView extends Component {
             dentist,
             userLanguages,
             refetchUser,
+            hasPreferredDays,
+            setHasPreferredDays,
         } = this.props;
 
         switch (key) {
@@ -191,12 +193,16 @@ class DentistDashboardPageView extends Component {
                                 }
                                 zipCode={zipCode}
                                 dentistId={dentistId}
+                                hasPreferredDays={hasPreferredDays}
                             />
                         </Card>
                         <Box mb="40px" />
                         <Card>
                             {this.renderPanelHeader(key)}
-                            <DentistAvailabilityForm />
+                            <DentistAvailabilityForm
+                                hasPreferredDays={hasPreferredDays}
+                                setHasPreferredDays={setHasPreferredDays}
+                            />
                         </Card>
                     </Box>
                 );

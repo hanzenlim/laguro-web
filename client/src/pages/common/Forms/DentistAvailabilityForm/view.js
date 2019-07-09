@@ -18,6 +18,7 @@ import {
 import { withScreenSizes } from '../../../../components/Responsive';
 import moment from 'moment';
 import _get from 'lodash/get';
+import _isEmpty from 'lodash/isEmpty';
 import { ListingTime, ABBREVIATED_DAYS, DAYS } from '../../../../util/timeUtil';
 import ListingRangePicker from '../../ListingRangePicker';
 import { Onboarding } from '../../the-bright-side-components';
@@ -135,7 +136,7 @@ const StyledCheckableTag = styled(CheckableTag)`
 `;
 
 const DayPickerField = props => {
-    const { desktopOnly } = props;
+    const { desktopOnly, setHasPreferredDays } = props;
 
     return ABBREVIATED_DAYS.map(d => {
         let dayText = d.charAt(0).toUpperCase() + d.slice(1);
@@ -148,6 +149,8 @@ const DayPickerField = props => {
             }
         }
 
+        const days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+
         return (
             <StyledCheckableTag
                 width={[40, '', 60]}
@@ -156,12 +159,37 @@ const DayPickerField = props => {
                 mb={[5, '', 0]}
                 borderRadius={['50%', '', '0']}
                 checked={props.field.value && props.field.value[d]}
-                onChange={isActive =>
-                    props.form.setFieldValue(
+                onChange={isActive => {
+                    const daysSelected = [];
+
+                    if (
+                        !_isEmpty(props.form.values) &&
+                        !_isEmpty(props.form.values.availabilityList)
+                    ) {
+                        props.form.values.availabilityList.forEach(
+                            availabilityItem => {
+                                days.forEach(day => {
+                                    if (availabilityItem.days[day]) {
+                                        daysSelected.push(day);
+                                    }
+                                });
+                            }
+                        );
+                    }
+
+                    if (isActive) {
+                        setHasPreferredDays(true);
+                    }
+
+                    if (!isActive && !_isEmpty(daysSelected)) {
+                        setHasPreferredDays(false);
+                    }
+
+                    return props.form.setFieldValue(
                         `${props.field.name}.${d}`,
                         isActive
-                    )
-                }
+                    );
+                }}
                 desktopOnly={desktopOnly}
             >
                 {dayText}
@@ -267,6 +295,12 @@ const DentistAvailabilityForm = props => (
                                                     </Text>
                                                     <Field
                                                         name={`availabilityList.${index}.days`}
+                                                        hasPreferredDays={
+                                                            props.hasPreferredDays
+                                                        }
+                                                        setHasPreferredDays={
+                                                            props.setHasPreferredDays
+                                                        }
                                                         component={withScreenSizes(
                                                             DayPickerField
                                                         )}

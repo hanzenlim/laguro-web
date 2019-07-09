@@ -54,6 +54,7 @@ class DentistCalendar extends Component {
     state = {
         showNewAppointment: false,
         appointmentIdToCancel: null,
+        isPendingAppointment: false,
     };
 
     toggleShowNewAppointment = () => {
@@ -71,6 +72,7 @@ class DentistCalendar extends Component {
     onCancelAppointment = () => {
         this.setState({
             appointmentIdToCancel: this.props.appointment.id,
+            isPendingAppointment: this.props.appointment.isPending,
         });
     };
 
@@ -113,6 +115,7 @@ class DentistCalendar extends Component {
                 </StyledModal>
                 <CancelAppoinmentModal
                     id={this.state.appointmentIdToCancel}
+                    isPendingAppointment={this.state.isPendingAppointment}
                     cancellationType={CANCELLED_BY_DENTIST}
                     visible={this.state.appointmentIdToCancel !== null}
                     toggleModalState={this.togglCancelAppointment}

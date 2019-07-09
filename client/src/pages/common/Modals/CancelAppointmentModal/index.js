@@ -2,11 +2,34 @@ import React, { PureComponent } from 'react';
 import { Mutation } from 'react-apollo';
 
 import CancelAppointmentModal from './view';
-import { cancelAppointmentMutation } from './queries';
+import {
+    withdrawAppointmentRequestMutation,
+    cancelAppointmentMutation,
+} from './queries';
 import { CANCELLED_BY_PATIENT } from '../../../../util/strings';
 import { appointmentClient } from '../../../../util/apolloClients';
 import { trackBookAppointment } from '../../../../util/trackingUtils';
+import { adopt } from 'react-adopt';
 import { getUser } from '../../../../util/authUtils';
+
+const Composed = adopt({
+    withdrawAppointmentRequest: ({ render }) => (
+        <Mutation
+            mutation={withdrawAppointmentRequestMutation}
+            client={appointmentClient}
+        >
+            {render}
+        </Mutation>
+    ),
+    cancelAppointment: ({ render }) => (
+        <Mutation
+            mutation={cancelAppointmentMutation}
+            client={appointmentClient}
+        >
+            {render}
+        </Mutation>
+    ),
+});
 
 class CancelAppointmentContainer extends PureComponent {
     onCancel = () => {
@@ -17,21 +40,28 @@ class CancelAppointmentContainer extends PureComponent {
         const { refetch } = this.props;
         const user = getUser();
         return (
-            <Mutation
-                mutation={cancelAppointmentMutation}
-                client={appointmentClient}
-            >
-                {(cancelAppointment, { loading }) => {
+            <Composed>
+                {({ withdrawAppointmentRequest, cancelAppointment }) => {
                     const onSubmit = async () => {
-                        await cancelAppointment({
-                            variables: {
-                                input: {
-                                    appointmentId: this.props.id,
-                                    cancellationType: this.props
-                                        .cancellationType,
+                        if (this.props.isPendingAppointment) {
+                            await withdrawAppointmentRequest({
+                                variables: {
+                                    input: {
+                                        appointmentId: this.props.id,
+                                    },
                                 },
-                            },
-                        });
+                            });
+                        } else {
+                            await cancelAppointment({
+                                variables: {
+                                    input: {
+                                        appointmentId: this.props.id,
+                                        cancellationType: this.props
+                                            .cancellationType,
+                                    },
+                                },
+                            });
+                        }
 
                         trackBookAppointment({
                             dentistId: user.dentistId,
@@ -49,11 +79,14 @@ class CancelAppointmentContainer extends PureComponent {
                             visible={this.props.visible}
                             onCancel={this.onCancel}
                             onSubmit={onSubmit}
-                            loading={loading}
+                            loading={
+                                withdrawAppointmentRequest.loading ||
+                                cancelAppointment.loading
+                            }
                         />
                     );
                 }}
-            </Mutation>
+            </Composed>
         );
     }
 }

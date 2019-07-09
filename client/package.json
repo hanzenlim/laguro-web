@@ -1,6 +1,6 @@
 {
   "name": "client",
-  "version": "0.7.3",
+  "version": "0.8.0",
   "private": true,
   "dependencies": {
     "@laguro/basic-components": "^1.0.22",
