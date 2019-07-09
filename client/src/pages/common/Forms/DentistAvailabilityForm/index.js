@@ -22,11 +22,18 @@ class DentistAvailabilityForm extends PureComponent {
 
         if (!dentist) return {};
 
+        const { hasPreferredDays, setHasPreferredDays } = this.props;
+
         return {
             dentistId: dentist.id,
             availabilityList: !isEmpty(dentist.preferredAvailability)
                 ? dentist.preferredAvailability.map(availability => {
                       const days = {};
+
+                      if (!isEmpty(availability.days) && !hasPreferredDays) {
+                          setHasPreferredDays(true);
+                      }
+
                       if (availability.days) {
                           availability.days.forEach(day => {
                               const dayIndex =
@@ -79,6 +86,8 @@ class DentistAvailabilityForm extends PureComponent {
 
     render() {
         const user = getUser();
+
+        const { hasPreferredDays, setHasPreferredDays } = this.props;
 
         return (
             <Query query={getUserQuery} variables={{ id: get(user, 'id') }}>
@@ -172,6 +181,10 @@ class DentistAvailabilityForm extends PureComponent {
                                     <DentistAvailabilityFormView
                                         data={mappedData}
                                         onSuccess={onSuccess}
+                                        hasPreferredDays={hasPreferredDays}
+                                        setHasPreferredDays={
+                                            setHasPreferredDays
+                                        }
                                     />
                                 );
                             }}

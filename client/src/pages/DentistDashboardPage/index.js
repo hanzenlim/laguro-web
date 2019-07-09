@@ -29,6 +29,10 @@ class DentistDashboardPage extends Component {
                 selectedTab: getKeyFromText(PROFILE_SETTINGS_MENU_TEXT),
             });
         }
+
+        this.state = {
+            hasPreferredDays: false,
+        };
     }
 
     render() {
@@ -81,6 +85,8 @@ class DentistDashboardPage extends Component {
                         ['ENGLISH']
                     );
 
+                    const { hasPreferredDays } = this.state;
+
                     return (
                         <DentistDashboardView
                             dentistId={dentistId}
@@ -98,6 +104,10 @@ class DentistDashboardPage extends Component {
                             refetch={refetch}
                             userLanguages={userLanguages}
                             refetchUser={refetch}
+                            hasPreferredDays={hasPreferredDays}
+                            setHasPreferredDays={status => {
+                                this.setState({ hasPreferredDays: status });
+                            }}
                         />
                     );
                 }}
