@@ -95,12 +95,19 @@ const ProcedurePaymentRequestView = props => {
                 <Box>
                     <Button
                         width="100%"
+                        height={50}
                         loading={isSubmitting}
                         onClick={onClickNext}
                     >
                         Next
                     </Button>
-                    <Button type="ghost" width="100%" mt="20px">
+                    <Button
+                        type="ghost"
+                        width="100%"
+                        height={50}
+                        mt="20px"
+                        onClick={onDeclineBtn}
+                    >
                         <Text
                             fontWeight="bold"
                             fontSize={3}
@@ -108,7 +115,7 @@ const ProcedurePaymentRequestView = props => {
                             border="2px solid"
                             borderColor="divider.blue"
                             borderRadius="4px"
-                            lineHeight="50px"
+                            lineHeight="46px"
                         >
                             Decline
                         </Text>
@@ -132,7 +139,12 @@ const ProcedurePaymentRequestView = props => {
                             isButtonOutside={true}
                         />
                     </Box>
-                    <Button type="ghost" height="60px" width="200px">
+                    <Button
+                        type="ghost"
+                        height={[50, '', 60]}
+                        width={['100%', '', 200]}
+                        onClick={onDeclineBtn}
+                    >
                         <Text
                             fontWeight="bold"
                             fontSize={3}
@@ -140,8 +152,7 @@ const ProcedurePaymentRequestView = props => {
                             border="2px solid"
                             borderColor="divider.blue"
                             borderRadius="4px"
-                            lineHeight="58px"
-                            onClick={onDeclineBtn}
+                            lineHeight={['46px', '', '56px']}
                         >
                             Decline
                         </Text>
@@ -181,6 +192,10 @@ ProcedurePaymentRequestView.propTypes = {
     onSubmitDeclinePayment: PropTypes.func.isRequired,
     onCancelDeclinePayment: PropTypes.func.isRequired,
     showDeclinePaymentModal: PropTypes.bool.isRequired,
+    insuranceCoverage: PropTypes.number.isRequired,
+    updateSubmittingState: PropTypes.func.isRequired,
+    tabletMobileOnly: PropTypes.bool.isRequired,
+    desktopOnly: PropTypes.bool.isRequired,
 };
 
 export default withScreenSizes(ProcedurePaymentRequestView);

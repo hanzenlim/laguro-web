@@ -56,10 +56,10 @@ const ProcedureSummaryView = props => {
                                     width="100%"
                                     opacity="1"
                                 >
-                                    <Box>
+                                    <Box mr={10}>
                                         <Text
                                             fontSize={[1, '', 2]}
-                                            lineHeight="20px"
+                                            lineHeight={1}
                                             fontWeight="500"
                                             letterSpacing={[
                                                 '-0.4px',
@@ -352,6 +352,7 @@ ProcedureSummaryView.propTypes = {
         recurringChargeAmount: PropTypes.number.isRequired,
         productName: PropTypes.string,
     }),
+    insuranceCoverage: PropTypes.number.isRequired,
 };
 
 ProcedureSummaryView.defaultProps = {
