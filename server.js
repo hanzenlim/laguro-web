@@ -1,6 +1,7 @@
 import authRoutes from './routes/authRoutes';
 import hellosignRoutes from './routes/hellosignRoutes';
 import stripeRoutes from './routes/stripeRoutes';
+import siteMapRoutes from './routes/siteMapRoutes';
 
 const express = require('express');
 const cookieSession = require('cookie-session');
@@ -98,6 +99,7 @@ app.post('/api/graphql', cors(), async (req, res) => {
 authRoutes(app);
 hellosignRoutes(app);
 stripeRoutes(app);
+siteMapRoutes(app);
 
 if (process.env.NODE_ENV === 'production') {
     if (process.env.APP_ENV === 'stage') {
@@ -109,10 +111,6 @@ if (process.env.NODE_ENV === 'production') {
             res.sendFile(path.resolve('build', 'robots.txt'));
         });
     }
-
-    app.get('/sitemap.xml', (req, res) => {
-        res.sendFile(path.resolve('build', 'sitemap.xml'));
-    });
 
     app.get('*', (req, res) => {
         res.header('Cache-Control', 'no-cache, no-store, must-revalidate');
