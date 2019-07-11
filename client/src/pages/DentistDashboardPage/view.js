@@ -36,7 +36,7 @@ import { Responsive, Link, Button, Flex } from '../../components/index';
 import PreferredLocations from '../common/PreferredLocations';
 import DentistAvailabilityForm from '../common/Forms/DentistAvailabilityForm';
 import DentistDashboardAppoinments from '../common/DentistDashboardAppointments';
-import { version } from '../../../package.json';
+import { version } from '../../../../package.json';
 
 const { TabletMobile, Desktop, withScreenSizes } = Responsive;
 

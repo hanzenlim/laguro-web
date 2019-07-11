@@ -38,7 +38,7 @@ import {
 import PaymentMethods from '../PaymentMethods';
 import { Responsive, Container } from '../../components/index';
 import PatientInsuranceForm from '../PatientInsuranceForm';
-import { version } from '../../../package.json';
+import { version } from '../../../../package.json';
 import WalletDashboard from '../WalletDashboard';
 
 const { TabletMobile, Desktop, withScreenSizes } = Responsive;
