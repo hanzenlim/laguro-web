@@ -17,7 +17,7 @@ import {
 import HostListing from '../common/HostListings/index';
 import { HOST_ONBOARDING_PAGE_URL_PREFIX } from '../../util/urls';
 import { Responsive, Link, Button, Flex } from '../../components/index';
-import { version } from '../../../package.json';
+import { version } from '../../../../package.json';
 
 const { TabletMobile, Desktop, withScreenSizes } = Responsive;
 
