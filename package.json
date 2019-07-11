@@ -22,7 +22,11 @@
         "build:env": "docker-compose up -d --build laguro",
         "stop:env": "docker-compose stop laguro",
         "restart:env": "docker-compose restart -d laguro",
-        "logs:env": "docker-compose logs --follow laguro"
+        "logs:env": "docker-compose logs --follow laguro",
+        "release:major": "git fetch && git checkout dev && git pull origin dev && npm version major && git push origin dev",
+        "release:minor": "git fetch && git checkout dev && git pull origin dev && npm version minor && git push origin dev",
+        "release:patch": "git fetch && git checkout dev && git pull origin dev && npm version patch && git push origin dev",
+        "merge:master": "git checkout master && git pull origin master && git merge dev && git push origin master"
     },
     "lint-staged": {
         "client/src/**/*.js": [
