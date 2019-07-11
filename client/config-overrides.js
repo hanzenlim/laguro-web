@@ -4,6 +4,7 @@ const {
     fixBabelImports,
     addWebpackAlias,
     addWebpackResolve,
+    removeModuleScopePlugin,
 } = require('customize-cra');
 
 module.exports = override(
@@ -20,5 +21,6 @@ module.exports = override(
     }),
     addWebpackResolve({
         modules: [path.resolve(__dirname, 'node_modules'), 'node_modules'],
-    })
+    }),
+    removeModuleScopePlugin()
 );
