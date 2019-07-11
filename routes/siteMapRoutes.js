@@ -7,7 +7,6 @@ async function searchEntity(isVerified, entity) {
     try {
         const response = await esClient.search({
             index: entity,
-            type: '_doc',
             from: 0,
             size: 1000,
             body: {
@@ -37,9 +36,7 @@ function entitySiteMap(availableEntities, entityName, frequency) {
                 <loc>
                     https://www.laguro.com/${entityName}/${availableEntities[index].id}
                 </loc>
-                <changefreq>
-                    ${frequency}
-                </changefreq>
+                <changefreq>${frequency}</changefreq>
             </url>
         `;
     }
@@ -97,8 +94,8 @@ const siteMapRoutes = app => {
                     <loc>https://www.laguro.com/privacy</loc>
                     <changefreq>yearly</changefreq>
                 </url>
-                ${entitySiteMap(dentistResult, 'dentist', 'hourly')}
-                ${entitySiteMap(officeResult, 'office', 'yearly')}
+                ${entitySiteMap(dentistResult, 'dentist', 'monthly')}
+                ${entitySiteMap(officeResult, 'office', 'monthly')}
             </urlset>`
         );
     });
