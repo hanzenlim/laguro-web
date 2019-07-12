@@ -467,7 +467,9 @@ export const getKioskPageWizardSteps = ({
                         },
                         dependentFirstName: user.firstName,
                         dependentLastName: user.lastName,
-                        dependentDob: `${patientBirthMonth}/${patientBirthDate}/${patientBirthYear}`,
+                        dependentDob: moment(
+                            `${patientBirthMonth}/${patientBirthDate}/${patientBirthYear}`
+                        ).format('MM/DD/YYYY'),
                     };
 
                     const eligibility = !hasNoInsurance
