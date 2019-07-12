@@ -3,6 +3,7 @@ import * as Yup from 'yup';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 import _find from 'lodash/find';
+import moment from 'moment';
 import { execute } from '../../util/gqlUtils';
 import { insuranceClient } from '../../util/apolloClients';
 import { CHECK_ELIGIBILITY } from './queries';
@@ -454,7 +455,9 @@ export const getPatientWebOnboardingPageWizardSteps = ({
                         },
                         dependentFirstName: user.firstName,
                         dependentLastName: user.lastName,
-                        dependentDob: `${patientBirthMonth}/${patientBirthDate}/${patientBirthYear}`,
+                        dependentDob: moment(
+                            `${patientBirthMonth}/${patientBirthDate}/${patientBirthYear}`
+                        ).format('MM/DD/YYYY'),
                     };
 
                     const eligibility = !hasNoInsurance
