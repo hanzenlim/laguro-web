@@ -53,6 +53,8 @@ class BookAppointment extends PureComponent {
         const isOnOfficePage = history.location.pathname.includes('office');
         const isOnDentistPage = history.location.pathname.includes('dentist');
 
+        const familyMembers = _get(this.props.user, 'family.members');
+
         this.state = {
             isOnOfficePage,
             isOnDentistPage,
@@ -66,12 +68,11 @@ class BookAppointment extends PureComponent {
             bookedAppointmentId: null,
             isBooking: false,
             hasAgreed: false,
-            currentPatientId: getUserId(
-                _find(_get(this.props.user, 'family.members'), [
-                    'relationshipToPrimary',
-                    'SELF',
-                ])
-            ),
+            currentPatientId: familyMembers
+                ? getUserId(
+                      _find(familyMembers, ['relationshipToPrimary', 'SELF'])
+                  )
+                : this.props.user.id,
         };
     }
 
@@ -234,10 +235,12 @@ class BookAppointment extends PureComponent {
                 onSelectTimeSlot={this.handleSelectTimeSlot}
                 onFindAnotherMatch={onFindAnotherMatch}
                 isFetchingNewData={isFetchingNewData}
-                patient={_find(_get(this.props.user, 'family.members'), [
-                    'id',
-                    this.state.currentPatientId,
-                ])}
+                patient={
+                    _find(_get(this.props.user, 'family.members'), [
+                        'id',
+                        this.state.currentPatientId,
+                    ]) || this.props.user
+                }
                 apptStartTime={
                     this.state.selectedTimeSlot &&
                     stripTimezone(this.state.selectedTimeSlot)
