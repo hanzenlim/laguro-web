@@ -27,7 +27,6 @@ import {
     getUserQuery,
 } from './queries';
 import BookAppointmentView from './view';
-import { getUserId } from '../../../util/userUtils';
 
 export const wrapperStyles = {
     mt: [22, '', 44],
@@ -53,8 +52,6 @@ class BookAppointment extends PureComponent {
         const isOnOfficePage = history.location.pathname.includes('office');
         const isOnDentistPage = history.location.pathname.includes('dentist');
 
-        const familyMembers = _get(this.props.user, 'family.members');
-
         this.state = {
             isOnOfficePage,
             isOnDentistPage,
@@ -68,11 +65,7 @@ class BookAppointment extends PureComponent {
             bookedAppointmentId: null,
             isBooking: false,
             hasAgreed: false,
-            currentPatientId: familyMembers
-                ? getUserId(
-                      _find(familyMembers, ['relationshipToPrimary', 'SELF'])
-                  )
-                : this.props.user.id,
+            currentPatientId: _get(props, 'user.id'),
         };
     }
 
