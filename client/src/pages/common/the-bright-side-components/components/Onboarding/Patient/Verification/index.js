@@ -154,6 +154,7 @@ export const Verification = props => {
                         {props.formikProps.values.mode === 'signUp' && (
                             <Field
                                 name="phoneNumber"
+                                type="tel"
                                 component={InputWithAutoFocus}
                                 onKeyPress={e => {
                                     if (e.key === 'Enter') {
