@@ -454,7 +454,7 @@ const Input = props => (
 );
 
 const InputField = props => {
-    const { field, form, placeholder, autoFocus, onKeyPress, disabled } = props;
+    const { field, form, placeholder, autoFocus, onKeyPress, disabled, type } = props;
     const fieldName = field.name;
     const hasError =
         _get(form.touched, fieldName) && _get(form.errors, fieldName);
@@ -464,6 +464,7 @@ const InputField = props => {
         <Box className={hasError ? 'has-error' : ''} mb={FormItemMarginBottom}>
             <StyledBasicComponentsInput
                 {...field}
+                type={type}
                 placeholder={placeholder}
                 height={InputSelectHeight}
                 autoFocus={autoFocus}
