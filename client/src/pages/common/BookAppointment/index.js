@@ -1,5 +1,6 @@
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
+import _flatten from 'lodash/flatten';
 import moment from 'moment';
 import queryString from 'query-string';
 import React, { PureComponent, Component } from 'react';
@@ -476,9 +477,11 @@ class BookAppointmentContainer extends Component {
                     if (
                         _isEmpty(officeAppointmentSlots) ||
                         _isEmpty(
-                            officeAppointmentSlots
-                                .map(oas => _get(oas, 'appointmentTimeslots'))
-                                .flat()
+                            _flatten(
+                                officeAppointmentSlots.map(oas =>
+                                    _get(oas, 'appointmentTimeslots')
+                                )
+                            )
                         )
                     ) {
                         return <NoAvailability />;
