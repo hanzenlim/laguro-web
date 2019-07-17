@@ -121,7 +121,6 @@ const GetBirthday = ({ forHolder }) => (
                         <Select
                             {...monthPropValue}
                             placeholder="Month"
-                            showSearch
                             onChange={value =>
                                 form.setFieldValue(
                                     forHolder
@@ -159,7 +158,6 @@ const GetBirthday = ({ forHolder }) => (
                         <Select
                             {...dayPropValue}
                             placeholder="Day"
-                            showSearch
                             onChange={value =>
                                 form.setFieldValue(
                                     forHolder ? 'holderBirthDay' : 'birthDay',
@@ -197,7 +195,6 @@ const GetBirthday = ({ forHolder }) => (
                             <Select
                                 {...yearPropValue}
                                 placeholder="Year"
-                                showSearch
                                 onChange={value =>
                                     form.setFieldValue(
                                         forHolder

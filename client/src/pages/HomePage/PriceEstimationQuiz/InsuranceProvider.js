@@ -22,7 +22,6 @@ const InsuranceProvider = () => (
                 >
                     <Select
                         placeholder="Select your insurance"
-                        showSearch
                         onChange={value =>
                             form.setFieldValue('insuranceProvider', value)
                         }
