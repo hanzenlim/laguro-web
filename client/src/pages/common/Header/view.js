@@ -217,7 +217,7 @@ class Header extends Component {
                                 <Link
                                     isExternal
                                     target="_blank"
-                                    to="http://blog.laguro.com/"
+                                    to="https://blog.laguro.com/"
                                 >
                                     <LinkButton>Blog</LinkButton>
                                 </Link>
