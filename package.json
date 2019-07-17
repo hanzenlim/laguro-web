@@ -1,6 +1,6 @@
 {
     "name": "laguro-web",
-    "version": "0.9.4",
+    "version": "0.9.5",
     "description": "Airbnb for dental practices",
     "main": "server.js",
     "engines": {
