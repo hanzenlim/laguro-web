@@ -145,7 +145,14 @@ export const getPatientWebOnboardingPageWizardSteps = ({
         validationSchema: Yup.object().shape({
             patientBirthMonth: Yup.string().required('Month is required'),
             patientBirthDate: Yup.string().required('Date is required'),
-            patientBirthYear: Yup.string().required('Year is required'),
+            patientBirthYear: Yup.date()
+                .max(
+                    moment()
+                        .subtract(18, 'years')
+                        .format(),
+                    'Under minimum age'
+                )
+                .required('Year is required'),
         }),
         initialValues: {
             patientBirthMonth:
