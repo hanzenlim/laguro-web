@@ -82,6 +82,18 @@ export const getFamilyQuery = gql`
                 zipCode
                 state
             }
+            family {
+                primaryUser {
+                    id
+                    address {
+                        streetAddress
+                        addressDetails
+                        city
+                        zipCode
+                        state
+                    }
+                }
+            }
         }
     }
 `;

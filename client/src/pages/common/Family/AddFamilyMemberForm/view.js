@@ -265,7 +265,7 @@ const AddFamilyMemberFormView = props => {
                         <Field name="hasDifferentAddress">
                             {props => (
                                 <StyledRadioGroup
-                                    defaultValue={false}
+                                    defaultValue={values.hasDifferentAddress}
                                     onChange={e =>
                                         props.form.setFieldValue(
                                             props.field.name,

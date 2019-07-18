@@ -1,6 +1,7 @@
 import { Modal } from 'antd';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
+import _isEqual from 'lodash/isEqual';
 import React, { PureComponent } from 'react';
 import { adopt } from 'react-adopt';
 import { Mutation, Query } from 'react-apollo';
@@ -110,26 +111,35 @@ class AddFamilyMemberForm extends PureComponent {
         return input;
     };
 
-    getInitialValues = ({ user = {} }) => ({
-        imageUrl: user.imageUrl || '',
-        firstName: user.firstName || '',
-        middleName: user.middleName || '',
-        lastName: user.lastName || '',
-        relationship: user.relationshipToPrimary || '',
-        birthMonth: user.dob && user.dob.split('/')[0],
-        birthDate: user.dob && user.dob.split('/')[1],
-        birthYear: user.dob && user.dob.split('/')[2],
-        gender: user.id && !user.gender ? 'unknown' : user.gender,
-        address1: (user.address && user.address.streetAddress) || '',
-        address2: (user.address && user.address.addressDetails) || '',
-        city: (user.address && user.address.city) || '',
-        zipCode: (user.address && user.address.zipCode) || '',
-        state: (user.address && user.address.state) || '',
-        phoneNumber: user.phoneNumber ? user.phoneNumber.split('+1')[1] : '',
-        email: user.email || '',
-        hasDifferentAddress: !_isEmpty(user.address),
-        hasDifferentContactInformation: !_isEmpty(user.phoneNumber),
-    });
+    getInitialValues = ({ user = {}, primaryUser = {} }) => {
+        const hasDifferentAddress = !_isEqual(
+            user.address,
+            primaryUser.address
+        );
+
+        return {
+            imageUrl: user.imageUrl || '',
+            firstName: user.firstName || '',
+            middleName: user.middleName || '',
+            lastName: user.lastName || '',
+            relationship: user.relationshipToPrimary || '',
+            birthMonth: user.dob && user.dob.split('/')[0],
+            birthDate: user.dob && user.dob.split('/')[1],
+            birthYear: user.dob && user.dob.split('/')[2],
+            gender: user.id && !user.gender ? 'unknown' : user.gender,
+            address1: (user.address && user.address.streetAddress) || '',
+            address2: (user.address && user.address.addressDetails) || '',
+            city: (user.address && user.address.city) || '',
+            zipCode: (user.address && user.address.zipCode) || '',
+            state: (user.address && user.address.state) || '',
+            phoneNumber: user.phoneNumber
+                ? user.phoneNumber.split('+1')[1]
+                : '',
+            email: user.email || '',
+            hasDifferentAddress,
+            hasDifferentContactInformation: !_isEmpty(user.phoneNumber),
+        };
+    };
 
     handleRemoveFamilyMember = () => {
         const { userId = '', onSuccess = () => {} } = this.props;
@@ -223,7 +233,11 @@ class AddFamilyMemberForm extends PureComponent {
                     this.updateUser = updateUser;
 
                     const user = _get(getUser, 'data.getUser');
-                    const initialValues = this.getInitialValues({ user });
+                    const primaryUser = _get(user, 'family.primaryUser', {});
+                    const initialValues = this.getInitialValues({
+                        user,
+                        primaryUser,
+                    });
 
                     if (_get(getUser, 'loading')) return <Loading />;
 
