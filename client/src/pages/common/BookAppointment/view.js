@@ -88,7 +88,7 @@ class BookAppointmentView extends React.Component {
                 >
                     Make an appointment
                 </Text>
-                {_isArray(patients) && patients.length > 1 && (
+                {_isArray(patients) && (
                     <Box mb={moduleMarginBottom}>
                         <SelectPatient
                             patients={_get(this.props.user, 'family.members')}
