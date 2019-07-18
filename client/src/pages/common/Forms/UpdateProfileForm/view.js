@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import ReactFilestack from 'filestack-react';
 import { Form, Field, withFormik } from 'formik';
 import * as Yup from 'yup';
-import _range from 'lodash/range';
 import { message } from 'antd';
 import _trim from 'lodash/trim';
 import { Box, Text, Image, Button, Flex } from '../../../../components';
@@ -17,6 +16,7 @@ import { setImageSizeToUrl } from '../../../../util/imageUtil';
 import defaultUserImage from '../../../../components/Image/defaultUserImage.svg';
 import { SelectLanguage } from '../../the-bright-side-components/components/Onboarding/SelectLanguage';
 import { Onboarding } from '../../the-bright-side-components';
+import FormFields from '../../FormFields';
 
 const StyledNextButton = styled(Button)`
     && {
@@ -25,27 +25,6 @@ const StyledNextButton = styled(Button)`
         font-size: 16px;
     }
 `;
-
-const dates = _range(1, 32)
-    .map(i => i.toString())
-    .map(num => (`0${  num}`).slice(-2));
-
-const months = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December',
-];
-
-const years = _range(moment().format('YYYY'), 1900).map(i => i.toString());
 
 const minAdultAge = moment()
     .subtract(18, 'years')
@@ -302,50 +281,24 @@ class UpdateProfileForm extends PureComponent {
                         <Box width={['100%', '', '160px']} mr="10px">
                             <Field
                                 name="birthMonth"
-                                placeholder="Month"
                                 component={props => (
-                                    <Onboarding.SelectField
-                                        {...props}
-                                        options={months.map((i, index) => (
-                                            <Onboarding.SelectOption
-                                                value={(index + 1).toString()}
-                                            >
-                                                {i}
-                                            </Onboarding.SelectOption>
-                                        ))}
-                                    />
+                                    <FormFields.SelectMonth {...props} />
                                 )}
                             />
                         </Box>
                         <Box width={['100%', '', '160px']} mr="10px">
                             <Field
                                 name="birthDate"
-                                placeholder="Date"
                                 component={props => (
-                                    <Onboarding.SelectField
-                                        {...props}
-                                        options={dates.map(i => (
-                                            <Onboarding.SelectOption value={i}>
-                                                {i}
-                                            </Onboarding.SelectOption>
-                                        ))}
-                                    />
+                                    <FormFields.SelectDate {...props} />
                                 )}
                             />
                         </Box>
                         <Box width={['100%', '', '160px']} mr="10px">
                             <Field
                                 name="birthYear"
-                                placeholder="Year"
                                 component={props => (
-                                    <Onboarding.SelectField
-                                        {...props}
-                                        options={years.map(i => (
-                                            <Onboarding.SelectOption value={i}>
-                                                {i}
-                                            </Onboarding.SelectOption>
-                                        ))}
-                                    />
+                                    <FormFields.SelectYear {...props} />
                                 )}
                             />
                         </Box>
