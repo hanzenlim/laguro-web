@@ -134,16 +134,27 @@ class AvailableTimes extends PureComponent {
         const nextActiveTimeSlotList = [];
         for (let i = 0; i < dateCount; i++) {
             // If day is blank, create an empty day
-            if (activeTimeSlotList[i] === undefined) {
+            if (_isEmpty(activeTimeSlotList[i])) {
                 // Generate the next empty day
-                const emptyNextDay = moment(nextActiveTimeSlotList[i - 1].day)
+                let emptyNextDay = moment()
                     .add(1, 'days')
                     .toDate();
 
-                nextActiveTimeSlotList[i] = {
-                    day: emptyNextDay,
-                    time: new Array(timeCount).fill(null),
-                };
+                if (i === 0) {
+                    nextActiveTimeSlotList[i] = {
+                        day: emptyNextDay,
+                        time: new Array(timeCount).fill(null),
+                    };
+                } else {
+                    emptyNextDay = moment(nextActiveTimeSlotList[i - 1].day)
+                        .add(1, 'days')
+                        .toDate();
+
+                    nextActiveTimeSlotList[i] = {
+                        day: emptyNextDay,
+                        time: new Array(timeCount).fill(null),
+                    };
+                }
             } else {
                 // If day is not blank, copy the day
                 nextActiveTimeSlotList[i] = activeTimeSlotList[i];
