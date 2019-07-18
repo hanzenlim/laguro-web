@@ -1,11 +1,11 @@
 import React from 'react';
 import { Form, Field, withFormik } from 'formik';
-import * as Yup from 'yup';
 import _capitalize from 'lodash/capitalize';
 import FormFields from '../../FormFields';
 import FormElements from '../../FormElements';
 import { Onboarding } from '../../the-bright-side-components/';
 import { Box, Text, Flex, Grid } from '../../../../components/';
+import { validationSchema } from './validators';
 
 const YES = 'yes';
 const NO = 'no';
@@ -329,98 +329,8 @@ const FamilyMemberInsuranceFormView = props => {
     );
 };
 
-const HAS_INSURANCE_FORM_NAME = 'hasInsurance';
-const IS_UNDER_PRIMARY_USER_INSURNACE_FORM_ITEM_NAME =
-    'isUnderPrimaryUserInsurance';
-
-const getHasInsuranceYesValidation = validation =>
-    Yup.string().when(HAS_INSURANCE_FORM_NAME, {
-        is: YES,
-        then: validation,
-    });
-
-const getIsUnderPrimaryUserInsuranceNoValidation = validation =>
-    Yup.string().when(IS_UNDER_PRIMARY_USER_INSURNACE_FORM_ITEM_NAME, {
-        is: NO,
-        then: validation,
-    });
-
-const getHasInsuranceYesAndIsUnderPrimaryUserInsuranceNoValidation = validation =>
-    Yup.string().when(
-        [
-            HAS_INSURANCE_FORM_NAME,
-            IS_UNDER_PRIMARY_USER_INSURNACE_FORM_ITEM_NAME,
-        ],
-        {
-            is: (hasInsurance, isUnderPrimaryUserInsurance) =>
-                hasInsurance === YES && isUnderPrimaryUserInsurance === NO,
-            then: validation,
-        }
-    );
-
-const INSURANCE_PROVIDER_YUP_VALIDATION = Yup.string().required(
-    'Insurance provider is required'
-);
-const INSURANCE_NUMBER_YUP_VALIDATION = Yup.string().required(
-    'Subscriber ID is required'
-);
-
 export default withFormik({
-    validationSchema: Yup.object().shape({
-        [HAS_INSURANCE_FORM_NAME]: Yup.string()
-            .required('Please fill out this field.')
-            .nullable(),
-        [IS_UNDER_PRIMARY_USER_INSURNACE_FORM_ITEM_NAME]: getHasInsuranceYesValidation(
-            Yup.string().required('Please fill out this field.')
-        ),
-        policyHolderUser: Yup.object()
-            .when(
-                [
-                    'hasInsurance',
-                    'hasOwnInsurance',
-                    'isUnderPrimaryUserInsurance',
-                ],
-                {
-                    is: (
-                        hasInsurance,
-                        hasOwnInsurance,
-                        isUnderPrimaryUserInsurance
-                    ) =>
-                        hasInsurance === YES &&
-                        hasOwnInsurance === NO &&
-                        isUnderPrimaryUserInsurance === NO,
-                    then: Yup.object().shape({
-                        firstName: Yup.string().required(
-                            'Please fill out this field.'
-                        ),
-                        lastName: Yup.string().required(
-                            'Please fill out this field.'
-                        ),
-                        gender: Yup.string()
-                            .required('Gender is required')
-                            .nullable(),
-                        birthMonth: Yup.string().required('Month is required'),
-                        birthDate: Yup.string().required('Date is required'),
-                        birthYear: Yup.string().required('Year is required'),
-                        address1: Yup.string().required(
-                            'Street address is required'
-                        ),
-                        city: Yup.string().required('City is required'),
-                        state: Yup.string().required('State is required'),
-                        zipCode: Yup.string().required(
-                            'Postal code is required'
-                        ),
-                    }),
-                }
-            )
-            .nullable(),
-        insuranceProvider: getHasInsuranceYesAndIsUnderPrimaryUserInsuranceNoValidation(
-            INSURANCE_PROVIDER_YUP_VALIDATION
-        ),
-        insuranceNumber: getIsUnderPrimaryUserInsuranceNoValidation(
-            INSURANCE_NUMBER_YUP_VALIDATION
-        ),
-    }),
+    validationSchema,
     mapPropsToValues: props => ({ ...props.initialValues }),
     handleSubmit: async (values, actions) => {
         try {

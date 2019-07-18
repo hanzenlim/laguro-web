@@ -28,6 +28,7 @@ import {
     GENERAL_REQUIRED,
     BOOKAPPOINTMENT_BOOKANAPPOINTMENT_YOUMUSTSELECTAPPT,
 } from '../../strings/messageStrings';
+import {policyHolderUserValidationSchema} from '../common/Family/FamilyMemberInsuranceForm/validators'
 
 // contains renderRegistrationStage which renders correct step within Registation stage of kiosk flow
 // contains getStageOneRegWizardSteps which return an array of step information objects, which contain step id(id), validations(validationSchema), and initialValues, given a user object. This user object is from getUser in Kiosk/index.js.
@@ -363,28 +364,7 @@ export const getKioskPageWizardSteps = ({
                 {
                     is: (hasNoInsurance, isPrimaryHolder) =>
                         hasNoInsurance === 'false' && isPrimaryHolder === 'no',
-                    then: Yup.object().shape({
-                        firstName: Yup.string().required(
-                            'Please fill out this field.'
-                        ),
-                        lastName: Yup.string().required(
-                            'Please fill out this field.'
-                        ),
-                        gender: Yup.string()
-                            .required('Gender is required')
-                            .nullable(),
-                        birthMonth: Yup.string().required('Month is required'),
-                        birthDate: Yup.string().required('Date is required'),
-                        birthYear: Yup.string().required('Year is required'),
-                        address1: Yup.string().required(
-                            'Street address is required'
-                        ),
-                        city: Yup.string().required('City is required'),
-                        state: Yup.string().required('State is required'),
-                        zipCode: Yup.string().required(
-                            'Postal code is required'
-                        ),
-                    }),
+                    then: policyHolderUserValidationSchema,
                 }
             ),
             hasNoInsurance: Yup.string(),
