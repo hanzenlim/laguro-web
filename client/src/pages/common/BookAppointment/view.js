@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
 import styled from 'styled-components';
 import _get from 'lodash/get';
-import _isArray from 'lodash/isArray';
 import _find from 'lodash/find';
 
 import { Button, Checkbox, Flex, Link, Text, Box } from '../../../components';
@@ -74,7 +73,7 @@ class BookAppointmentView extends React.Component {
             isFindAnotherMatchDisabled,
         } = this.props;
 
-        const patients = _get(this.props.user, 'family.members');
+        const patients = _get(this.props.user, 'family.members', []);
 
         const moduleMarginBottom = [13, '', 25];
 
@@ -88,7 +87,7 @@ class BookAppointmentView extends React.Component {
                 >
                     Make an appointment
                 </Text>
-                {_isArray(patients) && patients.length > 1 && (
+                {patients && patients.length !== 0 && (
                     <Box mb={moduleMarginBottom}>
                         <SelectPatient
                             patients={_get(this.props.user, 'family.members')}
