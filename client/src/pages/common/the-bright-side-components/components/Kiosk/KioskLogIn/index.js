@@ -1,5 +1,6 @@
 import { Box, Button, Flex, Text } from '@laguro/basic-components';
 import { Field } from 'formik';
+import { Tooltip, Icon } from 'antd';
 import * as React from 'react';
 import validator from 'validator';
 import { injectIntl } from 'react-intl';
@@ -76,10 +77,18 @@ class KioskLogInClass extends React.Component {
                     text={formatText(REGISTRATION_SIGNIN_TYPEINFROMATION)}
                 />
                 <Flex flexDirection="column" mb="20px">
-                    <Flex alignItems="flex-start" mb="10px">
+                    <Flex alignItems="center" mb="10px">
                         <Text>
                             {formatText(REGISTRATION_SIGNIN_PHONEOREMAIL)}
                         </Text>
+                        <Box ml="4px">
+                            <Tooltip
+                                placement="top"
+                                title="Must provide a valid 10-digit number, including area code."
+                            >
+                                <Icon type="info-circle" />
+                            </Tooltip>
+                        </Box>
                     </Flex>
 
                     <Flex>

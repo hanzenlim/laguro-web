@@ -2,6 +2,7 @@ import { Box, Button, Flex, Text } from '@laguro/basic-components';
 import { Field } from 'formik';
 import * as React from 'react';
 import validator from 'validator';
+import { Tooltip, Icon } from 'antd';
 
 import Onboarding from '../../../Onboarding';
 import InfoIcon from '../../Assets/infoIcon';
@@ -129,12 +130,20 @@ export const Verification = props => {
                 }
             />
             <Flex flexDirection="column" mb="40px">
-                <Flex alignItems="flex-start" mb="10px">
+                <Flex alignItems="center" mb="10px">
                     <Text>
                         {props.formikProps.values.mode === 'signIn'
                             ? 'Phone number or e-mail'
                             : 'Phone number'}
                     </Text>
+                    <Box ml="4px">
+                        <Tooltip
+                            placement="top"
+                            title="Must provide a valid 10-digit number, including area code."
+                        >
+                            <Icon type="info-circle" />
+                        </Tooltip>
+                    </Box>
                 </Flex>
 
                 <Flex flexDirection={['column', 'row', 'row']}>
