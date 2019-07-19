@@ -44,10 +44,8 @@ const StyledContainer = styled.div`
             color: ${props => props.theme.colors.datePicker.blue};
         }
 
-        .ant-calendar-input {
-            cursor: pointer;
-            /* Hide blinking input cursor */
-            color: transparent;
+        .ant-calendar-input-wrap {
+            display: none;
         }
     }
 `;
