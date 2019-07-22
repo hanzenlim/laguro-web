@@ -20,15 +20,7 @@ import {
 } from '../common/Forms/HostOnboardingForm/queries';
 
 import history from '../../history';
-import {
-    Container,
-    Steps,
-    Form,
-    Box,
-    Flex,
-    Progress,
-    Responsive,
-} from '../../components';
+import { Container, Form, Box, Flex, Progress } from '../../components';
 import AddOfficeInfo from '../common/Forms/HostOnboardingForm/AddOfficeInfo';
 import AddOfficeEquipments from '../common/Forms/HostOnboardingForm/AddOfficeEquipments';
 import AddDocument from '../common/Forms/HostOnboardingForm/AddDocument';
@@ -47,7 +39,6 @@ import OfficeVerificationUtil from './util';
 import { UPPERCASE_DAYS } from '../../util/timeUtil';
 import { HOST_DASHBOARD_PAGE_URL_BASE } from '../../util/urls';
 
-const { TabletMobile } = Responsive;
 const ABBREVIATED_DAYS = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
 
 const StyledAlert = styled(Alert)`
@@ -846,15 +837,11 @@ class HostOnboarding extends Component {
                                     <Mutation mutation={CREATE_OFFICE}>
                                         {createOffice => (
                                             <Fragment>
-                                                <TabletMobile>
-                                                    <Progress
-                                                        strokeLinecap="square"
-                                                        strokeWidth="3px"
-                                                        percent={
-                                                            progressBarPercent
-                                                        }
-                                                    />
-                                                </TabletMobile>
+                                                <Progress
+                                                    strokeLinecap="square"
+                                                    strokeWidth="3px"
+                                                    percent={progressBarPercent}
+                                                />
                                                 <Container
                                                     position="relative"
                                                     maxWidth={['', '', 624]}
@@ -913,41 +900,6 @@ class HostOnboarding extends Component {
                                                             );
                                                         }}
                                                     >
-                                                        {this.props
-                                                            .desktopOnly && (
-                                                            <Box
-                                                                position="absolute"
-                                                                top={200}
-                                                            >
-                                                                <Steps
-                                                                    mt={[
-                                                                        0,
-                                                                        '',
-                                                                        210,
-                                                                    ]}
-                                                                    mb={[
-                                                                        0,
-                                                                        '',
-                                                                        46,
-                                                                    ]}
-                                                                    current={
-                                                                        stepCount
-                                                                    }
-                                                                    size={
-                                                                        numSteps &&
-                                                                        numSteps.toString()
-                                                                    }
-                                                                    direction={
-                                                                        this
-                                                                            .props
-                                                                            .desktopOnly
-                                                                            ? 'vertical'
-                                                                            : 'horizontal'
-                                                                    }
-                                                                />
-                                                            </Box>
-                                                        )}
-
                                                         <Container
                                                             position="relative"
                                                             maxWidth={[
