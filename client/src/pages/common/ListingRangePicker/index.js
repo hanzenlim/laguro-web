@@ -65,7 +65,7 @@ class RangePicker extends PureComponent {
         this.state = {
             dateString: '',
             startValue: props.value[0],
-            endValue: null,
+            endValue: props.value[1] || null,
             startOpen: false,
             endOpen: false,
             showEndTime: false,
