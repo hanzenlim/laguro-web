@@ -155,6 +155,8 @@ class DentistDashboardPageView extends Component {
             refetchUser,
             hasPreferredDays,
             setHasPreferredDays,
+            hasPreferredDaysFromAPI,
+            setHasPreferredDaysFromAPI
         } = this.props;
 
         switch (key) {
@@ -202,6 +204,8 @@ class DentistDashboardPageView extends Component {
                             <DentistAvailabilityForm
                                 hasPreferredDays={hasPreferredDays}
                                 setHasPreferredDays={setHasPreferredDays}
+                                hasPreferredDaysFromAPI={hasPreferredDaysFromAPI}
+                                setHasPreferredDaysFromAPI={setHasPreferredDaysFromAPI}
                             />
                         </Card>
                     </Box>

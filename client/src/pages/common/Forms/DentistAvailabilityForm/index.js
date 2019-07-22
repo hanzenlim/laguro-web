@@ -22,7 +22,11 @@ class DentistAvailabilityForm extends PureComponent {
 
         if (!dentist) return {};
 
-        const { hasPreferredDays, setHasPreferredDays } = this.props;
+        const {
+            setHasPreferredDays,
+            hasPreferredDaysFromAPI,
+            setHasPreferredDaysFromAPI,
+        } = this.props;
 
         return {
             dentistId: dentist.id,
@@ -30,8 +34,12 @@ class DentistAvailabilityForm extends PureComponent {
                 ? dentist.preferredAvailability.map(availability => {
                       const days = {};
 
-                      if (!isEmpty(availability.days) && !hasPreferredDays) {
+                      if (
+                          !isEmpty(availability.days) &&
+                          !hasPreferredDaysFromAPI
+                      ) {
                           setHasPreferredDays(true);
+                          setHasPreferredDaysFromAPI(true);
                       }
 
                       if (availability.days) {

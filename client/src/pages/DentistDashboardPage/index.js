@@ -32,6 +32,7 @@ class DentistDashboardPage extends Component {
 
         this.state = {
             hasPreferredDays: false,
+            hasPreferredDaysFromAPI: false,
         };
     }
 
@@ -85,7 +86,10 @@ class DentistDashboardPage extends Component {
                         ['ENGLISH']
                     );
 
-                    const { hasPreferredDays } = this.state;
+                    const {
+                        hasPreferredDays,
+                        hasPreferredDaysFromAPI,
+                    } = this.state;
 
                     return (
                         <DentistDashboardView
@@ -105,8 +109,14 @@ class DentistDashboardPage extends Component {
                             userLanguages={userLanguages}
                             refetchUser={refetch}
                             hasPreferredDays={hasPreferredDays}
+                            hasPreferredDaysFromAPI={hasPreferredDaysFromAPI}
                             setHasPreferredDays={status => {
                                 this.setState({ hasPreferredDays: status });
+                            }}
+                            setHasPreferredDaysFromAPI={status => {
+                                this.setState({
+                                    hasPreferredDaysFromAPI: status,
+                                });
                             }}
                         />
                     );

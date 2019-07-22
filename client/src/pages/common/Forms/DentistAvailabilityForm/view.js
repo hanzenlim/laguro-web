@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Form, Field, withFormik, FieldArray, getIn } from 'formik';
@@ -137,6 +137,17 @@ const StyledCheckableTag = styled(CheckableTag)`
 
 const DayPickerField = props => {
     const { desktopOnly, setHasPreferredDays } = props;
+    const defaultDays = ['mon', 'tue', 'wed', 'thu', 'fri'];
+
+    useEffect(() => {
+        if (props.field && _isEmpty(props.field.value)) {
+            defaultDays.forEach(item => {
+                props.form.setFieldValue(`${props.field.name}.${item}`, true);
+            });
+
+            setHasPreferredDays(true);
+        }
+    }, [props.field.value]);
 
     return ABBREVIATED_DAYS.map(d => {
         let dayText = d.charAt(0).toUpperCase() + d.slice(1);
@@ -160,6 +171,10 @@ const DayPickerField = props => {
                 borderRadius={['50%', '', '0']}
                 checked={props.field.value && props.field.value[d]}
                 onChange={isActive => {
+                    if (isActive) {
+                        setHasPreferredDays(true);
+                    }
+
                     const daysSelected = [];
 
                     if (
@@ -169,7 +184,14 @@ const DayPickerField = props => {
                         props.form.values.availabilityList.forEach(
                             availabilityItem => {
                                 days.forEach(day => {
-                                    if (availabilityItem.days[day]) {
+                                    if (day === d && isActive) {
+                                        daysSelected.push(day);
+                                    }
+
+                                    if (
+                                        availabilityItem.days[day] &&
+                                        day !== d
+                                    ) {
                                         daysSelected.push(day);
                                     }
                                 });
@@ -177,11 +199,7 @@ const DayPickerField = props => {
                         );
                     }
 
-                    if (isActive) {
-                        setHasPreferredDays(true);
-                    }
-
-                    if (!isActive && !_isEmpty(daysSelected)) {
+                    if (!isActive && _isEmpty(daysSelected)) {
                         setHasPreferredDays(false);
                     }
 
@@ -305,6 +323,18 @@ const DentistAvailabilityForm = props => (
                                                             DayPickerField
                                                         )}
                                                     />
+                                                    {!props.hasPreferredDays && (
+                                                        <Text
+                                                            color="#f5222d"
+                                                            mb="0px"
+                                                            mt="10px"
+                                                            fontSize="12px"
+                                                        >
+                                                            At least one
+                                                            repeat-on day is
+                                                            required
+                                                        </Text>
+                                                    )}
                                                 </Box>
                                                 <Grid
                                                     gridTemplateColumns={[
