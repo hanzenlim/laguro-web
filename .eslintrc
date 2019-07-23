@@ -1,34 +1,44 @@
 {
-    "parser": "babel-eslint",
+    "env": {
+        "browser": true
+    },
     "extends": [
-        "airbnb-base",
-        "plugin:prettier/recommended"
+        "airbnb",
+        "prettier",
+        "prettier/react"
+    ],
+    "plugins": [
+        "prettier",
+        "react-hooks"
     ],
     "rules": {
-        "prettier/prettier": "error",
-        "class-methods-use-this": "off",
-        "no-underscore-dangle": "off",
-        "no-plusplus": "off",
-        "react/jsx-uses-react": "error",
-        "react/jsx-uses-vars": "error",
-        "react/prop-types": "error",
-        "import/no-extraneous-dependencies": ["error", {"devDependencies": true}],
-        "import/no-named-as-default": "off",
-        "import/prefer-default-export": "off"
+        "react/jsx-filename-extension": [
+            1,
+            {
+                "extensions": [
+                    ".js",
+                    ".jsx"
+                ]
+            }
+        ],
+        "react/prop-types": 0,
+        "no-underscore-dangle": 0,
+        "import/imports-first": [
+            "error",
+            "absolute-first"
+        ],
+        "import/newline-after-import": "error",
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": "warn"
     },
     "globals": {
-        "document": true,
         "window": true,
-        "alert": true
+        "document": true,
+        "localStorage": true,
+        "FormData": true,
+        "FileReader": true,
+        "Blob": true,
+        "navigator": true
     },
-    "plugins": [
-        "react",
-        "jest",
-        "eslint-plugin-cypress"
-    ],
-    "env": {
-        "jest/globals": true,
-        "browser": true,
-        "cypress/globals": true
-    }
+    "parser": "babel-eslint"
 }
