@@ -60,8 +60,8 @@ class FamilyMemberInsuranceForm extends PureComponent {
             birthYear: user.dob && user.dob.split('/')[2],
             hasInsurance: _get(user, 'insuranceInfo') ? 'yes' : 'no',
             hasOwnInsurance:
-                _get(user, 'insuranceInfo.insuranceNumber') &&
-                !_get(user, 'insuranceInfo.policyHolderUser')
+                _get(user, 'id', null) ===
+                _get(user, 'insuranceInfo.policyHolderUserId', null)
                     ? 'yes'
                     : 'no',
             isUnderPrimaryUserInsurance,
@@ -153,9 +153,7 @@ class FamilyMemberInsuranceForm extends PureComponent {
                             ? {
                                   firstName: policyHolderUser.firstName,
                                   lastName: policyHolderUser.lastName,
-                                  dob: `${policyHolderUser.birthMonth}/${
-                                      policyHolderUser.birthDate
-                                  }/${policyHolderUser.birthYear}`,
+                                  dob: `${policyHolderUser.birthMonth}/${policyHolderUser.birthDate}/${policyHolderUser.birthYear}`,
                                   gender:
                                       policyHolderUser.gender === 'unknown'
                                           ? null
@@ -190,24 +188,18 @@ class FamilyMemberInsuranceForm extends PureComponent {
             insuranceInfo,
             dependentFirstName: values.firstName,
             dependentLastName: values.lastName,
-            dependentDob: `${values.birthMonth}/${values.birthDate}/${
-                values.birthYear
-            }`,
+            dependentDob: `${values.birthMonth}/${values.birthDate}/${values.birthYear}`,
         };
 
         const checkEligibilityWithDependentInput = {
             patientId: userId,
             firstName: policyHolderUser.firstName,
             lastName: policyHolderUser.lastName,
-            dob: `${policyHolderUser.birthMonth}/${
-                policyHolderUser.birthDate
-            }/${policyHolderUser.birthYear}`,
+            dob: `${policyHolderUser.birthMonth}/${policyHolderUser.birthDate}/${policyHolderUser.birthYear}`,
             insuranceInfo,
             dependentFirstName: values.firstName,
             dependentLastName: values.lastName,
-            dependentDob: `${values.birthMonth}/${values.birthDate}/${
-                values.birthYear
-            }`,
+            dependentDob: `${values.birthMonth}/${values.birthDate}/${values.birthYear}`,
         };
 
         let isEligible = false;
