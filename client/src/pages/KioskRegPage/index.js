@@ -192,7 +192,10 @@ class KioskRegPage extends Component {
         cookies.erase(KIOSK_SELECTED_FAMILY_MEMBER);
 
         // KIOSK_OFFICE_ID_COOKIE_VARIABLE_NAME cookie is not set, redirect to office set-up page
-        if (_isEmpty(cookies.get(KIOSK_OFFICE_ID_COOKIE_VARIABLE_NAME))) {
+        if (
+            _isEmpty(cookies.get(KIOSK_OFFICE_ID_COOKIE_VARIABLE_NAME)) &&
+            !localStorage.getItem(KIOSK_OFFICE_ID_COOKIE_VARIABLE_NAME)
+        ) {
             redirect({ url: KIOSK_OFFICE_SETUP_PAGE_URL });
         }
     }

@@ -29,6 +29,12 @@ class KioskOfficeSetUpPage extends Component {
                                     .value,
                                 { expires: 0 }
                             );
+
+                            localStorage.setItem(
+                                KIOSK_OFFICE_ID_COOKIE_VARIABLE_NAME,
+                                document.getElementById('kiosk-office-id').value
+                            );
+
                             redirect({ url: KIOSK_REG_PAGE_URL });
                         }}
                     >

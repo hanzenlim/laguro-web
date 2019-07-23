@@ -46,9 +46,13 @@ const CheckInWithAppointmentCode = props => {
                         const checkIntoKioskResponse = await checkIntoKiosk({
                             variables: {
                                 input: {
-                                    officeId: cookies.get(
-                                        KIOSK_OFFICE_ID_COOKIE_VARIABLE_NAME
-                                    ),
+                                    officeId:
+                                        cookies.get(
+                                            KIOSK_OFFICE_ID_COOKIE_VARIABLE_NAME
+                                        ) ||
+                                        localStorage.getItem(
+                                            KIOSK_OFFICE_ID_COOKIE_VARIABLE_NAME
+                                        ),
                                     passcode: pin,
                                 },
                             },
