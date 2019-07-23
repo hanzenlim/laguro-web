@@ -8,8 +8,9 @@ const IS_UNDER_PRIMARY_USER_INSURNACE_FORM_ITEM_NAME =
     'isUnderPrimaryUserInsurance';
 
 export const getHasInsuranceYesValidation = validation =>
-    Yup.string().when(HAS_INSURANCE_FORM_NAME, {
-        is: YES,
+    Yup.string().when(['hasInsurance', 'hasOwnInsurance'], {
+        is: (hasInsurance, hasOwnInsurance) =>
+            hasInsurance === YES && hasOwnInsurance === NO,
         then: validation,
     });
 
