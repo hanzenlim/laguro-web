@@ -92,9 +92,7 @@ class AddFamilyMemberForm extends PureComponent {
                 : {}),
             dob:
                 values.birthMonth && values.birthDate && values.birthYear
-                    ? `${values.birthMonth}/${values.birthDate}/${
-                          values.birthYear
-                      }`
+                    ? `${values.birthMonth}/${values.birthDate}/${values.birthYear}`
                     : null,
             gender: values.gender === 'unknown' ? null : values.gender,
             address: values.hasDifferentAddress
@@ -188,14 +186,18 @@ class AddFamilyMemberForm extends PureComponent {
         const input = this.getInputFromForm({ values });
         delete input.primaryUserId;
         input.id = userId;
-        const result = await this.updateUser({
-            variables: {
-                input,
+        await execute({
+            action: async () => {
+                const result = await this.updateUser({
+                    variables: {
+                        input,
+                    },
+                });
+                if (result) {
+                    onSuccess();
+                }
             },
         });
-        if (result) {
-            onSuccess();
-        }
     };
 
     handleSubmit = async values => {
