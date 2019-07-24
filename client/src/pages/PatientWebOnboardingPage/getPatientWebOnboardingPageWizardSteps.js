@@ -11,6 +11,7 @@ import { ENGLISH } from '../../util/strings';
 import { KioskInsurance } from '../common/the-bright-side-components/components/Kiosk/KioskInsurance';
 import { HealthHistoryForm } from '../common/the-bright-side-components/components/Onboarding/Patient/HealthHistoryForm';
 import { policyHolderUserValidationSchema } from '../common/Family/FamilyMemberInsuranceForm/validators';
+import { getCheckEligibilityInput } from '../../util/mutationUtils';
 
 // contains getPatientWebOnboardingPageWizardSteps which return an array of step information objects, which contain step id(id), validations(validationSchema), and initialValues, given a user object. This user object is from getUser in PatientWebOnboardingPage/index.js.
 
@@ -388,9 +389,7 @@ export const getPatientWebOnboardingPageWizardSteps = ({
                                   : {
                                         firstName: policyHolderUser.firstName,
                                         lastName: policyHolderUser.lastName,
-                                        dob: `${policyHolderUser.birthMonth}/${
-                                            policyHolderUser.birthDate
-                                        }/${policyHolderUser.birthYear}`,
+                                        dob: `${policyHolderUser.birthMonth}/${policyHolderUser.birthDate}/${policyHolderUser.birthYear}`,
                                         gender:
                                             policyHolderUser.gender ===
                                             'unknown'
@@ -416,44 +415,52 @@ export const getPatientWebOnboardingPageWizardSteps = ({
                 beforeAction: async () => {
                     const isDependent = isPrimaryHolder === 'no';
 
-                    const checkEligibilityWithoutDependentInput = {
-                        patientId: user.id,
-                        firstName: user.firstName,
-                        lastName: user.lastName,
-                        dob: `${patientBirthMonth}/${patientBirthDate}/${patientBirthYear}`,
-                        insuranceInfo: {
-                            insuranceProvider,
-                            insuranceProviderId,
-                            policyHolderId: patientInsuranceNum,
-                        },
-                    };
+                    const checkEligibilityAsPolicyHolderInput = getCheckEligibilityInput(
+                        {
+                            id: user.id,
+                            policyHolder: {
+                                firstName: user.firstName,
+                                lastName: user.lastName,
+                                dob: `${patientBirthMonth}/${patientBirthDate}/${patientBirthYear}`,
+                            },
+                            insurance: {
+                                insuranceProvider,
+                                insuranceProviderId,
+                                policyHolderId: patientInsuranceNum,
+                            },
+                        }
+                    );
 
-                    const checkEligibilityWithDependentInput = {
-                        patientId: user.id,
-                        firstName: policyHolderUser.firstName,
-                        lastName: policyHolderUser.lastName,
-                        dob: `${policyHolderUser.birthMonth}/${
-                            policyHolderUser.birthDate
-                        }/${policyHolderUser.birthYear}`,
-                        insuranceInfo: {
-                            insuranceProvider,
-                            insuranceProviderId,
-                            policyHolderId: patientInsuranceNum,
-                        },
-                        dependentFirstName: user.firstName,
-                        dependentLastName: user.lastName,
-                        dependentDob: moment(
-                            `${patientBirthMonth}/${patientBirthDate}/${patientBirthYear}`
-                        ).format('MM/DD/YYYY'),
-                    };
+                    const checkEligibilityAsDependentInput = getCheckEligibilityInput(
+                        {
+                            id: user.id,
+                            policyHolder: {
+                                firstName: policyHolderUser.firstName,
+                                lastName: policyHolderUser.lastName,
+                                dob: `${policyHolderUser.birthMonth}/${policyHolderUser.birthDate}/${policyHolderUser.birthYear}`,
+                            },
+                            dependent: {
+                                firstName: user.firstName,
+                                lastName: user.lastName,
+                                dob: moment(
+                                    `${patientBirthMonth}/${patientBirthDate}/${patientBirthYear}`
+                                ).format('MM/DD/YYYY'),
+                            },
+                            insurance: {
+                                insuranceProvider,
+                                insuranceProviderId,
+                                policyHolderId: patientInsuranceNum,
+                            },
+                        }
+                    );
 
                     const eligibility = !hasNoInsurance
                         ? await insuranceClient.query({
                               query: CHECK_ELIGIBILITY,
                               variables: {
                                   input: isDependent
-                                      ? checkEligibilityWithDependentInput
-                                      : checkEligibilityWithoutDependentInput,
+                                      ? checkEligibilityAsDependentInput
+                                      : checkEligibilityAsPolicyHolderInput,
                               },
                               fetchPolicy: 'network-only',
                           })

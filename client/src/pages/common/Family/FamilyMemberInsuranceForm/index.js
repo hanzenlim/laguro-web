@@ -15,6 +15,8 @@ import { execute } from '../../../../util/gqlUtils';
 import FamilyMemberInsuranceFormView from './view';
 import { insuranceClient } from '../../../../util/apolloClients';
 
+import { getCheckEligibilityInput } from '../../../../util/mutationUtils';
+
 const Composed = adopt({
     updateInsuranceInfo: ({ render }) => (
         <Mutation mutation={updateInsuranceInfoMutation}>{render}</Mutation>
@@ -172,36 +174,6 @@ class FamilyMemberInsuranceForm extends PureComponent {
             },
         };
 
-        const checkEligibilityWithoutDependentInput = {
-            patientId: userId,
-            firstName: values.firstName,
-            lastName: values.lastName,
-            dob: `${values.birthMonth}/${values.birthDate}/${values.birthYear}`,
-            insuranceInfo,
-        };
-
-        const checkEligibilityAsDependentOfPrimaryUserInput = {
-            patientId: userId,
-            firstName: primaryUser.firstName,
-            lastName: primaryUser.lastName,
-            dob: primaryUser.dob,
-            insuranceInfo,
-            dependentFirstName: values.firstName,
-            dependentLastName: values.lastName,
-            dependentDob: `${values.birthMonth}/${values.birthDate}/${values.birthYear}`,
-        };
-
-        const checkEligibilityWithDependentInput = {
-            patientId: userId,
-            firstName: policyHolderUser.firstName,
-            lastName: policyHolderUser.lastName,
-            dob: `${policyHolderUser.birthMonth}/${policyHolderUser.birthDate}/${policyHolderUser.birthYear}`,
-            insuranceInfo,
-            dependentFirstName: values.firstName,
-            dependentLastName: values.lastName,
-            dependentDob: `${values.birthMonth}/${values.birthDate}/${values.birthYear}`,
-        };
-
         let isEligible = false;
 
         const getCheckAvailabilityInput = () => {
@@ -214,12 +186,58 @@ class FamilyMemberInsuranceForm extends PureComponent {
                 values.isUnderPrimaryUserInsurance === 'no';
 
             if (isDependentOfPrimaryUser) {
+                const checkEligibilityAsDependentOfPrimaryUserInput = getCheckEligibilityInput(
+                    {
+                        id: userId,
+                        policyHolder: {
+                            firstName: primaryUser.firstName,
+                            lastName: primaryUser.lastName,
+                            dob: `${primaryUser.birthMonth}/${primaryUser.birthDate}/${primaryUser.birthYear}`,
+                        },
+                        dependent: {
+                            firstName: values.firstName,
+                            lastName: values.lastName,
+                            dob: `${values.birthMonth}/${values.birthDate}/${values.birthYear}`,
+                        },
+                        insurance: insuranceInfo,
+                    }
+                );
+
                 return checkEligibilityAsDependentOfPrimaryUserInput;
             } else if (isDependentOfDifferentPerson) {
-                return checkEligibilityWithDependentInput;
+                const checkEligibilityAsDependentInput = getCheckEligibilityInput(
+                    {
+                        id: userId,
+                        policyHolder: {
+                            firstName: policyHolderUser.firstName,
+                            lastName: policyHolderUser.lastName,
+                            dob: `${policyHolderUser.birthMonth}/${policyHolderUser.birthDate}/${policyHolderUser.birthYear}`,
+                        },
+                        dependent: {
+                            firstName: values.firstName,
+                            lastName: values.lastName,
+                            dob: `${values.birthMonth}/${values.birthDate}/${values.birthYear}`,
+                        },
+                        insurance: insuranceInfo,
+                    }
+                );
+
+                return checkEligibilityAsDependentInput;
             }
 
-            return checkEligibilityWithoutDependentInput;
+            const checkEligibilityAsPolicyHolderInput = getCheckEligibilityInput(
+                {
+                    id: userId,
+                    policyHolder: {
+                        firstName: values.firstName,
+                        lastName: values.lastName,
+                        dob: `${values.birthMonth}/${values.birthDate}/${values.birthYear}`,
+                    },
+                    insurance: insuranceInfo,
+                }
+            );
+
+            return checkEligibilityAsPolicyHolderInput;
         };
 
         await execute({
