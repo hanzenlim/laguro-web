@@ -18,10 +18,10 @@ const AppointmentInfoCardOptions = ({ isSubmitting, onAccept, onReject }) => (
             width="100%"
             height="40px"
             onClick={onAccept}
+            fontSize="12px"
+            color="white"
         >
-            <Text fontSize="12px" color="white">
-                Approve Appointment
-            </Text>
+            Approve Appointment
         </Button>
         <Text
             pt={14}
