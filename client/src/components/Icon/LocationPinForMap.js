@@ -2,8 +2,8 @@ import React from 'react';
 
 const LocationPinForMap = props => (
     <svg
-        width={30}
-        height={30}
+        width={35}
+        height={35}
         viewBox="0 0 30 30"
         version="1.1"
         xmlns="http://www.w3.org/2000/svg"

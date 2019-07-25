@@ -6,8 +6,9 @@ import styled from 'styled-components';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import isEqual from 'lodash/isEqual';
 
-import { Box, Icon } from '../../../components';
+import { Box } from '../../../components';
 import MapInfoWindow from '../MapInfoWindow';
+import LocationPinForMap from '../../../components/Icon/LocationPinForMap';
 
 const StyledMarkerContainer = styled(Marker)`
     width: 0;
@@ -217,11 +218,7 @@ class Map extends PureComponent {
                                     data-marker={JSON.stringify(marker)}
                                     onClick={this.showPopup}
                                 />
-                                <Icon
-                                    type="locationPinForMap"
-                                    height={35}
-                                    width={35}
-                                />
+                                <LocationPinForMap />
                             </StyledMarkerContainer>
                         )
                 )}
