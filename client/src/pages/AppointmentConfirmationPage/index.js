@@ -6,6 +6,7 @@ import _get from 'lodash/get';
 import { Loading } from '../../components';
 import GeneralErrorPage from '../../pages/GeneralErrorPage';
 import AppointmentConfirmationView from './view';
+import { appointmentClient } from '../../util/apolloClients';
 
 import {
     getAppointmentsQuery,
@@ -96,11 +97,15 @@ class AppointmentConfirmationPage extends PureComponent {
             <Query
                 query={getAppointmentsQuery}
                 variables={{ id: appointmentId }}
+                onCompleted={data =>
+                    this.setState({
+                        status: _get(data, 'getAppointment.status', ''),
+                    })
+                }
             >
                 {({ loading, error, data }) => {
                     const {
                         showModal,
-                        status,
                         isModalSubmitting,
                         isCardSubmitting,
                     } = this.state;
@@ -113,15 +118,11 @@ class AppointmentConfirmationPage extends PureComponent {
                     )
                         return <GeneralErrorPage />;
 
-                    if (this.state.status !== appointment.status) {
-                        this.setState({ status: appointment.status });
-                    }
-
                     return (
                         <AppointmentConfirmationView
                             appointment={appointment}
                             showModal={showModal}
-                            status={status}
+                            status={this.state.status}
                             isCardSubmitting={isCardSubmitting}
                             isModalSubmitting={isModalSubmitting}
                             onAccept={this.acceptAppointmentRequest}
@@ -143,5 +144,8 @@ export default compose(
     withApollo,
     graphql(acceptOrRejectAppointmentRequestMutation, {
         name: 'acceptOrRejectAppointmentRequestMutation',
+        options: {
+            client: appointmentClient,
+        },
     })
 )(AppointmentConfirmationPage);

@@ -31,9 +31,6 @@ export const acceptOrRejectAppointmentRequestMutation = gql`
     mutation AcceptOrRejectAppointmentRequest(
         $input: AcceptOrRejectAppointmentRequestInput!
     ) {
-        acceptOrRejectAppointmentRequest(input: $input) {
-            id
-            status
-        }
+        acceptOrRejectAppointmentRequest(input: $input)
     }
 `;
