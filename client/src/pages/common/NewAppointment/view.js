@@ -6,9 +6,10 @@ import {
     CheckMarkAnimation,
     Box,
     Flex,
+    Icon,
 } from '../../../components';
 
-const renderAppointmentSuccess = onMakeAnotherAppt => (
+const AppointmentSuccess = props => (
     <Fragment>
         <Box
             width="375px"
@@ -16,13 +17,27 @@ const renderAppointmentSuccess = onMakeAnotherAppt => (
             borderColor="background.lightGray"
             borderRadius="4px"
         >
+            <Box position="absolute" right="20px" top="20px">
+                {props.onClose && (
+                    <Button
+                        type="ghost"
+                        onClick={props.onClose}
+                        height="auto"
+                        color="#303549"
+                    >
+                        <Icon type="close-circle" />
+                    </Button>
+                )}
+            </Box>
             <Flex flexDirection="column" my="30px" justifyContent="center">
                 <CheckMarkAnimation />
-                <Text textAlign="center">Appointment confirmation requested</Text>
+                <Text textAlign="center">
+                    Appointment confirmation requested
+                </Text>
                 <Button
                     width="80%"
                     mx="auto"
-                    onClick={onMakeAnotherAppt}
+                    onClick={props.onMakeAnotherAppt}
                     my="10px"
                 >
                     Make another appointment
@@ -31,16 +46,21 @@ const renderAppointmentSuccess = onMakeAnotherAppt => (
         </Box>
     </Fragment>
 );
+
 const NewAppointmentView = ({
     showConfirmationMessage,
     onMakeAnotherAppt,
+    onClose,
     ...rest
 }) => (
     <Fragment>
         {showConfirmationMessage ? (
-            renderAppointmentSuccess(onMakeAnotherAppt)
+            <AppointmentSuccess
+                onMakeAnotherAppt={onMakeAnotherAppt}
+                onClose={onClose}
+            />
         ) : (
-            <AppointmentForm {...rest} />
+            <AppointmentForm onClose={onClose} {...rest} />
         )}
     </Fragment>
 );
