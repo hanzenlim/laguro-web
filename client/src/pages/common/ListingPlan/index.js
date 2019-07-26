@@ -4,9 +4,9 @@ import { Box, Text, Icon, Flex, Button, Responsive } from '../../../components';
 import { withScreenSizes } from '../../../components/Responsive';
 
 const OPTION_NUM_TO_DATA = {
-    1: { type: 'Chair only', assistant: '', price: 20 },
+    1: { type: 'Chair only', assistant: '', price: 25 },
     2: { type: 'Chair', assistant: 'Shared assistant*', price: 35 },
-    3: { type: 'Private chair**', assistant: 'Personal assistant', price: 50 },
+    3: { type: 'Private chair**', assistant: 'Personal assistant', price: 75 },
 };
 
 const StyledButton = styled(Button)`
