@@ -33,7 +33,12 @@ const AppointmentConfirmationView = props => {
     const dentistUser = appointment.dentist.user;
 
     return (
-        <Box height="100vh" width="100vw" bg="background.aquaBlue">
+        <Box
+            height="100%"
+            minHeight="100vh"
+            width="100vw"
+            bg="background.aquaBlue"
+        >
             <Box pt={45} mb={22}>
                 <Text
                     textAlign="center"
@@ -44,8 +49,14 @@ const AppointmentConfirmationView = props => {
                     {statusText}
                 </Text>
             </Box>
-            <Box width={800} mx="auto" boxShadow="shadows[1]" bg="white">
-                <Box pb={41}>
+            <Box
+                maxWidth="800px"
+                width="100%"
+                mx="auto"
+                boxShadow={1}
+                bg="white"
+            >
+                <Box pb={41} mb={41}>
                     <DeclineAppointmentRequestModal
                         visible={showModal}
                         loading={isModalSubmitting}
@@ -59,7 +70,8 @@ const AppointmentConfirmationView = props => {
                         />
                     </Box>
                     <Box
-                        width={414}
+                        maxWidth="414px"
+                        width="100%"
                         border="1px solid"
                         borderColor="background.lightGray"
                         pb={21}
