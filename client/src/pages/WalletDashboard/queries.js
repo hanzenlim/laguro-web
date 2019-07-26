@@ -1,7 +1,11 @@
 import { gql } from 'apollo-boost';
 
-export const GET_WALLET_BY_USER_ID = (rangeStart, rangeEnd) => gql`
-    query($input: GetWalletByUserIdInput!) {
+export const GET_WALLET_BY_USER_ID = gql`
+    query(
+        $input: GetWalletByUserIdInput!
+        $rangeStart: String!
+        $rangeEnd: String!
+    ) {
         getWalletByUserId(input: $input) {
             id
             userId
@@ -10,11 +14,8 @@ export const GET_WALLET_BY_USER_ID = (rangeStart, rangeEnd) => gql`
             availableAmount
             totalAmount
             transactions(
-                options: {
-                    rangeStart: "${rangeStart}",
-                    rangeEnd: "${rangeEnd}",
-                }
-            ){
+                options: { rangeStart: $rangeStart, rangeEnd: $rangeEnd }
+            ) {
                 id
                 amount
                 description
@@ -25,3 +26,5 @@ export const GET_WALLET_BY_USER_ID = (rangeStart, rangeEnd) => gql`
         }
     }
 `;
+
+export default GET_WALLET_BY_USER_ID;
