@@ -181,6 +181,8 @@ export const GENERALINFORMATION_INSURANCE_YOURPLAN =
     'generalInformation.insurance.yourPlan';
 export const GENERALINFORMATION_INSURANCE_NOINSURANCE =
     'generalInformation.insurance.noInsurance';
+export const GENERALINFORMATION_INSURANCE_SAVEINSURANCE =
+    'generalInformation.insurance.saveInsurance';
 export const BOOKAPPOINTMENT_TITLE = 'bookAppointment.title';
 export const BOOKAPPOINTMENT_BOOKANAPPOINTMENT_YOUMUSTSELECTAPPT =
     'bookAppointment.bookAnAppointment.youMustSelectAppt';

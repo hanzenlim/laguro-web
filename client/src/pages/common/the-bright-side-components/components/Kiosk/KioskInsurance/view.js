@@ -20,6 +20,7 @@ import {
     GENERALINFORMATION_INSURANCE_STEP3,
     GENERALINFORMATION_INSURANCE_YOURPLAN,
     GENERALINFORMATION_INSURANCE_NOINSURANCE,
+    GENERALINFORMATION_INSURANCE_SAVEINSURANCE,
 } from '../../../../../../strings/messageStrings';
 import { injectIntl } from 'react-intl';
 
@@ -316,7 +317,7 @@ class InsuranceView extends React.PureComponent {
                         this.props.formikProps.submitForm();
                     }}
                 >
-                    Save and check my insurance
+                    {formatText(GENERALINFORMATION_INSURANCE_SAVEINSURANCE)}
                 </Onboarding.NextButton>
             </Box>
         );
