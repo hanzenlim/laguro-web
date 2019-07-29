@@ -118,7 +118,7 @@ export const getLTMBaseUrl = () => {
     const currentUrl = window.location.href;
 
     if (currentUrl.includes('localhost')) {
-        return 'localhost:3020';
+        return 'http://localhost:3020';
     } else if (currentUrl.includes('laguro-stage')) {
         return 'https://ltm.laguro-stage.com';
     }
