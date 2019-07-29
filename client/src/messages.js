@@ -145,6 +145,7 @@ export default {
                 step3: 'Enter Plan/Group Number (optional)',
                 yourPlan: 'Your Plan/Group Number here',
                 noInsurance: 'I don’t have insurance',
+                saveInsurance: 'Save and check my insurance',
             },
         },
         bookAppointment: {
@@ -616,6 +617,7 @@ export default {
                 step3: 'Introduzca el número de plan/grupo (opcional)',
                 yourPlan: 'Ingrese su número de plan/grupo aquí',
                 noInsurance: 'No tengo seguro',
+                saveInsurance: 'Guardar y ver mi seguro',
             },
         },
         bookAppointment: {
