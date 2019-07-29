@@ -454,7 +454,15 @@ const Input = props => (
 );
 
 const InputField = props => {
-    const { field, form, placeholder, autoFocus, onKeyPress, disabled, type } = props;
+    const {
+        field,
+        form,
+        placeholder,
+        autoFocus,
+        onKeyPress,
+        disabled,
+        type,
+    } = props;
     const fieldName = field.name;
     const hasError =
         _get(form.touched, fieldName) && _get(form.errors, fieldName);
@@ -623,8 +631,14 @@ export const AppointmentCard = ({
             )}
             <Box>
                 <Text textAlign="center">{doctorName}</Text>
+
                 <Flex mb={33} justifyContent="center">
-                    <DentistRating rating={rating} numReviews={numReviews} />
+                    {rating !== 0 && (
+                        <DentistRating
+                            rating={rating}
+                            numReviews={numReviews}
+                        />
+                    )}
                 </Flex>
 
                 <Flex flexDirection="column">
