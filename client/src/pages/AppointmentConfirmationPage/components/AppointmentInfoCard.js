@@ -41,7 +41,7 @@ const AppointmentInfoCardOptions = ({ isSubmitting, onAccept, onReject }) => (
 const AppointmentAcceptedDisplay = () => (
     <Fragment>
         <Box bg="#3481f8" color="white" width="100%" height={40}>
-            <Flex pl="38%">
+            <Flex justifyContent="center">
                 <Image
                     pt={8}
                     height={27}
@@ -101,7 +101,7 @@ const AppointmentInfoCard = props => {
                     width={[42, '', 59]}
                 />
             </Box>
-            <Box width={360} mx="auto">
+            <Box maxWidth={360} width="100%" mx="auto">
                 <Link to={`/dentist/${dentistId}`}>
                     <Text
                         pb={9}
@@ -119,7 +119,7 @@ const AppointmentInfoCard = props => {
                 <Text textAlign="center">{officeName}</Text>
                 <Text textAlign="center">{location}</Text>
             </Box>
-            <Box width={360} pt={4} mx="auto">
+            <Box maxWidth={360} width="100%" pt={4} mx="auto">
                 {status === PENDING_PATIENT_APPROVAL && (
                     <AppointmentInfoCardOptions
                         isSubmitting={isSubmitting}
