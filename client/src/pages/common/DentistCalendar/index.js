@@ -49,11 +49,15 @@ class DentistCalendar extends PureComponent {
         this.state = {
             resId: null,
             apptId: null,
+            officeId: null,
         };
     }
 
     onReservationClick = (e, resEvent) => {
-        this.setState({ resId: resEvent.id.slice(0, 12) });
+        this.setState({
+            resId: resEvent.id.slice(0, 12),
+            officeId: resEvent.officeId,
+        });
     };
 
     closeResModal = () => this.setState({ resId: null });
@@ -108,6 +112,7 @@ class DentistCalendar extends PureComponent {
                                 officeIdToColorMap[res.office.id],
                                 0.1
                             ),
+                            officeId: res.office.id,
                         }))
                     )
             );
@@ -128,7 +133,9 @@ class DentistCalendar extends PureComponent {
                 }
                 reservation={
                     this.props.reservations.filter(
-                        res => res.id === this.state.resId
+                        res =>
+                            res.id === this.state.resId &&
+                            res.office.id === this.state.officeId
                     )[0]
                 }
                 appointment={
