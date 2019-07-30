@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { Query, Mutation } from 'react-apollo';
 import { adopt } from 'react-adopt';
@@ -10,6 +10,7 @@ import { REGISTER_DWOLLA_CUSTOMER } from '../mutations';
 import { getUser } from '../../../util/authUtils';
 import { walletClient } from '../../../util/apolloClients';
 import { execute } from '../../../util/gqlUtils';
+import { PaymentMethodContext } from './PaymentMethodModal';
 
 const Composed = adopt({
     getUserQuery: ({ render }) => {
@@ -36,130 +37,141 @@ const Composed = adopt({
 
 // Main Component
 
-const InfoVerification = () => (
-    <Composed>
-        {({ getUserQuery, registerDwollaCustomerMutation }) => {
-            if (getUserQuery.loading) return <Loading />;
+const InfoVerification = () => {
+    const { setCurrentStep, PAYMENT_METHOD_STEPS } = useContext(
+        PaymentMethodContext
+    );
+    return (
+        <Composed>
+            {({ getUserQuery, registerDwollaCustomerMutation }) => {
+                if (getUserQuery.loading) return <Loading />;
 
-            const {
-                id = '',
-                firstName = '',
-                lastName = '',
-                dob = '',
-                email = '',
-                address,
-                dentist: { ssnOrEinOrTin = '' },
-            } = _get(getUserQuery, 'data.getUser', {});
+                const {
+                    // id = '',
+                    firstName = '',
+                    lastName = '',
+                    dob = '',
+                    email = '',
+                    address,
+                    // dentist: { ssnOrEinOrTin = '' },
+                } = _get(getUserQuery, 'data.getUser', {});
 
-            const name =
-                firstName && lastName ? `${firstName} ${lastName}` : '';
+                const name =
+                    firstName && lastName ? `${firstName} ${lastName}` : '';
 
-            const streetAddressString =
-                address && address.streetAddress
-                    ? `${address.streetAddress}, `
-                    : '';
-            const addressDetailsString =
-                address && address.addressDetails
-                    ? `${address.addressDetails} `
-                    : '';
-            const cityString =
-                address && address.city ? `${address.city}, ` : '';
-            const stateString =
-                address && address.state ? `${address.state} ` : '';
-            const zipCodeString =
-                address && address.zipCode ? `${address.zipCode} ` : '';
-            const completeAddress = `${streetAddressString}${addressDetailsString}${cityString}${stateString}${zipCodeString}`;
-            const isDisabled = !name || !dob || !email || !completeAddress;
+                const streetAddressString =
+                    address && address.streetAddress
+                        ? `${address.streetAddress}, `
+                        : '';
+                const addressDetailsString =
+                    address && address.addressDetails
+                        ? `${address.addressDetails} `
+                        : '';
+                const cityString =
+                    address && address.city ? `${address.city}, ` : '';
+                const stateString =
+                    address && address.state ? `${address.state} ` : '';
+                const zipCodeString =
+                    address && address.zipCode ? `${address.zipCode} ` : '';
+                const completeAddress = `${streetAddressString}${addressDetailsString}${cityString}${stateString}${zipCodeString}`;
+                const isDisabled = !name || !dob || !email || !completeAddress;
 
-            return (
-                <Box textAlign="center">
-                    <Text fontSize={3} fontWeight="medium" mb={30}>
-                        Verification
-                    </Text>
-
-                    <Text mb={20}>
-                        Something is missing! Please see below and visit{' '}
-                        <Link to="/dashboard/patient?selectedTab=account%20settings">
-                            <Text is="span" color="text.blue">
-                                My Profile
-                            </Text>
-                        </Link>{' '}
-                        to add the information needed to proceed
-                    </Text>
-
-                    <Box
-                        px={10}
-                        pt={30}
-                        pb={10}
-                        borderRadius={6}
-                        border="1px solid"
-                        borderColor="divider.gray"
-                        mb={16}
-                    >
-                        <InfoItem label="NAME" value={name} />
-                        <InfoItem label="DATE OF BIRTH" value={dob} />
-                        <InfoItem label="EMAIL ADDRESS" value={email} />
-                        <InfoItem label="ADDRESS" value={completeAddress} />
-                    </Box>
-
-                    <Text fontSize={10} color="text.gray" mb={16}>
-                        If you’d like to modify the information, please visit{' '}
-                        <Link to="/dashboard/patient?selectedTab=account%20settings">
-                            <Text is="span" color="text.blue">
-                                My profile
-                            </Text>
-                        </Link>
-                    </Text>
-
-                    <Button
-                        disabled={
-                            registerDwollaCustomerMutation.loading || isDisabled
-                        }
-                        loading={registerDwollaCustomerMutation.loading}
-                        onClick={async () => {
-                            await execute({
-                                action: async () => {
-                                    await registerDwollaCustomerMutation.mutate(
-                                        {
-                                            variables: {
-                                                input: {
-                                                    userId: id,
-                                                    firstName,
-                                                    lastName,
-                                                    email,
-                                                    dateOfBirth: dob,
-                                                    address1:
-                                                        address.streetAddress,
-                                                    city: address.city,
-                                                    state: address.state,
-                                                    postalCode: address.zipCode,
-                                                    ssnLastFour: ssnOrEinOrTin.slice(
-                                                        -4
-                                                    ),
-                                                },
-                                            },
-                                        }
-                                    );
-                                },
-                            });
-                        }}
-                        type="ghost"
-                        width="100%"
-                        style={{
-                            border: '1px solid #3481f8',
-                            borderRadius: 25,
-                            opacity: isDisabled ? 0.22 : 1,
-                        }}
-                    >
-                        <Text color="text.blue" display="inline" px={8}>
-                            Confirm and next
+                return (
+                    <Box textAlign="center">
+                        <Text fontSize={3} fontWeight="medium" mb={30}>
+                            Verification
                         </Text>
-                    </Button>
-                </Box>
-            );
-        }}
-    </Composed>
-);
+
+                        <Text mb={20}>
+                            Something is missing! Please see below and visit{' '}
+                            <Link to="/dashboard/patient?selectedTab=account%20settings">
+                                <Text is="span" color="text.blue">
+                                    My Profile
+                                </Text>
+                            </Link>{' '}
+                            to add the information needed to proceed
+                        </Text>
+
+                        <Box
+                            px={10}
+                            pt={30}
+                            pb={10}
+                            borderRadius={6}
+                            border="1px solid"
+                            borderColor="divider.gray"
+                            mb={16}
+                        >
+                            <InfoItem label="NAME" value={name} />
+                            <InfoItem label="DATE OF BIRTH" value={dob} />
+                            <InfoItem label="EMAIL ADDRESS" value={email} />
+                            <InfoItem label="ADDRESS" value={completeAddress} />
+                        </Box>
+
+                        <Text fontSize={10} color="text.gray" mb={16}>
+                            If you’d like to modify the information, please
+                            visit{' '}
+                            <Link to="/dashboard/patient?selectedTab=account%20settings">
+                                <Text is="span" color="text.blue">
+                                    My profile
+                                </Text>
+                            </Link>
+                        </Text>
+
+                        <Button
+                            disabled={
+                                registerDwollaCustomerMutation.loading ||
+                                isDisabled
+                            }
+                            loading={registerDwollaCustomerMutation.loading}
+                            onClick={async () => {
+                                await execute({
+                                    action: async () => {
+                                        // TODO: remove comment once API call fixed
+                                        // await registerDwollaCustomerMutation.mutate(
+                                        //     {
+                                        //         variables: {
+                                        //             input: {
+                                        //                 userId: id,
+                                        //                 firstName,
+                                        //                 lastName,
+                                        //                 email,
+                                        //                 dateOfBirth: dob,
+                                        //                 address1:
+                                        //                     address.streetAddress,
+                                        //                 city: address.city,
+                                        //                 state: address.state,
+                                        //                 postalCode: address.zipCode,
+                                        //                 ssnLastFour: ssnOrEinOrTin.slice(
+                                        //                     -4
+                                        //                 ),
+                                        //             },
+                                        //         },
+                                        //     }
+                                        // );
+                                        setCurrentStep(
+                                            PAYMENT_METHOD_STEPS.SELECT_VERIFICATION_METHOD
+                                        );
+                                    },
+                                });
+                            }}
+                            type="ghost"
+                            width="100%"
+                            style={{
+                                border: '1px solid #3481f8',
+                                borderRadius: 25,
+                                opacity: isDisabled ? 0.22 : 1,
+                            }}
+                        >
+                            <Text color="text.blue" display="inline" px={8}>
+                                Confirm and next
+                            </Text>
+                        </Button>
+                    </Box>
+                );
+            }}
+        </Composed>
+    );
+};
 
 // This component displays each information details of the user
 

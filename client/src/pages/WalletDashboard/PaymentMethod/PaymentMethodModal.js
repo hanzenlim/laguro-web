@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, createContext } from 'react';
 import PropTypes from 'prop-types';
 import { Modal as AntdModal } from 'antd';
 import styled from 'styled-components';
@@ -6,8 +6,11 @@ import styled from 'styled-components';
 import { Text, Responsive } from '../../../components';
 import BankAccounts from './BankAccounts';
 import InfoVerification from './InfoVerification';
+import SelectVerificationMethod from './SelectVerificationMethod';
 
 const { withScreenSizes } = Responsive;
+
+export const PaymentMethodContext = createContext();
 
 const Modal = styled(AntdModal)`
     &.ant-modal {
@@ -16,9 +19,11 @@ const Modal = styled(AntdModal)`
     }
 `;
 
-export const PAYMENT_METHOD_STEPS = {
+const PAYMENT_METHOD_STEPS = {
     INITIAL: 'initial',
     INFO_VERIFICATION: 'info verification',
+    SELECT_VERIFICATION_METHOD: 'select verification method',
+    INSTANT_VERIFICATION: 'instant verification',
 };
 
 const PaymentMethodModal = ({ visible, toggleModalVisibility, mobileOnly }) => {
@@ -40,28 +45,45 @@ const PaymentMethodModal = ({ visible, toggleModalVisibility, mobileOnly }) => {
     };
 
     return (
-        <Modal
-            title={title}
-            visible={visible}
-            footer={null}
-            destroyOnClose
-            width="100%"
-            style={mobileOnly ? { top: 0, height: '100vh' } : {}}
-            bodyStyle={
-                mobileOnly
-                    ? { height: 'calc(100vh - 55px)', overflow: 'auto' }
-                    : {}
-            }
-            onCancel={onCancel}
+        <PaymentMethodContext.Provider
+            value={{
+                currentStep,
+                setCurrentStep,
+                PAYMENT_METHOD_STEPS,
+            }}
         >
-            {currentStep === PAYMENT_METHOD_STEPS.INITIAL && (
-                <BankAccounts setCurrentStep={setCurrentStep} />
-            )}
+            <Modal
+                title={title}
+                visible={visible}
+                footer={null}
+                destroyOnClose
+                width="100%"
+                style={mobileOnly ? { top: 0, height: '100vh' } : {}}
+                bodyStyle={
+                    mobileOnly
+                        ? { height: 'calc(100vh - 55px)', overflow: 'auto' }
+                        : {}
+                }
+                onCancel={onCancel}
+            >
+                {currentStep === PAYMENT_METHOD_STEPS.INITIAL && (
+                    <BankAccounts />
+                )}
 
-            {currentStep === PAYMENT_METHOD_STEPS.INFO_VERIFICATION && (
-                <InfoVerification />
-            )}
-        </Modal>
+                {currentStep === PAYMENT_METHOD_STEPS.INFO_VERIFICATION && (
+                    <InfoVerification />
+                )}
+
+                {currentStep ===
+                    PAYMENT_METHOD_STEPS.SELECT_VERIFICATION_METHOD && (
+                    <SelectVerificationMethod />
+                )}
+
+                {currentStep === PAYMENT_METHOD_STEPS.INSTANT_VERIFICATION && (
+                    <div>Todo: Instant Verification Screen</div>
+                )}
+            </Modal>
+        </PaymentMethodContext.Provider>
     );
 };
 
