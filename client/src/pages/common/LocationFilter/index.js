@@ -1,9 +1,10 @@
-import React, { PureComponent } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import fetch from 'unfetch';
 import _get from 'lodash/get';
-import { formatAddress } from '../../../util/styleUtil';
+import { useDebounce } from 'use-debounce';
 
+import { formatAddress } from '../../../util/styleUtil';
 import LocationFilterView from './view';
 import esClient from '../../../util/esClient';
 import { DENTISTS, DENTIST, LOCATION } from '../../../util/strings';
@@ -50,34 +51,30 @@ const fetchLocationsFromMapbox = async (queryString, locationType) => {
     return result.json();
 };
 
-class LocationFilter extends PureComponent {
-    constructor(props) {
-        super(props);
+const LocationFilter = props => {
+    const initialRender = React.useRef(false);
+    const [queryString, setQueryString] = useState(props.initialValue || '');
+    const [locationResults, setLocationResults] = useState([]);
+    const [dentistResults, setDentistResults] = useState([]);
+    const [debouncedSearchTerm] = useDebounce(queryString, 300);
 
-        this.state = {
-            queryString: props.initialValue || '',
-            locationType: props.locationType,
-            locationResults: [],
-            dentistResults: [],
-        };
-    }
+    useEffect(() => {
+        setQueryString(props.initialValue);
+    }, [props.initialValue]);
 
-    componentDidUpdate(prevProps) {
-        if (prevProps.initialValue !== this.props.initialValue) {
-            this.setState({ queryString: this.props.initialValue });
+    useEffect(() => {
+        if (initialRender.current === false) {
+            initialRender.current = true;
+            return;
         }
-    }
 
-    handleChange = async value => {
-        const { onTextChange, onSearch } = this.props;
-        const { locationType } = this.state;
+        const value = debouncedSearchTerm;
+        const { onTextChange, onSearch, locationType } = props;
 
-        this.setState({ queryString: value });
         if (onTextChange) onTextChange(value);
-
-        if (value.length > 2) {
+        if (value && value.length > 2) {
             Promise.all(
-                this.props.withDentists
+                props.withDentists
                     ? [
                           fetchLocationsFromMapbox(value, locationType),
                           fetchDentistsFromES(value),
@@ -95,7 +92,6 @@ class LocationFilter extends PureComponent {
                             text: place.place_name,
                         })
                     );
-
                     const formattedESResults = results[1]
                         ? results[1].hits.hits.slice(0, 2).map(dentist => ({
                               name: dentist._source.name,
@@ -104,79 +100,66 @@ class LocationFilter extends PureComponent {
                               location: formatAddress(
                                   _get(
                                       dentist,
-                                      '_source.reservations[0].address'
+                                      '_source.reservations[0].address',
+                                      ''
                                   ),
                                   _get(
                                       dentist,
-                                      '_source.reservations[0].addressDetails'
+                                      '_source.reservations[0].addressDetails',
+                                      ''
                                   )
                               ),
                           }))
                         : [];
 
-                    this.setState({
-                        error: false,
-                        locationResults: formattedMapboxResults,
-                        dentistResults: formattedESResults,
-                    });
-
+                    setLocationResults(formattedMapboxResults);
+                    setDentistResults(formattedESResults);
                     if (onSearch) onSearch(formattedMapboxResults);
-
                     return null;
                 })
                 .catch(err => {
-                    this.setState({
-                        error: true,
-                        errorMsg: 'There was a problem retrieving data',
-                        locationResults: [],
-                        dentistResults: [],
-                    });
-
+                    setLocationResults([]);
+                    setDentistResults([]);
                     // eslint-disable-next-line
                     console.warn(err);
                 });
         } else {
-            this.setState({
-                error: false,
-                locationResults: [],
-                dentistResults: [],
-            });
+            setLocationResults([]);
+            setDentistResults([]);
         }
+    }, [debouncedSearchTerm]);
 
-        return null;
+    const handleChange = async value => {
+        setQueryString(value);
     };
 
-    handleSuggestionSelect = async (value, option) => {
+    const handleSuggestionSelect = async (value, option) => {
         if (option.props.data.type === 'STRING') {
-            this.props.onQueryString(option.props.data.string);
+            props.onQueryString(option.props.data.string);
         }
         if (option.props.data.type === LOCATION) {
-            this.props.onLocationChange(option.props.data.location);
-            await this.setState({
-                queryString: value,
-                locationResults: [],
-                dentistResults: [],
-            });
+            props.onLocationChange(option.props.data.location);
+            setQueryString(value);
+            setLocationResults([]);
+            setDentistResults([]);
         } else if (option.props.data.type === DENTIST) {
             history.push(`/dentist/${option.props.data.id}`);
         }
     };
 
-    render() {
-        const { queryString, locationResults, dentistResults } = this.state;
-        const { onSearch, ...rest } = this.props;
-        return (
-            <LocationFilterView
-                queryString={queryString}
-                locationResults={locationResults}
-                dentistResults={dentistResults}
-                handleChange={this.handleChange}
-                handleSuggestionSelect={this.handleSuggestionSelect}
-                {...rest}
-            />
-        );
-    }
-}
+    const { onSearch, ...rest } = props;
+
+    return (
+        <LocationFilterView
+            queryString={queryString}
+            locationResults={locationResults}
+            dentistResults={dentistResults}
+            handleChange={handleChange}
+            handleSuggestionSelect={handleSuggestionSelect}
+            {...rest}
+        />
+    );
+};
 
 LocationFilter.defaultProps = {
     onLocationChange: null,
