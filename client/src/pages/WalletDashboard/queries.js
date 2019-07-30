@@ -27,4 +27,25 @@ export const GET_WALLET_BY_USER_ID = gql`
     }
 `;
 
-export default GET_WALLET_BY_USER_ID;
+export const GET_USER = gql`
+    query getUser($id: String!) {
+        getUser(id: $id) {
+            id
+            firstName
+            lastName
+            dob
+            email
+            address {
+                streetAddress
+                addressDetails
+                city
+                state
+                zipCode
+            }
+            dentist {
+                id
+                ssnOrEinOrTin
+            }
+        }
+    }
+`;
