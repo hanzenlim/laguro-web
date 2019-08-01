@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Text } from '@laguro/basic-components';
+import { Box, Button, Flex, Text } from '../../../../../../components';
 import { Field } from 'formik';
 import { Tooltip, Icon } from 'antd';
 import * as React from 'react';

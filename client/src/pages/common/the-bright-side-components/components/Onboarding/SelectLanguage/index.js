@@ -1,4 +1,4 @@
-import { Select } from '@laguro/basic-components';
+import { Select } from '../../../../../../components';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import Onboarding from '../index';

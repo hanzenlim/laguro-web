@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import cookies from 'browser-cookies';
-import { Flex, Box } from '@laguro/basic-components';
+import { Flex, Box } from '../../../../components';
 import _isEmpty from 'lodash/isEmpty';
 import { Mutation, compose, withApollo } from 'react-apollo';
 import * as Yup from 'yup';

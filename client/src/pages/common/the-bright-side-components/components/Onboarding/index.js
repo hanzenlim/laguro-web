@@ -8,7 +8,7 @@ import {
     Rating,
     Select as BasicComponentsSelect,
     Text,
-} from '@laguro/basic-components';
+} from '../../../../../components';
 import _get from 'lodash/get';
 import * as React from 'react';
 import styled from 'styled-components';

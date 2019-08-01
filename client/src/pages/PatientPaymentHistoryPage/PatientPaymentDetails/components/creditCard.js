@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Flex, Image, Text } from '@laguro/basic-components';
+import { Flex, Image, Text } from '../../../../components';
 import visa from '../../../../components/Image/visa.svg';
 import mastercard from '../../../../components/Image/mastercard.svg';
 import americanExpress from '../../../../components/Image/americanExpress.svg';

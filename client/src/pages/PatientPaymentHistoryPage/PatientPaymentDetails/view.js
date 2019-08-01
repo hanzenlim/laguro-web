@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import _get from 'lodash/get';
-import { Text, Flex, Icon, Box } from '@laguro/basic-components';
+import { Text, Flex, Icon, Box } from '../../../components';
 import { formatListingTime } from '../../../util/timeUtil';
 import { renderPrice } from '../../../util/paymentUtil';
 import LineItem from './components/lineItem';

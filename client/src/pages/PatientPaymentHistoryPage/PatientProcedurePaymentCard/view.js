@@ -15,7 +15,7 @@ import {
     Icon,
     Button,
     Truncate,
-} from '@laguro/basic-components';
+} from '../../../components';
 import {
     AVAILABLE,
     PENDING,

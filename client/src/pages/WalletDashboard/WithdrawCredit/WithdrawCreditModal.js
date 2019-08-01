@@ -1,7 +1,7 @@
 import React, { useState, createContext } from 'react';
 import PropTypes from 'prop-types';
 import { Modal } from 'antd';
-import { renderPrice } from '@laguro/basic-components/lib/components/utils/paymentUtils';
+import { renderPrice } from '../../../util/paymentUtil';
 
 import { Text, Button, Responsive, Box, Icon } from '../../../components';
 import InitialScreen from './InitialScreen';

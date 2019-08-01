@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, Button, Flex } from '@laguro/basic-components';
+import { Box, Button, Flex } from '../../../../../../../../components';
 import { useFormatMessage } from '@comparaonline/react-intl-hooks';
 import Onboarding, { LastMargin } from '../../../../Onboarding';
 import ToolsIcon from '../../../Assets/toolsIcon';

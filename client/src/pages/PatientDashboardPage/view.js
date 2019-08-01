@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Box, Text, Card, Truncate } from '@laguro/basic-components';
+import { Box, Text, Card, Truncate } from '../../components';
 import _isEmpty from 'lodash/isEmpty';
 import queryString from 'query-string';
 import styled from 'styled-components';

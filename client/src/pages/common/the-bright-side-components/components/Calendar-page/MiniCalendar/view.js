@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import Calendar from 'react-calendar';
-import { Card, Box, Flex, Text } from '@laguro/basic-components';
+import { Card, Box, Flex, Text } from '../../../../../../components';
 import moment from 'moment';
 import { getLocalDate } from '../util';
 

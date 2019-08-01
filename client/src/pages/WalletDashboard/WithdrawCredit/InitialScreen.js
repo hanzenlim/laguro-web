@@ -1,6 +1,6 @@
 import React, { Fragment, useContext } from 'react';
 import PropTypes from 'prop-types';
-import { renderPrice } from '@laguro/basic-components/lib/components/utils/paymentUtils';
+import { renderPrice } from '../../../util/paymentUtil';
 
 import { Text, Button, Flex } from '../../../components';
 import FundingSourceSelection from '../FundingSourceSelection';

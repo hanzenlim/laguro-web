@@ -5,7 +5,7 @@ import _sum from 'lodash/sum';
 import _isEmpty from 'lodash/isEmpty';
 import moment from 'moment';
 import styled from 'styled-components';
-import { renderPrice } from '@laguro/basic-components/lib/components/utils/paymentUtils';
+import { renderPrice } from '../../util/paymentUtil';
 
 import { Text, Box, Flex, Responsive, Loading, Icon } from '../../components';
 

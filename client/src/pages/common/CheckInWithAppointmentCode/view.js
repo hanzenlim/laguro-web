@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button, Flex, Text } from '@laguro/basic-components';
+import { Box, Button, Flex, Text } from '../../../components';
 import { injectIntl } from 'react-intl';
 import { Onboarding } from '../the-bright-side-components';
 import InfoIcon from '../../../components/Icon/infoIcon';

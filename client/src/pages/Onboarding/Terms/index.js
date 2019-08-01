@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Flex, Box } from '@laguro/basic-components';
+import { Flex, Box } from '../../../components';
 import { getRedirectUrl, redirect } from '../../../history';
 import { PATIENT_WEB_ONBOARDING_PAGE_URL } from '../../../util/urls';
 import { setSessionCookie } from '../../../util/cookieUtils';

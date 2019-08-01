@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
-import { Container, Box, Text, Card, Truncate } from '@laguro/basic-components';
+import { Container, Box, Text, Card, Truncate } from '../../components';
 import queryString from 'query-string';
 import {
     MY_OFFICES_MENU_TEXT,

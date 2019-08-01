@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { Checkbox as AntdCheckbox } from 'antd';
 import _isEmpty from 'lodash/isEmpty';
-import { Checkbox, Card, Box, Text } from '@laguro/basic-components';
+import { Checkbox, Card, Box, Text } from '../../../../../../components';
 
 const CheckboxGroup = AntdCheckbox.Group;
 

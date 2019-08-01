@@ -8,7 +8,7 @@ import {
     Text,
     Truncate,
     Image,
-} from '@laguro/basic-components';
+} from '../../../../../../components';
 import moment from 'moment';
 import _sortBy from 'lodash/orderBy';
 import _get from 'lodash/get';

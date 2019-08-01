@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
-import { Box, Flex, Grid } from '@laguro/basic-components';
+import { Box, Flex, Grid } from '../../../../../../../../components';
 import Onboarding, { LastMargin } from '../../../../Onboarding';
 import ToolsIcon from '../../../Assets/toolsIcon';
 import { injectIntl } from 'react-intl';

@@ -9,7 +9,7 @@ import {
     Text,
     Button,
     Truncate,
-} from '@laguro/basic-components';
+} from '../../../components';
 import { FilestackImage } from '../../../components';
 import { getIdFromFilestackUrl } from '../../../util/imageUtil';
 import { getEquipmentColor } from '../../../util/tagUtils';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Flex, Box, Text } from '@laguro/basic-components';
+import { Flex, Box, Text } from '../../../../components';
 
 const Section = ({ title, children }) => (
     <Flex width={['100%', '', '100%']} flexDirection="column" mb={[16, '', 40]}>

@@ -3,7 +3,7 @@ import * as Yup from 'yup';
 import _get from 'lodash/get';
 import { Query, Mutation } from 'react-apollo';
 import { adopt } from 'react-adopt';
-import { Box, Flex, Loading } from '@laguro/basic-components';
+import { Box, Flex, Loading } from '../../components';
 import _isEmpty from 'lodash/isEmpty';
 import { UPDATE_INSURANCE_INFO_MUTATION, GET_USER } from './queries';
 import { RedirectErrorPage } from '../GeneralErrorPage';

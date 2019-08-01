@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Box } from '@laguro/basic-components';
+import { Box } from '../../components';
 
 export const StyledPreviousButtonContainer = styled(Box)`
     && .onboarding-previous-button {

@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import { Text, Flex, Modal, Button } from '@laguro/basic-components';
+import { Text, Flex, Modal, Button } from '../../../components';
 
 import PatientPaymentDetailsView from './view';
 import PatientProcedurePaymentDetailsView from '../PatientProcedurePaymentDetails/view';

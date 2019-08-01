@@ -1,4 +1,4 @@
-import { Flex, Text } from '@laguro/basic-components';
+import { Flex, Text } from '../../../../../../components';
 import * as React from 'react';
 import Onboarding, { AppointmentCard } from '../../Onboarding';
 import InfoIcon from '../../Onboarding/Assets/infoIcon';

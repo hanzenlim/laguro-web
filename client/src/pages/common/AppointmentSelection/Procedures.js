@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Box, Flex, Text } from '@laguro/basic-components';
+import { Box, Flex, Text } from '../../../components';
 import _isEmpty from 'lodash/isEmpty';
 import { getProcedureColor } from '../../../util/dentistUtils';
 import { injectIntl } from 'react-intl';

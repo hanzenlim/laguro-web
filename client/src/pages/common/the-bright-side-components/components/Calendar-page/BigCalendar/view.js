@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, Flex, Image, Text, Truncate } from '@laguro/basic-components';
+import { Box, Flex, Image, Text, Truncate } from '../../../../../../components';
 import moment from 'moment';
 import BigCalendar from 'react-big-calendar-test';
 import withDragAndDrop from 'react-big-calendar-test/lib/addons/dragAndDrop';

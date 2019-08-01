@@ -1,4 +1,4 @@
-import { Box, Flex } from '@laguro/basic-components';
+import { Box, Flex } from '../../../../../../../../components';
 import React from 'react';
 import Onboarding from '../../../../Onboarding';
 import DentistIcon from '../../../Assets/dentistIcon';

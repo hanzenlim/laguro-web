@@ -4,13 +4,3 @@
 1. Run `npm i` in `/laguro` folder
 2. Run `npm i` in `/laguro/client` folder
 3. Run webpack dev server `npm run dev`
-
-# Notes
-- If you run an into an issue where you have multiple copies of `react` or `styled-components` getting loaded, run these following commands inside the client folder:
-```
-react
-rm -r ./node_modules/\@laguro/basic-components/node_modules/react;
-
-styled-components
-rm -r ./node_modules/\@laguro/basic-components/node_modules/styled-components;
-```
