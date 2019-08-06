@@ -2,6 +2,7 @@ import { Box, Button, Flex, Text, Grid } from '@laguro/basic-components';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 import _capitalize from 'lodash/capitalize';
+import _find from 'lodash/find';
 import FormFields from '../../../../FormFields';
 import { Field } from 'formik';
 import * as React from 'react';
@@ -210,7 +211,7 @@ class InsuranceView extends React.PureComponent {
                                             {...props}
                                             options={insuranceList.map(i => (
                                                 <Onboarding.SelectOption
-                                                    value={i.id}
+                                                    value={i.name}
                                                 >
                                                     {i.name}
                                                 </Onboarding.SelectOption>
@@ -224,9 +225,13 @@ class InsuranceView extends React.PureComponent {
                                                         'props.children'
                                                     )
                                                 );
+
                                                 this.props.formikProps.setFieldValue(
                                                     'insuranceProviderId',
-                                                    value
+                                                    _find(
+                                                        insuranceList,
+                                                        i => i.name === value
+                                                    ).id
                                                 );
                                             }}
                                             disabled={
