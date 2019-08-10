@@ -407,7 +407,7 @@ const FamilyView = ({
                                             isExternal
                                             target="_blank"
                                             rel="noopener"
-                                            to={`${getLTMBaseUrl()}/go?to=/chart&patientId=${_get(
+                                            to={`${getLTMBaseUrl()}/go?to=/chart&familyMemberId=${_get(
                                                 member,
                                                 'id'
                                             )}`}

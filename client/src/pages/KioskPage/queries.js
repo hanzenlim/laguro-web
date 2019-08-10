@@ -137,6 +137,7 @@ export const GET_USER = gql`
     query($id: String!) {
         getUser(id: $id) {
             id
+            relationshipToPrimary
             insuranceInfo {
                 policyHolderId
                 insuranceProvider

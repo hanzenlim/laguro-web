@@ -1,12 +1,16 @@
-import React, { Fragment, useContext } from 'react';
+import React, { Fragment, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Query, Mutation } from 'react-apollo';
 import { adopt } from 'react-adopt';
 import _get from 'lodash/get';
+import moment from 'moment';
 
 import { Box, Text, Link, Button, Loading, Icon } from '../../../components';
 import { GET_USER } from '../queries';
-import { REGISTER_DWOLLA_CUSTOMER } from '../mutations';
+import {
+    REGISTER_PERSONAL_DWOLLA_CUSTOMER,
+    REGISTER_UNVERIFIED_DWOLLA_CUSTOMER,
+} from '../mutations';
 import { getUser } from '../../../util/authUtils';
 import { walletClient } from '../../../util/apolloClients';
 import { execute } from '../../../util/gqlUtils';
@@ -16,23 +20,39 @@ const Composed = adopt({
     getUserQuery: ({ render }) => {
         const { id } = getUser();
         return (
-            <Query query={GET_USER} variables={{ id }}>
+            <Query
+                query={GET_USER}
+                variables={{ id }}
+                fetchPolicy="network-only"
+            >
                 {render}
             </Query>
         );
     },
-    registerDwollaCustomerMutation: ({ render }) => (
-        <Mutation mutation={REGISTER_DWOLLA_CUSTOMER} client={walletClient}>
-            {(mutate, { data, loading, error }) =>
-                render({
-                    mutate,
-                    data,
-                    loading,
-                    error,
-                })
-            }
-        </Mutation>
-    ),
+    registerDwollaCustomerMutation: ({ render, getUserQuery }) => {
+        const { dentist } = _get(getUserQuery, 'data.getUser', '');
+        const ssn = dentist && _get(dentist, 'ssnOrEinOrTin', '');
+
+        return (
+            <Mutation
+                mutation={
+                    ssn
+                        ? REGISTER_PERSONAL_DWOLLA_CUSTOMER
+                        : REGISTER_UNVERIFIED_DWOLLA_CUSTOMER
+                }
+                client={walletClient}
+            >
+                {(mutate, { data, loading, error }) =>
+                    render({
+                        mutate,
+                        data,
+                        loading,
+                        error,
+                    })
+                }
+            </Mutation>
+        );
+    },
 });
 
 // Main Component
@@ -41,20 +61,25 @@ const InfoVerification = () => {
     const { setCurrentStep, PAYMENT_METHOD_STEPS } = useContext(
         PaymentMethodContext
     );
+
     return (
         <Composed>
             {({ getUserQuery, registerDwollaCustomerMutation }) => {
                 if (getUserQuery.loading) return <Loading />;
 
                 const {
-                    // id = '',
+                    id = '',
                     firstName = '',
                     lastName = '',
                     dob = '',
                     email = '',
                     address,
-                    // dentist: { ssnOrEinOrTin = '' },
+                    dentist,
+                    dwollaCustomerUrl,
                 } = _get(getUserQuery, 'data.getUser', {});
+
+                // For registered dwolla customers
+                if (dwollaCustomerUrl) return <SkipStep />;
 
                 const name =
                     firstName && lastName ? `${firstName} ${lastName}` : '';
@@ -74,6 +99,7 @@ const InfoVerification = () => {
                 const zipCodeString =
                     address && address.zipCode ? `${address.zipCode} ` : '';
                 const completeAddress = `${streetAddressString}${addressDetailsString}${cityString}${stateString}${zipCodeString}`;
+                const ssn = dentist && _get(dentist, 'ssnOrEinOrTin', '');
                 const isDisabled = !name || !dob || !email || !completeAddress;
 
                 return (
@@ -126,28 +152,29 @@ const InfoVerification = () => {
                             onClick={async () => {
                                 await execute({
                                     action: async () => {
-                                        // TODO: remove comment once API call fixed
-                                        // await registerDwollaCustomerMutation.mutate(
-                                        //     {
-                                        //         variables: {
-                                        //             input: {
-                                        //                 userId: id,
-                                        //                 firstName,
-                                        //                 lastName,
-                                        //                 email,
-                                        //                 dateOfBirth: dob,
-                                        //                 address1:
-                                        //                     address.streetAddress,
-                                        //                 city: address.city,
-                                        //                 state: address.state,
-                                        //                 postalCode: address.zipCode,
-                                        //                 ssnLastFour: ssnOrEinOrTin.slice(
-                                        //                     -4
-                                        //                 ),
-                                        //             },
-                                        //         },
-                                        //     }
-                                        // );
+                                        await registerDwollaCustomerMutation.mutate(
+                                            {
+                                                variables: {
+                                                    input: {
+                                                        userId: id,
+                                                        firstName,
+                                                        lastName,
+                                                        email,
+                                                        dateOfBirth: moment(
+                                                            dob,
+                                                            'M/DD/YYYY'
+                                                        ).format('YYYY-MM-DD'),
+                                                        address1:
+                                                            address.streetAddress,
+                                                        city: address.city,
+                                                        state: address.state,
+                                                        postalCode:
+                                                            address.zipCode,
+                                                        ...(ssn && { ssn }),
+                                                    },
+                                                },
+                                            }
+                                        );
                                         setCurrentStep(
                                             PAYMENT_METHOD_STEPS.SELECT_VERIFICATION_METHOD
                                         );
@@ -195,6 +222,19 @@ const InfoItem = ({ label, value }) => (
         </Text>
     </Box>
 );
+
+// Skip step component for verifying dwollaCustomerUrl
+const SkipStep = () => {
+    const { setCurrentStep, PAYMENT_METHOD_STEPS } = useContext(
+        PaymentMethodContext
+    );
+
+    useEffect(() => {
+        setCurrentStep(PAYMENT_METHOD_STEPS.SELECT_VERIFICATION_METHOD);
+    });
+
+    return null;
+};
 
 InfoVerification.propTypes = {};
 InfoItem.propTypes = {

@@ -64,6 +64,19 @@ export const DentistRating = ({ rating, numReviews }) => (
 );
 
 class AppointmentSelectionView extends React.PureComponent {
+    shouldComponentUpdate(nextProps) {
+        if (
+            nextProps.formikProps.isSubmitting !==
+                this.props.formikProps.isSubmitting ||
+            this.props.formikProps.values.appointmentSelected !==
+                nextProps.formikProps.values.appointmentSelected
+        ) {
+            return true;
+        }
+
+        return false;
+    }
+
     renderDentistPanel = (dentists, date) => (
         <Grid gridRowGap="13px">
             {dentists.map(dentist => this.renderDentistCard(dentist, date))}

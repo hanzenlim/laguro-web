@@ -5,16 +5,9 @@ import _sum from 'lodash/sum';
 import _isEmpty from 'lodash/isEmpty';
 import moment from 'moment';
 import styled from 'styled-components';
-import {
-    Text,
-    Box,
-    Flex,
-    Responsive,
-    Truncate,
-    Loading,
-    Icon,
-} from '../../components';
 import { renderPrice } from '@laguro/basic-components/lib/components/utils/paymentUtils';
+
+import { Text, Box, Flex, Responsive, Loading, Icon } from '../../components';
 
 const { Desktop, TabletMobile } = Responsive;
 
@@ -66,11 +59,12 @@ const StyledTable = styled(Table)`
         }
         .ant-table-header {
             background-color: transparent;
-                        padding: 6px ${TABLE_PX_IN_PIXELS}px 0 ${TABLE_PX_IN_PIXELS}px;
+            padding: 6px ${TABLE_PX_IN_PIXELS}px 0 ${TABLE_PX_IN_PIXELS}px;
         }
         .ant-table-thead > tr > th {
             border: none;
-            &:nth-child(1), &:nth-child(2) {
+            &:nth-child(1),
+            &:nth-child(2) {
                 div {
                     text-align: center;
                 }
@@ -83,17 +77,18 @@ const StyledTable = styled(Table)`
             background-color: transparent;
         }
         .ant-table-tbody > tr {
-            border-bottom: solid 1px
-            border-color: rgba(236,236,236,0.5)
+            border-bottom: solid 1px;
+            border-color: rgba(236, 236, 236, 0.5);
         }
         .ant-table-tbody > tr:hover:not(.ant-table-expanded-row) > td {
             background: transparent;
         }
         .ant-table-thead > tr {
-            border-bottom: solid 0.5px
+            border-bottom: solid 0.5px;
             border-color: #c7c7c7;
         }
-        .ant-table-thead > tr, .ant-table-tbody > tr {
+        .ant-table-thead > tr,
+        .ant-table-tbody > tr {
             width: 100%;
             display: grid;
             @media (min-width: ${props => props.theme.breakpoints[1]}) {
@@ -102,8 +97,7 @@ const StyledTable = styled(Table)`
             }
         }
         .ant-table-tbody > tr > td,
-        .ant-table-thead > tr > th div
-         {
+        .ant-table-thead > tr > th div {
             border: none;
             font-family: ${props => props.theme.fontFamily};
             font-size: ${props => props.theme.fontSizes[0]};
@@ -164,15 +158,13 @@ const StyledSelect = styled(Select)`
     }
 `;
 
-const renderTransactionPrice = (amount, props) => {
+const renderTransactionPrice = (amount, { isValid = true }) => {
     const textColor = amount < 0 ? 'text.red' : 'text.green';
-
     return (
         <Text
             color={textColor}
-            fontSize="inherit"
-            fontWeight="inherit"
-            {...props}
+            fontSize={0}
+            style={{ textDecoration: isValid ? 'none' : 'line-through' }}
         >
             {amount > 0 ? '+' : ''}
             {renderPrice(amount)}
@@ -207,7 +199,7 @@ const StyledIcon = styled(Icon)`
     }
 `;
 
-export const WalletTransactions = props => {
+const WalletTransactions = props => {
     const columns = [
         {
             title: 'Date',
@@ -238,9 +230,9 @@ export const WalletTransactions = props => {
             title: 'Description',
             className: 'column-description',
             dataIndex: 'description',
-            render: description => (
+            render: (description, { isValid }) => (
                 <Text fontSize="inherit" fontWeight="inherit">
-                    <Truncate lines={1}> {description}</Truncate>
+                    {`${description}${!isValid ? ' (Failed)' : ''}`}
                 </Text>
             ),
         },
@@ -258,7 +250,9 @@ export const WalletTransactions = props => {
             ? true
             : t.type.includes(props.filteredInfo.type[0])
     );
-    const filteredAmounts = filteredTransactions.map(t => parseInt(t.amount));
+    const filteredAmounts = filteredTransactions.map(t =>
+        t.isValid ? t.amount : 0
+    );
 
     return (
         <Fragment>
@@ -378,6 +372,7 @@ export const WalletTransactions = props => {
                             ) : (
                                 filteredTransactions.map(t => (
                                     <Flex
+                                        key={t.id}
                                         mb={10}
                                         justifyContent="space-between"
                                         borderBottom="solid 0.2px #dbdbdb"
@@ -414,14 +409,15 @@ export const WalletTransactions = props => {
                                                 letterSpacing="-0.34"
                                                 fontFamily="'Silka', 'Courier new', sans-serif"
                                             >
-                                                <Truncate lines={2}>
-                                                    {t.description}
-                                                </Truncate>
+                                                {`${t.description}${
+                                                    !t.isValid
+                                                        ? ' (Failed)'
+                                                        : ''
+                                                }`}
                                             </Text>
                                         </Box>
                                         {renderTransactionPrice(t.amount, {
-                                            fontSize: 0,
-                                            letterSpacing: '-0.34px',
+                                            isValid: t.isValid,
                                         })}
                                     </Flex>
                                 ))
@@ -443,3 +439,5 @@ export const WalletTransactions = props => {
         </Fragment>
     );
 };
+
+export default WalletTransactions;

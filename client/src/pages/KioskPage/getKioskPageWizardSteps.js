@@ -12,7 +12,10 @@ import { insuranceClient } from '../../util/apolloClients';
 import { trackBookAppointment } from '../../util/trackingUtils';
 import { CHECK_ELIGIBILITY } from './queries';
 import { ENGLISH } from '../../util/strings';
-import { KioskInsurance } from '../common/the-bright-side-components/components/Kiosk/KioskInsurance';
+import {
+    KioskInsurance,
+    getKioskInsuranceInitialValues,
+} from '../common/the-bright-side-components/components/Kiosk/KioskInsurance';
 import { HealthHistoryForm } from '../common/the-bright-side-components/components/Onboarding/Patient/HealthHistoryForm';
 import {
     GENERALINFORMATION_BIRTHDAY_MONTHISREQUIRED,
@@ -28,7 +31,7 @@ import {
     GENERAL_REQUIRED,
     BOOKAPPOINTMENT_BOOKANAPPOINTMENT_YOUMUSTSELECTAPPT,
 } from '../../strings/messageStrings';
-import {policyHolderUserValidationSchema} from '../common/Family/FamilyMemberInsuranceForm/validators'
+import { policyHolderUserValidationSchema } from '../common/Family/FamilyMemberInsuranceForm/validators';
 
 // contains renderRegistrationStage which renders correct step within Registation stage of kiosk flow
 // contains getStageOneRegWizardSteps which return an array of step information objects, which contain step id(id), validations(validationSchema), and initialValues, given a user object. This user object is from getUser in Kiosk/index.js.
@@ -200,14 +203,21 @@ export const getKioskPageWizardSteps = ({
             patientBirthDate: Yup.string().required(
                 formatText(GENERALINFORMATION_BIRTHDAY_DATEISREQUIRED)
             ),
-            patientBirthYear: Yup.date()
-                .max(
-                    minAdultAge,
-                    formatText(GENERALINFORMATION_BIRTHDAY_UNDERAGE)
-                )
-                .required(
-                    formatText(GENERALINFORMATION_BIRTHDAY_YEARISREQUIRED)
-                ),
+            patientBirthYear:
+                user && user.relationshipToPrimary === 'SELF'
+                    ? Yup.date()
+                          .max(
+                              minAdultAge,
+                              formatText(GENERALINFORMATION_BIRTHDAY_UNDERAGE)
+                          )
+                          .required(
+                              formatText(
+                                  GENERALINFORMATION_BIRTHDAY_YEARISREQUIRED
+                              )
+                          )
+                    : Yup.date().required(
+                          formatText(GENERALINFORMATION_BIRTHDAY_YEARISREQUIRED)
+                      ),
         }),
         initialValues: {
             patientBirthMonth:
@@ -265,99 +275,7 @@ export const getKioskPageWizardSteps = ({
     // stage 3: insurance
     {
         id: INSURANCE_WIZARD_STEP_ID,
-        initialValues: {
-            patientInsuranceNum:
-                _get(user, 'insuranceInfo.policyHolderId') || undefined,
-            insuranceProvider:
-                _get(user, 'insuranceInfo.insuranceProvider') || undefined,
-            insuranceProviderId: _get(
-                user,
-                'insuranceInfo.insuranceProviderId' || undefined
-            ),
-            planOrGroupNumber:
-                _get(user, 'insuranceInfo.planOrGroupNumber') || undefined,
-            hasNoInsurance: 'false',
-            isPrimaryHolder: !_get(user, 'insuranceInfo')
-                ? undefined
-                : _get(user, 'insuranceInfo.policyHolderUserId')
-                ? 'yes'
-                : 'no',
-            policyHolderUser: !_get(user, 'insuranceInfo.policyHolderUserId')
-                ? {
-                      firstName:
-                          _get(
-                              user,
-                              'insuranceInfo.policyHolderUser.firstName'
-                          ) || undefined,
-                      lastName:
-                          _get(
-                              user,
-                              'insuranceInfo.policyHolderUser.lastName'
-                          ) || undefined,
-                      gender: !_get(
-                          user,
-                          'insuranceInfo.policyHolderUser.gender'
-                      )
-                          ? 'unknown'
-                          : _get(user, 'insuranceInfo.policyHolderUser.gender'),
-                      birthMonth:
-                          _get(user, 'insuranceInfo.policyHolderUser.dob') &&
-                          _get(
-                              user,
-                              'insuranceInfo.policyHolderUser.dob'
-                          ).split('/')[0],
-                      birthDate:
-                          _get(user, 'insuranceInfo.policyHolderUser.dob') &&
-                          _get(
-                              user,
-                              'insuranceInfo.policyHolderUser.dob'
-                          ).split('/')[1],
-                      birthYear:
-                          _get(user, 'insuranceInfo.policyHolderUser.dob') &&
-                          _get(
-                              user,
-                              'insuranceInfo.policyHolderUser.dob'
-                          ).split('/')[2],
-                      address1:
-                          _get(
-                              user,
-                              'insuranceInfo.policyHolderUser.address.streetAddress'
-                          ) || undefined,
-                      address2:
-                          _get(
-                              user,
-                              'insuranceInfo.policyHolderUser.address.addressDetails'
-                          ) || undefined,
-                      city:
-                          _get(
-                              user,
-                              'insuranceInfo.policyHolderUser.address.city'
-                          ) || undefined,
-                      state:
-                          _get(
-                              user,
-                              'insuranceInfo.policyHolderUser.address.state'
-                          ) || undefined,
-                      zipCode:
-                          _get(
-                              user,
-                              'insuranceInfo.policyHolderUser.address.zipCode'
-                          ) || undefined,
-                  }
-                : {
-                      firstName: undefined,
-                      lastName: undefined,
-                      gender: undefined,
-                      birthMonth: undefined,
-                      birthDate: undefined,
-                      birthYear: undefined,
-                      address1: undefined,
-                      address2: undefined,
-                      city: undefined,
-                      state: undefined,
-                      zipCode: undefined,
-                  },
-        },
+        initialValues: getKioskInsuranceInitialValues(user),
         validationSchema: Yup.object().shape({
             policyHolderUser: Yup.object().when(
                 ['hasNoInsurance', 'isPrimaryHolder'],
@@ -437,9 +355,7 @@ export const getKioskPageWizardSteps = ({
                         patientId: user.id,
                         firstName: policyHolderUser.firstName,
                         lastName: policyHolderUser.lastName,
-                        dob: `${policyHolderUser.birthMonth}/${
-                            policyHolderUser.birthDate
-                        }/${policyHolderUser.birthYear}`,
+                        dob: `${policyHolderUser.birthMonth}/${policyHolderUser.birthDate}/${policyHolderUser.birthYear}`,
                         insuranceInfo: {
                             insuranceProvider,
                             insuranceProviderId,
@@ -515,13 +431,7 @@ export const getKioskPageWizardSteps = ({
                                                     policyHolderUser.firstName,
                                                 lastName:
                                                     policyHolderUser.lastName,
-                                                dob: `${
-                                                    policyHolderUser.birthMonth
-                                                }/${
-                                                    policyHolderUser.birthDate
-                                                }/${
-                                                    policyHolderUser.birthYear
-                                                }`,
+                                                dob: `${policyHolderUser.birthMonth}/${policyHolderUser.birthDate}/${policyHolderUser.birthYear}`,
                                                 gender:
                                                     policyHolderUser.gender ===
                                                     'unknown'

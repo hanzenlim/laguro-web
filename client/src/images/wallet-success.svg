@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="274" height="199" viewBox="0 0 274 199">
+    <defs>
+        <path id="b" d="M94.049 148.168L194.155 48.01a4 4 0 0 0-.018-5.673l-19.79-19.543a4 4 0 0 0-5.64.018l-74.662 74.7a3.997 3.997 0 0 1-5.655 0L61.105 70.214a3.997 3.997 0 0 0-5.655 0L35.824 89.849a4 4 0 0 0-.002 5.653l52.567 52.664a4 4 0 0 0 5.66.002z"/>
+        <filter id="a" width="112.6%" height="115.8%" x="-6.3%" y="-6.4%" filterUnits="objectBoundingBox">
+            <feMorphology in="SourceAlpha" operator="dilate" radius="3" result="shadowSpreadOuter1"/>
+            <feOffset dy="2" in="shadowSpreadOuter1" result="shadowOffsetOuter1"/>
+            <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="2"/>
+            <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"/>
+            <feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.09 0"/>
+        </filter>
+    </defs>
+    <g fill="none" fill-rule="evenodd" transform="translate(25 4)">
+        <path stroke="#F1F6FF" stroke-linecap="round" stroke-width="50" d="M0 40c10.825-7.136 25.776-9.518 37.204-15.643 13.023-6.978 22.055 2.01 16.879 14.39-3.343 7.995-36.767 62.74-20.767 70.112 2.914 1.342 12.85-2.638 13.183-2.857 14.343-9.443 27.363-20.78 41.558-30.445 22.106-15.05 68.377-35.221 69.782-35.557 22.586-5.398 3.79 34.183-7.853 49.155-24.841 31.94-36.752 39.29-54.643 67.801-7.825 12.47 24.903 14.383 32.251 9.768 24.784-15.568 48.523-32.755 73.247-48.417 9.046-5.73 13.848-10.188 23.013-15.727.308-.186-.547-.47-.82-.706"/>
+        <g stroke-linejoin="round">
+            <use fill="#000" filter="url(#a)" xlink:href="#b"/>
+            <use fill="#3481F8" stroke="#FFF" stroke-width="4" xlink:href="#b"/>
+        </g>
+        <circle cx="220" cy="17" r="5" stroke="#FFB07F" stroke-width="2"/>
+        <circle cx="31.5" cy="18.5" r="5.5" stroke="#FFF" stroke-width="2"/>
+        <path stroke="#9013FE" stroke-width="2" d="M13.84 154L10 161h8z"/>
+        <path stroke="#F8E71C" stroke-width="2" d="M199 126h8v8h-8z"/>
+        <path stroke="#9013FE" stroke-width="2" d="M109.343 8L115 2.343 120.657 8 115 13.657z"/>
+    </g>
+</svg>

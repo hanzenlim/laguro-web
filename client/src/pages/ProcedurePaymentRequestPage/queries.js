@@ -34,9 +34,6 @@ export const acceptOrRejectPaymentRequestMutation = gql`
     mutation AcceptOrRejectProcedureSetPaymentRequest(
         $input: AcceptOrRejectPaymentRequestInput!
     ) {
-        acceptOrRejectProcedureSetPaymentRequest(input: $input) {
-            id
-            status
-        }
+        acceptOrRejectProcedureSetPaymentRequest(input: $input)
     }
 `;

@@ -168,7 +168,7 @@ class BookAppointment extends PureComponent {
     handleSelectTimeSlot = utcFormattedTimeSlot => {
         this.setState({ selectedTimeSlot: utcFormattedTimeSlot });
 
-        if (trackSelectTimeSlot) {
+        if (utcFormattedTimeSlot && trackSelectTimeSlot) {
             const { isOnOfficePage } = this.state;
 
             trackSelectTimeSlot({
@@ -245,6 +245,7 @@ class BookAppointment extends PureComponent {
                 currentPatientId={this.state.currentPatientId}
                 onPatientSelect={this.onPatientSelect}
                 refetch={refetch}
+                selectedTimeSlot={selectedTimeSlot}
             />
         );
     }
@@ -519,7 +520,9 @@ class BookAppointmentContainer extends Component {
                         <BookAppointment
                             totalDentists={totalDentists}
                             suggestedDentist={suggestedDentist}
-                            isFetchingNewData={isFetchingNewData}
+                            isFetchingNewData={
+                                getDentistAppointmentSlots.loading
+                            }
                             locationList={locationList}
                             timeSlotList={timeSlotList}
                             dentist={getDentistData}

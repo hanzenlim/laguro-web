@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { Input as AntdInput } from 'antd';
 import styled from 'styled-components';
 import {
@@ -21,10 +21,11 @@ const StyledInput = styled(AntdInput)`
     }
 `;
 
-class Input extends PureComponent {
+class Input extends Component {
     render() {
-        const { ...rest } = this.props;
-        return <StyledInput {...rest} />;
+        const { setRef, ...rest } = this.props;
+
+        return <StyledInput ref={setRef} {...rest} />;
     }
 }
 

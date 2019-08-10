@@ -64,6 +64,8 @@ import Evening from './Evening';
 import Anytime from './Anytime';
 import Calculate from './Calculate';
 import Searching from './Searching';
+import Withdraw from './Withdraw';
+import AddCredit from './AddCredit';
 
 const Icon = props => {
     const { type, isButton, ...rest } = props;
@@ -207,6 +209,12 @@ const Icon = props => {
             break;
         case 'Calculate':
             ReturnIcon = Calculate;
+            break;
+        case 'Withdraw':
+            ReturnIcon = Withdraw;
+            break;
+        case 'AddCredit':
+            ReturnIcon = AddCredit;
             break;
         default:
             ReturnIcon = AntdIcon;

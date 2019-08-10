@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { addLocaleData, IntlProvider } from 'react-intl';
+import { InjectIntlContext } from '@comparaonline/react-intl-hooks';
 import en from 'react-intl/locale-data/en';
 import es from 'react-intl/locale-data/es';
 import qs from 'query-string';
@@ -39,7 +40,9 @@ ReactDOM.render(
         locale={intlLocale}
         messages={flattenMessages(messages[intlLocale])}
     >
-        <App />
+        <InjectIntlContext>
+            <App />
+        </InjectIntlContext>
     </IntlProvider>,
     document.getElementById('root')
 );

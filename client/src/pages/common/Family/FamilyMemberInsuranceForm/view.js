@@ -148,26 +148,23 @@ const FamilyMemberInsuranceFormView = props => {
                                         `1fr 1fr 1fr`,
                                     ]}
                                 >
-                                    <Field
-                                        name="policyHolderUser.birthMonth"
-                                        component={props => (
+                                    <Field name="policyHolderUser.birthMonth">
+                                        {props => (
                                             <FormFields.SelectMonth
                                                 {...props}
                                             />
                                         )}
-                                    />
-                                    <Field
-                                        name="policyHolderUser.birthDate"
-                                        component={props => (
+                                    </Field>
+                                    <Field name="policyHolderUser.birthDate">
+                                        {props => (
                                             <FormFields.SelectDate {...props} />
                                         )}
-                                    />
-                                    <Field
-                                        name="policyHolderUser.birthYear"
-                                        component={props => (
+                                    </Field>
+                                    <Field name="policyHolderUser.birthYear">
+                                        {props => (
                                             <FormFields.SelectYear {...props} />
                                         )}
-                                    />
+                                    </Field>
                                 </Grid>
                                 <Text
                                     fontSize={1}

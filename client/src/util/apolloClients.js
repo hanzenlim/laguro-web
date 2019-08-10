@@ -1,37 +1,65 @@
 import cookies from 'browser-cookies';
-import ApolloClient from 'apollo-boost';
+import { ApolloLink } from 'apollo-link';
+import { createHttpLink } from 'apollo-link-http';
+import { onError } from 'apollo-link-error';
+import { ApolloClient } from 'apollo-client';
+import { setContext } from 'apollo-link-context';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import _get from 'lodash/get';
+
 import { LAGURO_AUTH_TOKEN } from './strings';
+import { onTokenExpiryLogout } from './authUtils';
 
-const requestHandler = async operation => {
-    const token = cookies.get(LAGURO_AUTH_TOKEN);
-    operation.setContext({
-        headers: {
-            Authorization: token ? `Bearer ${token}` : '',
-        },
+function getClient({ uri }) {
+    const errorLink = onError(({ graphQLErrors, networkError }) => {
+        const graphQLErrorMessage = _get(graphQLErrors, '[0].message', '');
+
+        if (
+            graphQLErrorMessage &&
+            graphQLErrorMessage.includes('jwt expired')
+        ) {
+            onTokenExpiryLogout();
+        }
+
+        if (networkError) console.log(`[Network error]: ${networkError}`);
     });
-};
 
-export const defaultClient = new ApolloClient({
+    const authLink = setContext((_, { headers }) => {
+        const token = cookies.get(LAGURO_AUTH_TOKEN);
+        return {
+            headers: {
+                ...headers,
+                Authorization: token ? `Bearer ${token}` : '',
+            },
+        };
+    });
+
+    const checkpointLinks = ApolloLink.from([errorLink, authLink]);
+    const httpLink = createHttpLink({ uri });
+
+    return new ApolloClient({
+        link: checkpointLinks.concat(httpLink),
+        connectToDevTools: true,
+        cache: new InMemoryCache(),
+    });
+}
+
+export const defaultClient = getClient({
     uri: process.env.REACT_APP_GRAPHQL_LAGURO_API,
-    request: requestHandler,
 });
 
-export const insuranceClient = new ApolloClient({
+export const insuranceClient = getClient({
     uri: process.env.REACT_APP_GRAPHQL_INSURANCE_API,
-    request: requestHandler,
 });
 
-export const appointmentClient = new ApolloClient({
+export const appointmentClient = getClient({
     uri: process.env.REACT_APP_GRAPHQL_APPOINTMENT_API,
-    request: requestHandler,
 });
 
-export const walletClient = new ApolloClient({
+export const walletClient = getClient({
     uri: process.env.REACT_APP_GRAPHQL_WALLET_API,
-    request: requestHandler,
 });
 
-export const pricingClient = new ApolloClient({
-    uri: process.env.REACT_APP_GRAPHQL_PRICING_API,
-    request: requestHandler,
+export const pricingClient = getClient({
+    uri: process.env.REACT_APP_sGRAPHQL_PRICING_API,
 });

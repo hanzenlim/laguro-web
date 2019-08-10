@@ -1,10 +1,12 @@
 import { Box, Flex } from '@laguro/basic-components';
 import { Field } from 'formik';
 import * as React from 'react';
+import { injectIntl } from 'react-intl';
+import _isEmpty from 'lodash/isEmpty';
+
 import Onboarding from '../../..';
 import InsuranceUmbrella from '../../../Assets/insuranceUmbrella';
 import { getFormatTextFromProps } from '../../../../../../../../util/intlUtils';
-import { injectIntl } from 'react-intl';
 import {
     GENERAL_NEXT,
     GENERALINFORMATION_ADDRESS_ADDRESS,
@@ -72,8 +74,51 @@ const states = [
 ];
 
 class AddressView extends React.PureComponent {
+    constructor(props) {
+        super(props);
+        this.patientAddressOne = null;
+        this.city = null;
+        this.patientZIP = null;
+    }
+
+    componentDidUpdate(prevProps) {
+        const { formikProps } = this.props;
+
+        if (
+            !_isEmpty(formikProps.errors) &&
+            prevProps.formikProps.errors['patientAddress1'] !==
+                formikProps.errors['patientAddress1']
+        ) {
+            this.patientAddressOne.focus();
+        }
+
+        if (formikProps.submitCount !== prevProps.formikProps.submitCount) {
+            if (
+                !_isEmpty(formikProps.errors) &&
+                formikProps.errors['patientZIP']
+            ) {
+                this.patientZIP.focus();
+            }
+
+            if (
+                !_isEmpty(formikProps.errors) &&
+                formikProps.errors['patientCity']
+            ) {
+                this.city.focus();
+            }
+
+            if (
+                !_isEmpty(formikProps.errors) &&
+                formikProps.errors['patientAddress1']
+            ) {
+                this.patientAddressOne.focus();
+            }
+        }
+    }
+
     render() {
         const formatText = getFormatTextFromProps(this.props);
+
         return (
             <Box width={['100%', '329px', '329px']} px={['20px', '0', '0']}>
                 <Flex justifyContent="center">
@@ -93,6 +138,7 @@ class AddressView extends React.PureComponent {
                         GENERALINFORMATION_ADDRESS_STREETNUMBER
                     )}
                     component={Onboarding.InputField}
+                    setRef={node => (this.patientAddressOne = node)}
                 />
                 <Onboarding.FormItemLabelText
                     text={formatText(GENERALINFORMATION_ADDRESS_ADDRESS2)}
@@ -113,6 +159,7 @@ class AddressView extends React.PureComponent {
                         GENERALINFORMATION_ADDRESS_CITYPLACEHOLDER
                     )}
                     component={Onboarding.InputField}
+                    setRef={node => (this.city = node)}
                 />
                 <Onboarding.FormItemLabelText
                     text={formatText(GENERALINFORMATION_ADDRESS_STATE)}
@@ -135,7 +182,11 @@ class AddressView extends React.PureComponent {
                 <Onboarding.FormItemLabelText
                     text={formatText(GENERALINFORMATION_ADDRESS_POSTALCODE)}
                 />
-                <Field name="patientZIP" component={Onboarding.InputField} />
+                <Field
+                    name="patientZIP"
+                    component={Onboarding.InputField}
+                    setRef={node => (this.patientZIP = node)}
+                />
                 <Onboarding.NextButton
                     onClick={() => this.props.formikProps.submitForm()}
                 >

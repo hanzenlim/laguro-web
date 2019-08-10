@@ -6,7 +6,10 @@ import _isEmpty from 'lodash/isEmpty';
 import { execute } from '../../util/gqlUtils';
 import { insuranceClient } from '../../util/apolloClients';
 import { CHECK_ELIGIBILITY } from './queries';
-import { KioskInsurance } from '../common/the-bright-side-components/components/Kiosk/KioskInsurance';
+import {
+    KioskInsurance,
+    getKioskInsuranceInitialValues,
+} from '../common/the-bright-side-components/components/Kiosk/KioskInsurance';
 import { policyHolderUserValidationSchema } from '../common/Family/FamilyMemberInsuranceForm/validators';
 
 // contains renderRegistrationStage which renders correct step within Registation stage of kiosk flow
@@ -22,99 +25,7 @@ export const PATIENT_INSURANCE_FORM_LAST_WIZARD_STEP_ID = 'last';
 export const getPatientInsuranceFormWizardSteps = ({ user, mutations }) => [
     {
         id: INSURANCE_WIZARD_STEP_ID,
-        initialValues: {
-            patientInsuranceNum:
-                _get(user, 'insuranceInfo.policyHolderId') || undefined,
-            insuranceProvider:
-                _get(user, 'insuranceInfo.insuranceProvider') || undefined,
-            insuranceProviderId: _get(
-                user,
-                'insuranceInfo.insuranceProviderId' || undefined
-            ),
-            planOrGroupNumber:
-                _get(user, 'insuranceInfo.planOrGroupNumber') || undefined,
-            hasNoInsurance: 'false',
-            isPrimaryHolder: !_get(user, 'insuranceInfo')
-                ? undefined
-                : _get(user, 'insuranceInfo.policyHolderUserId')
-                ? 'yes'
-                : 'no',
-            policyHolderUser: !_get(user, 'insuranceInfo.policyHolderUserId')
-                ? {
-                      firstName:
-                          _get(
-                              user,
-                              'insuranceInfo.policyHolderUser.firstName'
-                          ) || undefined,
-                      lastName:
-                          _get(
-                              user,
-                              'insuranceInfo.policyHolderUser.lastName'
-                          ) || undefined,
-                      gender: !_get(
-                          user,
-                          'insuranceInfo.policyHolderUser.gender'
-                      )
-                          ? 'unknown'
-                          : _get(user, 'insuranceInfo.policyHolderUser.gender'),
-                      birthMonth:
-                          _get(user, 'insuranceInfo.policyHolderUser.dob') &&
-                          _get(
-                              user,
-                              'insuranceInfo.policyHolderUser.dob'
-                          ).split('/')[0],
-                      birthDate:
-                          _get(user, 'insuranceInfo.policyHolderUser.dob') &&
-                          _get(
-                              user,
-                              'insuranceInfo.policyHolderUser.dob'
-                          ).split('/')[1],
-                      birthYear:
-                          _get(user, 'insuranceInfo.policyHolderUser.dob') &&
-                          _get(
-                              user,
-                              'insuranceInfo.policyHolderUser.dob'
-                          ).split('/')[2],
-                      address1:
-                          _get(
-                              user,
-                              'insuranceInfo.policyHolderUser.address.streetAddress'
-                          ) || undefined,
-                      address2:
-                          _get(
-                              user,
-                              'insuranceInfo.policyHolderUser.address.addressDetails'
-                          ) || undefined,
-                      city:
-                          _get(
-                              user,
-                              'insuranceInfo.policyHolderUser.address.city'
-                          ) || undefined,
-                      state:
-                          _get(
-                              user,
-                              'insuranceInfo.policyHolderUser.address.state'
-                          ) || undefined,
-                      zipCode:
-                          _get(
-                              user,
-                              'insuranceInfo.policyHolderUser.address.zipCode'
-                          ) || undefined,
-                  }
-                : {
-                      firstName: undefined,
-                      lastName: undefined,
-                      gender: undefined,
-                      birthMonth: undefined,
-                      birthDate: undefined,
-                      birthYear: undefined,
-                      address1: undefined,
-                      address2: undefined,
-                      city: undefined,
-                      state: undefined,
-                      zipCode: undefined,
-                  },
-        },
+        initialValues: getKioskInsuranceInitialValues(user),
         validationSchema: Yup.object().shape({
             policyHolderUser: Yup.object().when(
                 ['hasNoInsurance', 'isPrimaryHolder'],
@@ -184,9 +95,7 @@ export const getPatientInsuranceFormWizardSteps = ({ user, mutations }) => [
                                   : {
                                         firstName: policyHolderUser.firstName,
                                         lastName: policyHolderUser.lastName,
-                                        dob: `${policyHolderUser.birthMonth}/${
-                                            policyHolderUser.birthDate
-                                        }/${policyHolderUser.birthYear}`,
+                                        dob: `${policyHolderUser.birthMonth}/${policyHolderUser.birthDate}/${policyHolderUser.birthYear}`,
                                         gender:
                                             policyHolderUser.gender ===
                                             'unknown'
@@ -228,9 +137,7 @@ export const getPatientInsuranceFormWizardSteps = ({ user, mutations }) => [
                         patientId: user.id,
                         firstName: policyHolderUser.firstName,
                         lastName: policyHolderUser.lastName,
-                        dob: `${policyHolderUser.birthMonth}/${
-                            policyHolderUser.birthDate
-                        }/${policyHolderUser.birthYear}`,
+                        dob: `${policyHolderUser.birthMonth}/${policyHolderUser.birthDate}/${policyHolderUser.birthYear}`,
                         insuranceInfo: {
                             insuranceProvider,
                             insuranceProviderId,

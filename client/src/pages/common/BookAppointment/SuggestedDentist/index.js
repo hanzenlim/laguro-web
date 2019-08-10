@@ -2,9 +2,10 @@ import React, { PureComponent } from 'react';
 import SuggestedDentistView from './view';
 
 class SuggestedDentist extends PureComponent {
-    handleFindAnotherMatch = () => {
+    handleFindAnotherMatch = async () => {
         if (this.props.onFindAnotherMatch) {
-            this.props.onFindAnotherMatch();
+            await this.props.onFindAnotherMatch();
+            this.props.onSelectTimeSlot(null);
         }
     };
 

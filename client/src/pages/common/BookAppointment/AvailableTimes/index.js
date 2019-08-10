@@ -70,6 +70,14 @@ class AvailableTimes extends PureComponent {
         if (!_isEqual(prevProps.timeSlotList, this.props.timeSlotList)) {
             this.updateActiveTimeSlots();
         }
+
+        if (
+            prevProps.selectedTimeSlot !== this.props.selectedTimeSlot &&
+            !this.props.selectedTimeSlot
+        ) {
+            this.updateActiveTimeSlots();
+            this.setState({ selectedTimeSlot: null });
+        }
     }
 
     handleSelectTimeSlot = time => {
@@ -78,8 +86,11 @@ class AvailableTimes extends PureComponent {
         const utcFormattedTime = moment(time)
             .utcOffset(0, true)
             .format();
-        if (this.props.onSelectTimeSlot) {
+
+        if (this.props.onSelectTimeSlot && time) {
             this.props.onSelectTimeSlot(utcFormattedTime);
+        } else {
+            this.props.onSelectTimeSlot(null);
         }
     };
 

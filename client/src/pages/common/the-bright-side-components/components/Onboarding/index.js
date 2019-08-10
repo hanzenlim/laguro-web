@@ -462,6 +462,7 @@ const InputField = props => {
         onKeyPress,
         disabled,
         type,
+        setRef = () => {},
     } = props;
     const fieldName = field.name;
     const hasError =
@@ -478,6 +479,7 @@ const InputField = props => {
                 autoFocus={autoFocus}
                 disabled={disabled}
                 onKeyPress={onKeyPress}
+                setRef={setRef}
             />
             {hasError && <Onboarding.ValidationMessage text={errorMessage} />}
         </Box>

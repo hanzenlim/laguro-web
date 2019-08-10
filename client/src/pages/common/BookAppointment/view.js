@@ -71,6 +71,7 @@ class BookAppointmentView extends React.Component {
             onSelectTimeSlot,
             suggestedDentist,
             isFindAnotherMatchDisabled,
+            selectedTimeSlot,
         } = this.props;
 
         const patients = _get(this.props.user, 'family.members', []);
@@ -104,6 +105,7 @@ class BookAppointmentView extends React.Component {
                             isFindAnotherMatchDisabled={
                                 isFindAnotherMatchDisabled
                             }
+                            onSelectTimeSlot={onSelectTimeSlot}
                         />
                     </Box>
                 )}
@@ -118,6 +120,7 @@ class BookAppointmentView extends React.Component {
                     onSelectTimeSlot={onSelectTimeSlot}
                     timeSlotList={timeSlotList}
                     isFetchingNewData={isFetchingNewData}
+                    selectedTimeSlot={selectedTimeSlot}
                 />
 
                 <Flex
@@ -142,7 +145,7 @@ class BookAppointmentView extends React.Component {
                     </Text>
                 </Flex>
                 <Button
-                    disabled={isButtonDisabled}
+                    disabled={isButtonDisabled || !selectedTimeSlot}
                     onClick={this.handleBookNow}
                     width="100%"
                 >

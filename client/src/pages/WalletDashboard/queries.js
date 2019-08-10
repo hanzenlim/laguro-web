@@ -10,7 +10,7 @@ export const GET_WALLET_BY_USER_ID = gql`
             id
             userId
             pendingAmount
-            processingAmount
+            laguroCreditAmount
             availableAmount
             totalAmount
             transactions(
@@ -21,6 +21,7 @@ export const GET_WALLET_BY_USER_ID = gql`
                 description
                 type
                 dateCreated
+                isValid
             }
             dateCreated
         }
@@ -46,6 +47,36 @@ export const GET_USER = gql`
                 id
                 ssnOrEinOrTin
             }
+            dwollaCustomerUrl
+        }
+    }
+`;
+
+export const GET_DWOLLA_IAV_TOKEN = gql`
+    query getDwollaIavToken($input: GetDwollaIavTokenInput!) {
+        getDwollaIavToken(input: $input)
+    }
+`;
+
+export const GET_DWOLLA_FUNDING_SOURCES = gql`
+    query getDwollaFundingSources($input: GetDwollaFundingSourcesInput!) {
+        getDwollaFundingSources(input: $input) {
+            fundingSourceUrl
+            name
+        }
+    }
+`;
+
+export const GET_TRANSFER_INFO = gql`
+    query getTransferInfo($input: GetTransferInfoInput!) {
+        getTransferInfo(input: $input) {
+            standardClearingFees {
+                feeAmount
+            }
+            nextAvailableClearingFees {
+                feeAmount
+            }
+            transactionAmountMaximum
         }
     }
 `;

@@ -12,6 +12,7 @@ import { RedirectErrorPage } from '../../pages/GeneralErrorPage';
 import { PENDING } from '../../util/strings';
 import { getUser } from '../../util/authUtils';
 import { execute } from '../../util/gqlUtils';
+import { walletClient } from '../../util/apolloClients';
 
 class ProcedurePaymentRequest extends PureComponent {
     constructor(props) {
@@ -79,6 +80,7 @@ class ProcedurePaymentRequest extends PureComponent {
 
         return (
             <Query
+                client={walletClient}
                 query={getPaymentRequestByPayerQuery}
                 fetchPolicy="network-only"
                 variables={{
@@ -192,5 +194,8 @@ export default compose(
     withApollo,
     graphql(acceptOrRejectPaymentRequestMutation, {
         name: 'acceptOrRejectPaymentRequestMutation',
+        options: props => ({
+            client: walletClient,
+        }),
     })
 )(ProcedurePaymentRequest);

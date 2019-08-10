@@ -1,24 +1,52 @@
 import React from 'react';
 
-import { Box, Flex, Text } from '../../components';
+import { Box, Flex, Text, Grid } from '../../components';
 import PaymentMethod from './PaymentMethod';
-import { WalletTransactions } from '../WalletTransactions';
-import { WalletDetails } from '../WalletDetails';
+import WalletTransactions from '../WalletTransactions';
+import WalletDetails from './WalletDetails';
+import WithdrawCreditModal from './WithdrawCredit/WithdrawCreditModal';
+import AddCreditModal from './AddCredit/AddCreditModal';
 
 const WalletDashboardView = props => (
     <Box mx={[-12, '', 0]}>
-        {window.location.href.includes('localhost') && (
-            <Flex justifyContent="space-between" alignItems="center" mb={20}>
-                <Text fontSize={2} fontWeight="medium">
-                    Balance
-                </Text>
-                <PaymentMethod />
+        {process.env.APP_ENV !== 'production' && (
+            <Flex
+                flexDirection={['column', '', 'row']}
+                justifyContent="space-between"
+                alignItems="center"
+                mb={[0, '', 12]}
+            >
+                <Flex
+                    justifyContent="space-between"
+                    alignItems="center"
+                    mb={[20, '', 0]}
+                    width="100%"
+                >
+                    <Text fontSize={2} fontWeight="medium">
+                        Balance
+                    </Text>
+                    <PaymentMethod />
+                </Flex>
+
+                <Grid
+                    gridTemplateColumns="1fr 1fr"
+                    gridColumnGap={10}
+                    mb={[12, '', 0]}
+                    ml={[0, '', 12]}
+                    width={['100%', '', 402]}
+                >
+                    <AddCreditModal
+                        balance={props.balanceBreakdown.totalAmount}
+                    />
+                    <WithdrawCreditModal
+                        balance={props.balanceBreakdown.availableAmount}
+                    />
+                </Grid>
             </Flex>
         )}
 
-        <Box mb={28}>
-            <WalletDetails details={[props.balanceBreakdown]} />
-        </Box>
+        <WalletDetails details={props.balanceBreakdown} />
+
         <WalletTransactions
             transactions={props.transactions}
             loading={props.loading}

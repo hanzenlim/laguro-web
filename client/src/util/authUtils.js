@@ -115,6 +115,13 @@ export const onLogout = () => {
     history.push('/');
 };
 
+export const onTokenExpiryLogout = () => {
+    window.localStorage && window.localStorage.clear();
+
+    eraseCookieSession();
+    history.push('/?reason=token-expiry');
+};
+
 export const onLogoutWithoutRedirect = () => {
     // eslint-disable-next-line
     // window && window.Intercom('shutdown');

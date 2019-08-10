@@ -1,8 +1,12 @@
 import React, { Component, Fragment } from 'react';
 import { Helmet } from 'react-helmet';
 import { withRouter } from 'react-router-dom';
+import qs from 'query-string';
+import { message } from 'antd';
+
 import HomePageView from './view';
 import Newsletter from '../common/Newsletter';
+import history from '../../history';
 
 class HomePage extends Component {
     componentDidMount() {
@@ -11,6 +15,14 @@ class HomePage extends Component {
         const id = hash.replace('#', '');
         const element = document.getElementById(id);
         if (element) element.scrollIntoView();
+
+        const params = qs.parse(history.location.search);
+
+        if (params && params.reason && params.reason === 'token-expiry') {
+            message.error('Please login again', 5, () => {
+                history.push('/');
+            });
+        }
     }
     render() {
         return (
