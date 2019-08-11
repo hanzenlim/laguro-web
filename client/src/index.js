@@ -7,8 +7,7 @@ import es from 'react-intl/locale-data/es';
 import qs from 'query-string';
 import App from './ApolloApp';
 import { initializeTagManager } from './util/trackingUtils';
-import { flattenMessages } from './util/flattenMessages';
-import messages from './messages';
+import messages from './messages.json';
 import history from './history';
 import cookies from 'browser-cookies';
 import { KIOSK_REG_PAGE_URL } from './util/urls';
@@ -36,10 +35,7 @@ if (
 const intlLocale = cookies.get('locale') || 'en';
 
 ReactDOM.render(
-    <IntlProvider
-        locale={intlLocale}
-        messages={flattenMessages(messages[intlLocale])}
-    >
+    <IntlProvider locale={intlLocale} messages={messages[intlLocale]}>
         <InjectIntlContext>
             <App />
         </InjectIntlContext>
