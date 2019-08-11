@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
 import { Table, DatePicker as AntdDatePicker, Select } from 'antd';
-import _get from 'lodash/get';
 import _sum from 'lodash/sum';
 import _isEmpty from 'lodash/isEmpty';
 import moment from 'moment';
@@ -10,10 +10,6 @@ import { renderPrice } from '@laguro/basic-components/lib/components/utils/payme
 import { Text, Box, Flex, Responsive, Loading, Icon } from '../../components';
 
 const { Desktop, TabletMobile } = Responsive;
-
-const TABLE_DIVIDER_COLOR = 'divider.gray';
-const TABLE_BORDER = 'solid 1px';
-const TABLE_PX_IN_PIXELS = 45;
 
 const CATEGORIES = [
     'All categories',
@@ -54,73 +50,21 @@ const StyledMonthPicker = styled(AntdDatePicker.MonthPicker)`
 
 const StyledTable = styled(Table)`
     && {
-        .ant-table-header {
-            margin-bottom: 0 !important;
-        }
-        .ant-table-header {
-            background-color: transparent;
-            padding: 6px ${TABLE_PX_IN_PIXELS}px 0 ${TABLE_PX_IN_PIXELS}px;
-        }
+        font-family: Silka-Bold, Silka;
+
         .ant-table-thead > tr > th {
-            border: none;
-            &:nth-child(1),
-            &:nth-child(2) {
-                div {
-                    text-align: center;
-                }
-            }
-            &:last-child {
-                div {
-                    text-align: right;
-                }
-            }
-            background-color: transparent;
+            background: ${({ theme }) => theme.colors.background.white};
+            font-size: 12px;
         }
-        .ant-table-tbody > tr {
-            border-bottom: solid 1px;
-            border-color: rgba(236, 236, 236, 0.5);
+
+        .ant-table-tbody > tr > td {
+            font-size: 12px;
         }
-        .ant-table-tbody > tr:hover:not(.ant-table-expanded-row) > td {
-            background: transparent;
-        }
-        .ant-table-thead > tr {
-            border-bottom: solid 0.5px;
-            border-color: #c7c7c7;
-        }
-        .ant-table-thead > tr,
-        .ant-table-tbody > tr {
-            width: 100%;
-            display: grid;
-            @media (min-width: ${props => props.theme.breakpoints[1]}) {
-                grid-template-columns: 70px 100px auto 110px;
-                grid-column-gap: 30px;
-            }
-        }
-        .ant-table-tbody > tr > td,
-        .ant-table-thead > tr > th div {
-            border: none;
-            font-family: ${props => props.theme.fontFamily};
-            font-size: ${props => props.theme.fontSizes[0]};
-            letter-spacing: -0.34px;
-            color: ${props => props.theme.colors.text.black};
-            font-weight: ${props => props.theme.fontWeights.regular};
-        }
+
         .ant-table-footer {
-            background-color: transparent;
-            border-top: solid 2px;
-            border-top-color: ${props =>
-                _get(props.theme.colors, TABLE_DIVIDER_COLOR)};
-        }
-        td.column-amount > div {
-            text-align: right;
-        }
-        .ant-table-body {
-            padding: 0 ${TABLE_PX_IN_PIXELS}px 6px ${TABLE_PX_IN_PIXELS}px;
-        }
-        .ant-table-tbody {
-            tr:last-child {
-                border: none;
-            }
+            background: ${({ theme }) => theme.colors.background.white};
+            border-top: 3px solid;
+            border-color: ${({ theme }) => theme.colors.divider.gray};
         }
     }
 `;
@@ -199,56 +143,57 @@ const StyledIcon = styled(Icon)`
     }
 `;
 
-const WalletTransactions = props => {
+const mapTransactions = transactions =>
+    transactions.map(t => ({ ...t, key: t.id })).reverse();
+
+const WalletTransactions = ({
+    transactions,
+    filteredInfo,
+    onMonthChange,
+    onCategoryChange,
+    monthSelected,
+    loading,
+}) => {
+    const mappedTransactions = mapTransactions(transactions);
     const columns = [
         {
             title: 'Date',
             key: 'dateCreated',
             dataIndex: 'dateCreated',
-            className: 'column-date-created',
-            render: dateCreated => moment(dateCreated).format('M/D/YY'),
+            width: 150,
+            render: dateCreated => moment(dateCreated).format('M/D/YY h:mA'),
         },
         {
             key: 'type',
             title: 'Category',
             dataIndex: 'type',
-            className: 'column-type',
-            filteredValue: props.filteredInfo.type || null,
-            render: type => (
-                <Text
-                    fontSize="inherit"
-                    fontWeight="inherit"
-                    textAlign="center"
-                >
-                    {TYPE_TO_DISPLAY_NAME[type]}
-                </Text>
-            ),
+            filteredValue: filteredInfo.type || null,
+            width: 150,
+            render: type => TYPE_TO_DISPLAY_NAME[type],
             onFilter: (value, record) =>
                 value === 'All categories' ? true : record.type.includes(value),
         },
         {
+            key: 'description',
             title: 'Description',
-            className: 'column-description',
             dataIndex: 'description',
-            render: (description, { isValid }) => (
-                <Text fontSize="inherit" fontWeight="inherit">
-                    {`${description}${!isValid ? ' (Failed)' : ''}`}
-                </Text>
-            ),
+            render: (description, { isValid }) =>
+                `${description}${!isValid ? ' (Failed)' : ''}`,
         },
         {
+            key: 'amount',
             title: 'Amount',
-            width: 80,
-            className: 'column-amount',
             dataIndex: 'amount',
+            width: 150,
+            align: 'right',
             render: renderTransactionPrice,
         },
     ];
 
-    const filteredTransactions = props.transactions.filter(t =>
-        props.filteredInfo.type[0] === 'All categories'
+    const filteredTransactions = mappedTransactions.filter(t =>
+        filteredInfo.type[0] === 'All categories'
             ? true
-            : t.type.includes(props.filteredInfo.type[0])
+            : t.type.includes(filteredInfo.type[0])
     );
     const filteredAmounts = filteredTransactions.map(t =>
         t.isValid ? t.amount : 0
@@ -277,14 +222,14 @@ const WalletTransactions = props => {
                     <Box mr={14} mb={[6, '', 0]} width={['100%', '', 'unset']}>
                         <StyledMonthPicker
                             onChange={momentDate => {
-                                props.onMonthChange(
+                                onMonthChange(
                                     momentDate || moment().startOf('month')
                                 );
                             }}
                             disabledDate={currentDate =>
                                 currentDate.startOf('month').isAfter(moment())
                             }
-                            value={props.monthSelected}
+                            value={monthSelected}
                             placeholder="Select month"
                             format="MMM YYYY"
                             suffixIcon={
@@ -301,12 +246,12 @@ const WalletTransactions = props => {
                     <Box mb={[28, '', 0]} width={['100%', '', 'unset']}>
                         <StyledSelect
                             onSelect={key => {
-                                props.onCategoryChange({
+                                onCategoryChange({
                                     dataIndex: 'type',
                                     categories: [key],
                                 });
                             }}
-                            value={props.filteredInfo.type[0]}
+                            value={filteredInfo.type[0]}
                         >
                             {CATEGORIES.map(item => (
                                 <Select.Option key={item} value={item}>
@@ -317,31 +262,29 @@ const WalletTransactions = props => {
                     </Box>
                 </Flex>
             </Flex>
-            {props.loading ? (
+            {loading ? (
                 <Loading />
             ) : (
                 <Fragment>
                     <Desktop>
                         <Box
-                            border={TABLE_BORDER}
-                            borderColor={TABLE_DIVIDER_COLOR}
+                            boxShadow="0 2px 4px 2px rgba(0, 0, 0, 0.04)"
                             borderRadius={4}
+                            px={20}
                         >
                             <StyledTable
                                 locale={{
                                     emptyText:
                                         'There are no transactions with the given filters',
                                 }}
-                                scroll={{ y: 1010 }}
+                                scroll={{ y: 500 }}
                                 pagination={false}
                                 columns={columns}
-                                dataSource={props.transactions}
+                                dataSource={mappedTransactions}
                                 footer={() => (
                                     <Text
-                                        className="footer-content"
                                         width="100%"
                                         textAlign="right"
-                                        px={TABLE_PX_IN_PIXELS}
                                         fontSize={1}
                                         letterSpacing="-0.39px"
                                     >
@@ -360,74 +303,79 @@ const WalletTransactions = props => {
                             px={21}
                             mb={28}
                         >
-                            {_isEmpty(filteredTransactions) ? (
-                                <Text
-                                    fontSize={0}
-                                    letterSpacing="-0.39px"
-                                    color="text.lightGray"
-                                >
-                                    There are no transactions with the given
-                                    filters
-                                </Text>
-                            ) : (
-                                filteredTransactions.map(t => (
-                                    <Flex
-                                        key={t.id}
-                                        mb={10}
-                                        justifyContent="space-between"
-                                        borderBottom="solid 0.2px #dbdbdb"
+                            <Box style={{ maxHeight: 500, overflowY: 'auto' }}>
+                                {_isEmpty(filteredTransactions) ? (
+                                    <Text
+                                        fontSize={0}
+                                        letterSpacing="-0.39px"
+                                        color="text.lightGray"
                                     >
-                                        <Box
-                                            mb={2}
-                                            mr={11}
+                                        There are no transactions with the given
+                                        filters
+                                    </Text>
+                                ) : (
+                                    filteredTransactions.map(t => (
+                                        <Flex
+                                            key={t.id}
+                                            pt={10}
                                             justifyContent="space-between"
+                                            borderBottom="solid 0.2px #dbdbdb"
                                         >
-                                            <Flex>
-                                                <Text
-                                                    fontSize={8}
-                                                    letterSpacing="-0.22px"
-                                                    mr={5}
-                                                >
-                                                    {moment(
-                                                        t.dateCreated
-                                                    ).format('M/D/YY')}
-                                                </Text>
-                                                <Text
-                                                    fontSize={8}
-                                                    letterSpacing="-0.22px"
-                                                >
-                                                    {
-                                                        TYPE_TO_DISPLAY_NAME[
-                                                            t.type
-                                                        ]
-                                                    }
-                                                </Text>
-                                            </Flex>
-                                            <Text
-                                                mb={13}
-                                                fontSize={0}
-                                                letterSpacing="-0.34"
-                                                fontFamily="'Silka', 'Courier new', sans-serif"
+                                            <Box
+                                                mb={2}
+                                                mr={11}
+                                                justifyContent="space-between"
                                             >
-                                                {`${t.description}${
-                                                    !t.isValid
-                                                        ? ' (Failed)'
-                                                        : ''
-                                                }`}
-                                            </Text>
-                                        </Box>
-                                        {renderTransactionPrice(t.amount, {
-                                            isValid: t.isValid,
-                                        })}
-                                    </Flex>
-                                ))
-                            )}
+                                                <Flex>
+                                                    <Text
+                                                        fontSize={8}
+                                                        letterSpacing="-0.22px"
+                                                        mr={5}
+                                                    >
+                                                        {moment(
+                                                            t.dateCreated
+                                                        ).format('M/D/YY h:mA')}
+                                                    </Text>
+                                                    <Text
+                                                        fontSize={8}
+                                                        letterSpacing="-0.22px"
+                                                    >
+                                                        {
+                                                            TYPE_TO_DISPLAY_NAME[
+                                                                t.type
+                                                            ]
+                                                        }
+                                                    </Text>
+                                                </Flex>
+                                                <Text
+                                                    mb={13}
+                                                    fontSize={0}
+                                                    letterSpacing="-0.34"
+                                                    fontFamily="'Silka', 'Courier new', sans-serif"
+                                                >
+                                                    {`${t.description}${
+                                                        !t.isValid
+                                                            ? ' (Failed)'
+                                                            : ''
+                                                    }`}
+                                                </Text>
+                                            </Box>
+                                            {renderTransactionPrice(t.amount, {
+                                                isValid: t.isValid,
+                                            })}
+                                        </Flex>
+                                    ))
+                                )}
+                            </Box>
                             {!_isEmpty(filteredTransactions) && (
                                 <Text
                                     width="100%"
                                     textAlign="right"
                                     fontSize={0}
                                     letterSpacing="-0.34px"
+                                    borderTop="solid 3px #dbdbdb"
+                                    pt={10}
+                                    mt={-1}
                                 >
                                     Total: {renderPrice(_sum(filteredAmounts))}
                                 </Text>
@@ -438,6 +386,30 @@ const WalletTransactions = props => {
             )}
         </Fragment>
     );
+};
+
+WalletTransactions.propTypes = {
+    transactions: PropTypes.arrayOf(
+        PropTypes.shape({
+            amount: PropTypes.number,
+            dateCreated: PropTypes.string,
+            description: PropTypes.string,
+            id: PropTypes.string,
+            isValid: PropTypes.bool,
+            type: PropTypes.string,
+        })
+    ),
+    filteredInfo: PropTypes.shape({
+        type: PropTypes.arrayOf(PropTypes.string),
+    }).isRequired,
+    onMonthChange: PropTypes.func.isRequired,
+    onCategoryChange: PropTypes.func.isRequired,
+    monthSelected: PropTypes.shape({}).isRequired,
+    loading: PropTypes.bool.isRequired,
+};
+
+WalletTransactions.defaultProps = {
+    transactions: [],
 };
 
 export default WalletTransactions;

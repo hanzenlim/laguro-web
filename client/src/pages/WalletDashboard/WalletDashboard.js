@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Box, Flex, Text, Grid } from '../../components';
 import PaymentMethod from './PaymentMethod';
-import WalletTransactions from '../WalletTransactions';
+import WalletTransactions from './WalletTransactions';
 import WalletDetails from './WalletDetails';
 import WithdrawCreditModal from './WithdrawCredit/WithdrawCreditModal';
 import AddCreditModal from './AddCredit/AddCreditModal';
