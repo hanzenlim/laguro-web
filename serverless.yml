@@ -8,6 +8,7 @@ provider:
   stage: dev
   environment:
     # These environments are used on the server side.
+    REACT_APP_ENV: ${env:REACT_APP_ENV}
     REACT_APP_GRAPHQL_LAGURO_API: ${env:REACT_APP_GRAPHQL_LAGURO_API}
     REACT_APP_GRAPHQL_INSURANCE_API: ${env:REACT_APP_GRAPHQL_INSURANCE_API}
     REACT_APP_GRAPHQL_APPOINTMENT_API: ${env:REACT_APP_GRAPHQL_APPOINTMENT_API}

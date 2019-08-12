@@ -9,7 +9,7 @@ import AddCreditModal from './AddCredit/AddCreditModal';
 
 const WalletDashboardView = props => (
     <Box mx={[-12, '', 0]}>
-        {process.env.APP_ENV !== 'production' && (
+        {process.env.REACT_APP_ENV !== 'production' && (
             <Flex
                 flexDirection={['column', '', 'row']}
                 justifyContent="space-between"

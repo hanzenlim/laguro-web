@@ -27,7 +27,7 @@ const InstantVerification = ({ token }) => {
     useEffect(() => {
         const { dwolla } = window;
         dwolla.configure(
-            process.env.APP_ENV === 'production' ? 'prod' : 'sandbox'
+            process.env.REACT_APP_ENV === 'production' ? 'prod' : 'sandbox'
         );
         dwolla.iav.start(
             token,
