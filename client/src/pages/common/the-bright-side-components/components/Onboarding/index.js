@@ -15,11 +15,6 @@ import styled from 'styled-components';
 import PreviousIcon from './Assets/previousIcon';
 import BasicComponentsInput from './Input';
 import { getFormatTextFromProps } from '../../../../../util/intlUtils';
-import {
-    GENERAL_NEXT,
-    GENERAL_NONE,
-    GENERAL_PREVIOUSPAGE,
-} from '../../../../../strings/messageStrings';
 import { injectIntl } from 'react-intl';
 
 export const LastMargin = 43;
@@ -294,7 +289,7 @@ class OnboardingNextButton extends React.Component {
                         onClick={onClick}
                         disabled={disabled}
                     >
-                        {children || formatText(GENERAL_NEXT)}
+                        {children || formatText('general.next')}
                     </StyledNextButton>
                 </Flex>
             </FormItem>
@@ -312,13 +307,13 @@ class OnboardingNoneButton extends React.Component {
             const count = values.filter(v => v === true).length;
             return (
                 <OnboardingNextButton onClick={onClick}>
-                    {`${formatText(GENERAL_NEXT)} (${count})`}
+                    {`${formatText('general.next')} (${count})`}
                 </OnboardingNextButton>
             );
         }
         return (
             <OnboardingNextButton onClick={onClick}>
-                {formatText(GENERAL_NONE)}
+                {formatText('general.none')}
             </OnboardingNextButton>
         );
     }
@@ -347,7 +342,7 @@ class PreviousButtonClass extends React.Component {
                             fontSize={[0, 1, '']}
                             color="text.blue"
                         >
-                            {formatText(GENERAL_PREVIOUSPAGE)}
+                            {formatText('general.previousPage')}
                         </Text>
                     </Flex>
                 </Button>

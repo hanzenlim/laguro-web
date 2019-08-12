@@ -13,19 +13,6 @@ import {
     getFormatTextFromProps,
     getIntlMonths,
 } from '../../../../../../../../util/intlUtils';
-import {
-    MEDICALHISTORYFORM_GENERALMEDICALINFORMATION2_INGOODHEALTH,
-    MEDICALHISTORYFORM_GENERALMEDICALINFORMATION2_GENERALHEALTHCHANGES,
-    GENERAL_PLEASEEXPLAIN,
-    MEDICALHISTORYFORM_GENERALMEDICALINFORMATION2_BEINGTREATED,
-    GENERAL_PLEASE_LIST,
-    MEDICALHISTORYFORM_GENERALMEDICALINFORMATION4_HADANORTHOPEDICJOINT,
-    MEDICALHISTORYFORM_GENERALMEDICALINFORMATION4_TAKINGMEDICATION,
-    MEDICALHISTORYFORM_GENERALMEDICALINFORMATION2_GENERALMEDICALINFORMATION,
-    MEDICALHISTORYFORM_GENERALMEDICALINFORMATION2_PLEASECOMPLETE,
-    MEDICALHISTORYFORM_GENERALMEDICALINFORMATION2_LASTPHYSICALEXAM,
-    GENERAL_NEXT,
-} from '../../../../../../../../strings/messageStrings';
 import { renderQuestionComponent } from '../../../../../../../../util/questionUtils';
 
 export const PHYSICAL_EXAM_MONTH = 'When was your last physical exam? (Month)';
@@ -137,7 +124,7 @@ class GeneralHealth extends React.Component {
                     <div>
                         <Onboarding.FormItemLabelText
                             text={formatText(
-                                MEDICALHISTORYFORM_GENERALMEDICALINFORMATION2_INGOODHEALTH
+                                'medicalHistoryForm.generalMedicalInformation2.inGoodHealth'
                             )}
                         />
                         <Onboarding.Choices
@@ -159,7 +146,7 @@ class GeneralHealth extends React.Component {
                     <div>
                         <Onboarding.FormItemLabelText
                             text={formatText(
-                                MEDICALHISTORYFORM_GENERALMEDICALINFORMATION2_GENERALHEALTHCHANGES
+                                'medicalHistoryForm.generalMedicalInformation2.generalHealthChanges'
                             )}
                         />
                         <Onboarding.Choices
@@ -182,7 +169,7 @@ class GeneralHealth extends React.Component {
                 const key = ANY_CHANGES_EXPLANATION;
                 return (
                     <TextArea
-                        placeholder={formatText(GENERAL_PLEASEEXPLAIN)}
+                        placeholder={formatText('general.pleaseExplain')}
                         value={props.formikProps.values[key]}
                         onChange={value =>
                             props.formikProps.setFieldValue(
@@ -200,7 +187,7 @@ class GeneralHealth extends React.Component {
                     <div>
                         <Onboarding.FormItemLabelText
                             text={formatText(
-                                MEDICALHISTORYFORM_GENERALMEDICALINFORMATION2_BEINGTREATED
+                                'medicalHistoryForm.generalMedicalInformation2.beingTreated'
                             )}
                             s
                         />
@@ -225,7 +212,7 @@ class GeneralHealth extends React.Component {
                 return (
                     <div>
                         <TextArea
-                            placeholder={formatText(GENERAL_PLEASE_LIST)}
+                            placeholder={formatText('general.pleaseList')}
                             value={props.formikProps.values[key]}
                             onChange={value =>
                                 props.formikProps.setFieldValue(
@@ -244,7 +231,7 @@ class GeneralHealth extends React.Component {
                     <div>
                         <Onboarding.FormItemLabelText
                             text={formatText(
-                                MEDICALHISTORYFORM_GENERALMEDICALINFORMATION4_HADANORTHOPEDICJOINT
+                                'medicalHistoryForm.generalMedicalInformation4.hadAnOrthopedicJoint'
                             )}
                         />
                         <Onboarding.Choices
@@ -266,7 +253,7 @@ class GeneralHealth extends React.Component {
                     <div>
                         <Onboarding.FormItemLabelText
                             text={formatText(
-                                MEDICALHISTORYFORM_GENERALMEDICALINFORMATION4_TAKINGMEDICATION
+                                'medicalHistoryForm.generalMedicalInformation4.takingMedication'
                             )}
                         />
                         <Onboarding.Choices
@@ -299,19 +286,19 @@ class GeneralHealth extends React.Component {
                 <DentistIcon />
                 <Onboarding.StepTitleText
                     text={formatText(
-                        MEDICALHISTORYFORM_GENERALMEDICALINFORMATION2_GENERALMEDICALINFORMATION
+                        'medicalHistoryForm.generalMedicalInformation2.generalMedicalInformation'
                     )}
                 />
                 <Onboarding.StepBlurbText
                     text={formatText(
-                        MEDICALHISTORYFORM_GENERALMEDICALINFORMATION2_PLEASECOMPLETE
+                        'medicalHistoryForm.generalMedicalInformation2.pleaseComplete'
                     )}
                 />
 
                 <Box>
                     <Onboarding.FormItemLabelText
                         text={formatText(
-                            MEDICALHISTORYFORM_GENERALMEDICALINFORMATION2_LASTPHYSICALEXAM
+                            'medicalHistoryForm.generalMedicalInformation2.lastPhysicalExam'
                         )}
                     />
                     <Flex mb="25px">
@@ -341,7 +328,7 @@ class GeneralHealth extends React.Component {
                 <Onboarding.NextButton
                     onClick={() => props.formikProps.submitForm()}
                 >
-                    {formatText(GENERAL_NEXT)}
+                    {formatText('general.next')}
                 </Onboarding.NextButton>
             </Flex>
         );

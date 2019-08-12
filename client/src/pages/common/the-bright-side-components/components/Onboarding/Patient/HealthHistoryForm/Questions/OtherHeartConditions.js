@@ -2,26 +2,6 @@ import { Flex, Grid } from '@laguro/basic-components';
 import React from 'react';
 import Onboarding from '../../../../Onboarding';
 import DentistIcon from '../../../Assets/dentistIcon';
-import {
-    MEDICALHISTORYFORM_OTHERHEARTCONDITIONS_CARDIOVASCULARDISEASE,
-    MEDICALHISTORYFORM_OTHERHEARTCONDITIONS_CONGESTIVEHEARTFAILURE,
-    MEDICALHISTORYFORM_OTHERHEARTCONDITIONS_HEARTATTACK,
-    MEDICALHISTORYFORM_OTHERHEARTCONDITIONS_HIGHBLOODPRESSURE,
-    MEDICALHISTORYFORM_OTHERHEARTCONDITIONS_RHEUMATICFEVER,
-    MEDICALHISTORYFORM_OTHERHEARTCONDITIONS_CHESTPAINUPONEXERTION,
-    MEDICALHISTORYFORM_OTHERHEARTCONDITIONS_ANGINA,
-    MEDICALHISTORYFORM_OTHERHEARTCONDITIONS_DAMAGEDHEARTFAILURE,
-    MEDICALHISTORYFORM_OTHERHEARTCONDITIONS_HEARTMURMUR,
-    MEDICALHISTORYFORM_OTHERHEARTCONDITIONS_MITRALVALVEPROLAPSE,
-    MEDICALHISTORYFORM_OTHERHEARTCONDITIONS_RHEUMATICHEARTDISEASE,
-    MEDICALHISTORYFORM_OTHERHEARTCONDITIONS_ATERIOSCLEROSIS,
-    MEDICALHISTORYFORM_OTHERHEARTCONDITIONS_DAMAGEDHEARTVALVES,
-    MEDICALHISTORYFORM_OTHERHEARTCONDITIONS_LOWBLOODPRESSURE,
-    MEDICALHISTORYFORM_OTHERHEARTCONDITIONS_OTHERCONGENITALHEARTDEFECTS,
-    MEDICALHISTORYFORM_OTHERHEARTCONDITIONS_PACEMAKER,
-    MEDICALHISTORYFORM_OTHERHEARTCONDITIONS_OTHERHEARTCONDITIONS,
-    GENERAL_PLEASE_CHOOSE_CONDITIONS,
-} from '../../../../../../../../strings/messageStrings';
 import { reduceArrayOfObjects } from '../../../../../../../../util/arrayUtils';
 import { getFormatTextFromProps } from '../../../../../../../../util/intlUtils';
 import { renderQuestionComponent } from '../../../../../../../../util/questionUtils';
@@ -64,22 +44,33 @@ const list = [
 ];
 
 const texts = {
-    [CARDIOVASCULAR_DISEASE]: MEDICALHISTORYFORM_OTHERHEARTCONDITIONS_CARDIOVASCULARDISEASE,
-    [CONGESTIVE_HEART_FAILURE]: MEDICALHISTORYFORM_OTHERHEARTCONDITIONS_CONGESTIVEHEARTFAILURE,
-    [HEART_ATTACK]: MEDICALHISTORYFORM_OTHERHEARTCONDITIONS_HEARTATTACK,
-    [HIGH_BLOOD_PRESSURE]: MEDICALHISTORYFORM_OTHERHEARTCONDITIONS_HIGHBLOODPRESSURE,
-    [RHEUMATIC_FEVER]: MEDICALHISTORYFORM_OTHERHEARTCONDITIONS_RHEUMATICFEVER,
-    [CHEST_PAIN_UPON_EXERTION]: MEDICALHISTORYFORM_OTHERHEARTCONDITIONS_CHESTPAINUPONEXERTION,
-    [ANGINA]: MEDICALHISTORYFORM_OTHERHEARTCONDITIONS_ANGINA,
-    [DAMAGED_HEART_FAILURE]: MEDICALHISTORYFORM_OTHERHEARTCONDITIONS_DAMAGEDHEARTFAILURE,
-    [HEART_MURMUR]: MEDICALHISTORYFORM_OTHERHEARTCONDITIONS_HEARTMURMUR,
-    [MITRAL_VALVE_PROLAPSE]: MEDICALHISTORYFORM_OTHERHEARTCONDITIONS_MITRALVALVEPROLAPSE,
-    [RHEUMATIC_HEART_DISEASE]: MEDICALHISTORYFORM_OTHERHEARTCONDITIONS_RHEUMATICHEARTDISEASE,
-    [ATERIOSCLEROSIS]: MEDICALHISTORYFORM_OTHERHEARTCONDITIONS_ATERIOSCLEROSIS,
-    [DAMAGED_HEART_VALVES]: MEDICALHISTORYFORM_OTHERHEARTCONDITIONS_DAMAGEDHEARTVALVES,
-    [LOW_BLOOD_PRESSURE]: MEDICALHISTORYFORM_OTHERHEARTCONDITIONS_LOWBLOODPRESSURE,
-    [PACEMAKER]: MEDICALHISTORYFORM_OTHERHEARTCONDITIONS_PACEMAKER,
-    [OTHER_CONGENITAL_HEART_DEFECTS]: MEDICALHISTORYFORM_OTHERHEARTCONDITIONS_OTHERCONGENITALHEARTDEFECTS,
+    [CARDIOVASCULAR_DISEASE]:
+        'medicalHistoryForm.otherHeartConditions.cardiovascularDisease',
+    [CONGESTIVE_HEART_FAILURE]:
+        'medicalHistoryForm.otherHeartConditions.congestiveHeartFailure',
+    [HEART_ATTACK]: 'medicalHistoryForm.otherHeartConditions.heartAttack',
+    [HIGH_BLOOD_PRESSURE]:
+        'medicalHistoryForm.otherHeartConditions.highBloodPressure',
+    [RHEUMATIC_FEVER]: 'medicalHistoryForm.otherHeartConditions.rheumaticFever',
+    [CHEST_PAIN_UPON_EXERTION]:
+        'medicalHistoryForm.otherHeartConditions.chestPainUponExertion',
+    [ANGINA]: 'medicalHistoryForm.otherHeartConditions.angina',
+    [DAMAGED_HEART_FAILURE]:
+        'medicalHistoryForm.otherHeartConditions.damagedHeartFailure',
+    [HEART_MURMUR]: 'medicalHistoryForm.otherHeartConditions.heartMurmur',
+    [MITRAL_VALVE_PROLAPSE]:
+        'medicalHistoryForm.otherHeartConditions.mitralValveProlapse',
+    [RHEUMATIC_HEART_DISEASE]:
+        'medicalHistoryForm.otherHeartConditions.rheumaticHeartDisease',
+    [ATERIOSCLEROSIS]:
+        'medicalHistoryForm.otherHeartConditions.ateriosclerosis',
+    [DAMAGED_HEART_VALVES]:
+        'medicalHistoryForm.otherHeartConditions.damagedHeartValves',
+    [LOW_BLOOD_PRESSURE]:
+        'medicalHistoryForm.otherHeartConditions.lowBloodPressure',
+    [PACEMAKER]: 'medicalHistoryForm.otherHeartConditions.pacemaker',
+    [OTHER_CONGENITAL_HEART_DEFECTS]:
+        'medicalHistoryForm.otherHeartConditions.otherCongenitalHeartDefects',
 };
 
 const getQuestionName = item =>
@@ -149,11 +140,13 @@ class OtherHeartConditions extends React.Component {
                 <DentistIcon />
                 <Onboarding.StepTitleText
                     text={formatText(
-                        MEDICALHISTORYFORM_OTHERHEARTCONDITIONS_OTHERHEARTCONDITIONS
+                        'medicalHistoryForm.otherHeartConditions.otherHeartConditions'
                     )}
                 />
                 <Onboarding.StepBlurbText
-                    text={formatText(GENERAL_PLEASE_CHOOSE_CONDITIONS)}
+                    text={formatText(
+                        'general.pleaseChooseTheConditionsThatApplyToYou'
+                    )}
                 />
                 <Grid gridTemplateColumns={['1fr', '1fr 1fr', '1fr 1fr']}>
                     {renderQuestions}

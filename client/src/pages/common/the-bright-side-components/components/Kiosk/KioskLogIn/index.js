@@ -8,18 +8,6 @@ import Onboarding from '../../Onboarding';
 import InfoIcon from '../../Onboarding/Assets/infoIcon';
 import PinInput from '../../Onboarding/PinInput';
 import { getFormatTextFromProps } from '../../../../../../util/intlUtils';
-import {
-    GENERAL_FIELDISREQUIRED,
-    REGISTRATION_SIGNIN_INVALID,
-    REGISTRATION_SIGNIN_MUSTHAVE10,
-    REGISTRATION_SIGNIN_SIGNIN,
-    REGISTRATION_SIGNIN_TYPEINFROMATION,
-    REGISTRATION_SIGNIN_PHONEOREMAIL,
-    REGISTRATION_SIGNIN_SEND,
-    REGISTRATION_SIGNIN_ENTERCODE,
-    REGISTRATION_SIGNIN_SIGNUP,
-    REGISTRATION_SIGNIN_CODESENT,
-} from '../../../../../../strings/messageStrings';
 
 const REGISTER_MODE = 'register-mode';
 const LOGIN_MODE = 'logIn-mode';
@@ -44,16 +32,16 @@ class KioskLogInClass extends React.Component {
             const hasCorrectDigitCount = phoneOrEmail.length === 10;
 
             if (!phoneOrEmail) {
-                return formatText(GENERAL_FIELDISREQUIRED);
+                return formatText('general.fieldIsRequired');
             }
 
             if (!isEmail) {
                 if (!isNumeric) {
-                    return formatText(REGISTRATION_SIGNIN_INVALID);
+                    return formatText('registration.signIn.invalid');
                 }
 
                 if (!hasCorrectDigitCount) {
-                    return formatText(REGISTRATION_SIGNIN_MUSTHAVE10);
+                    return formatText('registration.signIn.mustHave10');
                 }
             }
 
@@ -71,15 +59,15 @@ class KioskLogInClass extends React.Component {
                     <InfoIcon />
                 </Flex>
                 <Onboarding.StepTitleText
-                    text={formatText(REGISTRATION_SIGNIN_SIGNIN)}
+                    text={formatText('registration.signIn.signIn')}
                 />
                 <Onboarding.StepBlurbText
-                    text={formatText(REGISTRATION_SIGNIN_TYPEINFROMATION)}
+                    text={formatText('registration.signIn.typeInfromation')}
                 />
                 <Flex flexDirection="column" mb="20px">
                     <Flex alignItems="center" mb="10px">
                         <Text>
-                            {formatText(REGISTRATION_SIGNIN_PHONEOREMAIL)}
+                            {formatText('registration.signIn.phoneOrEmail')}
                         </Text>
                         <Box ml="4px">
                             <Tooltip
@@ -157,20 +145,20 @@ class KioskLogInClass extends React.Component {
                                 }
                             }}
                         >
-                            {formatText(REGISTRATION_SIGNIN_SEND)}
+                            {formatText('registration.signIn.send')}
                         </Button>
                     </Flex>
                     {props.formikProps.values.isCodeSent && (
                         <div>
                             <Text color="#3481f8" fontSize="12px" mb={15}>
-                                {formatText(REGISTRATION_SIGNIN_CODESENT)}
+                                {formatText('registration.signIn.codeSent')}
                             </Text>
 
                             <Box>
                                 <Box mb={10}>
                                     <Text>
                                         {formatText(
-                                            REGISTRATION_SIGNIN_ENTERCODE
+                                            'registration.signIn.enterCode'
                                         )}
                                     </Text>
                                 </Box>
@@ -223,7 +211,7 @@ class KioskLogInClass extends React.Component {
                                 fontSize="16px"
                                 textAlign="center"
                             >
-                                {formatText(REGISTRATION_SIGNIN_SIGNUP)}
+                                {formatText('registration.signIn.signUp')}
                             </Text>
                         </Button>
                     </Flex>

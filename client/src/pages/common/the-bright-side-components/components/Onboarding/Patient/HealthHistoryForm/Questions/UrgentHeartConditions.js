@@ -2,16 +2,6 @@ import { Box, Flex } from '@laguro/basic-components';
 import React from 'react';
 import Onboarding from '../../../../Onboarding';
 import DentistIcon from '../../../Assets/dentistIcon';
-import {
-    MEDICALHISTORYFORM_URGENTHEARTCONDITIONS_ARTIFICIALPROSTHETICHEARTVALUE,
-    MEDICALHISTORYFORM_URGENTHEARTCONDITIONS_DAMAGEDVALVESINTRANSPLANTEDHEART,
-    MEDICALHISTORYFORM_URGENTHEARTCONDITIONS_CONGENITALHEARTDISEASEREPAIRED,
-    MEDICALHISTORYFORM_URGENTHEARTCONDITIONS_CONGENITALHEARTDISEASEREPAIREDCOMPLETELY,
-    MEDICALHISTORYFORM_URGENTHEARTCONDITIONS_CONGENITALHEARTDISEASEUNREPAIRED,
-    MEDICALHISTORYFORM_URGENTHEARTCONDITIONS_PREVIOUSINFECTIVEENDOCARDITIS,
-    MEDICALHISTORYFORM_URGENTHEARTCONDITIONS_URGENTHEARTCONDITIONS,
-    GENERAL_PLEASE_CHOOSE_CONDITIONS,
-} from '../../../../../../../../strings/messageStrings';
 import { renderQuestionComponent } from '../../../../../../../../util/questionUtils';
 import { getFormatTextFromProps } from '../../../../../../../../util/intlUtils';
 import { reduceArrayOfObjects } from '../../../../../../../../util/arrayUtils';
@@ -36,12 +26,18 @@ const list = [
 ];
 
 const texts = {
-    [ARTIFICIAL_HEART_VALVE]: MEDICALHISTORYFORM_URGENTHEARTCONDITIONS_ARTIFICIALPROSTHETICHEARTVALUE,
-    [DAMAGED_VALVES]: MEDICALHISTORYFORM_URGENTHEARTCONDITIONS_DAMAGEDVALVESINTRANSPLANTEDHEART,
-    [CHD_REPAIRED_COMPLETELY]: MEDICALHISTORYFORM_URGENTHEARTCONDITIONS_CONGENITALHEARTDISEASEREPAIREDCOMPLETELY,
-    [PREVIOUS_ENDOCARDITIS]: MEDICALHISTORYFORM_URGENTHEARTCONDITIONS_PREVIOUSINFECTIVEENDOCARDITIS,
-    [UNREPARIED_CHD]: MEDICALHISTORYFORM_URGENTHEARTCONDITIONS_CONGENITALHEARTDISEASEUNREPAIRED,
-    [REPAIRED_CHD]: MEDICALHISTORYFORM_URGENTHEARTCONDITIONS_CONGENITALHEARTDISEASEREPAIRED,
+    [ARTIFICIAL_HEART_VALVE]:
+        'medicalHistoryForm.urgentHeartConditions.artificialProstheticHeartValue',
+    [DAMAGED_VALVES]:
+        'medicalHistoryForm.urgentHeartConditions.damagedValvesInTransplantedHeart',
+    [CHD_REPAIRED_COMPLETELY]:
+        'medicalHistoryForm.urgentHeartConditions.congenitalHeartDiseaseRepairedCompletely',
+    [PREVIOUS_ENDOCARDITIS]:
+        'medicalHistoryForm.urgentHeartConditions.previousInfectiveEndocarditis',
+    [UNREPARIED_CHD]:
+        'medicalHistoryForm.urgentHeartConditions.congenitalHeartDiseaseUnrepaired',
+    [REPAIRED_CHD]:
+        'medicalHistoryForm.urgentHeartConditions.congenitalHeartDiseaseRepaired',
 };
 
 const getQuestionName = item => `Urgent heart conditions (${item})`;
@@ -107,11 +103,13 @@ class UrgentHeartConditions extends React.Component {
                 <DentistIcon />
                 <Onboarding.StepTitleText
                     text={formatText(
-                        MEDICALHISTORYFORM_URGENTHEARTCONDITIONS_URGENTHEARTCONDITIONS
+                        'medicalHistoryForm.urgentHeartConditions.urgentHeartConditions'
                     )}
                 />
                 <Onboarding.StepBlurbText
-                    text={formatText(GENERAL_PLEASE_CHOOSE_CONDITIONS)}
+                    text={formatText(
+                        'general.pleaseChooseTheConditionsThatApplyToYou'
+                    )}
                 />
                 <Box>{renderQuestions}</Box>
                 <Onboarding.NoneButton

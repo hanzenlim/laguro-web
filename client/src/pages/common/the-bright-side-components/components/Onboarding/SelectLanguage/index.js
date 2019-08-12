@@ -7,7 +7,6 @@ import {
     getFormatTextFromProps,
     getIntlLanguages,
 } from '../../../../../../util/intlUtils';
-import { GENERALINFORMATION_LANGUAGE_SELECTLANGUAGES } from '../../../../../../strings/messageStrings';
 
 export const LANGUAGES = [
     { value: 'ENGLISH', label: 'English' },
@@ -62,7 +61,7 @@ class SelectLanguageClass extends Component {
                 mode="multiple"
                 style={{ width: '100%' }}
                 placeholder={formatText(
-                    GENERALINFORMATION_LANGUAGE_SELECTLANGUAGES
+                    'generalInformation.language.selectLanguages'
                 )}
                 value={this.props.value}
                 onChange={this.props.onSelect}

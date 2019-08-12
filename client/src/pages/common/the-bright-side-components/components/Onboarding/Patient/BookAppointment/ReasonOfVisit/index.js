@@ -4,12 +4,6 @@ import { useFormatMessage } from '@comparaonline/react-intl-hooks';
 import Onboarding, { LastMargin } from '../../../../Onboarding';
 import ToolsIcon from '../../../Assets/toolsIcon';
 import ToothIcon from '../../../Assets/toothIcon';
-import {
-    BOOKAPPOINTMENT_REASONOFVISIT_REASONOFVISIT,
-    BOOKAPPOINTMENT_REASONOFVISIT_LETUSKNOW,
-    BOOKAPPOINTMENT_REASONOFVISIT_EXAM,
-    BOOKAPPOINTMENT_REASONOFVISIT_SPECIALTREATMENT,
-} from '../../../../../../../../strings/messageStrings';
 import { Text } from '../../../../../../../../components';
 
 const ReasonOfVisit = props => {
@@ -21,10 +15,10 @@ const ReasonOfVisit = props => {
                 <ToolsIcon />
             </Flex>
             <Onboarding.StepTitleText
-                text={t(BOOKAPPOINTMENT_REASONOFVISIT_REASONOFVISIT)}
+                text={t('bookAppointment.reasonOfVisit.reasonOfVisit')}
             />
             <Onboarding.StepBlurbText
-                text={t(BOOKAPPOINTMENT_REASONOFVISIT_LETUSKNOW)}
+                text={t('bookAppointment.reasonOfVisit.letUsKnow')}
             />
 
             <Flex alignItems="center" flexDirection="column" mb={LastMargin}>
@@ -59,7 +53,7 @@ const ReasonOfVisit = props => {
                             </Box>
                             <Flex width="100%" justifyContent="center">
                                 <Text multiline>
-                                    {t(BOOKAPPOINTMENT_REASONOFVISIT_EXAM)}
+                                    {t('bookAppointment.reasonOfVisit.exam')}
                                 </Text>
                             </Flex>
                         </Flex>
@@ -98,7 +92,7 @@ const ReasonOfVisit = props => {
                             <Flex width="100%" justifyContent="center">
                                 <Text multiline>
                                     {t(
-                                        BOOKAPPOINTMENT_REASONOFVISIT_SPECIALTREATMENT
+                                        'bookAppointment.reasonOfVisit.specialTreatment'
                                     )}
                                 </Text>
                             </Flex>

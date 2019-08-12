@@ -2,19 +2,6 @@ import { Flex, Grid } from '@laguro/basic-components';
 import React from 'react';
 import Onboarding from '../../../../Onboarding';
 import DentistIcon from '../../../Assets/dentistIcon';
-import {
-    MEDICALHISTORYFORM_NUTRITIONALDISEASES_DIABETESI,
-    MEDICALHISTORYFORM_NUTRITIONALDISEASES_MALNUTRITION,
-    MEDICALHISTORYFORM_NUTRITIONALDISEASES_GASTROINTESTINALDISEASE,
-    MEDICALHISTORYFORM_NUTRITIONALDISEASES_ULCER,
-    MEDICALHISTORYFORM_NUTRITIONALDISEASES_DIABETESII,
-    MEDICALHISTORYFORM_NUTRITIONALDISEASES_EATINGDISORDER,
-    MEDICALHISTORYFORM_NUTRITIONALDISEASES_GEREFLUXORHEARTBURN,
-    MEDICALHISTORYFORM_NUTRITIONALDISEASES_SEVEREORRAPIDWEIGHTLOSS,
-    MEDICALHISTORYFORM_NUTRITIONALDISEASES_EXCESSIVEURINATION,
-    MEDICALHISTORYFORM_NUTRITIONALDISEASES_NUTRITIONALDISEASES,
-    GENERAL_PLEASE_CHOOSE_CONDITIONS,
-} from '../../../../../../../../strings/messageStrings';
 import { reduceArrayOfObjects } from '../../../../../../../../util/arrayUtils';
 import { getFormatTextFromProps } from '../../../../../../../../util/intlUtils';
 import { renderQuestionComponent } from '../../../../../../../../util/questionUtils';
@@ -43,15 +30,19 @@ const list = [
 ];
 
 const texts = {
-    [DIABETES_I]: MEDICALHISTORYFORM_NUTRITIONALDISEASES_DIABETESI,
-    [MALNUTRITION]: MEDICALHISTORYFORM_NUTRITIONALDISEASES_MALNUTRITION,
-    [GASTROINTENSTINAL_DISEASE]: MEDICALHISTORYFORM_NUTRITIONALDISEASES_GASTROINTESTINALDISEASE,
-    [ULCER]: MEDICALHISTORYFORM_NUTRITIONALDISEASES_ULCER,
-    [EXCESSIVE_URINATION]: MEDICALHISTORYFORM_NUTRITIONALDISEASES_EXCESSIVEURINATION,
-    [DIABETES_II]: MEDICALHISTORYFORM_NUTRITIONALDISEASES_DIABETESII,
-    [EATING_DISORDER]: MEDICALHISTORYFORM_NUTRITIONALDISEASES_EATINGDISORDER,
-    [GE_REFLUX_OR_HEARTBURN]: MEDICALHISTORYFORM_NUTRITIONALDISEASES_GEREFLUXORHEARTBURN,
-    [SEVERE_OR_RAPID_WEIGHT_LOSS]: MEDICALHISTORYFORM_NUTRITIONALDISEASES_SEVEREORRAPIDWEIGHTLOSS,
+    [DIABETES_I]: 'medicalHistoryForm.nutritionalDiseases.diabetesI',
+    [MALNUTRITION]: 'medicalHistoryForm.nutritionalDiseases.malnutrition',
+    [GASTROINTENSTINAL_DISEASE]:
+        'medicalHistoryForm.nutritionalDiseases.gastrointestinalDisease',
+    [ULCER]: 'medicalHistoryForm.nutritionalDiseases.ulcer',
+    [EXCESSIVE_URINATION]:
+        'medicalHistoryForm.nutritionalDiseases.excessiveUrination',
+    [DIABETES_II]: 'medicalHistoryForm.nutritionalDiseases.diabetesIi',
+    [EATING_DISORDER]: 'medicalHistoryForm.nutritionalDiseases.eatingDisorder',
+    [GE_REFLUX_OR_HEARTBURN]:
+        'medicalHistoryForm.nutritionalDiseases.geRefluxOrHeartburn',
+    [SEVERE_OR_RAPID_WEIGHT_LOSS]:
+        'medicalHistoryForm.nutritionalDiseases.severeOrRapidWeightLoss',
 };
 
 const getQuestionName = item => `Nutrition (${item})`;
@@ -120,11 +111,13 @@ class NutritionalDiseases extends React.Component {
                 <DentistIcon />
                 <Onboarding.StepTitleText
                     text={formatText(
-                        MEDICALHISTORYFORM_NUTRITIONALDISEASES_NUTRITIONALDISEASES
+                        'medicalHistoryForm.nutritionalDiseases.nutritionalDiseases'
                     )}
                 />
                 <Onboarding.StepBlurbText
-                    text={formatText(GENERAL_PLEASE_CHOOSE_CONDITIONS)}
+                    text={formatText(
+                        'general.pleaseChooseTheConditionsThatApplyToYou'
+                    )}
                 />
                 <Grid gridTemplateColumns={['1fr', '1fr 1fr', '1fr 1fr']}>
                     {renderQuestions}

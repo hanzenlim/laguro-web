@@ -2,13 +2,6 @@ import { Box, Flex } from '@laguro/basic-components';
 import * as React from 'react';
 import Onboarding from '../../..';
 import InsuranceUmbrella from '../../../Assets/insuranceUmbrella';
-import {
-    GENERALINFORMATION_GENDER_GENDER,
-    GENERALINFORMATION_GENDER_FEMALE,
-    GENERALINFORMATION_GENDER_MALE,
-    GENERALINFORMATION_GENDER_DONOTANSWER,
-    GENERAL_NEXT,
-} from '../../../../../../../../strings/messageStrings';
 import { injectIntl } from 'react-intl';
 import { getFormatTextFromProps } from '../../../../../../../../util/intlUtils';
 
@@ -21,7 +14,7 @@ class GenderView extends React.PureComponent {
                     <InsuranceUmbrella />
                 </Flex>
                 <Onboarding.StepTitleText
-                    text={formatText(GENERALINFORMATION_GENDER_GENDER)}
+                    text={formatText('generalInformation.gender.gender')}
                 />
                 <Onboarding.StepBlurbText />
 
@@ -30,16 +23,18 @@ class GenderView extends React.PureComponent {
                     namesAndTexts={[
                         {
                             name: 'female',
-                            text: formatText(GENERALINFORMATION_GENDER_FEMALE),
+                            text: formatText(
+                                'generalInformation.gender.female'
+                            ),
                         },
                         {
                             name: 'male',
-                            text: formatText(GENERALINFORMATION_GENDER_MALE),
+                            text: formatText('generalInformation.gender.male'),
                         },
                         {
                             name: 'unknown',
                             text: formatText(
-                                GENERALINFORMATION_GENDER_DONOTANSWER
+                                'generalInformation.gender.doNotAnswer'
                             ),
                         },
                     ]}
@@ -51,7 +46,7 @@ class GenderView extends React.PureComponent {
                     }}
                     loading={this.props.formikProps.isSubmitting}
                 >
-                    {formatText(GENERAL_NEXT)}
+                    {formatText('general.next')}
                 </Onboarding.NextButton>
             </Box>
         );

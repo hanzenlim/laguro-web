@@ -4,20 +4,6 @@ import _sortBy from 'lodash/sortBy';
 import Onboarding from '../../../../Onboarding';
 import ToolsIcon from '../../../Assets/toolsIcon';
 import { getFormatTextFromProps } from '../../../../../../../../util/intlUtils';
-import {
-    MEDICALHISTORYFORM_WHATWASDONE_BRACES,
-    MEDICALHISTORYFORM_WHATWASDONE_FILLING,
-    MEDICALHISTORYFORM_WHATWASDONE_ROOTCANAL,
-    MEDICALHISTORYFORM_WHATWASDONE_WISDOMTEETH,
-    MEDICALHISTORYFORM_WHATWASDONE_BRIDGES,
-    MEDICALHISTORYFORM_WHATWASDONE_IMPLANTS,
-    MEDICALHISTORYFORM_WHATWASDONE_TOOTHEXTRACTIONS,
-    MEDICALHISTORYFORM_WHATWASDONE_NITROUSSEDATION,
-    MEDICALHISTORYFORM_WHATWASDONE_WHITENING,
-    MEDICALHISTORYFORM_ALLERGIES_OTHER,
-    MEDICALHISTORYFORM_WHATWASDONE_WHATWASDONE,
-    GENERAL_NEXT,
-} from '../../../../../../../../strings/messageStrings';
 import { renderQuestionComponent } from '../../../../../../../../util/questionUtils';
 import { reduceArrayOfObjects } from '../../../../../../../../util/arrayUtils';
 import { injectIntl } from 'react-intl';
@@ -37,17 +23,17 @@ const list = _sortBy([
 list.push('Other');
 
 const texts = {
-    Braces: MEDICALHISTORYFORM_WHATWASDONE_BRACES,
-    Filling: MEDICALHISTORYFORM_WHATWASDONE_FILLING,
-    'Root canal': MEDICALHISTORYFORM_WHATWASDONE_ROOTCANAL,
-    'Wisdom teeth removal': MEDICALHISTORYFORM_WHATWASDONE_WISDOMTEETH,
-    'Bridges/Dentures': MEDICALHISTORYFORM_WHATWASDONE_BRIDGES,
-    Implants: MEDICALHISTORYFORM_WHATWASDONE_IMPLANTS,
-    'Tooth extraction': MEDICALHISTORYFORM_WHATWASDONE_TOOTHEXTRACTIONS,
-    'Crown/Cap': MEDICALHISTORYFORM_WHATWASDONE_TOOTHEXTRACTIONS,
-    'Nitrous sedation': MEDICALHISTORYFORM_WHATWASDONE_NITROUSSEDATION,
-    Whitening: MEDICALHISTORYFORM_WHATWASDONE_WHITENING,
-    Other: MEDICALHISTORYFORM_ALLERGIES_OTHER,
+    Braces: 'medicalHistoryForm.whatWasDone.braces',
+    Filling: 'medicalHistoryForm.whatWasDone.filling',
+    'Root canal': 'medicalHistoryForm.whatWasDone.rootCanal',
+    'Wisdom teeth removal': 'medicalHistoryForm.whatWasDone.wisdomTeeth',
+    'Bridges/Dentures': 'medicalHistoryForm.whatWasDone.bridges',
+    Implants: 'medicalHistoryForm.whatWasDone.implants',
+    'Tooth extraction': 'medicalHistoryForm.whatWasDone.toothExtractions',
+    'Crown/Cap': 'medicalHistoryForm.whatWasDone.toothExtractions',
+    'Nitrous sedation': 'medicalHistoryForm.whatWasDone.nitrousSedation',
+    Whitening: 'medicalHistoryForm.whatWasDone.whitening',
+    Other: 'medicalHistoryForm.allergies.other',
 };
 
 const getQuestionName = item => `Last dental procedures (${item})`;
@@ -121,7 +107,7 @@ class LastDentalExamProcedure extends React.Component {
                 <ToolsIcon />
                 <Onboarding.StepTitleText
                     text={formatText(
-                        MEDICALHISTORYFORM_WHATWASDONE_WHATWASDONE
+                        'medicalHistoryForm.whatWasDone.whatWasDone'
                     )}
                 />
                 <Onboarding.StepBlurbText />
@@ -136,7 +122,7 @@ class LastDentalExamProcedure extends React.Component {
                     }}
                 >
                     {props.formikProps.dirty
-                        ? formatText(GENERAL_NEXT)
+                        ? formatText('general.next')
                         : 'Skip'}
                 </Onboarding.NextButton>
             </Flex>

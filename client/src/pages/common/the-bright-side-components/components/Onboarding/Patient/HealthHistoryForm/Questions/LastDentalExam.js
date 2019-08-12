@@ -4,14 +4,6 @@ import React from 'react';
 import Onboarding from '../../..';
 import ToothIcon from '../../../Assets/toothIcon';
 import {
-    MEDICALHISTORYFORM_LASTDENTALEXAM_LASTDENTALEXAM,
-    MEDICALHISTORYFORM_LASTDENTALEXAM_DENTALEXAM,
-    MEDICALHISTORYFORM_LASTDENTALEXAM_DENTALXRAY,
-    GENERAL_NEXT,
-    GENERAL_MONTH,
-    GENERAL_YEAR,
-} from '../../../../../../../../strings/messageStrings';
-import {
     getFormatTextFromProps,
     getFormatDateFromProps,
     getIntlMonths,
@@ -59,7 +51,7 @@ class LastDentalExam extends React.Component {
                 return (
                     <Box width="160px" height="46px" mr="10px">
                         <Onboarding.Select
-                            placeholder={formatText(GENERAL_MONTH)}
+                            placeholder={formatText('general.month')}
                             value={props.formikProps.values[key]}
                             onSelect={value =>
                                 props.formikProps.setFieldValue(key, value)
@@ -80,7 +72,7 @@ class LastDentalExam extends React.Component {
                 return (
                     <Box width="160px" height="46px">
                         <Onboarding.Select
-                            placeholder={formatText(GENERAL_YEAR)}
+                            placeholder={formatText('general.year')}
                             value={props.formikProps.values[key]}
                             onSelect={value =>
                                 props.formikProps.setFieldValue(key, value)
@@ -101,7 +93,7 @@ class LastDentalExam extends React.Component {
                 return (
                     <Box width="160px" height="46px" mr="10px">
                         <Onboarding.Select
-                            placeholder={formatText(GENERAL_MONTH)}
+                            placeholder={formatText('general.month')}
                             value={props.formikProps.values[key]}
                             onSelect={value =>
                                 props.formikProps.setFieldValue(key, value)
@@ -122,7 +114,7 @@ class LastDentalExam extends React.Component {
                 return (
                     <Box width="160px" height="46px">
                         <Onboarding.Select
-                            placeholder={formatText(GENERAL_YEAR)}
+                            placeholder={formatText('general.year')}
                             value={props.formikProps.values[key]}
                             onSelect={value =>
                                 props.formikProps.setFieldValue(key, value)
@@ -154,7 +146,7 @@ class LastDentalExam extends React.Component {
                 <ToothIcon />
                 <Onboarding.StepTitleText
                     text={formatText(
-                        MEDICALHISTORYFORM_LASTDENTALEXAM_LASTDENTALEXAM
+                        'medicalHistoryForm.lastDentalExam.lastDentalExam'
                     )}
                 />
                 <Onboarding.StepBlurbText />
@@ -162,7 +154,7 @@ class LastDentalExam extends React.Component {
                 <Box>
                     <Onboarding.FormItemLabelText
                         text={formatText(
-                            MEDICALHISTORYFORM_LASTDENTALEXAM_DENTALEXAM
+                            'medicalHistoryForm.lastDentalExam.dentalExam'
                         )}
                     />
                     <Flex mb="25px">
@@ -182,7 +174,7 @@ class LastDentalExam extends React.Component {
 
                     <Onboarding.FormItemLabelText
                         text={formatText(
-                            MEDICALHISTORYFORM_LASTDENTALEXAM_DENTALXRAY
+                            'medicalHistoryForm.lastDentalExam.dentalXray'
                         )}
                     />
                     <Flex mb="25px">
@@ -205,7 +197,7 @@ class LastDentalExam extends React.Component {
                     onClick={() => props.formikProps.submitForm()}
                 >
                     {props.formikProps.dirty
-                        ? formatText(GENERAL_NEXT)
+                        ? formatText('general.next')
                         : 'Skip'}
                 </Onboarding.NextButton>
             </Flex>

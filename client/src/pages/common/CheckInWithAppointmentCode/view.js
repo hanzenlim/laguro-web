@@ -4,7 +4,6 @@ import { injectIntl } from 'react-intl';
 import { Onboarding } from '../the-bright-side-components';
 import InfoIcon from '../../../components/Icon/infoIcon';
 import PinInput from '../PinInput';
-import { REGISTRATION_STEPTWO_SENDING } from '../../../strings/messageStrings';
 import { getFormatTextFromProps } from '../../../util/intlUtils';
 
 const CheckInWithAppointmentCodeView = props => {
@@ -35,7 +34,7 @@ const CheckInWithAppointmentCodeView = props => {
                     </Flex>
                     {isSubmitting && (
                         <Text color="#3481f8" fontSize="12px">
-                            {formatText(REGISTRATION_STEPTWO_SENDING)}
+                            {formatText('registration.stepTwo.sending')}
                         </Text>
                     )}
                     <Button width="100%" onClick={redirect} type="ghost">

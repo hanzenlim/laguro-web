@@ -13,21 +13,13 @@ import {
 } from './getKioskPageWizardSteps';
 import { KIOSK_URL } from '../../util/urls';
 import { redirect } from '../../history';
-import {
-    GENERALINFORMATION_INSURANCE_INSURANCE,
-    BOOKAPPOINTMENT_TITLE,
-    MEDICALHISTORYFORM_TITLE,
-    REGISTRATION_TITLE,
-    GENERALINFORMATION_TITLE,
-} from '../../strings/messageStrings';
-
 export const getKioskPageProgressSteps = formatText =>
     [
-        REGISTRATION_TITLE,
-        GENERALINFORMATION_TITLE,
-        GENERALINFORMATION_INSURANCE_INSURANCE,
-        BOOKAPPOINTMENT_TITLE,
-        MEDICALHISTORYFORM_TITLE,
+        'registration.title',
+        'generalInformation.title',
+        'generalInformation.insurance.insurance',
+        'bookAppointment.title',
+        'medicalHistoryForm.title',
     ].map(t => formatText(t).toUpperCase());
 
 const addActionToWizardStep = ({ action, step }) => {

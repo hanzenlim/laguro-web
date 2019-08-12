@@ -3,15 +3,6 @@ import React from 'react';
 import _range from 'lodash/range';
 import Onboarding from '../../../../Onboarding';
 import DentistIcon from '../../../Assets/dentistIcon';
-import {
-    MEDICALHISTORYFORM_TERMINALILLNESS_NAMERECURRENTINFECTIONS,
-    GENERAL_PLEASESPECIFY,
-    MEDICALHISTORYFORM_TERMINALILLNESS_HIVORAIDS,
-    MEDICALHISTORYFORM_TERMINALILLNESS_HEPATITIS,
-    MEDICALHISTORYFORM_TERMINALILLNESS_SEXUALLYTRANSMITTEDDISEASES,
-    MEDICALHISTORYFORM_TERMINALILLNESS_TERMINALILLNESS,
-    GENERAL_PLEASE_CHOOSE_CONDITIONS,
-} from '../../../../../../../../strings/messageStrings';
 import { getFormatTextFromProps } from '../../../../../../../../util/intlUtils';
 import { injectIntl } from 'react-intl';
 import { renderQuestionComponent } from '../../../../../../../../util/questionUtils';
@@ -65,7 +56,7 @@ class TerminalIllness extends React.Component {
                     <Onboarding.Checkbox
                         key={key}
                         field={formatText(
-                            MEDICALHISTORYFORM_TERMINALILLNESS_NAMERECURRENTINFECTIONS
+                            'medicalHistoryForm.terminalIllness.nameRecurrentInfections'
                         )}
                         value={props.formikProps.values[key]}
                         onClick={() =>
@@ -86,7 +77,7 @@ class TerminalIllness extends React.Component {
 
                 return (
                     <TextArea
-                        placeholder={formatText(GENERAL_PLEASESPECIFY)}
+                        placeholder={formatText('general.pleaseSpecify')}
                         value={props.formikProps.values[key]}
                         onChange={value =>
                             props.formikProps.setFieldValue(
@@ -104,7 +95,7 @@ class TerminalIllness extends React.Component {
                     <Onboarding.Checkbox
                         key={key}
                         field={formatText(
-                            MEDICALHISTORYFORM_TERMINALILLNESS_HIVORAIDS
+                            'medicalHistoryForm.terminalIllness.hivOrAids'
                         )}
                         value={props.formikProps.values[key]}
                         onClick={() =>
@@ -122,7 +113,7 @@ class TerminalIllness extends React.Component {
                     <Onboarding.Checkbox
                         key={key}
                         field={formatText(
-                            MEDICALHISTORYFORM_TERMINALILLNESS_HEPATITIS
+                            'medicalHistoryForm.terminalIllness.hepatitis'
                         )}
                         value={props.formikProps.values[key]}
                         onClick={() =>
@@ -141,7 +132,7 @@ class TerminalIllness extends React.Component {
                     <Onboarding.Checkbox
                         key={key}
                         field={formatText(
-                            MEDICALHISTORYFORM_TERMINALILLNESS_SEXUALLYTRANSMITTEDDISEASES
+                            'medicalHistoryForm.terminalIllness.sexuallyTransmittedDiseases'
                         )}
                         value={props.formikProps.values[key]}
                         onClick={() =>
@@ -162,7 +153,7 @@ class TerminalIllness extends React.Component {
 
                 return (
                     <TextArea
-                        placeholder={formatText(GENERAL_PLEASESPECIFY)}
+                        placeholder={formatText('general.pleaseSpecify')}
                         value={props.formikProps.values[key]}
                         onChange={value =>
                             props.formikProps.setFieldValue(
@@ -191,11 +182,13 @@ class TerminalIllness extends React.Component {
                 <DentistIcon />
                 <Onboarding.StepTitleText
                     text={formatText(
-                        MEDICALHISTORYFORM_TERMINALILLNESS_TERMINALILLNESS
+                        'medicalHistoryForm.terminalIllness.terminalIllness'
                     )}
                 />
                 <Onboarding.StepBlurbText
-                    text={formatText(GENERAL_PLEASE_CHOOSE_CONDITIONS)}
+                    text={formatText(
+                        'general.pleaseChooseTheConditionsThatApplyToYou'
+                    )}
                 />
 
                 <Box>

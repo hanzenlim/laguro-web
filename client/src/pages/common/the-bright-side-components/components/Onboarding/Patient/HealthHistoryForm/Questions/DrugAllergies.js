@@ -2,26 +2,6 @@ import { Flex, Grid } from '@laguro/basic-components';
 import React from 'react';
 import Onboarding from '../../../../Onboarding';
 import DentistIcon from '../../../Assets/dentistIcon';
-import {
-    MEDICALHISTORYFORM_ALLERGIES_LOCALANESTHETICS,
-    MEDICALHISTORYFORM_ALLERGIES_BARBITURATES,
-    MEDICALHISTORYFORM_ALLERGIES_SULFADRUGS,
-    MEDICALHISTORYFORM_ALLERGIES_LATEX,
-    MEDICALHISTORYFORM_ALLERGIES_ANIMALS,
-    MEDICALHISTORYFORM_ALLERGIES_ASPIRIN,
-    MEDICALHISTORYFORM_ALLERGIES_SEDATIVES,
-    MEDICALHISTORYFORM_ALLERGIES_CODEINE,
-    MEDICALHISTORYFORM_ALLERGIES_IODINE,
-    MEDICALHISTORYFORM_ALLERGIES_FOOD,
-    MEDICALHISTORYFORM_ALLERGIES_WHITENING,
-    MEDICALHISTORYFORM_ALLERGIES_PENICILLIN,
-    MEDICALHISTORYFORM_ALLERGIES_SLEEPINGPILLS,
-    MEDICALHISTORYFORM_ALLERGIES_METALS,
-    MEDICALHISTORYFORM_ALLERGIES_HAYFEVER,
-    GENERAL_OTHER,
-    MEDICALHISTORYFORM_ALLERGIES_ALLERGIES,
-    MEDICALHISTORYFORM_ALLERGIES_ALLERGICREACTION,
-} from '../../../../../../../../strings/messageStrings';
 import { renderQuestionComponent } from '../../../../../../../../util/questionUtils';
 import { getFormatTextFromProps } from '../../../../../../../../util/intlUtils';
 import { injectIntl } from 'react-intl';
@@ -46,22 +26,23 @@ const list = [
 ];
 
 const texts = {
-    'Local anesthetics': MEDICALHISTORYFORM_ALLERGIES_LOCALANESTHETICS,
-    Barbiturates: MEDICALHISTORYFORM_ALLERGIES_BARBITURATES,
-    'Sulfa drugs': MEDICALHISTORYFORM_ALLERGIES_SULFADRUGS,
-    Latex: MEDICALHISTORYFORM_ALLERGIES_LATEX,
-    Animals: MEDICALHISTORYFORM_ALLERGIES_ANIMALS,
-    Aspirin: MEDICALHISTORYFORM_ALLERGIES_ASPIRIN,
-    Sedatives: MEDICALHISTORYFORM_ALLERGIES_SEDATIVES,
-    'Codeine or other narcotics': MEDICALHISTORYFORM_ALLERGIES_CODEINE,
-    Iodine: MEDICALHISTORYFORM_ALLERGIES_IODINE,
-    Food: MEDICALHISTORYFORM_ALLERGIES_FOOD,
-    Whitening: MEDICALHISTORYFORM_ALLERGIES_WHITENING,
-    'Penicillin or other antibiotics': MEDICALHISTORYFORM_ALLERGIES_PENICILLIN,
-    'Sleeping pills': MEDICALHISTORYFORM_ALLERGIES_SLEEPINGPILLS,
-    Metals: MEDICALHISTORYFORM_ALLERGIES_METALS,
-    'Hay fever / seasonal': MEDICALHISTORYFORM_ALLERGIES_HAYFEVER,
-    Other: GENERAL_OTHER,
+    'Local anesthetics': 'medicalHistoryForm.allergies.localAnesthetics',
+    Barbiturates: 'medicalHistoryForm.allergies.barbiturates',
+    'Sulfa drugs': 'medicalHistoryForm.allergies.sulfaDrugs',
+    Latex: 'medicalHistoryForm.allergies.latex',
+    Animals: 'medicalHistoryForm.allergies.animals',
+    Aspirin: 'medicalHistoryForm.allergies.aspirin',
+    Sedatives: 'medicalHistoryForm.allergies.sedatives',
+    'Codeine or other narcotics': 'medicalHistoryForm.allergies.codeine',
+    Iodine: 'medicalHistoryForm.allergies.iodine',
+    Food: 'medicalHistoryForm.allergies.food',
+    Whitening: 'medicalHistoryForm.allergies.whitening',
+    'Penicillin or other antibiotics':
+        'medicalHistoryForm.allergies.penicillin',
+    'Sleeping pills': 'medicalHistoryForm.allergies.sleepingPills',
+    Metals: 'medicalHistoryForm.allergies.metals',
+    'Hay fever / seasonal': 'medicalHistoryForm.allergies.hayFever',
+    Other: 'general.other',
 };
 
 const getQuestionName = item => `Allergies (${item})`;
@@ -128,11 +109,11 @@ class DrugAllergies extends React.Component {
             >
                 <DentistIcon />
                 <Onboarding.StepTitleText
-                    text={formatText(MEDICALHISTORYFORM_ALLERGIES_ALLERGIES)}
+                    text={formatText('medicalHistoryForm.allergies.allergies')}
                 />
                 <Onboarding.StepBlurbText
                     text={formatText(
-                        MEDICALHISTORYFORM_ALLERGIES_ALLERGICREACTION
+                        'medicalHistoryForm.allergies.allergicReaction'
                     )}
                 />
                 <Grid gridTemplateColumns={['1fr', '1fr 1fr', '1fr 1fr 1fr']}>

@@ -3,17 +3,6 @@ import React from 'react';
 import Onboarding from '../../../../Onboarding';
 import DentistIcon from '../../../Assets/dentistIcon';
 import _range from 'lodash/range';
-import {
-    MEDICALHISTORYFORM_GENERALDENTALINFORMATION2_HAVEEARACHES,
-    MEDICALHISTORYFORM_GENERALDENTALINFORMATION2_HAVEANYCLICKING,
-    MEDICALHISTORYFORM_GENERALDENTALINFORMATION2_GRINDTEETH,
-    MEDICALHISTORYFORM_GENERALDENTALINFORMATION2_HAVESORES,
-    MEDICALHISTORYFORM_GENERALDENTALINFORMATION2_WEARDENTURES,
-    MEDICALHISTORYFORM_GENERALDENTALINFORMATION2_ACTIVERECREATIONALACTIVITIES,
-    MEDICALHISTORYFORM_GENERALDENTALINFORMATION2_SERIOUSINJURY,
-    MEDICALHISTORYFORM_GENERALDENTALINFORMATION2_GENERALDENTALINFORMATION,
-    GENERAL_PLEASE_CHOOSE,
-} from '../../../../../../../../strings/messageStrings';
 import { injectIntl } from 'react-intl';
 import { renderQuestionComponent } from '../../../../../../../../util/questionUtils';
 import { getFormatTextFromProps } from '../../../../../../../../util/intlUtils';
@@ -71,7 +60,7 @@ class GeneralDentalInfo2 extends React.Component {
                     <Onboarding.Checkbox
                         key={key}
                         field={formatText(
-                            MEDICALHISTORYFORM_GENERALDENTALINFORMATION2_HAVEEARACHES
+                            'medicalHistoryForm.generalDentalInformation2.haveEaraches'
                         )}
                         width="100%"
                         value={props.formikProps.values[key]}
@@ -90,7 +79,7 @@ class GeneralDentalInfo2 extends React.Component {
                     <Onboarding.Checkbox
                         key={key}
                         field={formatText(
-                            MEDICALHISTORYFORM_GENERALDENTALINFORMATION2_HAVEANYCLICKING
+                            'medicalHistoryForm.generalDentalInformation2.haveAnyClicking'
                         )}
                         width="100%"
                         value={props.formikProps.values[key]}
@@ -109,7 +98,7 @@ class GeneralDentalInfo2 extends React.Component {
                     <Onboarding.Checkbox
                         key={key}
                         field={formatText(
-                            MEDICALHISTORYFORM_GENERALDENTALINFORMATION2_GRINDTEETH
+                            'medicalHistoryForm.generalDentalInformation2.grindTeeth'
                         )}
                         width="100%"
                         value={props.formikProps.values[key]}
@@ -128,7 +117,7 @@ class GeneralDentalInfo2 extends React.Component {
                     <Onboarding.Checkbox
                         key={key}
                         field={formatText(
-                            MEDICALHISTORYFORM_GENERALDENTALINFORMATION2_HAVESORES
+                            'medicalHistoryForm.generalDentalInformation2.haveSores'
                         )}
                         width="100%"
                         value={props.formikProps.values[key]}
@@ -147,7 +136,7 @@ class GeneralDentalInfo2 extends React.Component {
                     <Onboarding.Checkbox
                         key={key}
                         field={formatText(
-                            MEDICALHISTORYFORM_GENERALDENTALINFORMATION2_WEARDENTURES
+                            'medicalHistoryForm.generalDentalInformation2.wearDentures'
                         )}
                         width="100%"
                         value={props.formikProps.values[key]}
@@ -167,7 +156,7 @@ class GeneralDentalInfo2 extends React.Component {
                     <Onboarding.Checkbox
                         key={key}
                         field={formatText(
-                            MEDICALHISTORYFORM_GENERALDENTALINFORMATION2_ACTIVERECREATIONALACTIVITIES
+                            'medicalHistoryForm.generalDentalInformation2.activeRecreationalActivities'
                         )}
                         width="100%"
                         value={props.formikProps.values[key]}
@@ -186,7 +175,7 @@ class GeneralDentalInfo2 extends React.Component {
                     <Onboarding.Checkbox
                         key={key}
                         field={formatText(
-                            MEDICALHISTORYFORM_GENERALDENTALINFORMATION2_SERIOUSINJURY
+                            'medicalHistoryForm.generalDentalInformation2.seriousInjury'
                         )}
                         width="100%"
                         value={props.formikProps.values[key]}
@@ -215,11 +204,11 @@ class GeneralDentalInfo2 extends React.Component {
                 <DentistIcon />
                 <Onboarding.StepTitleText
                     text={formatText(
-                        MEDICALHISTORYFORM_GENERALDENTALINFORMATION2_GENERALDENTALINFORMATION
+                        'medicalHistoryForm.generalDentalInformation2.generalDentalInformation'
                     )}
                 />
                 <Onboarding.StepBlurbText
-                    text={formatText(GENERAL_PLEASE_CHOOSE)}
+                    text={formatText('general.pleaseChooseFollowingQuestions')}
                 />
                 <Flex
                     maxWidth="700px"

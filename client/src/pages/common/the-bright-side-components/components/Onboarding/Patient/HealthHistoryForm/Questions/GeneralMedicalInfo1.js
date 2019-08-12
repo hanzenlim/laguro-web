@@ -6,15 +6,6 @@ import { getFormatTextFromProps } from '../../../../../../../../util/intlUtils';
 import { renderQuestionComponent } from '../../../../../../../../util/questionUtils';
 import { injectIntl } from 'react-intl';
 import _range from 'lodash/range';
-import {
-    MEDICALHISTORYFORM_GENERALMEDICALINFORMATION3_GENERALMEDICALINFORMATION,
-    MEDICALHISTORYFORM_GENERALMEDICALINFORMATION3_PLEASECHOOSE,
-    MEDICALHISTORYFORM_GENERALMEDICALINFORMATION3_ANYOFFOLLOWING,
-    MEDICALHISTORYFORM_GENERALMEDICALINFORMATION3_ACTIVETUBERCULOSIS,
-    MEDICALHISTORYFORM_GENERALMEDICALINFORMATION3_PERSISTENTCOUGH,
-    MEDICALHISTORYFORM_GENERALMEDICALINFORMATION3_PERSISTENTCOUGHTHATPRODUCESBLOOD,
-    MEDICALHISTORYFORM_GENERALMEDICALINFORMATION3_BEENEXPOSEDTOANYONEWITHTUBERCULOSIS,
-} from '../../../../../../../../strings/messageStrings';
 
 const ACTIVE_TUBERCULOSIS = 'Active Tuberculosis';
 const PERSISTENT_COUGH_THREE_WEEKS =
@@ -53,7 +44,7 @@ class GeneralMedicalInfo1 extends React.Component {
                     <Onboarding.Checkbox
                         key={key}
                         field={formatText(
-                            MEDICALHISTORYFORM_GENERALMEDICALINFORMATION3_ACTIVETUBERCULOSIS
+                            'medicalHistoryForm.generalMedicalInformation3.activeTuberculosis'
                         )}
                         width="100%"
                         value={props.formikProps.values[key]}
@@ -72,7 +63,7 @@ class GeneralMedicalInfo1 extends React.Component {
                     <Onboarding.Checkbox
                         key={key}
                         field={formatText(
-                            MEDICALHISTORYFORM_GENERALMEDICALINFORMATION3_PERSISTENTCOUGH
+                            'medicalHistoryForm.generalMedicalInformation3.persistentCough'
                         )}
                         width="100%"
                         value={props.formikProps.values[key]}
@@ -91,7 +82,7 @@ class GeneralMedicalInfo1 extends React.Component {
                     <Onboarding.Checkbox
                         key={key}
                         field={formatText(
-                            MEDICALHISTORYFORM_GENERALMEDICALINFORMATION3_PERSISTENTCOUGHTHATPRODUCESBLOOD
+                            'medicalHistoryForm.generalMedicalInformation3.persistentCoughThatProducesBlood'
                         )}
                         width="100%"
                         value={props.formikProps.values[key]}
@@ -110,7 +101,7 @@ class GeneralMedicalInfo1 extends React.Component {
                     <Onboarding.Checkbox
                         key={key}
                         field={formatText(
-                            MEDICALHISTORYFORM_GENERALMEDICALINFORMATION3_BEENEXPOSEDTOANYONEWITHTUBERCULOSIS
+                            'medicalHistoryForm.generalMedicalInformation3.beenExposedToAnyoneWithTuberculosis'
                         )}
                         width="100%"
                         value={props.formikProps.values[key]}
@@ -139,12 +130,12 @@ class GeneralMedicalInfo1 extends React.Component {
                 <DentistIcon />
                 <Onboarding.StepTitleText
                     text={formatText(
-                        MEDICALHISTORYFORM_GENERALMEDICALINFORMATION3_GENERALMEDICALINFORMATION
+                        'medicalHistoryForm.generalMedicalInformation3.generalMedicalInformation'
                     )}
                 />
                 <Onboarding.StepBlurbText
                     text={formatText(
-                        MEDICALHISTORYFORM_GENERALMEDICALINFORMATION3_PLEASECHOOSE
+                        'medicalHistoryForm.generalMedicalInformation3.pleaseChoose'
                     )}
                 />
                 <Flex
@@ -154,7 +145,7 @@ class GeneralMedicalInfo1 extends React.Component {
                 >
                     <Onboarding.FormItemLabelText
                         text={formatText(
-                            MEDICALHISTORYFORM_GENERALMEDICALINFORMATION3_ANYOFFOLLOWING
+                            'medicalHistoryForm.generalMedicalInformation3.anyOfFollowing'
                         )}
                     />
                     {_range(4).map(i =>

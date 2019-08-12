@@ -4,16 +4,6 @@ import React from 'react';
 import Onboarding from '../../../../Onboarding';
 import DentistIcon from '../../../Assets/dentistIcon';
 import {
-    MEDICALHISTORYFORM_GENERALMEDICALINFORMATION4_HADANORTHOPEDICJOINT,
-    GENERAL_ANY_COMPLICATIONS,
-    MEDICALHISTORYFORM_GENERALMEDICALINFORMATION4_TAKINGMEDICATION,
-    MEDICALHISTORYFORM_GENERALMEDICALINFORMATION4_INTRAVENOUSBISPHOSPHONATES,
-    MEDICALHISTORYFORM_GENERALMEDICALINFORMATION3_GENERALMEDICALINFORMATION,
-    MEDICALHISTORYFORM_GENERALMEDICALINFORMATION4_PLEASECHOOSEFOLLOWINGQUESTIONS,
-    GENERAL_DONE_WHEn,
-    GENERAL_TREATMENT_START,
-} from '../../../../../../../../strings/messageStrings';
-import {
     getIntlMonths,
     getIntlYear,
     getIntlMonth,
@@ -90,7 +80,7 @@ class GeneralMedicalInfo2 extends React.Component {
                     <Onboarding.Checkbox
                         key={key}
                         field={formatText(
-                            MEDICALHISTORYFORM_GENERALMEDICALINFORMATION4_HADANORTHOPEDICJOINT
+                            'medicalHistoryForm.generalMedicalInformation4.hadAnOrthopedicJoint'
                         )}
                         width="100%"
                         value={props.formikProps.values[key]}
@@ -160,7 +150,7 @@ class GeneralMedicalInfo2 extends React.Component {
                 const key = ORTHOPEDIC_JOINT_REPLACEMENT_EXPLANATION;
                 return (
                     <TextArea
-                        placeholder={formatText(GENERAL_ANY_COMPLICATIONS)}
+                        placeholder={formatText('general.anyComplications')}
                         value={props.formikProps.values[key]}
                         onChange={value =>
                             props.formikProps.setFieldValue(
@@ -178,7 +168,7 @@ class GeneralMedicalInfo2 extends React.Component {
                     <Onboarding.Checkbox
                         key={key}
                         field={formatText(
-                            MEDICALHISTORYFORM_GENERALMEDICALINFORMATION4_TAKINGMEDICATION
+                            'medicalHistoryForm.generalMedicalInformation4.takingMedication'
                         )}
                         width="100%"
                         value={props.formikProps.values[key]}
@@ -197,7 +187,7 @@ class GeneralMedicalInfo2 extends React.Component {
                     <Onboarding.Checkbox
                         key={key}
                         field={formatText(
-                            MEDICALHISTORYFORM_GENERALMEDICALINFORMATION4_INTRAVENOUSBISPHOSPHONATES
+                            'medicalHistoryForm.generalMedicalInformation4.intravenousBisphosphonates'
                         )}
                         width="100%"
                         value={props.formikProps.values[key]}
@@ -276,12 +266,12 @@ class GeneralMedicalInfo2 extends React.Component {
                 <DentistIcon />
                 <Onboarding.StepTitleText
                     text={formatText(
-                        MEDICALHISTORYFORM_GENERALMEDICALINFORMATION3_GENERALMEDICALINFORMATION
+                        'medicalHistoryForm.generalMedicalInformation3.generalMedicalInformation'
                     )}
                 />
                 <Onboarding.StepBlurbText
                     text={formatText(
-                        MEDICALHISTORYFORM_GENERALMEDICALINFORMATION4_PLEASECHOOSEFOLLOWINGQUESTIONS
+                        'medicalHistoryForm.generalMedicalInformation4.pleaseChooseFollowingQuestions'
                     )}
                 />
 
@@ -302,7 +292,7 @@ class GeneralMedicalInfo2 extends React.Component {
                     ] ? null : (
                         <Box mt="6px">
                             <Onboarding.FormItemLabelText
-                                text={formatText(GENERAL_DONE_WHEn)}
+                                text={formatText('general.doneWhen')}
                             />
                             <Flex mb="6px">
                                 {renderQuestionComponent(
@@ -344,7 +334,7 @@ class GeneralMedicalInfo2 extends React.Component {
                     ] ? null : (
                         <Box mt="6px">
                             <Onboarding.FormItemLabelText
-                                text={formatText(GENERAL_TREATMENT_START)}
+                                text={formatText('general.treatmentStart')}
                             />
                             <Flex>
                                 {renderQuestionComponent(

@@ -2,12 +2,6 @@ import { Box, Flex, Text } from '@laguro/basic-components';
 import * as React from 'react';
 import Onboarding, { AppointmentCard } from '../../Onboarding';
 import ConfirmedIcon from '../../Onboarding/Assets/confirmedIcon';
-import {
-    BOOKAPPOINTMENT_APPOINTMENTCONFIRMATION_APPOINTMENTCONFIRMATION,
-    BOOKAPPOINTMENT_APPOINTMENTCONFIRMATION_NOTIFIEDDENTIST,
-    GENERAL_NEXT,
-    BOOKAPPOINTMENT_APPOINTMENTCONFIRMATION_YOURAPPOINTMENT,
-} from '../../../../../../strings/messageStrings';
 import { injectIntl } from 'react-intl';
 import { getFormatTextFromProps } from '../../../../../../util/intlUtils';
 
@@ -30,12 +24,12 @@ class KioskBookingConfirmationClass extends React.Component {
                 </Flex>
                 <Onboarding.StepTitleText
                     text={formatText(
-                        BOOKAPPOINTMENT_APPOINTMENTCONFIRMATION_APPOINTMENTCONFIRMATION
+                        'bookAppointment.appointmentConfirmation.appointmentConfirmation'
                     )}
                 />
                 <Onboarding.StepBlurbText
                     text={formatText(
-                        BOOKAPPOINTMENT_APPOINTMENTCONFIRMATION_YOURAPPOINTMENT,
+                        'bookAppointment.appointmentConfirmation.yourAppointment',
                         { dentistName: doctorName }
                     )}
                 />
@@ -52,7 +46,7 @@ class KioskBookingConfirmationClass extends React.Component {
                 <Flex textAlign="center" flexDirection="column" mt="40px">
                     <Text>
                         {formatText(
-                            BOOKAPPOINTMENT_APPOINTMENTCONFIRMATION_NOTIFIEDDENTIST
+                            'bookAppointment.appointmentConfirmation.notifiedDentist'
                         )}
                     </Text>
                 </Flex>
@@ -60,7 +54,7 @@ class KioskBookingConfirmationClass extends React.Component {
                 <Onboarding.StartQuestionaireButton
                     onNext={() => this.props.formikProps.submitForm()}
                 >
-                    {formatText(GENERAL_NEXT)}
+                    {formatText('general.next')}
                 </Onboarding.StartQuestionaireButton>
             </Box>
         );

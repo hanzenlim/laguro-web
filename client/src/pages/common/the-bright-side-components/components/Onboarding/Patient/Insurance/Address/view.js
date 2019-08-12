@@ -7,18 +7,6 @@ import _isEmpty from 'lodash/isEmpty';
 import Onboarding from '../../..';
 import InsuranceUmbrella from '../../../Assets/insuranceUmbrella';
 import { getFormatTextFromProps } from '../../../../../../../../util/intlUtils';
-import {
-    GENERAL_NEXT,
-    GENERALINFORMATION_ADDRESS_ADDRESS,
-    GENERALINFORMATION_ADDRESS_ADDRESS1,
-    GENERALINFORMATION_ADDRESS_ADDRESS2,
-    GENERALINFORMATION_ADDRESS_STREETNUMBER,
-    GENERALINFORMATION_ADDRESS_APARTMENTS,
-    GENERALINFORMATION_ADDRESS_CITY,
-    GENERALINFORMATION_ADDRESS_CITYPLACEHOLDER,
-    GENERALINFORMATION_ADDRESS_STATE,
-    GENERALINFORMATION_ADDRESS_POSTALCODE,
-} from '../../../../../../../../strings/messageStrings';
 
 const states = [
     'AL',
@@ -125,44 +113,44 @@ class AddressView extends React.PureComponent {
                     <InsuranceUmbrella />
                 </Flex>
                 <Onboarding.StepTitleText
-                    text={formatText(GENERALINFORMATION_ADDRESS_ADDRESS)}
+                    text={formatText('generalInformation.address.address')}
                 />
                 <Onboarding.StepBlurbText />
 
                 <Onboarding.FormItemLabelText
-                    text={formatText(GENERALINFORMATION_ADDRESS_ADDRESS1)}
+                    text={formatText('generalInformation.address.address1')}
                 />
                 <Field
                     name="patientAddress1"
                     placeholder={formatText(
-                        GENERALINFORMATION_ADDRESS_STREETNUMBER
+                        'generalInformation.address.streetNumber'
                     )}
                     component={Onboarding.InputField}
                     setRef={node => (this.patientAddressOne = node)}
                 />
                 <Onboarding.FormItemLabelText
-                    text={formatText(GENERALINFORMATION_ADDRESS_ADDRESS2)}
+                    text={formatText('generalInformation.address.address2')}
                 />
                 <Field
                     name="patientAddress2"
                     placeholder={formatText(
-                        GENERALINFORMATION_ADDRESS_APARTMENTS
+                        'generalInformation.address.apartments'
                     )}
                     component={Onboarding.InputField}
                 />
                 <Onboarding.FormItemLabelText
-                    text={formatText(GENERALINFORMATION_ADDRESS_CITY)}
+                    text={formatText('generalInformation.address.city')}
                 />
                 <Field
                     name="patientCity"
                     placeholder={formatText(
-                        GENERALINFORMATION_ADDRESS_CITYPLACEHOLDER
+                        'generalInformation.address.cityPlaceholder'
                     )}
                     component={Onboarding.InputField}
                     setRef={node => (this.city = node)}
                 />
                 <Onboarding.FormItemLabelText
-                    text={formatText(GENERALINFORMATION_ADDRESS_STATE)}
+                    text={formatText('generalInformation.address.state')}
                 />
                 <Field
                     name="patientState"
@@ -180,7 +168,7 @@ class AddressView extends React.PureComponent {
                 />
                 <Box mb="15px" />
                 <Onboarding.FormItemLabelText
-                    text={formatText(GENERALINFORMATION_ADDRESS_POSTALCODE)}
+                    text={formatText('generalInformation.address.postalCode')}
                 />
                 <Field
                     name="patientZIP"
@@ -190,7 +178,7 @@ class AddressView extends React.PureComponent {
                 <Onboarding.NextButton
                     onClick={() => this.props.formikProps.submitForm()}
                 >
-                    {formatText(GENERAL_NEXT)}
+                    {formatText('general.next')}
                 </Onboarding.NextButton>
             </Box>
         );

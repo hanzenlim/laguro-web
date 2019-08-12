@@ -1,24 +1,5 @@
 import _get from 'lodash/get';
 import _upperFirst from 'lodash/upperFirst';
-import {
-    GENERALINFORMATION_LANGUAGE_ENGLISH,
-    GENERALINFORMATION_LANGUAGE_SPANISH,
-    GENERALINFORMATION_LANGUAGE_CHINESE,
-    GENERALINFORMATION_LANGUAGE_TAGALOG,
-    GENERALINFORMATION_LANGUAGE_VIETNAMESE,
-    GENERALINFORMATION_LANGUAGE_KOREAN,
-    GENERALINFORMATION_LANGUAGE_ARMENIAN,
-    GENERALINFORMATION_LANGUAGE_JAPANESE,
-    GENERALINFORMATION_LANGUAGE_GERMAN,
-    GENERALINFORMATION_LANGUAGE_PERSIAN,
-    GENERALINFORMATION_LANGUAGE_PORTUGUESE,
-    GENERALINFORMATION_LANGUAGE_RUSSIAN,
-    GENERAL_MONTH,
-    GENERAL_DATE,
-    GENERAL_YEAR,
-    GENERAL_YES,
-    GENERAL_NO,
-} from '../strings/messageStrings';
 import { reduceArrayOfObjects } from './arrayUtils';
 
 export const getFormatTextFromProps = props => (textId, values = {}) =>
@@ -30,51 +11,51 @@ export const getFormatDateFromProps = props => (date, options = {}) =>
 export const getIntlLanguages = formatText => [
     {
         value: 'ENGLISH',
-        label: formatText(GENERALINFORMATION_LANGUAGE_ENGLISH),
+        label: formatText('generalInformation.language.english'),
     },
     {
         value: 'SPANISH',
-        label: formatText(GENERALINFORMATION_LANGUAGE_SPANISH),
+        label: formatText('generalInformation.language.spanish'),
     },
     {
         value: 'CHINESE',
-        label: formatText(GENERALINFORMATION_LANGUAGE_CHINESE),
+        label: formatText('generalInformation.language.chinese'),
     },
     {
         value: 'TAGALOG',
-        label: formatText(GENERALINFORMATION_LANGUAGE_TAGALOG),
+        label: formatText('generalInformation.language.tagalog'),
     },
     {
         value: 'VIETNAMESE',
-        label: formatText(GENERALINFORMATION_LANGUAGE_VIETNAMESE),
+        label: formatText('generalInformation.language.vietnamese'),
     },
     {
         value: 'KOREAN',
-        label: formatText(GENERALINFORMATION_LANGUAGE_KOREAN),
+        label: formatText('generalInformation.language.korean'),
     },
     {
         value: 'ARMENIAN',
-        label: formatText(GENERALINFORMATION_LANGUAGE_ARMENIAN),
+        label: formatText('generalInformation.language.armenian'),
     },
     {
         value: 'JAPANESE',
-        label: formatText(GENERALINFORMATION_LANGUAGE_JAPANESE),
+        label: formatText('generalInformation.language.japanese'),
     },
     {
         value: 'GERMAN',
-        label: formatText(GENERALINFORMATION_LANGUAGE_GERMAN),
+        label: formatText('generalInformation.language.german'),
     },
     {
         value: 'PERSIAN',
-        label: formatText(GENERALINFORMATION_LANGUAGE_PERSIAN),
+        label: formatText('generalInformation.language.persian'),
     },
     {
         value: 'PORTUGUESE',
-        label: formatText(GENERALINFORMATION_LANGUAGE_PORTUGUESE),
+        label: formatText('generalInformation.language.portuguese'),
     },
     {
         value: 'RUSSIAN',
-        label: formatText(GENERALINFORMATION_LANGUAGE_RUSSIAN),
+        label: formatText('generalInformation.language.russian'),
     },
 ];
 
@@ -96,9 +77,9 @@ export const getIntlMonths = formatDate =>
         );
     });
 
-export const getIntlMonth = formatText => formatText(GENERAL_MONTH);
-export const getIntlDate = formatText => formatText(GENERAL_DATE);
-export const getIntlYear = formatText => formatText(GENERAL_YEAR);
+export const getIntlMonth = formatText => formatText('general.month');
+export const getIntlDate = formatText => formatText('general.date');
+export const getIntlYear = formatText => formatText('general.year');
 
-export const getIntlYes = formatText => formatText(GENERAL_YES);
-export const getIntlNo = formatText => formatText(GENERAL_NO);
+export const getIntlYes = formatText => formatText('general.yes');
+export const getIntlNo = formatText => formatText('general.no');

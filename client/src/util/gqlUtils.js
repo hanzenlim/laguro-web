@@ -2,7 +2,6 @@ import { message } from 'antd';
 import _isEmpty from 'lodash/isEmpty';
 import _get from 'lodash/get';
 import { ACCOUNT_ALREADY_EXISTS_ERROR } from '../strings/errorStrings';
-import { GENERAL_ACCOUNTALREADY_EXISTS } from '../strings/messageStrings';
 
 // returns true if there is no error in execution
 // TODO: simplify function by removing reporting non-general errors
@@ -56,7 +55,7 @@ export const execute = async ({
 
         if (!_isEmpty(gqlError) && !reportGqlErrorOnly) {
             if (gqlError === ACCOUNT_ALREADY_EXISTS_ERROR) {
-                message.error(formatText(GENERAL_ACCOUNTALREADY_EXISTS));
+                message.error(formatText('general.accountAlreadyExists'));
             } else {
                 message.error(gqlError);
             }

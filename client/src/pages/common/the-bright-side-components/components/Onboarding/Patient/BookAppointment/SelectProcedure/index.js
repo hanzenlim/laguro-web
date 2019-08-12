@@ -5,10 +5,6 @@ import { Box, Flex, Grid } from '@laguro/basic-components';
 import Onboarding, { LastMargin } from '../../../../Onboarding';
 import ToolsIcon from '../../../Assets/toolsIcon';
 import { injectIntl } from 'react-intl';
-import {
-    BOOKAPPOINTMENT_REASONOFVISIT_REASONOFVISIT,
-    BOOKAPPOINTMENT_REASONOFVISIT_LETUSKNOW,
-} from '../../../../../../../../strings/messageStrings';
 import { getFormatTextFromProps } from '../../../../../../../../util/intlUtils';
 import { PROCEDURE_TEXTS } from '../../../../../../../../util/procedureUtils';
 
@@ -34,11 +30,11 @@ class SelectProcedureClass extends React.Component {
                 </Flex>
                 <Onboarding.StepTitleText
                     text={formatText(
-                        BOOKAPPOINTMENT_REASONOFVISIT_REASONOFVISIT
+                        'bookAppointment.reasonOfVisit.reasonOfVisit'
                     )}
                 />
                 <Onboarding.StepBlurbText
-                    text={formatText(BOOKAPPOINTMENT_REASONOFVISIT_LETUSKNOW)}
+                    text={formatText('bookAppointment.reasonOfVisit.letUsKnow')}
                 />
                 <Box mb={LastMargin}>
                     <CustomGrid>

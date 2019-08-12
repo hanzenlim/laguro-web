@@ -57,14 +57,6 @@ export const kioskIsAccountNewCookieVariableName = 'kioskIsAccountNew';
 export const KIOSK_PURPOSE_OF_VISIT_WALKIN = 'walkIn';
 export const KIOSK_SELECTED_FAMILY_MEMBER = 'kioskSelectedFamilyMember';
 
-const REGISTRATION_SIGNIN_FIELDISREQUIRED =
-    'registration.signIn.fieldIsRequired';
-const REGISTRATION_SIGNIN_USEVALID = 'registration.signIn.useValid';
-const REGISTRATION_STEPTWO_PROVIDEVALIDPIN =
-    'registration.stepTwo.provideValidPin';
-const REGISTRATION_REGISTRATION_LIKETODO_SELECTPURPOSE =
-    'registration.likeTodo.selectPurpose';
-
 // depending on user, some steps will be optional
 // onAction will return true if there is an error, return false if there isn't
 // add graphql calls to onAction
@@ -86,7 +78,7 @@ export const getKioskRegWizardSteps = ({ formatText = text => text }) => [
         id: PURPOSE_OF_VISIT_WIZARD_STEP_ID,
         validationSchema: Yup.object().shape({
             purposeOfVisit: Yup.string().required(
-                formatText(REGISTRATION_REGISTRATION_LIKETODO_SELECTPURPOSE)
+                formatText('registration.likeTodo.selectPurpose')
             ),
         }),
         initialValues: {
@@ -127,10 +119,10 @@ export const getKioskRegWizardSteps = ({ formatText = text => text }) => [
         validationSchema: Yup.object().shape({
             mode: Yup.string().required(),
             emailOrPhoneNumber: Yup.string()
-                .required(formatText(REGISTRATION_SIGNIN_FIELDISREQUIRED))
+                .required(formatText('registration.signIn.fieldIsRequired'))
                 .test(
                     'is phone number or email valid',
-                    formatText(REGISTRATION_SIGNIN_USEVALID),
+                    formatText('registration.signIn.useValid'),
                     validatePhoneOrEmail
                 ),
         }),
@@ -158,7 +150,7 @@ export const getKioskRegWizardSteps = ({ formatText = text => text }) => [
         validationSchema: Yup.object().shape({
             isPinValid: Yup.mixed().oneOf(
                 [true],
-                formatText(REGISTRATION_STEPTWO_PROVIDEVALIDPIN)
+                formatText('registration.stepTwo.provideValidPin')
             ),
         }),
         onAction: () => {

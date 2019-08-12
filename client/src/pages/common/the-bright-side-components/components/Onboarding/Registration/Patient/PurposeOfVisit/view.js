@@ -5,11 +5,6 @@ import AppointmentIcon from '../../../Assets/appointmentIcon';
 import { injectIntl } from 'react-intl';
 import { getFormatTextFromProps } from '../../../../../../../../util/intlUtils';
 
-const REGISTRATION_LIKETODO_LIKETODO = 'registration.likeTodo.likeTodo';
-const REGISTRATION_LIKETODO_WANTTODO = 'registration.likeTodo.wantTodo';
-const REGISTRATION_LIKETODO_WALKIN = 'registration.likeTodo.walkIn';
-const REGISTRATION_LIKETODO_CHECKIN = 'registration.likeTodo.checkIn';
-
 class PurposeOfVisitSelectionView extends React.PureComponent {
     render() {
         const formatText = getFormatTextFromProps(this.props);
@@ -23,10 +18,10 @@ class PurposeOfVisitSelectionView extends React.PureComponent {
             >
                 <AppointmentIcon />
                 <Onboarding.StepTitleText
-                    text={formatText(REGISTRATION_LIKETODO_LIKETODO)}
+                    text={formatText('registration.likeTodo.likeTodo')}
                 />
                 <Onboarding.StepBlurbText
-                    text={formatText(REGISTRATION_LIKETODO_WANTTODO)}
+                    text={formatText('registration.likeTodo.wantTodo')}
                 />
 
                 <Onboarding.Choices
@@ -34,11 +29,11 @@ class PurposeOfVisitSelectionView extends React.PureComponent {
                     namesAndTexts={[
                         {
                             name: 'walkIn',
-                            text: formatText(REGISTRATION_LIKETODO_WALKIN),
+                            text: formatText('registration.likeTodo.walkIn'),
                         },
                         {
                             name: 'checkIn',
-                            text: formatText(REGISTRATION_LIKETODO_CHECKIN),
+                            text: formatText('registration.likeTodo.checkIn'),
                         },
                     ]}
                     {...this.props}

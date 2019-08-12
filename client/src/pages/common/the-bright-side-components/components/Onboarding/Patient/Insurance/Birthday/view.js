@@ -10,13 +10,6 @@ import {
     getIntlMonths,
     getFormatDateFromProps,
 } from '../../../../../../../../util/intlUtils';
-import {
-    GENERALINFORMATION_BIRTHDAY_BIRTHDAY,
-    GENERAL_NEXT,
-    GENERAL_MONTH,
-    GENERAL_DATE,
-    GENERAL_YEAR,
-} from '../../../../../../../../strings/messageStrings';
 
 const dates = _range(1, 32)
     .map(i => i.toString())
@@ -34,7 +27,7 @@ class AddressView extends React.PureComponent {
                     <InsuranceUmbrella />
                 </Flex>
                 <Onboarding.StepTitleText
-                    text={formatText(GENERALINFORMATION_BIRTHDAY_BIRTHDAY)}
+                    text={formatText('generalInformation.birthday.birthday')}
                 />
                 <Onboarding.StepBlurbText />
 
@@ -44,7 +37,7 @@ class AddressView extends React.PureComponent {
                         component={props => (
                             <Onboarding.SelectField
                                 {...props}
-                                placeholder={formatText(GENERAL_MONTH)}
+                                placeholder={formatText('general.month')}
                                 options={months.map((i, index) => (
                                     <Onboarding.SelectOption
                                         value={(index + 1).toString()}
@@ -61,7 +54,7 @@ class AddressView extends React.PureComponent {
                         component={props => (
                             <Onboarding.SelectField
                                 {...props}
-                                placeholder={formatText(GENERAL_DATE)}
+                                placeholder={formatText('general.date')}
                                 options={dates.map(i => (
                                     <Onboarding.SelectOption value={i}>
                                         {i}
@@ -76,7 +69,7 @@ class AddressView extends React.PureComponent {
                         component={props => (
                             <Onboarding.SelectField
                                 {...props}
-                                placeholder={formatText(GENERAL_YEAR)}
+                                placeholder={formatText('general.year')}
                                 options={years.map(i => (
                                     <Onboarding.SelectOption
                                         value={i.toString()}
@@ -92,7 +85,7 @@ class AddressView extends React.PureComponent {
                 <Onboarding.NextButton
                     onClick={() => this.props.formikProps.submitForm()}
                 >
-                    {formatText(GENERAL_NEXT)}
+                    {formatText('general.next')}
                 </Onboarding.NextButton>
             </Box>
         );

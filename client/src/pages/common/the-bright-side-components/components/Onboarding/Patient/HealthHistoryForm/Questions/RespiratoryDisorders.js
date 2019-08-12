@@ -6,15 +6,6 @@ import { getFormatTextFromProps } from '../../../../../../../../util/intlUtils';
 import { reduceArrayOfObjects } from '../../../../../../../../util/arrayUtils';
 import { renderQuestionComponent } from '../../../../../../../../util/questionUtils';
 import { injectIntl } from 'react-intl';
-import {
-    MEDICALHISTORYFORM_RESPIRATORYDISORDERS_RESPIRATORYDISORDERS,
-    MEDICALHISTORYFORM_RESPIRATORYDISORDERS_ASTHMA,
-    MEDICALHISTORYFORM_RESPIRATORYDISORDERS_BRONCHITIS,
-    MEDICALHISTORYFORM_RESPIRATORYDISORDERS_EMPHYSEMA,
-    MEDICALHISTORYFORM_RESPIRATORYDISORDERS_SINUSTROUBLE,
-    MEDICALHISTORYFORM_RESPIRATORYDISORDERS_TUBERCULOSIS,
-    GENERAL_PLEASE_CHOOSE_CONDITIONS,
-} from '../../../../../../../../strings/messageStrings';
 
 const ASTHMA = 'Asthma';
 const BRONCHITIS = 'Bronchitis';
@@ -24,11 +15,11 @@ const TUBERCULOSIS = 'Tuberculosis';
 const list = [ASTHMA, BRONCHITIS, EMPHYSEMA, SINUS_TROUBLE, TUBERCULOSIS];
 
 const texts = {
-    [ASTHMA]: MEDICALHISTORYFORM_RESPIRATORYDISORDERS_ASTHMA,
-    [BRONCHITIS]: MEDICALHISTORYFORM_RESPIRATORYDISORDERS_BRONCHITIS,
-    [EMPHYSEMA]: MEDICALHISTORYFORM_RESPIRATORYDISORDERS_EMPHYSEMA,
-    [SINUS_TROUBLE]: MEDICALHISTORYFORM_RESPIRATORYDISORDERS_SINUSTROUBLE,
-    [TUBERCULOSIS]: MEDICALHISTORYFORM_RESPIRATORYDISORDERS_TUBERCULOSIS,
+    [ASTHMA]: 'medicalHistoryForm.respiratoryDisorders.asthma',
+    [BRONCHITIS]: 'medicalHistoryForm.respiratoryDisorders.bronchitis',
+    [EMPHYSEMA]: 'medicalHistoryForm.respiratoryDisorders.emphysema',
+    [SINUS_TROUBLE]: 'medicalHistoryForm.respiratoryDisorders.sinusTrouble',
+    [TUBERCULOSIS]: 'medicalHistoryForm.respiratoryDisorders.tuberculosis',
 };
 
 const getQuestionName = item => `Breathing (${item})`;
@@ -95,11 +86,13 @@ class RespiratoryDisorders extends React.Component {
                 <DentistIcon />
                 <Onboarding.StepTitleText
                     text={formatText(
-                        MEDICALHISTORYFORM_RESPIRATORYDISORDERS_RESPIRATORYDISORDERS
+                        'medicalHistoryForm.respiratoryDisorders.respiratoryDisorders'
                     )}
                 />
                 <Onboarding.StepBlurbText
-                    text={formatText(GENERAL_PLEASE_CHOOSE_CONDITIONS)}
+                    text={formatText(
+                        'general.pleaseChooseTheConditionsThatApplyToYou'
+                    )}
                 />
                 <Box>{renderQuestions}</Box>
                 <Onboarding.NoneButton

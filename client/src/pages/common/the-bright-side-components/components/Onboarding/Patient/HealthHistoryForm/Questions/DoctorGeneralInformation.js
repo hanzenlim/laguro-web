@@ -6,15 +6,6 @@ import { range } from '../../../../../../../../util/uiUtil';
 import { renderQuestionComponent } from '../../../../../../../../util/questionUtils';
 import { getFormatTextFromProps } from '../../../../../../../../util/intlUtils';
 import { injectIntl } from 'react-intl';
-import {
-    MEDICALHISTORYFORM_GENERALMEDICALINFORMATION1_GENERALMEDICALINFORMATION,
-    GENERAL_PLEASEFILL,
-    GENERAL_NEXT,
-    MEDICALHISTORYFORM_GENERALMEDICALINFORMATION1_GENERALINFORMATION,
-    MEDICALHISTORYFORM_GENERALMEDICALINFORMATION1_NAME,
-    MEDICALHISTORYFORM_GENERALMEDICALINFORMATION1_ADDRESS,
-    MEDICALHISTORYFORM_GENERALMEDICALINFORMATION1_PHONENUMBER,
-} from '../../../../../../../../strings/messageStrings';
 
 export const PHYSICIAN_NAME = 'Physician name';
 export const PHYSICIAN_PHONE_NUMBER = 'Physician phone number';
@@ -48,7 +39,7 @@ class DoctorGeneralInformation extends React.Component {
                         type="text"
                         name="name"
                         placeholder={formatText(
-                            MEDICALHISTORYFORM_GENERALMEDICALINFORMATION1_NAME
+                            'medicalHistoryForm.generalMedicalInformation1.name'
                         )}
                         value={props.formikProps.values[key]}
                         onChange={e =>
@@ -64,7 +55,7 @@ class DoctorGeneralInformation extends React.Component {
                         type="text"
                         name="phoneNumber"
                         placeholder={formatText(
-                            MEDICALHISTORYFORM_GENERALMEDICALINFORMATION1_PHONENUMBER
+                            'medicalHistoryForm.generalMedicalInformation1.phoneNumber'
                         )}
                         value={props.formikProps.values[key]}
                         onChange={e =>
@@ -80,7 +71,7 @@ class DoctorGeneralInformation extends React.Component {
                         type="text"
                         name="address"
                         placeholder={formatText(
-                            MEDICALHISTORYFORM_GENERALMEDICALINFORMATION1_ADDRESS
+                            'medicalHistoryForm.generalMedicalInformation1.address'
                         )}
                         value={props.formikProps.values[key]}
                         onChange={e =>
@@ -106,16 +97,16 @@ class DoctorGeneralInformation extends React.Component {
                 <DentistIcon />
                 <Onboarding.StepTitleText
                     text={formatText(
-                        MEDICALHISTORYFORM_GENERALMEDICALINFORMATION1_GENERALMEDICALINFORMATION
+                        'medicalHistoryForm.generalMedicalInformation1.generalMedicalInformation'
                     )}
                 />
                 <Onboarding.StepBlurbText
-                    text={formatText(GENERAL_PLEASEFILL)}
+                    text={formatText('general.pleaseFill')}
                 />
                 <Box>
                     <Onboarding.FormItemLabelText
                         text={formatText(
-                            MEDICALHISTORYFORM_GENERALMEDICALINFORMATION1_GENERALINFORMATION
+                            'medicalHistoryForm.generalMedicalInformation1.generalInformation'
                         )}
                     />
                     {range(3).map(i =>
@@ -131,7 +122,7 @@ class DoctorGeneralInformation extends React.Component {
                     onClick={() => props.formikProps.submitForm()}
                 >
                     {props.formikProps.dirty
-                        ? formatText(GENERAL_NEXT)
+                        ? formatText('general.next')
                         : 'Skip'}
                 </Onboarding.NextButton>
             </Flex>

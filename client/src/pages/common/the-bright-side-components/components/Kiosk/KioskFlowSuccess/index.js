@@ -3,12 +3,6 @@ import * as React from 'react';
 import Onboarding from '../../Onboarding';
 import CongratsIcon from '../../Onboarding/Assets/congratsIcon';
 import { injectIntl } from 'react-intl';
-import {
-    FINAL_CONGRATS,
-    FINAL_THANKYOUFORCOMPLETING,
-    FINAL_PLEASETAKEASEAT,
-    GENERAL_DONE,
-} from '../../../../../../strings/messageStrings';
 import { getFormatTextFromProps } from '../../../../../../util/intlUtils';
 
 class KioskFlowSuccessClass extends React.Component {
@@ -24,24 +18,24 @@ class KioskFlowSuccessClass extends React.Component {
                 height="100%"
             >
                 <Onboarding.StepTitleText
-                    text={`${formatText(FINAL_CONGRATS)}, ${name}`}
+                    text={`${formatText('final.congrats')}, ${name}`}
                 />
                 <Box mx="auto" mt="50px">
                     <CongratsIcon />
                 </Box>
                 <Box mb="20px" mt="60px">
                     <Text textAlign="center" fontSize="16px" color="#303449">
-                        {formatText(FINAL_THANKYOUFORCOMPLETING)}
+                        {formatText('final.thankYouForCompleting')}
                     </Text>
                 </Box>
                 <Box>
                     <Text textAlign="center" fontSize="16px" color="#303449">
-                        {formatText(FINAL_PLEASETAKEASEAT)}
+                        {formatText('final.pleaseTakeASeat')}
                     </Text>
                 </Box>
                 <Box mt="40px">
                     <Button onClick={this.props.onNext}>
-                        {formatText(GENERAL_DONE)}
+                        {formatText('general.done')}
                     </Button>
                 </Box>
             </Flex>

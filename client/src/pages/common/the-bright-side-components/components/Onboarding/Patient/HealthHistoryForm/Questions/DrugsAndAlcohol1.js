@@ -3,16 +3,6 @@ import React from 'react';
 import _range from 'lodash/range';
 import Onboarding from '../../../../Onboarding';
 import DentistIcon from '../../../Assets/dentistIcon';
-import {
-    MEDICALHISTORYFORM_DRUGSALCOHOL1_DOYOUUSECONTROLLEDSUBSTANCES,
-    MEDICALHISTORYFORM_DRUGSALCOHOL1_DOYOUUSETOBACCO,
-    MEDICALHISTORYFORM_DRUGSALCOHOL1_INTERESTEDINSTOPPING,
-    MEDICALHISTORYFORM_DRUGSALCOHOL1_NAMEDOYOUDRINKALCOHOLICBEVERAGES,
-    MEDICALHISTORYFORM_DRUGSALCOHOL1_HOWMUCHWITHINLAST,
-    GENERAL_NEXT,
-    MEDICALHISTORYFORM_DRUGSALCOHOL1_DRUGSALCOHOL,
-    GENERAL_PLEASE_CHOOSE,
-} from '../../../../../../../../strings/messageStrings';
 import { getFormatTextFromProps } from '../../../../../../../../util/intlUtils';
 import { injectIntl } from 'react-intl';
 import { renderQuestionComponent } from '../../../../../../../../util/questionUtils';
@@ -61,7 +51,7 @@ class DrugsAndAlcohol1 extends React.Component {
                     <Onboarding.Checkbox
                         key={key}
                         field={formatText(
-                            MEDICALHISTORYFORM_DRUGSALCOHOL1_DOYOUUSECONTROLLEDSUBSTANCES
+                            'medicalHistoryForm.drugsAlcohol1.doYouUseControlledSubstances'
                         )}
                         width="100%"
                         value={props.formikProps.values[key]}
@@ -80,7 +70,7 @@ class DrugsAndAlcohol1 extends React.Component {
                     <Onboarding.Checkbox
                         key={key}
                         field={formatText(
-                            MEDICALHISTORYFORM_DRUGSALCOHOL1_DOYOUUSETOBACCO
+                            'medicalHistoryForm.drugsAlcohol1.doYouUseTobacco'
                         )}
                         width="100%"
                         value={props.formikProps.values[key]}
@@ -106,7 +96,7 @@ class DrugsAndAlcohol1 extends React.Component {
                     <Onboarding.Checkbox
                         key={key}
                         field={formatText(
-                            MEDICALHISTORYFORM_DRUGSALCOHOL1_INTERESTEDINSTOPPING
+                            'medicalHistoryForm.drugsAlcohol1.interestedInStopping'
                         )}
                         width="100%"
                         value={props.formikProps.values[key]}
@@ -126,7 +116,7 @@ class DrugsAndAlcohol1 extends React.Component {
                     <Onboarding.Checkbox
                         key={key}
                         field={formatText(
-                            MEDICALHISTORYFORM_DRUGSALCOHOL1_NAMEDOYOUDRINKALCOHOLICBEVERAGES
+                            'medicalHistoryForm.drugsAlcohol1.nameDoYouDrinkAlcoholicBeverages'
                         )}
                         width="100%"
                         value={props.formikProps.values[key]}
@@ -151,7 +141,7 @@ class DrugsAndAlcohol1 extends React.Component {
                 return (
                     <TextArea
                         placeholder={formatText(
-                            MEDICALHISTORYFORM_DRUGSALCOHOL1_HOWMUCHWITHINLAST
+                            'medicalHistoryForm.drugsAlcohol1.howMuchWithinLast'
                         )}
                         value={props.formikProps.values[key]}
                         onChange={value =>
@@ -181,11 +171,11 @@ class DrugsAndAlcohol1 extends React.Component {
                 <DentistIcon />
                 <Onboarding.StepTitleText
                     text={formatText(
-                        MEDICALHISTORYFORM_DRUGSALCOHOL1_DRUGSALCOHOL
+                        'medicalHistoryForm.drugsAlcohol1.drugsAlcohol'
                     )}
                 />
                 <Onboarding.StepBlurbText
-                    text={formatText(GENERAL_PLEASE_CHOOSE)}
+                    text={formatText('general.pleaseChooseFollowingQuestions')}
                 />
                 <Flex
                     maxWidth="700px"
@@ -204,7 +194,7 @@ class DrugsAndAlcohol1 extends React.Component {
                 <Onboarding.NextButton
                     onClick={() => props.formikProps.submitForm()}
                 >
-                    {formatText(GENERAL_NEXT)}
+                    {formatText('general.next')}
                 </Onboarding.NextButton>
             </Flex>
         );

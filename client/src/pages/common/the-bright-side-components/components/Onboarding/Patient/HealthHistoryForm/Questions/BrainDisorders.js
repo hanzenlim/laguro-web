@@ -3,20 +3,6 @@ import React from 'react';
 import _range from 'lodash/range';
 import Onboarding from '../../../../Onboarding';
 import DentistIcon from '../../../Assets/dentistIcon';
-import {
-    MEDICALHISTORYFORM_BRAINDISORDERS_GLAUCOMA,
-    MEDICALHISTORYFORM_BRAINDISORDERS_STROKE,
-    MEDICALHISTORYFORM_BRAINDISORDERS_EPILEPSY,
-    MEDICALHISTORYFORM_BRAINDISORDERS_SLEEPINGDISORDERS,
-    MEDICALHISTORYFORM_BRAINDISORDERS_NEUROLOGICALDISORDERS,
-    MEDICALHISTORYFORM_BRAINDISORDERS_FAINTINGSPELLS,
-    GENERAL_PLEASESPECIFY,
-    MEDICALHISTORYFORM_BRAINDISORDERS_NIGHTSWEATS,
-    MEDICALHISTORYFORM_BRAINDISORDERS_MENTALHEALTHDISORDERS,
-    MEDICALHISTORYFORM_BRAINDISORDERS_SEVEREHEADACHES,
-    MEDICALHISTORYFORM_BRAINDISORDERS_BRAINDISORDERS,
-    GENERAL_PLEASE_CHOOSE_CONDITIONS,
-} from '../../../../../../../../strings/messageStrings';
 import { getFormatTextFromProps } from '../../../../../../../../util/intlUtils';
 import { renderQuestionComponent } from '../../../../../../../../util/questionUtils';
 import { injectIntl } from 'react-intl';
@@ -94,7 +80,7 @@ class BrainDisorders extends React.Component {
                     <Onboarding.Checkbox
                         key={key}
                         field={formatText(
-                            MEDICALHISTORYFORM_BRAINDISORDERS_GLAUCOMA
+                            'medicalHistoryForm.brainDisorders.glaucoma'
                         )}
                         value={props.formikProps.values[key]}
                         onClick={() =>
@@ -112,7 +98,7 @@ class BrainDisorders extends React.Component {
                     <Onboarding.Checkbox
                         key={key}
                         field={formatText(
-                            MEDICALHISTORYFORM_BRAINDISORDERS_STROKE
+                            'medicalHistoryForm.brainDisorders.stroke'
                         )}
                         value={props.formikProps.values[key]}
                         onClick={() =>
@@ -130,7 +116,7 @@ class BrainDisorders extends React.Component {
                     <Onboarding.Checkbox
                         key={key}
                         field={formatText(
-                            MEDICALHISTORYFORM_BRAINDISORDERS_EPILEPSY
+                            'medicalHistoryForm.brainDisorders.epilepsy'
                         )}
                         value={props.formikProps.values[key]}
                         onClick={() =>
@@ -149,7 +135,7 @@ class BrainDisorders extends React.Component {
                     <Onboarding.Checkbox
                         key={key}
                         field={formatText(
-                            MEDICALHISTORYFORM_BRAINDISORDERS_FAINTINGSPELLS
+                            'medicalHistoryForm.brainDisorders.faintingSpells'
                         )}
                         value={props.formikProps.values[key]}
                         onClick={() =>
@@ -167,7 +153,7 @@ class BrainDisorders extends React.Component {
                     <Onboarding.Checkbox
                         key={key}
                         field={formatText(
-                            MEDICALHISTORYFORM_BRAINDISORDERS_SLEEPINGDISORDERS
+                            'medicalHistoryForm.brainDisorders.sleepingDisorders'
                         )}
                         value={props.formikProps.values[key]}
                         onClick={() =>
@@ -186,7 +172,7 @@ class BrainDisorders extends React.Component {
                     <Onboarding.Checkbox
                         key={key}
                         field={formatText(
-                            MEDICALHISTORYFORM_BRAINDISORDERS_NEUROLOGICALDISORDERS
+                            'medicalHistoryForm.brainDisorders.neurologicalDisorders'
                         )}
                         value={props.formikProps.values[key]}
                         onClick={() =>
@@ -207,7 +193,7 @@ class BrainDisorders extends React.Component {
 
                 return (
                     <TextArea
-                        placeholder={formatText(GENERAL_PLEASESPECIFY)}
+                        placeholder={formatText('general.pleaseSpecify')}
                         value={props.formikProps.values[key]}
                         onChange={value =>
                             props.formikProps.setFieldValue(
@@ -225,7 +211,7 @@ class BrainDisorders extends React.Component {
                     <Onboarding.Checkbox
                         key={key}
                         field={formatText(
-                            MEDICALHISTORYFORM_BRAINDISORDERS_NIGHTSWEATS
+                            'medicalHistoryForm.brainDisorders.nightSweats'
                         )}
                         value={props.formikProps.values[key]}
                         onClick={() =>
@@ -243,7 +229,7 @@ class BrainDisorders extends React.Component {
                     <Onboarding.Checkbox
                         key={key}
                         field={formatText(
-                            MEDICALHISTORYFORM_BRAINDISORDERS_MENTALHEALTHDISORDERS
+                            'medicalHistoryForm.brainDisorders.mentalHealthDisorders'
                         )}
                         value={props.formikProps.values[key]}
                         onClick={() =>
@@ -263,7 +249,7 @@ class BrainDisorders extends React.Component {
 
                 return (
                     <TextArea
-                        placeholder={formatText(GENERAL_PLEASESPECIFY)}
+                        placeholder={formatText('general.pleaseSpecify')}
                         value={props.formikProps.values[key]}
                         onChange={value =>
                             props.formikProps.setFieldValue(
@@ -281,7 +267,7 @@ class BrainDisorders extends React.Component {
                     <Onboarding.Checkbox
                         key={key}
                         field={formatText(
-                            MEDICALHISTORYFORM_BRAINDISORDERS_SEVEREHEADACHES
+                            'medicalHistoryForm.brainDisorders.severeHeadaches'
                         )}
                         value={props.formikProps.values[key]}
                         onClick={() =>
@@ -310,11 +296,13 @@ class BrainDisorders extends React.Component {
                 <DentistIcon />
                 <Onboarding.StepTitleText
                     text={formatText(
-                        MEDICALHISTORYFORM_BRAINDISORDERS_BRAINDISORDERS
+                        'medicalHistoryForm.brainDisorders.brainDisorders'
                     )}
                 />
                 <Onboarding.StepBlurbText
-                    text={formatText(GENERAL_PLEASE_CHOOSE_CONDITIONS)}
+                    text={formatText(
+                        'general.pleaseChooseTheConditionsThatApplyToYou'
+                    )}
                 />
 
                 <Box>

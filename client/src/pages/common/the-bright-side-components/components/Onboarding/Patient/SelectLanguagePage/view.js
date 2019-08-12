@@ -6,11 +6,6 @@ import Onboarding from '../../../Onboarding';
 import DentistIcon from '../../Assets/dentistIcon';
 import { SelectLanguage } from '../../SelectLanguage';
 import { getFormatTextFromProps } from '../../../../../../../util/intlUtils';
-import {
-    GENERALINFORMATION_LANGUAGE_WHICHLANGUAGES,
-    GENERALINFORMATION_LANGUAGE_LANGUAGE,
-    GENERAL_NEXT,
-} from '../../../../../../../strings/messageStrings';
 import { injectIntl } from 'react-intl';
 
 class SelectLanguagePage extends React.PureComponent {
@@ -22,11 +17,11 @@ class SelectLanguagePage extends React.PureComponent {
                     <DentistIcon />
                 </Flex>
                 <Onboarding.StepTitleText
-                    text={formatText(GENERALINFORMATION_LANGUAGE_LANGUAGE)}
+                    text={formatText('generalInformation.language.language')}
                 />
                 <Onboarding.StepBlurbText
                     text={formatText(
-                        GENERALINFORMATION_LANGUAGE_WHICHLANGUAGES
+                        'generalInformation.language.whichLanguages'
                     )}
                 />
 
@@ -62,7 +57,7 @@ class SelectLanguagePage extends React.PureComponent {
                 <Onboarding.NextButton
                     onClick={() => this.props.formikProps.submitForm()}
                 >
-                    {formatText(GENERAL_NEXT)}
+                    {formatText('general.next')}
                 </Onboarding.NextButton>
             </Box>
         );

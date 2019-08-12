@@ -12,10 +12,6 @@ import { execute } from '../../../util/gqlUtils';
 import { validatePhoneOrEmail } from '../../../util/validationUtils';
 import { trackUserSignup, trackUserAuth } from '../../../util/trackingUtils';
 import { KioskRegister } from '../../common/KioskRegister';
-import {
-    REGISTRATION_STEPTWO_ALREADYHAVEACCOUNT,
-    REGISTRATION_STEPTWO_PROVIDENAME,
-} from '../../../strings/messageStrings';
 import { getFormatTextFromProps } from '../../../util/intlUtils';
 
 const Composed = adopt({
@@ -76,7 +72,7 @@ class RegisterStep extends Component {
 
                         if (_isEmpty(firstName) || _isEmpty(lastName)) {
                             message.error(
-                                formatText(REGISTRATION_STEPTWO_PROVIDENAME)
+                                formatText('registration.stepTwo.provideName')
                             );
                             return null;
                         }
@@ -231,7 +227,7 @@ class RegisterStep extends Component {
                                         } else {
                                             message.error(
                                                 formatText(
-                                                    REGISTRATION_STEPTWO_ALREADYHAVEACCOUNT
+                                                    'registration.stepTwo.alreadyHaveAccount'
                                                 )
                                             );
                                         }

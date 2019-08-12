@@ -2,18 +2,6 @@ import { Flex, Grid } from '@laguro/basic-components';
 import React from 'react';
 import Onboarding from '../../../../Onboarding';
 import DentistIcon from '../../../Assets/dentistIcon';
-import {
-    MEDICALHISTORYFORM_IMMUNEANDCANCER_CANCERCHEMOTHERAPYRADIATIONTREATMENTS,
-    MEDICALHISTORYFORM_IMMUNEANDCANCER_ARTHIRITIS,
-    MEDICALHISTORYFORM_IMMUNEANDCANCER_RHEUMATOIDARTHRITIS,
-    MEDICALHISTORYFORM_IMMUNEANDCANCER_THYROIDPROBLEMS,
-    MEDICALHISTORYFORM_IMMUNEANDCANCER_AUTOIMMUNEDISEASE,
-    MEDICALHISTORYFORM_IMMUNEANDCANCER_SYSTEMICIUPUSERYTHEMATOSUS,
-    MEDICALHISTORYFORM_IMMUNEANDCANCER_OSTEOPOROSIS,
-    MEDICALHISTORYFORM_IMMUNEANDCANCER_KIDNEYPROBLEMS,
-    MEDICALHISTORYFORM_IMMUNEANDCANCER_IMMUNEANDCANCER,
-    GENERAL_PLEASE_CHOOSE_CONDITIONS,
-} from '../../../../../../../../strings/messageStrings';
 import { getFormatTextFromProps } from '../../../../../../../../util/intlUtils';
 import { reduceArrayOfObjects } from '../../../../../../../../util/arrayUtils';
 import { injectIntl } from 'react-intl';
@@ -41,14 +29,18 @@ const list = [
 ];
 
 const texts = {
-    [CANCER_CHEMOTHERAPY_RADIATION_TREATMENTS]: MEDICALHISTORYFORM_IMMUNEANDCANCER_CANCERCHEMOTHERAPYRADIATIONTREATMENTS,
-    [ARTHIRITIS]: MEDICALHISTORYFORM_IMMUNEANDCANCER_ARTHIRITIS,
-    [RHEUMATOID_ARTHRITIS]: MEDICALHISTORYFORM_IMMUNEANDCANCER_RHEUMATOIDARTHRITIS,
-    [THYROID_PROBLEMS]: MEDICALHISTORYFORM_IMMUNEANDCANCER_THYROIDPROBLEMS,
-    [AUTOIMMUNE_DISEASE]: MEDICALHISTORYFORM_IMMUNEANDCANCER_AUTOIMMUNEDISEASE,
-    [SYSTEMIC_IUPUS_ERYTHEMATOSUS]: MEDICALHISTORYFORM_IMMUNEANDCANCER_SYSTEMICIUPUSERYTHEMATOSUS,
-    [OSTEOPOROSIS]: MEDICALHISTORYFORM_IMMUNEANDCANCER_OSTEOPOROSIS,
-    [KIDNEY_PROBLEMS]: MEDICALHISTORYFORM_IMMUNEANDCANCER_KIDNEYPROBLEMS,
+    [CANCER_CHEMOTHERAPY_RADIATION_TREATMENTS]:
+        'medicalHistoryForm.immuneAndCancer.cancerChemotherapyRadiationTreatments',
+    [ARTHIRITIS]: 'medicalHistoryForm.immuneAndCancer.arthiritis',
+    [RHEUMATOID_ARTHRITIS]:
+        'medicalHistoryForm.immuneAndCancer.rheumatoidArthritis',
+    [THYROID_PROBLEMS]: 'medicalHistoryForm.immuneAndCancer.thyroidProblems',
+    [AUTOIMMUNE_DISEASE]:
+        'medicalHistoryForm.immuneAndCancer.autoimmuneDisease',
+    [SYSTEMIC_IUPUS_ERYTHEMATOSUS]:
+        'medicalHistoryForm.immuneAndCancer.systemicIupusErythematosus',
+    [OSTEOPOROSIS]: 'medicalHistoryForm.immuneAndCancer.osteoporosis',
+    [KIDNEY_PROBLEMS]: 'medicalHistoryForm.immuneAndCancer.kidneyProblems',
 };
 
 const getQuestionName = item => `Immune and cancer (${item})`;
@@ -118,11 +110,13 @@ class ImmuneAndCancer extends React.Component {
                 <DentistIcon />
                 <Onboarding.StepTitleText
                     text={formatText(
-                        MEDICALHISTORYFORM_IMMUNEANDCANCER_IMMUNEANDCANCER
+                        'medicalHistoryForm.immuneAndCancer.immuneAndCancer'
                     )}
                 />
                 <Onboarding.StepBlurbText
-                    text={formatText(GENERAL_PLEASE_CHOOSE_CONDITIONS)}
+                    text={formatText(
+                        'general.pleaseChooseTheConditionsThatApplyToYou'
+                    )}
                 />
                 <Grid
                     alignItems="flex-start"

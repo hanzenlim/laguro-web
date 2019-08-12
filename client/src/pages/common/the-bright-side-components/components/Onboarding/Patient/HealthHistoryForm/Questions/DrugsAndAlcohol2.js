@@ -6,13 +6,6 @@ import {
     getYesOrNoNamesAndTexts,
     renderQuestionComponent,
 } from '../../../../../../../../util/questionUtils';
-import {
-    GENERAL_PLEASEEXPLAIN,
-    MEDICALHISTORYFORM_DRUGSALCOHOL2_DRUGSALCOHOL,
-    MEDICALHISTORYFORM_DRUGSALCOHOL2_PLEASEANSWER,
-    MEDICALHISTORYFORM_DRUGSALCOHOL2_NAMEANYADDITIONAL,
-    GENERAL_DONE,
-} from '../../../../../../../../strings/messageStrings';
 import { injectIntl } from 'react-intl';
 import { getFormatTextFromProps } from '../../../../../../../../util/intlUtils';
 
@@ -54,7 +47,7 @@ class DrugsAndAlcohol2 extends React.Component {
                 const key = ANY_ADDITIONAL_DISEASE_CONDITION_OR_PROBLEMS_NOT_LISTED_ABOVE_THAT_YOU_THINK_WE_SHOULD_KNOW_ABOUT;
                 return (
                     <TextArea
-                        placeholder={formatText(GENERAL_PLEASEEXPLAIN)}
+                        placeholder={formatText('general.pleaseExplain')}
                         value={props.formikProps.values[key]}
                         onChange={value =>
                             props.formikProps.setFieldValue(
@@ -83,12 +76,12 @@ class DrugsAndAlcohol2 extends React.Component {
                 <DentistIcon />
                 <Onboarding.StepTitleText
                     text={formatText(
-                        MEDICALHISTORYFORM_DRUGSALCOHOL2_DRUGSALCOHOL
+                        'medicalHistoryForm.drugsAlcohol2.drugsAlcohol'
                     )}
                 />
                 <Onboarding.StepBlurbText
                     text={formatText(
-                        MEDICALHISTORYFORM_DRUGSALCOHOL2_PLEASEANSWER
+                        'medicalHistoryForm.drugsAlcohol2.pleaseAnswer'
                     )}
                 />
                 <Box>
@@ -105,7 +98,7 @@ class DrugsAndAlcohol2 extends React.Component {
                     )}
                     <Onboarding.FormItemLabelText
                         text={formatText(
-                            MEDICALHISTORYFORM_DRUGSALCOHOL2_NAMEANYADDITIONAL
+                            'medicalHistoryForm.drugsAlcohol2.nameAnyAdditional'
                         )}
                     />
                     {renderQuestionComponent(
@@ -121,7 +114,7 @@ class DrugsAndAlcohol2 extends React.Component {
                     }}
                     loading={this.props.formikProps.isSubmitting}
                 >
-                    {formatText(GENERAL_DONE)}
+                    {formatText('general.done')}
                 </Onboarding.NextButton>
             </Flex>
         );

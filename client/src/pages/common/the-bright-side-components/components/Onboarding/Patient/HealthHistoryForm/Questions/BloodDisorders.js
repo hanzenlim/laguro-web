@@ -6,17 +6,6 @@ import { reduceArrayOfObjects } from '../../../../../../../../util/arrayUtils';
 import { injectIntl } from 'react-intl';
 import { getFormatTextFromProps } from '../../../../../../../../util/intlUtils';
 import { renderQuestionComponent } from '../../../../../../../../util/questionUtils';
-import {
-    MEDICALHISTORYFORM_BLOODDISORDERS_ABNORMALBLEEDING,
-    MEDICALHISTORYFORM_BLOODDISORDERS_ANEMIA,
-    MEDICALHISTORYFORM_BLOODDISORDERS_BLOODTRANSFUSIONDATE,
-    MEDICALHISTORYFORM_BLOODDISORDERS_HEMOPHILIA,
-    MEDICALHISTORYFORM_BLOODDISORDERS_LIVERDISEASE,
-    MEDICALHISTORYFORM_BLOODDISORDERS_JAUNDICE,
-    MEDICALHISTORYFORM_BLOODDISORDERS_PERSISTENTSWOLLENGLANDS,
-    MEDICALHISTORYFORM_BLOODDISORDERS_BLOODDISORDERS,
-    GENERAL_PLEASE_CHOOSE_CONDITIONS,
-} from '../../../../../../../../strings/messageStrings';
 
 const ABNORMAL_BLEEDING = 'Abnormal bleeding';
 const ANEMIA = 'Anemia';
@@ -37,13 +26,15 @@ const list = [
 ];
 
 const texts = {
-    [ABNORMAL_BLEEDING]: MEDICALHISTORYFORM_BLOODDISORDERS_ABNORMALBLEEDING,
-    [ANEMIA]: MEDICALHISTORYFORM_BLOODDISORDERS_ANEMIA,
-    [BLOOD_TRANSFUSION_DATE]: MEDICALHISTORYFORM_BLOODDISORDERS_BLOODTRANSFUSIONDATE,
-    [HEMOPHILIA]: MEDICALHISTORYFORM_BLOODDISORDERS_HEMOPHILIA,
-    [LIVER_DISEASE]: MEDICALHISTORYFORM_BLOODDISORDERS_LIVERDISEASE,
-    [JAUNDICE]: MEDICALHISTORYFORM_BLOODDISORDERS_JAUNDICE,
-    [PERSISTENT_SWOLLEN_GLANDS_IN_NECK]: MEDICALHISTORYFORM_BLOODDISORDERS_PERSISTENTSWOLLENGLANDS,
+    [ABNORMAL_BLEEDING]: 'medicalHistoryForm.bloodDisorders.abnormalBleeding',
+    [ANEMIA]: 'medicalHistoryForm.bloodDisorders.anemia',
+    [BLOOD_TRANSFUSION_DATE]:
+        'medicalHistoryForm.bloodDisorders.bloodTransfusionDate',
+    [HEMOPHILIA]: 'medicalHistoryForm.bloodDisorders.hemophilia',
+    [LIVER_DISEASE]: 'medicalHistoryForm.bloodDisorders.liverDisease',
+    [JAUNDICE]: 'medicalHistoryForm.bloodDisorders.jaundice',
+    [PERSISTENT_SWOLLEN_GLANDS_IN_NECK]:
+        'medicalHistoryForm.bloodDisorders.persistentSwollenGlands',
 };
 
 const getQuestionName = item => `Blood disorders (${item})`;
@@ -112,11 +103,13 @@ class BloodDisorders extends React.Component {
                 <DentistIcon />
                 <Onboarding.StepTitleText
                     text={formatText(
-                        MEDICALHISTORYFORM_BLOODDISORDERS_BLOODDISORDERS
+                        'medicalHistoryForm.bloodDisorders.bloodDisorders'
                     )}
                 />
                 <Onboarding.StepBlurbText
-                    text={formatText(GENERAL_PLEASE_CHOOSE_CONDITIONS)}
+                    text={formatText(
+                        'general.pleaseChooseTheConditionsThatApplyToYou'
+                    )}
                 />
                 <Box>{renderQuestions}</Box>
                 <Onboarding.NoneButton

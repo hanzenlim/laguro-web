@@ -13,10 +13,7 @@ import { validatePhoneOrEmail } from '../../../util/validationUtils';
 import { trackUserAuth } from '../../../util/trackingUtils';
 import { KioskLogIn } from '../../common/the-bright-side-components/components/Kiosk/KioskLogIn';
 import { getFormatTextFromProps } from '../../../util/intlUtils';
-import { REGISTRATION_SIGNIN_INCORRECTCODE } from '../../../strings/messageStrings';
 import { INCORRECT_PASSWORD_GQL_ERROR } from '../../../util/errors';
-
-const REGISTRATION_SIGNIN_NOTRECOGNIZED = 'registration.signIn.notRecognized';
 
 const Composed = adopt({
     sendKioskLoginCode: ({ render }) => (
@@ -63,10 +60,7 @@ export const LoginStep = injectIntl(props => {
                                           .emailOrPhoneNumber,
                               }
                             : {
-                                  phoneNumber: `+1${
-                                      props.formikProps.values
-                                          .emailOrPhoneNumber
-                                  }`,
+                                  phoneNumber: `+1${props.formikProps.values.emailOrPhoneNumber}`,
                               }),
                     };
                 };
@@ -92,7 +86,7 @@ export const LoginStep = injectIntl(props => {
                         },
                         errorMessages: {
                             [INCORRECT_PASSWORD_GQL_ERROR]: formatText(
-                                REGISTRATION_SIGNIN_INCORRECTCODE
+                                'registration.signIn.incorrectCode'
                             ),
                         },
                     });
@@ -204,7 +198,7 @@ export const LoginStep = injectIntl(props => {
                                 } else {
                                     message.warning(
                                         formatText(
-                                            REGISTRATION_SIGNIN_NOTRECOGNIZED
+                                            'registration.signIn.notRecognized'
                                         )
                                     );
                                 }

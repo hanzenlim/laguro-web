@@ -7,13 +7,6 @@ import {
     getYesOrNoNamesAndTexts,
     renderQuestionComponent,
 } from '../../../../../../../../util/questionUtils';
-import {
-    GENERAL_HOW_MANY_WEEKS,
-    MEDICALHISTORYFORM_WOMENONLY_WOMENONLY,
-    MEDICALHISTORYFORM_WOMENONLY_PLEASECOMPLETEIFPREGNANT,
-    MEDICALHISTORYFORM_WOMENONLY_AREYOUPREGNANT,
-    GENERAL_NEXT,
-} from '../../../../../../../../strings/messageStrings';
 import { injectIntl } from 'react-intl';
 import { getFormatTextFromProps } from '../../../../../../../../util/intlUtils';
 
@@ -69,7 +62,7 @@ class WomenOnly extends React.Component {
                 return (
                     <Box mb="5px">
                         <Onboarding.Select
-                            placeholder={formatText(GENERAL_HOW_MANY_WEEKS)}
+                            placeholder={formatText('general.howManyWeeks')}
                             value={props.formikProps.values[key]}
                             onSelect={value =>
                                 props.formikProps.setFieldValue(key, value)
@@ -137,18 +130,18 @@ class WomenOnly extends React.Component {
             >
                 <DentistIcon />
                 <Onboarding.StepTitleText
-                    text={formatText(MEDICALHISTORYFORM_WOMENONLY_WOMENONLY)}
+                    text={formatText('medicalHistoryForm.womenOnly.womenOnly')}
                 />
                 <Onboarding.StepBlurbText
                     text={formatText(
-                        MEDICALHISTORYFORM_WOMENONLY_PLEASECOMPLETEIFPREGNANT
+                        'medicalHistoryForm.womenOnly.pleaseCompleteIfPregnant'
                     )}
                 />
 
                 <Box>
                     <Onboarding.FormItemLabelText
                         text={formatText(
-                            MEDICALHISTORYFORM_WOMENONLY_AREYOUPREGNANT
+                            'medicalHistoryForm.womenOnly.areYouPregnant'
                         )}
                     />
                     {_range(4).map(i =>
@@ -165,7 +158,7 @@ class WomenOnly extends React.Component {
                     onClick={() => props.formikProps.submitForm()}
                 >
                     {props.formikProps.dirty
-                        ? formatText(GENERAL_NEXT)
+                        ? formatText('general.next')
                         : 'Skip'}
                 </Onboarding.NextButton>
             </Flex>

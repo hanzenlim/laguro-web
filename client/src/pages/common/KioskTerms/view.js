@@ -2,10 +2,6 @@ import * as React from 'react';
 import { Box } from '../../../components';
 import { Terms } from '../Terms';
 import { Onboarding } from '../the-bright-side-components';
-import {
-    BOOKAPPOINTMENT_TERMS_TERMS,
-    BOOKAPPOINTMENT_TERMS_AGREE,
-} from '../../../strings/messageStrings';
 import { injectIntl } from 'react-intl';
 import { getFormatTextFromProps } from '../../../util/intlUtils';
 
@@ -15,7 +11,7 @@ class KioskTermsView extends React.Component {
         return (
             <Box height={['calc(100vh - 170px)', '', 'calc(100vh - 200px)']}>
                 <Onboarding.StepTitleText
-                    text={formatText(BOOKAPPOINTMENT_TERMS_TERMS)}
+                    text={formatText('bookAppointment.terms.terms')}
                 />
                 <Box
                     p="16px"
@@ -31,7 +27,7 @@ class KioskTermsView extends React.Component {
                     loading={this.props.isSubmitting}
                     onClick={() => this.props.formikProps.submitForm()}
                 >
-                    {formatText(BOOKAPPOINTMENT_TERMS_AGREE)}
+                    {formatText('bookAppointment.terms.agree')}
                 </Onboarding.NextButton>
             </Box>
         );

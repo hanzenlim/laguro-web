@@ -7,20 +7,6 @@ import InfoIcon from '../../../components/Icon/infoIcon';
 import PinInput from '../PinInput';
 import { getFormatTextFromProps } from '../../../util/intlUtils';
 import { injectIntl } from 'react-intl';
-import {
-    GENERAL_SEND,
-    GENERAL_PLEASEFILL,
-    GENERAL_MUSTHAVE10,
-    GENERAL_INVALIDPHONE,
-    REGISTRATION_STEPTWO_STEPTWO,
-    REGISTRATION_STEPTWO_TYPEINFORMATION,
-    REGISTRATION_STEPTWO_PHONE,
-    REGISTRATION_STEPTWO_VERIFICATIONCODESENT,
-    REGISTRATION_STEPTWO_ENTERVERIFICATIONCODE,
-    REGISTRATION_STEPTWO_SENDING,
-    REGISTRATION_STEPTWO_PHONEVERIFIED,
-    REGISTRATION_STEPTWO_CREATENEWACCOUNT,
-} from '../../../strings/messageStrings';
 
 class KioskRegisterView extends React.Component {
     validate = phoneNumber => {
@@ -30,15 +16,15 @@ class KioskRegisterView extends React.Component {
             !_isEmpty(phoneNumber) && phoneNumber.length === 10;
 
         if (!phoneNumber) {
-            return formatText(GENERAL_PLEASEFILL);
+            return formatText('general.pleaseFill');
         }
 
         if (!isNumeric) {
-            return formatText(GENERAL_INVALIDPHONE);
+            return formatText('general.invalidPhone');
         }
 
         if (!hasCorrectDigitCount) {
-            return formatText(GENERAL_MUSTHAVE10);
+            return formatText('general.mustHave10');
         }
 
         return '';
@@ -57,14 +43,14 @@ class KioskRegisterView extends React.Component {
                     <InfoIcon />
                 </Flex>
                 <Onboarding.StepTitleText
-                    text={formatText(REGISTRATION_STEPTWO_STEPTWO)}
+                    text={formatText('registration.stepTwo.stepTwo')}
                 />
                 <Onboarding.StepBlurbText
-                    text={formatText(REGISTRATION_STEPTWO_TYPEINFORMATION)}
+                    text={formatText('registration.stepTwo.typeInformation')}
                 />
                 <Flex flexDirection="column" mb="40px">
                     <Flex alignItems="flex-start" mb="10px">
-                        <Text>{formatText(REGISTRATION_STEPTWO_PHONE)}</Text>
+                        <Text>{formatText('registration.stepTwo.phone')}</Text>
                     </Flex>
 
                     <Flex>
@@ -116,7 +102,7 @@ class KioskRegisterView extends React.Component {
                                 }
                             }}
                         >
-                            {formatText(GENERAL_SEND)}
+                            {formatText('general.send')}
                         </Button>
                     </Flex>
                     {this.props.formikProps.errors.emailOrPhoneNumber && (
@@ -133,7 +119,7 @@ class KioskRegisterView extends React.Component {
                         <div>
                             <Text color="#3481f8" fontSize="12px" mb={15}>
                                 {formatText(
-                                    REGISTRATION_STEPTWO_VERIFICATIONCODESENT
+                                    'registration.stepTwo.verificationCodeSent'
                                 )}
                             </Text>
 
@@ -141,7 +127,7 @@ class KioskRegisterView extends React.Component {
                                 <Box mb={10}>
                                     <Text>
                                         {formatText(
-                                            REGISTRATION_STEPTWO_ENTERVERIFICATIONCODE
+                                            'registration.stepTwo.enterVerificationCode'
                                         )}
                                     </Text>
                                 </Box>
@@ -162,7 +148,7 @@ class KioskRegisterView extends React.Component {
                                 {this.props.formikProps.isSubmitting && (
                                     <Text color="#3481f8" fontSize="12px">
                                         {formatText(
-                                            REGISTRATION_STEPTWO_SENDING
+                                            'registration.stepTwo.sending'
                                         )}
                                     </Text>
                                 )}
@@ -170,7 +156,7 @@ class KioskRegisterView extends React.Component {
                                 {this.props.formikProps.values.isPinValid && (
                                     <Text color="#3481f8" fontSize="12px">
                                         {formatText(
-                                            REGISTRATION_STEPTWO_PHONEVERIFIED
+                                            'registration.stepTwo.phoneVerified'
                                         )}
                                     </Text>
                                 )}
@@ -195,7 +181,7 @@ class KioskRegisterView extends React.Component {
                             this.props.formikProps.values.code.length !== 6
                         }
                     >
-                        {formatText(REGISTRATION_STEPTWO_CREATENEWACCOUNT)}
+                        {formatText('registration.stepTwo.createNewAccount')}
                     </Onboarding.NextButton>
                 )}
             </Flex>
