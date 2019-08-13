@@ -13,10 +13,11 @@ const { Desktop, TabletMobile } = Responsive;
 
 const CATEGORIES = [
     'All categories',
-    'CHAIR_RENTAL',
-    'TREATMENT_PLAN',
-    'IMAGE_REQUEST',
-    'POS_TRANSACTION',
+    'Treatment',
+    'Chair',
+    'Services',
+    'ACH',
+    'Promo',
 ];
 
 const FILTER_BUTTON_STYLES = `
@@ -116,23 +117,42 @@ const renderTransactionPrice = (amount, { isValid = true }) => {
     );
 };
 
-// TODO confirm these string values
-const TYPE_TO_FILTER_NAME = {
-    TREATMENT_PLAN: 'Treatment',
-    IMAGE_REQUEST: 'Images',
-    CHAIR_RENTAL: 'Chair Rental',
-    POS_TRANSACTION: 'Pos Transactions',
+const DISPLAY_NAME_TO_TYPES = {
+    Treatment: [
+        'TREATMENT_PLAN_SERVICE_FEE',
+        'TREATMENT_PLAN_PAYMENT',
+        'TREATMENT_PLAN',
+    ],
+    Chair: ['CHAIR_RENTAL_SERVICE_FEE', 'CHAIR_RENTAL'],
+    Services: [
+        'IMAGE_REQUEST',
+        'POS_TRANSACTION_TYPE',
+        'POS_TRANSACTION_SERVICE_FEE_TYPE',
+    ],
+    ACH: [
+        'ACH_DEPOSIT_TYPE',
+        'ACH_WITHDRAWAL_TYPE',
+        'ACH_WITHDRAWAL_FEE_TYPE',
+        'LAGURO_CREDIT_PURCHASE_TYPE',
+    ],
+    Promo: ['ADD_LAGURO_CREDIT_TYPE'],
     [`All categories`]: 'All categories',
 };
 
 const TYPE_TO_DISPLAY_NAME = {
-    TREATMENT_PLAN: 'Treatment',
-    IMAGE_REQUEST: 'Images',
-    CHAIR_RENTAL: 'Chair Rental',
-    POS_TRANSACTION_TYPE: 'Pos Transaction',
-    TREATMENT_PLAN_SERVICE_FEE: 'Treatment Service Fee',
-    CHAIR_RENTAL_SERVICE_FEE: 'Chair Rental Service Fee',
+    TREATMENT_PLAN_SERVICE_FEE: 'Treatment',
     TREATMENT_PLAN_PAYMENT: 'Treatment',
+    TREATMENT_PLAN: 'Treatment',
+    CHAIR_RENTAL_SERVICE_FEE: 'Chair',
+    CHAIR_RENTAL: 'Chair',
+    IMAGE_REQUEST: 'Services',
+    POS_TRANSACTION_TYPE: 'Services',
+    POS_TRANSACTION_SERVICE_FEE_TYPE: 'Services',
+    ACH_DEPOSIT_TYPE: 'ACH',
+    ACH_WITHDRAWAL_TYPE: 'ACH',
+    ACH_WITHDRAWAL_FEE_TYPE: 'ACH',
+    LAGURO_CREDIT_PURCHASE_TYPE: 'ACH',
+    ADD_LAGURO_CREDIT_TYPE: 'Promo',
     [`All categories`]: 'All categories',
 };
 
@@ -171,7 +191,9 @@ const WalletTransactions = ({
             width: 150,
             render: type => TYPE_TO_DISPLAY_NAME[type],
             onFilter: (value, record) =>
-                value === 'All categories' ? true : record.type.includes(value),
+                value === 'All categories'
+                    ? true
+                    : DISPLAY_NAME_TO_TYPES[value].includes(record.type),
         },
         {
             key: 'description',
@@ -193,7 +215,7 @@ const WalletTransactions = ({
     const filteredTransactions = mappedTransactions.filter(t =>
         filteredInfo.type[0] === 'All categories'
             ? true
-            : t.type.includes(filteredInfo.type[0])
+            : DISPLAY_NAME_TO_TYPES[filteredInfo.type[0]].includes(t.type)
     );
     const filteredAmounts = filteredTransactions.map(t =>
         t.isValid ? t.amount : 0
@@ -255,7 +277,7 @@ const WalletTransactions = ({
                         >
                             {CATEGORIES.map(item => (
                                 <Select.Option key={item} value={item}>
-                                    {TYPE_TO_FILTER_NAME[item]}
+                                    {item}
                                 </Select.Option>
                             ))}
                         </StyledSelect>
