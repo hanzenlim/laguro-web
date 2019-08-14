@@ -45,7 +45,7 @@ class PatientsListContainer extends PureComponent {
             return this.setState({ filteredPatients: null });
 
         const filteredPatients = patients.filter(patient =>
-            patient.name.includes(searchString)
+            patient.name.toLowerCase().includes(searchString.toLowerCase())
         );
         return this.setState({ filteredPatients });
     };
