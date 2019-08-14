@@ -10,6 +10,26 @@ const StyledInput = styled(InputNumber)`
         height: 60px;
         width: 100%;
         font-size: 40px;
+        border: none;
+        box-shadow: none;
+
+        .ant-input-number-handler-wrap {
+            border: none;
+        }
+
+        .ant-input-number-handler {
+            border: 1px solid #f2f2f2;
+        }
+
+        .ant-input-number-handler-up {
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .ant-input-number-handler-down {
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
 
         input {
             text-align: center;

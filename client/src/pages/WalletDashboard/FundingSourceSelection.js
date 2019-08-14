@@ -117,19 +117,30 @@ const Overlay = ({ bankAccounts, setVisibility, isWithdrawCreditMode }) => {
             borderRadius={25}
             p={22}
         >
+            <Text
+                fontSize={0}
+                fontWeight="medium"
+                pb={10}
+                borderBottom="1px solid"
+                borderColor="#f2f2f2"
+            >
+                Bank accounts
+            </Text>
             {bankAccounts.length ? (
-                <StyledMenu
-                    onClick={({ key }) => {
-                        setFundingSource(normalizedBankAccounts[key]);
-                        setVisibility(false);
-                    }}
-                >
-                    {bankAccounts.map(bankAccount => (
-                        <Menu.Item key={bankAccount.fundingSourceUrl}>
-                            <Text fontSize={0}>{bankAccount.name}</Text>
-                        </Menu.Item>
-                    ))}
-                </StyledMenu>
+                <Box pl={14}>
+                    <StyledMenu
+                        onClick={({ key }) => {
+                            setFundingSource(normalizedBankAccounts[key]);
+                            setVisibility(false);
+                        }}
+                    >
+                        {bankAccounts.map(bankAccount => (
+                            <Menu.Item key={bankAccount.fundingSourceUrl}>
+                                <Text fontSize={0}>{bankAccount.name}</Text>
+                            </Menu.Item>
+                        ))}
+                    </StyledMenu>
+                </Box>
             ) : (
                 <Text textAlign="center" fontSize={0}>
                     No funding source available.

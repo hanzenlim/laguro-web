@@ -226,15 +226,10 @@ const WalletTransactions = ({
             <Flex
                 justifyContent="space-between"
                 flexDirection={['column', '', 'row']}
-                alignItems={['unset', '', 'flex-end']}
-                mb={11}
+                alignItems={['unset', '', 'center']}
+                mb={10}
             >
-                <Text
-                    fontSize={1}
-                    letterSpacing="-0.39px"
-                    color="text.lightGray"
-                    mb={[18, '', 'unset']}
-                >
+                <Text fontSize={2} fontWeight="medium" mb={[14, '', 0]}>
                     Transactions
                 </Text>
                 <Flex
