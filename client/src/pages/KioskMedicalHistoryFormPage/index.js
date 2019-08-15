@@ -135,7 +135,16 @@ const KioskMedicalHistoryFormPage = props => {
                                     innerKeys.forEach(innerKey => {
                                         newArray.push({
                                             key: innerKey,
-                                            value: values[valueKey][innerKey],
+                                            value:
+                                                typeof values[valueKey][
+                                                    innerKey
+                                                ] === 'boolean'
+                                                    ? values[valueKey][
+                                                          innerKey
+                                                      ].toString()
+                                                    : values[valueKey][
+                                                          innerKey
+                                                      ],
                                         });
                                     });
                                 });

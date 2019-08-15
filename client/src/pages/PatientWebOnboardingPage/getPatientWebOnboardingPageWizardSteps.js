@@ -633,7 +633,10 @@ export const getPatientWebOnboardingPageWizardSteps = ({
                 innerKeys.forEach(innerKey => {
                     newArray.push({
                         key: innerKey,
-                        value: allValues[valueKey][innerKey],
+                        value:
+                            typeof allValues[valueKey][innerKey] === 'boolean'
+                                ? allValues[valueKey][innerKey].toString()
+                                : allValues[valueKey][innerKey],
                     });
                 });
             });
