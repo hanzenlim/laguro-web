@@ -54,10 +54,11 @@ const AboutSection = ({ desktopOnly }) => (
                         title="Laguro"
                         width="100%"
                         height={desktopOnly ? 488 : 244}
-                        src="https://www.youtube.com/embed/Y7-jkeZAn40"
+                        src="https://player.vimeo.com/video/354290976?autopause=0"
                         frameBorder="0"
-                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen"
                         allowFullScreen
+                        a
                     />
                 </Box>
             </Grid>
