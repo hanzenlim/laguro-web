@@ -110,7 +110,7 @@ class ProfileButton extends Component {
                                 }
                             >
                                 <LinkButton textProps={{ fontWeight: 'bold' }}>
-                                    Log in
+                                    Log in / Sign up
                                 </LinkButton>
                             </Link>
                         </HeaderLinkContainer>

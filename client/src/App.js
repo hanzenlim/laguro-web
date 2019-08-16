@@ -12,7 +12,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import { trackPageview, trackUserAuth } from './util/trackingUtils';
 import { getUser } from './util/authUtils';
 
-import './Silka.css';
+import './Fonts.css';
 import theme from './components/theme';
 import './App.css';
 import {

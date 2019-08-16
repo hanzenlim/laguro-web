@@ -16,7 +16,6 @@ import {
 const StyledForm = styled(Form)`
     && {
         display: flex;
-        margin-top: 34px;
         width: 100%;
         text-align: center;
 
@@ -45,26 +44,29 @@ const StyledButton = styled(Button)`
 `;
 
 const NewsletterView = props => (
-    <Flex bg="background.navyBlue" width="100%x">
+    <Flex bg="background.navyBlue" width="100%x" py={[36, '', 75]}>
         <Container>
             <Text
+                fontFamily="IowanOldStyle"
                 fontWeight="bold"
                 color="text.white"
-                fontSize={[3, '', 5]}
-                mt="37px"
+                fontSize={[3, '', 40]}
                 textAlign="center"
+                mb={[12, '', 34]}
             >
                 Subscribe to our newsletter
             </Text>
+
             <Text
-                fontWeight="300"
+                fontWeight="light"
                 color="text.white"
                 fontSize={[1, '', 2]}
-                mt="12px"
+                mb={[26, '', 34]}
                 textAlign="center"
             >
                 Join our newsletter for latest updates and special offers.
             </Text>
+
             <Flex width="100%" justifyContent="center">
                 <Box width={['100%', '', '535px']}>
                     <StyledForm noValidate onSubmit={props.handleSubmit}>
@@ -84,36 +86,36 @@ const NewsletterView = props => (
                                     htmlType="submit"
                                     height="50px"
                                     loading={props.isSubmitting}
+                                    fontSize={[1, '', 2]}
                                 >
                                     Join
                                 </StyledButton>
                             </Flex>
-                            <Flex
-                                width="100%"
-                                height="15px"
-                                mt="24px"
-                                alignItems="center"
-                                justifyContent="center"
-                            >
-                                {props.submitCount > 0 &&
-                                    props.touched.email &&
-                                    props.errors.email && (
-                                        <React.Fragment>
-                                            <Icon type="alert" />
-                                            <Text
-                                                style={{
-                                                    'white-space': 'pre',
-                                                }}
-                                                color="white"
-                                                fontSize="12px"
-                                                ml="8px"
-                                                lineHeight="1"
-                                            >
-                                                {props.errors.email}
-                                            </Text>
-                                        </React.Fragment>
-                                    )}
-                            </Flex>
+
+                            {props.submitCount > 0 &&
+                                props.touched.email &&
+                                props.errors.email && (
+                                    <Flex
+                                        width="100%"
+                                        height="15px"
+                                        mt="24px"
+                                        alignItems="center"
+                                        justifyContent="center"
+                                    >
+                                        <Icon type="alert" />
+                                        <Text
+                                            style={{
+                                                'white-space': 'pre',
+                                            }}
+                                            color="white"
+                                            fontSize="12px"
+                                            ml="8px"
+                                            lineHeight="1"
+                                        >
+                                            {props.errors.email}
+                                        </Text>
+                                    </Flex>
+                                )}
                         </Box>
                     </StyledForm>
                 </Box>

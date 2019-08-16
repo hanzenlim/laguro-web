@@ -211,18 +211,6 @@ class Header extends Component {
                                 />
                             </HeaderLinkContainer>
                         )}
-                        {/* Blog link doesn't show if user is both dentist and host on mobile */}
-                        {!(!desktopOnly && isDentist && isHost) && (
-                            <HeaderLinkContainer>
-                                <Link
-                                    isExternal
-                                    target="_blank"
-                                    to="https://blog.laguro.com/"
-                                >
-                                    <LinkButton>Blog</LinkButton>
-                                </Link>
-                            </HeaderLinkContainer>
-                        )}
 
                         <ProfileButton
                             pathname={pathname}
