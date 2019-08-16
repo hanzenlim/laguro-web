@@ -32,7 +32,7 @@ const tabContents = [
         title: 'Best match',
         subtitle: 'Every smile is unique.',
         description:
-            'Based on your dental problem, setting, and preferred language, we will curate the best appointment options for you. Our personalized appointments technology is powered by our own cutting-edge matching engine that brings you the right dentist for your specific needs.',
+            'Based on your dental problem, settings, and preferred language, we will curate the best appointment options for you. Our personalized appointments technology is powered by our own cutting-edge matching engine that brings you the right dentist for your specific needs.',
         imageUrl: personalizedAppointmentsImg,
     },
     {
@@ -45,7 +45,7 @@ const tabContents = [
     {
         title: 'Flexible time',
         subtitle:
-            'We live busy lives so fitting in dental appointments six months from now can be tricky.',
+            'We live busy lives, so fitting in dental appointments six months from now can be tricky.',
         description:
             'Laguro makes it super easy for you to search and review dentists, and instantly book the next available appointment. Rescheduling is not a problem; we believe this process should be fast, simple, and hassle-free.',
         imageUrl: flexibleTimeImg,
