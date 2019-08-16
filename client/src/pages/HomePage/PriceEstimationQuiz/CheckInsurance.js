@@ -14,8 +14,8 @@ const selection = [
 const CheckInsurance = ({ setFormStep, history }) => (
     <Box mt={20}>
         <Text fontSize={0} color="#757575" maxWidth={320} mx="auto">
-            By entering your insurance information, we’ll give you an estimate
-            of how much you’ll be paying for this procedure.
+            We’ll give you an estimate of how much you’ll be paying for this
+            procedure.
         </Text>
 
         <Flex width={324} mt={24} mx="auto" justifyContent="space-between">
@@ -42,11 +42,7 @@ const CheckInsurance = ({ setFormStep, history }) => (
                                     );
                                     setTimeout(() => {
                                         history.push(
-                                            `/dentist/search?dayAvailability=${
-                                                form.values.dayAvailability
-                                            }&timeAvailability=${
-                                                form.values.timeAvailability
-                                            }`
+                                            `/dentist/search?bundleGroup=${form.values.bundleGroup}&dayAvailability=${form.values.dayAvailability}&timeAvailability=${form.values.timeAvailability}&age=${form.values.age}`
                                         );
                                     }, 3000);
                                 }
@@ -61,6 +57,7 @@ const CheckInsurance = ({ setFormStep, history }) => (
                                         ? 'divider.blue'
                                         : '#dfe0e2'
                                 }
+                                bg="background.white"
                                 boxShadow="0 2px 7px 0 rgba(48, 53, 73, 0.1)"
                                 textAlign="center"
                             >

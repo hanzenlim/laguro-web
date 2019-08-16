@@ -15,6 +15,7 @@ import InsuranceProvider from './InsuranceProvider';
 import AskPrimaryHolder from './AskPrimaryHolder';
 import AskHolderInfo from './AskHolderInfo';
 import GetBirthday from './GetBirthday';
+import GetAge from './GetAge';
 import MemberIdStep from './MemberIdStep';
 import Loader from './Loader';
 import { FORM_STEPS, FORM_LOADERS } from '.';
@@ -48,7 +49,7 @@ const shouldNextButtonRender = step => {
     const stepsWithNext = [
         FORM_STEPS.INPUT_NAME,
         FORM_STEPS.INPUT_BIRTHDAY,
-        FORM_STEPS.GET_INSURANCE_PROVIDER,
+        FORM_STEPS.INPUT_AGE,
         FORM_STEPS.ASK_HOLDER_INFO,
         FORM_STEPS.INPUT_HOLDER_BIRTHDAY,
     ];
@@ -89,6 +90,17 @@ const checkIfNextOnBdayIsDisabled = (values, isInputHolderBirthday) => {
     return isBdayFieldsEmpty || isMinor;
 };
 
+const checkIfNextOnAgeIsDisabled = values => {
+    const isAgeFieldEmpty = !values['age'];
+
+    let isMinor = true;
+
+    if (values.age) {
+        isMinor = values.age < 18;
+    }
+    return isAgeFieldEmpty || isMinor;
+};
+
 // Check disabled state for next button. Return true to set it to disabled mode
 const checkDisabledState = (step, values) => {
     if (step === FORM_STEPS.INPUT_NAME)
@@ -96,6 +108,10 @@ const checkDisabledState = (step, values) => {
 
     if (step === FORM_STEPS.INPUT_BIRTHDAY) {
         return checkIfNextOnBdayIsDisabled(values, false);
+    }
+
+    if (step === FORM_STEPS.INPUT_AGE) {
+        return checkIfNextOnAgeIsDisabled(values);
     }
 
     if (step === FORM_STEPS.GET_INSURANCE_PROVIDER)
@@ -135,11 +151,11 @@ const PriceEstimationQuiz = ({
     ];
 
     const stepsWithPreText = [
-        FORM_STEPS.CHECK_INSURANCE,
-        FORM_STEPS.GET_INSURANCE_PROVIDER,
-        FORM_STEPS.ASK_PRIMARY_HOLDER,
-        FORM_STEPS.INPUT_HOLDER_BIRTHDAY,
-        FORM_STEPS.INPUT_MEMBER_ID,
+        // FORM_STEPS.CHECK_INSURANCE,
+        // FORM_STEPS.GET_INSURANCE_PROVIDER,
+        // FORM_STEPS.ASK_PRIMARY_HOLDER,
+        // FORM_STEPS.INPUT_HOLDER_BIRTHDAY,
+        // FORM_STEPS.INPUT_MEMBER_ID,
     ];
 
     const onClose = useCallback(() => toggleQuizVisibility(), []);
@@ -228,12 +244,14 @@ const PriceEstimationQuiz = ({
                                 <GetBirthday />
                             )}
 
+                            {step === FORM_STEPS.INPUT_AGE && <GetAge />}
+
                             {step === FORM_STEPS.CHECK_INSURANCE && (
                                 <CheckInsurance setFormStep={setFormStep} />
                             )}
 
                             {step === FORM_STEPS.GET_INSURANCE_PROVIDER && (
-                                <InsuranceProvider />
+                                <InsuranceProvider setFormStep={setFormStep} />
                             )}
 
                             {step === FORM_STEPS.ASK_PRIMARY_HOLDER && (

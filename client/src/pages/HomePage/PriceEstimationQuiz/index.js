@@ -12,14 +12,15 @@ export const FORM_STEPS = {
     SELECT_BUNDLE_GROUP: 'Which procedure are you looking for?',
     SELECT_TIME_AVAILABILITY: 'When are you available for your appointment?',
     SELECT_DAYS: 'Which days do you prefer?',
-    INPUT_NAME: 'What is your name?',
+    // INPUT_NAME: 'What is your name?',
     INPUT_BIRTHDAY: 'When is your birthday?',
+    INPUT_AGE: 'How old are you?',
     CHECK_INSURANCE: 'Do you have insurance?',
     GET_INSURANCE_PROVIDER: 'What is the name of your insurance provider?',
-    ASK_PRIMARY_HOLDER: 'Are you the primary holder?',
-    ASK_HOLDER_INFO: `What is the primary holder's name?`,
-    INPUT_HOLDER_BIRTHDAY: `When is the primary holder's birthday?`,
-    INPUT_MEMBER_ID: `Insurance Information`,
+    // ASK_PRIMARY_HOLDER: 'Are you the primary holder?',
+    // ASK_HOLDER_INFO: `What is the primary holder's name?`,
+    // INPUT_HOLDER_BIRTHDAY: `When is the primary holder's birthday?`,
+    // INPUT_MEMBER_ID: `Insurance Information`,
 };
 
 export const FORM_LOADERS = {
@@ -100,11 +101,15 @@ const PriceEstimationQuiz = ({
                 break;
 
             case FORM_STEPS.INPUT_BIRTHDAY:
-                setFormStep(FORM_STEPS.INPUT_NAME);
+                setFormStep(FORM_STEPS.SELECT_DAYS);
+                break;
+
+            case FORM_STEPS.INPUT_AGE:
+                setFormStep(FORM_STEPS.SELECT_DAYS);
                 break;
 
             case FORM_STEPS.CHECK_INSURANCE:
-                setFormStep(FORM_STEPS.INPUT_BIRTHDAY);
+                setFormStep(FORM_STEPS.INPUT_AGE);
                 break;
 
             case FORM_STEPS.GET_INSURANCE_PROVIDER:
@@ -141,6 +146,10 @@ const PriceEstimationQuiz = ({
                 break;
 
             case FORM_STEPS.INPUT_BIRTHDAY:
+                setFormStep(FORM_STEPS.CHECK_INSURANCE);
+                break;
+
+            case FORM_STEPS.INPUT_AGE:
                 setFormStep(FORM_STEPS.CHECK_INSURANCE);
                 break;
 
@@ -248,9 +257,7 @@ const PriceEstimationQuiz = ({
                     setErrors({
                         memberId:
                             parsedError.type === 'Onederful'
-                                ? `${parsedError.message[0].reason}. ${
-                                      parsedError.message[0].followup
-                                  }.`
+                                ? `${parsedError.message[0].reason}. ${parsedError.message[0].followup}.`
                                 : 'Something went wrong. Please Try again later.',
                     });
                 } finally {

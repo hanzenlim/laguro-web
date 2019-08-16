@@ -25,7 +25,7 @@ const DaysSelection = ({ setFormStep }) => (
                         mx="auto"
                         onClick={() => {
                             form.setFieldValue('dayAvailability', value);
-                            setFormStep(FORM_STEPS.INPUT_NAME);
+                            setFormStep(FORM_STEPS.INPUT_AGE);
                         }}
                     >
                         <Box
