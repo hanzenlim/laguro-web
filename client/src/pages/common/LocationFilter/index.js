@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import fetch from 'unfetch';
 import _get from 'lodash/get';
 import { useDebounce } from 'use-debounce';
+import PlacesAutocomplete, {
+    geocodeByAddress,
+    getLatLng,
+} from 'react-places-autocomplete';
 
 import { formatAddress } from '../../../util/styleUtil';
 import LocationFilterView from './view';
 import esClient from '../../../util/esClient';
 import { DENTISTS, DENTIST, LOCATION } from '../../../util/strings';
 import history from '../../../history';
-import { mapBoxApiKey } from '../../../config/keys';
 
 const fetchDentistsFromES = async queryString => {
     const res = await esClient.search({
@@ -39,24 +41,11 @@ const fetchDentistsFromES = async queryString => {
     return res;
 };
 
-const fetchLocationsFromMapbox = async (queryString, locationType) => {
-    const header = { 'Content-Type': 'application/json' };
-    const locationTypeFilter = locationType ? `&types=${locationType}` : '';
-    const path = `https://api.mapbox.com/geocoding/v5/mapbox.places/${queryString}.json?access_token=${mapBoxApiKey}&country=us${locationTypeFilter}`;
-
-    const result = await fetch(path, {
-        headers: header,
-    });
-
-    return result.json();
-};
-
 const LocationFilter = props => {
-    const initialRender = React.useRef(false);
     const [queryString, setQueryString] = useState(props.initialValue || '');
-    const [locationResults, setLocationResults] = useState([]);
     const [dentistResults, setDentistResults] = useState([]);
-    const [debouncedSearchTerm] = useDebounce(queryString, 300);
+    const initialRender = React.useRef(false);
+    const [debouncedSearchTerm] = useDebounce(queryString, 700);
 
     useEffect(() => {
         setQueryString(props.initialValue);
@@ -68,68 +57,50 @@ const LocationFilter = props => {
             return;
         }
 
-        const value = debouncedSearchTerm;
-        const { onTextChange, onSearch, locationType } = props;
+        if (props.onTextChange) {
+            props.onTextChange(debouncedSearchTerm);
+        }
 
-        if (onTextChange) onTextChange(value);
-        if (value && value.length > 2) {
-            Promise.all(
-                props.withDentists
-                    ? [
-                          fetchLocationsFromMapbox(value, locationType),
-                          fetchDentistsFromES(value),
-                      ]
-                    : [fetchLocationsFromMapbox(value, locationType)]
-            )
-                .then(async results => {
-                    const formattedMapboxResults = results[0].features.map(
-                        place => ({
-                            value: {
-                                name: place.place_name,
-                                lat: place.center[1],
-                                long: place.center[0],
-                            },
-                            text: place.place_name,
-                        })
-                    );
-                    const formattedESResults = results[1]
-                        ? results[1].hits.hits.slice(0, 2).map(dentist => ({
-                              name: dentist._source.name,
-                              dentistId: dentist._id,
-                              specialty: dentist._source.specialty,
-                              location: formatAddress(
-                                  _get(
-                                      dentist,
-                                      '_source.reservations[0].address',
-                                      ''
+        if (debouncedSearchTerm && debouncedSearchTerm.length > 2) {
+            if (props.withDentists) {
+                fetchDentistsFromES(debouncedSearchTerm)
+                    .then(async results => {
+                        const formattedESResults = results
+                            ? results.hits.hits.slice(0, 2).map(dentist => ({
+                                  name: dentist._source.name,
+                                  dentistId: dentist._id,
+                                  specialty: dentist._source.specialty,
+                                  location: formatAddress(
+                                      _get(
+                                          dentist,
+                                          '_source.reservations[0].address',
+                                          ''
+                                      ),
+                                      _get(
+                                          dentist,
+                                          '_source.reservations[0].addressDetails',
+                                          ''
+                                      )
                                   ),
-                                  _get(
-                                      dentist,
-                                      '_source.reservations[0].addressDetails',
-                                      ''
-                                  )
-                              ),
-                          }))
-                        : [];
+                              }))
+                            : [];
 
-                    setLocationResults(formattedMapboxResults);
-                    setDentistResults(formattedESResults);
-                    if (onSearch) onSearch(formattedMapboxResults);
-                    return null;
-                })
-                .catch(err => {
-                    setLocationResults([]);
-                    setDentistResults([]);
-                    // eslint-disable-next-line
-                    console.warn(err);
-                });
+                        setDentistResults(formattedESResults);
+
+                        return null;
+                    })
+                    .catch(err => {
+                        setDentistResults([]);
+                        // eslint-disable-next-line
+                        console.warn(err);
+                    });
+            }
         } else {
-            setLocationResults([]);
             setDentistResults([]);
         }
     }, [debouncedSearchTerm]);
 
-    const handleChange = async value => {
+    const handleChange = value => {
         setQueryString(value);
     };
 
@@ -138,26 +109,84 @@ const LocationFilter = props => {
             props.onQueryString(option.props.data.string);
         }
         if (option.props.data.type === LOCATION) {
-            props.onLocationChange(option.props.data.location);
-            setQueryString(value);
-            setLocationResults([]);
+            setQueryString(option.props.data.location.description);
+            const response = await geocodeByAddress(
+                option.props.data.location.description
+            );
+            const latLng = await getLatLng(response[0]);
+            props.onLocationChange({
+                id: option.props.data.location.placeId,
+                name: option.props.data.location.description,
+                lat: latLng.lat,
+                long: latLng.lng,
+            });
             setDentistResults([]);
         } else if (option.props.data.type === DENTIST) {
             history.push(`/dentist/${option.props.data.id}`);
         }
     };
 
+    const getSuggestions = suggestions => {
+        let predictions = [];
+        if (props.locationType !== 'address') {
+            suggestions.forEach(prediction => {
+                const descriptionElements = prediction.description.split(',');
+                // Remove country from array of descriptions
+                descriptionElements.pop();
+                const newDescription = descriptionElements.join(',');
+                predictions.push({
+                    ...prediction,
+                    description: newDescription,
+                });
+            });
+        } else {
+            predictions = suggestions;
+        }
+        if (props.onSearch) {
+            onSearch(
+                suggestions.map(location => ({
+                    id: location.place_id,
+                    description: location.description,
+                }))
+            );
+        }
+        return predictions;
+    };
+
+    const searchOptions = {
+        types: props.locationType ? [props.locationType] : ['(regions)'],
+        componentRestrictions: { country: 'us' },
+    };
+
     const { onSearch, ...rest } = props;
 
     return (
-        <LocationFilterView
-            queryString={queryString}
-            locationResults={locationResults}
-            dentistResults={dentistResults}
-            handleChange={handleChange}
-            handleSuggestionSelect={handleSuggestionSelect}
-            {...rest}
-        />
+        <PlacesAutocomplete
+            value={queryString}
+            onChange={handleChange}
+            searchOptions={searchOptions}
+            debounce={700}
+        >
+            {({ getInputProps, suggestions }) => {
+                const parsedSuggestions = getSuggestions(suggestions);
+                return (
+                    <LocationFilterView
+                        queryString={queryString}
+                        locationResults={parsedSuggestions}
+                        dentistResults={dentistResults}
+                        handleChange={value =>
+                            getInputProps().onChange({
+                                target: {
+                                    value,
+                                },
+                            })
+                        }
+                        handleSuggestionSelect={handleSuggestionSelect}
+                        {...rest}
+                    />
+                );
+            }}
+        </PlacesAutocomplete>
     );
 };
 
