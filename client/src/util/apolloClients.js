@@ -61,5 +61,5 @@ export const walletClient = getClient({
 });
 
 export const pricingClient = getClient({
-    uri: process.env.REACT_APP_sGRAPHQL_PRICING_API,
+    uri: process.env.REACT_APP_GRAPHQL_PRICING_API,
 });
