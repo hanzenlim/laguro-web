@@ -4,8 +4,6 @@ import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 
 import { execute } from '../../util/gqlUtils';
-import { insuranceClient } from '../../util/apolloClients';
-import { CHECK_ELIGIBILITY } from './queries';
 import {
     KioskInsurance,
     getKioskInsuranceInitialValues,
@@ -118,61 +116,6 @@ export const getPatientInsuranceFormWizardSteps = ({ user, mutations }) => [
             formikProps.setSubmitting(true);
             const updateInsuranceHasNoError = await execute({
                 reportGqlErrorOnly: true,
-                beforeAction: async () => {
-                    const isDependent = isPrimaryHolder === 'no';
-
-                    const checkEligibilityWithoutDependentInput = {
-                        patientId: user.id,
-                        firstName: user.firstName,
-                        lastName: user.lastName,
-                        dob: user.dob,
-                        insuranceInfo: {
-                            insuranceProvider,
-                            insuranceProviderId,
-                            policyHolderId: patientInsuranceNum,
-                        },
-                    };
-
-                    const checkEligibilityWithDependentInput = {
-                        patientId: user.id,
-                        firstName: policyHolderUser.firstName,
-                        lastName: policyHolderUser.lastName,
-                        dob: `${policyHolderUser.birthMonth}/${policyHolderUser.birthDate}/${policyHolderUser.birthYear}`,
-                        insuranceInfo: {
-                            insuranceProvider,
-                            insuranceProviderId,
-                            policyHolderId: patientInsuranceNum,
-                        },
-                        dependentFirstName: user.firstName,
-                        dependentLastName: user.lastName,
-                        dependentDob: user.dob,
-                    };
-
-                    const eligibility = !hasNoInsurance
-                        ? await insuranceClient.query({
-                              query: CHECK_ELIGIBILITY,
-                              variables: {
-                                  input: isDependent
-                                      ? checkEligibilityWithDependentInput
-                                      : checkEligibilityWithoutDependentInput,
-                              },
-                              fetchPolicy: 'network-only',
-                          })
-                        : null;
-
-                    const isEligible = _get(
-                        eligibility,
-                        'data.checkEligibility.isEligible',
-                        false
-                    );
-
-                    if (!isEligible && !hasNoInsurance) {
-                        const errorMessage =
-                            'Your insurance information has expired. Please contact your insurance provider to resolve this issue';
-
-                        throw new Error({ clientErrorMessage: errorMessage });
-                    }
-                },
                 action: async () => {
                     await updateInsuranceInfoMutation({
                         variables: {

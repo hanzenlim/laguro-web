@@ -5,8 +5,6 @@ import _isEmpty from 'lodash/isEmpty';
 import _find from 'lodash/find';
 import moment from 'moment';
 import { execute } from '../../util/gqlUtils';
-import { insuranceClient } from '../../util/apolloClients';
-import { CHECK_ELIGIBILITY } from './queries';
 import { ENGLISH } from '../../util/strings';
 import {
     KioskInsurance,
@@ -14,7 +12,6 @@ import {
 } from '../common/the-bright-side-components/components/Kiosk/KioskInsurance';
 import { HealthHistoryForm } from '../common/the-bright-side-components/components/Onboarding/Patient/HealthHistoryForm';
 import { policyHolderUserValidationSchema } from '../common/Family/FamilyMemberInsuranceForm/validators';
-import { getCheckEligibilityInput } from '../../util/mutationUtils';
 
 // contains getPatientWebOnboardingPageWizardSteps which return an array of step information objects, which contain step id(id), validations(validationSchema), and initialValues, given a user object. This user object is from getUser in PatientWebOnboardingPage/index.js.
 
@@ -323,73 +320,6 @@ export const getPatientWebOnboardingPageWizardSteps = ({
             formikProps.setSubmitting(true);
             const updateInsuranceHasNoError = await execute({
                 reportGqlErrorOnly: true,
-                beforeAction: async () => {
-                    const isDependent = isPrimaryHolder === 'no';
-
-                    const checkEligibilityAsPolicyHolderInput = getCheckEligibilityInput(
-                        {
-                            id: user.id,
-                            policyHolder: {
-                                firstName: user.firstName,
-                                lastName: user.lastName,
-                                dob: `${patientBirthMonth}/${patientBirthDate}/${patientBirthYear}`,
-                            },
-                            insurance: {
-                                insuranceProvider,
-                                insuranceProviderId,
-                                policyHolderId: patientInsuranceNum,
-                            },
-                        }
-                    );
-
-                    const checkEligibilityAsDependentInput = getCheckEligibilityInput(
-                        {
-                            id: user.id,
-                            policyHolder: {
-                                firstName: policyHolderUser.firstName,
-                                lastName: policyHolderUser.lastName,
-                                dob: `${policyHolderUser.birthMonth}/${policyHolderUser.birthDate}/${policyHolderUser.birthYear}`,
-                            },
-                            dependent: {
-                                firstName: user.firstName,
-                                lastName: user.lastName,
-                                dob: moment(
-                                    `${patientBirthMonth}/${patientBirthDate}/${patientBirthYear}`
-                                ).format('MM/DD/YYYY'),
-                            },
-                            insurance: {
-                                insuranceProvider,
-                                insuranceProviderId,
-                                policyHolderId: patientInsuranceNum,
-                            },
-                        }
-                    );
-
-                    const eligibility = !hasNoInsurance
-                        ? await insuranceClient.query({
-                              query: CHECK_ELIGIBILITY,
-                              variables: {
-                                  input: isDependent
-                                      ? checkEligibilityAsDependentInput
-                                      : checkEligibilityAsPolicyHolderInput,
-                              },
-                              fetchPolicy: 'network-only',
-                          })
-                        : null;
-
-                    const isEligible = _get(
-                        eligibility,
-                        'data.checkEligibility.isEligible',
-                        false
-                    );
-
-                    if (!isEligible && !hasNoInsurance) {
-                        const errorMessage =
-                            'Your insurance information has expired. Please contact your insurance provider to resolve this issue';
-
-                        throw new Error({ clientErrorMessage: errorMessage });
-                    }
-                },
                 action: async () => {
                     await updateInsuranceInfoMutation({
                         variables: {

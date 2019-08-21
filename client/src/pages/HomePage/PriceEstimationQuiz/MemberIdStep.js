@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Field, ErrorMessage } from 'formik';
 import styled from 'styled-components';
 
@@ -12,7 +11,7 @@ const StyledButton = styled(Button)`
     }
 `;
 
-const MemberIdStep = ({ isCheckEligibilityLoading }) => (
+const MemberIdStep = (
     <Box mt={22} textAlign="center">
         <Text fontSize={0} color="#757575" maxWidth={320} mb={25} mx="auto">
             You can find this information on your insurance card
@@ -52,7 +51,6 @@ const MemberIdStep = ({ isCheckEligibilityLoading }) => (
                 height={60}
                 fontWeight="bold"
                 fontSize={1}
-                loading={isCheckEligibilityLoading}
                 htmlType="submit"
             >
                 Calculate my price estimation
@@ -72,9 +70,5 @@ const MemberIdStep = ({ isCheckEligibilityLoading }) => (
         </Text>
     </Box>
 );
-
-MemberIdStep.propTypes = {
-    isCheckEligibilityLoading: PropTypes.bool.isRequired,
-};
 
 export default MemberIdStep;

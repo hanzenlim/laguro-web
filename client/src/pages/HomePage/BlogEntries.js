@@ -165,7 +165,7 @@ const Entry = ({ imageUrl, title, excerpt, entryUrl, categories }) => {
 
                 <Text fontWeight="light" fontSize={[1, '', 3]} mb={30}>
                     <Truncate lines={4}>
-                        <div
+                        <span
                             // eslint-disable-next-line react/no-danger
                             dangerouslySetInnerHTML={{
                                 __html: excerpt,
@@ -201,7 +201,7 @@ Entry.propTypes = {
     entryUrl: PropTypes.string.isRequired,
     categories: PropTypes.arrayOf(
         PropTypes.shape({
-            id: PropTypes.string,
+            id: PropTypes.number,
             name: PropTypes.string,
             color: PropTypes.string,
         })

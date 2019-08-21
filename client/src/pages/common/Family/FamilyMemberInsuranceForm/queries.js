@@ -46,12 +46,3 @@ export const getFamilyQuery = gql`
         }
     }
 `;
-
-export const CHECK_ELIGIBILITY_QUERY = gql`
-    query checkEligibility($input: InsurancePatientInput!) {
-        checkEligibility(input: $input) {
-            id
-            isEligible
-        }
-    }
-`;

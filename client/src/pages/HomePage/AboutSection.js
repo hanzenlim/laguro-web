@@ -58,7 +58,6 @@ const AboutSection = ({ desktopOnly }) => (
                         frameBorder="0"
                         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; fullscreen"
                         allowFullScreen
-                        a
                     />
                 </Box>
             </Grid>

@@ -3,6 +3,7 @@ import { message as warningMessage } from 'antd';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import _isEmpty from 'lodash/isEmpty';
+import { compose } from 'react-apollo';
 
 import { Flex, Responsive } from '../../../components';
 import { withScreenSizes } from '../../../components/Responsive';
@@ -35,14 +36,14 @@ class Login extends Component {
         }
     }
 
+    setReference = node => {
+        this.pinInputRef = node;
+    };
+
     toggleLoginTitle = () => {
         this.setState(state => ({
             showLoginTitle: !state.showLoginTitle,
         }));
-    };
-
-    setReference = node => {
-        this.pinInputRef = node;
     };
 
     clear = () => {
@@ -52,7 +53,14 @@ class Login extends Component {
     };
 
     render() {
-        const { closeModal, history, customRedirect, sideEffect } = this.props;
+        const {
+            closeModal,
+            history,
+            customRedirect,
+            sideEffect,
+            mode,
+        } = this.props;
+
         const { showLoginTitle } = this.state;
 
         return (
@@ -87,6 +95,7 @@ class Login extends Component {
                                     clear={this.clear}
                                     customRedirect={customRedirect}
                                     sideEffect={sideEffect}
+                                    mode={mode}
                                 />
                             </StyledFlex>
                         </Flex>
@@ -119,6 +128,7 @@ class Login extends Component {
                                     clear={this.clear}
                                     customRedirect={customRedirect}
                                     sideEffect={sideEffect}
+                                    mode={mode}
                                 />
                             </StyledFlex>
                         </Flex>
@@ -128,4 +138,8 @@ class Login extends Component {
         );
     }
 }
-export default withScreenSizes(withRouter(Login));
+
+export default compose(
+    withScreenSizes,
+    withRouter
+)(Login);

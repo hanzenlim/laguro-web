@@ -2,7 +2,8 @@ import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import ReactTruncate from 'react-truncate';
 
-import { Text } from '../../components';
+import Text from '../Text';
+import Button from '../Button';
 
 const ShowMore = () => (
     <Text
@@ -26,9 +27,15 @@ class Truncate extends PureComponent {
     }
 
     renderToggle = () => (
-        <span onClick={() => this.setState({ open: true })}>
-            …{this.props.toggle || (this.props.hasToggle && <ShowMore />)}
-        </span>
+        <Button
+            type="ghost"
+            height="auto"
+            onClick={() => this.setState({ open: true })}
+        >
+            <Text is="span">
+                …{this.props.toggle || (this.props.hasToggle && <ShowMore />)}
+            </Text>
+        </Button>
     );
 
     render() {
@@ -49,9 +56,14 @@ class Truncate extends PureComponent {
     }
 }
 
+Truncate.defaultProps = {
+    toggle: '',
+};
+
 Truncate.propTypes = {
     lines: PropTypes.number.isRequired,
-    children: PropTypes.string.isRequired,
+    children: PropTypes.oneOfType([PropTypes.string, PropTypes.node])
+        .isRequired,
     toggle: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
 };
 

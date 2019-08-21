@@ -11,44 +11,38 @@ const LoginModal = ({
     message,
     customRedirect,
     sideEffect,
-}) => (
-    <Modal
-        onCancel={closeLoginModal}
-        destroyOnClose={true}
-        visible={isLoginModalOpen}
-        width={600}
-        bodyStyle={{ height: 600, padding: 0 }}
-    >
+    mode,
+}) => {
+    const login = (
         <Login
             closeModal={toggleLoginModal}
             message={message}
             customRedirect={customRedirect}
             sideEffect={sideEffect}
+            mode={mode}
         />
-    </Modal>
-);
+    );
 
-LoginModal.defaultProps = {
-    login: () => {},
-    closeModal: () => {},
-    visible: false,
-    message: '',
-    closable: true,
-    isSubmitting: false,
+    return (
+        <Modal
+            onCancel={closeLoginModal}
+            destroyOnClose
+            visible={isLoginModalOpen}
+            width={600}
+            bodyStyle={{ height: 600, padding: 0 }}
+        >
+            {login}
+        </Modal>
+    );
 };
 
 LoginModal.propTypes = {
-    login: PropTypes.func,
-    closeModal: PropTypes.func,
-    visible: PropTypes.bool,
-    message: PropTypes.string,
-    closable: PropTypes.bool,
-    isSubmitting: PropTypes.bool,
     isLoginModalOpen: PropTypes.bool.isRequired,
     toggleLoginModal: PropTypes.func.isRequired,
     closeLoginModal: PropTypes.func.isRequired,
     customRedirect: PropTypes.string.isRequired,
     sideEffect: PropTypes.func.isRequired,
+    mode: PropTypes.string.isRequired,
 };
 
 export default LoginModal;

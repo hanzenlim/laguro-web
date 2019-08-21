@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Box, Container, Text, Button, Image } from '../../components';
+import { Box, Container, Text, Button, Image, Link } from '../../components';
 import devicesImage from '../../images/devices.png';
 import { withScreenSizes } from '../../components/Responsive';
 import emitter from '../../util/emitter';
@@ -26,10 +26,21 @@ const TopCallToAction = ({ desktopOnly }) => (
                     >
                         You could earn a $100 treatment credit.
                     </Text>
-                    <Text fontSize={[1, '', 2]} mb={[12, '', 26]}>
-                        Earn a $100 credit to use toward your next appointment
-                        when you create your free account with us today. Terms
-                        apply.
+                    <Text fontSize={[1, '', 4]} mb={[12, '', 26]}>
+                        {`Earn a $100 credit to use toward your next appointment
+                        when you create your free account with us today. `}
+                        <Text is="span" fontSize={[1, '', 2]}>
+                            Terms apply.{' '}
+                        </Text>
+                        <Link to="/laguro-credits-terms">
+                            <Text
+                                is="span"
+                                fontSize={[1, '', 2]}
+                                color="text.blue"
+                            >
+                                Learn more
+                            </Text>
+                        </Link>
                     </Text>
 
                     <Button
@@ -37,7 +48,9 @@ const TopCallToAction = ({ desktopOnly }) => (
                         width={150}
                         fontSize={2}
                         style={{ borderRadius: 30 }}
-                        onClick={() => emitter.emit('loginModal')}
+                        onClick={() =>
+                            emitter.emit('loginModal', { mode: 'getName' })
+                        }
                     >
                         Sign up
                     </Button>

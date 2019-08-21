@@ -83,7 +83,7 @@ export const RegisterOrLoginStep = props => (
                             ? props.customRedirect
                             : history.location.pathname;
                         history.push(
-                            `/onboarding/name-and-persona/?redirectTo=${redirect}`
+                            `/onboarding/terms/?redirectTo=${redirect}`
                         );
                     } else {
                         // Redirect based on user data
@@ -141,9 +141,7 @@ export const RegisterOrLoginStep = props => (
                                   props.formikProps.values.emailOrPhoneNumber,
                           }
                         : {
-                              phoneNumber: `+1${
-                                  props.formikProps.values.emailOrPhoneNumber
-                              }`,
+                              phoneNumber: `+1${props.formikProps.values.emailOrPhoneNumber}`,
                           }),
                     ...(phoneNumberFromSignup && {
                         phoneNumber: `+1${phoneNumberFromSignup}`,

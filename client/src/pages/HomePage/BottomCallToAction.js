@@ -43,7 +43,9 @@ const BottomCallToAction = () => (
                     type="ghost"
                     height={[50, '', 60]}
                     style={{ borderRadius: 30, overflow: 'hidden' }}
-                    onClick={() => emitter.emit('loginModal')}
+                    onClick={() =>
+                        emitter.emit('loginModal', { mode: 'getName' })
+                    }
                 >
                     <Text
                         bg="background.white"

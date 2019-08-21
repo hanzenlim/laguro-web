@@ -138,7 +138,6 @@ const PriceEstimationQuiz = ({
     setIsHolder,
     formikProps,
     toggleQuizVisibility,
-    isCheckEligibilityLoading,
 }) => {
     const title = step;
     const { handleSubmit, values } = formikProps;
@@ -270,11 +269,7 @@ const PriceEstimationQuiz = ({
                             )}
 
                             {step === FORM_STEPS.INPUT_MEMBER_ID && (
-                                <MemberIdStep
-                                    isCheckEligibilityLoading={
-                                        isCheckEligibilityLoading
-                                    }
-                                />
+                                <MemberIdStep />
                             )}
                         </Box>
                     </Box>
@@ -340,7 +335,6 @@ PriceEstimationQuiz.propTypes = {
     formikProps: PropTypes.shape({
         handleSubmit: PropTypes.func,
     }).isRequired,
-    isCheckEligibilityLoading: PropTypes.bool.isRequired,
 };
 
 export default PriceEstimationQuiz;

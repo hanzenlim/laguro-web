@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import system from 'system-components';
 import { Box } from '../';
 
@@ -37,7 +37,8 @@ const GridSystem = system(
     'position',
     'alignItems',
     'justifyItems',
-    'width'
+    'width',
+    'maxWidth'
 );
 
 const GridItemSystem = system(
@@ -50,12 +51,9 @@ const GridItemSystem = system(
     'position'
 );
 
-class Grid extends Component {
-    render() {
-        const { children, ...rest } = this.props;
-        return <GridSystem {...rest}> {children} </GridSystem>;
-    }
-}
+const Grid = ({ children, ...rest }) => (
+    <GridSystem {...rest}> {children} </GridSystem>
+);
 
 Grid.GridItem = GridItemSystem;
 

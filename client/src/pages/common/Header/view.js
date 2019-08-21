@@ -9,7 +9,7 @@ import { Icon, Responsive, Link, Flex } from '../../../components/';
 import LoginModal from '../Modals/LoginModal';
 import { intercomKey } from '../../../config/keys';
 import { DentistLink, HostLink } from './Links';
-import { LinkButton, HeaderLinkContainer } from './common';
+import { HeaderLinkContainer } from './common';
 import { HEADER_HEIGHT } from './constants';
 import {
     getPageType,
@@ -109,6 +109,7 @@ class Header extends Component {
             desktopOnly,
             customRedirect,
             sideEffect,
+            mode,
         } = this.props;
 
         let placeholder;
@@ -154,13 +155,14 @@ class Header extends Component {
                 style={{ zIndex: 600 }}
                 position={position()}
             >
-                <IntercomContainer auth={auth} pathname={pathname} />
+                <IntercomContainer auth={auth || {}} pathname={pathname} />
                 <LoginModal
                     toggleLoginModal={toggleLoginModal}
                     closeLoginModal={closeLoginModal}
                     isLoginModalOpen={isLoginModalOpen}
                     customRedirect={customRedirect}
                     sideEffect={sideEffect}
+                    mode={mode}
                 />
                 <Container
                     display="flex"
@@ -169,14 +171,13 @@ class Header extends Component {
                     alignItems="center"
                 >
                     <Flex>
-                        <Link mr={32} to={'/'} display="flex">
+                        <Link mr={32} to="/" display="flex">
                             {/* mb is because the icon has extra space at the bottom */}
                             <Flex alignItems="center" height="100%" mb={6}>
                                 <Icon
                                     type={getLogoType()}
-                                    isButton={true}
-                                    width="auto"
-                                    height={[22, '', 37]}
+                                    isButton
+                                    fontSize={[50, '', 80]}
                                 />
                             </Flex>
                         </Link>
@@ -232,24 +233,20 @@ class Header extends Component {
 }
 
 Header.defaultProps = {
-    visibleModal: null,
     auth: null,
     onLogout: () => {},
     toggleLoginModal: () => {},
-    isSubmitting: false,
     isDentist: null,
     isHost: null,
 };
 
 Header.propTypes = {
-    auth: PropTypes.object,
+    auth: PropTypes.shape({}),
     onLogout: PropTypes.func,
-    openLoginModal: PropTypes.func,
-    isSubmitting: PropTypes.bool,
     isDentist: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
     isHost: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
     toggleLoginModal: PropTypes.func,
-    pathname: PropTypes.string,
+    pathname: PropTypes.string.isRequired,
     isLoginModalOpen: PropTypes.bool.isRequired,
     closeLoginModal: PropTypes.func.isRequired,
     hasUpdatedDentistBio: PropTypes.bool.isRequired,

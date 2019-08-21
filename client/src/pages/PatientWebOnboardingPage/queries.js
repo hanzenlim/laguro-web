@@ -119,12 +119,3 @@ export const GET_PATIENT_HEALTH_DATA_UNSTRUCTURED = gql`
         }
     }
 `;
-
-export const CHECK_ELIGIBILITY = gql`
-    query checkEligibility($input: InsurancePatientInput!) {
-        checkEligibility(input: $input) {
-            id
-            isEligible
-        }
-    }
-`;

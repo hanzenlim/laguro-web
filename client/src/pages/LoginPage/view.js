@@ -1,37 +1,34 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+
 import { Box, Responsive } from '../../components';
 import LoginModal from '../common/Modals/LoginModal';
 import Login from '../common/Login';
 
 const { Mobile, TabletDesktop } = Responsive;
 
-const LoginPageView = ({ isLoginModalOpen, toggleLoginModal, message }) => (
+const LoginPageView = ({
+    isLoginModalOpen,
+    toggleLoginModal,
+    message,
+    mode,
+}) => (
     <Box>
         <Mobile>
-            <Login closeModal={toggleLoginModal} message={message} />
+            <Login
+                closeModal={toggleLoginModal}
+                message={message}
+                mode={mode}
+            />
         </Mobile>
         <TabletDesktop>
             <LoginModal
                 isLoginModalOpen={isLoginModalOpen}
                 toggleLoginModal={toggleLoginModal}
                 message={message}
+                mode={mode}
             />
         </TabletDesktop>
     </Box>
 );
-
-LoginPageView.defaultProps = {
-    login: () => {},
-    closeModal: () => {},
-    visible: false,
-};
-
-LoginPageView.propTypes = {
-    login: PropTypes.func,
-    closeModal: PropTypes.func,
-    visible: PropTypes.bool,
-    isSubmitting: PropTypes.bool,
-};
 
 export default LoginPageView;

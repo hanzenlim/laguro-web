@@ -31,13 +31,6 @@ export const getAppointmentsQuery = gql`
             localStartTime
             localEndTime
             status
-            payment {
-                id
-                procedures {
-                    id
-                    name
-                }
-            }
         }
     }
 `;

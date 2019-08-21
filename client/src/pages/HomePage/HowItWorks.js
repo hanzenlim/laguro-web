@@ -1,5 +1,4 @@
 import React, { Fragment } from 'react';
-import { Helmet } from 'react-helmet';
 
 import { Box, Container, Grid, Text, Image } from '../../components';
 import Step1Img from '../../images/how-it-works-step-1.png';
@@ -26,15 +25,8 @@ const steps = [
 
 const HowItWorks = () => (
     <Fragment>
-        <Helmet>
-            <title>How It Works - Laguro</title>
-            <link rel="canonical" href="https://www.laguro.com/#how-it-works" />
-            <meta
-                name="description"
-                content="Learn more about Laguro Patient's five-step on-boarding process and how it works"
-            />
-        </Helmet>
         <Box
+            id="how-it-works"
             pt={[86, '', 400]}
             pb={[0, '', 172]}
             background="linear-gradient(to bottom, #ffffff, #f4f8ff 43%, #f4f2ff)"

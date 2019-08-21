@@ -144,13 +144,6 @@ PatientAppoinmentsView.propTypes = {
             localStartTime: PropTypes.string,
             localEndTime: PropTypes.string,
             status: PropTypes.string,
-            payment: PropTypes.shape({
-                id: PropTypes.string,
-                procedures: PropTypes.shape({
-                    id: PropTypes.string,
-                    name: PropTypes.string,
-                }),
-            }),
         })
     ),
 };

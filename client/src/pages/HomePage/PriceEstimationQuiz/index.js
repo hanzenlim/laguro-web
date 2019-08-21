@@ -4,8 +4,8 @@ import { Formik } from 'formik';
 import _get from 'lodash/get';
 
 import PriceEstimationQuizView from './view';
-import { CHECK_ELIGIBILITY, GET_BUNDLE_GROUP_COVERAGE } from './queries';
-import { insuranceClient, pricingClient } from '../../../util/apolloClients';
+import { GET_BUNDLE_GROUP_COVERAGE } from './queries';
+import { pricingClient } from '../../../util/apolloClients';
 import { trackPriceEstimationQuizStep } from '../../../util/trackingUtils';
 
 export const FORM_STEPS = {
@@ -39,9 +39,6 @@ const PriceEstimationQuiz = ({
     const [progress, setProgress] = useState((1 / formStepsKeys.length) * 100);
     const [step, setStep] = useState(FORM_STEPS.SELECT_BUNDLE_GROUP);
     const [isHolder, setIsHolder] = useState(true);
-    const [isCheckEligibilityLoading, setCheckEligibilityLoading] = useState(
-        false
-    );
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -200,97 +197,48 @@ const PriceEstimationQuiz = ({
                     holderBirthDay,
                     holderBirthYear,
                     insuranceProvider,
-                    memberId,
                     holderFirstName,
                     holderLastName,
                     isPrimaryHolder,
                     bundleGroup,
-                    planOrGroupNumber,
                 } = values;
                 let response = {};
                 let patientId = '';
 
                 // Check Eligibility query run
-                try {
-                    patientId = (isPrimaryHolder
-                        ? `${lastName}-${firstName}-${insuranceProvider}-${birthMonth}${birthDay}${birthYear}`
-                        : `${holderLastName}-${holderFirstName}-${insuranceProvider}-${holderBirthMonth}${holderBirthDay}${holderBirthYear}`
-                    )
-                        .replace(/\s+/g, '-')
-                        .toUpperCase();
 
-                    setCheckEligibilityLoading(true);
-                    response = await insuranceClient.query({
-                        query: CHECK_ELIGIBILITY,
+                patientId = (isPrimaryHolder
+                    ? `${lastName}-${firstName}-${insuranceProvider}-${birthMonth}${birthDay}${birthYear}`
+                    : `${holderLastName}-${holderFirstName}-${insuranceProvider}-${holderBirthMonth}${holderBirthDay}${holderBirthYear}`
+                )
+                    .replace(/\s+/g, '-')
+                    .toUpperCase();
+
+                // getBundleGroupCoverage run
+                try {
+                    setFormStep(FORM_LOADERS.CALCULATING_PRICE);
+                    response = await pricingClient.query({
+                        query: GET_BUNDLE_GROUP_COVERAGE,
                         variables: {
                             input: {
-                                anonymous: true,
                                 patientId,
-                                firstName: firstName.toUpperCase(),
-                                lastName: lastName.toUpperCase(),
-                                dob: `${birthMonth}/${birthDay}/${birthYear}`,
-                                insuranceInfo: {
-                                    insuranceProviderId: insuranceProvider,
-                                    insuranceProvider,
-                                    policyHolderId: memberId,
-                                    planOrGroupNumber,
-                                },
-                                ...(!isPrimaryHolder
-                                    ? {
-                                          dependentFirstName: holderFirstName.toUpperCase(),
-                                          dependentLastName: holderLastName.toUpperCase(),
-                                          dependentDob: `${holderBirthMonth}/${holderBirthDay}/${holderBirthYear}`,
-                                      }
-                                    : {}),
+                                bundleGroup,
                             },
                         },
                     });
-                } catch (error) {
-                    const gqlErrorOnly = _get(
-                        error,
-                        'graphQLErrors[0].message'
-                    );
-                    const parsedError = JSON.parse(
-                        gqlErrorOnly.replace('Error: ', '')
-                    );
 
+                    setBundleGroupCoverageData(
+                        _get(response, 'data.getBundleGroupCoverage')
+                    );
+                    setFormValues(values);
+                    toggleQuizVisibility();
+                    setQuizDone(true);
+                } catch (error) {
                     setErrors({
                         memberId:
-                            parsedError.type === 'Onederful'
-                                ? `${parsedError.message[0].reason}. ${parsedError.message[0].followup}.`
-                                : 'Something went wrong. Please Try again later.',
+                            'Something went wrong. Please Try again later.',
                     });
-                } finally {
-                    setCheckEligibilityLoading(false);
-                }
-
-                // getBundleGroupCoverage run
-                if (_get(response, 'data.checkEligibility.isEligible')) {
-                    try {
-                        setFormStep(FORM_LOADERS.CALCULATING_PRICE);
-                        response = await pricingClient.query({
-                            query: GET_BUNDLE_GROUP_COVERAGE,
-                            variables: {
-                                input: {
-                                    patientId,
-                                    bundleGroup,
-                                },
-                            },
-                        });
-
-                        setBundleGroupCoverageData(
-                            _get(response, 'data.getBundleGroupCoverage')
-                        );
-                        setFormValues(values);
-                        toggleQuizVisibility();
-                        setQuizDone(true);
-                    } catch (error) {
-                        setErrors({
-                            memberId:
-                                'Something went wrong. Please Try again later.',
-                        });
-                        setFormStep(FORM_STEPS.INPUT_MEMBER_ID);
-                    }
+                    setFormStep(FORM_STEPS.INPUT_MEMBER_ID);
                 }
             }}
             render={formikProps => (
@@ -302,7 +250,6 @@ const PriceEstimationQuiz = ({
                     setFormStep={setFormStep}
                     setIsHolder={setIsHolder}
                     toggleQuizVisibility={toggleQuizVisibility}
-                    isCheckEligibilityLoading={isCheckEligibilityLoading}
                     formikProps={formikProps}
                 />
             )}

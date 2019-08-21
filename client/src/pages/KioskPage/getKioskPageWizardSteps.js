@@ -8,9 +8,7 @@ import moment from 'moment-timezone';
 
 import { execute } from '../../util/gqlUtils';
 import { getDentistTimes, redirectFromHealthHistory } from './utils';
-import { insuranceClient } from '../../util/apolloClients';
 import { trackBookAppointment } from '../../util/trackingUtils';
-import { CHECK_ELIGIBILITY } from './queries';
 import { ENGLISH } from '../../util/strings';
 import {
     KioskInsurance,
@@ -324,63 +322,6 @@ export const getKioskPageWizardSteps = ({
             formikProps.setSubmitting(true);
             const updateInsuranceHasNoError = await execute({
                 reportGqlErrorOnly: true,
-                beforeAction: async () => {
-                    const isDependent = isPrimaryHolder === 'no';
-
-                    const checkEligibilityWithoutDependentInput = {
-                        patientId: user.id,
-                        firstName: user.firstName,
-                        lastName: user.lastName,
-                        dob: `${patientBirthMonth}/${patientBirthDate}/${patientBirthYear}`,
-                        insuranceInfo: {
-                            insuranceProvider,
-                            insuranceProviderId,
-                            policyHolderId: patientInsuranceNum,
-                        },
-                    };
-
-                    const checkEligibilityWithDependentInput = {
-                        patientId: user.id,
-                        firstName: policyHolderUser.firstName,
-                        lastName: policyHolderUser.lastName,
-                        dob: `${policyHolderUser.birthMonth}/${policyHolderUser.birthDate}/${policyHolderUser.birthYear}`,
-                        insuranceInfo: {
-                            insuranceProvider,
-                            insuranceProviderId,
-                            policyHolderId: patientInsuranceNum,
-                        },
-                        dependentFirstName: user.firstName,
-                        dependentLastName: user.lastName,
-                        dependentDob: moment(
-                            `${patientBirthMonth}/${patientBirthDate}/${patientBirthYear}`
-                        ).format('MM/DD/YYYY'),
-                    };
-
-                    const eligibility = !hasNoInsurance
-                        ? await insuranceClient.query({
-                              query: CHECK_ELIGIBILITY,
-                              variables: {
-                                  input: isDependent
-                                      ? checkEligibilityWithDependentInput
-                                      : checkEligibilityWithoutDependentInput,
-                              },
-                              fetchPolicy: 'network-only',
-                          })
-                        : null;
-
-                    const isEligible = _get(
-                        eligibility,
-                        'data.checkEligibility.isEligible',
-                        false
-                    );
-
-                    if (!isEligible && !hasNoInsurance) {
-                        const errorMessage =
-                            'Your insurance information has expired. Please contact your insurance provider to resolve this issue';
-
-                        throw new Error({ clientErrorMessage: errorMessage });
-                    }
-                },
                 action: async () => {
                     const formattedValues = {
                         userId,

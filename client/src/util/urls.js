@@ -6,13 +6,15 @@ import history from '../history';
 const SELETED_TAB_SEARCH_PARAM_VALUE = 'selectedTab';
 
 // pages for all users
-export const ONBOARDING_NAME_AND_PERSONA_PAGE = '/onboarding/name-and-persona/';
+export const ONBOARDING_TERMS_PAGE_URL = '/onboarding/terms/';
 export const LOGIN_PAGE_URL = '/login';
 export const RESET_PASSWORD_PAGE_URL = '/reset-password';
 export const ABOUT_PAGE_URL = '/about';
 export const GENERAL_ERROR_PAGE_URL = '/error';
 export const COUNTDOWN_PAGE_URL = '/countdown';
+export const SIGNUP_PROMO_PAGE_URL = '/promo100';
 export const TERMS_PAGE_URL = '/terms';
+export const LAGURO_CREDITS_TERMS_PAGE_URL = '/laguro-credits-terms';
 export const PRIVACY_PAGE_URL = '/privacy';
 export const KIOSK_URL = '/kiosk';
 export const KIOSK_REG_PAGE_URL = '/kiosk/registration';
@@ -20,7 +22,7 @@ export const NEW_REVIEW_PAGE_URL_PREFIX = '/review';
 export const KIOSK_OFFICE_SETUP_PAGE_URL = '/kiosk/office-setup';
 
 export const URLS_FOR_ALL_USER_PAGES = [
-    ONBOARDING_NAME_AND_PERSONA_PAGE,
+    ONBOARDING_TERMS_PAGE_URL,
     LOGIN_PAGE_URL,
     RESET_PASSWORD_PAGE_URL,
     ABOUT_PAGE_URL,

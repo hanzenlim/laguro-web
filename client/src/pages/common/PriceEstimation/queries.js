@@ -10,7 +10,7 @@ export const getAllBundles = gql`
 `;
 
 export const getBundleCoverage = gql`
-    query getBundleCoverage($input: GetBundleCoverageInput) {
+    query getBundleCoverage($input: GetBundleCoverageInput!) {
         getBundleCoverage(input: $input) {
             id
             name

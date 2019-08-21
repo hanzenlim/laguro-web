@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Tabs } from 'antd';
 import styled from 'styled-components';
 
-import { Box, Text, Container, Grid, Image } from '../../components';
+import { Box, Text, Container, Grid, Image, Flex } from '../../components';
 import priceTransparencyImg from '../../images/price-transparency.gif';
 import dentalBenefitsImg from '../../images/dental-benefits.png';
 import personalizedAppointmentsImg from '../../images/personalized-appointments.png';
@@ -66,7 +66,13 @@ const FeatureTabs = () => {
     const onTabClick = key => setActiveKey(key);
 
     return (
-        <Box pt={[66, '', 170]} pb={[70, '', 80]} bg="background.white">
+        <Box
+            id="our-features"
+            pt={[66, '', 170]}
+            pb={[70, '', 80]}
+            bg="background.white"
+            minHeight={['auto', '', 1090]}
+        >
             <Container>
                 <Text
                     fontSize={[28, '', 50]}
@@ -88,6 +94,7 @@ const FeatureTabs = () => {
                     >
                         {tabContents.map((content, index) => (
                             <TabPane
+                                forceRender
                                 tab={
                                     <TabName
                                         name={content.title}
@@ -106,7 +113,7 @@ const FeatureTabs = () => {
                                         gridColumnGap={40}
                                         gridRowGap={40}
                                     >
-                                        <Box>
+                                        <Flex alignItems="center">
                                             <Box maxWidth={518} width="100%">
                                                 <Text
                                                     fontSize={[3, '', 26]}
@@ -120,12 +127,13 @@ const FeatureTabs = () => {
                                                     {content.description}
                                                 </Text>
                                             </Box>
-                                        </Box>
+                                        </Flex>
 
-                                        <Box>
+                                        <Box px={[0, '', 40]}>
                                             <Image
                                                 src={content.imageUrl}
                                                 maxWidth="100%"
+                                                mx="auto"
                                             />
                                         </Box>
                                     </Grid>

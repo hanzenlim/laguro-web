@@ -1,16 +1,19 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import _get from 'lodash/get';
+import { compose } from 'react-apollo';
+import { withRouter } from 'react-router-dom';
 
 import HeaderView from './view';
 import { withScreenSizes } from '../../../components/Responsive';
 import { onLogout, getUser } from '../../../util/authUtils';
 import emitter from '../../../util/emitter';
-import history from '../../../history';
 
 class HeaderContainer extends PureComponent {
     constructor(props) {
         super(props);
+
+        const { history } = this.props;
 
         this.state = {
             isSubmitting: false,
@@ -18,6 +21,7 @@ class HeaderContainer extends PureComponent {
             isLoginModalOpen: false,
             customRedirect: history.location.pathname,
             sideEffect: () => {},
+            mode: 'signIn',
         };
 
         history.listen(location => {
@@ -29,15 +33,20 @@ class HeaderContainer extends PureComponent {
         emitter.on('loginModal', args => {
             const redirectPath = _get(args, 'redirectPath');
             const sideEffect = _get(args, 'sideEffect');
+            const mode = _get(args, 'mode', 'signIn');
+
             const { mobileOnly } = this.props;
             if (mobileOnly) {
-                history.push(`/login?redirectTo=${this.state.pathname}`);
+                history.push(`/login?redirectTo=${this.state.pathname}`, {
+                    mode,
+                });
                 window.scrollTo(0, 0);
             } else {
                 this.setState({
                     isLoginModalOpen: true,
                     customRedirect: redirectPath || history.location.pathname,
                     sideEffect,
+                    mode,
                 });
             }
         });
@@ -45,18 +54,6 @@ class HeaderContainer extends PureComponent {
         this.toggleLoginModal = this.toggleLoginModal.bind(this);
         this.onLogout = this.onLogout.bind(this);
     }
-
-    toggleLoginModal = () => {
-        this.setState({
-            isLoginModalOpen: !this.state.isLoginModalOpen,
-        });
-    };
-
-    closeLoginModal = () => {
-        this.setState({
-            isLoginModalOpen: false,
-        });
-    };
 
     onLogout = () => {
         onLogout();
@@ -66,23 +63,47 @@ class HeaderContainer extends PureComponent {
         this.forceUpdate();
     };
 
+    closeLoginModal = () => {
+        this.setState({
+            isLoginModalOpen: false,
+            mode: 'signIn',
+        });
+    };
+
+    toggleLoginModal = () => {
+        this.setState({
+            isLoginModalOpen: !this.state.isLoginModalOpen,
+            mode: 'signIn',
+        });
+    };
+
     render() {
         const user = getUser();
+
+        const {
+            mode,
+            isSubmitting,
+            isLoginModalOpen,
+            pathname,
+            customRedirect,
+            sideEffect,
+        } = this.state;
 
         return (
             <HeaderView
                 auth={user}
-                isSubmitting={this.state.isSubmitting}
+                isSubmitting={isSubmitting}
                 isDentist={_get(user, 'isDentist')}
                 isHost={_get(user, 'isHost')}
                 hasUpdatedDentistBio={!!_get(user, 'hasUpdatedDentistBio')}
                 onLogout={this.onLogout}
                 toggleLoginModal={this.toggleLoginModal}
                 closeLoginModal={this.closeLoginModal}
-                isLoginModalOpen={this.state.isLoginModalOpen}
-                pathname={this.state.pathname}
-                customRedirect={this.state.customRedirect}
-                sideEffect={this.state.sideEffect}
+                isLoginModalOpen={isLoginModalOpen}
+                pathname={pathname}
+                customRedirect={customRedirect}
+                sideEffect={sideEffect}
+                mode={mode}
             />
         );
     }
@@ -92,4 +113,7 @@ HeaderContainer.propTypes = {
     mobileOnly: PropTypes.bool.isRequired,
 };
 
-export default withScreenSizes(HeaderContainer);
+export default compose(
+    withRouter,
+    withScreenSizes
+)(HeaderContainer);

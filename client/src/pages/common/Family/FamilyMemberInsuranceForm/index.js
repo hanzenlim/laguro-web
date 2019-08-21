@@ -9,13 +9,9 @@ import {
     updateInsuranceInfoMutation,
     getFamilyQuery,
     addInsuranceDependentMutation,
-    CHECK_ELIGIBILITY_QUERY,
 } from './queries';
 import { execute } from '../../../../util/gqlUtils';
 import FamilyMemberInsuranceFormView from './view';
-import { insuranceClient } from '../../../../util/apolloClients';
-
-import { getCheckEligibilityInput } from '../../../../util/mutationUtils';
 
 const Composed = adopt({
     updateInsuranceInfo: ({ render }) => (
@@ -131,7 +127,6 @@ class FamilyMemberInsuranceForm extends PureComponent {
         const {
             userId = '',
             onSuccess = () => {},
-            primaryUser = {},
         } = this.props;
         const { policyHolderUser } = values;
 
@@ -173,90 +168,6 @@ class FamilyMemberInsuranceForm extends PureComponent {
                 },
             },
         };
-
-        let isEligible = false;
-
-        const getCheckAvailabilityInput = () => {
-            const isDependentOfPrimaryUser =
-                values.hasOwnInsurance === 'no' &&
-                values.isUnderPrimaryUserInsurance === 'yes';
-
-            const isDependentOfDifferentPerson =
-                values.hasOwnInsurance === 'no' &&
-                values.isUnderPrimaryUserInsurance === 'no';
-
-            if (isDependentOfPrimaryUser) {
-                const checkEligibilityAsDependentOfPrimaryUserInput = getCheckEligibilityInput(
-                    {
-                        id: userId,
-                        policyHolder: {
-                            firstName: primaryUser.firstName,
-                            lastName: primaryUser.lastName,
-                            dob: `${primaryUser.birthMonth}/${primaryUser.birthDate}/${primaryUser.birthYear}`,
-                        },
-                        dependent: {
-                            firstName: values.firstName,
-                            lastName: values.lastName,
-                            dob: `${values.birthMonth}/${values.birthDate}/${values.birthYear}`,
-                        },
-                        insurance: insuranceInfo,
-                    }
-                );
-
-                return checkEligibilityAsDependentOfPrimaryUserInput;
-            } else if (isDependentOfDifferentPerson) {
-                const checkEligibilityAsDependentInput = getCheckEligibilityInput(
-                    {
-                        id: userId,
-                        policyHolder: {
-                            firstName: policyHolderUser.firstName,
-                            lastName: policyHolderUser.lastName,
-                            dob: `${policyHolderUser.birthMonth}/${policyHolderUser.birthDate}/${policyHolderUser.birthYear}`,
-                        },
-                        dependent: {
-                            firstName: values.firstName,
-                            lastName: values.lastName,
-                            dob: `${values.birthMonth}/${values.birthDate}/${values.birthYear}`,
-                        },
-                        insurance: insuranceInfo,
-                    }
-                );
-
-                return checkEligibilityAsDependentInput;
-            }
-
-            const checkEligibilityAsPolicyHolderInput = getCheckEligibilityInput(
-                {
-                    id: userId,
-                    policyHolder: {
-                        firstName: values.firstName,
-                        lastName: values.lastName,
-                        dob: `${values.birthMonth}/${values.birthDate}/${values.birthYear}`,
-                    },
-                    insurance: insuranceInfo,
-                }
-            );
-
-            return checkEligibilityAsPolicyHolderInput;
-        };
-
-        await execute({
-            reportGqlErrorOnly: true,
-            action: async () => {
-                const response = await insuranceClient.query({
-                    query: CHECK_ELIGIBILITY_QUERY,
-                    variables: {
-                        input: getCheckAvailabilityInput(),
-                    },
-                    fetchPolicy: 'network-only',
-                });
-                isEligible = _get(response, 'data.checkEligibility.isEligible');
-            },
-        });
-
-        if (!isEligible) {
-            return null;
-        }
 
         const result = await execute({
             action: async () => {

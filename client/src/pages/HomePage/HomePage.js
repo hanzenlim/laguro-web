@@ -23,12 +23,6 @@ const { withScreenSizes } = Responsive;
 // Main Component
 const HomePageView = ({ location }) => {
     useEffect(() => {
-        // used to scroll to hash location on load
-        const { hash } = location;
-        const id = hash.replace('#', '');
-        const element = document.getElementById(id);
-        if (element) element.scrollIntoView();
-
         const params = qs.parse(history.location.search);
 
         if (params && params.reason && params.reason === 'token-expiry') {
