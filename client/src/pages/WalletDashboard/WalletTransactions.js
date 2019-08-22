@@ -181,7 +181,7 @@ const WalletTransactions = ({
             key: 'dateCreated',
             dataIndex: 'dateCreated',
             width: 150,
-            render: dateCreated => moment(dateCreated).format('M/D/YY h:mA'),
+            render: dateCreated => moment(dateCreated).format('M/D/YY h:mmA'),
         },
         {
             key: 'type',
