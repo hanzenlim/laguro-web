@@ -177,7 +177,8 @@ class Header extends Component {
                                 <Icon
                                     type={getLogoType()}
                                     isButton
-                                    fontSize={[50, '', 80]}
+                                    width="auto"
+                                    height={[22, '', 37]}
                                 />
                             </Flex>
                         </Link>
