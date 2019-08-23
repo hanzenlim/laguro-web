@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import isEqual from 'lodash/isEqual';
 
+import { mapBoxApiKey } from '../../../config/keys';
 import { Box } from '../../../components';
 import MapInfoWindow from '../MapInfoWindow';
 import LocationPinForMap from '../../../components/Icon/LocationPinForMap';
@@ -20,9 +21,6 @@ const StyledNavigationControl = styled(NavigationControl)`
     top: 10px;
     left: 10px;
 `;
-
-const mapBoxApiKey =
-    'pk.eyJ1IjoibGFndXJvLWFkbWluIiwiYSI6ImNqaWc3enk2bDE0dDAzd3Blb2dyOXRvc2oifQ.Ketzla96PFhKDE8-VwAI5g';
 
 const MAP_STYLE = 'mapbox://styles/mapbox/streets-v9';
 

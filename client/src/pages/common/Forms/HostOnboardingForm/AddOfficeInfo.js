@@ -186,7 +186,7 @@ class AddOfficeInfo extends Component {
         // if options is not empty and the location field is not found in the dropdown options and if location form input is not empty, autocomplete has error
         const hasError =
             options &&
-            !options.map(item => item.text).includes(location) &&
+            !options.map(item => item.description).includes(location) &&
             !isEmpty(location);
 
         if (hasError) {

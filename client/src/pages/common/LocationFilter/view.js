@@ -31,8 +31,7 @@ const StyledAutocomplete = styled(AntdAutocomplete)`
         }
         && .ant-input {
             ${height};
-            padding-left: ${props =>
-                props.withSuffixIcon ? '42px' : '18px'};            
+            padding-left: ${props => (props.withSuffixIcon ? '42px' : '18px')};
             padding-right: 50px;
             border: 1px solid;
             border-color: ${props => props.theme.colors.divider.darkGray};
@@ -110,9 +109,9 @@ const LocationFilterView = ({
 }) => {
     const LocationOptions = locationResults.map(result => (
         <Option
-            key={result.text}
-            text={result.text}
-            data={{ type: LOCATION, location: result.value }}
+            key={result.description}
+            text={result.description}
+            data={{ type: LOCATION, location: result }}
             style={{ padding: 0, backgroundColor: 'white' }}
         >
             <StyledOption alignItems="center">
@@ -123,9 +122,9 @@ const LocationFilterView = ({
                     ml={6}
                     mr={10}
                 />
-                <Box width={width - 50}>
+                <Box width={[250, '', 400]}>
                     <Truncate lines={1} ellipsis trimWhitespace>
-                        {result.text}
+                        {result.description}
                     </Truncate>
                 </Box>
             </StyledOption>
