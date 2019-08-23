@@ -9,6 +9,7 @@ import { PaymentMethodContext } from './PaymentMethodModal';
 import { GET_DWOLLA_FUNDING_SOURCES } from '../queries';
 import { getUser } from '../../../util/authUtils';
 import { walletClient } from '../../../util/apolloClients';
+import PaymentMethods from '../../PaymentMethods';
 
 const BankAccounts = () => {
     const { setCurrentStep, PAYMENT_METHOD_STEPS } = useContext(
@@ -19,68 +20,80 @@ const BankAccounts = () => {
     return (
         <Box>
             <Text fontSize={0} mb={6}>
-                Bank Accounts
+                Credit/Debit cards
             </Text>
+            <PaymentMethods />
+            {process.env.REACT_APP_ENV !== 'production' && (
+                <Fragment>
+                    <Text fontSize={0} mb={6}>
+                        Bank Accounts
+                    </Text>
 
-            <Query
-                query={GET_DWOLLA_FUNDING_SOURCES}
-                variables={{ input: { userId: id } }}
-                client={walletClient}
-                fetchPolicy="network-only"
-            >
-                {({ data, loading, error }) => {
-                    if (loading) return <Loading />;
+                    <Query
+                        query={GET_DWOLLA_FUNDING_SOURCES}
+                        variables={{ input: { userId: id } }}
+                        client={walletClient}
+                        fetchPolicy="network-only"
+                    >
+                        {({ data, loading, error }) => {
+                            if (loading) return <Loading />;
 
-                    if (
-                        error &&
-                        !error.message.includes(
-                            'User has not registered for a dwolla account yet'
-                        )
-                    ) {
-                        return <div>Something went wrong.</div>;
-                    }
+                            if (
+                                error &&
+                                !error.message.includes(
+                                    'User has not registered for a dwolla account yet'
+                                )
+                            ) {
+                                return <div>Something went wrong.</div>;
+                            }
 
-                    const bankAccounts = _get(
-                        data,
-                        'getDwollaFundingSources',
-                        []
-                    );
+                            const bankAccounts = _get(
+                                data,
+                                'getDwollaFundingSources',
+                                []
+                            );
 
-                    return (
-                        <Fragment>
-                            {bankAccounts.map(({ name, fundingSourceUrl }) => (
-                                <ItemWrapper
-                                    key={fundingSourceUrl}
-                                    fundingSourceUrl={fundingSourceUrl}
-                                >
-                                    <Text fontSize={0}>{name}</Text>
-                                </ItemWrapper>
-                            ))}
+                            return (
+                                <Fragment>
+                                    {bankAccounts.map(
+                                        ({ name, fundingSourceUrl }) => (
+                                            <ItemWrapper
+                                                key={fundingSourceUrl}
+                                                fundingSourceUrl={
+                                                    fundingSourceUrl
+                                                }
+                                            >
+                                                <Text fontSize={0}>{name}</Text>
+                                            </ItemWrapper>
+                                        )
+                                    )}
 
-                            <ItemWrapper
-                                onClick={() =>
-                                    setCurrentStep(
-                                        PAYMENT_METHOD_STEPS.INFO_VERIFICATION
-                                    )
-                                }
-                                isAction
-                            >
-                                <Text
-                                    fontSize={4}
-                                    mr={24}
-                                    fontWeight="light"
-                                    color="text.blue"
-                                >
-                                    +
-                                </Text>
-                                <Text fontSize={0}>
-                                    Link a new bank account
-                                </Text>
-                            </ItemWrapper>
-                        </Fragment>
-                    );
-                }}
-            </Query>
+                                    <ItemWrapper
+                                        onClick={() =>
+                                            setCurrentStep(
+                                                PAYMENT_METHOD_STEPS.INFO_VERIFICATION
+                                            )
+                                        }
+                                        isAction
+                                    >
+                                        <Text
+                                            fontSize={4}
+                                            mr={24}
+                                            fontWeight="light"
+                                            color="text.blue"
+                                        >
+                                            +
+                                        </Text>
+                                        <Text fontSize={0}>
+                                            Link a new bank account
+                                        </Text>
+                                    </ItemWrapper>
+                                </Fragment>
+                            );
+                        }}
+                    </Query>
+                </Fragment>
+            )}
         </Box>
     );
 };

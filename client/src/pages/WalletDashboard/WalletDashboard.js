@@ -9,25 +9,25 @@ import AddCreditModal from './AddCredit/AddCreditModal';
 
 const WalletDashboardView = props => (
     <Box mx={[-12, '', 0]}>
-        {process.env.REACT_APP_ENV !== 'production' && (
+        <Flex
+            flexDirection={['column', '', 'row']}
+            justifyContent="space-between"
+            alignItems="center"
+            mb={[0, '', 12]}
+        >
             <Flex
-                flexDirection={['column', '', 'row']}
                 justifyContent="space-between"
                 alignItems="center"
-                mb={[0, '', 12]}
+                mb={[20, '', 0]}
+                width="100%"
             >
-                <Flex
-                    justifyContent="space-between"
-                    alignItems="center"
-                    mb={[20, '', 0]}
-                    width="100%"
-                >
-                    <Text fontSize={2} fontWeight="medium">
-                        Balance
-                    </Text>
-                    <PaymentMethod />
-                </Flex>
+                <Text fontSize={2} fontWeight="medium">
+                    Balance
+                </Text>
+                <PaymentMethod />
+            </Flex>
 
+            {process.env.REACT_APP_ENV !== 'production' && (
                 <Grid
                     gridTemplateColumns="1fr 1fr"
                     gridColumnGap={10}
@@ -42,8 +42,8 @@ const WalletDashboardView = props => (
                         balance={props.balanceBreakdown.availableAmount}
                     />
                 </Grid>
-            </Flex>
-        )}
+            )}
+        </Flex>
 
         <WalletDetails details={props.balanceBreakdown} />
 

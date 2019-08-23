@@ -136,15 +136,28 @@ class ExistingCardFormView extends PureComponent {
                 <Radio
                     value={NEW_CARD_PAYMENT_METHOD}
                     onClick={onChangeCardMethod} // when clicking on add a new card, call the onChange in order to display new card form for payment methods
-                    className="existing-card-form-add-a-new-card-radio"
                 >
-                    <Text
-                        is="span"
-                        fontSize={2}
-                        className="existing-card-form-add-a-new-card-text"
+                    <Flex
+                        alignItems="center"
+                        justifyContent={'flex-start'}
+                        width="100%"
+                        minHeight={38}
+                        px={22}
+                        py={0}
+                        boxShadow="0 2px 6px 1px rgba(0, 0, 0, 0.09)"
+                        mt="5px"
+                        style={{ cursor: 'pointer' }}
                     >
-                        Add a new card
-                    </Text>
+                        <Text
+                            fontSize={4}
+                            mr={24}
+                            fontWeight="light"
+                            color="text.blue"
+                        >
+                            +
+                        </Text>
+                        <Text fontSize={0}>Add a new card</Text>
+                    </Flex>
                 </Radio>
             </RadioGroup>
         );

@@ -103,7 +103,6 @@ export const DENTAL_RECORDS_MENU_TEXT = 'Dental Records';
 export const MEDICAL_HISTORY_MENU_TEXT = 'Medical history';
 export const INSURANCE_MENU_TEXT = 'Insurance';
 export const PENDING_REQUESTS_MENU_TEXT = 'Pending requests';
-export const PAYMENT_METHODS_MENU_TEXT = 'Payment methods';
 export const BECOME_A_DENTIST_MENU_TEXT = 'Become a dentist';
 export const BECOME_A_HOST_MENU_TEXT = 'Become a host';
 export const LAGURO_WALLET_MENU_TEXT = 'Laguro wallet';

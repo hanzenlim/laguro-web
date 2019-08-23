@@ -17,18 +17,6 @@ const StyledBox = styled(Box)`
         .payment-card-form-title {
             display: none;
         }
-        // styling add a new card button
-        .existing-card-form-add-a-new-card-text {
-            width: 33%;
-            background-color: ${props => props.theme.colors.background.blue};
-            padding: 12px 20px;
-            color: white;
-            border-radius: 5px;
-        }
-        // adding space between existing cards and add a new card button
-        .existing-card-form-add-a-new-card-radio {
-            margin-top: 20px;
-        }
         .new-card-form-submit-button {
             height: 47px;
             span {
@@ -41,7 +29,7 @@ const StyledBox = styled(Box)`
 class PaymentMethods extends Component {
     render() {
         return (
-            <StyledBox width={['100%', '', 400]}>
+            <StyledBox width="100%">
                 <Payment
                     isInPatientDashboard={true}
                     btnText="Submit new card"

@@ -17,7 +17,6 @@ import {
     MEDICAL_HISTORY_MENU_TEXT,
     INSURANCE_MENU_TEXT,
     PENDING_REQUESTS_MENU_TEXT,
-    PAYMENT_METHODS_MENU_TEXT,
     LOG_OUT_MENU_TEXT,
     INSURANCE_CONFIRMATION_TEXT,
     LAGURO_WALLET_MENU_TEXT,
@@ -35,7 +34,6 @@ import {
     StyledDashboardMenu,
     StyledDashboardMenuItem,
 } from '../Dashboard/common';
-import PaymentMethods from '../PaymentMethods';
 import { Responsive, Container } from '../../components/index';
 import PatientInsuranceForm from '../PatientInsuranceForm';
 import { version } from '../../../../package.json';
@@ -56,7 +54,6 @@ const menuTextToDescription = {
     [INSURANCE_MENU_TEXT]: 'View and edit your dental insurance information',
     [PENDING_REQUESTS_MENU_TEXT]:
         'View procedure payment requests from your dentist',
-    [PAYMENT_METHODS_MENU_TEXT]: 'Manage your payment options',
     [LAGURO_WALLET_MENU_TEXT]: 'View current balance and past transactions',
     [LOG_OUT_MENU_TEXT]: '',
 };
@@ -215,14 +212,6 @@ class PatientDashboardPageView extends Component {
                     <Card>
                         {this.renderPanelHeader(key)}
                         <ProcedurePaymentRequestPage />
-                    </Card>
-                );
-                break;
-            case PAYMENT_METHODS_MENU_TEXT:
-                panelContent = (
-                    <Card>
-                        {this.renderPanelHeader(key)}
-                        <PaymentMethods />
                     </Card>
                 );
                 break;

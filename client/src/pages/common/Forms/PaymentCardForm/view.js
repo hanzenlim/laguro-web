@@ -1,6 +1,5 @@
 import React from 'react';
 import _get from 'lodash/get';
-import _isEmpty from 'lodash/isEmpty';
 import { Alert } from 'antd';
 import ExistingCardFormView from './ExistingCardForm';
 import NewCardFormView from './NewCardForm';
@@ -52,15 +51,6 @@ const CardView = ({
                 Card Info
             </Text>
             <Box mb={isConsentAndPayment ? [104, '', 28] : [24, '', 28]}>
-                {isInPatientDashboard && _isEmpty(paymentOptionsCards) && (
-                    <Text
-                        mb={20}
-                        width={['100%', '', 700]}
-                        letterSpacing="-0.3px"
-                    >
-                        You do not have any existing payment options.
-                    </Text>
-                )}
                 {(_get(paymentOptionsCards, 'length') > 0 ||
                     isInPatientDashboard) &&
                     renderExistingCards(

@@ -8,7 +8,6 @@ import {
     MEDICAL_HISTORY_MENU_TEXT,
     INSURANCE_MENU_TEXT,
     PENDING_REQUESTS_MENU_TEXT,
-    PAYMENT_METHODS_MENU_TEXT,
     // dentist menu
     LAGURO_TREATMENT_MODULE_MENU_TEXT,
     PROFILE_SETTINGS_MENU_TEXT,
@@ -55,11 +54,7 @@ const patientMenuTexts = [
     INSURANCE_MENU_TEXT,
 ];
 
-const paymentMenuTexts = [
-    PENDING_REQUESTS_MENU_TEXT,
-    PAYMENT_METHODS_MENU_TEXT,
-    LAGURO_WALLET_MENU_TEXT,
-];
+const paymentMenuTexts = [PENDING_REQUESTS_MENU_TEXT, LAGURO_WALLET_MENU_TEXT];
 
 export const profileMenuTexts = [
     ...unclassfiedProfileMenuTexts,
