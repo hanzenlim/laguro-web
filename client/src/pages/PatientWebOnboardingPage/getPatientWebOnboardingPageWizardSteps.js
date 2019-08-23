@@ -80,7 +80,7 @@ export const HEALTH_HISTORY_STAGE_WIZARD_STEP_IDS = [
     DrugsAndAlcohol2_WIZARD_STEP_ID,
 ];
 
-export const REDIRECT_WIZARD_STEP_ID = 'redirect-page';
+export const SUCCESS_STEP_ID = 'success-step';
 
 const {
     BloodDisorders,
@@ -297,7 +297,9 @@ export const getPatientWebOnboardingPageWizardSteps = ({
                                   : {
                                         firstName: policyHolderUser.firstName,
                                         lastName: policyHolderUser.lastName,
-                                        dob: `${policyHolderUser.birthMonth}/${policyHolderUser.birthDate}/${policyHolderUser.birthYear}`,
+                                        dob: `${policyHolderUser.birthMonth}/${
+                                            policyHolderUser.birthDate
+                                        }/${policyHolderUser.birthYear}`,
                                         gender:
                                             policyHolderUser.gender ===
                                             'unknown'
@@ -587,9 +589,9 @@ export const getPatientWebOnboardingPageWizardSteps = ({
             }));
         },
     },
-    // empty step to redirect to another page
+    // success step
     {
-        id: REDIRECT_WIZARD_STEP_ID,
+        id: SUCCESS_STEP_ID,
     },
 ];
 

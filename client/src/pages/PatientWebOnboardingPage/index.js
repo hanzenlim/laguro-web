@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
-import cookies from 'browser-cookies';
 import { adopt } from 'react-adopt';
 import { Query, Mutation } from 'react-apollo';
 import { getUser } from '../../util/authUtils';
@@ -45,10 +44,9 @@ import {
     DrugsAndAlcohol2_WIZARD_STEP_ID,
     GeneralMedicalInfo1_WIZARD_STEP_ID,
     GENERAL_INFO_STAGE_WIZARD_STEP_IDS,
-    REDIRECT_WIZARD_STEP_ID,
+    SUCCESS_STEP_ID,
 } from './getPatientWebOnboardingPageWizardSteps';
 import history from '../../history';
-import { handleSkip } from './utils';
 import { withScreenSizes } from '../../components/Responsive';
 import { Address } from '../common/the-bright-side-components/components/Onboarding/Patient/Insurance/Address';
 import { Gender } from '../common/the-bright-side-components/components/Onboarding/Patient/Insurance/Gender';
@@ -61,6 +59,7 @@ import {
     Wizard,
     Birthday,
 } from '../common/the-bright-side-components';
+import SuccessScreen from './SuccessScreen';
 
 export const PATIENT_WEB_ONBOARDING_PAGE_REDIRECT_TO_COOKIE_VARIABLE_NAME =
     'patient-onboarding-redirectTo';
@@ -95,6 +94,7 @@ const {
 
 const WIZARD_STEP_IDS_WITHOUT_PREVIOUS_BUTTON = [
     HEALTH_HISTORY_STAGE_WIZARD_STEP_IDS[0],
+    SUCCESS_STEP_ID,
 ];
 
 const getCurrentWizardStep = () => history.location.pathname.split('/')[2];
@@ -184,14 +184,6 @@ class PatientWebOnboardingPage extends Component {
                         healthDataData,
                         'getPatientHealthDataUnstructured.groupedItems'
                     );
-
-                    // add redirects here
-                    // redirect back when finished with flow
-                    if (currentWizardStepId === REDIRECT_WIZARD_STEP_ID) {
-                        window.location.href = cookies.get(
-                            PATIENT_WEB_ONBOARDING_PAGE_REDIRECT_TO_COOKIE_VARIABLE_NAME
-                        );
-                    }
 
                     // to prevent loading the wizard with empty initialValues
                     this.steps =
@@ -292,7 +284,7 @@ class PatientWebOnboardingPage extends Component {
                                 break;
 
                             default:
-                                step = null;
+                                step = <SuccessScreen />;
                         }
 
                         return (
@@ -308,7 +300,11 @@ class PatientWebOnboardingPage extends Component {
                                 ) : (
                                     <Box width="330px" mx="auto" pt="100px">
                                         <Onboarding.SkipButton
-                                            onSkip={handleSkip}
+                                            onSkip={() =>
+                                                history.push(
+                                                    `/patient-onboarding/${SUCCESS_STEP_ID}`
+                                                )
+                                            }
                                             text="Skip all"
                                         />
                                         {step}
@@ -355,7 +351,7 @@ class PatientWebOnboardingPage extends Component {
                                 <Wizard
                                     onSubmit={() => {}}
                                     Form="form"
-                                    withRoutingHistory={true}
+                                    withRoutingHistory
                                     render={wizardProps => (
                                         <React.Fragment>
                                             {wizardProps.actions.canGoBack &&
