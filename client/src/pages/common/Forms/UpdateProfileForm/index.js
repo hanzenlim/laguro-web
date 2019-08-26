@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { Query, Mutation } from 'react-apollo';
 import get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
+import _capitalize from 'lodash/capitalize';
 import { message } from 'antd';
 import UpdateProfileFormView from './view';
 import { Loading } from '../../../../components';
@@ -122,16 +123,18 @@ class UpdateProfileContainer extends PureComponent {
                                             ? null
                                             : newProfileImage ||
                                               mappedData.imageUrl,
-                                        firstName: values.firstName,
-                                        middleName: values.middleName || null,
-                                        lastName: values.lastName,
+                                        firstName: _capitalize(
+                                            values.firstName
+                                        ),
+                                        middleName: values.middleName
+                                            ? _capitalize(values.middleName)
+                                            : null,
+                                        lastName: _capitalize(values.lastName),
                                         dob:
                                             values.birthMonth &&
                                             values.birthDate &&
                                             values.birthYear
-                                                ? `${values.birthMonth}/${
-                                                      values.birthDate
-                                                  }/${values.birthYear}`
+                                                ? `${values.birthMonth}/${values.birthDate}/${values.birthYear}`
                                                 : null,
                                         gender:
                                             values.gender === 'unknown'
