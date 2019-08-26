@@ -1,6 +1,7 @@
 import React from 'react';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
+import _capitalize from 'lodash/capitalize';
 import { adopt } from 'react-adopt';
 import { Mutation } from 'react-apollo';
 import { message } from 'antd';
@@ -127,13 +128,19 @@ export const RegisterOrLoginStep = props => (
                 return {
                     passcode,
                     ...(!_isEmpty(props.formikProps.values.firstName) && {
-                        firstName: props.formikProps.values.firstName,
+                        firstName: _capitalize(
+                            props.formikProps.values.firstName
+                        ),
                     }),
                     ...(!_isEmpty(props.formikProps.values.middleName) && {
-                        middleName: props.formikProps.values.middleName,
+                        middleName: _capitalize(
+                            props.formikProps.values.middleName
+                        ),
                     }),
                     ...(!_isEmpty(props.formikProps.values.lastName) && {
-                        lastName: props.formikProps.values.lastName,
+                        lastName: _capitalize(
+                            props.formikProps.values.lastName
+                        ),
                     }),
                     ...(!phoneNumberFromSignup && isEmail
                         ? {
