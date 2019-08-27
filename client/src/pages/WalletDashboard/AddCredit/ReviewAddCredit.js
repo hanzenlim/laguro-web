@@ -46,6 +46,7 @@ const ConfirmAddCredit = () => {
     const {
         computedAmount,
         selectedFundingSource,
+        selectedPaymentPlatform,
         setCurrentStep,
         ADD_CREDIT_STEPS,
     } = useContext(AddCreditContext);
@@ -59,12 +60,15 @@ const ConfirmAddCredit = () => {
                 input: {
                     userId,
                     amount: computedAmount,
-                    paymentPlatform: 'DWOLLA',
-                    paymentOptionId: _get(
-                        selectedFundingSource,
-                        'fundingSourceUrl',
-                        ''
-                    ),
+                    paymentPlatform: selectedPaymentPlatform,
+                    paymentOptionId:
+                        selectedPaymentPlatform === 'DWOLLA'
+                            ? _get(
+                                  selectedFundingSource,
+                                  'fundingSourceUrl',
+                                  ''
+                              )
+                            : _get(selectedFundingSource, 'id', ''),
                 },
             }}
             client={walletClient}
@@ -79,7 +83,7 @@ const ConfirmAddCredit = () => {
                 },
             ]}
         >
-            {(addCredit, { loading, error }) => (
+            {(addCredit, { loading }) => (
                 <Button
                     disabled={loading}
                     loading={loading}
@@ -87,12 +91,12 @@ const ConfirmAddCredit = () => {
                     width="100%"
                     style={{ borderRadius: 25 }}
                     onClick={async () => {
-                        await execute({
+                        const response = await execute({
                             action: async () => {
                                 await addCredit();
                             },
                         });
-                        if (!error) setCurrentStep(ADD_CREDIT_STEPS.SUCCESS);
+                        if (response) setCurrentStep(ADD_CREDIT_STEPS.SUCCESS);
                     }}
                 >
                     Confirm and Add money

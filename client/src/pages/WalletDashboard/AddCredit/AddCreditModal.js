@@ -22,6 +22,7 @@ const AddCreditModal = ({ mobileOnly, balance }) => {
     const initialState = {
         isModalOpen: false,
         selectedFundingSource: null,
+        selectedPaymentPlatform: null,
         amount: 1,
         currentStep: ADD_CREDIT_STEPS.INITIAL,
     };
@@ -31,12 +32,16 @@ const AddCreditModal = ({ mobileOnly, balance }) => {
     const [selectedFundingSource, setFundingSource] = useState(
         initialState.selectedFundingSource
     );
+    const [selectedPaymentPlatform, setPaymentPlatform] = useState(
+        initialState.selectedPaymentPlatform
+    );
     const [amount, setAmount] = useState(initialState.amount);
 
     const resetState = () => {
         setModalOpen(initialState.isModalOpen);
         setCurrentStep(initialState.currentStep);
         setFundingSource(initialState.selectedFundingSource);
+        setPaymentPlatform(initialState.selectedPaymentPlatform);
         setAmount(initialState.amount);
     };
 
@@ -56,6 +61,8 @@ const AddCreditModal = ({ mobileOnly, balance }) => {
             value={{
                 selectedFundingSource,
                 setFundingSource,
+                selectedPaymentPlatform,
+                setPaymentPlatform,
                 amount,
                 computedAmount,
                 setAmount,
