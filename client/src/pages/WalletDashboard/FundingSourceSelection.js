@@ -1,17 +1,40 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Dropdown, Menu } from 'antd';
 import { Query } from 'react-apollo';
+import { adopt } from 'react-adopt';
 import _get from 'lodash/get';
 import _keyBy from 'lodash/keyBy';
 import styled from 'styled-components';
 
 import { Button, Text, Icon, Box, Loading } from '../../components';
-import { GET_DWOLLA_FUNDING_SOURCES } from './queries';
+import { GET_DWOLLA_FUNDING_SOURCES, GET_PAYMENT_OPTIONS } from './queries';
 import { getUser } from '../../util/authUtils';
 import { walletClient } from '../../util/apolloClients';
 import { WithdrawCreditContext } from './WithdrawCredit/WithdrawCreditModal';
 import { AddCreditContext } from './AddCredit/AddCreditModal';
+
+const Composed = adopt({
+    getDwollaFundingSources: ({ render, userId }) => (
+        <Query
+            query={GET_DWOLLA_FUNDING_SOURCES}
+            variables={{ input: { userId } }}
+            client={walletClient}
+            fetchPolicy="network-only"
+        >
+            {render}
+        </Query>
+    ),
+    getPaymentOptions: ({ render, userId }) => (
+        <Query
+            query={GET_PAYMENT_OPTIONS}
+            variables={{ id: userId }}
+            fetchPolicy="network-only"
+        >
+            {render}
+        </Query>
+    ),
+});
 
 const FundingSourceSelection = ({ mode }) => {
     const isWithdrawCreditMode = mode === 'withdraw credit';
@@ -23,31 +46,45 @@ const FundingSourceSelection = ({ mode }) => {
     const { id: userId } = getUser();
 
     return (
-        <Query
-            query={GET_DWOLLA_FUNDING_SOURCES}
-            variables={{ input: { userId } }}
-            client={walletClient}
-            fetchPolicy="network-only"
-        >
-            {({ data, loading, error }) => {
-                if (loading) return <Loading />;
+        <Composed userId={userId}>
+            {({ getDwollaFundingSources, getPaymentOptions }) => {
+                if (
+                    getDwollaFundingSources.loading ||
+                    getPaymentOptions.loading
+                )
+                    return <Loading />;
 
                 if (
-                    error &&
-                    !error.message.includes(
+                    getDwollaFundingSources.error &&
+                    !getDwollaFundingSources.error.message.includes(
                         'User has not registered for a dwolla account yet'
                     )
                 ) {
                     return <div>Something went wrong.</div>;
                 }
 
-                const bankAccounts = _get(data, 'getDwollaFundingSources', []);
+                const bankAccounts = _get(
+                    getDwollaFundingSources,
+                    'data.getDwollaFundingSources',
+                    []
+                );
+
+                let stripeCards = _get(
+                    getPaymentOptions,
+                    'data.getUser.paymentOptions',
+                    []
+                );
+                stripeCards = stripeCards.map(card => ({
+                    id: card.id,
+                    name: `${card.brand} ** ${card.last4}`,
+                }));
 
                 return (
                     <Dropdown
                         overlay={
                             <Overlay
                                 bankAccounts={bankAccounts}
+                                stripeCards={stripeCards}
                                 setVisibility={setVisibility}
                                 isWithdrawCreditMode={isWithdrawCreditMode}
                             />
@@ -68,6 +105,10 @@ const FundingSourceSelection = ({ mode }) => {
                                 {selectedFundingSource &&
                                     selectedFundingSource.name}
                                 {!selectedFundingSource &&
+                                    !isWithdrawCreditMode &&
+                                    `Select payment method `}
+                                {!selectedFundingSource &&
+                                    isWithdrawCreditMode &&
                                     `Select your bank account `}
                                 {!selectedFundingSource && (
                                     <Icon
@@ -82,7 +123,7 @@ const FundingSourceSelection = ({ mode }) => {
                     </Dropdown>
                 );
             }}
-        </Query>
+        </Composed>
     );
 };
 
@@ -101,14 +142,24 @@ const StyledMenu = styled(Menu)`
     }
 `;
 
-const Overlay = ({ bankAccounts, setVisibility, isWithdrawCreditMode }) => {
-    const { setFundingSource } = useContext(
+const Overlay = ({
+    bankAccounts,
+    stripeCards,
+    setVisibility,
+    isWithdrawCreditMode,
+}) => {
+    const {
+        setFundingSource,
+        selectedFundingSource,
+        setPaymentPlatform,
+    } = useContext(
         isWithdrawCreditMode ? WithdrawCreditContext : AddCreditContext
     );
     const normalizedBankAccounts = _keyBy(
         bankAccounts,
         ({ fundingSourceUrl }) => fundingSourceUrl
     );
+    const normalizedStripeCards = _keyBy(stripeCards, ({ id }) => id);
     return (
         <Box
             width="100%"
@@ -129,8 +180,16 @@ const Overlay = ({ bankAccounts, setVisibility, isWithdrawCreditMode }) => {
             {bankAccounts.length ? (
                 <Box pl={14}>
                     <StyledMenu
+                        selectedKeys={[
+                            _get(
+                                selectedFundingSource,
+                                'fundingSourceUrl',
+                                null
+                            ),
+                        ]}
                         onClick={({ key }) => {
                             setFundingSource(normalizedBankAccounts[key]);
+                            setPaymentPlatform('DWOLLA');
                             setVisibility(false);
                         }}
                     >
@@ -142,9 +201,51 @@ const Overlay = ({ bankAccounts, setVisibility, isWithdrawCreditMode }) => {
                     </StyledMenu>
                 </Box>
             ) : (
-                <Text textAlign="center" fontSize={0}>
+                <Text textAlign="center" fontSize={0} pt="10px">
                     No funding source available.
                 </Text>
+            )}
+            {!isWithdrawCreditMode && (
+                <Fragment>
+                    <Text
+                        fontSize={0}
+                        fontWeight="medium"
+                        pt={10}
+                        pb={10}
+                        borderBottom="1px solid"
+                        borderColor="#f2f2f2"
+                    >
+                        Credit/Debit cards
+                    </Text>
+                    {stripeCards.length ? (
+                        <Box pl={14}>
+                            <StyledMenu
+                                selectedKeys={[
+                                    _get(selectedFundingSource, 'id', null),
+                                ]}
+                                onClick={({ key }) => {
+                                    setFundingSource(
+                                        normalizedStripeCards[key]
+                                    );
+                                    setPaymentPlatform('STRIPE');
+                                    setVisibility(false);
+                                }}
+                            >
+                                {stripeCards.map(stripeCard => (
+                                    <Menu.Item key={stripeCard.id}>
+                                        <Text fontSize={0}>
+                                            {stripeCard.name}
+                                        </Text>
+                                    </Menu.Item>
+                                ))}
+                            </StyledMenu>
+                        </Box>
+                    ) : (
+                        <Text textAlign="center" fontSize={0} pt="10px">
+                            No funding source available.
+                        </Text>
+                    )}
+                </Fragment>
             )}
         </Box>
     );

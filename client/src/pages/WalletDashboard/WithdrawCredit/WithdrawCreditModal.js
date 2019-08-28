@@ -27,6 +27,7 @@ const WithdrawCreditModal = ({ mobileOnly, balance }) => {
     const initialState = {
         isModalOpen: false,
         selectedFundingSource: null,
+        selectedPaymentPlatform: null,
         amount: 2,
         clearing: CLEARING_VALUES.STANDARD,
         currentStep: WITHDRAW_CREDIT_STEPS.INITIAL,
@@ -37,6 +38,9 @@ const WithdrawCreditModal = ({ mobileOnly, balance }) => {
     const [selectedFundingSource, setFundingSource] = useState(
         initialState.selectedFundingSource
     );
+    const [selectedPaymentPlatform, setPaymentPlatform] = useState(
+        initialState.selectedPaymentPlatform
+    );
     const [amount, setAmount] = useState(initialState.amount);
     const [clearing, setClearing] = useState(initialState.clearing);
 
@@ -44,6 +48,7 @@ const WithdrawCreditModal = ({ mobileOnly, balance }) => {
         setModalOpen(initialState.isModalOpen);
         setCurrentStep(initialState.currentStep);
         setFundingSource(initialState.selectedFundingSource);
+        setPaymentPlatform(initialState.selectedPaymentPlatform);
         setAmount(initialState.amount);
         setClearing(initialState.clearing);
     };
@@ -65,6 +70,8 @@ const WithdrawCreditModal = ({ mobileOnly, balance }) => {
             value={{
                 selectedFundingSource,
                 setFundingSource,
+                selectedPaymentPlatform,
+                setPaymentPlatform,
                 amount,
                 computedAmount,
                 setAmount,

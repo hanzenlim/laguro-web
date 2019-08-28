@@ -52,6 +52,19 @@ export const GET_USER = gql`
     }
 `;
 
+export const GET_PAYMENT_OPTIONS = gql`
+    query getUser($id: String!) {
+        getUser(id: $id) {
+            id
+            paymentOptions {
+                id
+                last4
+                brand
+            }
+        }
+    }
+`;
+
 export const GET_DWOLLA_IAV_TOKEN = gql`
     query getDwollaIavToken($input: GetDwollaIavTokenInput!) {
         getDwollaIavToken(input: $input)
