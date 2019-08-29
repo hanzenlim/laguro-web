@@ -17,6 +17,15 @@ const StyledTabs = styled(Tabs)`
         .ant-tabs-ink-bar {
             background-color: ${({ theme }) => theme.colors.text.black};
         }
+
+        .ant-tabs-tab-arrow-show:not(.ant-tabs-tab-btn-disabled) {
+            color: black;
+        }
+
+        .ant-tabs-tab-prev-icon-target,
+        .ant-tabs-tab-next-icon-target {
+            transform: scale(1.233333) rotate(0deg);
+        }
     }
 `;
 
