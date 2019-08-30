@@ -32,12 +32,12 @@ class AddOfficeInfo extends Component {
         super(props);
         const { imageUrls, locationLat, locationLong, location } = props;
         const imageUrlsForState = imageUrls || [];
+        this.options = [];
 
         this.state = {
             imageUrls: imageUrlsForState,
             locationLat,
             locationLong,
-            options: [],
             location,
             isAutocompleteTouched: false,
         };
@@ -167,11 +167,10 @@ class AddOfficeInfo extends Component {
     };
 
     handleSearch = options => {
-        this.setState({ options });
+        this.options = options;
     };
 
     validateLocation = (rule, value, callback) => {
-        const { options } = this.state;
         const { form } = this.props;
         const location = form.getFieldValue('location');
 
@@ -185,8 +184,8 @@ class AddOfficeInfo extends Component {
 
         // if options is not empty and the location field is not found in the dropdown options and if location form input is not empty, autocomplete has error
         const hasError =
-            options &&
-            !options.map(item => item.text).includes(location) &&
+            this.options &&
+            !this.options.map(item => item.description).includes(location) &&
             !isEmpty(location);
 
         if (hasError) {
