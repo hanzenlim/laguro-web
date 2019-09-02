@@ -1,4 +1,5 @@
 import system from 'system-components';
+import { backgroundImage } from 'styled-system';
 import styled from 'styled-components';
 import { zIndex } from '../utils';
 
@@ -51,12 +52,15 @@ const Box = system(
     'backgroundRepeat',
     // misc
     'boxShadow',
-    'overflow'
+    'overflow',
+    'bg'
 );
 
 const StyledBox = styled(Box)`
     ${zIndex};
     ${props => props.transform && `transform: ${props.transform}`};
+    ${props => props.overflow && `overflow: ${props.overflow}`};
+    ${backgroundImage};
 `;
 StyledBox.displayName = 'Box';
 

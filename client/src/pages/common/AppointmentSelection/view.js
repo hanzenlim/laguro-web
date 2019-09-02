@@ -1,5 +1,13 @@
 import React, { Fragment } from 'react';
+import _upperCase from 'lodash/upperCase';
+import _groupBy from 'lodash/groupBy';
+import _isEmpty from 'lodash/isEmpty';
+import _mapValues from 'lodash/mapValues';
+import _sortBy from 'lodash/sortBy';
+import moment from 'moment';
+import styled from 'styled-components';
 import {
+    Rating,
     Box,
     Button,
     Card,
@@ -8,15 +16,7 @@ import {
     Image,
     Text,
     Icon,
-} from '@laguro/basic-components';
-import _upperCase from 'lodash/upperCase';
-import _groupBy from 'lodash/groupBy';
-import _isEmpty from 'lodash/isEmpty';
-import _mapValues from 'lodash/mapValues';
-import _sortBy from 'lodash/sortBy';
-import moment from 'moment';
-import styled from 'styled-components';
-import { Rating } from '../../../components';
+} from '../../../components';
 import { getInsuranceText } from '../../../util/insuranceUtil';
 import Procedures from './Procedures';
 import { Onboarding } from '../the-bright-side-components';

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Tabs, Box, Container } from '@laguro/basic-components';
+import { Tabs, Box, Container } from '../../components';
 import DentistBookings from '../common/DentistBookings/';
 import { MY_CALENDAR_MENU } from '../../util/strings';
 

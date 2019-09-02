@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Box } from '@laguro/basic-components';
+import { Box } from '../../../components';
 
 import PaymentCardView from './view';
 import { NoPaymentsCard } from '../../common/PaymentHistory';

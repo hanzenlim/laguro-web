@@ -1,4 +1,4 @@
-import { Box } from '@laguro/basic-components';
+import { Box } from '../../components';
 import * as React from 'react';
 import * as Yup from 'yup';
 import _isEmpty from 'lodash/isEmpty';

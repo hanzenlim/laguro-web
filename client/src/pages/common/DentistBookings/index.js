@@ -7,7 +7,7 @@ import _isEmpty from 'lodash/isEmpty';
 import _mapKeys from 'lodash/mapKeys';
 import { message } from 'antd';
 import { adopt } from 'react-adopt';
-import { Loading } from '@laguro/basic-components';
+import { Loading } from '../../../components';
 import { getDentistQuery, updateAppointmentMutation } from './queries';
 import { RedirectErrorPage } from '../../GeneralErrorPage';
 import DentistBookingsView from './view';

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Box } from '@laguro/basic-components';
+import { Box } from '../../../../../../components';
 
 import PinItem from './PinItem';
 

@@ -1,4 +1,4 @@
-import { Box, Flex, Grid } from '@laguro/basic-components';
+import { Box, Flex, Grid } from '../../../../../../../components';
 import * as React from 'react';
 import Onboarding from '../..';
 import AppleIcon from '../../Assets/appleIcon';

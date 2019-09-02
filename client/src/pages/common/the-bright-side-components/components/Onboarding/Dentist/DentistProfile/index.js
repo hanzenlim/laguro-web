@@ -5,7 +5,7 @@ import {
     Image,
     Text,
     TextArea,
-} from '@laguro/basic-components';
+} from '../../../../../../../components';
 import * as React from 'react';
 import styled from 'styled-components';
 import Onboarding from '../../../Onboarding';

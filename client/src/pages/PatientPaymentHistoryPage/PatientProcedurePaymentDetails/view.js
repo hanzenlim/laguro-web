@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment-timezone';
 import _get from 'lodash/get';
 import styled from 'styled-components';
-import { Grid, Text, Flex, Icon, Box } from '@laguro/basic-components';
+import { Grid, Text, Flex, Icon, Box } from '../../../components';
 import { renderPrice } from '../../../util/paymentUtil';
 import LineItem from '../../common/PaymentDetails/components/lineItem';
 import CreditCard from '../../common/PaymentDetails/components/creditCard';

@@ -9,7 +9,7 @@ import {
     Link,
     Text,
     Image,
-} from '@laguro/basic-components';
+} from '../../../../../../components';
 import moment from 'moment';
 
 const StyledCard = styled(Card)`

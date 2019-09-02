@@ -1,5 +1,5 @@
 import React from 'react';
-import { Theme, Button, Text, Box } from '@laguro/basic-components';
+import { Button, Text, Box } from '../../../components';
 import styled from 'styled-components';
 import _get from 'lodash/get';
 import {
@@ -63,7 +63,8 @@ export const StyledDropContainer = styled.div`
         .ant-dropdown {
             height: 250vh;
             overflow-y: auto;
-            background-color: ${Theme.colors.background.lightGray};
+            background-color: ${props =>
+                props.theme.colors.background.lightGray};
             top: ${HEADER_HEIGHT + 1}px !important;
             left: 0 !important;
             right: 0 !important;

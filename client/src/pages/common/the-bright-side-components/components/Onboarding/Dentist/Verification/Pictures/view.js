@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Flex } from '@laguro/basic-components';
+import { Box, Flex } from '../../../../../../../../components';
 import Onboarding from '../../..';
 import InfoIcon from '../../../Assets/infoIcon';
 

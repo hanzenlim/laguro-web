@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Box } from '@laguro/basic-components';
-import { Loading } from '../../components';
+import { Box, Loading } from '../../components';
 import { adopt } from 'react-adopt';
 import { Query, Mutation } from 'react-apollo';
 import cookies from 'browser-cookies';

@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import * as Yup from 'yup';
-import { Flex } from '@laguro/basic-components';
+import { Flex } from '../../../components';
 import Wizard from '../the-bright-side-components/components/Wizard';
 import history from '../../../history';
 import {

@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import _get from 'lodash/get';
 import { Mutation } from 'react-apollo';
 import moment from 'moment';
-import { renderPrice } from '@laguro/basic-components/lib/components/utils/paymentUtils';
+import { renderPrice } from '../../../util/paymentUtil';
 
 import { Box, Text, Button } from '../../../components';
 import { AddCreditContext } from './AddCreditModal';

@@ -1,4 +1,4 @@
-import { Box, Flex, TextArea } from '@laguro/basic-components';
+import { Box, Flex, TextArea } from '../../../../../../../../components';
 import React from 'react';
 import _range from 'lodash/range';
 import Onboarding from '../../../../Onboarding';

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { renderPrice } from '@laguro/basic-components/lib/components/utils/paymentUtils';
+import { renderPrice } from '../../../util/paymentUtil';
 
 import { Box, Flex, Text } from '../../../components';
 

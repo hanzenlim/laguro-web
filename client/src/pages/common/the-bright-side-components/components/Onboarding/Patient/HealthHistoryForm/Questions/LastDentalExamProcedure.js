@@ -1,4 +1,4 @@
-import { Flex, Grid } from '@laguro/basic-components';
+import { Flex, Grid } from '../../../../../../../../components';
 import React from 'react';
 import _sortBy from 'lodash/sortBy';
 import Onboarding from '../../../../Onboarding';

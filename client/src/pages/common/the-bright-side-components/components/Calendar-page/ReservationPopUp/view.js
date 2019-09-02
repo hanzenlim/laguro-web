@@ -9,7 +9,7 @@ import {
     Text,
     Image,
     Icon,
-} from '@laguro/basic-components';
+} from '../../../../../../components';
 import moment from 'moment';
 import _isEmpty from 'lodash/isEmpty';
 import _get from 'lodash/get';

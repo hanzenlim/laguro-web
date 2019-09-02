@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Text, Grid } from '@laguro/basic-components';
+import { Box, Button, Flex, Text, Grid } from '../../../../../../components';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 import _capitalize from 'lodash/capitalize';

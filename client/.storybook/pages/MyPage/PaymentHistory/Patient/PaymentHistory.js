@@ -1,13 +1,13 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { Box, Flex } from '@laguro/basic-components';
+import { Box, Flex } from '../../../../../src/components';
 import PatientProcedurePaymentCardView from '../../../../../src/pages/PatientPaymentHistoryPage/PatientProcedurePaymentCard/view';
 import { PATIENT, PAYMENT_CARD } from '../../../../../src/util/strings';
 import {
     PAYMENT_MADE,
     PROCEDURE_PAYMENT_TYPE,
     CHARGED,
-} from '@laguro/basic-components/lib/components/utils/stringUtils';
+} from '../../../../../src/util/strings';
 import PatientProcedurePaymentDetailsView from '../../../../../src/pages/PatientPaymentHistoryPage/PatientProcedurePaymentDetails/view';
 import { Card } from 'antd';
 import { getPatientPaymentBreakdown } from '../../../../../src/pages/PatientPaymentHistoryPage/utils';

@@ -1,6 +1,6 @@
 import React from 'react';
 import _lowerCase from 'lodash/lowerCase';
-import { Flex, Box, Text, CheckMarkAnimation } from '@laguro/basic-components';
+import { Flex, Box, Text, CheckMarkAnimation } from '../../components';
 
 // used for confirmation panel for things like medical history form, insurance form, dentist profile form, and dentist verification
 const Confirmation = props => (

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Box } from '@laguro/basic-components';
+import { Box } from '../../components';
 import { getProgressBarProps } from '../../components/utils';
 import { getSearchParamValueByKey } from '../../history';
 import { Progress } from '../common/the-bright-side-components/components/Onboarding/Patient/Progress';

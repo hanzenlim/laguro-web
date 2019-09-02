@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Modal, Box } from '@laguro/basic-components';
+import { Modal, Box } from '../../../components';
 import _get from 'lodash/get';
 import styled from 'styled-components';
 import CancelAppoinmentModal from '../Modals/CancelAppointmentModal';

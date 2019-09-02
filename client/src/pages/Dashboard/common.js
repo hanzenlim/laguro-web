@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Box } from '@laguro/basic-components';
+import { Box } from '../../components';
 import Menu from '../common/Menu';
 
 const dashboardMenuWidthInPixels = 338;

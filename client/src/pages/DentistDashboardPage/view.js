@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
-import { Box, Container, Text, Card, Truncate } from '@laguro/basic-components';
+import { Box, Container, Text, Card, Truncate } from '../../components';
 import _isEmpty from 'lodash/isEmpty';
 import queryString from 'query-string';
 import {
@@ -156,7 +156,7 @@ class DentistDashboardPageView extends Component {
             hasPreferredDays,
             setHasPreferredDays,
             hasPreferredDaysFromAPI,
-            setHasPreferredDaysFromAPI
+            setHasPreferredDaysFromAPI,
         } = this.props;
 
         switch (key) {
@@ -204,8 +204,12 @@ class DentistDashboardPageView extends Component {
                             <DentistAvailabilityForm
                                 hasPreferredDays={hasPreferredDays}
                                 setHasPreferredDays={setHasPreferredDays}
-                                hasPreferredDaysFromAPI={hasPreferredDaysFromAPI}
-                                setHasPreferredDaysFromAPI={setHasPreferredDaysFromAPI}
+                                hasPreferredDaysFromAPI={
+                                    hasPreferredDaysFromAPI
+                                }
+                                setHasPreferredDaysFromAPI={
+                                    setHasPreferredDaysFromAPI
+                                }
                             />
                         </Card>
                     </Box>

@@ -1,4 +1,4 @@
-import { Box, Flex, Grid } from '@laguro/basic-components';
+import { Box, Flex, Grid } from '../../../../../../../../components';
 import { Field } from 'formik';
 import _range from 'lodash/range';
 import * as React from 'react';
