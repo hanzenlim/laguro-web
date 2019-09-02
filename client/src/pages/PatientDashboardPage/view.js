@@ -1,8 +1,8 @@
-import React, { Component, Fragment } from 'react';
-import { Box, Text, Card, Truncate } from '../../components';
+import React, { Component, Fragment, useContext } from 'react';
 import _isEmpty from 'lodash/isEmpty';
 import queryString from 'query-string';
 import styled from 'styled-components';
+import { compose } from 'react-apollo';
 import UpdateProfileForm from '../../pages/common/Forms/UpdateProfileForm';
 import ContactInformationForm from '../../pages/common/Forms/ContactInformationForm';
 // import PaymentHistory from '../common/PaymentHistory'; //TODO We need to remove the code relateded with this old page
@@ -34,10 +34,18 @@ import {
     StyledDashboardMenu,
     StyledDashboardMenuItem,
 } from '../Dashboard/common';
-import { Responsive, Container } from '../../components/index';
+import {
+    Box,
+    Text,
+    Card,
+    Truncate,
+    Responsive,
+    Container,
+} from '../../components';
 import PatientInsuranceForm from '../PatientInsuranceForm';
 import { version } from '../../../../package.json';
 import WalletDashboard from '../WalletDashboard';
+import { AuthContext } from '../../App';
 
 const { TabletMobile, Desktop, withScreenSizes } = Responsive;
 
@@ -86,26 +94,6 @@ class PatientDashboardPageView extends Component {
         }
     }
 
-    // add new searchParams to render next panel
-    handleClick = ({ key }) => {
-        const url = `${LTM_LINK_BASE_URL}/go?to=/chart`;
-        if (key === DENTAL_RECORDS_MENU_TEXT) {
-            window.open(url, '_blank');
-            return null;
-        }
-
-        const params = queryString.parse(window.location.search);
-        const newParams = {
-            ...params,
-            selectedTab: getKeyFromText(key),
-        };
-        addSearchParams(newParams);
-
-        if (this.props.refetch) {
-            this.props.refetch();
-        }
-    };
-
     // this will be displayed instead of the dentist insurance form. insuranceConfirmation will be turned back to null if displayed once, due to componentDidUpdate
     onInsuranceFormComplete = () => {
         this.insuranceConfirmation = (
@@ -124,6 +112,26 @@ class PatientDashboardPageView extends Component {
             </Card>
         );
         this.setState({ showMedicalHistoryConfirmation: true }); // this will cause a re-render to show medicalHistoryConfirmation
+    };
+
+    // add new searchParams to render next panel
+    handleClick = ({ key }) => {
+        const url = `${LTM_LINK_BASE_URL}/go?to=/chart`;
+        if (key === DENTAL_RECORDS_MENU_TEXT) {
+            window.open(url, '_blank');
+            return;
+        }
+
+        const params = queryString.parse(window.location.search);
+        const newParams = {
+            ...params,
+            selectedTab: getKeyFromText(key),
+        };
+        addSearchParams(newParams);
+
+        if (this.props.refetch) {
+            this.props.refetch();
+        }
     };
 
     renderPanelHeader = key => (
@@ -190,9 +198,9 @@ class PatientDashboardPageView extends Component {
                         {this.renderPanelHeader(key)}
                         <KioskMedicalHistoryFormPage
                             onFinish={this.onMedicalHistoryFormComplete} // to render confirmation panel on finish
-                            fromPatientDashboard={true}
-                            withoutProgressBar={true}
-                            cannotSkip={true} // medical history form has a skip to insurance button. does not make sense to skip to insurance in medical history panel
+                            fromPatientDashboard
+                            withoutProgressBar
+                            cannotSkip // medical history form has a skip to insurance button. does not make sense to skip to insurance in medical history panel
                         />
                     </Card>
                 );
@@ -224,6 +232,7 @@ class PatientDashboardPageView extends Component {
                 );
                 break;
             case LOG_OUT_MENU_TEXT:
+                this.props.setIsAuth(false);
                 onLogout();
                 break;
             default:
@@ -319,4 +328,14 @@ class PatientDashboardPageView extends Component {
         );
     }
 }
-export default withScreenSizes(PatientDashboardPageView);
+
+const withAuthContext = WrappedComponent => props => {
+    const { setIsAuth } = useContext(AuthContext);
+
+    return <WrappedComponent setIsAuth={setIsAuth} {...props} />;
+};
+
+export default compose(
+    withScreenSizes,
+    withAuthContext
+)(PatientDashboardPageView);

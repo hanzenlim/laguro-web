@@ -292,7 +292,8 @@ class DentistListingCard extends PureComponent {
                                 <Flex
                                     alignItems="center"
                                     justifyContent="center"
-                                    width={304}
+                                    width="100%"
+                                    maxWidth="304px"
                                     pl={[0, '', 18]}
                                     py={20}
                                 >

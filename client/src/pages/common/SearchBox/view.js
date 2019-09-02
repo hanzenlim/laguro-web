@@ -40,7 +40,7 @@ const SearchBox = props => {
             width={['100%', '', '500px']}
             justifyContent="center"
         >
-            <Box width="100%">
+            <Box width="100%" position="relative" zIndex="99">
                 <LocationFilter
                     height="50px"
                     initialValue={initialLocationFilterValue}
@@ -49,7 +49,7 @@ const SearchBox = props => {
                     onLocationChange={onLocationFilterChange}
                     onQueryString={onQueryString}
                     width="100%"
-                    withDentists={true}
+                    withDentists
                 />
             </Box>
             <Box position="absolute" right="0" zIndex="100">

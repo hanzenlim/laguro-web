@@ -36,13 +36,20 @@ const CheckInsurance = ({ setFormStep, history }) => (
                                         FORM_STEPS.GET_INSURANCE_PROVIDER
                                     );
                                 } else {
-                                    // TODO: Add query params based on answers
                                     setFormStep(
                                         FORM_LOADERS.MATCH_DENTIST_AVAILABLE
                                     );
                                     setTimeout(() => {
                                         history.push(
-                                            `/dentist/search?bundleGroup=${form.values.bundleGroup}&dayAvailability=${form.values.dayAvailability}&timeAvailability=${form.values.timeAvailability}&age=${form.values.age}`
+                                            `/dentist/search?bundleGroup=${
+                                                form.values.bundleGroup
+                                            }&dayAvailability=${
+                                                form.values.dayAvailability
+                                            }&timeAvailability=${
+                                                form.values.timeAvailability
+                                            }&age=${
+                                                form.values.age
+                                            }&hasFinishedSurvey=true`
                                         );
                                     }, 3000);
                                 }

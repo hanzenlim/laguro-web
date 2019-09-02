@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, useContext } from 'react';
 import PropTypes from 'prop-types';
 import _get from 'lodash/get';
 import { compose } from 'react-apollo';
@@ -8,6 +8,7 @@ import HeaderView from './view';
 import { withScreenSizes } from '../../../components/Responsive';
 import { onLogout, getUser } from '../../../util/authUtils';
 import emitter from '../../../util/emitter';
+import { AuthContext } from '../../../App';
 
 class HeaderContainer extends PureComponent {
     constructor(props) {
@@ -56,6 +57,8 @@ class HeaderContainer extends PureComponent {
     }
 
     onLogout = () => {
+        const { setIsAuth } = this.props;
+        setIsAuth(false);
         onLogout();
 
         // We're forcing it to rerender so that it will update the header to
@@ -109,11 +112,18 @@ class HeaderContainer extends PureComponent {
     }
 }
 
+const withAuthContext = Component => props => {
+    const { setIsAuth } = useContext(AuthContext);
+
+    return <Component setIsAuth={setIsAuth} {...props} />;
+};
+
 HeaderContainer.propTypes = {
     mobileOnly: PropTypes.bool.isRequired,
 };
 
 export default compose(
     withRouter,
-    withScreenSizes
+    withScreenSizes,
+    withAuthContext
 )(HeaderContainer);

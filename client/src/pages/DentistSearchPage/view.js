@@ -1,22 +1,24 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
-import {
-    Flex,
-    Container,
-    Box,
-    Grid,
-    Responsive,
-    Loading,
-} from '../../components';
-import SearchBox from '../common/SearchBox';
+import queryString from 'query-string';
+
+import { Container, Box, Loading, Text } from '../../components';
 import SearchResultsList from '../common/SearchResultsList';
-import SearchFilter from '../common/SearchFilter';
-import FeaturedOffices from '../OfficeDetailsPage/FeaturedOffices';
+import history from '../../history';
+import SignUpBanner from './SignupBanner';
+import DentistSearchFilter from './DentistSearchFilter';
+import QuizPrompt from './QuizPrompt';
+import PriceEstimationCarousel from './PriceEstimationCarousel';
+import { AuthContext } from '../../App';
 
-const { Desktop, TabletMobile } = Responsive;
-
-const DentistSearchPageView = props => {
-    const { data, total, loading, onToggleFilter, isFilterVisible } = props;
+const DentistSearchPageView = ({
+    data,
+    total,
+    loading,
+    onToggleFilter,
+    isFilterVisible,
+}) => {
+    const { isAuth } = useContext(AuthContext);
 
     const transformedData = data.map(dentist => ({
         ...dentist,
@@ -25,60 +27,53 @@ const DentistSearchPageView = props => {
         ),
     }));
 
-    return (
-        <Box height="100%">
-            <Container pt={[48, '', total === 0 ? 110 : 84]}>
-                <Box mt="20px">
-                    <FeaturedOffices />
-                </Box>
-                <Box>
-                    <Desktop>
-                        {matches =>
-                            matches ? null : (
-                                <Box mb={20} mt={[24, '', 0]}>
-                                    <SearchBox
-                                        size="large"
-                                        placeholder="Search for dentists by name, location, or specialty"
-                                        toggleFilter={onToggleFilter}
-                                    />
-                                </Box>
-                            )
-                        }
-                    </Desktop>
+    const { hasFinishedSurvey, insuranceProvider } = queryString.parse(
+        history.location.search
+    );
 
-                    <Flex width="100%">
-                        <TabletMobile>
-                            {isFilterVisible ? (
-                                <Box mb={20} width="100%">
-                                    <SearchFilter />
-                                </Box>
-                            ) : null}
-                        </TabletMobile>
-                        <Desktop>
-                            <Box mt={34}>
-                                <SearchFilter />
-                            </Box>
-                        </Desktop>
-                    </Flex>
+    const isLoggedInAndHasFinishedSurvey = hasFinishedSurvey && isAuth;
+    const isAnonAndHasFinishedSurveyWithInsurance =
+        hasFinishedSurvey && insuranceProvider;
+
+    return (
+        <Box height="100%" pt={[48, '', 84]}>
+            {!isAuth && <SignUpBanner />}
+
+            <DentistSearchFilter
+                onToggleFilter={onToggleFilter}
+                isFilterVisible={isFilterVisible}
+            />
+
+            {!hasFinishedSurvey && <QuizPrompt />}
+            {(isAnonAndHasFinishedSurveyWithInsurance ||
+                isLoggedInAndHasFinishedSurvey) && (
+                <Box my={28}>
+                    <PriceEstimationCarousel />
                 </Box>
-                <Box pt={0}>
-                    <Grid
-                        gridColumnGap={['', '', '10px']}
-                        gridTemplateColumns="1fr"
-                    >
-                        <Box pb="50px">
-                            {loading ? (
-                                <Box mt="100px">
-                                    <Loading />
-                                </Box>
-                            ) : (
-                                <SearchResultsList
-                                    data={transformedData}
-                                    total={total}
-                                />
-                            )}
+            )}
+
+            <Container>
+                <Box pb="50px">
+                    {loading ? (
+                        <Box mt="100px">
+                            <Loading />
                         </Box>
-                    </Grid>
+                    ) : (
+                        <Box>
+                            <Text
+                                fontSize={[1, '', 4]}
+                                fontWeight="medium"
+                                mt={30}
+                                mb={[8, '', 30]}
+                            >
+                                Available dentists
+                            </Text>
+                            <SearchResultsList
+                                data={transformedData}
+                                total={total}
+                            />
+                        </Box>
+                    )}
                 </Box>
             </Container>
         </Box>
@@ -86,11 +81,11 @@ const DentistSearchPageView = props => {
 };
 
 DentistSearchPageView.propTypes = {
-    data: PropTypes.func,
-    defaultPosition: PropTypes.bool,
-    mapDimensions: PropTypes.bool,
-    total: PropTypes.bool,
-    toggleMap: PropTypes.func,
+    data: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+    total: PropTypes.number.isRequired,
+    loading: PropTypes.bool.isRequired,
+    onToggleFilter: PropTypes.func.isRequired,
+    isFilterVisible: PropTypes.bool.isRequired,
 };
 
 export default DentistSearchPageView;

@@ -72,7 +72,7 @@
     "react-scripts": "^2.1.5",
     "react-scroll-to-component": "^1.0.2",
     "react-sizes": "^1.0.4",
-    "react-slick": "^0.23.1",
+    "react-slick": "^0.25.2",
     "react-stars": "^2.2.5",
     "react-stripe-checkout": "^2.6.3",
     "react-stripe-elements": "^5.0.0",

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useEffect, useState, createContext } from 'react';
 import cookies from 'browser-cookies';
 import { Router, Route, Switch, Redirect } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
@@ -62,33 +62,25 @@ const HomePage = Loadable({
 
 const DentistSearchPage = Loadable({
     loader: () =>
-        import(
-            './pages/DentistSearchPage' /* webpackChunkName: "dentistSearchPage" */
-        ),
+        import('./pages/DentistSearchPage' /* webpackChunkName: "dentistSearchPage" */),
     loading: () => null,
 });
 
 const OfficeSearchPage = Loadable({
     loader: () =>
-        import(
-            './pages/OfficeSearchPage' /* webpackChunkName: "officeSearchPage" */
-        ),
+        import('./pages/OfficeSearchPage' /* webpackChunkName: "officeSearchPage" */),
     loading: () => null,
 });
 
 const DentistDetailsPage = Loadable({
     loader: () =>
-        import(
-            './pages/DentistDetailsPage' /* webpackChunkName: "dentistDetailsPage" */
-        ),
+        import('./pages/DentistDetailsPage' /* webpackChunkName: "dentistDetailsPage" */),
     loading: () => null,
 });
 
 const OfficeDetailsPage = Loadable({
     loader: () =>
-        import(
-            './pages/OfficeDetailsPage' /* webpackChunkName: "officeDetailsPage" */
-        ),
+        import('./pages/OfficeDetailsPage' /* webpackChunkName: "officeDetailsPage" */),
     loading: () => null,
 });
 
@@ -100,17 +92,13 @@ const ResetPassPage = Loadable({
 
 const HostOnboarding = Loadable({
     loader: () =>
-        import(
-            './pages/HostOnboarding' /* webpackChunkName: "hostOnboarding" */
-        ),
+        import('./pages/HostOnboarding' /* webpackChunkName: "hostOnboarding" */),
     loading: () => null,
 });
 
 const ProcedurePaymentRequestPage = Loadable({
     loader: () =>
-        import(
-            './pages/ProcedurePaymentRequestPage' /* webpackChunkName: "procedurePaymentRequestPage" */
-        ),
+        import('./pages/ProcedurePaymentRequestPage' /* webpackChunkName: "procedurePaymentRequestPage" */),
     loading: () => null,
 });
 
@@ -122,9 +110,7 @@ const Error404Page = Loadable({
 
 const GeneralErrorPage = Loadable({
     loader: () =>
-        import(
-            './pages/GeneralErrorPage' /* webpackChunkName: "generalErrorPage" */
-        ),
+        import('./pages/GeneralErrorPage' /* webpackChunkName: "generalErrorPage" */),
     loading: () => null,
 });
 
@@ -154,9 +140,7 @@ const TermsPage = Loadable({
 
 const LaguroCreditsTermsPage = Loadable({
     loader: () =>
-        import(
-            './pages/LaguroCreditsTermsPage' /* webpackChunkName: "laguroCreditsTermsPage" */
-        ),
+        import('./pages/LaguroCreditsTermsPage' /* webpackChunkName: "laguroCreditsTermsPage" */),
     loading: () => null,
 });
 
@@ -174,81 +158,61 @@ const NewReviewPage = Loadable({
 
 const DentistProfilePage = Loadable({
     loader: () =>
-        import(
-            './pages/DentistProfilePage' /* webpackChunkName: "dentistProfilePage" */
-        ),
+        import('./pages/DentistProfilePage' /* webpackChunkName: "dentistProfilePage" */),
     loading: () => null,
 });
 
 const AppointmentConfirmationPage = Loadable({
     loader: () =>
-        import(
-            './pages/AppointmentConfirmationPage' /* webpackChunkName: "appointmentConfirmationPage" */
-        ),
+        import('./pages/AppointmentConfirmationPage' /* webpackChunkName: "appointmentConfirmationPage" */),
     loading: () => null,
 });
 
 const KioskMedicalHistoryFormPage = Loadable({
     loader: () =>
-        import(
-            './pages/KioskMedicalHistoryFormPage' /* webpackChunkName: "kioskMedicalHistoryFormPage" */
-        ),
+        import('./pages/KioskMedicalHistoryFormPage' /* webpackChunkName: "kioskMedicalHistoryFormPage" */),
     loading: () => null,
 });
 
 const KioskInsurancePage = Loadable({
     loader: () =>
-        import(
-            './pages/KioskInsurancePage' /* webpackChunkName: "kioskInsurancePage" */
-        ),
+        import('./pages/KioskInsurancePage' /* webpackChunkName: "kioskInsurancePage" */),
     loading: () => null,
 });
 
 const KioskDentistProfilePage = Loadable({
     loader: () =>
-        import(
-            './pages/KioskDentistProfilePage' /* webpackChunkName: "kioskDentistProfilePage" */
-        ),
+        import('./pages/KioskDentistProfilePage' /* webpackChunkName: "kioskDentistProfilePage" */),
     loading: () => null,
 });
 
 const PatientWebOnboardingTermsPage = Loadable({
     loader: () =>
-        import(
-            './pages/Onboarding/Terms' /* webpackChunkName: "PatientWebOnboardingTermsPage" */
-        ),
+        import('./pages/Onboarding/Terms' /* webpackChunkName: "PatientWebOnboardingTermsPage" */),
     loading: () => null,
 });
 
 const DentistOnboardingVerification = Loadable({
     loader: () =>
-        import(
-            './pages/Onboarding/Dentist/Verification' /* webpackChunkName: "dentistOnboarding" */
-        ),
+        import('./pages/Onboarding/Dentist/Verification' /* webpackChunkName: "dentistOnboarding" */),
     loading: () => null,
 });
 
 const PatientDashboardPage = Loadable({
     loader: () =>
-        import(
-            './pages/PatientDashboardPage' /* webpackChunkName: "PatientDashboardPage" */
-        ),
+        import('./pages/PatientDashboardPage' /* webpackChunkName: "PatientDashboardPage" */),
     loading: () => null,
 });
 
 const DentistDashboardPage = Loadable({
     loader: () =>
-        import(
-            './pages/DentistDashboardPage' /* webpackChunkName: "DentistDashboardPage" */
-        ),
+        import('./pages/DentistDashboardPage' /* webpackChunkName: "DentistDashboardPage" */),
     loading: () => null,
 });
 
 const HostDashboardPage = Loadable({
     loader: () =>
-        import(
-            './pages/HostDashboardPage' /* webpackChunkName: "DentistDashboardPage" */
-        ),
+        import('./pages/HostDashboardPage' /* webpackChunkName: "DentistDashboardPage" */),
     loading: () => null,
 });
 
@@ -266,19 +230,41 @@ const KioskRegPage = Loadable({
 
 const KioskOfficeSetUpPage = Loadable({
     loader: () =>
-        import(
-            './pages/KioskOfficeSetUpPage' /* webpackChunkName: "KioskOfficeSetUpPage" */
-        ),
+        import('./pages/KioskOfficeSetUpPage' /* webpackChunkName: "KioskOfficeSetUpPage" */),
     loading: () => null,
 });
 
 const PatientWebOnboardingPage = Loadable({
     loader: () =>
-        import(
-            './pages/PatientWebOnboardingPage' /* webpackChunkName: "PatientWebOnboardingPage" */
-        ),
+        import('./pages/PatientWebOnboardingPage' /* webpackChunkName: "PatientWebOnboardingPage" */),
     loading: () => null,
 });
+
+// custom Tracking Hook
+const useTracker = () => {
+    const trackPageView = () => {
+        trackPageview({
+            urlPath: history.location.pathname + history.location.search,
+            pageName: history.location.title,
+        });
+    };
+
+    useEffect(() => {
+        const user = getUser();
+        if (user && user.id) {
+            trackUserAuth({ userId: user.id });
+        }
+
+        trackPageView();
+
+        history.listen(() => {
+            trackPageView();
+        });
+    }, []);
+};
+
+// for global state for identifying login state
+export const AuthContext = createContext();
 
 const PrivateRoute = ({ component: ComponentToBeRendered, ...rest }) => {
     let user = cookies.get('user');
@@ -301,7 +287,9 @@ const PrivateRoute = ({ component: ComponentToBeRendered, ...rest }) => {
                         preserveQueryString
                         to={{
                             pathname: '/login',
-                            search: `?redirectTo=${props.location.pathname}${props.location.search}`,
+                            search: `?redirectTo=${props.location.pathname}${
+                                props.location.search
+                            }`,
                             state: {
                                 from: props.location,
                                 message:
@@ -315,31 +303,16 @@ const PrivateRoute = ({ component: ComponentToBeRendered, ...rest }) => {
     );
 };
 
-class App extends Component {
-    componentDidMount() {
-        const user = getUser();
-        if (user && user.id) {
-            trackUserAuth({ userId: user.id });
-        }
+const App = () => {
+    useTracker();
 
-        this.trackPageView();
+    const user = getUser();
+    const [isAuth, setIsAuth] = useState(!!user);
 
-        history.listen(() => {
-            this.trackPageView();
-        });
-    }
-
-    trackPageView = () => {
-        trackPageview({
-            urlPath: history.location.pathname + history.location.search,
-            pageName: history.location.title,
-        });
-    };
-
-    render() {
-        const { pathname } = history.location;
-        return (
-            <ThemeProvider theme={theme}>
+    const { pathname } = history.location;
+    return (
+        <ThemeProvider theme={theme}>
+            <AuthContext.Provider value={{ isAuth, setIsAuth }}>
                 <Router history={history}>
                     <ScrollToTop>
                         <Layout>
@@ -515,9 +488,9 @@ class App extends Component {
                         </Layout>
                     </ScrollToTop>
                 </Router>
-            </ThemeProvider>
-        );
-    }
-}
+            </AuthContext.Provider>
+        </ThemeProvider>
+    );
+};
 
 export default App;

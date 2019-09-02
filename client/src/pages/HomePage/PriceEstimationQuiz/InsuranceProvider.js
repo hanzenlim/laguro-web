@@ -59,7 +59,7 @@ const InsuranceProvider = ({ setFormStep, history }) => (
                     </Box>
                     <Box width={320} maxWidth="100%" mb={15} mx="auto">
                         <Field
-                            render={({ form }) => (
+                            render={() => (
                                 <StyledButton
                                     type="primary"
                                     width="100%"
@@ -67,13 +67,23 @@ const InsuranceProvider = ({ setFormStep, history }) => (
                                     fontWeight="bold"
                                     fontSize={1}
                                     onClick={() => {
-                                        // TODO: Add query params based on answers
                                         setFormStep(
                                             FORM_LOADERS.MATCH_DENTIST_AVAILABLE
                                         );
                                         setTimeout(() => {
                                             history.push(
-                                                `/dentist/search?bundleGroup=${form.values.bundleGroup}&dayAvailability=${form.values.dayAvailability}&timeAvailability=${form.values.timeAvailability}&age=${form.values.age}&insuranceProvider=${form.values.insuranceProvider}`
+                                                `/dentist/search?bundleGroup=${
+                                                    form.values.bundleGroup
+                                                }&dayAvailability=${
+                                                    form.values.dayAvailability
+                                                }&timeAvailability=${
+                                                    form.values.timeAvailability
+                                                }&age=${
+                                                    form.values.age
+                                                }&insuranceProvider=${
+                                                    form.values
+                                                        .insuranceProvider
+                                                }&hasFinishedSurvey=true`
                                             );
                                         }, 3000);
                                     }}

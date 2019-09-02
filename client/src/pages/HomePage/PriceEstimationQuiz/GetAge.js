@@ -25,7 +25,7 @@ const checkIfMinor = ({ form }) => {
 const GetAge = () => (
     <Box mt={30}>
         <Field
-            name={'age'}
+            name="age"
             render={({ form }) => {
                 const isMinor = checkIfMinor({ form });
                 return (

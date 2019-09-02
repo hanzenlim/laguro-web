@@ -91,7 +91,7 @@ const checkIfNextOnBdayIsDisabled = (values, isInputHolderBirthday) => {
 };
 
 const checkIfNextOnAgeIsDisabled = values => {
-    const isAgeFieldEmpty = !values['age'];
+    const isAgeFieldEmpty = !values.age;
 
     let isMinor = true;
 
@@ -157,7 +157,9 @@ const PriceEstimationQuiz = ({
         // FORM_STEPS.INPUT_MEMBER_ID,
     ];
 
-    const onClose = useCallback(() => toggleQuizVisibility(), []);
+    const onClose = useCallback(() => toggleQuizVisibility(), [
+        toggleQuizVisibility,
+    ]);
 
     return (
         <Box

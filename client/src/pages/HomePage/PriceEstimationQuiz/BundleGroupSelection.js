@@ -6,7 +6,7 @@ import { Field } from 'formik';
 import { Box, Button, Flex, Text, Icon } from '../../../components';
 import { FORM_STEPS } from '.';
 
-const selection = [
+export const selection = [
     {
         value: 'FIRST_VISIT',
         title: 'First Visit',

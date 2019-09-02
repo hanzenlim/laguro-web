@@ -8,7 +8,7 @@ import {
     validatePhone,
 } from '../../../util/validationUtils';
 
-import { RegisterOrLoginStep } from '../../RegisterOrLoginStep';
+import RegisterOrLoginStep from '../../RegisterOrLoginStep';
 
 const KioskOnboardingPage = ({ mode, ...componentProps }) => {
     const steps = [

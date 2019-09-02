@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { useState } from 'react';
 import queryString from 'query-string';
 import _startCase from 'lodash/startCase';
 
@@ -6,21 +6,16 @@ import history from '../../../history';
 import SearchFilterView from './view';
 import { trackSearchFilter } from '../../../util/trackingUtils';
 
-class SearchFilter extends PureComponent {
-    constructor(props) {
-        super(props);
+const SearchFilter = () => {
+    const [urlParams, setUrlParams] = useState(
+        queryString.parse(history.location.search) || {}
+    );
 
-        const urlParams = queryString.parse(history.location.search);
-
-        this.state = {
-            urlParams: urlParams || {},
-        };
-    }
-
-    handleSelect = (name, value) => {
-        const urlParams = queryString.parse(history.location.search);
-        urlParams[name] = value;
-        history.push({ search: `?${queryString.stringify(urlParams)}` });
+    const handleSelect = (name, value) => {
+        const updatedUrlParams = queryString.parse(history.location.search);
+        updatedUrlParams[name] = value;
+        setUrlParams(updatedUrlParams);
+        history.push({ search: `?${queryString.stringify(updatedUrlParams)}` });
 
         if (trackSearchFilter) {
             trackSearchFilter({
@@ -29,14 +24,7 @@ class SearchFilter extends PureComponent {
         }
     };
 
-    render() {
-        return (
-            <SearchFilterView
-                data={this.state.urlParams}
-                onSelect={this.handleSelect}
-            />
-        );
-    }
-}
+    return <SearchFilterView data={urlParams} onSelect={handleSelect} />;
+};
 
 export default SearchFilter;

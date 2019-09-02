@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 import _capitalize from 'lodash/capitalize';
@@ -23,6 +23,7 @@ import {
 } from '../../util/trackingUtils';
 import { Verification } from '../common/the-bright-side-components/components/Onboarding/Patient/Verification';
 import { GetPatientName } from '../common/the-bright-side-components/components/Onboarding/Registration/GetPatientName';
+import { AuthContext } from '../../App';
 
 const Composed = adopt({
     sendKioskLoginCode: ({ render }) => (
@@ -69,343 +70,364 @@ const getRegisterResult = data => {
 };
 
 // TODO: Move to common folder
-export const RegisterOrLoginStep = props => (
-    <Composed>
-        {({
-            sendKioskLoginCode,
-            registerUser,
-            login,
-            sendRegistrationCode,
-        }) => {
-            const redirectUser = ({ user }) => {
-                if (props.context === 'web') {
-                    if (props.formikProps.values.mode === 'signUp') {
-                        const redirect = props.customRedirect
-                            ? props.customRedirect
-                            : history.location.pathname;
-                        history.push(
-                            `/onboarding/terms/?redirectTo=${redirect}`
-                        );
+const RegisterOrLoginStep = props => {
+    const { setIsAuth } = useContext(AuthContext);
+    return (
+        <Composed>
+            {({
+                sendKioskLoginCode,
+                registerUser,
+                login,
+                sendRegistrationCode,
+            }) => {
+                const redirectUser = ({ user }) => {
+                    if (props.context === 'web') {
+                        if (props.formikProps.values.mode === 'signUp') {
+                            const redirect = props.customRedirect
+                                ? props.customRedirect
+                                : history.location.pathname;
+                            history.push(
+                                `/onboarding/terms/?redirectTo=${redirect}`
+                            );
+                        } else {
+                            // Redirect based on user data
+                        }
                     } else {
-                        // Redirect based on user data
-                    }
-                } else {
-                    let upcomingAppointments = [];
-                    if (_get(user, 'appointments')) {
-                        upcomingAppointments = _get(user, 'appointments');
-                    }
+                        let upcomingAppointments = [];
+                        if (_get(user, 'appointments')) {
+                            upcomingAppointments = _get(user, 'appointments');
+                        }
 
-                    const purposeOfVisit = _get(
-                        props,
-                        'values[0].purposeOfVisit'
-                    );
-
-                    if (
-                        purposeOfVisit === 'checkIn' &&
-                        upcomingAppointments.length
-                    ) {
-                        history.push(
-                            `/kiosk/check-in/${_get(
-                                upcomingAppointments,
-                                '[0].id'
-                            )}`
+                        const purposeOfVisit = _get(
+                            props,
+                            'values[0].purposeOfVisit'
                         );
-                    } else if (user.firstName) {
-                        history.push(`/kiosk/reason-of-visit`);
-                    } else {
-                        props.formikProps.submitForm();
+
+                        if (
+                            purposeOfVisit === 'checkIn' &&
+                            upcomingAppointments.length
+                        ) {
+                            history.push(
+                                `/kiosk/check-in/${_get(
+                                    upcomingAppointments,
+                                    '[0].id'
+                                )}`
+                            );
+                        } else if (user.firstName) {
+                            history.push(`/kiosk/reason-of-visit`);
+                        } else {
+                            props.formikProps.submitForm();
+                        }
                     }
-                }
-            };
-
-            const getValidatePinInput = passcode => {
-                const isEmail = validateEmail(
-                    props.formikProps.values.emailOrPhoneNumber
-                );
-                const phoneNumberFromSignup =
-                    props.formikProps.values.phoneNumber;
-
-                return {
-                    passcode,
-                    ...(!_isEmpty(props.formikProps.values.firstName) && {
-                        firstName: _capitalize(
-                            props.formikProps.values.firstName
-                        ),
-                    }),
-                    ...(!_isEmpty(props.formikProps.values.middleName) && {
-                        middleName: _capitalize(
-                            props.formikProps.values.middleName
-                        ),
-                    }),
-                    ...(!_isEmpty(props.formikProps.values.lastName) && {
-                        lastName: _capitalize(
-                            props.formikProps.values.lastName
-                        ),
-                    }),
-                    ...(!phoneNumberFromSignup && isEmail
-                        ? {
-                              email:
-                                  props.formikProps.values.emailOrPhoneNumber,
-                          }
-                        : {
-                              phoneNumber: `+1${props.formikProps.values.emailOrPhoneNumber}`,
-                          }),
-                    ...(phoneNumberFromSignup && {
-                        phoneNumber: `+1${phoneNumberFromSignup}`,
-                    }),
                 };
-            };
 
-            const validatePin = async ({ input }) => {
-                if (props.formikProps.values.mode === 'signIn') {
-                    try {
-                        const loginResult = await login({
-                            variables: {
-                                input,
-                            },
-                        });
+                const getValidatePinInput = passcode => {
+                    const isEmail = validateEmail(
+                        props.formikProps.values.emailOrPhoneNumber
+                    );
+                    const phoneNumberFromSignup =
+                        props.formikProps.values.phoneNumber;
 
-                        const {
-                            isPinValid,
-                            token,
-                            user,
-                            dentist,
-                        } = getLoginResult(loginResult);
+                    return {
+                        passcode,
+                        ...(!_isEmpty(props.formikProps.values.firstName) && {
+                            firstName: _capitalize(
+                                props.formikProps.values.firstName
+                            ),
+                        }),
+                        ...(!_isEmpty(props.formikProps.values.middleName) && {
+                            middleName: _capitalize(
+                                props.formikProps.values.middleName
+                            ),
+                        }),
+                        ...(!_isEmpty(props.formikProps.values.lastName) && {
+                            lastName: _capitalize(
+                                props.formikProps.values.lastName
+                            ),
+                        }),
+                        ...(!phoneNumberFromSignup && isEmail
+                            ? {
+                                  email:
+                                      props.formikProps.values
+                                          .emailOrPhoneNumber,
+                              }
+                            : {
+                                  phoneNumber: `+1${
+                                      props.formikProps.values
+                                          .emailOrPhoneNumber
+                                  }`,
+                              }),
+                        ...(phoneNumberFromSignup && {
+                            phoneNumber: `+1${phoneNumberFromSignup}`,
+                        }),
+                    };
+                };
 
-                        if (!isPinValid) {
+                const validatePin = async ({ input }) => {
+                    if (props.formikProps.values.mode === 'signIn') {
+                        try {
+                            const loginResult = await login({
+                                variables: {
+                                    input,
+                                },
+                            });
+
+                            const {
+                                isPinValid,
+                                token,
+                                user,
+                                dentist,
+                            } = getLoginResult(loginResult);
+
+                            if (!isPinValid) {
+                                props.clear();
+                                props.formikProps.setSubmitting(false);
+                                return;
+                            }
+
+                            props.formikProps.setFieldValue('isPinValid', true);
+
+                            const dentistBio = _get(dentist, 'bio');
+
+                            setUser({
+                                ...user,
+                                token,
+                                hasUpdatedDentistBio: isBioUpdated(dentistBio), // used to distinguish between dentists and hosts. actual dentists will have a bio, because this is a required field. hosts will have a bio of ' '(a space character).
+                            });
+                            setAuthToken(token);
+                            setIsAuth(true);
+
+                            trackUserAuth({ userId: user.id });
+
+                            if (props.closeModal) {
+                                props.closeModal();
+                            }
+
+                            redirectUser({
+                                user,
+                            });
+
+                            const { sideEffect } = props;
+                            if (sideEffect) await sideEffect(user);
+                        } catch (error) {
                             props.clear();
                             props.formikProps.setSubmitting(false);
-                            return;
+                            if (error && !_isEmpty(error.graphQLErrors)) {
+                                message.error(error.graphQLErrors[0].message);
+                            }
                         }
+                    } else if (props.formikProps.values.mode === 'signUp') {
+                        try {
+                            const registerUserResult = await registerUser({
+                                variables: {
+                                    input,
+                                },
+                            });
 
-                        props.formikProps.setFieldValue('isPinValid', true);
+                            const {
+                                isPinValid,
+                                token,
+                                user,
+                            } = getRegisterResult(registerUserResult);
 
-                        const dentistBio = _get(dentist, 'bio');
+                            if (!isPinValid) return;
 
-                        setUser({
-                            ...user,
-                            token,
-                            hasUpdatedDentistBio: isBioUpdated(dentistBio), // used to distinguish between dentists and hosts. actual dentists will have a bio, because this is a required field. hosts will have a bio of ' '(a space character).
-                        });
-                        setAuthToken(token);
+                            props.formikProps.setFieldValue('isPinValid', true);
 
-                        trackUserAuth({ userId: user.id });
+                            // used to distinguish between dentists and hosts. recently signed-up user will not be a dentist and therefore will not have a dentist bio
+                            setUser({
+                                ...user,
+                                token,
+                                hasUpdatedDentistBio: false,
+                            });
+                            setAuthToken(token);
+                            setIsAuth(true);
 
-                        if (props.closeModal) {
-                            props.closeModal();
-                        }
+                            trackUserSignup();
+                            trackUserAuth({ userId: user.id });
 
-                        redirectUser({
-                            user,
-                        });
+                            if (props.closeModal) {
+                                props.closeModal();
+                            }
 
-                        const { sideEffect } = props;
-                        sideEffect && (await sideEffect(user));
-                    } catch (error) {
-                        props.clear();
-                        props.formikProps.setSubmitting(false);
-                        if (error && !_isEmpty(error.graphQLErrors)) {
+                            redirectUser({
+                                user,
+                            });
+
+                            props.formikProps.setSubmitting(false);
+                        } catch (error) {
+                            props.clear();
+                            props.formikProps.setSubmitting(false);
                             message.error(error.graphQLErrors[0].message);
                         }
                     }
-                } else if (props.formikProps.values.mode === 'signUp') {
-                    try {
-                        const registerUserResult = await registerUser({
-                            variables: {
-                                input,
-                            },
-                        });
+                };
 
-                        const { isPinValid, token, user } = getRegisterResult(
-                            registerUserResult
-                        );
+                if (
+                    props.formikProps.values.mode === 'signIn' ||
+                    props.formikProps.values.mode === 'signUp'
+                ) {
+                    return (
+                        <Verification
+                            {...props}
+                            onClickSignup={() => {
+                                if (trackSignupAttempt) {
+                                    trackSignupAttempt();
+                                }
+                            }}
+                            onRequestPinCode={async username => {
+                                props.formikProps.setFieldValue(
+                                    'isCodeSent',
+                                    false
+                                );
+                                const isEmailOrPhoneValid = validatePhoneOrEmail(
+                                    username
+                                );
 
-                        if (!isPinValid) return;
-
-                        props.formikProps.setFieldValue('isPinValid', true);
-
-                        // used to distinguish between dentists and hosts. recently signed-up user will not be a dentist and therefore will not have a dentist bio
-                        setUser({
-                            ...user,
-                            token,
-                            hasUpdatedDentistBio: false,
-                        });
-                        setAuthToken(token);
-
-                        trackUserSignup();
-                        trackUserAuth({ userId: user.id });
-
-                        if (props.closeModal) {
-                            props.closeModal();
-                        }
-
-                        redirectUser({
-                            user,
-                        });
-
-                        props.formikProps.setSubmitting(false);
-                    } catch (error) {
-                        props.clear();
-                        props.formikProps.setSubmitting(false);
-                        message.error(error.graphQLErrors[0].message);
-                    }
-                }
-            };
-
-            if (
-                props.formikProps.values.mode === 'signIn' ||
-                props.formikProps.values.mode === 'signUp'
-            ) {
-                return (
-                    <Verification
-                        {...props}
-                        onClickSignup={() => {
-                            if (trackSignupAttempt) {
-                                trackSignupAttempt();
-                            }
-                        }}
-                        onRequestPinCode={async username => {
-                            props.formikProps.setFieldValue(
-                                'isCodeSent',
-                                false
-                            );
-                            const isEmailOrPhoneValid = validatePhoneOrEmail(
-                                username
-                            );
-
-                            if (!isEmailOrPhoneValid) {
-                                return null;
-                            }
-
-                            const isEmail = validateEmail(username);
-
-                            const input = {};
-
-                            if (isEmail) {
-                                input.email = username;
-                            } else {
-                                const phoneNumber = `+1${username}`;
-                                input.phoneNumber = phoneNumber;
-                            }
-
-                            props.formikProps.setSubmitting(true);
-                            if (props.formikProps.values.mode === 'signIn') {
-                                try {
-                                    const sendKioskLoginCodeResult = await sendKioskLoginCode(
-                                        {
-                                            variables: {
-                                                input,
-                                            },
-                                        }
-                                    );
-
-                                    const isCodeSent = _get(
-                                        sendKioskLoginCodeResult,
-                                        'data.sendKioskLoginCode'
-                                    );
-
-                                    if (isCodeSent) {
-                                        props.formikProps.setFieldValue(
-                                            'isCodeSent',
-                                            true
-                                        );
-                                    } else {
-                                        message.warning(
-                                            'We do not recognize this Phone number or e-mail. Please sign up.'
-                                        );
-                                    }
-                                } catch (error) {
-                                    props.formikProps.setSubmitting(false);
-                                    message.error(
-                                        error.graphQLErrors[0].message
-                                    );
+                                if (!isEmailOrPhoneValid) {
+                                    return null;
                                 }
 
-                                props.formikProps.setSubmitting(false);
-                            } else if (
-                                props.formikProps.values.mode === 'signUp'
-                            ) {
-                                try {
-                                    const sendRegistrationCodeResult = await sendRegistrationCode(
-                                        {
-                                            variables: {
-                                                input,
-                                            },
-                                        }
-                                    );
+                                const isEmail = validateEmail(username);
 
-                                    const isCodeSent = _get(
-                                        sendRegistrationCodeResult,
-                                        'data.sendRegistrationCode'
-                                    );
+                                const input = {};
 
-                                    if (isCodeSent) {
-                                        props.formikProps.setFieldValue(
-                                            'isCodeSent',
-                                            true
-                                        );
-                                    } else {
-                                        message.error(
-                                            'You already have an account.'
-                                        );
-                                    }
-                                } catch (error) {
-                                    props.formikProps.setSubmitting(false);
-                                    message.error(
-                                        error.graphQLErrors[0].message
-                                    );
+                                if (isEmail) {
+                                    input.email = username;
+                                } else {
+                                    const phoneNumber = `+1${username}`;
+                                    input.phoneNumber = phoneNumber;
                                 }
 
-                                props.formikProps.setSubmitting(false);
-                            }
-                            return null;
-                        }}
-                        onPinComplete={async pin => {
-                            if (props.formikProps.values.mode === 'signUp')
-                                return;
-
-                            try {
                                 props.formikProps.setSubmitting(true);
-                                validatePin({
-                                    input: getValidatePinInput(pin),
-                                });
-                            } catch (error) {
-                                props.formikProps.setSubmitting(false);
-                                message.error(() => (
-                                    <div>
-                                        This phone number is already registered.{' '}
-                                        <div>Please sign in instead.</div>
-                                    </div>
-                                ));
-                            }
-                        }}
-                        onSubmitPinCode={async pin => {
-                            if (props.formikProps.values.mode === 'signIn')
-                                return;
-                            if (props.formikProps.values.code.length !== 6)
-                                return;
+                                if (
+                                    props.formikProps.values.mode === 'signIn'
+                                ) {
+                                    try {
+                                        const sendKioskLoginCodeResult = await sendKioskLoginCode(
+                                            {
+                                                variables: {
+                                                    input,
+                                                },
+                                            }
+                                        );
 
-                            try {
-                                await validatePin({
-                                    input: getValidatePinInput(pin),
-                                });
-                            } catch (error) {
-                                message.error(error.graphQLErrors[0].message);
-                            }
+                                        const isCodeSent = _get(
+                                            sendKioskLoginCodeResult,
+                                            'data.sendKioskLoginCode'
+                                        );
+
+                                        if (isCodeSent) {
+                                            props.formikProps.setFieldValue(
+                                                'isCodeSent',
+                                                true
+                                            );
+                                        } else {
+                                            message.warning(
+                                                'We do not recognize this Phone number or e-mail. Please sign up.'
+                                            );
+                                        }
+                                    } catch (error) {
+                                        props.formikProps.setSubmitting(false);
+                                        message.error(
+                                            error.graphQLErrors[0].message
+                                        );
+                                    }
+
+                                    props.formikProps.setSubmitting(false);
+                                } else if (
+                                    props.formikProps.values.mode === 'signUp'
+                                ) {
+                                    try {
+                                        const sendRegistrationCodeResult = await sendRegistrationCode(
+                                            {
+                                                variables: {
+                                                    input,
+                                                },
+                                            }
+                                        );
+
+                                        const isCodeSent = _get(
+                                            sendRegistrationCodeResult,
+                                            'data.sendRegistrationCode'
+                                        );
+
+                                        if (isCodeSent) {
+                                            props.formikProps.setFieldValue(
+                                                'isCodeSent',
+                                                true
+                                            );
+                                        } else {
+                                            message.error(
+                                                'You already have an account.'
+                                            );
+                                        }
+                                    } catch (error) {
+                                        props.formikProps.setSubmitting(false);
+                                        message.error(
+                                            error.graphQLErrors[0].message
+                                        );
+                                    }
+
+                                    props.formikProps.setSubmitting(false);
+                                }
+                                return null;
+                            }}
+                            onPinComplete={async pin => {
+                                if (props.formikProps.values.mode === 'signUp')
+                                    return;
+
+                                try {
+                                    props.formikProps.setSubmitting(true);
+                                    validatePin({
+                                        input: getValidatePinInput(pin),
+                                    });
+                                } catch (error) {
+                                    props.formikProps.setSubmitting(false);
+                                    message.error(() => (
+                                        <div>
+                                            This phone number is already
+                                            registered.{' '}
+                                            <div>Please sign in instead.</div>
+                                        </div>
+                                    ));
+                                }
+                            }}
+                            onSubmitPinCode={async pin => {
+                                if (props.formikProps.values.mode === 'signIn')
+                                    return;
+                                if (props.formikProps.values.code.length !== 6)
+                                    return;
+
+                                try {
+                                    await validatePin({
+                                        input: getValidatePinInput(pin),
+                                    });
+                                } catch (error) {
+                                    message.error(
+                                        error.graphQLErrors[0].message
+                                    );
+                                }
+                            }}
+                        />
+                    );
+                }
+                return (
+                    <GetPatientName
+                        {...props}
+                        onNext={() => {
+                            if (
+                                Object.keys(props.formikProps.errors).length !==
+                                0
+                            )
+                                return;
+                            props.formikProps.setFieldValue('mode', 'signUp');
                         }}
                     />
                 );
-            }
-            return (
-                <GetPatientName
-                    {...props}
-                    onNext={() => {
-                        if (Object.keys(props.formikProps.errors).length !== 0)
-                            return;
-                        props.formikProps.setFieldValue('mode', 'signUp');
-                    }}
-                />
-            );
-        }}
-    </Composed>
-);
+            }}
+        </Composed>
+    );
+};
+
+export default RegisterOrLoginStep;
