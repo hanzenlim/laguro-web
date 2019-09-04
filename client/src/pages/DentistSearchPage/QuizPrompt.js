@@ -57,7 +57,7 @@ const QuizPrompt = () => (
                     fontWeight="medium"
                 >
                     {`See how much you can save with your insurance coverage. `}
-                    <Link to="/" ml={6}>
+                    <Link to="/?isQuizVisible=true" ml={6}>
                         <Text
                             is="span"
                             color="text.white"
