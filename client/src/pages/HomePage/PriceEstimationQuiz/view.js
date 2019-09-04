@@ -2,21 +2,15 @@ import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Progress } from 'antd';
-import moment from 'moment';
 import { transparentize } from 'polished';
 
 import { Box, Flex, Button, Text } from '../../../components';
 import BundleGroupSelection from './BundleGroupSelection';
 import TimeAvailabilitySelection from './TimeAvailabilitySelection';
 import DaysSelection from './DaysSelection';
-import NameStep from './NameStep';
 import CheckInsurance from './CheckInsurance';
 import InsuranceProvider from './InsuranceProvider';
-import AskPrimaryHolder from './AskPrimaryHolder';
-import AskHolderInfo from './AskHolderInfo';
-import GetBirthday from './GetBirthday';
 import GetAge from './GetAge';
-import MemberIdStep from './MemberIdStep';
 import Loader from './Loader';
 import { FORM_STEPS, FORM_LOADERS } from '.';
 
@@ -46,50 +40,11 @@ const NextButton = styled(Button)`
 
 // This function check if step is allowed to render Next button. Add a step to stepsWithNext to include it from UI.
 const shouldNextButtonRender = step => {
-    const stepsWithNext = [
-        FORM_STEPS.INPUT_NAME,
-        FORM_STEPS.INPUT_BIRTHDAY,
-        FORM_STEPS.INPUT_AGE,
-        FORM_STEPS.ASK_HOLDER_INFO,
-        FORM_STEPS.INPUT_HOLDER_BIRTHDAY,
-    ];
+    const stepsWithNext = [FORM_STEPS.INPUT_AGE];
     return stepsWithNext.includes(step);
 };
 
-// This function checks if the bday fields are valid
-const checkIfNextOnBdayIsDisabled = (values, isInputHolderBirthday) => {
-    const isBdayFieldsEmpty =
-        !values[isInputHolderBirthday ? 'holderBirthMonth' : 'birthMonth'] ||
-        !values[isInputHolderBirthday ? 'holderBirthDay' : 'birthDay'] ||
-        !values[isInputHolderBirthday ? 'holderBirthYear' : 'birthYear'];
-
-    let isMinor = true;
-
-    if (
-        values[isInputHolderBirthday ? 'holderBirthMonth' : 'birthMonth'] &&
-        values[isInputHolderBirthday ? 'holderBirthDay' : 'birthDay'] &&
-        values[isInputHolderBirthday ? 'holderBirthYear' : 'birthYear']
-    ) {
-        const month = isInputHolderBirthday
-            ? values.holderBirthMonth
-            : values.birthMonth;
-        const day = isInputHolderBirthday
-            ? values.holderBirthDay
-            : values.birthDay;
-        const year = isInputHolderBirthday
-            ? values.holderBirthYear
-            : values.birthYear;
-
-        const completeBirthDate = moment(
-            `${month}/${day}/${year}`,
-            'MM-DD-YYYY'
-        );
-
-        isMinor = moment().diff(completeBirthDate, 'years') < 18;
-    }
-    return isBdayFieldsEmpty || isMinor;
-};
-
+// This function checks if the age field is valid
 const checkIfNextOnAgeIsDisabled = values => {
     const isAgeFieldEmpty = !values.age;
 
@@ -103,25 +58,8 @@ const checkIfNextOnAgeIsDisabled = values => {
 
 // Check disabled state for next button. Return true to set it to disabled mode
 const checkDisabledState = (step, values) => {
-    if (step === FORM_STEPS.INPUT_NAME)
-        return !values.firstName || !values.lastName;
-
-    if (step === FORM_STEPS.INPUT_BIRTHDAY) {
-        return checkIfNextOnBdayIsDisabled(values, false);
-    }
-
     if (step === FORM_STEPS.INPUT_AGE) {
         return checkIfNextOnAgeIsDisabled(values);
-    }
-
-    if (step === FORM_STEPS.GET_INSURANCE_PROVIDER)
-        return !values.insuranceProvider;
-
-    if (step === FORM_STEPS.ASK_HOLDER_INFO)
-        return !values.holderFirstName || !values.holderLastName;
-
-    if (step === FORM_STEPS.INPUT_HOLDER_BIRTHDAY) {
-        return checkIfNextOnBdayIsDisabled(values, true);
     }
 
     return false;
@@ -135,7 +73,6 @@ const PriceEstimationQuiz = ({
     onPrev,
     onNext,
     setFormStep,
-    setIsHolder,
     formikProps,
     toggleQuizVisibility,
 }) => {
@@ -144,18 +81,7 @@ const PriceEstimationQuiz = ({
 
     const isNextDisabled = checkDisabledState(step, values);
 
-    const formLoaderSteps = [
-        FORM_LOADERS.MATCH_DENTIST_AVAILABLE,
-        FORM_LOADERS.CALCULATING_PRICE,
-    ];
-
-    const stepsWithPreText = [
-        // FORM_STEPS.CHECK_INSURANCE,
-        // FORM_STEPS.GET_INSURANCE_PROVIDER,
-        // FORM_STEPS.ASK_PRIMARY_HOLDER,
-        // FORM_STEPS.INPUT_HOLDER_BIRTHDAY,
-        // FORM_STEPS.INPUT_MEMBER_ID,
-    ];
+    const formLoaderSteps = [FORM_LOADERS.MATCH_DENTIST_AVAILABLE];
 
     const onClose = useCallback(() => toggleQuizVisibility(), [
         toggleQuizVisibility,
@@ -196,28 +122,6 @@ const PriceEstimationQuiz = ({
 
                 {!formLoaderSteps.includes(step) && (
                     <Box is="form" pt={50} onSubmit={handleSubmit}>
-                        {stepsWithPreText.includes(step) && (
-                            <Text
-                                fontSize={1}
-                                color="text.gray"
-                                lineHeight="17px"
-                                mb={10}
-                                mt={-27}
-                            >
-                                {[
-                                    FORM_STEPS.CHECK_INSURANCE,
-                                    FORM_STEPS.GET_INSURANCE_PROVIDER,
-                                    FORM_STEPS.ASK_PRIMARY_HOLDER,
-                                ].includes(step) &&
-                                    `Hang in there, you're halfway done!`}
-
-                                {step === FORM_STEPS.INPUT_HOLDER_BIRTHDAY &&
-                                    'One more step!'}
-
-                                {step === FORM_STEPS.INPUT_MEMBER_ID &&
-                                    `You're almost there!`}
-                            </Text>
-                        )}
                         <Box mb={63}>
                             <Text fontSize={3} fontWeight="bold">
                                 {title}
@@ -239,12 +143,6 @@ const PriceEstimationQuiz = ({
                                 <DaysSelection setFormStep={setFormStep} />
                             )}
 
-                            {step === FORM_STEPS.INPUT_NAME && <NameStep />}
-
-                            {step === FORM_STEPS.INPUT_BIRTHDAY && (
-                                <GetBirthday />
-                            )}
-
                             {step === FORM_STEPS.INPUT_AGE && <GetAge />}
 
                             {step === FORM_STEPS.CHECK_INSURANCE && (
@@ -254,29 +152,11 @@ const PriceEstimationQuiz = ({
                             {step === FORM_STEPS.GET_INSURANCE_PROVIDER && (
                                 <InsuranceProvider setFormStep={setFormStep} />
                             )}
-
-                            {step === FORM_STEPS.ASK_PRIMARY_HOLDER && (
-                                <AskPrimaryHolder
-                                    setFormStep={setFormStep}
-                                    setIsHolder={setIsHolder}
-                                />
-                            )}
-
-                            {step === FORM_STEPS.ASK_HOLDER_INFO && (
-                                <AskHolderInfo />
-                            )}
-
-                            {step === FORM_STEPS.INPUT_HOLDER_BIRTHDAY && (
-                                <GetBirthday forHolder />
-                            )}
-
-                            {step === FORM_STEPS.INPUT_MEMBER_ID && (
-                                <MemberIdStep />
-                            )}
                         </Box>
                     </Box>
                 )}
             </Box>
+
             {!formLoaderSteps.includes(step) && (
                 <Box
                     position="relative"
@@ -332,7 +212,6 @@ PriceEstimationQuiz.propTypes = {
     onPrev: PropTypes.func.isRequired,
     onNext: PropTypes.func.isRequired,
     setFormStep: PropTypes.func.isRequired,
-    setIsHolder: PropTypes.func.isRequired,
     toggleQuizVisibility: PropTypes.func.isRequired,
     formikProps: PropTypes.shape({
         handleSubmit: PropTypes.func,

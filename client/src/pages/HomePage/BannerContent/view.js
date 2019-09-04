@@ -13,8 +13,6 @@ import {
     Image,
 } from '../../../components';
 import PriceEstimationQuiz from '../PriceEstimationQuiz';
-import PriceEstimationResult from '../PriceEstimationResult';
-
 import bannerBg from '../../../images/banner-bg.png';
 
 const { withScreenSizes } = Responsive;
@@ -26,19 +24,10 @@ const HeroContent = styled(Container)`
     }
 `;
 
-const BannerContentView = ({
-    isQuizDone,
-    isQuizVisible,
-    bundleGroupCoverageData,
-    formValues,
-    toggleQuizVisibility,
-    setQuizDone,
-    setBundleGroupCoverageData,
-    setFormValues,
-}) => (
+const BannerContentView = ({ isQuizVisible, toggleQuizVisibility }) => (
     <Flex
         width="100%"
-        height={isQuizDone ? [690, '', 862] : [450, '', 740]}
+        height={[450, '', 740]}
         position="relative"
         alignItems="center"
     >
@@ -58,82 +47,70 @@ const BannerContentView = ({
             />
         </Flex>
 
-        {!isQuizDone && (
-            <HeroContent color="text.white">
+        <HeroContent color="text.white">
+            <Text
+                fontSize={[29, '', 60]}
+                fontWeight="bold"
+                fontFamily="IowanOldStyle"
+                color="text.white"
+                lineHeight={[1.1]}
+                width={525}
+                maxWidth="100%"
+                mb={[32, '', 50]}
+            >
+                An easier way to improve your dental experience.
+            </Text>
+
+            <Button
+                type="ghost"
+                height="auto"
+                mr={[0, '', 30]}
+                mb={[20, '', 0]}
+                width={[170, '', 270]}
+                onClick={toggleQuizVisibility}
+            >
                 <Text
-                    fontSize={[29, '', 60]}
-                    fontWeight="bold"
-                    fontFamily="IowanOldStyle"
-                    color="text.white"
-                    lineHeight={[1.1]}
-                    width={525}
-                    maxWidth="100%"
-                    mb={[32, '', 50]}
+                    color="text.blue"
+                    bg="background.white"
+                    lineHeight="50px"
+                    borderRadius={32}
+                    style={{
+                        boxShadow: '0 2px 7px 0 rgba(24, 54, 100, 0.39)',
+                    }}
                 >
-                    An easier way to improve your dental experience.
+                    Take the quiz →
                 </Text>
+            </Button>
 
-                <Button
-                    type="ghost"
-                    height="auto"
-                    mr={[0, '', 30]}
-                    mb={[20, '', 0]}
-                    width={[170, '', 270]}
-                    onClick={toggleQuizVisibility}
+            <Box display={['block', '', 'inline']}>
+                <Text
+                    is="span"
+                    color="text.white"
+                    fontSize={[1, '', 2]}
+                    fontWeight="light"
                 >
-                    <Text
-                        color="text.blue"
-                        bg="background.white"
-                        lineHeight="50px"
-                        borderRadius={32}
-                        style={{
-                            boxShadow: '0 2px 7px 0 rgba(24, 54, 100, 0.39)',
-                        }}
-                    >
-                        Take the quiz →
-                    </Text>
-                </Button>
-
-                <Box display={['block', '', 'inline']}>
+                    {`or `}
+                </Text>
+                <Link to="/dentist/search">
                     <Text
                         is="span"
                         color="text.white"
                         fontSize={[1, '', 2]}
-                        fontWeight="light"
+                        lineHeight="14px"
+                        fontWeight="medium"
+                        style={{ textDecoration: 'underline' }}
                     >
-                        {`or `}
+                        Search for dentists
                     </Text>
-                    <Link to="/dentist/search">
-                        <Text
-                            is="span"
-                            color="text.white"
-                            fontSize={[1, '', 2]}
-                            lineHeight="14px"
-                            fontWeight="medium"
-                            style={{ textDecoration: 'underline' }}
-                        >
-                            Search for dentists
-                        </Text>
-                    </Link>
-                </Box>
+                </Link>
+            </Box>
 
-                {isQuizVisible && (
-                    <PriceEstimationQuiz
-                        toggleQuizVisibility={toggleQuizVisibility}
-                        setQuizDone={setQuizDone}
-                        setBundleGroupCoverageData={setBundleGroupCoverageData}
-                        setFormValues={setFormValues}
-                    />
-                )}
-            </HeroContent>
-        )}
-
-        {isQuizDone && (
-            <PriceEstimationResult
-                bundleGroupCoverageData={bundleGroupCoverageData}
-                formValues={formValues}
-            />
-        )}
+            {isQuizVisible && (
+                <PriceEstimationQuiz
+                    toggleQuizVisibility={toggleQuizVisibility}
+                />
+            )}
+        </HeroContent>
 
         <Box
             height={150}
@@ -171,14 +148,8 @@ const Wave = props => (
 );
 
 BannerContentView.propTypes = {
-    isQuizDone: PropTypes.bool.isRequired,
     isQuizVisible: PropTypes.bool.isRequired,
-    setQuizDone: PropTypes.func.isRequired,
     toggleQuizVisibility: PropTypes.func.isRequired,
-    setBundleGroupCoverageData: PropTypes.func.isRequired,
-    bundleGroupCoverageData: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-    setFormValues: PropTypes.func.isRequired,
-    formValues: PropTypes.shape({}).isRequired,
 };
 
 export default withScreenSizes(BannerContentView);
