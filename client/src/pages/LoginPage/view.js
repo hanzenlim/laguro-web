@@ -1,5 +1,6 @@
 import React from 'react';
 
+import history from '../../history';
 import { Box, Responsive } from '../../components';
 import LoginModal from '../common/Modals/LoginModal';
 import Login from '../common/Login';
@@ -24,6 +25,7 @@ const LoginPageView = ({
             <LoginModal
                 isLoginModalOpen={isLoginModalOpen}
                 toggleLoginModal={toggleLoginModal}
+                closeLoginModal={() => history.push('/')}
                 message={message}
                 mode={mode}
             />
