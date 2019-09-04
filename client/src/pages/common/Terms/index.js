@@ -21,7 +21,7 @@ export const Terms = props => (
             </strong>
         </p>
         <p>
-            <Text is="span">Last Updated: May 6, 2019</Text>
+            <Text is="span">Last Updated: August 20, 2019</Text>
         </p>
         <p>
             <Text is="span">Thank you for using Laguro!</Text>
@@ -271,10 +271,12 @@ export const Terms = props => (
                 Maps/Earth mapping services, including Google Maps API(s). Your
                 use of Google Maps/Earth is subject to the&nbsp;
             </Text>
-            <a href="https://www.google.com/help/terms_maps.html">
-                <Text is="span" fontSize={0}>
-                    Google Maps/Google Earth Additional Terms of Service
-                </Text>
+            <a
+                href="https://www.google.com/help/terms_maps.html"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                <u>Google Maps/Google Earth Additional Terms of Service</u>
             </a>
             <Text is="span">.</Text>
         </p>
@@ -509,7 +511,7 @@ export const Terms = props => (
                 <strong>
                     <Text is="span" fontSize={1}>
                         {' '}
-                        Service Fees
+                        Payments and Service Fees
                     </Text>
                 </strong>
             </li>
@@ -538,11 +540,44 @@ export const Terms = props => (
             <Text is="span">
                 6.3 You are responsible for paying any Service Fees that you owe
                 to Laguro. The applicable Service Fees (including any applicable
-                Taxes) are collected by Laguro through Stripe. Laguro Payments
-                will deduct any Fees from the Listing Fee before remitting the
-                payout to the Host. &nbsp;Patient Fees are collected at the time
-                an appointment is made. Except as otherwise provided on the
-                Laguro Platform, Service Fees are non-refundable.
+                Taxes) are collected by Laguro through its payment services
+                vendors. Laguro Payments will deduct any Fees from the Listing
+                Fee before remitting the payout to the Host. Patient Fees are
+                collected at the time an appointment is made. Except as
+                otherwise provided on the Laguro Platform, Service Fees are
+                non-refundable.
+            </Text>
+        </p>
+        <p>
+            <Text is="span">
+                6.4 In order to use the payment functionality of our
+                application, you must open a “Dwolla Platform” account provided
+                by Dwolla, Inc. and you must accept the{' '}
+                <a
+                    href="https://www.dwolla.com/legal/tos/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <u>Dwolla Terms of Service</u>
+                </a>{' '}
+                and{' '}
+                <a
+                    href="https://www.dwolla.com/legal/privacy/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <u>Privacy Policy</u>
+                </a>
+                . Any funds held in the Dwolla account are held by Dwolla’s
+                financial institution partners as set out in the Dwolla Terms of
+                Service. You authorize us to collect and share with Dwolla your
+                personal information including full name, email address, and
+                financial information, and you are responsible for the accuracy
+                and completeness of that data. You understand that you will
+                access and manage your Dwolla account through our application,
+                and Dwolla account notifications will be sent by us, not Dwolla.
+                We will provide customer support for your Dwolla account
+                activity, and can be reached at support@laguro.com.
             </Text>
         </p>
         <ol start="7">
@@ -1770,10 +1805,12 @@ export const Terms = props => (
                 initiate arbitration, a claim must be filed with the AAA and the
                 written Demand for Arbitration (available at&nbsp;
             </Text>
-            <a href="https://www.adr.org/sites/default/files/Demand%20for%20Arbitration%20Consumer%20Arbitration%20Rules.pdf">
-                <Text is="span" fontSize={0}>
-                    www.adr.org
-                </Text>
+            <a
+                href="https://www.adr.org/sites/default/files/Demand%20for%20Arbitration%20Consumer%20Arbitration%20Rules.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                <u>www.adr.org</u>
             </a>
             <Text is="span">
                 ) provided to the other party, as specified in the AAA Rules.
