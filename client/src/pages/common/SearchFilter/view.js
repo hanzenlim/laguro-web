@@ -6,6 +6,8 @@ import { Select as AntdSelect } from 'antd';
 import styled from 'styled-components';
 
 import { Box, Flex, Responsive, Text } from '../../../components';
+import { getInsuranceText, getInsuranceId } from '../../../util/insuranceUtil';
+import { supportedInsuranceList } from '../../../staticData';
 import {
     PROCEDURE_LIST,
     LANGUAGE_LIST,
@@ -41,7 +43,7 @@ const Select = styled(AntdSelect)`
     }
 `;
 
-const SearchFilterView = ({ onSelect }) => (
+const SearchFilterView = ({ onSelect, data }) => (
     <StyledForm>
         <Flex
             width="100%"
@@ -156,17 +158,28 @@ const SearchFilterView = ({ onSelect }) => (
                 mr={[0, '', 10]}
             >
                 <Field
-                    name="insurance"
+                    name="insuranceProvider"
                     component={fieldProps => (
                         <Select
                             placeholder="Insurance"
-                            value={fieldProps.form.values.insurance}
+                            value={
+                                supportedInsuranceList
+                                    .map(i => i.id)
+                                    .includes(
+                                        fieldProps.form.values.insuranceProvider
+                                    )
+                                    ? getInsuranceText(
+                                          fieldProps.form.values
+                                              .insuranceProvider
+                                      )
+                                    : 'All procedures'
+                            }
                             onChange={value => {
                                 onSelect(fieldProps.field.name, value);
                             }}
                         >
                             {INSURANCE_LIST.map(i => (
-                                <Option value={i} key={i}>
+                                <Option value={getInsuranceId(i)} key={i}>
                                     {i}
                                 </Option>
                             ))}

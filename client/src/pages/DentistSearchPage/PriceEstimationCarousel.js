@@ -19,7 +19,7 @@ import {
 import { pricingClient } from '../../util/apolloClients';
 import { renderPriceWithoutZeros } from '../../util/paymentUtil';
 import history from '../../history';
-import insuranceList from '../common/the-bright-side-components/components/Kiosk/KioskInsurance/insuranceList';
+import { allInsuranceList } from '../../staticData';
 import { selection as bundleGroups } from '../HomePage/PriceEstimationQuiz/BundleGroupSelection';
 import { AuthContext } from '../../App';
 import { getUser } from '../../util/authUtils';
@@ -67,7 +67,7 @@ const PrevArrow = ({ onClick, className }) => (
 );
 
 // Normalized Static Values
-const normalizedInsuranceList = _keyBy(insuranceList, 'id');
+const normalizedInsuranceList = _keyBy(allInsuranceList, 'id');
 const normalizedBundleGroups = _keyBy(bundleGroups, 'value');
 
 // Main Component

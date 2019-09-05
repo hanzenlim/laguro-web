@@ -9,7 +9,7 @@ import moment from 'moment';
 import DentistSearchPageView from './view';
 import history from '../../history';
 import { GET_DENTISTS_AND_APPOINTMENT_SLOTS } from './queries';
-
+import { supportedInsuranceList } from '../../staticData';
 import { appointmentClient } from '../../util/apolloClients';
 
 const daysAvailabilityMapping = {
@@ -138,7 +138,7 @@ class DetailsSearchPage extends PureComponent {
         if (
             urlParams.language ||
             urlParams.procedure ||
-            urlParams.insurance ||
+            urlParams.insuranceProvider ||
             urlParams.dayAvailability ||
             urlParams.timeAvailability
         ) {
@@ -158,14 +158,13 @@ class DetailsSearchPage extends PureComponent {
             }
 
             if (
-                urlParams.insurance &&
-                urlParams.insurance !== 'All insurances'
+                urlParams.insuranceProvider &&
+                urlParams.insuranceProvider !== 'All insurances' &&
+                supportedInsuranceList
+                    .map(i => i.id)
+                    .includes(urlParams.insuranceProvider)
             ) {
-                if (urlParams.insurance === 'Delta Dental (CA)') {
-                    options.acceptedInsurance = 'DD_CALIFORNIA';
-                } else {
-                    options.acceptedInsurance = urlParams.insurance;
-                }
+                options.acceptedInsurance = urlParams.insuranceProvider;
             }
 
             if (urlParams.dayAvailability) {

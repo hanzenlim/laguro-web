@@ -4,14 +4,15 @@ import { Field } from 'formik';
 import { withRouter } from 'react-router-dom';
 import { Select as AntdSelect } from 'antd';
 import styled from 'styled-components';
+import queryString from 'query-string';
 
 import { Box, Button } from '../../../components';
 import { Select } from './CustomInputs';
 
-import insuranceList from '../../common/the-bright-side-components/components/Kiosk/KioskInsurance/insuranceList';
+import { allInsuranceList, supportedInsuranceList } from '../../../staticData';
 import { FORM_LOADERS } from '.';
 
-const { Option } = AntdSelect;
+const { Option, OptGroup } = AntdSelect;
 
 const StyledButton = styled(Button)`
     &&.ant-btn {
@@ -50,11 +51,36 @@ const InsuranceProvider = ({ setFormStep, history }) => (
                                 ? { value: form.values.insuranceProvider }
                                 : {})}
                         >
-                            {insuranceList.map(insurance => (
-                                <Option key={insurance.id} value={insurance.id}>
-                                    {insurance.name}
-                                </Option>
-                            ))}
+                            <OptGroup label="Popular">
+                                {supportedInsuranceList.map(insurance => (
+                                    <Option
+                                        key={insurance.id}
+                                        value={insurance.id}
+                                    >
+                                        {insurance.name}
+                                    </Option>
+                                ))}
+                            </OptGroup>
+                            <OptGroup label="All insurance">
+                                {allInsuranceList
+                                    .filter(insurance => {
+                                        const supportedInsuranceIdList = supportedInsuranceList.map(
+                                            i => i.id
+                                        );
+
+                                        return !supportedInsuranceIdList.includes(
+                                            insurance.id
+                                        );
+                                    })
+                                    .map(insurance => (
+                                        <Option
+                                            key={insurance.id}
+                                            value={insurance.id}
+                                        >
+                                            {insurance.name}
+                                        </Option>
+                                    ))}
+                            </OptGroup>
                         </Select>
                     </Box>
                     <Box width={320} maxWidth="100%" mb={15} mx="auto">
@@ -71,19 +97,26 @@ const InsuranceProvider = ({ setFormStep, history }) => (
                                             FORM_LOADERS.MATCH_DENTIST_AVAILABLE
                                         );
                                         setTimeout(() => {
+                                            const searchParams = queryString.stringify(
+                                                {
+                                                    bundleGroup:
+                                                        form.values.bundleGroup,
+                                                    dayAvailability:
+                                                        form.values
+                                                            .dayAvailability,
+                                                    timeAvailability:
+                                                        form.values
+                                                            .timeAvailability,
+                                                    age: form.values.age,
+                                                    insuranceProvider:
+                                                        form.values
+                                                            .insuranceProvider,
+                                                    hasFinishedSurvey: true,
+                                                }
+                                            );
+
                                             history.push(
-                                                `/dentist/search?bundleGroup=${
-                                                    form.values.bundleGroup
-                                                }&dayAvailability=${
-                                                    form.values.dayAvailability
-                                                }&timeAvailability=${
-                                                    form.values.timeAvailability
-                                                }&age=${
-                                                    form.values.age
-                                                }&insuranceProvider=${
-                                                    form.values
-                                                        .insuranceProvider
-                                                }&hasFinishedSurvey=true`
+                                                `/dentist/search?${searchParams}`
                                             );
                                         }, 3000);
                                     }}
