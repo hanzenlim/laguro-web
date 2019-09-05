@@ -3,11 +3,12 @@ import { Query, compose, withApollo } from 'react-apollo';
 import { Helmet } from 'react-helmet';
 import queryString from 'query-string';
 import _get from 'lodash/get';
+import _sortBy from 'lodash/sortBy';
+import moment from 'moment';
+
 import DentistSearchPageView from './view';
 import history from '../../history';
-import { getMyPosition, DEFAULT_LOCATION } from '../../util/navigatorUtil';
 import { GET_DENTISTS_AND_APPOINTMENT_SLOTS } from './queries';
-import moment from 'moment';
 
 import { appointmentClient } from '../../util/apolloClients';
 
@@ -63,19 +64,15 @@ const getHoursFromTimeAvailability = {
     },
 };
 
+export const sortByList = [{ desc: 'Name', value: 'name' }];
+
 class DetailsSearchPage extends PureComponent {
     constructor(props) {
         super(props);
 
         this.state = {
-            data: [],
-            total: 0,
-            loading: true,
-            showMap: false,
-            defaultPosition: DEFAULT_LOCATION,
-            urlParams: {},
             isFilterVisible: false,
-            queryUrl: this.props.location.search,
+            sortBy: sortByList[0].value,
         };
 
         this.refetch = () => {};
@@ -88,10 +85,6 @@ class DetailsSearchPage extends PureComponent {
         if (urlParams.limit) {
             delete urlParams.limit;
             history.push({ search: `?${queryString.stringify(urlParams)}` });
-        }
-
-        if (!urlParams.lat || !urlParams.long) {
-            this.setState({ defaultPosition: await getMyPosition() });
         }
     };
 
@@ -112,26 +105,24 @@ class DetailsSearchPage extends PureComponent {
         }
     };
 
-    toggleMap = () => {
-        this.setState({ showMap: !this.state.showMap });
-    };
-
     onToggleFilter = () => {
         this.setState({ isFilterVisible: !this.state.isFilterVisible });
     };
 
+    setSortBy = value => this.setState({ sortBy: value });
+
+    sortItems = (items, sortBy) => {
+        if (sortBy === 'name') {
+            return _sortBy(items, item => item[sortBy]);
+        }
+
+        return items;
+    };
+
     buildQueryParams = urlParams => {
-        let queryParams = {
+        const queryParams = {
             textQuery: urlParams && urlParams.text ? urlParams.text : '',
         };
-        if (urlParams.lat && urlParams.long) {
-            queryParams = {
-                locationQuery: {
-                    lat: parseFloat(urlParams.lat),
-                    lon: parseFloat(urlParams.long),
-                },
-            };
-        }
 
         queryParams.options = {};
         queryParams.options.rangeStart = moment()
@@ -206,6 +197,7 @@ class DetailsSearchPage extends PureComponent {
     render() {
         const urlParams = queryString.parse(this.props.location.search);
         const queryParams = this.buildQueryParams(urlParams);
+        const { sortBy } = this.state;
 
         return (
             <Fragment>
@@ -237,17 +229,17 @@ class DetailsSearchPage extends PureComponent {
                             []
                         );
 
+                        const sortedItems = this.sortItems(items, sortBy);
+
                         return (
                             <DentistSearchPageView
-                                data={items}
-                                showMap={this.state.showMap}
+                                data={sortedItems}
                                 total={items.length}
-                                toggleMap={this.toggleMap}
-                                defaultPosition={this.state.defaultPosition}
-                                urlParams={this.state.urlParams}
                                 loading={loading}
                                 isFilterVisible={this.state.isFilterVisible}
                                 onToggleFilter={this.onToggleFilter}
+                                sortBy={sortBy}
+                                setSortBy={this.setSortBy}
                             />
                         );
                     }}

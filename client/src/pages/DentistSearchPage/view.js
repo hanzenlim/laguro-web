@@ -2,13 +2,14 @@ import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
 
-import { Container, Box, Loading, Text } from '../../components';
+import { Container, Box, Loading, Text, Flex } from '../../components';
 import SearchResultsList from '../common/SearchResultsList';
 import history from '../../history';
 import SignUpBanner from './SignupBanner';
 import DentistSearchFilter from './DentistSearchFilter';
 import QuizPrompt from './QuizPrompt';
 import PriceEstimationCarousel from './PriceEstimationCarousel';
+import SortSelection from './SortSelection';
 import { AuthContext } from '../../App';
 
 const DentistSearchPageView = ({
@@ -17,6 +18,8 @@ const DentistSearchPageView = ({
     loading,
     onToggleFilter,
     isFilterVisible,
+    sortBy,
+    setSortBy,
 }) => {
     const { isAuth } = useContext(AuthContext);
 
@@ -60,14 +63,25 @@ const DentistSearchPageView = ({
                         </Box>
                     ) : (
                         <Box>
-                            <Text
-                                fontSize={[1, '', 4]}
-                                fontWeight="medium"
+                            <Flex
+                                alignItems={['flex-start', 'center', 'center']}
+                                justifyContent="space-between"
+                                flexDirection={['column', 'row', 'row']}
                                 mt={30}
-                                mb={[8, '', 30]}
+                                mb={30}
                             >
-                                Available dentists
-                            </Text>
+                                <Text
+                                    fontSize={[1, '', 4]}
+                                    fontWeight="medium"
+                                    mb={[8, 0, 0]}
+                                >
+                                    Available dentists
+                                </Text>
+                                <SortSelection
+                                    value={sortBy}
+                                    onChange={setSortBy}
+                                />
+                            </Flex>
                             <SearchResultsList
                                 data={transformedData}
                                 total={total}
