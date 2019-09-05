@@ -194,7 +194,7 @@ class Header extends Component {
 
                     <Flex alignItems="center">
                         {auth && isHost && (
-                            <HeaderLinkContainer width={['', '', 'auto']}>
+                            <HeaderLinkContainer width={['', '', 42]}>
                                 <HostLink
                                     auth={auth}
                                     desktopOnly={desktopOnly}
@@ -204,7 +204,7 @@ class Header extends Component {
                         )}
                         {/* hasUpdatedDentistBio will be true for those users who created a dentist profile on the website. Will be false for hosts who have not created their own dentist profile. Right now, the backend automatically creates a dentist profile for all new hosts. */}
                         {auth && this.props.hasUpdatedDentistBio && (
-                            <HeaderLinkContainer width={['', '', 'auto']}>
+                            <HeaderLinkContainer width={['', '', 60]}>
                                 <DentistLink
                                     auth={auth}
                                     desktopOnly={desktopOnly}

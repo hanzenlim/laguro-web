@@ -1,7 +1,8 @@
 import React from 'react';
-import { Button, Text, Box } from '../../../components';
 import styled from 'styled-components';
 import _get from 'lodash/get';
+
+import { Button, Text, Box } from '../../../components';
 import {
     getPageType,
     HOME_PAGE_TYPE,
@@ -42,6 +43,8 @@ const StyledLinkButton = styled(Button)`
             font-weight: ${props => props.theme.fontWeights.light};
         }
         border-radius: 0;
+        border-bottom: solid 1px transparent;
+
         // on mobile, :hover is activated with a click
         :hover {
             border-bottom: solid 1px

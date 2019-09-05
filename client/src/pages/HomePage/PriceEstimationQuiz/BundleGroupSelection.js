@@ -22,7 +22,7 @@ export const selection = [
     {
         value: 'SURGERY',
         title: 'Surgery',
-        subtitle: 'General checkup, X-rays or Exams',
+        subtitle: 'Implants, Extractions, Root canals...',
         icon: 'Surgery',
     },
     {
