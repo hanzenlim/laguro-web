@@ -9,7 +9,6 @@ import { Box, Flex, Responsive, Text } from '../../../components';
 import { getInsuranceText, getInsuranceId } from '../../../util/insuranceUtil';
 import { supportedInsuranceList } from '../../../staticData';
 import {
-    PROCEDURE_LIST,
     LANGUAGE_LIST,
     DAY_AVAILABILITY_LIST,
     TIME_AVAILABILITY_LIST,
@@ -43,7 +42,15 @@ const Select = styled(AntdSelect)`
     }
 `;
 
-const SearchFilterView = ({ onSelect, data }) => (
+const BUNDLE_GROUP_LIST = [
+    { key: 'All procedures', value: 'All procedures' },
+    { key: 'FIRST_VISIT', value: 'First Visit' },
+    { key: 'GENERAL', value: 'General procedures' },
+    { key: 'SURGERY', value: 'Surgery' },
+    { key: 'SPECIAL', value: 'Special treatment' },
+];
+
+const SearchFilterView = ({ onSelect }) => (
     <StyledForm>
         <Flex
             width="100%"
@@ -62,18 +69,18 @@ const SearchFilterView = ({ onSelect, data }) => (
                 mr={[0, '', 10]}
             >
                 <Field
-                    name="procedure"
+                    name="bundleGroup"
                     component={fieldProps => (
                         <Select
                             placeholder="Procedures"
-                            value={fieldProps.form.values.procedure}
+                            value={fieldProps.form.values.bundleGroup}
                             onChange={value => {
                                 onSelect(fieldProps.field.name, value);
                             }}
                         >
-                            {PROCEDURE_LIST.map(i => (
-                                <Option value={i} key={i}>
-                                    {i}
+                            {BUNDLE_GROUP_LIST.map(i => (
+                                <Option value={i.key} key={i}>
+                                    {i.value}
                                 </Option>
                             ))}
                         </Select>

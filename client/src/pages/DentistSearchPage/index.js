@@ -70,6 +70,24 @@ export const sortByList = [
     { desc: 'Name', value: 'name' },
 ];
 
+const procedureListMapping = {
+    'First Visit': ['Exams'],
+    'General procedures': ['Fillings', 'Crowns/Bridges/Venners'],
+    Surgery: [
+        'Root Canals',
+        'Gum Surgery/Grafting',
+        'Implant placement',
+        'Implant crown',
+        'Extractions/Surgery',
+    ],
+    'Special treatment': [
+        'Deep Cleaning',
+        'Whitening/Cosmetic',
+        'Dentures',
+        'Braces',
+    ],
+};
+
 class DetailsSearchPage extends PureComponent {
     constructor(props) {
         super(props);
@@ -145,7 +163,7 @@ class DetailsSearchPage extends PureComponent {
         // Add more filters
         if (
             urlParams.language ||
-            urlParams.procedure ||
+            urlParams.bundleGroup ||
             urlParams.insuranceProvider ||
             urlParams.dayAvailability ||
             urlParams.timeAvailability
@@ -159,10 +177,11 @@ class DetailsSearchPage extends PureComponent {
             // We don't want to include the filter if the
             // selected procedure is all procedures
             if (
-                urlParams.procedure &&
-                urlParams.procedure !== 'All procedures'
+                urlParams.bundleGroup &&
+                urlParams.bundleGroup !== 'All procedures'
             ) {
-                options.procedure = urlParams.procedure;
+                options.procedures =
+                    procedureListMapping[urlParams.bundleGroup];
             }
 
             if (
