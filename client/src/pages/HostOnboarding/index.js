@@ -825,6 +825,7 @@ class HostOnboarding extends Component {
                 variables={{ id: officeId }}
                 onCompleted={this.handleGetOffice}
                 fetchPolicy="network-only"
+                skip={_isEmpty(officeId)}
             >
                 {() => (
                     <Mutation
