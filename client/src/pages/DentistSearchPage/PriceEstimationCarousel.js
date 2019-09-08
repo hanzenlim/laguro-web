@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 // import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
 import SlickSlider from 'react-slick';
@@ -10,22 +10,33 @@ import _keyBy from 'lodash/keyBy';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
-import { Loading, Container, Box, Icon, Text } from '../../components';
+import { Container, Box, Icon, Text } from '../../components';
 import CarouselCard from './CarouselCard';
-import {
-    GET_ANON_BUNDLE_GROUP_COVERAGE,
-    GET_BUNDLE_GROUP_COVERAGE,
-} from './queries';
+import { GET_ANON_BUNDLE_GROUP_COVERAGE } from './queries';
 import { pricingClient } from '../../util/apolloClients';
 import { renderPriceWithoutZeros } from '../../util/paymentUtil';
 import history from '../../history';
 import insuranceList from '../common/the-bright-side-components/components/Kiosk/KioskInsurance/insuranceList';
 import { selection as bundleGroups } from '../HomePage/PriceEstimationQuiz/BundleGroupSelection';
-import { AuthContext } from '../../App';
-import { getUser } from '../../util/authUtils';
 
 // Slider Custom Styles
 const Slider = styled(SlickSlider)`
+    .slick-track {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        align-items: stretch;
+
+        .slick-slide {
+            float: none;
+            height: auto;
+
+            & > * {
+                height: 100%;
+            }
+        }
+    }
+
     .slick-arrow {
         width: 44px;
         height: 44px;
@@ -72,57 +83,29 @@ const normalizedBundleGroups = _keyBy(bundleGroups, 'value');
 
 // Main Component
 const PriceEstimationCarousel = () => {
-    const { isAuth } = useContext(AuthContext);
-
-    let queryProps = {};
-
-    if (isAuth) {
-        const { id: patientId } = getUser();
-        const { bundleGroup } = queryString.parse(history.location.search);
-        queryProps = {
-            query: GET_BUNDLE_GROUP_COVERAGE,
-            input: { patientId, bundleGroup },
-        };
-    } else {
-        const { bundleGroup, age, insuranceProvider } = queryString.parse(
-            history.location.search
-        );
-
-        queryProps = {
-            query: GET_ANON_BUNDLE_GROUP_COVERAGE,
-            input: {
-                bundleGroup,
-                anonPatient: {
-                    age: Number(age),
-                },
-                anonPatientInsurance: {
-                    insuranceProvider,
-                    insuranceProviderId: insuranceProvider,
-                },
-            },
-        };
-    }
+    const { bundleGroup, age, insuranceProvider } = queryString.parse(
+        history.location.search
+    );
 
     return (
         <Query
-            query={queryProps.query}
+            query={GET_ANON_BUNDLE_GROUP_COVERAGE}
             variables={{
-                input: queryProps.input,
+                input: {
+                    bundleGroup,
+                    anonPatient: {
+                        age: Number(age),
+                    },
+                    anonPatientInsurance: {
+                        insuranceProvider,
+                        insuranceProviderId: insuranceProvider,
+                    },
+                },
             }}
             client={pricingClient}
             fetchPolicy="cache-and-network"
         >
             {({ loading, data }) => {
-                if (loading) return <Loading />;
-
-                const bundleGroupCoverageData = _get(
-                    data,
-                    isAuth
-                        ? 'getBundleGroupCoverage'
-                        : 'getAnonBundleGroupCoverage',
-                    []
-                );
-
                 const {
                     insuranceProvider: insuranceProviderId,
                     bundleGroup: bundleGroupId,
@@ -150,6 +133,32 @@ const PriceEstimationCarousel = () => {
                     </Text>
                 );
 
+                if (loading) {
+                    return (
+                        <Container>
+                            <Text
+                                fontSize={[1, '', 4]}
+                                fontWeight="bold"
+                                color="#626770"
+                                mb={[16, '', 24]}
+                                textAlign="center"
+                            >
+                                {`Calculating price estimation for `}
+                                {bundleGroupName}
+                                {` with `}
+                                {insuranceName}
+                                {` ...`}
+                            </Text>
+                        </Container>
+                    );
+                }
+
+                const bundleGroupCoverageData = _get(
+                    data,
+                    'getAnonBundleGroupCoverage',
+                    []
+                );
+
                 return (
                     <Container>
                         <Text
@@ -161,8 +170,10 @@ const PriceEstimationCarousel = () => {
                         >
                             {`Insurance coverage estimation for `}
                             {bundleGroupName}
-                            {!isAuth && ` with `}
-                            {!isAuth && insuranceName}
+                            {` with `}
+                            {insuranceName}
+                            {!bundleGroupCoverageData.length &&
+                                ` is not yet available.`}
                         </Text>
 
                         {bundleGroupCoverageData.length ? (
@@ -218,9 +229,7 @@ const PriceEstimationCarousel = () => {
                                     )
                                 )}
                             </Slider>
-                        ) : (
-                            <Text textAlign="center">Not yet available.</Text>
-                        )}
+                        ) : null}
                     </Container>
                 );
             }}

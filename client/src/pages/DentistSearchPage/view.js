@@ -34,10 +34,6 @@ const DentistSearchPageView = ({
         history.location.search
     );
 
-    const isLoggedInAndHasFinishedSurvey = hasFinishedSurvey && isAuth;
-    const isAnonAndHasFinishedSurveyWithInsurance =
-        hasFinishedSurvey && insuranceProvider;
-
     return (
         <Box height="100%" pt={[48, '', 84]}>
             {!isAuth && <SignUpBanner />}
@@ -48,8 +44,7 @@ const DentistSearchPageView = ({
             />
 
             {!hasFinishedSurvey && <QuizPrompt />}
-            {(isAnonAndHasFinishedSurveyWithInsurance ||
-                isLoggedInAndHasFinishedSurvey) && (
+            {hasFinishedSurvey && insuranceProvider && (
                 <Box my={28}>
                     <PriceEstimationCarousel />
                 </Box>
