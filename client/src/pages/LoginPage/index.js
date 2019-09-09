@@ -3,10 +3,13 @@ import { Helmet } from 'react-helmet';
 import queryString from 'query-string';
 import { Redirect } from 'react-router-dom';
 import _get from 'lodash/get';
+import { Flex, Image } from '../../components';
 
 import history from '../../history';
 import LoginPageView from './view';
 import { getUser } from '../../util/authUtils';
+
+import bannerBg from '../../images/banner-bg.png';
 
 class LoginPage extends Component {
     state = {
@@ -64,6 +67,22 @@ class LoginPage extends Component {
                         />
                     </Helmet>
                 )}
+                <Flex
+                    display={['none', 'flex', '']}
+                    position="absolute"
+                    justifyContent="center"
+                    width="100%"
+                    height="100%"
+                    zIndex="1"
+                    style={{ overflow: 'hidden' }}
+                >
+                    <Image
+                        height="100%"
+                        src={bannerBg}
+                        alt="homepage-background"
+                        style={{ objectFit: 'cover' }}
+                    />
+                </Flex>
                 <LoginPageView
                     isLoginModalOpen={this.state.isLoginModalOpen}
                     toggleLoginModal={this.toggleLoginModal}
