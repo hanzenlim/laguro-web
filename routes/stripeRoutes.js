@@ -10,6 +10,7 @@ const handleStripeEventMutation = `
 `;
 
 const CHARGE_SUCCEED = 'charge.succeeded';
+const INVOICE_PAYMENT_FAILED = 'invoice.payment_failed';
 
 const stripeRoutes = app => {
     app.post('/api/stripe', async (req, res) => {
@@ -19,7 +20,7 @@ const stripeRoutes = app => {
 
         // arguably better to always send event id to decouple server logic,
         // but filtering here will reduce load
-        if (type === CHARGE_SUCCEED) {
+        if (type === CHARGE_SUCCEED || type === INVOICE_PAYMENT_FAILED) {
             await makeMutation(handleStripeEventMutation, { eventId });
         }
         res.json({ status: 200, message: 'success' });
