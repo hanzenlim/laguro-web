@@ -64,7 +64,11 @@ const getHoursFromTimeAvailability = {
     },
 };
 
-export const sortByList = [{ desc: 'Name', value: 'name' }];
+export const sortByList = [
+    { desc: 'Best matches', value: '' },
+    { desc: 'Most popular', value: 'numReviews' },
+    { desc: 'Name', value: 'name' },
+];
 
 class DetailsSearchPage extends PureComponent {
     constructor(props) {
@@ -114,6 +118,10 @@ class DetailsSearchPage extends PureComponent {
     sortItems = (items, sortBy) => {
         if (sortBy === 'name') {
             return _sortBy(items, item => item[sortBy]);
+        }
+
+        if (sortBy === 'numReviews') {
+            return _sortBy(items, item => item[sortBy]).reverse();
         }
 
         return items;
