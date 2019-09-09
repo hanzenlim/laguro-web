@@ -30,9 +30,11 @@ const DentistSearchPageView = ({
         ),
     }));
 
-    const { hasFinishedSurvey, insuranceProvider } = queryString.parse(
-        history.location.search
-    );
+    const { insuranceProvider } = queryString.parse(history.location.search);
+    let hasFinishedSurvey = false;
+    if (window && window.localStorage) {
+        hasFinishedSurvey = window.localStorage.getItem('hasFinishedSurvey');
+    }
 
     return (
         <Box height="100%" pt={[48, '', 84]}>

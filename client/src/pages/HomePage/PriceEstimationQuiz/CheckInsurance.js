@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Field } from 'formik';
 import { withRouter } from 'react-router-dom';
+import queryString from 'query-string';
 
 import { Box, Text, Button, Flex } from '../../../components';
 import { FORM_STEPS, FORM_LOADERS } from '.';
@@ -39,17 +40,28 @@ const CheckInsurance = ({ setFormStep, history }) => (
                                     setFormStep(
                                         FORM_LOADERS.MATCH_DENTIST_AVAILABLE
                                     );
+
                                     setTimeout(() => {
+                                        const searchParams = queryString.stringify(
+                                            {
+                                                bundleGroup:
+                                                    form.values.bundleGroup,
+                                                dayAvailability:
+                                                    form.values.dayAvailability,
+                                                timeAvailability:
+                                                    form.values
+                                                        .timeAvailability,
+                                                age: form.values.age,
+                                            }
+                                        );
+                                        if (window && window.localStorage) {
+                                            window.localStorage.setItem(
+                                                'hasFinishedSurvey',
+                                                true
+                                            );
+                                        }
                                         history.push(
-                                            `/dentist/search?bundleGroup=${
-                                                form.values.bundleGroup
-                                            }&dayAvailability=${
-                                                form.values.dayAvailability
-                                            }&timeAvailability=${
-                                                form.values.timeAvailability
-                                            }&age=${
-                                                form.values.age
-                                            }&hasFinishedSurvey=true`
+                                            `/dentist/search?${searchParams}`
                                         );
                                     }, 3000);
                                 }
