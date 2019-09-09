@@ -111,9 +111,15 @@ const InsuranceProvider = ({ setFormStep, history }) => (
                                                     insuranceProvider:
                                                         form.values
                                                             .insuranceProvider,
-                                                    hasFinishedSurvey: true,
                                                 }
                                             );
+
+                                            if (window && window.localStorage) {
+                                                window.localStorage.setItem(
+                                                    'hasFinishedSurvey',
+                                                    true
+                                                );
+                                            }
 
                                             history.push(
                                                 `/dentist/search?${searchParams}`
