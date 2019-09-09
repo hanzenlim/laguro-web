@@ -71,21 +71,21 @@ export const sortByList = [
 ];
 
 const procedureListMapping = {
-    'First Visit': ['Exams'],
-    'General procedures': ['Fillings', 'Crowns/Bridges/Venners'],
+    'First Visit': ['Exams', 'Deep Cleaning', 'Fillings'],
+    'General procedures': [
+        'Exams',
+        'Deep Cleaning',
+        'Fillings',
+        'Implant crown',
+    ],
     Surgery: [
+        'Crowns/Bridges/Venners',
         'Root Canals',
-        'Gum Surgery/Grafting',
         'Implant placement',
         'Implant crown',
         'Extractions/Surgery',
     ],
-    'Special treatment': [
-        'Deep Cleaning',
-        'Whitening/Cosmetic',
-        'Dentures',
-        'Braces',
-    ],
+    'Special treatment': ['Dentures', 'Braces', 'Whitening/Cosmetic'],
 };
 
 class DetailsSearchPage extends PureComponent {
