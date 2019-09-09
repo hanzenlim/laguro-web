@@ -1,4 +1,4 @@
-export const payerList = [
+export const allInsuranceList = [
     { name: '32 BJ', id: '32_BJ' },
     { name: '3M Dental Services', id: '3M' },
     { name: 'AARP Dental Insurance Plan', id: 'AARP' },
@@ -380,4 +380,4 @@ export const payerList = [
     { name: 'Wellpoint Dental Services', id: 'WELLPOINT' },
 ];
 
-export default payerList;
+export default allInsuranceList;

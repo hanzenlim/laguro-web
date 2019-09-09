@@ -16,7 +16,7 @@ import { GET_ANON_BUNDLE_GROUP_COVERAGE } from './queries';
 import { pricingClient } from '../../util/apolloClients';
 import { renderPriceWithoutZeros } from '../../util/paymentUtil';
 import history from '../../history';
-import insuranceList from '../common/the-bright-side-components/components/Kiosk/KioskInsurance/insuranceList';
+import { allInsuranceList } from '../../staticData';
 import { selection as bundleGroups } from '../HomePage/PriceEstimationQuiz/BundleGroupSelection';
 
 // Slider Custom Styles
@@ -78,7 +78,7 @@ const PrevArrow = ({ onClick, className }) => (
 );
 
 // Normalized Static Values
-const normalizedInsuranceList = _keyBy(insuranceList, 'id');
+const normalizedInsuranceList = _keyBy(allInsuranceList, 'id');
 const normalizedBundleGroups = _keyBy(bundleGroups, 'value');
 
 // Main Component

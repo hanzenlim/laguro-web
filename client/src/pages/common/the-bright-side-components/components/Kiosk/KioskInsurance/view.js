@@ -9,7 +9,7 @@ import * as React from 'react';
 import Onboarding from '../../Onboarding';
 import FormElements from '../../../../FormElements';
 import InsuranceUmbrella from '../../Onboarding/Assets/insuranceUmbrella';
-import insuranceList from './insuranceList';
+import { allInsuranceList } from '../../../../../../staticData';
 import { getFormatTextFromProps } from '../../../../../../util/intlUtils';
 import { injectIntl } from 'react-intl';
 
@@ -209,7 +209,7 @@ class InsuranceView extends React.PureComponent {
                                     component={props => (
                                         <Onboarding.SelectField
                                             {...props}
-                                            options={insuranceList.map(i => (
+                                            options={allInsuranceList.map(i => (
                                                 <Onboarding.SelectOption
                                                     value={i.name}
                                                 >
@@ -229,7 +229,7 @@ class InsuranceView extends React.PureComponent {
                                                 this.props.formikProps.setFieldValue(
                                                     'insuranceProviderId',
                                                     _find(
-                                                        insuranceList,
+                                                        allInsuranceList,
                                                         i => i.name === value
                                                     ).id
                                                 );
