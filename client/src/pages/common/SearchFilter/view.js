@@ -172,7 +172,7 @@ const SearchFilterView = ({ onSelect, data }) => (
                                           fieldProps.form.values
                                               .insuranceProvider
                                       )
-                                    : 'All procedures'
+                                    : 'All insurances'
                             }
                             onChange={value => {
                                 onSelect(fieldProps.field.name, value);

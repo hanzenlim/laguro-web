@@ -30,7 +30,9 @@ const DentistSearchPageView = ({
         ),
     }));
 
-    const { insuranceProvider } = queryString.parse(history.location.search);
+    const { insuranceProvider, bundleGroup } = queryString.parse(
+        history.location.search
+    );
     let hasFinishedSurvey = false;
     if (window && window.localStorage) {
         hasFinishedSurvey = window.localStorage.getItem('hasFinishedSurvey');
@@ -46,7 +48,7 @@ const DentistSearchPageView = ({
             />
 
             {!hasFinishedSurvey && <QuizPrompt />}
-            {hasFinishedSurvey && insuranceProvider && (
+            {hasFinishedSurvey && insuranceProvider && bundleGroup && (
                 <Box my={28}>
                     <PriceEstimationCarousel />
                 </Box>

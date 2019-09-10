@@ -118,7 +118,11 @@ const PriceEstimationCarousel = () => {
                         fontWeight="bold"
                         color="text.blue"
                     >
-                        {normalizedInsuranceList[insuranceProviderId].name}
+                        {_get(
+                            normalizedInsuranceList,
+                            `${insuranceProviderId}.name`,
+                            ''
+                        )}
                     </Text>
                 ) : null;
 
@@ -129,7 +133,11 @@ const PriceEstimationCarousel = () => {
                         fontWeight="bold"
                         color="text.blue"
                     >
-                        {normalizedBundleGroups[bundleGroupId].title}
+                        {_get(
+                            normalizedBundleGroups,
+                            `${bundleGroupId}.title`,
+                            ''
+                        )}
                     </Text>
                 );
 
