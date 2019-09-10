@@ -6,13 +6,11 @@ import { Select as AntdSelect } from 'antd';
 import styled from 'styled-components';
 
 import { Box, Flex, Responsive, Text } from '../../../components';
-import { getInsuranceText, getInsuranceId } from '../../../util/insuranceUtil';
 import { supportedInsuranceList } from '../../../staticData';
 import {
     LANGUAGE_LIST,
     DAY_AVAILABILITY_LIST,
     TIME_AVAILABILITY_LIST,
-    INSURANCE_LIST,
 } from '../../../util/dentistUtils';
 
 const { TabletMobile } = Responsive;
@@ -48,6 +46,14 @@ const BUNDLE_GROUP_LIST = [
     { key: 'GENERAL', value: 'General procedures' },
     { key: 'SURGERY', value: 'Surgery' },
     { key: 'SPECIAL', value: 'Special treatment' },
+];
+
+const INSURANCE_OPTIONS = [
+    {
+        id: 'All insurances',
+        name: 'All insurances',
+    },
+    ...supportedInsuranceList,
 ];
 
 const SearchFilterView = ({ onSelect }) => (
@@ -170,24 +176,28 @@ const SearchFilterView = ({ onSelect }) => (
                         <Select
                             placeholder="Insurance"
                             value={
-                                supportedInsuranceList
-                                    .map(i => i.id)
-                                    .includes(
+                                INSURANCE_OPTIONS.find(
+                                    i =>
+                                        i.id ===
                                         fieldProps.form.values.insuranceProvider
-                                    )
-                                    ? getInsuranceText(
-                                          fieldProps.form.values
-                                              .insuranceProvider
-                                      )
-                                    : 'All insurances'
+                                )
+                                    ? INSURANCE_OPTIONS.find(
+                                          i =>
+                                              i.id ===
+                                              fieldProps.form.values
+                                                  .insuranceProvider
+                                      ).name
+                                    : fieldProps.form.values.hasFinishedSurvey
+                                    ? 'All insurances'
+                                    : undefined
                             }
                             onChange={value => {
                                 onSelect(fieldProps.field.name, value);
                             }}
                         >
-                            {INSURANCE_LIST.map(i => (
-                                <Option value={getInsuranceId(i)} key={i}>
-                                    {i}
+                            {INSURANCE_OPTIONS.map(i => (
+                                <Option value={i.id} key={i.id}>
+                                    {i.name}
                                 </Option>
                             ))}
                         </Select>

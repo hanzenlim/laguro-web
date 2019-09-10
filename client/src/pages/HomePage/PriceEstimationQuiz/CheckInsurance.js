@@ -42,26 +42,26 @@ const CheckInsurance = ({ setFormStep, history }) => (
                                     );
 
                                     setTimeout(() => {
-                                        const searchParams = queryString.stringify(
-                                            {
-                                                bundleGroup:
-                                                    form.values.bundleGroup,
-                                                dayAvailability:
-                                                    form.values.dayAvailability,
-                                                timeAvailability:
-                                                    form.values
-                                                        .timeAvailability,
-                                                age: form.values.age,
-                                            }
-                                        );
+                                        const answers = {
+                                            bundleGroup:
+                                                form.values.bundleGroup,
+                                            dayAvailability:
+                                                form.values.dayAvailability,
+                                            timeAvailability:
+                                                form.values.timeAvailability,
+                                            age: form.values.age,
+                                            hasFinishedSurvey: true,
+                                        };
                                         if (window && window.localStorage) {
                                             window.localStorage.setItem(
-                                                'hasFinishedSurvey',
-                                                true
+                                                'homepageSurvey',
+                                                JSON.stringify(answers)
                                             );
                                         }
                                         history.push(
-                                            `/dentist/search?${searchParams}`
+                                            `/dentist/search?${queryString.stringify(
+                                                answers
+                                            )}`
                                         );
                                     }, 3000);
                                 }

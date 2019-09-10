@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import queryString from 'query-string';
 import _startCase from 'lodash/startCase';
 
@@ -10,6 +10,17 @@ const SearchFilter = () => {
     const [urlParams, setUrlParams] = useState(
         queryString.parse(history.location.search) || {}
     );
+
+    useEffect(() => {
+        if (window && window.localStorage) {
+            const answers = window.localStorage.getItem('homepageSurvey');
+            const parsedAnswers = JSON.parse(answers);
+            setUrlParams(parsedAnswers);
+            history.push({
+                search: `?${queryString.stringify(parsedAnswers)}`,
+            });
+        }
+    }, []);
 
     const handleSelect = (name, value) => {
         const updatedUrlParams = queryString.parse(history.location.search);

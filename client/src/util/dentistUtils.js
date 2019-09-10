@@ -62,14 +62,6 @@ export const TIME_AVAILABILITY_LIST = [
     'Evening',
 ];
 
-export const INSURANCE_LIST = [
-    'All insurances',
-    'MetLife',
-    'Cigna',
-    'Delta Dental (CA)',
-    'Guardian',
-];
-
 export const getProcedureColor = procedureName => {
     switch (procedureName) {
         case 'Exams':
