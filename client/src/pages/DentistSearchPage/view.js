@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
+import _get from 'lodash/get';
 import queryString from 'query-string';
 
 import { Container, Box, Loading, Text, Flex } from '../../components';
@@ -35,7 +36,9 @@ const DentistSearchPageView = ({
     );
     let hasFinishedSurvey = false;
     if (window && window.localStorage) {
-        hasFinishedSurvey = window.localStorage.getItem('hasFinishedSurvey');
+        const answers = window.localStorage.getItem('homepageSurvey');
+        const parsedAnswers = JSON.parse(answers);
+        hasFinishedSurvey = _get(parsedAnswers, 'hasFinishedSurvey', false);
     }
 
     return (
@@ -48,11 +51,15 @@ const DentistSearchPageView = ({
             />
 
             {!hasFinishedSurvey && <QuizPrompt />}
-            {hasFinishedSurvey && insuranceProvider && bundleGroup && (
-                <Box my={28}>
-                    <PriceEstimationCarousel />
-                </Box>
-            )}
+            {hasFinishedSurvey &&
+                insuranceProvider &&
+                insuranceProvider !== 'All insurances' &&
+                bundleGroup &&
+                bundleGroup !== 'All procedures' && (
+                    <Box my={28}>
+                        <PriceEstimationCarousel />
+                    </Box>
+                )}
 
             <Container>
                 <Box pb="50px">

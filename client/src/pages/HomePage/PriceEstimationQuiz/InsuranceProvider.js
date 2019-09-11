@@ -97,32 +97,32 @@ const InsuranceProvider = ({ setFormStep, history }) => (
                                             FORM_LOADERS.MATCH_DENTIST_AVAILABLE
                                         );
                                         setTimeout(() => {
-                                            const searchParams = queryString.stringify(
-                                                {
-                                                    bundleGroup:
-                                                        form.values.bundleGroup,
-                                                    dayAvailability:
-                                                        form.values
-                                                            .dayAvailability,
-                                                    timeAvailability:
-                                                        form.values
-                                                            .timeAvailability,
-                                                    age: form.values.age,
-                                                    insuranceProvider:
-                                                        form.values
-                                                            .insuranceProvider,
-                                                }
-                                            );
+                                            const answers = {
+                                                bundleGroup:
+                                                    form.values.bundleGroup,
+                                                dayAvailability:
+                                                    form.values.dayAvailability,
+                                                timeAvailability:
+                                                    form.values
+                                                        .timeAvailability,
+                                                age: form.values.age,
+                                                insuranceProvider:
+                                                    form.values
+                                                        .insuranceProvider,
+                                                hasFinishedSurvey: true,
+                                            };
 
                                             if (window && window.localStorage) {
                                                 window.localStorage.setItem(
-                                                    'hasFinishedSurvey',
-                                                    true
+                                                    'homepageSurvey',
+                                                    JSON.stringify(answers)
                                                 );
                                             }
 
                                             history.push(
-                                                `/dentist/search?${searchParams}`
+                                                `/dentist/search?${queryString.stringify(
+                                                    answers
+                                                )}`
                                             );
                                         }, 3000);
                                     }}
