@@ -22,7 +22,7 @@ const MiddleBlock = ({ dentist, tagStopPoint }) => (
             <Flex alignItems="flex-start" mb={4}>
                 <Icon type="insurance" />
                 <Text fontSize={[0, '', 1]} lineHeight="17px" ml="8px">
-                    Accepts{' '}
+                    In-Network:{' '}
                     {dentist.acceptedInsurances.length > 1
                         ? dentist.acceptedInsurances.map((sp, index) =>
                               index !== dentist.acceptedInsurances.length - 1

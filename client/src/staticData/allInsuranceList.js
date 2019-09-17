@@ -200,6 +200,7 @@ export const allInsuranceList = [
     { name: 'DeltaCare USA - Encounters', id: 'DELTACARE_USA_ENCOUNTERS' },
     { name: 'Dental Benefit Providers', id: 'DENTAL_BENEFIT_PROVIDERS' },
     { name: 'Dental Guard Preferred', id: 'DENTAL_GUARD_PREFERRED' },
+    { name: 'DentiCal', id: 'dentical' },
     {
         name: 'Deseret Mutual Benefit Administrators (DMBA)',
         id: 'DESERET_MUTUAL_BENEFIT_ADMINISTRATORS',

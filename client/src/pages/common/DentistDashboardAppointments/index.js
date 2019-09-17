@@ -9,13 +9,7 @@ import CancelAppoinmentModal from '../Modals/CancelAppointmentModal';
 import { RedirectErrorPage } from '../../GeneralErrorPage';
 
 import { getAppointmentsQuery } from './queries';
-import {
-    END_TIME,
-    STATUS,
-    ACTIVE,
-    CANCELLED,
-    DENTIST_ID,
-} from '../../../util/strings';
+import { DENTIST_ID } from '../../../util/strings';
 import { getUser } from '../../../util/authUtils';
 
 const DentistDashboardContainer = () => {
@@ -28,18 +22,6 @@ const DentistDashboardContainer = () => {
                 input: {
                     partitionKey: DENTIST_ID,
                     partitionValue: get(user, 'dentistId'),
-                    options: {
-                        sortKey: `${END_TIME}`,
-                        rangeStart: `${moment()
-                            .startOf('days')
-                            .format()}`,
-                        filters: [
-                            {
-                                filterKey: `${STATUS}`,
-                                filterValues: [`${ACTIVE}`, `${CANCELLED}`],
-                            },
-                        ],
-                    },
                 },
             }}
         >
@@ -47,7 +29,14 @@ const DentistDashboardContainer = () => {
                 if (error) return <RedirectErrorPage />;
                 if (loading) return <Loading />;
 
-                const appointments = get(data, 'queryAppointments');
+                const appointments = get(data, 'queryAppointments').sort(
+                    (a, b) => {
+                        const startTimeA = moment(a.startTime);
+                        const startTimeB = moment(b.startTime);
+
+                        return startTimeB.diff(startTimeA);
+                    }
+                );
 
                 return (
                     <DentistDashboardView

@@ -112,7 +112,7 @@
         "generalInformation.insurance.pleaseSelect": "Please select your insurance provider and type in your insurance information (it can be found on your insurance card). If you do not have insurance, then select 'I don't have insurance' to continue",
         "generalInformation.insurance.step1": "Select Insurance",
         "generalInformation.insurance.yourInsurance": "Your insurance here",
-        "generalInformation.insurance.step2": "Enter Subscriber ID",
+        "generalInformation.insurance.step2": "Enter Subscriber ID / Employee Number",
         "generalInformation.insurance.yourInsuranceNumber": "Your Subscriber ID here",
         "generalInformation.insurance.step3": "Enter Plan/Group Number (optional)",
         "generalInformation.insurance.yourPlan": "Your Plan/Group Number here",

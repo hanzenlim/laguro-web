@@ -92,9 +92,7 @@ const SuggestedDentistView = props => {
                                                 <Text ml={6} fontSize="12px">
                                                     {dentist.reviewCount &&
                                                     dentist.reviewCount !== 0
-                                                        ? `(${
-                                                              dentist.reviewCount
-                                                          })`
+                                                        ? `(${dentist.reviewCount})`
                                                         : ''}
                                                 </Text>
                                             </Flex>
@@ -106,7 +104,7 @@ const SuggestedDentistView = props => {
                                     <Flex alignItems="center">
                                         <Icon type="insurance" />
                                         <Text fontSize="12px" ml="8px">
-                                            Accepts{' '}
+                                            In-Network:{' '}
                                             {dentist.insurance.length > 1
                                                 ? dentist.insurance.map(
                                                       (sp, index) =>

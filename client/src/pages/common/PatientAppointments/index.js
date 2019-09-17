@@ -10,13 +10,6 @@ import CancelAppoinmentModal from '../Modals/CancelAppointmentModal';
 import { RedirectErrorPage } from '../../../pages/GeneralErrorPage';
 
 import { getAppointmentsQuery } from './queries';
-import {
-    END_TIME,
-    STATUS,
-    PENDING_PATIENT_APPROVAL,
-    ACTIVE,
-    CANCELLED,
-} from '../../../util/strings';
 import { getUser } from '../../../util/authUtils';
 
 const PatientAppoinmentsContainer = props => {
@@ -27,22 +20,6 @@ const PatientAppoinmentsContainer = props => {
             fetchPolicy="cache-and-network"
             variables={{
                 id: get(user, 'id'),
-                queryOptions: {
-                    sortKey: `${END_TIME}`,
-                    rangeStart: `${moment()
-                        .startOf('days')
-                        .format()}`,
-                    filters: [
-                        {
-                            filterKey: `${STATUS}`,
-                            filterValues: [
-                                `${PENDING_PATIENT_APPROVAL}`,
-                                `${ACTIVE}`,
-                                `${CANCELLED}`,
-                            ],
-                        },
-                    ],
-                },
             }}
         >
             {({ loading, error, data, refetch }) => {
@@ -63,7 +40,7 @@ const PatientAppoinmentsContainer = props => {
                         const startTimeA = moment(a.startTime);
                         const startTimeB = moment(b.startTime);
 
-                        return startTimeA.diff(startTimeB);
+                        return startTimeB.diff(startTimeA);
                     });
 
                 return (
