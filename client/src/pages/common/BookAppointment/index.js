@@ -298,7 +298,11 @@ const Composed = adopt({
         );
     },
     getUser: ({ render }) => (
-        <Query query={getUserQuery} variables={{ id: _get(getUser(), 'id') }}>
+        <Query
+            query={getUserQuery}
+            variables={{ id: _get(getUser(), 'id') }}
+            skip={!_get(getUser(), 'id')}
+        >
             {render}
         </Query>
     ),

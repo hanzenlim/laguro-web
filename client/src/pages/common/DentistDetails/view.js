@@ -133,7 +133,7 @@ class DentistDetailsView extends PureComponent {
                                         ml="8px"
                                         lineHeight="17px"
                                     >
-                                        Accepts{' '}
+                                        In-Network:{' '}
                                         {data.acceptedInsurances.length > 1 ? (
                                             data.acceptedInsurances.map(
                                                 (sp, index) =>
