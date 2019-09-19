@@ -112,6 +112,14 @@ if (process.env.NODE_ENV === 'production') {
         });
     }
 
+    app.get('/manifest.json', (req, res) => {
+        res.sendFile(path.resolve('build', 'manifest.json'));
+    });
+
+    app.get('/serviceworker.js', (req, res) => {
+        res.sendFile(path.resolve('build', 'serviceworker.js'));
+    });
+
     app.get('*', (req, res) => {
         res.header('Cache-Control', 'no-cache, no-store, must-revalidate');
         res.header('Pragma', 'no-cache');
