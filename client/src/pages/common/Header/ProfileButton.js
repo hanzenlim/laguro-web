@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { Dropdown } from 'antd';
-import { Image, Flex } from '../../../components';
+import { Box, Image, Flex, Button } from '../../../components';
 import styled from 'styled-components';
 import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
 import { Link, Responsive } from '../../../components/index';
@@ -15,8 +15,9 @@ import history from '../../../history';
 import { PATIENT_DASHBOARD_PAGE_URL_BASE } from '../../../util/urls';
 import { ACCOUNT_SETTINGS_MENU_TEXT } from '../../../util/strings';
 import { isMobileDevice } from '../../../util/uiUtil';
+import emitter from '../../../util/emitter';
 
-const { Mobile } = Responsive;
+const { TabletMobile } = Responsive;
 
 const ProfileImage = styled(Flex)`
     cursor: pointer;
@@ -98,24 +99,86 @@ class ProfileButton extends Component {
             </Fragment>
         ) : (
             <Fragment>
-                <Mobile>
-                    {matches => (
-                        <HeaderLinkContainer>
-                            <Link
-                                onClick={this.openLoginForLogIn(matches)}
-                                to={
-                                    matches
-                                        ? `/login?redirectTo=${pathname}`
-                                        : pathname
-                                }
+                <TabletMobile>
+                    {matches =>
+                        matches ? (
+                            <HeaderLinkContainer>
+                                <Link
+                                    onClick={this.openLoginForLogIn(matches)}
+                                    to={
+                                        matches
+                                            ? `/login?redirectTo=${pathname}`
+                                            : pathname
+                                    }
+                                >
+                                    <LinkButton
+                                        textProps={{ fontWeight: 'bold' }}
+                                    >
+                                        Log in / Sign up
+                                    </LinkButton>
+                                </Link>
+                            </HeaderLinkContainer>
+                        ) : (
+                            <HeaderLinkContainer
+                                display="flex"
+                                alignItems="center"
                             >
-                                <LinkButton textProps={{ fontWeight: 'bold' }}>
-                                    Log in / Sign up
-                                </LinkButton>
-                            </Link>
-                        </HeaderLinkContainer>
-                    )}
-                </Mobile>
+                                <Link
+                                    mr="20px"
+                                    onClick={this.openLoginForLogIn(matches)}
+                                    to={
+                                        matches
+                                            ? `/login?redirectTo=${pathname}`
+                                            : pathname
+                                    }
+                                >
+                                    <LinkButton
+                                        textProps={{
+                                            fontWeight: 'bold',
+                                            fontSize: '18px',
+                                        }}
+                                    >
+                                        Log in
+                                    </LinkButton>
+                                </Link>
+                                <Box display="inline">
+                                    <Button
+                                        color="text.blue"
+                                        bg="background.white"
+                                        height="50px"
+                                        width="auto"
+                                        px="46px"
+                                        style={{
+                                            borderRadius: 30,
+                                            boxShadow:
+                                                '0 2px 7px 0 rgba(24, 54, 100, 0.39)',
+                                        }}
+                                        onClick={() =>
+                                            emitter.emit('loginModal', {
+                                                mode: 'getName',
+                                            })
+                                        }
+                                    >
+                                        <Box
+                                            fontSize={3}
+                                            display="inline"
+                                            fontWeight="medium"
+                                        >
+                                            Sign up{' '}
+                                        </Box>
+                                        <Box
+                                            fontSize={3}
+                                            display="inline"
+                                            fontWeight="light"
+                                        >
+                                            — its free!
+                                        </Box>
+                                    </Button>
+                                </Box>
+                            </HeaderLinkContainer>
+                        )
+                    }
+                </TabletMobile>
             </Fragment>
         );
     }
