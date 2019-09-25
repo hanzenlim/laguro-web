@@ -14,7 +14,7 @@ import {
     Icon,
     FilestackImage,
 } from '../../../components';
-import { CANCELLED } from '../../../util/strings';
+import { CANCELLED, PENDING_PATIENT_APPROVAL } from '../../../util/strings';
 import {
     setImageSizeToUrl,
     getIdFromFilestackUrl,
@@ -78,9 +78,9 @@ class PatientAppointments extends PureComponent {
                 const dentistName = `Dr. ${firstName} ${lastName}`;
                 const { name: officeName, id: officeId, location } = office;
                 const isCancelled = status === CANCELLED;
-                const patientName = `${patient.firstName} ${
-                    patient.lastName
-                }`.toLowerCase();
+                const isPendingPatientApproval =
+                    status === PENDING_PATIENT_APPROVAL;
+                const patientName = `${patient.firstName} ${patient.lastName}`.toLowerCase();
 
                 return (
                     <Box
@@ -224,7 +224,11 @@ class PatientAppointments extends PureComponent {
                                         </Box>
                                     )} */}
                                 </Box>
-                                {isCancelled ? (
+                                {isPendingPatientApproval ? (
+                                    <Text color="text.lightGray" fontSize={0}>
+                                        pending
+                                    </Text>
+                                ) : isCancelled ? (
                                     <Text fontWeight="medium" fontSize={0}>
                                         cancelled
                                     </Text>
@@ -342,7 +346,11 @@ class PatientAppointments extends PureComponent {
                                         )} */}
                                     </Box>
                                 </Flex>
-                                {isCancelled ? (
+                                {isPendingPatientApproval ? (
+                                    <Text color="text.lightGray" mt={14}>
+                                        pending
+                                    </Text>
+                                ) : isCancelled ? (
                                     <Text
                                         fontWeight="medium"
                                         fontSize={2}
