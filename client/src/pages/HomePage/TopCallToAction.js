@@ -45,14 +45,19 @@ const TopCallToAction = ({ desktopOnly }) => (
 
                     <Button
                         height={[50, '', 50]}
-                        width={150}
-                        fontSize={2}
+                        width="auto"
+                        px="46px"
                         style={{ borderRadius: 30 }}
                         onClick={() =>
                             emitter.emit('loginModal', { mode: 'getName' })
                         }
                     >
-                        Sign up
+                        <Box fontSize={2} display="inline" fontWeight="medium">
+                            Sign up{' '}
+                        </Box>
+                        <Box fontSize={2} display="inline" fontWeight="light">
+                            — its free!
+                        </Box>
                     </Button>
                 </Box>
 

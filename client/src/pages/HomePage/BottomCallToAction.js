@@ -28,7 +28,7 @@ const BottomCallToAction = () => (
                     lineHeight={[1.43, '', 1.2]}
                     mb={[10, '', 16]}
                 >
-                    Smile anywhere.
+                    Helping you smile anywhere.
                 </Text>
                 <Text
                     fontSize={[1, '', 4]}
@@ -53,9 +53,21 @@ const BottomCallToAction = () => (
                         width={[260, '', 308]}
                         lineHeight={['50px', '', '60px']}
                         fontWeight="medium"
-                        fontSize={[1, '', 4]}
                     >
-                        Sign up
+                        <Box
+                            fontSize={[1, '', 4]}
+                            display="inline"
+                            fontWeight="medium"
+                        >
+                            Sign up{' '}
+                        </Box>
+                        <Box
+                            fontSize={[1, '', 4]}
+                            display="inline"
+                            fontWeight="light"
+                        >
+                            — its free!
+                        </Box>
                     </Text>
                 </Button>
             </Box>

@@ -16,7 +16,7 @@ import { breakpointsInPixels } from '../../../components/theme';
 export const getLinkTextColor = () => {
     const pageType = getPageType();
     const textWhite = 'text.white';
-    const textBlack = 'text.black';
+    const textBlack = 'text.blue';
 
     switch (pageType) {
         case HOME_PAGE_TYPE:
