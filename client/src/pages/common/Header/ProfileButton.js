@@ -102,7 +102,10 @@ class ProfileButton extends Component {
                 <TabletMobile>
                     {matches =>
                         matches ? (
-                            <HeaderLinkContainer>
+                            <HeaderLinkContainer
+                                display="flex"
+                                alignItems="center"
+                            >
                                 <Link
                                     onClick={this.openLoginForLogIn(matches)}
                                     to={
@@ -111,12 +114,42 @@ class ProfileButton extends Component {
                                             : pathname
                                     }
                                 >
-                                    <LinkButton
-                                        textProps={{ fontWeight: 'bold' }}
+                                    <Button
+                                        type="ghost"
+                                        fontSize={1}
+                                        fontWeight="bold"
+                                        color="white"
                                     >
-                                        Log in / Sign up
-                                    </LinkButton>
+                                        Log in
+                                    </Button>
                                 </Link>
+                                <Box display="inline" color="white" ml="22px">
+                                    <Button
+                                        type="ghost"
+                                        onClick={() =>
+                                            emitter.emit('loginModal', {
+                                                mode: 'getName',
+                                            })
+                                        }
+                                    >
+                                        <Box
+                                            color="white"
+                                            fontSize={1}
+                                            display="inline"
+                                            fontWeight="medium"
+                                        >
+                                            Sign up{' '}
+                                        </Box>
+                                        <Box
+                                            color="white"
+                                            fontSize={1}
+                                            display="inline"
+                                            fontWeight="light"
+                                        >
+                                            — its free!
+                                        </Box>
+                                    </Button>
+                                </Box>
                             </HeaderLinkContainer>
                         ) : (
                             <HeaderLinkContainer
