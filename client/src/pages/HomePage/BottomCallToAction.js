@@ -66,7 +66,7 @@ const BottomCallToAction = () => (
                             display="inline"
                             fontWeight="light"
                         >
-                            — its free!
+                            — it's free!
                         </Box>
                     </Text>
                 </Button>

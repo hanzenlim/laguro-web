@@ -56,7 +56,7 @@ const TopCallToAction = ({ desktopOnly }) => (
                             Sign up{' '}
                         </Box>
                         <Box fontSize={2} display="inline" fontWeight="light">
-                            — its free!
+                            — it's free!
                         </Box>
                     </Button>
                 </Box>
