@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import defaultUserImage from '../../../components/Image/defaultUserImage.svg';
 import { Link, Responsive } from '../../../components/index';
 import { setImageSizeToUrl } from '../../../util/imageUtil';
-import { StyledDropContainer, LinkButton, HeaderLinkContainer } from './common';
+import { StyledDropContainer, LinkButton } from './common';
 import {
     profileMenuSections,
     profileMenuTextToLinkTo,
@@ -102,10 +102,7 @@ class ProfileButton extends Component {
                 <TabletMobile>
                     {matches =>
                         matches ? (
-                            <HeaderLinkContainer
-                                display="flex"
-                                alignItems="center"
-                            >
+                            <Flex alignItems="center">
                                 <Link
                                     onClick={this.openLoginForLogIn(matches)}
                                     to={
@@ -146,16 +143,13 @@ class ProfileButton extends Component {
                                             display="inline"
                                             fontWeight="light"
                                         >
-                                            — its free!
+                                            — it's free!
                                         </Box>
                                     </Button>
                                 </Box>
-                            </HeaderLinkContainer>
+                            </Flex>
                         ) : (
-                            <HeaderLinkContainer
-                                display="flex"
-                                alignItems="center"
-                            >
+                            <Flex alignItems="center">
                                 <Link
                                     mr="20px"
                                     onClick={this.openLoginForLogIn(matches)}
@@ -204,11 +198,11 @@ class ProfileButton extends Component {
                                             display="inline"
                                             fontWeight="light"
                                         >
-                                            — its free!
+                                            — it's free!
                                         </Box>
                                     </Button>
                                 </Box>
-                            </HeaderLinkContainer>
+                            </Flex>
                         )
                     }
                 </TabletMobile>
