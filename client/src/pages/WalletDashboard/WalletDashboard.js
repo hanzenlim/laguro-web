@@ -27,7 +27,7 @@ const WalletDashboardView = props => (
                 <PaymentMethod />
             </Flex>
 
-            {process.env.REACT_APP_ENV !== 'production' && (
+            {process.env.REACT_APP_ENV !== 'production' ? (
                 <Grid
                     gridTemplateColumns="1fr 1fr"
                     gridColumnGap={10}
@@ -42,6 +42,16 @@ const WalletDashboardView = props => (
                         balance={props.balanceBreakdown.availableAmount}
                     />
                 </Grid>
+            ) : (
+                <Box
+                    mb={[12, '', 0]}
+                    ml={[0, '', 12]}
+                    width={['100%', '', 'auto']}
+                >
+                    <AddCreditModal
+                        balance={props.balanceBreakdown.totalAmount}
+                    />
+                </Box>
             )}
         </Flex>
 
