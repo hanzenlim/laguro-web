@@ -1,14 +1,14 @@
 import React from 'react';
-import { Box, Container } from '../../components/';
+import { Box, Text } from '../../components/';
 import { Terms } from '../common/Terms';
 
 const TermsPageView = () => (
-    <Container>
-        <Box m="20px auto" width={['unset', '', '50%']}>
-            <p>Terms of Service</p>
-            <Terms />
-        </Box>
-    </Container>
+    <Box m="40px auto" px={25} width="100%" maxWidth={900}>
+        <Text fontWeight="bold" mb={20} fontSize={3}>
+            Terms of Service
+        </Text>
+        <Terms />
+    </Box>
 );
 
 export default TermsPageView;
