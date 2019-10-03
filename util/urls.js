@@ -104,7 +104,10 @@ const checkPathnameList = (pathname, urls) => {
 export const getPageType = pathname => {
     const conditions = {
         homepage:
-            _isEmpty(pathname) || pathname === '/' || pathname.startsWith('/?'),
+            _isEmpty(pathname) ||
+            pathname === '/' ||
+            pathname.startsWith('/?') ||
+            pathname.startsWith('/#'),
         patientPages:
             checkPathnameList(pathname, URLS_FOR_PATIENT_PAGES) ||
             pathname.startsWith(`${DENTIST_DETAILS_PAGE_URL_PREFIX}/`) ||
