@@ -163,14 +163,19 @@ app.prepare().then(() => {
         }
     });
 
-    server.get('*.js', (req, res, next) => {
-        if (req.header('Accept-Encoding').includes('br')) {
-            req.url = req.url + '.br';
-            res.set('Content-Encoding', 'br');
-            res.set('Content-Type', 'application/javascript; charset=UTF-8');
-        }
-        next();
-    });
+    if (process.env.REACT_APP_ENV !== 'development') {
+        server.get('*.js', (req, res, next) => {
+            if (req.header('Accept-Encoding').includes('br')) {
+                req.url = req.url + '.br';
+                res.set('Content-Encoding', 'br');
+                res.set(
+                    'Content-Type',
+                    'application/javascript; charset=UTF-8'
+                );
+            }
+            next();
+        });
+    }
 
     server.get('*', (req, res) => {
         res.header('Cache-Control', 'no-cache, no-store, must-revalidate');
