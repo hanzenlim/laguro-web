@@ -5,13 +5,12 @@ WORKDIR /usr/src/app
 RUN apk add build-base autoconf libtool zlib automake
 
 COPY package*.json ./
-COPY .npmrc ./
+COPY .env ./
 
-COPY client/package*.json ./client/
-COPY client/.npmrc ./client/
-
-RUN cd client && npm install
+RUN npm install
 
 COPY . .
 
-CMD [ "npm", "run", "dev"]
+RUN npm run build
+
+EXPOSE 3000

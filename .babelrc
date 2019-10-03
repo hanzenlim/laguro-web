@@ -1,4 +1,42 @@
 {
-  "presets": ["env", "react"], 
-  "plugins": ["transform-class-properties", "transform-object-rest-spread"]
+    "presets": ["next/babel"],
+    "env": {
+      "development": {
+        "plugins": [
+          [
+            "babel-plugin-root-import"
+          ],
+          [
+            "react-intl"
+          ],
+          [
+            "import",
+            {
+              "style": "css",
+              "libraryName": "antd"
+            }
+          ]
+        ]
+      },
+      "production": {
+        "plugins": [
+          [
+            "babel-plugin-root-import"
+          ],
+          [
+            "react-intl",
+            {
+              "messagesDir": "lang/.messages/"
+            }
+          ],
+          [
+            "import",
+            {
+              "style": "css",
+              "libraryName": "antd"
+            }
+          ]
+        ]
+      }
+    }
 }

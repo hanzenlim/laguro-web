@@ -1,126 +1,178 @@
-import authRoutes from './routes/authRoutes';
-import hellosignRoutes from './routes/hellosignRoutes';
-import stripeRoutes from './routes/stripeRoutes';
-import siteMapRoutes from './routes/siteMapRoutes';
+// Polyfill Node with `Intl` that has data for all locales.
+// See: https://formatjs.io/guides/runtime-environments/#server
+require('dotenv').config();
+
+const IntlPolyfill = require('intl');
+
+Intl.NumberFormat = IntlPolyfill.NumberFormat;
+Intl.DateTimeFormat = IntlPolyfill.DateTimeFormat;
+const path = require('path');
 
 const express = require('express');
-const cookieSession = require('cookie-session');
-const passport = require('passport');
-const path = require('path');
-const bodyParser = require('body-parser');
-const logger = require('morgan');
-const cors = require('cors');
-const prerenderNode = require('prerender-node');
+const next = require('next');
+const accepts = require('accepts');
+const glob = require('glob');
+const { readFileSync } = require('fs');
+const { basename } = require('path');
+const isEmpty = require('lodash/isEmpty');
+const expressStaticGzip = require('express-static-gzip');
 
-const { makeQuery } = require('./util/serverDataLoader');
-const { generateToken, COOKIE_EXPIRATION } = require('./util/token');
+const siteMapRoutes = require('./apiRoutes/siteMapRoutes');
 
-// Services
-require('./services/passport');
+const port = parseInt(process.env.PORT, 10) || 3000;
+const dev = process.env.NODE_ENV !== 'production';
+const app = next({ dev });
+const handle = app.getRequestHandler();
 
-// Middleware start
-const app = express();
-app.use(bodyParser.json());
+// Get the supported languages by looking for translations in the `lang/` dir.
+const supportedLanguages = glob
+    .sync('./lang/*.json')
+    .map(f => basename(f, '.json'));
 
-// Auth config
-app.use(
-    cookieSession({
-        keys: [process.env.COOKIE_KEY],
-    })
-);
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(logger('dev'));
-app.use(express.static(path.join(__dirname, 'public')));
-app.options('/api/graphql', cors());
-app.options(
-    '/api/ehr-login',
-    cors({ origin: true, optionsSuccessStatus: 200 })
-);
+// We need to expose React Intl's locale data on the request for the user's
+// locale. This function will also cache the scripts by lang in memory.
+const localeDataCache = new Map();
+const getLocaleDataScript = locale => {
+    const lang = locale.split('-')[0];
+    if (!localeDataCache.has(lang)) {
+        const localeDataFile = require.resolve(
+            `@formatjs/intl-relativetimeformat/dist/locale-data/${lang}`
+        );
+        const localeDataScript = readFileSync(localeDataFile, 'utf8');
+        localeDataCache.set(lang, localeDataScript);
+    }
+    return localeDataCache.get(lang);
+};
 
-if (process.env.NODE_ENV === 'production') {
-    const prerender = prerenderNode.set(
-        'prerenderToken',
-        process.env.PRERENDER_TOKEN
-    );
-    prerender.crawlerUserAgents.push('googlebot');
-    prerender.crawlerUserAgents.push('bingbot');
-    prerender.crawlerUserAgents.push('yandex');
-    app.use(prerender);
+// We need to load and expose the translations on the request for the user's
+// locale. These will only be used in production, in dev the `defaultMessage` in
+// each message description in the source code will be used.
+const getMessages = locale => require(`./lang/${locale}.json`);
+
+function parseCookies(request) {
+    const list = {};
+
+    if (request && !isEmpty(request.headers) && request.headers.cookie) {
+        request.headers.cookie.split(';').forEach(cookie => {
+            const parts = cookie.split('=');
+            list[parts.shift().trim()] = decodeURI(parts.join('='));
+        });
+    }
+
+    return list;
 }
 
-app.post('/api/graphql', cors(), async (req, res) => {
-    const context = {};
+app.prepare().then(() => {
+    const server = express();
 
-    // Append incoming JWT tokens to the header and pass thru the backend
-    // for external access to graphql api.
-    // Express automatically converts headers props to lowercase.
-    if (req.headers && req.headers.authorization) {
-        context.headers = {
-            Authorization: req.headers.authorization,
-        };
-    }
+    siteMapRoutes(server);
 
-    // req.user is initialize if the user is logged in through a middleware
-    if (req.user) {
-        const { id, email, dentistId } = req.user;
-        const user = { id, email, dentistId };
-        const token = generateToken(user);
+    server.use((req, res, nextMiddleware) => {
+        const { lang } = req.query;
+        const cookies = parseCookies(req);
 
-        context.headers = {
-            Authorization: `Bearer ${token}`,
-        };
-    }
+        const accept = accepts(req);
+        const locale =
+            lang ||
+            cookies.locale ||
+            accept.language(accept.languages(supportedLanguages)) ||
+            'en';
+        req.locale = locale;
+        req.localeDataScript = getLocaleDataScript(locale);
+        req.messages = getMessages(locale);
 
-    try {
-        const result = await makeQuery(
-            req.body.query,
-            req.body.variables,
-            context
-        );
-        res.send(JSON.stringify(result));
-    } catch (e) {
-        // eslint-disable-next-line
-        console.log(e.message);
-        res.send(
-            JSON.stringify({
-                data: null,
-                errors: [
-                    {
-                        message: e.message,
-                    },
-                ],
-            })
-        );
-    }
-});
+        nextMiddleware();
+    });
 
-// Route Files
-authRoutes(app);
-hellosignRoutes(app);
-stripeRoutes(app);
-siteMapRoutes(app);
+    // the middleware used to serve .br and .gz files instead of js
+    server.use(
+        expressStaticGzip(__dirname, {
+            enableBrotli: true,
+            orderPreference: ['br', 'gz'],
+            index: false,
+        })
+    );
 
-if (process.env.NODE_ENV === 'production') {
-    if (process.env.APP_ENV === 'stage') {
-        app.get('/robots.txt', (req, res) => {
+    server.get('/review/:id', (req, res) => {
+        const { id } = req.params;
+
+        return app.render(req, res, '/review', { id, ...req.query });
+    });
+
+    server.get('/dashboard*', (req, res) => {
+        app.render(req, res, '/dashboard', req.query);
+    });
+
+    server.get('/kiosk*', (req, res) => {
+        app.render(req, res, '/kiosk', req.query);
+    });
+
+    server.get('/patient-onboarding*', (req, res) => {
+        app.render(req, res, '/patient-onboarding', req.query);
+    });
+
+    server.get('/host-onboarding*', (req, res) => {
+        app.render(req, res, '/host-onboarding', req.query);
+    });
+
+    server.get('/onboarding/terms', (req, res) => {
+        app.render(req, res, '/onboarding-terms', req.query);
+    });
+
+    server.get('/onboarding/dentist/verification', (req, res) => {
+        app.render(req, res, '/onboarding-dentist-verification', req.query);
+    });
+
+    server.get('/onboarding/dentist/profile', (req, res) => {
+        app.render(req, res, '/onboarding-dentist-profile', req.query);
+    });
+
+    server.get('/dentist/:id', (req, res) => {
+        const { id } = req.params;
+
+        if (id === 'search') {
+            return app.render(req, res, '/dentist-search', req.query);
+        }
+
+        return app.render(req, res, '/dentist', { id, ...req.query });
+    });
+
+    server.get('/office/:id', (req, res) => {
+        const { id } = req.params;
+
+        if (id === 'search') {
+            return app.render(req, res, '/office-search', req.query);
+        }
+
+        return app.render(req, res, '/office', { id });
+    });
+
+    server.get('/manifest.json', (req, res) => {
+        res.sendFile(path.resolve('static', 'manifest.json'));
+    });
+
+    server.get('/serviceworker.js', (req, res) => {
+        res.sendFile(path.resolve('static', 'serviceworker.js'));
+    });
+
+    server.get('/robots.txt', (req, res) => {
+        if (process.env.APP_ENV === 'stage') {
             res.send('User-agent: *\nDisallow: /');
-        });
-    } else {
-        app.get('/robots.txt', (req, res) => {
-            res.sendFile(path.resolve('build', 'robots.txt'));
-        });
-    }
-
-    app.get('/manifest.json', (req, res) => {
-        res.sendFile(path.resolve('build', 'manifest.json'));
+        } else {
+            res.sendFile(path.resolve('static', 'robots.txt'));
+        }
     });
 
-    app.get('/serviceworker.js', (req, res) => {
-        res.sendFile(path.resolve('build', 'serviceworker.js'));
+    server.get('*.js', (req, res, next) => {
+        if (req.header('Accept-Encoding').includes('br')) {
+            req.url = req.url + '.br';
+            res.set('Content-Encoding', 'br');
+            res.set('Content-Type', 'application/javascript; charset=UTF-8');
+        }
+        next();
     });
 
-    app.get('*', (req, res) => {
+    server.get('*', (req, res) => {
         res.header('Cache-Control', 'no-cache, no-store, must-revalidate');
         res.header('Pragma', 'no-cache');
 
@@ -128,16 +180,11 @@ if (process.env.NODE_ENV === 'production') {
             res.header('X-Robots-Tag', 'noindex');
         }
 
-        res.sendFile(path.resolve('build', 'index.html'));
+        handle(req, res);
     });
-} else {
-    // express will serve production assets
-    app.use(express.static('client/build'));
 
-    // express will serve index.html if route is unrecognizable
-    app.get('*', (req, res) => {
-        res.sendFile(path.resolve('client', 'build', 'index.html'));
+    server.listen(port, err => {
+        if (err) throw err;
+        console.log(`> Ready on http://localhost:${port}`);
     });
-}
-
-module.exports = app;
+});
