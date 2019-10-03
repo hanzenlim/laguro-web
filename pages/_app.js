@@ -64,17 +64,17 @@ function LaguroApp({ Component, pageProps, apolloClient, locale, messages }) {
                                     href="/static/css/fonts/silka/silka-regular-webfont.woff2"
                                     as="font"
                                     type="font/woff2"
-                                    crossOrigin
+                                    crossOrigin="true"
                                 />
                                 <link
                                     href="https://www.google-analytics.com"
                                     rel="preconnect"
-                                    crossOrigin
+                                    crossOrigin="true"
                                 />
                                 <link
                                     href="https://www.googletag</link>manager.com"
                                     rel="preconnect"
-                                    crossOrigin
+                                    crossOrigin="true"
                                 />
                                 <script
                                     id="stripe-js"
