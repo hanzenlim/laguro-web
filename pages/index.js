@@ -1,9 +1,21 @@
-import React from 'react';
+import React, { Fragment } from 'react';
+import Head from 'next/head';
 
-import HomePage from '../routes/HomePage';
+import HomePage from '~/routes/HomePage';
 
-function Sample(props) {
-    return <HomePage {...props} />;
+function Home(props) {
+    return (
+        <Fragment>
+            <Head>
+                <link
+                    href="https://blog.laguro.com"
+                    rel="preconnect"
+                    crossOrigin="true"
+                />
+            </Head>
+            <HomePage {...props} />
+        </Fragment>
+    );
 }
 
-export default Sample;
+export default Home;
