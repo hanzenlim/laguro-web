@@ -18,6 +18,88 @@ import {
 } from '~/appContext';
 import Footer from '~/common/Footer';
 import Header from '~/common/Header';
+import { createGlobalStyle } from 'styled-components';
+
+const GlobalStyle = createGlobalStyle`
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+    font-family: 'Silka', sans-serif;
+}
+
+*:focus {
+    outline: none;
+}
+
+[role="button"] {
+    cursor: pointer;
+}
+
+@media print {
+    .ant-modal {
+        margin: 0;
+        border: none;
+        box-shadow: none;
+    }
+
+    .ant-modal-content {
+        box-shadow: none;
+    }
+
+    .ant-modal-close-x * {
+        display: none;
+    }
+
+    .print-btn * {
+        display: none;
+    }
+}
+
+.ant-message .ant-message-info span {
+    font-size: 60px
+}
+
+.ant-message .ant-message-info i {
+    font-size: 60px;
+}
+
+#fsp-fileUpload {
+    height: 1px !important;
+    width: 1px !important;
+}
+
+/* ----------- iPad Pro 12.9" ----------- */
+/* Landscape */
+/* Declare the same value for min- and max-width to avoid colliding with desktops */
+/* Source: https://medium.com/connect-the-dots/css-media-queries-for-ipad-pro-8cad10e17106*/
+@media only screen
+and (min-device-width: 1024px)
+and (max-device-width: 1024px)
+and (orientation: landscape)
+and (-webkit-min-device-pixel-ratio: 2) {
+    .kiosk-reg-page, .kiosk-pages {
+        zoom: 150%;
+    }
+
+}
+
+/* ----------- iPad Pro 10.5" ----------- */
+/* ----------- Landscape mode" ----------- */
+@media only screen
+and (min-device-width: 1112px)
+and (max-device-width: 1112px)
+and (orientation: landscape)
+and (-webkit-min-device-pixel-ratio: 2) {
+    html {
+        zoom: 150%;
+    }
+
+}
+
+`;
 
 class ExtendedApp extends App {
     render() {
@@ -61,7 +143,7 @@ function LaguroApp({ Component, pageProps, apolloClient, locale, messages }) {
                                 <meta name="theme-color" content="#000000" />
                                 <link
                                     rel="preload"
-                                    href="/static/css/fonts/silka/silka-regular-webfont.woff2"
+                                    href="/static/fonts/silka/silka-regular-webfont.woff2"
                                     as="font"
                                     type="font/woff2"
                                     crossOrigin="true"
@@ -122,14 +204,6 @@ function LaguroApp({ Component, pageProps, apolloClient, locale, messages }) {
                                         })(window,document,'script','dataLayer','${process.env.REACT_APP_GTM_TRACKING_ID}')`,
                                     }}
                                 />
-                                <link
-                                    rel="stylesheet"
-                                    href="/static/css/App.css"
-                                />
-                                <link
-                                    rel="stylesheet"
-                                    href="/static/css/Fonts.css"
-                                />
                                 <noscript>
                                     <iframe
                                         src={`https://www.googletagmanager.com/ns.html?id=${process.env.REACT_APP_GTM_TRACKING_ID}`}
@@ -153,6 +227,7 @@ function LaguroApp({ Component, pageProps, apolloClient, locale, messages }) {
                                 </Content>
                                 <Footer />
                             </Layout>
+                            <GlobalStyle />
                         </LoginContextProvider>
                     </AppContextProvider>
                 </ThemeProvider>
