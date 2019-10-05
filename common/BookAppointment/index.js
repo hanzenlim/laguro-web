@@ -467,19 +467,49 @@ class BookAppointmentContainer extends Component {
 
         return (
             <Composed dentistId={dentistId}>
-                {({
-                    createAppointment,
-                    getDentist,
-                    getDentistAppointmentSlots,
-                    getUser,
-                }) => {
-                    const getDentistData = getDentist.data.getDentist;
-                    const officeAppointmentSlots = _get(
-                        getDentistAppointmentSlots,
-                        'data.getDentistAppointmentSlots'
+                {props => {
+                    const getDentist = _get(props, 'getDentist', {});
+                    const getDentistAppointmentSlots = _get(
+                        props,
+                        'getDentistAppointmentSlots',
+                        {}
+                    );
+                    const getUser = _get(props, 'getUser', {});
+
+                    if (
+                        getDentist.loading ||
+                        getDentistAppointmentSlots.loading ||
+                        getUser.loading
+                    ) {
+                        return <Loading />;
+                    }
+
+                    if (
+                        getDentist.error ||
+                        getDentistAppointmentSlots.error ||
+                        getUser.error
+                    ) {
+                        return null;
+                    }
+
+                    const createAppointment = _get(
+                        props,
+                        'createAppointment',
+                        () => {}
                     );
 
-                    if (!getDentistData) return null;
+                    const getDentistData = _get(
+                        getDentist,
+                        'getDentist.data.getDentist',
+                        {}
+                    );
+                    const officeAppointmentSlots = _get(
+                        getDentistAppointmentSlots,
+                        'data.getDentistAppointmentSlots',
+                        []
+                    );
+
+                    // if (_isEmpty(getDentistData)) return null;
 
                     if (
                         getDentistAppointmentSlots.loading &&
@@ -519,7 +549,14 @@ class BookAppointmentContainer extends Component {
                             );
                         }
                     });
-                    const locationList = getDentistData.preferredLocations.filter(
+
+                    const preferredLocations = _get(
+                        getDentistData,
+                        'preferredLocations',
+                        []
+                    );
+
+                    const locationList = preferredLocations.filter(
                         preferredLocation =>
                             officeIdsWithAppointmentSlots.includes(
                                 preferredLocation.id
