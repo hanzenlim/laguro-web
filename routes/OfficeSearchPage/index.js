@@ -1,16 +1,16 @@
-import React, { Fragment, PureComponent } from 'react';
-import { Helmet } from 'react-helmet';
+import React, { PureComponent, Fragment } from 'react';
 import _throttle from 'lodash/throttle';
-import queryString from 'query-string';
+import _flowRight from 'lodash/flowRight';
 import get from 'lodash/get';
+import { withRouter } from 'next/router';
+
 import OfficeSearchPageView from './view';
-import history from '~/util/history';
 import esClient from '~/lib/esClient';
-import { OFFICES } from '~/util/strings';
 import { Loading, Box } from '~/components';
-import { withScreenSizes } from '../../components/Responsive';
+import { withScreenSizes } from '~/components/Responsive';
+import { numMaxContainerWidth } from '~/components/theme';
 import { getMyPosition, DEFAULT_LOCATION } from '~/util/navigatorUtil';
-import { numMaxContainerWidth } from '../../components/theme';
+import { OFFICES } from '~/util/strings';
 import { trimAddress } from '~/util/styleUtil';
 
 const PAGE_SIZE = 14;
@@ -20,46 +20,26 @@ class OfficeSearchPage extends PureComponent {
     constructor(props) {
         super(props);
 
-        const { width, height } = this.getDimensions();
+        const { esData } = this.props;
 
         this.state = {
-            data: [],
-            total: 0,
+            data: this.getMappedData(esData),
+            total: this.getDataCount(esData),
             loading: true,
             showMap: this.props.desktopOnly,
-            defaultPosition: DEFAULT_LOCATION,
             mapDimensions: {
-                width,
-                height,
+                width: 0,
+                height: 0,
             },
-            urlParams: null,
         };
     }
 
     componentDidMount = async () => {
-        const urlParams = queryString.parse(this.props.location.search);
-        // TODO: Handle case where a desktop user at page 2 of search page
-        // shares his current URL to a mobile user
-        if (urlParams.limit) {
-            delete urlParams.limit;
-            history.push({ search: `?${queryString.stringify(urlParams)}` });
-        }
-
-        if (!urlParams.lat || !urlParams.long) {
-            this.setState({ defaultPosition: await getMyPosition() });
-        }
-        const response = await this.fetchData(urlParams);
-        const mappedData = this.getMappedData(response);
-        const total = this.getDataCount(response);
-
         this.updateDimensions();
         window.addEventListener('resize', _throttle(this.updateDimensions));
 
         this.setState({
-            data: mappedData,
-            total,
             loading: false,
-            urlParams,
         });
     };
 
@@ -67,33 +47,15 @@ class OfficeSearchPage extends PureComponent {
         window.removeEventListener('resize', _throttle(this.updateDimensions));
     }
 
-    componentDidUpdate = async prevProps => {
-        const { location, tabletMobileOnly } = this.props;
-        const { showMap } = this.state;
-
-        if (prevProps.location.search !== location.search) {
-            const newUrlParams = queryString.parse(location.search);
-
-            if (!newUrlParams.limit) this.setState(() => ({ loading: true }));
-            await this.updateSearchResults();
-            if (!newUrlParams.limit) this.setState(() => ({ loading: false }));
-        }
-
-        if (tabletMobileOnly && showMap) {
-            this.setState({ showMap: false });
-        }
-    };
-
-    updateSearchResults = async () => {
-        const nextUrlParams = queryString.parse(this.props.location.search);
-        const response = await this.fetchData(nextUrlParams);
+    updateSearchResults = async limit => {
+        const urlParams = this.props.router.query;
+        const response = await this.fetchData({ limit, ...urlParams });
         const mappedData = this.getMappedData(response);
         const total = this.getDataCount(response);
 
         this.setState({
             data: mappedData,
             total,
-            urlParams: nextUrlParams,
         });
     };
 
@@ -165,22 +127,13 @@ class OfficeSearchPage extends PureComponent {
     getDataCount = data => data.hits.total;
 
     fetchData = async params => {
-        const {
-            endTime,
-            startTime,
-            lat,
-            long: lon,
-            page,
-            text,
-            limit,
-        } = params;
+        const { lat, long: lon, page, text, limit } = params;
         const from = this.getOffset(page, PAGE_SIZE);
         const must = [
             {
                 term: { isVerified: { value: true } },
             },
         ];
-        const { defaultPosition } = this.state;
 
         let distanceFilter = null;
 
@@ -203,30 +156,11 @@ class OfficeSearchPage extends PureComponent {
                 geo_distance: {
                     distance: DISTANCE,
                     'location.geoPoint': {
-                        lon: lon || defaultPosition.lon,
-                        lat: lat || defaultPosition.lat,
+                        lon: lon || DEFAULT_LOCATION.lon,
+                        lat: lat || DEFAULT_LOCATION.lat,
                     },
                 },
             };
-        }
-
-        if (startTime && endTime) {
-            must.push(
-                {
-                    range: {
-                        'listings.endTime': {
-                            gte: startTime,
-                        },
-                    },
-                },
-                {
-                    range: {
-                        'listings.startTime': {
-                            lte: endTime,
-                        },
-                    },
-                }
-            );
         }
 
         const res = await esClient.search({
@@ -251,6 +185,16 @@ class OfficeSearchPage extends PureComponent {
         this.setState(state => ({ showMap: !state.showMap }));
     };
 
+    onSearchNearLocation = async () => {
+        const { router } = this.props;
+        const defaultPosition = await getMyPosition();
+
+        router.push({
+            pathname: '/office/search',
+            query: { lat: defaultPosition.lat, long: defaultPosition.lon },
+        });
+    };
+
     render() {
         if (this.state.loading)
             return (
@@ -259,32 +203,37 @@ class OfficeSearchPage extends PureComponent {
                 </Box>
             );
 
+        const { router } = this.props;
+        const { data, total, mapDimensions, showMap } = this.state;
+
+        const defaultPosition =
+            router.query.lat && router.query.long
+                ? { lat: router.query.lat, lon: router.query.long }
+                : DEFAULT_LOCATION;
+
         return (
             <Fragment>
-                <Helmet>
-                    <title>Search Office - Laguro</title>
-                    <meta
-                        name="description"
-                        content="Searching for your next dental office is now available at the touch of your fingertip"
-                    />
-                    <link
-                        rel="canonical"
-                        href="https://www.laguro.com/office/search"
-                    />
-                </Helmet>
                 <OfficeSearchPageView
-                    defaultPosition={this.state.defaultPosition}
-                    data={this.state.data}
-                    total={this.state.total}
-                    urlParams={this.state.urlParams}
-                    mapDimensions={this.state.mapDimensions}
-                    showMap={this.state.showMap}
+                    defaultPosition={defaultPosition}
+                    data={data}
+                    total={total}
+                    urlParams={router.query}
+                    mapDimensions={mapDimensions}
+                    showMap={showMap}
                     toggleMap={this.toggleMap}
                     onShowMore={this.updateSearchResults}
                 />
+                {process.env.REACT_APP_ENV === 'development' && (
+                    <button
+                        onClick={this.onSearchNearLocation}
+                        style={{ position: 'fixed', bottom: 15, left: 15 }}
+                    >
+                        Find offices near me
+                    </button>
+                )}
             </Fragment>
         );
     }
 }
 
-export default withScreenSizes(OfficeSearchPage);
+export default _flowRight(withScreenSizes, withRouter)(OfficeSearchPage);
