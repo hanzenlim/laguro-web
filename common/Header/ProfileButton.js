@@ -83,6 +83,7 @@ const ProfileButton = props => {
                                       )
                                     : '/static/images/defaultUserImage.svg'
                             }
+                            alt="profile-image"
                             width={[30, '', 50]}
                             height={[30, '', 50]}
                             borderRadius={50}

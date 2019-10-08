@@ -82,6 +82,7 @@ const TopCallToAction = ({ desktopOnly }) => {
                     >
                         <Image
                             src="/static/images/devices.png"
+                            alt="$100 Treatment Credit"
                             maxWidth={['140%', '', '170%']}
                             position="relative"
                             zIndex="2"
