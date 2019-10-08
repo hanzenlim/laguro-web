@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Query } from 'react-apollo';
 import get from 'lodash/get';
 import queryString from 'query-string';
@@ -8,6 +8,7 @@ import GeneralErrorPage from '~/routes/GeneralErrorPage';
 import { getUserQuery } from './queries';
 import { getUser } from '~/util/authUtils';
 import { getTextFromKey } from '~/routes/Dashboard/Dashboard/utils';
+import Head from 'next/head';
 
 const HostDashboardPage = ({ location }) => {
     const user = getUser();
@@ -34,15 +35,20 @@ const HostDashboardPage = ({ location }) => {
                 const offices = get(dataUserQuery, 'getUser.dentist.offices');
 
                 return (
-                    <HostDashboardView
-                        dentistId={dentistId}
-                        isDentist={get(dataUserQuery, 'getUser.isDentist')}
-                        dentist={dentist}
-                        isHost={get(dataUserQuery, 'getUser.isHost')}
-                        offices={offices}
-                        userId={id}
-                        panel={getTextFromKey(params.selectedTab)}
-                    />
+                    <Fragment>
+                        <Head>
+                            <title>Laguro Dentist</title>
+                        </Head>
+                        <HostDashboardView
+                            dentistId={dentistId}
+                            isDentist={get(dataUserQuery, 'getUser.isDentist')}
+                            dentist={dentist}
+                            isHost={get(dataUserQuery, 'getUser.isHost')}
+                            offices={offices}
+                            userId={id}
+                            panel={getTextFromKey(params.selectedTab)}
+                        />
+                    </Fragment>
                 );
             }}
         </Query>

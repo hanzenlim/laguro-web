@@ -1,6 +1,8 @@
 /* eslint-disable camelcase */
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import { withRouter } from 'next/router';
+import Head from 'next/head';
+
 import {
     Birthday,
     Onboarding,
@@ -834,61 +836,68 @@ class KioskPage extends PureComponent {
                     }
 
                     return (
-                        <Box className="kiosk-pages">
-                            <Progress
-                                steps={kioskPageProgressSteps}
-                                step={currentStep}
-                                percent={20}
-                            />
-
-                            {getCurrentWizardStep(this.props.router) ===
-                                BOOK_APPT_STAGE_WIZARD_STEP_IDS[0] &&
-                                isCheckInButNoUpcomingAppt && (
-                                    <Container
-                                        position="relative"
-                                        maxWidth={['', '', 700]}
-                                        px={[25, '', 0]}
-                                        mt={30}
-                                    >
-                                        <Box mt={20} mb={-20}>
-                                            <Alert
-                                                type="info"
-                                                showIcon
-                                                message="It looks like you don't have an appointment scheduled. You can book a new appointment here."
-                                            />
-                                        </Box>
-                                    </Container>
-                                )}
-
-                            {!_isEmpty(this.steps) && (
-                                <Wizard
-                                    onSubmit={() => {}}
-                                    Form="form"
-                                    withRoutingHistory
-                                    render={wizardProps => (
-                                        <React.Fragment>
-                                            {wizardProps.actions.canGoBack &&
-                                                !WIZARD_STEP_IDS_WITHOUT_PREVIOUS_BUTTON.includes(
-                                                    wizardProps.actions
-                                                        .currentStep
-                                                ) && (
-                                                    <Onboarding.PreviousButton
-                                                        goToPreviousStep={
-                                                            wizardProps.actions
-                                                                .goToPreviousStep
-                                                        }
-                                                    />
-                                                )}
-                                            {render({
-                                                ...wizardProps,
-                                                ...this.props,
-                                            })}
-                                        </React.Fragment>
-                                    )}
-                                    steps={this.steps}
+                        <Fragment>
+                            <Head>
+                                <title>Laguro</title>
+                            </Head>
+                            <Box className="kiosk-pages">
+                                <Progress
+                                    steps={kioskPageProgressSteps}
+                                    step={currentStep}
+                                    percent={20}
                                 />
-                            )}
-                        </Box>
+
+                                {getCurrentWizardStep(this.props.router) ===
+                                    BOOK_APPT_STAGE_WIZARD_STEP_IDS[0] &&
+                                    isCheckInButNoUpcomingAppt && (
+                                        <Container
+                                            position="relative"
+                                            maxWidth={['', '', 700]}
+                                            px={[25, '', 0]}
+                                            mt={30}
+                                        >
+                                            <Box mt={20} mb={-20}>
+                                                <Alert
+                                                    type="info"
+                                                    showIcon
+                                                    message="It looks like you don't have an appointment scheduled. You can book a new appointment here."
+                                                />
+                                            </Box>
+                                        </Container>
+                                    )}
+
+                                {!_isEmpty(this.steps) && (
+                                    <Wizard
+                                        onSubmit={() => {}}
+                                        Form="form"
+                                        withRoutingHistory
+                                        render={wizardProps => (
+                                            <React.Fragment>
+                                                {wizardProps.actions
+                                                    .canGoBack &&
+                                                    !WIZARD_STEP_IDS_WITHOUT_PREVIOUS_BUTTON.includes(
+                                                        wizardProps.actions
+                                                            .currentStep
+                                                    ) && (
+                                                        <Onboarding.PreviousButton
+                                                            goToPreviousStep={
+                                                                wizardProps
+                                                                    .actions
+                                                                    .goToPreviousStep
+                                                            }
+                                                        />
+                                                    )}
+                                                {render({
+                                                    ...wizardProps,
+                                                    ...this.props,
+                                                })}
+                                            </React.Fragment>
+                                        )}
+                                        steps={this.steps}
+                                    />
+                                )}
+                            </Box>
+                        </Fragment>
                     );
                 }}
             </Composed>

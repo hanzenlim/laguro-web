@@ -1,7 +1,7 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, Fragment } from 'react';
+import Head from 'next/head';
 
 import DentistProfilePageView from './view';
-
 import { AppContext } from '../../appContext';
 
 function DentistProfilePage() {
@@ -19,7 +19,14 @@ function DentistProfilePage() {
 
     if (!mounted) return null;
 
-    return <DentistProfilePageView />;
+    return (
+        <Fragment>
+            <Head>
+                <title>Laguro</title>
+            </Head>
+            <DentistProfilePageView />
+        </Fragment>
+    );
 }
 
 export default DentistProfilePage;

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
 import { Query } from 'react-apollo';
 import get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 import queryString from 'query-string';
+import Head from 'next/head';
 
 import DentistDashboardView from './view';
 import { Loading } from '~/components';
@@ -57,31 +58,36 @@ const DentistDashboardPage = ({ location }) => {
                 ]);
 
                 return (
-                    <DentistDashboardView
-                        dentistId={dentistId}
-                        isDentist={get(dataUserQuery, 'getUser.isDentist')}
-                        dentist={dentist}
-                        isHost={get(dataUserQuery, 'getUser.isHost')}
-                        offices={offices}
-                        userId={id}
-                        panel={getTextFromKey(params.selectedTab)}
-                        preferredLocations={preferredLocations}
-                        serializedPreferredLocations={
-                            serializedPreferredLocations
-                        }
-                        zipCode={zipCode}
-                        refetch={refetch}
-                        userLanguages={userLanguages}
-                        refetchUser={refetch}
-                        hasPreferredDays={hasPreferredDays}
-                        hasPreferredDaysFromAPI={hasPreferredDaysFromAPI}
-                        setHasPreferredDays={status => {
-                            setHasPreferredDays(status);
-                        }}
-                        setHasPreferredDaysFromAPI={status => {
-                            setHasPreferredDaysFromAPI(status);
-                        }}
-                    />
+                    <Fragment>
+                        <Head>
+                            <title>Laguro Dentist</title>
+                        </Head>
+                        <DentistDashboardView
+                            dentistId={dentistId}
+                            isDentist={get(dataUserQuery, 'getUser.isDentist')}
+                            dentist={dentist}
+                            isHost={get(dataUserQuery, 'getUser.isHost')}
+                            offices={offices}
+                            userId={id}
+                            panel={getTextFromKey(params.selectedTab)}
+                            preferredLocations={preferredLocations}
+                            serializedPreferredLocations={
+                                serializedPreferredLocations
+                            }
+                            zipCode={zipCode}
+                            refetch={refetch}
+                            userLanguages={userLanguages}
+                            refetchUser={refetch}
+                            hasPreferredDays={hasPreferredDays}
+                            hasPreferredDaysFromAPI={hasPreferredDaysFromAPI}
+                            setHasPreferredDays={status => {
+                                setHasPreferredDays(status);
+                            }}
+                            setHasPreferredDaysFromAPI={status => {
+                                setHasPreferredDaysFromAPI(status);
+                            }}
+                        />
+                    </Fragment>
                 );
             }}
         </Query>

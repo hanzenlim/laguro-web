@@ -1,9 +1,10 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, Fragment } from 'react';
 import { withRouter } from 'next/router';
 import { Query, graphql, withApollo } from 'react-apollo';
 import _flowRight from 'lodash/flowRight';
 import queryString from 'query-string';
 import _get from 'lodash/get';
+import Head from 'next/head';
 
 import { Loading } from '~/components';
 import GeneralErrorPage from '~/routes/GeneralErrorPage';
@@ -95,48 +96,51 @@ class AppointmentConfirmationPage extends PureComponent {
         }
 
         return (
-            <Query
-                query={getAppointmentsQuery}
-                variables={{ id: appointmentId }}
-                onCompleted={data =>
-                    this.setState({
-                        status: _get(data, 'getAppointment.status', ''),
-                    })
-                }
-            >
-                {({ loading, error, data }) => {
-                    const {
-                        showModal,
-                        isModalSubmitting,
-                        isCardSubmitting,
-                    } = this.state;
-                    const appointment = _get(data, 'getAppointment');
-                    if (loading) return <Loading />;
-                    if (
-                        error ||
-                        !appointment ||
-                        !VALID_STATUSES.includes(appointment.status)
-                    )
-                        return <GeneralErrorPage />;
+            <Fragment>
+                <Head>Laguro</Head>
+                <Query
+                    query={getAppointmentsQuery}
+                    variables={{ id: appointmentId }}
+                    onCompleted={data =>
+                        this.setState({
+                            status: _get(data, 'getAppointment.status', ''),
+                        })
+                    }
+                >
+                    {({ loading, error, data }) => {
+                        const {
+                            showModal,
+                            isModalSubmitting,
+                            isCardSubmitting,
+                        } = this.state;
+                        const appointment = _get(data, 'getAppointment');
+                        if (loading) return <Loading />;
+                        if (
+                            error ||
+                            !appointment ||
+                            !VALID_STATUSES.includes(appointment.status)
+                        )
+                            return <GeneralErrorPage />;
 
-                    return (
-                        <AppointmentConfirmationView
-                            appointment={appointment}
-                            showModal={showModal}
-                            status={this.state.status}
-                            isCardSubmitting={isCardSubmitting}
-                            isModalSubmitting={isModalSubmitting}
-                            onAccept={this.acceptAppointmentRequest}
-                            onReject={this.rejectAppointmentRequest}
-                            onConfirmRejection={this.confirmRejection}
-                            onCancelRejection={this.cancelRejection}
-                            confirmAppointmentRequestRejection={
-                                this.confirmAppointmentRequestRejection
-                            }
-                        />
-                    );
-                }}
-            </Query>
+                        return (
+                            <AppointmentConfirmationView
+                                appointment={appointment}
+                                showModal={showModal}
+                                status={this.state.status}
+                                isCardSubmitting={isCardSubmitting}
+                                isModalSubmitting={isModalSubmitting}
+                                onAccept={this.acceptAppointmentRequest}
+                                onReject={this.rejectAppointmentRequest}
+                                onConfirmRejection={this.confirmRejection}
+                                onCancelRejection={this.cancelRejection}
+                                confirmAppointmentRequestRejection={
+                                    this.confirmAppointmentRequestRejection
+                                }
+                            />
+                        );
+                    }}
+                </Query>
+            </Fragment>
         );
     }
 }

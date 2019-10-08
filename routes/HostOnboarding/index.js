@@ -8,6 +8,8 @@ import { Query, Mutation, withApollo } from 'react-apollo';
 import queryString from 'query-string';
 import get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
+import Head from 'next/head';
+
 import {
     GET_OFFICE,
     CREATE_OFFICE,
@@ -840,239 +842,295 @@ class HostOnboarding extends Component {
         const user = getUser();
 
         return (
-            <Query
-                query={GET_OFFICE}
-                variables={{ id: officeId }}
-                onCompleted={this.handleGetOffice}
-                fetchPolicy="network-only"
-                skip={_isEmpty(officeId)}
-            >
-                {() => (
-                    <Mutation
-                        mutation={UPDATE_OFFICE}
-                        onCompleted={this.handleOnCompleted}
-                    >
-                        {updateOffice => (
-                            <Mutation mutation={CREATE_LISTING}>
-                                {batchCreateListings => (
-                                    <Mutation mutation={CREATE_OFFICE}>
-                                        {createOffice => (
-                                            <Fragment>
-                                                <Progress
-                                                    strokeLinecap="square"
-                                                    strokeWidth="3px"
-                                                    percent={progressBarPercent}
-                                                />
-                                                <Container
-                                                    position="relative"
-                                                    maxWidth={['', '', 624]}
-                                                    px={[25, '', 0]}
-                                                >
-                                                    {isConfirmationStep &&
-                                                        resumeWarning && (
-                                                            <StyledAlert
-                                                                type="info"
-                                                                showIcon
-                                                                message={
-                                                                    <Fragment>
-                                                                        Looks
-                                                                        like you
-                                                                        were
-                                                                        middle
-                                                                        of
-                                                                        creating
-                                                                        an
-                                                                        office!
-                                                                        We&#39;ve
-                                                                        saved
-                                                                        your
-                                                                        changes
-                                                                        or{' '}
-                                                                        <RestartText
-                                                                            onClick={
-                                                                                this
-                                                                                    .handleRestart
-                                                                            }
-                                                                        >
-                                                                            you
-                                                                            can
-                                                                            start
-                                                                            over
-                                                                        </RestartText>
-                                                                        .
-                                                                    </Fragment>
-                                                                }
-                                                            />
-                                                        )}
-                                                </Container>
-                                                <StyledContainer
-                                                    pb={[100, '', 200]}
-                                                >
-                                                    <Form
-                                                        data-cy="host-submit"
-                                                        debounce="false"
-                                                        onSuccess={values => {
-                                                            this.onSubmit(
-                                                                values,
-                                                                createOffice,
-                                                                updateOffice,
-                                                                batchCreateListings,
-                                                                get(user, 'id')
-                                                            );
-                                                        }}
+            <Fragment>
+                <Head>
+                    <title>Add Office - Laguro</title>
+                </Head>
+                <Query
+                    query={GET_OFFICE}
+                    variables={{ id: officeId }}
+                    onCompleted={this.handleGetOffice}
+                    fetchPolicy="network-only"
+                    skip={_isEmpty(officeId)}
+                >
+                    {() => (
+                        <Mutation
+                            mutation={UPDATE_OFFICE}
+                            onCompleted={this.handleOnCompleted}
+                        >
+                            {updateOffice => (
+                                <Mutation mutation={CREATE_LISTING}>
+                                    {batchCreateListings => (
+                                        <Mutation mutation={CREATE_OFFICE}>
+                                            {createOffice => (
+                                                <Fragment>
+                                                    <Progress
+                                                        strokeLinecap="square"
+                                                        strokeWidth="3px"
+                                                        percent={
+                                                            progressBarPercent
+                                                        }
+                                                    />
+                                                    <Container
+                                                        position="relative"
+                                                        maxWidth={['', '', 624]}
+                                                        px={[25, '', 0]}
                                                     >
-                                                        <Container
-                                                            position="relative"
-                                                            maxWidth={[
-                                                                '',
-                                                                '',
-                                                                624,
-                                                            ]}
-                                                            px={0}
-                                                        >
-                                                            {step ===
-                                                                OFFICE_STEP && (
-                                                                <AddOfficeInfo
-                                                                    ref={value => {
-                                                                        this.addOfficeInfo = value;
-                                                                    }}
-                                                                    locationDisabled={
-                                                                        mode ===
-                                                                        EDIT_OFFICE_MODE
+                                                        {isConfirmationStep &&
+                                                            resumeWarning && (
+                                                                <StyledAlert
+                                                                    type="info"
+                                                                    showIcon
+                                                                    message={
+                                                                        <Fragment>
+                                                                            Looks
+                                                                            like
+                                                                            you
+                                                                            were
+                                                                            middle
+                                                                            of
+                                                                            creating
+                                                                            an
+                                                                            office!
+                                                                            We&#39;ve
+                                                                            saved
+                                                                            your
+                                                                            changes
+                                                                            or{' '}
+                                                                            <RestartText
+                                                                                onClick={
+                                                                                    this
+                                                                                        .handleRestart
+                                                                                }
+                                                                            >
+                                                                                you
+                                                                                can
+                                                                                start
+                                                                                over
+                                                                            </RestartText>
+                                                                            .
+                                                                        </Fragment>
                                                                     }
-                                                                    handleSelect={
-                                                                        this
-                                                                            .enableSubmit
-                                                                    }
-                                                                    firstName={get(
+                                                                />
+                                                            )}
+                                                    </Container>
+                                                    <StyledContainer
+                                                        pb={[100, '', 200]}
+                                                    >
+                                                        <Form
+                                                            data-cy="host-submit"
+                                                            debounce="false"
+                                                            onSuccess={values => {
+                                                                this.onSubmit(
+                                                                    values,
+                                                                    createOffice,
+                                                                    updateOffice,
+                                                                    batchCreateListings,
+                                                                    get(
                                                                         user,
-                                                                        'firstName'
-                                                                    )}
-                                                                    lastName={get(
-                                                                        user,
-                                                                        'lastName'
-                                                                    )}
-                                                                    onImageChange={
-                                                                        this
-                                                                            .handleImageChange
-                                                                    }
-                                                                    header={
-                                                                        this
-                                                                            .headerList[0]
-                                                                    }
-                                                                    mode={mode}
-                                                                    {...initialFormValues}
-                                                                />
-                                                            )}
-                                                            {step ===
-                                                                EQUIPMENT_STEP && (
-                                                                <AddOfficeEquipments
-                                                                    header={
-                                                                        this
-                                                                            .headerList[1]
-                                                                    }
-                                                                    {...initialFormValues}
-                                                                />
-                                                            )}
-                                                            {step ===
-                                                                DOCUMENT_STEP && (
-                                                                <AddDocument
-                                                                    header={
-                                                                        this
-                                                                            .headerList[2]
-                                                                    }
-                                                                    {...initialFormValues}
-                                                                    {...this
-                                                                        .props}
-                                                                />
-                                                            )}
-                                                            {step ===
-                                                                LISTING_STEP && (
-                                                                <AddOfficeListing
-                                                                    isOnboarding={
-                                                                        this
-                                                                            .mode !==
-                                                                        ADD_LISTING_MODE
-                                                                    }
-                                                                    {...initialFormValues}
-                                                                />
-                                                            )}
-
-                                                            {step ===
-                                                                CONFIRMATION_STEP &&
-                                                                wizardState.officeId &&
-                                                                wizardState
-                                                                    .listingIds
-                                                                    .length && (
-                                                                    <ListingConfirmation
-                                                                        officeId={
-                                                                            wizardState.officeId
-                                                                        }
-                                                                        listingIds={
-                                                                            wizardState.listingIds
-                                                                        }
-                                                                    />
-                                                                )}
-                                                        </Container>
-                                                        {/* previous button is shown when the user is not on the first page or the last page. using indexOf for edit office */}
-                                                        <Box
-                                                            position={[
-                                                                'relative',
-                                                                '',
-                                                                'fixed',
-                                                            ]}
-                                                            bg="white"
-                                                            left="0"
-                                                            right="0"
-                                                            bottom="0"
-                                                            height={[
-                                                                '',
-                                                                '',
-                                                                100,
-                                                            ]}
-                                                            border={[
-                                                                'none',
-                                                                '',
-                                                                '1px solid',
-                                                            ]}
-                                                            borderColor={[
-                                                                'none',
-                                                                '',
-                                                                'divider.gray',
-                                                            ]}
-                                                            zIndex="modal"
+                                                                        'id'
+                                                                    )
+                                                                );
+                                                            }}
                                                         >
                                                             <Container
-                                                                px={[0, '', 25]}
+                                                                position="relative"
+                                                                maxWidth={[
+                                                                    '',
+                                                                    '',
+                                                                    624,
+                                                                ]}
+                                                                px={0}
                                                             >
-                                                                <Flex
-                                                                    justifyContent="space-between"
-                                                                    alignItems="center"
-                                                                    flexDirection={[
-                                                                        'column-reverse',
+                                                                {step ===
+                                                                    OFFICE_STEP && (
+                                                                    <AddOfficeInfo
+                                                                        ref={value => {
+                                                                            this.addOfficeInfo = value;
+                                                                        }}
+                                                                        locationDisabled={
+                                                                            mode ===
+                                                                            EDIT_OFFICE_MODE
+                                                                        }
+                                                                        handleSelect={
+                                                                            this
+                                                                                .enableSubmit
+                                                                        }
+                                                                        firstName={get(
+                                                                            user,
+                                                                            'firstName'
+                                                                        )}
+                                                                        lastName={get(
+                                                                            user,
+                                                                            'lastName'
+                                                                        )}
+                                                                        onImageChange={
+                                                                            this
+                                                                                .handleImageChange
+                                                                        }
+                                                                        header={
+                                                                            this
+                                                                                .headerList[0]
+                                                                        }
+                                                                        mode={
+                                                                            mode
+                                                                        }
+                                                                        {...initialFormValues}
+                                                                    />
+                                                                )}
+                                                                {step ===
+                                                                    EQUIPMENT_STEP && (
+                                                                    <AddOfficeEquipments
+                                                                        header={
+                                                                            this
+                                                                                .headerList[1]
+                                                                        }
+                                                                        {...initialFormValues}
+                                                                    />
+                                                                )}
+                                                                {step ===
+                                                                    DOCUMENT_STEP && (
+                                                                    <AddDocument
+                                                                        header={
+                                                                            this
+                                                                                .headerList[2]
+                                                                        }
+                                                                        {...initialFormValues}
+                                                                        {...this
+                                                                            .props}
+                                                                    />
+                                                                )}
+                                                                {step ===
+                                                                    LISTING_STEP && (
+                                                                    <AddOfficeListing
+                                                                        isOnboarding={
+                                                                            this
+                                                                                .mode !==
+                                                                            ADD_LISTING_MODE
+                                                                        }
+                                                                        {...initialFormValues}
+                                                                    />
+                                                                )}
+
+                                                                {step ===
+                                                                    CONFIRMATION_STEP &&
+                                                                    wizardState.officeId &&
+                                                                    wizardState
+                                                                        .listingIds
+                                                                        .length && (
+                                                                        <ListingConfirmation
+                                                                            officeId={
+                                                                                wizardState.officeId
+                                                                            }
+                                                                            listingIds={
+                                                                                wizardState.listingIds
+                                                                            }
+                                                                        />
+                                                                    )}
+                                                            </Container>
+                                                            {/* previous button is shown when the user is not on the first page or the last page. using indexOf for edit office */}
+                                                            <Box
+                                                                position={[
+                                                                    'relative',
+                                                                    '',
+                                                                    'fixed',
+                                                                ]}
+                                                                bg="white"
+                                                                left="0"
+                                                                right="0"
+                                                                bottom="0"
+                                                                height={[
+                                                                    '',
+                                                                    '',
+                                                                    100,
+                                                                ]}
+                                                                border={[
+                                                                    'none',
+                                                                    '',
+                                                                    '1px solid',
+                                                                ]}
+                                                                borderColor={[
+                                                                    'none',
+                                                                    '',
+                                                                    'divider.gray',
+                                                                ]}
+                                                                zIndex="modal"
+                                                            >
+                                                                <Container
+                                                                    px={[
+                                                                        0,
                                                                         '',
-                                                                        'row',
+                                                                        25,
                                                                     ]}
                                                                 >
-                                                                    {stepCount !==
-                                                                        0 &&
-                                                                    this.stepList.indexOf(
-                                                                        step
-                                                                    ) !==
-                                                                        this
-                                                                            .stepList
-                                                                            .length -
-                                                                            1 ? (
-                                                                        <BackButton
+                                                                    <Flex
+                                                                        justifyContent="space-between"
+                                                                        alignItems="center"
+                                                                        flexDirection={[
+                                                                            'column-reverse',
+                                                                            '',
+                                                                            'row',
+                                                                        ]}
+                                                                    >
+                                                                        {stepCount !==
+                                                                            0 &&
+                                                                        this.stepList.indexOf(
+                                                                            step
+                                                                        ) !==
+                                                                            this
+                                                                                .stepList
+                                                                                .length -
+                                                                                1 ? (
+                                                                            <BackButton
+                                                                                disabled={
+                                                                                    false
+                                                                                }
+                                                                                onBack={
+                                                                                    this
+                                                                                        .handleBack
+                                                                                }
+                                                                                type="primary"
+                                                                                ghost
+                                                                                width={[
+                                                                                    'calc(100vw - 50px)',
+                                                                                    '',
+                                                                                    188,
+                                                                                ]}
+                                                                                height={[
+                                                                                    50,
+                                                                                    '',
+                                                                                    60,
+                                                                                ]}
+                                                                                mt={[
+                                                                                    10,
+                                                                                    '',
+                                                                                    20,
+                                                                                ]}
+                                                                                buttonText="Previous"
+                                                                            />
+                                                                        ) : (
+                                                                            <div />
+                                                                        )}
+
+                                                                        <SubmitButton
                                                                             disabled={
-                                                                                false
-                                                                            }
-                                                                            onBack={
                                                                                 this
-                                                                                    .handleBack
+                                                                                    .mode ===
+                                                                                    LISTING_STEP ||
+                                                                                this
+                                                                                    .mode ===
+                                                                                    EDIT_OFFICE_MODE
+                                                                                    ? false
+                                                                                    : this
+                                                                                          .state
+                                                                                          .numImage ===
+                                                                                      0
                                                                             }
-                                                                            type="primary"
-                                                                            ghost
+                                                                            loading={
+                                                                                this
+                                                                                    .state
+                                                                                    .submitting
+                                                                            }
                                                                             width={[
                                                                                 'calc(100vw - 50px)',
                                                                                 '',
@@ -1088,72 +1146,33 @@ class HostOnboarding extends Component {
                                                                                 '',
                                                                                 20,
                                                                             ]}
-                                                                            buttonText="Previous"
+                                                                            mr={[
+                                                                                0,
+                                                                                '',
+                                                                                30,
+                                                                            ]}
+                                                                            buttonText={
+                                                                                this
+                                                                                    .buttonTexts[
+                                                                                    stepCount
+                                                                                ]
+                                                                            }
                                                                         />
-                                                                    ) : (
-                                                                        <div />
-                                                                    )}
-
-                                                                    <SubmitButton
-                                                                        disabled={
-                                                                            this
-                                                                                .mode ===
-                                                                                LISTING_STEP ||
-                                                                            this
-                                                                                .mode ===
-                                                                                EDIT_OFFICE_MODE
-                                                                                ? false
-                                                                                : this
-                                                                                      .state
-                                                                                      .numImage ===
-                                                                                  0
-                                                                        }
-                                                                        loading={
-                                                                            this
-                                                                                .state
-                                                                                .submitting
-                                                                        }
-                                                                        width={[
-                                                                            'calc(100vw - 50px)',
-                                                                            '',
-                                                                            188,
-                                                                        ]}
-                                                                        height={[
-                                                                            50,
-                                                                            '',
-                                                                            60,
-                                                                        ]}
-                                                                        mt={[
-                                                                            10,
-                                                                            '',
-                                                                            20,
-                                                                        ]}
-                                                                        mr={[
-                                                                            0,
-                                                                            '',
-                                                                            30,
-                                                                        ]}
-                                                                        buttonText={
-                                                                            this
-                                                                                .buttonTexts[
-                                                                                stepCount
-                                                                            ]
-                                                                        }
-                                                                    />
-                                                                </Flex>
-                                                            </Container>
-                                                        </Box>
-                                                    </Form>
-                                                </StyledContainer>
-                                            </Fragment>
-                                        )}
-                                    </Mutation>
-                                )}
-                            </Mutation>
-                        )}
-                    </Mutation>
-                )}
-            </Query>
+                                                                    </Flex>
+                                                                </Container>
+                                                            </Box>
+                                                        </Form>
+                                                    </StyledContainer>
+                                                </Fragment>
+                                            )}
+                                        </Mutation>
+                                    )}
+                                </Mutation>
+                            )}
+                        </Mutation>
+                    )}
+                </Query>
+            </Fragment>
         );
     }
 }

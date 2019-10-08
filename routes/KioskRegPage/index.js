@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-
+import React, { Component, Fragment } from 'react';
+import Head from 'next/head';
 import * as Yup from 'yup';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
@@ -337,33 +337,38 @@ class KioskRegPage extends Component {
         };
 
         return (
-            <Box className="kiosk-reg-page">
-                <Progress
-                    steps={getKioskPageProgressSteps(formatText)}
-                    step={1}
-                    percent={20}
-                />
-                <Wizard
-                    Form="form"
-                    withRoutingHistory
-                    render={wizardProps => (
-                        <React.Fragment>
-                            {wizardProps.actions.canGoBack && (
-                                <Onboarding.PreviousButton
-                                    goToPreviousStep={
-                                        wizardProps.actions.goToPreviousStep
-                                    }
-                                />
-                            )}
-                            {render({
-                                ...wizardProps,
-                                ...this.props,
-                            })}
-                        </React.Fragment>
-                    )}
-                    steps={steps}
-                />
-            </Box>
+            <Fragment>
+                <Head>
+                    <title>Laguro</title>
+                </Head>
+                <Box className="kiosk-reg-page">
+                    <Progress
+                        steps={getKioskPageProgressSteps(formatText)}
+                        step={1}
+                        percent={20}
+                    />
+                    <Wizard
+                        Form="form"
+                        withRoutingHistory
+                        render={wizardProps => (
+                            <React.Fragment>
+                                {wizardProps.actions.canGoBack && (
+                                    <Onboarding.PreviousButton
+                                        goToPreviousStep={
+                                            wizardProps.actions.goToPreviousStep
+                                        }
+                                    />
+                                )}
+                                {render({
+                                    ...wizardProps,
+                                    ...this.props,
+                                })}
+                            </React.Fragment>
+                        )}
+                        steps={steps}
+                    />
+                </Box>
+            </Fragment>
         );
     }
 }

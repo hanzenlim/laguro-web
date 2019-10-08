@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { Query } from 'react-apollo';
 import get from 'lodash/get';
 import queryString from 'query-string';
 import _isEmpty from 'lodash/isEmpty';
+import Head from 'next/head';
 
 import PatientDashboardView from './view';
 import { Loading } from '~/components';
@@ -37,16 +38,21 @@ const PatientDashboardPage = ({ location }) => {
                 const offices = get(dataUserQuery, 'getUser.dentist.offices');
 
                 return (
-                    <PatientDashboardView
-                        dentistId={dentistId}
-                        isDentist={get(dataUserQuery, 'getUser.isDentist')}
-                        dentist={dentist}
-                        isHost={get(dataUserQuery, 'getUser.isHost')}
-                        offices={offices}
-                        userId={id}
-                        panel={getTextFromKey(params.selectedTab)}
-                        refetch={refetch}
-                    />
+                    <Fragment>
+                        <Head>
+                            <title>Laguro</title>
+                        </Head>
+                        <PatientDashboardView
+                            dentistId={dentistId}
+                            isDentist={get(dataUserQuery, 'getUser.isDentist')}
+                            dentist={dentist}
+                            isHost={get(dataUserQuery, 'getUser.isHost')}
+                            offices={offices}
+                            userId={id}
+                            panel={getTextFromKey(params.selectedTab)}
+                            refetch={refetch}
+                        />
+                    </Fragment>
                 );
             }}
         </Query>
