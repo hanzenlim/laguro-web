@@ -16,14 +16,34 @@ import { LoginContext } from '../../appContext';
 
 const { Item } = Menu;
 
+const DEFAULT_PROCEDURE = 'Full exam and x-ray';
+
 class Bundle extends Component {
-    state = {
-        selectedProcedure: '',
-        selectedIndex: null,
-        selectedInsurance: null,
-        price: null,
-        insuranceList: [],
-        isModalVisible: false,
+    constructor(props) {
+        super(props);
+
+        const defaultState = this.getDefaultState();
+
+        this.state = {
+            selectedProcedure: defaultState.selectedProcedure,
+            selectedIndex: defaultState.selectedIndex,
+            selectedInsurance: null,
+            price: defaultState.price,
+            insuranceList: [],
+            isModalVisible: false,
+        };
+    }
+
+    getDefaultState = () => {
+        const currentBundle = this.getCurrentBundle(DEFAULT_PROCEDURE);
+        const selectedIndex = this.getIndexOfBundle(DEFAULT_PROCEDURE);
+
+        return {
+            selectedProcedure: DEFAULT_PROCEDURE,
+            selectedIndex,
+            price: currentBundle.price,
+            insuranceList: currentBundle.insuranceList,
+        };
     };
 
     onSelectBundle = ({ key }) => {
@@ -112,6 +132,7 @@ class Bundle extends Component {
         if (!_isEmpty(bundles)) {
             const filteredBundleElement = bundles.filter(
                 item =>
+                    item.name &&
                     item.name.toLowerCase() === selectedProcedure.toLowerCase()
             );
 
