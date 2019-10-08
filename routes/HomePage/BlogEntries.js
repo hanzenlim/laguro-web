@@ -31,7 +31,7 @@ const useBlog = () => {
         const fetchBlogEntries = async () => {
             // fetch posts
             let response = await fetch(
-                'https://blog.laguro.com/wp-json/wp/v2/posts?per_page=3&page=1'
+                'https://blog.laguro.com/wp-json/wp/v2/posts?per_page=3&page=1&_embed'
             );
             const data = await response.json();
 
@@ -62,7 +62,9 @@ const useBlog = () => {
                     id: entry.id,
                     title: entry.title.rendered,
                     excerpt,
-                    imageUrl: entry.jetpack_featured_media_url,
+                    imageUrl:
+                        entry._embedded['wp:featuredmedia']['0'].media_details
+                            .sizes.medium.source_url,
                     entryUrl: entry.link,
                     categories,
                 };

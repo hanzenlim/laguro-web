@@ -100,7 +100,6 @@ const FeatureTabs = () => {
                     >
                         {tabContents.map((content, index) => (
                             <TabPane
-                                forceRender
                                 tab={
                                     <TabName
                                         name={content.title}

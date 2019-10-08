@@ -36,7 +36,7 @@ const LoginPageView = ({
                 >
                     <Image
                         height="100%"
-                        src="/static/images/banner-bg.png"
+                        src="/static/images/banner-bg.svg"
                         alt="homepage-background"
                         style={{ objectFit: 'cover' }}
                     />

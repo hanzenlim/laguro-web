@@ -81,9 +81,9 @@ const TopCallToAction = ({ desktopOnly }) => {
                         minHeight={[200, '', 400]}
                     >
                         <Image
-                            src="/static/images/devices.png"
+                            src="/static/images/devices.svg"
                             alt="$100 Treatment Credit"
-                            maxWidth={['140%', '', '170%']}
+                            width={['140%', '', '170%']}
                             position="relative"
                             zIndex="2"
                         />

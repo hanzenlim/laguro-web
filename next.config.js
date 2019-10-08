@@ -9,6 +9,7 @@ const Dotenv = require('dotenv-webpack');
 // const withImages = require('next-images');
 
 const BrotliPlugin = require('brotli-webpack-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 module.exports = withCss({
     webpack: (config, { isServer }) => {
@@ -34,6 +35,9 @@ module.exports = withCss({
                 use: 'null-loader',
             });
         }
+
+        config.optimization.minimizer = [];
+        config.optimization.minimizer.push(new OptimizeCSSAssetsPlugin({}));
 
         config.module.rules.push({
             test: /\.(eot|woff|woff2|ttf|svg|png|jpg|gif)$/,
