@@ -246,7 +246,7 @@ class DetailsSearchPage extends PureComponent {
                         input: queryParams,
                     }}
                     notifyOnNetworkStatusChange
-                    context={{ clientName: 'search' }}
+                    context={{ clientName: 'appointment' }}
                 >
                     {({ data, loading, refetch }) => {
                         this.refetch = refetch;
