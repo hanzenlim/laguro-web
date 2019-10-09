@@ -500,7 +500,7 @@ class BookAppointmentContainer extends Component {
 
                     const getDentistData = _get(
                         getDentist,
-                        'getDentist.data.getDentist',
+                        'data.getDentist',
                         {}
                     );
                     const officeAppointmentSlots = _get(
