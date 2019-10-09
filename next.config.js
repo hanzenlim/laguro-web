@@ -9,7 +9,6 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 });
 
 const BrotliPlugin = require('brotli-webpack-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 const nextConfig = {
     webpack: (config, { isServer }) => {
@@ -35,9 +34,6 @@ const nextConfig = {
                 use: 'null-loader',
             });
         }
-
-        config.optimization.minimizer = [];
-        config.optimization.minimizer.push(new OptimizeCSSAssetsPlugin({}));
 
         config.module.rules.push({
             test: /\.(eot|woff|woff2|ttf|svg|png|jpg|gif)$/,
