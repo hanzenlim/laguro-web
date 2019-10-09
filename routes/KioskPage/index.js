@@ -182,7 +182,7 @@ const Composed = adopt({
                 currentWizardStepId !== BOOK_APPOINTMENT_WIZARD_STEP_ID
             }
             fetchPolicy="network-only"
-            context={{ clientName: 'search' }}
+            context={{ clientName: 'appointment' }}
         >
             {render}
         </Query>
