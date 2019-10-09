@@ -9,6 +9,11 @@ const StyledCheckbox = styled(AntdCheckbox)`
             background-color: ${props => props.theme.colors.background.blue};
         }
 
+        .ant-checkbox.ant-checkbox-checked.ant-checkbox-disabled
+            .ant-checkbox-inner {
+            background-color: rgb(245, 245, 245);
+        }
+
         .ant-checkbox-wrapper:hover .ant-checkbox-inner,
         .ant-checkbox:hover .ant-checkbox-inner,
         .ant-checkbox-input:focus + .ant-checkbox-inner {
