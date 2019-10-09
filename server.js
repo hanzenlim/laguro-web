@@ -16,6 +16,7 @@ const { readFileSync } = require('fs');
 const { basename } = require('path');
 const isEmpty = require('lodash/isEmpty');
 const expressStaticGzip = require('express-static-gzip');
+const compression = require('compression');
 
 const siteMapRoutes = require('./apiRoutes/siteMapRoutes');
 
@@ -92,6 +93,8 @@ app.prepare().then(() => {
             index: false,
         })
     );
+
+    server.use(compression());
 
     server.get('/review/:id', (req, res) => {
         const { id } = req.params;

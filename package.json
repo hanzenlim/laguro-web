@@ -36,6 +36,7 @@
     "babel-plugin-react-intl": "^4.1.19",
     "brotli-webpack-plugin": "^1.1.0",
     "browser-cookies": "^1.2.0",
+    "compression": "^1.7.4",
     "cookie": "^0.4.0",
     "cross-env": "^5.2.0",
     "dotenv": "^8.1.0",
