@@ -1,17 +1,17 @@
 require('dotenv').config();
 
-/* eslint-disable */
 const withCss = require('@zeit/next-css');
 const path = require('path');
 const Dotenv = require('dotenv-webpack');
-// NOTE: Remove withImages temporarily because it is breaking null images from graphql
-// if this breaks any UI, please revisit this issue
-// const withImages = require('next-images');
+const withPlugins = require('next-compose-plugins');
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+    enabled: process.env.ANALYZE === 'true',
+});
 
 const BrotliPlugin = require('brotli-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
-module.exports = withCss({
+const nextConfig = {
     webpack: (config, { isServer }) => {
         if (isServer) {
             const antStyles = /antd\/.*?\/style\/css.*?/;
@@ -70,7 +70,6 @@ module.exports = withCss({
 
         return config;
     },
-    // target: 'serverless',
     onDemandEntries: {
         // This governs the behavior of the development server ONLY
         // period (in ms) where the server will keep pages in the buffer
@@ -78,4 +77,6 @@ module.exports = withCss({
         // number of pages that should be kept simultaneously without being disposed
         pagesBufferLength: 10,
     },
-});
+};
+
+module.exports = withPlugins([withBundleAnalyzer, withCss], nextConfig);
