@@ -73,21 +73,6 @@ const StyledDocumentUploaderFlex = styled(Flex)`
     }
 `;
 
-const StyledLaguroCheckbox = styled(LaguroCheckbox)`
-    && {
-        .ant-checkbox-disabled .ant-checkbox-inner {
-            background-color: rgb(245, 245, 245);
-        }
-        .ant-checkbox-inner:after {
-            /* top: 44%;
-          left: 3px;
-          * commenting this out will generate misaligned
-          * checkbox in storybook but correct on laguro app
-          */
-        }
-    }
-`;
-
 const StyledNavButtonText = styled(Text)`
     && {
         width: 99px;
@@ -131,7 +116,7 @@ const OnboardingCheckbox = props => {
             >
                 <Flex height="100%" alignItems="center">
                     <Box height="18px" width="18px">
-                        <StyledLaguroCheckbox checked={value} />
+                        <LaguroCheckbox checked={value} />
                     </Box>
                     <Text ml="20px" mb={5} width="80%" lineHeight="1.2">
                         <StyledTruncatedText>{field}</StyledTruncatedText>
@@ -689,7 +674,7 @@ const OnboardingProcedureCheckbox = props => {
         >
             <Box height={25} border="none" background="white">
                 <Flex height="100%" alignItems="center">
-                    <StyledLaguroCheckbox checked={value} disabled={disabled} />
+                    <LaguroCheckbox checked={value} disabled={disabled} />
                     <Text ml="20px" lineHeight="1.2">
                         {field}
                     </Text>
