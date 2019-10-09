@@ -2,9 +2,13 @@ import React, { Fragment } from 'react';
 import Head from 'next/head';
 import _get from 'lodash/get';
 import { useRouter } from 'next/router';
+import validate from 'uuid-validate';
 
 import DentistDetailsPage from '../routes/Dentist/DentistDetailsPage';
-import { fetchDentistFromES } from '../routes/Dentist/queries';
+import {
+    fetchDentistFromES,
+    fetchDentistFromESByPermalink,
+} from '../routes/Dentist/queries';
 import GeneralErrorPage from '../routes/GeneralErrorPage';
 import Error404Page from '../routes/Error404Page';
 
@@ -46,11 +50,18 @@ DentistDetailsPageContainer.getInitialProps = async ({ req }) => {
         const id = _get(req, 'params.id', '');
 
         if (!id) {
-            return null;
+            return {};
         }
 
-        const result = await fetchDentistFromES(id);
-        const dentist = _get(result, '_source', null);
+        let result = {};
+
+        if (validate(id)) {
+            result = await fetchDentistFromES(id);
+        } else {
+            result = await fetchDentistFromESByPermalink(id);
+        }
+
+        const dentist = _get(result, '_source', {});
 
         return { dentist };
     } catch (error) {

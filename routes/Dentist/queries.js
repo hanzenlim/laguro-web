@@ -1,4 +1,7 @@
 import gql from 'graphql-tag';
+import _get from 'lodash/get';
+import _isEmpty from 'lodash/isEmpty';
+
 import esClient from '~/lib/esClient';
 import { DENTISTS } from '~/util/strings';
 
@@ -10,6 +13,28 @@ export const fetchDentistFromES = async queryString => {
     });
 
     return res;
+};
+
+export const fetchDentistFromESByPermalink = async permalink => {
+    const res = await esClient.search({
+        index: DENTISTS,
+        type: '_doc',
+        body: {
+            query: {
+                match_phrase: {
+                    permalink,
+                },
+            },
+        },
+    });
+
+    const dentistsArray = _get(res, 'hits.hits', []);
+
+    if (!_isEmpty(dentistsArray)) {
+        return dentistsArray[0];
+    }
+
+    return null;
 };
 
 // eslint-disable-next-line

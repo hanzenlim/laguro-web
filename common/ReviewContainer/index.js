@@ -84,6 +84,7 @@ class ReviewContainer extends PureComponent {
                                 viewOnly={this.props.viewOnly}
                                 info={mappedData}
                                 match={match}
+                                id={id}
                             />
                             {!this.props.viewOnly && (
                                 <Fragment>
@@ -104,6 +105,7 @@ class ReviewContainer extends PureComponent {
                                             toggleModalState={
                                                 this.toggleModalState
                                             }
+                                            contextId={id}
                                         />
                                     </StyledModal>
                                 </Fragment>

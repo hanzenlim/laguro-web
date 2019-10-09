@@ -34,10 +34,10 @@ class NewReview extends PureComponent {
 
     onSuccess = async ({ text }) => {
         const user = getUser();
-        const { mutate, info, router } = this.props;
+        const { mutate, info, router, contextId } = this.props;
         const { rating } = this.state;
         const reviewerId = _get(user, 'id');
-        const revieweeId = router.query.id;
+        const revieweeId = contextId;
         const { type } = info;
 
         const input = {
@@ -58,7 +58,7 @@ class NewReview extends PureComponent {
                             info.type === DENTIST
                                 ? GET_DENTIST_REVIEWS
                                 : GET_OFFICE_REVIEWS,
-                        variables: { id: router.query.id },
+                        variables: { id: contextId },
                     },
                 ],
             });

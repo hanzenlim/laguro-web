@@ -113,11 +113,20 @@ class DentistListingCard extends PureComponent {
     };
 
     handleSelectAppointment = e => {
-        const { start, dentistid, officeid } = e.currentTarget.dataset;
+        const {
+            start,
+            dentistid,
+            officeid,
+            dentistpermalink,
+        } = e.currentTarget.dataset;
 
         const { onSelectAppointment } = this.props;
 
         const appointment = {};
+
+        if (dentistpermalink) {
+            appointment.dentistPermalink = dentistpermalink;
+        }
 
         if (start) {
             appointment.localStartTime = start;
@@ -187,7 +196,8 @@ class DentistListingCard extends PureComponent {
             </Menu>
         );
 
-        const dentistDetailsPageUrl = `${DENTIST_DETAILS_PAGE_URL_PREFIX}/${dentist.dentistId}`;
+        const dentistDetailsPageUrl = `${DENTIST_DETAILS_PAGE_URL_PREFIX}/${dentist.permalink ||
+            dentist.dentistId}`;
 
         return (
             <Box width="100%">

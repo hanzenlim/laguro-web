@@ -58,7 +58,7 @@ class BookAppointment extends PureComponent {
             isOnDentistPage,
             selectedTimeSlot: null,
             officeId: isOnOfficePage ? router.query.id : urlParams.officeId,
-            dentistId: isOnDentistPage ? router.query.id : urlParams.dentistId,
+            dentistId: isOnDentistPage ? props.dentistId : urlParams.dentistId,
             bookedAppointmentId: null,
             isBooking: false,
             hasAgreed: false,
@@ -108,7 +108,7 @@ class BookAppointment extends PureComponent {
 
         const officeId = isOnOfficePage ? router.query.id : urlParams.officeId;
         const dentistId = isOnDentistPage
-            ? router.query.id
+            ? this.props.dentistId
             : suggestedDentist.id;
 
         // if (trackBookAppointmentAttempt) {
@@ -287,6 +287,7 @@ const Composed = adopt({
             <Query
                 query={getDentistAppointmentSlotsQuery}
                 fetchPolicy="network-only"
+                notifyOnNetworkStatusChange
                 variables={{
                     input,
                 }}
@@ -317,8 +318,8 @@ class BookAppointmentContainer extends Component {
         const isOnOfficePage = router.pathname.includes('office');
 
         this.state = {
-            dentistId: isOnDentistPage ? router.query.id : urlParams.dentistId,
-            officeId: isOnOfficePage ? router.query.id : urlParams.officeId,
+            dentistId: isOnDentistPage ? props.id : urlParams.dentistId,
+            officeId: isOnOfficePage ? props.id : urlParams.officeId,
             suggestedDentist: null,
             isFetchingNewData: false,
             totalDentists: null,
@@ -454,11 +455,11 @@ class BookAppointmentContainer extends Component {
 
     render() {
         const {
-            dentistId,
             suggestedDentist,
             isFetchingNewData,
             totalDentists,
             officeId,
+            dentistId,
         } = this.state;
 
         const { router, toggleLoginModal } = this.props;
@@ -481,7 +482,11 @@ class BookAppointmentContainer extends Component {
                         getDentistAppointmentSlots.loading ||
                         getUser.loading
                     ) {
-                        return <Loading />;
+                        return (
+                            <Box {...wrapperStyles}>
+                                <Loading />
+                            </Box>
+                        );
                     }
 
                     if (
@@ -508,20 +513,6 @@ class BookAppointmentContainer extends Component {
                         'data.getDentistAppointmentSlots',
                         []
                     );
-
-                    // if (_isEmpty(getDentistData)) return null;
-
-                    if (
-                        getDentistAppointmentSlots.loading &&
-                        !officeAppointmentSlots &&
-                        !isFetchingNewData
-                    ) {
-                        return (
-                            <Box {...wrapperStyles}>
-                                <Loading />
-                            </Box>
-                        );
-                    }
 
                     if (
                         _isEmpty(officeAppointmentSlots) ||
@@ -596,6 +587,7 @@ class BookAppointmentContainer extends Component {
                                 getDentistAppointmentSlots.refetch
                             }
                             setOfficeId={this.setOfficeId}
+                            dentistId={dentistId}
                         />
                     );
                 }}

@@ -58,9 +58,14 @@ class SearchResultsList extends PureComponent {
     };
 
     handleSelectAppointment = appointment => {
-        const { localStartTime, dentistId, officeId } = appointment;
+        const {
+            localStartTime,
+            dentistId,
+            officeId,
+            dentistPermalink,
+        } = appointment;
 
-        let url = `/dentist/${dentistId}`;
+        let url = `/dentist/${dentistPermalink || dentistId}`;
 
         if (officeId && localStartTime) {
             url = `${url}?officeId=${officeId}&startTime=${localStartTime}`;

@@ -34,6 +34,7 @@ export const GET_DENTISTS_AND_APPOINTMENT_SLOTS = gql`
             acceptedInsurances
             firstAppointmentDuration
             averageRating
+            permalink
             bundles {
                 id
                 name

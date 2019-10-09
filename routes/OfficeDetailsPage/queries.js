@@ -14,3 +14,17 @@ export const getOfficeImageQuery = gql`
         }
     }
 `;
+
+export const getOfficeByPermalink = gql`
+    query($permalink: String!) {
+        getOfficeByPermalink(permalink: $permalink) {
+            id
+            imageUrls
+            name
+            description
+            location {
+                name
+            }
+        }
+    }
+`;

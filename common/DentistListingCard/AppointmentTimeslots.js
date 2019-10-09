@@ -195,6 +195,9 @@ class AppointmentTimeslots extends React.Component {
                                                         indexToMap
                                                     ].office.id
                                                 }
+                                                data-dentistpermalink={
+                                                    dentist.permalink
+                                                }
                                                 onClick={
                                                     handleSelectAppointment
                                                 }
@@ -215,6 +218,9 @@ class AppointmentTimeslots extends React.Component {
                                                     .appointmentTimeslotsByOffice[
                                                     indexToMap
                                                 ].office.id
+                                            }
+                                            data-dentistpermalink={
+                                                dentist.permalink
                                             }
                                             type="primary"
                                             height={40}

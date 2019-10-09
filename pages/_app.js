@@ -129,13 +129,13 @@ function LaguroApp({ Component, pageProps, apolloClient, locale, messages }) {
     const withUserProps = { ...pageProps, isAuth };
 
     return (
-        <IntlProvider locale={locale} messages={messages}>
+        <IntlProvider locale={locale || 'en'} messages={messages}>
             <ApolloProvider client={apolloClient}>
                 <ThemeProvider theme={theme}>
                     <AppContextProvider value={{ isAuth, mounted, setIsAuth }}>
                         <LoginContextProvider value={loginModalContextValue}>
                             <Head>
-                                <meta charset="utf-8" />
+                                <meta charSet="utf-8" />
                                 <meta
                                     name="viewport"
                                     content="width=device-width, initial-scale=1"

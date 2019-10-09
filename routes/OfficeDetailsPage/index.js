@@ -2,6 +2,8 @@ import get from 'lodash/get';
 import React, { Fragment, PureComponent } from 'react';
 import { Query } from 'react-apollo';
 import { Helmet } from 'react-helmet';
+import validate from 'uuid-validate';
+
 import { Loading } from '~/components';
 import GeneralErrorPage from '~/routes/GeneralErrorPage';
 import Error404Page from '~/routes/Error404Page';
@@ -21,9 +23,12 @@ class OfficeDetailsPageContainer extends PureComponent {
 
     render() {
         const { id } = this.props.match.params;
+        const isUuid = validate(id);
+        const variables = isUuid ? { id } : { permalink: id };
+        const query = isUuid ? getOfficeImageQuery : getOfficeByPermalink;
 
         return (
-            <Query query={getOfficeImageQuery} variables={{ id }}>
+            <Query query={query} variables={variables}>
                 {({ loading, error, data }) => {
                     if (loading) {
                         return <Loading />;
@@ -33,17 +38,28 @@ class OfficeDetailsPageContainer extends PureComponent {
                         return <GeneralErrorPage />;
                     }
 
+                    const show404Page = isUuid
+                        ? !data.getOffice
+                        : !data.getOfficeByPermalink;
+
                     // TODO: add SSR 404
-                    if (!data.getOffice) {
+                    if (show404Page) {
                         return <Error404Page />;
                     }
 
-                    const officeName = get(data, 'getOffice.name');
+                    const pathToData = isUuid
+                        ? 'getOffice'
+                        : 'getOfficeByPermalink';
+
+                    const officeName = get(data, `${pathToData}.name`);
                     const officeDescription = get(
                         data,
-                        'getOffice.description'
+                        `${pathToData}.description`
                     );
-                    const officeLocation = get(data, 'getOffice.location.name');
+                    const officeLocation = get(
+                        data,
+                        `${pathToData}.location.name`
+                    );
 
                     return (
                         <Fragment>
@@ -66,7 +82,7 @@ class OfficeDetailsPageContainer extends PureComponent {
                                 officeDetailsDoneLoading={
                                     this.state.officeDetailsDoneLoading
                                 }
-                                imageUrls={get(data, 'getOffice.imageUrls')}
+                                imageUrls={get(data, `${pathToData}.imageUrls`)}
                                 officeName={officeName}
                                 id={id}
                             />
