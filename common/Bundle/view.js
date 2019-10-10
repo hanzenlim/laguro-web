@@ -86,7 +86,7 @@ const BundleView = ({
         <StyledButton
             type="primary"
             ghost={isNullSelectedIndex}
-            width={190}
+            width="auto"
             height="30px"
             borderColor="#3481f8"
             fontSize={0}
