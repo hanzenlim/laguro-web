@@ -29,7 +29,7 @@ class Bundle extends Component {
             selectedIndex: defaultState.selectedIndex,
             selectedInsurance: null,
             price: defaultState.price,
-            insuranceList: [],
+            insuranceList: defaultState.insuranceList,
             isModalVisible: false,
         };
     }
