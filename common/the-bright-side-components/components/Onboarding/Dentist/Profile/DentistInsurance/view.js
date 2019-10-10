@@ -8,6 +8,7 @@ const insuranceList = [
     { id: 'CIGNA', text: 'Cigna' },
     { id: 'DD_CALIFORNIA', text: 'Delta Dental (CA)' },
     { id: 'GUARDIAN', text: 'Guardian' },
+    { id: 'AETNA_DENTAL_PLANS', text: 'Aetna Dental Plans' },
 ];
 
 class DentistInsuranceView extends React.PureComponent {
@@ -23,7 +24,7 @@ class DentistInsuranceView extends React.PureComponent {
                 <Flex justifyContent="center">
                     <InfoIcon />
                 </Flex>
-                <Onboarding.StepTitleText text="Which insurance do you accept?" />
+                <Onboarding.StepTitleText text="Which insurances are you in-network with?" />
                 <Onboarding.StepBlurbText />
 
                 {insuranceList.map(i => {
