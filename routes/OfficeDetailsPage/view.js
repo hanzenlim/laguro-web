@@ -146,9 +146,7 @@ const OfficeDetailsPageView = props => {
                     )}
                     <StyledCarousel
                         className={isCarouselFullScreen && 'full-screen'}
-                        infinite={true}
-                        centerPadding={0}
-                        variableWidth={true}
+                        infinite
                         dots
                         responsive={[
                             {
