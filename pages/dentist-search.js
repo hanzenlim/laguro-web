@@ -228,37 +228,51 @@ class DetailsSearchPage extends PureComponent {
         const queryParams = this.buildQueryParams(urlParams);
 
         return (
-            <Fragment>
-                <Head>
-                    <title>Search Dentist - Laguro</title>
-                    <meta
-                        name="description"
-                        content="The Laguro Dentist Search tool can help you find a dentist that will best fit your needs"
-                    />
-                    <link
-                        rel="canonical"
-                        href="https://www.laguro.com/dentist/search"
-                    />
-                </Head>
-                <Query
-                    query={GET_DENTISTS_AND_APPOINTMENT_SLOTS}
-                    variables={{
-                        input: queryParams,
-                    }}
-                    notifyOnNetworkStatusChange
-                    context={{ clientName: 'appointment' }}
-                >
-                    {({ data, loading, refetch }) => {
-                        this.refetch = refetch;
-                        const items = _get(
-                            data,
-                            'searchForDentistsAndAppointmentSlots',
-                            []
-                        );
+            <Query
+                query={GET_DENTISTS_AND_APPOINTMENT_SLOTS}
+                variables={{
+                    input: queryParams,
+                }}
+                notifyOnNetworkStatusChange
+                context={{ clientName: 'appointment' }}
+            >
+                {({ data, loading, refetch }) => {
+                    this.refetch = refetch;
+                    const items = _get(
+                        data,
+                        'searchForDentistsAndAppointmentSlots',
+                        []
+                    );
 
-                        const sortedItems = this.sortItems(items, sortBy);
+                    const sortedItems = this.sortItems(items, sortBy);
 
-                        return (
+                    const structuredSchema = {
+                        '@context': 'https://schema.org',
+                        '@type': 'ItemList',
+                        itemListElement: items.map((item, index) => ({
+                            '@type': 'ListItem',
+                            position: index + 1,
+                            url: `https://www.laguro.com/dentist/${item.permalink ||
+                                item.id}`,
+                        })),
+                    };
+
+                    return (
+                        <Fragment>
+                            <Head>
+                                <title>Search Dentist - Laguro</title>
+                                <meta
+                                    name="description"
+                                    content="The Laguro Dentist Search tool can help you find a dentist that will best fit your needs"
+                                />
+                                <link
+                                    rel="canonical"
+                                    href="https://www.laguro.com/dentist/search"
+                                />
+                                <script type="application/ld+json">
+                                    {JSON.stringify(structuredSchema)}
+                                </script>
+                            </Head>
                             <DentistSearchFilterContext.Provider
                                 value={{
                                     urlParams,
@@ -275,10 +289,10 @@ class DetailsSearchPage extends PureComponent {
                                     setSortBy={this.setSortBy}
                                 />
                             </DentistSearchFilterContext.Provider>
-                        );
-                    }}
-                </Query>
-            </Fragment>
+                        </Fragment>
+                    );
+                }}
+            </Query>
         );
     }
 }

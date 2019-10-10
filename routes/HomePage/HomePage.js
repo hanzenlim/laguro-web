@@ -57,8 +57,8 @@ const HomePageContainer = () => (
                     potentialAction: {
                         '@type': 'SearchAction',
                         target:
-                            'https://www.laguro.com/dentist/search?text={query}',
-                        query: 'Dentist',
+                            'https://www.laguro.com/dentist/search?text={searchbox_target}',
+                        'query-input': 'required name=searchbox_target',
                     },
                 })}
             </script>
