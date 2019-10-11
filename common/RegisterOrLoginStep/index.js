@@ -86,21 +86,22 @@ const RegisterOrLoginStep = props => {
                         if (props.formikProps.values.mode === 'signUp') {
                             if (
                                 router.pathname.includes('promo100') ||
-                                router.pathname.includes('login')
+                                router.pathname.includes('login') ||
+                                router.pathname.includes('signup')
                             ) {
-                                router.push(`/onboarding/terms`);
+                                return router.push(`/onboarding/terms`);
                             } else {
                                 const redirect = props.customRedirect
                                     ? props.customRedirect
                                     : router.pathname;
-                                router.push(
+                                return router.push(
                                     `/onboarding/terms/?redirectTo=${redirect}`
                                 );
                             }
                         }
 
                         if (router.query.redirectTo) {
-                            router.push(router.query.redirectTo);
+                            return router.push(router.query.redirectTo);
                         }
                     } else {
                         let upcomingAppointments = [];
@@ -117,16 +118,16 @@ const RegisterOrLoginStep = props => {
                             purposeOfVisit === 'checkIn' &&
                             upcomingAppointments.length
                         ) {
-                            router.push(
+                            return router.push(
                                 `/kiosk/check-in/${_get(
                                     upcomingAppointments,
                                     '[0].id'
                                 )}`
                             );
                         } else if (user.firstName) {
-                            router.push(`/kiosk/reason-of-visit`);
+                            return router.push(`/kiosk/reason-of-visit`);
                         } else {
-                            props.formikProps.submitForm();
+                            return props.formikProps.submitForm();
                         }
                     }
                 };
