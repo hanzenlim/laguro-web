@@ -13,7 +13,6 @@ class AvailableTimes extends PureComponent {
         this.state = {
             selectedTimeSlot: null,
             activeTimeSlotList: [],
-            timeSlotList: props.timeSlotList,
             timeSlotStartIndex: 0,
             dateSlotStartIndex: 0,
             dateCount: 3,
@@ -197,7 +196,8 @@ class AvailableTimes extends PureComponent {
     };
 
     checkIfHasNextDays = () => {
-        const { dateSlotStartIndex, timeSlotList, dateCount } = this.state;
+        const { dateSlotStartIndex, dateCount } = this.state;
+        const { timeSlotList } = this.props;
 
         if (timeSlotList[dateSlotStartIndex + dateCount] === undefined) {
             return false;
@@ -206,7 +206,8 @@ class AvailableTimes extends PureComponent {
     };
 
     checkIfHasPrevDays = () => {
-        const { dateSlotStartIndex, timeSlotList, dateCount } = this.state;
+        const { dateSlotStartIndex, dateCount } = this.state;
+        const { timeSlotList } = this.props;
 
         if (timeSlotList[dateSlotStartIndex - dateCount] === undefined) {
             return false;
@@ -217,10 +218,10 @@ class AvailableTimes extends PureComponent {
     checkIfHasPrevTimeSlots = () => {
         const {
             timeSlotStartIndex,
-            timeSlotList,
             dateCount,
             dateSlotStartIndex,
         } = this.state;
+        const { timeSlotList } = this.props;
 
         const nextTimeSlots = [];
         for (let i = 0; i < dateCount; i++) {
@@ -244,10 +245,10 @@ class AvailableTimes extends PureComponent {
         const {
             timeCount,
             timeSlotStartIndex,
-            timeSlotList,
             dateCount,
             dateSlotStartIndex,
         } = this.state;
+        const { timeSlotList } = this.props;
 
         const nextTimeSlots = [];
         for (let i = 0; i < dateCount; i++) {
