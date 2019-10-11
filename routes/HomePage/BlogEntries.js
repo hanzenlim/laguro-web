@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import _keyBy from 'lodash/keyBy';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 import {
     Box,
@@ -9,7 +10,6 @@ import {
     Text,
     Grid,
     Loading,
-    Image,
     Truncate,
 } from '~/components';
 
@@ -138,7 +138,7 @@ const Entry = ({ imageUrl, title, excerpt, entryUrl, categories }) => {
             minHeight={['auto', '', 662]}
             style={{ overflow: 'hidden' }}
         >
-            <Image src={imageUrl} alt={title} width="100%" />
+            <LazyLoadImage src={imageUrl} alt={title} width="100%" />
 
             <Box
                 flex={1}

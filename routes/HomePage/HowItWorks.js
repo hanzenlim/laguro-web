@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
-import { Box, Container, Grid, Text, Image } from '~/components';
+import { Box, Container, Grid, Text } from '~/components';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const steps = [
     {
@@ -55,7 +56,7 @@ const HowItWorks = () => (
                             <Text fontSize={[3, '', 26]} mb={[32, '', 36]}>
                                 {step.description}
                             </Text>
-                            <Image
+                            <LazyLoadImage
                                 src={step.imageUrl}
                                 alt={step.description}
                                 width="100%"

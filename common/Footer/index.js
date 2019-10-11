@@ -1,17 +1,9 @@
 import React from 'react';
 import { transparentize } from 'polished';
 import { useRouter } from 'next/router';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
-import {
-    Text,
-    Box,
-    Flex,
-    Link,
-    Icon,
-    Container,
-    Grid,
-    Image,
-} from '~/components';
+import { Text, Box, Flex, Link, Icon, Container, Grid } from '~/components';
 
 import {
     DENTIST_ONBOARDING_PROFILE_URL,
@@ -281,7 +273,7 @@ const FooterBottom = () => (
                 </Text>
             </Flex>
             <Flex alignItems={['flex-end', '', 'center']}>
-                <Image
+                <LazyLoadImage
                     src="/static/images/HIPAA-Compliance.svg"
                     alt="HIPAA Compliance"
                 />
