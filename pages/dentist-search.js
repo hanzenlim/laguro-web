@@ -246,16 +246,17 @@ class DetailsSearchPage extends PureComponent {
 
                     const sortedItems = this.sortItems(items, sortBy);
 
-                    const structuredSchema = {
-                        '@context': 'https://schema.org',
-                        '@type': 'ItemList',
-                        itemListElement: items.map((item, index) => ({
-                            '@type': 'ListItem',
-                            position: index + 1,
-                            url: `https://www.laguro.com/dentist/${item.permalink ||
-                                item.id}`,
-                        })),
-                    };
+                    const structuredSchema = `
+                    {
+                        "@context": "https://schema.org",
+                        "@type": "ItemList",
+                        "itemListElement": ${JSON.stringify(items.map((item, index) => ({
+                            "@type": "ListItem",
+                            "position": index + 1,
+                            "url": `https://www.laguro.com/dentist/${item.permalink ||
+                                item.dentistId}`
+                        })))}
+                    }`;
 
                     return (
                         <Fragment>
@@ -269,9 +270,7 @@ class DetailsSearchPage extends PureComponent {
                                     rel="canonical"
                                     href="https://www.laguro.com/dentist/search"
                                 />
-                                <script type="application/ld+json">
-                                    {JSON.stringify(structuredSchema)}
-                                </script>
+                                <script type="application/ld+json" dangerouslySetInnerHTML={{__html: structuredSchema}} />
                             </Head>
                             <DentistSearchFilterContext.Provider
                                 value={{

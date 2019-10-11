@@ -49,19 +49,24 @@ const HomePageContainer = () => (
                 name="description"
                 content="Laguro is a dental care platform matching patients with the right dentist anytime, anywhere"
             />
-            <script type="application/ld+json">
-                {JSON.stringify({
-                    '@context': 'http://schema.org',
-                    '@type': 'WebSite',
-                    url: 'https://www.laguro.com/',
-                    potentialAction: {
-                        '@type': 'SearchAction',
-                        target:
-                            'https://www.laguro.com/dentist/search?text={searchbox_target}',
-                        'query-input': 'required name=searchbox_target',
-                    },
-                })}
-            </script>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{
+                    __html: `
+                {
+                    "@context": "http://schema.org",
+                    "@type": "WebSite",
+                    "url": "https://www.laguro.com/",
+                    "potentialAction": {
+                        "@type": "SearchAction",
+                        "target":
+                            "https://www.laguro.com/dentist/search?text={searchbox_target}",
+                        "query-input": "required name=searchbox_target"
+                    }
+                }
+            `,
+                }}
+            ></script>
         </Head>
         <HomePageView />
     </Fragment>
