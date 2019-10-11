@@ -38,11 +38,6 @@ const specialties = [
     'Prosthodontics',
 ];
 
-const CIGNA_FORM_ITEM_NAME = 'CIGNA';
-const METLIFE_FORM_ITEM_NAME = 'METLIFE';
-const DD_CALIFORNIA_FORM_ITEM_NAME = 'DD_CALIFORNIA';
-const GUARDIAN_FORM_ITEM_NAME = 'GUARDIAN';
-
 const checkAcceptedInsurance = (key, acceptedInsurances) =>
     !_isEmpty(acceptedInsurances) && acceptedInsurances.includes(key);
 
@@ -188,20 +183,24 @@ class KioskDentistProfilePage extends Component {
                             id: '3',
                             component: null,
                             initialValues: {
-                                [CIGNA_FORM_ITEM_NAME]: checkAcceptedInsurance(
-                                    CIGNA_FORM_ITEM_NAME,
+                                ['CIGNA']: checkAcceptedInsurance(
+                                    'CIGNA',
                                     acceptedInsurances
                                 ),
-                                [METLIFE_FORM_ITEM_NAME]: checkAcceptedInsurance(
-                                    METLIFE_FORM_ITEM_NAME,
+                                ['METLIFE']: checkAcceptedInsurance(
+                                    'METLIFE',
                                     acceptedInsurances
                                 ),
-                                [DD_CALIFORNIA_FORM_ITEM_NAME]: checkAcceptedInsurance(
-                                    DD_CALIFORNIA_FORM_ITEM_NAME,
+                                ['DD_CALIFORNIA']: checkAcceptedInsurance(
+                                    'DD_CALIFORNIA',
                                     acceptedInsurances
                                 ),
-                                [GUARDIAN_FORM_ITEM_NAME]: checkAcceptedInsurance(
-                                    GUARDIAN_FORM_ITEM_NAME,
+                                ['GUARDIAN']: checkAcceptedInsurance(
+                                    'GUARDIAN',
+                                    acceptedInsurances
+                                ),
+                                ['AETNA_DENTAL_PLANS']: checkAcceptedInsurance(
+                                    'AETNA_DENTAL_PLANS',
                                     acceptedInsurances
                                 ),
                             },
