@@ -37,8 +37,14 @@ const LoginModal = ({
     useEffect(() => {
         if (isLoginModalOpen && mobileOnly) {
             router.push({
-                pathname: '/login',
-                query: { redirectTo: router.asPath, mode },
+                pathname: mode === 'signIn' ? '/login' : '/signup',
+                query: {
+                    redirectTo:
+                        router.asPath.includes('/login') ||
+                        router.asPath.includes('/signup')
+                            ? router.query.redirectTo
+                            : router.asPath,
+                },
             });
             closeLoginModal();
         }

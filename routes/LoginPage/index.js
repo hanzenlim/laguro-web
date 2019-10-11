@@ -17,7 +17,7 @@ const LoginPage = props => {
 
         setIsLoginModalOpen(!isLoginModalOpen);
     };
-    const { location } = props;
+    const { location, mode } = props;
 
     const user = getUser();
 
@@ -38,7 +38,7 @@ const LoginPage = props => {
             isLoginModalOpen={isLoginModalOpen}
             toggleLoginModal={toggleLoginModal}
             message={_get(location, 'state.message')}
-            mode={_get(router, 'query.mode', 'signIn')}
+            mode={mode}
         />
     );
 };

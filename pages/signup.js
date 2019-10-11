@@ -2,7 +2,7 @@ import React, { Fragment, Component } from 'react';
 import Head from 'next/head';
 import LoginPage from '~/routes/LoginPage';
 
-const Login = () => {
+const Signup = () => {
     return (
         <Fragment>
             <Head>
@@ -13,9 +13,9 @@ const Login = () => {
                 />
                 <link rel="canonical" href="https://www.laguro.com/login" />
             </Head>
-            <LoginPage mode="signIn" />
+            <LoginPage mode="getName" />
         </Fragment>
     );
 };
 
-export default Login;
+export default Signup;
