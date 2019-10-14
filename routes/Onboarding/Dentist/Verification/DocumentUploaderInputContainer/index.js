@@ -59,9 +59,13 @@ class DocumentUploaderInputContainer extends PureComponent {
             >
                 {({ error, data: filestackData }) => {
                     if (error) return <RedirectErrorPage />;
-                    const uploadPolicySignature = filestackData.getFileStackPolicySignature || {
-                        policy: '',
-                    };
+                    const uploadPolicySignature = _get(
+                        filestackData,
+                        'getFileStackPolicySignature',
+                        {
+                            policy: '',
+                        }
+                    );
                     return (
                         <DocumentUploaderInput
                             fetchSignedURL={this.fetchSignedURL}
