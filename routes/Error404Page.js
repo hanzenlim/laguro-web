@@ -11,9 +11,14 @@ const Error404Page = () => (
         justifyContent="center"
     >
         <Box p={15} textAlign="center">
-            <Image src="/static/images/spaceship.svg" alt="error-404" mb={16} />
+            <Image
+                src="/static/images/spaceship.svg"
+                alt="error-404"
+                mb={16}
+                maxWidth="100%"
+            />
             <Text
-                fontSize={70}
+                fontSize={[30, '', 70]}
                 color="text.white"
                 mb={36}
                 letterSpacing="-1.6px"
@@ -22,7 +27,11 @@ const Error404Page = () => (
             </Text>
             <Link to="/" type="ghost">
                 <Button width={300} height="60px">
-                    <Text fontSize={4} fontWeight="bold" color="text.white">
+                    <Text
+                        fontSize={[2, '', 4]}
+                        fontWeight="bold"
+                        color="text.white"
+                    >
                         Go to Homepage
                     </Text>
                 </Button>

@@ -27,16 +27,21 @@ const GeneralErrorPage = () => (
         justifyContent="center"
     >
         <Box px={15} py={80} textAlign="center">
-            <Text fontSize={6} fontWeight="bold" color="text.white">
+            <Text fontSize={[5, '', 6]} fontWeight="bold" color="text.white">
                 Oops...
             </Text>
-            <Text fontSize={6} color="text.white" mb={20}>
+            <Text fontSize={[5, '', 6]} color="text.white" mb={20}>
                 I think something went wrong!{' '}
                 <Text is="span" fontWeight="bold" color="text.white">
                     Sorry.
                 </Text>
             </Text>
-            <Image src={girlWithLaptop} alt="general-error" mx="auto" />
+            <Image
+                src="/static/images/girlwithlaptop.svg"
+                alt="general-error"
+                mx="auto"
+                maxWidth="100%"
+            />
         </Box>
     </Flex>
 );

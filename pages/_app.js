@@ -6,6 +6,7 @@ import cookies from 'browser-cookies';
 import Head from 'next/head';
 import _isEmpty from 'lodash/isEmpty';
 import { IntlProvider } from 'react-intl';
+import Router from 'next/router';
 
 import withApolloClient from '~/lib/withApolloClient';
 import Layout from '~/components/Layout';
@@ -102,6 +103,11 @@ and (-webkit-min-device-pixel-ratio: 2) {
 `;
 
 class ExtendedApp extends App {
+    componentDidMount() {
+        Router.beforePopState(({ as }) => {
+            location.href = as;
+        });
+    }
     render() {
         return <LaguroApp {...this.props} />;
     }
