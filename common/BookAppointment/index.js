@@ -111,16 +111,16 @@ class BookAppointment extends PureComponent {
             ? this.props.dentistId
             : suggestedDentist.id;
 
-        // if (trackBookAppointmentAttempt) {
-        //     trackBookAppointmentAttempt({
-        //         dentistId,
-        //         weekDay: moment(localStartTime).format('dddd'),
-        //         hour: moment(localStartTime).format('hh:mm a'),
-        //         internalPage: this.getInternalPage(),
-        //         eventAction: 'Interaction',
-        //         officeId,
-        //     });
-        // }
+        if (trackBookAppointmentAttempt) {
+            trackBookAppointmentAttempt({
+                dentistId,
+                weekDay: moment(localStartTime).format('dddd'),
+                hour: moment(localStartTime).format('hh:mm a'),
+                internalPage: this.getInternalPage(),
+                eventAction: 'Interaction',
+                officeId,
+            });
+        }
 
         const user = getUser();
         // Show login modal if not logged in.
@@ -162,18 +162,18 @@ class BookAppointment extends PureComponent {
     };
 
     handleSelectTimeSlot = utcFormattedTimeSlot => {
-        this.setState({ selectedTimeSlot: utcFormattedTimeSlot });
+        this.setState({ selectedTimeSlot: utcFormattedTimeSlot }, () => {
+            if (utcFormattedTimeSlot && trackSelectTimeSlot) {
+                const { isOnOfficePage } = this.state;
 
-        // if (utcFormattedTimeSlot && trackSelectTimeSlot) {
-        //     const { isOnOfficePage } = this.state;
-
-        //     trackSelectTimeSlot({
-        //         eventLabel: moment(stripTimezone(utcFormattedTimeSlot)).format(
-        //             'hh:mm a'
-        //         ),
-        //         internalPage: isOnOfficePage ? 'office' : 'dentist',
-        //     });
-        // }
+                trackSelectTimeSlot({
+                    eventLabel: moment(
+                        stripTimezone(utcFormattedTimeSlot)
+                    ).format('hh:mm a'),
+                    internalPage: isOnOfficePage ? 'office' : 'dentist',
+                });
+            }
+        });
     };
 
     onPatientSelect = patientId =>
