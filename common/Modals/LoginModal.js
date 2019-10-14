@@ -80,11 +80,15 @@ const LoginModal = ({
     );
 };
 
+LoginModal.defaultProps = {
+    customRedirect: null,
+};
+
 LoginModal.propTypes = {
     isLoginModalOpen: PropTypes.bool.isRequired,
     toggleLoginModal: PropTypes.func.isRequired,
     closeLoginModal: PropTypes.func.isRequired,
-    customRedirect: PropTypes.string.isRequired,
+    customRedirect: PropTypes.string,
     sideEffect: PropTypes.func.isRequired,
     mode: PropTypes.string.isRequired,
 };

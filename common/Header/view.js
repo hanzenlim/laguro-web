@@ -215,6 +215,7 @@ Header.defaultProps = {
     toggleLoginModal: () => {},
     isDentist: null,
     isHost: null,
+    customRedirect: null,
 };
 
 Header.propTypes = {
@@ -228,7 +229,7 @@ Header.propTypes = {
     closeLoginModal: PropTypes.func.isRequired,
     hasUpdatedDentistBio: PropTypes.bool.isRequired,
     desktopOnly: PropTypes.bool.isRequired,
-    customRedirect: PropTypes.string.isRequired,
+    customRedirect: PropTypes.string,
     sideEffect: PropTypes.func.isRequired,
 };
 

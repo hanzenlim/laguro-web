@@ -7,7 +7,9 @@ export const AppContextConsumer = AppContext.Consumer;
 export const useLogin = () => {
     const [isLoginModalOpen, setLoginModalOpen] = useState(false);
     const [customRedirect, setCustomRedirect] = useState(null);
-    const [sideEffect, setSideEffect] = useState(() => {});
+    const [sideEffect, setSideEffect] = useState(() => {
+        return () => {};
+    });
     const [mode, setMode] = useState('signIn');
 
     const openLoginModal = ({
@@ -17,7 +19,9 @@ export const useLogin = () => {
     } = {}) => {
         setLoginModalOpen(true);
         setCustomRedirect(redirectPath);
-        setSideEffect(updatedSideEffect);
+        setSideEffect(() => {
+            return updatedSideEffect;
+        });
         setMode(updatedMode);
     };
 
