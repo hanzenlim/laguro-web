@@ -7,11 +7,11 @@ const withPlugins = require('next-compose-plugins');
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
     enabled: process.env.ANALYZE === 'true',
 });
-
+const withProgressBar = require('next-progressbar');
 const BrotliPlugin = require('brotli-webpack-plugin');
 
 const nextConfig = {
-    webpack: (config, { isServer }) => {
+    webpack: (config, { isServer, dev }) => {
         if (isServer) {
             const antStyles = /antd\/.*?\/style\/css.*?/;
             const origExternals = [...config.externals];
@@ -56,13 +56,17 @@ const nextConfig = {
                 path: path.join(__dirname, '.env'),
                 systemvars: true,
             }),
-
-            new BrotliPlugin({
-                asset: '[path].br[query]',
-                test: /\.(js|css|html|svg)$/,
-                minRatio: 0.8,
-            }),
         ];
+
+        if (!dev) {
+            config.plugins.push(
+                new BrotliPlugin({
+                    asset: '[path].br[query]',
+                    test: /\.(js|css|html|svg)$/,
+                    minRatio: 0.8,
+                })
+            );
+        }
 
         return config;
     },
@@ -75,4 +79,19 @@ const nextConfig = {
     },
 };
 
-module.exports = withPlugins([withBundleAnalyzer, withCss], nextConfig);
+module.exports = withPlugins(
+    [
+        withBundleAnalyzer,
+        withCss,
+        [
+            withProgressBar,
+            {
+                progressBar: {
+                    // Enable line below when needed. Disabled for performance boost
+                    // profile: true,
+                },
+            },
+        ],
+    ],
+    nextConfig
+);
