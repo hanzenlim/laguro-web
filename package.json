@@ -66,6 +66,7 @@
     "next": "^9.0.3",
     "next-compose-plugins": "^2.2.0",
     "next-images": "^1.1.2",
+    "next-progressbar": "^1.0.0",
     "node-fetch": "^2.6.0",
     "nodemon": "^1.19.1",
     "nuka-carousel": "^4.5.9",
