@@ -1,21 +1,36 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import _get from 'lodash/get';
+import moment from 'moment-timezone';
 
-import {
-    CheckMarkAnimation,
-    Text,
-    Box,
-    Flex,
-    Icon,
-    Link,
-} from '~/components';
+import { CheckMarkAnimation, Text, Box, Flex, Icon, Link } from '~/components';
 import {
     PATIENT_DASHBOARD_PAGE_URL_BASE,
     OFFICE_PAGES_URL_PREFIX,
 } from '~/util/urls';
+import { trackBookAppointment } from '~/util/trackingUtils';
 
-const PaymentConfirmationView = props => {
-    const { h1, h2, h3 } = props;
+const PaymentConfirmationView = ({
+    h1,
+    h2,
+    h3,
+    officeId,
+    internalPage,
+    data,
+}) => {
+    useEffect(() => {
+        trackBookAppointment({
+            appointmentId: _get(data, 'id'),
+            dentistId: _get(data, 'dentist.id'),
+            city: _get(data, 'timezone'),
+            weekDay: moment(_get(data, 'localStartTime')).format('dddd'),
+            hour: moment(_get(data, 'localStartTime')).format('hh:mm a'),
+            internalPage,
+            eventAction: 'Conversion',
+            // TODO: Put back when API is ready
+            officeId,
+        });
+    }, []);
 
     return (
         <div>
@@ -38,9 +53,7 @@ const PaymentConfirmationView = props => {
                         <Text fontSize={[2, '', 4]}>{h2}</Text>
 
                         {h3 ? (
-                            <Link
-                                to={`${OFFICE_PAGES_URL_PREFIX}/${props.officeId}`}
-                            >
+                            <Link to={`${OFFICE_PAGES_URL_PREFIX}/${officeId}`}>
                                 <Flex
                                     mt={5}
                                     mb={24}

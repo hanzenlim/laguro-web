@@ -1,5 +1,4 @@
 import React, { Fragment, useState } from 'react';
-import styled from 'styled-components';
 import _get from 'lodash/get';
 import _find from 'lodash/find';
 
@@ -18,12 +17,6 @@ import { SelectPatient } from './SelectPatient';
 import { withScreenSizes } from '~/components/Responsive';
 import { scrollToTop } from '~/util/windowUtils';
 import { getUser } from '~/util/authUtils';
-import emitter from '~/util/emitter';
-import { useLogin } from '~/appContext';
-
-const Container = styled(Box)`
-    ${props => !props.visible && `display: none;`};
-`;
 
 // step one: location and time selection
 // step two: decision
@@ -168,27 +161,29 @@ function BookAppointmentView({
 
     return (
         <Fragment>
-            <Container visible={currentPage === 'selection'}>
-                {renderSelection()}
-            </Container>
-            <Container visible={currentPage === 'decision'}>
-                <BookAppointmentDecision
-                    patientName={getUserFullName(patient)}
-                    apptStartTime={apptStartTime}
-                    dentistName={getDentistFullName(dentist)}
-                    apptAddress={getOfficeAddress(office)}
-                    onNext={async () => {
-                        if (await onBookNow()) {
-                            setCurrentPage('confirmation');
-                        }
-                    }}
-                    onPrevious={() => setCurrentPage('selection')}
-                    isBooking={isBooking}
-                />
-            </Container>
-            <Container visible={currentPage === 'confirmation'}>
-                {renderConfirmation()}
-            </Container>
+            {currentPage === 'selection' && <Box>{renderSelection()}</Box>}
+
+            {currentPage === 'decision' && (
+                <Box>
+                    <BookAppointmentDecision
+                        patientName={getUserFullName(patient)}
+                        apptStartTime={apptStartTime}
+                        dentistName={getDentistFullName(dentist)}
+                        apptAddress={getOfficeAddress(office)}
+                        onNext={async () => {
+                            if (await onBookNow()) {
+                                setCurrentPage('confirmation');
+                            }
+                        }}
+                        onPrevious={() => setCurrentPage('selection')}
+                        isBooking={isBooking}
+                    />
+                </Box>
+            )}
+
+            {currentPage === 'confirmation' && (
+                <Box>{renderConfirmation()}</Box>
+            )}
         </Fragment>
     );
 }

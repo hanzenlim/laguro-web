@@ -1,13 +1,12 @@
 import _get from 'lodash/get';
 import moment from 'moment-timezone';
-import React, { PureComponent, Component } from 'react';
+import React, { Component } from 'react';
 import { adopt } from 'react-adopt';
 import { Query } from 'react-apollo';
 import _isEmpty from 'lodash/isEmpty';
 import { useRouter } from 'next/router';
 
 import { Loading } from '~/components';
-import { trackBookAppointment } from '~/util/trackingUtils';
 import { RedirectErrorPage } from '~/routes/GeneralErrorPage';
 import { getAppointmentQuery } from './queries';
 import AppointmentConfirmationView from './view';
@@ -64,22 +63,6 @@ class AppointmentConfirmation extends Component {
                     const internalPage = this.getInternalPage();
                     const officeId = _get(data, 'office.id');
 
-                    trackBookAppointment({
-                        appointmentId: _get(data, 'id'),
-                        dentistId: _get(data, 'dentist.id'),
-                        city: _get(data, 'timezone'),
-                        weekDay: moment(_get(data, 'localStartTime')).format(
-                            'dddd'
-                        ),
-                        hour: moment(_get(data, 'localStartTime')).format(
-                            'hh:mm a'
-                        ),
-                        internalPage,
-                        eventAction: 'Conversion',
-                        // TODO: Put back when API is ready
-                        officeId,
-                    });
-
                     const localStartTime = _get(data, 'localStartTime');
 
                     return (
@@ -94,6 +77,8 @@ class AppointmentConfirmation extends Component {
                             h3={formatAddress(_get(data, 'location.name'))}
                             appointmentId={_get(data, 'id')}
                             officeId={officeId}
+                            data={data}
+                            internalPage={internalPage}
                         />
                     );
                 }}
