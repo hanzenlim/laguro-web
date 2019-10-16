@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import { withRouter } from 'next/router';
 import cookies from 'browser-cookies';
+import { Flex, Box } from '~/components';
 import _isEmpty from 'lodash/isEmpty';
 import { Mutation, withApollo } from 'react-apollo';
 import * as Yup from 'yup';
 import { adopt } from 'react-adopt';
-import queryString from 'query-string';
 import compose from 'lodash/flowRight';
 
 import DocumentUploaderInputContainer from './DocumentUploaderInputContainer';
@@ -21,7 +22,7 @@ import Numbers from '~/common/the-bright-side-components/components/Onboarding/D
 import { Progress } from '~/common/the-bright-side-components/components/Onboarding/Patient/Progress';
 import { Pictures } from '~/common/the-bright-side-components/components/Onboarding/Dentist/Verification/Pictures';
 import { Wizard, Onboarding } from '~/common/the-bright-side-components';
-import { Flex, Box } from '~/components';
+import { usePrivateApp } from '~/util/authUtils';
 
 const SSN_FORM_ITEM_NAME = 'ssn';
 const DEA_NUM_FORM_ITEM_NAME = 'deaNum';
@@ -318,7 +319,7 @@ class RenderDentistOnboarding extends Component {
                                                     !_doc.length ||
                                                     !_doc[0].url
                                                 ) {
-                                                    //document was deleted
+                                                    // document was deleted
                                                     diffDocs[docType] = [];
                                                 }
 
@@ -356,10 +357,9 @@ class RenderDentistOnboarding extends Component {
                                         } else {
                                             const {
                                                 redirectTo,
-                                            } = queryString.parse(
-                                                this.props.location.search
-                                            );
-                                            this.props.history.push(
+                                            } = this.props.router.query;
+
+                                            this.props.router.push(
                                                 redirectTo || '/'
                                             );
                                         }
@@ -375,8 +375,17 @@ class RenderDentistOnboarding extends Component {
     }
 }
 
-export default compose(
+const withPrivateApp = WrappedComponent => props => {
+    const { isRouteAccessible } = usePrivateApp();
+    return isRouteAccessible ? <WrappedComponent {...props} /> : null;
+};
+
+const Verification = compose(
+    withPrivateApp,
+    withRouter,
     withApollo,
     createPatientDocumentMutation,
     saveUploadedImagesMutation
 )(RenderDentistOnboarding);
+
+export default Verification;
