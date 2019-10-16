@@ -5,9 +5,10 @@ import _sum from 'lodash/sum';
 import _isEmpty from 'lodash/isEmpty';
 import moment from 'moment';
 import styled from 'styled-components';
+import { getLTMBaseUrl } from '~/util/urls';
 
 import { renderPrice } from '~/util/paymentUtil';
-import { Text, Box, Flex, Responsive, Loading, Icon } from '~/components';
+import { Text, Box, Flex, Responsive, Loading, Icon, Link } from '~/components';
 
 const { Desktop, TabletMobile } = Responsive;
 
@@ -203,6 +204,52 @@ const WalletTransactions = ({
                 `${description}${!isValid ? ' (Failed)' : ''}`,
         },
         {
+            key: 'Details',
+            title: '',
+            width: 50,
+            dataIndex: 'treatmentPlanId',
+            render: (treatmentPlanId, { type }) => {
+                if (
+                    TYPE_TO_DISPLAY_NAME[type] === 'Treatment' &&
+                    treatmentPlanId
+                ) {
+                    return (
+                        <Link
+                            isExternal
+                            target="_blank"
+                            rel="noopener"
+                            to={`${getLTMBaseUrl()}/go?to=/treatment&id=${treatmentPlanId}`}
+                        >
+                            <Text color="text.blue">Details</Text>
+                        </Link>
+                    );
+                }
+                return null;
+            },
+        },
+        {
+            key: 'Receipt',
+            title: '',
+            width: 50,
+            dataIndex: 'receiptPdfUrl',
+            render: receiptPdfUrl => {
+                if (receiptPdfUrl) {
+                    return (
+                        <Link
+                            isExternal
+                            target="_blank"
+                            rel="noopener"
+                            to={receiptPdfUrl}
+                        >
+                            <Text color="text.blue">Receipt</Text>
+                        </Link>
+                    );
+                }
+
+                return null;
+            },
+        },
+        {
             key: 'amount',
             title: 'Amount',
             dataIndex: 'amount',
@@ -365,7 +412,6 @@ const WalletTransactions = ({
                                                     </Text>
                                                 </Flex>
                                                 <Text
-                                                    mb={13}
                                                     fontSize={0}
                                                     letterSpacing="-0.34"
                                                     fontFamily="'Silka', 'Courier new', sans-serif"
@@ -376,6 +422,46 @@ const WalletTransactions = ({
                                                             : ''
                                                     }`}
                                                 </Text>
+                                                <Flex mb={13}>
+                                                    {t.receiptPdfUrl ? (
+                                                        <Link
+                                                            isExternal
+                                                            target="_blank"
+                                                            rel="noopener"
+                                                            to={t.receiptPdfUrl}
+                                                        >
+                                                            <Text
+                                                                fontSize="10px"
+                                                                color="text.blue"
+                                                                mr="5px"
+                                                            >
+                                                                Receipt
+                                                            </Text>
+                                                        </Link>
+                                                    ) : null}
+
+                                                    {t.treatmentPlanId &&
+                                                    TYPE_TO_DISPLAY_NAME[
+                                                        t.type
+                                                    ] === 'Treatment' ? (
+                                                        <Link
+                                                            isExternal
+                                                            target="_blank"
+                                                            rel="noopener"
+                                                            to={`${getLTMBaseUrl()}/go?to=/treatment&id=${
+                                                                t.treatmentPlanId
+                                                            }`}
+                                                        >
+                                                            <Text
+                                                                fontSize="10px"
+                                                                color="text.blue"
+                                                                mr="5px"
+                                                            >
+                                                                Details
+                                                            </Text>
+                                                        </Link>
+                                                    ) : null}
+                                                </Flex>
                                             </Box>
                                             {renderTransactionPrice(t.amount, {
                                                 isValid: t.isValid,

@@ -22,6 +22,8 @@ export const GET_WALLET_BY_USER_ID = gql`
                 type
                 dateCreated
                 isValid
+                receiptPdfUrl
+                treatmentPlanId
             }
             dateCreated
         }
