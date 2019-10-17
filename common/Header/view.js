@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import _isString from 'lodash/isString';
+import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Container, Icon, Responsive, Link, Flex } from '~/components';
-import SearchBox from '../SearchBox';
-import LoginModal from '../Modals/LoginModal';
 import { DentistLink, HostLink } from './Links';
 import { HeaderLinkContainer } from './common';
 import { HEADER_HEIGHT } from './constants';
@@ -23,6 +22,11 @@ import {
     PATIENT_WEB_ONBOARDING_PAGE_URL,
 } from '~/util/urls';
 import ProfileButton from './ProfileButton';
+
+const SearchBox = dynamic(() => import('~/common/SearchBox'), { ssr: false });
+const LoginModal = dynamic(() => import('~/common/Modals/LoginModal'), {
+    ssr: false,
+});
 
 const { Desktop, withScreenSizes } = Responsive;
 
