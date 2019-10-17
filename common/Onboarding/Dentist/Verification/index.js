@@ -23,6 +23,7 @@ import { Progress } from '~/common/the-bright-side-components/components/Onboard
 import { Pictures } from '~/common/the-bright-side-components/components/Onboarding/Dentist/Verification/Pictures';
 import { Wizard, Onboarding } from '~/common/the-bright-side-components';
 import { usePrivateApp } from '~/util/authUtils';
+import { getUserQuery } from '~/routes/Dashboard/DentistDashboardPage/queries';
 
 const SSN_FORM_ITEM_NAME = 'ssn';
 const DEA_NUM_FORM_ITEM_NAME = 'deaNum';
@@ -350,9 +351,14 @@ class RenderDentistOnboarding extends Component {
 
                                         await Promise.all(uploadResults);
                                     },
-                                    afterAction: () => {
+                                    afterAction: async () => {
                                         // this will trigger a render of a confirmation panel in dentist dashboard
                                         if (this.props.fromDentistDashboard) {
+                                            await this.props.client.query({
+                                                query: getUserQuery,
+                                                variables: { id: user.id },
+                                                fetchPolicy: 'network-only',
+                                            });
                                             this.props.onFinish();
                                         } else {
                                             const {
