@@ -46,6 +46,7 @@ const DentistLink = ({ desktopOnly, pathname }) => (
                         ? `${DENTIST_DASHBOARD_PAGE_URL_BASE}${PROFILE_SETTINGS_MENU_TEXT}`
                         : '#'
                 }
+                prefetch={false}
             >
                 {/* TODO: Do not pass pathname */}
                 <LinkButton pathname={pathname}>Dentists</LinkButton>
@@ -82,6 +83,7 @@ const HostLink = ({ desktopOnly, pathname }) => (
                         ? `${HOST_DASHBOARD_PAGE_URL_BASE}${MY_OFFICES_MENU_TEXT}`
                         : '#'
                 }
+                prefetch={false}
             >
                 {/* TODO: Do not pass pathname */}
                 <LinkButton pathname={pathname}>Hosts</LinkButton>

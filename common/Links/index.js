@@ -6,7 +6,7 @@ import {
 } from '~/util/urls';
 
 export const BecomeADentistLink = (
-    <Link to={DENTIST_ONBOARDING_PROFILE_URL}>
+    <Link to={DENTIST_ONBOARDING_PROFILE_URL} prefetch={false}>
         <Text
             color="text.blue"
             fontSize={3}
@@ -23,7 +23,7 @@ export const BecomeADentistLink = (
 );
 
 export const BecomeAHostLink = (
-    <Link to={`${HOST_ONBOARDING_PAGE_URL_PREFIX}/add-office`}>
+    <Link to={`${HOST_ONBOARDING_PAGE_URL_PREFIX}/add-office`} prefetch={false}>
         <Text
             color="text.blue"
             fontSize={3}
@@ -39,8 +39,8 @@ export const BecomeAHostLink = (
     </Link>
 );
 
-export const GenericLink = ({ text, url }) => (
-    <Link to={url}>
+export const GenericLink = ({ text, url, ...props }) => (
+    <Link to={url} {...props}>
         <Text
             color="text.blue"
             fontSize={3}

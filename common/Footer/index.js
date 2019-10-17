@@ -17,26 +17,38 @@ import {
 } from '~/util/urls';
 
 const PATIENT_LINKS_MAP = [
-    { label: 'Find a dentist', url: DENTIST_SEARCH_PAGE_URL },
-    { label: 'Check our locations', url: OFFICE_SEARCH_PAGE_URL },
+    {
+        label: 'Find a dentist',
+        to: DENTIST_SEARCH_PAGE_URL,
+        prefetch: false,
+    },
+    {
+        label: 'Check our locations',
+        to: OFFICE_SEARCH_PAGE_URL,
+        prefetch: false,
+    },
 ];
 
 const DENTIST_LINKS_MAP = [
-    { label: 'Become a dentist', url: DENTIST_ONBOARDING_PROFILE_URL },
-    { label: 'Book a chair', url: OFFICE_SEARCH_PAGE_URL },
+    {
+        label: 'Become a dentist',
+        to: DENTIST_ONBOARDING_PROFILE_URL,
+        prefetch: false,
+    },
+    { label: 'Book a chair', to: OFFICE_SEARCH_PAGE_URL, prefetch: false },
     {
         label: 'Advanced training program',
-        url: 'https://www.lagurouniversity.com/advancedtrainingprogram',
+        to: 'https://www.lagurouniversity.com/advancedtrainingprogram',
         isExternal: true,
     },
     {
         label: 'Laguro Treatment Module',
-        url: getLTMBaseUrl(),
+        to: getLTMBaseUrl(),
         isExternal: true,
     },
     {
         label: 'Laguro University',
-        url: 'https://www.lagurouniversity.com/join',
+        to: 'https://www.lagurouniversity.com/join',
         isExternal: true,
     },
 ];
@@ -44,20 +56,21 @@ const DENTIST_LINKS_MAP = [
 const HOST_LINKS_MAP = [
     {
         label: 'Become a host',
-        url: `${HOST_ONBOARDING_PAGE_URL_PREFIX}/add-office`,
+        to: `${HOST_ONBOARDING_PAGE_URL_PREFIX}/add-office`,
+        prefetch: false,
     },
     {
         label: 'Laguro University',
-        url: 'https://www.lagurouniversity.com/join',
+        to: 'https://www.lagurouniversity.com/join',
         isExternal: true,
     },
 ];
 
 const LAGURO_LINKS_MAP = [
-    { label: 'About us', url: ABOUT_PAGE_URL },
-    { label: 'Blog', url: 'https://blog.laguro.com', isExternal: true },
-    { label: 'How it works', url: '/#how-it-works', isAnchorTag: true },
-    { label: 'Our features', url: '/#our-features', isAnchorTag: true },
+    { label: 'About us', to: ABOUT_PAGE_URL },
+    { label: 'Blog', to: 'https://blog.laguro.com', isExternal: true },
+    { label: 'How it works', to: '/#how-it-works', isAnchorTag: true },
+    { label: 'Our features', to: '/#our-features', isAnchorTag: true },
     // TODO: add link later
     // { label: 'Earn a $25 gift card', url: '/' },
 ];
@@ -65,17 +78,17 @@ const LAGURO_LINKS_MAP = [
 const SOCIAL_LINKS_MAP = [
     {
         label: 'Facebook',
-        url: 'https://www.facebook.com/LaguroDental/',
+        to: 'https://www.facebook.com/LaguroDental/',
         isExternal: true,
     },
     {
         label: 'LinkedIn',
-        url: 'https://www.linkedin.com/company/lagurodental/',
+        to: 'https://www.linkedin.com/company/lagurodental/',
         isExternal: true,
     },
     {
         label: 'Instagram',
-        url: 'https://www.instagram.com/lagurodental/',
+        to: 'https://www.instagram.com/lagurodental/',
         isExternal: true,
     },
 ];
@@ -148,7 +161,8 @@ const LinkGroup = ({ head, links }) => (
         {links.map(link => (
             <Box key={link.label}>
                 <Link
-                    to={link.url}
+                    to={link.to}
+                    {...('prefetch' in link && { prefetch: link.prefetch })}
                     {...(link.isExternal && {
                         target: '_blank',
                         rel: 'noopener noreferrer',
@@ -173,7 +187,7 @@ const SocialLinks = () => (
         {SOCIAL_LINKS_MAP.map((link, index) => (
             <Link
                 key={link.label}
-                to={link.url}
+                to={link.to}
                 isExternal
                 target="_blank"
                 mr={SOCIAL_LINKS_MAP.length - 1 === index ? 0 : 6}

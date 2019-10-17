@@ -14,20 +14,26 @@ const StyledLink = styled.a`
 `;
 
 const CustomLink = props => {
-    const { to, children, isExternal, ...rest } = props;
+    const { to, children, isExternal, as, prefetch, ...rest } = props;
 
-    if (isExternal) return <StyledLink href={to} {...rest}>{children}</StyledLink>
+    if (isExternal)
+        return (
+            <StyledLink href={to} {...rest}>
+                {children}
+            </StyledLink>
+        );
 
     return (
-        <Link href={to}>
+        <Link href={to} as={as} prefetch={prefetch}>
             <StyledLink {...rest}>{children}</StyledLink>
         </Link>
     );
 };
 
 CustomLink.defaultProps = {
-    isExternal: false
-}
+    isExternal: false,
+    prefetch: true,
+};
 
 CustomLink.propTypes = {
     to: PropTypes.string.isRequired,

@@ -111,7 +111,7 @@ const BannerContent = () => {
                     >
                         {`or `}
                     </Text>
-                    <Link to="/dentist/search">
+                    <Link to="/dentist/search" prefetch={false}>
                         <Text
                             is="span"
                             color="text.white"

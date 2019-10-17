@@ -277,6 +277,7 @@ const Menus = props => {
                                     // menuTextToLink:
                                     //      {"Account settings": '/dashboard/patient?selectedTab=account_settings'}
                                     to={props.menuTextToLinkTo[menuText]}
+                                    prefetch={false}
                                 >
                                     {renderText(menuText)}
                                 </Link>

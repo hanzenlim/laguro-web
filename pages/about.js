@@ -136,6 +136,7 @@ const AboutPage = () => (
                                             <GenericLink
                                                 text="Schedule an appointment"
                                                 url={DENTIST_SEARCH_PAGE_URL}
+                                                prefetch={false}
                                             />
                                         </Box>
                                     </Flex>

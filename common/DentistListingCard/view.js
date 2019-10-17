@@ -217,7 +217,10 @@ class DentistListingCard extends PureComponent {
                                     mr={32}
                                     overflow="hidden"
                                 >
-                                    <Link to={dentistDetailsPageUrl}>
+                                    <Link
+                                        to={dentistDetailsPageUrl}
+                                        prefetch={false}
+                                    >
                                         {dentist.imageUrl &&
                                         dentist.imageUrl.includes(
                                             'filestack'
@@ -249,7 +252,10 @@ class DentistListingCard extends PureComponent {
                                 pr={['', '', 32]}
                             >
                                 <Box mb={[8, '', 4]}>
-                                    <Link to={dentistDetailsPageUrl}>
+                                    <Link
+                                        to={dentistDetailsPageUrl}
+                                        prefetch={false}
+                                    >
                                         <TopBlock dentist={dentist} />
                                     </Link>
                                 </Box>
