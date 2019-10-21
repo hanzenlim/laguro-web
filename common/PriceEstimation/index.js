@@ -10,7 +10,6 @@ import { withRouter } from 'next/router';
 import { getBundleCoverage, getUserQuery } from './queries';
 import { renderPriceWithoutZeros } from '~/util/paymentUtil';
 import { getUser } from '~/util/authUtils';
-import emitter from '~/util/emitter';
 import { PATIENT_DASHBOARD_PAGE_URL_BASE } from '~/util/urls';
 import {
     trackSelectProcedure,
@@ -82,18 +81,8 @@ class PriceEstimation extends PureComponent {
     };
 
     handleCheckOutOfPocketCost = () => {
-        const user = getUser();
-        const { router } = this.props;
-        const dentistId = router.asPath.split('/')[2];
-
         if (trackCheckOutOfPocketAttempt) {
             trackCheckOutOfPocketAttempt({ internalPage: 'dentist' });
-        }
-
-        if (!_get(user, 'id')) {
-            emitter.emit('loginModal', {
-                redirectPath: `/dentist/${dentistId}`,
-            });
         }
 
         this.setState({
@@ -275,7 +264,6 @@ class PriceEstimation extends PureComponent {
             >
                 {({ loading: userLoading, data: userData }) => (
                     <Query
-                        client={pricingClient}
                         query={getBundleCoverage}
                         variables={queryVariables}
                         onCompleted={this.onGetBundleComplete}
