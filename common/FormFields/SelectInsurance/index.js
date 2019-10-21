@@ -1,7 +1,7 @@
 import React from 'react';
 import _get from 'lodash/get';
 
-import { supportedInsuranceList } from '~/data';
+import { allInsuranceList } from '~/data';
 import { Onboarding } from '~/common/the-bright-side-components';
 
 const SelectInsurance = props => {
@@ -11,7 +11,7 @@ const SelectInsurance = props => {
             form={form}
             field={field}
             placeholder="Search and select insurance"
-            options={supportedInsuranceList.map(i => (
+            options={allInsuranceList.map(i => (
                 <Onboarding.SelectOption value={i.id}>
                     {i.name}
                 </Onboarding.SelectOption>
