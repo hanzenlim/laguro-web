@@ -48,6 +48,7 @@ export const getDentistQuery = gql`
             firstAppointmentDuration
             specialty
             languages
+            permalink
             procedures {
                 group
             }

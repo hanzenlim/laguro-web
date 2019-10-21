@@ -19,7 +19,12 @@ const progressSteps = ['Dentist Profile', 'Verification'];
 
 const currentStep = progressSteps[0];
 
-const KioskDentistProfileView = ({ onCreate, steps, withoutProgressBar }) => (
+const KioskDentistProfileView = ({
+    onCreate,
+    steps,
+    withoutProgressBar,
+    isEditing,
+}) => (
     <Box>
         {!withoutProgressBar &&
             getSearchParamValueByKey('referer') !== 'ProfilePage' && (
@@ -30,7 +35,11 @@ const KioskDentistProfileView = ({ onCreate, steps, withoutProgressBar }) => (
                     })}
                 />
             )}
-        <DentistProfile onSubmit={onCreate} steps={steps} />
+        <DentistProfile
+            onSubmit={onCreate}
+            steps={steps}
+            isEditing={isEditing}
+        />
     </Box>
 );
 

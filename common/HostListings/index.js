@@ -23,6 +23,7 @@ const HostListingsContainer = () => {
                 if (loading) return <Loading />;
 
                 const { offices } = get(data, 'getDentist');
+
                 return <HostListingsView offices={offices} />;
             }}
         </Query>

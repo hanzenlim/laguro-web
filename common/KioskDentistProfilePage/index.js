@@ -153,6 +153,7 @@ class KioskDentistProfilePage extends Component {
                                 time: firstAppointmentDuration || 30,
                                 languages: dentistLanguages || [ENGLISH],
                                 procedureList: defaultProceduresList,
+                                permalink: dentist.permalink || '',
                             },
                             validationSchema: Yup.object().shape({
                                 procedureList: Yup.object().test(
@@ -214,6 +215,7 @@ class KioskDentistProfilePage extends Component {
                             procedureList: procedureListOnCreate,
                             profilePicture,
                             time,
+                            permalink,
                         } = _get(values, ['1'], {});
                         const { about } = _get(values, ['2'], {});
                         const dentistInsurance = _get(values, ['3'], {});
@@ -290,6 +292,7 @@ class KioskDentistProfilePage extends Component {
                                         variables: {
                                             input: {
                                                 ...createQuery,
+                                                permalink,
                                                 id: user.dentistId,
                                             },
                                         },
@@ -346,6 +349,9 @@ class KioskDentistProfilePage extends Component {
                                 <KioskDentistProfileView
                                     onCreate={onCreate}
                                     steps={steps}
+                                    isEditing={
+                                        !_isEmpty(_get(user, 'dentistId'))
+                                    }
                                     withoutProgressBar={
                                         this.props.withoutProgressBar
                                     } // used in dentist dashboard

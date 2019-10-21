@@ -21,6 +21,7 @@ export const getUserQuery = gql`
                 licenseNumber
                 ssnOrEinOrTin
                 npiNumber
+                permalink
                 preferredLocations {
                     id
                     name

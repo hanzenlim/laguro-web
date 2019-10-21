@@ -16,6 +16,7 @@ export const getUserQuery = gql`
                 deaRegistrationNumber
                 offices {
                     id
+                    permalink
                 }
                 bio
                 specialty

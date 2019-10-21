@@ -180,6 +180,7 @@ class DentistDashboardPageView extends Component {
                             fromDentistDashboard
                             userLanguages={userLanguages}
                             refetchUser={refetchUser}
+                            dentist={dentist}
                         />
                     </Card>
                 );

@@ -19,6 +19,7 @@ export const getDentistQuery = gql`
             ) {
                 id
                 name
+                permalink
                 equipment {
                     name
                 }

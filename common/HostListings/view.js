@@ -1,10 +1,23 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Box, Tabs, Text, Flex, Link, Icon, Responsive } from '~/components';
+import _isEmpty from 'lodash/isEmpty';
+
+import {
+    Box,
+    Tabs,
+    Text,
+    Flex,
+    Link,
+    Icon,
+    Responsive,
+    Button,
+    Modal,
+} from '~/components';
 import Listings from './Listings';
 import { ContainerPaddingInPixels } from '~/components/Container';
 import { formatAddress } from '~/util/styleUtil';
+import OfficePermalink from '~/common/OfficePermalink';
 
 const { TabPane } = Tabs;
 const { TabletMobile } = Responsive;
@@ -38,10 +51,34 @@ export const StyledList = styled.ul`
     }
 `;
 
+const PermalinkModal = ({ permalink, id, visible, onCancel }) => {
+    return (
+        <Modal visible={visible} onCancel={onCancel} destroyOnClose width={550}>
+            <OfficePermalink
+                permalink={permalink}
+                officeId={id}
+                onCancel={onCancel}
+            />
+        </Modal>
+    );
+};
+
 class HostListings extends PureComponent {
+    state = {
+        showModal: false,
+        selectedOffice: null,
+    };
+
     renderTabPane = offices =>
         offices.map(office => {
-            const { id, name, listings, equipment, location } = office;
+            const {
+                id,
+                name,
+                listings,
+                equipment,
+                location,
+                permalink,
+            } = office;
             const { name: address, addressDetails } = location;
             const fullAddress = formatAddress(address, addressDetails);
             return (
@@ -84,10 +121,7 @@ class HostListings extends PureComponent {
                             </Link>
                         </Flex>
                     </Flex>
-                    <Box
-                        mb={[20, '', 34]}
-                        px={[ContainerPaddingInPixels, '', 0]}
-                    >
+                    <Box mb={[5, '', 9]} px={[ContainerPaddingInPixels, '', 0]}>
                         <Icon
                             fontSize={[0, '', 1]}
                             type="environment-o"
@@ -96,6 +130,22 @@ class HostListings extends PureComponent {
                         <Text is="span" fontSize={[0, '', 1]}>
                             {fullAddress}
                         </Text>
+                    </Box>
+                    <Box mb={[5, '', 17]}>
+                        <Button
+                            type="ghost"
+                            onClick={() =>
+                                this.setState({ selectedOffice: office })
+                            }
+                        >
+                            <Text
+                                color="text.blue"
+                                fontSize={[0, '', 1]}
+                                mr={[14, '', 24]}
+                            >
+                                Edit permalink
+                            </Text>
+                        </Button>
                     </Box>
                     <Box
                         px={[ContainerPaddingInPixels, '', 28]}
@@ -165,15 +215,32 @@ class HostListings extends PureComponent {
                             NO LISTINGS
                         </Text>
                     )}
+                    {this.state.showModal && (
+                        <PermalinkModal
+                            visible={this.state.showModal}
+                            onCancel={() => this.setState({ showModal: false })}
+                            permalink={permalink}
+                            officeId={id}
+                        />
+                    )}
                 </TabPane>
             );
         });
 
     render() {
         const { offices } = this.props;
+        const { selectedOffice } = this.state;
+
         return (
             <Box width={['100%', '', 600]} maxWidth="100%" mb={[100, '', 0]}>
                 <StyledTabs>{this.renderTabPane(offices)}</StyledTabs>
+                {selectedOffice && (
+                    <PermalinkModal
+                        visible={!_isEmpty(selectedOffice)}
+                        onCancel={() => this.setState({ selectedOffice: null })}
+                        {...selectedOffice}
+                    />
+                )}
             </Box>
         );
     }
