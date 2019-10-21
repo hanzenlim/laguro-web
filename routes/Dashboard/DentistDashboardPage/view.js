@@ -26,6 +26,7 @@ import {
     DENTIST,
     AVAILABILITY_SETTINGS_MENU_TEXT,
     DENTIST_POS_PIN_CODE,
+    GROUP_WALLET_MENU_TEXT,
     APPOINTMENTS_MENU_TEXT,
 } from '~/util/strings';
 import { dentistDashboardMenuTexts } from '~/util/menuItems';
@@ -47,6 +48,7 @@ import ReviewContainer from '~/common/ReviewContainer/index';
 import PreferredLocations from '~/common/PreferredLocations';
 import DentistAvailabilityForm from '~/common/Forms/DentistAvailabilityForm';
 import DentistDashboardAppoinments from '~/common/DentistDashboardAppointments';
+import GroupWallet from '~/common/GroupWallet';
 import { version } from '~/package.json';
 
 const { TabletMobile, Desktop, withScreenSizes } = Responsive;
@@ -70,6 +72,7 @@ const menuTextToDescription = {
     [MY_PATIENTS_MENU_TEXT]: 'View your patients and their documents',
     [VIEW_PROFILE_MENU_TEXT]: 'View your public dentist page',
     [DENTIST_POS_PIN_CODE]: 'View your dentist pos pin code',
+    [GROUP_WALLET_MENU_TEXT]: 'View your group wallet',
 };
 
 class DentistDashboardPageView extends Component {
@@ -269,6 +272,7 @@ class DentistDashboardPageView extends Component {
                 panelContent = (
                     <Card>
                         {this.renderPanelHeader(key)}
+
                         <Container px={[25, '', 0]}>
                             <DentistDetails
                                 dentist={this.props.dentist}
@@ -280,6 +284,14 @@ class DentistDashboardPageView extends Component {
                                 viewOnly
                             />
                         </Container>
+                    </Card>
+                );
+                break;
+            case GROUP_WALLET_MENU_TEXT:
+                panelContent = (
+                    <Card>
+                        {this.renderPanelHeader(key)}
+                        <GroupWallet dentalGroups={this.props.dentalGroups} />
                     </Card>
                 );
                 break;

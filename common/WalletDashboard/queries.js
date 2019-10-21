@@ -30,6 +30,30 @@ export const GET_WALLET_BY_USER_ID = gql`
     }
 `;
 
+export const GET_WALLET = gql`
+    query($id: String!, $rangeStart: String!, $rangeEnd: String!) {
+        getWallet(id: $id) {
+            id
+            userId
+            pendingAmount
+            laguroCreditAmount
+            availableAmount
+            totalAmount
+            transactions(
+                options: { rangeStart: $rangeStart, rangeEnd: $rangeEnd }
+            ) {
+                id
+                amount
+                description
+                type
+                dateCreated
+                isValid
+            }
+            dateCreated
+        }
+    }
+`;
+
 export const GET_USER = gql`
     query getUser($id: String!) {
         getUser(id: $id) {

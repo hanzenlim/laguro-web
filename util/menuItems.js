@@ -25,6 +25,7 @@ import {
     BECOME_A_DENTIST_MENU_TEXT,
     BECOME_A_HOST_MENU_TEXT,
     LAGURO_WALLET_MENU_TEXT,
+    GROUP_WALLET_MENU_TEXT,
 } from './strings';
 import {
     PATIENT_DASHBOARD_PAGE_URL_BASE,
@@ -110,6 +111,7 @@ const unclassfiedDentistMenuTexts3 = [
     SEARCH_FOR_CHAIRS_MENU_TEXT,
     VIEW_PROFILE_MENU_TEXT,
     DENTIST_POS_PIN_CODE,
+    GROUP_WALLET_MENU_TEXT,
 ];
 
 const dentistMenuTexts = [
@@ -124,6 +126,7 @@ export const dentistDashboardMenuTexts = [
     ...apptsMenuTexts,
     DENTIST_POS_PIN_CODE,
     VIEW_PROFILE_MENU_TEXT,
+    GROUP_WALLET_MENU_TEXT,
 ];
 
 // divider will appear at the top of each menu section

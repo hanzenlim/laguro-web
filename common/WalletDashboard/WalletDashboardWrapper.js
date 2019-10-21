@@ -3,14 +3,16 @@ import moment from 'moment';
 import { Query } from 'react-apollo';
 import _get from 'lodash/get';
 
-import { GET_WALLET_BY_USER_ID } from './queries';
+import { GET_WALLET_BY_USER_ID, GET_WALLET } from './queries';
 import { getUser } from '~/util/authUtils';
 import RedirectErrorPage from '~/routes/GeneralErrorPage';
 import WalletDashboardView from './WalletDashboard';
 
 export const WalletDashboardContext = createContext();
 
-const WalletDashboard = () => {
+const WalletDashboard = props => {
+    const { walletId = null } = props;
+    const isGroupWallet = !!walletId;
     const [month, setMonth] = useState(moment().startOf('month'));
     const [filteredInfo, setFilteredInfo] = useState({
         type: ['All categories'],
@@ -27,15 +29,31 @@ const WalletDashboard = () => {
     return (
         <WalletDashboardContext.Provider value={{ month }}>
             <Query
-                query={GET_WALLET_BY_USER_ID}
+                query={isGroupWallet ? GET_WALLET : GET_WALLET_BY_USER_ID}
                 context={{ clientName: 'wallet' }}
-                variables={{
-                    input: {
-                        userId: _get(getUser(), 'id', null),
-                    },
-                    rangeStart: moment.utc(month.startOf('month')).format(),
-                    rangeEnd: moment.utc(month.endOf('month')).format(),
-                }}
+                variables={
+                    isGroupWallet
+                        ? {
+                              id: walletId,
+                              rangeStart: moment
+                                  .utc(month.startOf('month'))
+                                  .format(),
+                              rangeEnd: moment
+                                  .utc(month.endOf('month'))
+                                  .format(),
+                          }
+                        : {
+                              input: {
+                                  userId: _get(getUser(), 'id', null),
+                              },
+                              rangeStart: moment
+                                  .utc(month.startOf('month'))
+                                  .format(),
+                              rangeEnd: moment
+                                  .utc(month.endOf('month'))
+                                  .format(),
+                          }
+                }
                 fetchPolicy="cache-and-network"
             >
                 {({ data, loading, error }) => {
@@ -62,6 +80,7 @@ const WalletDashboard = () => {
 
                     return (
                         <WalletDashboardView
+                            isGroupWallet={isGroupWallet}
                             balanceBreakdown={balanceBreakdown}
                             transactions={transactions}
                             month={month}

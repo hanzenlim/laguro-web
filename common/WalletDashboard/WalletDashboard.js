@@ -9,40 +9,41 @@ import AddCreditModal from './AddCredit/AddCreditModal';
 
 const WalletDashboardView = props => (
     <Box mx={[-12, '', 0]}>
-        <Flex
-            flexDirection={['column', '', 'row']}
-            justifyContent="space-between"
-            alignItems="center"
-            mb={[0, '', 12]}
-        >
+        {!props.isGroupWallet && (
             <Flex
+                flexDirection={['column', '', 'row']}
                 justifyContent="space-between"
                 alignItems="center"
-                mb={[20, '', 0]}
-                width="100%"
+                mb={[0, '', 12]}
             >
-                <Text fontSize={2} fontWeight="medium">
-                    Balance
-                </Text>
-                <PaymentMethod />
-            </Flex>
-
-            {process.env.REACT_APP_ENV !== 'production' ? (
-                <Grid
-                    gridTemplateColumns="1fr 1fr"
-                    gridColumnGap={10}
-                    mb={[12, '', 0]}
-                    ml={[0, '', 12]}
-                    width={['100%', '', 402]}
+                <Flex
+                    justifyContent="space-between"
+                    alignItems="center"
+                    mb={[20, '', 0]}
+                    width="100%"
                 >
-                    <AddCreditModal
-                        balance={props.balanceBreakdown.totalAmount}
-                    />
-                    <WithdrawCreditModal
-                        balance={props.balanceBreakdown.availableAmount}
-                    />
-                </Grid>
-            ) : (
+                    <Text fontSize={2} fontWeight="medium">
+                        Balance
+                    </Text>
+                    <PaymentMethod />
+                </Flex>
+
+                {process.env.REACT_APP_ENV !== 'production' ? (
+                    <Grid
+                        gridTemplateColumns="1fr 1fr"
+                        gridColumnGap={10}
+                        mb={[12, '', 0]}
+                        ml={[0, '', 12]}
+                        width={['100%', '', 402]}
+                    >
+                        <AddCreditModal
+                            balance={props.balanceBreakdown.totalAmount}
+                        />
+                        <WithdrawCreditModal
+                            balance={props.balanceBreakdown.availableAmount}
+                        />
+                    </Grid>
+                ) : (
                     <Box
                         mb={[12, '', 0]}
                         ml={[0, '', 12]}
@@ -53,7 +54,8 @@ const WalletDashboardView = props => (
                         />
                     </Box>
                 )}
-        </Flex>
+            </Flex>
+        )}
 
         <WalletDetails details={props.balanceBreakdown} />
 

@@ -64,6 +64,11 @@ const DentistDashboardPage = ({ location }) => {
                         </Head>
                         <DentistDashboardView
                             dentistId={dentistId}
+                            dentalGroups={get(
+                                dataUserQuery,
+                                'getUser.dentalGroups',
+                                []
+                            )}
                             isDentist={get(dataUserQuery, 'getUser.isDentist')}
                             dentist={dentist}
                             isHost={get(dataUserQuery, 'getUser.isHost')}

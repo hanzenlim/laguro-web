@@ -15,6 +15,11 @@ export const getUserQuery = gql`
             address {
                 zipCode
             }
+            dentalGroups {
+                id
+                adminUserId
+                name
+            }
             dentist {
                 id
                 deaRegistrationNumber
