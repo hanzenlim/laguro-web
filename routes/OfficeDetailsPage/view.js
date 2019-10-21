@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { AppContext } from '../../appContext';
 import styled from 'styled-components';
 import _get from 'lodash/get';
@@ -19,7 +20,10 @@ import ReviewContainer from '~/common/ReviewContainer';
 import FeaturedOffices from './FeaturedOffices';
 import { getIdFromFilestackUrl } from '~/util/imageUtil';
 import OfficeLocation from './OfficeLocation';
-import BookAppointment from '~/common/BookAppointment';
+
+const BookAppointment = dynamic(() => import('~/common/BookAppointment'), {
+    ssr: false,
+});
 
 const { Desktop, TabletMobile } = Responsive;
 

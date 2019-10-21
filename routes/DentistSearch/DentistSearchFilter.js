@@ -1,9 +1,13 @@
 import React from 'react';
+import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
 
 import { Flex, Container, Box, Responsive } from '~/components';
-import SearchBox from '~/common/SearchBox';
-import SearchFilter from '~/common/SearchFilter';
+
+const SearchBox = dynamic(() => import('~/common/SearchBox'), { ssr: false });
+const SearchFilter = dynamic(() => import('~/common/SearchFilter'), {
+    ssr: false,
+});
 
 const { Desktop, TabletMobile } = Responsive;
 

@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
 import _isEmpty from 'lodash/isEmpty';
@@ -6,9 +7,12 @@ import _isEmpty from 'lodash/isEmpty';
 import DentistListingCard from '../DentistListingCard';
 import OfficeListingCard from '../OfficeListingCard';
 import { Flex, Grid, Button } from '~/components';
-import NoSearchResults from '../NoSearchResults';
 import { DENTISTS, OFFICES } from '~/util/strings';
 import { withRouter } from 'next/router';
+
+const NoSearchResults = dynamic(() => import('~/common/NoSearchResults'), {
+    ssr: false,
+});
 
 const ITEMS_COUNT = 14;
 

@@ -1,11 +1,13 @@
 import React from 'react';
+import dynamic from 'next/dynamic';
 import _get from 'lodash/get';
 
 import { Box, Button, Flex, Grid, Text, Image, Link } from '~/components';
-import Map from '../../Map';
 import { OFFICE_PAGES_URL_PREFIX } from '~/util/urls';
 import { withScreenSizes } from '~/components/Responsive';
 import { formatAddress } from '~/util/styleUtil';
+
+const Map = dynamic(() => import('~/common/Map'), { ssr: false });
 
 const DEFAULT_COORDINATES = {
     latitude: 42.93552,

@@ -1,10 +1,12 @@
 import React, { PureComponent } from 'react';
+import dynamic from 'next/dynamic';
 import _get from 'lodash/get';
 
 import { Box, Text } from '~/components';
 import { withScreenSizes } from '~/components/Responsive';
 import { trimAddress } from '~/util/styleUtil';
-import Map from '~/common/Map';
+
+const Map = dynamic(() => import('~/common/Map'), { ssr: false });
 
 class OfficeLocationView extends PureComponent {
     sideWidthRef = React.createRef();

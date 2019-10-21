@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
+import dynamic from 'next/dynamic';
 import PropTypes from 'prop-types';
 import _isEmpty from 'lodash/isEmpty';
 
 import { Container, Flex, Box, Responsive } from '~/components';
 import FeaturedDentists from './partials/FeaturedDentists';
 import ReviewContainer from '~/common/ReviewContainer';
-import BookAppointment from '~/common/BookAppointment';
 import DentistDetails from '~/common/DentistDetails';
 import PriceEstimation from '~/common/PriceEstimation';
+
+const BookAppointment = dynamic(() => import('~/common/BookAppointment'), {
+    ssr: false,
+});
 
 import { DENTIST } from '~/util/strings';
 

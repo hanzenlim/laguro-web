@@ -1,4 +1,5 @@
 import React from 'react';
+import dynamic from 'next/dynamic';
 import moment from 'moment';
 import {
     Container,
@@ -9,9 +10,10 @@ import {
     Text,
     Switch,
 } from '~/components';
-import SearchBox from '~/common/SearchBox';
 import SearchResultsList from '~/common/SearchResultsList';
-import Map from '~/common/Map';
+
+const SearchBox = dynamic(() => import('~/common/SearchBox'), { ssr: false });
+const Map = dynamic(() => import('~/common/Map'), { ssr: false });
 
 const { Desktop, TabletMobile } = Responsive;
 
