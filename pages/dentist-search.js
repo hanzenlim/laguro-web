@@ -233,7 +233,6 @@ class DetailsSearchPage extends PureComponent {
                 variables={{
                     input: queryParams,
                 }}
-                notifyOnNetworkStatusChange
                 context={{ clientName: 'appointment' }}
             >
                 {({ data, loading, refetch }) => {
@@ -250,12 +249,14 @@ class DetailsSearchPage extends PureComponent {
                     {
                         "@context": "https://schema.org",
                         "@type": "ItemList",
-                        "itemListElement": ${JSON.stringify(items.map((item, index) => ({
-                            "@type": "ListItem",
-                            "position": index + 1,
-                            "url": `https://www.laguro.com/dentist/${item.permalink ||
-                                item.dentistId}`
-                        })))}
+                        "itemListElement": ${JSON.stringify(
+                            items.map((item, index) => ({
+                                '@type': 'ListItem',
+                                position: index + 1,
+                                url: `https://www.laguro.com/dentist/${item.permalink ||
+                                    item.dentistId}`,
+                            }))
+                        )}
                     }`;
 
                     return (
@@ -270,7 +271,12 @@ class DetailsSearchPage extends PureComponent {
                                     rel="canonical"
                                     href="https://www.laguro.com/dentist/search"
                                 />
-                                <script type="application/ld+json" dangerouslySetInnerHTML={{__html: structuredSchema}} />
+                                <script
+                                    type="application/ld+json"
+                                    dangerouslySetInnerHTML={{
+                                        __html: structuredSchema,
+                                    }}
+                                />
                             </Head>
                             <DentistSearchFilterContext.Provider
                                 value={{
