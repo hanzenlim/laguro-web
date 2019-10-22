@@ -32,13 +32,14 @@ const CustomLink = props => {
 
 CustomLink.defaultProps = {
     isExternal: false,
-    prefetch: true,
 };
 
 CustomLink.propTypes = {
     to: PropTypes.string.isRequired,
     children: PropTypes.node.isRequired,
     isExternal: PropTypes.bool,
+    as: PropTypes.string,
+    prefetch: PropTypes.bool,
 };
 
 export default CustomLink;
