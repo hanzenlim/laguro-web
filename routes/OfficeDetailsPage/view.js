@@ -45,9 +45,7 @@ const StyledCarousel = styled(SlickCarousel)`
     }
 
     &&.full-screen {
-        position: relative;
-        top: 50%;
-        transform: translateY(-50%);
+        width: 100%;
     }
 
     &&.full-screen .image-container img {
@@ -118,7 +116,13 @@ const OfficeDetailsPageView = props => {
             {_get(imageUrls, 'length') > 0 ? (
                 <Box
                     {...(isCarouselFullScreen
-                        ? { position: 'fixed', zIndex: '9999' }
+                        ? {
+                              position: 'fixed',
+                              zIndex: '9999',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                          }
                         : {})}
                     top={0}
                     height={isCarouselFullScreen ? '100vh' : 'auto'}
