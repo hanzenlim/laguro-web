@@ -11,6 +11,7 @@ const ProcedureSummary = ({
     patientProcedures,
     installmentPlan,
     originalPrice,
+    laguroCredits,
     nominalAmount,
     discountPrice,
     insuranceCoverage,
@@ -20,6 +21,7 @@ const ProcedureSummary = ({
         installmentPlan={installmentPlan}
         nominalAmount={nominalAmount}
         originalPrice={originalPrice}
+        laguroCredits={laguroCredits}
         discountPrice={discountPrice}
         insuranceCoverage={insuranceCoverage}
     />

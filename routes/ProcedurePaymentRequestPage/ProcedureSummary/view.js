@@ -15,6 +15,7 @@ const ProcedureSummaryView = props => {
         procedures,
         nominalAmount,
         discountPrice,
+        laguroCredits,
         installmentPlan,
         originalPrice,
         insuranceCoverage,
@@ -148,6 +149,36 @@ const ProcedureSummaryView = props => {
                         </Flex>
                     )}
 
+                    {laguroCredits > 0 && (
+                        <Flex
+                            alignItems="flex-end"
+                            justifyContent="space-between"
+                            mt={1}
+                        >
+                            <Box>
+                                <Text
+                                    fontSize={[1, '', 2]}
+                                    lineHeight="20px"
+                                    textTransform="capitalize"
+                                    letterSpacing={['-0.4px', '', '-0.6px']}
+                                    color="text.black"
+                                >
+                                    Credits
+                                </Text>
+                            </Box>
+                            <Box>
+                                <Text
+                                    fontSize={[1, '', 2]}
+                                    lineHeight={1}
+                                    letterSpacing={['-0.4px', '', '-0.6px']}
+                                    color="text.green"
+                                >
+                                    -{renderPrice(laguroCredits)}
+                                </Text>
+                            </Box>
+                        </Flex>
+                    )}
+
                     {discountPrice > 0 && (
                         <Flex
                             alignItems="flex-end"
@@ -199,7 +230,7 @@ const ProcedureSummaryView = props => {
                                 letterSpacing={['-0.4px', '', '-0.6px']}
                                 color="text.black"
                             >
-                                {renderPrice(nominalAmount)}
+                                {renderPrice(nominalAmount - laguroCredits)}
                             </Text>
                         </Box>
                     </Flex>
@@ -279,7 +310,8 @@ const ProcedureSummaryView = props => {
                                             color="text.black"
                                         >
                                             {renderPrice(
-                                                installmentPlan.outstandingAmount
+                                                installmentPlan.recurringChargeAmount *
+                                                    installmentPlan.numChargePeriods
                                             )}
                                         </Text>
                                     </Box>

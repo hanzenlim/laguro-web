@@ -140,6 +140,9 @@ class ProcedurePaymentRequest extends PureComponent {
                         'discount.rate'
                     );
 
+                    const laguroCredits =
+                        _get(paymentRequestData, 'laguroCredits') || 0;
+
                     const discountPrice = Math.round(
                         _get(paymentRequestData, 'discount.amount') ||
                             (afterInsuranceAndDiscountBeforeInstallmentPlan /
@@ -163,6 +166,7 @@ class ProcedurePaymentRequest extends PureComponent {
                             discountPrice={discountPrice}
                             insuranceCoverage={insuranceCoverage}
                             originalPrice={originalPrice}
+                            laguroCredits={laguroCredits}
                             nominalAmount={_get(
                                 paymentRequestData,
                                 'nominalAmount'

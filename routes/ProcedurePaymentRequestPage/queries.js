@@ -20,6 +20,7 @@ export const getPaymentRequestByPayerQuery = gql`
                 downPaymentAmount
                 interval
             }
+            laguroCredits
             originalPrice
             nominalAmount
             discount {

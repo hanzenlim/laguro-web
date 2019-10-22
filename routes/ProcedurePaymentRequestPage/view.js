@@ -15,6 +15,7 @@ const ProcedurePaymentRequestView = props => {
         onPaymentSuccess,
         patientProcedures,
         installmentPlan,
+        laguroCredits,
         nominalAmount,
         discountPrice,
         originalPrice,
@@ -85,6 +86,7 @@ const ProcedurePaymentRequestView = props => {
                         installmentPlan={installmentPlan}
                         nominalAmount={nominalAmount}
                         originalPrice={originalPrice}
+                        laguroCredits={laguroCredits}
                         discountPrice={discountPrice}
                         insuranceCoverage={insuranceCoverage}
                     />
@@ -182,6 +184,7 @@ ProcedurePaymentRequestView.propTypes = {
     hasClickedNext: PropTypes.bool.isRequired,
     onClickNext: PropTypes.func.isRequired,
     onDeclineBtn: PropTypes.func.isRequired,
+    laguroCredits: PropTypes.func.isRequired,
     patientProcedures: PropTypes.array.isRequired,
     installmentPlan: PropTypes.object.isRequired,
     originalPrice: PropTypes.string,
