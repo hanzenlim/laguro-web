@@ -6,4 +6,4 @@ node_modules/
 .DS_Store
 laguro-next/.env
 .next
-.env
+._env

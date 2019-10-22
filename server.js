@@ -1,12 +1,12 @@
 // Polyfill Node with `Intl` that has data for all locales.
 // See: https://formatjs.io/guides/runtime-environments/#server
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config(process.env.LAGURO_USE_CUSTOM_DOTENV_FILE === "1" ? { path: path.resolve(process.cwd(), '._env') } : null);
 
 const IntlPolyfill = require('intl');
 
 Intl.NumberFormat = IntlPolyfill.NumberFormat;
 Intl.DateTimeFormat = IntlPolyfill.DateTimeFormat;
-const path = require('path');
 
 const express = require('express');
 const next = require('next');

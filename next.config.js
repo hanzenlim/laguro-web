@@ -1,7 +1,7 @@
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config(process.env.LAGURO_USE_CUSTOM_DOTENV_FILE === "1" ? { path: path.resolve(process.cwd(), '._env') } : null);
 
 const withCss = require('@zeit/next-css');
-const path = require('path');
 const Dotenv = require('dotenv-webpack');
 const withPlugins = require('next-compose-plugins');
 const withBundleAnalyzer = require('@next/bundle-analyzer')({

@@ -11,6 +11,7 @@ RUN npm install
 
 COPY . .
 
-RUN npm run build
+ENV NEXT_TELEMETRY_DISABLED=1
+RUN npm run build:server
 
 EXPOSE 3000

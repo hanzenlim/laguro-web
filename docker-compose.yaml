@@ -1,0 +1,14 @@
+version: "3.5"
+
+services:
+  laguro:
+    image: laguro:local
+    container_name: laguro
+    build: .
+    ports: 
+      - 3000:3000
+    entrypoint: "npm run start:server"
+networks:
+  default:
+    external:
+      name: laguro_network
