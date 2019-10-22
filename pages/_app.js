@@ -115,8 +115,13 @@ class ExtendedApp extends App {
 
 function LaguroApp({ Component, pageProps, apolloClient, locale, messages }) {
     const [isAuth, setIsAuth] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const [mounted, setMounted] = useState(false);
     const loginModalContextValue = useLogin();
+
+    Router.onRouteChangeStart = () => setIsLoading(true);
+    Router.onRouteChangeComplete = () => setIsLoading(false);
+    Router.onRouteChangeError = () => setIsLoading(false);
 
     const checkAuth = () => {
         const user = cookies.get('user');
@@ -140,7 +145,7 @@ function LaguroApp({ Component, pageProps, apolloClient, locale, messages }) {
                 <ThemeProvider theme={theme}>
                     <AppContextProvider value={{ isAuth, mounted, setIsAuth }}>
                         <LoginContextProvider value={loginModalContextValue}>
-                            <Layout>
+                            <Layout isLoading={isLoading}>
                                 <Header {...loginModalContextValue} />
                                 <Content>
                                     <Component

@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Flex, Loading } from '~/components';
 
 const StyledLayout = styled.div`
     display: flex;
@@ -101,9 +102,26 @@ const StyledLayout = styled.div`
 `;
 
 const Layout = props => {
-    const { children } = props;
+    const { children, isLoading } = props;
 
-    return <StyledLayout>{children}</StyledLayout>;
+    return (
+        <StyledLayout>
+            {isLoading && (
+                <Flex
+                    height="100vh"
+                    bg="white"
+                    width="100vw"
+                    zIndex="5000"
+                    alignItems="center"
+                    justifyContent="center"
+                    position="fixed"
+                >
+                    <Loading />
+                </Flex>
+            )}
+            {children}
+        </StyledLayout>
+    );
 };
 
 export default Layout;
