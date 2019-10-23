@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { width, height } from 'styled-system';
 import PropTypes from 'prop-types';
 import dynamic from 'next/dynamic';
+import _get from 'lodash/get';
 
 import { Icon, Flex, Truncate, Box } from '~/components';
 import { LOCATION, DENTIST } from '~/util/strings';
@@ -110,8 +111,14 @@ const LocationFilterView = ({
 }) => {
     const LocationOptions = locationResults.map(result => (
         <Option
-            key={result.description}
-            text={result.description}
+            key={
+                result.description ||
+                _get(result, 'formattedSuggestion.mainText', queryString)
+            }
+            text={
+                result.description ||
+                _get(result, 'formattedSuggestion.mainText', queryString)
+            }
             data={{ type: LOCATION, location: result }}
             style={{ padding: 0, backgroundColor: 'white' }}
         >
@@ -125,7 +132,12 @@ const LocationFilterView = ({
                 />
                 <Box width={[250, '', 400]}>
                     <Truncate lines={1} ellipsis trimWhitespace>
-                        {result.description}
+                        {result.description ||
+                            _get(
+                                result,
+                                'formattedSuggestion.mainText',
+                                queryString
+                            )}
                     </Truncate>
                 </Box>
             </StyledOption>
