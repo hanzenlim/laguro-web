@@ -9,22 +9,26 @@ import { getFormatTextFromProps } from '~/util/intlUtils';
 import { injectIntl } from 'react-intl';
 
 class KioskRegisterView extends React.Component {
-    validate = phoneNumber => {
+    validate = phoneOrEmail => {
         const formatText = getFormatTextFromProps(this.props);
-        const isNumeric = validator.isNumeric(phoneNumber);
-        const hasCorrectDigitCount =
-            !_isEmpty(phoneNumber) && phoneNumber.length === 10;
 
-        if (!phoneNumber) {
+        const isEmail = validator.isEmail(phoneOrEmail);
+        const isNumeric = validator.isNumeric(phoneOrEmail);
+        const hasCorrectDigitCount =
+            !_isEmpty(phoneOrEmail) && phoneOrEmail.length === 10;
+
+        if (!phoneOrEmail) {
             return formatText('general.pleaseFill');
         }
 
-        if (!isNumeric) {
-            return formatText('general.invalidPhone');
-        }
+        if (!isEmail) {
+            if (!isNumeric) {
+                return formatText('registration.signIn.invalid');
+            }
 
-        if (!hasCorrectDigitCount) {
-            return formatText('general.mustHave10');
+            if (!hasCorrectDigitCount) {
+                return formatText('general.mustHave10');
+            }
         }
 
         return '';
@@ -50,7 +54,9 @@ class KioskRegisterView extends React.Component {
                 />
                 <Flex flexDirection="column" mb="40px">
                     <Flex alignItems="flex-start" mb="10px">
-                        <Text>{formatText('registration.stepTwo.phone')}</Text>
+                        <Text>
+                            {formatText('registration.stepTwo.phoneOrEmail')}
+                        </Text>
                     </Flex>
 
                     <Flex>

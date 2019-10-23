@@ -8,7 +8,7 @@ import Onboarding from '../../../Onboarding';
 import InfoIcon from '../../Assets/infoIcon';
 import PinInput from '../../PinInput';
 
-const validate = phoneOrEmail => {
+const checkIfValidPhoneOrEmail = phoneOrEmail => {
     const isEmail = validator.isEmail(phoneOrEmail);
     const isNumeric = validator.isNumeric(phoneOrEmail);
     const hasCorrectDigitCount = phoneOrEmail.length === 10;
@@ -30,25 +30,6 @@ const validate = phoneOrEmail => {
     return '';
 };
 
-const validatePhoneNumber = phone => {
-    const isNumeric = validator.isNumeric(phone);
-    const hasCorrectDigitCount = phone.length === 10;
-
-    if (!phone) {
-        return 'Required';
-    }
-
-    if (!isNumeric) {
-        return 'Invalid phone number';
-    }
-
-    if (!hasCorrectDigitCount) {
-        return 'Must have 10 digits';
-    }
-
-    return '';
-};
-
 // Move outside render so that autofocus doesn't re run on every type
 // See: https://github.com/s-yadav/react-number-format/issues/233
 const InputWithAutoFocus = props => (
@@ -65,19 +46,23 @@ export const Verification = props => {
     }
     const handleSendAction = () => {
         if (
-            validate(props.formikProps.values.emailOrPhoneNumber) ||
-            validate(props.formikProps.values.phoneNumber)
+            checkIfValidPhoneOrEmail(
+                props.formikProps.values.emailOrPhoneNumber
+            ) ||
+            checkIfValidPhoneOrEmail(props.formikProps.values.phoneNumber)
         ) {
             props.formikProps.setFieldTouched('emailOrPhoneNumber', true);
             props.formikProps.setFieldError(
                 'emailOrPhoneNumber',
-                validate(props.formikProps.values.emailOrPhoneNumber)
+                checkIfValidPhoneOrEmail(
+                    props.formikProps.values.emailOrPhoneNumber
+                )
             );
 
             props.formikProps.setFieldTouched('phoneNumber', true);
             props.formikProps.setFieldError(
                 'phoneNumber',
-                validate(props.formikProps.values.phoneNumber)
+                checkIfValidPhoneOrEmail(props.formikProps.values.phoneNumber)
             );
         }
 
@@ -91,11 +76,11 @@ export const Verification = props => {
     };
 
     const handleVerificationCodeSendAction = () => {
-        if (validatePhoneNumber(props.formikProps.values.phoneNumber)) {
+        if (checkIfValidPhoneOrEmail(props.formikProps.values.phoneNumber)) {
             props.formikProps.setFieldTouched('phoneNumber', true);
             props.formikProps.setFieldError(
                 'phoneNumber',
-                validatePhoneNumber(props.formikProps.values.phoneNumber)
+                checkIfValidPhoneOrEmail(props.formikProps.values.phoneNumber)
             );
         } else {
             if (props.onRequestPinCode) {
@@ -131,11 +116,7 @@ export const Verification = props => {
             />
             <Flex flexDirection="column" mb="40px">
                 <Flex alignItems="center" mb="10px">
-                    <Text>
-                        {props.formikProps.values.mode === 'signIn'
-                            ? 'Phone number or e-mail'
-                            : 'Phone number'}
-                    </Text>
+                    <Text>Phone number or e-mail</Text>
                     <Box ml="4px">
                         <Tooltip
                             placement="top"

@@ -36,9 +36,9 @@ const KioskOnboardingPage = ({ mode, ...componentProps }) => {
                     then: Yup.string()
                         .required('This field is required')
                         .test(
-                            'is phone number',
-                            'Please use a valid phone number',
-                            validatePhone
+                            'is phone number or email valid',
+                            'Please use a valid email or phone number',
+                            validatePhoneOrEmail
                         ),
                 }),
             }),

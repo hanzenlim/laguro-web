@@ -57,7 +57,7 @@
     "registration.stepOne.lastName": "Apellido",
     "registration.stepTwo.stepTwo": "Paso 2. Verificación",
     "registration.stepTwo.typeInformation": "Ingrese su información a continuación para iniciar sesión \n Le enviaremos una verificación",
-    "registration.stepTwo.phone": "Número de teléfono",
+    "registration.stepTwo.phoneOrEmail": "Número de teléfono o correo electrónico",
     "registration.stepTwo.provideValidPin": "Debe proporcionar un pin válido",
     "registration.stepTwo.provideName": "Por favor, introduzca su nombre",
     "registration.stepTwo.alreadyHaveAccount": "Ya dispone de una cuenta",

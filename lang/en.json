@@ -57,7 +57,7 @@
     "registration.stepOne.lastName": "Last Name",
     "registration.stepTwo.stepTwo": "Step 2. Verification",
     "registration.stepTwo.typeInformation": "Type in your information below to log in.\n A verification will be sent",
-    "registration.stepTwo.phone": "Phone number",
+    "registration.stepTwo.phoneOrEmail": "Phone number or e-mail",
     "registration.stepTwo.send": "Send",
     "registration.stepTwo.provideValidPin": "You must provide a valid pin",
     "registration.stepTwo.provideName": "Please provide your name",
