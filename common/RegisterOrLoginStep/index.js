@@ -133,11 +133,11 @@ const RegisterOrLoginStep = props => {
                 };
 
                 const getValidatePinInput = passcode => {
-                    const isEmail = validateEmail(
-                        props.formikProps.values.emailOrPhoneNumber
-                    );
-                    const phoneNumberFromSignup =
+                    const usernameFromSignin =
+                        props.formikProps.values.emailOrPhoneNumber;
+                    const usernameFromSignup =
                         props.formikProps.values.phoneNumber;
+                    const username = usernameFromSignup || usernameFromSignin;
 
                     return {
                         passcode,
@@ -156,17 +156,11 @@ const RegisterOrLoginStep = props => {
                                 props.formikProps.values.lastName
                             ),
                         }),
-                        ...(!phoneNumberFromSignup && isEmail
-                            ? {
-                                  email:
-                                      props.formikProps.values
-                                          .emailOrPhoneNumber,
-                              }
-                            : {
-                                  phoneNumber: `+1${props.formikProps.values.emailOrPhoneNumber}`,
-                              }),
-                        ...(phoneNumberFromSignup && {
-                            phoneNumber: `+1${phoneNumberFromSignup}`,
+                        ...(validateEmail(username) && {
+                            email: username,
+                        }),
+                        ...(!validateEmail(username) && {
+                            phoneNumber: `+1${username}`,
                         }),
                     };
                 };

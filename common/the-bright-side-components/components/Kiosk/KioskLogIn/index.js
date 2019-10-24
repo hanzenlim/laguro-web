@@ -72,7 +72,7 @@ class KioskLogInClass extends React.Component {
                         <Box ml="4px">
                             <Tooltip
                                 placement="top"
-                                title="Must provide a valid 10-digit number, including area code."
+                                title="Must provide an email or a valid 10-digit number, including area code."
                             >
                                 <Icon type="info-circle" />
                             </Tooltip>
