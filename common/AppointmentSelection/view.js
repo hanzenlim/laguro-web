@@ -1,4 +1,14 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, Component } from 'react';
+import _upperCase from 'lodash/upperCase';
+import _groupBy from 'lodash/groupBy';
+import _isEmpty from 'lodash/isEmpty';
+import _mapValues from 'lodash/mapValues';
+import _sortBy from 'lodash/sortBy';
+import _isEqual from 'lodash/isEqual';
+import moment from 'moment';
+import styled from 'styled-components';
+import { injectIntl } from 'react-intl';
+
 import {
     Box,
     Button,
@@ -10,21 +20,12 @@ import {
     Icon,
     Rating,
 } from '~/components';
-import _upperCase from 'lodash/upperCase';
-import _groupBy from 'lodash/groupBy';
-import _isEmpty from 'lodash/isEmpty';
-import _mapValues from 'lodash/mapValues';
-import _sortBy from 'lodash/sortBy';
-import moment from 'moment';
-import styled from 'styled-components';
-
 import { getInsuranceText } from '~/util/insuranceUtil';
-import Procedures from './Procedures';
-import { Onboarding } from '../the-bright-side-components';
-import { injectIntl } from 'react-intl';
 import { getFormatTextFromProps, getIntlLanguage } from '~/util/intlUtils';
 import { DENTIST_SPECIALTY_TEXTS } from '~/util/dentistSpecialtyUtils';
 import { getOfficeName } from '~/util/officeUtils';
+import Procedures from './Procedures';
+import { Onboarding } from '../the-bright-side-components';
 
 const StyledCard = styled(Card)`
     overflow: hidden;
@@ -49,18 +50,24 @@ export const DentistRating = ({ rating, numReviews }) => (
     </Flex>
 );
 
-class AppointmentSelectionView extends React.PureComponent {
+class AppointmentSelectionView extends Component {
     shouldComponentUpdate(nextProps) {
-        if (
-            nextProps.formikProps.isSubmitting !==
-                this.props.formikProps.isSubmitting ||
-            this.props.formikProps.values.appointmentSelected !==
-                nextProps.formikProps.values.appointmentSelected
-        ) {
-            return true;
-        }
+        const { formikProps, moreMap } = this.props;
 
-        return false;
+        const isSubmittingUpdated =
+            nextProps.formikProps.isSubmitting !== formikProps.isSubmitting;
+
+        const isAppointmentSelectedUpdated =
+            formikProps.values.appointmentSelected !==
+            nextProps.formikProps.values.appointmentSelected;
+
+        const isMoreMapUpdated = !_isEqual(moreMap, nextProps.moreMap);
+
+        return (
+            isSubmittingUpdated ||
+            isAppointmentSelectedUpdated ||
+            isMoreMapUpdated
+        );
     }
 
     renderDentistPanel = (dentists, date) => (
@@ -70,8 +77,9 @@ class AppointmentSelectionView extends React.PureComponent {
     );
 
     renderDentistCard = (dentist, date) => {
+        const { moreMap, formikProps, onMore } = this.props;
         const formatText = getFormatTextFromProps(this.props);
-        const availableTimes = this.props.moreMap[`${dentist.id}${date}`]
+        const availableTimes = moreMap[`${dentist.id}${date}`]
             ? dentist.availableTimes
             : dentist.availableTimes.slice(0, 7);
 
@@ -239,18 +247,18 @@ class AppointmentSelectionView extends React.PureComponent {
                                         height={40}
                                         width="100%"
                                         ghost={
-                                            this.props.formikProps.values
+                                            formikProps.values
                                                 .appointmentSelected !==
                                             dentist.dentistTimeIds[index]
                                         }
                                         type={
-                                            this.props.formikProps.values
+                                            formikProps.values
                                                 .appointmentSelected ===
                                                 dentist.dentistTimeIds[index] &&
                                             'primary'
                                         }
                                         onClick={() => {
-                                            this.props.formikProps.setFieldValue(
+                                            formikProps.setFieldValue(
                                                 'appointmentSelected',
                                                 dentist.dentistTimeIds[index]
                                             );
@@ -260,7 +268,7 @@ class AppointmentSelectionView extends React.PureComponent {
                                     </Button>
                                 ))}
 
-                                {!this.props.moreMap[`${dentist.id}${date}`] &&
+                                {!moreMap[`${dentist.id}${date}`] &&
                                     dentist.availableTimes.length > 7 && (
                                         <Button
                                             height={40}
@@ -269,9 +277,7 @@ class AppointmentSelectionView extends React.PureComponent {
                                             pb={10}
                                             fontWeight="700"
                                             onClick={() => {
-                                                this.props.onMore(
-                                                    `${dentist.id}${date}`
-                                                );
+                                                onMore(`${dentist.id}${date}`);
                                             }}
                                         >
                                             ...
@@ -286,15 +292,19 @@ class AppointmentSelectionView extends React.PureComponent {
     };
 
     render() {
+        const {
+            office,
+            formikProps,
+            dentistTimes: dentistTimesProp,
+        } = this.props;
         // props.dentistTimes: multiple dentists with single startTime
         // e.g. [ { id: 'dentistId', startTime: "2019-02-05T15:48:43-08:00", ...},
         //        { id: 'dentistId', startTime: "2019-02-05T15:48:43-08:00", ...}, ]
 
         // e.g. { 'Feb 5, 2019': [{ id: 'dentistId', startTime: "15:48:43-08:00", ...}, { id: 'dentistId', startTime: "16:48:43-08:00", ...}, ...],
         //        'Feb 6, 2019': [{ id: 'dentistId2', startTime: "15:48:43-08:00", ...},{ id: 'dentistId2', startTime: "16:48:43-08:00", ...}, ...] }
-        const dentistTimesGroupedByDates = _groupBy(
-            this.props.dentistTimes,
-            dt => moment(dt.startTime).format('MMM D, YYYY')
+        const dentistTimesGroupedByDates = _groupBy(dentistTimesProp, dt =>
+            moment(dt.startTime).format('MMM D, YYYY')
         );
 
         // e.g. { 'Feb 5, 2019': [{ id: 'dentistId', availableTimes: ["15:48:43-08:00", ...], ...}, ...],
@@ -324,7 +334,7 @@ class AppointmentSelectionView extends React.PureComponent {
                     fontSize={1}
                     color="text.gray"
                 >
-                    {_upperCase(getOfficeName(this.props.office))}
+                    {_upperCase(getOfficeName(office))}
                 </Text>
                 <Onboarding.StepTitleText
                     text={formatText(
@@ -354,15 +364,13 @@ class AppointmentSelectionView extends React.PureComponent {
                         )}
                     </Box>
                 ))}
-                {!_isEmpty(
-                    this.props.formikProps.values.appointmentSelected
-                ) && (
+                {!_isEmpty(formikProps.values.appointmentSelected) && (
                     <Onboarding.FixedBox width={329}>
                         <StyledNextButton
                             width="329px"
                             height="50px"
-                            loading={this.props.formikProps.isSubmitting}
-                            onClick={() => this.props.formikProps.submitForm()}
+                            loading={formikProps.isSubmitting}
+                            onClick={() => formikProps.submitForm()}
                         >
                             {formatText(
                                 'bookAppointment.bookAnAppointment.bookAppt'
