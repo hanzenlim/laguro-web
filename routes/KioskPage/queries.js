@@ -253,16 +253,6 @@ export const GET_OFFICE = gql`
             name
             listings {
                 id
-                reservations {
-                    id
-                    availableTimes {
-                        startTime
-                        endTime
-                    }
-                    reservedBy {
-                        id
-                    }
-                }
             }
             activeDentists(
                 options: {
