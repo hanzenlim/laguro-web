@@ -4,13 +4,13 @@ import { Query } from 'react-apollo';
 import moment from 'moment';
 import get from 'lodash/get';
 
-import PatientAppoinments from './view';
 import { Loading } from '~/components';
+import { RedirectErrorPage } from '~/routes/GeneralErrorPage';
+import { getUser } from '~/util/authUtils';
+import PatientAppoinments from './view';
 import CancelAppoinmentModal from '../Modals/CancelAppointmentModal';
-import RedirectErrorPage from '~routes//GeneralErrorPage';
 
 import { getAppointmentsQuery } from './queries';
-import { getUser } from '~/util/authUtils';
 
 const PatientAppoinmentsContainer = props => {
     const user = props.user || getUser();

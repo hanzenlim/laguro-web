@@ -4,7 +4,11 @@
       "development": {
         "plugins": [
           [
-            "babel-plugin-root-import"
+            "babel-plugin-root-import",
+            {
+              "rootPathSuffix": "./",
+              "rootPathPrefix": "~/"
+            }
           ],
           [
             "react-intl"
@@ -21,7 +25,11 @@
       "production": {
         "plugins": [
           [
-            "babel-plugin-root-import"
+            "babel-plugin-root-import",
+            {
+              "rootPathSuffix": "./",
+              "rootPathPrefix": "~/"
+            }
           ],
           [
             "react-intl",

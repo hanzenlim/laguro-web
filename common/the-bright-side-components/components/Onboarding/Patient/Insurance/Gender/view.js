@@ -1,9 +1,10 @@
-import { Box, Flex } from '~/components';
 import * as React from 'react';
+import { injectIntl } from 'react-intl';
+
+import { Box, Flex } from '~/components';
+import { getFormatTextFromProps } from '~/util/intlUtils';
 import Onboarding from '../../..';
 import InsuranceUmbrella from '../../../Assets/insuranceUmbrella';
-import { injectIntl } from 'react-intl';
-import { getFormatTextFromProps } from '~/util/intlUtils';
 
 class GenderView extends React.PureComponent {
     render() {
@@ -40,14 +41,6 @@ class GenderView extends React.PureComponent {
                     ]}
                     {...this.props}
                 />
-                <Onboarding.NextButton
-                    onClick={() => {
-                        this.props.formikProps.submitForm();
-                    }}
-                    loading={this.props.formikProps.isSubmitting}
-                >
-                    {formatText('general.next')}
-                </Onboarding.NextButton>
             </Box>
         );
     }
