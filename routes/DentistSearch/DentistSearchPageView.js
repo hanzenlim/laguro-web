@@ -1,5 +1,7 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
+import { useQuery } from '@apollo/react-hooks';
+import _get from 'lodash/get';
 
 import { Container, Box, Loading, Text, Flex } from '~/components';
 import SearchResultsList from '~/common/SearchResultsList';
@@ -9,24 +11,31 @@ import QuizPrompt from './QuizPrompt';
 import PriceEstimationCarousel from './PriceEstimationCarousel';
 import SortSelection from './SortSelection';
 import { AppContext } from '../../appContext';
+import { GET_DENTISTS_AND_APPOINTMENT_SLOTS } from './queries';
 
 const DentistSearchPageView = ({
-    data,
-    total,
-    loading,
     onToggleFilter,
     isFilterVisible,
     sortBy,
     setSortBy,
+    input,
+    sortItems,
 }) => {
-    const { isAuth, mounted } = useContext(AppContext);
+    const { data, loading } = useQuery(GET_DENTISTS_AND_APPOINTMENT_SLOTS, {
+        variables: { input },
+        context: { clientName: 'appointment' },
+    });
 
-    const transformedData = data.map(dentist => ({
+    const items = _get(data, 'searchForDentistsAndAppointmentSlots', []);
+    const sortedItems = sortItems(items, sortBy);
+    const { isAuth, mounted } = useContext(AppContext);
+    const transformedData = sortedItems.map(dentist => ({
         ...dentist,
         appointmentTimeslotsByOffice: dentist.appointmentTimeslotsByOffice.filter(
             i => i.appointmentTimeslots.length > 0
         ),
     }));
+    const total = transformedData.length;
 
     return (
         <Box height="100%" pt={[48, '', 84]}>

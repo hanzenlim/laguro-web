@@ -6,10 +6,15 @@ import _get from 'lodash/get';
 import _sortBy from 'lodash/sortBy';
 import moment from 'moment';
 import queryString from 'query-string';
+import dynamic from 'next/dynamic';
 
-import DentistSearchPageView from '../routes/DentistSearch/DentistSearchPageView';
 import { GET_DENTISTS_AND_APPOINTMENT_SLOTS } from '../routes/DentistSearch/queries';
 import { supportedInsuranceList } from '~/data';
+
+const DentistSearchPageView = dynamic(
+    () => import('../routes/DentistSearch/DentistSearchPageView'),
+    { ssr: false }
+);
 
 const daysAvailabilityMapping = {
     'Any day': [
@@ -228,76 +233,34 @@ class DetailsSearchPage extends PureComponent {
         const queryParams = this.buildQueryParams(urlParams);
 
         return (
-            <Query
-                query={GET_DENTISTS_AND_APPOINTMENT_SLOTS}
-                variables={{
-                    input: queryParams,
-                }}
-                context={{ clientName: 'appointment' }}
-            >
-                {({ data, loading, refetch }) => {
-                    this.refetch = refetch;
-                    const items = _get(
-                        data,
-                        'searchForDentistsAndAppointmentSlots',
-                        []
-                    );
-
-                    const sortedItems = this.sortItems(items, sortBy);
-
-                    const structuredSchema = `
-                    {
-                        "@context": "https://schema.org",
-                        "@type": "ItemList",
-                        "itemListElement": ${JSON.stringify(
-                            items.map((item, index) => ({
-                                '@type': 'ListItem',
-                                position: index + 1,
-                                url: `https://www.laguro.com/dentist/${item.permalink ||
-                                    item.dentistId}`,
-                            }))
-                        )}
-                    }`;
-
-                    return (
-                        <Fragment>
-                            <Head>
-                                <title>Search Dentist - Laguro</title>
-                                <meta
-                                    name="description"
-                                    content="The Laguro Dentist Search tool can help you find a dentist that will best fit your needs"
-                                />
-                                <link
-                                    rel="canonical"
-                                    href="https://www.laguro.com/dentist/search"
-                                />
-                                <script
-                                    type="application/ld+json"
-                                    dangerouslySetInnerHTML={{
-                                        __html: structuredSchema,
-                                    }}
-                                />
-                            </Head>
-                            <DentistSearchFilterContext.Provider
-                                value={{
-                                    urlParams,
-                                    setUrlParams: this.setUrlParams,
-                                }}
-                            >
-                                <DentistSearchPageView
-                                    data={sortedItems}
-                                    total={items.length}
-                                    loading={loading}
-                                    isFilterVisible={this.state.isFilterVisible}
-                                    onToggleFilter={this.onToggleFilter}
-                                    sortBy={sortBy}
-                                    setSortBy={this.setSortBy}
-                                />
-                            </DentistSearchFilterContext.Provider>
-                        </Fragment>
-                    );
-                }}
-            </Query>
+            <Fragment>
+                <Head>
+                    <title>Search Dentist - Laguro</title>
+                    <meta
+                        name="description"
+                        content="The Laguro Dentist Search tool can help you find a dentist that will best fit your needs"
+                    />
+                    <link
+                        rel="canonical"
+                        href="https://www.laguro.com/dentist/search"
+                    />
+                </Head>
+                <DentistSearchFilterContext.Provider
+                    value={{
+                        urlParams,
+                        setUrlParams: this.setUrlParams,
+                    }}
+                >
+                    <DentistSearchPageView
+                        isFilterVisible={this.state.isFilterVisible}
+                        onToggleFilter={this.onToggleFilter}
+                        sortBy={sortBy}
+                        setSortBy={this.setSortBy}
+                        sortItems={this.sortItems}
+                        input={queryParams}
+                    />
+                </DentistSearchFilterContext.Provider>
+            </Fragment>
         );
     }
 }
