@@ -86,14 +86,15 @@ class HostListings extends PureComponent {
                     <Flex
                         mt={12}
                         px={[ContainerPaddingInPixels, '', 0]}
-                        alignItems="center"
+                        alignItems={['flex-start', 'center', '']}
+                        flexDirection={['column', 'row', '']}
                     >
                         <Text fontSize={[2, '', 5]} mr={[6, '', 14]}>
                             {name}
                         </Text>
                         <Flex>
                             <Link
-                                to={`/office/${id}`}
+                                to={`/office/${permalink}`}
                                 type="ghost"
                                 target="_blank"
                                 isExternal
@@ -106,6 +107,21 @@ class HostListings extends PureComponent {
                                     View Office
                                 </Text>
                             </Link>
+                            <Button
+                                type="ghost"
+                                height="auto"
+                                onClick={() =>
+                                    this.setState({ selectedOffice: office })
+                                }
+                            >
+                                <Text
+                                    color="text.blue"
+                                    fontSize={[0, '', 1]}
+                                    mr={[14, '', 24]}
+                                >
+                                    Set unique profile link
+                                </Text>
+                            </Button>
                             <Link
                                 to={`/host-onboarding/add-office?mode=edit-office&officeId=${id}`}
                                 type="ghost"
@@ -130,22 +146,6 @@ class HostListings extends PureComponent {
                         <Text is="span" fontSize={[0, '', 1]}>
                             {fullAddress}
                         </Text>
-                    </Box>
-                    <Box mb={[5, '', 17]}>
-                        <Button
-                            type="ghost"
-                            onClick={() =>
-                                this.setState({ selectedOffice: office })
-                            }
-                        >
-                            <Text
-                                color="text.blue"
-                                fontSize={[0, '', 1]}
-                                mr={[14, '', 24]}
-                            >
-                                Edit permalink
-                            </Text>
-                        </Button>
                     </Box>
                     <Box
                         px={[ContainerPaddingInPixels, '', 28]}

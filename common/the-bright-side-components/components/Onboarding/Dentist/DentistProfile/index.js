@@ -1,15 +1,16 @@
 import * as React from 'react';
 import styled from 'styled-components';
 
+import { procedureList } from '~/data';
 import { Box, Flex, Grid, Image, Text, TextArea } from '~/components';
-import Onboarding from '../../../Onboarding';
+
+import Onboarding from "../..";
 import Upload from '../../../Upload';
 import Wizard from '../../../Wizard';
 import InfoIcon from '../../Assets/infoIcon';
 import { SelectLanguage } from '../../SelectLanguage';
 import { SelectTime } from '../../SelectTime';
 import { DentistInsurance } from '../Profile/DentistInsurance';
-import { procedureList } from '~/data';
 
 const UploadButton = styled.button`
     padding: 3px;
@@ -149,7 +150,7 @@ const Step1 = props => {
                 <Box height={30} />
                 {props.isEditing && (
                     <React.Fragment>
-                        <Text fontSize={2}>Set your unique permalink</Text>
+                        <Text fontSize={2}>Set your unique profile link</Text>
                         <Box height={10} />
                         <Onboarding.Input
                             onChange={e =>
@@ -158,7 +159,7 @@ const Step1 = props => {
                                     e.target.value
                                 )
                             }
-                            value={props.formikProps.values['permalink']}
+                            value={props.formikProps.values.permalink}
                         />
                         <Box height={30} />
                     </React.Fragment>
