@@ -42,12 +42,6 @@ class SearchBox extends PureComponent {
             text: urlParams.text || '',
             urlParams,
         });
-
-        if (urlParams.startTime) {
-            urlParams.startTime = moment(urlParams.startTime).format(
-                'ddd MM/DD'
-            );
-        }
     }
 
     handleTextChange = text => {
