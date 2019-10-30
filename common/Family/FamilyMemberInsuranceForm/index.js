@@ -63,6 +63,8 @@ class FamilyMemberInsuranceForm extends PureComponent {
                     ? 'yes'
                     : 'no',
             isUnderPrimaryUserInsurance,
+            issueDate:
+                _get(user, 'insuranceInfo.issueDate') || '',
             insuranceProvider:
                 _get(user, 'insuranceInfo.insuranceProvider') || '',
             insuranceProviderId:
@@ -131,6 +133,7 @@ class FamilyMemberInsuranceForm extends PureComponent {
         const { policyHolderUser } = values;
 
         const insuranceInfo = {
+            issueDate: values.issueDate,
             insuranceProvider: values.insuranceProvider,
             insuranceProviderId: values.insuranceProviderId,
             policyHolderId: values.insuranceNumber,

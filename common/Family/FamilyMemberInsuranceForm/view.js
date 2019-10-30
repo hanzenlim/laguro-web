@@ -3,7 +3,7 @@ import { Form, Field, withFormik } from 'formik';
 import _capitalize from 'lodash/capitalize';
 import FormFields from '../../FormFields';
 import FormElements from '../../FormElements';
-import { Onboarding } from '../../the-bright-side-components/';
+import { Onboarding } from "../../the-bright-side-components";
 import { Box, Text, Flex, Grid } from '~/components/';
 import { validationSchema } from './validators';
 
@@ -302,6 +302,22 @@ const FamilyMemberInsuranceFormView = props => {
                                 <Field
                                     name="planOrGroupNumber"
                                     placeholder="Plan / group number"
+                                    component={Onboarding.InputField}
+                                />
+                                </Box>
+
+                                 <Text
+                                fontSize={1}
+                                letterSpacing="-0.4px"
+                                color="text.black"
+                                mb="10px"
+                            >
+                                Issue Date (optional)
+                            </Text>
+                            <Box width={['100%', '', '500px']}>
+                                <Field
+                                    name="issueDate"
+                                    placeholder="MM/DD/YYYY"
                                     component={Onboarding.InputField}
                                 />
                             </Box>

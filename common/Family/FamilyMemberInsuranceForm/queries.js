@@ -24,6 +24,7 @@ export const getFamilyQuery = gql`
             lastName
             dob
             insuranceInfo {
+                issueDate
                 insuranceProvider
                 insuranceProviderId
                 policyHolderId

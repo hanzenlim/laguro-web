@@ -137,6 +137,7 @@ export const GET_USER = gql`
             id
             relationshipToPrimary
             insuranceInfo {
+                issueDate
                 policyHolderId
                 insuranceProvider
                 insuranceProviderId

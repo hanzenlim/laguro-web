@@ -15,6 +15,7 @@ export const GET_USER = gql`
         getUser(id: $id) {
             id
             insuranceInfo {
+                issueDate
                 policyHolderId
                 insuranceProvider
                 insuranceProviderId

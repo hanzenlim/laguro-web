@@ -58,6 +58,7 @@ export const getPatientInsuranceFormWizardSteps = ({ user, mutations }) => [
             const userId = _get(user, 'id');
 
             const {
+                issueDate,
                 insuranceProvider,
                 insuranceProviderId,
                 planOrGroupNumber,
@@ -75,6 +76,9 @@ export const getPatientInsuranceFormWizardSteps = ({ user, mutations }) => [
                 insuranceInfo: hasNoInsurance
                     ? null
                     : {
+                         ...(!_isEmpty(issueDate) && {
+                              issueDate,
+                          }),
                           ...(!_isEmpty(insuranceProvider) && {
                               insuranceProvider,
                           }),

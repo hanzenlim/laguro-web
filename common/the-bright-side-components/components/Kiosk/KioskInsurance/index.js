@@ -21,6 +21,8 @@ KioskInsurance['HAS_NO_INSURANCE'] = KioskInsuranceView['HAS_NO_INSURANCE'];
 
 export const getKioskInsuranceInitialValues = user => {
     return {
+        issueDate:
+            _get(user, 'insuranceInfo.issueDate') || undefined,
         patientInsuranceNum:
             _get(user, 'insuranceInfo.policyHolderId') || undefined,
         insuranceProvider:

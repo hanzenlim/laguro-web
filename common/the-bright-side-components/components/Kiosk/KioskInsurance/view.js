@@ -1,8 +1,8 @@
-import { Box, Button, Flex, Text, Grid } from '~/components';
 import _get from 'lodash/get';
 import _isEmpty from 'lodash/isEmpty';
 import _capitalize from 'lodash/capitalize';
 import _find from 'lodash/find';
+import { Box, Button, Flex, Text, Grid } from '~/components';
 import FormFields from '../../../../FormFields';
 import { Field } from 'formik';
 import * as React from 'react';
@@ -71,9 +71,9 @@ class InsuranceView extends React.PureComponent {
                         </Field>
 
                         {values.isPrimaryHolder !== undefined && (
-                            <React.Fragment>
+                            <>
                                 {values.isPrimaryHolder === NO && (
-                                    <React.Fragment>
+                                    <>
                                         <Onboarding.FormItemLabelText text="Name" />
                                         <Field
                                             name="policyHolderUser.firstName"
@@ -193,7 +193,7 @@ class InsuranceView extends React.PureComponent {
                                                 }
                                             />
                                         </Box>
-                                    </React.Fragment>
+                                    </>
                                 )}
 
                                 <Onboarding.FormItemLabelText
@@ -273,7 +273,19 @@ class InsuranceView extends React.PureComponent {
                                         this.props.formikProps.isSubmitting
                                     }
                                 />
-                            </React.Fragment>
+                                <Onboarding.FormItemLabelText
+                                    text="Issue Date (optional)"
+                                />
+                                <Field
+                                    name="issueDate"
+                                    placeholder="MM/DD/YYYY"
+                                    component={Onboarding.InputField}
+                                    disabled={
+                                        this.props.formikProps.isSubmitting
+                                    }
+                                />
+                                <Box mb="15px" />
+                            </>
                         )}
                     </Box>
                 </Flex>

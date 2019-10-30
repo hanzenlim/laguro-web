@@ -250,6 +250,7 @@ export const getPatientWebOnboardingPageWizardSteps = ({
                 patientGender,
                 patientState,
                 patientZIP,
+                issueDate,
                 insuranceProvider,
                 insuranceProviderId,
                 planOrGroupNumber,
@@ -279,6 +280,9 @@ export const getPatientWebOnboardingPageWizardSteps = ({
                 insuranceInfo: hasNoInsurance
                     ? null
                     : {
+                        ...(!_isEmpty(issueDate) && {
+                            issueDate,
+                        }),
                           ...(!_isEmpty(insuranceProvider) && {
                               insuranceProvider,
                           }),

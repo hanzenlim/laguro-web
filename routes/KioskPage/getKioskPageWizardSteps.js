@@ -307,6 +307,7 @@ export const getKioskPageWizardSteps = ({
                 patientGender,
                 patientState,
                 patientZIP,
+                issueDate,
                 insuranceProvider,
                 insuranceProviderId,
                 planOrGroupNumber,
@@ -341,6 +342,9 @@ export const getKioskPageWizardSteps = ({
                         insuranceInfo: hasNoInsurance
                             ? null
                             : {
+                                 ...(!_isEmpty(issueDate) && {
+                                      issueDate,
+                                  }),
                                   ...(!_isEmpty(insuranceProvider) && {
                                       insuranceProvider,
                                   }),
