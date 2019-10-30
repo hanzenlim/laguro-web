@@ -183,61 +183,6 @@ export const GET_OFFICE = gql`
         getOffice(id: $id) {
             id
             name
-            listings {
-                id
-                reservations {
-                    id
-                    availableTimes {
-                        startTime
-                        endTime
-                    }
-                    reservedBy {
-                        id
-                    }
-                }
-            }
-            activeDentists(
-                options: {
-                    rangeStart: "${moment()
-                        .utc()
-                        .format()}",
-                    rangeEnd: "${moment()
-                        .utc()
-                        .add(14, 'days')
-                        .format()}"
-                }
-            ) {
-                id
-                specialty
-                isHostVerified
-                user {
-                    firstName
-                    lastName
-                    imageUrl
-                }
-                procedures {
-                    group
-                }
-                averageRating
-                availableAppointmentSlots(
-                    options: {
-                        rangeStart: "${moment()
-                            .utc()
-                            .format()}",
-                        rangeEnd: "${moment()
-                            .utc()
-                            .add(14, 'days')
-                            .format()}",
-                        officeId: $id
-                    }
-                ) {
-                    startTime
-                    reservationId
-                }
-                firstAppointmentDuration
-                languages
-                acceptedInsurances
-            }
         }
     }
 `;

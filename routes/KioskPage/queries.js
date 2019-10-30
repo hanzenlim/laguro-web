@@ -252,49 +252,6 @@ export const GET_OFFICE = gql`
         getOffice(id: $id) {
             id
             name
-            listings {
-                id
-            }
-            activeDentists(
-                options: {
-                    rangeStart: "${moment()
-                        .utc()
-                        .format()}",
-                    rangeEnd: "${moment()
-                        .utc()
-                        .add(14, 'days')
-                        .format()}"
-                }
-            ) {
-                specialty
-                user {
-                    firstName
-                    lastName
-                    imageUrl
-                }
-                procedures {
-                    group
-                }
-                averageRating
-                availableAppointmentSlots(
-                    options: {
-                        rangeStart: "${moment()
-                            .utc()
-                            .format()}",
-                        rangeEnd: "${moment()
-                            .utc()
-                            .add(14, 'days')
-                            .format()}",
-                        officeId: $id
-                    }
-                ) {
-                    startTime
-                    reservationId
-                }
-                firstAppointmentDuration
-                languages
-                acceptedInsurances
-            }
         }
     }
 `;
