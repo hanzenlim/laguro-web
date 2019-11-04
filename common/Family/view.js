@@ -87,7 +87,8 @@ const FamilyView = ({
     refetch = () => {},
     openModal = () => {},
     closeModal = () => {},
-    viewDentalRecords = () => {},
+    hideAppointments = false,
+    hideDentalRecords = false,
     currentFamilyMember = {},
 }) => {
     const currentFamilyMemberName = getUserFullName(currentFamilyMember);
@@ -292,9 +293,7 @@ const FamilyView = ({
                                         fontSize={3}
                                         fontWeight="500"
                                     >
-                                        {`${member.firstName} ${
-                                            member.lastName
-                                        }`}
+                                        {`${member.firstName} ${member.lastName}`}
                                     </Text>
                                 </Flex>
 
@@ -307,37 +306,42 @@ const FamilyView = ({
                                         gridColumnGap="18px"
                                         gridRowGap="18px"
                                     >
-                                        <Button
-                                            onClick={() =>
-                                                openModal({
-                                                    modal: 'appointments',
-                                                    userId: member.id,
-                                                })
-                                            }
-                                            type="ghost"
-                                            height="auto"
-                                        >
-                                            <Flex
-                                                border="1px solid"
-                                                borderColor="#ececec"
-                                                borderRadius="30px"
-                                                height="62px"
-                                                width="132px"
-                                                alignItems="center"
-                                                justifyContent="center"
-                                                flexDirection="column"
+                                        {!hideAppointments && (
+                                            <Button
+                                                onClick={() =>
+                                                    openModal({
+                                                        modal: 'appointments',
+                                                        userId: member.id,
+                                                    })
+                                                }
+                                                type="ghost"
+                                                height="auto"
                                             >
-                                                <Box opacity="0.63" mb="8px">
-                                                    <Icon type="clock" />
-                                                </Box>
-                                                <Text
-                                                    color="#3481f8"
-                                                    fontSize={0}
+                                                <Flex
+                                                    border="1px solid"
+                                                    borderColor="#ececec"
+                                                    borderRadius="30px"
+                                                    height="62px"
+                                                    width="132px"
+                                                    alignItems="center"
+                                                    justifyContent="center"
+                                                    flexDirection="column"
                                                 >
-                                                    APPOINTMENTS
-                                                </Text>
-                                            </Flex>
-                                        </Button>
+                                                    <Box
+                                                        opacity="0.63"
+                                                        mb="8px"
+                                                    >
+                                                        <Icon type="clock" />
+                                                    </Box>
+                                                    <Text
+                                                        color="#3481f8"
+                                                        fontSize={0}
+                                                    >
+                                                        APPOINTMENTS
+                                                    </Text>
+                                                </Flex>
+                                            </Button>
+                                        )}
 
                                         <Button
                                             onClick={() =>
@@ -403,41 +407,46 @@ const FamilyView = ({
                                             </Flex>
                                         </Button>
 
-                                        <Link
-                                            isExternal
-                                            target="_blank"
-                                            rel="noopener"
-                                            to={`${getLTMBaseUrl()}/go?to=/chart&familyMemberId=${_get(
-                                                member,
-                                                'id'
-                                            )}`}
-                                        >
-                                            <Button type="ghost" height="auto">
-                                                <Flex
-                                                    border="1px solid"
-                                                    borderColor="#ececec"
-                                                    borderRadius="30px"
-                                                    height="62px"
-                                                    width="132px"
-                                                    alignItems="center"
-                                                    justifyContent="center"
-                                                    flexDirection="column"
+                                        {!hideDentalRecords && (
+                                            <Link
+                                                isExternal
+                                                target="_blank"
+                                                rel="noopener"
+                                                to={`${getLTMBaseUrl()}/go?to=/chart&familyMemberId=${_get(
+                                                    member,
+                                                    'id'
+                                                )}`}
+                                            >
+                                                <Button
+                                                    type="ghost"
+                                                    height="auto"
                                                 >
-                                                    <Box
-                                                        opacity="0.63"
-                                                        mb="8px"
+                                                    <Flex
+                                                        border="1px solid"
+                                                        borderColor="#ececec"
+                                                        borderRadius="30px"
+                                                        height="62px"
+                                                        width="132px"
+                                                        alignItems="center"
+                                                        justifyContent="center"
+                                                        flexDirection="column"
                                                     >
-                                                        <Icon type="dentalRecords" />
-                                                    </Box>
-                                                    <Text
-                                                        color="#3481f8"
-                                                        fontSize={0}
-                                                    >
-                                                        DENTAL RECORDS
-                                                    </Text>
-                                                </Flex>
-                                            </Button>
-                                        </Link>
+                                                        <Box
+                                                            opacity="0.63"
+                                                            mb="8px"
+                                                        >
+                                                            <Icon type="dentalRecords" />
+                                                        </Box>
+                                                        <Text
+                                                            color="#3481f8"
+                                                            fontSize={0}
+                                                        >
+                                                            DENTAL RECORDS
+                                                        </Text>
+                                                    </Flex>
+                                                </Button>
+                                            </Link>
+                                        )}
                                     </Grid>
                                 </Flex>
                             </Box>

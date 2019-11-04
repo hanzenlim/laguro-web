@@ -241,6 +241,8 @@ export const GET_APPOINTMENT = gql`
             status
             patient {
                 id
+                firstName
+                lastName
                 hasSubmittedHealthHistoryForm
             }
         }

@@ -13,7 +13,7 @@ import { BookAppointmentDecision } from './BookAppointmentDecision';
 import { getUserFullName, getUserId } from '~/util/userUtils';
 import { getDentistFullName } from '~/util/dentistUtils';
 import { getOfficeAddress } from '~/util/officeUtils';
-import { SelectPatient } from './SelectPatient';
+import SelectPatient from './SelectPatient';
 import { withScreenSizes } from '~/components/Responsive';
 import { scrollToTop } from '~/util/windowUtils';
 import { getUser } from '~/util/authUtils';
@@ -87,7 +87,7 @@ function BookAppointmentView({
                         <SelectPatient
                             patients={_get(user, 'family.members')}
                             currentPatientId={currentPatientId}
-                            onPatientSelect={onPatientSelect}
+                            onSetSelectedPatientId={onPatientSelect}
                         />
                     </Box>
                 )}

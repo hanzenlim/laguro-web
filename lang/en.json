@@ -155,7 +155,7 @@
     "bookAppointment.terms.terms": "Terms & Conditions",
     "bookAppointment.terms.agree": "Agree",
     "bookAppointment.appointmentConfirmation.appointmentConfirmation": "Appointment confirmation",
-    "bookAppointment.appointmentConfirmation.yourAppointment": "Your appointment with {dentistName} has been scheduled",
+    "bookAppointment.appointmentConfirmation.yourAppointment": "{patientName}'s appointment with {dentistName} has been scheduled",
     "bookAppointment.appointmentConfirmation.notifiedDentist": "We have notified your dentist about this appointment",
     "medicalHistoryForm.title": "Medical history form",
     "medicalHistoryForm.lastDentalExam.lastDentalExam": "When was your last dental exam and x-rays?",

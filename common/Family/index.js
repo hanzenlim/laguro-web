@@ -58,6 +58,7 @@ class Family extends PureComponent {
 
     render() {
         const { activeModal = '', userId = '' } = this.state;
+        const { hideDentalRecords, hideAppointments } = this.props;
 
         return (
             <Composed>
@@ -82,6 +83,8 @@ class Family extends PureComponent {
                             openModal={this.openModal}
                             closeModal={this.closeModal}
                             currentFamilyMember={currentFamilyMember}
+                            hideDentalRecords={hideDentalRecords}
+                            hideAppointments={hideAppointments}
                         />
                     );
                 }}

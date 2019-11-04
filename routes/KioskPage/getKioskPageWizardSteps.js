@@ -134,7 +134,7 @@ const {
 const getAnswer = answer => {
     if (answer === 'true') {
         return true;
-    } else if (answer === 'false') {
+    } if (answer === 'false') {
         return false;
     } else if (answer === null) {
         return '';
@@ -342,7 +342,7 @@ export const getKioskPageWizardSteps = ({
                         insuranceInfo: hasNoInsurance
                             ? null
                             : {
-                                 ...(!_isEmpty(issueDate) && {
+                                  ...(!_isEmpty(issueDate) && {
                                       issueDate,
                                   }),
                                   ...(!_isEmpty(insuranceProvider) && {
@@ -472,6 +472,9 @@ export const getKioskPageWizardSteps = ({
                         formikProps.setSubmitting(true);
                     },
                     action: async () => {
+                        const kioskSelectedFamilyMemberId = cookies.get(
+                            'kioskSelectedFamilyMember'
+                        );
                         const result = await _get(
                             mutations,
                             'createAppointmentFromKiosk'
@@ -480,7 +483,9 @@ export const getKioskPageWizardSteps = ({
                                 input: {
                                     officeId,
                                     dentistId: dentistTime.dentistId,
-                                    patientId: _get(user, 'id'),
+                                    patientId:
+                                        kioskSelectedFamilyMemberId ||
+                                        _get(user, 'id'),
                                     localStartTime: moment(
                                         dentistTime.startTime
                                     ).format(LOCAL_TIME_FORMAT),

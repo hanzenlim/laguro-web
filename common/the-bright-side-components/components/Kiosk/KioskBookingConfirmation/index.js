@@ -8,6 +8,7 @@ import { getFormatTextFromProps } from '~/util/intlUtils';
 class KioskBookingConfirmationClass extends React.Component {
     render() {
         const {
+            patientName,
             doctorName,
             rating,
             numReviews,
@@ -30,7 +31,7 @@ class KioskBookingConfirmationClass extends React.Component {
                 <Onboarding.StepBlurbText
                     text={formatText(
                         'bookAppointment.appointmentConfirmation.yourAppointment',
-                        { dentistName: doctorName }
+                        { patientName, dentistName: doctorName }
                     )}
                 />
 

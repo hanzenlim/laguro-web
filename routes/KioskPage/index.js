@@ -358,8 +358,10 @@ class KioskPage extends PureComponent {
                     const localStartTime = _get(appt, 'localStartTime');
                     const numReviews = _get(appt, 'dentist.numReviews');
                     const rating = _get(appt, 'dentist.averageRating');
-                    const firstName = _get(appt, 'dentist.user.firstName');
-                    const lastName = _get(appt, 'dentist.user.lastName');
+                    const dentistFirstName = _get(appt, 'dentist.user.firstName', '');
+                    const dentistLastName = _get(appt, 'dentist.user.lastName', '');
+                    const patientFirstName = _get(appt, 'patient.firstName', '');
+                    const patientLastName = _get(appt, 'patient.lastName', '');
                     const imageUrl = _get(appt, 'dentist.user.imageUrl');
 
                     const hasGoneThroughInsurancePage = _get(
@@ -660,7 +662,8 @@ class KioskPage extends PureComponent {
                                         time={moment(localStartTime).format(
                                             'h:mm A'
                                         )}
-                                        doctorName={`Dr. ${firstName} ${lastName}`}
+                                        patientName={`${patientFirstName} ${patientLastName}`}
+                                        doctorName={`Dr. ${dentistFirstName} ${dentistLastName}`}
                                         hasGoneThroughInsurancePage={
                                             hasGoneThroughInsurancePage
                                         }

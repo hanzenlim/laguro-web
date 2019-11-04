@@ -154,7 +154,7 @@
     "bookAppointment.terms.terms": "Términos y condiciones",
     "bookAppointment.terms.agree": "Aceptar",
     "bookAppointment.appointmentConfirmation.appointmentConfirmation": "Confirmación de la cita",
-    "bookAppointment.appointmentConfirmation.yourAppointment": "Su cita con {dentistName} ha sido programada",
+    "bookAppointment.appointmentConfirmation.yourAppointment": "{patientName} Su cita con {dentistName} ha sido programada",
     "bookAppointment.appointmentConfirmation.notifiedDentist": "Hemos notificado a su dentista sobre esta cita",
     "medicalHistoryForm.title": "Formulario de historial medico",
     "medicalHistoryForm.lastDentalExam.lastDentalExam": "¿Cuándo se realizó su último examen dental y radiografías?",
