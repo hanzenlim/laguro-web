@@ -1,7 +1,11 @@
 // Polyfill Node with `Intl` that has data for all locales.
 // See: https://formatjs.io/guides/runtime-environments/#server
 const path = require('path');
-require('dotenv').config(process.env.LAGURO_USE_CUSTOM_DOTENV_FILE === "1" ? { path: path.resolve(process.cwd(), '._env') } : null);
+require('dotenv').config(
+    process.env.LAGURO_USE_CUSTOM_DOTENV_FILE === '1'
+        ? { path: path.resolve(process.cwd(), '._env') }
+        : null
+);
 
 const IntlPolyfill = require('intl');
 
@@ -21,7 +25,10 @@ const compression = require('compression');
 const siteMapRoutes = require('./apiRoutes/siteMapRoutes');
 
 const port = parseInt(process.env.PORT, 10) || 3000;
-const dev = process.env.NODE_ENV !== 'production';
+
+const ENV = process.env.NODE_ENV || 'development';
+
+const dev = ENV.toLowerCase() !== 'production';
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
