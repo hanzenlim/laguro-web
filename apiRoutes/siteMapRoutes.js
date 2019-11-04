@@ -3,14 +3,14 @@ const esClient = require('../apiUtil/esClient');
 
 const getItems = body => body.hits.hits.map(({ _source }) => _source);
 async function searchEntity(isVerified, entity) {
-    let searchResult;
+    let searchResult = [];
     try {
         const response = await esClient.search({
             index: entity,
             from: 0,
             size: 1000,
             body: {
-                _source: ['id', 'isVerified'],
+                _source: ['id', 'isVerified', 'permalink'],
                 query: {
                     match: {
                         isVerified,
@@ -34,7 +34,9 @@ function entitySiteMap(availableEntities, entityName, frequency) {
         returnSiteMapXml += `
             <url>
                 <loc>
-                    https://www.laguro.com/${entityName}/${availableEntities[index].id}
+                    https://www.laguro.com/${entityName}/${availableEntities[
+            index
+        ].permalink || availableEntities[index].id}
                 </loc>
                 <changefreq>${frequency}</changefreq>
             </url>
@@ -92,6 +94,14 @@ const siteMapRoutes = app => {
                 </url>
                 <url>
                     <loc>https://www.laguro.com/privacy</loc>
+                    <changefreq>yearly</changefreq>
+                </url>
+                <url>
+                    <loc>https://blog.laguro.com/</loc>
+                    <changefreq>weekly</changefreq>
+                </url>
+                <url>
+                    <loc>https://www.lagurouniversity.com/</loc>
                     <changefreq>yearly</changefreq>
                 </url>
                 ${entitySiteMap(dentistResult, 'dentist', 'monthly')}
