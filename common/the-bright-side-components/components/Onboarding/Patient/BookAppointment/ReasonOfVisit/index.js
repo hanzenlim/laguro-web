@@ -5,12 +5,12 @@ import Onboarding, { LastMargin } from '../../../../Onboarding';
 import ToolsIcon from '../../../Assets/toolsIcon';
 import ToothIcon from '../../../Assets/toothIcon';
 import { Text } from '~/components';
-import messages from '~/strings/messages.json';
+import enMessages from '~/lang/en.json';
 
 const ReasonOfVisit = props => {
     // TODO: Fix this
     // const t = useFormatMessage();
-    const t = id => messages['en'][id];
+    const t = id => enMessages[id];
 
     return (
         <Box width="400px" mx="auto">

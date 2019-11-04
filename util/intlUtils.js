@@ -1,7 +1,6 @@
 import _get from 'lodash/get';
 import _upperFirst from 'lodash/upperFirst';
 import { reduceArrayOfObjects } from './arrayUtils';
-// import messages from '../strings/messages.json';   // not sure what to do here
 
 export const getFormatTextFromProps = props => (textId, values = {}) =>
     _get(props, 'intl.formatMessage')({ id: textId }, values);
