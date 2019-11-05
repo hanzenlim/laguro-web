@@ -123,6 +123,7 @@ const DISPLAY_NAME_TO_TYPES = {
         'TREATMENT_PLAN_SERVICE_FEE',
         'TREATMENT_PLAN_PAYMENT',
         'TREATMENT_PLAN',
+        'CASH_WITHDRAWAL',
     ],
     Chair: ['CHAIR_RENTAL_SERVICE_FEE', 'CHAIR_RENTAL'],
     Services: [
@@ -144,6 +145,7 @@ const TYPE_TO_DISPLAY_NAME = {
     TREATMENT_PLAN_SERVICE_FEE: 'Treatment',
     TREATMENT_PLAN_PAYMENT: 'Treatment',
     TREATMENT_PLAN: 'Treatment',
+    CASH_WITHDRAWAL: 'Treatment',
     CHAIR_RENTAL_SERVICE_FEE: 'Chair',
     CHAIR_RENTAL: 'Chair',
     IMAGE_REQUEST: 'Services',
