@@ -8,6 +8,7 @@ class InlineStylesHead extends Head {
     getCssLinks() {
         return this.__getInlineStyles();
     }
+
     __getInlineStyles() {
         const { assetPrefix, files } = this.context._documentProps;
         if (!files || files.length === 0) return null;
@@ -75,6 +76,7 @@ export default class MyDocument extends Document {
                         content="width=device-width, initial-scale=1"
                     />
                     <meta name="theme-color" content="#000000" />
+                    <link rel="canonical" href="https://www.laguro.com"/>
                     <link
                         rel="preload"
                         href="/static/fonts/silka/silka-regular-webfont.woff2"
@@ -83,19 +85,19 @@ export default class MyDocument extends Document {
                         crossOrigin="true"
                     />
                     <link
-                        href="https://www.google-analytics.com"
+                        href="https://www.googletagmanager.com"
                         rel="preconnect"
                         crossOrigin="true"
                     />
                     <link
-                        href="https://www.googletag</link>manager.com"
+                        href="http://cdn.taboola.com"
                         rel="preconnect"
                         crossOrigin="true"
                     />
-                    <script
-                        id="stripe-js"
-                        src="https://js.stripe.com/v3/"
-                        async
+                    <link
+                        href="http://www.googleadservices.com"
+                        rel="preconnect"
+                        crossOrigin="true"
                     />
                     <link
                         rel="icon"
@@ -109,25 +111,17 @@ export default class MyDocument extends Document {
                         sizes="16x16"
                         href="/static/images/fav</link>icon-16x16.png"
                     />
-                    <script
-                        dangerouslySetInnerHTML={{
-                            __html: `(function (i, s, o, g, r, a, m, n) {
-                                i['moengage_object'] = r; t = {}; q = function (f) { return function () { (i['moengage_q'] = i['moengage_q'] || []).push({ f: f, a: arguments }); }; };
-                                f = ['track_event', 'add_user_attribute', 'add_first_name', 'add_last_name', 'add_email', 'add_mobile',
-                                    'add_user_name', 'add_gender', 'add_birthday', 'destroy_session', 'add_unique_user_id', 'moe_events', 'call_web_push', 'track', 'location_type_attribute'];
-                                for (k in f) { t[f[k]] = q(f[k]); }
-                                a = s.createElement(o); m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m);
-                                i['moe'] = i['moe'] || function () { n = arguments[0]; return t; }; a.onload = function () { if (n) { i[r] = moe(n); } };
-                                })(window, document, 'script', 'https://cdn.moengage.com/webpush/moe_webSdk.min.latest.js', 'Moengage');`,
-                        }}
+                    <link 
+                        rel="preconnect" 
+                        href="https://player.vimeo.com"
                     />
-                    <script
-                        dangerouslySetInnerHTML={{
-                            __html: `Moengage = moe({
-                                app_id: "${process.env.REACT_APP_MOENGAGE_KEY}",
-                                debug_logs: 0
-                                });`,
-                        }}
+                    <link 
+                        rel="preconnect" 
+                        href="https://i.vimeocdn.com"
+                    />
+                    <link 
+                        rel="preconnect" 
+                        href="https://f.vimeocdn.com"
                     />
                     <script
                         dangerouslySetInnerHTML={{

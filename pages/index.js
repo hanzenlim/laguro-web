@@ -10,7 +10,6 @@ function Home(props) {
                 <link
                     href="https://blog.laguro.com"
                     rel="preconnect"
-                    crossOrigin="true"
                 />
             </Head>
             <HomePage {...props} />

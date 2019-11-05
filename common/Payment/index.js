@@ -21,11 +21,14 @@ class Payment extends PureComponent {
             // eslint-disable-next-line react/no-did-mount-set-state
             this.setState({ stripe: window.Stripe(stripePublicKey) });
         } else {
-            document
-                .querySelector('#stripe-js')
-                .addEventListener('load', () => {
-                    this.setState({ stripe: window.Stripe(stripePublicKey) });
-                });
+            const script = document.createElement("script");
+            script.src = "https://js.stripe.com/v3/";
+            script.async = true;
+            script.id = "stripe-js";
+            script.addEventListener('load', () => {
+                this.setState({ stripe: window.Stripe(stripePublicKey) });
+            });
+            document.body.appendChild(script);
         }
     }
 
