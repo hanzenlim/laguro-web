@@ -9,14 +9,15 @@ import * as Yup from 'yup';
 import { message } from 'antd';
 import _trim from 'lodash/trim';
 import { Box, Text, Image, Button, Flex } from '~/components';
-import { filestackKey } from '../../../keys';
 import { profileImageRatio } from '~/util/uiUtil';
 import { USER_PHOTOS_CONTAINER } from '~/util/strings';
 import { setImageSizeToUrl } from '~/util/imageUtil';
-import defaultUserImage from '~/components/Image/defaultUserImage.svg';
+import { filestackKey } from '../../../keys';
 import { SelectLanguage } from '../../the-bright-side-components/components/Onboarding/SelectLanguage';
 import { Onboarding } from '../../the-bright-side-components';
 import FormFields from '../../FormFields';
+
+const defaultUserImage = '/static/images/defaultUserImage.svg';
 
 const StyledNextButton = styled(Button)`
     && {
@@ -38,6 +39,7 @@ class UpdateProfileForm extends PureComponent {
             setNewProfileImage,
             removeProfileImage,
             hasRemovedProfileImage,
+            isSubmitting,
         } = this.props;
 
         return (
@@ -211,7 +213,8 @@ class UpdateProfileForm extends PureComponent {
                                             event.target &&
                                             event.target.value &&
                                             typeof parseInt(
-                                                event.target.value
+                                                event.target.value,
+                                                10
                                             ) === 'number'
                                         ) {
                                             props.form.setFieldValue(
@@ -393,7 +396,7 @@ class UpdateProfileForm extends PureComponent {
                     <Flex width="100%" justifyContent="center" mt={28}>
                         <StyledNextButton
                             htmlType="submit"
-                            loading={this.props.isSubmitting}
+                            loading={isSubmitting}
                             width={329}
                             height={50}
                             ghost
@@ -409,6 +412,7 @@ class UpdateProfileForm extends PureComponent {
 
 UpdateProfileForm.defaultProps = {
     onSuccess: async () => {},
+    newProfileImage: null,
 };
 
 UpdateProfileForm.propTypes = {
@@ -422,10 +426,8 @@ UpdateProfileForm.propTypes = {
         emailNotification: PropTypes.bool,
         customName: PropTypes.string,
     }).isRequired,
-    error: PropTypes.string,
-    loading: PropTypes.bool,
     newProfileImage: PropTypes.string,
-    onSuccess: PropTypes.func.isRequired,
+    onSuccess: PropTypes.func,
     setNewProfileImage: PropTypes.func.isRequired,
 };
 
