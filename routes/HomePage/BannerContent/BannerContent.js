@@ -12,8 +12,8 @@ import {
     Responsive,
     Image,
 } from '~/components';
-import PriceEstimationQuiz from '../PriceEstimationQuiz';
 import { trackPriceEstimationQuizAttempt } from '~/util/trackingUtils';
+import PriceEstimationQuiz from '../PriceEstimationQuiz';
 import { AppContext } from '../../../appContext';
 
 const { withScreenSizes } = Responsive;
@@ -61,7 +61,7 @@ const BannerContent = () => {
             >
                 <Image
                     height="100%"
-                    src="/static/images/banner-bg.svg"
+                    src="/static/images/banner-bg.png"
                     alt="homepage-background"
                     style={{ objectFit: 'cover' }}
                 />
@@ -109,7 +109,7 @@ const BannerContent = () => {
                         fontSize={[1, '', 2]}
                         fontWeight="light"
                     >
-                        {`or `}
+                        or
                     </Text>
                     <Link to="/dentist/search" prefetch={false}>
                         <Text

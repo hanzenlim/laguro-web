@@ -1,10 +1,9 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 
-import { Box, Responsive } from '~/components';
+import { Box, Responsive, Flex, Image } from '~/components';
 import LoginModal from '~/common/Modals/LoginModal';
 import Login from '~/common/Login';
-import { Flex, Image } from '~/components';
 
 const { Mobile, TabletDesktop } = Responsive;
 
@@ -36,7 +35,7 @@ const LoginPageView = ({
                 >
                     <Image
                         height="100%"
-                        src="/static/images/banner-bg.svg"
+                        src="/static/images/banner-bg.png"
                         alt="homepage-background"
                         style={{ objectFit: 'cover' }}
                     />
