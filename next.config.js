@@ -1,9 +1,5 @@
 const path = require('path');
-require('dotenv').config(
-    process.env.LAGURO_USE_CUSTOM_DOTENV_FILE === '1'
-        ? { path: path.resolve(process.cwd(), '._env') }
-        : null
-);
+require('dotenv').config(process.env.LAGURO_USE_CUSTOM_DOTENV_FILE === "1" ? { path: path.resolve(process.cwd(), '._env') } : null);
 
 const withCss = require('@zeit/next-css');
 const Dotenv = require('dotenv-webpack');
@@ -40,7 +36,7 @@ const nextConfig = {
         }
 
         config.module.rules.push({
-            test: /\.(eot|woff|woff2|ttf|png|jpg|gif)$/,
+            test: /\.(eot|woff|woff2|ttf|svg|png|jpg|gif)$/,
             use: {
                 loader: 'url-loader',
                 options: {
@@ -48,11 +44,6 @@ const nextConfig = {
                     name: '[name].[ext]',
                 },
             },
-        });
-
-        config.module.rules.push({
-            test: /\.svg$/,
-            use: ['@svgr/webpack'],
         });
 
         config.plugins = config.plugins || [];
