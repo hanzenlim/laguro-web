@@ -61,7 +61,9 @@ const WalletDashboard = props => {
                         return <RedirectErrorPage />;
                     }
 
-                    const wallet = _get(data, 'getWalletByUserId', {});
+                    const wallet = isGroupWallet
+                        ? _get(data, 'getWallet', {})
+                        : _get(data, 'getWalletByUserId', {});
                     const transactions = _get(wallet, 'transactions', []);
                     const pendingAmount = _get(wallet, 'pendingAmount', 0);
                     const laguroCreditAmount = _get(
