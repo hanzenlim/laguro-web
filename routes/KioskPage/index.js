@@ -358,9 +358,21 @@ class KioskPage extends PureComponent {
                     const localStartTime = _get(appt, 'localStartTime');
                     const numReviews = _get(appt, 'dentist.numReviews');
                     const rating = _get(appt, 'dentist.averageRating');
-                    const dentistFirstName = _get(appt, 'dentist.user.firstName', '');
-                    const dentistLastName = _get(appt, 'dentist.user.lastName', '');
-                    const patientFirstName = _get(appt, 'patient.firstName', '');
+                    const dentistFirstName = _get(
+                        appt,
+                        'dentist.user.firstName',
+                        ''
+                    );
+                    const dentistLastName = _get(
+                        appt,
+                        'dentist.user.lastName',
+                        ''
+                    );
+                    const patientFirstName = _get(
+                        appt,
+                        'patient.firstName',
+                        ''
+                    );
                     const patientLastName = _get(appt, 'patient.lastName', '');
                     const imageUrl = _get(appt, 'dentist.user.imageUrl');
 
@@ -640,9 +652,7 @@ class KioskPage extends PureComponent {
                                                 week
                                             </Text>
                                             <Onboarding.NextButton
-                                                onClick={() =>
-                                                    onKioskLogout(props.client)
-                                                }
+                                                onClick={() => onKioskLogout()}
                                             >
                                                 Log out
                                             </Onboarding.NextButton>
@@ -762,7 +772,7 @@ class KioskPage extends PureComponent {
                                         time={moment(localStartTime).format(
                                             'h:mm A'
                                         )}
-                                        doctorName={`Dr. ${firstName} ${lastName}`}
+                                        doctorName={`Dr. ${dentistFirstName} ${dentistLastName}`}
                                         {...props}
                                     />
                                 );
