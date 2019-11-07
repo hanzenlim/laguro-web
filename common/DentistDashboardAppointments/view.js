@@ -324,7 +324,13 @@ class DentistDashboardAppointments extends PureComponent {
         const upcomingAppointments = filterAppointments({
             appointments,
             isUpcoming: true,
+        }).sort((a, b) => {
+            // Sort by earliest date first
+            if (a.startTime < b.startTime) return -1;
+            if (a.startTime > b.startTime) return 1;
+            return 0;
         });
+
         const pastAppointments = filterAppointments({
             appointments,
             isUpcoming: false,
