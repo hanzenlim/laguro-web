@@ -109,7 +109,7 @@ const BannerContent = () => {
                         fontSize={[1, '', 2]}
                         fontWeight="light"
                     >
-                        or
+                        or{' '}
                     </Text>
                     <Link to="/dentist/search" prefetch={false}>
                         <Text
