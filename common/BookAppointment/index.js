@@ -291,7 +291,7 @@ const Composed = adopt({
                 variables={{
                     input,
                 }}
-                context={{ clientName: 'appointment' }}
+                context={{ clientName: 'search' }}
             >
                 {render}
             </Query>
