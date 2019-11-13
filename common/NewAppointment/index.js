@@ -4,12 +4,12 @@ import { message } from 'antd';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import _get from 'lodash/get';
 
-import NewAppointmentView from './view';
 import { Loading } from '~/components';
-import RedirectErrorPage from '~/routes/GeneralErrorPage';
-import { getDentistQuery, requestAppointmentMutation } from './queries';
+import RedirectToErrorPage from '~/routes/GeneralErrorPage';
 import { getUser } from '~/util/authUtils';
 import { trackBookAppointment } from '~/util/trackingUtils';
+import NewAppointmentView from './view';
+import { getDentistQuery, requestAppointmentMutation } from './queries';
 
 const LOCAL_TIME_FORMAT = 'YYYY-MM-DDTHH:mm:ss';
 
@@ -17,9 +17,12 @@ function NewAppointment({ onSuccessApptCreation, onClose }) {
     const [showConfirmationMessage, setShowConfirmationMessage] = useState(
         false
     );
-    const [requestAppointment] = useMutation(requestAppointmentMutation, {
-        context: { clientName: 'appointment' },
-    });
+    const [requestAppointment, { loading: mutationLoading }] = useMutation(
+        requestAppointmentMutation,
+        {
+            context: { clientName: 'appointment' },
+        }
+    );
 
     const user = getUser();
     const id = _get(user, 'dentistId');
@@ -29,7 +32,7 @@ function NewAppointment({ onSuccessApptCreation, onClose }) {
     });
 
     if (error) {
-        return <RedirectErrorPage />;
+        return <RedirectToErrorPage />;
     }
 
     if (loading) {
@@ -93,9 +96,9 @@ function NewAppointment({ onSuccessApptCreation, onClose }) {
                 window.scrollTo(0, 0);
             }
         } catch (errors) {
-            const errorMessage = errors[0].message;
+            const errorMessage = errors.graphQLErrors[0].message;
 
-            message.error(errorMessage);
+            message.error(errorMessage, 5);
         }
     };
 
@@ -114,6 +117,7 @@ function NewAppointment({ onSuccessApptCreation, onClose }) {
             patientsName={patientsNameMap}
             onSubmit={onSubmit}
             onClose={onClose}
+            mutationLoading={mutationLoading}
         />
     );
 }

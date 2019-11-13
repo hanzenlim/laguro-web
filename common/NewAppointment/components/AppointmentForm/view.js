@@ -47,12 +47,17 @@ const renderErrorMessage = errors =>
 const TIMEPICKER_FORMAT = 'h:mma';
 
 class AppointmentFormView extends PureComponent {
-    state = {
-        patientsName: this.props.patientsName.map(value => value.fullName),
-    };
+    constructor(props) {
+        super(props);
+        const { patientsName } = this.props;
+        this.state = {
+            patientsName: patientsName.map(value => value.fullName),
+        };
+    }
 
     onSearchPatient = value => {
-        const result = this.props.patientsName
+        const { patientsName } = this.props;
+        const result = patientsName
             .map(patient => patient.fullName)
             .filter(patient => patient.match(value));
 
@@ -62,7 +67,12 @@ class AppointmentFormView extends PureComponent {
     };
 
     render() {
-        const { preferredLocations, validate, onSubmit } = this.props;
+        const {
+            preferredLocations,
+            validate,
+            onSubmit,
+            mutationLoading,
+        } = this.props;
 
         if (
             _get(preferredLocations, 'length') &&
@@ -114,6 +124,9 @@ class AppointmentFormView extends PureComponent {
                                 setFieldValue(field, formattedTime);
                             };
 
+                            const { onClose } = this.props;
+                            const { patientsName } = this.state;
+
                             return (
                                 <Box
                                     width="375px"
@@ -135,13 +148,13 @@ class AppointmentFormView extends PureComponent {
                                             >
                                                 Create a New Appointment
                                             </Text>
-                                            {this.props.onClose && (
+                                            {onClose && (
                                                 <Text
                                                     fontSize={1}
                                                     my="15px"
                                                     mx="20px"
                                                     cursor="pointer"
-                                                    onClick={this.props.onClose}
+                                                    onClick={onClose}
                                                 >
                                                     x
                                                 </Text>
@@ -158,9 +171,7 @@ class AppointmentFormView extends PureComponent {
                                             <StyledAutoComplete
                                                 width="100%"
                                                 height="45px"
-                                                dataSource={
-                                                    this.state.patientsName
-                                                }
+                                                dataSource={patientsName}
                                                 onSelect={handleFieldChange(
                                                     'patientName'
                                                 )}
@@ -190,14 +201,14 @@ class AppointmentFormView extends PureComponent {
                                                 >
                                                     {preferredLocations.map(
                                                         location => (
-                                                            <Option
+                                                            <Select.Option
                                                                 value={
                                                                     location.name
                                                                 }
                                                                 id={location.id}
                                                             >
                                                                 {location.name}
-                                                            </Option>
+                                                            </Select.Option>
                                                         )
                                                     )}
                                                 </Select>
@@ -309,6 +320,7 @@ class AppointmentFormView extends PureComponent {
                                                 mt="14px"
                                                 width="100%"
                                                 htmlType="submit"
+                                                loading={mutationLoading}
                                             >
                                                 Request confirmation
                                             </Button>
@@ -324,9 +336,12 @@ class AppointmentFormView extends PureComponent {
     }
 }
 
+AppointmentFormView.defaultProps = {
+    patientsName: [],
+    preferredLocations: [],
+};
+
 AppointmentFormView.propTypes = {
-    appointments: PropTypes.array,
-    onSelect: PropTypes.func,
     onClose: PropTypes.func.isRequired,
     validate: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,

@@ -50,7 +50,8 @@
         "react-hooks/rules-of-hooks": "error",
         "react-hooks/exhaustive-deps": "warn",
         "react/jsx-props-no-spreading": "off",
-        "react/jsx-fragments": "off"
+        "react/jsx-fragments": "off",
+        "react/state-in-constructor": "off"
     },
     "globals": {
         "window": true,

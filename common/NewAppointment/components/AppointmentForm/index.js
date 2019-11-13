@@ -4,13 +4,14 @@ import AppointmentFormView from './view';
 
 class AppointmentForm extends PureComponent {
     onSubmit = values => {
-        const selectedPatient = this.props.patientsName.filter(
+        const { patientsName, onSubmit } = this.props;
+        const selectedPatient = patientsName.filter(
             value => value.fullName === values.patientName
         );
 
         const { dentalOfficeId } = values;
 
-        this.props.onSubmit({
+        onSubmit({
             selectedPatientId: selectedPatient[0].key,
             dentalOfficeId,
             selectedDate: values.selectedDate,
@@ -57,16 +58,22 @@ class AppointmentForm extends PureComponent {
     };
 
     render() {
-        const { preferredLocations } = this.props;
+        const {
+            preferredLocations,
+            mutationLoading,
+            patientsName,
+            onClose,
+        } = this.props;
         return (
             <AppointmentFormView
                 onDateChange={this.onDateChange}
                 preferredLocations={preferredLocations}
                 onSelectLocation={this.handleSelectLocation}
                 validate={this.validateForm}
-                patientsName={this.props.patientsName}
+                patientsName={patientsName}
                 onSubmit={this.onSubmit}
-                onClose={this.props.onClose}
+                onClose={onClose}
+                mutationLoading={mutationLoading}
             />
         );
     }
