@@ -23,7 +23,7 @@ const DentistSearchPageView = ({
 }) => {
     const { data, loading } = useQuery(GET_DENTISTS_AND_APPOINTMENT_SLOTS, {
         variables: { input },
-        context: { clientName: 'search' },
+        context: { clientName: 'appointment' },
     });
 
     const items = _get(data, 'searchForDentistsAndAppointmentSlots', []);
