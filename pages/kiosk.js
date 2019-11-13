@@ -11,6 +11,13 @@ const KioskPage = dynamic(() => import('../routes/KioskPage'), {
     ssr: false,
 });
 
+const KioskAppointmentCodeConfirmation = dynamic(
+    () => import('~/routes/KioskAppointmentCodeConfirmation'),
+    {
+        ssr: false,
+    }
+);
+
 const KioskOfficeSetUpPage = dynamic(
     () => import('../routes/KioskOfficeSetUpPage'),
     {
@@ -30,6 +37,10 @@ function App() {
                 <Route
                     path="/kiosk/office-setup"
                     component={KioskOfficeSetUpPage}
+                />
+                <Route
+                    path="/kiosk/appointment-code-confirmation"
+                    component={KioskAppointmentCodeConfirmation}
                 />
                 <Route path="/kiosk" component={KioskPage} />
             </Switch>

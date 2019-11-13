@@ -1,36 +1,46 @@
 import React, { useState, useRef, useEffect } from 'react';
 import cookies from 'browser-cookies';
-import { adopt } from 'react-adopt';
-import { checkIntoKioskMutation, getUserQuery } from './queries';
-import { Mutation } from 'react-apollo';
-import { useQuery } from '@apollo/react-hooks';
 import { message } from 'antd';
-import { setUser, setAuthToken } from '~/util/authUtils';
 import _isEmpty from 'lodash/isEmpty';
 import _get from 'lodash/get';
-import CheckInWithAppointmentCodeView from './view';
+import { useMutation } from '@apollo/react-hooks';
+
+import { setAuthToken } from '~/util/authUtils';
 import { KIOSK_OFFICE_ID_COOKIE_VARIABLE_NAME } from '~/routes/KioskPage';
 import { KIOSK_APPT_CODE_COOKIE_VARIABLE_NAME } from '~/routes/KioskPage/getKioskPageWizardSteps';
 
-const Composed = adopt({
-    checkIntoKiosk: ({ render }) => (
-        <Mutation
-            mutation={checkIntoKioskMutation}
-            context={{ clientName: 'appointment' }}
-        >
-            {render}
-        </Mutation>
-    ),
-});
+import { checkIntoKioskMutation } from './queries';
+import CheckInWithAppointmentCodeView from './view';
 
 const CheckInWithAppointmentCode = props => {
     const pinInputRef = useRef(null);
+
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [token, setToken] = useState(null);
+    const [appointmentId, setAppointmentId] = useState(null);
+
+    const [checkIntoKiosk] = useMutation(checkIntoKioskMutation, {
+        context: { clientName: 'appointment' },
+    });
 
     const redirect = async () => {
         await props.formikProps.setFieldValue('hasAppointmentCode', false);
         props.formikProps.submitForm();
     };
+
+    useEffect(() => {
+        if (appointmentId) {
+            props.router.push(
+                `/kiosk/appointment-code-confirmation?id=${appointmentId}`
+            );
+        }
+    }, [appointmentId]);
+
+    useEffect(() => {
+        if (token) {
+            setAuthToken(token);
+        }
+    }, [token]);
 
     useEffect(() => {
         props.formikProps.setFieldValue('hasAppointmentCode', true);
@@ -40,78 +50,62 @@ const CheckInWithAppointmentCode = props => {
         cookies.erase(KIOSK_APPT_CODE_COOKIE_VARIABLE_NAME);
     }, []);
 
-    return (
-        <Composed>
-            {({ checkIntoKiosk }) => {
-                const validatePin = async pin => {
-                    setIsSubmitting(true);
-                    try {
-                        const checkIntoKioskResponse = await checkIntoKiosk({
-                            variables: {
-                                input: {
-                                    officeId:
-                                        cookies.get(
-                                            KIOSK_OFFICE_ID_COOKIE_VARIABLE_NAME
-                                        ) ||
-                                        localStorage.getItem(
-                                            KIOSK_OFFICE_ID_COOKIE_VARIABLE_NAME
-                                        ),
-                                    passcode: pin,
-                                },
-                            },
-                        });
+    const validatePin = async pin => {
+        setIsSubmitting(true);
+        try {
+            const checkIntoKioskResponse = await checkIntoKiosk({
+                variables: {
+                    input: {
+                        officeId:
+                            cookies.get(KIOSK_OFFICE_ID_COOKIE_VARIABLE_NAME) ||
+                            localStorage.getItem(
+                                KIOSK_OFFICE_ID_COOKIE_VARIABLE_NAME
+                            ),
+                        passcode: pin,
+                    },
+                },
+            });
 
-                        const checkIntoKioskData = _get(
-                            checkIntoKioskResponse,
-                            'data.checkIntoKiosk'
-                        );
+            cookies.set(KIOSK_APPT_CODE_COOKIE_VARIABLE_NAME, pin, {
+                expires: 0,
+            });
 
-                        if (checkIntoKioskData) {
-                            setAuthToken(checkIntoKioskData.authToken);
-                        }
+            const checkIntoKioskData = _get(
+                checkIntoKioskResponse,
+                'data.checkIntoKiosk',
+                null
+            );
 
-                        const getUserQueryResponse = useQuery(getUserQuery, {
-                            id: _get(checkIntoKioskData, 'userId'),
-                        });
-
-                        const getUserQueryData = _get(
-                            getUserQueryResponse,
-                            'data.getUser'
-                        );
-
-                        if (getUserQueryData) {
-                            setUser({
-                                ...getUserQueryData,
-                                token: checkIntoKioskData.token,
-                            });
-                        }
-
-                        cookies.set(KIOSK_APPT_CODE_COOKIE_VARIABLE_NAME, pin, {
-                            expires: 0,
-                        });
-
-                        props.formikProps.submitForm();
-                    } catch (error) {
-                        setIsSubmitting(false);
-                        if (!_isEmpty(pinInputRef)) {
-                            pinInputRef.current.clear();
-                        }
-                        if (error && !_isEmpty(error.graphQLErrors)) {
-                            message.error(error.graphQLErrors[0].message);
-                        }
-                    }
-                };
-
-                return (
-                    <CheckInWithAppointmentCodeView
-                        isSubmitting={isSubmitting}
-                        pinInputRef={pinInputRef}
-                        validatePin={validatePin}
-                        redirect={redirect}
-                    />
+            if (checkIntoKioskData) {
+                setAppointmentId(
+                    _get(checkIntoKioskData, 'appointmentId', null)
                 );
-            }}
-        </Composed>
+                setToken(_get(checkIntoKioskData, 'authToken', null));
+            } else {
+                setIsSubmitting(false);
+                if (!_isEmpty(pinInputRef)) {
+                    pinInputRef.current.clear();
+                }
+                message.error('Incorrect appointment code');
+            }
+        } catch (error) {
+            setIsSubmitting(false);
+            if (!_isEmpty(pinInputRef)) {
+                pinInputRef.current.clear();
+            }
+            if (error && !_isEmpty(error.graphQLErrors)) {
+                message.error(error.graphQLErrors[0].message);
+            }
+        }
+    };
+
+    return (
+        <CheckInWithAppointmentCodeView
+            isSubmitting={isSubmitting}
+            pinInputRef={pinInputRef}
+            validatePin={validatePin}
+            redirect={redirect}
+        />
     );
 };
 
