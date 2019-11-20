@@ -2,7 +2,7 @@ import get from 'lodash/get';
 import esClient from '~/lib/esClient';
 
 const DENTISTS_INDEX = 'dentists';
-const MAX_SIZE = 20;
+const MAX_SIZE = 6;
 
 const getFeaturedDentists = async () => {
     const searchResponse = await esClient.search({

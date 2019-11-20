@@ -3,11 +3,6 @@ import React, { PureComponent, Fragment } from 'react';
 import { withRouter } from 'next/router';
 import Head from 'next/head';
 
-import {
-    Birthday,
-    Onboarding,
-    Wizard,
-} from '~/common/the-bright-side-components';
 import _get from 'lodash/get';
 import _isNull from 'lodash/isNull';
 import cookies from 'browser-cookies';
@@ -16,6 +11,12 @@ import moment from 'moment';
 import { adopt } from 'react-adopt';
 import { Query, Mutation } from 'react-apollo';
 import { Alert } from 'antd';
+import { injectIntl } from 'react-intl';
+import {
+    Birthday,
+    Onboarding,
+    Wizard,
+} from '~/common/the-bright-side-components';
 import {
     getUser,
     onKioskLogout,
@@ -110,7 +111,6 @@ import { KioskFlowSuccess } from '~/common/the-bright-side-components/components
 import { HealthHistoryForm } from '~/common/the-bright-side-components/components/Onboarding/Patient/HealthHistoryForm';
 import { procedureList } from '../../data';
 import { getFormatTextFromProps } from '~/util/intlUtils';
-import { injectIntl } from 'react-intl';
 
 export const KIOSK_OFFICE_ID_COOKIE_VARIABLE_NAME = 'kiosk-office-id';
 
@@ -182,7 +182,7 @@ const Composed = adopt({
                 currentWizardStepId !== BOOK_APPOINTMENT_WIZARD_STEP_ID
             }
             fetchPolicy="network-only"
-            context={{ clientName: 'appointment' }}
+            context={{ clientName: 'search' }}
         >
             {render}
         </Query>
@@ -488,7 +488,7 @@ class KioskPage extends PureComponent {
                             `${KIOSK_URL}/${INSURANCE_WIZARD_STEP_ID}`
                         );
                         return null;
-                    } else if (
+                    } if (
                         currentWizardStepId === INSURANCE_WIZARD_STEP_ID &&
                         !_isEmpty(
                             _get(
@@ -501,7 +501,7 @@ class KioskPage extends PureComponent {
                             `${KIOSK_URL}/${BOOK_APPT_STAGE_WIZARD_STEP_IDS[0]}`
                         );
                         return null;
-                    } else if (
+                    } if (
                         currentWizardStepId ===
                             BOOK_APPT_STAGE_WIZARD_STEP_IDS[0] &&
                         isCheckInAndHasUpcomingAppt
@@ -512,7 +512,7 @@ class KioskPage extends PureComponent {
                             }`
                         );
                         return null;
-                    } else if (
+                    } if (
                         currentWizardStepId ===
                             HEALTH_HISTORY_STAGE_WIZARD_STEP_IDS[0] &&
                         hasSubmittedHealthHistoryForm
