@@ -4,13 +4,12 @@ import styled from 'styled-components';
 import { procedureList } from '~/data';
 import { Box, Flex, Grid, Image, Text, TextArea } from '~/components';
 
-import Onboarding from "../..";
+import Onboarding from '../..';
 import Upload from '../../../Upload';
 import Wizard from '../../../Wizard';
 import InfoIcon from '../../Assets/infoIcon';
 import { SelectLanguage } from '../../SelectLanguage';
 import { SelectTime } from '../../SelectTime';
-import { DentistInsurance } from '../Profile/DentistInsurance';
 
 const UploadButton = styled.button`
     padding: 3px;
@@ -39,7 +38,7 @@ const specialties = [
 
 const LANGUAGES_FORM_ITEM_NAME = 'languages';
 
-const Step1 = props => {
+const Step1 = ({ formikProps, isEditing }) => {
     return (
         <Box mb={30}>
             <Flex flexDirection="column">
@@ -69,13 +68,13 @@ const Step1 = props => {
                         background="#3481f8"
                         mr={12}
                     >
-                        {props.formikProps.values.profilePicture && (
+                        {formikProps.values.profilePicture && (
                             <Image
                                 alt="profile photo"
                                 borderRadius="50%"
                                 width="80px"
                                 height="80px"
-                                src={props.formikProps.values.profilePicture}
+                                src={formikProps.values.profilePicture}
                             />
                         )}
                     </Box>
@@ -90,12 +89,12 @@ const Step1 = props => {
                             }}
                             onSuccess={result => {
                                 const upload = result.filesUploaded[0];
-                                props.formikProps.setFieldValue(
+                                formikProps.setFieldValue(
                                     'profilePicture',
                                     upload.url
                                 );
                             }}
-                            value={props.formikProps.values.profilePicture}
+                            value={formikProps.values.profilePicture}
                         />
                     </Flex>
                 </Flex>
@@ -109,9 +108,9 @@ const Step1 = props => {
                 <Box width={['100%', '370px', '370px']}>
                     <Onboarding.Select
                         placeholder="General Dentist"
-                        value={props.formikProps.values.key}
+                        value={formikProps.values.key}
                         onSelect={value =>
-                            props.formikProps.setFieldValue('key', value)
+                            formikProps.setFieldValue('key', value)
                         }
                     >
                         {specialties.map(sp => (
@@ -129,10 +128,8 @@ const Step1 = props => {
                     time increments when they book their appointment
                 </Text>
                 <SelectTime
-                    onSelect={time =>
-                        props.formikProps.setFieldValue('time', time)
-                    }
-                    value={props.formikProps.values.time}
+                    onSelect={time => formikProps.setFieldValue('time', time)}
+                    value={formikProps.values.time}
                 />
                 <Box height={30} />
 
@@ -140,26 +137,26 @@ const Step1 = props => {
                 <Box height={10} />
                 <SelectLanguage
                     onSelect={languages =>
-                        props.formikProps.setFieldValue(
+                        formikProps.setFieldValue(
                             LANGUAGES_FORM_ITEM_NAME,
                             languages
                         )
                     }
-                    value={props.formikProps.values[LANGUAGES_FORM_ITEM_NAME]}
+                    value={formikProps.values[LANGUAGES_FORM_ITEM_NAME]}
                 />
                 <Box height={30} />
-                {props.isEditing && (
+                {isEditing && (
                     <React.Fragment>
                         <Text fontSize={2}>Set your unique profile link</Text>
                         <Box height={10} />
                         <Onboarding.Input
                             onChange={e =>
-                                props.formikProps.setFieldValue(
+                                formikProps.setFieldValue(
                                     'permalink',
                                     e.target.value
                                 )
                             }
-                            value={props.formikProps.values.permalink}
+                            value={formikProps.values.permalink}
                         />
                         <Box height={30} />
                     </React.Fragment>
@@ -176,11 +173,11 @@ const Step1 = props => {
                             key={p}
                             disabled={p === 'Exams'}
                             field={p}
-                            value={props.formikProps.values.procedureList[p]}
+                            value={formikProps.values.procedureList[p]}
                             onClick={() =>
-                                props.formikProps.setFieldValue(
+                                formikProps.setFieldValue(
                                     `procedureList[${p}]`,
-                                    !props.formikProps.values.procedureList[p]
+                                    !formikProps.values.procedureList[p]
                                 )
                             }
                         />
@@ -191,11 +188,11 @@ const Step1 = props => {
 
                 <Onboarding.NextButton
                     onClick={() => {
-                        props.formikProps.submitForm();
+                        formikProps.submitForm();
                     }}
                 />
-                {props.formikProps.submitCount !== 0 &&
-                    Object.keys(props.formikProps.errors).length !== 0 && (
+                {formikProps.submitCount !== 0 &&
+                    Object.keys(formikProps.errors).length !== 0 && (
                         <Onboarding.RequiredFieldsMessage />
                     )}
             </Flex>
@@ -203,7 +200,7 @@ const Step1 = props => {
     );
 };
 
-const Step2 = props => (
+const Step2 = ({ formikProps }) => (
     <Box mb={30}>
         <Flex flexDirection="column">
             <Flex justifyContent="center">
@@ -220,23 +217,19 @@ Tell them about your professional background: Where did you obtain your credenti
 
 Tell them about you: Where are you currently practicing? What kind of procedures do you offer? What do you like to do on your spare time?
 "
-                value={props.formikProps.values.about}
+                value={formikProps.values.about}
                 onChange={value =>
-                    props.formikProps.setFieldValue('about', value.target.value)
+                    formikProps.setFieldValue('about', value.target.value)
                 }
                 height={356}
             />
 
             <Box height={35} />
 
-            <Onboarding.NextButton
-                onClick={() => props.formikProps.submitForm()}
-            />
+            <Onboarding.NextButton onClick={() => formikProps.submitForm()} />
         </Flex>
     </Box>
 );
-
-const Step3 = props => <DentistInsurance {...props} />;
 
 const render = props => {
     let Step = null;
@@ -247,9 +240,6 @@ const render = props => {
             break;
         case '2':
             Step = Step2;
-            break;
-        case '3':
-            Step = Step3;
             break;
         default:
             Step = Step1;
@@ -279,3 +269,5 @@ export const DentistProfile = ({ onSubmit, steps, isEditing }) => (
         steps={steps}
     />
 );
+
+export default DentistProfile;

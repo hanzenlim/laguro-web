@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Mutation, Query } from 'react-apollo';
 import _get from 'lodash/get';
@@ -8,13 +8,6 @@ import { adopt } from 'react-adopt';
 import * as Yup from 'yup';
 import Head from 'next/head';
 
-import KioskDentistProfileView from './view';
-import {
-    CREATE_DENTIST,
-    UPDATE_USER_IMAGE_URL,
-    getDentistQuery,
-    UPDATE_DENTIST,
-} from './queries';
 import { DENTIST_ONBOARDING_VERIFICATION_URL } from '~/util/urls';
 import {
     redirect,
@@ -27,6 +20,13 @@ import { execute } from '~/util/gqlUtils';
 import { isBioUpdated } from '~/util/dentistUtils';
 import { ENGLISH } from '~/util/strings';
 import { procedureList } from '~/data';
+import KioskDentistProfileView from './view';
+import {
+    CREATE_DENTIST,
+    UPDATE_USER_IMAGE_URL,
+    getDentistQuery,
+    UPDATE_DENTIST,
+} from './queries';
 
 const specialties = [
     'General Dentist',
@@ -37,9 +37,6 @@ const specialties = [
     'Periodontics',
     'Prosthodontics',
 ];
-
-const checkAcceptedInsurance = (key, acceptedInsurances) =>
-    !_isEmpty(acceptedInsurances) && acceptedInsurances.includes(key);
 
 const Composed = adopt({
     /* eslint-disable-next-line react/prop-types */
@@ -105,220 +102,170 @@ const Composed = adopt({
     ),
 });
 
-class KioskDentistProfilePage extends Component {
-    render() {
-        const refetchUser = _get(this.props, 'refetchUser', () => {});
+const KioskDentistProfilePage = props => {
+    const refetchUser = _get(props, 'refetchUser', () => {});
 
-        return (
-            <Composed>
-                {({
-                    dentistResponse: {
-                        loading: isDentistLoading,
-                        data: dentistData,
+    return (
+        <Composed>
+            {({
+                dentistResponse: {
+                    loading: isDentistLoading,
+                    data: dentistData,
+                },
+                createDentist,
+                updateUser,
+                updateDentist,
+            }) => {
+                const dentist = _get(dentistData, 'getDentist') || {};
+                const {
+                    firstAppointmentDuration,
+                    specialty,
+                    procedures,
+                    bio,
+                    acceptedInsurances,
+                    languages: dentistLanguages,
+                } = dentist;
+                const user = getUser();
+
+                const defaultProceduresList = { ...procedureList };
+
+                if (!_isEmpty(procedures)) {
+                    procedures.map(procedure => {
+                        defaultProceduresList[procedure.group] = true;
+                        return null;
+                    });
+                }
+
+                const steps = [
+                    {
+                        id: '1',
+                        component: null,
+                        initialValues: {
+                            profilePicture: user.imageUrl,
+                            key: specialty || specialties[0],
+                            time: firstAppointmentDuration || 30,
+                            languages: dentistLanguages || [ENGLISH],
+                            procedureList: defaultProceduresList,
+                            permalink: dentist.permalink || '',
+                        },
+                        validationSchema: Yup.object().shape({
+                            procedureList: Yup.object().test(
+                                'has at least one procedure',
+                                'Please select at lease one procedure',
+                                procedureObject =>
+                                    Object.values(procedureObject).some(i => i)
+                            ),
+                        }),
+                        onAction: () => {
+                            window.scrollTo(0, 0);
+                        },
                     },
-                    createDentist,
-                    updateUser,
-                    updateDentist,
-                }) => {
-                    const dentist = _get(dentistData, 'getDentist') || {};
-                    const {
-                        firstAppointmentDuration,
-                        specialty,
-                        procedures,
-                        bio,
-                        acceptedInsurances,
-                        languages: dentistLanguages,
-                    } = dentist;
-                    const user = getUser();
 
-                    const defaultProceduresList = Object.assign(
-                        {},
-                        procedureList
+                    {
+                        id: '2',
+                        component: null,
+                        initialValues: { about: bio },
+                        validationSchema: Yup.object().shape({
+                            about: Yup.string()
+                                .required('You must write a bio')
+                                .concat(Yup.string().notOneOf([' '])),
+                        }),
+                    },
+                ];
+
+                const onCreate = async values => {
+                    const {
+                        key,
+                        languages,
+                        procedureList: procedureListOnCreate,
+                        profilePicture,
+                        time,
+                        permalink,
+                    } = _get(values, ['1'], {});
+                    const { about } = _get(values, ['2'], {});
+
+                    const procedureArrayOfKeys = Object.keys(
+                        procedureListOnCreate
                     );
 
-                    if (!_isEmpty(procedures)) {
-                        procedures.map(procedure => {
-                            defaultProceduresList[procedure.group] = true;
+                    const proceduresOnCreate = procedureArrayOfKeys.map(
+                        item => {
+                            if (procedureListOnCreate[item]) {
+                                return {
+                                    code: 'code',
+                                    duration: 0,
+                                    group: item,
+                                    name: 'name',
+                                };
+                            }
+
                             return null;
+                        }
+                    );
+
+                    const createQuery = {
+                        specialty: key,
+                        languages,
+                        acceptedInsurances: acceptedInsurances || [],
+                        bio: about,
+                        procedures: compact(proceduresOnCreate),
+                        firstAppointmentDuration: time,
+                    };
+
+                    const updateImageQuery = {
+                        id: _get(user, 'id'),
+                        imageUrl: profilePicture,
+                    };
+
+                    if (updateImageQuery && updateImageQuery.imageUrl) {
+                        await execute({
+                            action: async () => {
+                                await updateUser({
+                                    variables: {
+                                        input: updateImageQuery,
+                                    },
+                                });
+                            },
                         });
                     }
 
-                    const steps = [
-                        {
-                            id: '1',
-                            component: null,
-                            initialValues: {
-                                profilePicture: user.imageUrl,
-                                key: specialty || specialties[0],
-                                time: firstAppointmentDuration || 30,
-                                languages: dentistLanguages || [ENGLISH],
-                                procedureList: defaultProceduresList,
-                                permalink: dentist.permalink || '',
-                            },
-                            validationSchema: Yup.object().shape({
-                                procedureList: Yup.object().test(
-                                    'has at least one procedure',
-                                    'Please select at lease one procedure',
-                                    procedureObject =>
-                                        Object.values(procedureObject).some(
-                                            i => i
-                                        )
-                                ),
-                            }),
-                            onAction: () => {
-                                window.scrollTo(0, 0);
-                            },
-                        },
+                    await execute({
+                        action: async () => {
+                            if (_isEmpty(_get(user, 'dentistId'))) {
+                                await createDentist({
+                                    variables: {
+                                        input: {
+                                            ...createQuery,
+                                            userId: _get(user, 'id'),
+                                        },
+                                    },
+                                });
 
-                        {
-                            id: '2',
-                            component: null,
-                            initialValues: { about: bio },
-                            validationSchema: Yup.object().shape({
-                                about: Yup.string()
-                                    .required('You must write a bio')
-                                    .concat(Yup.string().notOneOf([' '])),
-                            }),
-                        },
-                        {
-                            id: '3',
-                            component: null,
-                            initialValues: {
-                                ['CIGNA']: checkAcceptedInsurance(
-                                    'CIGNA',
-                                    acceptedInsurances
-                                ),
-                                ['METLIFE']: checkAcceptedInsurance(
-                                    'METLIFE',
-                                    acceptedInsurances
-                                ),
-                                ['DD_CALIFORNIA']: checkAcceptedInsurance(
-                                    'DD_CALIFORNIA',
-                                    acceptedInsurances
-                                ),
-                                ['GUARDIAN']: checkAcceptedInsurance(
-                                    'GUARDIAN',
-                                    acceptedInsurances
-                                ),
-                                ['AETNA_DENTAL_PLANS']: checkAcceptedInsurance(
-                                    'AETNA_DENTAL_PLANS',
-                                    acceptedInsurances
-                                ),
-                            },
-                        },
-                    ];
+                                await refetchUser();
+                            } else {
+                                await updateDentist({
+                                    variables: {
+                                        input: {
+                                            ...createQuery,
+                                            permalink,
+                                            id: user.dentistId,
+                                        },
+                                    },
+                                });
 
-                    const onCreate = async values => {
-                        const {
-                            key,
-                            languages,
-                            procedureList: procedureListOnCreate,
-                            profilePicture,
-                            time,
-                            permalink,
-                        } = _get(values, ['1'], {});
-                        const { about } = _get(values, ['2'], {});
-                        const dentistInsurance = _get(values, ['3'], {});
-
-                        const insuranceArrayOfKeys = Object.keys(
-                            dentistInsurance
-                        );
-
-                        const acceptedInsurancesOnCreate = insuranceArrayOfKeys.filter(
-                            insuranceArrayOfKey =>
-                                dentistInsurance[insuranceArrayOfKey]
-                        );
-
-                        const procedureArrayOfKeys = Object.keys(
-                            procedureListOnCreate
-                        );
-
-                        const proceduresOnCreate = procedureArrayOfKeys.map(
-                            item => {
-                                if (procedureListOnCreate[item]) {
-                                    return {
-                                        code: 'code',
-                                        duration: 0,
-                                        group: item,
-                                        name: 'name',
-                                    };
-                                }
-
-                                return null;
+                                await refetchUser();
                             }
-                        );
-
-                        const createQuery = {
-                            specialty: key,
-                            languages,
-                            acceptedInsurances: acceptedInsurancesOnCreate,
-                            bio: about,
-                            procedures: compact(proceduresOnCreate),
-                            firstAppointmentDuration: time,
-                        };
-
-                        const updateImageQuery = {
-                            id: _get(user, 'id'),
-                            imageUrl: profilePicture,
-                        };
-
-                        if (updateImageQuery && updateImageQuery.imageUrl) {
-                            await execute({
-                                action: async () => {
-                                    await updateUser({
-                                        variables: {
-                                            input: updateImageQuery,
-                                        },
-                                    });
-                                },
-                            });
-                        }
-
-                        await execute({
-                            action: async () => {
-                                if (_isEmpty(_get(user, 'dentistId'))) {
-                                    await createDentist({
-                                        variables: {
-                                            input: {
-                                                ...createQuery,
-                                                userId: _get(user, 'id'),
-                                            },
-                                        },
-                                    });
-
-                                    await refetchUser();
-                                } else {
-                                    await updateDentist({
-                                        variables: {
-                                            input: {
-                                                ...createQuery,
-                                                permalink,
-                                                id: user.dentistId,
-                                            },
-                                        },
-                                    });
-
-                                    await refetchUser();
-                                }
-                            },
-                            afterAction: () => {
-                                // this will trigger a render of a confirmation panel in dentist dashboard
-                                if (this.props.fromDentistDashboard) {
-                                    this.props.onFinish();
-                                } else if (
-                                    getSearchParamValueByKey(
-                                        'referer'
-                                    ).includes('ProfilePage')
-                                ) {
-                                    if (!attemptToRedirectBack()) {
-                                        redirect({
-                                            url: DENTIST_ONBOARDING_VERIFICATION_URL,
-                                            newSearchParamKey: 'referer',
-                                            newSearchParamValue:
-                                                'KioskDentistProfilePage',
-                                        });
-                                    }
-                                } else {
+                        },
+                        afterAction: () => {
+                            // this will trigger a render of a confirmation panel in dentist dashboard
+                            if (props.fromDentistDashboard) {
+                                props.onFinish();
+                            } else if (
+                                getSearchParamValueByKey('referer').includes(
+                                    'ProfilePage'
+                                )
+                            ) {
+                                if (!attemptToRedirectBack()) {
                                     redirect({
                                         url: DENTIST_ONBOARDING_VERIFICATION_URL,
                                         newSearchParamKey: 'referer',
@@ -326,44 +273,52 @@ class KioskDentistProfilePage extends Component {
                                             'KioskDentistProfilePage',
                                     });
                                 }
-                            },
-                        });
-                    };
+                            } else {
+                                redirect({
+                                    url: DENTIST_ONBOARDING_VERIFICATION_URL,
+                                    newSearchParamKey: 'referer',
+                                    newSearchParamValue:
+                                        'KioskDentistProfilePage',
+                                });
+                            }
+                        },
+                    });
+                };
 
-                    return (
-                        <Fragment>
-                            <Head>
-                                <title>Laguro Dentist</title>
-                                <link
-                                    rel="canonical"
-                                    href="https://www.laguro.com/onboarding/dentist/profile/"
-                                />
-                                <meta
-                                    name="description"
-                                    content="Become a Laguro Dentist today. Tell us about the different dental services that you offer"
-                                />
-                            </Head>
-                            {isDentistLoading ? (
-                                <Loading />
-                            ) : (
-                                <KioskDentistProfileView
-                                    onCreate={onCreate}
-                                    steps={steps}
-                                    isEditing={
-                                        !_isEmpty(_get(user, 'dentistId'))
-                                    }
-                                    withoutProgressBar={
-                                        this.props.withoutProgressBar
-                                    } // used in dentist dashboard
-                                />
-                            )}
-                        </Fragment>
-                    );
-                }}
-            </Composed>
-        );
-    }
-}
+                return (
+                    <Fragment>
+                        <Head>
+                            <title>Laguro Dentist</title>
+                            <link
+                                rel="canonical"
+                                href="https://www.laguro.com/onboarding/dentist/profile/"
+                            />
+                            <meta
+                                name="description"
+                                content="Become a Laguro Dentist today. Tell us about the different dental services that you offer"
+                            />
+                        </Head>
+                        {isDentistLoading ? (
+                            <Loading />
+                        ) : (
+                            <KioskDentistProfileView
+                                onCreate={onCreate}
+                                steps={steps}
+                                isEditing={!_isEmpty(_get(user, 'dentistId'))}
+                                withoutProgressBar={props.withoutProgressBar} // used in dentist dashboard
+                            />
+                        )}
+                    </Fragment>
+                );
+            }}
+        </Composed>
+    );
+};
+
+KioskDentistProfilePage.defaultProps = {
+    withoutProgressBar: false,
+    fromDentistDashboard: false,
+};
 
 KioskDentistProfilePage.propTypes = {
     withoutProgressBar: PropTypes.bool,
