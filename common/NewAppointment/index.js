@@ -1,22 +1,34 @@
-import React, { useState } from 'react';
+/* eslint-disable react-hooks/rules-of-hooks */
+import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 import { message } from 'antd';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import _get from 'lodash/get';
+import _isEmpty from 'lodash/isEmpty';
+import uniqBy from 'lodash/uniqBy';
 
 import { Loading } from '~/components';
 import RedirectToErrorPage from '~/routes/GeneralErrorPage';
 import { getUser } from '~/util/authUtils';
 import { trackBookAppointment } from '~/util/trackingUtils';
 import NewAppointmentView from './view';
-import { getDentistQuery, requestAppointmentMutation } from './queries';
+import {
+    getDentistQuery,
+    requestAppointmentMutation,
+    getPatientsByDentalGroups,
+} from './queries';
 
 const LOCAL_TIME_FORMAT = 'YYYY-MM-DDTHH:mm:ss';
 
 function NewAppointment({ onSuccessApptCreation, onClose }) {
+    const [patientsFromDentalGroups, setPatientsFromDentalGroups] = useState(
+        []
+    );
+
     const [showConfirmationMessage, setShowConfirmationMessage] = useState(
         false
     );
+
     const [requestAppointment, { loading: mutationLoading }] = useMutation(
         requestAppointmentMutation,
         {
@@ -31,6 +43,21 @@ function NewAppointment({ onSuccessApptCreation, onClose }) {
         variables: { id },
     });
 
+    useEffect(() => {
+        const getPatients = async () => {
+            if (!loading && !error && data) {
+                const dentalGroups = _get(data, 'getDentist.dentalGroups', []);
+                const esResponse = await getPatientsByDentalGroups({
+                    dentalGroups,
+                });
+
+                setPatientsFromDentalGroups(esResponse);
+            }
+        };
+
+        getPatients();
+    }, [data, error, loading]);
+
     if (error) {
         return <RedirectToErrorPage />;
     }
@@ -39,18 +66,13 @@ function NewAppointment({ onSuccessApptCreation, onClose }) {
         return <Loading />;
     }
 
-    const { patients } = _get(data, 'getDentist');
     const dentistId = _get(data, 'getDentist.id');
+    const patients = _get(data, 'getDentist.patients', []);
 
-    const patientsNameMap = patients.map(value => {
-        const key = value.id;
-        const fullName = `${value.firstName} ${value.lastName}`;
-
-        return {
-            key,
-            fullName,
-        };
-    });
+    const patientsNameMap = patients.map(value => ({
+        value: value.id,
+        text: `${value.firstName} ${value.lastName}`,
+    }));
 
     const onSubmit = async values => {
         const localStartTimeHour = moment(values.selectedStartTime).format(
@@ -102,6 +124,20 @@ function NewAppointment({ onSuccessApptCreation, onClose }) {
         }
     };
 
+    let patientsFinal = [...patientsNameMap];
+
+    if (!_isEmpty(patientsFromDentalGroups)) {
+        const patientsNormalize = patientsFromDentalGroups.map(item => ({
+            value: item.id,
+            text: `${item.firstName} ${item.lastName}`,
+        }));
+
+        patientsFinal = uniqBy(
+            [...patientsFinal, ...patientsNormalize],
+            'value'
+        );
+    }
+
     return (
         <NewAppointmentView
             preferredLocations={_get(data, 'getDentist.preferredLocations')}
@@ -114,7 +150,8 @@ function NewAppointment({ onSuccessApptCreation, onClose }) {
             onMakeAnotherAppt={() => {
                 setShowConfirmationMessage(false);
             }}
-            patientsName={patientsNameMap}
+            patientsName={patientsFinal}
+            patients={patientsFinal}
             onSubmit={onSubmit}
             onClose={onClose}
             mutationLoading={mutationLoading}

@@ -1,3 +1,4 @@
+/* eslint-disable react/no-did-update-set-state */
 import React, { Fragment, PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import _get from 'lodash/get';
@@ -49,20 +50,25 @@ const TIMEPICKER_FORMAT = 'h:mma';
 class AppointmentFormView extends PureComponent {
     constructor(props) {
         super(props);
-        const { patientsName } = this.props;
+
         this.state = {
-            patientsName: patientsName.map(value => value.fullName),
+            patients: props.patients,
         };
     }
 
+    componentDidUpdate(prevProps) {
+        const { patients } = this.props;
+        if (prevProps.patients.length !== patients.length) {
+            this.setState({ patients });
+        }
+    }
+
     onSearchPatient = value => {
-        const { patientsName } = this.props;
-        const result = patientsName
-            .map(patient => patient.fullName)
-            .filter(patient => patient.match(value));
+        const { patients } = this.props;
+        const result = patients.filter(patient => patient.text.match(value));
 
         this.setState({
-            patientsName: !value ? [] : result,
+            patients: !value ? patients : result,
         });
     };
 
@@ -80,6 +86,8 @@ class AppointmentFormView extends PureComponent {
         ) {
             return <NoAppointmentsMessage />;
         }
+
+        const { patients } = this.state;
 
         return (
             <Fragment>
@@ -125,7 +133,6 @@ class AppointmentFormView extends PureComponent {
                             };
 
                             const { onClose } = this.props;
-                            const { patientsName } = this.state;
 
                             return (
                                 <Box
@@ -171,7 +178,7 @@ class AppointmentFormView extends PureComponent {
                                             <StyledAutoComplete
                                                 width="100%"
                                                 height="45px"
-                                                dataSource={patientsName}
+                                                dataSource={patients}
                                                 onSelect={handleFieldChange(
                                                     'patientName'
                                                 )}
