@@ -123,6 +123,7 @@ export default class MyDocument extends Document {
                         rel="preconnect" 
                         href="https://f.vimeocdn.com"
                     />
+                    {!process.env.REACT_APP_ENV === 'development' &&
                     <script
                         dangerouslySetInnerHTML={{
                             __html: `(function(w,d,s,l,i){w[l] = w[l] || [];w[l].push({'gtm.start':
@@ -132,6 +133,7 @@ export default class MyDocument extends Document {
                                 })(window,document,'script','dataLayer','${process.env.REACT_APP_GTM_TRACKING_ID}')`,
                         }}
                     />
+                    }
                     <script
                         src={`https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_PLACES_API_KEY}&libraries=places`}
                         async
@@ -140,12 +142,14 @@ export default class MyDocument extends Document {
                 </InlineStylesHead>
                 <body>
                     <noscript>
+                    {!process.env.REACT_APP_ENV === 'development' &&
                         <iframe
                             src={`https://www.googletagmanager.com/ns.html?id=${process.env.REACT_APP_GTM_TRACKING_ID}`}
                             height="0"
                             width="0"
                             title="app_gtm_tracker"
                         />
+                    }
                     </noscript>
                     <Main />
                     <script src={polyfill} />
