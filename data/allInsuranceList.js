@@ -299,6 +299,7 @@ export const allInsuranceList = [
         id: 'PREFERRED_DENTAL_ORGANIZATION',
     },
     { name: 'PrimeWest', id: 'PRIMEWEST' },
+    { name: 'Principal Plan Dental', id: 'PRINCIPAL_PLAN_DENTAL' },
     { name: 'Provident Life &amp; Casualty Ins. Co.', id: 'PROVIDENT_LIFE' },
     {
         name: 'Provident Life and Accident Ins. Co.',
