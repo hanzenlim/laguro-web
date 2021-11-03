@@ -125,7 +125,7 @@
     "url-loader": "^2.1.0",
     "use-debounce": "^3.0.1",
     "uuid-validate": "0.0.3",
-    "validator": "^10.11.0",
+    "validator": "^13.7.0",
     "viewport-mercator-project": "^6.2.1",
     "yup": "^0.27.0"
   },
