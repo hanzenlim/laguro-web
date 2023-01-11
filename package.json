@@ -78,7 +78,7 @@
     "https-proxy-agent": "^2.2.4",
     "intl": "^1.2.5",
     "isomorphic-unfetch": "^3.0.0",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "lodash": "^4.17.15",
     "mapbox-gl": "^0.45.0",
     "mitt": "^1.1.3",
